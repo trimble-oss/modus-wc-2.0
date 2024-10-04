@@ -25,13 +25,13 @@ To use a component in your project, import it and use it with the "modus-wc" pre
 <modus-wc-button label="Click me"></modus-wc-button>
 ```
 
-## Theming
+## Documentation
 
-You can customize the appearance of components by overriding the CSS custom properties. All properties are prefixed with "modus-wc-".
+For more detailed documentation on topics like custom theming and project design, please check the [docs](./docs) folder.
 
 ## Contributing
 
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests.
+Please read the [CONTRIBUTING](./CONTRIBUTING.md) doc for details on our code of conduct, and the process for submitting pull requests.
 
 ## License
 
