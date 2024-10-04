@@ -1,0 +1,13 @@
+.modus-wc-button {
+  padding: var(--modus-wc-button-padding, 10px 20px);
+  font-size: var(--modus-wc-button-font-size, 16px);
+  cursor: pointer;
+  background-color: var(--modus-wc-button-bg-color, #007bff);
+  color: var(--modus-wc-button-text-color, white);
+  border: var(--modus-wc-button-border, none);
+  border-radius: var(--modus-wc-button-border-radius, 4px);
+
+  &:hover {
+    background-color: var(--modus-wc-button-hover-bg-color, #0056b3);
+  }
+}
