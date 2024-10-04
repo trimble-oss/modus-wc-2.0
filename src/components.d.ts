@@ -6,13 +6,38 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    /**
+     * @component modus-wc-button
+     * @description A customizable button component.
+     */
     interface ModusWcButton {
+        /**
+          * The aria-label attribute for accessibility.
+         */
         "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the button.
+         */
         "customClass": string;
+        /**
+          * If true, the button will take the full width of its container.
+         */
+        "fullWidth": boolean;
+        /**
+          * The text label displayed on the button.
+         */
         "label": string;
+        /**
+          * The size of the button. Can be 'small', 'medium', or 'large'.
+         */
+        "size": 'small' | 'medium' | 'large';
     }
 }
 declare global {
+    /**
+     * @component modus-wc-button
+     * @description A customizable button component.
+     */
     interface HTMLModusWcButtonElement extends Components.ModusWcButton, HTMLStencilElement {
     }
     var HTMLModusWcButtonElement: {
@@ -24,10 +49,31 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    /**
+     * @component modus-wc-button
+     * @description A customizable button component.
+     */
     interface ModusWcButton {
+        /**
+          * The aria-label attribute for accessibility.
+         */
         "ariaLabel"?: string;
+        /**
+          * Custom CSS class to apply to the button.
+         */
         "customClass"?: string;
+        /**
+          * If true, the button will take the full width of its container.
+         */
+        "fullWidth"?: boolean;
+        /**
+          * The text label displayed on the button.
+         */
         "label"?: string;
+        /**
+          * The size of the button. Can be 'small', 'medium', or 'large'.
+         */
+        "size"?: 'small' | 'medium' | 'large';
     }
     interface IntrinsicElements {
         "modus-wc-button": ModusWcButton;
@@ -37,6 +83,10 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * @component modus-wc-button
+             * @description A customizable button component.
+             */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
         }
     }

@@ -6,6 +6,8 @@ interface ButtonArgs {
   customClass: string;
   backgroundColor: string;
   textColor: string;
+  size: 'small' | 'medium' | 'large';
+  fullWidth: boolean;
 }
 
 const meta: Meta<ButtonArgs> = {
@@ -16,6 +18,11 @@ const meta: Meta<ButtonArgs> = {
     customClass: { control: 'text' },
     backgroundColor: { control: 'color' },
     textColor: { control: 'color' },
+    size: {
+      control: { type: 'select' },
+      options: ['small', 'medium', 'large'],
+    },
+    fullWidth: { control: 'boolean' },
   },
 };
 
@@ -35,7 +42,9 @@ const Template: Story = {
       <modus-wc-button 
         label="${args.label}" 
         aria-label="${args.ariaLabel}" 
-        custom-class="custom-themed-button ${args.customClass}"
+        custom-class="custom-themed-button ${args.customClass} modus-wc-button--${args.size}"
+        size="${args.size}"
+        ${args.fullWidth ? 'full-width' : ''}
       ></modus-wc-button>
     `;
   },
@@ -49,5 +58,34 @@ export const Default: Story = {
     backgroundColor: '#007bff',
     textColor: 'white',
     customClass: '',
+    size: 'medium',
+    fullWidth: false,
+  },
+};
+
+export const Small: Story = {
+  ...Template,
+  args: {
+    ...Default.args,
+    size: 'small',
+    label: 'Small Button',
+  },
+};
+
+export const Large: Story = {
+  ...Template,
+  args: {
+    ...Default.args,
+    size: 'large',
+    label: 'Large Button',
+  },
+};
+
+export const FullWidth: Story = {
+  ...Template,
+  args: {
+    ...Default.args,
+    fullWidth: true,
+    label: 'Full Width Button',
   },
 };
