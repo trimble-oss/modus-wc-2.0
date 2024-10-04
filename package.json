@@ -20,8 +20,8 @@
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{js,ts,json,md}\""
@@ -32,17 +32,20 @@
     "@eslint/js": "^9.11.1",
     "@stencil/core": "^4.22.0",
     "@stencil/sass": "^3.0.12",
+    "@storybook/addon-docs": "^8.3.5",
     "@storybook/addon-essentials": "^8.3.5",
     "@storybook/addon-links": "^8.3.5",
-    "@storybook/builder-webpack5": "^8.3.5",
     "@storybook/html": "^8.3.5",
-    "@storybook/manager-webpack5": "^6.5.16",
+    "@storybook/html-webpack5": "^8.3.5",
+    "@storybook/preset-typescript": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^8.8.0",
     "@typescript-eslint/parser": "^8.8.0",
     "eslint": "^9.11.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "prettier": "^3.3.3",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.2",
     "webpack": "^5.95.0"
   }
 }

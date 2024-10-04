@@ -2,7 +2,6 @@
 
 <!-- Auto Generated Below -->
 
-
 ## Properties
 
 | Property      | Attribute      | Description | Type     | Default |
@@ -11,7 +10,6 @@
 | `customClass` | `custom-class` |             | `string` | `''`    |
 | `label`       | `label`        |             | `string` | `''`    |
 
+---
 
-----------------------------------------------
-
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_
