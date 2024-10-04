@@ -12,7 +12,10 @@ export class ModusWcButton {
 
   render() {
     return (
-      <button class={`modus-wc-button ${this.customClass}`} aria-label={this.ariaLabel || this.label}>
+      <button
+        class={`modus-wc-button ${this.customClass}`}
+        aria-label={this.ariaLabel || this.label}
+      >
         {this.label}
       </button>
     );

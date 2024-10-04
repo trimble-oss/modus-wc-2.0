@@ -7,27 +7,23 @@ export const config: Config = {
     {
       type: 'dist',
       esmLoaderPath: '../loader',
-      copy: [
-        { src: 'components/README.md' }
-      ]
+      copy: [{ src: 'components/README.md' }],
     },
     {
-      type: 'dist-custom-elements'
+      type: 'dist-custom-elements',
     },
     {
-      type: 'docs-readme'
+      type: 'docs-readme',
     },
     {
       type: 'www',
-      serviceWorker: null
-    }
+      serviceWorker: null,
+    },
   ],
   plugins: [
     sass({
-      injectGlobalPaths: [
-        'src/styles/global.scss'
-      ]
-    })
+      injectGlobalPaths: ['src/styles/global.scss'],
+    }),
   ],
   buildEs5: 'prod',
   extras: {

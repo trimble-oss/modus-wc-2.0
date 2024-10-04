@@ -37,6 +37,8 @@
     "@storybook/builder-webpack5": "^8.3.5",
     "@storybook/html": "^8.3.5",
     "@storybook/manager-webpack5": "^6.5.16",
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "@typescript-eslint/parser": "^8.8.0",
     "eslint": "^9.11.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
