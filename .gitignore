@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+www/
+loader/
+storybook-static/
+
+# Stencil
+.stencil/
+
+# Storybook
+.storybook/
+
+# Test coverage
+coverage/
+
+# IDE and editor files
+.idea/
+.vscode/
+
+# Logs
+*.log

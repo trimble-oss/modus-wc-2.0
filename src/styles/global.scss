@@ -1,0 +1,41 @@
+:root {
+  // Global theme variables
+  --modus-wc-primary-color: #007bff;
+  --modus-wc-secondary-color: #6c757d;
+  --modus-wc-success-color: #28a745;
+  --modus-wc-danger-color: #dc3545;
+  --modus-wc-warning-color: #ffc107;
+  --modus-wc-info-color: #17a2b8;
+  --modus-wc-light-color: #f8f9fa;
+  --modus-wc-dark-color: #343a40;
+
+  // Typography
+  --modus-wc-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --modus-wc-font-size-base: 16px;
+  --modus-wc-line-height-base: 1.5;
+
+  // Spacing
+  --modus-wc-spacing-unit: 8px;
+
+  // Border
+  --modus-wc-border-radius: 4px;
+  --modus-wc-border-width: 1px;
+  --modus-wc-border-color: #dee2e6;
+
+  // Transitions
+  --modus-wc-transition-duration: 0.3s;
+  --modus-wc-transition-timing-function: ease-in-out;
+}
+
+// Reset styles
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--modus-wc-font-family);
+  font-size: var(--modus-wc-font-size-base);
+  line-height: var(--modus-wc-line-height-base);
+  color: var(--modus-wc-dark-color);
+  background-color: var(--modus-wc-light-color);
+}
