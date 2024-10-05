@@ -13,7 +13,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Changed to 20 for better stability
+          node-version: '20'
 
       - name: Install dependencies
         run: npm ci
@@ -43,8 +43,9 @@ jobs:
               let hasViolations = false;
 
               for (const file of files) {
-                if (path.extname(file) === '.js') {
+                if (file.startsWith('modus-wc-') && file.endsWith('.js')) {
                   const filePath = 'file://' + path.resolve(componentsDir, file);
+                  console.log(\`Checking file: \${file}\`);
                   await page.goto(filePath);
                   
                   await page.evaluate(axeCore.source);
@@ -54,6 +55,8 @@ jobs:
                     console.error(\`Accessibility violations found in \${file}:\`);
                     console.error(JSON.stringify(results.violations, null, 2));
                     hasViolations = true;
+                  } else {
+                    console.log(\`No violations found in \${file}\`);
                   }
                 }
               }
@@ -62,6 +65,8 @@ jobs:
 
               if (hasViolations) {
                 process.exit(1);
+              } else {
+                console.log('All checked files pass accessibility tests.');
               }
             } catch (error) {
               console.error('An error occurred:', error);
