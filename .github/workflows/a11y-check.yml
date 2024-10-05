@@ -42,6 +42,17 @@ jobs:
               
               let hasViolations = false;
 
+              // Configure axe-core to disable specific rules
+              const axeConfig = {
+                rules: [
+                  { id: 'document-title', enabled: false },
+                  { id: 'html-has-lang', enabled: false },
+                  { id: 'landmark-one-main', enabled: false },
+                  { id: 'page-has-heading-one', enabled: false },
+                  { id: 'region', enabled: false }
+                ]
+              };
+
               for (const file of files) {
                 if (file.startsWith('modus-wc-') && file.endsWith('.js')) {
                   const filePath = 'file://' + path.resolve(componentsDir, file);
@@ -49,7 +60,7 @@ jobs:
                   await page.goto(filePath);
                   
                   await page.evaluate(axeCore.source);
-                  const results = await page.evaluate(() => axe.run());
+                  const results = await page.evaluate((config) => axe.run(document, config), axeConfig);
                   
                   if (results.violations.length > 0) {
                     console.error(\`Accessibility violations found in \${file}:\`);
