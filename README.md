@@ -11,7 +11,9 @@ This is a web component library built with Stencil JS and SASS for large enterpr
 
 ## Building
 
-Run `npm run build` to build the component library.
+Run `npm run stencil:build` to build the component library.
+
+Run `npm run storybook:build` to build the Storybook project.
 
 ## Testing
 

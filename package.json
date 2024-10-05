@@ -15,16 +15,17 @@
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/modus-web-components-2.0/modus-web-components-2.0.esm.js",
   "scripts": {
-    "build": "stencil build --docs",
-    "start": "stencil build --dev --watch --serve",
-    "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll",
-    "generate": "stencil generate",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "code-style": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yml}\"",
+    "code-style:fix": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yml}\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write \"**/*.{js,ts,json,md}\""
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test:watch": "stencil test --spec --e2e --watchAll",
+    "stencil:build": "stencil build --docs",
+    "stencil:generate": "stencil generate",
+    "storybook": "storybook dev -p 6006",
+    "storybook:build": "storybook build"
   },
   "devDependencies": {
     "@babel/core": "^7.25.7",
