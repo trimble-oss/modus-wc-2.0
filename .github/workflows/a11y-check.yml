@@ -1,0 +1,75 @@
+name: Accessibility Check
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  a11y-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Stencil components
+        run: npm run build
+
+      - name: Install Puppeteer
+        run: npm install puppeteer
+
+      - name: Install axe-core
+        run: npm install axe-core
+
+      - name: Run accessibility tests
+        run: |
+          node -e "
+          const puppeteer = require('puppeteer');
+          const axeCore = require('axe-core');
+          const fs = require('fs');
+          const path = require('path');
+
+          (async () => {
+            const browser = await puppeteer.launch();
+            const page = await browser.newPage();
+            
+            const componentsDir = './dist/components';
+            const files = fs.readdirSync(componentsDir);
+            
+            let hasViolations = false;
+
+            for (const file of files) {
+              if (path.extname(file) === '.js') {
+                const filePath = `file://${path.resolve(componentsDir, file)}`;
+                await page.goto(filePath);
+                
+                await page.evaluate(axeCore.source);
+                const results = await page.evaluate(() => axe.run());
+                
+                if (results.violations.length > 0) {
+                  console.error(`Accessibility violations found in ${file}:`);
+                  console.error(JSON.stringify(results.violations, null, 2));
+                  hasViolations = true;
+                }
+              }
+            }
+
+            await browser.close();
+
+            if (hasViolations) {
+              process.exit(1);
+            }
+          })();
+          "
+
+      - name: Check test results
+        if: failure()
+        run: |
+          echo "Accessibility tests failed. Please fix the issues before merging."
+          exit 1
