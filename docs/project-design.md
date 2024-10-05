@@ -83,6 +83,8 @@ The project follows a structured organization to maintain clarity and separation
 
 ## Accessibility
 
+Accessibility is validated by the Accessibility Check (axe-core) GitHub workflow the prevents A11Y issues being merged to `main`.
+
 ### WCAG 2.2 Compliance
 
 - Adhere to WCAG 2.2 standards:
