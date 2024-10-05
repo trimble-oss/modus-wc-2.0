@@ -13,7 +13,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '20' # Changed to 20 for better stability
 
       - name: Install dependencies
         run: npm ci
@@ -21,52 +21,54 @@ jobs:
       - name: Build Stencil components
         run: npm run build
 
-      - name: Install Puppeteer
-        run: npm install puppeteer
-
-      - name: Install axe-core
-        run: npm install axe-core
+      - name: Install Puppeteer and axe-core
+        run: npm install puppeteer axe-core
 
       - name: Run accessibility tests
         run: |
-          node -e "
+          node << EOF
           const puppeteer = require('puppeteer');
           const axeCore = require('axe-core');
           const fs = require('fs');
           const path = require('path');
 
           (async () => {
-            const browser = await puppeteer.launch();
-            const page = await browser.newPage();
-            
-            const componentsDir = './dist/components';
-            const files = fs.readdirSync(componentsDir);
-            
-            let hasViolations = false;
+            try {
+              const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+              const page = await browser.newPage();
+              
+              const componentsDir = './dist/components';
+              const files = fs.readdirSync(componentsDir);
+              
+              let hasViolations = false;
 
-            for (const file of files) {
-              if (path.extname(file) === '.js') {
-                const filePath = `file://${path.resolve(componentsDir, file)}`;
-                await page.goto(filePath);
-                
-                await page.evaluate(axeCore.source);
-                const results = await page.evaluate(() => axe.run());
-                
-                if (results.violations.length > 0) {
-                  console.error(`Accessibility violations found in ${file}:`);
-                  console.error(JSON.stringify(results.violations, null, 2));
-                  hasViolations = true;
+              for (const file of files) {
+                if (path.extname(file) === '.js') {
+                  const filePath = 'file://' + path.resolve(componentsDir, file);
+                  await page.goto(filePath);
+                  
+                  await page.evaluate(axeCore.source);
+                  const results = await page.evaluate(() => axe.run());
+                  
+                  if (results.violations.length > 0) {
+                    console.error(\`Accessibility violations found in \${file}:\`);
+                    console.error(JSON.stringify(results.violations, null, 2));
+                    hasViolations = true;
+                  }
                 }
               }
-            }
 
-            await browser.close();
+              await browser.close();
 
-            if (hasViolations) {
+              if (hasViolations) {
+                process.exit(1);
+              }
+            } catch (error) {
+              console.error('An error occurred:', error);
               process.exit(1);
             }
           })();
-          "
+          EOF
 
       - name: Check test results
         if: failure()
