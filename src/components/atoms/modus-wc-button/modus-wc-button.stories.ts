@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/html';
+import { Meta, StoryObj } from '@storybook/web-components';
 import { setModusWCMode, ModusWCMode } from '../../../utils/theme';
 
 interface ButtonArgs {
@@ -10,11 +10,13 @@ interface ButtonArgs {
   pressed: boolean;
   size: 'small' | 'medium' | 'large';
   type: 'button' | 'submit' | 'reset';
+  variant: 'filled' | 'outlined' | 'text';
+  color: 'primary' | 'secondary' | 'tertiary';
   mode: ModusWCMode;
 }
 
 const meta: Meta<ButtonArgs> = {
-  title: 'Components/ModusWcButton',
+  title: 'Components/Button',
   argTypes: {
     label: { control: 'text' },
     ariaLabel: { control: 'text' },
@@ -29,6 +31,14 @@ const meta: Meta<ButtonArgs> = {
     type: {
       control: { type: 'select' },
       options: ['button', 'submit', 'reset'],
+    },
+    variant: {
+      control: { type: 'select' },
+      options: ['filled', 'outlined', 'text'],
+    },
+    color: {
+      control: { type: 'select' },
+      options: ['primary', 'secondary', 'tertiary'],
     },
     mode: {
       control: { type: 'select' },
@@ -53,6 +63,8 @@ const Template: Story = {
         custom-class="${args.customClass}"
         size="${args.size}"
         type="${args.type}"
+        variant="${args.variant}"
+        color="${args.color}"
         ${args.disabled ? 'disabled' : ''}
         ${args.fullWidth ? 'full-width' : ''}
         ${args.pressed ? 'pressed' : ''}
@@ -64,68 +76,16 @@ const Template: Story = {
 export const Default: Story = {
   ...Template,
   args: {
-    label: 'Click me',
     ariaLabel: 'Click me button',
+    color: 'primary',
     customClass: '',
     disabled: false,
     fullWidth: false,
+    label: 'Click me',
+    mode: 'default',
     pressed: false,
     size: 'medium',
     type: 'button',
-    mode: 'default',
-  },
-};
-
-export const Dark: Story = {
-  ...Template,
-  args: {
-    ...Default.args,
-    mode: 'dark',
-    label: 'Dark Mode Button',
-  },
-};
-
-export const HighContrast: Story = {
-  ...Template,
-  args: {
-    ...Default.args,
-    mode: 'high-contrast',
-    label: 'High Contrast Button',
-  },
-};
-
-export const Disabled: Story = {
-  ...Template,
-  args: {
-    ...Default.args,
-    disabled: true,
-    label: 'Disabled Button',
-  },
-};
-
-export const FullWidth: Story = {
-  ...Template,
-  args: {
-    ...Default.args,
-    fullWidth: true,
-    label: 'Full Width Button',
-  },
-};
-
-export const ToggleButton: Story = {
-  ...Template,
-  args: {
-    ...Default.args,
-    pressed: true,
-    label: 'Toggle Button (Pressed)',
-  },
-};
-
-export const SubmitButton: Story = {
-  ...Template,
-  args: {
-    ...Default.args,
-    type: 'submit',
-    label: 'Submit Form',
+    variant: 'filled',
   },
 };

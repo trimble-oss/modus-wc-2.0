@@ -25,14 +25,14 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-text-color-high-contrast: #ffffff;
   --modus-wc-border-color-high-contrast: #ffffff;
 
-  // Primary Colors
+  // Primary colors
   --modus-wc-primary-dark: #06425c;
   --modus-wc-primary-blue: #1b84ff;
   --modus-wc-blue-light: #87b9f5;
   --modus-wc-blue-pale: #cce2ff;
   --modus-wc-blue-paler: #ecf3ff;
 
-  // Secondary Colors
+  // Secondary colors
   --modus-wc-orange-darker: #E51D0;
   --modus-wc-orange-dark: #e55f11;
   --modus-wc-orange: #f06e1f;
@@ -41,7 +41,7 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-orange-light-pale: #fdf7c1;
   --modus-wc-orange-lighter: #fefce2;
 
-  // Tertiary Colors
+  // Tertiary colors
   --modus-wc-purple-darker: #3f1aa9;
   --modus-wc-purple-dark: #5110dc;
   --modus-wc-purple: #7034df;
@@ -63,6 +63,10 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-border-radius: 4px;
   --modus-wc-border-width: 1px;
   --modus-wc-border-color: var(--modus-wc-blue-pale);
+
+  // Button styles
+  --modus-wc-button-border-radius: 20px;
+  --modus-wc-button-border-width: 1px;
 
   // Transitions
   --modus-wc-transition-duration: 0.3s;

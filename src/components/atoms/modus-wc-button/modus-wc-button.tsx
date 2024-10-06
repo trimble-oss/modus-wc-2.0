@@ -1,4 +1,5 @@
 import { Component, Prop, h, Host } from '@stencil/core';
+import { getCurrentModusWCMode } from '../../../utils/theme';
 
 /**
  * @component modus-wc-button
@@ -14,6 +15,11 @@ export class ModusWcButton {
    * The aria-label attribute for accessibility.
    */
   @Prop() ariaLabel!: string;
+
+  /**
+   * The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'.
+   */
+  @Prop() color: 'primary' | 'secondary' | 'tertiary' = 'primary';
 
   /**
    * Custom CSS class to apply to the button.
@@ -46,12 +52,18 @@ export class ModusWcButton {
   @Prop() size: 'small' | 'medium' | 'large' = 'medium';
 
   /**
+   * The variant of the button. Can be 'filled', 'outlined', or 'text'.
+   */
+  @Prop() variant: 'filled' | 'outlined' | 'text' = 'filled';
+
+  /**
    * The type of the button. Can be 'button', 'submit', or 'reset'.
    */
   @Prop() type: 'button' | 'submit' | 'reset' = 'button';
 
   render() {
     const ariaPressed = this.pressed ? 'true' : undefined;
+    const currentMode = getCurrentModusWCMode();
 
     return (
       <Host>
@@ -60,7 +72,11 @@ export class ModusWcButton {
             'modus-wc-button': true,
             [this.customClass]: !!this.customClass,
             [`modus-wc-button--${this.size}`]: true,
+            [`modus-wc-button--${this.variant}`]: true,
+            [`modus-wc-button--${this.color}`]: true,
             'modus-wc-button--full-width': this.fullWidth,
+            'modus-wc-button--disabled': this.disabled,
+            'modus-wc-button--dark-mode': currentMode === 'dark',
           }}
           aria-label={this.ariaLabel || this.label}
           disabled={this.disabled}

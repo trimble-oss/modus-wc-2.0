@@ -16,6 +16,10 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
+          * The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'.
+         */
+        "color": 'primary' | 'secondary' | 'tertiary';
+        /**
           * Custom CSS class to apply to the button.
          */
         "customClass": string;
@@ -43,6 +47,10 @@ export namespace Components {
           * The type of the button. Can be 'button', 'submit', or 'reset'.
          */
         "type": 'button' | 'submit' | 'reset';
+        /**
+          * The variant of the button. Can be 'filled', 'outlined', or 'text'.
+         */
+        "variant": 'filled' | 'outlined' | 'text';
     }
 }
 declare global {
@@ -71,6 +79,10 @@ declare namespace LocalJSX {
          */
         "ariaLabel": string;
         /**
+          * The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'.
+         */
+        "color"?: 'primary' | 'secondary' | 'tertiary';
+        /**
           * Custom CSS class to apply to the button.
          */
         "customClass"?: string;
@@ -98,6 +110,10 @@ declare namespace LocalJSX {
           * The type of the button. Can be 'button', 'submit', or 'reset'.
          */
         "type"?: 'button' | 'submit' | 'reset';
+        /**
+          * The variant of the button. Can be 'filled', 'outlined', or 'text'.
+         */
+        "variant"?: 'filled' | 'outlined' | 'text';
     }
     interface IntrinsicElements {
         "modus-wc-button": ModusWcButton;

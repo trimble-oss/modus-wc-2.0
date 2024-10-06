@@ -11,15 +11,10 @@
   justify-content: center;
   padding: var(--modus-wc-button-padding, 0.5em 1em);
   font-family: var(--modus-wc-font-family);
+  font-weight: 500;
   cursor: pointer;
-  background-color: var(--modus-wc-bg-color);
-  color: var(--modus-wc-text-color);
-  border-color: var(--modus-wc-border-color);
-  border-radius: var(
-    --modus-wc-button-border-radius,
-    var(--modus-wc-border-radius)
-  );
-  transition: background-color var(--modus-wc-transition-duration)
+  border-radius: var(--modus-wc-button-border-radius, 20px);
+  transition: all var(--modus-wc-transition-duration)
     var(--modus-wc-transition-timing-function);
 
   @include modus-wc-fluid-type(
@@ -29,30 +24,145 @@
     $modus-wc-fluid-font-size-max
   );
 
-  &:hover {
-    // We can't use darken with CSS variables, so we'll use a fallback color
-    background-color: var(--modus-wc-button-hover-bg-color, #0056b3);
+  &--filled {
+    &.modus-wc-button--primary {
+      background-color: var(--modus-wc-primary-blue);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-primary-blue);
+      color: var(--modus-wc-light);
+
+      &:hover {
+        background-color: var(--modus-wc-primary-dark);
+      }
+    }
+
+    &.modus-wc-button--secondary {
+      background-color: var(--modus-wc-orange);
+      border: var(--modus-wc-button-border-width) solid var(--modus-wc-orange);
+      color: var(--modus-wc-light);
+
+      &:hover {
+        background-color: var(--modus-wc-orange-dark);
+      }
+    }
+
+    &.modus-wc-button--tertiary {
+      background-color: var(--modus-wc-purple);
+      border: var(--modus-wc-button-border-width) solid var(--modus-wc-purple);
+      color: var(--modus-wc-light);
+
+      &:hover {
+        background-color: var(--modus-wc-purple-dark);
+      }
+    }
+  }
+
+  &--outlined {
+    background-color: transparent;
+
+    &.modus-wc-button--primary {
+      color: var(--modus-wc-primary-blue);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-primary-blue);
+
+      &:hover {
+        background-color: var(--modus-wc-blue-pale);
+      }
+    }
+
+    &.modus-wc-button--secondary {
+      color: var(--modus-wc-orange);
+      border: var(--modus-wc-button-border-width) solid var(--modus-wc-orange);
+
+      &:hover {
+        background-color: var(--modus-wc-orange-pale);
+      }
+    }
+
+    &.modus-wc-button--tertiary {
+      color: var(--modus-wc-purple);
+      border: var(--modus-wc-button-border-width) solid var(--modus-wc-purple);
+
+      &:hover {
+        background-color: var(--modus-wc-purple-pale);
+      }
+    }
+
+    &.modus-wc-button--dark-mode {
+      color: var(--modus-wc-light);
+      border: var(--modus-wc-button-border-width) solid var(--modus-wc-light);
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  &--text {
+    background-color: transparent;
+    border: none;
+
+    &.modus-wc-button--primary {
+      color: var(--modus-wc-primary-blue);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &.modus-wc-button--secondary {
+      color: var(--modus-wc-orange);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &.modus-wc-button--tertiary {
+      color: var(--modus-wc-purple);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &.modus-wc-button--dark-mode {
+      color: var(--modus-wc-light);
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
   }
 
   &--small {
     font-size: 0.875em;
+    padding: 0.25em 0.75em;
   }
 
   &--large {
     font-size: 1.125em;
+    padding: 0.75em 1.25em;
   }
 
   &--full-width {
     width: 100%;
   }
 
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: inherit;
+    }
+  }
+
   @include modus-wc-responsive(sm) {
-    // Adjust styles for small screens and up
     padding: var(--modus-wc-button-padding-sm, 0.75em 1.5em);
   }
 
   @include modus-wc-responsive(md) {
-    // Adjust styles for medium screens and up
     padding: var(--modus-wc-button-padding-md, 1em 2em);
   }
 }
