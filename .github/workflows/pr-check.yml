@@ -31,9 +31,9 @@ jobs:
         run: npm run stencil:build
         continue-on-error: true
 
-      #- name: Build Storybook project
-      #run: npm run storybook:build
-      #continue-on-error: true
+      - name: Build Storybook project
+        run: npm run storybook:build
+        continue-on-error: true
 
       - name: Check for step failures
         run: |
