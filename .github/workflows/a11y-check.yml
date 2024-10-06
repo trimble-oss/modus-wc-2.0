@@ -1,0 +1,99 @@
+name: Accessibility Check
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  a11y-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Stencil components
+        run: npm run stencil:build
+
+      - name: Install Puppeteer and axe-core
+        run: npm install puppeteer axe-core
+
+      - name: Run accessibility tests
+        run: |
+          node << EOF
+          const puppeteer = require('puppeteer');
+          const axeCore = require('axe-core');
+          const fs = require('fs');
+          const path = require('path');
+
+          (async () => {
+            try {
+              const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+              const page = await browser.newPage();
+              
+              const componentsDir = './dist/components';
+              const files = fs.readdirSync(componentsDir);
+              
+              let hasViolations = false;
+
+              // Configure axe-core to disable specific rules
+              const axeConfig = {
+                runOnly: {
+                  type: 'tag',
+                  values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice']
+                },
+                rules: {
+                  'document-title': { enabled: false },
+                  'html-has-lang': { enabled: false },
+                  'landmark-one-main': { enabled: false },
+                  'page-has-heading-one': { enabled: false },
+                  'region': { enabled: false }
+                }
+              };
+
+              for (const file of files) {
+                if (file.startsWith('modus-wc-') && file.endsWith('.js')) {
+                  const filePath = 'file://' + path.resolve(componentsDir, file);
+                  console.log(\`Checking file: \${file}\`);
+                  await page.goto(filePath);
+                  
+                  await page.evaluate(axeCore.source);
+                  const results = await page.evaluate((config) => {
+                    return axe.run(document, config);
+                  }, axeConfig);
+                  
+                  if (results.violations.length > 0) {
+                    console.error(\`Accessibility violations found in \${file}:\`);
+                    console.error(JSON.stringify(results.violations, null, 2));
+                    hasViolations = true;
+                  } else {
+                    console.log(\`No violations found in \${file}\`);
+                  }
+                }
+              }
+
+              await browser.close();
+
+              if (hasViolations) {
+                process.exit(1);
+              } else {
+                console.log('All checked files pass accessibility tests.');
+              }
+            } catch (error) {
+              console.error('An error occurred:', error);
+              process.exit(1);
+            }
+          })();
+          EOF
+
+      - name: Check test results
+        if: failure()
+        run: |
+          echo "Accessibility tests failed. Please fix the issues before merging."
+          exit 1
