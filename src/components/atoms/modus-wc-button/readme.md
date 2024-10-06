@@ -5,13 +5,16 @@
 
 ## Properties
 
-| Property      | Attribute      | Description                                                    | Type                             | Default    |
-| ------------- | -------------- | -------------------------------------------------------------- | -------------------------------- | ---------- |
-| `ariaLabel`   | `aria-label`   | The aria-label attribute for accessibility.                    | `string`                         | `''`       |
-| `customClass` | `custom-class` | Custom CSS class to apply to the button.                       | `string`                         | `''`       |
-| `fullWidth`   | `full-width`   | If true, the button will take the full width of its container. | `boolean`                        | `false`    |
-| `label`       | `label`        | The text label displayed on the button.                        | `string`                         | `''`       |
-| `size`        | `size`         | The size of the button. Can be 'small', 'medium', or 'large'.  | `"large" \| "medium" \| "small"` | `'medium'` |
+| Property                 | Attribute      | Description                                                          | Type                              | Default     |
+| ------------------------ | -------------- | -------------------------------------------------------------------- | --------------------------------- | ----------- |
+| `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility.                          | `string`                          | `undefined` |
+| `customClass`            | `custom-class` | Custom CSS class to apply to the button.                             | `string`                          | `''`        |
+| `disabled`               | `disabled`     | If true, the button will be disabled.                                | `boolean`                         | `false`     |
+| `fullWidth`              | `full-width`   | If true, the button will take the full width of its container.       | `boolean`                         | `false`     |
+| `label` _(required)_     | `label`        | The text label displayed on the button.                              | `string`                          | `undefined` |
+| `pressed`                | `pressed`      | If true, the button will be in a pressed state (for toggle buttons). | `boolean`                         | `false`     |
+| `size`                   | `size`         | The size of the button. Can be 'small', 'medium', or 'large'.        | `"large" \| "medium" \| "small"`  | `'medium'`  |
+| `type`                   | `type`         | The type of the button. Can be 'button', 'submit', or 'reset'.       | `"button" \| "reset" \| "submit"` | `'button'`  |
 
 
 ----------------------------------------------

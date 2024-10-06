@@ -4,10 +4,11 @@ interface ButtonArgs {
   label: string;
   ariaLabel: string;
   customClass: string;
-  backgroundColor: string;
-  textColor: string;
-  size: 'small' | 'medium' | 'large';
+  disabled: boolean;
   fullWidth: boolean;
+  pressed: boolean;
+  size: 'small' | 'medium' | 'large';
+  type: 'button' | 'submit' | 'reset';
 }
 
 const meta: Meta<ButtonArgs> = {
@@ -16,13 +17,17 @@ const meta: Meta<ButtonArgs> = {
     label: { control: 'text' },
     ariaLabel: { control: 'text' },
     customClass: { control: 'text' },
-    backgroundColor: { control: 'color' },
-    textColor: { control: 'color' },
+    disabled: { control: 'boolean' },
+    fullWidth: { control: 'boolean' },
+    pressed: { control: 'boolean' },
     size: {
       control: { type: 'select' },
       options: ['small', 'medium', 'large'],
     },
-    fullWidth: { control: 'boolean' },
+    type: {
+      control: { type: 'select' },
+      options: ['button', 'submit', 'reset'],
+    },
   },
 };
 
@@ -33,18 +38,15 @@ type Story = StoryObj<ButtonArgs>;
 const Template: Story = {
   render: (args) => {
     return `
-      <style>
-        .custom-themed-button {
-          --modus-wc-button-bg-color: ${args.backgroundColor};
-          --modus-wc-button-text-color: ${args.textColor};
-        }
-      </style>
       <modus-wc-button 
-        label="${args.label}" 
-        aria-label="${args.ariaLabel}" 
-        custom-class="custom-themed-button ${args.customClass} modus-wc-button--${args.size}"
+        label="${args.label}"
+        aria-label="${args.ariaLabel}"
+        custom-class="${args.customClass}"
         size="${args.size}"
+        type="${args.type}"
+        ${args.disabled ? 'disabled' : ''}
         ${args.fullWidth ? 'full-width' : ''}
+        ${args.pressed ? 'pressed' : ''}
       ></modus-wc-button>
     `;
   },
@@ -55,29 +57,21 @@ export const Default: Story = {
   args: {
     label: 'Click me',
     ariaLabel: 'Click me button',
-    backgroundColor: '#007bff',
-    textColor: 'white',
     customClass: '',
-    size: 'medium',
+    disabled: false,
     fullWidth: false,
+    pressed: false,
+    size: 'medium',
+    type: 'button',
   },
 };
 
-export const Small: Story = {
+export const Disabled: Story = {
   ...Template,
   args: {
     ...Default.args,
-    size: 'small',
-    label: 'Small Button',
-  },
-};
-
-export const Large: Story = {
-  ...Template,
-  args: {
-    ...Default.args,
-    size: 'large',
-    label: 'Large Button',
+    disabled: true,
+    label: 'Disabled Button',
   },
 };
 
@@ -87,5 +81,23 @@ export const FullWidth: Story = {
     ...Default.args,
     fullWidth: true,
     label: 'Full Width Button',
+  },
+};
+
+export const ToggleButton: Story = {
+  ...Template,
+  args: {
+    ...Default.args,
+    pressed: true,
+    label: 'Toggle Button (Pressed)',
+  },
+};
+
+export const SubmitButton: Story = {
+  ...Template,
+  args: {
+    ...Default.args,
+    type: 'submit',
+    label: 'Submit Form',
   },
 };
