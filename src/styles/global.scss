@@ -1,96 +1,21 @@
-@use "sass:math";
-
-// SASS variables for compile-time use
-$modus-wc-breakpoint-sm: 576px;
-$modus-wc-breakpoint-md: 768px;
-$modus-wc-breakpoint-lg: 992px;
-$modus-wc-breakpoint-xl: 1200px;
-
-$modus-wc-fluid-font-size-min: 14px;
-$modus-wc-fluid-font-size-max: 18px;
-
-// Updated Utility function to strip units
-@function strip-unit($value) {
-  @return math.div($value, $value * 0 + 1);
-}
-
-// Fluid typography mixin
-@mixin modus-wc-fluid-type($min-vw, $max-vw, $min-font-size, $max-font-size) {
-  $u1: unit($min-vw);
-  $u2: unit($max-vw);
-  $u3: unit($min-font-size);
-  $u4: unit($max-font-size);
-
-  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
-    font-size: $min-font-size;
-    @media screen and (min-width: $min-vw) {
-      font-size: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
-    }
-    @media screen and (min-width: $max-vw) {
-      font-size: $max-font-size;
-    }
-  }
-}
-
-// Responsive mixins
-@mixin modus-wc-responsive($breakpoint) {
-  @if $breakpoint == sm {
-    @media (min-width: #{$modus-wc-breakpoint-sm}) { @content; }
-  } @else if $breakpoint == md {
-    @media (min-width: #{$modus-wc-breakpoint-md}) { @content; }
-  } @else if $breakpoint == lg {
-    @media (min-width: #{$modus-wc-breakpoint-lg}) { @content; }
-  } @else if $breakpoint == xl {
-    @media (min-width: #{$modus-wc-breakpoint-xl}) { @content; }
-  }
-}
-
-:root {
-  // Global theme variables
-  --modus-wc-primary-color: #007bff;
-  --modus-wc-secondary-color: #6c757d;
-  --modus-wc-success-color: #28a745;
-  --modus-wc-danger-color: #dc3545;
-  --modus-wc-warning-color: #ffc107;
-  --modus-wc-info-color: #17a2b8;
-  --modus-wc-light-color: #f8f9fa;
-  --modus-wc-dark-color: #343a40;
-
-  // Typography
-  --modus-wc-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --modus-wc-font-size-base: 16px;
-  --modus-wc-line-height-base: 1.5;
-
-  // Spacing
-  --modus-wc-spacing-unit: 8px;
-
-  // Border
-  --modus-wc-border-radius: 4px;
-  --modus-wc-border-width: 1px;
-  --modus-wc-border-color: #dee2e6;
-
-  // Transitions
-  --modus-wc-transition-duration: 0.3s;
-  --modus-wc-transition-timing-function: ease-in-out;
-
-  // Responsive breakpoints
-  --modus-wc-breakpoint-sm: #{$modus-wc-breakpoint-sm};
-  --modus-wc-breakpoint-md: #{$modus-wc-breakpoint-md};
-  --modus-wc-breakpoint-lg: #{$modus-wc-breakpoint-lg};
-  --modus-wc-breakpoint-xl: #{$modus-wc-breakpoint-xl};
-
-  // Fluid typography
-  --modus-wc-fluid-font-size-min: #{$modus-wc-fluid-font-size-min};
-  --modus-wc-fluid-font-size-max: #{$modus-wc-fluid-font-size-max};
-}
+@import 'mixins';
+@import 'theme';
 
 // Reset styles
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 body {
-  @include modus-wc-fluid-type($modus-wc-breakpoint-sm, $modus-wc-breakpoint-xl, $modus-wc-fluid-font-size-min, $modus-wc-fluid-font-size-max);
+  @include modus-wc-fluid-type(
+    var(--modus-wc-fluid-screen-min),
+    var(--modus-wc-fluid-screen-max),
+    var(--modus-wc-fluid-font-size-min),
+    var(--modus-wc-fluid-font-size-max)
+  );
+
   font-family: var(--modus-wc-font-family);
   line-height: var(--modus-wc-line-height-base);
   color: var(--modus-wc-dark-color);
