@@ -43,21 +43,73 @@ Since Shadow DOM is disabled, you can directly target component classes:
 }
 ```
 
-## 4. Utilize Style Modes (Currently unsupported)
+## 4. Implement Different Modes (Dark Mode, High Contrast Mode)
 
-Components support different style modes. Set the `mode` attribute and customize accordingly:
+Our theming system supports different modes out of the box. You can switch between modes using utility functions provided by the library.
 
-```html
-<modus-wc-button label="Primary Button" mode="primary"></modus-wc-button>
+### Available Modes
+
+- Default (Light) Mode
+- Dark Mode
+- High Contrast Mode
+
+### Using Mode Switching Functions
+
+Import the utility functions in your application:
+import { setModusMode, toggleModusMode, getCurrentModusMode, initializeModusMode } from 'modus-web-components/utils/theme';
+
+```typescript
+import {
+  getCurrentModusMode,
+  initializeModusMode,
+  setModusMode,
+} from 'modus-web-components/utils/theme';
 ```
 
+Initialize the mode based on user preferences:
+
+```typescript
+initializeModusMode();
+```
+
+Switch to a specific mode:
+
+```typescript
+setModusMode('dark'); // Options: 'default', 'dark', 'high-contrast'
+```
+
+Get the current mode:
+
+```typescript
+const currentMode = getCurrentModusMode();
+```
+
+## 5. Applying Modes in CSS
+
+The mode switching functions apply CSS classes to the <html> element. You can use these classes to style your components for different modes:
+
 ```css
-.modus-wc-button.mode-primary {
-  --modus-wc-button-bg-color: #0056b3;
+/* Default styles */
+.modus-wc-button {
+  background-color: var(--modus-wc-button-bg-color);
+  color: var(--modus-wc-button-text-color);
+}
+
+/* Dark mode styles */
+.modus-wc-dark-mode .modus-wc-button {
+  --modus-wc-button-bg-color: #333333;
+  --modus-wc-button-text-color: #ffffff;
+}
+
+/* High contrast mode styles */
+.modus-wc-high-contrast-mode .modus-wc-button {
+  --modus-wc-button-bg-color: #000000;
+  --modus-wc-button-text-color: #ffffff;
+  border: 2px solid #ffffff;
 }
 ```
 
-## 5. Component-Level Custom Properties
+## 6. Component-Level Custom Properties
 
 Fine-tune individual component instances:
 
@@ -67,5 +119,12 @@ modus-wc-button {
   --modus-wc-button-font-size: 18px;
 }
 ```
+
+## Best Practices
+
+1. Use CSS variables for themeable properties to ensure consistency across your application.
+2. Leverage the provided mode switching functions to implement a cohesive theming experience.
+3. Always consider accessibility when creating custom themes or modes.
+4. Test your custom themes and modes thoroughly across different browsers and devices.
 
 For a complete list of customizable properties and more advanced theming options, please refer to our detailed documentation.

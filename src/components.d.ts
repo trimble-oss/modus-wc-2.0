@@ -8,7 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     /**
      * @component modus-wc-button
-     * @description A customizable button component.
+     * @description A customizable button component that adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
         /**
@@ -16,9 +16,17 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
+          * The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'.
+         */
+        "color": 'primary' | 'secondary' | 'tertiary';
+        /**
           * Custom CSS class to apply to the button.
          */
         "customClass": string;
+        /**
+          * If true, the button will be disabled.
+         */
+        "disabled": boolean;
         /**
           * If true, the button will take the full width of its container.
          */
@@ -28,15 +36,27 @@ export namespace Components {
          */
         "label": string;
         /**
+          * If true, the button will be in a pressed state (for toggle buttons).
+         */
+        "pressed": boolean;
+        /**
           * The size of the button. Can be 'small', 'medium', or 'large'.
          */
         "size": 'small' | 'medium' | 'large';
+        /**
+          * The type of the button. Can be 'button', 'submit', or 'reset'.
+         */
+        "type": 'button' | 'submit' | 'reset';
+        /**
+          * The variant of the button. Can be 'filled', 'outlined', or 'text'.
+         */
+        "variant": 'filled' | 'outlined' | 'text';
     }
 }
 declare global {
     /**
      * @component modus-wc-button
-     * @description A customizable button component.
+     * @description A customizable button component that adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcButtonElement extends Components.ModusWcButton, HTMLStencilElement {
     }
@@ -51,17 +71,25 @@ declare global {
 declare namespace LocalJSX {
     /**
      * @component modus-wc-button
-     * @description A customizable button component.
+     * @description A customizable button component that adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
         /**
           * The aria-label attribute for accessibility.
          */
-        "ariaLabel"?: string;
+        "ariaLabel": string;
+        /**
+          * The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'.
+         */
+        "color"?: 'primary' | 'secondary' | 'tertiary';
         /**
           * Custom CSS class to apply to the button.
          */
         "customClass"?: string;
+        /**
+          * If true, the button will be disabled.
+         */
+        "disabled"?: boolean;
         /**
           * If true, the button will take the full width of its container.
          */
@@ -69,11 +97,23 @@ declare namespace LocalJSX {
         /**
           * The text label displayed on the button.
          */
-        "label"?: string;
+        "label": string;
+        /**
+          * If true, the button will be in a pressed state (for toggle buttons).
+         */
+        "pressed"?: boolean;
         /**
           * The size of the button. Can be 'small', 'medium', or 'large'.
          */
         "size"?: 'small' | 'medium' | 'large';
+        /**
+          * The type of the button. Can be 'button', 'submit', or 'reset'.
+         */
+        "type"?: 'button' | 'submit' | 'reset';
+        /**
+          * The variant of the button. Can be 'filled', 'outlined', or 'text'.
+         */
+        "variant"?: 'filled' | 'outlined' | 'text';
     }
     interface IntrinsicElements {
         "modus-wc-button": ModusWcButton;
@@ -85,7 +125,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             /**
              * @component modus-wc-button
-             * @description A customizable button component.
+             * @description A customizable button component that adheres to WCAG 2.2 standards.
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
         }

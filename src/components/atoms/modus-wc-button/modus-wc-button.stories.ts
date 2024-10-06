@@ -1,28 +1,49 @@
-import { Meta, StoryObj } from '@storybook/html';
+import { Meta, StoryObj } from '@storybook/web-components';
+import { setModusWCMode, ModusWCMode } from '../../../utils/theme';
 
 interface ButtonArgs {
   label: string;
   ariaLabel: string;
   customClass: string;
-  backgroundColor: string;
-  textColor: string;
-  size: 'small' | 'medium' | 'large';
+  disabled: boolean;
   fullWidth: boolean;
+  pressed: boolean;
+  size: 'small' | 'medium' | 'large';
+  type: 'button' | 'submit' | 'reset';
+  variant: 'filled' | 'outlined' | 'text';
+  color: 'primary' | 'secondary' | 'tertiary';
+  mode: ModusWCMode;
 }
 
 const meta: Meta<ButtonArgs> = {
-  title: 'Components/ModusWcButton',
+  title: 'Components/Button',
   argTypes: {
     label: { control: 'text' },
     ariaLabel: { control: 'text' },
     customClass: { control: 'text' },
-    backgroundColor: { control: 'color' },
-    textColor: { control: 'color' },
+    disabled: { control: 'boolean' },
+    fullWidth: { control: 'boolean' },
+    pressed: { control: 'boolean' },
     size: {
       control: { type: 'select' },
       options: ['small', 'medium', 'large'],
     },
-    fullWidth: { control: 'boolean' },
+    type: {
+      control: { type: 'select' },
+      options: ['button', 'submit', 'reset'],
+    },
+    variant: {
+      control: { type: 'select' },
+      options: ['filled', 'outlined', 'text'],
+    },
+    color: {
+      control: { type: 'select' },
+      options: ['primary', 'secondary', 'tertiary'],
+    },
+    mode: {
+      control: { type: 'select' },
+      options: ['default', 'dark', 'high-contrast'],
+    },
   },
 };
 
@@ -32,19 +53,21 @@ type Story = StoryObj<ButtonArgs>;
 
 const Template: Story = {
   render: (args) => {
+    // Set the mode
+    setModusWCMode(args.mode);
+
     return `
-      <style>
-        .custom-themed-button {
-          --modus-wc-button-bg-color: ${args.backgroundColor};
-          --modus-wc-button-text-color: ${args.textColor};
-        }
-      </style>
       <modus-wc-button 
-        label="${args.label}" 
-        aria-label="${args.ariaLabel}" 
-        custom-class="custom-themed-button ${args.customClass} modus-wc-button--${args.size}"
+        label="${args.label}"
+        aria-label="${args.ariaLabel}"
+        custom-class="${args.customClass}"
         size="${args.size}"
+        type="${args.type}"
+        variant="${args.variant}"
+        color="${args.color}"
+        ${args.disabled ? 'disabled' : ''}
         ${args.fullWidth ? 'full-width' : ''}
+        ${args.pressed ? 'pressed' : ''}
       ></modus-wc-button>
     `;
   },
@@ -53,39 +76,16 @@ const Template: Story = {
 export const Default: Story = {
   ...Template,
   args: {
-    label: 'Click me',
     ariaLabel: 'Click me button',
-    backgroundColor: '#007bff',
-    textColor: 'white',
+    color: 'primary',
     customClass: '',
-    size: 'medium',
+    disabled: false,
     fullWidth: false,
-  },
-};
-
-export const Small: Story = {
-  ...Template,
-  args: {
-    ...Default.args,
-    size: 'small',
-    label: 'Small Button',
-  },
-};
-
-export const Large: Story = {
-  ...Template,
-  args: {
-    ...Default.args,
-    size: 'large',
-    label: 'Large Button',
-  },
-};
-
-export const FullWidth: Story = {
-  ...Template,
-  args: {
-    ...Default.args,
-    fullWidth: true,
-    label: 'Full Width Button',
+    label: 'Click me',
+    mode: 'default',
+    pressed: false,
+    size: 'medium',
+    type: 'button',
+    variant: 'filled',
   },
 };
