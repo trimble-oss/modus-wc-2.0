@@ -1,19 +1,54 @@
 // SASS variables for compile-time use
+$modus-wc-breakpoint-sm: 576px;
+$modus-wc-breakpoint-md: 768px;
+$modus-wc-breakpoint-lg: 992px;
+$modus-wc-breakpoint-xl: 1200px;
+
 $modus-wc-fluid-screen-min: 320px;
 $modus-wc-fluid-screen-max: 1200px;
 $modus-wc-fluid-font-size-min: 14px;
 $modus-wc-fluid-font-size-max: 18px;
 
 :root {
-  // Colors
-  --modus-wc-primary-color: #007bff;
-  --modus-wc-secondary-color: #6c757d;
-  --modus-wc-success-color: #28a745;
-  --modus-wc-danger-color: #dc3545;
-  --modus-wc-warning-color: #ffc107;
-  --modus-wc-info-color: #17a2b8;
-  --modus-wc-light-color: #f8f9fa;
-  --modus-wc-dark-color: #343a40;
+  // Default mode (light)
+  --modus-wc-bg-color: var(--modus-wc-light);
+  --modus-wc-text-color: var(--modus-wc-primary-dark);
+  --modus-wc-border-color: var(--modus-wc-blue-pale);
+
+  // Dark mode
+  --modus-wc-bg-color-dark: var(--modus-wc-primary-dark);
+  --modus-wc-text-color-dark: var(--modus-wc-light);
+  --modus-wc-border-color-dark: var(--modus-wc-blue-light);
+
+  // High contrast mode
+  --modus-wc-bg-color-high-contrast: #000000;
+  --modus-wc-text-color-high-contrast: #ffffff;
+  --modus-wc-border-color-high-contrast: #ffffff;
+
+  // Primary Colors
+  --modus-wc-primary-dark: #06425c;
+  --modus-wc-primary-blue: #1b84ff;
+  --modus-wc-blue-light: #87b9f5;
+  --modus-wc-blue-pale: #cce2ff;
+  --modus-wc-blue-paler: #ecf3ff;
+
+  // Secondary Colors
+  --modus-wc-orange-darker: #E51D0;
+  --modus-wc-orange-dark: #e55f11;
+  --modus-wc-orange: #f06e1f;
+  --modus-wc-orange-light: #f7763b;
+  --modus-wc-orange-pale: #fbf5d1;
+  --modus-wc-orange-light-pale: #fdf7c1;
+  --modus-wc-orange-lighter: #fefce2;
+
+  // Tertiary Colors
+  --modus-wc-purple-darker: #3f1aa9;
+  --modus-wc-purple-dark: #5110dc;
+  --modus-wc-purple: #7034df;
+  --modus-wc-purple-light: #8e5ffd;
+  --modus-wc-purple-pale: #d4cbff;
+  --modus-wc-lilac: #f1eaff;
+  --modus-wc-light: #f2f7ff;
 
   // Typography
   --modus-wc-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
@@ -27,7 +62,7 @@ $modus-wc-fluid-font-size-max: 18px;
   // Border
   --modus-wc-border-radius: 4px;
   --modus-wc-border-width: 1px;
-  --modus-wc-border-color: #dee2e6;
+  --modus-wc-border-color: var(--modus-wc-blue-pale);
 
   // Transitions
   --modus-wc-transition-duration: 0.3s;
@@ -44,4 +79,18 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-fluid-screen-max: #{$modus-wc-fluid-screen-max};
   --modus-wc-fluid-font-size-min: #{$modus-wc-fluid-font-size-min};
   --modus-wc-fluid-font-size-max: #{$modus-wc-fluid-font-size-max};
+}
+
+// Dark mode class
+.modus-wc-dark-mode {
+  --modus-wc-bg-color: var(--modus-wc-bg-color-dark);
+  --modus-wc-text-color: var(--modus-wc-text-color-dark);
+  --modus-wc-border-color: var(--modus-wc-border-color-dark);
+}
+
+// High constrast mode class
+.modus-wc-high-contrast-mode {
+  --modus-wc-bg-color: var(--modus-wc-bg-color-high-contrast);
+  --modus-wc-text-color: var(--modus-wc-text-color-high-contrast);
+  --modus-wc-border-color: var(--modus-wc-border-color-high-contrast);
 }

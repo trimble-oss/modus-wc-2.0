@@ -10,10 +10,10 @@
 
 body {
   @include modus-wc-fluid-type(
-    var(--modus-wc-fluid-screen-min),
-    var(--modus-wc-fluid-screen-max),
-    var(--modus-wc-fluid-font-size-min),
-    var(--modus-wc-fluid-font-size-max)
+    $modus-wc-fluid-screen-min,
+    $modus-wc-fluid-screen-max,
+    $modus-wc-fluid-font-size-min,
+    $modus-wc-fluid-font-size-max
   );
 
   font-family: var(--modus-wc-font-family);
