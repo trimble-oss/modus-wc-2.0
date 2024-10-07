@@ -22,12 +22,15 @@ export class StencilDocs {
   @State() parsedDocs: string = '';
 
   async componentWillLoad() {
+    const baseUrl = window.location.origin.includes('github.io')
+      ? `${window.location.origin}${window.location.pathname}`
+      : '';
     const directories = ['atoms', 'molecules', 'organisms'];
 
     for (const dir of directories) {
       try {
         const response = await fetch(
-          `/components/${dir}/${this.componentName}/readme.md`
+          `${baseUrl}/components/${dir}/${this.componentName}/readme.md`
         );
         if (response.ok) {
           this.docs = await response.text();
