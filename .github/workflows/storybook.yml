@@ -1,4 +1,4 @@
-name: Storybook CI
+name: Publish Storybook
 
 on:
   pull_request:
