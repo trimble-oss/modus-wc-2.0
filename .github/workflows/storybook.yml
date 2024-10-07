@@ -1,24 +1,86 @@
-name: Publish Storybook
+name: Storybook CI
+
 on:
+  pull_request:
+    branches: [main]
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'main'
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
 
-      - name: Install and build 🔧
+      - name: Install and build
         run: |
           npm ci
           npm run stencil:build
           npm run storybook:build
 
-      - name: Deploy 🚀
+      - name: Deploy preview
+        if: github.event_name == 'pull_request'
+        uses: rossjrw/pr-preview-action@v1
+        id: preview-deploy
+        with:
+          source-dir: ./storybook-static/
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: JamesIves/github-pages-deploy-action@v4
+        id: deploy
         with:
           folder: storybook-static
+          branch: gh-pages
+          target-folder: ${{ github.event.inputs.branch || 'main' }}
+
+      - name: Get preview URL
+        if: github.event_name == 'pull_request' && steps.preview-deploy.outcome == 'success'
+        id: preview-url
+        run: |
+          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/pr-preview/pr-${{ github.event.number }}/" >> $GITHUB_OUTPUT
+
+      - name: Comment PR
+        if: github.event_name == 'pull_request' && steps.preview-deploy.outcome == 'success'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Storybook preview deployed successfully to: ${{ steps.preview-url.outputs.url }}'
+            })
+
+      - name: Get deployment URL
+        if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
+        id: deployment-url
+        run: |
+          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${{ github.event.inputs.branch || 'main' }}/" >> $GITHUB_OUTPUT
+
+      - name: Print deployment URL
+        if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
+        run: |
+          echo "Storybook deployed successfully to: ${{ steps.deployment-url.outputs.url }}"
+
+      - name: Print failure message
+        if: failure()
+        run: |
+          echo "Deployment failed. Please check the logs for more information."
