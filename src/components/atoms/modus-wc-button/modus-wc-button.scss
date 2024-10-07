@@ -9,9 +9,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--modus-wc-button-padding, 0.5em 1em);
   font-family: var(--modus-wc-font-family);
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   border-radius: var(--modus-wc-button-border-radius, 20px);
   transition: all var(--modus-wc-transition-duration)
@@ -26,33 +25,35 @@
 
   &--filled {
     &.modus-wc-button--primary {
-      background-color: var(--modus-wc-primary-blue);
+      background-color: var(--modus-wc-color-primary-500);
       border: var(--modus-wc-button-border-width) solid
-        var(--modus-wc-primary-blue);
-      color: var(--modus-wc-light);
+        var(--modus-wc-color-primary-500);
+      color: var(--modus-wc-color-neutral-0);
 
       &:hover {
-        background-color: var(--modus-wc-primary-dark);
+        background-color: var(--modus-wc-color-primary-900);
       }
     }
 
     &.modus-wc-button--secondary {
-      background-color: var(--modus-wc-orange);
-      border: var(--modus-wc-button-border-width) solid var(--modus-wc-orange);
-      color: var(--modus-wc-light);
+      background-color: var(--modus-wc-color-secondary-500);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-color-secondary-500);
+      color: var(--modus-wc-color-neutral-0);
 
       &:hover {
-        background-color: var(--modus-wc-orange-dark);
+        background-color: var(--modus-wc-color-secondary-500);
       }
     }
 
     &.modus-wc-button--tertiary {
-      background-color: var(--modus-wc-purple);
-      border: var(--modus-wc-button-border-width) solid var(--modus-wc-purple);
-      color: var(--modus-wc-light);
+      background-color: var(--modus-wc-color-tertiary-500);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-color-tertiary-500);
+      color: var(--modus-wc-color-neutral-0);
 
       &:hover {
-        background-color: var(--modus-wc-purple-dark);
+        background-color: var(--modus-wc-color-tertiary-800);
       }
     }
   }
@@ -61,36 +62,39 @@
     background-color: transparent;
 
     &.modus-wc-button--primary {
-      color: var(--modus-wc-primary-blue);
+      color: var(--modus-wc-color-primary-500);
       border: var(--modus-wc-button-border-width) solid
-        var(--modus-wc-primary-blue);
+        var(--modus-wc-color-primary-500);
 
       &:hover {
-        background-color: var(--modus-wc-blue-pale);
+        background-color: var(--modus-wc-color-primary-100);
       }
     }
 
     &.modus-wc-button--secondary {
-      color: var(--modus-wc-orange);
-      border: var(--modus-wc-button-border-width) solid var(--modus-wc-orange);
+      color: var(--modus-wc-color-secondary-500);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-color-secondary-500);
 
       &:hover {
-        background-color: var(--modus-wc-orange-pale);
+        background-color: var(--modus-wc-color-secondary-100);
       }
     }
 
     &.modus-wc-button--tertiary {
-      color: var(--modus-wc-purple);
-      border: var(--modus-wc-button-border-width) solid var(--modus-wc-purple);
+      color: var(--modus-wc-color-tertiary-500);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-color-tertiary-500);
 
       &:hover {
-        background-color: var(--modus-wc-purple-pale);
+        background-color: var(--modus-wc-color-tertiary-100);
       }
     }
 
     &.modus-wc-button--dark-mode {
-      color: var(--modus-wc-light);
-      border: var(--modus-wc-button-border-width) solid var(--modus-wc-light);
+      color: var(--modus-wc-color-neutral-0);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-color-neutral-0);
 
       &:hover {
         background-color: transparent;
@@ -103,7 +107,7 @@
     border: none;
 
     &.modus-wc-button--primary {
-      color: var(--modus-wc-primary-blue);
+      color: var(--modus-wc-color-primary-500);
 
       &:hover {
         text-decoration: underline;
@@ -111,7 +115,7 @@
     }
 
     &.modus-wc-button--secondary {
-      color: var(--modus-wc-orange);
+      color: var(--modus-wc-color-secondary-500);
 
       &:hover {
         text-decoration: underline;
@@ -119,7 +123,7 @@
     }
 
     &.modus-wc-button--tertiary {
-      color: var(--modus-wc-purple);
+      color: var(--modus-wc-color-tertiary-500);
 
       &:hover {
         text-decoration: underline;
@@ -127,7 +131,7 @@
     }
 
     &.modus-wc-button--dark-mode {
-      color: var(--modus-wc-light);
+      color: var(---modus-wc-color-neutral-0);
 
       &:hover {
         background-color: transparent;
@@ -136,13 +140,21 @@
   }
 
   &--small {
-    font-size: 0.875em;
-    padding: 0.25em 0.75em;
+    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+    line-height: var(--modus-wc-font-size-xs);
+    font-size: var(--modus-wc-font-size-sm);
+  }
+
+  &--medium {
+    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
+    line-height: var(--modus-wc-font-size-xs);
+    font-size: var(----modus-wc-font-size-md);
   }
 
   &--large {
-    font-size: 1.125em;
-    padding: 0.75em 1.25em;
+    padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+    line-height: var(--modus-wc-font-size-xs);
+    font-size: var(--modus-wc-font-size-lg);
   }
 
   &--full-width {
@@ -159,10 +171,14 @@
   }
 
   @include modus-wc-responsive(sm) {
-    padding: var(--modus-wc-button-padding-sm, 0.75em 1.5em);
+    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
   }
 
   @include modus-wc-responsive(md) {
-    padding: var(--modus-wc-button-padding-md, 1em 2em);
+    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
+  }
+
+  @include modus-wc-responsive(lg) {
+    padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
   }
 }
