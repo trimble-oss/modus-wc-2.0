@@ -13,19 +13,19 @@ $modus-wc-fluid-font-size-max: 18px;
 
 :root {
   // Default mode (light)
-  --modus-wc-bg-color: var(--modus-wc-color-neutral-0);
+  --modus-wc-bg-color: var(--modus-wc-color-white);
   --modus-wc-text-color: var(--modus-wc-primary-dark);
   --modus-wc-border-color: var(--modus-wc-blue-pale);
 
   // Dark mode
   --modus-wc-bg-color-dark: var(--modus-wc-primary-dark);
-  --modus-wc-text-color-dark: var(--modus-wc-color-neutral-0);
-  --modus-wc-border-color-dark: var(--modus-wc-color-neutral-0);
+  --modus-wc-text-color-dark: var(--modus-wc-color-white);
+  --modus-wc-border-color-dark: var(--modus-wc-color-white);
 
   // High contrast mode
   --modus-wc-bg-color-high-contrast: #000000;
-  --modus-wc-text-color-high-contrast: var(--modus-wc-color-neutral-0);
-  --modus-wc-border-color-high-contrast: var(--modus-wc-color-neutral-0);
+  --modus-wc-text-color-high-contrast: var(--modus-wc-color-white);
+  --modus-wc-border-color-high-contrast: var(--modus-wc-color-white);
 
   // Primary colors
   --modus-wc-color-primary-900: #082f5d;
@@ -41,7 +41,6 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-color-secondary-300: #ff7e36;
   --modus-wc-color-secondary-100: #ff8f51;
   --modus-wc-color-secondary-50: #ffd7c1;
-  --modus-wc-color-secondary-25: #ffece2;
 
   // Tertiary colors
   --modus-wc-color-tertiary-900: #3f0aa9;
@@ -52,8 +51,14 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-color-tertiary-50: #f1eaff;
 
   // Neutral colors
-  --modus-wc-color-neutral-50: #f2eef7;
-  --modus-wc-color-neutral-0: #ffffff;
+  --modus-wc-color-black: #000000;
+  --modus-wc-grey-900: #171c1e;
+  --modus-wc-grey-800: #252a2e;
+  --modus-wc-grey-500: #353a40;
+  --modus-wc-grey-300: #6a6e79;
+  --modus-wc-grey-100: #90939f;
+  --modus-wc-grey-50: #e0e1e9;
+  --modus-wc-color-white: #ffffff;
 
   // Feedback colors
   --modus-wc-color-feedback-error-light: #ff8f45;
@@ -130,7 +135,7 @@ $modus-wc-fluid-font-size-max: 18px;
 
 // Dark mode class
 .modus-wc-dark-mode {
-  --modus-wc-bg-color: var(--modus-wc-color-prim);
+  --modus-wc-bg-color: var(--modus-wc-bg-color-dark);
   --modus-wc-text-color: var(--modus-wc-text-color-dark);
   --modus-wc-border-color: var(--modus-wc-border-color-dark);
 }

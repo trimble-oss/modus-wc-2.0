@@ -28,7 +28,7 @@
       background-color: var(--modus-wc-color-primary-500);
       border: var(--modus-wc-button-border-width) solid
         var(--modus-wc-color-primary-500);
-      color: var(--modus-wc-color-neutral-0);
+      color: var(--modus-wc-color-white);
 
       &:hover {
         background-color: var(--modus-wc-color-primary-900);
@@ -39,7 +39,7 @@
       background-color: var(--modus-wc-color-secondary-500);
       border: var(--modus-wc-button-border-width) solid
         var(--modus-wc-color-secondary-500);
-      color: var(--modus-wc-color-neutral-0);
+      color: var(--modus-wc-color-white);
 
       &:hover {
         background-color: var(--modus-wc-color-secondary-500);
@@ -50,7 +50,7 @@
       background-color: var(--modus-wc-color-tertiary-500);
       border: var(--modus-wc-button-border-width) solid
         var(--modus-wc-color-tertiary-500);
-      color: var(--modus-wc-color-neutral-0);
+      color: var(--modus-wc-color-white);
 
       &:hover {
         background-color: var(--modus-wc-color-tertiary-800);
@@ -92,9 +92,9 @@
     }
 
     &.modus-wc-button--dark-mode {
-      color: var(--modus-wc-color-neutral-0);
+      color: var(--modus-wc-color-white);
       border: var(--modus-wc-button-border-width) solid
-        var(--modus-wc-color-neutral-0);
+        var(--modus-wc-color-white);
 
       &:hover {
         background-color: transparent;
@@ -131,7 +131,7 @@
     }
 
     &.modus-wc-button--dark-mode {
-      color: var(---modus-wc-color-neutral-0);
+      color: var(---modus-wc-color-white);
 
       &:hover {
         background-color: transparent;
