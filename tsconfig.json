@@ -15,7 +15,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "strict": true
+    "strict": true,
+    "types": ["marked"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "**/*.spec.ts", "**/*.config.ts"]

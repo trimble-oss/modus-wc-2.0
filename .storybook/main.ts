@@ -7,6 +7,7 @@ const config: StorybookConfig = {
     name: '@storybook/web-components-webpack5',
     options: {},
   },
+  staticDirs: ['../src'],
   webpackFinal: async (config) => {
     if (config.module?.rules) {
       config.module.rules.push({

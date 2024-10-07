@@ -18,9 +18,9 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-border-color: var(--modus-wc-color-primary-900);
 
   // Dark mode
-  --modus-wc-bg-color-dark: var(--modus-wc-primary-dark);
-  --modus-wc-text-color-dark: var(--modus-wc-color-white);
-  --modus-wc-border-color-dark: var(--modus-wc-color-white);
+  --modus-wc-bg-color-dark: var(--modus-wc-color-primary-900);
+  --modus-wc-text-color-dark: var(--modus-wc-grey-100);
+  --modus-wc-border-color-dark: var(--modus-wc-grey-100);
 
   // High contrast mode
   --modus-wc-bg-color-high-contrast: var(--modus-wc-color-black);

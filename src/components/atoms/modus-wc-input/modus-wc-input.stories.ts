@@ -48,17 +48,21 @@ const Template: Story = {
     setModusWCMode(args.mode);
 
     return `
-      <modus-wc-input 
-        aria-label="${args.ariaLabel}"
-        placeholder="${args.placeholder}"
-        value="${args.value}"
-        name="${args.name}"
-        type="${args.type}"
-        custom-class="${args.customClass}"
-        size="${args.size}"
-        ${args.disabled ? 'disabled' : ''}
-        ${args.required ? 'required' : ''}
-      ></modus-wc-input>
+        <div>
+            <stencil-docs component-name="modus-wc-input"></stencil-docs>
+            <h2>Demo</h2>
+            <modus-wc-input 
+              aria-label="${args.ariaLabel}"
+              placeholder="${args.placeholder}"
+              value="${args.value}"
+              name="${args.name}"
+              type="${args.type}"
+              custom-class="${args.customClass}"
+              size="${args.size}"
+              ${args.disabled ? 'disabled' : ''}
+              ${args.required ? 'required' : ''}
+            ></modus-wc-input>
+        </div>
     `;
   },
 };
