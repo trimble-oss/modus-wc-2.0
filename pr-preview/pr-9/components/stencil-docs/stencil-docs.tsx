@@ -27,6 +27,8 @@ export class StencilDocs {
       : '';
     const directories = ['atoms', 'molecules', 'organisms'];
 
+    console.log('stencil-docs baseUrl', baseUrl, window.location);
+
     for (const dir of directories) {
       try {
         const response = await fetch(
