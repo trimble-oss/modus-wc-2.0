@@ -1,9 +1,18 @@
-import { Component, Prop, h, Host } from '@stencil/core';
+import {
+  Component,
+  h,
+  Event,
+  EventEmitter,
+  Host,
+  Listen,
+  Prop,
+} from '@stencil/core';
 import { getCurrentModusWCMode } from '../../../utils/theme';
 
 /**
- * @component modus-wc-button
- * @description A customizable button component that adheres to WCAG 2.2 standards.
+ * A customizable button component used to create buttons with different sizes, variants, and types.
+ *
+ * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-button',
@@ -61,6 +70,26 @@ export class ModusWcButton {
    */
   @Prop() type: 'button' | 'submit' | 'reset' = 'button';
 
+  /**
+   * Event emitted when the button is clicked or activated via keyboard.
+   */
+  @Event() click!: EventEmitter<MouseEvent | KeyboardEvent>;
+
+  private handleClick = (event: MouseEvent) => {
+    if (!this.disabled) {
+      this.click.emit(event);
+    }
+  };
+
+  // @ts-expect-error: TODO fixes linting issue, test thoroughly
+  @Listen('keydown')
+  handleKeyDown = (event: KeyboardEvent) => {
+    if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      this.click.emit(event);
+    }
+  };
+
   render() {
     const ariaPressed = this.pressed ? 'true' : undefined;
     const currentMode = getCurrentModusWCMode();
@@ -79,9 +108,12 @@ export class ModusWcButton {
             'modus-wc-button--dark-mode': currentMode === 'dark',
           }}
           aria-label={this.ariaLabel || this.label}
-          disabled={this.disabled}
-          type={this.type}
           aria-pressed={ariaPressed}
+          disabled={this.disabled}
+          onClick={this.handleClick}
+          onKeyDown={this.handleKeyDown}
+          tabIndex={this.disabled ? -1 : 0}
+          type={this.type}
         >
           {this.label}
         </button>

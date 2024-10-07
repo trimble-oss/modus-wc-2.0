@@ -15,7 +15,7 @@ $modus-wc-fluid-font-size-max: 18px;
   // Default mode (light)
   --modus-wc-bg-color: var(--modus-wc-color-white);
   --modus-wc-text-color: var(--modus-wc-primary-dark);
-  --modus-wc-border-color: var(--modus-wc-blue-pale);
+  --modus-wc-border-color: var(--modus-wc-color-primary-900);
 
   // Dark mode
   --modus-wc-bg-color-dark: var(--modus-wc-primary-dark);
@@ -31,6 +31,7 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-color-primary-900: #082f5d;
   --modus-wc-color-primary-500: #1b84ff;
   --modus-wc-color-primary-300: #57a4ff;
+  --modus-wc-color-primary-200: #d3e7ff;
   --modus-wc-color-primary-100: #cce3ff;
   --modus-wc-color-primary-50: #ebf4ff;
 
@@ -39,7 +40,8 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-color-secondary-800: #ea5f11;
   --modus-wc-color-secondary-500: #fd6e1e;
   --modus-wc-color-secondary-300: #ff7e36;
-  --modus-wc-color-secondary-100: #ff8f51;
+  --modus-wc-color-secondary-200: #ff8f51;
+  --modus-wc-color-secondary-100: #ffd7c1;
   --modus-wc-color-secondary-50: #ffd7c1;
 
   // Tertiary colors
@@ -47,8 +49,9 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-color-tertiary-800: #511dbc;
   --modus-wc-color-tertiary-500: #703adf;
   --modus-wc-color-tertiary-300: #8e5ff0;
-  --modus-wc-color-tertiary-100: #dac8ff;
-  --modus-wc-color-tertiary-50: #f1eaff;
+  --modus-wc-color-tertiary-200: #dac8ff;
+  --modus-wc-color-tertiary-100: #f1eaff;
+  --modus-wc-color-tertiary-50: #f2eff7;
 
   // Neutral colors
   --modus-wc-color-black: #000000;
@@ -62,16 +65,16 @@ $modus-wc-fluid-font-size-max: 18px;
 
   // Feedback colors
   --modus-wc-color-feedback-error-light: #ff8f45;
-  --modus-wc-color-feedback-error: #f86807;
-  --modus-wc-color-feedback-error-dark: #a73f03;
+  --modus-wc-color-feedback-error: #f35118;
+  --modus-wc-color-feedback-error-dark: #c43502;
 
-  --modus-wc-color-feedback-warning-light: #ffe262;
-  --modus-wc-color-feedback-warning: #f0c509;
-  --modus-wc-color-feedback-warning-dark: #cfad13;
+  --modus-wc-color-feedback-warning-light: #f6c746;
+  --modus-wc-color-feedback-warning: #fbad26;
+  --modus-wc-color-feedback-warning-dark: #d19e29;
 
-  --modus-wc-color-feedback-success-light: #4cc44c;
-  --modus-wc-color-feedback-success: #289e3a;
-  --modus-wc-color-feedback-success-dark: #23742f;
+  --modus-wc-color-feedback-success-light: #22b93b;
+  --modus-wc-color-feedback-success: #008516;
+  --modus-wc-color-feedback-success-dark: #21632c;
 
   // Typography
   --modus-wc-font-family: 'Open Sans', 'Noto Sans', 'Segoe UI', 'San Francisco',
@@ -106,9 +109,14 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-spacing-xxl: 3rem; /* XX-Large: 48px */
 
   // Border
-  --modus-wc-border-radius: var(--modus-wc-spacing-xs);
+  --modus-wc-border-radius-xs: 2px;
+  --modus-wc-border-radius-sm: 4px;
+  --modus-wc-border-radius-md: 8px;
+  --modus-wc-border-radius-lg: 16px;
+  --modus-wc-border-radius-xl: 20px;
+  --modus-wc-border-radius-xxl: 24px;
+
   --modus-wc-border-width: 1px;
-  --modus-wc-border-color: var(--modus-wc-color-primary-50);
 
   // Button styles
   --modus-wc-button-border-radius: 20px;
