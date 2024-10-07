@@ -54,7 +54,7 @@ jobs:
         if: github.event_name == 'pull_request' && steps.preview-deploy.outcome == 'success'
         id: preview-url
         run: |
-          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/pr-preview/pr-${{ github.event.number }}/" >> $GITHUB_OUTPUT
+          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/pr-preview/pr-${{ github.event.number }}" >> $GITHUB_OUTPUT
 
       - name: Comment PR
         if: github.event_name == 'pull_request' && steps.preview-deploy.outcome == 'success'
@@ -73,7 +73,7 @@ jobs:
         if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
         id: deployment-url
         run: |
-          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${{ github.event.inputs.branch || 'main' }}/" >> $GITHUB_OUTPUT
+          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${{ github.event.inputs.branch || 'main' }}" >> $GITHUB_OUTPUT
 
       - name: Print deployment URL
         if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
