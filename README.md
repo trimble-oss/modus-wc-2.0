@@ -35,6 +35,10 @@ For more detailed documentation on topics like custom theming and project design
 
 Please read the [CONTRIBUTING](./CONTRIBUTING.md) doc for details on our code of conduct, and the process for submitting pull requests.
 
+## Release
+
+On PR creation and merge to `main` the "Publish Storybook" action will automatically run. Once complete, a comment will be added to the PR with a link to a hosted Storybook page.
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details
