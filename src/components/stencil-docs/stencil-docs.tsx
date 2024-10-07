@@ -22,12 +22,10 @@ export class StencilDocs {
   @State() parsedDocs: string = '';
 
   async componentWillLoad() {
-    const baseUrl = window.location.origin.includes('github.io')
-      ? `${window.location.origin}${window.location.pathname}`
+    const baseUrl = window.parent?.location.origin.includes('github.io')
+      ? `${window.parent.location.origin}${window.parent.location.pathname}`
       : '';
     const directories = ['atoms', 'molecules', 'organisms'];
-
-    console.log('stencil-docs baseUrl', baseUrl, window.location);
 
     for (const dir of directories) {
       try {
