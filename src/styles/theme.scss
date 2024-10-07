@@ -1,68 +1,114 @@
 // SASS variables for compile-time use
+$modus-wc-breakpoint-xs: 320px;
 $modus-wc-breakpoint-sm: 576px;
 $modus-wc-breakpoint-md: 768px;
 $modus-wc-breakpoint-lg: 992px;
 $modus-wc-breakpoint-xl: 1200px;
+$modus-wc-breakpoint-xxl: 1600px;
 
 $modus-wc-fluid-screen-min: 320px;
-$modus-wc-fluid-screen-max: 1200px;
+$modus-wc-fluid-screen-max: 1600px;
 $modus-wc-fluid-font-size-min: 14px;
 $modus-wc-fluid-font-size-max: 18px;
 
 :root {
   // Default mode (light)
-  --modus-wc-bg-color: var(--modus-wc-light);
+  --modus-wc-bg-color: var(--modus-wc-color-white);
   --modus-wc-text-color: var(--modus-wc-primary-dark);
   --modus-wc-border-color: var(--modus-wc-blue-pale);
 
   // Dark mode
   --modus-wc-bg-color-dark: var(--modus-wc-primary-dark);
-  --modus-wc-text-color-dark: var(--modus-wc-light);
-  --modus-wc-border-color-dark: var(--modus-wc-blue-light);
+  --modus-wc-text-color-dark: var(--modus-wc-color-white);
+  --modus-wc-border-color-dark: var(--modus-wc-color-white);
 
   // High contrast mode
   --modus-wc-bg-color-high-contrast: #000000;
-  --modus-wc-text-color-high-contrast: #ffffff;
-  --modus-wc-border-color-high-contrast: #ffffff;
+  --modus-wc-text-color-high-contrast: var(--modus-wc-color-white);
+  --modus-wc-border-color-high-contrast: var(--modus-wc-color-white);
 
   // Primary colors
-  --modus-wc-primary-dark: #06425c;
-  --modus-wc-primary-blue: #1b84ff;
-  --modus-wc-blue-light: #87b9f5;
-  --modus-wc-blue-pale: #cce2ff;
-  --modus-wc-blue-paler: #ecf3ff;
+  --modus-wc-color-primary-900: #082f5d;
+  --modus-wc-color-primary-500: #1b84ff;
+  --modus-wc-color-primary-300: #57a4ff;
+  --modus-wc-color-primary-100: #cce3ff;
+  --modus-wc-color-primary-50: #ebf4ff;
 
   // Secondary colors
-  --modus-wc-orange-darker: #E51D0;
-  --modus-wc-orange-dark: #e55f11;
-  --modus-wc-orange: #f06e1f;
-  --modus-wc-orange-light: #f7763b;
-  --modus-wc-orange-pale: #fbf5d1;
-  --modus-wc-orange-light-pale: #fdf7c1;
-  --modus-wc-orange-lighter: #fefce2;
+  --modus-wc-color-secondary-900: #e25100;
+  --modus-wc-color-secondary-800: #ea5f11;
+  --modus-wc-color-secondary-500: #fd6e1e;
+  --modus-wc-color-secondary-300: #ff7e36;
+  --modus-wc-color-secondary-100: #ff8f51;
+  --modus-wc-color-secondary-50: #ffd7c1;
 
   // Tertiary colors
-  --modus-wc-purple-darker: #3f1aa9;
-  --modus-wc-purple-dark: #5110dc;
-  --modus-wc-purple: #7034df;
-  --modus-wc-purple-light: #8e5ffd;
-  --modus-wc-purple-pale: #d4cbff;
-  --modus-wc-lilac: #f1eaff;
-  --modus-wc-light: #f2f7ff;
+  --modus-wc-color-tertiary-900: #3f0aa9;
+  --modus-wc-color-tertiary-800: #511dbc;
+  --modus-wc-color-tertiary-500: #703adf;
+  --modus-wc-color-tertiary-300: #8e5ff0;
+  --modus-wc-color-tertiary-100: #dac8ff;
+  --modus-wc-color-tertiary-50: #f1eaff;
+
+  // Neutral colors
+  --modus-wc-color-black: #000000;
+  --modus-wc-grey-900: #171c1e;
+  --modus-wc-grey-800: #252a2e;
+  --modus-wc-grey-500: #353a40;
+  --modus-wc-grey-300: #6a6e79;
+  --modus-wc-grey-100: #90939f;
+  --modus-wc-grey-50: #e0e1e9;
+  --modus-wc-color-white: #ffffff;
+
+  // Feedback colors
+  --modus-wc-color-feedback-error-light: #ff8f45;
+  --modus-wc-color-feedback-error: #f86807;
+  --modus-wc-color-feedback-error-dark: #a73f03;
+
+  --modus-wc-color-feedback-warning-light: #ffe262;
+  --modus-wc-color-feedback-warning: #f0c509;
+  --modus-wc-color-feedback-warning-dark: #cfad13;
+
+  --modus-wc-color-feedback-success-light: #4cc44c;
+  --modus-wc-color-feedback-success: #289e3a;
+  --modus-wc-color-feedback-success-dark: #23742f;
 
   // Typography
-  --modus-wc-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, sans-serif;
-  --modus-wc-font-size-base: 16px;
-  --modus-wc-line-height-base: 1.5;
+  --modus-wc-font-family: 'Open Sans', 'Noto Sans', 'Segoe UI', 'San Francisco',
+    'Helvetica', 'Arial', 'Roboto', 'Tahoma', sans-serif;
+
+  /* Base font size in pixels (for reference) */
+  --modus-wc-font-size-root: 16px;
+
+  --modus-wc-font-size-xs: 0.625rem; /* 10px */
+  --modus-wc-font-size-sm: 0.75rem; /* 12px */
+  --modus-wc-font-size-base: 0.875rem; /* 14px */
+  --modus-wc-font-size-md: 1rem; /* 16px */
+  --modus-wc-font-size-lg: 1.125rem; /* 18px */
+  --modus-wc-font-size-xl: 1.25rem; /* 20px */
+  --modus-wc-font-size-2xl: 1.5rem; /* 24px */
+  --modus-wc-font-size-3xl: 1.875rem; /* 30px */
+  --modus-wc-font-size-4xl: 2.25rem; /* 36px */
+
+  --modus-wc-line-height-xs: 1; /* 16px */
+  --modus-wc-line-height-sm: 1.25; /* 20px */
+  --modus-wc-line-height-md: 1.5; /* 24px */
+  --modus-wc-line-height-lg: 1.75; /* 28px */
+  --modus-wc-line-height-xl: 2; /* 32px */
+  --modus-wc-line-height-xxl: 2.25; /* 36px */
 
   // Spacing
-  --modus-wc-spacing-unit: 8px;
+  --modus-wc-spacing-xs: 0.25rem; /* X-Small: 4px */
+  --modus-wc-spacing-sm: 0.5rem; /* Small: 8px */
+  --modus-wc-spacing-md: 1rem; /* Medium: 16px */
+  --modus-wc-spacing-lg: 1.5rem; /* Large: 24px */
+  --modus-wc-spacing-xl: 2rem; /* X-Large: 32px */
+  --modus-wc-spacing-xxl: 3rem; /* XX-Large: 48px */
 
   // Border
-  --modus-wc-border-radius: 4px;
+  --modus-wc-border-radius: var(--modus-wc-spacing-xs);
   --modus-wc-border-width: 1px;
-  --modus-wc-border-color: var(--modus-wc-blue-pale);
+  --modus-wc-border-color: var(--modus-wc-color-primary-50);
 
   // Button styles
   --modus-wc-button-border-radius: 20px;
@@ -73,10 +119,12 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-transition-timing-function: ease-in-out;
 
   // Responsive breakpoints
-  --modus-wc-breakpoint-sm: 576px;
-  --modus-wc-breakpoint-md: 768px;
-  --modus-wc-breakpoint-lg: 992px;
-  --modus-wc-breakpoint-xl: 1200px;
+  --modus-wc-breakpoint-xs: #{$modus-wc-breakpoint-xs};
+  --modus-wc-breakpoint-sm: #{$modus-wc-breakpoint-sm};
+  --modus-wc-breakpoint-md: #{$modus-wc-breakpoint-md};
+  --modus-wc-breakpoint-lg: #{$modus-wc-breakpoint-lg};
+  --modus-wc-breakpoint-xl: #{$modus-wc-breakpoint-xl};
+  --modus-wc-breakpoint-xxl: #{$modus-wc-breakpoint-xxl};
 
   // Fluid typography
   --modus-wc-fluid-screen-min: #{$modus-wc-fluid-screen-min};
@@ -92,7 +140,7 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-border-color: var(--modus-wc-border-color-dark);
 }
 
-// High constrast mode class
+// High-contrast mode class
 .modus-wc-high-contrast-mode {
   --modus-wc-bg-color: var(--modus-wc-bg-color-high-contrast);
   --modus-wc-text-color: var(--modus-wc-text-color-high-contrast);

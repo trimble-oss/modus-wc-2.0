@@ -8,6 +8,10 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: var(--modus-font-size-root);
+}
+
 body {
   @include modus-wc-fluid-type(
     $modus-wc-fluid-screen-min,
@@ -17,7 +21,8 @@ body {
   );
 
   font-family: var(--modus-wc-font-family);
+  font-size: var(--modus-wc-font-size-base);
   line-height: var(--modus-wc-line-height-base);
   color: var(--modus-wc-dark-color);
-  background-color: var(--modus-wc-light-color);
+  background-color: var(--modus-wc-color-white);
 }
