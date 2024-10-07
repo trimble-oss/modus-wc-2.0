@@ -53,7 +53,6 @@ type Story = StoryObj<ButtonArgs>;
 
 const Template: Story = {
   render: (args) => {
-    // Set the mode
     setModusWCMode(args.mode);
 
     return `

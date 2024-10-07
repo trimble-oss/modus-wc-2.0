@@ -7,8 +7,8 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     /**
-     * @component modus-wc-button
-     * @description A customizable button component that adheres to WCAG 2.2 standards.
+     * A customizable button component used to create buttons with different sizes, variants, and types.
+     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
         /**
@@ -52,26 +52,111 @@ export namespace Components {
          */
         "variant": 'filled' | 'outlined' | 'text';
     }
+    /**
+     * A customizable input component used to create inputs with different sizes and types.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcInput {
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the input.
+         */
+        "customClass": string;
+        /**
+          * If true, the input will be disabled.
+         */
+        "disabled": boolean;
+        /**
+          * The input's name attribute.
+         */
+        "name": string;
+        /**
+          * The input's placeholder text.
+         */
+        "placeholder": string;
+        /**
+          * If true, the input will be required.
+         */
+        "required": boolean;
+        /**
+          * The size of the input. Can be 'small', 'medium', or 'large'.
+         */
+        "size": 'small' | 'medium' | 'large';
+        /**
+          * The input's type attribute.
+         */
+        "type": 'email' | 'number' | 'text' | 'password';
+        /**
+          * The input's value.
+         */
+        "value": string;
+    }
+}
+export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcButtonElement;
+}
+export interface ModusWcInputCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcInputElement;
 }
 declare global {
+    interface HTMLModusWcButtonElementEventMap {
+        "click": MouseEvent | KeyboardEvent;
+    }
     /**
-     * @component modus-wc-button
-     * @description A customizable button component that adheres to WCAG 2.2 standards.
+     * A customizable button component used to create buttons with different sizes, variants, and types.
+     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcButtonElement extends Components.ModusWcButton, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcButtonElementEventMap>(type: K, listener: (this: HTMLModusWcButtonElement, ev: ModusWcButtonCustomEvent<HTMLModusWcButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcButtonElementEventMap>(type: K, listener: (this: HTMLModusWcButtonElement, ev: ModusWcButtonCustomEvent<HTMLModusWcButtonElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcButtonElement: {
         prototype: HTMLModusWcButtonElement;
         new (): HTMLModusWcButtonElement;
     };
+    interface HTMLModusWcInputElementEventMap {
+        "blur": FocusEvent;
+        "change": string;
+        "focus": FocusEvent;
+    }
+    /**
+     * A customizable input component used to create inputs with different sizes and types.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcInputElement extends Components.ModusWcInput, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcInputElementEventMap>(type: K, listener: (this: HTMLModusWcInputElement, ev: ModusWcInputCustomEvent<HTMLModusWcInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcInputElementEventMap>(type: K, listener: (this: HTMLModusWcInputElement, ev: ModusWcInputCustomEvent<HTMLModusWcInputElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcInputElement: {
+        prototype: HTMLModusWcInputElement;
+        new (): HTMLModusWcInputElement;
+    };
     interface HTMLElementTagNameMap {
         "modus-wc-button": HTMLModusWcButtonElement;
+        "modus-wc-input": HTMLModusWcInputElement;
     }
 }
 declare namespace LocalJSX {
     /**
-     * @component modus-wc-button
-     * @description A customizable button component that adheres to WCAG 2.2 standards.
+     * A customizable button component used to create buttons with different sizes, variants, and types.
+     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
         /**
@@ -99,6 +184,10 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
+          * Event emitted when the button is clicked or activated via keyboard.
+         */
+        "onClick"?: (event: ModusWcButtonCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
           * If true, the button will be in a pressed state (for toggle buttons).
          */
         "pressed"?: boolean;
@@ -115,8 +204,63 @@ declare namespace LocalJSX {
          */
         "variant"?: 'filled' | 'outlined' | 'text';
     }
+    /**
+     * A customizable input component used to create inputs with different sizes and types.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcInput {
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the input.
+         */
+        "customClass"?: string;
+        /**
+          * If true, the input will be disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * The input's name attribute.
+         */
+        "name"?: string;
+        /**
+          * Event emitted when the input loses focus.
+         */
+        "onBlur"?: (event: ModusWcInputCustomEvent<FocusEvent>) => void;
+        /**
+          * Event emitted when the input value changes.
+         */
+        "onChange"?: (event: ModusWcInputCustomEvent<string>) => void;
+        /**
+          * Event emitted when the input gains focus.
+         */
+        "onFocus"?: (event: ModusWcInputCustomEvent<FocusEvent>) => void;
+        /**
+          * The input's placeholder text.
+         */
+        "placeholder"?: string;
+        /**
+          * If true, the input will be required.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input. Can be 'small', 'medium', or 'large'.
+         */
+        "size"?: 'small' | 'medium' | 'large';
+        /**
+          * The input's type attribute.
+         */
+        "type"?: 'email' | 'number' | 'text' | 'password';
+        /**
+          * The input's value.
+         */
+        "value"?: string;
+    }
     interface IntrinsicElements {
         "modus-wc-button": ModusWcButton;
+        "modus-wc-input": ModusWcInput;
     }
 }
 export { LocalJSX as JSX };
@@ -124,10 +268,15 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             /**
-             * @component modus-wc-button
-             * @description A customizable button component that adheres to WCAG 2.2 standards.
+             * A customizable button component used to create buttons with different sizes, variants, and types.
+             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
+            /**
+             * A customizable input component used to create inputs with different sizes and types.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-input": LocalJSX.ModusWcInput & JSXBase.HTMLAttributes<HTMLModusWcInputElement>;
         }
     }
 }
