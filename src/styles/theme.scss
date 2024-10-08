@@ -29,51 +29,53 @@ $modus-wc-fluid-font-size-max: 18px;
 
   // Primary colors
   --modus-wc-color-primary-900: #082f5d;
-  --modus-wc-color-primary-500: #1b84ff;
-  --modus-wc-color-primary-300: #57a4ff;
+  --modus-wc-color-primary-800: #0053b3;
+  --modus-wc-color-primary-500: #4998f3;
+  --modus-wc-color-primary-300: #73b3ff;
   --modus-wc-color-primary-200: #d3e7ff;
-  --modus-wc-color-primary-100: #cce3ff;
-  --modus-wc-color-primary-50: #ebf4ff;
+  --modus-wc-color-primary-100: #ebf4ff;
 
   // Secondary colors
-  --modus-wc-color-secondary-900: #e25100;
-  --modus-wc-color-secondary-800: #ea5f11;
-  --modus-wc-color-secondary-500: #fd6e1e;
-  --modus-wc-color-secondary-300: #ff7e36;
-  --modus-wc-color-secondary-200: #ff8f51;
-  --modus-wc-color-secondary-100: #ffd7c1;
-  --modus-wc-color-secondary-50: #ffd7c1;
+  --modus-wc-color-secondary-900: #cc4b00;
+  --modus-wc-color-secondary-800: #ff640a;
+  --modus-wc-color-secondary-500: #ff7a2d;
+  --modus-wc-color-secondary-300: #ff995f;
+  --modus-wc-color-secondary-200: #ffd7c1;
+  --modus-wc-color-secondary-100: #ffece2;
 
   // Tertiary colors
   --modus-wc-color-tertiary-900: #3f0aa9;
-  --modus-wc-color-tertiary-800: #511dbc;
-  --modus-wc-color-tertiary-500: #703adf;
-  --modus-wc-color-tertiary-300: #8e5ff0;
-  --modus-wc-color-tertiary-200: #dac8ff;
-  --modus-wc-color-tertiary-100: #f1eaff;
-  --modus-wc-color-tertiary-50: #f2eff7;
+  --modus-wc-color-tertiary-800: #672cdd;
+  --modus-wc-color-tertiary-500: #a580f5;
+  --modus-wc-color-tertiary-300: #dac8ff;
+  --modus-wc-color-tertiary-200: #f1eaff;
+  --modus-wc-color-tertiary-100: #f2eff7;
 
   // Neutral colors
   --modus-wc-color-black: #000000;
-  --modus-wc-grey-900: #2f3336;
-  --modus-wc-grey-800: #4e555f;
-  --modus-wc-grey-500: #7b808c;
-  --modus-wc-grey-300: #b7bac5;
+  --modus-wc-grey-900: #0e1112;
+  --modus-wc-grey-800: #2f3336;
+  --modus-wc-grey-500: #4e555f;
+  --modus-wc-grey-300: #7b808c;
+  --modus-wc-grey-200: #b7bac5;
   --modus-wc-grey-100: #e0e1e9;
   --modus-wc-color-white: #ffffff;
 
   // Feedback colors
-  --modus-wc-color-feedback-error-light: #f77c50;
-  --modus-wc-color-feedback-error: #f35118;
-  --modus-wc-color-feedback-error-dark: #c43502;
+  --modus-wc-color-feedback-error-900: #a80101;
+  --modus-wc-color-feedback-error-700: #ca0000;
+  --modus-wc-color-feedback-error-500: #e86b63;
+  --modus-wc-color-feedback-error-300: #ffcfcc;
 
-  --modus-wc-color-feedback-warning-light: #ffd792;
-  --modus-wc-color-feedback-warning: #fbad26;
-  --modus-wc-color-feedback-warning-dark: #ffa200;
+  --modus-wc-color-feedback-warning-900: #e79302;
+  --modus-wc-color-feedback-warning-700: #fbad26;
+  --modus-wc-color-feedback-warning-500: #ffd792;
+  --modus-wc-color-feedback-warning-300: #fff4e1;
 
-  --modus-wc-color-feedback-success-light: #22b93b;
-  --modus-wc-color-feedback-success: #008516;
-  --modus-wc-color-feedback-success-dark: #21632c;
+  --modus-wc-color-feedback-success-900: #21632c;
+  --modus-wc-color-feedback-success-700: #008516;
+  --modus-wc-color-feedback-success-500: #49cc5e;
+  --modus-wc-color-feedback-success-300: #cdf2d3;
 
   // Typography
   --modus-wc-font-family: 'Open Sans', 'Noto Sans', 'Segoe UI', 'San Francisco',

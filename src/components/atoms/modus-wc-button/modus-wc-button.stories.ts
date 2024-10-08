@@ -57,20 +57,20 @@ const Template: Story = {
 
     return `
       <div>
-        <stencil-docs component-name="modus-wc-button"></stencil-docs>
-        <h2>Demo</h2>
+        <h1>Button</h1>
         <modus-wc-button 
-          label="${args.label}"
-          aria-label="${args.ariaLabel}"
-          custom-class="${args.customClass}"
-          size="${args.size}"
-          type="${args.type}"
-          variant="${args.variant}"
-          color="${args.color}"
-          ${args.disabled ? 'disabled' : ''}
-          ${args.fullWidth ? 'full-width' : ''}
-          ${args.pressed ? 'pressed' : ''}
-        ></modus-wc-button>
+            label="${args.label}"
+            aria-label="${args.ariaLabel}"
+            custom-class="${args.customClass}"
+            size="${args.size}"
+            type="${args.type}"
+            variant="${args.variant}"
+            color="${args.color}"
+            ${args.disabled ? 'disabled' : ''}
+            ${args.fullWidth ? 'full-width' : ''}
+            ${args.pressed ? 'pressed' : ''}
+          ></modus-wc-button>
+          <stencil-docs component-name="modus-wc-button"></stencil-docs>        
       </div>
     `;
   },
