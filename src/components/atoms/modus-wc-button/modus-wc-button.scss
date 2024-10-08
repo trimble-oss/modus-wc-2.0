@@ -25,20 +25,20 @@
 
   &--filled {
     &.modus-wc-button--primary {
-      background-color: var(--modus-wc-color-primary-500);
+      background-color: var(--modus-wc-color-primary-800);
       border: var(--modus-wc-button-border-width) solid
-        var(--modus-wc-color-primary-500);
+        var(--modus-wc-color-primary-800);
       color: var(--modus-wc-color-white);
 
       &:hover {
-        background-color: var(--modus-wc-color-primary-900);
+        background-color: var(--modus-wc-color-primary-500);
       }
     }
 
     &.modus-wc-button--secondary {
-      background-color: var(--modus-wc-color-secondary-500);
+      background-color: var(--modus-wc-color-secondary-800);
       border: var(--modus-wc-button-border-width) solid
-        var(--modus-wc-color-secondary-500);
+        var(--modus-wc-color-secondary-800);
       color: var(--modus-wc-color-white);
 
       &:hover {
@@ -47,13 +47,13 @@
     }
 
     &.modus-wc-button--tertiary {
-      background-color: var(--modus-wc-color-tertiary-500);
+      background-color: var(--modus-wc-color-tertiary-800);
       border: var(--modus-wc-button-border-width) solid
-        var(--modus-wc-color-tertiary-500);
+        var(--modus-wc-color-tertiary-800);
       color: var(--modus-wc-color-white);
 
       &:hover {
-        background-color: var(--modus-wc-color-tertiary-800);
+        background-color: var(--modus-wc-color-tertiary-500);
       }
     }
   }
@@ -62,9 +62,9 @@
     background-color: transparent;
 
     &.modus-wc-button--primary {
-      color: var(--modus-wc-color-primary-500);
+      color: var(--modus-wc-color-primary-800);
       border: var(--modus-wc-button-border-width) solid
-        var(--modus-wc-color-primary-500);
+        var(--modus-wc-color-primary-800);
 
       &:hover {
         background-color: var(--modus-wc-color-primary-100);
@@ -72,9 +72,9 @@
     }
 
     &.modus-wc-button--secondary {
-      color: var(--modus-wc-color-secondary-500);
+      color: var(--modus-wc-color-secondary-800);
       border: var(--modus-wc-button-border-width) solid
-        var(--modus-wc-color-secondary-500);
+        var(--modus-wc-color-secondary-800);
 
       &:hover {
         background-color: var(--modus-wc-color-secondary-100);
@@ -82,9 +82,9 @@
     }
 
     &.modus-wc-button--tertiary {
-      color: var(--modus-wc-color-tertiary-500);
+      color: var(--modus-wc-color-tertiary-800);
       border: var(--modus-wc-button-border-width) solid
-        var(--modus-wc-color-tertiary-500);
+        var(--modus-wc-color-tertiary-800);
 
       &:hover {
         background-color: var(--modus-wc-color-tertiary-100);
@@ -107,7 +107,7 @@
     border: none;
 
     &.modus-wc-button--primary {
-      color: var(--modus-wc-color-primary-500);
+      color: var(--modus-wc-color-primary-800);
 
       &:hover {
         text-decoration: underline;
@@ -115,7 +115,7 @@
     }
 
     &.modus-wc-button--secondary {
-      color: var(--modus-wc-color-secondary-500);
+      color: var(--modus-wc-color-secondary-800);
 
       &:hover {
         text-decoration: underline;
@@ -123,7 +123,7 @@
     }
 
     &.modus-wc-button--tertiary {
-      color: var(--modus-wc-color-tertiary-500);
+      color: var(--modus-wc-color-tertiary-800);
 
       &:hover {
         text-decoration: underline;

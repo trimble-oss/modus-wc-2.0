@@ -94,6 +94,16 @@ export namespace Components {
          */
         "value": string;
     }
+    /**
+     * A component used to render auto-generated Stencil documentation in Storybook stories.
+     * Searches for the component directory within `/atoms`, `/molecules`, and `organisms`. Renders the `readme.md` file.
+     */
+    interface StencilDocs {
+        /**
+          * The component name used to find the proper directory.
+         */
+        "componentName": string;
+    }
 }
 export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -148,9 +158,20 @@ declare global {
         prototype: HTMLModusWcInputElement;
         new (): HTMLModusWcInputElement;
     };
+    /**
+     * A component used to render auto-generated Stencil documentation in Storybook stories.
+     * Searches for the component directory within `/atoms`, `/molecules`, and `organisms`. Renders the `readme.md` file.
+     */
+    interface HTMLStencilDocsElement extends Components.StencilDocs, HTMLStencilElement {
+    }
+    var HTMLStencilDocsElement: {
+        prototype: HTMLStencilDocsElement;
+        new (): HTMLStencilDocsElement;
+    };
     interface HTMLElementTagNameMap {
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-input": HTMLModusWcInputElement;
+        "stencil-docs": HTMLStencilDocsElement;
     }
 }
 declare namespace LocalJSX {
@@ -258,9 +279,20 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    /**
+     * A component used to render auto-generated Stencil documentation in Storybook stories.
+     * Searches for the component directory within `/atoms`, `/molecules`, and `organisms`. Renders the `readme.md` file.
+     */
+    interface StencilDocs {
+        /**
+          * The component name used to find the proper directory.
+         */
+        "componentName": string;
+    }
     interface IntrinsicElements {
         "modus-wc-button": ModusWcButton;
         "modus-wc-input": ModusWcInput;
+        "stencil-docs": StencilDocs;
     }
 }
 export { LocalJSX as JSX };
@@ -277,6 +309,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-input": LocalJSX.ModusWcInput & JSXBase.HTMLAttributes<HTMLModusWcInputElement>;
+            /**
+             * A component used to render auto-generated Stencil documentation in Storybook stories.
+             * Searches for the component directory within `/atoms`, `/molecules`, and `organisms`. Renders the `readme.md` file.
+             */
+            "stencil-docs": LocalJSX.StencilDocs & JSXBase.HTMLAttributes<HTMLStencilDocsElement>;
         }
     }
 }
