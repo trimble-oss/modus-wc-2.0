@@ -1,0 +1,28 @@
+@import 'mixins';
+@import 'theme';
+
+// Reset styles
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: var(--modus-font-size-root);
+}
+
+body {
+  @include modus-wc-fluid-type(
+    $modus-wc-fluid-screen-min,
+    $modus-wc-fluid-screen-max,
+    $modus-wc-fluid-font-size-min,
+    $modus-wc-fluid-font-size-max
+  );
+
+  font-family: var(--modus-wc-font-family);
+  font-size: var(--modus-wc-font-size-base);
+  line-height: var(--modus-wc-line-height-base);
+  color: var(--modus-wc-dark-color);
+  background-color: var(--modus-wc-color-white);
+}
