@@ -1,9 +1,10 @@
-import js from '@eslint/js';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
-import prettierPlugin from 'eslint-plugin-prettier';
-import prettier from 'eslint-config-prettier';
 import globals from 'globals';
+import js from '@eslint/js';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import prettier from 'eslint-config-prettier';
+import prettierPlugin from 'eslint-plugin-prettier';
+import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 
 export default [
   js.configs.recommended,
@@ -14,6 +15,7 @@ export default [
   {
     files: ['**/*.{ts,tsx}'],
     plugins: {
+      'jsx-a11y': jsxA11y,
       '@typescript-eslint': tsPlugin,
       prettier: prettierPlugin,
     },
@@ -23,10 +25,14 @@ export default [
       },
       parser: tsParser,
       parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
         project: './tsconfig.json',
       },
     },
     rules: {
+      ...jsxA11y.flatConfigs.recommended.rules,
       ...prettier.rules,
       'prettier/prettier': 'error',
       ...tsPlugin.configs['recommended-type-checked'].rules,
