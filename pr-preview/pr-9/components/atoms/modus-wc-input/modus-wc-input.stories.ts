@@ -49,8 +49,7 @@ const Template: Story = {
 
     return `
         <div>
-            <stencil-docs component-name="modus-wc-input"></stencil-docs>
-            <h2>Demo</h2>
+            <h1>Input</h1>
             <modus-wc-input 
               aria-label="${args.ariaLabel}"
               placeholder="${args.placeholder}"
@@ -62,6 +61,7 @@ const Template: Story = {
               ${args.disabled ? 'disabled' : ''}
               ${args.required ? 'required' : ''}
             ></modus-wc-input>
+            <stencil-docs component-name="modus-wc-input"></stencil-docs>
         </div>
     `;
   },
