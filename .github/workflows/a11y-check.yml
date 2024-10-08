@@ -13,7 +13,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ vars.NODE_VERSION }}
 
       - name: Install dependencies
         run: npm ci
@@ -46,7 +46,7 @@ jobs:
               const axeConfig = {
                 runOnly: {
                   type: 'tag',
-                  values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice']
+                  values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22a', 'wcag22aa', 'best-practice']
                 },
                 rules: {
                   'document-title': { enabled: false },
