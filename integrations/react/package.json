@@ -2,18 +2,9 @@
   "name": "@trimble-cms/modus-wc-react",
   "version": "0.0.1",
   "description": "React wrappers for Modus Web Components",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist/"
-  ],
-  "scripts": {
-    "build": "npm run clean && npm run compile",
-    "clean": "rimraf dist",
-    "compile": "npm run tsc",
-    "tsc": "tsc -p ."
-  },
+  "keywords": [],
+  "license": "MIT",
+  "author": "Trimble Inc.",
   "dependencies": {
     "@stencil/react-output-target": "0.7.1",
     "@trimble-cms/modus-wc": "0.0.1"
@@ -29,5 +20,26 @@
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
-  }
+  },
+  "main": "components.js",
+  "module": "components.js",
+  "types": "components.d.ts",
+  "files": [
+    "components.js",
+    "components.d.ts"
+  ],
+  "exports": {
+    ".": {
+      "types": "./components.d.ts",
+      "import": "./components.js",
+      "require": "./components.js"
+    }
+  },
+  "scripts": {
+    "build": "npm run clean && npm run compile",
+    "clean": "rimraf dist",
+    "compile": "npm run tsc",
+    "tsc": "tsc -p ."
+  },
+  "sideEffects": false
 }

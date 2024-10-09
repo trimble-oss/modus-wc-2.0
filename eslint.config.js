@@ -44,6 +44,7 @@ export default [
       '**/*.config.ts',
       '.storybook/**',
       'dist/**',
+      'integrations/**',
       'loader/**',
       'node_modules/**',
       'storybook-static/**',
