@@ -1,0 +1,123 @@
+name: Publish @trimble-cms/modus-wc
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get previous version of package.json
+        run: git show HEAD~1:package.json > previous-package.json
+
+      - name: Compare package.json versions
+        run: |
+          previous_version=$(jq -r '.version' previous-package.json)
+          input_version="${{ github.event.inputs.version }}"
+          echo "Previous version: $previous_version"
+          echo "Input version: $input_version"
+          if [ "$previous_version" == "$input_version" ]; then
+            echo "The package.json version has not changed. No need to publish."
+            exit 1
+          fi
+        shell: bash
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web components
+        run: npm run stencil:build
+
+      - name: Copy package.json to dist
+        run: cp package.json dist/
+
+      - name: Update package.json version
+        run: jq --arg version "${{ github.event.inputs.version }}" '.version = $version' dist/package.json > dist/package.json.tmp && mv dist/package.json.tmp dist/package.json
+
+      - name: Upload dist directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download dist directory
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Configure npm registry
+        run: npm config set registry https://artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/
+
+      - name: Authenticate to Artifactory
+        run: echo "//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${ARTIFACTORY_TOKEN}" >> .npmrc
+        env:
+          ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create .npmrc in dist
+        run: |
+          echo "//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${ARTIFACTORY_TOKEN}" > dist/.npmrc
+        env:
+          ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish
+        run: |
+          cd dist
+          npm publish
+        continue-on-error: true
+
+  release:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download dist directory
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Zip dist directory
+        run: zip -r dist.zip dist/
+
+      - name: Create GitHub release
+        id: create_release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.event.inputs.version }}
+          name: ${{ github.event.workflow_run.head_commit.message }}
+
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist.zip
+          asset_name: dist.zip
+          asset_content_type: application/zip
