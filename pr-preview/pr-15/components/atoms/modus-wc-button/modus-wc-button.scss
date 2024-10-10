@@ -1,0 +1,184 @@
+@import '../../../styles/theme';
+@import '../../../styles/mixins';
+
+:host {
+  display: inline-block;
+}
+
+.modus-wc-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--modus-wc-font-family);
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--modus-wc-button-border-radius-xl, 20px);
+  transition: all var(--modus-wc-transition-duration)
+    var(--modus-wc-transition-timing-function);
+
+  @include modus-wc-fluid-type(
+    $modus-wc-breakpoint-sm,
+    $modus-wc-breakpoint-xl,
+    $modus-wc-fluid-font-size-min,
+    $modus-wc-fluid-font-size-max
+  );
+
+  &--filled {
+    &.modus-wc-button--primary {
+      background-color: var(--modus-wc-color-primary-800);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-color-primary-800);
+      color: var(--modus-wc-color-white);
+
+      &:hover {
+        background-color: var(--modus-wc-color-primary-500);
+      }
+    }
+
+    &.modus-wc-button--secondary {
+      background-color: var(--modus-wc-color-secondary-800);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-color-secondary-800);
+      color: var(--modus-wc-color-white);
+
+      &:hover {
+        background-color: var(--modus-wc-color-secondary-500);
+      }
+    }
+
+    &.modus-wc-button--tertiary {
+      background-color: var(--modus-wc-color-tertiary-800);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-color-tertiary-800);
+      color: var(--modus-wc-color-white);
+
+      &:hover {
+        background-color: var(--modus-wc-color-tertiary-500);
+      }
+    }
+  }
+
+  &--outlined {
+    background-color: transparent;
+
+    &.modus-wc-button--primary {
+      color: var(--modus-wc-color-primary-800);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-color-primary-800);
+
+      &:hover {
+        background-color: var(--modus-wc-color-primary-100);
+      }
+    }
+
+    &.modus-wc-button--secondary {
+      color: var(--modus-wc-color-secondary-800);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-color-secondary-800);
+
+      &:hover {
+        background-color: var(--modus-wc-color-secondary-100);
+      }
+    }
+
+    &.modus-wc-button--tertiary {
+      color: var(--modus-wc-color-tertiary-800);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-color-tertiary-800);
+
+      &:hover {
+        background-color: var(--modus-wc-color-tertiary-100);
+      }
+    }
+
+    &.modus-wc-button--dark-mode {
+      color: var(--modus-wc-color-white);
+      border: var(--modus-wc-button-border-width) solid
+        var(--modus-wc-color-white);
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  &--text {
+    background-color: transparent;
+    border: none;
+
+    &.modus-wc-button--primary {
+      color: var(--modus-wc-color-primary-800);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &.modus-wc-button--secondary {
+      color: var(--modus-wc-color-secondary-800);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &.modus-wc-button--tertiary {
+      color: var(--modus-wc-color-tertiary-800);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &.modus-wc-button--dark-mode {
+      color: var(---modus-wc-color-white);
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  &--small {
+    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+    line-height: var(--modus-wc-font-size-xs);
+    font-size: var(--modus-wc-font-size-sm);
+  }
+
+  &--medium {
+    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
+    line-height: var(--modus-wc-font-size-xs);
+    font-size: var(----modus-wc-font-size-md);
+  }
+
+  &--large {
+    padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+    line-height: var(--modus-wc-font-size-xs);
+    font-size: var(--modus-wc-font-size-lg);
+  }
+
+  &--full-width {
+    width: 100%;
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: inherit;
+    }
+  }
+
+  @include modus-wc-responsive(sm) {
+    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+  }
+
+  @include modus-wc-responsive(md) {
+    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
+  }
+
+  @include modus-wc-responsive(lg) {
+    padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+  }
+}
