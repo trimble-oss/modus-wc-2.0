@@ -23,7 +23,7 @@ export const config: Config = {
     reactOutputTarget({
       outDir: './integrations/react/src',
       excludeComponents: ['stencil-docs'],
-      customElementsDir: './dist/components',
+      customElementsDir: 'components',
       stencilPackageName: '@trimble-cms/modus-wc',
     }),
   ],

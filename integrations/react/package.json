@@ -6,8 +6,8 @@
   "license": "MIT",
   "author": "Trimble Inc.",
   "dependencies": {
-    "@stencil/react-output-target": "0.7.1",
-    "@trimble-cms/modus-wc": "0.0.1"
+    "@stencil/react-output-target": "^0.7.1",
+    "@trimble-cms/modus-wc": "0.0.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
@@ -33,6 +33,11 @@
       "types": "./components.d.ts",
       "import": "./components.js",
       "require": "./components.js"
+    },
+    "./components/*": {
+      "import": "./esm/components/*.js",
+      "require": "./cjs/components/*.js",
+      "types": "./types/components/*.d.ts"
     }
   },
   "scripts": {
