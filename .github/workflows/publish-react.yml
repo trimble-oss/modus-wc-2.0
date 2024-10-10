@@ -1,4 +1,4 @@
-name: Publish @trimble-cms/modus-wc-react
+name: Publish modus-wc-react
 
 on:
   workflow_dispatch:
