@@ -29,7 +29,7 @@ jobs:
         run: npm run build --prefix integrations/react
 
       - name: Copy package.json to dist
-        run: cp integrations/react/package.json dist/
+        run: cp integrations/react/package.json integrations/react/dist/
 
       - name: Update package.json version
         run: jq --arg version "${{ github.event.inputs.version }}" '.version = $version' integrations/react/dist/package.json > integrations/react/dist/package.json.tmp && mv integrations/react/dist/package.json.tmp integrations/react/dist/package.json
