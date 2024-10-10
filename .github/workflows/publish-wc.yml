@@ -1,4 +1,4 @@
-name: Publish modus-wc
+name: Publish Web Components
 
 on:
   workflow_dispatch:
@@ -14,23 +14,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
-      - name: Get previous version of package.json
-        run: git show HEAD~1:package.json > previous-package.json
-
-      - name: Compare package.json versions
-        run: |
-          previous_version=$(jq -r '.version' previous-package.json)
-          input_version="${{ github.event.inputs.version }}"
-          echo "Previous version: $previous_version"
-          echo "Input version: $input_version"
-          if [ "$previous_version" == "$input_version" ]; then
-            echo "The package.json version has not changed. No need to publish."
-            exit 1
-          fi
-        shell: bash
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -110,7 +93,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.event.inputs.version }}
-          name: ${{ github.event.workflow_run.head_commit.message }}
+          name: modus-wc-${{ github.event.inputs.version }}
 
       - name: Upload release asset
         uses: actions/upload-release-asset@v1
