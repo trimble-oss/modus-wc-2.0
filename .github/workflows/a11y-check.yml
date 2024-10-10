@@ -1,4 +1,4 @@
-name: Accessibility Check
+name: Check Accessibility
 
 on:
   pull_request:

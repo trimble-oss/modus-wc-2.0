@@ -1,4 +1,4 @@
-name: Publish @trimble-cms/modus-wc
+name: Publish modus-wc
 
 on:
   workflow_dispatch:
