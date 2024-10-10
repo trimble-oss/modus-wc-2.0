@@ -56,19 +56,6 @@ jobs:
         run: |
           echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/pr-preview/pr-${{ github.event.number }}/" >> $GITHUB_OUTPUT
 
-      - name: Comment PR
-        if: github.event_name == 'pull_request' && steps.preview-deploy.outcome == 'success'
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Storybook preview deployed successfully to: ${{ steps.preview-url.outputs.url }}'
-            })
-
       - name: Get deployment URL
         if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
         id: deployment-url

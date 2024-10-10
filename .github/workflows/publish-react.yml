@@ -1,13 +1,8 @@
-name: Publish to Artifactory
+name: Publish @trimble-cms/modus-wc-react
 
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'Branch to publish'
-        required: true
-        default: 'main'
-        type: string
       version:
         description: 'Version'
         required: true
@@ -23,7 +18,7 @@ jobs:
           fetch-depth: 2
 
       - name: Get previous version of package.json
-        run: git show HEAD~1:package.json > previous-package.json
+        run: git show HEAD~1:integrations/react/package.json > previous-package.json
 
       - name: Compare package.json versions
         run: |
@@ -34,7 +29,6 @@ jobs:
           if [ "$previous_version" == "$input_version" ]; then
             echo "The package.json version has not changed. No need to publish."
             exit 1
-          fi
         shell: bash
 
       - name: Setup Node.js
@@ -43,22 +37,22 @@ jobs:
           node-version: ${{ vars.NODE_VERSION }}
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --prefix integrations/react
 
-      - name: Build
-        run: npm run stencil:build
+      - name: Build React integrations
+        run: npm run build --prefix integrations/react
 
       - name: Copy package.json to dist
-        run: cp package.json dist/
+        run: cp integrations/react/package.json dist/
 
-      - name: Update version in dist/package.json
-        run: jq --arg version "${{ github.event.inputs.version }}" '.version = $version' dist/package.json > dist/package.json.tmp && mv dist/package.json.tmp dist/package.json
+      - name: Update package.json version
+        run: jq --arg version "${{ github.event.inputs.version }}" '.version = $version' integrations/react/dist/package.json > integrations/react/dist/package.json.tmp && mv integrations/react/dist/package.json.tmp integrations/react/dist/package.json
 
       - name: Upload dist directory
         uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: dist
+          path: integrations/react/dist
 
   publish:
     needs: build
@@ -71,7 +65,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist
-          path: dist
+          path: integrations/react/dist
 
       - name: Configure npm registry
         run: npm config set registry https://artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/
@@ -83,13 +77,13 @@ jobs:
 
       - name: Create .npmrc in dist
         run: |
-          echo "//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${ARTIFACTORY_TOKEN}" > dist/.npmrc
+          echo "//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${ARTIFACTORY_TOKEN}" > integrations/react/dist/.npmrc
         env:
           ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish
         run: |
-          cd dist
+          cd integrations/react/dist
           npm publish
         continue-on-error: true
 
@@ -104,13 +98,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist
-          path: dist
+          path: integrations/react/dist
 
       - name: Zip dist directory
-        run: zip -r dist.zip dist/
-
-      - name: Get package version
-        uses: nyaa8/package-version@v1
+        run: zip -r dist.zip integrations/react/dist/
 
       - name: Create GitHub release
         id: create_release

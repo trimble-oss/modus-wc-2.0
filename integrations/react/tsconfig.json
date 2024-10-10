@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    // Basic Options
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["dom", "es2015"],
+    "jsx": "react",
+    "declaration": true,
+    "outDir": "dist",
+    "declarationDir": "dist",
+
+    // Strict Type-Checking Options
+    "strict": true,
+
+    // Module Resolution Options
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@stencil/react-output-target": [
+        "./node_modules/@stencil/react-output-target"
+      ],
+      "@stencil/react-output-target/*": [
+        "./node_modules/@stencil/react-output-target/*"
+      ],
+      "@trimble-cms/modus-wc": ["./node_modules/@trimble-cms/modus-wc"],
+      "@trimble-cms/modus-wc/*": ["./node_modules/@trimble-cms/modus-wc/*"]
+    },
+    "typeRoots": ["node_modules/@types"],
+    "types": ["react", "react-dom"],
+
+    // Advanced Options
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+
+    // Additional Checks
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowUnreachableCode": false,
+
+    // JSX Options
+    "jsxFactory": "React.createElement",
+    "jsxFragmentFactory": "React.Fragment",
+
+    // Module Interop
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src"],
+  "exclude": ["dist", "node_modules"]
+}
