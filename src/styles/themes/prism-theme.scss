@@ -28,57 +28,58 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-border-color-high-contrast: var(--modus-wc-color-white);
 
   // Primary colors
-  --modus-wc-color-primary-900: #003054;
-  --modus-wc-color-primary-800: #0063a3;
-  --modus-wc-color-primary-500: #217cbb;
-  --modus-wc-color-primary-300: #368fc7;
-  --modus-wc-color-primary-200: #6cb7e2;
-  --modus-wc-color-primary-100: #dcedf9;
+  --modus-wc-color-primary-900: #082f5d;
+  --modus-wc-color-primary-800: #0053b3;
+  --modus-wc-color-primary-500: #4998f3;
+  --modus-wc-color-primary-300: #73b3ff;
+  --modus-wc-color-primary-200: #d3e7ff;
+  --modus-wc-color-primary-100: #ebf4ff;
 
   // Secondary colors
-  --modus-wc-color-secondary-900: #d88228;
-  --modus-wc-color-secondary-800: #fcb647;
-  --modus-wc-color-secondary-500: #fec157;
-  --modus-wc-color-secondary-300: #ffce74;
-  --modus-wc-color-secondary-200: #ffd88c;
-  --modus-wc-color-secondary-100: #fff5e4;
+  --modus-wc-color-secondary-900: #cc4b00;
+  --modus-wc-color-secondary-800: #ff640a;
+  --modus-wc-color-secondary-500: #ff7a2d;
+  --modus-wc-color-secondary-300: #ff995f;
+  --modus-wc-color-secondary-200: #ffd7c1;
+  --modus-wc-color-secondary-100: #ffece2;
 
   // Tertiary colors
-  --modus-wc-color-tertiary-900: #662a12;
-  --modus-wc-color-tertiary-800: #95301f;
-  --modus-wc-color-tertiary-500: #b44e2a;
-  --modus-wc-color-tertiary-300: #d57a3f;
-  --modus-wc-color-tertiary-200: #ecc2a2;
-  --modus-wc-color-tertiary-100: #f6e5d8;
+  --modus-wc-color-tertiary-900: #3f0aa9;
+  --modus-wc-color-tertiary-800: #672cdd;
+  --modus-wc-color-tertiary-500: #a580f5;
+  --modus-wc-color-tertiary-300: #dac8ff;
+  --modus-wc-color-tertiary-200: #f1eaff;
+  --modus-wc-color-tertiary-100: #f2eff7;
 
   // Neutral colors
   --modus-wc-color-black: #000000;
-  --modus-wc-grey-900: #171c1e;
-  --modus-wc-grey-800: #252a2e;
-  --modus-wc-grey-500: #464b52;
-  --modus-wc-grey-300: #7d808d;
-  --modus-wc-grey-200: #b7b9c3;
+  --modus-wc-grey-900: #0e1112;
+  --modus-wc-grey-800: #2f3336;
+  --modus-wc-grey-500: #4e555f;
+  --modus-wc-grey-300: #7b808c;
+  --modus-wc-grey-200: #b7bac5;
   --modus-wc-grey-100: #e0e1e9;
   --modus-wc-color-white: #ffffff;
 
   // Feedback colors
-  --modus-wc-color-feedback-error-900: #ab1f26;
-  --modus-wc-color-feedback-error-700: #da212c;
-  --modus-wc-color-feedback-error-500: #e86363;
-  --modus-wc-color-feedback-error-300: #fbd4d7;
+  --modus-wc-color-feedback-error-900: #a80101;
+  --modus-wc-color-feedback-error-700: #ca0000;
+  --modus-wc-color-feedback-error-500: #e86b63;
+  --modus-wc-color-feedback-error-300: #ffcfcc;
 
-  --modus-wc-color-feedback-warning-900: #e49325;
+  --modus-wc-color-feedback-warning-900: #e79302;
   --modus-wc-color-feedback-warning-700: #fbad26;
-  --modus-wc-color-feedback-warning-500: #fec157;
-  --modus-wc-color-feedback-warning-300: #fff5e4;
+  --modus-wc-color-feedback-warning-500: #ffd792;
+  --modus-wc-color-feedback-warning-300: #fff4e1;
 
-  --modus-wc-color-feedback-success-900: #006638;
-  --modus-wc-color-feedback-success-700: #1e8a44;
-  --modus-wc-color-feedback-success-500: #4ea646;
-  --modus-wc-color-feedback-success-300: #e0eccf;
+  --modus-wc-color-feedback-success-900: #21632c;
+  --modus-wc-color-feedback-success-700: #008516;
+  --modus-wc-color-feedback-success-500: #49cc5e;
+  --modus-wc-color-feedback-success-300: #cdf2d3;
 
   // Typography
-  --modus-wc-font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --modus-wc-font-family: 'Open Sans', 'Noto Sans', 'Segoe UI', 'San Francisco',
+    'Helvetica', 'Arial', 'Roboto', 'Tahoma', sans-serif;
 
   /* Base font size in pixels (for reference) */
   --modus-wc-font-size-root: 16px;
@@ -92,16 +93,6 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-font-size-2xl: 1.5rem; /* 24px */
   --modus-wc-font-size-3xl: 1.875rem; /* 30px */
   --modus-wc-font-size-4xl: 2.25rem; /* 36px */
-
-  --modus-wc-font-weight-thin: 100;
-  --modus-wc-font-weight-extralight: 200;
-  --modus-wc-font-weight-light: 300;
-  --modus-wc-font-weight-normal: 400;
-  --modus-wc-font-weight-medium: 500;
-  --modus-wc-font-weight-semibold: 600;
-  --modus-wc-font-weight-bold: 700;
-  --modus-wc-font-weight-extrabold: 800;
-  --modus-wc-font-weight-black: 900;
 
   --modus-wc-line-height-xs: 1; /* 16px */
   --modus-wc-line-height-sm: 1.25; /* 20px */
@@ -129,7 +120,7 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-border-width: 1px;
 
   // Button styles
-  --modus-wc-button-border-radius: 4px;
+  --modus-wc-button-border-radius: 20px;
   --modus-wc-button-border-width: 1px;
 
   // Transitions

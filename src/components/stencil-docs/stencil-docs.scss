@@ -10,10 +10,14 @@ $table-alt-background: #f6f8fa;
 
 .stencil-docs {
   font-family: $font-family;
+  font-weight: var(--modus-wc-font-weight-semibold);
   line-height: 1.6;
   color: $primary-color;
   background-color: $background-color;
+  border: solid 1px var(--modus-wc-border-color);
+  border-radius: var(--modus-wc-border-radius-md);
   padding: 0 var(--modus-wc-spacing-md);
+  margin-top: var(--modus-wc-spacing-md);
   max-width: 1200px;
 
   h1, h2, h3, h4, h5, h6 {
