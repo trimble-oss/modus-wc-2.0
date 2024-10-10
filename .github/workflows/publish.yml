@@ -3,11 +3,6 @@ name: Publish to Artifactory
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'Branch to publish'
-        required: true
-        default: 'main'
-        type: string
       version:
         description: 'Version'
         required: true
