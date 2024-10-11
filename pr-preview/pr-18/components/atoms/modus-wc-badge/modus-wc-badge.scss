@@ -11,60 +11,72 @@
   justify-content: center;
   font-family: var(--modus-wc-font-family);
   font-weight: var(--modus-wc-font-weight-semibold);
-  border-radius: var(--modus-wc-border-radius-md);
+  border-radius: var(--modus-wc-button-border-radius, 4px);
   transition: all var(--modus-wc-transition-duration) var(--modus-wc-transition-timing-function);
 
   // Color variations
   &--primary {
     background-color: var(--modus-wc-color-primary-500);
+    border: var(--modus-wc-badge-border-width) solid var(--modus-wc-color-primary-500);
     color: var(--modus-wc-color-white);
 
     &.modus-wc-badge--text {
+      border: none;
       color: var(--modus-wc-color-primary-500);
     }
   }
 
   &--secondary {
     background-color: var(--modus-wc-color-secondary-500);
+    border: var(--modus-wc-badge-border-width) solid var(--modus-wc-color-secondary-500);
     color: var(--modus-wc-color-black);
 
     &.modus-wc-badge--text {
+      border: none;
       color: var(--modus-wc-color-secondary-500);
     }
   }
 
   &--tertiary {
     background-color: var(--modus-wc-color-tertiary-500);
+    border: var(--modus-wc-badge-border-width) solid var(--modus-wc-color-tertiary-500);
     color: var(--modus-wc-color-white);
 
     &.modus-wc-badge--text {
+      border: none;
       color: var(--modus-wc-color-tertiary-500);
     }
   }
 
   &--success {
     background-color: var(--modus-wc-color-feedback-success-700);
+    border: var(--modus-wc-badge-border-width) solid var(--modus-wc-color-feedback-success-700);
     color: var(--modus-wc-color-white);
 
     &.modus-wc-badge--text {
+      border: none;
       color: var(--modus-wc-color-feedback-success-700);
     }
   }
 
   &--warning {
     background-color: var(--modus-wc-color-feedback-warning-700);
+    border: var(--modus-wc-badge-border-width) solid var(--modus-wc-color-feedback-warning-700);
     color: var(--modus-wc-color-black);
 
     &.modus-wc-badge--text {
+      border: none;
       color: var(--modus-wc-color-feedback-warning-700);
     }
   }
 
   &--danger {
     background-color: var(--modus-wc-color-feedback-error-700);
+    border: var(--modus-wc-badge-border-width) solid var(--modus-wc-color-feedback-error-700);
     color: var(--modus-wc-color-white);
 
     &.modus-wc-badge--text {
+      border: none;
       color: var(--modus-wc-color-feedback-error-700);
     }
   }
@@ -72,7 +84,7 @@
   // Size variations
   &--small {
     font-size: var(--modus-wc-font-size-xs);
-    padding: var(--modus-wc-spacing-xxs);
+    padding: 0 var(--modus-wc-spacing-xxs);
   }
 
   &--medium {
