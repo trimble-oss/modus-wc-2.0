@@ -10,9 +10,20 @@
 import type { EventName, StencilReactComponent } from '@stencil/react-output-target/runtime';
 import { createComponent } from '@stencil/react-output-target/runtime';
 import { type ModusWcButtonCustomEvent, type ModusWcInputCustomEvent } from "@trimble-cms/modus-wc";
+import { ModusWcBadge as ModusWcBadgeElement, defineCustomElement as defineModusWcBadge } from "@trimble-cms/modus-wc/components/modus-wc-badge.js";
 import { ModusWcButton as ModusWcButtonElement, defineCustomElement as defineModusWcButton } from "@trimble-cms/modus-wc/components/modus-wc-button.js";
 import { ModusWcInput as ModusWcInputElement, defineCustomElement as defineModusWcInput } from "@trimble-cms/modus-wc/components/modus-wc-input.js";
 import React from 'react';
+
+type ModusWcBadgeEvents = NonNullable<unknown>;
+
+export const ModusWcBadge: StencilReactComponent<ModusWcBadgeElement, ModusWcBadgeEvents> = /*@__PURE__*/ createComponent<ModusWcBadgeElement, ModusWcBadgeEvents>({
+    tagName: 'modus-wc-badge',
+    elementClass: ModusWcBadgeElement,
+    react: React,
+    events: {} as ModusWcBadgeEvents,
+    defineCustomElement: defineModusWcBadge
+});
 
 type ModusWcButtonEvents = { onClick: EventName<ModusWcButtonCustomEvent<MouseEvent | KeyboardEvent>> };
 
