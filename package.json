@@ -27,6 +27,10 @@
       "types": "./loader/index.d.ts"
     }
   },
+  "files": [
+    "dist/",
+    "loader/"
+  ],
   "scripts": {
     "code-style": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yml}\"",
     "code-style:fix": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yml}\"",
