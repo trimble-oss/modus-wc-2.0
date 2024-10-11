@@ -27,18 +27,6 @@
   "files": [
     "dist"
   ],
-  "exports": {
-    ".": {
-      "types": "./components.d.ts",
-      "import": "./components.js",
-      "require": "./components.js"
-    },
-    "./components/*": {
-      "import": "./esm/components/*.js",
-      "require": "./cjs/components/*.js",
-      "types": "./types/components/*.d.ts"
-    }
-  },
   "scripts": {
     "build": "npm run clean && npm run compile",
     "clean": "rimraf dist",

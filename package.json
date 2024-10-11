@@ -17,17 +17,6 @@
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/modus-wc/modus-wc.esm.js",
   "jsdelivr": "dist/modus-wc/modus-wc.js",
-  "exports": {
-    ".": {
-      "import": "./dist/modus-wc/modus-wc.esm.js",
-      "require": "./dist/cjs/modus-wc.cjs.js"
-    },
-    "./loader": {
-      "import": "./loader/index.js",
-      "require": "./loader/index.cjs",
-      "types": "./loader/index.d.ts"
-    }
-  },
   "files": [
     "dist/",
     "loader/"
