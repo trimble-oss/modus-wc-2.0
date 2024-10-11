@@ -18,9 +18,13 @@
   "jsdelivr": "modus-wc/modus-wc.js",
   "exports": {
     ".": {
-      "import": "./esm/index.js",
-      "require": "./cjs/index.cjs.js",
-      "types": "./types/components.d.ts"
+      "import": "./dist/modus-wc/modus-wc.esm.js",
+      "require": "./dist/cjs/modus-wc.cjs.js"
+    },
+    "./loader": {
+      "import": "./loader/index.js",
+      "require": "./loader/index.cjs",
+      "types": "./loader/index.d.ts"
     }
   },
   "scripts": {
