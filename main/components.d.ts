@@ -7,6 +7,41 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     /**
+     * A customizable badge component used to create badges with different sizes, types, and colors.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcBadge {
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The color variant of the badge.
+         */
+        "color": | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'success'
+    | 'warning'
+    | 'danger';
+        /**
+          * The content to display inside the badge. For 'counter' type, this should be a number.
+         */
+        "content": string;
+        /**
+          * Custom CSS class to apply to the badge.
+         */
+        "customClass": string;
+        /**
+          * The size of the badge.
+         */
+        "size": 'small' | 'medium' | 'large';
+        /**
+          * The type of the badge.
+         */
+        "type": 'filled' | 'text' | 'counter';
+    }
+    /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -114,6 +149,16 @@ export interface ModusWcInputCustomEvent<T> extends CustomEvent<T> {
     target: HTMLModusWcInputElement;
 }
 declare global {
+    /**
+     * A customizable badge component used to create badges with different sizes, types, and colors.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcBadgeElement extends Components.ModusWcBadge, HTMLStencilElement {
+    }
+    var HTMLModusWcBadgeElement: {
+        prototype: HTMLModusWcBadgeElement;
+        new (): HTMLModusWcBadgeElement;
+    };
     interface HTMLModusWcButtonElementEventMap {
         "click": MouseEvent | KeyboardEvent;
     }
@@ -169,12 +214,48 @@ declare global {
         new (): HTMLStencilDocsElement;
     };
     interface HTMLElementTagNameMap {
+        "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-input": HTMLModusWcInputElement;
         "stencil-docs": HTMLStencilDocsElement;
     }
 }
 declare namespace LocalJSX {
+    /**
+     * A customizable badge component used to create badges with different sizes, types, and colors.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcBadge {
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The color variant of the badge.
+         */
+        "color"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'success'
+    | 'warning'
+    | 'danger';
+        /**
+          * The content to display inside the badge. For 'counter' type, this should be a number.
+         */
+        "content": string;
+        /**
+          * Custom CSS class to apply to the badge.
+         */
+        "customClass"?: string;
+        /**
+          * The size of the badge.
+         */
+        "size"?: 'small' | 'medium' | 'large';
+        /**
+          * The type of the badge.
+         */
+        "type"?: 'filled' | 'text' | 'counter';
+    }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
      * Adheres to WCAG 2.2 standards.
@@ -290,6 +371,7 @@ declare namespace LocalJSX {
         "componentName": string;
     }
     interface IntrinsicElements {
+        "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
         "modus-wc-input": ModusWcInput;
         "stencil-docs": StencilDocs;
@@ -299,6 +381,11 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * A customizable badge component used to create badges with different sizes, types, and colors.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-badge": LocalJSX.ModusWcBadge & JSXBase.HTMLAttributes<HTMLModusWcBadgeElement>;
             /**
              * A customizable button component used to create buttons with different sizes, variants, and types.
              * Adheres to WCAG 2.2 standards.
