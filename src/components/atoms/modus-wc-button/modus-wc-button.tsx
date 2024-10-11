@@ -75,6 +75,12 @@ export class ModusWcButton {
    */
   @Event() click!: EventEmitter<MouseEvent | KeyboardEvent>;
 
+  componentWillLoad() {
+    if (!this.ariaLabel) {
+      console.warn('ModusWcButton: ariaLabel is required for accessibility.');
+    }
+  }
+
   private handleClick = (event: MouseEvent) => {
     if (!this.disabled) {
       this.click.emit(event);
