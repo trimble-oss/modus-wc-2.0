@@ -21,12 +21,11 @@
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
   },
-  "main": "components.js",
-  "module": "components.js",
-  "types": "components.d.ts",
+  "main": "dist/components.js",
+  "module": "dist/components.js",
+  "types": "dist/components.d.ts",
   "files": [
-    "components.js",
-    "components.d.ts"
+    "dist"
   ],
   "exports": {
     ".": {
