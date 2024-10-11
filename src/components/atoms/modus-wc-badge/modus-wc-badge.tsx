@@ -1,6 +1,8 @@
 import { Component, h, Host, Prop } from '@stencil/core';
 import { getCurrentModusWCMode } from '../../../utils/theme';
 
+const ALERT_COLORS = ['success', 'warning', 'danger'];
+
 /**
  * A customizable badge component used to create badges with different sizes, types, and colors.
  *
@@ -48,9 +50,15 @@ export class ModusWcBadge {
    */
   @Prop() type: 'filled' | 'text' | 'counter' = 'filled';
 
+  componentWillLoad() {
+    if (!this.ariaLabel) {
+      console.warn('ModusWcBadge: ariaLabel is required for accessibility.');
+    }
+  }
+
   render() {
     const currentMode = getCurrentModusWCMode();
-    const isCounter = this.type === 'counter';
+    const isAlert = ALERT_COLORS.includes(this.color);
 
     return (
       <Host>
@@ -65,11 +73,8 @@ export class ModusWcBadge {
             'modus-wc-badge--high-contrast-mode':
               currentMode === 'high-contrast',
           }}
-          aria-label={
-            this.ariaLabel ||
-            (isCounter ? `Count: ${this.content}` : this.content)
-          }
-          role={isCounter ? 'status' : 'badge'}
+          aria-label={this.ariaLabel}
+          role={isAlert ? 'alert' : 'status'}
         >
           {this.content}
         </span>

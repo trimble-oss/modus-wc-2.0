@@ -8,8 +8,6 @@
 - [ ] Documentation change
 - [ ] Other
 
-### :camera: Screenshots
-
 ### :clipboard: Test Plan
 
 [comment]: # 'How do you know the changes are safe to ship to production?'
@@ -17,9 +15,14 @@
 
 ### :white_check_mark: Self Code Review Checklist
 
+PR authors and reviewers, please verify that all of these items have been completed.
+
 - [ ] My code is clean and readable.
 - [ ] I followed standard conventions.
-- [ ] I have made corresponding changes to the documentation (if necessary).
+- [ ] Component code is WCAG 2.2 compliant (if applicable).
+- [ ] I have made corresponding changes to theme files (if applicable).
+- [ ] I have made corresponding changes to the documentation (if applicable).
+- [ ] I made Storybook changes including usage documentation (if applicable).
 
 ### :link: Azure DevOps Work Item
 

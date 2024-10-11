@@ -72,6 +72,12 @@ export class ModusWcInput {
    */
   @Event() focus!: EventEmitter<FocusEvent>;
 
+  componentWillLoad() {
+    if (!this.ariaLabel) {
+      console.warn('ModusWcInput: ariaLabel is required for accessibility.');
+    }
+  }
+
   private handleBlur = (event: FocusEvent) => {
     this.blur.emit(event);
   };

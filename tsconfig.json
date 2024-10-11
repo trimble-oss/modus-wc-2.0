@@ -16,8 +16,8 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "strict": true,
-    "types": ["marked"]
+    "types": ["jest", "marked"]
   },
   "include": ["src"],
-  "exclude": ["node_modules", "**/*.spec.ts", "**/*.config.ts"]
+  "exclude": ["node_modules", "**/*.config.ts"]
 }

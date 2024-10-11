@@ -37,4 +37,20 @@ export const config: Config = {
     enableImportInjection: true,
   },
   taskQueue: 'async',
+  testing: {
+    collectCoverageFrom: [
+      'src/components/**/modus-wc-*.tsx',
+      'src/utils/**/*.ts',
+    ],
+    coverageDirectory: 'coverage',
+    coverageReporters: ['lcov', 'text', 'html'],
+    coverageThreshold: {
+      global: {
+        branches: 100,
+        functions: 100,
+        lines: 100,
+        statements: 100,
+      },
+    },
+  },
 };
