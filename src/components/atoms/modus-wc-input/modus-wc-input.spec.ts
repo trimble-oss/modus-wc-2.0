@@ -128,6 +128,7 @@ describe('modus-wc-input', () => {
       expect(changeSpy).toHaveBeenCalledWith(
         expect.objectContaining({ detail: 'New Value' })
       );
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(page.rootInstance.value).toBe('New Value');
     }
   });
