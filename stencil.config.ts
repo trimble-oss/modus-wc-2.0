@@ -8,10 +8,10 @@ export const config: Config = {
     {
       type: 'dist',
       esmLoaderPath: '../loader',
-      copy: [{ src: 'components/README.md' }],
     },
     {
       type: 'dist-custom-elements',
+      generateTypeDeclarations: false,
     },
     {
       type: 'docs-readme',
@@ -23,7 +23,7 @@ export const config: Config = {
     reactOutputTarget({
       outDir: './integrations/react/src',
       excludeComponents: ['stencil-docs'],
-      customElementsDir: 'components',
+      customElementsDir: 'dist/components',
       stencilPackageName: '@trimble-cms/modus-wc',
     }),
   ],
