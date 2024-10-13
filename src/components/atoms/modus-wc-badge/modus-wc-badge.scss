@@ -9,15 +9,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--modus-wc-font-family);
+  font-family: var(--modus-wc-font-family, 'Open Sans', sans-serif);
   font-weight: var(--modus-wc-font-weight-semibold);
   border-radius: var(--modus-wc-badge-border-radius, 4px);
-  transition: all var(--modus-wc-transition-duration) var(--modus-wc-transition-timing-function);
+  transition: all var(--modus-wc-transition-duration)
+    var(--modus-wc-transition-timing-function);
 
   // Color variations
   &--primary {
     background-color: var(--modus-wc-color-primary-500);
-    border: var(--modus-wc-badge-border-width) solid var(--modus-wc-color-primary-500);
+    border: var(--modus-wc-badge-border-width) solid
+      var(--modus-wc-color-primary-500);
     color: var(--modus-wc-color-white);
 
     &.modus-wc-badge--text {
@@ -28,7 +30,8 @@
 
   &--secondary {
     background-color: var(--modus-wc-color-secondary-500);
-    border: var(--modus-wc-badge-border-width) solid var(--modus-wc-color-secondary-500);
+    border: var(--modus-wc-badge-border-width) solid
+      var(--modus-wc-color-secondary-500);
     color: var(--modus-wc-color-black);
 
     &.modus-wc-badge--text {
@@ -39,7 +42,8 @@
 
   &--tertiary {
     background-color: var(--modus-wc-color-tertiary-500);
-    border: var(--modus-wc-badge-border-width) solid var(--modus-wc-color-tertiary-500);
+    border: var(--modus-wc-badge-border-width) solid
+      var(--modus-wc-color-tertiary-500);
     color: var(--modus-wc-color-white);
 
     &.modus-wc-badge--text {
@@ -50,7 +54,8 @@
 
   &--success {
     background-color: var(--modus-wc-color-feedback-success-700);
-    border: var(--modus-wc-badge-border-width) solid var(--modus-wc-color-feedback-success-700);
+    border: var(--modus-wc-badge-border-width) solid
+      var(--modus-wc-color-feedback-success-700);
     color: var(--modus-wc-color-white);
 
     &.modus-wc-badge--text {
@@ -61,7 +66,8 @@
 
   &--warning {
     background-color: var(--modus-wc-color-feedback-warning-700);
-    border: var(--modus-wc-badge-border-width) solid var(--modus-wc-color-feedback-warning-700);
+    border: var(--modus-wc-badge-border-width) solid
+      var(--modus-wc-color-feedback-warning-700);
     color: var(--modus-wc-color-black);
 
     &.modus-wc-badge--text {
@@ -72,7 +78,8 @@
 
   &--danger {
     background-color: var(--modus-wc-color-feedback-error-700);
-    border: var(--modus-wc-badge-border-width) solid var(--modus-wc-color-feedback-error-700);
+    border: var(--modus-wc-badge-border-width) solid
+      var(--modus-wc-color-feedback-error-700);
     color: var(--modus-wc-color-white);
 
     &.modus-wc-badge--text {

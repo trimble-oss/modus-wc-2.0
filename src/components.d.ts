@@ -5,6 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+export { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
@@ -129,6 +131,29 @@ export namespace Components {
          */
         "value": string;
     }
+    interface ModusWcTypography {
+        /**
+          * The aria-label for the typography component.
+         */
+        "ariaLabel": string;
+        "bodySize"?: TypographyBodySize;
+        /**
+          * Custom CSS class for additional styling.
+         */
+        "customClass": string;
+        /**
+          * The text case.
+         */
+        "textCase": 'sentence' | 'title' | 'uppercase';
+        /**
+          * The variant of the typography component.
+         */
+        "variant": TypographyVariant;
+        /**
+          * The weight of the text.
+         */
+        "weight": 'regular' | 'semibold' | 'bold';
+    }
     /**
      * A component used to render auto-generated Stencil documentation in Storybook stories.
      * Searches for the component directory within `/atoms`, `/molecules`, and `organisms`. Renders the `readme.md` file.
@@ -203,6 +228,12 @@ declare global {
         prototype: HTMLModusWcInputElement;
         new (): HTMLModusWcInputElement;
     };
+    interface HTMLModusWcTypographyElement extends Components.ModusWcTypography, HTMLStencilElement {
+    }
+    var HTMLModusWcTypographyElement: {
+        prototype: HTMLModusWcTypographyElement;
+        new (): HTMLModusWcTypographyElement;
+    };
     /**
      * A component used to render auto-generated Stencil documentation in Storybook stories.
      * Searches for the component directory within `/atoms`, `/molecules`, and `organisms`. Renders the `readme.md` file.
@@ -217,6 +248,7 @@ declare global {
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-input": HTMLModusWcInputElement;
+        "modus-wc-typography": HTMLModusWcTypographyElement;
         "stencil-docs": HTMLStencilDocsElement;
     }
 }
@@ -360,6 +392,29 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface ModusWcTypography {
+        /**
+          * The aria-label for the typography component.
+         */
+        "ariaLabel": string;
+        "bodySize"?: TypographyBodySize;
+        /**
+          * Custom CSS class for additional styling.
+         */
+        "customClass"?: string;
+        /**
+          * The text case.
+         */
+        "textCase"?: 'sentence' | 'title' | 'uppercase';
+        /**
+          * The variant of the typography component.
+         */
+        "variant"?: TypographyVariant;
+        /**
+          * The weight of the text.
+         */
+        "weight"?: 'regular' | 'semibold' | 'bold';
+    }
     /**
      * A component used to render auto-generated Stencil documentation in Storybook stories.
      * Searches for the component directory within `/atoms`, `/molecules`, and `organisms`. Renders the `readme.md` file.
@@ -374,6 +429,7 @@ declare namespace LocalJSX {
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
         "modus-wc-input": ModusWcInput;
+        "modus-wc-typography": ModusWcTypography;
         "stencil-docs": StencilDocs;
     }
 }
@@ -396,6 +452,7 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-input": LocalJSX.ModusWcInput & JSXBase.HTMLAttributes<HTMLModusWcInputElement>;
+            "modus-wc-typography": LocalJSX.ModusWcTypography & JSXBase.HTMLAttributes<HTMLModusWcTypographyElement>;
             /**
              * A component used to render auto-generated Stencil documentation in Storybook stories.
              * Searches for the component directory within `/atoms`, `/molecules`, and `organisms`. Renders the `readme.md` file.

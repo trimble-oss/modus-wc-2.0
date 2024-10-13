@@ -9,7 +9,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--modus-wc-font-family);
+  font-family: var(--modus-wc-font-family, 'Open Sans', sans-serif);
   font-weight: 600;
   cursor: pointer;
   border-radius: var(--modus-wc-button-border-radius, 4px);
