@@ -4,6 +4,7 @@ import { sass } from '@stencil/sass';
 
 export const config: Config = {
   namespace: 'modus-wc',
+  sourceMap: false,
   outputTargets: [
     {
       type: 'dist',
