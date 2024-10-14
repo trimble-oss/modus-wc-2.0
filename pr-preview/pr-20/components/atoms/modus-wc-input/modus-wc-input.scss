@@ -1,0 +1,100 @@
+@import '../../../styles/theme';
+@import '../../../styles/mixins';
+
+:host {
+  display: inline-block;
+}
+
+.modus-wc-input-wrapper {
+  display: inline-flex;
+  font-family: var(--modus-wc-font-family);
+  transition: all var(--modus-wc-transition-duration)
+    var(--modus-wc-transition-timing-function);
+
+  @include modus-wc-fluid-type(
+    $modus-wc-breakpoint-sm,
+    $modus-wc-breakpoint-xl,
+    $modus-wc-fluid-font-size-min,
+    $modus-wc-fluid-font-size-max
+  );
+}
+
+.modus-wc-input {
+  width: 100%;
+  border: var(--modus-wc-border-width) solid var(--modus-wc-border-color);
+  border-radius: var(--modus-wc-border-radius-md);
+  background-color: var(--modus-wc-bg-color);
+  color: var(--modus-wc-text-color);
+  font-size: inherit;
+  transition: border-color var(--modus-wc-transition-duration)
+    var(--modus-wc-transition-timing-function);
+
+  &:focus {
+    outline: none;
+    border-color: var(--modus-wc-color-primary-500);
+    box-shadow: 0 0 0 2px var(--modus-wc-color-primary-100);
+  }
+
+  &::placeholder {
+    color: var(--modus-wc-color-neutral-300);
+  }
+}
+
+.modus-wc-input--small .modus-wc-input {
+  padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-xs);
+  font-size: var(--modus-wc-font-size-sm);
+}
+
+.modus-wc-input--medium .modus-wc-input {
+  padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-sm);
+  font-size: var(--modus-wc-font-size-md);
+}
+
+.modus-wc-input--large .modus-wc-input {
+  padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-md);
+  font-size: var(--modus-wc-font-size-lg);
+}
+
+.modus-wc-input--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+
+  .modus-wc-input {
+    pointer-events: none;
+  }
+}
+
+.modus-wc-input--dark-mode {
+  .modus-wc-input {
+    background-color: var(--modus-wc-bg-color-dark);
+    color: var(--modus-wc-text-color-dark);
+    border-color: var(--modus-wc-border-color-dark);
+
+    &::placeholder {
+      color: var(--modus-wc-color-neutral-400);
+    }
+
+    &:focus {
+      border-color: var(--modus-wc-color-primary-300);
+      box-shadow: 0 0 0 2px var(--modus-wc-color-primary-900);
+    }
+  }
+}
+
+@include modus-wc-responsive(sm) {
+  .modus-wc-input {
+    font-size: var(--modus-wc-font-size-sm);
+  }
+}
+
+@include modus-wc-responsive(md) {
+  .modus-wc-input {
+    font-size: var(--modus-wc-font-size-md);
+  }
+}
+
+@include modus-wc-responsive(lg) {
+  .modus-wc-input {
+    font-size: var(--modus-wc-font-size-lg);
+  }
+}
