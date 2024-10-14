@@ -9,7 +9,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--modus-wc-font-family, 'Open Sans', sans-serif);
+  font-family: var(--modus-wc-font-family);
   font-weight: var(--modus-wc-font-weight-semibold);
   border-radius: var(--modus-wc-badge-border-radius, 4px);
   transition: all var(--modus-wc-transition-duration)
@@ -91,12 +91,12 @@
   // Size variations
   &--small {
     font-size: var(--modus-wc-font-size-xs);
-    padding: 0 var(--modus-wc-spacing-xxs);
+    padding: 0 var(--modus-wc-spacing-2xs);
   }
 
   &--medium {
     font-size: var(--modus-wc-font-size-sm);
-    padding: var(--modus-wc-spacing-xxs) var(--modus-wc-spacing-sm);
+    padding: var(--modus-wc-spacing-2xs) var(--modus-wc-spacing-sm);
 
     &.modus-wc-badge--counter {
       padding: var(--modus-wc-spacing-xs);

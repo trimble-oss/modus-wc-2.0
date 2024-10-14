@@ -1,7 +1,7 @@
 import { h, Component, Host, Prop } from '@stencil/core';
 import { getCurrentModusWCMode } from '../../../utils/theme';
 
-export type TypographyBodySize = '1' | '2' | '3' | '4' | 'mini';
+export type TypographyBodySize = 'standard' | 'small' | 'mini';
 
 export type TypographyVariant =
   | 'body'
@@ -24,7 +24,10 @@ export class ModusWCTypography {
    */
   @Prop() ariaLabel!: string;
 
-  @Prop() bodySize?: TypographyBodySize;
+  /**
+   * The size option when variant "body" is selected.
+   */
+  @Prop() bodySize?: TypographyBodySize = 'standard';
 
   /**
    * Custom CSS class for additional styling.
@@ -64,7 +67,8 @@ export class ModusWCTypography {
           class={{
             'modus-wc-typography': true,
             [this.customClass]: !!this.customClass,
-            [`modus-wc-typography--body-${this.bodySize}`]: !!this.bodySize,
+            [`modus-wc-typography--body-${this.bodySize}`]:
+              this.variant === 'body',
             [`modus-wc-typography--${this.textCase}`]: true,
             [`modus-wc-typography--${this.variant}`]: true,
             [`modus-wc-typography--${this.weight}`]: true,

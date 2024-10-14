@@ -7,7 +7,7 @@
 
 .modus-wc-input-wrapper {
   display: inline-flex;
-  font-family: var(--modus-wc-font-family, 'Open Sans', sans-serif);
+  font-family: var(--modus-wc-font-family);
   transition: all var(--modus-wc-transition-duration)
     var(--modus-wc-transition-timing-function);
 

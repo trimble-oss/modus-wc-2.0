@@ -136,6 +136,9 @@ export namespace Components {
           * The aria-label for the typography component.
          */
         "ariaLabel": string;
+        /**
+          * The size option when variant "body" is selected.
+         */
         "bodySize"?: TypographyBodySize;
         /**
           * Custom CSS class for additional styling.
@@ -397,6 +400,9 @@ declare namespace LocalJSX {
           * The aria-label for the typography component.
          */
         "ariaLabel": string;
+        /**
+          * The size option when variant "body" is selected.
+         */
         "bodySize"?: TypographyBodySize;
         /**
           * Custom CSS class for additional styling.

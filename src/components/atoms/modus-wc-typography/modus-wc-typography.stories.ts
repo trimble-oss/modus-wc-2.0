@@ -19,7 +19,7 @@ const meta: Meta<TypographyArgs> = {
     ariaLabel: { control: 'text' },
     bodySize: {
       control: { type: 'select' },
-      options: ['1', '2', '3', '4', 'mini'],
+      options: ['standard', 'small', 'mini'],
     },
     customClass: { control: 'text' },
     variant: {
@@ -71,7 +71,7 @@ export const Default: Story = {
   ...Template,
   args: {
     ariaLabel: 'Example typography',
-    content: 'This is an example of the typography component',
+    content: 'The quick brown fox jumps over the lazy dog',
     customClass: '',
     mode: 'default',
     textCase: 'sentence',
