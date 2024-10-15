@@ -9,7 +9,7 @@ on:
         type: string
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -25,33 +25,15 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Update package.json version
+        run: jq --arg version "${{ github.event.inputs.version }}" '.version = $version' integrations/react/package.json > integrations/react/package.json.tmp && mv integrations/react/package.json.tmp integrations/react/package.json
+
+      # TODO: test if needed
+      - name: Update package lock version
+        run: npm i --prefix integrations/react
+
       - name: Build React integration
         run: npm run build --prefix integrations/react
-
-      - name: Copy package.json to dist
-        run: cp integrations/react/package.json integrations/react/dist/
-
-      - name: Update package.json version
-        run: jq --arg version "${{ github.event.inputs.version }}" '.version = $version' integrations/react/dist/package.json > integrations/react/dist/package.json.tmp && mv integrations/react/dist/package.json.tmp integrations/react/dist/package.json
-
-      - name: Upload dist directory
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: integrations/react/dist
-
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download dist directory
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: integrations/react/dist
 
       - name: Configure npm registry
         run: npm config set registry https://artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/
@@ -67,14 +49,27 @@ jobs:
         env:
           ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Pack the package
+        run: |
+          cd integrations/react
+          npm pack
+        id: npm_pack
+
+      # TODO: verify that the path is correctly finding the tarball
+      - name: Upload tarball as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-tarball
+          path: './integrations/react/*.tgz'
+
       - name: Publish
         run: |
-          cd integrations/react/dist
+          cd integrations/react
           npm publish
         continue-on-error: true
 
   release:
-    needs: publish
+    needs: build-and-publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -83,11 +78,8 @@ jobs:
       - name: Download dist directory
         uses: actions/download-artifact@v4
         with:
-          name: dist
-          path: integrations/react/dist
-
-      - name: Zip dist directory
-        run: zip -r dist.zip integrations/react/dist/
+          name: npm-tarball
+          path: ./integrations/react
 
       - name: Create GitHub release
         id: create_release
@@ -103,6 +95,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist.zip
-          asset_name: dist.zip
-          asset_content_type: application/zip
+          asset_path: ./*.tgz
+          asset_name: package.tgz
+          asset_content_type: application/gzip
