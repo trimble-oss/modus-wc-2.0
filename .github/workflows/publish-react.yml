@@ -28,10 +28,6 @@ jobs:
       - name: Update package.json version
         run: jq --arg version "${{ github.event.inputs.version }}" '.version = $version' integrations/react/package.json > integrations/react/package.json.tmp && mv integrations/react/package.json.tmp integrations/react/package.json
 
-      # TODO: test if needed
-      - name: Update package lock version
-        run: npm i --prefix integrations/react
-
       - name: Build React integration
         run: npm run build --prefix integrations/react
 
@@ -55,7 +51,6 @@ jobs:
           npm pack
         id: npm_pack
 
-      # TODO: verify that the path is correctly finding the tarball
       - name: Upload tarball as artifact
         uses: actions/upload-artifact@v4
         with:
