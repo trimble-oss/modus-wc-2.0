@@ -64,6 +64,10 @@ jobs:
           name: npm-tarball
           path: .
 
+      # List files in the current directory
+      - name: list files
+        run: ls -la
+
       - name: Create GitHub release
         id: create_release
         uses: ncipollo/release-action@v1.14.0
@@ -78,6 +82,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: npm-tarball/*.tgz
+          asset_path: ./npm-tarball/*.tgz
           asset_name: package.tgz
           asset_content_type: application/gzip
