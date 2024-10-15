@@ -41,12 +41,6 @@ jobs:
         env:
           ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Create .npmrc in dist
-        run: |
-          echo "//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${ARTIFACTORY_TOKEN}" > dist/.npmrc
-        env:
-          ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Pack the package
         run: npm pack
         id: npm_pack
