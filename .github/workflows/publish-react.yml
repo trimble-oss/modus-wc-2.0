@@ -64,11 +64,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download dist directory
+      - name: Download tarball artifact
         uses: actions/download-artifact@v4
         with:
           name: npm-tarball
           path: ./integrations/react
+
+      - name: Find the asset
+        id: find-asset
+        run: echo "::set-output name=asset_path::$(find . -name 'integrations/react/trimble-cms-modus-wc-react*.tgz')"
 
       - name: Create GitHub release
         id: create_release
@@ -84,6 +88,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./integrations/react/*.tgz
+          asset_path: ${{ steps.find-asset.outputs.asset_path }}
           asset_name: package-react.tgz
           asset_content_type: application/gzip
