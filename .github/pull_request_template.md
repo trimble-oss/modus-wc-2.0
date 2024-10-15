@@ -17,13 +17,13 @@
 
 PR authors and reviewers, please verify that all of these items have been completed.
 
-- [ ] My code is clean and readable.
-- [ ] I followed standard conventions.
-- [ ] Component code is WCAG 2.2 compliant (if applicable).
-- [ ] I have made corresponding changes to theme files (if applicable).
-- [ ] I have made corresponding changes to the documentation (if applicable).
-- [ ] I made Storybook changes including usage documentation (if applicable).
+- [ ] My code is clean and readable
+- [ ] I followed standard conventions
+- [ ] Component code is WCAG 2.2 compliant (if applicable)
+- [ ] I have made theme files changes (if applicable)
+- [ ] I have made documentation changes (if applicable)
+- [ ] I have made Storybook changes including usage documentation (if applicable)
 
 ### :link: Azure DevOps Work Item
 
-AB#<insert Azure Board ID # here>
+AB#<insert Azure Story ID # here>
