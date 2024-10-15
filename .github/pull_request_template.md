@@ -23,6 +23,7 @@ PR authors and reviewers, please verify that all of these items have been comple
 - [ ] I have made theme files changes (if applicable)
 - [ ] I have made documentation changes (if applicable)
 - [ ] I have made Storybook changes including usage documentation (if applicable)
+- [ ] I have tested the component thoroughly in Storybook including RTL rendering (if applicable)
 
 ### :link: Azure DevOps Work Item
 
