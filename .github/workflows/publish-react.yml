@@ -90,6 +90,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./*.tgz
+          asset_path: '*.tgz'
           asset_name: package.tgz
           asset_content_type: application/gzip
