@@ -39,12 +39,6 @@ jobs:
         env:
           ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Create .npmrc in dist
-        run: |
-          echo "//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${ARTIFACTORY_TOKEN}" > integrations/react/dist/.npmrc
-        env:
-          ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Pack the package
         run: |
           cd integrations/react
@@ -90,6 +84,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./npm-tarball/*.tgz
+          asset_path: ./integrations/react/trimble-cms-modus-wc-react-*.tgz
           asset_name: package.tgz
           asset_content_type: application/gzip
