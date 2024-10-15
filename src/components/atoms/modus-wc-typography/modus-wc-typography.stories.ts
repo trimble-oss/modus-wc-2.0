@@ -71,6 +71,7 @@ export const Default: Story = {
   ...Template,
   args: {
     ariaLabel: 'Example typography',
+    bodySize: 'standard',
     content: 'The quick brown fox jumps over the lazy dog',
     customClass: '',
     mode: 'default',
