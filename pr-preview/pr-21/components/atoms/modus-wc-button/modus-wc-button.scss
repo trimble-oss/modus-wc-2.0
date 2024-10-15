@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
   font-family: var(--modus-wc-font-family);
-  font-weight: 600;
+  font-weight: var(--modus-wc-font-weight-semibold);
   cursor: pointer;
   border-radius: var(--modus-wc-button-border-radius, 4px);
   transition: all var(--modus-wc-transition-duration)

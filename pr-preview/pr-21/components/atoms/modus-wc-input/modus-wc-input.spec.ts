@@ -134,12 +134,18 @@ describe('modus-wc-input', () => {
   });
 
   it('should use placeholder as aria-label if ariaLabel is not provided', async () => {
+    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+
     const page = await newSpecPage({
       components: [ModusWcInput],
       html: '<modus-wc-input placeholder="Enter text"></modus-wc-input>',
     });
+
     const input = page.root?.querySelector('input');
+
     expect(input?.getAttribute('aria-label')).toBe('Enter text');
+
+    consoleSpy.mockRestore();
   });
 
   it('should prioritize ariaLabel over placeholder for aria-label attribute', async () => {

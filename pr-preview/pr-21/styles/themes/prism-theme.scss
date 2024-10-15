@@ -4,7 +4,7 @@ $modus-wc-breakpoint-sm: 576px;
 $modus-wc-breakpoint-md: 768px;
 $modus-wc-breakpoint-lg: 992px;
 $modus-wc-breakpoint-xl: 1200px;
-$modus-wc-breakpoint-xxl: 1600px;
+$modus-wc-breakpoint-2xl: 1600px;
 
 $modus-wc-fluid-screen-min: 320px;
 $modus-wc-fluid-screen-max: 1600px;
@@ -99,7 +99,7 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-line-height-md: 1.5; /* 24px */
   --modus-wc-line-height-lg: 1.75; /* 28px */
   --modus-wc-line-height-xl: 2; /* 32px */
-  --modus-wc-line-height-xxl: 2.25; /* 36px */
+  --modus-wc-line-height-2xl: 2.25; /* 36px */
 
   // Spacing
   --modus-wc-spacing-xs: 0.25rem; /* X-Small: 4px */
@@ -107,7 +107,12 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-spacing-md: 1rem; /* Medium: 16px */
   --modus-wc-spacing-lg: 1.5rem; /* Large: 24px */
   --modus-wc-spacing-xl: 2rem; /* X-Large: 32px */
-  --modus-wc-spacing-xxl: 3rem; /* XX-Large: 48px */
+  --modus-wc-spacing-2xl: 3rem; /* XX-Large: 48px */
+
+  --modus-wc-letter-spacing-sm: 0.10px;
+  --modus-wc-letter-spacing-md: 0.15px;
+  --modus-wc-letter-spacing-lg: 0.25px;
+  --modus-wc-letter-spacing-xl: 0.5px;
 
   // Border
   --modus-wc-border-radius-xs: 2px;
@@ -115,7 +120,7 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-border-radius-md: 8px;
   --modus-wc-border-radius-lg: 16px;
   --modus-wc-border-radius-xl: 20px;
-  --modus-wc-border-radius-xxl: 24px;
+  --modus-wc-border-radius-2xl: 24px;
 
   --modus-wc-border-width: 1px;
 
@@ -137,7 +142,7 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-breakpoint-md: #{$modus-wc-breakpoint-md};
   --modus-wc-breakpoint-lg: #{$modus-wc-breakpoint-lg};
   --modus-wc-breakpoint-xl: #{$modus-wc-breakpoint-xl};
-  --modus-wc-breakpoint-xxl: #{$modus-wc-breakpoint-xxl};
+  --modus-wc-breakpoint-2xl: #{$modus-wc-breakpoint-2xl};
 
   // Fluid typography
   --modus-wc-fluid-screen-min: #{$modus-wc-fluid-screen-min};
