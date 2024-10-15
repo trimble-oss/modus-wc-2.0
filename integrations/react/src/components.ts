@@ -13,6 +13,7 @@ import { type ModusWcButtonCustomEvent, type ModusWcInputCustomEvent } from "@tr
 import { ModusWcBadge as ModusWcBadgeElement, defineCustomElement as defineModusWcBadge } from "@trimble-cms/modus-wc/components/modus-wc-badge.js";
 import { ModusWcButton as ModusWcButtonElement, defineCustomElement as defineModusWcButton } from "@trimble-cms/modus-wc/components/modus-wc-button.js";
 import { ModusWcInput as ModusWcInputElement, defineCustomElement as defineModusWcInput } from "@trimble-cms/modus-wc/components/modus-wc-input.js";
+import { ModusWcTypography as ModusWcTypographyElement, defineCustomElement as defineModusWcTypography } from "@trimble-cms/modus-wc/components/modus-wc-typography.js";
 import React from 'react';
 
 type ModusWcBadgeEvents = NonNullable<unknown>;
@@ -51,4 +52,14 @@ export const ModusWcInput: StencilReactComponent<ModusWcInputElement, ModusWcInp
         onFocus: 'focus'
     } as ModusWcInputEvents,
     defineCustomElement: defineModusWcInput
+});
+
+type ModusWcTypographyEvents = NonNullable<unknown>;
+
+export const ModusWcTypography: StencilReactComponent<ModusWcTypographyElement, ModusWcTypographyEvents> = /*@__PURE__*/ createComponent<ModusWcTypographyElement, ModusWcTypographyEvents>({
+    tagName: 'modus-wc-typography',
+    elementClass: ModusWcTypographyElement,
+    react: React,
+    events: {} as ModusWcTypographyEvents,
+    defineCustomElement: defineModusWcTypography
 });

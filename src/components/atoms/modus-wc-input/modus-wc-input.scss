@@ -9,13 +9,13 @@
   display: inline-flex;
   font-family: var(--modus-wc-font-family);
   transition: all var(--modus-wc-transition-duration)
-  var(--modus-wc-transition-timing-function);
+    var(--modus-wc-transition-timing-function);
 
   @include modus-wc-fluid-type(
-                  $modus-wc-breakpoint-sm,
-                  $modus-wc-breakpoint-xl,
-                  $modus-wc-fluid-font-size-min,
-                  $modus-wc-fluid-font-size-max
+    $modus-wc-breakpoint-sm,
+    $modus-wc-breakpoint-xl,
+    $modus-wc-fluid-font-size-min,
+    $modus-wc-fluid-font-size-max
   );
 }
 
@@ -27,7 +27,7 @@
   color: var(--modus-wc-text-color);
   font-size: inherit;
   transition: border-color var(--modus-wc-transition-duration)
-  var(--modus-wc-transition-timing-function);
+    var(--modus-wc-transition-timing-function);
 
   &:focus {
     outline: none;
