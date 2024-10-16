@@ -68,11 +68,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: npm-tarball
-          path: ./integrations/react
+          path: .
 
       - name: Find the asset
         id: find-asset
-        run: echo "::set-output name=asset_path::$(find . -name 'integrations/react/trimble-cms-modus-wc-react*.tgz')"
+        run: echo "::set-output name=asset_path::$(find . -name 'trimble-cms-modus-wc-react*.tgz')"
 
       - name: Create GitHub release
         id: create_release
