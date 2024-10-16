@@ -100,6 +100,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.find-asset.outputs.asset_path }}
+          asset_path: '**/${{ steps.find-asset.outputs.asset_path }}'
           asset_name: package-react.tgz
           asset_content_type: application/gzip
