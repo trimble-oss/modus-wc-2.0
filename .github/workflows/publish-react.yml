@@ -20,9 +20,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: list files 1
-        run: ls -la
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -42,9 +39,6 @@ jobs:
       - name: Pack the package
         run: npm pack
         id: npm_pack
-
-      - name: list files 2
-        run: ls -la
 
       - name: Upload tarball as artifact
         uses: actions/upload-artifact@v4
@@ -70,24 +64,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: list files 1
-        run: ls -la
-
       - name: Download tarball artifact
         uses: actions/download-artifact@v4
         with:
           name: npm-tarball
           path: .
 
-      - name: list files 2
-        run: ls -la
-
       - name: Find the asset
         id: find-asset
         run: |
           asset_path=$(find . -name 'trimble-cms-modus-wc-react*.tgz')
           full_asset_path="${{ github.workspace }}/integrations/react/${asset_path}"
-          echo "Asset found at: $full_asset_path"
           echo "::set-output name=asset_path::$full_asset_path"
 
       - name: Create GitHub release
