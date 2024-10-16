@@ -39,17 +39,12 @@ jobs:
       - name: Build React integration
         run: npm run build 
 
-      - name: Configure npm registry
-        run: npm config set registry https://artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/
-
-      - name: Authenticate to Artifactory
-        run: echo "//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${ARTIFACTORY_TOKEN}" >> .npmrc
-        env:
-          ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Pack the package
         run: npm pack
         id: npm_pack
+
+      - name: list files 2
+        run: ls -la
 
       - name: Upload tarball as artifact
         uses: actions/upload-artifact@v4
