@@ -9,6 +9,32 @@ import { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-
 export { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
+     * A customizable avatar component used to create avatars with different images.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcAvatar {
+        /**
+          * The image alt attribute for accessibility.
+         */
+        "alt": string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the avatar.
+         */
+        "customClass": string;
+        /**
+          * DaisyUI CSS class to apply to the avatar.
+         */
+        "daisyClass": string;
+        /**
+          * The location of the image.
+         */
+        "imgSrc": string;
+    }
+    /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
      * Adheres to WCAG 2.2 standards.
      */
@@ -131,6 +157,10 @@ export namespace Components {
          */
         "value": string;
     }
+    /**
+     * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+     * Adheres to WCAG 2.2 standards.
+     */
     interface ModusWcTypography {
         /**
           * The aria-label for the typography component.
@@ -177,6 +207,16 @@ export interface ModusWcInputCustomEvent<T> extends CustomEvent<T> {
     target: HTMLModusWcInputElement;
 }
 declare global {
+    /**
+     * A customizable avatar component used to create avatars with different images.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcAvatarElement extends Components.ModusWcAvatar, HTMLStencilElement {
+    }
+    var HTMLModusWcAvatarElement: {
+        prototype: HTMLModusWcAvatarElement;
+        new (): HTMLModusWcAvatarElement;
+    };
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
      * Adheres to WCAG 2.2 standards.
@@ -231,6 +271,10 @@ declare global {
         prototype: HTMLModusWcInputElement;
         new (): HTMLModusWcInputElement;
     };
+    /**
+     * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+     * Adheres to WCAG 2.2 standards.
+     */
     interface HTMLModusWcTypographyElement extends Components.ModusWcTypography, HTMLStencilElement {
     }
     var HTMLModusWcTypographyElement: {
@@ -248,6 +292,7 @@ declare global {
         new (): HTMLStencilDocsElement;
     };
     interface HTMLElementTagNameMap {
+        "modus-wc-avatar": HTMLModusWcAvatarElement;
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-input": HTMLModusWcInputElement;
@@ -256,6 +301,32 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    /**
+     * A customizable avatar component used to create avatars with different images.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcAvatar {
+        /**
+          * The image alt attribute for accessibility.
+         */
+        "alt": string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the avatar.
+         */
+        "customClass"?: string;
+        /**
+          * DaisyUI CSS class to apply to the avatar.
+         */
+        "daisyClass"?: string;
+        /**
+          * The location of the image.
+         */
+        "imgSrc"?: string;
+    }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
      * Adheres to WCAG 2.2 standards.
@@ -395,6 +466,10 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    /**
+     * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+     * Adheres to WCAG 2.2 standards.
+     */
     interface ModusWcTypography {
         /**
           * The aria-label for the typography component.
@@ -432,6 +507,7 @@ declare namespace LocalJSX {
         "componentName": string;
     }
     interface IntrinsicElements {
+        "modus-wc-avatar": ModusWcAvatar;
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
         "modus-wc-input": ModusWcInput;
@@ -443,6 +519,11 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * A customizable avatar component used to create avatars with different images.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-avatar": LocalJSX.ModusWcAvatar & JSXBase.HTMLAttributes<HTMLModusWcAvatarElement>;
             /**
              * A customizable badge component used to create badges with different sizes, types, and colors.
              * Adheres to WCAG 2.2 standards.
@@ -458,6 +539,10 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-input": LocalJSX.ModusWcInput & JSXBase.HTMLAttributes<HTMLModusWcInputElement>;
+            /**
+             * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+             * Adheres to WCAG 2.2 standards.
+             */
             "modus-wc-typography": LocalJSX.ModusWcTypography & JSXBase.HTMLAttributes<HTMLModusWcTypographyElement>;
             /**
              * A component used to render auto-generated Stencil documentation in Storybook stories.
