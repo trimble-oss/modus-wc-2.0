@@ -13,6 +13,7 @@ import { type ModusWcButtonCustomEvent, type ModusWcInputCustomEvent } from "@tr
 import { ModusWcAvatar as ModusWcAvatarElement, defineCustomElement as defineModusWcAvatar } from "@trimble-cms/modus-wc/dist/components/modus-wc-avatar.js";
 import { ModusWcBadge as ModusWcBadgeElement, defineCustomElement as defineModusWcBadge } from "@trimble-cms/modus-wc/dist/components/modus-wc-badge.js";
 import { ModusWcButton as ModusWcButtonElement, defineCustomElement as defineModusWcButton } from "@trimble-cms/modus-wc/dist/components/modus-wc-button.js";
+import { ModusWcDivider as ModusWcDividerElement, defineCustomElement as defineModusWcDivider } from "@trimble-cms/modus-wc/dist/components/modus-wc-divider.js";
 import { ModusWcInput as ModusWcInputElement, defineCustomElement as defineModusWcInput } from "@trimble-cms/modus-wc/dist/components/modus-wc-input.js";
 import { ModusWcTypography as ModusWcTypographyElement, defineCustomElement as defineModusWcTypography } from "@trimble-cms/modus-wc/dist/components/modus-wc-typography.js";
 import React from 'react';
@@ -45,6 +46,16 @@ export const ModusWcButton: StencilReactComponent<ModusWcButtonElement, ModusWcB
     react: React,
     events: { onClick: 'click' } as ModusWcButtonEvents,
     defineCustomElement: defineModusWcButton
+});
+
+type ModusWcDividerEvents = NonNullable<unknown>;
+
+export const ModusWcDivider: StencilReactComponent<ModusWcDividerElement, ModusWcDividerEvents> = /*@__PURE__*/ createComponent<ModusWcDividerElement, ModusWcDividerEvents>({
+    tagName: 'modus-wc-divider',
+    elementClass: ModusWcDividerElement,
+    react: React,
+    events: {} as ModusWcDividerEvents,
+    defineCustomElement: defineModusWcDivider
 });
 
 type ModusWcInputEvents = {

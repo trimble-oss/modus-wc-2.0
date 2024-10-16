@@ -22,11 +22,11 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
-          * Custom CSS class to apply to the avatar.
+          * Custom CSS class to apply to the outer div.
          */
         "customClass": string;
         /**
-          * DaisyUI CSS class to apply to the avatar.
+          * DaisyUI CSS class to apply to inner div.
          */
         "daisyClass": string;
         /**
@@ -57,7 +57,7 @@ export namespace Components {
          */
         "content": string;
         /**
-          * Custom CSS class to apply to the badge.
+          * Custom CSS class to apply to the span element.
          */
         "customClass": string;
         /**
@@ -83,7 +83,7 @@ export namespace Components {
          */
         "color": 'primary' | 'secondary' | 'tertiary';
         /**
-          * Custom CSS class to apply to the button.
+          * Custom CSS class to apply to the button element.
          */
         "customClass": string;
         /**
@@ -116,6 +116,28 @@ export namespace Components {
         "variant": 'filled' | 'outlined' | 'text';
     }
     /**
+     * A customizable divider component used to separate content horizontally or vertically.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcDivider {
+        /**
+          * The aria-label attribute used for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The content to display in the divider.
+         */
+        "content"?: string;
+        /**
+          * Custom CSS class to apply to the outer div.
+         */
+        "customClass": string;
+        /**
+          * DaisyUI CSS class to apply to the inner div.
+         */
+        "daisyClass": string;
+    }
+    /**
      * A customizable input component used to create inputs with different sizes and types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -125,7 +147,7 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
-          * Custom CSS class to apply to the input.
+          * Custom CSS class to apply to the outer div.
          */
         "customClass": string;
         /**
@@ -171,7 +193,7 @@ export namespace Components {
          */
         "bodySize"?: TypographyBodySize;
         /**
-          * Custom CSS class for additional styling.
+          * Custom CSS class to apply to the typography element.
          */
         "customClass": string;
         /**
@@ -248,6 +270,16 @@ declare global {
         prototype: HTMLModusWcButtonElement;
         new (): HTMLModusWcButtonElement;
     };
+    /**
+     * A customizable divider component used to separate content horizontally or vertically.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcDividerElement extends Components.ModusWcDivider, HTMLStencilElement {
+    }
+    var HTMLModusWcDividerElement: {
+        prototype: HTMLModusWcDividerElement;
+        new (): HTMLModusWcDividerElement;
+    };
     interface HTMLModusWcInputElementEventMap {
         "blur": FocusEvent;
         "change": string;
@@ -295,6 +327,7 @@ declare global {
         "modus-wc-avatar": HTMLModusWcAvatarElement;
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
+        "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-input": HTMLModusWcInputElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
         "stencil-docs": HTMLStencilDocsElement;
@@ -315,11 +348,11 @@ declare namespace LocalJSX {
          */
         "ariaLabel": string;
         /**
-          * Custom CSS class to apply to the avatar.
+          * Custom CSS class to apply to the outer div.
          */
         "customClass"?: string;
         /**
-          * DaisyUI CSS class to apply to the avatar.
+          * DaisyUI CSS class to apply to inner div.
          */
         "daisyClass"?: string;
         /**
@@ -350,7 +383,7 @@ declare namespace LocalJSX {
          */
         "content": string;
         /**
-          * Custom CSS class to apply to the badge.
+          * Custom CSS class to apply to the span element.
          */
         "customClass"?: string;
         /**
@@ -376,7 +409,7 @@ declare namespace LocalJSX {
          */
         "color"?: 'primary' | 'secondary' | 'tertiary';
         /**
-          * Custom CSS class to apply to the button.
+          * Custom CSS class to apply to the button element.
          */
         "customClass"?: string;
         /**
@@ -413,6 +446,28 @@ declare namespace LocalJSX {
         "variant"?: 'filled' | 'outlined' | 'text';
     }
     /**
+     * A customizable divider component used to separate content horizontally or vertically.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcDivider {
+        /**
+          * The aria-label attribute used for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The content to display in the divider.
+         */
+        "content"?: string;
+        /**
+          * Custom CSS class to apply to the outer div.
+         */
+        "customClass"?: string;
+        /**
+          * DaisyUI CSS class to apply to the inner div.
+         */
+        "daisyClass"?: string;
+    }
+    /**
      * A customizable input component used to create inputs with different sizes and types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -422,7 +477,7 @@ declare namespace LocalJSX {
          */
         "ariaLabel": string;
         /**
-          * Custom CSS class to apply to the input.
+          * Custom CSS class to apply to the outer div.
          */
         "customClass"?: string;
         /**
@@ -480,7 +535,7 @@ declare namespace LocalJSX {
          */
         "bodySize"?: TypographyBodySize;
         /**
-          * Custom CSS class for additional styling.
+          * Custom CSS class to apply to the typography element.
          */
         "customClass"?: string;
         /**
@@ -510,6 +565,7 @@ declare namespace LocalJSX {
         "modus-wc-avatar": ModusWcAvatar;
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
+        "modus-wc-divider": ModusWcDivider;
         "modus-wc-input": ModusWcInput;
         "modus-wc-typography": ModusWcTypography;
         "stencil-docs": StencilDocs;
@@ -534,6 +590,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
+            /**
+             * A customizable divider component used to separate content horizontally or vertically.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-divider": LocalJSX.ModusWcDivider & JSXBase.HTMLAttributes<HTMLModusWcDividerElement>;
             /**
              * A customizable input component used to create inputs with different sizes and types.
              * Adheres to WCAG 2.2 standards.

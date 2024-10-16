@@ -73,7 +73,7 @@ Adheres to WCAG 2.2 standards.
 | ------------------------ | -------------- | ------------------------------------------------------------------------------ | ---------------------------------------- | ----------- |
 | `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility.                                    | `string`                                 | `undefined` |
 | `color`                  | `color`        | The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'. | `"primary" \| "secondary" \| "tertiary"` | `'primary'` |
-| `customClass`            | `custom-class` | Custom CSS class to apply to the button.                                       | `string`                                 | `''`        |
+| `customClass`            | `custom-class` | Custom CSS class to apply to the button element.                               | `string`                                 | `''`        |
 | `disabled`               | `disabled`     | If true, the button will be disabled.                                          | `boolean`                                | `false`     |
 | `fullWidth`              | `full-width`   | If true, the button will take the full width of its container.                 | `boolean`                                | `false`     |
 | `label` _(required)_     | `label`        | The text label displayed on the button.                                        | `string`                                 | `undefined` |

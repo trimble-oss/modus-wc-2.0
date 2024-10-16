@@ -31,7 +31,7 @@ export class ModusWcButton {
   @Prop() color: 'primary' | 'secondary' | 'tertiary' = 'primary';
 
   /**
-   * Custom CSS class to apply to the button.
+   * Custom CSS class to apply to the button element.
    */
   @Prop() customClass: string = '';
 

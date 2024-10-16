@@ -18,7 +18,7 @@ export class ModusWcInput {
   @Prop() ariaLabel!: string;
 
   /**
-   * Custom CSS class to apply to the input.
+   * Custom CSS class to apply to the outer div.
    */
   @Prop() customClass: string = '';
 
