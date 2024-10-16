@@ -41,7 +41,7 @@ jobs:
 
       - name: Pack the package
         run: |
-          cd integrations/react
+          cd ./integrations/react
           npm pack
         id: npm_pack
 
@@ -55,7 +55,7 @@ jobs:
         run: |
           cd integrations/react
           npm publish
-        continue-on-error: true
+        continue-on-error: false
 
   release:
     needs: build-and-publish

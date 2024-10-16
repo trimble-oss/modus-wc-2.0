@@ -49,7 +49,7 @@ jobs:
 
       - name: Publish
         run: npm publish
-        continue-on-error: true
+        continue-on-error: false
 
   release:
     needs: build-and-publish
