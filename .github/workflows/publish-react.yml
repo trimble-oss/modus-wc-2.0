@@ -11,9 +11,17 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+
+    defaults: 
+      run:
+        working-directory: integrations/react
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: list files 1
+        run: ls -la
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,35 +48,42 @@ jobs:
           ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Pack the package
-        run: |
-          cd ./integrations/react
-          npm pack
+        run: npm pack
         id: npm_pack
 
       - name: Upload tarball as artifact
         uses: actions/upload-artifact@v4
         with:
           name: npm-tarball
-          path: './integrations/react/*.tgz'
+          path: '*.tgz'
 
       - name: Publish
-        run: |
-          cd integrations/react
-          npm publish
+        run: npm publish
         continue-on-error: false
 
   release:
     needs: build-and-publish
     runs-on: ubuntu-latest
+
+    defaults: 
+      run:
+        working-directory: integrations/react
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: list files 1
+        run: ls -la
 
       - name: Download tarball artifact
         uses: actions/download-artifact@v4
         with:
           name: npm-tarball
           path: .
+
+      - name: list files 1
+        run: ls -la
 
       - name: Find the asset
         id: find-asset
