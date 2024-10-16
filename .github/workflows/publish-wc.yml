@@ -58,18 +58,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: list files 1
-        run: ls -la
-
       - name: Download tarball artifact
         uses: actions/download-artifact@v4
         with:
           name: npm-tarball
           path: .
-
-      # List files in the current directory
-      - name: list files 2
-        run: ls -la
 
       - name: Find the asset
         id: find-asset
