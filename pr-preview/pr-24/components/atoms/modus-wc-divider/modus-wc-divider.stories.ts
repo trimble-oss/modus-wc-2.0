@@ -34,12 +34,16 @@ const Template: Story = {
     return `
       <div>
         <h1>Divider</h1>
+        <div>
+          <div>Content</div>
           <modus-wc-divider 
             aria-label="${args.ariaLabel}"
             custom-class="${args.customClass}"
             daisy-class="${args.daisyClass}"
             content="${args.content}"
           ></modus-wc-divider>
+          <div>Content</div>
+        </div>
         <stencil-docs component-name="modus-wc-divider"></stencil-docs>
       </div>
     `;

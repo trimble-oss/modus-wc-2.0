@@ -36,7 +36,7 @@ export class ModusWcBadge {
   @Prop() content!: string;
 
   /**
-   * Custom CSS class to apply to the badge.
+   * Custom CSS class to apply to the span element.
    */
   @Prop() customClass: string = '';
 
