@@ -50,10 +50,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: npm-tarball
-          path: '*.tgz'
+          path: '**/*.tgz'
 
       - name: Publish
         run: npm publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         continue-on-error: false
 
   release:
