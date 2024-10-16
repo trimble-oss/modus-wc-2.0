@@ -27,7 +27,7 @@ export class ModusWcDivider {
   @Prop() customClass: string = '';
 
   /**
-   * DaisyUI class to apply to the inner div.
+   * DaisyUI CSS class to apply to the inner div.
    */
   @Prop() daisyClass: string = '';
 

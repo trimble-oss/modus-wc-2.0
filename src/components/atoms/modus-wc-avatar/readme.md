@@ -94,7 +94,7 @@ Adheres to WCAG 2.2 standards.
 | `alt` _(required)_       | `alt`          | The image alt attribute for accessibility.  | `string` | `undefined` |
 | `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility. | `string` | `undefined` |
 | `customClass`            | `custom-class` | Custom CSS class to apply to the outer div. | `string` | `''`        |
-| `daisyClass`             | `daisy-class`  | DaisyUI class to apply to inner div.        | `string` | `''`        |
+| `daisyClass`             | `daisy-class`  | DaisyUI CSS class to apply to inner div.    | `string` | `''`        |
 | `imgSrc`                 | `img-src`      | The location of the image.                  | `string` | `''`        |
 
 

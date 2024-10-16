@@ -35,7 +35,7 @@ export class ModusWCTypography {
   @Prop() bodySize?: TypographyBodySize = 'standard';
 
   /**
-   * Custom CSS class for additional styling.
+   * Custom CSS class to apply to the typography element.
    */
   @Prop() customClass: string = '';
 

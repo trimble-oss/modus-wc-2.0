@@ -27,7 +27,7 @@ export class ModusWcAvatar {
   @Prop() customClass: string = '';
 
   /**
-   * DaisyUI class to apply to inner div.
+   * DaisyUI CSS class to apply to inner div.
    */
   @Prop() daisyClass: string = '';
 

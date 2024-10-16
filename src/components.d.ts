@@ -26,7 +26,7 @@ export namespace Components {
          */
         "customClass": string;
         /**
-          * DaisyUI class to apply to inner div.
+          * DaisyUI CSS class to apply to inner div.
          */
         "daisyClass": string;
         /**
@@ -57,7 +57,7 @@ export namespace Components {
          */
         "content": string;
         /**
-          * Custom CSS class to apply to the badge.
+          * Custom CSS class to apply to the span element.
          */
         "customClass": string;
         /**
@@ -83,7 +83,7 @@ export namespace Components {
          */
         "color": 'primary' | 'secondary' | 'tertiary';
         /**
-          * Custom CSS class to apply to the button.
+          * Custom CSS class to apply to the button element.
          */
         "customClass": string;
         /**
@@ -133,7 +133,7 @@ export namespace Components {
          */
         "customClass": string;
         /**
-          * DaisyUI class to apply to the inner div.
+          * DaisyUI CSS class to apply to the inner div.
          */
         "daisyClass": string;
     }
@@ -147,7 +147,7 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
-          * Custom CSS class to apply to the input.
+          * Custom CSS class to apply to the outer div.
          */
         "customClass": string;
         /**
@@ -193,7 +193,7 @@ export namespace Components {
          */
         "bodySize"?: TypographyBodySize;
         /**
-          * Custom CSS class for additional styling.
+          * Custom CSS class to apply to the typography element.
          */
         "customClass": string;
         /**
@@ -352,7 +352,7 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * DaisyUI class to apply to inner div.
+          * DaisyUI CSS class to apply to inner div.
          */
         "daisyClass"?: string;
         /**
@@ -383,7 +383,7 @@ declare namespace LocalJSX {
          */
         "content": string;
         /**
-          * Custom CSS class to apply to the badge.
+          * Custom CSS class to apply to the span element.
          */
         "customClass"?: string;
         /**
@@ -409,7 +409,7 @@ declare namespace LocalJSX {
          */
         "color"?: 'primary' | 'secondary' | 'tertiary';
         /**
-          * Custom CSS class to apply to the button.
+          * Custom CSS class to apply to the button element.
          */
         "customClass"?: string;
         /**
@@ -463,7 +463,7 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * DaisyUI class to apply to the inner div.
+          * DaisyUI CSS class to apply to the inner div.
          */
         "daisyClass"?: string;
     }
@@ -477,7 +477,7 @@ declare namespace LocalJSX {
          */
         "ariaLabel": string;
         /**
-          * Custom CSS class to apply to the input.
+          * Custom CSS class to apply to the outer div.
          */
         "customClass"?: string;
         /**
@@ -535,7 +535,7 @@ declare namespace LocalJSX {
          */
         "bodySize"?: TypographyBodySize;
         /**
-          * Custom CSS class for additional styling.
+          * Custom CSS class to apply to the typography element.
          */
         "customClass"?: string;
         /**

@@ -83,7 +83,7 @@ Adheres to WCAG 2.2 standards.
 | `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute used for accessibility. | `string`              | `undefined` |
 | `content`                | `content`      | The content to display in the divider.           | `string \| undefined` | `''`        |
 | `customClass`            | `custom-class` | Custom CSS class to apply to the outer div.      | `string`              | `''`        |
-| `daisyClass`             | `daisy-class`  | DaisyUI class to apply to the inner div.         | `string`              | `''`        |
+| `daisyClass`             | `daisy-class`  | DaisyUI CSS class to apply to the inner div.     | `string`              | `''`        |
 
 
 ----------------------------------------------
