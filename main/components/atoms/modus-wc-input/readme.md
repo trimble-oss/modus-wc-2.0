@@ -67,7 +67,7 @@ Adheres to WCAG 2.2 standards.
 | Property                 | Attribute      | Description                                                  | Type                                          | Default     |
 | ------------------------ | -------------- | ------------------------------------------------------------ | --------------------------------------------- | ----------- |
 | `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility.                  | `string`                                      | `undefined` |
-| `customClass`            | `custom-class` | Custom CSS class to apply to the input.                      | `string`                                      | `''`        |
+| `customClass`            | `custom-class` | Custom CSS class to apply to the outer div.                  | `string`                                      | `''`        |
 | `disabled`               | `disabled`     | If true, the input will be disabled.                         | `boolean`                                     | `false`     |
 | `name`                   | `name`         | The input's name attribute.                                  | `string`                                      | `''`        |
 | `placeholder`            | `placeholder`  | The input's placeholder text.                                | `string`                                      | `''`        |
