@@ -7,7 +7,7 @@
   "author": "Trimble Inc.",
   "dependencies": {
     "@stencil/react-output-target": "^0.7.1",
-    "@trimble-cms/modus-wc": "0.0.5"
+    "@trimble-cms/modus-wc": "0.0.6"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
