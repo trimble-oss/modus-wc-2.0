@@ -5,6 +5,12 @@
 <!-- Auto Generated Below -->
 
 
+## Overview
+
+A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+
+Adheres to WCAG 2.2 standards.
+
 ## Usage
 
 ### Component-usage

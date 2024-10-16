@@ -13,6 +13,11 @@ export type TypographyVariant =
   | 'h6'
   | 'p';
 
+/**
+ * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+ *
+ * Adheres to WCAG 2.2 standards.
+ */
 @Component({
   tag: 'modus-wc-typography',
   styleUrl: 'modus-wc-typography.scss',
