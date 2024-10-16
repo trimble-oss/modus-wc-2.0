@@ -9,8 +9,13 @@ on:
         type: string
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
+
+    defaults: 
+      run:
+        working-directory: integrations/react
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,73 +26,56 @@ jobs:
           node-version: ${{ vars.NODE_VERSION }}
 
       - name: Install dependencies
-        run: npm ci --prefix integrations/react
+        run: npm ci
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Build React integration
-        run: npm run build --prefix integrations/react
-
-      - name: Copy package.json to dist
-        run: cp integrations/react/package.json integrations/react/dist/
-
       - name: Update package.json version
-        run: jq --arg version "${{ github.event.inputs.version }}" '.version = $version' integrations/react/dist/package.json > integrations/react/dist/package.json.tmp && mv integrations/react/dist/package.json.tmp integrations/react/dist/package.json
+        run: jq --arg version "${{ github.event.inputs.version }}" '.version = $version' package.json > package.json.tmp && mv package.json.tmp package.json
 
-      - name: Upload dist directory
+      - name: Build React integration
+        run: npm run build 
+
+      - name: Pack the package
+        run: npm pack
+        id: npm_pack
+
+      - name: Upload tarball as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: dist
-          path: integrations/react/dist
-
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download dist directory
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: integrations/react/dist
-
-      - name: Configure npm registry
-        run: npm config set registry https://artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/
-
-      - name: Authenticate to Artifactory
-        run: echo "//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${ARTIFACTORY_TOKEN}" >> .npmrc
-        env:
-          ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Create .npmrc in dist
-        run: |
-          echo "//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${ARTIFACTORY_TOKEN}" > integrations/react/dist/.npmrc
-        env:
-          ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
+          name: npm-tarball
+          path: '**/*.tgz'
 
       - name: Publish
-        run: |
-          cd integrations/react/dist
-          npm publish
-        continue-on-error: true
+        run: npm publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        continue-on-error: false
 
   release:
-    needs: publish
+    needs: build-and-publish
     runs-on: ubuntu-latest
+
+    defaults: 
+      run:
+        working-directory: integrations/react
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download dist directory
+      - name: Download tarball artifact
         uses: actions/download-artifact@v4
         with:
-          name: dist
-          path: integrations/react/dist
+          name: npm-tarball
+          path: .
 
-      - name: Zip dist directory
-        run: zip -r dist.zip integrations/react/dist/
+      - name: Find the asset
+        id: find-asset
+        run: |
+          asset_path=$(find . -name 'trimble-cms-modus-wc-react*.tgz')
+          full_asset_path="${{ github.workspace }}/integrations/react/${asset_path}"
+          echo "::set-output name=asset_path::$full_asset_path"
 
       - name: Create GitHub release
         id: create_release
@@ -103,6 +91,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist.zip
-          asset_name: dist.zip
-          asset_content_type: application/zip
+          asset_path: ${{ steps.find-asset.outputs.asset_path }}
+          asset_name: package-react.tgz
+          asset_content_type: application/gzip

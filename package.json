@@ -7,22 +7,20 @@
   "author": "Trimble Inc.",
   "type": "module",
   "main": "dist/index.cjs.js",
-  "module": "esm/index.js",
-  "es2015": "esm/index.js",
-  "es2017": "esm/index.js",
-  "esnext": "esm/index.js",
-  "jsnext:main": "esm/index.js",
-  "types": "types/components.d.ts",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.js",
+  "es2017": "dist/esm/index.js",
+  "esnext": "dist/esm/index.js",
+  "jsnext:main": "dist/esm/index.js",
+  "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
-  "unpkg": "modus-wc/modus-wc.js",
-  "jsdelivr": "modus-wc/modus-wc.js",
-  "exports": {
-    ".": {
-      "import": "./esm/index.js",
-      "require": "./cjs/index.cjs.js",
-      "types": "./types/components.d.ts"
-    }
-  },
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/modus-wc/modus-wc.esm.js",
+  "jsdelivr": "dist/modus-wc/modus-wc.js",
+  "files": [
+    "dist/",
+    "loader/"
+  ],
   "scripts": {
     "code-style": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yml}\"",
     "code-style:fix": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yml}\"",

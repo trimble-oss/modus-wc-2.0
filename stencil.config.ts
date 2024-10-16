@@ -4,11 +4,11 @@ import { sass } from '@stencil/sass';
 
 export const config: Config = {
   namespace: 'modus-wc',
+  sourceMap: false,
   outputTargets: [
     {
       type: 'dist',
       esmLoaderPath: '../loader',
-      copy: [{ src: 'components/README.md' }],
     },
     {
       type: 'dist-custom-elements',
@@ -23,7 +23,7 @@ export const config: Config = {
     reactOutputTarget({
       outDir: './integrations/react/src',
       excludeComponents: ['stencil-docs'],
-      customElementsDir: 'components',
+      customElementsDir: 'dist/components',
       stencilPackageName: '@trimble-cms/modus-wc',
     }),
   ],

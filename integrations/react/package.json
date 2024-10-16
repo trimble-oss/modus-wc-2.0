@@ -7,7 +7,7 @@
   "author": "Trimble Inc.",
   "dependencies": {
     "@stencil/react-output-target": "^0.7.1",
-    "@trimble-cms/modus-wc": "0.0.2"
+    "@trimble-cms/modus-wc": "0.0.6"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
@@ -21,25 +21,12 @@
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
   },
-  "main": "components.js",
-  "module": "components.js",
-  "types": "components.d.ts",
+  "main": "dist/components.js",
+  "module": "dist/components.js",
+  "types": "dist/components.d.ts",
   "files": [
-    "components.js",
-    "components.d.ts"
+    "dist"
   ],
-  "exports": {
-    ".": {
-      "types": "./components.d.ts",
-      "import": "./components.js",
-      "require": "./components.js"
-    },
-    "./components/*": {
-      "import": "./esm/components/*.js",
-      "require": "./cjs/components/*.js",
-      "types": "./types/components/*.d.ts"
-    }
-  },
   "scripts": {
     "build": "npm run clean && npm run compile",
     "clean": "rimraf dist",

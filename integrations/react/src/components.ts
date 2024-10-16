@@ -10,10 +10,10 @@
 import type { EventName, StencilReactComponent } from '@stencil/react-output-target/runtime';
 import { createComponent } from '@stencil/react-output-target/runtime';
 import { type ModusWcButtonCustomEvent, type ModusWcInputCustomEvent } from "@trimble-cms/modus-wc";
-import { ModusWcBadge as ModusWcBadgeElement, defineCustomElement as defineModusWcBadge } from "@trimble-cms/modus-wc/components/modus-wc-badge.js";
-import { ModusWcButton as ModusWcButtonElement, defineCustomElement as defineModusWcButton } from "@trimble-cms/modus-wc/components/modus-wc-button.js";
-import { ModusWcInput as ModusWcInputElement, defineCustomElement as defineModusWcInput } from "@trimble-cms/modus-wc/components/modus-wc-input.js";
-import { ModusWcTypography as ModusWcTypographyElement, defineCustomElement as defineModusWcTypography } from "@trimble-cms/modus-wc/components/modus-wc-typography.js";
+import { ModusWcBadge as ModusWcBadgeElement, defineCustomElement as defineModusWcBadge } from "@trimble-cms/modus-wc/dist/components/modus-wc-badge.js";
+import { ModusWcButton as ModusWcButtonElement, defineCustomElement as defineModusWcButton } from "@trimble-cms/modus-wc/dist/components/modus-wc-button.js";
+import { ModusWcInput as ModusWcInputElement, defineCustomElement as defineModusWcInput } from "@trimble-cms/modus-wc/dist/components/modus-wc-input.js";
+import { ModusWcTypography as ModusWcTypographyElement, defineCustomElement as defineModusWcTypography } from "@trimble-cms/modus-wc/dist/components/modus-wc-typography.js";
 import React from 'react';
 
 type ModusWcBadgeEvents = NonNullable<unknown>;
