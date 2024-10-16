@@ -57,7 +57,7 @@ export const Default: Story = {
     customClass: '',
     daisyClass: '',
     imgSrc:
-      'https://static.wikia.nocookie.net/sonic-battle/images/4/42/Sonic_Battle_-_Sonic.png/revision/latest?cb=20210602073129',
+      'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',
     mode: 'default',
   },
 };
