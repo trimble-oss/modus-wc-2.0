@@ -10,11 +10,22 @@
 import type { EventName, StencilReactComponent } from '@stencil/react-output-target/runtime';
 import { createComponent } from '@stencil/react-output-target/runtime';
 import { type ModusWcButtonCustomEvent, type ModusWcInputCustomEvent } from "@trimble-cms/modus-wc";
+import { ModusWcAvatar as ModusWcAvatarElement, defineCustomElement as defineModusWcAvatar } from "@trimble-cms/modus-wc/dist/components/modus-wc-avatar.js";
 import { ModusWcBadge as ModusWcBadgeElement, defineCustomElement as defineModusWcBadge } from "@trimble-cms/modus-wc/dist/components/modus-wc-badge.js";
 import { ModusWcButton as ModusWcButtonElement, defineCustomElement as defineModusWcButton } from "@trimble-cms/modus-wc/dist/components/modus-wc-button.js";
 import { ModusWcInput as ModusWcInputElement, defineCustomElement as defineModusWcInput } from "@trimble-cms/modus-wc/dist/components/modus-wc-input.js";
 import { ModusWcTypography as ModusWcTypographyElement, defineCustomElement as defineModusWcTypography } from "@trimble-cms/modus-wc/dist/components/modus-wc-typography.js";
 import React from 'react';
+
+type ModusWcAvatarEvents = NonNullable<unknown>;
+
+export const ModusWcAvatar: StencilReactComponent<ModusWcAvatarElement, ModusWcAvatarEvents> = /*@__PURE__*/ createComponent<ModusWcAvatarElement, ModusWcAvatarEvents>({
+    tagName: 'modus-wc-avatar',
+    elementClass: ModusWcAvatarElement,
+    react: React,
+    events: {} as ModusWcAvatarEvents,
+    defineCustomElement: defineModusWcAvatar
+});
 
 type ModusWcBadgeEvents = NonNullable<unknown>;
 
