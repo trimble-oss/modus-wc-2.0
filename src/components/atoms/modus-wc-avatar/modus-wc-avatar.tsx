@@ -22,12 +22,12 @@ export class ModusWcAvatar {
   @Prop() ariaLabel!: string;
 
   /**
-   * Custom CSS class to apply to the avatar.
+   * Custom CSS class to apply to the outer div.
    */
   @Prop() customClass: string = '';
 
   /**
-   * DaisyUI CSS class to apply to the avatar.
+   * DaisyUI class to apply to inner div.
    */
   @Prop() daisyClass: string = '';
 
