@@ -1,11 +1,8 @@
 # This publishes various packages in this repository.
-# It will update the package.json version, build the packages, publish them to the Artifactory NPM registry, as well as create a GitHub release.
-# The packages consist of:
-# - The Web Components package
-# - The React package
-# This is triggered by a manual run with a specified version number.
+# It will update the package.json version, build the react package, publish it to the Artifactory NPM registry, as well as create a GitHub release.
+# This is triggered by running the main 'Publish & Release' workflow.
 
-name: Publish & Release
+name: Publish & Release - React
 
 on:
   workflow_dispatch:
@@ -13,11 +10,16 @@ on:
       version:
         description: 'Version to release'
         required: true
-        type: string
 
 jobs:
-  build-and-publish-wc:
+  build-and-publish-react:
     runs-on: ubuntu-latest
+    needs: build-and-publish-wc
+
+    defaults:
+      run:
+        working-directory: integrations/react
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,6 +31,14 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Update Modus WebComponent version
+        run: |
+          jq --arg version "${{ github.event.inputs.version }}" \
+          '.dependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
+          mv package.json.tmp package.json
 
       - name: Update package.json version
         run: |
@@ -36,16 +46,8 @@ jobs:
           '.version = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
 
-      - name: Build web components
-        run: npm run stencil:build
-
-      - name: Configure npm registry
-        run: npm config set registry https://artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/
-
-      - name: Authenticate to Artifactory
-        run: echo "//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${ARTIFACTORY_TOKEN}" >> .npmrc
-        env:
-          ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Build React integration
+        run: npm run build
 
       - name: Pack the package
         run: npm pack
@@ -55,25 +57,22 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: npm-tarball
-          path: '*.tgz'
+          path: '**/*.tgz'
 
       - name: Publish
         run: npm publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         continue-on-error: false
 
-  trigger-react-jobs:
-    needs: build-and-publish-wc
+  release-react:
+    needs: build-and-publish-react
     runs-on: ubuntu-latest
-    steps:
-      - name: Trigger React Jobs
-        uses: benc-uk/workflow-dispatch@v1.2
-        with:
-          workflow: publish-react.yml
-          inputs: '{"version": "${{ github.event.inputs.version }}"}'
 
-  release-wc:
-    needs: build-and-publish-wc
-    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: integrations/react
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -86,15 +85,18 @@ jobs:
 
       - name: Find the asset
         id: find-asset
-        run: echo "asset_path=$(find . -name 'trimble-cms-modus-wc-*.tgz')" >> $GITHUB_OUTPUT
+        run: |
+          asset_path=$(find . -name 'trimble-cms-modus-wc-react*.tgz')
+          full_asset_path="${{ github.workspace }}/integrations/react/${asset_path}"
+          echo "asset_path=$full_asset_path" >> $GITHUB_OUTPUT
 
       - name: Create GitHub release
         id: create_release
         uses: ncipollo/release-action@v1.14.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: modus-wc-${{ github.event.inputs.version }}
-          name: Modus Web Components ${{ github.event.inputs.version }}
+          tag: modus-wc-react-${{ github.event.inputs.version }}
+          name: Modus Web Components React ${{ github.event.inputs.version }}
 
       - name: Upload release asset
         uses: actions/upload-release-asset@v1
@@ -103,5 +105,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ steps.find-asset.outputs.asset_path }}
-          asset_name: package.tgz
+          asset_name: package-react.tgz
           asset_content_type: application/gzip
