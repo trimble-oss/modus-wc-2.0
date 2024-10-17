@@ -61,11 +61,11 @@ jobs:
         run: npm publish
         continue-on-error: false
 
-  trigger-react-jobs:
+  trigger-react-publish:
     needs: build-and-publish-wc
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger React Jobs
+      - name: Trigger React Publish Workflow
         uses: benc-uk/workflow-dispatch@v1.2
         with:
           workflow: publish-react.yml

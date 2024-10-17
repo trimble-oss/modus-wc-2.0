@@ -10,6 +10,7 @@ on:
       version:
         description: 'Version to release'
         required: true
+        type: string
 
 jobs:
   build-and-publish-react:
@@ -34,7 +35,7 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Update Modus WebComponent version
+      - name: Update to use new WebComponent version
         run: |
           jq --arg version "${{ github.event.inputs.version }}" \
           '.dependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
