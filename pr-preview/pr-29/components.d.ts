@@ -5,7 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { Event } from "@stencil/core";
 import { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+export { Event } from "@stencil/core";
 export { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
@@ -138,24 +140,44 @@ export namespace Components {
         "daisyClass": string;
     }
     /**
-     * A customizable input component used to create inputs with different sizes and types.
+     * A customizable input component used to create inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcInput {
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * Indicates whether the input has an invalid input.
+         */
+        "ariaInvalid"?: boolean;
         /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
         /**
-          * Custom CSS class to apply to the outer div.
+          * Custom CSS class to apply to the input (supports DaisyUI).
          */
         "customClass": string;
         /**
-          * If true, the input will be disabled.
+          * Specifies the text direction of the input content.
+         */
+        "dir"?: 'ltr' | 'rtl' | 'auto';
+        /**
+          * The disabled state of the input.
          */
         "disabled": boolean;
         /**
-          * The input's name attribute.
+          * The ID of the input element.
+         */
+        "id"?: string;
+        /**
+          * The maximum number of characters allowed in the input.
+         */
+        "maxLength"?: number;
+        /**
+          * The name of the input.
          */
         "name": string;
         /**
@@ -163,13 +185,17 @@ export namespace Components {
          */
         "placeholder": string;
         /**
+          * The readonly state of the input.
+         */
+        "readonly": boolean;
+        /**
           * If true, the input will be required.
          */
         "required": boolean;
         /**
-          * The size of the input. Can be 'small', 'medium', or 'large'.
+          * The tabindex of the input.
          */
-        "size": 'small' | 'medium' | 'large';
+        "tabIndex"?: number;
         /**
           * The input's type attribute.
          */
@@ -197,13 +223,9 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
-          * Custom CSS class to apply to the textarea element.
+          * Custom CSS class to apply to the textarea (supports DaisyUI).
          */
         "customClass": string;
-        /**
-          * DaisyUI CSS class to apply to the textarea element.
-         */
-        "daisyClass": string;
         /**
           * Specifies the text direction of the textarea content.
          */
@@ -356,11 +378,11 @@ declare global {
     };
     interface HTMLModusWcInputElementEventMap {
         "blur": FocusEvent;
-        "change": string;
+        "change": Event;
         "focus": FocusEvent;
     }
     /**
-     * A customizable input component used to create inputs with different sizes and types.
+     * A customizable input component used to create inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcInputElement extends Components.ModusWcInput, HTMLStencilElement {
@@ -379,7 +401,7 @@ declare global {
     };
     interface HTMLModusWcTextareaElementEventMap {
         "blur": FocusEvent;
-        "change": string;
+        "change": Event;
         "focus": FocusEvent;
     }
     /**
@@ -566,24 +588,44 @@ declare namespace LocalJSX {
         "daisyClass"?: string;
     }
     /**
-     * A customizable input component used to create inputs with different sizes and types.
+     * A customizable input component used to create inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcInput {
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * Indicates whether the input has an invalid input.
+         */
+        "ariaInvalid"?: boolean;
         /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
         /**
-          * Custom CSS class to apply to the outer div.
+          * Custom CSS class to apply to the input (supports DaisyUI).
          */
         "customClass"?: string;
         /**
-          * If true, the input will be disabled.
+          * Specifies the text direction of the input content.
+         */
+        "dir"?: 'ltr' | 'rtl' | 'auto';
+        /**
+          * The disabled state of the input.
          */
         "disabled"?: boolean;
         /**
-          * The input's name attribute.
+          * The ID of the input element.
+         */
+        "id"?: string;
+        /**
+          * The maximum number of characters allowed in the input.
+         */
+        "maxLength"?: number;
+        /**
+          * The name of the input.
          */
         "name"?: string;
         /**
@@ -593,7 +635,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the input value changes.
          */
-        "onChange"?: (event: ModusWcInputCustomEvent<string>) => void;
+        "onChange"?: (event: ModusWcInputCustomEvent<Event>) => void;
         /**
           * Event emitted when the input gains focus.
          */
@@ -603,13 +645,17 @@ declare namespace LocalJSX {
          */
         "placeholder"?: string;
         /**
+          * The readonly state of the input.
+         */
+        "readonly"?: boolean;
+        /**
           * If true, the input will be required.
          */
         "required"?: boolean;
         /**
-          * The size of the input. Can be 'small', 'medium', or 'large'.
+          * The tabindex of the input.
          */
-        "size"?: 'small' | 'medium' | 'large';
+        "tabIndex"?: number;
         /**
           * The input's type attribute.
          */
@@ -637,13 +683,9 @@ declare namespace LocalJSX {
          */
         "ariaLabel": string;
         /**
-          * Custom CSS class to apply to the textarea element.
+          * Custom CSS class to apply to the textarea (supports DaisyUI).
          */
         "customClass"?: string;
-        /**
-          * DaisyUI CSS class to apply to the textarea element.
-         */
-        "daisyClass"?: string;
         /**
           * Specifies the text direction of the textarea content.
          */
@@ -671,7 +713,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when the textarea value changes.
          */
-        "onChange"?: (event: ModusWcTextareaCustomEvent<string>) => void;
+        "onChange"?: (event: ModusWcTextareaCustomEvent<Event>) => void;
         /**
           * Emitted when the textarea gains focus.
          */
@@ -777,7 +819,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-divider": LocalJSX.ModusWcDivider & JSXBase.HTMLAttributes<HTMLModusWcDividerElement>;
             /**
-             * A customizable input component used to create inputs with different sizes and types.
+             * A customizable input component used to create inputs with types.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-input": LocalJSX.ModusWcInput & JSXBase.HTMLAttributes<HTMLModusWcInputElement>;
