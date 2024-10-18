@@ -11,7 +11,6 @@
   aria-invalid="false"
   aria-label="Full example textarea"
   custom-class="my-custom-class"
-  daisy-class="modus-wc-textarea-custom"
   dir="ltr"
   disabled="false"
   id="full-example"
@@ -56,8 +55,7 @@
 <!-- Textarea with custom classes -->
 <modus-wc-textarea
   aria-label="Styled textarea"
-  custom-class="my-custom-class"
-  daisy-class="modus-wc-textarea-bordered modus-wc-textarea-lg"
+  custom-class="modus-wc-textarea-bordered modus-wc-textarea-lg"
   placeholder="This textarea has custom styling"
 ></modus-wc-textarea>
 
