@@ -82,7 +82,7 @@ const Template: Story = {
           tab-index=${ifDefined(args.tabIndex)}
           value=${ifDefined(args.value)}
           @blur=${(e: CustomEvent) => console.log('blur', e.detail)}
-          @change=${(e: CustomEvent) => console.log('change', e.detail)}
+          @change=${(e: CustomEvent) => console.log('change', e)}
           @focus=${(e: CustomEvent) => console.log('focus', e.detail)}
         ></modus-wc-textarea>
         <stencil-docs component-name="modus-wc-textarea"></stencil-docs>

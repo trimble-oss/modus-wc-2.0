@@ -111,7 +111,7 @@ describe('modus-wc-textarea', () => {
     expect(changeSpy).toHaveBeenCalled();
     expect(changeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        detail: 'New value',
+        detail: expect.any(Event),
       })
     );
   });

@@ -128,7 +128,7 @@ Adheres to WCAG 2.2 standards.
 | Event    | Description                              | Type                      |
 | -------- | ---------------------------------------- | ------------------------- |
 | `blur`   | Emitted when the textarea loses focus.   | `CustomEvent<FocusEvent>` |
-| `change` | Emitted when the textarea value changes. | `CustomEvent<string>`     |
+| `change` | Emitted when the textarea value changes. | `CustomEvent<Event>`      |
 | `focus`  | Emitted when the textarea gains focus.   | `CustomEvent<FocusEvent>` |
 
 
