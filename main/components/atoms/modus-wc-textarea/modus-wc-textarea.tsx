@@ -1,4 +1,4 @@
-import { h, Component, Event, EventEmitter, Prop } from '@stencil/core';
+import { h, Component, Event, EventEmitter, Host, Prop } from '@stencil/core';
 
 /**
  * A customizable textarea component.
@@ -27,14 +27,9 @@ export class ModusWcTextarea {
   @Prop() ariaLabel!: string;
 
   /**
-   * Custom CSS class to apply to the textarea element.
+   * Custom CSS class to apply to the textarea (supports DaisyUI).
    */
   @Prop() customClass: string = '';
-
-  /**
-   * DaisyUI CSS class to apply to the textarea element.
-   */
-  @Prop() daisyClass: string = '';
 
   /**
    * Specifies the text direction of the textarea content.
@@ -99,7 +94,7 @@ export class ModusWcTextarea {
   /**
    * Emitted when the textarea value changes.
    */
-  @Event() change!: EventEmitter<string>;
+  @Event() change!: EventEmitter<Event>;
 
   /**
    * Emitted when the textarea gains focus.
@@ -117,8 +112,7 @@ export class ModusWcTextarea {
   };
 
   private handleChange = (event: Event) => {
-    const input = event.target as HTMLTextAreaElement;
-    this.change.emit(input.value);
+    this.change.emit(event);
   };
 
   private handleFocus = (event: FocusEvent) => {
@@ -127,32 +121,33 @@ export class ModusWcTextarea {
 
   render() {
     return (
-      <textarea
-        aria-describedby={this.ariaDescribedby}
-        aria-invalid={this.ariaInvalid}
-        aria-label={this.ariaLabel}
-        aria-placeholder={this.placeholder}
-        aria-required={this.required}
-        class={{
-          'modus-wc-textarea': true,
-          [this.customClass]: !!this.customClass,
-          [this.daisyClass]: !!this.daisyClass,
-        }}
-        dir={this.dir}
-        disabled={this.disabled}
-        id={this.id}
-        maxLength={this.maxLength}
-        name={this.name}
-        onBlur={this.handleBlur}
-        onChange={this.handleChange}
-        onFocus={this.handleFocus}
-        placeholder={this.placeholder}
-        readonly={this.readonly}
-        required={this.required}
-        rows={this.rows}
-        tabIndex={this.tabIndex}
-        value={this.value}
-      />
+      <Host>
+        <textarea
+          aria-describedby={this.ariaDescribedby}
+          aria-invalid={this.ariaInvalid}
+          aria-label={this.ariaLabel || this.placeholder}
+          aria-placeholder={this.placeholder}
+          aria-required={this.required}
+          class={{
+            'modus-wc-textarea': true,
+            [this.customClass]: !!this.customClass,
+          }}
+          dir={this.dir}
+          disabled={this.disabled}
+          id={this.id}
+          maxLength={this.maxLength}
+          name={this.name}
+          onBlur={this.handleBlur}
+          onChange={this.handleChange}
+          onFocus={this.handleFocus}
+          placeholder={this.placeholder}
+          readonly={this.readonly}
+          required={this.required}
+          rows={this.rows}
+          tabIndex={this.tabIndex}
+          value={this.value}
+        />
+      </Host>
     );
   }
 }
