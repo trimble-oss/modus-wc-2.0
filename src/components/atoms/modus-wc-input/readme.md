@@ -28,7 +28,6 @@ Adheres to WCAG 2.2 standards.
   aria-invalid="false"
   aria-label="Full example input"
   custom-class="my-custom-class"
-  daisy-class="modus-wc-input-custom"
   dir="ltr"
   disabled="false"
   id="full-example"
@@ -73,8 +72,7 @@ Adheres to WCAG 2.2 standards.
 <!-- Input with custom classes -->
 <modus-wc-input
   aria-label="Styled input"
-  custom-class="my-custom-class"
-  daisy-class="modus-wc-input-bordered modus-wc-input-lg"
+  custom-class="modus-wc-input-bordered modus-wc-input-lg"
   placeholder="This input has custom styling"
 ></modus-wc-input>
 
