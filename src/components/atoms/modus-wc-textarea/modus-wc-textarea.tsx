@@ -27,14 +27,9 @@ export class ModusWcTextarea {
   @Prop() ariaLabel!: string;
 
   /**
-   * Custom CSS class to apply to the textarea element.
+   * Custom CSS class to apply to the textarea (supports DaisyUI).
    */
   @Prop() customClass: string = '';
-
-  /**
-   * DaisyUI CSS class to apply to the textarea element.
-   */
-  @Prop() daisyClass: string = '';
 
   /**
    * Specifies the text direction of the textarea content.
@@ -136,7 +131,6 @@ export class ModusWcTextarea {
           class={{
             'modus-wc-textarea': true,
             [this.customClass]: !!this.customClass,
-            [this.daisyClass]: !!this.daisyClass,
           }}
           dir={this.dir}
           disabled={this.disabled}

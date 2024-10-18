@@ -9,7 +9,7 @@
 
 import type { EventName, StencilReactComponent } from '@stencil/react-output-target/runtime';
 import { createComponent } from '@stencil/react-output-target/runtime';
-import { type ModusWcButtonCustomEvent, type ModusWcInputCustomEvent, type ModusWcTextareaCustomEvent } from "@trimble-cms/modus-wc";
+import { type Event, type ModusWcButtonCustomEvent, type ModusWcInputCustomEvent, type ModusWcTextareaCustomEvent } from "@trimble-cms/modus-wc";
 import { ModusWcAvatar as ModusWcAvatarElement, defineCustomElement as defineModusWcAvatar } from "@trimble-cms/modus-wc/dist/components/modus-wc-avatar.js";
 import { ModusWcBadge as ModusWcBadgeElement, defineCustomElement as defineModusWcBadge } from "@trimble-cms/modus-wc/dist/components/modus-wc-badge.js";
 import { ModusWcButton as ModusWcButtonElement, defineCustomElement as defineModusWcButton } from "@trimble-cms/modus-wc/dist/components/modus-wc-button.js";
@@ -61,7 +61,7 @@ export const ModusWcDivider: StencilReactComponent<ModusWcDividerElement, ModusW
 
 type ModusWcInputEvents = {
     onBlur: EventName<ModusWcInputCustomEvent<FocusEvent>>,
-    onChange: EventName<CustomEvent<string>>,
+    onChange: EventName<ModusWcInputCustomEvent<Event>>,
     onFocus: EventName<ModusWcInputCustomEvent<FocusEvent>>
 };
 
@@ -79,7 +79,7 @@ export const ModusWcInput: StencilReactComponent<ModusWcInputElement, ModusWcInp
 
 type ModusWcTextareaEvents = {
     onBlur: EventName<ModusWcTextareaCustomEvent<FocusEvent>>,
-    onChange: EventName<CustomEvent<string>>,
+    onChange: EventName<ModusWcTextareaCustomEvent<Event>>,
     onFocus: EventName<ModusWcTextareaCustomEvent<FocusEvent>>
 };
 

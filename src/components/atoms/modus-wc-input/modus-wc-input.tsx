@@ -1,8 +1,7 @@
 import { h, Host, Component, Event, EventEmitter, Prop } from '@stencil/core';
-import { getCurrentModusWCMode } from '../../../utils/theme';
 
 /**
- * A customizable input component used to create inputs with different sizes and types.
+ * A customizable input component used to create inputs with types.
  *
  * Adheres to WCAG 2.2 standards.
  */
@@ -13,22 +12,47 @@ import { getCurrentModusWCMode } from '../../../utils/theme';
 })
 export class ModusWcInput {
   /**
+   * The ID of the element that describes the input.
+   */
+  @Prop() ariaDescribedby?: string;
+
+  /**
+   * Indicates whether the input has an invalid input.
+   */
+  @Prop() ariaInvalid?: boolean;
+
+  /**
    * The aria-label attribute for accessibility.
    */
   @Prop() ariaLabel!: string;
 
   /**
-   * Custom CSS class to apply to the outer div.
+   * Custom CSS class to apply to the input (supports DaisyUI).
    */
   @Prop() customClass: string = '';
 
   /**
-   * If true, the input will be disabled.
+   * Specifies the text direction of the input content.
+   */
+  @Prop() dir?: 'ltr' | 'rtl' | 'auto';
+
+  /**
+   * The disabled state of the input.
    */
   @Prop() disabled: boolean = false;
 
   /**
-   * The input's name attribute.
+   * The ID of the input element.
+   */
+  @Prop() id?: string;
+
+  /**
+   * The maximum number of characters allowed in the input.
+   */
+  @Prop() maxLength?: number;
+
+  /**
+   * The name of the input.
    */
   @Prop() name: string = '';
 
@@ -38,14 +62,19 @@ export class ModusWcInput {
   @Prop() placeholder: string = '';
 
   /**
+   * The readonly state of the input.
+   */
+  @Prop() readonly: boolean = false;
+
+  /**
    * If true, the input will be required.
    */
   @Prop() required: boolean = false;
 
   /**
-   * The size of the input. Can be 'small', 'medium', or 'large'.
+   * The tabindex of the input.
    */
-  @Prop() size: 'small' | 'medium' | 'large' = 'medium';
+  @Prop() tabIndex?: number;
 
   /**
    * The input's type attribute.
@@ -65,7 +94,7 @@ export class ModusWcInput {
   /**
    * Event emitted when the input value changes.
    */
-  @Event() change!: EventEmitter<string>;
+  @Event() change!: EventEmitter<Event>;
 
   /**
    * Event emitted when the input gains focus.
@@ -83,9 +112,7 @@ export class ModusWcInput {
   };
 
   private handleChange = (event: Event) => {
-    const input = event.target as HTMLInputElement;
-    this.value = input.value;
-    this.change.emit(this.value);
+    this.change.emit(event);
   };
 
   private handleFocus = (event: FocusEvent) => {
@@ -93,33 +120,33 @@ export class ModusWcInput {
   };
 
   render() {
-    const currentMode = getCurrentModusWCMode();
-
     return (
       <Host>
-        <div
+        <input
+          aria-describedby={this.ariaDescribedby}
+          aria-invalid={this.ariaInvalid}
+          aria-label={this.ariaLabel || this.placeholder}
+          aria-placeholder={this.placeholder}
+          aria-required={this.required}
           class={{
-            'modus-wc-input-wrapper': true,
+            'modus-wc-input': true,
             [this.customClass]: !!this.customClass,
-            [`modus-wc-input--${this.size}`]: true,
-            'modus-wc-input--disabled': this.disabled,
-            'modus-wc-input--dark-mode': currentMode === 'dark',
           }}
-        >
-          <input
-            aria-label={this.ariaLabel || this.placeholder}
-            class="modus-wc-input"
-            disabled={this.disabled}
-            name={this.name}
-            onBlur={this.handleBlur}
-            onFocus={this.handleFocus}
-            onInput={this.handleChange}
-            placeholder={this.placeholder}
-            required={this.required}
-            type={this.type}
-            value={this.value}
-          />
-        </div>
+          dir={this.dir}
+          disabled={this.disabled}
+          id={this.id}
+          maxLength={this.maxLength}
+          name={this.name}
+          onBlur={this.handleBlur}
+          onChange={this.handleChange}
+          onFocus={this.handleFocus}
+          placeholder={this.placeholder}
+          readonly={this.readonly}
+          required={this.required}
+          tabIndex={this.tabIndex}
+          type={this.type}
+          value={this.value}
+        />
       </Host>
     );
   }
