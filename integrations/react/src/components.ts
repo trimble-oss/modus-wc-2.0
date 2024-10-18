@@ -9,12 +9,13 @@
 
 import type { EventName, StencilReactComponent } from '@stencil/react-output-target/runtime';
 import { createComponent } from '@stencil/react-output-target/runtime';
-import { type ModusWcButtonCustomEvent, type ModusWcInputCustomEvent } from "@trimble-cms/modus-wc";
+import { type ModusWcButtonCustomEvent, type ModusWcInputCustomEvent, type ModusWcTextareaCustomEvent } from "@trimble-cms/modus-wc";
 import { ModusWcAvatar as ModusWcAvatarElement, defineCustomElement as defineModusWcAvatar } from "@trimble-cms/modus-wc/dist/components/modus-wc-avatar.js";
 import { ModusWcBadge as ModusWcBadgeElement, defineCustomElement as defineModusWcBadge } from "@trimble-cms/modus-wc/dist/components/modus-wc-badge.js";
 import { ModusWcButton as ModusWcButtonElement, defineCustomElement as defineModusWcButton } from "@trimble-cms/modus-wc/dist/components/modus-wc-button.js";
 import { ModusWcDivider as ModusWcDividerElement, defineCustomElement as defineModusWcDivider } from "@trimble-cms/modus-wc/dist/components/modus-wc-divider.js";
 import { ModusWcInput as ModusWcInputElement, defineCustomElement as defineModusWcInput } from "@trimble-cms/modus-wc/dist/components/modus-wc-input.js";
+import { ModusWcTextarea as ModusWcTextareaElement, defineCustomElement as defineModusWcTextarea } from "@trimble-cms/modus-wc/dist/components/modus-wc-textarea.js";
 import { ModusWcTypography as ModusWcTypographyElement, defineCustomElement as defineModusWcTypography } from "@trimble-cms/modus-wc/dist/components/modus-wc-typography.js";
 import React from 'react';
 
@@ -74,6 +75,24 @@ export const ModusWcInput: StencilReactComponent<ModusWcInputElement, ModusWcInp
         onFocus: 'focus'
     } as ModusWcInputEvents,
     defineCustomElement: defineModusWcInput
+});
+
+type ModusWcTextareaEvents = {
+    onBlur: EventName<ModusWcTextareaCustomEvent<FocusEvent>>,
+    onChange: EventName<CustomEvent<string>>,
+    onFocus: EventName<ModusWcTextareaCustomEvent<FocusEvent>>
+};
+
+export const ModusWcTextarea: StencilReactComponent<ModusWcTextareaElement, ModusWcTextareaEvents> = /*@__PURE__*/ createComponent<ModusWcTextareaElement, ModusWcTextareaEvents>({
+    tagName: 'modus-wc-textarea',
+    elementClass: ModusWcTextareaElement,
+    react: React,
+    events: {
+        onBlur: 'blur',
+        onChange: 'change',
+        onFocus: 'focus'
+    } as ModusWcTextareaEvents,
+    defineCustomElement: defineModusWcTextarea
 });
 
 type ModusWcTypographyEvents = NonNullable<unknown>;

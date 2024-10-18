@@ -180,6 +180,76 @@ export namespace Components {
         "value": string;
     }
     /**
+     * A customizable textarea component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTextarea {
+        /**
+          * The ID of the element that describes the textarea.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * Indicates whether the textarea has an invalid input.
+         */
+        "ariaInvalid"?: boolean;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the textarea element.
+         */
+        "customClass": string;
+        /**
+          * DaisyUI CSS class to apply to the textarea element.
+         */
+        "daisyClass": string;
+        /**
+          * Specifies the text direction of the textarea content.
+         */
+        "dir"?: 'ltr' | 'rtl' | 'auto';
+        /**
+          * The disabled state of the textarea.
+         */
+        "disabled": boolean;
+        /**
+          * The ID of the textarea element.
+         */
+        "id"?: string;
+        /**
+          * The maximum number of characters allowed in the textarea.
+         */
+        "maxLength"?: number;
+        /**
+          * The name of the textarea.
+         */
+        "name": string;
+        /**
+          * The placeholder text for the textarea.
+         */
+        "placeholder": string;
+        /**
+          * The readonly state of the textarea.
+         */
+        "readonly": boolean;
+        /**
+          * The required state of the textarea.
+         */
+        "required": boolean;
+        /**
+          * The number of visible text lines for the textarea.
+         */
+        "rows"?: number;
+        /**
+          * The tabindex of the textarea.
+         */
+        "tabIndex"?: number;
+        /**
+          * The value of the textarea.
+         */
+        "value": string;
+    }
+    /**
      * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
      * Adheres to WCAG 2.2 standards.
      */
@@ -227,6 +297,10 @@ export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcInputElement;
+}
+export interface ModusWcTextareaCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTextareaElement;
 }
 declare global {
     /**
@@ -303,6 +377,29 @@ declare global {
         prototype: HTMLModusWcInputElement;
         new (): HTMLModusWcInputElement;
     };
+    interface HTMLModusWcTextareaElementEventMap {
+        "blur": FocusEvent;
+        "change": string;
+        "focus": FocusEvent;
+    }
+    /**
+     * A customizable textarea component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcTextareaElement extends Components.ModusWcTextarea, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTextareaElementEventMap>(type: K, listener: (this: HTMLModusWcTextareaElement, ev: ModusWcTextareaCustomEvent<HTMLModusWcTextareaElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTextareaElementEventMap>(type: K, listener: (this: HTMLModusWcTextareaElement, ev: ModusWcTextareaCustomEvent<HTMLModusWcTextareaElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTextareaElement: {
+        prototype: HTMLModusWcTextareaElement;
+        new (): HTMLModusWcTextareaElement;
+    };
     /**
      * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
      * Adheres to WCAG 2.2 standards.
@@ -329,6 +426,7 @@ declare global {
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-input": HTMLModusWcInputElement;
+        "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
         "stencil-docs": HTMLStencilDocsElement;
     }
@@ -522,6 +620,88 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
+     * A customizable textarea component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTextarea {
+        /**
+          * The ID of the element that describes the textarea.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * Indicates whether the textarea has an invalid input.
+         */
+        "ariaInvalid"?: boolean;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the textarea element.
+         */
+        "customClass"?: string;
+        /**
+          * DaisyUI CSS class to apply to the textarea element.
+         */
+        "daisyClass"?: string;
+        /**
+          * Specifies the text direction of the textarea content.
+         */
+        "dir"?: 'ltr' | 'rtl' | 'auto';
+        /**
+          * The disabled state of the textarea.
+         */
+        "disabled"?: boolean;
+        /**
+          * The ID of the textarea element.
+         */
+        "id"?: string;
+        /**
+          * The maximum number of characters allowed in the textarea.
+         */
+        "maxLength"?: number;
+        /**
+          * The name of the textarea.
+         */
+        "name"?: string;
+        /**
+          * Emitted when the textarea loses focus.
+         */
+        "onBlur"?: (event: ModusWcTextareaCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the textarea value changes.
+         */
+        "onChange"?: (event: ModusWcTextareaCustomEvent<string>) => void;
+        /**
+          * Emitted when the textarea gains focus.
+         */
+        "onFocus"?: (event: ModusWcTextareaCustomEvent<FocusEvent>) => void;
+        /**
+          * The placeholder text for the textarea.
+         */
+        "placeholder"?: string;
+        /**
+          * The readonly state of the textarea.
+         */
+        "readonly"?: boolean;
+        /**
+          * The required state of the textarea.
+         */
+        "required"?: boolean;
+        /**
+          * The number of visible text lines for the textarea.
+         */
+        "rows"?: number;
+        /**
+          * The tabindex of the textarea.
+         */
+        "tabIndex"?: number;
+        /**
+          * The value of the textarea.
+         */
+        "value"?: string;
+    }
+    /**
      * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
      * Adheres to WCAG 2.2 standards.
      */
@@ -567,6 +747,7 @@ declare namespace LocalJSX {
         "modus-wc-button": ModusWcButton;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-input": ModusWcInput;
+        "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-typography": ModusWcTypography;
         "stencil-docs": StencilDocs;
     }
@@ -600,6 +781,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-input": LocalJSX.ModusWcInput & JSXBase.HTMLAttributes<HTMLModusWcInputElement>;
+            /**
+             * A customizable textarea component.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-textarea": LocalJSX.ModusWcTextarea & JSXBase.HTMLAttributes<HTMLModusWcTextareaElement>;
             /**
              * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
              * Adheres to WCAG 2.2 standards.
