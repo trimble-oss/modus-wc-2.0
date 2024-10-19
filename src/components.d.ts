@@ -157,6 +157,23 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
+          * Controls automatic capitalization in inputted text.
+         */
+        "autoCapitalize"?: | 'off'
+    | 'none'
+    | 'on'
+    | 'sentences'
+    | 'words'
+    | 'characters';
+        /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: 'on' | 'off';
+        /**
+          * Indicates that an element should be focused on page load.
+         */
+        "autoFocus"?: boolean;
+        /**
           * Custom CSS class to apply to the input (supports DaisyUI).
          */
         "customClass": string;
@@ -165,7 +182,7 @@ export namespace Components {
          */
         "dir"?: 'ltr' | 'rtl' | 'auto';
         /**
-          * The disabled state of the input.
+          * Whether the form control is disabled.
          */
         "disabled": boolean;
         /**
@@ -173,35 +190,58 @@ export namespace Components {
          */
         "id"?: string;
         /**
-          * The maximum number of characters allowed in the input.
+          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
+         */
+        "inputMode"?: | 'decimal'
+    | 'email'
+    | 'none'
+    | 'numeric'
+    | 'search'
+    | 'tel'
+    | 'text'
+    | 'url';
+        /**
+          * Maximum length (number of characters) of value.
          */
         "maxLength"?: number;
         /**
-          * The name of the input.
+          * Minimum length (number of characters) of value.
+         */
+        "minLength"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pai.
          */
         "name": string;
         /**
-          * The input's placeholder text.
+          * Pattern the value must match to be valid
+         */
+        "pattern"?: string;
+        /**
+          * Text that appears in the form control when it has no value set.
          */
         "placeholder": string;
         /**
-          * The readonly state of the input.
+          * Whether the value is editable.
          */
-        "readonly": boolean;
+        "readOnly": boolean;
         /**
-          * If true, the input will be required.
+          * A value is required or must be checked for the form to be submittable.
          */
         "required": boolean;
         /**
-          * The tabindex of the input.
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "spellcheck"?: boolean;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "tabIndex"?: number;
         /**
-          * The input's type attribute.
+          * Type of form control.
          */
-        "type": 'email' | 'number' | 'text' | 'password';
+        "type": 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
         /**
-          * The input's value.
+          * The value of the control.
          */
         "value": string;
     }
@@ -605,6 +645,23 @@ declare namespace LocalJSX {
          */
         "ariaLabel": string;
         /**
+          * Controls automatic capitalization in inputted text.
+         */
+        "autoCapitalize"?: | 'off'
+    | 'none'
+    | 'on'
+    | 'sentences'
+    | 'words'
+    | 'characters';
+        /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: 'on' | 'off';
+        /**
+          * Indicates that an element should be focused on page load.
+         */
+        "autoFocus"?: boolean;
+        /**
           * Custom CSS class to apply to the input (supports DaisyUI).
          */
         "customClass"?: string;
@@ -613,7 +670,7 @@ declare namespace LocalJSX {
          */
         "dir"?: 'ltr' | 'rtl' | 'auto';
         /**
-          * The disabled state of the input.
+          * Whether the form control is disabled.
          */
         "disabled"?: boolean;
         /**
@@ -621,11 +678,26 @@ declare namespace LocalJSX {
          */
         "id"?: string;
         /**
-          * The maximum number of characters allowed in the input.
+          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
+         */
+        "inputMode"?: | 'decimal'
+    | 'email'
+    | 'none'
+    | 'numeric'
+    | 'search'
+    | 'tel'
+    | 'text'
+    | 'url';
+        /**
+          * Maximum length (number of characters) of value.
          */
         "maxLength"?: number;
         /**
-          * The name of the input.
+          * Minimum length (number of characters) of value.
+         */
+        "minLength"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pai.
          */
         "name"?: string;
         /**
@@ -641,27 +713,35 @@ declare namespace LocalJSX {
          */
         "onFocus"?: (event: ModusWcTextInputCustomEvent<FocusEvent>) => void;
         /**
-          * The input's placeholder text.
+          * Pattern the value must match to be valid
+         */
+        "pattern"?: string;
+        /**
+          * Text that appears in the form control when it has no value set.
          */
         "placeholder"?: string;
         /**
-          * The readonly state of the input.
+          * Whether the value is editable.
          */
-        "readonly"?: boolean;
+        "readOnly"?: boolean;
         /**
-          * If true, the input will be required.
+          * A value is required or must be checked for the form to be submittable.
          */
         "required"?: boolean;
         /**
-          * The tabindex of the input.
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "spellcheck"?: boolean;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "tabIndex"?: number;
         /**
-          * The input's type attribute.
+          * Type of form control.
          */
-        "type"?: 'email' | 'number' | 'text' | 'password';
+        "type"?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
         /**
-          * The input's value.
+          * The value of the control.
          */
         "value"?: string;
     }

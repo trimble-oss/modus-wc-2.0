@@ -16,90 +16,13 @@ Adheres to WCAG 2.2 standards.
 ### Component-usage
 
 ```html
-<!-- Basic Usage -->
-<modus-wc-text-input
-  aria-label="Enter your name"
-  placeholder="Type your name here"
-></modus-wc-text-input>
-
-<!-- With all properties -->
-<modus-wc-text-input
-  aria-describedby="input-description"
-  aria-invalid="false"
-  aria-label="Full example input"
-  custom-class="my-custom-class"
-  dir="ltr"
-  disabled="false"
-  id="full-example"
-  max-length="50"
-  name="full-example"
-  placeholder="Type here..."
-  readonly="false"
-  required="true"
-  tab-index="0"
-  type="text"
-  value="Initial value"
-></modus-wc-text-input>
-
-<!-- Disabled input -->
-<modus-wc-text-input
-  aria-label="Disabled input"
-  disabled="true"
-  value="This input is disabled"
-></modus-wc-text-input>
-
-<!-- Required input -->
-<modus-wc-text-input
-  aria-label="Required input"
-  required="true"
-  placeholder="This field is required"
-></modus-wc-text-input>
-
-<!-- Readonly input -->
-<modus-wc-text-input
-  aria-label="Readonly input"
-  readonly="true"
-  value="This content is readonly"
-></modus-wc-text-input>
-
-<!-- RTL input -->
-<modus-wc-text-input
-  aria-label="RTL input"
-  dir="rtl"
-  placeholder="أدخل النص هنا"
-></modus-wc-text-input>
-
-<!-- Input with custom classes -->
-<modus-wc-text-input
-  aria-label="Styled input"
-  custom-class="modus-wc-input-bordered modus-wc-input-lg"
-  placeholder="This input has custom styling"
-></modus-wc-text-input>
-
-<!-- Different input types -->
-<modus-wc-text-input
-  aria-label="Email input"
-  type="email"
-  placeholder="Enter your email"
-></modus-wc-text-input>
-
-<modus-wc-text-input
-  aria-label="Number input"
-  type="number"
-  placeholder="Enter a number"
-></modus-wc-text-input>
-
-<modus-wc-text-input
-  aria-label="Password input"
-  type="password"
-  placeholder="Enter your password"
-></modus-wc-text-input>
+<!-- Basic input -->
+<modus-wc-text-input aria-label="Enter your name"></modus-wc-text-input>
 
 <!-- Input with event listeners -->
 <modus-wc-text-input
   id="event-text-input"
-  aria-label="Input with events"
-  placeholder="Type here to see events in console"
+  aria-label="Enter your name"
 ></modus-wc-text-input>
 
 <script>
@@ -118,23 +41,30 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property                 | Attribute          | Description                                                | Type                                          | Default     |
-| ------------------------ | ------------------ | ---------------------------------------------------------- | --------------------------------------------- | ----------- |
-| `ariaDescribedby`        | `aria-describedby` | The ID of the element that describes the input.            | `string \| undefined`                         | `undefined` |
-| `ariaInvalid`            | `aria-invalid`     | Indicates whether the input has an invalid input.          | `boolean \| undefined`                        | `undefined` |
-| `ariaLabel` _(required)_ | `aria-label`       | The aria-label attribute for accessibility.                | `string`                                      | `undefined` |
-| `customClass`            | `custom-class`     | Custom CSS class to apply to the input (supports DaisyUI). | `string`                                      | `''`        |
-| `dir`                    | `dir`              | Specifies the text direction of the input content.         | `"auto" \| "ltr" \| "rtl" \| undefined`       | `undefined` |
-| `disabled`               | `disabled`         | The disabled state of the input.                           | `boolean`                                     | `false`     |
-| `id`                     | `id`               | The ID of the input element.                               | `string \| undefined`                         | `undefined` |
-| `maxLength`              | `max-length`       | The maximum number of characters allowed in the input.     | `number \| undefined`                         | `undefined` |
-| `name`                   | `name`             | The name of the input.                                     | `string`                                      | `''`        |
-| `placeholder`            | `placeholder`      | The input's placeholder text.                              | `string`                                      | `''`        |
-| `readonly`               | `readonly`         | The readonly state of the input.                           | `boolean`                                     | `false`     |
-| `required`               | `required`         | If true, the input will be required.                       | `boolean`                                     | `false`     |
-| `tabIndex`               | `tab-index`        | The tabindex of the input.                                 | `number \| undefined`                         | `undefined` |
-| `type`                   | `type`             | The input's type attribute.                                | `"email" \| "number" \| "password" \| "text"` | `'text'`    |
-| `value`                  | `value`            | The input's value.                                         | `string`                                      | `''`        |
+| Property                 | Attribute          | Description                                                                                                                                                              | Type                                                                                               | Default     |
+| ------------------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- | ----------- |
+| `ariaDescribedby`        | `aria-describedby` | The ID of the element that describes the input.                                                                                                                          | `string \| undefined`                                                                              | `undefined` |
+| `ariaInvalid`            | `aria-invalid`     | Indicates whether the input has an invalid input.                                                                                                                        | `boolean \| undefined`                                                                             | `undefined` |
+| `ariaLabel` _(required)_ | `aria-label`       | The aria-label attribute for accessibility.                                                                                                                              | `string`                                                                                           | `undefined` |
+| `autoCapitalize`         | `auto-capitalize`  | Controls automatic capitalization in inputted text.                                                                                                                      | `"characters" \| "none" \| "off" \| "on" \| "sentences" \| "words" \| undefined`                   | `undefined` |
+| `autoComplete`           | `auto-complete`    | Hint for form autofill feature.                                                                                                                                          | `"off" \| "on" \| undefined`                                                                       | `undefined` |
+| `autoFocus`              | `auto-focus`       | Indicates that an element should be focused on page load.                                                                                                                | `boolean \| undefined`                                                                             | `undefined` |
+| `customClass`            | `custom-class`     | Custom CSS class to apply to the input (supports DaisyUI).                                                                                                               | `string`                                                                                           | `''`        |
+| `dir`                    | `dir`              | Specifies the text direction of the input content.                                                                                                                       | `"auto" \| "ltr" \| "rtl" \| undefined`                                                            | `undefined` |
+| `disabled`               | `disabled`         | Whether the form control is disabled.                                                                                                                                    | `boolean`                                                                                          | `false`     |
+| `id`                     | `id`               | The ID of the input element.                                                                                                                                             | `string \| undefined`                                                                              | `undefined` |
+| `inputMode`              | `input-mode`       | Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard. | `"decimal" \| "email" \| "none" \| "numeric" \| "search" \| "tel" \| "text" \| "url" \| undefined` | `undefined` |
+| `maxLength`              | `max-length`       | Maximum length (number of characters) of value.                                                                                                                          | `number \| undefined`                                                                              | `undefined` |
+| `minLength`              | `min-length`       | Minimum length (number of characters) of value.                                                                                                                          | `number \| undefined`                                                                              | `undefined` |
+| `name`                   | `name`             | Name of the form control. Submitted with the form as part of a name/value pai.                                                                                           | `string`                                                                                           | `''`        |
+| `pattern`                | `pattern`          | Pattern the value must match to be valid                                                                                                                                 | `string \| undefined`                                                                              | `undefined` |
+| `placeholder`            | `placeholder`      | Text that appears in the form control when it has no value set.                                                                                                          | `string`                                                                                           | `''`        |
+| `readOnly`               | `read-only`        | Whether the value is editable.                                                                                                                                           | `boolean`                                                                                          | `false`     |
+| `required`               | `required`         | A value is required or must be checked for the form to be submittable.                                                                                                   | `boolean`                                                                                          | `false`     |
+| `spellcheck`             | `spellcheck`       | Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.                                                                         | `boolean \| undefined`                                                                             | `undefined` |
+| `tabIndex`               | `tab-index`        | Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).                                                                  | `number \| undefined`                                                                              | `undefined` |
+| `type`                   | `type`             | Type of form control.                                                                                                                                                    | `"email" \| "password" \| "search" \| "tel" \| "text" \| "url"`                                    | `'text'`    |
+| `value`                  | `value`            | The value of the control.                                                                                                                                                | `string`                                                                                           | `''`        |
 
 
 ## Events

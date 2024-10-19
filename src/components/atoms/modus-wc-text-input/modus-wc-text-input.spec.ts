@@ -22,15 +22,22 @@ describe('modus-wc-text-input', () => {
         aria-describedby="description" 
         aria-invalid="true" 
         aria-label="Custom input" 
+        autocapitalize="words"
+        autocomplete="on"
+        autofocus="true"
         custom-class="custom-class" 
         dir="rtl" 
         disabled="true"
         id="custom-id" 
+        inputmode="numeric"
         max-length="50" 
+        min-length="5"
         name="custom-name" 
+        pattern="[A-Za-z]{3}"
         placeholder="Custom placeholder" 
         readonly="true"
         required="true"
+        spellcheck="true"
         tab-index="1" 
         type="email"
         value="test@example.com"
@@ -42,15 +49,22 @@ describe('modus-wc-text-input', () => {
         aria-describedby="description" 
         aria-invalid="true" 
         aria-label="Custom input" 
+        autocapitalize="words"
+        autocomplete="on"
+        autofocus="true"
         custom-class="custom-class" 
         dir="rtl" 
         disabled="true" 
         id="custom-id" 
+        inputmode="numeric"
         max-length="50" 
+        min-length="5"
         name="custom-name" 
+        pattern="[A-Za-z]{3}"
         placeholder="Custom placeholder" 
         readonly="true"
         required="true"
+        spellcheck="true"
         tab-index="1" 
         type="email"
         value="test@example.com"
@@ -66,10 +80,12 @@ describe('modus-wc-text-input', () => {
           disabled
           id="custom-id"
           maxlength="50"
+          minlength="5"
           name="custom-name"
+          pattern="[A-Za-z]{3}"
           placeholder="Custom placeholder"
-          readonly
           required
+          spellcheck
           tabindex="1"
           type="email"
           value="test@example.com"
@@ -153,7 +169,7 @@ describe('modus-wc-text-input', () => {
   });
 
   it('renders with different input types', async () => {
-    const types = ['email', 'number', 'text', 'password'];
+    const types = ['email', 'password', 'search', 'tel', 'text', 'url'];
     for (const type of types) {
       const page = await newSpecPage({
         components: [ModusWcTextInput],
