@@ -3,8 +3,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { Meta, StoryObj } from '@storybook/web-components';
 
 const meta: Meta = {
-  title: 'Components/Input',
-  component: 'modus-wc-input',
+  title: 'Components/Text Input',
+  component: 'modus-wc-text-input',
   argTypes: {
     ariaDescribedby: { control: 'text', table: { sort: 'alpha' } },
     ariaInvalid: { control: 'boolean', table: { sort: 'alpha' } },
@@ -46,8 +46,8 @@ type Story = StoryObj;
 const Template: Story = {
   render: (args) => html`
     <div>
-      <h1>Input</h1>
-      <modus-wc-input
+      <h1>Text Input</h1>
+      <modus-wc-text-input
         aria-describedby=${ifDefined(args.ariaDescribedby)}
         aria-invalid=${ifDefined(args.ariaInvalid)}
         aria-label=${ifDefined(args.ariaLabel)}
@@ -71,8 +71,8 @@ const Template: Story = {
           const target = e.target as HTMLInputElement;
           args.value = target.value;
         }}
-      ></modus-wc-input>
-      <stencil-docs component-name="modus-wc-input"></stencil-docs>
+      ></modus-wc-text-input>
+      <stencil-docs component-name="modus-wc-text-input"></stencil-docs>
     </div>
   `,
   args: {

@@ -140,10 +140,10 @@ export namespace Components {
         "daisyClass": string;
     }
     /**
-     * A customizable input component used to create inputs with types.
+     * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
-    interface ModusWcInput {
+    interface ModusWcTextInput {
         /**
           * The ID of the element that describes the input.
          */
@@ -316,9 +316,9 @@ export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcButtonElement;
 }
-export interface ModusWcInputCustomEvent<T> extends CustomEvent<T> {
+export interface ModusWcTextInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLModusWcInputElement;
+    target: HTMLModusWcTextInputElement;
 }
 export interface ModusWcTextareaCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -376,28 +376,28 @@ declare global {
         prototype: HTMLModusWcDividerElement;
         new (): HTMLModusWcDividerElement;
     };
-    interface HTMLModusWcInputElementEventMap {
+    interface HTMLModusWcTextInputElementEventMap {
         "blur": FocusEvent;
         "change": Event;
         "focus": FocusEvent;
     }
     /**
-     * A customizable input component used to create inputs with types.
+     * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
-    interface HTMLModusWcInputElement extends Components.ModusWcInput, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLModusWcInputElementEventMap>(type: K, listener: (this: HTMLModusWcInputElement, ev: ModusWcInputCustomEvent<HTMLModusWcInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+    interface HTMLModusWcTextInputElement extends Components.ModusWcTextInput, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTextInputElementEventMap>(type: K, listener: (this: HTMLModusWcTextInputElement, ev: ModusWcTextInputCustomEvent<HTMLModusWcTextInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLModusWcInputElementEventMap>(type: K, listener: (this: HTMLModusWcInputElement, ev: ModusWcInputCustomEvent<HTMLModusWcInputElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTextInputElementEventMap>(type: K, listener: (this: HTMLModusWcTextInputElement, ev: ModusWcTextInputCustomEvent<HTMLModusWcTextInputElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
-    var HTMLModusWcInputElement: {
-        prototype: HTMLModusWcInputElement;
-        new (): HTMLModusWcInputElement;
+    var HTMLModusWcTextInputElement: {
+        prototype: HTMLModusWcTextInputElement;
+        new (): HTMLModusWcTextInputElement;
     };
     interface HTMLModusWcTextareaElementEventMap {
         "blur": FocusEvent;
@@ -447,7 +447,7 @@ declare global {
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
-        "modus-wc-input": HTMLModusWcInputElement;
+        "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
         "stencil-docs": HTMLStencilDocsElement;
@@ -588,10 +588,10 @@ declare namespace LocalJSX {
         "daisyClass"?: string;
     }
     /**
-     * A customizable input component used to create inputs with types.
+     * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
-    interface ModusWcInput {
+    interface ModusWcTextInput {
         /**
           * The ID of the element that describes the input.
          */
@@ -631,15 +631,15 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the input loses focus.
          */
-        "onBlur"?: (event: ModusWcInputCustomEvent<FocusEvent>) => void;
+        "onBlur"?: (event: ModusWcTextInputCustomEvent<FocusEvent>) => void;
         /**
           * Event emitted when the input value changes.
          */
-        "onChange"?: (event: ModusWcInputCustomEvent<Event>) => void;
+        "onChange"?: (event: ModusWcTextInputCustomEvent<Event>) => void;
         /**
           * Event emitted when the input gains focus.
          */
-        "onFocus"?: (event: ModusWcInputCustomEvent<FocusEvent>) => void;
+        "onFocus"?: (event: ModusWcTextInputCustomEvent<FocusEvent>) => void;
         /**
           * The input's placeholder text.
          */
@@ -788,7 +788,7 @@ declare namespace LocalJSX {
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
         "modus-wc-divider": ModusWcDivider;
-        "modus-wc-input": ModusWcInput;
+        "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-typography": ModusWcTypography;
         "stencil-docs": StencilDocs;
@@ -819,10 +819,10 @@ declare module "@stencil/core" {
              */
             "modus-wc-divider": LocalJSX.ModusWcDivider & JSXBase.HTMLAttributes<HTMLModusWcDividerElement>;
             /**
-             * A customizable input component used to create inputs with types.
+             * A customizable input component used to create text inputs with types.
              * Adheres to WCAG 2.2 standards.
              */
-            "modus-wc-input": LocalJSX.ModusWcInput & JSXBase.HTMLAttributes<HTMLModusWcInputElement>;
+            "modus-wc-text-input": LocalJSX.ModusWcTextInput & JSXBase.HTMLAttributes<HTMLModusWcTextInputElement>;
             /**
              * A customizable textarea component.
              * Adheres to WCAG 2.2 standards.

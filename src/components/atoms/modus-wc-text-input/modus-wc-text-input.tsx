@@ -1,16 +1,16 @@
 import { h, Host, Component, Event, EventEmitter, Prop } from '@stencil/core';
 
 /**
- * A customizable input component used to create inputs with types.
+ * A customizable input component used to create text inputs with types.
  *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
-  tag: 'modus-wc-input',
-  styleUrl: 'modus-wc-input.scss',
+  tag: 'modus-wc-text-input',
+  styleUrl: 'modus-wc-text-input.scss',
   shadow: false,
 })
-export class ModusWcInput {
+export class ModusWcTextInput {
   /**
    * The ID of the element that describes the input.
    */
