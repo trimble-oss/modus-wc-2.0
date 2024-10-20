@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  check-and-build:
+  check-pr:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,24 +21,32 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
+        id: lint
         run: npm run lint
         continue-on-error: true
 
       - name: Run Prettier
+        id: prettier
         run: npm run code-style
         continue-on-error: true
 
       - name: Build Stencil components
+        id: stencil
         run: npm run stencil:build
         continue-on-error: true
 
       - name: Build Storybook project
+        id: storybook
         run: npm run storybook:build
         continue-on-error: true
 
       - name: Check for step failures
+        if: always()
         run: |
-          if [ ${{ job.status }} == 'failure' ]; then
+          if [ "${{ steps.lint.outcome }}" == "failure" ] || \
+             [ "${{ steps.prettier.outcome }}" == "failure" ] || \
+             [ "${{ steps.stencil.outcome }}" == "failure" ] || \
+             [ "${{ steps.storybook.outcome }}" == "failure" ]; then
             echo "One or more steps have failed. Please review the logs and fix the issues before merging."
             exit 1
           fi
