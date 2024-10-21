@@ -55,7 +55,7 @@ export class ModusWcTextInput {
   /**
    * Specifies the text direction of the input content.
    */
-  @Prop() dir?: 'ltr' | 'rtl' | 'auto';
+  @Prop() dir: '' | 'ltr' | 'rtl' | 'auto' = '';
 
   /**
    * Whether the form control is disabled.

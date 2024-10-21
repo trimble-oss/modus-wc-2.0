@@ -34,7 +34,7 @@ export class ModusWcTextarea {
   /**
    * Specifies the text direction of the textarea content.
    */
-  @Prop() dir?: 'ltr' | 'rtl' | 'auto';
+  @Prop() dir: '' | 'ltr' | 'rtl' | 'auto' = '';
 
   /**
    * The disabled state of the textarea.
