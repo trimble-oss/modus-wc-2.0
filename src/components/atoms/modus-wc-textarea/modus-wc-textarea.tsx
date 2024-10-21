@@ -19,7 +19,7 @@ export class ModusWcTextarea {
   /**
    * Indicates whether the textarea has an invalid input.
    */
-  @Prop() ariaInvalid?: boolean;
+  @Prop() ariainvalid?: boolean;
 
   /**
    * The aria-label attribute for accessibility.
@@ -44,7 +44,7 @@ export class ModusWcTextarea {
   /**
    * The ID of the textarea element.
    */
-  @Prop() id?: string;
+  @Prop() id: string = '';
 
   /**
    * The maximum number of characters allowed in the textarea.
@@ -79,7 +79,7 @@ export class ModusWcTextarea {
   /**
    * The tabindex of the textarea.
    */
-  @Prop() tabIndex?: number;
+  @Prop() tabIndex: number = 0;
 
   /**
    * The value of the textarea.
@@ -124,7 +124,7 @@ export class ModusWcTextarea {
       <Host>
         <textarea
           aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.ariaInvalid}
+          aria-invalid={this.ariainvalid}
           aria-label={this.ariaLabel || this.placeholder}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
