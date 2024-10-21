@@ -4,7 +4,7 @@ This document outlines the steps to release a new version of the Modus Web Compo
 
 ## Prerequisites
 
-1. Ensure you have the necessary permissions to run the publishing workflow.
+Ensure you have the necessary permissions to run the publishing workflow.
 
 ## Release Process
 
@@ -21,7 +21,16 @@ Ensure that all changes intended for the release are merged into the branch you 
 3. Click on the `Run workflow` button to the right.
 4. Provide the new version number as input and start the workflow.
 
-### 3. Automated Workflow Steps
+### 3. Verify the Release
+
+After the workflow completes, verify that the following have been successfully published:
+- The `@trimble-cms/modus-wc` package to the NPM registry.
+- The `@trimble-cms/modus-wc-react` package to the NPM registry.
+- The [GitHub releases](https://github.com/Trimble-Construction/poc-modus-wc-2.0/releases) for both packages.
+
+That's it! :octocat:
+
+## GitHub Workflow Breakdown
 
 ```mermaid
 graph LR
@@ -41,10 +50,3 @@ The `Publish & Release` workflow will handle the following steps:
     - Build the `@trimble-cms/modus-wc-react` package.
     - Publish the `@trimble-cms/modus-wc-react` package to the NPM registry.
 - Create GitHub releases for both packages.
-
-### 4. Verify the Release
-
-After the workflow completes, verify that the following have been successfully published:
-- The `@trimble-cms/modus-wc` package to the NPM registry.
-- The `@trimble-cms/modus-wc-react` package to the NPM registry.
-- The GitHub releases for both packages.
