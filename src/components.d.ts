@@ -149,13 +149,13 @@ export namespace Components {
          */
         "ariaDescribedby"?: string;
         /**
-          * Indicates whether the input has an invalid input.
-         */
-        "ariaInvalid"?: boolean;
-        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
+        /**
+          * Indicates whether the input has an invalid input.
+         */
+        "ariainvalid"?: boolean;
         /**
           * Controls automatic capitalization in inputted text.
          */
@@ -180,7 +180,7 @@ export namespace Components {
         /**
           * Specifies the text direction of the input content.
          */
-        "dir"?: 'ltr' | 'rtl' | 'auto';
+        "dir": '' | 'ltr' | 'rtl' | 'auto';
         /**
           * Whether the form control is disabled.
          */
@@ -188,11 +188,11 @@ export namespace Components {
         /**
           * The ID of the input element.
          */
-        "id"?: string;
+        "id": string;
         /**
           * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
          */
-        "inputMode"?: | 'decimal'
+        "inputMode": | 'decimal'
     | 'email'
     | 'none'
     | 'numeric'
@@ -231,11 +231,11 @@ export namespace Components {
         /**
           * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
          */
-        "spellcheck"?: boolean;
+        "spellcheck": boolean;
         /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
-        "tabIndex"?: number;
+        "tabIndex": number;
         /**
           * Type of form control.
          */
@@ -255,13 +255,13 @@ export namespace Components {
          */
         "ariaDescribedby"?: string;
         /**
-          * Indicates whether the textarea has an invalid input.
-         */
-        "ariaInvalid"?: boolean;
-        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
+        /**
+          * Indicates whether the textarea has an invalid input.
+         */
+        "ariainvalid"?: boolean;
         /**
           * Custom CSS class to apply to the textarea (supports DaisyUI).
          */
@@ -269,7 +269,7 @@ export namespace Components {
         /**
           * Specifies the text direction of the textarea content.
          */
-        "dir"?: 'ltr' | 'rtl' | 'auto';
+        "dir": '' | 'ltr' | 'rtl' | 'auto';
         /**
           * The disabled state of the textarea.
          */
@@ -277,7 +277,7 @@ export namespace Components {
         /**
           * The ID of the textarea element.
          */
-        "id"?: string;
+        "id": string;
         /**
           * The maximum number of characters allowed in the textarea.
          */
@@ -305,7 +305,7 @@ export namespace Components {
         /**
           * The tabindex of the textarea.
          */
-        "tabIndex"?: number;
+        "tabIndex": number;
         /**
           * The value of the textarea.
          */
@@ -637,13 +637,13 @@ declare namespace LocalJSX {
          */
         "ariaDescribedby"?: string;
         /**
-          * Indicates whether the input has an invalid input.
-         */
-        "ariaInvalid"?: boolean;
-        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
+        /**
+          * Indicates whether the input has an invalid input.
+         */
+        "ariainvalid"?: boolean;
         /**
           * Controls automatic capitalization in inputted text.
          */
@@ -668,7 +668,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the text direction of the input content.
          */
-        "dir"?: 'ltr' | 'rtl' | 'auto';
+        "dir"?: '' | 'ltr' | 'rtl' | 'auto';
         /**
           * Whether the form control is disabled.
          */
@@ -755,13 +755,13 @@ declare namespace LocalJSX {
          */
         "ariaDescribedby"?: string;
         /**
-          * Indicates whether the textarea has an invalid input.
-         */
-        "ariaInvalid"?: boolean;
-        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
+        /**
+          * Indicates whether the textarea has an invalid input.
+         */
+        "ariainvalid"?: boolean;
         /**
           * Custom CSS class to apply to the textarea (supports DaisyUI).
          */
@@ -769,7 +769,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the text direction of the textarea content.
          */
-        "dir"?: 'ltr' | 'rtl' | 'auto';
+        "dir"?: '' | 'ltr' | 'rtl' | 'auto';
         /**
           * The disabled state of the textarea.
          */
