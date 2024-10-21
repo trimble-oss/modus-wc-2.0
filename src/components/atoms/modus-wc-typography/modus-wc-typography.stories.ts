@@ -14,7 +14,7 @@ interface TypographyArgs {
 }
 
 const meta: Meta<TypographyArgs> = {
-  title: 'Components/Typography',
+  title: 'Components/Atoms/Typography',
   argTypes: {
     ariaLabel: { control: 'text' },
     bodySize: {

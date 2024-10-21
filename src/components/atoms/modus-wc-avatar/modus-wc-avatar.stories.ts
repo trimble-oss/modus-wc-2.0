@@ -11,7 +11,7 @@ interface AvatarArgs {
 }
 
 const meta: Meta<AvatarArgs> = {
-  title: 'Components/Avatar',
+  title: 'Components/Atoms/Avatar',
   argTypes: {
     alt: { control: 'text' },
     ariaLabel: { control: 'text' },
