@@ -15,6 +15,9 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: write
+
 jobs:
   build-and-publish-wc:
     runs-on: ubuntu-latest
@@ -88,20 +91,14 @@ jobs:
         id: find-asset
         run: echo "asset_path=$(find . -name 'trimble-cms-modus-wc-*.tgz')" >> $GITHUB_OUTPUT
 
+      - name: Rename the asset to package.tgz
+        run: mv ${{ steps.find-asset.outputs.asset_path }} package.tgz
+
       - name: Create GitHub release
-        id: create_release
-        uses: ncipollo/release-action@v1.14.0
+        uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: modus-wc-${{ github.event.inputs.version }}
+          tag_name: modus-wc-${{ github.event.inputs.version }}
           name: Modus Web Components ${{ github.event.inputs.version }}
-
-      - name: Upload release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.find-asset.outputs.asset_path }}
-          asset_name: package.tgz
-          asset_content_type: application/gzip
+          files: |
+            package.tgz
