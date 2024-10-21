@@ -1,56 +1,70 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcInput } from './modus-wc-input';
+import { ModusWcTextInput } from './modus-wc-text-input';
 
-describe('modus-wc-input', () => {
+describe('modus-wc-text-input', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcInput],
-      html: '<modus-wc-input aria-label="Default input"></modus-wc-input>',
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input aria-label="Default input"></modus-wc-text-input>',
     });
     expect(page.root).not.toBeNull();
     expect(page.root).toEqualHtml(`
-      <modus-wc-input aria-label="Default input" value="">
+      <modus-wc-text-input aria-label="Default input" value="">
         <input aria-label="Default input" aria-placeholder="" class="modus-wc-input" name="" placeholder="" type="text" value="">
-      </modus-wc-input>
+      </modus-wc-text-input>
     `);
   });
 
   it('renders with custom props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcInput],
-      html: `<modus-wc-input 
+      components: [ModusWcTextInput],
+      html: `<modus-wc-text-input 
         aria-describedby="description" 
         aria-invalid="true" 
         aria-label="Custom input" 
+        autocapitalize="words"
+        autocomplete="on"
+        autofocus="true"
         custom-class="custom-class" 
         dir="rtl" 
         disabled="true"
         id="custom-id" 
+        inputmode="numeric"
         max-length="50" 
+        min-length="5"
         name="custom-name" 
+        pattern="[A-Za-z]{3}"
         placeholder="Custom placeholder" 
         readonly="true"
         required="true"
+        spellcheck="true"
         tab-index="1" 
         type="email"
         value="test@example.com"
-      ></modus-wc-input>`,
+      ></modus-wc-text-input>`,
     });
     expect(page.root).not.toBeNull();
     expect(page.root).toEqualHtml(`
-      <modus-wc-input 
+      <modus-wc-text-input 
         aria-describedby="description" 
         aria-invalid="true" 
         aria-label="Custom input" 
+        autocapitalize="words"
+        autocomplete="on"
+        autofocus="true"
         custom-class="custom-class" 
         dir="rtl" 
         disabled="true" 
         id="custom-id" 
+        inputmode="numeric"
         max-length="50" 
+        min-length="5"
         name="custom-name" 
+        pattern="[A-Za-z]{3}"
         placeholder="Custom placeholder" 
         readonly="true"
         required="true"
+        spellcheck="true"
         tab-index="1" 
         type="email"
         value="test@example.com"
@@ -66,22 +80,24 @@ describe('modus-wc-input', () => {
           disabled
           id="custom-id"
           maxlength="50"
+          minlength="5"
           name="custom-name"
+          pattern="[A-Za-z]{3}"
           placeholder="Custom placeholder"
-          readonly
           required
+          spellcheck
           tabindex="1"
           type="email"
           value="test@example.com"
         >
-      </modus-wc-input>
+      </modus-wc-text-input>
     `);
   });
 
   it('emits blur event', async () => {
     const page = await newSpecPage({
-      components: [ModusWcInput],
-      html: '<modus-wc-input aria-label="Blur test"></modus-wc-input>',
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input aria-label="Blur test"></modus-wc-text-input>',
     });
     expect(page.root).not.toBeNull();
     const input = page.root!.querySelector('input');
@@ -95,8 +111,8 @@ describe('modus-wc-input', () => {
 
   it('emits change event', async () => {
     const page = await newSpecPage({
-      components: [ModusWcInput],
-      html: '<modus-wc-input aria-label="Change test"></modus-wc-input>',
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input aria-label="Change test"></modus-wc-text-input>',
     });
     expect(page.root).not.toBeNull();
     const input = page.root!.querySelector('input');
@@ -117,8 +133,8 @@ describe('modus-wc-input', () => {
 
   it('emits focus event', async () => {
     const page = await newSpecPage({
-      components: [ModusWcInput],
-      html: '<modus-wc-input aria-label="Focus test"></modus-wc-input>',
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input aria-label="Focus test"></modus-wc-text-input>',
     });
     expect(page.root).not.toBeNull();
     const input = page.root!.querySelector('input');
@@ -133,8 +149,8 @@ describe('modus-wc-input', () => {
   it('warns when ariaLabel is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
     await newSpecPage({
-      components: [ModusWcInput],
-      html: '<modus-wc-input></modus-wc-input>',
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input></modus-wc-text-input>',
     });
     expect(consoleWarnSpy).toHaveBeenCalledWith(
       'ModusWcInput: ariaLabel is required for accessibility.'
@@ -145,19 +161,19 @@ describe('modus-wc-input', () => {
   it('does not warn when ariaLabel is provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
     await newSpecPage({
-      components: [ModusWcInput],
-      html: '<modus-wc-input aria-label="Valid label"></modus-wc-input>',
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input aria-label="Valid label"></modus-wc-text-input>',
     });
     expect(consoleWarnSpy).not.toHaveBeenCalled();
     consoleWarnSpy.mockRestore();
   });
 
   it('renders with different input types', async () => {
-    const types = ['email', 'number', 'text', 'password'];
+    const types = ['email', 'password', 'search', 'tel', 'text', 'url'];
     for (const type of types) {
       const page = await newSpecPage({
-        components: [ModusWcInput],
-        html: `<modus-wc-input aria-label="Type test" type="${type}"></modus-wc-input>`,
+        components: [ModusWcTextInput],
+        html: `<modus-wc-text-input aria-label="Type test" type="${type}"></modus-wc-text-input>`,
       });
       expect(page.root).not.toBeNull();
       const input = page.root!.querySelector('input');
@@ -169,8 +185,8 @@ describe('modus-wc-input', () => {
   it('uses placeholder as aria-label when ariaLabel is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
     const page = await newSpecPage({
-      components: [ModusWcInput],
-      html: '<modus-wc-input placeholder="Test placeholder"></modus-wc-input>',
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input placeholder="Test placeholder"></modus-wc-text-input>',
     });
     expect(page.root).not.toBeNull();
     const input = page.root!.querySelector('input');
