@@ -140,10 +140,10 @@ export namespace Components {
         "daisyClass": string;
     }
     /**
-     * A customizable input component used to create inputs with types.
+     * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
-    interface ModusWcInput {
+    interface ModusWcTextInput {
         /**
           * The ID of the element that describes the input.
          */
@@ -157,6 +157,23 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
+          * Controls automatic capitalization in inputted text.
+         */
+        "autoCapitalize"?: | 'off'
+    | 'none'
+    | 'on'
+    | 'sentences'
+    | 'words'
+    | 'characters';
+        /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: 'on' | 'off';
+        /**
+          * Indicates that an element should be focused on page load.
+         */
+        "autoFocus"?: boolean;
+        /**
           * Custom CSS class to apply to the input (supports DaisyUI).
          */
         "customClass": string;
@@ -165,7 +182,7 @@ export namespace Components {
          */
         "dir"?: 'ltr' | 'rtl' | 'auto';
         /**
-          * The disabled state of the input.
+          * Whether the form control is disabled.
          */
         "disabled": boolean;
         /**
@@ -173,35 +190,58 @@ export namespace Components {
          */
         "id"?: string;
         /**
-          * The maximum number of characters allowed in the input.
+          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
+         */
+        "inputMode"?: | 'decimal'
+    | 'email'
+    | 'none'
+    | 'numeric'
+    | 'search'
+    | 'tel'
+    | 'text'
+    | 'url';
+        /**
+          * Maximum length (number of characters) of value.
          */
         "maxLength"?: number;
         /**
-          * The name of the input.
+          * Minimum length (number of characters) of value.
+         */
+        "minLength"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pai.
          */
         "name": string;
         /**
-          * The input's placeholder text.
+          * Pattern the value must match to be valid
+         */
+        "pattern"?: string;
+        /**
+          * Text that appears in the form control when it has no value set.
          */
         "placeholder": string;
         /**
-          * The readonly state of the input.
+          * Whether the value is editable.
          */
-        "readonly": boolean;
+        "readOnly": boolean;
         /**
-          * If true, the input will be required.
+          * A value is required or must be checked for the form to be submittable.
          */
         "required": boolean;
         /**
-          * The tabindex of the input.
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "spellcheck"?: boolean;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "tabIndex"?: number;
         /**
-          * The input's type attribute.
+          * Type of form control.
          */
-        "type": 'email' | 'number' | 'text' | 'password';
+        "type": 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
         /**
-          * The input's value.
+          * The value of the control.
          */
         "value": string;
     }
@@ -316,9 +356,9 @@ export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcButtonElement;
 }
-export interface ModusWcInputCustomEvent<T> extends CustomEvent<T> {
+export interface ModusWcTextInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLModusWcInputElement;
+    target: HTMLModusWcTextInputElement;
 }
 export interface ModusWcTextareaCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -376,28 +416,28 @@ declare global {
         prototype: HTMLModusWcDividerElement;
         new (): HTMLModusWcDividerElement;
     };
-    interface HTMLModusWcInputElementEventMap {
+    interface HTMLModusWcTextInputElementEventMap {
         "blur": FocusEvent;
         "change": Event;
         "focus": FocusEvent;
     }
     /**
-     * A customizable input component used to create inputs with types.
+     * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
-    interface HTMLModusWcInputElement extends Components.ModusWcInput, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLModusWcInputElementEventMap>(type: K, listener: (this: HTMLModusWcInputElement, ev: ModusWcInputCustomEvent<HTMLModusWcInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+    interface HTMLModusWcTextInputElement extends Components.ModusWcTextInput, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTextInputElementEventMap>(type: K, listener: (this: HTMLModusWcTextInputElement, ev: ModusWcTextInputCustomEvent<HTMLModusWcTextInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLModusWcInputElementEventMap>(type: K, listener: (this: HTMLModusWcInputElement, ev: ModusWcInputCustomEvent<HTMLModusWcInputElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTextInputElementEventMap>(type: K, listener: (this: HTMLModusWcTextInputElement, ev: ModusWcTextInputCustomEvent<HTMLModusWcTextInputElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
-    var HTMLModusWcInputElement: {
-        prototype: HTMLModusWcInputElement;
-        new (): HTMLModusWcInputElement;
+    var HTMLModusWcTextInputElement: {
+        prototype: HTMLModusWcTextInputElement;
+        new (): HTMLModusWcTextInputElement;
     };
     interface HTMLModusWcTextareaElementEventMap {
         "blur": FocusEvent;
@@ -447,7 +487,7 @@ declare global {
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
-        "modus-wc-input": HTMLModusWcInputElement;
+        "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
         "stencil-docs": HTMLStencilDocsElement;
@@ -588,10 +628,10 @@ declare namespace LocalJSX {
         "daisyClass"?: string;
     }
     /**
-     * A customizable input component used to create inputs with types.
+     * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
-    interface ModusWcInput {
+    interface ModusWcTextInput {
         /**
           * The ID of the element that describes the input.
          */
@@ -605,6 +645,23 @@ declare namespace LocalJSX {
          */
         "ariaLabel": string;
         /**
+          * Controls automatic capitalization in inputted text.
+         */
+        "autoCapitalize"?: | 'off'
+    | 'none'
+    | 'on'
+    | 'sentences'
+    | 'words'
+    | 'characters';
+        /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: 'on' | 'off';
+        /**
+          * Indicates that an element should be focused on page load.
+         */
+        "autoFocus"?: boolean;
+        /**
           * Custom CSS class to apply to the input (supports DaisyUI).
          */
         "customClass"?: string;
@@ -613,7 +670,7 @@ declare namespace LocalJSX {
          */
         "dir"?: 'ltr' | 'rtl' | 'auto';
         /**
-          * The disabled state of the input.
+          * Whether the form control is disabled.
          */
         "disabled"?: boolean;
         /**
@@ -621,47 +678,70 @@ declare namespace LocalJSX {
          */
         "id"?: string;
         /**
-          * The maximum number of characters allowed in the input.
+          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
+         */
+        "inputMode"?: | 'decimal'
+    | 'email'
+    | 'none'
+    | 'numeric'
+    | 'search'
+    | 'tel'
+    | 'text'
+    | 'url';
+        /**
+          * Maximum length (number of characters) of value.
          */
         "maxLength"?: number;
         /**
-          * The name of the input.
+          * Minimum length (number of characters) of value.
+         */
+        "minLength"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pai.
          */
         "name"?: string;
         /**
           * Event emitted when the input loses focus.
          */
-        "onBlur"?: (event: ModusWcInputCustomEvent<FocusEvent>) => void;
+        "onBlur"?: (event: ModusWcTextInputCustomEvent<FocusEvent>) => void;
         /**
           * Event emitted when the input value changes.
          */
-        "onChange"?: (event: ModusWcInputCustomEvent<Event>) => void;
+        "onChange"?: (event: ModusWcTextInputCustomEvent<Event>) => void;
         /**
           * Event emitted when the input gains focus.
          */
-        "onFocus"?: (event: ModusWcInputCustomEvent<FocusEvent>) => void;
+        "onFocus"?: (event: ModusWcTextInputCustomEvent<FocusEvent>) => void;
         /**
-          * The input's placeholder text.
+          * Pattern the value must match to be valid
+         */
+        "pattern"?: string;
+        /**
+          * Text that appears in the form control when it has no value set.
          */
         "placeholder"?: string;
         /**
-          * The readonly state of the input.
+          * Whether the value is editable.
          */
-        "readonly"?: boolean;
+        "readOnly"?: boolean;
         /**
-          * If true, the input will be required.
+          * A value is required or must be checked for the form to be submittable.
          */
         "required"?: boolean;
         /**
-          * The tabindex of the input.
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "spellcheck"?: boolean;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "tabIndex"?: number;
         /**
-          * The input's type attribute.
+          * Type of form control.
          */
-        "type"?: 'email' | 'number' | 'text' | 'password';
+        "type"?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
         /**
-          * The input's value.
+          * The value of the control.
          */
         "value"?: string;
     }
@@ -788,7 +868,7 @@ declare namespace LocalJSX {
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
         "modus-wc-divider": ModusWcDivider;
-        "modus-wc-input": ModusWcInput;
+        "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-typography": ModusWcTypography;
         "stencil-docs": StencilDocs;
@@ -819,10 +899,10 @@ declare module "@stencil/core" {
              */
             "modus-wc-divider": LocalJSX.ModusWcDivider & JSXBase.HTMLAttributes<HTMLModusWcDividerElement>;
             /**
-             * A customizable input component used to create inputs with types.
+             * A customizable input component used to create text inputs with types.
              * Adheres to WCAG 2.2 standards.
              */
-            "modus-wc-input": LocalJSX.ModusWcInput & JSXBase.HTMLAttributes<HTMLModusWcInputElement>;
+            "modus-wc-text-input": LocalJSX.ModusWcTextInput & JSXBase.HTMLAttributes<HTMLModusWcTextInputElement>;
             /**
              * A customizable textarea component.
              * Adheres to WCAG 2.2 standards.

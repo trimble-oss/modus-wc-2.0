@@ -27,3 +27,10 @@ body {
   color: var(--modus-wc-dark-color);
   background-color: var(--modus-wc-color-white);
 }
+
+// Storybook styles
+body.sb-show-main.sb-main-padded {
+  display: flex;
+  justify-content: center;
+  padding-bottom: var(--modus-wc-spacing-xl);
+}

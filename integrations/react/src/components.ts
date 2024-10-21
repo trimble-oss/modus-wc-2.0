@@ -9,12 +9,12 @@
 
 import type { EventName, StencilReactComponent } from '@stencil/react-output-target/runtime';
 import { createComponent } from '@stencil/react-output-target/runtime';
-import { type Event, type ModusWcButtonCustomEvent, type ModusWcInputCustomEvent, type ModusWcTextareaCustomEvent } from "@trimble-cms/modus-wc";
+import { type Event, type ModusWcButtonCustomEvent, type ModusWcTextInputCustomEvent, type ModusWcTextareaCustomEvent } from "@trimble-cms/modus-wc";
 import { ModusWcAvatar as ModusWcAvatarElement, defineCustomElement as defineModusWcAvatar } from "@trimble-cms/modus-wc/dist/components/modus-wc-avatar.js";
 import { ModusWcBadge as ModusWcBadgeElement, defineCustomElement as defineModusWcBadge } from "@trimble-cms/modus-wc/dist/components/modus-wc-badge.js";
 import { ModusWcButton as ModusWcButtonElement, defineCustomElement as defineModusWcButton } from "@trimble-cms/modus-wc/dist/components/modus-wc-button.js";
 import { ModusWcDivider as ModusWcDividerElement, defineCustomElement as defineModusWcDivider } from "@trimble-cms/modus-wc/dist/components/modus-wc-divider.js";
-import { ModusWcInput as ModusWcInputElement, defineCustomElement as defineModusWcInput } from "@trimble-cms/modus-wc/dist/components/modus-wc-input.js";
+import { ModusWcTextInput as ModusWcTextInputElement, defineCustomElement as defineModusWcTextInput } from "@trimble-cms/modus-wc/dist/components/modus-wc-text-input.js";
 import { ModusWcTextarea as ModusWcTextareaElement, defineCustomElement as defineModusWcTextarea } from "@trimble-cms/modus-wc/dist/components/modus-wc-textarea.js";
 import { ModusWcTypography as ModusWcTypographyElement, defineCustomElement as defineModusWcTypography } from "@trimble-cms/modus-wc/dist/components/modus-wc-typography.js";
 import React from 'react';
@@ -59,22 +59,22 @@ export const ModusWcDivider: StencilReactComponent<ModusWcDividerElement, ModusW
     defineCustomElement: defineModusWcDivider
 });
 
-type ModusWcInputEvents = {
-    onBlur: EventName<ModusWcInputCustomEvent<FocusEvent>>,
-    onChange: EventName<ModusWcInputCustomEvent<Event>>,
-    onFocus: EventName<ModusWcInputCustomEvent<FocusEvent>>
+type ModusWcTextInputEvents = {
+    onBlur: EventName<ModusWcTextInputCustomEvent<FocusEvent>>,
+    onChange: EventName<ModusWcTextInputCustomEvent<Event>>,
+    onFocus: EventName<ModusWcTextInputCustomEvent<FocusEvent>>
 };
 
-export const ModusWcInput: StencilReactComponent<ModusWcInputElement, ModusWcInputEvents> = /*@__PURE__*/ createComponent<ModusWcInputElement, ModusWcInputEvents>({
-    tagName: 'modus-wc-input',
-    elementClass: ModusWcInputElement,
+export const ModusWcTextInput: StencilReactComponent<ModusWcTextInputElement, ModusWcTextInputEvents> = /*@__PURE__*/ createComponent<ModusWcTextInputElement, ModusWcTextInputEvents>({
+    tagName: 'modus-wc-text-input',
+    elementClass: ModusWcTextInputElement,
     react: React,
     events: {
         onBlur: 'blur',
         onChange: 'change',
         onFocus: 'focus'
-    } as ModusWcInputEvents,
-    defineCustomElement: defineModusWcInput
+    } as ModusWcTextInputEvents,
+    defineCustomElement: defineModusWcTextInput
 });
 
 type ModusWcTextareaEvents = {

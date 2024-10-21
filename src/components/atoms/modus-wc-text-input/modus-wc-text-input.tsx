@@ -1,16 +1,16 @@
 import { h, Host, Component, Event, EventEmitter, Prop } from '@stencil/core';
 
 /**
- * A customizable input component used to create inputs with types.
+ * A customizable input component used to create text inputs with types.
  *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
-  tag: 'modus-wc-input',
-  styleUrl: 'modus-wc-input.scss',
+  tag: 'modus-wc-text-input',
+  styleUrl: 'modus-wc-text-input.scss',
   shadow: false,
 })
-export class ModusWcInput {
+export class ModusWcTextInput {
   /**
    * The ID of the element that describes the input.
    */
@@ -27,6 +27,27 @@ export class ModusWcInput {
   @Prop() ariaLabel!: string;
 
   /**
+   * Controls automatic capitalization in inputted text.
+   */
+  @Prop() autoCapitalize?:
+    | 'off'
+    | 'none'
+    | 'on'
+    | 'sentences'
+    | 'words'
+    | 'characters';
+
+  /**
+   * Hint for form autofill feature.
+   */
+  @Prop() autoComplete?: 'on' | 'off';
+
+  /**
+   * Indicates that an element should be focused on page load.
+   */
+  @Prop() autoFocus?: boolean;
+
+  /**
    * Custom CSS class to apply to the input (supports DaisyUI).
    */
   @Prop() customClass: string = '';
@@ -37,7 +58,7 @@ export class ModusWcInput {
   @Prop() dir?: 'ltr' | 'rtl' | 'auto';
 
   /**
-   * The disabled state of the input.
+   * Whether the form control is disabled.
    */
   @Prop() disabled: boolean = false;
 
@@ -47,42 +68,73 @@ export class ModusWcInput {
   @Prop() id?: string;
 
   /**
-   * The maximum number of characters allowed in the input.
+   * Hints at the type of data that might be entered by the user while editing the element or its contents.
+   * This allows a browser to display an appropriate virtual keyboard.
+   */
+  @Prop() inputMode?:
+    | 'decimal'
+    | 'email'
+    | 'none'
+    | 'numeric'
+    | 'search'
+    | 'tel'
+    | 'text'
+    | 'url';
+
+  /**
+   * Maximum length (number of characters) of value.
    */
   @Prop() maxLength?: number;
 
   /**
-   * The name of the input.
+   * Minimum length (number of characters) of value.
+   */
+  @Prop() minLength?: number;
+
+  /**
+   * Name of the form control. Submitted with the form as part of a name/value pai.
    */
   @Prop() name: string = '';
 
   /**
-   * The input's placeholder text.
+   * Pattern the value must match to be valid
+   */
+  @Prop() pattern?: string;
+
+  /**
+   * Text that appears in the form control when it has no value set.
    */
   @Prop() placeholder: string = '';
 
   /**
-   * The readonly state of the input.
+   * Whether the value is editable.
    */
-  @Prop() readonly: boolean = false;
+  @Prop() readOnly: boolean = false;
 
   /**
-   * If true, the input will be required.
+   * A value is required or must be checked for the form to be submittable.
    */
   @Prop() required: boolean = false;
 
   /**
-   * The tabindex of the input.
+   * Whether the element may be checked for spelling errors.
+   * A hint for the browser, not a guarantee.
+   */
+  @Prop() spellcheck?: boolean;
+
+  /**
+   * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
    */
   @Prop() tabIndex?: number;
 
   /**
-   * The input's type attribute.
+   * Type of form control.
    */
-  @Prop() type: 'email' | 'number' | 'text' | 'password' = 'text';
+  @Prop() type: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url' =
+    'text';
 
   /**
-   * The input's value.
+   * The value of the control.
    */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
@@ -128,6 +180,9 @@ export class ModusWcInput {
           aria-label={this.ariaLabel || this.placeholder}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
+          autocapitalize={this.autoCapitalize}
+          autocomplete={this.autoComplete}
+          autofocus={this.autoFocus}
           class={{
             'modus-wc-input': true,
             [this.customClass]: !!this.customClass,
@@ -135,14 +190,18 @@ export class ModusWcInput {
           dir={this.dir}
           disabled={this.disabled}
           id={this.id}
-          maxLength={this.maxLength}
+          inputmode={this.inputMode}
+          maxlength={this.maxLength}
+          minlength={this.minLength}
           name={this.name}
           onBlur={this.handleBlur}
           onChange={this.handleChange}
           onFocus={this.handleFocus}
+          pattern={this.pattern}
           placeholder={this.placeholder}
-          readonly={this.readonly}
+          readonly={this.readOnly}
           required={this.required}
+          spellcheck={this.spellcheck}
           tabIndex={this.tabIndex}
           type={this.type}
           value={this.value}
