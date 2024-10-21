@@ -3,7 +3,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { Meta, StoryObj } from '@storybook/web-components';
 
 const meta: Meta = {
-  title: 'Components/Text Input',
+  title: 'Components/Atoms/Text Input',
   component: 'modus-wc-text-input',
   argTypes: {
     ariaDescribedby: { control: 'text', table: { sort: 'alpha' } },

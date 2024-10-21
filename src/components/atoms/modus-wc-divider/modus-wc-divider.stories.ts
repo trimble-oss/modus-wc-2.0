@@ -10,7 +10,7 @@ interface DividerArgs {
 }
 
 const meta: Meta<DividerArgs> = {
-  title: 'Components/Divider',
+  title: 'Components/Atoms/Divider',
   argTypes: {
     ariaLabel: { control: 'text' },
     customClass: { control: 'text' },
