@@ -149,13 +149,13 @@ export namespace Components {
          */
         "ariaDescribedby"?: string;
         /**
+          * Indicates whether the input has an invalid input.
+         */
+        "ariaInvalid": 'true' | 'false';
+        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
-        /**
-          * Indicates whether the input has an invalid input.
-         */
-        "ariainvalid"?: boolean;
         /**
           * Controls automatic capitalization in inputted text.
          */
@@ -255,13 +255,13 @@ export namespace Components {
          */
         "ariaDescribedby"?: string;
         /**
+          * Indicates whether the textarea has an invalid input.
+         */
+        "ariaInvalid": 'true' | 'false';
+        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
-        /**
-          * Indicates whether the textarea has an invalid input.
-         */
-        "ariainvalid"?: boolean;
         /**
           * Custom CSS class to apply to the textarea (supports DaisyUI).
          */
@@ -637,13 +637,13 @@ declare namespace LocalJSX {
          */
         "ariaDescribedby"?: string;
         /**
+          * Indicates whether the input has an invalid input.
+         */
+        "ariaInvalid"?: 'true' | 'false';
+        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
-        /**
-          * Indicates whether the input has an invalid input.
-         */
-        "ariainvalid"?: boolean;
         /**
           * Controls automatic capitalization in inputted text.
          */
@@ -755,13 +755,13 @@ declare namespace LocalJSX {
          */
         "ariaDescribedby"?: string;
         /**
+          * Indicates whether the textarea has an invalid input.
+         */
+        "ariaInvalid"?: 'true' | 'false';
+        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
-        /**
-          * Indicates whether the textarea has an invalid input.
-         */
-        "ariainvalid"?: boolean;
         /**
           * Custom CSS class to apply to the textarea (supports DaisyUI).
          */

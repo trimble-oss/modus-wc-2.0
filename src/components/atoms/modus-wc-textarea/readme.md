@@ -104,8 +104,8 @@ Adheres to WCAG 2.2 standards.
 | Property                 | Attribute          | Description                                                   | Type                             | Default     |
 | ------------------------ | ------------------ | ------------------------------------------------------------- | -------------------------------- | ----------- |
 | `ariaDescribedby`        | `aria-describedby` | The ID of the element that describes the textarea.            | `string \| undefined`            | `undefined` |
+| `ariaInvalid`            | `aria-invalid`     | Indicates whether the textarea has an invalid input.          | `"false" \| "true"`              | `'false'`   |
 | `ariaLabel` _(required)_ | `aria-label`       | The aria-label attribute for accessibility.                   | `string`                         | `undefined` |
-| `ariainvalid`            | `ariainvalid`      | Indicates whether the textarea has an invalid input.          | `boolean \| undefined`           | `undefined` |
 | `customClass`            | `custom-class`     | Custom CSS class to apply to the textarea (supports DaisyUI). | `string`                         | `''`        |
 | `dir`                    | `dir`              | Specifies the text direction of the textarea content.         | `"" \| "auto" \| "ltr" \| "rtl"` | `''`        |
 | `disabled`               | `disabled`         | The disabled state of the textarea.                           | `boolean`                        | `false`     |
