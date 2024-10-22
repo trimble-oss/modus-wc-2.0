@@ -1,6 +1,11 @@
 name: Build React Integration
 
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      npm_token:
+        required: true
+        type: string
 
 jobs:
   build-react:
@@ -30,12 +35,15 @@ jobs:
           echo "modus_wc_tarball=${modus_wc_tarball}" >> $GITHUB_OUTPUT
         continue-on-error: false
 
+      - name: print token
+        run: echo ${{ inputs.npm_token }}
+
       - name: Install dependencies for react build
         run: npm ci
         working-directory: integrations/react
-        continue-on-error: false
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ inputs.npm_token }}
+        continue-on-error: false
 
       - name: Install current modus-wc implementation for react integration
         run: npm install ./${{ steps.npm_pack.outputs.modus_wc_tarball }}

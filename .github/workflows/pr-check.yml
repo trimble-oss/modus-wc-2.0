@@ -7,6 +7,8 @@ on:
 jobs:
   build-react:
     uses: ./.github/workflows/build-react.yml
+    with:
+      npm_token: ${{ secrets.NPM_TOKEN }}
 
   check-pr:
     runs-on: ubuntu-latest
