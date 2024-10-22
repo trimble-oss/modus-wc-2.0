@@ -51,6 +51,8 @@ jobs:
         run: npm ci
         working-directory: integrations/react
         continue-on-error: false
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Install current modus-wc implementation for react integration
         run: npm install ./${{ steps.npm_pack.outputs.modus_wc_tarball }}
