@@ -1,5 +1,8 @@
 import { h, Host, Component, Event, EventEmitter, Prop } from '@stencil/core';
-import { tailwindThemeClasses } from './modus-wc-text-input.tailwind';
+import {
+  convertPropsToClasses,
+  tailwindThemeClasses,
+} from './modus-wc-text-input.tailwind';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -49,7 +52,12 @@ export class ModusWcTextInput {
   @Prop() autoFocus?: boolean;
 
   /**
-   * Custom CSS class to apply to the input (supports DaisyUI).
+   * Indicates that the input should have a border.
+   */
+  @Prop() bordered?: boolean = true;
+
+  /**
+   * Custom CSS class to apply to the input.
    */
   @Prop() customClass: string = '';
 
@@ -118,6 +126,14 @@ export class ModusWcTextInput {
   @Prop() required: boolean = false;
 
   /**
+   * The size of the input.
+   */
+  @Prop() size:
+    | 'modus-wc-input-sm'
+    | 'modus-wc-input-md'
+    | 'modus-wc-input-lg' = 'modus-wc-input-md';
+
+  /**
    * Whether the element may be checked for spelling errors.
    * A hint for the browser, not a guarantee.
    */
@@ -175,10 +191,14 @@ export class ModusWcTextInput {
   render() {
     const theme = document.documentElement.getAttribute('data-theme') ?? '';
     const themeClasses = tailwindThemeClasses[theme];
+
+    const propClasses = convertPropsToClasses({ bordered: this.bordered });
+
     const classes = {
       'modus-wc-input': true,
-      [themeClasses]: true,
       [this.customClass]: !!this.customClass,
+      [themeClasses]: !!themeClasses,
+      [propClasses]: !!propClasses,
     };
 
     return (
