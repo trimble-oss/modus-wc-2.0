@@ -1,4 +1,5 @@
 import { h, Host, Component, Event, EventEmitter, Prop } from '@stencil/core';
+import { tailwindThemeClasses } from './modus-wc-text-input.tailwind';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -172,6 +173,14 @@ export class ModusWcTextInput {
   };
 
   render() {
+    const theme = document.documentElement.getAttribute('data-theme') ?? '';
+    const themeClasses = tailwindThemeClasses[theme];
+    const classes = {
+      'modus-wc-input': true,
+      [themeClasses]: true,
+      [this.customClass]: !!this.customClass,
+    };
+
     return (
       <Host>
         <input
@@ -183,10 +192,7 @@ export class ModusWcTextInput {
           autocapitalize={this.autoCapitalize}
           autocomplete={this.autoComplete}
           autofocus={this.autoFocus}
-          class={{
-            'modus-wc-input': true,
-            [this.customClass]: !!this.customClass,
-          }}
+          class={classes}
           dir={this.dir}
           disabled={this.disabled}
           id={this.id}
