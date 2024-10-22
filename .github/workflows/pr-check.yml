@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  quality-checks:
+  check-pr:
     runs-on: ubuntu-latest
 
     steps:
@@ -51,7 +51,7 @@ jobs:
             exit 1
           fi
 
-  build-react:
+  build-react-integration:
     uses: ./.github/workflows/build-react.yml
     with:
       node_version: ${{ vars.NODE_VERSION }}
