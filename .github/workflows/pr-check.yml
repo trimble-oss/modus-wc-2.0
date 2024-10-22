@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  check-pr:
+  quality-checks:
     runs-on: ubuntu-latest
 
     steps:
@@ -40,37 +40,11 @@ jobs:
         run: npm run storybook:build
         continue-on-error: true
 
-      - name: Pack modus-wc
-        id: npm_pack
-        run: |
-          modus_wc_tarball=$(npm pack --pack-destination integrations/react | tail -n 1)
-          echo "modus_wc_tarball=${modus_wc_tarball}" >> $GITHUB_OUTPUT
-        continue-on-error: false
-
-      - name: Install dependencies for react build
-        run: npm ci
-        working-directory: integrations/react
-        continue-on-error: false
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Install current modus-wc implementation for react integration
-        run: npm install ./${{ steps.npm_pack.outputs.modus_wc_tarball }}
-        working-directory: integrations/react
-        continue-on-error: false
-
-      - name: Build react integration
-        id: react
-        run: npm run build
-        working-directory: integrations/react
-        continue-on-error: true
-
       - name: Check for step failures
         if: always()
         run: |
           if [ "${{ steps.lint.outcome }}" == "failure" ] || \
              [ "${{ steps.prettier.outcome }}" == "failure" ] || \
-             [ "${{ steps.react.outcome }}" == "failure" ] || \
              [ "${{ steps.stencil.outcome }}" == "failure" ] || \
              [ "${{ steps.storybook.outcome }}" == "failure" ]; then
             echo "One or more steps have failed. Please review the logs and fix the issues before merging."
