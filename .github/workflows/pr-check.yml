@@ -5,11 +5,6 @@ on:
     branches: [main]
 
 jobs:
-  build-react:
-    uses: ./.github/workflows/build-react.yml
-    with:
-      npm_token: ${{ secrets.NPM_TOKEN }}
-
   check-pr:
     runs-on: ubuntu-latest
 
@@ -81,3 +76,9 @@ jobs:
             echo "One or more steps have failed. Please review the logs and fix the issues before merging."
             exit 1
           fi
+
+  build-react:
+    uses: ./.github/workflows/build-react.yml
+    with:
+      node_version: ${{ vars.NODE_VERSION }}
+    secrets: inherit
