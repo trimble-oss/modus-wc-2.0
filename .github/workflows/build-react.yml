@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: test error
+        run: exit 1
+
       - name: Build Stencil components
         id: stencil
         run: npm run stencil:build
