@@ -20,6 +20,7 @@ const meta: Meta = {
       table: { sort: 'alpha' },
     },
     autoFocus: { control: 'boolean', table: { sort: 'alpha' } },
+    bordered: { control: 'boolean', table: { sort: 'alpha' } },
     customClass: { control: 'text', table: { sort: 'alpha' } },
     dir: {
       control: { type: 'select' },
@@ -49,6 +50,10 @@ const meta: Meta = {
     placeholder: { control: 'text', table: { sort: 'alpha' } },
     readonly: { control: 'boolean', table: { sort: 'alpha' } },
     required: { control: 'boolean', table: { sort: 'alpha' } },
+    size: {
+      control: { type: 'select' },
+      options: ['modus-wc-input-sm', 'modus-wc-input-md', 'modus-wc-input-lg'],
+    },
     spellcheck: { control: 'boolean', table: { sort: 'alpha' } },
     tabIndex: { control: 'number', table: { sort: 'alpha' } },
     type: {
@@ -80,6 +85,7 @@ const Template: Story = {
         auto-capitalize=${ifDefined(args.autoCapitalize)}
         auto-complete=${ifDefined(args.autoComplete)}
         ?auto-focus=${args.autoFocus}
+        ?bordered=${args.bordered}
         custom-class=${ifDefined(args.customClass)}
         dir=${ifDefined(args.dir)}
         ?disabled=${args.disabled}
@@ -92,6 +98,7 @@ const Template: Story = {
         placeholder=${ifDefined(args.placeholder)}
         ?readonly=${args.readonly}
         ?required=${args.required}
+        ?size=${args.size}
         ?spellcheck=${args.spellcheck}
         tab-index=${ifDefined(args.tabIndex)}
         type=${ifDefined(args.type)}
