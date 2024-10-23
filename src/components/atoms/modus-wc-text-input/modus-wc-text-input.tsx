@@ -192,13 +192,16 @@ export class ModusWcTextInput {
     const theme = document.documentElement.getAttribute('data-theme') ?? '';
     const themeClasses = tailwindThemeClasses[theme];
 
-    const propClasses = convertPropsToClasses({ bordered: this.bordered });
+    const propClasses = convertPropsToClasses({
+      bordered: this.bordered,
+      size: this.size,
+    });
 
     const classes = {
-      'modus-wc-input': true,
       [this.customClass]: !!this.customClass,
-      [themeClasses]: !!themeClasses,
       [propClasses]: !!propClasses,
+      [themeClasses]: !!themeClasses,
+      'modus-wc-input': true,
     };
 
     return (
