@@ -1,4 +1,5 @@
 import { Config } from '@stencil/core';
+import { angularOutputTarget } from '@stencil/angular-output-target';
 import { reactOutputTarget } from '@stencil/react-output-target';
 import { sass } from '@stencil/sass';
 
@@ -20,6 +21,15 @@ export const config: Config = {
       type: 'www',
       serviceWorker: null,
     },
+    angularOutputTarget({
+      componentCorePackage: '@trimble-cms/modus-wc',
+      outputType: 'component',
+      directivesProxyFile:
+        './integrations/angular/ng18/projects/trimble-cms/modus-wc-ng/src/lib/stencil-generated/components.ts',
+      directivesArrayFile:
+        './integrations/angular/ng18/projects/trimble-cms/modus-wc-ng/src/lib/stencil-generated/index.ts',
+      valueAccessorConfigs: [],
+    }),
     reactOutputTarget({
       outDir: './integrations/react/src',
       excludeComponents: ['stencil-docs'],
