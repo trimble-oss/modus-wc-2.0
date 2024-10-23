@@ -186,6 +186,7 @@ export class ModusWcTextInput {
   };
 
   render() {
+    // istanbul ignore next - not implemented
     const theme = document.documentElement.getAttribute('data-theme') ?? '';
     const themeClasses = tailwindThemeClasses[theme];
 

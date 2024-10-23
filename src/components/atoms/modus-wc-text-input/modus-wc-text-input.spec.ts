@@ -10,7 +10,7 @@ describe('modus-wc-text-input', () => {
     expect(page.root).not.toBeNull();
     expect(page.root).toEqualHtml(`
       <modus-wc-text-input aria-label="Default input" value="">
-        <input aria-invalid="false" aria-label="Default input" aria-placeholder="" class="modus-wc-input" inputmode="text" name="" placeholder="" tabindex="0" type="text" value="">
+        <input aria-invalid="false" aria-label="Default input" aria-placeholder="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md" inputmode="text" name="" placeholder="" tabindex="0" type="text" value="">
       </modus-wc-text-input>
     `);
   });
@@ -37,6 +37,7 @@ describe('modus-wc-text-input', () => {
         placeholder="Custom placeholder" 
         readonly="true"
         required="true"
+        size="lg"
         spellcheck="true"
         tab-index="1" 
         type="email"
@@ -64,6 +65,7 @@ describe('modus-wc-text-input', () => {
         placeholder="Custom placeholder" 
         readonly="true"
         required="true"
+        size="lg"
         spellcheck="true"
         tab-index="1" 
         type="email"
@@ -75,7 +77,7 @@ describe('modus-wc-text-input', () => {
           aria-label="Custom input"
           aria-placeholder="Custom placeholder"
           aria-required=""
-          class="modus-wc-input custom-class"
+          class="modus-wc-input modus-wc-input-bordered modus-wc-input-lg custom-class"
           dir="rtl"
           disabled
           id="custom-id"

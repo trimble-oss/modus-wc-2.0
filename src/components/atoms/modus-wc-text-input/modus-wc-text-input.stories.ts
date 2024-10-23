@@ -106,7 +106,7 @@ const Template: Story = {
       <h1>Text Input</h1>
       <modus-wc-text-input
         aria-describedby=${args.ariaDescribedby}
-        ?aria-invalid=${args.ariaInvalid}
+        aria-invalid=${args.ariaInvalid}
         aria-label=${args.ariaLabel}
         auto-capitalize=${args.autoCapitalize}
         auto-complete=${args.autoComplete}

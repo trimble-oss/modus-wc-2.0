@@ -33,7 +33,7 @@
   // TODO - handle valid border-color #1e8a44
 
   // TODO - this may use a class instead of the aria attribute
-  &[aria-invalid] {
+  &[aria-invalid="true"] {
     border-color: #da212c;
   }
 
@@ -72,7 +72,7 @@
   // TODO - handle valid border-color #006638
 
   // TODO - this may use a class instead of the aria attribute
-  &[aria-invalid] {
+  &[aria-invalid="true"] {
     border-color: #da212c;
   }
 

@@ -58,6 +58,7 @@ export class ModusWcAvatar {
   private getClasses(): string {
     const classList = [];
 
+    // istanbul ignore next - not implemented
     const theme = document.documentElement.getAttribute('data-theme') ?? '';
     const themeClasses = tailwindThemeClasses[theme];
     const propClasses = convertPropsToClasses({
@@ -65,6 +66,7 @@ export class ModusWcAvatar {
       size: this.size,
     });
 
+    // istanbul ignore next - not implemented
     if (themeClasses) classList.push(themeClasses);
     if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);

@@ -4,10 +4,13 @@ export const tailwindThemeClasses: Record<string, string> = {
   'modus-dark': '',
 };
 
-export const convertPropsToClasses = (props: any): string => {
+export const convertPropsToClasses = (props: {
+  shape?: string;
+  size?: string;
+}): string => {
   let classes = '';
 
-  if (props.hasOwnProperty('shape') && props.shape) {
+  if (Object.prototype.hasOwnProperty.call(props, 'shape') && props.shape) {
     switch (props.shape) {
       case 'circle':
         classes = `${classes} modus-wc-rounded-full`;
@@ -18,7 +21,7 @@ export const convertPropsToClasses = (props: any): string => {
     }
   }
 
-  if (props.hasOwnProperty('size') && props.size) {
+  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
     switch (props.size) {
       case 'xs':
         classes = `${classes} modus-wc-w-8`;
