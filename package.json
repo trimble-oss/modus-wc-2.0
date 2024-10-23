@@ -34,8 +34,8 @@
     "stencil:build-react": "stencil build --ts --react",
     "stencil:generate": "stencil generate",
     "stencil:watch": "stencil build --dev --watch",
-    "storybook": "concurrently \"npm run stencil:build\" \"storybook dev -p 6006\"",
-    "storybook:build": "npm run stencil:build && storybook build",
+    "storybook": "npm run tailwind:build && npm run stencil:build && storybook dev -p 6006",
+    "storybook:build": "storybook build",
     "tailwind:build": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css -m",
     "tailwind:watch": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --watch"
   },

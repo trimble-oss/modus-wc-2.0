@@ -48,7 +48,7 @@ const meta: Meta = {
     name: { control: 'text', table: { sort: 'alpha' } },
     pattern: { control: 'text', table: { sort: 'alpha' } },
     placeholder: { control: 'text', table: { sort: 'alpha' } },
-    readonly: { control: 'boolean', table: { sort: 'alpha' } },
+    readOnly: { control: 'boolean', table: { sort: 'alpha' } },
     required: { control: 'boolean', table: { sort: 'alpha' } },
     size: {
       control: { type: 'select' },
@@ -96,9 +96,9 @@ const Template: Story = {
         name=${ifDefined(args.name)}
         pattern=${ifDefined(args.pattern)}
         placeholder=${ifDefined(args.placeholder)}
-        ?readonly=${args.readonly}
+        ?read-only=${args.readOnly}
         ?required=${args.required}
-        ?size=${args.size}
+        size=${ifDefined(args.size)}
         ?spellcheck=${args.spellcheck}
         tab-index=${ifDefined(args.tabIndex)}
         type=${ifDefined(args.type)}
@@ -119,7 +119,15 @@ const Template: Story = {
   `,
   args: {
     ariaLabel: 'Enter your name',
+    bordered: true,
+    customClass: '',
+    disabled: false,
+    name: '',
     placeholder: 'Type your name here',
+    readOnly: false,
+    required: false,
+    size: 'modus-wc-input-md',
+    value: '',
   },
 };
 
