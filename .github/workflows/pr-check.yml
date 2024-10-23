@@ -50,3 +50,8 @@ jobs:
             echo "One or more steps have failed. Please review the logs and fix the issues before merging."
             exit 1
           fi
+
+  build-react-integration:
+    uses: ./.github/workflows/build-react.yml
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

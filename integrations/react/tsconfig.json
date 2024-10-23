@@ -35,8 +35,6 @@
     "experimentalDecorators": true,
 
     // Additional Checks
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "allowUnreachableCode": false,
 
     // JSX Options
