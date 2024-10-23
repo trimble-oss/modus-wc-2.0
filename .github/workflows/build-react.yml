@@ -5,11 +5,6 @@ on:
     secrets:
       NPM_TOKEN:
         required: true
-    inputs:
-      node_version:
-        description: 'Node version to use for the build'
-        type: string
-        required: true
 
 jobs:
   build-react:
@@ -22,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ inputs.node_version }}
+          node-version: ${{ vars.NODE_VERSION }}
 
       - name: Install dependencies
         run: npm ci
