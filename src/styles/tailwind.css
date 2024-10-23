@@ -2,4 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+/* override variables for light/dark mode here */
+
+@media (prefers-color-scheme: light) {
+    :root {
+        color-scheme: light;
+        --modus-wc-bg-color: var(--modus-wc-color-white);
+        --modus-wc-text-color: var(--modus-wc-primary-dark);
+        --modus-wc-border-color: var(--modus-wc-color-primary-900);
+    }
+    body { 
+        background: var(--modus-wc-color-white);
+        color: var(--modus-wc-color-black);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+   :root {
+        color-scheme: dark;
+        --modus-wc-bg-color: var(--modus-wc-grey-900);
+        --modus-wc-text-color: var(--modus-wc-grey-100);
+        --modus-wc-border-color: var(--modus-wc-grey-500);
+    }
+    body { 
+        background: var(--modus-wc-grey-800);
+        color: var(--modus-wc-color-white);
+    }
+}
+
 /* Your custom styles go here */

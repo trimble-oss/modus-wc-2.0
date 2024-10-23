@@ -1,4 +1,5 @@
 @import '../../../styles/output.css';
+@import '../../../styles/modus-variables.scss';
 
 /**
 * This component uses Tailwind CSS and DaisyUI.
@@ -6,17 +7,17 @@
 */
 
 [data-theme="modus-classic"] .modus-wc-input {
-  background-color:	#ffffff;
+  background-color:	var(--modus-wc-bg-color);
   border-color:	#464b52;
   border-radius: 4px;
   border-width:	1px;
-  color: #464b52;
+  color: var(--modus-wc-text-color);
   font-size: 12px;
   height: 32px;
   padding: 8px;
 
   &:focus {
-    border-color: #019aeb;
+    border-color: var(--modus-wc-primary-500);
     outline: none;
   }
 
