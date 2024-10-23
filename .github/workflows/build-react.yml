@@ -50,4 +50,4 @@ jobs:
         id: react
         run: npm run build
         working-directory: integrations/react
-        continue-on-error: true
+        continue-on-error: false
