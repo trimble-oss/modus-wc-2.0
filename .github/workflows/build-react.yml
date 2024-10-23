@@ -34,9 +34,6 @@ jobs:
           echo "modus_wc_tarball=${modus_wc_tarball}" >> $GITHUB_OUTPUT
         continue-on-error: false
 
-      - name: print token
-        run: echo ${{ secrets.NPM_TOKEN }}
-
       - name: Install dependencies for react build
         run: npm ci
         working-directory: integrations/react
