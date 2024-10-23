@@ -53,6 +53,5 @@ jobs:
 
   build-react-integration:
     uses: ./.github/workflows/build-react.yml
-    with:
-      node_version: ${{ vars.NODE_VERSION }}
-    secrets: inherit
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
