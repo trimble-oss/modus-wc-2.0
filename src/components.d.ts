@@ -24,17 +24,21 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
-          * Custom CSS class to apply to the outer div.
+          * Custom CSS class to apply to the inner div.
          */
         "customClass": string;
-        /**
-          * DaisyUI CSS class to apply to inner div.
-         */
-        "daisyClass": string;
         /**
           * The location of the image.
          */
         "imgSrc": string;
+        /**
+          * The shape of the avatar.
+         */
+        "shape"?: 'circle' | 'square';
+        /**
+          * The size of the avatar.
+         */
+        "size"?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
@@ -235,9 +239,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size": | 'modus-wc-input-sm'
-    | 'modus-wc-input-md'
-    | 'modus-wc-input-lg';
+        "size"?: 'sm' | 'md' | 'lg';
         /**
           * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
          */
@@ -518,17 +520,21 @@ declare namespace LocalJSX {
          */
         "ariaLabel": string;
         /**
-          * Custom CSS class to apply to the outer div.
+          * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
-        /**
-          * DaisyUI CSS class to apply to inner div.
-         */
-        "daisyClass"?: string;
         /**
           * The location of the image.
          */
         "imgSrc"?: string;
+        /**
+          * The shape of the avatar.
+         */
+        "shape"?: 'circle' | 'square';
+        /**
+          * The size of the avatar.
+         */
+        "size"?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
@@ -745,9 +751,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: | 'modus-wc-input-sm'
-    | 'modus-wc-input-md'
-    | 'modus-wc-input-lg';
+        "size"?: 'sm' | 'md' | 'lg';
         /**
           * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
          */

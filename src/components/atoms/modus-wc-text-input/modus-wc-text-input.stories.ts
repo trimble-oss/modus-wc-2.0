@@ -1,8 +1,34 @@
 import { html } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { Meta, StoryObj } from '@storybook/web-components';
 
-const meta: Meta = {
+interface TextInputArgs {
+  ariaDescribedby: string;
+  ariaInvalid: boolean;
+  ariaLabel: string;
+  autoCapitalize: string;
+  autoComplete: string;
+  autoFocus: boolean;
+  bordered: boolean;
+  customClass: string;
+  dir: string;
+  disabled: boolean;
+  id: string;
+  inputMode: string;
+  maxLength: number;
+  minLength: number;
+  name: string;
+  pattern: string;
+  placeholder: string;
+  readOnly: boolean;
+  required: boolean;
+  size: string;
+  spellcheck: boolean;
+  tabIndex: number;
+  type: string;
+  value: string;
+}
+
+const meta: Meta<TextInputArgs> = {
   title: 'Components/Atoms/Text Input',
   component: 'modus-wc-text-input',
   argTypes: {
@@ -52,7 +78,7 @@ const meta: Meta = {
     required: { control: 'boolean', table: { sort: 'alpha' } },
     size: {
       control: { type: 'select' },
-      options: ['modus-wc-input-sm', 'modus-wc-input-md', 'modus-wc-input-lg'],
+      options: ['sm', 'md', 'lg'],
     },
     spellcheck: { control: 'boolean', table: { sort: 'alpha' } },
     tabIndex: { control: 'number', table: { sort: 'alpha' } },
@@ -72,36 +98,36 @@ const meta: Meta = {
 
 export default meta;
 
-type Story = StoryObj;
+type Story = StoryObj<TextInputArgs>;
 
 const Template: Story = {
   render: (args) => html`
     <div>
       <h1>Text Input</h1>
       <modus-wc-text-input
-        aria-describedby=${ifDefined(args.ariaDescribedby)}
-        aria-invalid=${ifDefined(args.ariaInvalid)}
-        aria-label=${ifDefined(args.ariaLabel)}
-        auto-capitalize=${ifDefined(args.autoCapitalize)}
-        auto-complete=${ifDefined(args.autoComplete)}
+        aria-describedby=${args.ariaDescribedby}
+        ?aria-invalid=${args.ariaInvalid}
+        aria-label=${args.ariaLabel}
+        auto-capitalize=${args.autoCapitalize}
+        auto-complete=${args.autoComplete}
         ?auto-focus=${args.autoFocus}
         ?bordered=${args.bordered}
-        custom-class=${ifDefined(args.customClass)}
-        dir=${ifDefined(args.dir)}
+        custom-class=${args.customClass}
+        dir=${args.dir}
         ?disabled=${args.disabled}
-        id=${ifDefined(args.id)}
-        input-mode=${ifDefined(args.inputMode)}
-        max-length=${ifDefined(args.maxLength)}
-        min-length=${ifDefined(args.minLength)}
-        name=${ifDefined(args.name)}
-        pattern=${ifDefined(args.pattern)}
-        placeholder=${ifDefined(args.placeholder)}
+        id=${args.id}
+        input-mode=${args.inputMode}
+        max-length=${args.maxLength}
+        min-length=${args.minLength}
+        name=${args.name}
+        pattern=${args.pattern}
+        placeholder=${args.placeholder}
         ?read-only=${args.readOnly}
         ?required=${args.required}
-        size=${ifDefined(args.size)}
+        size=${args.size}
         ?spellcheck=${args.spellcheck}
-        tab-index=${ifDefined(args.tabIndex)}
-        type=${ifDefined(args.type)}
+        tab-index=${args.tabIndex}
+        type=${args.type}
         .value=${args.value}
         @input=${(e: Event) => {
           const target = e.target as HTMLInputElement;
@@ -119,6 +145,7 @@ const Template: Story = {
   `,
   args: {
     ariaLabel: 'Enter your name',
+    ariaInvalid: false,
     bordered: true,
     customClass: '',
     disabled: false,
@@ -126,7 +153,7 @@ const Template: Story = {
     placeholder: 'Type your name here',
     readOnly: false,
     required: false,
-    size: 'modus-wc-input-md',
+    size: 'md',
     value: '',
   },
 };

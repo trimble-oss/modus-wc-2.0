@@ -1,13 +1,13 @@
+import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
-import { setModusWCMode, ModusWCMode } from '../../../utils/theme';
 
 interface AvatarArgs {
   alt: string;
   ariaLabel: string;
   customClass: string;
-  daisyClass: string;
   imgSrc: string;
-  mode: ModusWCMode;
+  shape: string;
+  size: string;
 }
 
 const meta: Meta<AvatarArgs> = {
@@ -16,11 +16,14 @@ const meta: Meta<AvatarArgs> = {
     alt: { control: 'text' },
     ariaLabel: { control: 'text' },
     customClass: { control: 'text' },
-    daisyClass: { control: 'text' },
     imgSrc: { control: 'text' },
-    mode: {
+    shape: {
       control: { type: 'select' },
-      options: ['default', 'dark', 'high-contrast'],
+      options: ['circle', 'square'],
+    },
+    size: {
+      control: { type: 'select' },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
 };
@@ -30,34 +33,29 @@ export default meta;
 type Story = StoryObj<AvatarArgs>;
 
 const Template: Story = {
-  render: (args) => {
-    setModusWCMode(args.mode);
-
-    return `
-      <div>
-        <h1>Avatar</h1>
-        <modus-wc-avatar 
-          alt="${args.alt}"
-          aria-label="${args.ariaLabel}"
-          custom-class="${args.customClass}"
-          daisy-class="${args.daisyClass}"
-          img-src="${args.imgSrc}"
-        ></modus-wc-avatar>
-        <stencil-docs component-name="modus-wc-avatar"></stencil-docs>
-      </div>
-    `;
-  },
-};
-
-export const Default: Story = {
-  ...Template,
+  render: (args) => html`
+    <div>
+      <h1>Avatar</h1>
+      <modus-wc-avatar
+        alt="${args.alt}"
+        aria-label="${args.ariaLabel}"
+        custom-class="${args.customClass}"
+        img-src="${args.imgSrc}"
+        shape="${args.shape}"
+        size="${args.size}"
+      ></modus-wc-avatar>
+      <stencil-docs component-name="modus-wc-avatar"></stencil-docs>
+    </div>
+  `,
   args: {
     alt: 'User avatar',
     ariaLabel: 'User avatar',
     customClass: '',
-    daisyClass: '',
     imgSrc:
       'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',
-    mode: 'default',
+    shape: 'circle',
+    size: 'md',
   },
 };
+
+export const Default: Story = { ...Template };

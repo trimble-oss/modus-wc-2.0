@@ -1,4 +1,8 @@
 import { h, Component, Prop } from '@stencil/core';
+import {
+  convertPropsToClasses,
+  tailwindThemeClasses,
+} from './modus-wc-avatar.tailwind';
 
 /**
  * A customizable avatar component used to create avatars with different images.
@@ -22,14 +26,9 @@ export class ModusWcAvatar {
   @Prop() ariaLabel!: string;
 
   /**
-   * Custom CSS class to apply to the outer div.
+   * Custom CSS class to apply to the inner div.
    */
   @Prop() customClass: string = '';
-
-  /**
-   * DaisyUI CSS class to apply to inner div.
-   */
-  @Prop() daisyClass: string = '';
 
   /**
    * The location of the image.
@@ -37,6 +36,16 @@ export class ModusWcAvatar {
   @Prop() imgSrc: string = '';
 
   // TODO - add placeholder support (need UX logic)
+
+  /**
+   * The shape of the avatar.
+   */
+  @Prop() shape?: 'circle' | 'square' = 'circle';
+
+  /**
+   * The size of the avatar.
+   */
+  @Prop() size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
 
   componentWillLoad() {
     if (!this.alt || !this.ariaLabel) {
@@ -46,16 +55,27 @@ export class ModusWcAvatar {
     }
   }
 
+  private getClasses(): string {
+    const classList = [];
+
+    const theme = document.documentElement.getAttribute('data-theme') ?? '';
+    const themeClasses = tailwindThemeClasses[theme];
+    const propClasses = convertPropsToClasses({
+      shape: this.shape,
+      size: this.size,
+    });
+
+    if (themeClasses) classList.push(themeClasses);
+    if (propClasses) classList.push(propClasses);
+    if (this.customClass) classList.push(this.customClass);
+
+    return classList.join(' ');
+  }
+
   render() {
     return (
-      <div
-        class={{
-          'modus-wc-avatar': true,
-          [this.customClass]: !!this.customClass,
-        }}
-        aria-label={this.ariaLabel}
-      >
-        <div class={this.daisyClass}>
+      <div class="modus-wc-avatar" aria-label={this.ariaLabel}>
+        <div class={this.getClasses()}>
           <img src={this.imgSrc} alt={this.alt} />
         </div>
       </div>

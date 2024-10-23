@@ -12,7 +12,7 @@ export const convertPropsToClasses = (props: any): string => {
   }
 
   if (props.hasOwnProperty('size') && props.size) {
-    classes = `${classes} ${props.size}`;
+    classes = `${classes} modus-wc-input-${props.size}`;
   }
 
   return classes;

@@ -128,10 +128,7 @@ export class ModusWcTextInput {
   /**
    * The size of the input.
    */
-  @Prop() size:
-    | 'modus-wc-input-sm'
-    | 'modus-wc-input-md'
-    | 'modus-wc-input-lg' = 'modus-wc-input-md';
+  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
 
   /**
    * Whether the element may be checked for spelling errors.
