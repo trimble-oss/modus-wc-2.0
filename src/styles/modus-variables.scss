@@ -85,15 +85,24 @@ $modus-wc-fluid-font-size-max: 18px;
   /* Base font size in pixels (for reference) */
   --modus-wc-font-size-root: 16px;
 
-  --modus-wc-font-size-xs: 0.625rem; /* 10px */
-  --modus-wc-font-size-sm: 0.75rem; /* 12px */
-  --modus-wc-font-size-base: 0.875rem; /* 14px */
-  --modus-wc-font-size-md: 1rem; /* 16px */
-  --modus-wc-font-size-lg: 1.125rem; /* 18px */
-  --modus-wc-font-size-xl: 1.25rem; /* 20px */
-  --modus-wc-font-size-2xl: 1.5rem; /* 24px */
-  --modus-wc-font-size-3xl: 1.875rem; /* 30px */
-  --modus-wc-font-size-4xl: 2.25rem; /* 36px */
+  --modus-wc-font-size-xs: 0.625rem;
+  /* 10px */
+  --modus-wc-font-size-sm: 0.75rem;
+  /* 12px */
+  --modus-wc-font-size-base: 0.875rem;
+  /* 14px */
+  --modus-wc-font-size-md: 1rem;
+  /* 16px */
+  --modus-wc-font-size-lg: 1.125rem;
+  /* 18px */
+  --modus-wc-font-size-xl: 1.25rem;
+  /* 20px */
+  --modus-wc-font-size-2xl: 1.5rem;
+  /* 24px */
+  --modus-wc-font-size-3xl: 1.875rem;
+  /* 30px */
+  --modus-wc-font-size-4xl: 2.25rem;
+  /* 36px */
 
   --modus-wc-font-weight-thin: 100;
   --modus-wc-font-weight-extralight: 200;
@@ -105,21 +114,34 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-font-weight-extrabold: 800;
   --modus-wc-font-weight-black: 900;
 
-  --modus-wc-line-height-xs: 1; /* 16px */
-  --modus-wc-line-height-sm: 1.25; /* 20px */
-  --modus-wc-line-height-md: 1.5; /* 24px */
-  --modus-wc-line-height-lg: 1.75; /* 28px */
-  --modus-wc-line-height-xl: 2; /* 32px */
-  --modus-wc-line-height-2xl: 2.25; /* 36px */
+  --modus-wc-line-height-xs: 1;
+  /* 16px */
+  --modus-wc-line-height-sm: 1.25;
+  /* 20px */
+  --modus-wc-line-height-md: 1.5;
+  /* 24px */
+  --modus-wc-line-height-lg: 1.75;
+  /* 28px */
+  --modus-wc-line-height-xl: 2;
+  /* 32px */
+  --modus-wc-line-height-2xl: 2.25;
+  /* 36px */
 
   // Spacing
-  --modus-wc-spacing-2xs: 0.125rem; /* 2px */
-  --modus-wc-spacing-xs: 0.25rem; /* 4px */
-  --modus-wc-spacing-sm: 0.5rem; /* 8px */
-  --modus-wc-spacing-md: 1rem; /* 16px */
-  --modus-wc-spacing-lg: 1.5rem; /* 24px */
-  --modus-wc-spacing-xl: 2rem; /* 32px */
-  --modus-wc-spacing-2xl: 3rem; /* 48px */
+  --modus-wc-spacing-2xs: 0.125rem;
+  /* 2px */
+  --modus-wc-spacing-xs: 0.25rem;
+  /* 4px */
+  --modus-wc-spacing-sm: 0.5rem;
+  /* 8px */
+  --modus-wc-spacing-md: 1rem;
+  /* 16px */
+  --modus-wc-spacing-lg: 1.5rem;
+  /* 24px */
+  --modus-wc-spacing-xl: 2rem;
+  /* 32px */
+  --modus-wc-spacing-2xl: 3rem;
+  /* 48px */
 
   --modus-wc-letter-spacing-sm: 0.10px;
   --modus-wc-letter-spacing-md: 0.15px;
@@ -175,4 +197,89 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-bg-color: var(--modus-wc-bg-color-high-contrast);
   --modus-wc-text-color: var(--modus-wc-text-color-high-contrast);
   --modus-wc-border-color: var(--modus-wc-border-color-high-contrast);
+}
+
+/* set variables for light/dark mode here */
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --modus-wc-bg-color: var(--modus-wc-color-white);
+    --modus-wc-text-color: var(--modus-wc-primary-dark);
+    --modus-wc-border-color: var(--modus-wc-color-primary-900);
+  }
+
+  body {
+    background: var(--modus-wc-color-white);
+    color: var(--modus-wc-color-black);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --modus-wc-bg-color: var(--modus-wc-grey-900);
+    --modus-wc-text-color: var(--modus-wc-grey-100);
+    --modus-wc-border-color: var(--modus-wc-color-primary-900);
+  }
+
+  body {
+    background: oklch(var(--b1));
+    color: var(--modus-wc-color-white);
+  }
+}
+
+/* example of daisy theme variables for light/dark mode */
+//to-do: this works but is being overrode due to this documents order in the CSS I think, looks like daisy theme is being generated and applied multiple times when running storybook, needs fixed
+
+@media (prefers-color-scheme: light) {
+  [data-theme="modus-classic"] :root {
+    color-scheme: light;
+    --p: --modus-wc-color-primary-900;
+    --pc: #d4dbff;
+    --s: #ff41c7;
+    --sc: #fff9fc;
+    --a: #00cfbd;
+    --ac: #00100d;
+    --n: #2b3440;
+    --nc: #d7dde4;
+    --b1: #ffffff;
+    --b2: #e5e6e6;
+    --b3: #e5e6e6;
+    --bc: #1f2937;
+    --in: #00b3f0;
+    --inc: #000000;
+    --su: #00ca92;
+    --suc: #000000;
+    --wa: #ffc22d;
+    --wac: #000000;
+    --er: #ff6f70;
+    --erc: #000000;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme="modus-classic"] :root {
+    color-scheme: dark;
+    --p: --modus-wc-color-primary-900;
+    --pc: #14185a;
+    --s: #ff71cf;
+    --sc: #190211;
+    --a: #00c7b5;
+    --ac: #000e0c;
+    --n: #2a323c;
+    --nc: #a6adbb;
+    --b1: #1d232a;
+    --b2: #191e24;
+    --b3: #15191e;
+    --bc: #a6adbb;
+    --in: #00b3f0;
+    --inc: #000000;
+    --su: #00ca92;
+    --suc: #000000;
+    --wa: #ffc22d;
+    --wac: #000000;
+    --er: #ff6f70;
+    --erc: #000000;
+  }
 }
