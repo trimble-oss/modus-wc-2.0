@@ -5,9 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Event } from "@stencil/core";
 import { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { Event } from "@stencil/core";
 export { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
@@ -418,7 +416,7 @@ declare global {
     };
     interface HTMLModusWcTextInputElementEventMap {
         "blur": FocusEvent;
-        "change": Event;
+        "change": string;
         "focus": FocusEvent;
     }
     /**
@@ -441,7 +439,7 @@ declare global {
     };
     interface HTMLModusWcTextareaElementEventMap {
         "blur": FocusEvent;
-        "change": Event;
+        "change": string;
         "focus": FocusEvent;
     }
     /**
@@ -707,7 +705,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the input value changes.
          */
-        "onChange"?: (event: ModusWcTextInputCustomEvent<Event>) => void;
+        "onChange"?: (event: ModusWcTextInputCustomEvent<string>) => void;
         /**
           * Event emitted when the input gains focus.
          */
@@ -793,7 +791,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when the textarea value changes.
          */
-        "onChange"?: (event: ModusWcTextareaCustomEvent<Event>) => void;
+        "onChange"?: (event: ModusWcTextareaCustomEvent<string>) => void;
         /**
           * Emitted when the textarea gains focus.
          */
