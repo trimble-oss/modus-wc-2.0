@@ -146,7 +146,7 @@ export class ModusWcTextInput {
   /**
    * Event emitted when the input value changes.
    */
-  @Event() change!: EventEmitter<Event>;
+  @Event() change!: EventEmitter<string>;
 
   /**
    * Event emitted when the input gains focus.
@@ -164,7 +164,9 @@ export class ModusWcTextInput {
   };
 
   private handleChange = (event: Event) => {
-    this.change.emit(event);
+    const input = event.target as HTMLInputElement;
+    this.value = input.value;
+    this.change.emit(this.value);
   };
 
   private handleFocus = (event: FocusEvent) => {

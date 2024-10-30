@@ -94,7 +94,7 @@ export class ModusWcTextarea {
   /**
    * Emitted when the textarea value changes.
    */
-  @Event() change!: EventEmitter<Event>;
+  @Event() change!: EventEmitter<string>;
 
   /**
    * Emitted when the textarea gains focus.
@@ -112,7 +112,9 @@ export class ModusWcTextarea {
   };
 
   private handleChange = (event: Event) => {
-    this.change.emit(event);
+    const input = event.target as HTMLTextAreaElement;
+    this.value = input.value;
+    this.change.emit(this.value);
   };
 
   private handleFocus = (event: FocusEvent) => {
