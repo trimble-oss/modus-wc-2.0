@@ -1,4 +1,11 @@
-import { h, Host, Component, Event, EventEmitter, Prop } from '@stencil/core';
+import {
+  h,
+  Host,
+  Component,
+  Event as StencilEvent,
+  EventEmitter,
+  Prop,
+} from '@stencil/core';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -19,7 +26,8 @@ export class ModusWcTextInput {
   /**
    * Indicates whether the input has an invalid input.
    */
-  @Prop() ariaInvalid?: boolean;
+  @Prop() ariaInvalidInput?: 'grammar' | 'spelling' | 'true' | 'false' =
+    'false';
 
   /**
    * The aria-label attribute for accessibility.
@@ -65,13 +73,13 @@ export class ModusWcTextInput {
   /**
    * The ID of the input element.
    */
-  @Prop() id?: string;
+  @Prop() id: string = '';
 
   /**
    * Hints at the type of data that might be entered by the user while editing the element or its contents.
    * This allows a browser to display an appropriate virtual keyboard.
    */
-  @Prop() inputMode?:
+  @Prop() inputMode:
     | 'decimal'
     | 'email'
     | 'none'
@@ -79,7 +87,7 @@ export class ModusWcTextInput {
     | 'search'
     | 'tel'
     | 'text'
-    | 'url';
+    | 'url' = 'text';
 
   /**
    * Maximum length (number of characters) of value.
@@ -120,12 +128,12 @@ export class ModusWcTextInput {
    * Whether the element may be checked for spelling errors.
    * A hint for the browser, not a guarantee.
    */
-  @Prop() spellcheck?: boolean;
+  @Prop() spellcheck: boolean = false;
 
   /**
    * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
    */
-  @Prop() tabIndex?: number;
+  @Prop() tabIndex: number = 0;
 
   /**
    * Type of form control.
@@ -141,17 +149,17 @@ export class ModusWcTextInput {
   /**
    * Event emitted when the input loses focus.
    */
-  @Event() blur!: EventEmitter<FocusEvent>;
+  @StencilEvent() blur!: EventEmitter<FocusEvent>;
 
   /**
    * Event emitted when the input value changes.
    */
-  @Event() change!: EventEmitter<Event>;
+  @StencilEvent() change!: EventEmitter<Event>;
 
   /**
    * Event emitted when the input gains focus.
    */
-  @Event() focus!: EventEmitter<FocusEvent>;
+  @StencilEvent() focus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
     if (!this.ariaLabel) {
@@ -176,7 +184,7 @@ export class ModusWcTextInput {
       <Host>
         <input
           aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.ariaInvalid}
+          aria-invalid={this.ariaInvalidInput}
           aria-label={this.ariaLabel || this.placeholder}
           aria-placeholder={this.placeholder}
           aria-required={this.required}

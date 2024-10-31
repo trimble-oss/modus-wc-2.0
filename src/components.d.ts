@@ -5,9 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Event } from "@stencil/core";
 import { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { Event } from "@stencil/core";
 export { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
@@ -151,7 +149,7 @@ export namespace Components {
         /**
           * Indicates whether the input has an invalid input.
          */
-        "ariaInvalid"?: boolean;
+        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -188,11 +186,11 @@ export namespace Components {
         /**
           * The ID of the input element.
          */
-        "id"?: string;
+        "id": string;
         /**
           * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
          */
-        "inputMode"?: | 'decimal'
+        "inputMode": | 'decimal'
     | 'email'
     | 'none'
     | 'numeric'
@@ -231,11 +229,11 @@ export namespace Components {
         /**
           * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
          */
-        "spellcheck"?: boolean;
+        "spellcheck": boolean;
         /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
-        "tabIndex"?: number;
+        "tabIndex": number;
         /**
           * Type of form control.
          */
@@ -257,7 +255,7 @@ export namespace Components {
         /**
           * Indicates whether the textarea has an invalid input.
          */
-        "ariaInvalid"?: boolean;
+        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -277,7 +275,7 @@ export namespace Components {
         /**
           * The ID of the textarea element.
          */
-        "id"?: string;
+        "id": string;
         /**
           * The maximum number of characters allowed in the textarea.
          */
@@ -303,9 +301,13 @@ export namespace Components {
          */
         "rows"?: number;
         /**
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "spellcheck": boolean;
+        /**
           * The tabindex of the textarea.
          */
-        "tabIndex"?: number;
+        "tabIndex": number;
         /**
           * The value of the textarea.
          */
@@ -639,7 +641,7 @@ declare namespace LocalJSX {
         /**
           * Indicates whether the input has an invalid input.
          */
-        "ariaInvalid"?: boolean;
+        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -757,7 +759,7 @@ declare namespace LocalJSX {
         /**
           * Indicates whether the textarea has an invalid input.
          */
-        "ariaInvalid"?: boolean;
+        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -814,6 +816,10 @@ declare namespace LocalJSX {
           * The number of visible text lines for the textarea.
          */
         "rows"?: number;
+        /**
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "spellcheck"?: boolean;
         /**
           * The tabindex of the textarea.
          */

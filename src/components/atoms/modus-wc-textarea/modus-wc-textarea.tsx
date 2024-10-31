@@ -1,4 +1,11 @@
-import { h, Component, Event, EventEmitter, Host, Prop } from '@stencil/core';
+import {
+  h,
+  Component,
+  Event as StencilEvent,
+  EventEmitter,
+  Host,
+  Prop,
+} from '@stencil/core';
 
 /**
  * A customizable textarea component.
@@ -19,7 +26,8 @@ export class ModusWcTextarea {
   /**
    * Indicates whether the textarea has an invalid input.
    */
-  @Prop() ariaInvalid?: boolean;
+  @Prop() ariaInvalidInput?: 'grammar' | 'spelling' | 'true' | 'false' =
+    'false';
 
   /**
    * The aria-label attribute for accessibility.
@@ -44,7 +52,7 @@ export class ModusWcTextarea {
   /**
    * The ID of the textarea element.
    */
-  @Prop() id?: string;
+  @Prop() id: string = '';
 
   /**
    * The maximum number of characters allowed in the textarea.
@@ -77,9 +85,15 @@ export class ModusWcTextarea {
   @Prop() rows?: number;
 
   /**
+   * Whether the element may be checked for spelling errors.
+   * A hint for the browser, not a guarantee.
+   */
+  @Prop() spellcheck: boolean = true;
+
+  /**
    * The tabindex of the textarea.
    */
-  @Prop() tabIndex?: number;
+  @Prop() tabIndex: number = 0;
 
   /**
    * The value of the textarea.
@@ -89,17 +103,17 @@ export class ModusWcTextarea {
   /**
    * Emitted when the textarea loses focus.
    */
-  @Event() blur!: EventEmitter<FocusEvent>;
+  @StencilEvent() blur!: EventEmitter<FocusEvent>;
 
   /**
    * Emitted when the textarea value changes.
    */
-  @Event() change!: EventEmitter<Event>;
+  @StencilEvent() change!: EventEmitter<Event>;
 
   /**
    * Emitted when the textarea gains focus.
    */
-  @Event() focus!: EventEmitter<FocusEvent>;
+  @StencilEvent() focus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
     if (!this.ariaLabel) {
@@ -124,7 +138,7 @@ export class ModusWcTextarea {
       <Host>
         <textarea
           aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.ariaInvalid}
+          aria-invalid={this.ariaInvalidInput}
           aria-label={this.ariaLabel || this.placeholder}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
