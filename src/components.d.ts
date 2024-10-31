@@ -153,7 +153,7 @@ export namespace Components {
         /**
           * Indicates whether the input has an invalid input.
          */
-        "ariaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
+        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -267,7 +267,7 @@ export namespace Components {
         /**
           * Indicates whether the textarea has an invalid input.
          */
-        "ariaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
+        "ariaInvalidTextarea"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -657,7 +657,7 @@ declare namespace LocalJSX {
         /**
           * Indicates whether the input has an invalid input.
          */
-        "ariaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
+        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -783,7 +783,7 @@ declare namespace LocalJSX {
         /**
           * Indicates whether the textarea has an invalid input.
          */
-        "ariaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
+        "ariaInvalidTextarea"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
