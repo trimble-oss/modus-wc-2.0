@@ -1,5 +1,5 @@
 @use 'sass:math';
-@import 'theme';
+@import 'modus-variables';
 
 @function strip-unit($value) {
   @return math.div($value, ($value * 0 + 1));

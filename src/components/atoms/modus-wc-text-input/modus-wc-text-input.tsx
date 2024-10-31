@@ -1,4 +1,8 @@
 import { h, Host, Component, Event, EventEmitter, Prop } from '@stencil/core';
+import {
+  convertPropsToClasses,
+  tailwindThemeClasses,
+} from './modus-wc-text-input.tailwind';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -48,7 +52,12 @@ export class ModusWcTextInput {
   @Prop() autoFocus?: boolean;
 
   /**
-   * Custom CSS class to apply to the input (supports DaisyUI).
+   * Indicates that the input should have a border.
+   */
+  @Prop() bordered?: boolean = true;
+
+  /**
+   * Custom CSS class to apply to the input.
    */
   @Prop() customClass: string = '';
 
@@ -117,6 +126,11 @@ export class ModusWcTextInput {
   @Prop() required: boolean = false;
 
   /**
+   * The size of the input.
+   */
+  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
+
+  /**
    * Whether the element may be checked for spelling errors.
    * A hint for the browser, not a guarantee.
    */
@@ -172,6 +186,22 @@ export class ModusWcTextInput {
   };
 
   render() {
+    // istanbul ignore next - not implemented
+    const theme = document.documentElement.getAttribute('data-theme') ?? '';
+    const themeClasses = tailwindThemeClasses[theme];
+
+    const propClasses = convertPropsToClasses({
+      bordered: this.bordered,
+      size: this.size,
+    });
+
+    const classes = {
+      [this.customClass]: !!this.customClass,
+      [propClasses]: !!propClasses,
+      [themeClasses]: !!themeClasses,
+      'modus-wc-input': true,
+    };
+
     return (
       <Host>
         <input
@@ -183,10 +213,7 @@ export class ModusWcTextInput {
           autocapitalize={this.autoCapitalize}
           autocomplete={this.autoComplete}
           autofocus={this.autoFocus}
-          class={{
-            'modus-wc-input': true,
-            [this.customClass]: !!this.customClass,
-          }}
+          class={classes}
           dir={this.dir}
           disabled={this.disabled}
           id={this.id}

@@ -1,8 +1,8 @@
 ```html
-<!-- Basic input -->
+<!-- Basic text input -->
 <modus-wc-text-input aria-label="Enter your name"></modus-wc-text-input>
 
-<!-- Input with event listeners -->
+<!-- Text input with event listeners -->
 <modus-wc-text-input
   id="event-text-input"
   aria-label="Enter your name"
