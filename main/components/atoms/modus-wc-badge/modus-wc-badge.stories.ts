@@ -18,7 +18,7 @@ interface BadgeArgs {
 }
 
 const meta: Meta<BadgeArgs> = {
-  title: 'Components/Badge',
+  title: 'Components/Atoms/Badge',
   argTypes: {
     ariaLabel: { control: 'text' },
     color: {

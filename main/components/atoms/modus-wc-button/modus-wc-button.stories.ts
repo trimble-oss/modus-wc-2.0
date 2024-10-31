@@ -16,7 +16,7 @@ interface ButtonArgs {
 }
 
 const meta: Meta<ButtonArgs> = {
-  title: 'Components/Button',
+  title: 'Components/Atoms/Button',
   argTypes: {
     label: { control: 'text' },
     ariaLabel: { control: 'text' },
