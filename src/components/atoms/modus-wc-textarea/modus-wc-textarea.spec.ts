@@ -10,7 +10,7 @@ describe('modus-wc-textarea', () => {
     expect(page.root).not.toBeNull();
     expect(page.root).toEqualHtml(`
       <modus-wc-textarea aria-label="Default textarea" value="">
-        <textarea aria-label="Default textarea" aria-placeholder="" class="modus-wc-textarea" placeholder="" value=""></textarea>
+        <textarea aria-invalid="false" aria-label="Default textarea" aria-placeholder="" class="modus-wc-textarea" placeholder="" tabindex="0" value=""></textarea>
       </modus-wc-textarea>
     `);
   });
@@ -57,7 +57,7 @@ describe('modus-wc-textarea', () => {
       >
         <textarea 
           aria-describedby="description"
-          aria-invalid=""
+          aria-invalid="true"
           aria-label="Custom textarea"
           aria-placeholder="Custom placeholder"
           aria-required=""

@@ -26,8 +26,7 @@ export class ModusWcTextarea {
   /**
    * Indicates whether the textarea has an invalid input.
    */
-  @Prop() ariaInvalidInput?: 'grammar' | 'spelling' | 'true' | 'false' =
-    'false';
+  @Prop() ariaInvalid?: 'grammar' | 'spelling' | 'true' | 'false' = 'false';
 
   /**
    * The aria-label attribute for accessibility.
@@ -42,7 +41,7 @@ export class ModusWcTextarea {
   /**
    * Specifies the text direction of the textarea content.
    */
-  @Prop() dir: 'ltr' | 'rtl' | 'auto' | '' = '';
+  @Prop() dir: '' | 'ltr' | 'rtl' | 'auto' = '';
 
   /**
    * The disabled state of the textarea.
@@ -138,7 +137,7 @@ export class ModusWcTextarea {
       <Host>
         <textarea
           aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.ariaInvalidInput}
+          aria-invalid={this.ariaInvalid}
           aria-label={this.ariaLabel || this.placeholder}
           aria-placeholder={this.placeholder}
           aria-required={this.required}

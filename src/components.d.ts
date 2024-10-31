@@ -149,7 +149,7 @@ export namespace Components {
         /**
           * Indicates whether the input has an invalid input.
          */
-        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
+        "ariaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -178,7 +178,7 @@ export namespace Components {
         /**
           * Specifies the text direction of the input content.
          */
-        "dir": 'ltr' | 'rtl' | 'auto' | '';
+        "dir": '' | 'ltr' | 'rtl' | 'auto';
         /**
           * Whether the form control is disabled.
          */
@@ -255,7 +255,7 @@ export namespace Components {
         /**
           * Indicates whether the textarea has an invalid input.
          */
-        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
+        "ariaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -267,7 +267,7 @@ export namespace Components {
         /**
           * Specifies the text direction of the textarea content.
          */
-        "dir": 'ltr' | 'rtl' | 'auto' | '';
+        "dir": '' | 'ltr' | 'rtl' | 'auto';
         /**
           * The disabled state of the textarea.
          */
@@ -641,7 +641,7 @@ declare namespace LocalJSX {
         /**
           * Indicates whether the input has an invalid input.
          */
-        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
+        "ariaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -670,7 +670,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the text direction of the input content.
          */
-        "dir"?: 'ltr' | 'rtl' | 'auto' | '';
+        "dir"?: '' | 'ltr' | 'rtl' | 'auto';
         /**
           * Whether the form control is disabled.
          */
@@ -759,7 +759,7 @@ declare namespace LocalJSX {
         /**
           * Indicates whether the textarea has an invalid input.
          */
-        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
+        "ariaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -771,7 +771,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the text direction of the textarea content.
          */
-        "dir"?: 'ltr' | 'rtl' | 'auto' | '';
+        "dir"?: '' | 'ltr' | 'rtl' | 'auto';
         /**
           * The disabled state of the textarea.
          */

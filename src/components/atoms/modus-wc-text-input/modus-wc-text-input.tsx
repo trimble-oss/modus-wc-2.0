@@ -26,8 +26,7 @@ export class ModusWcTextInput {
   /**
    * Indicates whether the input has an invalid input.
    */
-  @Prop() ariaInvalidInput?: 'grammar' | 'spelling' | 'true' | 'false' =
-    'false';
+  @Prop() ariaInvalid?: 'grammar' | 'spelling' | 'true' | 'false' = 'false';
 
   /**
    * The aria-label attribute for accessibility.
@@ -63,7 +62,7 @@ export class ModusWcTextInput {
   /**
    * Specifies the text direction of the input content.
    */
-  @Prop() dir: 'ltr' | 'rtl' | 'auto' | '' = '';
+  @Prop() dir: '' | 'ltr' | 'rtl' | 'auto' = '';
 
   /**
    * Whether the form control is disabled.
@@ -184,7 +183,7 @@ export class ModusWcTextInput {
       <Host>
         <input
           aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.ariaInvalidInput}
+          aria-invalid={this.ariaInvalid}
           aria-label={this.ariaLabel || this.placeholder}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
