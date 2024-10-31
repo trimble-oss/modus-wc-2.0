@@ -5,9 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Event } from "@stencil/core";
 import { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { Event } from "@stencil/core";
 export { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**

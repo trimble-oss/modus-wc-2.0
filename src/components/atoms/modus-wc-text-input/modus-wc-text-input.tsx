@@ -1,4 +1,11 @@
-import { h, Host, Component, Event, EventEmitter, Prop } from '@stencil/core';
+import {
+  h,
+  Host,
+  Component,
+  Event as StencilEvent,
+  EventEmitter,
+  Prop,
+} from '@stencil/core';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -141,17 +148,17 @@ export class ModusWcTextInput {
   /**
    * Event emitted when the input loses focus.
    */
-  @Event() blur!: EventEmitter<FocusEvent>;
+  @StencilEvent() blur!: EventEmitter<FocusEvent>;
 
   /**
    * Event emitted when the input value changes.
    */
-  @Event() change!: EventEmitter<Event>;
+  @StencilEvent() change!: EventEmitter<Event>;
 
   /**
    * Event emitted when the input gains focus.
    */
-  @Event() focus!: EventEmitter<FocusEvent>;
+  @StencilEvent() focus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
     if (!this.ariaLabel) {

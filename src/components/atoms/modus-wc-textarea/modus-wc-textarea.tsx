@@ -1,4 +1,11 @@
-import { h, Component, Event, EventEmitter, Host, Prop } from '@stencil/core';
+import {
+  h,
+  Component,
+  Event as StencilEvent,
+  EventEmitter,
+  Host,
+  Prop,
+} from '@stencil/core';
 
 /**
  * A customizable textarea component.
@@ -89,17 +96,17 @@ export class ModusWcTextarea {
   /**
    * Emitted when the textarea loses focus.
    */
-  @Event() blur!: EventEmitter<FocusEvent>;
+  @StencilEvent() blur!: EventEmitter<FocusEvent>;
 
   /**
    * Emitted when the textarea value changes.
    */
-  @Event() change!: EventEmitter<Event>;
+  @StencilEvent() change!: EventEmitter<Event>;
 
   /**
    * Emitted when the textarea gains focus.
    */
-  @Event() focus!: EventEmitter<FocusEvent>;
+  @StencilEvent() focus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
     if (!this.ariaLabel) {
