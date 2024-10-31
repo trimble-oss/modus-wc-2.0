@@ -180,7 +180,7 @@ export namespace Components {
         /**
           * Specifies the text direction of the input content.
          */
-        "dir"?: 'ltr' | 'rtl' | 'auto';
+        "dir": 'ltr' | 'rtl' | 'auto' | '';
         /**
           * Whether the form control is disabled.
          */
@@ -269,7 +269,7 @@ export namespace Components {
         /**
           * Specifies the text direction of the textarea content.
          */
-        "dir"?: 'ltr' | 'rtl' | 'auto';
+        "dir": 'ltr' | 'rtl' | 'auto' | '';
         /**
           * The disabled state of the textarea.
          */
@@ -668,7 +668,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the text direction of the input content.
          */
-        "dir"?: 'ltr' | 'rtl' | 'auto';
+        "dir"?: 'ltr' | 'rtl' | 'auto' | '';
         /**
           * Whether the form control is disabled.
          */
@@ -769,7 +769,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the text direction of the textarea content.
          */
-        "dir"?: 'ltr' | 'rtl' | 'auto';
+        "dir"?: 'ltr' | 'rtl' | 'auto' | '';
         /**
           * The disabled state of the textarea.
          */
