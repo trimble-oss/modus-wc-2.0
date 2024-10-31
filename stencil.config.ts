@@ -1,6 +1,22 @@
 import { Config } from '@stencil/core';
 import { reactOutputTarget } from '@stencil/react-output-target';
 import { sass } from '@stencil/sass';
+import tailwind, {
+  setPluginConfigurationDefaults,
+  tailwindGlobal,
+  tailwindHMR,
+} from 'stencil-tailwind-plugin';
+import tailwindConfig from './tailwind.config';
+
+const tailwindOpts = {
+  debug: true,
+  minify: false,
+  stripComments: true,
+  tailwindConf: tailwindConfig,
+  tailwindCssPath: './src/styles/tailwind.css',
+};
+
+setPluginConfigurationDefaults(tailwindOpts);
 
 export const config: Config = {
   namespace: 'modus-wc',
@@ -32,7 +48,13 @@ export const config: Config = {
     sass({
       injectGlobalPaths: ['src/styles/global.scss'],
     }),
+    tailwindGlobal(),
+    tailwind(),
+    tailwindHMR(),
   ],
+  devServer: {
+    reloadStrategy: 'pageReload',
+  },
   buildEs5: 'prod',
   extras: {
     enableImportInjection: true,

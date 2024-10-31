@@ -16,10 +16,10 @@ Adheres to WCAG 2.2 standards.
 ### Component-usage
 
 ```html
-<!-- Basic input -->
+<!-- Basic text input -->
 <modus-wc-text-input aria-label="Enter your name"></modus-wc-text-input>
 
-<!-- Input with event listeners -->
+<!-- Text input with event listeners -->
 <modus-wc-text-input
   id="event-text-input"
   aria-label="Enter your name"
@@ -49,7 +49,8 @@ Adheres to WCAG 2.2 standards.
 | `autoCapitalize`         | `auto-capitalize`  | Controls automatic capitalization in inputted text.                                                                                                                      | `"characters" \| "none" \| "off" \| "on" \| "sentences" \| "words" \| undefined`      | `undefined` |
 | `autoComplete`           | `auto-complete`    | Hint for form autofill feature.                                                                                                                                          | `"off" \| "on" \| undefined`                                                          | `undefined` |
 | `autoFocus`              | `auto-focus`       | Indicates that an element should be focused on page load.                                                                                                                | `boolean \| undefined`                                                                | `undefined` |
-| `customClass`            | `custom-class`     | Custom CSS class to apply to the input (supports DaisyUI).                                                                                                               | `string`                                                                              | `''`        |
+| `bordered`               | `bordered`         | Indicates that the input should have a border.                                                                                                                           | `boolean \| undefined`                                                                | `true`      |
+| `customClass`            | `custom-class`     | Custom CSS class to apply to the input.                                                                                                                                  | `string`                                                                              | `''`        |
 | `dir`                    | `dir`              | Specifies the text direction of the input content.                                                                                                                       | `"" \| "auto" \| "ltr" \| "rtl"`                                                      | `''`        |
 | `disabled`               | `disabled`         | Whether the form control is disabled.                                                                                                                                    | `boolean`                                                                             | `false`     |
 | `id`                     | `id`               | The ID of the input element.                                                                                                                                             | `string`                                                                              | `''`        |
@@ -61,6 +62,7 @@ Adheres to WCAG 2.2 standards.
 | `placeholder`            | `placeholder`      | Text that appears in the form control when it has no value set.                                                                                                          | `string`                                                                              | `''`        |
 | `readOnly`               | `read-only`        | Whether the value is editable.                                                                                                                                           | `boolean`                                                                             | `false`     |
 | `required`               | `required`         | A value is required or must be checked for the form to be submittable.                                                                                                   | `boolean`                                                                             | `false`     |
+| `size`                   | `size`             | The size of the input.                                                                                                                                                   | `"lg" \| "md" \| "sm" \| undefined`                                                   | `'md'`      |
 | `spellcheck`             | `spellcheck`       | Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.                                                                         | `boolean`                                                                             | `false`     |
 | `tabIndex`               | `tab-index`        | Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).                                                                  | `number`                                                                              | `0`         |
 | `type`                   | `type`             | Type of form control.                                                                                                                                                    | `"email" \| "password" \| "search" \| "tel" \| "text" \| "url"`                       | `'text'`    |

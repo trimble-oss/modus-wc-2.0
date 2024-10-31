@@ -3,7 +3,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 const meta: Meta = {
-  title: 'Components/Textarea',
+  title: 'Components/Atoms/Textarea',
   component: 'modus-wc-textarea',
   argTypes: {
     ariaDescribedby: { control: 'text', table: { sort: 'alpha' } },

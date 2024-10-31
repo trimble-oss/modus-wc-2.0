@@ -1,3 +1,5 @@
+/* istanbul ignore file - this may not make it to production */
+
 export type ModusWCMode = 'default' | 'dark' | 'high-contrast';
 
 export const getCurrentModusWCMode = (): ModusWCMode => {
