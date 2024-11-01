@@ -5,6 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 const meta: Meta = {
   title: 'Components/Atoms/Textarea',
   component: 'modus-wc-textarea',
+  tags: ['autodocs'],
   argTypes: {
     ariaDescribedby: { control: 'text', table: { sort: 'alpha' } },
     ariaInvalid: { control: 'boolean', table: { sort: 'alpha' } },
@@ -40,35 +41,31 @@ type Story = StoryObj;
 const Template: Story = {
   render: (args) => {
     return html`
-      <div>
-        <h1>Textarea</h1>
-        <modus-wc-textarea
-          aria-describedby=${ifDefined(args.ariaDescribedby)}
-          aria-invalid=${ifDefined(args.ariaInvalid)}
-          aria-label=${ifDefined(args.ariaLabel)}
-          custom-class=${ifDefined(args.customClass)}
-          dir=${ifDefined(args.dir)}
-          ?disabled=${args.disabled}
-          id=${ifDefined(args.id)}
-          max-length=${ifDefined(args.maxLength)}
-          name=${ifDefined(args.name)}
-          placeholder=${ifDefined(args.placeholder)}
-          ?readonly=${args.readonly}
-          ?required=${args.required}
-          rows=${ifDefined(args.rows)}
-          tab-index=${ifDefined(args.tabIndex)}
-          .value=${args.value}
-          @input=${(e: Event) => {
-            const target = e.target as HTMLTextAreaElement;
-            args.value = target.value;
-          }}
-          @change=${(e: Event) => {
-            const target = e.target as HTMLTextAreaElement;
-            args.value = target.value;
-          }}
-        ></modus-wc-textarea>
-        <stencil-docs component-name="modus-wc-textarea"></stencil-docs>
-      </div>
+      <modus-wc-textarea
+        aria-describedby=${ifDefined(args.ariaDescribedby)}
+        aria-invalid=${ifDefined(args.ariaInvalid)}
+        aria-label=${ifDefined(args.ariaLabel)}
+        custom-class=${ifDefined(args.customClass)}
+        dir=${ifDefined(args.dir)}
+        ?disabled=${args.disabled}
+        id=${ifDefined(args.id)}
+        max-length=${ifDefined(args.maxLength)}
+        name=${ifDefined(args.name)}
+        placeholder=${ifDefined(args.placeholder)}
+        ?readonly=${args.readonly}
+        ?required=${args.required}
+        rows=${ifDefined(args.rows)}
+        tab-index=${ifDefined(args.tabIndex)}
+        .value=${args.value}
+        @input=${(e: Event) => {
+          const target = e.target as HTMLTextAreaElement;
+          args.value = target.value;
+        }}
+        @change=${(e: Event) => {
+          const target = e.target as HTMLTextAreaElement;
+          args.value = target.value;
+        }}
+      ></modus-wc-textarea>
     `;
   },
   args: {

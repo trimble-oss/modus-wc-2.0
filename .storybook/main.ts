@@ -1,34 +1,19 @@
-import type { StorybookConfig } from '@storybook/web-components-webpack5';
+import type { StorybookConfig } from '@storybook/web-components-vite';
 
 const config: StorybookConfig = {
-  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+  stories: [
+    '../src/components/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/stories/**/*.mdx',
+  ],
+  addons: [
+    '@storybook/addon-a11y',
+    '@storybook/addon-essentials',
+    '@storybook/addon-links',
+    '@storybook/addon-themes',
+  ],
   framework: {
-    name: '@storybook/web-components-webpack5',
+    name: '@storybook/web-components-vite',
     options: {},
   },
-  staticDirs: ['../src'],
-  webpackFinal: async (config) => {
-    if (config.module?.rules) {
-      config.module.rules.push({
-        test: /\.(ts|tsx)$/,
-        use: [
-          {
-            loader: require.resolve('ts-loader'),
-            options: {
-              transpileOnly: true,
-            },
-          },
-        ],
-      });
-    }
-
-    if (config.resolve?.extensions) {
-      config.resolve.extensions.push('.ts', '.tsx');
-    }
-
-    return config;
-  },
 };
-
 export default config;
