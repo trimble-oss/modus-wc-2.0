@@ -102,14 +102,14 @@ export declare interface ModusWcDivider extends Components.ModusWcDivider {}
 
 
 @ProxyCmp({
-  inputs: ['ariaDescribedby', 'ariaInvalid', 'ariaLabel', 'autoCapitalize', 'autoComplete', 'autoFocus', 'bordered', 'customClass', 'dir', 'disabled', 'id', 'inputMode', 'maxLength', 'minLength', 'name', 'pattern', 'placeholder', 'readOnly', 'required', 'size', 'spellcheck', 'tabIndex', 'type', 'value']
+  inputs: ['ariaDescribedby', 'ariaInvalidInput', 'ariaLabel', 'autoCapitalize', 'autoComplete', 'autoFocus', 'bordered', 'customClass', 'dir', 'disabled', 'id', 'inputMode', 'maxLength', 'minLength', 'name', 'pattern', 'placeholder', 'readOnly', 'required', 'size', 'spellcheck', 'tabIndex', 'type', 'value']
 })
 @Component({
   selector: 'modus-wc-text-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['ariaDescribedby', 'ariaInvalid', 'ariaLabel', 'autoCapitalize', 'autoComplete', 'autoFocus', 'bordered', 'customClass', 'dir', 'disabled', 'id', 'inputMode', 'maxLength', 'minLength', 'name', 'pattern', 'placeholder', 'readOnly', 'required', 'size', 'spellcheck', 'tabIndex', 'type', 'value'],
+  inputs: ['ariaDescribedby', 'ariaInvalidInput', 'ariaLabel', 'autoCapitalize', 'autoComplete', 'autoFocus', 'bordered', 'customClass', 'dir', 'disabled', 'id', 'inputMode', 'maxLength', 'minLength', 'name', 'pattern', 'placeholder', 'readOnly', 'required', 'size', 'spellcheck', 'tabIndex', 'type', 'value'],
 })
 export class ModusWcTextInput {
   protected el: HTMLElement;
@@ -138,14 +138,14 @@ export declare interface ModusWcTextInput extends Components.ModusWcTextInput {
 
 
 @ProxyCmp({
-  inputs: ['ariaDescribedby', 'ariaInvalid', 'ariaLabel', 'customClass', 'dir', 'disabled', 'id', 'maxLength', 'name', 'placeholder', 'readonly', 'required', 'rows', 'tabIndex', 'value']
+  inputs: ['ariaDescribedby', 'ariaInvalidTextarea', 'ariaLabel', 'customClass', 'dir', 'disabled', 'id', 'maxLength', 'name', 'placeholder', 'readonly', 'required', 'rows', 'spellcheck', 'tabIndex', 'value']
 })
 @Component({
   selector: 'modus-wc-textarea',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['ariaDescribedby', 'ariaInvalid', 'ariaLabel', 'customClass', 'dir', 'disabled', 'id', 'maxLength', 'name', 'placeholder', 'readonly', 'required', 'rows', 'tabIndex', 'value'],
+  inputs: ['ariaDescribedby', 'ariaInvalidTextarea', 'ariaLabel', 'customClass', 'dir', 'disabled', 'id', 'maxLength', 'name', 'placeholder', 'readonly', 'required', 'rows', 'spellcheck', 'tabIndex', 'value'],
 })
 export class ModusWcTextarea {
   protected el: HTMLElement;
