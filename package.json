@@ -52,7 +52,6 @@
     "@storybook/addon-links": "^8.3.5",
     "@storybook/addon-themes": "^8.4.1",
     "@storybook/blocks": "^8.4.1",
-    "@storybook/preset-typescript": "^3.0.0",
     "@storybook/test": "^8.4.1",
     "@storybook/web-components": "^8.3.5",
     "@storybook/web-components-vite": "^8.4.1",
