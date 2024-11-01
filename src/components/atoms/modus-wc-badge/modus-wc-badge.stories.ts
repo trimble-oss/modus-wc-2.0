@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/web-components';
-import { setModusWCMode, ModusWCMode } from '../../../utils/theme';
 
 interface BadgeArgs {
   ariaLabel: string;
@@ -14,7 +13,6 @@ interface BadgeArgs {
   customClass: string;
   size: 'small' | 'medium' | 'large';
   type: 'filled' | 'text' | 'counter';
-  mode: ModusWCMode;
 }
 
 const meta: Meta<BadgeArgs> = {
@@ -44,10 +42,6 @@ const meta: Meta<BadgeArgs> = {
       control: { type: 'select' },
       options: ['filled', 'text', 'counter'],
     },
-    mode: {
-      control: { type: 'select' },
-      options: ['default', 'dark', 'high-contrast'],
-    },
   },
 };
 
@@ -57,8 +51,6 @@ type Story = StoryObj<BadgeArgs>;
 
 const Template: Story = {
   render: (args) => {
-    setModusWCMode(args.mode);
-
     return `
       <modus-wc-badge 
         aria-label="${args.ariaLabel}"
@@ -79,7 +71,6 @@ export const Default: Story = {
     color: 'primary',
     content: 'Badge',
     customClass: '',
-    mode: 'default',
     size: 'medium',
     type: 'filled',
   },

@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/web-components';
-import { setModusWCMode, ModusWCMode } from '../../../utils/theme';
 
 interface ButtonArgs {
   label: string;
@@ -12,7 +11,6 @@ interface ButtonArgs {
   type: 'button' | 'submit' | 'reset';
   variant: 'filled' | 'outlined' | 'text';
   color: 'primary' | 'secondary' | 'tertiary';
-  mode: ModusWCMode;
 }
 
 const meta: Meta<ButtonArgs> = {
@@ -42,10 +40,6 @@ const meta: Meta<ButtonArgs> = {
       control: { type: 'select' },
       options: ['primary', 'secondary', 'tertiary'],
     },
-    mode: {
-      control: { type: 'select' },
-      options: ['default', 'dark', 'high-contrast'],
-    },
   },
 };
 
@@ -55,8 +49,6 @@ type Story = StoryObj<ButtonArgs>;
 
 const Template: Story = {
   render: (args) => {
-    setModusWCMode(args.mode);
-
     return `
       <modus-wc-button 
           label="${args.label}"
@@ -83,7 +75,6 @@ export const Default: Story = {
     disabled: false,
     fullWidth: false,
     label: 'Click me',
-    mode: 'default',
     pressed: false,
     size: 'medium',
     type: 'button',

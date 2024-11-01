@@ -72,6 +72,7 @@
     "prettier": "^3.3.3",
     "puppeteer": "^23.5.3",
     "stencil-tailwind-plugin": "^1.8.0",
+    "storybook-addon-performance": "^0.17.3",
     "tailwindcss": "^3.4.14",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.2",

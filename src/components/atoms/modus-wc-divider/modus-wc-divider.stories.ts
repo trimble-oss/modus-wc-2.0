@@ -1,12 +1,10 @@
 import { Meta, StoryObj } from '@storybook/web-components';
-import { setModusWCMode, ModusWCMode } from '../../../utils/theme';
 
 interface DividerArgs {
   ariaLabel: string;
   customClass: string;
   daisyClass: string;
   content: string;
-  mode: ModusWCMode;
 }
 
 const meta: Meta<DividerArgs> = {
@@ -18,10 +16,6 @@ const meta: Meta<DividerArgs> = {
     customClass: { control: 'text' },
     daisyClass: { control: 'text' },
     content: { control: 'text' },
-    mode: {
-      control: { type: 'select' },
-      options: ['default', 'dark', 'high-contrast'],
-    },
   },
 };
 
@@ -31,8 +25,6 @@ type Story = StoryObj<DividerArgs>;
 
 const Template: Story = {
   render: (args) => {
-    setModusWCMode(args.mode);
-
     return `
       <modus-wc-divider 
         aria-label="${args.ariaLabel}"
@@ -51,6 +43,5 @@ export const Default: Story = {
     content: '',
     customClass: '',
     daisyClass: '',
-    mode: 'default',
   },
 };
