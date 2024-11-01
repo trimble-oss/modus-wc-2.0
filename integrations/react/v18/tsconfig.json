@@ -10,17 +10,34 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "target": "es2015",
-    "skipLibCheck": true,
     "jsx": "react",
-    "allowSyntheticDefaultImports": true,
+
     "declaration": true,
-    "declarationDir": "./dist/types"
+    "declarationDir": "./dist/types",
+    "typeRoots": ["node_modules/@types"],
+    "types": ["react", "react-dom"],
+
+    // Advanced Options
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+
+    // Additional Checks
+    "allowUnreachableCode": false,
+
+    // JSX Options
+    "jsxFactory": "React.createElement",
+    "jsxFragmentFactory": "React.Fragment",
+
+    // Module Interop
+    "allowSyntheticDefaultImports": true
   },
   "include": [
-    "src/index.ts",
-    "src/stencil-generated/**/*"
+    "src"
   ],
   "exclude": [
+    "dist",
     "node_modules"
   ]
 }
