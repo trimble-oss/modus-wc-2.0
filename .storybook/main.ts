@@ -10,7 +10,6 @@ const config: StorybookConfig = {
     '@storybook/addon-essentials',
     '@storybook/addon-links',
     '@storybook/addon-themes',
-    'storybook-addon-performance',
   ],
   framework: {
     name: '@storybook/web-components-vite',
