@@ -26,7 +26,8 @@ export class ModusWcTextarea {
   /**
    * Indicates whether the textarea has an invalid input.
    */
-  @Prop() ariaInvalid: 'true' | 'false' = 'false';
+  @Prop() ariaInvalidTextarea?: 'grammar' | 'spelling' | 'true' | 'false' =
+    'false';
 
   /**
    * The aria-label attribute for accessibility.
@@ -84,6 +85,12 @@ export class ModusWcTextarea {
   @Prop() rows?: number;
 
   /**
+   * Whether the element may be checked for spelling errors.
+   * A hint for the browser, not a guarantee.
+   */
+  @Prop() spellcheck: boolean = true;
+
+  /**
    * The tabindex of the textarea.
    */
   @Prop() tabIndex: number = 0;
@@ -131,7 +138,7 @@ export class ModusWcTextarea {
       <Host>
         <textarea
           aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.ariaInvalid}
+          aria-invalid={this.ariaInvalidTextarea}
           aria-label={this.ariaLabel || this.placeholder}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
@@ -151,6 +158,7 @@ export class ModusWcTextarea {
           readonly={this.readonly}
           required={this.required}
           rows={this.rows}
+          spellcheck={this.spellcheck}
           tabIndex={this.tabIndex}
           value={this.value}
         />

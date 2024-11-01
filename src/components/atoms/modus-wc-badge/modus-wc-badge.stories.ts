@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/web-components';
-import { setModusWCMode, ModusWCMode } from '../../../utils/theme';
 
 interface BadgeArgs {
   ariaLabel: string;
@@ -14,11 +13,12 @@ interface BadgeArgs {
   customClass: string;
   size: 'small' | 'medium' | 'large';
   type: 'filled' | 'text' | 'counter';
-  mode: ModusWCMode;
 }
 
 const meta: Meta<BadgeArgs> = {
   title: 'Components/Atoms/Badge',
+  component: 'modus-wc-badge',
+  tags: ['autodocs'],
   argTypes: {
     ariaLabel: { control: 'text' },
     color: {
@@ -42,10 +42,6 @@ const meta: Meta<BadgeArgs> = {
       control: { type: 'select' },
       options: ['filled', 'text', 'counter'],
     },
-    mode: {
-      control: { type: 'select' },
-      options: ['default', 'dark', 'high-contrast'],
-    },
   },
 };
 
@@ -55,21 +51,15 @@ type Story = StoryObj<BadgeArgs>;
 
 const Template: Story = {
   render: (args) => {
-    setModusWCMode(args.mode);
-
     return `
-      <div>
-        <h1>Badge</h1>
-        <modus-wc-badge 
-          aria-label="${args.ariaLabel}"
-          color="${args.color}"
-          content="${args.content}"
-          custom-class="${args.customClass}"
-          size="${args.size}"
-          type="${args.type}"
-        ></modus-wc-badge>
-        <stencil-docs component-name="modus-wc-badge"></stencil-docs>
-      </div>
+      <modus-wc-badge 
+        aria-label="${args.ariaLabel}"
+        color="${args.color}"
+        content="${args.content}"
+        custom-class="${args.customClass}"
+        size="${args.size}"
+        type="${args.type}"
+      ></modus-wc-badge>
     `;
   },
 };
@@ -81,7 +71,6 @@ export const Default: Story = {
     color: 'primary',
     content: 'Badge',
     customClass: '',
-    mode: 'default',
     size: 'medium',
     type: 'filled',
   },

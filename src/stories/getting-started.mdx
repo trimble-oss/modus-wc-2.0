@@ -1,0 +1,53 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/Getting Started" />
+
+# Modus Web Components 2.0
+
+## Installation
+
+```bash
+npm install @trimble-cms/modus-wc-2.0
+```
+
+## Usage
+
+1. Register custom elements:
+
+```javascript
+import { defineCustomElements } from '@trimble-cms/modus-wc-2.0';
+
+// Call during the initial loading of your application
+const Root = () => {
+  defineCustomElements();
+
+  return <App />;
+};
+```
+
+2. Use the components:
+
+```javascript
+// Use in HTML
+<modus-wc-button variant="primary">Click me</modus-wc-button>
+```
+
+## Framework Integration
+
+### Angular
+
+```typescript
+
+```
+
+### React
+
+```jsx
+
+```
+
+### Vue
+
+```vue
+
+```

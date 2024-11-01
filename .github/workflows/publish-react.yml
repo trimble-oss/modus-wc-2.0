@@ -33,7 +33,8 @@ jobs:
           node-version: ${{ vars.NODE_VERSION }}
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 

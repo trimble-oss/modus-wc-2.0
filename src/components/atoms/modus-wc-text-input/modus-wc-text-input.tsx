@@ -30,7 +30,8 @@ export class ModusWcTextInput {
   /**
    * Indicates whether the input has an invalid input.
    */
-  @Prop() ariaInvalid: 'true' | 'false' = 'false';
+  @Prop() ariaInvalidInput?: 'grammar' | 'spelling' | 'true' | 'false' =
+    'false';
 
   /**
    * The aria-label attribute for accessibility.
@@ -213,7 +214,7 @@ export class ModusWcTextInput {
       <Host>
         <input
           aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.ariaInvalid}
+          aria-invalid={this.ariaInvalidInput}
           aria-label={this.ariaLabel || this.placeholder}
           aria-placeholder={this.placeholder}
           aria-required={this.required}

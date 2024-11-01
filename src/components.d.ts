@@ -153,7 +153,7 @@ export namespace Components {
         /**
           * Indicates whether the input has an invalid input.
          */
-        "ariaInvalid": 'true' | 'false';
+        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -267,7 +267,7 @@ export namespace Components {
         /**
           * Indicates whether the textarea has an invalid input.
          */
-        "ariaInvalid": 'true' | 'false';
+        "ariaInvalidTextarea"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -312,6 +312,10 @@ export namespace Components {
           * The number of visible text lines for the textarea.
          */
         "rows"?: number;
+        /**
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "spellcheck": boolean;
         /**
           * The tabindex of the textarea.
          */
@@ -653,7 +657,7 @@ declare namespace LocalJSX {
         /**
           * Indicates whether the input has an invalid input.
          */
-        "ariaInvalid"?: 'true' | 'false';
+        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -779,7 +783,7 @@ declare namespace LocalJSX {
         /**
           * Indicates whether the textarea has an invalid input.
          */
-        "ariaInvalid"?: 'true' | 'false';
+        "ariaInvalidTextarea"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -836,6 +840,10 @@ declare namespace LocalJSX {
           * The number of visible text lines for the textarea.
          */
         "rows"?: number;
+        /**
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "spellcheck"?: boolean;
         /**
           * The tabindex of the textarea.
          */
