@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/web-components';
-import { setModusWCMode, ModusWCMode } from '../../../utils/theme';
 
 interface ButtonArgs {
   label: string;
@@ -12,11 +11,12 @@ interface ButtonArgs {
   type: 'button' | 'submit' | 'reset';
   variant: 'filled' | 'outlined' | 'text';
   color: 'primary' | 'secondary' | 'tertiary';
-  mode: ModusWCMode;
 }
 
 const meta: Meta<ButtonArgs> = {
   title: 'Components/Atoms/Button',
+  component: 'modus-wc-button',
+  tags: ['autodocs'],
   argTypes: {
     label: { control: 'text' },
     ariaLabel: { control: 'text' },
@@ -40,10 +40,6 @@ const meta: Meta<ButtonArgs> = {
       control: { type: 'select' },
       options: ['primary', 'secondary', 'tertiary'],
     },
-    mode: {
-      control: { type: 'select' },
-      options: ['default', 'dark', 'high-contrast'],
-    },
   },
 };
 
@@ -53,25 +49,19 @@ type Story = StoryObj<ButtonArgs>;
 
 const Template: Story = {
   render: (args) => {
-    setModusWCMode(args.mode);
-
     return `
-      <div>
-        <h1>Button</h1>
-        <modus-wc-button 
-            label="${args.label}"
-            aria-label="${args.ariaLabel}"
-            custom-class="${args.customClass}"
-            size="${args.size}"
-            type="${args.type}"
-            variant="${args.variant}"
-            color="${args.color}"
-            ${args.disabled ? 'disabled' : ''}
-            ${args.fullWidth ? 'full-width' : ''}
-            ${args.pressed ? 'pressed' : ''}
-          ></modus-wc-button>
-          <stencil-docs component-name="modus-wc-button"></stencil-docs>        
-      </div>
+      <modus-wc-button 
+          label="${args.label}"
+          aria-label="${args.ariaLabel}"
+          custom-class="${args.customClass}"
+          size="${args.size}"
+          type="${args.type}"
+          variant="${args.variant}"
+          color="${args.color}"
+          ${args.disabled ? 'disabled' : ''}
+          ${args.fullWidth ? 'full-width' : ''}
+          ${args.pressed ? 'pressed' : ''}
+        ></modus-wc-button>
     `;
   },
 };
@@ -85,7 +75,6 @@ export const Default: Story = {
     disabled: false,
     fullWidth: false,
     label: 'Click me',
-    mode: 'default',
     pressed: false,
     size: 'medium',
     type: 'button',

@@ -31,6 +31,7 @@ interface TextInputArgs {
 const meta: Meta<TextInputArgs> = {
   title: 'Components/Atoms/Text Input',
   component: 'modus-wc-text-input',
+  tags: ['autodocs'],
   argTypes: {
     ariaDescribedby: { control: 'text', table: { sort: 'alpha' } },
     ariaInvalid: { control: 'boolean', table: { sort: 'alpha' } },
@@ -102,46 +103,42 @@ type Story = StoryObj<TextInputArgs>;
 
 const Template: Story = {
   render: (args) => html`
-    <div>
-      <h1>Text Input</h1>
-      <modus-wc-text-input
-        aria-describedby=${args.ariaDescribedby}
-        aria-invalid=${args.ariaInvalid}
-        aria-label=${args.ariaLabel}
-        auto-capitalize=${args.autoCapitalize}
-        auto-complete=${args.autoComplete}
-        ?auto-focus=${args.autoFocus}
-        ?bordered=${args.bordered}
-        custom-class=${args.customClass}
-        dir=${args.dir}
-        ?disabled=${args.disabled}
-        id=${args.id}
-        input-mode=${args.inputMode}
-        max-length=${args.maxLength}
-        min-length=${args.minLength}
-        name=${args.name}
-        pattern=${args.pattern}
-        placeholder=${args.placeholder}
-        ?read-only=${args.readOnly}
-        ?required=${args.required}
-        size=${args.size}
-        ?spellcheck=${args.spellcheck}
-        tab-index=${args.tabIndex}
-        type=${args.type}
-        .value=${args.value}
-        @input=${(e: Event) => {
-          const target = e.target as HTMLInputElement;
-          args.value = target.value;
-        }}
-        @change=${(e: Event) => {
-          const target = e.target as HTMLInputElement;
-          args.value = target.value;
-        }}
-        @blur=${(e: FocusEvent) => console.log('Blur event:', e)}
-        @focus=${(e: FocusEvent) => console.log('Focus event:', e)}
-      ></modus-wc-text-input>
-      <stencil-docs component-name="modus-wc-text-input"></stencil-docs>
-    </div>
+    <modus-wc-text-input
+      aria-describedby=${args.ariaDescribedby}
+      aria-invalid=${args.ariaInvalid}
+      aria-label=${args.ariaLabel}
+      auto-capitalize=${args.autoCapitalize}
+      auto-complete=${args.autoComplete}
+      ?auto-focus=${args.autoFocus}
+      ?bordered=${args.bordered}
+      custom-class=${args.customClass}
+      dir=${args.dir}
+      ?disabled=${args.disabled}
+      id=${args.id}
+      input-mode=${args.inputMode}
+      max-length=${args.maxLength}
+      min-length=${args.minLength}
+      name=${args.name}
+      pattern=${args.pattern}
+      placeholder=${args.placeholder}
+      ?read-only=${args.readOnly}
+      ?required=${args.required}
+      size=${args.size}
+      ?spellcheck=${args.spellcheck}
+      tab-index=${args.tabIndex}
+      type=${args.type}
+      .value=${args.value}
+      @input=${(e: Event) => {
+        const target = e.target as HTMLInputElement;
+        args.value = target.value;
+      }}
+      @change=${(e: Event) => {
+        const target = e.target as HTMLInputElement;
+        args.value = target.value;
+      }}
+      @blur=${(e: FocusEvent) => console.log('Blur event:', e)}
+      @focus=${(e: FocusEvent) => console.log('Focus event:', e)}
+    ></modus-wc-text-input>
   `,
   args: {
     ariaLabel: 'Enter your name',
