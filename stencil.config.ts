@@ -23,10 +23,12 @@ export const config: Config = {
   sourceMap: false,
   outputTargets: [
     {
+      // Required for the Angular integration
       type: 'dist',
       esmLoaderPath: '../loader',
     },
     {
+      // Required for the React integration
       type: 'dist-custom-elements',
     },
     {
@@ -37,10 +39,9 @@ export const config: Config = {
       serviceWorker: null,
     },
     reactOutputTarget({
-      outDir: './integrations/react/src',
+      outDir: './integrations/react/stencil-generated',
       excludeComponents: ['stencil-docs'],
       customElementsDir: 'dist/components',
-      stencilPackageName: '@trimble-cms/modus-wc',
     }),
   ],
   plugins: [

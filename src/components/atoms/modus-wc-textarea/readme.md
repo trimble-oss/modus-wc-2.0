@@ -101,23 +101,24 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property                 | Attribute          | Description                                                   | Type                             | Default     |
-| ------------------------ | ------------------ | ------------------------------------------------------------- | -------------------------------- | ----------- |
-| `ariaDescribedby`        | `aria-describedby` | The ID of the element that describes the textarea.            | `string \| undefined`            | `undefined` |
-| `ariaInvalid`            | `aria-invalid`     | Indicates whether the textarea has an invalid input.          | `"false" \| "true"`              | `'false'`   |
-| `ariaLabel` _(required)_ | `aria-label`       | The aria-label attribute for accessibility.                   | `string`                         | `undefined` |
-| `customClass`            | `custom-class`     | Custom CSS class to apply to the textarea (supports DaisyUI). | `string`                         | `''`        |
-| `dir`                    | `dir`              | Specifies the text direction of the textarea content.         | `"" \| "auto" \| "ltr" \| "rtl"` | `''`        |
-| `disabled`               | `disabled`         | The disabled state of the textarea.                           | `boolean`                        | `false`     |
-| `id`                     | `id`               | The ID of the textarea element.                               | `string`                         | `''`        |
-| `maxLength`              | `max-length`       | The maximum number of characters allowed in the textarea.     | `number \| undefined`            | `undefined` |
-| `name`                   | `name`             | The name of the textarea.                                     | `string`                         | `''`        |
-| `placeholder`            | `placeholder`      | The placeholder text for the textarea.                        | `string`                         | `''`        |
-| `readonly`               | `readonly`         | The readonly state of the textarea.                           | `boolean`                        | `false`     |
-| `required`               | `required`         | The required state of the textarea.                           | `boolean`                        | `false`     |
-| `rows`                   | `rows`             | The number of visible text lines for the textarea.            | `number \| undefined`            | `undefined` |
-| `tabIndex`               | `tab-index`        | The tabindex of the textarea.                                 | `number`                         | `0`         |
-| `value`                  | `value`            | The value of the textarea.                                    | `string`                         | `''`        |
+| Property                 | Attribute               | Description                                                                                      | Type                                                        | Default     |
+| ------------------------ | ----------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- | ----------- |
+| `ariaDescribedby`        | `aria-describedby`      | The ID of the element that describes the textarea.                                               | `string \| undefined`                                       | `undefined` |
+| `ariaInvalidTextarea`    | `aria-invalid-textarea` | Indicates whether the textarea has an invalid input.                                             | `"false" \| "grammar" \| "spelling" \| "true" \| undefined` | `'false'`   |
+| `ariaLabel` _(required)_ | `aria-label`            | The aria-label attribute for accessibility.                                                      | `string`                                                    | `undefined` |
+| `customClass`            | `custom-class`          | Custom CSS class to apply to the textarea (supports DaisyUI).                                    | `string`                                                    | `''`        |
+| `dir`                    | `dir`                   | Specifies the text direction of the textarea content.                                            | `"" \| "auto" \| "ltr" \| "rtl"`                            | `''`        |
+| `disabled`               | `disabled`              | The disabled state of the textarea.                                                              | `boolean`                                                   | `false`     |
+| `id`                     | `id`                    | The ID of the textarea element.                                                                  | `string`                                                    | `''`        |
+| `maxLength`              | `max-length`            | The maximum number of characters allowed in the textarea.                                        | `number \| undefined`                                       | `undefined` |
+| `name`                   | `name`                  | The name of the textarea.                                                                        | `string`                                                    | `''`        |
+| `placeholder`            | `placeholder`           | The placeholder text for the textarea.                                                           | `string`                                                    | `''`        |
+| `readonly`               | `readonly`              | The readonly state of the textarea.                                                              | `boolean`                                                   | `false`     |
+| `required`               | `required`              | The required state of the textarea.                                                              | `boolean`                                                   | `false`     |
+| `rows`                   | `rows`                  | The number of visible text lines for the textarea.                                               | `number \| undefined`                                       | `undefined` |
+| `spellcheck`             | `spellcheck`            | Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee. | `boolean`                                                   | `true`      |
+| `tabIndex`               | `tab-index`             | The tabindex of the textarea.                                                                    | `number`                                                    | `0`         |
+| `value`                  | `value`                 | The value of the textarea.                                                                       | `string`                                                    | `''`        |
 
 
 ## Events

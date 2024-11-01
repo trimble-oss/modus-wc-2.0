@@ -9,6 +9,7 @@ storybook-static/
 
 # Stencil
 .stencil/
+/integrations/**/stencil-generated/
 
 # Test coverage
 coverage/

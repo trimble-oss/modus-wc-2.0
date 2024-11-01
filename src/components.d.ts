@@ -5,9 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Event } from "@stencil/core";
 import { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { Event } from "@stencil/core";
 export { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
@@ -155,7 +153,7 @@ export namespace Components {
         /**
           * Indicates whether the input has an invalid input.
          */
-        "ariaInvalid": 'true' | 'false';
+        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -269,7 +267,7 @@ export namespace Components {
         /**
           * Indicates whether the textarea has an invalid input.
          */
-        "ariaInvalid": 'true' | 'false';
+        "ariaInvalidTextarea"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -314,6 +312,10 @@ export namespace Components {
           * The number of visible text lines for the textarea.
          */
         "rows"?: number;
+        /**
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "spellcheck": boolean;
         /**
           * The tabindex of the textarea.
          */
@@ -655,7 +657,7 @@ declare namespace LocalJSX {
         /**
           * Indicates whether the input has an invalid input.
          */
-        "ariaInvalid"?: 'true' | 'false';
+        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -781,7 +783,7 @@ declare namespace LocalJSX {
         /**
           * Indicates whether the textarea has an invalid input.
          */
-        "ariaInvalid"?: 'true' | 'false';
+        "ariaInvalidTextarea"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * The aria-label attribute for accessibility.
          */
@@ -838,6 +840,10 @@ declare namespace LocalJSX {
           * The number of visible text lines for the textarea.
          */
         "rows"?: number;
+        /**
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "spellcheck"?: boolean;
         /**
           * The tabindex of the textarea.
          */

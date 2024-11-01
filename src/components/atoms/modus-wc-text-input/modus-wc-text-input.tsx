@@ -1,4 +1,11 @@
-import { h, Host, Component, Event, EventEmitter, Prop } from '@stencil/core';
+import {
+  h,
+  Host,
+  Component,
+  Event as StencilEvent,
+  EventEmitter,
+  Prop,
+} from '@stencil/core';
 import {
   convertPropsToClasses,
   tailwindThemeClasses,
@@ -23,7 +30,8 @@ export class ModusWcTextInput {
   /**
    * Indicates whether the input has an invalid input.
    */
-  @Prop() ariaInvalid: 'true' | 'false' = 'false';
+  @Prop() ariaInvalidInput?: 'grammar' | 'spelling' | 'true' | 'false' =
+    'false';
 
   /**
    * The aria-label attribute for accessibility.
@@ -155,17 +163,17 @@ export class ModusWcTextInput {
   /**
    * Event emitted when the input loses focus.
    */
-  @Event() blur!: EventEmitter<FocusEvent>;
+  @StencilEvent() blur!: EventEmitter<FocusEvent>;
 
   /**
    * Event emitted when the input value changes.
    */
-  @Event() change!: EventEmitter<Event>;
+  @StencilEvent() change!: EventEmitter<Event>;
 
   /**
    * Event emitted when the input gains focus.
    */
-  @Event() focus!: EventEmitter<FocusEvent>;
+  @StencilEvent() focus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
     if (!this.ariaLabel) {
@@ -206,7 +214,7 @@ export class ModusWcTextInput {
       <Host>
         <input
           aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.ariaInvalid}
+          aria-invalid={this.ariaInvalidInput}
           aria-label={this.ariaLabel || this.placeholder}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
