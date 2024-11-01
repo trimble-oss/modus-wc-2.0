@@ -1,0 +1,1 @@
+var t=function(){return document.documentElement.classList.contains("modus-wc-dark-mode")?"dark":document.documentElement.classList.contains("modus-wc-high-contrast-mode")?"high-contrast":"default"};export{t as g};
