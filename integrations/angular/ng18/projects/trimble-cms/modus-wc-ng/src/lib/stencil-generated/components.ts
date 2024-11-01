@@ -8,14 +8,14 @@ import { Components } from '@trimble-cms/modus-wc';
 
 
 @ProxyCmp({
-  inputs: ['alt', 'ariaLabel', 'customClass', 'daisyClass', 'imgSrc']
+  inputs: ['alt', 'ariaLabel', 'customClass', 'imgSrc', 'shape', 'size']
 })
 @Component({
   selector: 'modus-wc-avatar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['alt', 'ariaLabel', 'customClass', 'daisyClass', 'imgSrc'],
+  inputs: ['alt', 'ariaLabel', 'customClass', 'imgSrc', 'shape', 'size'],
 })
 export class ModusWcAvatar {
   protected el: HTMLElement;
@@ -102,14 +102,14 @@ export declare interface ModusWcDivider extends Components.ModusWcDivider {}
 
 
 @ProxyCmp({
-  inputs: ['ariaDescribedby', 'ariaInvalid', 'ariaLabel', 'autoCapitalize', 'autoComplete', 'autoFocus', 'customClass', 'dir', 'disabled', 'id', 'inputMode', 'maxLength', 'minLength', 'name', 'pattern', 'placeholder', 'readOnly', 'required', 'spellcheck', 'tabIndex', 'type', 'value']
+  inputs: ['ariaDescribedby', 'ariaInvalid', 'ariaLabel', 'autoCapitalize', 'autoComplete', 'autoFocus', 'bordered', 'customClass', 'dir', 'disabled', 'id', 'inputMode', 'maxLength', 'minLength', 'name', 'pattern', 'placeholder', 'readOnly', 'required', 'size', 'spellcheck', 'tabIndex', 'type', 'value']
 })
 @Component({
   selector: 'modus-wc-text-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['ariaDescribedby', 'ariaInvalid', 'ariaLabel', 'autoCapitalize', 'autoComplete', 'autoFocus', 'customClass', 'dir', 'disabled', 'id', 'inputMode', 'maxLength', 'minLength', 'name', 'pattern', 'placeholder', 'readOnly', 'required', 'spellcheck', 'tabIndex', 'type', 'value'],
+  inputs: ['ariaDescribedby', 'ariaInvalid', 'ariaLabel', 'autoCapitalize', 'autoComplete', 'autoFocus', 'bordered', 'customClass', 'dir', 'disabled', 'id', 'inputMode', 'maxLength', 'minLength', 'name', 'pattern', 'placeholder', 'readOnly', 'required', 'size', 'spellcheck', 'tabIndex', 'type', 'value'],
 })
 export class ModusWcTextInput {
   protected el: HTMLElement;
