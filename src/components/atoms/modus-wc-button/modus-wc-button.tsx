@@ -26,6 +26,11 @@ export class ModusWcButton {
   @Prop() ariaLabel!: string;
 
   /**
+   * Event emitted when the button is clicked or activated via keyboard.
+   */
+  @Event() buttonClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
+  /**
    * The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'.
    */
   @Prop() color: 'primary' | 'secondary' | 'tertiary' = 'primary';
@@ -70,11 +75,6 @@ export class ModusWcButton {
    */
   @Prop() type: 'button' | 'submit' | 'reset' = 'button';
 
-  /**
-   * Event emitted when the button is clicked or activated via keyboard.
-   */
-  @Event() click!: EventEmitter<MouseEvent | KeyboardEvent>;
-
   componentWillLoad() {
     if (!this.ariaLabel) {
       console.warn('ModusWcButton: ariaLabel is required for accessibility.');
@@ -83,7 +83,7 @@ export class ModusWcButton {
 
   private handleClick = (event: MouseEvent) => {
     if (!this.disabled) {
-      this.click.emit(event);
+      this.buttonClick.emit(event);
     }
   };
 
@@ -92,7 +92,7 @@ export class ModusWcButton {
   handleKeyDown = (event: KeyboardEvent) => {
     if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
       event.preventDefault();
-      this.click.emit(event);
+      this.buttonClick.emit(event);
     }
   };
 

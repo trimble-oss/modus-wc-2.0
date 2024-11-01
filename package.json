@@ -28,6 +28,7 @@
     "lint:fix": "eslint . --fix",
     "start": "concurrently \"npm run tailwind:watch\" \"stencil build --dev --watch --serve\"",
     "test": "stencil test --spec --e2e",
+    "test:update-snapshot": "stencil test --spec --e2e --update-snapshot",
     "test:coverage": "stencil test --spec --coverage",
     "test:watch": "stencil test --spec --e2e --watchAll",
     "stencil:build": "stencil build --docs",

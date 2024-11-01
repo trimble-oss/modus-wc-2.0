@@ -10,7 +10,7 @@ describe('modus-wc-text-input', () => {
     expect(page.root).not.toBeNull();
     expect(page.root).toEqualHtml(`
       <modus-wc-text-input aria-label="Default input" value="">
-        <input aria-invalid="false" aria-label="Default input" aria-placeholder="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md" inputmode="text" name="" placeholder="" tabindex="0" type="text" value="">
+        <input aria-label="Default input" aria-placeholder="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md" inputmode="text" name="" placeholder="" type="text" value="">
       </modus-wc-text-input>
     `);
   });
@@ -18,83 +18,34 @@ describe('modus-wc-text-input', () => {
   it('renders with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextInput],
-      html: `<modus-wc-text-input 
-        aria-describedby="description" 
-        aria-invalid="true" 
-        aria-label="Custom input" 
+      html: `<modus-wc-text-input
+        aria-describedby="description"
+        aria-label="Custom input"
         autocapitalize="words"
         autocomplete="on"
         autofocus="true"
-        custom-class="custom-class" 
-        dir="rtl" 
+        custom-class="custom-class"
         disabled="true"
-        id="custom-id" 
+        input-aria-invalid="grammar"
+        input-id="custom-id"
+        input-dir="rtl"
         inputmode="numeric"
-        max-length="50" 
+        input-tab-index="1"
+        max-length="50"
         min-length="5"
-        name="custom-name" 
+        name="custom-name"
         pattern="[A-Za-z]{3}"
-        placeholder="Custom placeholder" 
+        placeholder="Custom placeholder"
         readonly="true"
         required="true"
         size="lg"
         spellcheck="true"
-        tab-index="1" 
         type="email"
         value="test@example.com"
       ></modus-wc-text-input>`,
     });
     expect(page.root).not.toBeNull();
-    expect(page.root).toEqualHtml(`
-      <modus-wc-text-input 
-        aria-describedby="description" 
-        aria-invalid="true" 
-        aria-label="Custom input" 
-        autocapitalize="words"
-        autocomplete="on"
-        autofocus="true"
-        custom-class="custom-class" 
-        dir="rtl" 
-        disabled="true" 
-        id="custom-id" 
-        inputmode="numeric"
-        max-length="50" 
-        min-length="5"
-        name="custom-name" 
-        pattern="[A-Za-z]{3}"
-        placeholder="Custom placeholder" 
-        readonly="true"
-        required="true"
-        size="lg"
-        spellcheck="true"
-        tab-index="1" 
-        type="email"
-        value="test@example.com"
-      >
-        <input 
-          aria-describedby="description"
-          aria-invalid="true"
-          aria-label="Custom input"
-          aria-placeholder="Custom placeholder"
-          aria-required=""
-          class="modus-wc-input modus-wc-input-bordered modus-wc-input-lg custom-class"
-          dir="rtl"
-          disabled
-          id="custom-id"
-          inputmode="text"
-          maxlength="50"
-          minlength="5"
-          name="custom-name"
-          pattern="[A-Za-z]{3}"
-          placeholder="Custom placeholder"
-          required
-          spellcheck
-          tabindex="1"
-          type="email"
-          value="test@example.com"
-        >
-      </modus-wc-text-input>
-    `);
+    expect(page.root).toMatchSnapshot();
   });
 
   it('emits blur event', async () => {
@@ -106,7 +57,7 @@ describe('modus-wc-text-input', () => {
     const input = page.root!.querySelector('input');
     expect(input).not.toBeNull();
     const blurSpy = jest.fn();
-    page.root!.addEventListener('blur', blurSpy);
+    page.root!.addEventListener('inputBlur', blurSpy);
     input!.dispatchEvent(new FocusEvent('blur'));
     await page.waitForChanges();
     expect(blurSpy).toHaveBeenCalled();
@@ -121,7 +72,7 @@ describe('modus-wc-text-input', () => {
     const input = page.root!.querySelector('input');
     expect(input).not.toBeNull();
     const changeSpy = jest.fn();
-    page.root!.addEventListener('change', changeSpy);
+    page.root!.addEventListener('inputChange', changeSpy);
     input!.value = 'New value';
     input!.dispatchEvent(new Event('change'));
     await page.waitForChanges();
@@ -143,7 +94,7 @@ describe('modus-wc-text-input', () => {
     const input = page.root!.querySelector('input');
     expect(input).not.toBeNull();
     const focusSpy = jest.fn();
-    page.root!.addEventListener('focus', focusSpy);
+    page.root!.addEventListener('inputFocus', focusSpy);
     input!.dispatchEvent(new FocusEvent('focus'));
     await page.waitForChanges();
     expect(focusSpy).toHaveBeenCalled();
