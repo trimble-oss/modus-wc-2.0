@@ -19,6 +19,8 @@ interface BadgeArgs {
 
 const meta: Meta<BadgeArgs> = {
   title: 'Components/Atoms/Badge',
+  component: 'modus-wc-badge',
+  tags: ['autodocs'],
   argTypes: {
     ariaLabel: { control: 'text' },
     color: {
@@ -58,18 +60,14 @@ const Template: Story = {
     setModusWCMode(args.mode);
 
     return `
-      <div>
-        <h1>Badge</h1>
-        <modus-wc-badge 
-          aria-label="${args.ariaLabel}"
-          color="${args.color}"
-          content="${args.content}"
-          custom-class="${args.customClass}"
-          size="${args.size}"
-          type="${args.type}"
-        ></modus-wc-badge>
-        <stencil-docs component-name="modus-wc-badge"></stencil-docs>
-      </div>
+      <modus-wc-badge 
+        aria-label="${args.ariaLabel}"
+        color="${args.color}"
+        content="${args.content}"
+        custom-class="${args.customClass}"
+        size="${args.size}"
+        type="${args.type}"
+      ></modus-wc-badge>
     `;
   },
 };

@@ -15,6 +15,8 @@ interface TypographyArgs {
 
 const meta: Meta<TypographyArgs> = {
   title: 'Components/Atoms/Typography',
+  component: 'modus-wc-typography',
+  tags: ['autodocs'],
   argTypes: {
     ariaLabel: { control: 'text' },
     bodySize: {
@@ -51,18 +53,14 @@ const Template: Story = {
     setModusWCMode(args.mode);
 
     return `
-      <div>
-        <h1>Typography</h1>
-        <modus-wc-typography 
-          aria-label="${args.ariaLabel}"
-          body-size="${args.bodySize}"
-          custom-class="${args.customClass}"
-          variant="${args.variant}"
-          weight="${args.weight}"
-          text-case="${args.textCase}"
-        >${args.content}</modus-wc-typography>
-        <stencil-docs component-name="modus-wc-typography"></stencil-docs>
-      </div>
+      <modus-wc-typography 
+        aria-label="${args.ariaLabel}"
+        body-size="${args.bodySize}"
+        custom-class="${args.customClass}"
+        variant="${args.variant}"
+        weight="${args.weight}"
+        text-case="${args.textCase}"
+      >${args.content}</modus-wc-typography>
     `;
   },
 };

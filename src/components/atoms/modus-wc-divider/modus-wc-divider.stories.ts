@@ -11,6 +11,8 @@ interface DividerArgs {
 
 const meta: Meta<DividerArgs> = {
   title: 'Components/Atoms/Divider',
+  component: 'modus-wc-divider',
+  tags: ['autodocs'],
   argTypes: {
     ariaLabel: { control: 'text' },
     customClass: { control: 'text' },
@@ -32,20 +34,12 @@ const Template: Story = {
     setModusWCMode(args.mode);
 
     return `
-      <div>
-        <h1>Divider</h1>
-        <div>
-          <div>Content</div>
-          <modus-wc-divider 
-            aria-label="${args.ariaLabel}"
-            custom-class="${args.customClass}"
-            daisy-class="${args.daisyClass}"
-            content="${args.content}"
-          ></modus-wc-divider>
-          <div>Content</div>
-        </div>
-        <stencil-docs component-name="modus-wc-divider"></stencil-docs>
-      </div>
+      <modus-wc-divider 
+        aria-label="${args.ariaLabel}"
+        custom-class="${args.customClass}"
+        daisy-class="${args.daisyClass}"
+        content="${args.content}"
+      ></modus-wc-divider>
     `;
   },
 };

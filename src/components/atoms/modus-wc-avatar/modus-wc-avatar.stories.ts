@@ -12,6 +12,8 @@ interface AvatarArgs {
 
 const meta: Meta<AvatarArgs> = {
   title: 'Components/Atoms/Avatar',
+  component: 'modus-wc-avatar',
+  tags: ['autodocs'],
   argTypes: {
     alt: { control: 'text' },
     ariaLabel: { control: 'text' },
@@ -34,18 +36,14 @@ type Story = StoryObj<AvatarArgs>;
 
 const Template: Story = {
   render: (args) => html`
-    <div>
-      <h1>Avatar</h1>
-      <modus-wc-avatar
-        alt="${args.alt}"
-        aria-label="${args.ariaLabel}"
-        custom-class="${args.customClass}"
-        img-src="${args.imgSrc}"
-        shape="${args.shape}"
-        size="${args.size}"
-      ></modus-wc-avatar>
-      <stencil-docs component-name="modus-wc-avatar"></stencil-docs>
-    </div>
+    <modus-wc-avatar
+      alt="${args.alt}"
+      aria-label="${args.ariaLabel}"
+      custom-class="${args.customClass}"
+      img-src="${args.imgSrc}"
+      shape="${args.shape}"
+      size="${args.size}"
+    ></modus-wc-avatar>
   `,
   args: {
     alt: 'User avatar',
