@@ -158,6 +158,7 @@ export class ModusWcTextarea {
           readonly={this.readonly}
           required={this.required}
           rows={this.rows}
+          spellcheck={this.spellcheck}
           tabIndex={this.tabIndex}
           value={this.value}
         />
