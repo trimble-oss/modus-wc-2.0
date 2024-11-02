@@ -20,10 +20,10 @@ const preview: Preview = {
   decorators: [
     withThemeByDataAttribute({
       themes: {
-        'modus-classic': 'modus-classic',
-        'modus-dark': 'modus-dark',
+        'modus-classic-light': 'modus-classic-light',
+        'modus-classic-dark': 'modus-classic-dark',
       },
-      defaultTheme: 'modus-classic',
+      defaultTheme: 'modus-classic-light',
       attributeName: 'data-theme',
     }),
   ],

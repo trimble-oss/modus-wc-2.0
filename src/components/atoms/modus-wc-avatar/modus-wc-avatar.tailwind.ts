@@ -1,9 +1,3 @@
-// TODO - evaluate if this is needed or if it ends up overriding our theme or customCSS styles
-export const tailwindThemeClasses: Record<string, string> = {
-  'modus-classic': '',
-  'modus-dark': '',
-};
-
 export const convertPropsToClasses = (props: {
   shape?: string;
   size?: string;

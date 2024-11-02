@@ -1,8 +1,5 @@
 import { h, Component, Prop } from '@stencil/core';
-import {
-  convertPropsToClasses,
-  tailwindThemeClasses,
-} from './modus-wc-avatar.tailwind';
+import { convertPropsToClasses } from './modus-wc-avatar.tailwind';
 
 /**
  * A customizable avatar component used to create avatars with different images.
@@ -59,15 +56,12 @@ export class ModusWcAvatar {
     const classList = [];
 
     // istanbul ignore next - not implemented
-    const theme = document.documentElement.getAttribute('data-theme') ?? '';
-    const themeClasses = tailwindThemeClasses[theme];
     const propClasses = convertPropsToClasses({
       shape: this.shape,
       size: this.size,
     });
 
     // istanbul ignore next - not implemented
-    if (themeClasses) classList.push(themeClasses);
     if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
 

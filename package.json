@@ -46,6 +46,7 @@
     "@stencil/core": "^4.22.0",
     "@stencil/react-output-target": "^0.7.1",
     "@stencil/sass": "^3.0.12",
+    "@stencil/store": "^2.0.16",
     "@storybook/addon-a11y": "^8.4.1",
     "@storybook/addon-docs": "^8.3.5",
     "@storybook/addon-essentials": "^8.3.5",
