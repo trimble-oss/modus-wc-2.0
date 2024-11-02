@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  check-pr:
+  merge-gate:
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
