@@ -1,4 +1,4 @@
-name: Check PR
+name: Merge Gate
 
 on:
   pull_request:
@@ -43,13 +43,19 @@ jobs:
         run: npm run storybook:build
         continue-on-error: true
 
+      - name: Run unit tests and check code coverage
+        id: tests
+        run: npm run test:coverage
+        continue-on-error: true
+
       - name: Check for step failures
         if: always()
         run: |
           if [ "${{ steps.lint.outcome }}" == "failure" ] || \
              [ "${{ steps.prettier.outcome }}" == "failure" ] || \
              [ "${{ steps.stencil.outcome }}" == "failure" ] || \
-             [ "${{ steps.storybook.outcome }}" == "failure" ]; then
+             [ "${{ steps.storybook.outcome }}" == "failure" ] || \
+             [ "${{ steps.tests.outcome }}" == "failure" ]; then
             echo "One or more steps have failed. Please review the logs and fix the issues before merging."
             exit 1
           fi
