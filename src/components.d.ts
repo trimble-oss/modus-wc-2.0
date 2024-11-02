@@ -340,6 +340,10 @@ export namespace Components {
           * The controls the theme switcher renders (theme, mode, or both).
          */
         "controls"?: 'theme' | 'mode' | 'both';
+        /**
+          * Custom CSS class to apply to the typography element.
+         */
+        "customClass": string;
     }
     /**
      * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
@@ -881,6 +885,10 @@ declare namespace LocalJSX {
           * The controls the theme switcher renders (theme, mode, or both).
          */
         "controls"?: 'theme' | 'mode' | 'both';
+        /**
+          * Custom CSS class to apply to the typography element.
+         */
+        "customClass"?: string;
     }
     /**
      * A customizable typography component used to render text with different sizes, variants, weights, and text casing.

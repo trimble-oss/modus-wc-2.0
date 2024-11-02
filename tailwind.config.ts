@@ -2,6 +2,7 @@ import typography from '@tailwindcss/typography';
 import daisyui from 'daisyui';
 import type { Config } from 'tailwindcss';
 import { modusClassic } from './src/styles/themes/modus-classic';
+import { prism } from './src/styles/themes/prism';
 
 export default {
   content: [
@@ -19,6 +20,8 @@ export default {
     themes: [
       { 'modus-classic-light': modusClassic.light },
       { 'modus-classic-dark': modusClassic.dark },
+      { 'prism-light': prism.light },
+      { 'prism-dark': prism.dark },
     ],
   },
   plugins: [typography, daisyui],

@@ -24,79 +24,79 @@ export const modusClassic = {
   light: {
     ...common,
 
-    // Primary Colors
-    primary: '#0063a3',
-    'primary-focus': '#003054',
-    'primary-content': '#ffffff',
+    // Primary Colors (Primary Palette)
+    primary: '#0063A3', // Trimble Blue
+    'primary-focus': '#004F83', // Trimble Blue Dark
+    'primary-content': '#FFFFFF', // White
 
-    // Secondary Colors
-    secondary: '#fcb647',
-    'secondary-focus': '#d88228',
-    'secondary-content': '#ffffff',
+    // Secondary Colors (Yellow Progression)
+    secondary: '#FBAD26', // Yellow
+    'secondary-focus': '#E49325', // Yellow Dark
+    'secondary-content': '#252A2E', // Trimble Gray
 
-    // Tertiary/Accent Colors
-    accent: '#95301f',
-    'accent-focus': '#662a12',
-    'accent-content': '#ffffff',
+    // Tertiary/Accent Colors (Neutral Progression)
+    accent: '#6A6E79', // Gray 6
+    'accent-focus': '#464B52', // Gray 8
+    'accent-content': '#FFFFFF', // White
 
     // Neutral Colors
-    neutral: '#464b52',
-    'neutral-focus': '#252a2e',
-    'neutral-content': '#ffffff',
+    neutral: '#353A40', // Gray 9
+    'neutral-focus': '#171C1E', // Gray 10
+    'neutral-content': '#FFFFFF', // White
 
     // Base Colors
-    'base-100': '#ffffff',
-    'base-200': '#e0e1e9',
-    'base-300': '#b7b9c3',
-    'base-content': '#171c1e',
+    'base-100': '#CBCDD6', // Gray 1
+    'base-200': '#B7B9C3', // Gray 2
+    'base-300': '#A3A6B1', // Gray 3
+    'base-content': '#252A2E', // Trimble Gray
 
     // State/Feedback Colors
-    info: '#217cbb',
-    'info-content': '#ffffff',
-    success: '#1e8a44',
-    'success-content': '#ffffff',
-    warning: '#fbad26',
-    'warning-content': '#000000',
-    error: '#da212c',
-    'error-content': '#ffffff',
+    info: '#0063A3', // Trimble Blue
+    'info-content': '#FFFFFF', // White
+    success: '#1E8A44', // Green
+    'success-content': '#FFFFFF', // White
+    warning: '#FBAD26', // Yellow
+    'warning-content': '#252A2E', // Trimble Gray
+    error: '#DA212C', // Red
+    'error-content': '#FFFFFF', // White
   },
   dark: {
     ...common,
 
-    // Primary Colors
-    primary: '#368fc7',
-    'primary-focus': '#217cbb',
-    'primary-content': '#ffffff',
+    // Primary Colors (Primary Palette)
+    primary: '#0063A3', // Trimble Blue
+    'primary-focus': '#004F83', // Trimble Blue Dark
+    'primary-content': '#FFFFFF', // White
 
-    // Secondary Colors
-    secondary: '#fec157',
-    'secondary-focus': '#fcb647',
-    'secondary-content': '#000000',
+    // Secondary Colors (Yellow Progression)
+    secondary: '#FBAD26', // Yellow
+    'secondary-focus': '#E49325', // Yellow Dark
+    'secondary-content': '#252A2E', // Trimble Gray
 
-    // Tertiary/Accent Colors
-    accent: '#b44e2a',
-    'accent-focus': '#95301f',
-    'accent-content': '#ffffff',
+    // Tertiary/Accent Colors (Neutral Progression)
+    accent: '#6A6E79', // Gray 6
+    'accent-focus': '#464B52', // Gray 8
+    'accent-content': '#FFFFFF', // White
 
     // Neutral Colors
-    neutral: '#7d808d',
-    'neutral-focus': '#464b52',
-    'neutral-content': '#ffffff',
+    neutral: '#353A40', // Gray 9
+    'neutral-focus': '#171C1E', // Gray 10
+    'neutral-content': '#FFFFFF', // White
 
     // Base Colors
-    'base-100': '#252a2e',
-    'base-200': '#171c1e',
-    'base-300': '#000000',
-    'base-content': '#e0e1e9',
+    'base-100': '#464B52', // Gray 8
+    'base-200': '#353A40', // Gray 9
+    'base-300': '#171C1E', // Gray 10
+    'base-content': '#FFFFFF', // White
 
     // State/Feedback Colors
-    info: '#6cb7e2',
-    'info-content': '#000000',
-    success: '#4ea646',
-    'success-content': '#ffffff',
-    warning: '#fec157',
-    'warning-content': '#000000',
-    error: '#e86363',
-    'error-content': '#ffffff',
+    info: '#0063A3', // Trimble Blue
+    'info-content': '#FFFFFF', // White
+    success: '#1E8A44', // Green
+    'success-content': '#FFFFFF', // White
+    warning: '#FBAD26', // Yellow
+    'warning-content': '#252A2E', // Trimble Gray
+    error: '#DA212C', // Red
+    'error-content': '#FFFFFF', // White
   },
 };

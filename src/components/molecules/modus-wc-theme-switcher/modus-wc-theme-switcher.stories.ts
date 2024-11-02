@@ -2,7 +2,9 @@ import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
 
 interface ThemeSwitcherArgs {
+  ariaLabel: string;
   controls?: string;
+  customClass?: string;
 }
 
 const meta: Meta<ThemeSwitcherArgs> = {
@@ -19,7 +21,9 @@ const meta: Meta<ThemeSwitcherArgs> = {
     layout: 'centered',
   },
   argTypes: {
+    ariaLabel: { control: 'text' },
     controls: { control: 'text' },
+    customClass: { control: 'text' },
   },
 };
 
@@ -31,11 +35,14 @@ const Template: Story = {
   render: (args) => html`
     <modus-wc-theme-provider>
       <modus-wc-theme-switcher
+        aria-label=${args.ariaLabel}
         controls=${args.controls}
+        custom-class=${args.customClass}
       ></modus-wc-theme-switcher>
     </modus-wc-theme-provider>
   `,
   args: {
+    ariaLabel: 'Toggle theme',
     controls: 'mode',
   },
 };

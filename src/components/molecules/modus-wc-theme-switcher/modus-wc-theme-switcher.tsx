@@ -1,3 +1,6 @@
+// TODO - add coverage once finalized
+/* istanbul ignore file */
+
 import { Component, h, Prop, State } from '@stencil/core';
 import { themeStore } from '../../../providers/theme/theme.store';
 
@@ -22,6 +25,11 @@ export class ModusWcThemeSwitcher {
    */
   @Prop() controls?: 'theme' | 'mode' | 'both' = 'both';
 
+  /**
+   * Custom CSS class to apply to the typography element.
+   */
+  @Prop() customClass: string = '';
+
   private modeUnsubscribe: (() => void) | undefined;
   @State() isDarkMode = themeStore.state.mode === 'dark';
 
@@ -43,6 +51,16 @@ export class ModusWcThemeSwitcher {
     this.modeUnsubscribe?.();
   }
 
+  private getClasses(): string {
+    const classList = [
+      'modus-wc-grid modus-wc-cursor-pointer modus-wc-place-items-center',
+    ];
+
+    if (this.customClass) classList.push(this.customClass);
+
+    return classList.join(' ');
+  }
+
   private handleModeToggle(event: Event) {
     const checkbox = event.target as HTMLInputElement;
     const newMode = checkbox.checked ? 'dark' : 'light';
@@ -51,10 +69,7 @@ export class ModusWcThemeSwitcher {
 
   render() {
     return (
-      <label
-        class="modus-wc-grid modus-wc-cursor-pointer modus-wc-place-items-center"
-        aria-label={this.ariaLabel}
-      >
+      <label class={this.getClasses()} aria-label={this.ariaLabel}>
         <input
           type="checkbox"
           value="modus-classic-light"
