@@ -3,7 +3,7 @@ import {
   themeStore,
   initializeThemeStore,
   watchSystemTheme,
-} from '../../../stores/theme/theme.store';
+} from './theme.store';
 
 @Component({
   tag: 'modus-wc-theme-provider',

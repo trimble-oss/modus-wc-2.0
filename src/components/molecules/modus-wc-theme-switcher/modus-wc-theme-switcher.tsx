@@ -1,5 +1,5 @@
 import { Component, h, Prop, State } from '@stencil/core';
-import { themeStore } from '../../../stores/theme/theme.store';
+import { themeStore } from '../../../providers/theme/theme.store';
 
 /**
  * A theme switcher component used to toggle the application theme and/or mode.
