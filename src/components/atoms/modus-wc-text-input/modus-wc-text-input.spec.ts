@@ -20,7 +20,7 @@ describe('modus-wc-text-input', () => {
       components: [ModusWcTextInput],
       html: `<modus-wc-text-input 
         aria-describedby="description" 
-        aria-invalid="true" 
+        aria-invalid-input="true" 
         aria-label="Custom input" 
         autocapitalize="words"
         autocomplete="on"
@@ -48,7 +48,7 @@ describe('modus-wc-text-input', () => {
     expect(page.root).toEqualHtml(`
       <modus-wc-text-input 
         aria-describedby="description" 
-        aria-invalid="true" 
+        aria-invalid-input="true" 
         aria-label="Custom input" 
         autocapitalize="words"
         autocomplete="on"
