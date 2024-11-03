@@ -22,12 +22,7 @@ export class ModusWcThemeSwitcher {
   @Prop() ariaLabel!: string;
 
   /**
-   * The controls the theme switcher renders (theme, mode, or both).
-   */
-  @Prop() controls?: 'theme' | 'mode' | 'both' = 'both';
-
-  /**
-   * Custom CSS class to apply to the typography element.
+   * Custom CSS class to apply to the theme switcher element.
    */
   @Prop() customClass: string = '';
 

@@ -328,6 +328,7 @@ export namespace Components {
         "value": string;
     }
     interface ModusWcThemeProvider {
+        "initialTheme"?: Partial<IThemeConfig>;
     }
     /**
      * A theme switcher component used to toggle the application theme and/or mode.
@@ -339,11 +340,7 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
-          * The controls the theme switcher renders (theme, mode, or both).
-         */
-        "controls"?: 'theme' | 'mode' | 'both';
-        /**
-          * Custom CSS class to apply to the typography element.
+          * Custom CSS class to apply to the theme switcher element.
          */
         "customClass": string;
     }
@@ -888,6 +885,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface ModusWcThemeProvider {
+        "initialTheme"?: Partial<IThemeConfig>;
     }
     /**
      * A theme switcher component used to toggle the application theme and/or mode.
@@ -899,11 +897,7 @@ declare namespace LocalJSX {
          */
         "ariaLabel": string;
         /**
-          * The controls the theme switcher renders (theme, mode, or both).
-         */
-        "controls"?: 'theme' | 'mode' | 'both';
-        /**
-          * Custom CSS class to apply to the typography element.
+          * Custom CSS class to apply to the theme switcher element.
          */
         "customClass"?: string;
         /**

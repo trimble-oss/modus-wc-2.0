@@ -1,21 +1,24 @@
-import { Component, h } from '@stencil/core';
+import { Component, h, Prop } from '@stencil/core';
 import {
   themeStore,
   initializeThemeStore,
   watchSystemTheme,
 } from './theme.store';
+import { IThemeConfig } from './theme.types';
 
 @Component({
   tag: 'modus-wc-theme-provider',
   shadow: false,
 })
 export class ThemeProvider {
+  @Prop() initialTheme?: Partial<IThemeConfig>;
+
   private cleanup: (() => void) | undefined;
   private modeUnsubscribe: (() => void) | undefined;
   private themeUnsubscribe: (() => void) | undefined;
 
   componentWillLoad() {
-    initializeThemeStore();
+    initializeThemeStore(this.initialTheme);
     this.cleanup = watchSystemTheme();
 
     // Subscribe to specific property changes

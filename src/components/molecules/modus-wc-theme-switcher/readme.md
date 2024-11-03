@@ -13,11 +13,10 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property                 | Attribute      | Description                                                     | Type                                       | Default     |
-| ------------------------ | -------------- | --------------------------------------------------------------- | ------------------------------------------ | ----------- |
-| `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility.                     | `string`                                   | `undefined` |
-| `controls`               | `controls`     | The controls the theme switcher renders (theme, mode, or both). | `"both" \| "mode" \| "theme" \| undefined` | `'both'`    |
-| `customClass`            | `custom-class` | Custom CSS class to apply to the typography element.            | `string`                                   | `''`        |
+| Property                 | Attribute      | Description                                              | Type     | Default     |
+| ------------------------ | -------------- | -------------------------------------------------------- | -------- | ----------- |
+| `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility.              | `string` | `undefined` |
+| `customClass`            | `custom-class` | Custom CSS class to apply to the theme switcher element. | `string` | `''`        |
 
 
 ## Events

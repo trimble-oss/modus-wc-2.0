@@ -17,12 +17,15 @@ export const themeStore = {
 };
 
 // Initialize theme store with system preferences and stored values
-export const initializeThemeStore = () => {
+export const initializeThemeStore = (initialConfig?: Partial<IThemeConfig>) => {
+  // Set default theme
+  state.theme = initialConfig?.theme || 'modus-classic';
+
+  // Get mode from storage or system preferences
   const stored = localStorage.getItem('modus-theme-config');
   if (stored) {
     const config = JSON.parse(stored) as IThemeConfig;
     state.mode = config.mode;
-    state.theme = config.theme;
   } else {
     const prefersDark = window.matchMedia(
       '(prefers-color-scheme: dark)'
