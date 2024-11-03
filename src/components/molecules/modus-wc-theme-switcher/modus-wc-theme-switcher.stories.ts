@@ -1,10 +1,12 @@
 import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
+import { fn } from '@storybook/test';
 
 interface ThemeSwitcherArgs {
   ariaLabel: string;
   controls?: string;
   customClass?: string;
+  themeChange?: (event: CustomEvent) => void;
 }
 
 const meta: Meta<ThemeSwitcherArgs> = {
@@ -20,10 +22,20 @@ const meta: Meta<ThemeSwitcherArgs> = {
     },
     layout: 'centered',
   },
+  args: { themeChange: fn() },
   argTypes: {
     ariaLabel: { control: 'text' },
-    controls: { control: 'text' },
+    controls: {
+      control: { type: 'select' },
+      options: ['theme', 'mode', 'both'],
+    },
     customClass: { control: 'text' },
+    themeChange: {
+      action: 'themeChange',
+      table: {
+        category: 'Events',
+      },
+    },
   },
 };
 
@@ -38,6 +50,7 @@ const Template: Story = {
         aria-label=${args.ariaLabel}
         controls=${args.controls}
         custom-class=${args.customClass}
+        @themeChange=${args.themeChange}
       ></modus-wc-theme-switcher>
     </modus-wc-theme-provider>
   `,

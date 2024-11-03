@@ -1,8 +1,9 @@
 // TODO - add coverage once finalized
 /* istanbul ignore file */
 
-import { Component, h, Prop, State } from '@stencil/core';
+import { Component, Event, EventEmitter, h, Prop, State } from '@stencil/core';
 import { themeStore } from '../../../providers/theme/theme.store';
+import { IThemeConfig } from '../../../providers/theme/theme.types';
 
 /**
  * A theme switcher component used to toggle the application theme and/or mode.
@@ -29,6 +30,11 @@ export class ModusWcThemeSwitcher {
    * Custom CSS class to apply to the typography element.
    */
   @Prop() customClass: string = '';
+
+  /**
+   * An event that fires when the theme is changed.
+   */
+  @Event() themeChange!: EventEmitter<IThemeConfig>;
 
   private modeUnsubscribe: (() => void) | undefined;
   @State() isDarkMode = themeStore.state.mode === 'dark';
@@ -65,6 +71,8 @@ export class ModusWcThemeSwitcher {
     const checkbox = event.target as HTMLInputElement;
     const newMode = checkbox.checked ? 'dark' : 'light';
     themeStore.setMode(newMode);
+
+    this.themeChange.emit(themeStore.state);
   }
 
   render() {

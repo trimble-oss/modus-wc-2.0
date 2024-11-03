@@ -5,7 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
@@ -388,6 +390,10 @@ export interface ModusWcTextareaCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTextareaElement;
 }
+export interface ModusWcThemeSwitcherCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcThemeSwitcherElement;
+}
 declare global {
     /**
      * A customizable avatar component used to create avatars with different images.
@@ -492,11 +498,22 @@ declare global {
         prototype: HTMLModusWcThemeProviderElement;
         new (): HTMLModusWcThemeProviderElement;
     };
+    interface HTMLModusWcThemeSwitcherElementEventMap {
+        "themeChange": IThemeConfig;
+    }
     /**
      * A theme switcher component used to toggle the application theme and/or mode.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcThemeSwitcherElement extends Components.ModusWcThemeSwitcher, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcThemeSwitcherElementEventMap>(type: K, listener: (this: HTMLModusWcThemeSwitcherElement, ev: ModusWcThemeSwitcherCustomEvent<HTMLModusWcThemeSwitcherElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcThemeSwitcherElementEventMap>(type: K, listener: (this: HTMLModusWcThemeSwitcherElement, ev: ModusWcThemeSwitcherCustomEvent<HTMLModusWcThemeSwitcherElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcThemeSwitcherElement: {
         prototype: HTMLModusWcThemeSwitcherElement;
@@ -889,6 +906,10 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the typography element.
          */
         "customClass"?: string;
+        /**
+          * An event that fires when the theme is changed.
+         */
+        "onThemeChange"?: (event: ModusWcThemeSwitcherCustomEvent<IThemeConfig>) => void;
     }
     /**
      * A customizable typography component used to render text with different sizes, variants, weights, and text casing.

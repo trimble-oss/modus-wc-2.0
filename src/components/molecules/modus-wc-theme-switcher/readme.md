@@ -20,6 +20,13 @@ Adheres to WCAG 2.2 standards.
 | `customClass`            | `custom-class` | Custom CSS class to apply to the typography element.            | `string`                                   | `''`        |
 
 
+## Events
+
+| Event         | Description                                    | Type                        |
+| ------------- | ---------------------------------------------- | --------------------------- |
+| `themeChange` | An event that fires when the theme is changed. | `CustomEvent<IThemeConfig>` |
+
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
