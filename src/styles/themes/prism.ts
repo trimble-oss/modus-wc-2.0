@@ -1,28 +1,14 @@
-const common = {
-  // Design Tokens
-  '--rounded-box': '0.5rem',
-  '--rounded-btn': '0.25rem',
-  '--rounded-badge': '0.25rem',
+import { common } from './common';
 
-  // Animation
-  '--animation-btn': '0.3s',
-  '--animation-input': '0.3s',
+const commonOverrides = {
+  ...common,
 
-  // Button
-  '--btn-text-case': 'uppercase',
-  '--btn-focus-scale': '0.95',
-
-  // Border
-  '--border-btn': '1px',
-
-  // Padding
-  '--navbar-padding': '1rem',
-  '--padding-card': '2rem',
+  '--rounded-badge': '0.75rem',
 };
 
 export const prism = {
   light: {
-    ...common,
+    ...commonOverrides,
 
     // Primary Colors (Blue progression)
     primary: '#0053B3', // Primary Blue Buttons
@@ -61,7 +47,7 @@ export const prism = {
     'error-content': '#FFFFFF', // White
   },
   dark: {
-    ...common,
+    ...commonOverrides,
 
     // Primary Colors (Blue progression)
     primary: '#0053B3', // Primary Blue Buttons

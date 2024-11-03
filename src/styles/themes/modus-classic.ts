@@ -1,28 +1,12 @@
-const common = {
-  // Design Tokens
-  '--rounded-box': '0.5rem',
-  '--rounded-btn': '0.25rem', // 4px
-  '--rounded-badge': '0.25rem', // 4px
+import { common } from './common';
 
-  // Animation
-  '--animation-btn': '0.3s',
-  '--animation-input': '0.3s',
-
-  // Button
-  '--btn-text-case': 'uppercase',
-  '--btn-focus-scale': '0.95',
-
-  // Border
-  '--border-btn': '1px',
-
-  // Padding
-  '--navbar-padding': '1rem',
-  '--padding-card': '2rem',
+const commonOverrides = {
+  ...common,
 };
 
 export const modusClassic = {
   light: {
-    ...common,
+    ...commonOverrides,
 
     // Primary Colors (Primary Palette)
     primary: '#0063A3', // Trimble Blue
@@ -61,7 +45,7 @@ export const modusClassic = {
     'error-content': '#FFFFFF', // White
   },
   dark: {
-    ...common,
+    ...commonOverrides,
 
     // Primary Colors (Primary Palette)
     primary: '#0063A3', // Trimble Blue

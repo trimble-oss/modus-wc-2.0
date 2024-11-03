@@ -80,7 +80,9 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-color-feedback-success-300: #e0eccf;
 
   // Typography
-  --modus-wc-font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --modus-wc-font-family: 'Open Sans', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
   /* Base font size in pixels (for reference) */
   --modus-wc-font-size-root: 16px;
@@ -121,7 +123,7 @@ $modus-wc-fluid-font-size-max: 18px;
   --modus-wc-spacing-xl: 2rem; /* 32px */
   --modus-wc-spacing-2xl: 3rem; /* 48px */
 
-  --modus-wc-letter-spacing-sm: 0.10px;
+  --modus-wc-letter-spacing-sm: 0.1px;
   --modus-wc-letter-spacing-md: 0.15px;
   --modus-wc-letter-spacing-lg: 0.25px;
   --modus-wc-letter-spacing-xl: 0.5px;
@@ -164,7 +166,7 @@ $modus-wc-fluid-font-size-max: 18px;
 }
 
 @media (prefers-color-scheme: light) {
-  [data-theme="modus-classic"] :root {
+  [data-theme='modus-classic'] :root {
     color-scheme: light;
     --p: --modus-wc-color-primary-900;
     --pc: #d4dbff;
@@ -190,7 +192,7 @@ $modus-wc-fluid-font-size-max: 18px;
 }
 
 @media (prefers-color-scheme: dark) {
-  [data-theme="modus-classic"] :root {
+  [data-theme='modus-classic'] :root {
     color-scheme: dark;
     --p: --modus-wc-color-primary-900;
     --pc: #14185a;

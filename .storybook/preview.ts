@@ -22,6 +22,8 @@ const preview: Preview = {
       themes: {
         'modus-classic-light': 'modus-classic-light',
         'modus-classic-dark': 'modus-classic-dark',
+        'prism-light': 'prism-light',
+        'prism-dark': 'prism-dark',
       },
       defaultTheme: 'modus-classic-light',
       attributeName: 'data-theme',

@@ -12,7 +12,7 @@ export default {
   ],
   daisyui: {
     base: true,
-    darkTheme: 'modus-dark',
+    darkTheme: 'modus-classic-dark',
     logs: true,
     styled: true,
     themeRoot: ':root',
