@@ -282,109 +282,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-divider/modus-wc-divider.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable divider component used to separate content horizontally or vertically.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcDivider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute used for accessibility."
-            },
-            {
-              "kind": "field",
-              "name": "content",
-              "type": {
-                "text": "string | undefined"
-              },
-              "default": "''",
-              "description": "The content to display in the divider."
-            },
-            {
-              "kind": "field",
-              "name": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Custom CSS class to apply to the outer div."
-            },
-            {
-              "kind": "field",
-              "name": "daisyClass",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "DaisyUI CSS class to apply to the inner div."
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "name": "content",
-              "fieldName": "content",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "name": "daisy-class",
-              "fieldName": "daisyClass",
-              "type": {
-                "text": "string"
-              }
-            }
-          ],
-          "tagName": "modus-wc-divider",
-          "events": [],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcDivider",
-          "declaration": {
-            "name": "ModusWcDivider",
-            "module": "src/components/atoms/modus-wc-divider/modus-wc-divider.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-divider",
-          "declaration": {
-            "name": "ModusWcDivider",
-            "module": "src/components/atoms/modus-wc-divider/modus-wc-divider.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-button/modus-wc-button.tsx",
       "declarations": [
         {
@@ -600,6 +497,109 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-divider/modus-wc-divider.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable divider component used to separate content horizontally or vertically.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcDivider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used for accessibility."
+            },
+            {
+              "kind": "field",
+              "name": "content",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "''",
+              "description": "The content to display in the divider."
+            },
+            {
+              "kind": "field",
+              "name": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Custom CSS class to apply to the outer div."
+            },
+            {
+              "kind": "field",
+              "name": "daisyClass",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "DaisyUI CSS class to apply to the inner div."
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "content",
+              "fieldName": "content",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "daisy-class",
+              "fieldName": "daisyClass",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-divider",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcDivider",
+          "declaration": {
+            "name": "ModusWcDivider",
+            "module": "src/components/atoms/modus-wc-divider/modus-wc-divider.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-divider",
+          "declaration": {
+            "name": "ModusWcDivider",
+            "module": "src/components/atoms/modus-wc-divider/modus-wc-divider.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx",
       "declarations": [
         {
@@ -723,30 +723,6 @@
                 "text": "number | undefined"
               },
               "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
-            },
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<Event>"
-              },
-              "description": "Event emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input gains focus."
             },
             {
               "kind": "field",
@@ -1026,7 +1002,32 @@
             }
           ],
           "tagName": "modus-wc-text-input",
-          "events": [],
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Event emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
           "customElement": true
         }
       ],
@@ -1186,30 +1187,6 @@
             },
             {
               "kind": "field",
-              "name": "textareaBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the textarea loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "textareaChange",
-              "type": {
-                "text": "EventEmitter<Event>"
-              },
-              "description": "Emitted when the textarea value changes."
-            },
-            {
-              "kind": "field",
-              "name": "textareaFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the textarea gains focus."
-            },
-            {
-              "kind": "field",
               "name": "value",
               "type": {
                 "text": "string"
@@ -1352,7 +1329,32 @@
             }
           ],
           "tagName": "modus-wc-textarea",
-          "events": [],
+          "events": [
+            {
+              "kind": "field",
+              "name": "textareaBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the textarea loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "textareaChange",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Emitted when the textarea value changes."
+            },
+            {
+              "kind": "field",
+              "name": "textareaFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the textarea gains focus."
+            }
+          ],
           "customElement": true
         }
       ],
