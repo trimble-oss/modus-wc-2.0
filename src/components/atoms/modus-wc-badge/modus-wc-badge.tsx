@@ -1,4 +1,5 @@
 import { Component, h, Host, Prop } from '@stencil/core';
+import { convertPropsToClasses } from './modus-wc-badget.tailwind';
 
 const ALERT_COLORS = ['success', 'warning', 'danger'];
 
@@ -25,6 +26,7 @@ export class ModusWcBadge {
     | 'primary'
     | 'secondary'
     | 'tertiary'
+    | 'high-contrast'
     | 'success'
     | 'warning'
     | 'danger' = 'primary';
@@ -42,17 +44,31 @@ export class ModusWcBadge {
   /**
    * The size of the badge.
    */
-  @Prop() size: 'small' | 'medium' | 'large' = 'medium';
+  @Prop() size: 'sm' | 'md' | 'lg' = 'md';
 
   /**
    * The type of the badge.
    */
-  @Prop() type: 'filled' | 'text' | 'counter' = 'filled';
+  @Prop() type: 'counter' | 'filled' | 'text' = 'filled';
 
   componentWillLoad() {
     if (!this.ariaLabel) {
       console.warn('ModusWcBadge: ariaLabel is required for accessibility.');
     }
+  }
+
+  private getClasses(): string {
+    const classList = ['modus-wc-badge'];
+    const propClasses = convertPropsToClasses({
+      color: this.color,
+      size: this.size,
+      type: this.type,
+    });
+
+    if (propClasses) classList.push(propClasses);
+    if (this.customClass) classList.push(this.customClass);
+
+    return classList.join(' ');
   }
 
   render() {
@@ -61,13 +77,7 @@ export class ModusWcBadge {
     return (
       <Host>
         <span
-          class={{
-            'modus-wc-badge': true,
-            [this.customClass]: !!this.customClass,
-            [`modus-wc-badge--${this.size}`]: true,
-            [`modus-wc-badge--${this.type}`]: true,
-            [`modus-wc-badge--${this.color}`]: true,
-          }}
+          class={this.getClasses()}
           aria-label={this.ariaLabel}
           role={isAlert ? 'alert' : 'status'}
         >

@@ -14,9 +14,9 @@ export const modusClassic = {
     'primary-content': '#FFFFFF', // White
 
     // Secondary Colors (Yellow Progression)
-    secondary: '#FBAD26', // Yellow
-    'secondary-focus': '#E49325', // Yellow Dark
-    'secondary-content': '#252A2E', // Trimble Gray
+    secondary: '#6A6E79', // Neutral Gray 6
+    'secondary-focus': '#464B52', // Neutral Gray 8
+    'secondary-content': '#FFFFFF', // Trimble Gray
 
     // Tertiary/Accent Colors (Neutral Progression)
     accent: '#6A6E79', // Gray 6
@@ -24,9 +24,9 @@ export const modusClassic = {
     'accent-content': '#FFFFFF', // White
 
     // Neutral Colors
-    neutral: '#353A40', // Gray 9
-    'neutral-focus': '#171C1E', // Gray 10
-    'neutral-content': '#FFFFFF', // White
+    neutral: '#CBCDD6', // Gray 1
+    'neutral-focus': '#A3A6B1', // Gray 3
+    'neutral-content': '#252A2E', // Trimble Gray
 
     // Base Colors
     'base-100': '#CBCDD6', // Gray 1
