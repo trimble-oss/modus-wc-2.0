@@ -10,7 +10,7 @@ describe('modus-wc-textarea', () => {
     expect(page.root).not.toBeNull();
     expect(page.root).toEqualHtml(`
       <modus-wc-textarea aria-label="Default textarea" value="">
-        <textarea aria-invalid="false" aria-label="Default textarea" aria-placeholder="" class="modus-wc-textarea" placeholder="" tabindex="0" value=""></textarea>
+        <textarea aria-invalid="false" aria-label="Default textarea" aria-placeholder="" class="modus-wc-textarea" placeholder="" spellcheck="" tabindex="0" value=""></textarea>
       </modus-wc-textarea>
     `);
   });
@@ -20,7 +20,7 @@ describe('modus-wc-textarea', () => {
       components: [ModusWcTextarea],
       html: `<modus-wc-textarea 
         aria-describedby="description" 
-        aria-invalid="true" 
+        aria-invalid-textarea="true" 
         aria-label="Custom textarea" 
         custom-class="custom-class" 
         dir="rtl" 
@@ -40,7 +40,7 @@ describe('modus-wc-textarea', () => {
     expect(page.root).toEqualHtml(`
       <modus-wc-textarea 
         aria-describedby="description" 
-        aria-invalid="true" 
+        aria-invalid-textarea="true" 
         aria-label="Custom textarea" 
         custom-class="custom-class"  
         dir="rtl" 
@@ -71,6 +71,7 @@ describe('modus-wc-textarea', () => {
           readonly
           required
           rows="5"
+          spellcheck=""
           tabindex="1"
           value="Custom value"
         ></textarea>

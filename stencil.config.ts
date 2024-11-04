@@ -51,7 +51,7 @@ export const config: Config = {
     }),
     reactOutputTarget({
       outDir: './integrations/react/stencil-generated',
-      excludeComponents: ['stencil-docs'],
+      excludeComponents: [],
       customElementsDir: 'dist/components',
     }),
   ],
