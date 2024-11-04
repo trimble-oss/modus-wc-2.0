@@ -10,15 +10,20 @@ setCustomElementsManifest(customElements);
 const preview: Preview = {
   tags: ['autodocs'],
   parameters: {
+    // To handle Tailwind dark mode if needed
+    backgrounds: {
+      disable: true,
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
     },
-    // To handle Tailwind dark mode if needed
-    backgrounds: {
-      disable: true,
+    docs: {
+      controls: {
+        sort: 'requiredFirst',
+      },
     },
   },
   decorators: [
