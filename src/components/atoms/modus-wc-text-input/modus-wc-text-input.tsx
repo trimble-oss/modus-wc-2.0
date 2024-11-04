@@ -25,12 +25,6 @@ export class ModusWcTextInput {
   @Prop() ariaDescribedby?: string;
 
   /**
-   * Indicates whether the input has an invalid input.
-   */
-  @Prop() ariaInvalidInput?: 'grammar' | 'spelling' | 'true' | 'false' =
-    'false';
-
-  /**
    * The aria-label attribute for accessibility.
    */
   @Prop() ariaLabel!: string;
@@ -67,19 +61,24 @@ export class ModusWcTextInput {
   @Prop() customClass: string = '';
 
   /**
-   * Specifies the text direction of the input content.
-   */
-  @Prop() dir: '' | 'ltr' | 'rtl' | 'auto' = '';
-
-  /**
    * Whether the form control is disabled.
    */
   @Prop() disabled: boolean = false;
 
   /**
+   * Indicates whether the input has an invalid input.
+   */
+  @Prop() inputAriaInvalid?: 'grammar' | 'spelling' | 'true' | 'false';
+
+  /**
+   * Specifies the text direction of the input content.
+   */
+  @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
+
+  /**
    * The ID of the input element.
    */
-  @Prop() id: string = '';
+  @Prop() inputId?: string;
 
   /**
    * Hints at the type of data that might be entered by the user while editing the element or its contents.
@@ -94,6 +93,32 @@ export class ModusWcTextInput {
     | 'tel'
     | 'text'
     | 'url' = 'text';
+
+  /**
+   * Whether the element may be checked for spelling errors.
+   * A hint for the browser, not a guarantee.
+   */
+  @Prop() inputSpellcheck?: boolean = false;
+
+  /**
+   * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+   */
+  @Prop() inputTabIndex?: number;
+
+  /**
+   * Event emitted when the input loses focus.
+   */
+  @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
+
+  /**
+   * Event emitted when the input value changes.
+   */
+  @StencilEvent() inputChange!: EventEmitter<Event>;
+
+  /**
+   * Event emitted when the input gains focus.
+   */
+  @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   /**
    * Maximum length (number of characters) of value.
@@ -136,17 +161,6 @@ export class ModusWcTextInput {
   @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
 
   /**
-   * Whether the element may be checked for spelling errors.
-   * A hint for the browser, not a guarantee.
-   */
-  @Prop() spellcheck: boolean = false;
-
-  /**
-   * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
-   */
-  @Prop() tabIndex: number = 0;
-
-  /**
    * Type of form control.
    */
   @Prop() type: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url' =
@@ -157,21 +171,6 @@ export class ModusWcTextInput {
    */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
-  /**
-   * Event emitted when the input loses focus.
-   */
-  @StencilEvent() blur!: EventEmitter<FocusEvent>;
-
-  /**
-   * Event emitted when the input value changes.
-   */
-  @StencilEvent() change!: EventEmitter<Event>;
-
-  /**
-   * Event emitted when the input gains focus.
-   */
-  @StencilEvent() focus!: EventEmitter<FocusEvent>;
-
   componentWillLoad() {
     if (!this.ariaLabel) {
       console.warn('ModusWcInput: ariaLabel is required for accessibility.');
@@ -179,15 +178,15 @@ export class ModusWcTextInput {
   }
 
   private handleBlur = (event: FocusEvent) => {
-    this.blur.emit(event);
+    this.inputBlur.emit(event);
   };
 
   private handleChange = (event: Event) => {
-    this.change.emit(event);
+    this.inputChange.emit(event);
   };
 
   private handleFocus = (event: FocusEvent) => {
-    this.focus.emit(event);
+    this.inputFocus.emit(event);
   };
 
   render() {
@@ -206,7 +205,7 @@ export class ModusWcTextInput {
       <Host>
         <input
           aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.ariaInvalidInput}
+          aria-invalid={this.inputAriaInvalid}
           aria-label={this.ariaLabel || this.placeholder}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
@@ -214,9 +213,9 @@ export class ModusWcTextInput {
           autocomplete={this.autoComplete}
           autofocus={this.autoFocus}
           class={classes}
-          dir={this.dir}
+          dir={this.inputDir}
           disabled={this.disabled}
-          id={this.id}
+          id={this.inputId}
           inputmode={this.inputMode}
           maxlength={this.maxLength}
           minlength={this.minLength}
@@ -228,8 +227,8 @@ export class ModusWcTextInput {
           placeholder={this.placeholder}
           readonly={this.readOnly}
           required={this.required}
-          spellcheck={this.spellcheck}
-          tabIndex={this.tabIndex}
+          spellcheck={this.inputSpellcheck}
+          tabIndex={this.inputTabIndex}
           type={this.type}
           value={this.value}
         />

@@ -85,9 +85,9 @@ Adheres to WCAG 2.2 standards.
 
 ## Events
 
-| Event   | Description                                                         | Type                                       |
-| ------- | ------------------------------------------------------------------- | ------------------------------------------ |
-| `click` | Event emitted when the button is clicked or activated via keyboard. | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+| Event         | Description                                                         | Type                                       |
+| ------------- | ------------------------------------------------------------------- | ------------------------------------------ |
+| `buttonClick` | Event emitted when the button is clicked or activated via keyboard. | `CustomEvent<KeyboardEvent \| MouseEvent>` |
 
 
 ----------------------------------------------

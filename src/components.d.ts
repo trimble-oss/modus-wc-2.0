@@ -153,10 +153,6 @@ export namespace Components {
          */
         "ariaDescribedby"?: string;
         /**
-          * Indicates whether the input has an invalid input.
-         */
-        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
-        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
@@ -186,17 +182,21 @@ export namespace Components {
          */
         "customClass": string;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "dir": '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * Whether the form control is disabled.
          */
         "disabled": boolean;
         /**
+          * Indicates whether the input has an invalid input.
+         */
+        "inputAriaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
           * The ID of the input element.
          */
-        "id": string;
+        "inputId"?: string;
         /**
           * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
          */
@@ -208,6 +208,14 @@ export namespace Components {
     | 'tel'
     | 'text'
     | 'url';
+        /**
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "inputSpellcheck"?: boolean;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
         /**
           * Maximum length (number of characters) of value.
          */
@@ -241,14 +249,6 @@ export namespace Components {
          */
         "size"?: 'sm' | 'md' | 'lg';
         /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "spellcheck": boolean;
-        /**
-          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
-         */
-        "tabIndex": number;
-        /**
           * Type of form control.
          */
         "type": 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
@@ -267,10 +267,6 @@ export namespace Components {
          */
         "ariaDescribedby"?: string;
         /**
-          * Indicates whether the textarea has an invalid input.
-         */
-        "ariaInvalidTextarea"?: 'grammar' | 'spelling' | 'true' | 'false';
-        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
@@ -279,17 +275,9 @@ export namespace Components {
          */
         "customClass": string;
         /**
-          * Specifies the text direction of the textarea content.
-         */
-        "dir": '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The disabled state of the textarea.
          */
         "disabled": boolean;
-        /**
-          * The ID of the textarea element.
-         */
-        "id": string;
         /**
           * The maximum number of characters allowed in the textarea.
          */
@@ -315,13 +303,25 @@ export namespace Components {
          */
         "rows"?: number;
         /**
+          * Indicates whether the textarea has an invalid input.
+         */
+        "textareaAriaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
+        /**
+          * Specifies the text direction of the textarea content.
+         */
+        "textareaDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the textarea element.
+         */
+        "textareaId"?: string;
+        /**
           * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
          */
-        "spellcheck": boolean;
+        "textareaSpellcheck"?: boolean;
         /**
           * The tabindex of the textarea.
          */
-        "tabIndex": number;
+        "textareaTabIndex"?: number;
         /**
           * The value of the textarea.
          */
@@ -413,7 +413,7 @@ declare global {
         new (): HTMLModusWcBadgeElement;
     };
     interface HTMLModusWcButtonElementEventMap {
-        "click": MouseEvent | KeyboardEvent;
+        "buttonClick": MouseEvent | KeyboardEvent;
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -444,9 +444,9 @@ declare global {
         new (): HTMLModusWcDividerElement;
     };
     interface HTMLModusWcTextInputElementEventMap {
-        "blur": FocusEvent;
-        "change": Event;
-        "focus": FocusEvent;
+        "inputBlur": FocusEvent;
+        "inputChange": Event;
+        "inputFocus": FocusEvent;
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -467,9 +467,9 @@ declare global {
         new (): HTMLModusWcTextInputElement;
     };
     interface HTMLModusWcTextareaElementEventMap {
-        "blur": FocusEvent;
-        "change": Event;
-        "focus": FocusEvent;
+        "textareaBlur": FocusEvent;
+        "textareaChange": Event;
+        "textareaFocus": FocusEvent;
     }
     /**
      * A customizable textarea component.
@@ -636,7 +636,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the button is clicked or activated via keyboard.
          */
-        "onClick"?: (event: ModusWcButtonCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        "onButtonClick"?: (event: ModusWcButtonCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
           * If true, the button will be in a pressed state (for toggle buttons).
          */
@@ -686,10 +686,6 @@ declare namespace LocalJSX {
          */
         "ariaDescribedby"?: string;
         /**
-          * Indicates whether the input has an invalid input.
-         */
-        "ariaInvalidInput"?: 'grammar' | 'spelling' | 'true' | 'false';
-        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
@@ -719,17 +715,21 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "dir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
         /**
+          * Indicates whether the input has an invalid input.
+         */
+        "inputAriaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
           * The ID of the input element.
          */
-        "id"?: string;
+        "inputId"?: string;
         /**
           * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
          */
@@ -741,6 +741,14 @@ declare namespace LocalJSX {
     | 'tel'
     | 'text'
     | 'url';
+        /**
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "inputSpellcheck"?: boolean;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
         /**
           * Maximum length (number of characters) of value.
          */
@@ -756,15 +764,15 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the input loses focus.
          */
-        "onBlur"?: (event: ModusWcTextInputCustomEvent<FocusEvent>) => void;
+        "onInputBlur"?: (event: ModusWcTextInputCustomEvent<FocusEvent>) => void;
         /**
           * Event emitted when the input value changes.
          */
-        "onChange"?: (event: ModusWcTextInputCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcTextInputCustomEvent<Event>) => void;
         /**
           * Event emitted when the input gains focus.
          */
-        "onFocus"?: (event: ModusWcTextInputCustomEvent<FocusEvent>) => void;
+        "onInputFocus"?: (event: ModusWcTextInputCustomEvent<FocusEvent>) => void;
         /**
           * Pattern the value must match to be valid
          */
@@ -786,14 +794,6 @@ declare namespace LocalJSX {
          */
         "size"?: 'sm' | 'md' | 'lg';
         /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "spellcheck"?: boolean;
-        /**
-          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
-         */
-        "tabIndex"?: number;
-        /**
           * Type of form control.
          */
         "type"?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
@@ -812,10 +812,6 @@ declare namespace LocalJSX {
          */
         "ariaDescribedby"?: string;
         /**
-          * Indicates whether the textarea has an invalid input.
-         */
-        "ariaInvalidTextarea"?: 'grammar' | 'spelling' | 'true' | 'false';
-        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
@@ -824,17 +820,9 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * Specifies the text direction of the textarea content.
-         */
-        "dir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The disabled state of the textarea.
          */
         "disabled"?: boolean;
-        /**
-          * The ID of the textarea element.
-         */
-        "id"?: string;
         /**
           * The maximum number of characters allowed in the textarea.
          */
@@ -846,15 +834,15 @@ declare namespace LocalJSX {
         /**
           * Emitted when the textarea loses focus.
          */
-        "onBlur"?: (event: ModusWcTextareaCustomEvent<FocusEvent>) => void;
+        "onTextareaBlur"?: (event: ModusWcTextareaCustomEvent<FocusEvent>) => void;
         /**
           * Emitted when the textarea value changes.
          */
-        "onChange"?: (event: ModusWcTextareaCustomEvent<Event>) => void;
+        "onTextareaChange"?: (event: ModusWcTextareaCustomEvent<Event>) => void;
         /**
           * Emitted when the textarea gains focus.
          */
-        "onFocus"?: (event: ModusWcTextareaCustomEvent<FocusEvent>) => void;
+        "onTextareaFocus"?: (event: ModusWcTextareaCustomEvent<FocusEvent>) => void;
         /**
           * The placeholder text for the textarea.
          */
@@ -872,13 +860,25 @@ declare namespace LocalJSX {
          */
         "rows"?: number;
         /**
+          * Indicates whether the textarea has an invalid input.
+         */
+        "textareaAriaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
+        /**
+          * Specifies the text direction of the textarea content.
+         */
+        "textareaDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the textarea element.
+         */
+        "textareaId"?: string;
+        /**
           * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
          */
-        "spellcheck"?: boolean;
+        "textareaSpellcheck"?: boolean;
         /**
           * The tabindex of the textarea.
          */
-        "tabIndex"?: number;
+        "textareaTabIndex"?: number;
         /**
           * The value of the textarea.
          */

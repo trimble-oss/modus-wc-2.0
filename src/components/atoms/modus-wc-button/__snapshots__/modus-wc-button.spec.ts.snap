@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-button should render with custom props 1`] = `
+<modus-wc-button aria-label="Custom Button" color="secondary" custom-class="custom" label="Test" size="large" type="submit" variant="outlined">
+  <button aria-label="Custom Button" class="custom modus-wc-button modus-wc-button--large modus-wc-button--outlined modus-wc-button--secondary" tabindex="0" type="submit">
+    Test
+  </button>
+</modus-wc-button>
+`;
