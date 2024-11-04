@@ -1,16 +1,17 @@
 import { Meta, StoryObj } from '@storybook/web-components';
+import { html } from 'lit';
 
 interface ButtonArgs {
-  label: string;
-  ariaLabel: string;
-  customClass: string;
+  'aria-label': string;
+  color: 'primary' | 'secondary' | 'tertiary';
+  'custom-class': string;
   disabled: boolean;
-  fullWidth: boolean;
+  'full-width': boolean;
+  label: string;
   pressed: boolean;
   size: 'small' | 'medium' | 'large';
   type: 'button' | 'submit' | 'reset';
   variant: 'filled' | 'outlined' | 'text';
-  color: 'primary' | 'secondary' | 'tertiary';
 }
 
 const meta: Meta<ButtonArgs> = {
@@ -18,15 +19,15 @@ const meta: Meta<ButtonArgs> = {
   component: 'modus-wc-button',
   argTypes: {
     size: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['small', 'medium', 'large'],
     },
     type: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['button', 'submit', 'reset'],
     },
     variant: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['filled', 'outlined', 'text'],
     },
     color: {
@@ -42,19 +43,19 @@ type Story = StoryObj<ButtonArgs>;
 
 const Template: Story = {
   render: (args) => {
-    return `
-      <modus-wc-button 
-          label="${args.label}"
-          aria-label="${args.ariaLabel}"
-          custom-class="${args.customClass}"
-          size="${args.size}"
-          type="${args.type}"
-          variant="${args.variant}"
-          color="${args.color}"
-          ${args.disabled ? 'disabled' : ''}
-          ${args.fullWidth ? 'full-width' : ''}
-          ${args.pressed ? 'pressed' : ''}
-        ></modus-wc-button>
+    return html`
+      <modus-wc-button
+        aria-label="${args['aria-label']}"
+        ?color="${args.color}"
+        ?custom-class="${args['custom-class']}"
+        ?disabled="${args.disabled}"
+        ?full-width="${args['full-width']}"
+        label="${args.label}"
+        ?pressed="${args.pressed}"
+        size="${args.size}"
+        type="${args.type}"
+        variant="${args.variant}"
+      ></modus-wc-button>
     `;
   },
 };
@@ -62,13 +63,8 @@ const Template: Story = {
 export const Default: Story = {
   ...Template,
   args: {
-    ariaLabel: 'Click me button',
-    color: 'primary',
-    customClass: '',
-    disabled: false,
-    fullWidth: false,
+    'aria-label': 'Click me button',
     label: 'Click me',
-    pressed: false,
     size: 'medium',
     type: 'button',
     variant: 'filled',

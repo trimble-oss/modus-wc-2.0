@@ -12,70 +12,8 @@
           "name": "ModusWcAvatar",
           "members": [
             {
-              "kind": "field",
-              "name": "alt",
-              "type": {
-                "text": "string"
-              },
-              "description": "The image alt attribute for accessibility."
-            },
-            {
-              "kind": "field",
-              "name": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
-            },
-            {
-              "kind": "field",
-              "name": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Custom CSS class to apply to the inner div."
-            },
-            {
-              "kind": "method",
-              "name": "getClasses",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              }
-            },
-            {
-              "kind": "field",
-              "name": "imgSrc",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The location of the image."
-            },
-            {
               "kind": "method",
               "name": "render"
-            },
-            {
-              "kind": "field",
-              "name": "shape",
-              "type": {
-                "text": "'circle' | 'square' | undefined"
-              },
-              "default": "'circle'",
-              "description": "The shape of the avatar."
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined"
-              },
-              "default": "'md'",
-              "description": "The size of the avatar."
             }
           ],
           "attributes": [
@@ -84,42 +22,48 @@
               "fieldName": "alt",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The image alt attribute for accessibility."
             },
             {
               "name": "aria-label",
               "fieldName": "ariaLabel",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "Custom CSS class to apply to the inner div."
             },
             {
               "name": "img-src",
               "fieldName": "imgSrc",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The location of the image."
             },
             {
               "name": "shape",
               "fieldName": "shape",
               "type": {
                 "text": "'circle' | 'square'"
-              }
+              },
+              "description": "The shape of the avatar."
             },
             {
               "name": "size",
               "fieldName": "size",
               "type": {
                 "text": "'xs' | 'sm' | 'md' | 'lg' | 'xl'"
-              }
+              },
+              "description": "The size of the avatar."
             }
           ],
           "tagName": "modus-wc-avatar",
@@ -156,60 +100,8 @@
           "name": "ModusWcBadge",
           "members": [
             {
-              "kind": "field",
-              "name": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
-            },
-            {
-              "kind": "field",
-              "name": "color",
-              "type": {
-                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
-              },
-              "default": "'primary'",
-              "description": "The color variant of the badge."
-            },
-            {
-              "kind": "field",
-              "name": "content",
-              "type": {
-                "text": "string"
-              },
-              "description": "The content to display inside the badge. For 'counter' type, this should be a number."
-            },
-            {
-              "kind": "field",
-              "name": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Custom CSS class to apply to the span element."
-            },
-            {
               "kind": "method",
               "name": "render"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "'small' | 'medium' | 'large'"
-              },
-              "default": "'medium'",
-              "description": "The size of the badge."
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "'filled' | 'text' | 'counter'"
-              },
-              "default": "'filled'",
-              "description": "The type of the badge."
             }
           ],
           "attributes": [
@@ -218,42 +110,48 @@
               "fieldName": "ariaLabel",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "color",
               "fieldName": "color",
               "type": {
                 "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
-              }
+              },
+              "description": "The color variant of the badge."
             },
             {
               "name": "content",
               "fieldName": "content",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The content to display inside the badge. For 'counter' type, this should be a number."
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "Custom CSS class to apply to the span element."
             },
             {
               "name": "size",
               "fieldName": "size",
               "type": {
                 "text": "'small' | 'medium' | 'large'"
-              }
+              },
+              "description": "The size of the badge."
             },
             {
               "name": "type",
               "fieldName": "type",
               "type": {
                 "text": "'filled' | 'text' | 'counter'"
-              }
+              },
+              "description": "The type of the badge."
             }
           ],
           "tagName": "modus-wc-badge",
@@ -290,105 +188,8 @@
           "name": "ModusWcButton",
           "members": [
             {
-              "kind": "field",
-              "name": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
-            },
-            {
-              "kind": "field",
-              "name": "color",
-              "type": {
-                "text": "'primary' | 'secondary' | 'tertiary'"
-              },
-              "default": "'primary'",
-              "description": "The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'."
-            },
-            {
-              "kind": "field",
-              "name": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Custom CSS class to apply to the button element."
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "If true, the button will be disabled."
-            },
-            {
-              "kind": "field",
-              "name": "fullWidth",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "If true, the button will take the full width of its container."
-            },
-            {
-              "kind": "field",
-              "name": "handleClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleKeyDown"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "description": "The text label displayed on the button."
-            },
-            {
-              "kind": "field",
-              "name": "pressed",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "If true, the button will be in a pressed state (for toggle buttons)."
-            },
-            {
               "kind": "method",
               "name": "render"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "'small' | 'medium' | 'large'"
-              },
-              "default": "'medium'",
-              "description": "The size of the button. Can be 'small', 'medium', or 'large'."
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "'button' | 'submit' | 'reset'"
-              },
-              "default": "'button'",
-              "description": "The type of the button. Can be 'button', 'submit', or 'reset'."
-            },
-            {
-              "kind": "field",
-              "name": "variant",
-              "type": {
-                "text": "'filled' | 'outlined' | 'text'"
-              },
-              "default": "'filled'",
-              "description": "The variant of the button. Can be 'filled', 'outlined', or 'text'."
             }
           ],
           "attributes": [
@@ -397,70 +198,80 @@
               "fieldName": "ariaLabel",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "color",
               "fieldName": "color",
               "type": {
                 "text": "'primary' | 'secondary' | 'tertiary'"
-              }
+              },
+              "description": "The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'."
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "Custom CSS class to apply to the button element."
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
               "type": {
                 "text": "boolean"
-              }
+              },
+              "description": "If true, the button will be disabled."
             },
             {
               "name": "full-width",
               "fieldName": "fullWidth",
               "type": {
                 "text": "boolean"
-              }
+              },
+              "description": "If true, the button will take the full width of its container."
             },
             {
               "name": "label",
               "fieldName": "label",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The text label displayed on the button."
             },
             {
               "name": "pressed",
               "fieldName": "pressed",
               "type": {
                 "text": "boolean"
-              }
+              },
+              "description": "If true, the button will be in a pressed state (for toggle buttons)."
             },
             {
               "name": "size",
               "fieldName": "size",
               "type": {
                 "text": "'small' | 'medium' | 'large'"
-              }
-            },
-            {
-              "name": "variant",
-              "fieldName": "variant",
-              "type": {
-                "text": "'filled' | 'outlined' | 'text'"
-              }
+              },
+              "description": "The size of the button. Can be 'small', 'medium', or 'large'."
             },
             {
               "name": "type",
               "fieldName": "type",
               "type": {
                 "text": "'button' | 'submit' | 'reset'"
-              }
+              },
+              "description": "The type of the button. Can be 'button', 'submit', or 'reset'."
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "type": {
+                "text": "'filled' | 'outlined' | 'text'"
+              },
+              "description": "The variant of the button. Can be 'filled', 'outlined', or 'text'."
             }
           ],
           "tagName": "modus-wc-button",
@@ -505,41 +316,6 @@
           "name": "ModusWcDivider",
           "members": [
             {
-              "kind": "field",
-              "name": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute used for accessibility."
-            },
-            {
-              "kind": "field",
-              "name": "content",
-              "type": {
-                "text": "string | undefined"
-              },
-              "default": "''",
-              "description": "The content to display in the divider."
-            },
-            {
-              "kind": "field",
-              "name": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Custom CSS class to apply to the outer div."
-            },
-            {
-              "kind": "field",
-              "name": "daisyClass",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "DaisyUI CSS class to apply to the inner div."
-            },
-            {
               "kind": "method",
               "name": "render"
             }
@@ -550,28 +326,32 @@
               "fieldName": "ariaLabel",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The aria-label attribute used for accessibility."
             },
             {
               "name": "content",
               "fieldName": "content",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The content to display in the divider."
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "Custom CSS class to apply to the outer div."
             },
             {
               "name": "daisy-class",
               "fieldName": "daisyClass",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "DaisyUI CSS class to apply to the inner div."
             }
           ],
           "tagName": "modus-wc-divider",
@@ -608,227 +388,8 @@
           "name": "ModusWcTextInput",
           "members": [
             {
-              "kind": "field",
-              "name": "ariaDescribedby",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "The ID of the element that describes the input."
-            },
-            {
-              "kind": "field",
-              "name": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
-            },
-            {
-              "kind": "field",
-              "name": "autoCapitalize",
-              "type": {
-                "text": "| 'off'\r\n    | 'none'\r\n    | 'on'\r\n    | 'sentences'\r\n    | 'words'\r\n    | 'characters' | undefined"
-              },
-              "description": "Controls automatic capitalization in inputted text."
-            },
-            {
-              "kind": "field",
-              "name": "autoComplete",
-              "type": {
-                "text": "'on' | 'off' | undefined"
-              },
-              "description": "Hint for form autofill feature."
-            },
-            {
-              "kind": "field",
-              "name": "autoFocus",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "description": "Indicates that an element should be focused on page load."
-            },
-            {
-              "kind": "field",
-              "name": "bordered",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "default": "true",
-              "description": "Indicates that the input should have a border."
-            },
-            {
-              "kind": "field",
-              "name": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Custom CSS class to apply to the input."
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the form control is disabled."
-            },
-            {
-              "kind": "field",
-              "name": "handleBlur",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleFocus",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "inputAriaInvalid",
-              "type": {
-                "text": "'grammar' | 'spelling' | 'true' | 'false' | undefined"
-              },
-              "description": "Indicates whether the input has an invalid input."
-            },
-            {
-              "kind": "field",
-              "name": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto' | undefined"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
-              "kind": "field",
-              "name": "inputId",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "kind": "field",
-              "name": "inputMode",
-              "type": {
-                "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
-              },
-              "default": "'text'",
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
-            },
-            {
-              "kind": "field",
-              "name": "inputSpellcheck",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "default": "false",
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
-            },
-            {
-              "kind": "field",
-              "name": "inputTabIndex",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
-            },
-            {
-              "kind": "field",
-              "name": "maxLength",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Maximum length (number of characters) of value."
-            },
-            {
-              "kind": "field",
-              "name": "minLength",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Minimum length (number of characters) of value."
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Name of the form control. Submitted with the form as part of a name/value pai."
-            },
-            {
-              "kind": "field",
-              "name": "pattern",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Pattern the value must match to be valid"
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Text that appears in the form control when it has no value set."
-            },
-            {
-              "kind": "field",
-              "name": "readOnly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the value is editable."
-            },
-            {
               "kind": "method",
               "name": "render"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "A value is required or must be checked for the form to be submittable."
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "'sm' | 'md' | 'lg' | undefined"
-              },
-              "default": "'md'",
-              "description": "The size of the input."
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "'email' | 'password' | 'search' | 'tel' | 'text' | 'url'"
-              },
-              "default": "'text'",
-              "description": "Type of form control."
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The value of the control."
             }
           ],
           "attributes": [
@@ -837,168 +398,192 @@
               "fieldName": "ariaDescribedby",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The ID of the element that describes the input."
             },
             {
               "name": "aria-label",
               "fieldName": "ariaLabel",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "auto-capitalize",
               "fieldName": "autoCapitalize",
               "type": {
                 "text": "| 'off'\r\n    | 'none'\r\n    | 'on'\r\n    | 'sentences'\r\n    | 'words'\r\n    | 'characters'"
-              }
+              },
+              "description": "Controls automatic capitalization in inputted text."
             },
             {
               "name": "auto-complete",
               "fieldName": "autoComplete",
               "type": {
                 "text": "'on' | 'off'"
-              }
+              },
+              "description": "Hint for form autofill feature."
             },
             {
               "name": "auto-focus",
               "fieldName": "autoFocus",
               "type": {
                 "text": "boolean"
-              }
+              },
+              "description": "Indicates that an element should be focused on page load."
             },
             {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
                 "text": "boolean"
-              }
+              },
+              "description": "Indicates that the input should have a border."
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "Custom CSS class to apply to the input."
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
               "type": {
                 "text": "boolean"
-              }
+              },
+              "description": "Whether the form control is disabled."
             },
             {
               "name": "input-aria-invalid",
               "fieldName": "inputAriaInvalid",
               "type": {
                 "text": "'grammar' | 'spelling' | 'true' | 'false'"
-              }
+              },
+              "description": "Indicates whether the input has an invalid input."
             },
             {
               "name": "input-dir",
               "fieldName": "inputDir",
               "type": {
                 "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              }
+              },
+              "description": "Specifies the text direction of the input content."
             },
             {
               "name": "input-id",
               "fieldName": "inputId",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The ID of the input element."
             },
             {
               "name": "input-mode",
               "fieldName": "inputMode",
               "type": {
                 "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
-              }
+              },
+              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
             },
             {
               "name": "input-spellcheck",
               "fieldName": "inputSpellcheck",
               "type": {
                 "text": "boolean"
-              }
+              },
+              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
             },
             {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
               "type": {
                 "text": "number"
-              }
+              },
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
             },
             {
               "name": "max-length",
               "fieldName": "maxLength",
               "type": {
                 "text": "number"
-              }
+              },
+              "description": "Maximum length (number of characters) of value."
             },
             {
               "name": "min-length",
               "fieldName": "minLength",
               "type": {
                 "text": "number"
-              }
+              },
+              "description": "Minimum length (number of characters) of value."
             },
             {
               "name": "name",
               "fieldName": "name",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pai."
             },
             {
               "name": "pattern",
               "fieldName": "pattern",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "Pattern the value must match to be valid"
             },
             {
               "name": "placeholder",
               "fieldName": "placeholder",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "Text that appears in the form control when it has no value set."
             },
             {
               "name": "read-only",
               "fieldName": "readOnly",
               "type": {
                 "text": "boolean"
-              }
+              },
+              "description": "Whether the value is editable."
             },
             {
               "name": "required",
               "fieldName": "required",
               "type": {
                 "text": "boolean"
-              }
+              },
+              "description": "A value is required or must be checked for the form to be submittable."
             },
             {
               "name": "size",
               "fieldName": "size",
               "type": {
                 "text": "'sm' | 'md' | 'lg'"
-              }
+              },
+              "description": "The size of the input."
             },
             {
               "name": "type",
               "fieldName": "type",
               "type": {
                 "text": "'email' | 'password' | 'search' | 'tel' | 'text' | 'url'"
-              }
+              },
+              "description": "Type of form control."
             },
             {
               "name": "value",
               "fieldName": "value",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The value of the control."
             }
           ],
           "tagName": "modus-wc-text-input",
@@ -1060,158 +645,8 @@
           "name": "ModusWcTextarea",
           "members": [
             {
-              "kind": "field",
-              "name": "ariaDescribedby",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "The ID of the element that describes the textarea."
-            },
-            {
-              "kind": "field",
-              "name": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
-            },
-            {
-              "kind": "field",
-              "name": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Custom CSS class to apply to the textarea (supports DaisyUI)."
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "The disabled state of the textarea."
-            },
-            {
-              "kind": "field",
-              "name": "handleBlur",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleFocus",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "maxLength",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "The maximum number of characters allowed in the textarea."
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The name of the textarea."
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The placeholder text for the textarea."
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "The readonly state of the textarea."
-            },
-            {
               "kind": "method",
               "name": "render"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "The required state of the textarea."
-            },
-            {
-              "kind": "field",
-              "name": "rows",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "The number of visible text lines for the textarea."
-            },
-            {
-              "kind": "field",
-              "name": "textareaAriaInvalid",
-              "type": {
-                "text": "'grammar' | 'spelling' | 'true' | 'false' | undefined"
-              },
-              "description": "Indicates whether the textarea has an invalid input."
-            },
-            {
-              "kind": "field",
-              "name": "textareaDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto' | undefined"
-              },
-              "description": "Specifies the text direction of the textarea content."
-            },
-            {
-              "kind": "field",
-              "name": "textareaId",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "The ID of the textarea element."
-            },
-            {
-              "kind": "field",
-              "name": "textareaSpellcheck",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
-            },
-            {
-              "kind": "field",
-              "name": "textareaTabIndex",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "The tabindex of the textarea."
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The value of the textarea."
             }
           ],
           "attributes": [
@@ -1220,112 +655,128 @@
               "fieldName": "ariaDescribedby",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The ID of the element that describes the textarea."
             },
             {
               "name": "aria-label",
               "fieldName": "ariaLabel",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "Custom CSS class to apply to the textarea (supports DaisyUI)."
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
               "type": {
                 "text": "boolean"
-              }
+              },
+              "description": "The disabled state of the textarea."
             },
             {
               "name": "max-length",
               "fieldName": "maxLength",
               "type": {
                 "text": "number"
-              }
+              },
+              "description": "The maximum number of characters allowed in the textarea."
             },
             {
               "name": "name",
               "fieldName": "name",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The name of the textarea."
             },
             {
               "name": "placeholder",
               "fieldName": "placeholder",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The placeholder text for the textarea."
             },
             {
               "name": "readonly",
               "fieldName": "readonly",
               "type": {
                 "text": "boolean"
-              }
+              },
+              "description": "The readonly state of the textarea."
             },
             {
               "name": "required",
               "fieldName": "required",
               "type": {
                 "text": "boolean"
-              }
+              },
+              "description": "The required state of the textarea."
             },
             {
               "name": "rows",
               "fieldName": "rows",
               "type": {
                 "text": "number"
-              }
+              },
+              "description": "The number of visible text lines for the textarea."
             },
             {
               "name": "textarea-aria-invalid",
               "fieldName": "textareaAriaInvalid",
               "type": {
                 "text": "'grammar' | 'spelling' | 'true' | 'false'"
-              }
+              },
+              "description": "Indicates whether the textarea has an invalid input."
             },
             {
               "name": "textarea-dir",
               "fieldName": "textareaDir",
               "type": {
                 "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              }
+              },
+              "description": "Specifies the text direction of the textarea content."
             },
             {
               "name": "textarea-id",
               "fieldName": "textareaId",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The ID of the textarea element."
             },
             {
               "name": "textarea-spellcheck",
               "fieldName": "textareaSpellcheck",
               "type": {
                 "text": "boolean"
-              }
+              },
+              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
             },
             {
               "name": "textarea-tab-index",
               "fieldName": "textareaTabIndex",
               "type": {
                 "text": "number"
-              }
+              },
+              "description": "The tabindex of the textarea."
             },
             {
               "name": "value",
               "fieldName": "value",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The value of the textarea."
             }
           ],
           "tagName": "modus-wc-textarea",
@@ -1387,61 +838,8 @@
           "name": "ModusWCTypography",
           "members": [
             {
-              "kind": "field",
-              "name": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label for the typography component."
-            },
-            {
-              "kind": "field",
-              "name": "bodySize",
-              "type": {
-                "text": "TypographyBodySize | undefined"
-              },
-              "default": "'standard'",
-              "description": "The size option when variant \"body\" is selected."
-            },
-            {
-              "kind": "field",
-              "name": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Custom CSS class to apply to the typography element."
-            },
-            {
               "kind": "method",
               "name": "render"
-            },
-            {
-              "kind": "field",
-              "name": "textCase",
-              "type": {
-                "text": "'sentence' | 'title' | 'uppercase'"
-              },
-              "default": "'sentence'",
-              "description": "The text case."
-            },
-            {
-              "kind": "field",
-              "name": "variant",
-              "type": {
-                "text": "TypographyVariant"
-              },
-              "default": "'p'",
-              "description": "The variant of the typography component."
-            },
-            {
-              "kind": "field",
-              "name": "weight",
-              "type": {
-                "text": "'regular' | 'semibold' | 'bold'"
-              },
-              "default": "'regular'",
-              "description": "The weight of the text."
             }
           ],
           "attributes": [
@@ -1450,42 +848,48 @@
               "fieldName": "ariaLabel",
               "type": {
                 "text": "string"
-              }
+              },
+              "description": "The aria-label for the typography component."
             },
             {
               "name": "body-size",
               "fieldName": "bodySize",
               "type": {
                 "text": "TypographyBodySize"
-              }
+              },
+              "description": "The size option when variant \"body\" is selected."
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
                 "text": "string"
-              }
-            },
-            {
-              "name": "variant",
-              "fieldName": "variant",
-              "type": {
-                "text": "TypographyVariant"
-              }
-            },
-            {
-              "name": "weight",
-              "fieldName": "weight",
-              "type": {
-                "text": "'regular' | 'semibold' | 'bold'"
-              }
+              },
+              "description": "Custom CSS class to apply to the typography element."
             },
             {
               "name": "text-case",
               "fieldName": "textCase",
               "type": {
                 "text": "'sentence' | 'title' | 'uppercase'"
-              }
+              },
+              "description": "The text case."
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "type": {
+                "text": "TypographyVariant"
+              },
+              "description": "The variant of the typography component."
+            },
+            {
+              "name": "weight",
+              "fieldName": "weight",
+              "type": {
+                "text": "'regular' | 'semibold' | 'bold'"
+              },
+              "description": "The weight of the text."
             }
           ],
           "tagName": "modus-wc-typography",

@@ -88,7 +88,7 @@ export class ModusWcButton {
 
   // @ts-expect-error: TODO fixes linting issue, test thoroughly
   @Listen('keydown')
-  handleKeyDown = (event: KeyboardEvent) => {
+  private handleKeyDown = (event: KeyboardEvent) => {
     if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
       event.preventDefault();
       this.buttonClick.emit(event);
