@@ -1,5 +1,5 @@
 import { Component, h, Host, Prop } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-badget.tailwind';
+import { convertPropsToClasses } from './modus-wc-badge.tailwind';
 
 const ALERT_COLORS = ['success', 'warning', 'danger'];
 
