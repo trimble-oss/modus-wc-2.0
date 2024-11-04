@@ -34,11 +34,7 @@ describe('modus-wc-button', () => {
       components: [ModusWcButton],
       html: '<modus-wc-button aria-label="Custom Button" color="secondary" custom-class="custom" label="Test" size="large" variant="outlined" type="submit"></modus-wc-button>',
     });
-    expect(page.root).toEqualHtml(`
-      <modus-wc-button aria-label="Custom Button" color="secondary" custom-class="custom" label="Test" size="large" variant="outlined" type="submit">
-        <button class="modus-wc-button custom modus-wc-button--large modus-wc-button--outlined modus-wc-button--secondary" aria-label="Custom Button" tabindex="0" type="submit">Test</button>
-      </modus-wc-button>
-    `);
+    expect(page.root).toMatchSnapshot();
   });
 
   it('should apply disabled state correctly', async () => {
@@ -77,46 +73,44 @@ describe('modus-wc-button', () => {
     `);
   });
 
-  it('should emit click event when clicked', async () => {
+  it('should emit buttonClick event when clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
       html: '<modus-wc-button aria-label="Clickable Button"></modus-wc-button>',
     });
     const button = page.root?.querySelector('button');
     const clickSpy = jest.fn();
-    page.root?.addEventListener('click', clickSpy);
+    page.root?.addEventListener('buttonClick', clickSpy);
 
     button?.click();
     await page.waitForChanges();
 
-    // Both the internal and outward click fire
-    expect(clickSpy).toHaveBeenCalledTimes(2);
+    expect(clickSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should not emit click event when disabled', async () => {
+  it('should not emit buttonClick event when disabled', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
       html: '<modus-wc-button aria-label="Disabled Button" disabled></modus-wc-button>',
     });
     const button = page.root?.querySelector('button');
     const clickSpy = jest.fn();
-    page.root?.addEventListener('click', clickSpy);
+    page.root?.addEventListener('buttonClick', clickSpy);
 
     button?.click();
     await page.waitForChanges();
 
-    // Only the internal click fires
-    expect(clickSpy).toHaveBeenCalledTimes(1);
+    expect(clickSpy).toHaveBeenCalledTimes(0);
   });
 
-  it('should emit click event on Enter key press', async () => {
+  it('should emit buttonClick event on Enter key press', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
       html: '<modus-wc-button aria-label="Enter Key Button"></modus-wc-button>',
     });
     const button = page.root?.querySelector('button');
     const clickSpy = jest.fn();
-    page.root?.addEventListener('click', clickSpy);
+    page.root?.addEventListener('buttonClick', clickSpy);
 
     const event = new KeyboardEvent('keydown', { key: 'Enter' });
     button?.dispatchEvent(event);
@@ -125,14 +119,14 @@ describe('modus-wc-button', () => {
     expect(clickSpy).toHaveBeenCalled();
   });
 
-  it('should emit click event on Space key press', async () => {
+  it('should emit buttonClick event on Space key press', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
       html: '<modus-wc-button aria-label="Space Key Button"></modus-wc-button>',
     });
     const button = page.root?.querySelector('button');
     const clickSpy = jest.fn();
-    page.root?.addEventListener('click', clickSpy);
+    page.root?.addEventListener('buttonClick', clickSpy);
 
     const event = new KeyboardEvent('keydown', { key: ' ' });
     button?.dispatchEvent(event);
@@ -141,14 +135,14 @@ describe('modus-wc-button', () => {
     expect(clickSpy).toHaveBeenCalled();
   });
 
-  it('should not emit click event on key press when disabled', async () => {
+  it('should not emit buttonClick event on key press when disabled', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
       html: '<modus-wc-button aria-label="Disabled Key Press Button" disabled></modus-wc-button>',
     });
     const button = page.root?.querySelector('button');
     const clickSpy = jest.fn();
-    page.root?.addEventListener('click', clickSpy);
+    page.root?.addEventListener('buttonClick', clickSpy);
 
     const event = new KeyboardEvent('keydown', { key: 'Enter' });
     button?.dispatchEvent(event);

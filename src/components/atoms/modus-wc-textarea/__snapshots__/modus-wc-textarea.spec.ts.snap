@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-textarea renders with custom props 1`] = `
+<modus-wc-textarea aria-describedby="description" aria-label="Custom textarea" custom-class="custom-class" disabled="true" max-length="100" name="custom-name" placeholder="Custom placeholder" readonly="true" required="true" rows="5" textarea-aria-invalid="true" textarea-dir="rtl" textarea-id="custom-id" textarea-spellcheck="true" textarea-tab-index="2" value="Custom value"><textarea aria-describedby="description" aria-invalid="true" aria-label="Custom textarea" aria-placeholder="Custom placeholder" aria-required="" class="custom-class modus-wc-textarea" dir="rtl" disabled="" id="custom-id" maxlength="100" name="custom-name" placeholder="Custom placeholder" readonly="" required="" rows="5" spellcheck="" tabindex="2" value="Custom value"></textarea>
+</modus-wc-textarea>
+`;
