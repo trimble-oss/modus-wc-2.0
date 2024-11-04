@@ -6,10 +6,7 @@ import {
   EventEmitter,
   Prop,
 } from '@stencil/core';
-import {
-  convertPropsToClasses,
-  tailwindThemeClasses,
-} from './modus-wc-text-input.tailwind';
+import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -194,10 +191,6 @@ export class ModusWcTextInput {
   };
 
   render() {
-    // istanbul ignore next - not implemented
-    const theme = document.documentElement.getAttribute('data-theme') ?? '';
-    const themeClasses = tailwindThemeClasses[theme];
-
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       size: this.size,
@@ -206,7 +199,6 @@ export class ModusWcTextInput {
     const classes = {
       [this.customClass]: !!this.customClass,
       [propClasses]: !!propClasses,
-      [themeClasses]: !!themeClasses,
       'modus-wc-input': true,
     };
 

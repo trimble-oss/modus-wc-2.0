@@ -1,5 +1,4 @@
 import { Component, h, Host, Prop } from '@stencil/core';
-import { getCurrentModusWCMode } from '../../../utils/theme';
 
 const ALERT_COLORS = ['success', 'warning', 'danger'];
 
@@ -57,7 +56,6 @@ export class ModusWcBadge {
   }
 
   render() {
-    const currentMode = getCurrentModusWCMode();
     const isAlert = ALERT_COLORS.includes(this.color);
 
     return (
@@ -69,9 +67,6 @@ export class ModusWcBadge {
             [`modus-wc-badge--${this.size}`]: true,
             [`modus-wc-badge--${this.type}`]: true,
             [`modus-wc-badge--${this.color}`]: true,
-            'modus-wc-badge--dark-mode': currentMode === 'dark',
-            'modus-wc-badge--high-contrast-mode':
-              currentMode === 'high-contrast',
           }}
           aria-label={this.ariaLabel}
           role={isAlert ? 'alert' : 'status'}
