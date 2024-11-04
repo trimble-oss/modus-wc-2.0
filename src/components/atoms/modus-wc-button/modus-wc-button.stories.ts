@@ -16,14 +16,7 @@ interface ButtonArgs {
 const meta: Meta<ButtonArgs> = {
   title: 'Components/Atoms/Button',
   component: 'modus-wc-button',
-  tags: ['autodocs'],
   argTypes: {
-    label: { control: 'text' },
-    ariaLabel: { control: 'text' },
-    customClass: { control: 'text' },
-    disabled: { control: 'boolean' },
-    fullWidth: { control: 'boolean' },
-    pressed: { control: 'boolean' },
     size: {
       control: { type: 'select' },
       options: ['small', 'medium', 'large'],

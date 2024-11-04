@@ -37,6 +37,16 @@
               "description": "Custom CSS class to apply to the inner div."
             },
             {
+              "kind": "method",
+              "name": "getClasses",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              }
+            },
+            {
               "kind": "field",
               "name": "imgSrc",
               "type": {
@@ -44,6 +54,10 @@
               },
               "default": "''",
               "description": "The location of the image."
+            },
+            {
+              "kind": "method",
+              "name": "render"
             },
             {
               "kind": "field",
@@ -62,20 +76,6 @@
               },
               "default": "'md'",
               "description": "The size of the avatar."
-            },
-            {
-              "kind": "method",
-              "name": "getClasses",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "render"
             }
           ],
           "attributes": [
@@ -190,6 +190,10 @@
               "description": "Custom CSS class to apply to the span element."
             },
             {
+              "kind": "method",
+              "name": "render"
+            },
+            {
               "kind": "field",
               "name": "size",
               "type": {
@@ -206,10 +210,6 @@
               },
               "default": "'filled'",
               "description": "The type of the badge."
-            },
-            {
-              "kind": "method",
-              "name": "render"
             }
           ],
           "attributes": [
@@ -335,6 +335,15 @@
             },
             {
               "kind": "field",
+              "name": "handleClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleKeyDown"
+            },
+            {
+              "kind": "field",
               "name": "label",
               "type": {
                 "text": "string"
@@ -351,6 +360,10 @@
               "description": "If true, the button will be in a pressed state (for toggle buttons)."
             },
             {
+              "kind": "method",
+              "name": "render"
+            },
+            {
               "kind": "field",
               "name": "size",
               "type": {
@@ -358,15 +371,6 @@
               },
               "default": "'medium'",
               "description": "The size of the button. Can be 'small', 'medium', or 'large'."
-            },
-            {
-              "kind": "field",
-              "name": "variant",
-              "type": {
-                "text": "'filled' | 'outlined' | 'text'"
-              },
-              "default": "'filled'",
-              "description": "The variant of the button. Can be 'filled', 'outlined', or 'text'."
             },
             {
               "kind": "field",
@@ -379,16 +383,12 @@
             },
             {
               "kind": "field",
-              "name": "handleClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleKeyDown"
-            },
-            {
-              "kind": "method",
-              "name": "render"
+              "name": "variant",
+              "type": {
+                "text": "'filled' | 'outlined' | 'text'"
+              },
+              "default": "'filled'",
+              "description": "The variant of the button. Can be 'filled', 'outlined', or 'text'."
             }
           ],
           "attributes": [
@@ -676,6 +676,21 @@
             },
             {
               "kind": "field",
+              "name": "handleBlur",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleFocus",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
               "name": "inputAriaInvalid",
               "type": {
                 "text": "'grammar' | 'spelling' | 'true' | 'false' | undefined"
@@ -776,6 +791,10 @@
               "description": "Whether the value is editable."
             },
             {
+              "kind": "method",
+              "name": "render"
+            },
+            {
               "kind": "field",
               "name": "required",
               "type": {
@@ -810,25 +829,6 @@
               },
               "default": "''",
               "description": "The value of the control."
-            },
-            {
-              "kind": "field",
-              "name": "handleBlur",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleFocus",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "render"
             }
           ],
           "attributes": [
@@ -1095,6 +1095,21 @@
             },
             {
               "kind": "field",
+              "name": "handleBlur",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleFocus",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
               "name": "maxLength",
               "type": {
                 "text": "number | undefined"
@@ -1127,6 +1142,10 @@
               },
               "default": "false",
               "description": "The readonly state of the textarea."
+            },
+            {
+              "kind": "method",
+              "name": "render"
             },
             {
               "kind": "field",
@@ -1193,25 +1212,6 @@
               },
               "default": "''",
               "description": "The value of the textarea."
-            },
-            {
-              "kind": "field",
-              "name": "handleBlur",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleFocus",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "render"
             }
           ],
           "attributes": [
@@ -1413,6 +1413,19 @@
               "description": "Custom CSS class to apply to the typography element."
             },
             {
+              "kind": "method",
+              "name": "render"
+            },
+            {
+              "kind": "field",
+              "name": "textCase",
+              "type": {
+                "text": "'sentence' | 'title' | 'uppercase'"
+              },
+              "default": "'sentence'",
+              "description": "The text case."
+            },
+            {
               "kind": "field",
               "name": "variant",
               "type": {
@@ -1429,19 +1442,6 @@
               },
               "default": "'regular'",
               "description": "The weight of the text."
-            },
-            {
-              "kind": "field",
-              "name": "textCase",
-              "type": {
-                "text": "'sentence' | 'title' | 'uppercase'"
-              },
-              "default": "'sentence'",
-              "description": "The text case."
-            },
-            {
-              "kind": "method",
-              "name": "render"
             }
           ],
           "attributes": [

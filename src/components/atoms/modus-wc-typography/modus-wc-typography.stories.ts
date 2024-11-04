@@ -14,28 +14,25 @@ interface TypographyArgs {
 const meta: Meta<TypographyArgs> = {
   title: 'Components/Atoms/Typography',
   component: 'modus-wc-typography',
-  tags: ['autodocs'],
-  argTypes: {
-    ariaLabel: { control: 'text' },
-    bodySize: {
-      control: { type: 'select' },
-      options: ['standard', 'small', 'mini'],
-    },
-    customClass: { control: 'text' },
-    variant: {
-      control: { type: 'select' },
-      options: ['body', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
-    },
-    weight: {
-      control: { type: 'select' },
-      options: ['regular', 'semibold', 'bold'],
-    },
-    textCase: {
-      control: { type: 'select' },
-      options: ['sentence', 'title', 'uppercase'],
-    },
-    content: { control: 'text' },
-  },
+  // tags: ['autodocs'],
+  // argTypes: {
+  //   bodySize: {
+  //     control: { type: 'select' },
+  //     options: ['standard', 'small', 'mini'],
+  //   },
+  //   variant: {
+  //     control: { type: 'select' },
+  //     options: ['body', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
+  //   },
+  //   weight: {
+  //     control: { type: 'select' },
+  //     options: ['regular', 'semibold', 'bold'],
+  //   },
+  //   textCase: {
+  //     control: { type: 'select' },
+  //     options: ['sentence', 'title', 'uppercase'],
+  //   },
+  // },
 };
 
 export default meta;
@@ -60,12 +57,12 @@ const Template: Story = {
 export const Default: Story = {
   ...Template,
   args: {
-    ariaLabel: 'Example typography',
-    bodySize: 'standard',
+    // ariaLabel: 'Example typography',
+    // bodySize: 'standard',
     content: 'The quick brown fox jumps over the lazy dog',
-    customClass: '',
-    textCase: 'sentence',
-    variant: 'p',
-    weight: 'regular',
+    // customClass: '',
+    // textCase: 'sentence',
+    // variant: 'p',
+    // weight: 'regular',
   },
 };

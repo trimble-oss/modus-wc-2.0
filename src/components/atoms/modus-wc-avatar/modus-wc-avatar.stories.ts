@@ -13,21 +13,16 @@ interface AvatarArgs {
 const meta: Meta<AvatarArgs> = {
   title: 'Components/Atoms/Avatar',
   component: 'modus-wc-avatar',
-  tags: ['autodocs'],
-  argTypes: {
-    alt: { control: 'text' },
-    ariaLabel: { control: 'text' },
-    customClass: { control: 'text' },
-    imgSrc: { control: 'text' },
-    shape: {
-      control: { type: 'select' },
-      options: ['circle', 'square'],
-    },
-    size: {
-      control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
-    },
-  },
+  // argTypes: {
+  //   shape: {
+  //     control: { type: 'select' },
+  //     options: ['circle', 'square'],
+  //   },
+  //   size: {
+  //     control: { type: 'select' },
+  //     options: ['xs', 'sm', 'md', 'lg', 'xl'],
+  //   },
+  // },
 };
 
 export default meta;

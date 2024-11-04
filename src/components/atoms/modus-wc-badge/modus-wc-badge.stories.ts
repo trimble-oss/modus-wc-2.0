@@ -18,9 +18,7 @@ interface BadgeArgs {
 const meta: Meta<BadgeArgs> = {
   title: 'Components/Atoms/Badge',
   component: 'modus-wc-badge',
-  tags: ['autodocs'],
   argTypes: {
-    ariaLabel: { control: 'text' },
     color: {
       control: { type: 'select' },
       options: [
@@ -32,8 +30,6 @@ const meta: Meta<BadgeArgs> = {
         'danger',
       ],
     },
-    content: { control: 'text' },
-    customClass: { control: 'text' },
     size: {
       control: { type: 'select' },
       options: ['small', 'medium', 'large'],

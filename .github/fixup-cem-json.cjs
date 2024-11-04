@@ -19,7 +19,11 @@ const path = require('path');
 const filePath = path.resolve(path.dirname(require.main.filename), '../src/custom-elements.json');
 const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
+data.modules.sort((a, b) => a.path.localeCompare(b.path));
+
 data.modules.forEach(module => {
+  module.declarations.sort((a, b) => a.name.localeCompare(b.name))
+
   module.declarations.forEach(declaration => {
     // Fixup events
     const eventMembers = declaration.members?.filter(member => member.type?.text.includes('Event')) || [];
@@ -28,6 +32,16 @@ data.modules.forEach(module => {
       declaration.events.push(...eventMembers);
     }
     declaration.members = declaration.members?.filter(member => !member.type?.text.includes('Event'));
+
+    // Fixup description
+    // declaration.attributes?.forEach(attribute => {
+    //   const member = declaration.members?.find(member => member.name === attribute.fieldName);
+    //   if (member) {
+    //     attribute.description = member.description;
+    //   }
+    // });
+
+    declaration.members?.sort((a, b) => a.name.localeCompare(b.name));
   });
 });
 

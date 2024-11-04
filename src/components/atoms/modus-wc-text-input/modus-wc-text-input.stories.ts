@@ -46,9 +46,6 @@ const meta: Meta<TextInputArgs> = {
       options: ['on', 'off'],
       table: { sort: 'alpha' },
     },
-    autoFocus: { control: 'boolean', table: { sort: 'alpha' } },
-    bordered: { control: 'boolean', table: { sort: 'alpha' } },
-    customClass: { control: 'text', table: { sort: 'alpha' } },
     dir: {
       control: { type: 'select' },
       options: ['ltr', 'rtl', 'auto'],

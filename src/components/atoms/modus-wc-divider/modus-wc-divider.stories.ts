@@ -10,13 +10,6 @@ interface DividerArgs {
 const meta: Meta<DividerArgs> = {
   title: 'Components/Atoms/Divider',
   component: 'modus-wc-divider',
-  tags: ['autodocs'],
-  argTypes: {
-    ariaLabel: { control: 'text' },
-    customClass: { control: 'text' },
-    daisyClass: { control: 'text' },
-    content: { control: 'text' },
-  },
 };
 
 export default meta;
