@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-text-input renders with custom props 1`] = `
-<modus-wc-text-input aria-describedby="description" aria-label="Custom input" autocapitalize="words" autocomplete="on" autofocus="true" custom-class="custom-class" disabled="true" input-aria-invalid="grammar" input-dir="rtl" input-id="custom-id" input-tab-index="1" inputmode="numeric" max-length="50" min-length="5" name="custom-name" pattern="[A-Za-z]{3}" placeholder="Custom placeholder" readonly="true" required="true" size="lg" spellcheck="true" type="email" value="test@example.com">
+<modus-wc-text-input aria-describedby="description" aria-label="Custom input" autocapitalize="words" autocomplete="on" autofocus="true" custom-class="custom-class" disabled="true" input-aria-invalid="grammar" input-dir="rtl" input-id="custom-id" input-spellcheck="true" input-tab-index="1" inputmode="numeric" max-length="50" min-length="5" name="custom-name" pattern="[A-Za-z]{3}" placeholder="Custom placeholder" readonly="true" required="true" size="lg" type="email" value="test@example.com">
   <input aria-describedby="description" aria-invalid="grammar" aria-label="Custom input" aria-placeholder="Custom placeholder" aria-required="" class="custom-class modus-wc-input modus-wc-input-bordered modus-wc-input-lg" dir="rtl" disabled="" id="custom-id" inputmode="text" maxlength="50" minlength="5" name="custom-name" pattern="[A-Za-z]{3}" placeholder="Custom placeholder" required="" spellcheck="" tabindex="1" type="email" value="test@example.com">
 </modus-wc-text-input>
 `;

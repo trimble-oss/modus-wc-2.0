@@ -209,6 +209,10 @@ export namespace Components {
     | 'text'
     | 'url';
         /**
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "inputSpellcheck"?: boolean;
+        /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
@@ -244,10 +248,6 @@ export namespace Components {
           * The size of the input.
          */
         "size"?: 'sm' | 'md' | 'lg';
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "spellcheck": boolean;
         /**
           * Type of form control.
          */
@@ -742,6 +742,10 @@ declare namespace LocalJSX {
     | 'text'
     | 'url';
         /**
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "inputSpellcheck"?: boolean;
+        /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
@@ -789,10 +793,6 @@ declare namespace LocalJSX {
           * The size of the input.
          */
         "size"?: 'sm' | 'md' | 'lg';
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "spellcheck"?: boolean;
         /**
           * Type of form control.
          */

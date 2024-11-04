@@ -95,6 +95,12 @@ export class ModusWcTextInput {
     | 'url' = 'text';
 
   /**
+   * Whether the element may be checked for spelling errors.
+   * A hint for the browser, not a guarantee.
+   */
+  @Prop() inputSpellcheck?: boolean = false;
+
+  /**
    * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
    */
   @Prop() inputTabIndex?: number;
@@ -153,12 +159,6 @@ export class ModusWcTextInput {
    * The size of the input.
    */
   @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
-
-  /**
-   * Whether the element may be checked for spelling errors.
-   * A hint for the browser, not a guarantee.
-   */
-  @Prop() spellcheck: boolean = false;
 
   /**
    * Type of form control.
@@ -227,7 +227,7 @@ export class ModusWcTextInput {
           placeholder={this.placeholder}
           readonly={this.readOnly}
           required={this.required}
-          spellcheck={this.spellcheck}
+          spellcheck={this.inputSpellcheck}
           tabIndex={this.inputTabIndex}
           type={this.type}
           value={this.value}

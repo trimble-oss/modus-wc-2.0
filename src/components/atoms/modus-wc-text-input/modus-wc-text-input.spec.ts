@@ -30,6 +30,7 @@ describe('modus-wc-text-input', () => {
         input-id="custom-id"
         input-dir="rtl"
         inputmode="numeric"
+        input-spellcheck="true"
         input-tab-index="1"
         max-length="50"
         min-length="5"
@@ -39,7 +40,6 @@ describe('modus-wc-text-input', () => {
         readonly="true"
         required="true"
         size="lg"
-        spellcheck="true"
         type="email"
         value="test@example.com"
       ></modus-wc-text-input>`,
