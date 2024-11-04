@@ -1,3 +1,4 @@
 integrations
 src/**/*.d.ts
 src/components/**/readme.md
+src/providers/**/readme.md

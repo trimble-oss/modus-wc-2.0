@@ -7,7 +7,6 @@ import {
   Listen,
   Prop,
 } from '@stencil/core';
-import { getCurrentModusWCMode } from '../../../utils/theme';
 
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -98,7 +97,6 @@ export class ModusWcButton {
 
   render() {
     const ariaPressed = this.pressed ? 'true' : undefined;
-    const currentMode = getCurrentModusWCMode();
 
     return (
       <Host>
@@ -111,7 +109,6 @@ export class ModusWcButton {
             [`modus-wc-button--${this.color}`]: true,
             'modus-wc-button--full-width': this.fullWidth,
             'modus-wc-button--disabled': this.disabled,
-            'modus-wc-button--dark-mode': currentMode === 'dark',
           }}
           aria-label={this.ariaLabel || this.label}
           aria-pressed={ariaPressed}

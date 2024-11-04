@@ -1,5 +1,4 @@
 import { h, Component, Host, Prop } from '@stencil/core';
-import { getCurrentModusWCMode } from '../../../utils/theme';
 
 export type TypographyBodySize = 'standard' | 'small' | 'mini';
 
@@ -63,7 +62,6 @@ export class ModusWCTypography {
   }
 
   render() {
-    const currentMode = getCurrentModusWCMode();
     const Element = this.variant;
 
     return (
@@ -77,9 +75,6 @@ export class ModusWCTypography {
             [`modus-wc-typography--${this.textCase}`]: true,
             [`modus-wc-typography--${this.variant}`]: true,
             [`modus-wc-typography--${this.weight}`]: true,
-            'modus-wc-typography--dark-mode': currentMode === 'dark',
-            'modus-wc-typography--high-contrast-mode':
-              currentMode === 'high-contrast',
           }}
           aria-label={this.ariaLabel}
         >

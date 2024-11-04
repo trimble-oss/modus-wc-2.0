@@ -5,7 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
@@ -325,6 +327,23 @@ export namespace Components {
          */
         "value": string;
     }
+    interface ModusWcThemeProvider {
+        "initialTheme"?: Partial<IThemeConfig>;
+    }
+    /**
+     * A theme switcher component used to toggle the application theme and/or mode.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcThemeSwitcher {
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the theme switcher element.
+         */
+        "customClass": string;
+    }
     /**
      * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
      * Adheres to WCAG 2.2 standards.
@@ -355,16 +374,6 @@ export namespace Components {
          */
         "weight": 'regular' | 'semibold' | 'bold';
     }
-    /**
-     * A component used to render auto-generated Stencil documentation in Storybook stories.
-     * Searches for the component directory within `/atoms`, `/molecules`, and `organisms`. Renders the `readme.md` file.
-     */
-    interface StencilDocs {
-        /**
-          * The component name used to find the proper directory.
-         */
-        "componentName": string;
-    }
 }
 export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -377,6 +386,10 @@ export interface ModusWcTextInputCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcTextareaCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTextareaElement;
+}
+export interface ModusWcThemeSwitcherCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcThemeSwitcherElement;
 }
 declare global {
     /**
@@ -476,6 +489,33 @@ declare global {
         prototype: HTMLModusWcTextareaElement;
         new (): HTMLModusWcTextareaElement;
     };
+    interface HTMLModusWcThemeProviderElement extends Components.ModusWcThemeProvider, HTMLStencilElement {
+    }
+    var HTMLModusWcThemeProviderElement: {
+        prototype: HTMLModusWcThemeProviderElement;
+        new (): HTMLModusWcThemeProviderElement;
+    };
+    interface HTMLModusWcThemeSwitcherElementEventMap {
+        "themeChange": IThemeConfig;
+    }
+    /**
+     * A theme switcher component used to toggle the application theme and/or mode.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcThemeSwitcherElement extends Components.ModusWcThemeSwitcher, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcThemeSwitcherElementEventMap>(type: K, listener: (this: HTMLModusWcThemeSwitcherElement, ev: ModusWcThemeSwitcherCustomEvent<HTMLModusWcThemeSwitcherElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcThemeSwitcherElementEventMap>(type: K, listener: (this: HTMLModusWcThemeSwitcherElement, ev: ModusWcThemeSwitcherCustomEvent<HTMLModusWcThemeSwitcherElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcThemeSwitcherElement: {
+        prototype: HTMLModusWcThemeSwitcherElement;
+        new (): HTMLModusWcThemeSwitcherElement;
+    };
     /**
      * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
      * Adheres to WCAG 2.2 standards.
@@ -486,16 +526,6 @@ declare global {
         prototype: HTMLModusWcTypographyElement;
         new (): HTMLModusWcTypographyElement;
     };
-    /**
-     * A component used to render auto-generated Stencil documentation in Storybook stories.
-     * Searches for the component directory within `/atoms`, `/molecules`, and `organisms`. Renders the `readme.md` file.
-     */
-    interface HTMLStencilDocsElement extends Components.StencilDocs, HTMLStencilElement {
-    }
-    var HTMLStencilDocsElement: {
-        prototype: HTMLStencilDocsElement;
-        new (): HTMLStencilDocsElement;
-    };
     interface HTMLElementTagNameMap {
         "modus-wc-avatar": HTMLModusWcAvatarElement;
         "modus-wc-badge": HTMLModusWcBadgeElement;
@@ -503,8 +533,9 @@ declare global {
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
+        "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
+        "modus-wc-theme-switcher": HTMLModusWcThemeSwitcherElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
-        "stencil-docs": HTMLStencilDocsElement;
     }
 }
 declare namespace LocalJSX {
@@ -853,6 +884,27 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface ModusWcThemeProvider {
+        "initialTheme"?: Partial<IThemeConfig>;
+    }
+    /**
+     * A theme switcher component used to toggle the application theme and/or mode.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcThemeSwitcher {
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the theme switcher element.
+         */
+        "customClass"?: string;
+        /**
+          * An event that fires when the theme is changed.
+         */
+        "onThemeChange"?: (event: ModusWcThemeSwitcherCustomEvent<IThemeConfig>) => void;
+    }
     /**
      * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
      * Adheres to WCAG 2.2 standards.
@@ -883,16 +935,6 @@ declare namespace LocalJSX {
          */
         "weight"?: 'regular' | 'semibold' | 'bold';
     }
-    /**
-     * A component used to render auto-generated Stencil documentation in Storybook stories.
-     * Searches for the component directory within `/atoms`, `/molecules`, and `organisms`. Renders the `readme.md` file.
-     */
-    interface StencilDocs {
-        /**
-          * The component name used to find the proper directory.
-         */
-        "componentName": string;
-    }
     interface IntrinsicElements {
         "modus-wc-avatar": ModusWcAvatar;
         "modus-wc-badge": ModusWcBadge;
@@ -900,8 +942,9 @@ declare namespace LocalJSX {
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
+        "modus-wc-theme-provider": ModusWcThemeProvider;
+        "modus-wc-theme-switcher": ModusWcThemeSwitcher;
         "modus-wc-typography": ModusWcTypography;
-        "stencil-docs": StencilDocs;
     }
 }
 export { LocalJSX as JSX };
@@ -938,16 +981,17 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-textarea": LocalJSX.ModusWcTextarea & JSXBase.HTMLAttributes<HTMLModusWcTextareaElement>;
+            "modus-wc-theme-provider": LocalJSX.ModusWcThemeProvider & JSXBase.HTMLAttributes<HTMLModusWcThemeProviderElement>;
+            /**
+             * A theme switcher component used to toggle the application theme and/or mode.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-theme-switcher": LocalJSX.ModusWcThemeSwitcher & JSXBase.HTMLAttributes<HTMLModusWcThemeSwitcherElement>;
             /**
              * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-typography": LocalJSX.ModusWcTypography & JSXBase.HTMLAttributes<HTMLModusWcTypographyElement>;
-            /**
-             * A component used to render auto-generated Stencil documentation in Storybook stories.
-             * Searches for the component directory within `/atoms`, `/molecules`, and `organisms`. Renders the `readme.md` file.
-             */
-            "stencil-docs": LocalJSX.StencilDocs & JSXBase.HTMLAttributes<HTMLStencilDocsElement>;
         }
     }
 }

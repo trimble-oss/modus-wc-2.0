@@ -20,6 +20,7 @@ describe('modus-wc-text-input', () => {
       components: [ModusWcTextInput],
       html: `<modus-wc-text-input
         aria-describedby="description"
+        aria-invalid-input="true"
         aria-label="Custom input"
         autocapitalize="words"
         autocomplete="on"
@@ -45,7 +46,56 @@ describe('modus-wc-text-input', () => {
       ></modus-wc-text-input>`,
     });
     expect(page.root).not.toBeNull();
-    expect(page.root).toMatchSnapshot();
+    expect(page.root).toEqualHtml(`
+      <modus-wc-text-input 
+        aria-describedby="description" 
+        aria-invalid-input="true" 
+        aria-label="Custom input" 
+        autocapitalize="words"
+        autocomplete="on"
+        autofocus="true"
+        custom-class="custom-class" 
+        dir="rtl" 
+        disabled="true" 
+        id="custom-id" 
+        inputmode="numeric"
+        max-length="50" 
+        min-length="5"
+        name="custom-name" 
+        pattern="[A-Za-z]{3}"
+        placeholder="Custom placeholder" 
+        readonly="true"
+        required="true"
+        size="lg"
+        spellcheck="true"
+        tab-index="1" 
+        type="email"
+        value="test@example.com"
+      >
+        <input 
+          aria-describedby="description"
+          aria-invalid="true"
+          aria-label="Custom input"
+          aria-placeholder="Custom placeholder"
+          aria-required=""
+          class="modus-wc-input modus-wc-input-bordered modus-wc-input-lg custom-class"
+          dir="rtl"
+          disabled
+          id="custom-id"
+          inputmode="text"
+          maxlength="50"
+          minlength="5"
+          name="custom-name"
+          pattern="[A-Za-z]{3}"
+          placeholder="Custom placeholder"
+          required
+          spellcheck
+          tabindex="1"
+          type="email"
+          value="test@example.com"
+        >
+      </modus-wc-text-input>
+    `);
   });
 
   it('emits blur event', async () => {

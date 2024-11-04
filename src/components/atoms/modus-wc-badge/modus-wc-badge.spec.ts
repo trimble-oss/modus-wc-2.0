@@ -1,12 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcBadge } from './modus-wc-badge';
-import * as themeUtils from '../../../utils/theme';
 
 describe('modus-wc-badge', () => {
-  beforeEach(() => {
-    jest.spyOn(themeUtils, 'getCurrentModusWCMode').mockReturnValue('default');
-  });
-
   it('should warn if ariaLabel is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
@@ -66,42 +61,6 @@ describe('modus-wc-badge', () => {
     expect(page.root).toEqualHtml(`
       <modus-wc-badge aria-label="Alert Badge" content="Alert" color="danger">
         <span class="modus-wc-badge modus-wc-badge--medium modus-wc-badge--filled modus-wc-badge--danger" aria-label="Alert Badge" role="alert">Alert</span>
-      </modus-wc-badge>
-    `);
-  });
-
-  it('should apply dark mode class correctly', async () => {
-    jest.spyOn(themeUtils, 'getCurrentModusWCMode').mockReturnValue('dark');
-
-    const page = await newSpecPage({
-      components: [ModusWcBadge],
-      html: '<modus-wc-badge aria-label="Dark Mode Badge"></modus-wc-badge>',
-    });
-
-    await page.waitForChanges();
-
-    expect(page.root).toEqualHtml(`
-      <modus-wc-badge aria-label="Dark Mode Badge">
-        <span class="modus-wc-badge modus-wc-badge--medium modus-wc-badge--filled modus-wc-badge--primary modus-wc-badge--dark-mode" aria-label="Dark Mode Badge" role="status"></span>
-      </modus-wc-badge>
-    `);
-  });
-
-  it('should apply high contrast mode class correctly', async () => {
-    jest
-      .spyOn(themeUtils, 'getCurrentModusWCMode')
-      .mockReturnValue('high-contrast');
-
-    const page = await newSpecPage({
-      components: [ModusWcBadge],
-      html: '<modus-wc-badge aria-label="High Contrast Badge"></modus-wc-badge>',
-    });
-
-    await page.waitForChanges();
-
-    expect(page.root).toEqualHtml(`
-      <modus-wc-badge aria-label="High Contrast Badge">
-        <span class="modus-wc-badge modus-wc-badge--medium modus-wc-badge--filled modus-wc-badge--primary modus-wc-badge--high-contrast-mode" aria-label="High Contrast Badge" role="status"></span>
       </modus-wc-badge>
     `);
   });

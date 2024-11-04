@@ -1,12 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcButton } from './modus-wc-button';
-import * as themeUtils from '../../../utils/theme';
 
 describe('modus-wc-button', () => {
-  beforeEach(() => {
-    jest.spyOn(themeUtils, 'getCurrentModusWCMode').mockReturnValue('default');
-  });
-
   it('should warn if ariaLabel is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
@@ -74,21 +69,6 @@ describe('modus-wc-button', () => {
     expect(page.root).toEqualHtml(`
       <modus-wc-button aria-label="Pressed Button" pressed>
         <button class="modus-wc-button modus-wc-button--medium modus-wc-button--filled modus-wc-button--primary" aria-label="Pressed Button" aria-pressed="true" tabindex="0" type="button"></button>
-      </modus-wc-button>
-    `);
-  });
-
-  it('should apply dark mode class correctly', async () => {
-    jest.spyOn(themeUtils, 'getCurrentModusWCMode').mockReturnValue('dark');
-
-    const page = await newSpecPage({
-      components: [ModusWcButton],
-      html: '<modus-wc-button aria-label="Dark Mode Button"></modus-wc-button>',
-    });
-
-    expect(page.root).toEqualHtml(`
-      <modus-wc-button aria-label="Dark Mode Button">
-        <button class="modus-wc-button modus-wc-button--medium modus-wc-button--filled modus-wc-button--primary modus-wc-button--dark-mode" aria-label="Dark Mode Button" tabindex="0" type="button"></button>
       </modus-wc-button>
     `);
   });

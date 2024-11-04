@@ -10,7 +10,7 @@ describe('modus-wc-textarea', () => {
     expect(page.root).not.toBeNull();
     expect(page.root).toEqualHtml(`
       <modus-wc-textarea aria-label="Default textarea" value="">
-        <textarea aria-label="Default textarea" aria-placeholder="" class="modus-wc-textarea" placeholder="" value=""></textarea>
+        <textarea aria-invalid="false" aria-label="Default textarea" aria-placeholder="" class="modus-wc-textarea" placeholder="" spellcheck="" tabindex="0" value=""></textarea>
       </modus-wc-textarea>
     `);
   });
@@ -18,10 +18,12 @@ describe('modus-wc-textarea', () => {
   it('renders with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextarea],
-      html: `<modus-wc-textarea
-        aria-describedby="description"
-        aria-label="Custom textarea"
-        custom-class="custom-class"
+      html: `<modus-wc-textarea 
+        aria-describedby="description" 
+        aria-invalid-textarea="true" 
+        aria-label="Custom textarea" 
+        custom-class="custom-class" 
+        dir="rtl" 
         disabled="true"
         max-length="100"
         name="custom-name"
@@ -38,7 +40,46 @@ describe('modus-wc-textarea', () => {
       ></modus-wc-textarea>`,
     });
     expect(page.root).not.toBeNull();
-    expect(page.root).toMatchSnapshot();
+    expect(page.root).toEqualHtml(`
+      <modus-wc-textarea 
+        aria-describedby="description" 
+        aria-invalid-textarea="true" 
+        aria-label="Custom textarea" 
+        custom-class="custom-class"  
+        dir="rtl" 
+        disabled="true" 
+        id="custom-id" 
+        max-length="100" 
+        name="custom-name" 
+        placeholder="Custom placeholder" 
+        readonly="true"
+        required="true"
+        rows="5" 
+        tab-index="1" 
+        value="Custom value"
+      >
+        <textarea 
+          aria-describedby="description"
+          aria-invalid="true"
+          aria-label="Custom textarea"
+          aria-placeholder="Custom placeholder"
+          aria-required=""
+          class="modus-wc-textarea custom-class"
+          dir="rtl"
+          disabled
+          id="custom-id"
+          maxlength="100"
+          name="custom-name"
+          placeholder="Custom placeholder"
+          readonly
+          required
+          rows="5"
+          spellcheck=""
+          tabindex="1"
+          value="Custom value"
+        ></textarea>
+      </modus-wc-textarea>
+    `);
   });
 
   it('emits blur event', async () => {
