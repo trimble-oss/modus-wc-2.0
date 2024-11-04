@@ -1,10 +1,14 @@
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import type { Preview } from '@storybook/web-components';
+import { setCustomElementsManifest } from '@storybook/web-components';
 import { defineCustomElements } from '../loader';
+import customElements from '../src/custom-elements.json';
 
 defineCustomElements();
+setCustomElementsManifest(customElements);
 
 const preview: Preview = {
+  tags: ['autodocs'],
   parameters: {
     controls: {
       matchers: {
