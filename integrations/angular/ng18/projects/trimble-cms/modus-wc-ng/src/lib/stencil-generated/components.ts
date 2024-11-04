@@ -66,7 +66,7 @@ export class ModusWcButton {
   constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
     c.detach();
     this.el = r.nativeElement;
-    proxyOutputs(this, this.el, ['click']);
+    proxyOutputs(this, this.el, ['buttonClick']);
   }
 }
 
@@ -75,7 +75,7 @@ export declare interface ModusWcButton extends Components.ModusWcButton {
   /**
    * Event emitted when the button is clicked or activated via keyboard.
    */
-  click: EventEmitter<CustomEvent<MouseEvent | KeyboardEvent>>;
+  buttonClick: EventEmitter<CustomEvent<MouseEvent | KeyboardEvent>>;
 }
 
 
@@ -102,21 +102,21 @@ export declare interface ModusWcDivider extends Components.ModusWcDivider {}
 
 
 @ProxyCmp({
-  inputs: ['ariaDescribedby', 'ariaInvalidInput', 'ariaLabel', 'autoCapitalize', 'autoComplete', 'autoFocus', 'bordered', 'customClass', 'dir', 'disabled', 'id', 'inputMode', 'maxLength', 'minLength', 'name', 'pattern', 'placeholder', 'readOnly', 'required', 'size', 'spellcheck', 'tabIndex', 'type', 'value']
+  inputs: ['ariaDescribedby', 'ariaLabel', 'autoCapitalize', 'autoComplete', 'autoFocus', 'bordered', 'customClass', 'disabled', 'inputAriaInvalid', 'inputDir', 'inputId', 'inputMode', 'inputSpellcheck', 'inputTabIndex', 'maxLength', 'minLength', 'name', 'pattern', 'placeholder', 'readOnly', 'required', 'size', 'type', 'value']
 })
 @Component({
   selector: 'modus-wc-text-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['ariaDescribedby', 'ariaInvalidInput', 'ariaLabel', 'autoCapitalize', 'autoComplete', 'autoFocus', 'bordered', 'customClass', 'dir', 'disabled', 'id', 'inputMode', 'maxLength', 'minLength', 'name', 'pattern', 'placeholder', 'readOnly', 'required', 'size', 'spellcheck', 'tabIndex', 'type', 'value'],
+  inputs: ['ariaDescribedby', 'ariaLabel', 'autoCapitalize', 'autoComplete', 'autoFocus', 'bordered', 'customClass', 'disabled', 'inputAriaInvalid', 'inputDir', 'inputId', 'inputMode', 'inputSpellcheck', 'inputTabIndex', 'maxLength', 'minLength', 'name', 'pattern', 'placeholder', 'readOnly', 'required', 'size', 'type', 'value'],
 })
 export class ModusWcTextInput {
   protected el: HTMLElement;
   constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
     c.detach();
     this.el = r.nativeElement;
-    proxyOutputs(this, this.el, ['blur', 'change', 'focus']);
+    proxyOutputs(this, this.el, ['inputBlur', 'inputChange', 'inputFocus']);
   }
 }
 
@@ -125,34 +125,34 @@ export declare interface ModusWcTextInput extends Components.ModusWcTextInput {
   /**
    * Event emitted when the input loses focus.
    */
-  blur: EventEmitter<CustomEvent<FocusEvent>>;
+  inputBlur: EventEmitter<CustomEvent<FocusEvent>>;
   /**
    * Event emitted when the input value changes.
    */
-  change: EventEmitter<CustomEvent<Event>>;
+  inputChange: EventEmitter<CustomEvent<Event>>;
   /**
    * Event emitted when the input gains focus.
    */
-  focus: EventEmitter<CustomEvent<FocusEvent>>;
+  inputFocus: EventEmitter<CustomEvent<FocusEvent>>;
 }
 
 
 @ProxyCmp({
-  inputs: ['ariaDescribedby', 'ariaInvalidTextarea', 'ariaLabel', 'customClass', 'dir', 'disabled', 'id', 'maxLength', 'name', 'placeholder', 'readonly', 'required', 'rows', 'spellcheck', 'tabIndex', 'value']
+  inputs: ['ariaDescribedby', 'ariaLabel', 'customClass', 'disabled', 'maxLength', 'name', 'placeholder', 'readonly', 'required', 'rows', 'textareaAriaInvalid', 'textareaDir', 'textareaId', 'textareaSpellcheck', 'textareaTabIndex', 'value']
 })
 @Component({
   selector: 'modus-wc-textarea',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['ariaDescribedby', 'ariaInvalidTextarea', 'ariaLabel', 'customClass', 'dir', 'disabled', 'id', 'maxLength', 'name', 'placeholder', 'readonly', 'required', 'rows', 'spellcheck', 'tabIndex', 'value'],
+  inputs: ['ariaDescribedby', 'ariaLabel', 'customClass', 'disabled', 'maxLength', 'name', 'placeholder', 'readonly', 'required', 'rows', 'textareaAriaInvalid', 'textareaDir', 'textareaId', 'textareaSpellcheck', 'textareaTabIndex', 'value'],
 })
 export class ModusWcTextarea {
   protected el: HTMLElement;
   constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
     c.detach();
     this.el = r.nativeElement;
-    proxyOutputs(this, this.el, ['blur', 'change', 'focus']);
+    proxyOutputs(this, this.el, ['textareaBlur', 'textareaChange', 'textareaFocus']);
   }
 }
 
@@ -161,15 +161,67 @@ export declare interface ModusWcTextarea extends Components.ModusWcTextarea {
   /**
    * Emitted when the textarea loses focus.
    */
-  blur: EventEmitter<CustomEvent<FocusEvent>>;
+  textareaBlur: EventEmitter<CustomEvent<FocusEvent>>;
   /**
    * Emitted when the textarea value changes.
    */
-  change: EventEmitter<CustomEvent<Event>>;
+  textareaChange: EventEmitter<CustomEvent<Event>>;
   /**
    * Emitted when the textarea gains focus.
    */
-  focus: EventEmitter<CustomEvent<FocusEvent>>;
+  textareaFocus: EventEmitter<CustomEvent<FocusEvent>>;
+}
+
+
+@ProxyCmp({
+  inputs: ['initialTheme']
+})
+@Component({
+  selector: 'modus-wc-theme-provider',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: '<ng-content></ng-content>',
+  // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
+  inputs: ['initialTheme'],
+})
+export class ModusWcThemeProvider {
+  protected el: HTMLElement;
+  constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
+    c.detach();
+    this.el = r.nativeElement;
+  }
+}
+
+
+export declare interface ModusWcThemeProvider extends Components.ModusWcThemeProvider {}
+
+
+@ProxyCmp({
+  inputs: ['ariaLabel', 'customClass']
+})
+@Component({
+  selector: 'modus-wc-theme-switcher',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: '<ng-content></ng-content>',
+  // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
+  inputs: ['ariaLabel', 'customClass'],
+})
+export class ModusWcThemeSwitcher {
+  protected el: HTMLElement;
+  constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
+    c.detach();
+    this.el = r.nativeElement;
+    proxyOutputs(this, this.el, ['themeChange']);
+  }
+}
+
+
+import type { IThemeConfig as IModusWcThemeSwitcherIThemeConfig } from '@trimble-cms/modus-wc';
+
+export declare interface ModusWcThemeSwitcher extends Components.ModusWcThemeSwitcher {
+  /**
+   * An event that fires when the theme is changed.
+   */
+  themeChange: EventEmitter<CustomEvent<IModusWcThemeSwitcherIThemeConfig>>;
 }
 
 
@@ -193,27 +245,5 @@ export class ModusWcTypography {
 
 
 export declare interface ModusWcTypography extends Components.ModusWcTypography {}
-
-
-@ProxyCmp({
-  inputs: ['componentName']
-})
-@Component({
-  selector: 'stencil-docs',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: '<ng-content></ng-content>',
-  // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['componentName'],
-})
-export class StencilDocs {
-  protected el: HTMLElement;
-  constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
-    c.detach();
-    this.el = r.nativeElement;
-  }
-}
-
-
-export declare interface StencilDocs extends Components.StencilDocs {}
 
 

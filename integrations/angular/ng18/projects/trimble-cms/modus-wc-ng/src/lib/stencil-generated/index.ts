@@ -8,6 +8,7 @@ export const DIRECTIVES = [
   d.ModusWcDivider,
   d.ModusWcTextInput,
   d.ModusWcTextarea,
-  d.ModusWcTypography,
-  d.StencilDocs
+  d.ModusWcThemeProvider,
+  d.ModusWcThemeSwitcher,
+  d.ModusWcTypography
 ];
