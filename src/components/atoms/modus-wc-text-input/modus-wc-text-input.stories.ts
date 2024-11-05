@@ -47,6 +47,15 @@ const meta: Meta<TextInputArgs> = {
   title: 'Components/Atoms/Text Input',
   component: 'modus-wc-text-input',
   tags: ['autodocs'],
+  args: {
+    'aria-label': 'Enter your name',
+    'input-mode': 'text',
+    name: '',
+    placeholder: 'Type your name here',
+    size: 'md',
+    type: 'text',
+    value: '',
+  },
   argTypes: {
     'auto-capitalize': {
       control: { type: 'select' },
@@ -129,15 +138,6 @@ const Template: Story = {
       }}
     ></modus-wc-text-input>
   `,
-  args: {
-    'aria-label': 'Enter your name',
-    'input-mode': 'text',
-    name: '',
-    placeholder: 'Type your name here',
-    size: 'md',
-    type: 'text',
-    value: '',
-  },
 };
 
 export const Default: Story = { ...Template };

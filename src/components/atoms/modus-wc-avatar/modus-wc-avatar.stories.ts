@@ -13,6 +13,14 @@ interface AvatarArgs {
 const meta: Meta<AvatarArgs> = {
   title: 'Components/Atoms/Avatar',
   component: 'modus-wc-avatar',
+  args: {
+    alt: 'Example avatar',
+    'aria-label': 'Example avatar',
+    'img-src':
+      'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',
+    shape: 'circle',
+    size: 'md',
+  },
   argTypes: {
     shape: {
       control: { type: 'inline-radio' },
@@ -41,14 +49,6 @@ const Template: Story = {
         size="${args.size}"
       ></modus-wc-avatar>
     `;
-  },
-  args: {
-    alt: 'Example avatar',
-    'aria-label': 'Example avatar',
-    'img-src':
-      'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',
-    shape: 'circle',
-    size: 'md',
   },
 };
 

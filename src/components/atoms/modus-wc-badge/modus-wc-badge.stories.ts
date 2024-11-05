@@ -20,6 +20,13 @@ interface BadgeArgs {
 const meta: Meta<BadgeArgs> = {
   title: 'Components/Atoms/Badge',
   component: 'modus-wc-badge',
+  args: {
+    'aria-label': 'Example badge',
+    color: 'primary',
+    content: 'Badge',
+    size: 'md',
+    variant: 'filled',
+  },
   argTypes: {
     color: {
       control: { type: 'select' },
@@ -65,11 +72,4 @@ const Template: Story = {
 
 export const Default: Story = {
   ...Template,
-  args: {
-    'aria-label': 'Example badge',
-    color: 'primary',
-    content: 'Badge',
-    size: 'md',
-    variant: 'filled',
-  },
 };
