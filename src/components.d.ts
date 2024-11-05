@@ -55,6 +55,7 @@ export namespace Components {
         "color": | 'primary'
     | 'secondary'
     | 'tertiary'
+    | 'high-contrast'
     | 'success'
     | 'warning'
     | 'danger';
@@ -69,11 +70,11 @@ export namespace Components {
         /**
           * The size of the badge.
          */
-        "size": 'small' | 'medium' | 'large';
+        "size": 'sm' | 'md' | 'lg';
         /**
           * The type of the badge.
          */
-        "type": 'filled' | 'text' | 'counter';
+        "type": 'counter' | 'filled' | 'text';
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -584,6 +585,7 @@ declare namespace LocalJSX {
         "color"?: | 'primary'
     | 'secondary'
     | 'tertiary'
+    | 'high-contrast'
     | 'success'
     | 'warning'
     | 'danger';
@@ -598,11 +600,11 @@ declare namespace LocalJSX {
         /**
           * The size of the badge.
          */
-        "size"?: 'small' | 'medium' | 'large';
+        "size"?: 'sm' | 'md' | 'lg';
         /**
           * The type of the badge.
          */
-        "type"?: 'filled' | 'text' | 'counter';
+        "type"?: 'counter' | 'filled' | 'text';
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.

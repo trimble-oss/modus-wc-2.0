@@ -6,13 +6,14 @@ interface BadgeArgs {
     | 'primary'
     | 'secondary'
     | 'tertiary'
+    | 'high-contrast'
     | 'success'
     | 'warning'
     | 'danger';
   content: string;
   customClass: string;
-  size: 'small' | 'medium' | 'large';
-  type: 'filled' | 'text' | 'counter';
+  size: 'sm' | 'md' | 'lg';
+  type: 'counter' | 'filled' | 'text';
 }
 
 const meta: Meta<BadgeArgs> = {
@@ -27,6 +28,7 @@ const meta: Meta<BadgeArgs> = {
         'primary',
         'secondary',
         'tertiary',
+        'high-contrast',
         'success',
         'warning',
         'danger',
@@ -36,11 +38,11 @@ const meta: Meta<BadgeArgs> = {
     customClass: { control: 'text' },
     size: {
       control: { type: 'select' },
-      options: ['small', 'medium', 'large'],
+      options: ['sm', 'md', 'lg'],
     },
     type: {
       control: { type: 'select' },
-      options: ['filled', 'text', 'counter'],
+      options: ['counter', 'filled', 'text'],
     },
   },
 };
@@ -71,7 +73,7 @@ export const Default: Story = {
     color: 'primary',
     content: 'Badge',
     customClass: '',
-    size: 'medium',
+    size: 'md',
     type: 'filled',
   },
 };
