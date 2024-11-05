@@ -3,79 +3,67 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-const meta: Meta = {
+interface TextAreaArgs {
+  'aria-describedby': string;
+  'aria-label': string;
+  'custom-class': string;
+  disabled: boolean;
+  'max-length': number;
+  name: string;
+  placeholder: string;
+  readonly: boolean;
+  required: boolean;
+  rows: number;
+  'textarea-aria-invalid': 'grammar' | 'spelling' | 'true' | 'false';
+  'textarea-dir': 'ltr' | 'rtl' | 'auto';
+  'textarea-id': string;
+  'textarea-spellcheck': boolean;
+  'textarea-tab-index': number;
+  value: string;
+}
+
+const meta: Meta<TextAreaArgs> = {
   title: 'Components/Atoms/Textarea',
   component: 'modus-wc-textarea',
   argTypes: {
-    // ariaDescribedby: { control: 'text', table: { category: 'yeet' } },
-    //   customClass: { control: 'text', table: { sort: 'alpha' } },
-      // disabled: { control: 'boolean', table: { sort: 'alpha' } },
-    //   maxLength: { control: 'number', table: { sort: 'alpha' } },
-    //   name: { control: 'text', table: { sort: 'alpha' } },
-    //   placeholder: { control: 'text', table: { sort: 'alpha' } },
-    //   readonly: { control: 'boolean', table: { sort: 'alpha' } },
-    //   required: { control: 'boolean', table: { sort: 'alpha' } },
-    //   rows: { control: 'number', table: { sort: 'alpha' } },
-      // textareaAriaInvalid: {
-      //   control: { type: 'select' },
-      //   options: ['grammar', 'spelling', 'true', 'false'],
-      //   table: { sort: 'alpha' },
-      // },
-    maxLength: { control: 'number' },
-    textareaDir: {
-      type: {
-        name: 'enum',
-        value: ['ltr', 'rtl', 'auto'],
+    'textarea-aria-invalid': {
+      control: {
+        type: 'inline-radio',
       },
+      options: ['grammar', 'spelling', 'true', 'false'],
     },
-    textareaAriaInvalid: {
-      type: {
-        name: 'enum',
-        value: ['grammar', 'spelling', 'true', 'false'],
+    'textarea-dir': {
+      control: {
+        type: 'inline-radio',
       },
+      options: ['ltr', 'rtl', 'auto'],
     },
-    handleBlur: { table: { disable: true } },
-    handleChange: { table: { disable: true } },
-    handleFocus: { table: { disable: true } },
-    //   textareaId: { control: 'text', table: { sort: 'alpha' } },
-    //   textareaSpellcheck: { control: 'boolean', table: { sort: 'alpha' } },
-    //   textareaTabIndex: { control: 'number', table: { sort: 'alpha' } },
-    //   textareaBlur: { action: 'textarea-blur' },
-    //   value: { control: 'text', table: { sort: 'alpha' } },
-    // },
-    // parameters: {
-    //   actions: {
-    //     handles: ['textarea-blur', 'textarea-change'],
-    //   },
-    //   controls: {
-    //     sort: 'alpha',
-    //   },
   },
 };
 
 export default meta;
 
-type Story = StoryObj;
+type Story = StoryObj<TextAreaArgs>;
 
 const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-textarea
-        aria-describedby=${ifDefined(args.ariaDescribedby)}
-        aria-label=${ifDefined(args.ariaLabel)}
-        custom-class=${ifDefined(args.customClass)}
+        aria-describedby=${ifDefined(args['aria-describedby'])}
+        aria-label=${ifDefined(args['aria-label'])}
+        custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
-        max-length=${ifDefined(args.maxLength)}
+        max-length=${ifDefined(args['max-length'])}
         name=${ifDefined(args.name)}
         placeholder=${ifDefined(args.placeholder)}
         ?readonly=${args.readonly}
         ?required=${args.required}
-        rows=${ifDefined(args.rows)}
-        textarea-aria-invalid=${ifDefined(args.textareaAriaInvalid)}
-        textarea-dir=${ifDefined(args.textareaDir)}
-        textarea-id=${ifDefined(args.textareaId)}
-        textarea-spellcheck=${ifDefined(args.textareaSpellcheck)}
-        textarea-tab-index=${ifDefined(args.textareaTabIndex)}
+        ?rows=${args.rows}
+        ?textarea-aria-invalid=${args['textarea-aria-invalid']}
+        textarea-dir=${args['textarea-dir']}
+        ?textarea-id=${args['textarea-id']}
+        ?textarea-spellcheck=${args['textarea-spellcheck']}
+        ?textarea-tab-index=${args['textarea-tab-index']}
         .value=${args.value}
         @textarea-blur=${(e: Event) => {
           const target = e.target as HTMLTextAreaElement;
@@ -85,13 +73,16 @@ const Template: Story = {
           const target = e.target as HTMLTextAreaElement;
           args.value = target.value;
         }}
+        @textarea-focus=${(e: Event) => {
+          const target = e.target as HTMLTextAreaElement;
+          args.value = target.value;
+        }}
       ></modus-wc-textarea>
     `;
   },
   args: {
-    ariaLabel: 'Enter your comments',
+    'aria-label': 'Enter your comments',
     placeholder: 'Type your comments here',
-    // maxLength: 100,
   },
 };
 

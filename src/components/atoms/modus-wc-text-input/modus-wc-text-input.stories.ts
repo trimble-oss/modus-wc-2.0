@@ -1,30 +1,45 @@
 import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface TextInputArgs {
-  ariaDescribedby: string;
-  ariaInvalid: boolean;
-  ariaLabel: string;
-  autoCapitalize: string;
-  autoComplete: string;
+  'aria-describedby': string;
+  'aria-label': string;
+  'auto-capitalize':
+    | 'off'
+    | 'none'
+    | 'on'
+    | 'sentences'
+    | 'words'
+    | 'characters';
+  'auto-complete': 'on' | 'off';
   autoFocus: boolean;
   bordered: boolean;
-  customClass: string;
-  dir: string;
+  'custom-class': string;
   disabled: boolean;
-  id: string;
-  inputMode: string;
-  maxLength: number;
-  minLength: number;
+  'input-aria-invalid': 'grammar' | 'spelling' | 'true' | 'false';
+  'input-dir': '' | 'ltr' | 'rtl' | 'auto';
+  'input-id': string;
+  'input-mode':
+    | 'decimal'
+    | 'email'
+    | 'none'
+    | 'numeric'
+    | 'search'
+    | 'tel'
+    | 'text'
+    | 'url';
+  'input-spellcheck': boolean;
+  'input-tab-index': number;
+  'max-length': number;
+  'min-length': number;
   name: string;
   pattern: string;
   placeholder: string;
   readOnly: boolean;
   required: boolean;
-  size: string;
-  spellcheck: boolean;
-  tabIndex: number;
-  type: string;
+  size: 'sm' | 'md' | 'lg';
+  type: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
   value: string;
 }
 
@@ -33,27 +48,19 @@ const meta: Meta<TextInputArgs> = {
   component: 'modus-wc-text-input',
   tags: ['autodocs'],
   argTypes: {
-    ariaDescribedby: { control: 'text', table: { sort: 'alpha' } },
-    ariaInvalid: { control: 'boolean', table: { sort: 'alpha' } },
-    ariaLabel: { control: 'text', table: { sort: 'alpha' } },
-    autoCapitalize: {
+    'auto-capitalize': {
       control: { type: 'select' },
       options: ['off', 'none', 'on', 'sentences', 'words', 'characters'],
-      table: { sort: 'alpha' },
     },
-    autoComplete: {
+    'auto-complete': {
       control: { type: 'select' },
       options: ['on', 'off'],
-      table: { sort: 'alpha' },
     },
-    dir: {
+    'input-dir': {
       control: { type: 'select' },
       options: ['ltr', 'rtl', 'auto'],
-      table: { sort: 'alpha' },
     },
-    disabled: { control: 'boolean', table: { sort: 'alpha' } },
-    id: { control: 'text', table: { sort: 'alpha' } },
-    inputMode: {
+    'input-mode': {
       control: { type: 'select' },
       options: [
         'decimal',
@@ -65,31 +72,14 @@ const meta: Meta<TextInputArgs> = {
         'text',
         'url',
       ],
-      table: { sort: 'alpha' },
     },
-    maxLength: { control: 'number', table: { sort: 'alpha' } },
-    minLength: { control: 'number', table: { sort: 'alpha' } },
-    name: { control: 'text', table: { sort: 'alpha' } },
-    pattern: { control: 'text', table: { sort: 'alpha' } },
-    placeholder: { control: 'text', table: { sort: 'alpha' } },
-    readOnly: { control: 'boolean', table: { sort: 'alpha' } },
-    required: { control: 'boolean', table: { sort: 'alpha' } },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
-    spellcheck: { control: 'boolean', table: { sort: 'alpha' } },
-    tabIndex: { control: 'number', table: { sort: 'alpha' } },
     type: {
       control: { type: 'select' },
       options: ['email', 'password', 'search', 'tel', 'text', 'url'],
-      table: { sort: 'alpha' },
-    },
-    value: { control: 'text', table: { sort: 'alpha' } },
-  },
-  parameters: {
-    controls: {
-      sort: 'alpha',
     },
   },
 };
@@ -101,53 +91,51 @@ type Story = StoryObj<TextInputArgs>;
 const Template: Story = {
   render: (args) => html`
     <modus-wc-text-input
-      aria-describedby=${args.ariaDescribedby}
-      aria-invalid=${args.ariaInvalid}
-      aria-label=${args.ariaLabel}
-      auto-capitalize=${args.autoCapitalize}
-      auto-complete=${args.autoComplete}
+      aria-describedby=${ifDefined(args['aria-describedby'])}
+      aria-label=${args['aria-label']}
+      ?auto-capitalize=${args['auto-capitalize']}
+      ?auto-complete=${args['auto-complete']}
       ?auto-focus=${args.autoFocus}
       ?bordered=${args.bordered}
-      custom-class=${args.customClass}
-      dir=${args.dir}
+      ?custom-class=${args['custom-class']}
+      ?input-dir=${args['input-dir']}
       ?disabled=${args.disabled}
-      id=${args.id}
-      input-mode=${args.inputMode}
-      max-length=${args.maxLength}
-      min-length=${args.minLength}
+      ?input-aria-invalid=${args['input-aria-invalid']}
+      ?input-id=${args['input-id']}
+      input-mode=${args['input-mode']}
+      ?max-length=${args['max-length']}
+      ?min-length=${args['min-length']}
       name=${args.name}
-      pattern=${args.pattern}
+      ?pattern=${args.pattern}
       placeholder=${args.placeholder}
       ?read-only=${args.readOnly}
       ?required=${args.required}
       size=${args.size}
-      ?spellcheck=${args.spellcheck}
-      tab-index=${args.tabIndex}
+      ?input-spellcheck=${args['input-spellcheck']}
+      ?tab-index=${args['input-tab-index']}
       type=${args.type}
       .value=${args.value}
-      @input=${(e: Event) => {
+      @inputBlur=${(e: FocusEvent) => {
         const target = e.target as HTMLInputElement;
         args.value = target.value;
       }}
-      @change=${(e: Event) => {
+      @inputChange=${(e: Event) => {
         const target = e.target as HTMLInputElement;
         args.value = target.value;
       }}
-      @blur=${(e: FocusEvent) => console.log('Blur event:', e)}
-      @focus=${(e: FocusEvent) => console.log('Focus event:', e)}
+      @inputFocus=${(e: FocusEvent) => {
+        const target = e.target as HTMLInputElement;
+        args.value = target.value;
+      }}
     ></modus-wc-text-input>
   `,
   args: {
-    ariaLabel: 'Enter your name',
-    ariaInvalid: false,
-    bordered: true,
-    customClass: '',
-    disabled: false,
+    'aria-label': 'Enter your name',
+    'input-mode': 'text',
     name: '',
     placeholder: 'Type your name here',
-    readOnly: false,
-    required: false,
     size: 'md',
+    type: 'text',
     value: '',
   },
 };
