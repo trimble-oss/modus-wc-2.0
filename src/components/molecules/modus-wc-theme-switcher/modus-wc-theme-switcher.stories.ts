@@ -2,18 +2,18 @@ import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { fn } from '@storybook/test';
 import { IThemeConfig } from '../../../providers/theme/theme.types';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface ThemeSwitcherArgs {
-  ariaLabel: string;
-  customClass?: string;
-  initialTheme?: Partial<IThemeConfig>;
+  'aria-label': string;
+  'custom-class'?: string;
+  'initial-theme'?: Partial<IThemeConfig>;
   themeChange?: (event: CustomEvent) => void;
 }
 
 const meta: Meta<ThemeSwitcherArgs> = {
   title: 'Components/Molecules/ThemeSwitcher',
   component: 'modus-wc-theme-switcher',
-  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {
@@ -23,21 +23,21 @@ const meta: Meta<ThemeSwitcherArgs> = {
     },
   },
   args: {
-    ariaLabel: 'Toggle theme',
-    customClass: undefined,
-    initialTheme: undefined,
+    'aria-label': 'Toggle theme',
+    'custom-class': undefined,
+    'initial-theme': undefined,
     themeChange: fn(),
   },
   argTypes: {
-    ariaLabel: {
+    'aria-label': {
       control: 'text',
       description: 'The aria-label attribute for accessibility.',
     },
-    customClass: {
+    'custom-class': {
       control: 'text',
       description: 'Custom CSS class to apply to the theme switcher element.',
     },
-    initialTheme: {
+    'initial-theme': {
       control: 'object',
       description: 'Initial theme configuration (set on the theme provider).',
       table: {
@@ -60,10 +60,10 @@ type Story = StoryObj<ThemeSwitcherArgs>;
 
 const Template: Story = {
   render: (args) => html`
-    <modus-wc-theme-provider .initialTheme=${args.initialTheme}>
+    <modus-wc-theme-provider .initialTheme=${args['initial-theme']}>
       <modus-wc-theme-switcher
-        aria-label=${args.ariaLabel}
-        custom-class=${args.customClass}
+        aria-label=${args['aria-label']}
+        custom-class=${ifDefined(args['custom-class'])}
         @themeChange=${args.themeChange}
       ></modus-wc-theme-switcher>
     </modus-wc-theme-provider>

@@ -3,9 +3,9 @@ import { Meta, StoryObj } from '@storybook/web-components';
 
 interface AvatarArgs {
   alt: string;
-  ariaLabel: string;
-  customClass: string;
-  imgSrc: string;
+  'aria-label': string;
+  'custom-class': string;
+  'img-src': string;
   shape: string;
   size: string;
 }
@@ -13,18 +13,13 @@ interface AvatarArgs {
 const meta: Meta<AvatarArgs> = {
   title: 'Components/Atoms/Avatar',
   component: 'modus-wc-avatar',
-  tags: ['autodocs'],
   argTypes: {
-    alt: { control: 'text' },
-    ariaLabel: { control: 'text' },
-    customClass: { control: 'text' },
-    imgSrc: { control: 'text' },
     shape: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['circle', 'square'],
     },
     size: {
-      control: { type: 'select' },
+      control: { type: 'radio' },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
@@ -35,21 +30,22 @@ export default meta;
 type Story = StoryObj<AvatarArgs>;
 
 const Template: Story = {
-  render: (args) => html`
-    <modus-wc-avatar
-      alt="${args.alt}"
-      aria-label="${args.ariaLabel}"
-      custom-class="${args.customClass}"
-      img-src="${args.imgSrc}"
-      shape="${args.shape}"
-      size="${args.size}"
-    ></modus-wc-avatar>
-  `,
+  render: (args) => {
+    return html`
+      <modus-wc-avatar
+        alt="${args.alt}"
+        aria-label="${args['aria-label']}"
+        ?custom-class="${args['custom-class']}"
+        img-src="${args['img-src']}"
+        shape="${args.shape}"
+        size="${args.size}"
+      ></modus-wc-avatar>
+    `;
+  },
   args: {
-    alt: 'User avatar',
-    ariaLabel: 'User avatar',
-    customClass: '',
-    imgSrc:
+    alt: 'Example avatar',
+    'aria-label': 'Example avatar',
+    'img-src':
       'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',
     shape: 'circle',
     size: 'md',

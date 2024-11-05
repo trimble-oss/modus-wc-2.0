@@ -1,0 +1,988 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-avatar/modus-wc-avatar.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable avatar component used to create avatars with different images.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcAvatar",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "alt",
+              "fieldName": "alt",
+              "type": {
+                "text": "string"
+              },
+              "description": "The image alt attribute for accessibility."
+            },
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "img-src",
+              "fieldName": "imgSrc",
+              "type": {
+                "text": "string"
+              },
+              "description": "The location of the image."
+            },
+            {
+              "name": "shape",
+              "fieldName": "shape",
+              "type": {
+                "text": "'circle' | 'square'"
+              },
+              "description": "The shape of the avatar."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "'xs' | 'sm' | 'md' | 'lg' | 'xl'"
+              },
+              "description": "The size of the avatar."
+            }
+          ],
+          "tagName": "modus-wc-avatar",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcAvatar",
+          "declaration": {
+            "name": "ModusWcAvatar",
+            "module": "src/components/atoms/modus-wc-avatar/modus-wc-avatar.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-avatar",
+          "declaration": {
+            "name": "ModusWcAvatar",
+            "module": "src/components/atoms/modus-wc-avatar/modus-wc-avatar.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-badge/modus-wc-badge.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcBadge",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "color",
+              "fieldName": "color",
+              "type": {
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
+              },
+              "description": "The color variant of the badge."
+            },
+            {
+              "name": "content",
+              "fieldName": "content",
+              "type": {
+                "text": "string"
+              },
+              "description": "The content to display inside the badge. For 'counter' type, this should be a number."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the span element."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "'small' | 'medium' | 'large'"
+              },
+              "description": "The size of the badge."
+            },
+            {
+              "name": "type",
+              "fieldName": "type",
+              "type": {
+                "text": "'filled' | 'text' | 'counter'"
+              },
+              "description": "The type of the badge."
+            }
+          ],
+          "tagName": "modus-wc-badge",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcBadge",
+          "declaration": {
+            "name": "ModusWcBadge",
+            "module": "src/components/atoms/modus-wc-badge/modus-wc-badge.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-badge",
+          "declaration": {
+            "name": "ModusWcBadge",
+            "module": "src/components/atoms/modus-wc-badge/modus-wc-badge.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-button/modus-wc-button.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcButton",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "color",
+              "fieldName": "color",
+              "type": {
+                "text": "'primary' | 'secondary' | 'tertiary'"
+              },
+              "description": "The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the button element."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "If true, the button will be disabled."
+            },
+            {
+              "name": "full-width",
+              "fieldName": "fullWidth",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "If true, the button will take the full width of its container."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text label displayed on the button."
+            },
+            {
+              "name": "pressed",
+              "fieldName": "pressed",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "If true, the button will be in a pressed state (for toggle buttons)."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "'small' | 'medium' | 'large'"
+              },
+              "description": "The size of the button. Can be 'small', 'medium', or 'large'."
+            },
+            {
+              "name": "type",
+              "fieldName": "type",
+              "type": {
+                "text": "'button' | 'submit' | 'reset'"
+              },
+              "description": "The type of the button. Can be 'button', 'submit', or 'reset'."
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "type": {
+                "text": "'filled' | 'outlined' | 'text'"
+              },
+              "description": "The variant of the button. Can be 'filled', 'outlined', or 'text'."
+            }
+          ],
+          "tagName": "modus-wc-button",
+          "events": [
+            {
+              "name": "buttonClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the button is clicked or activated via keyboard."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcButton",
+          "declaration": {
+            "name": "ModusWcButton",
+            "module": "src/components/atoms/modus-wc-button/modus-wc-button.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-button",
+          "declaration": {
+            "name": "ModusWcButton",
+            "module": "src/components/atoms/modus-wc-button/modus-wc-button.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-divider/modus-wc-divider.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable divider component used to separate content horizontally or vertically.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcDivider",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used for accessibility."
+            },
+            {
+              "name": "content",
+              "fieldName": "content",
+              "type": {
+                "text": "string"
+              },
+              "description": "The content to display in the divider."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the outer div."
+            },
+            {
+              "name": "daisy-class",
+              "fieldName": "daisyClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "DaisyUI CSS class to apply to the inner div."
+            }
+          ],
+          "tagName": "modus-wc-divider",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcDivider",
+          "declaration": {
+            "name": "ModusWcDivider",
+            "module": "src/components/atoms/modus-wc-divider/modus-wc-divider.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-divider",
+          "declaration": {
+            "name": "ModusWcDivider",
+            "module": "src/components/atoms/modus-wc-divider/modus-wc-divider.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable input component used to create text inputs with types.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcTextInput",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "fieldName": "ariaDescribedby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the element that describes the input."
+            },
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "auto-capitalize",
+              "fieldName": "autoCapitalize",
+              "type": {
+                "text": "| 'off'\r\n    | 'none'\r\n    | 'on'\r\n    | 'sentences'\r\n    | 'words'\r\n    | 'characters'"
+              },
+              "description": "Controls automatic capitalization in inputted text."
+            },
+            {
+              "name": "auto-complete",
+              "fieldName": "autoComplete",
+              "type": {
+                "text": "'on' | 'off'"
+              },
+              "description": "Hint for form autofill feature."
+            },
+            {
+              "name": "auto-focus",
+              "fieldName": "autoFocus",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that an element should be focused on page load."
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the input."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the form control is disabled."
+            },
+            {
+              "name": "input-aria-invalid",
+              "fieldName": "inputAriaInvalid",
+              "type": {
+                "text": "'grammar' | 'spelling' | 'true' | 'false'"
+              },
+              "description": "Indicates whether the input has an invalid input."
+            },
+            {
+              "name": "input-dir",
+              "fieldName": "inputDir",
+              "type": {
+                "text": "'' | 'ltr' | 'rtl' | 'auto'"
+              },
+              "description": "Specifies the text direction of the input content."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-mode",
+              "fieldName": "inputMode",
+              "type": {
+                "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
+              },
+              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
+            },
+            {
+              "name": "input-spellcheck",
+              "fieldName": "inputSpellcheck",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+            },
+            {
+              "name": "max-length",
+              "fieldName": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum length (number of characters) of value."
+            },
+            {
+              "name": "min-length",
+              "fieldName": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum length (number of characters) of value."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pai."
+            },
+            {
+              "name": "pattern",
+              "fieldName": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "description": "Pattern the value must match to be valid"
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text that appears in the form control when it has no value set."
+            },
+            {
+              "name": "read-only",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the value is editable."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required or must be checked for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "type",
+              "fieldName": "type",
+              "type": {
+                "text": "'email' | 'password' | 'search' | 'tel' | 'text' | 'url'"
+              },
+              "description": "Type of form control."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the control."
+            }
+          ],
+          "tagName": "modus-wc-text-input",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Event emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTextInput",
+          "declaration": {
+            "name": "ModusWcTextInput",
+            "module": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-text-input",
+          "declaration": {
+            "name": "ModusWcTextInput",
+            "module": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-textarea/modus-wc-textarea.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable textarea component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcTextarea",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "fieldName": "ariaDescribedby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the element that describes the textarea."
+            },
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the textarea (supports DaisyUI)."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The disabled state of the textarea."
+            },
+            {
+              "name": "max-length",
+              "fieldName": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "The maximum number of characters allowed in the textarea."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the textarea."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "The placeholder text for the textarea."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The readonly state of the textarea."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The required state of the textarea."
+            },
+            {
+              "name": "rows",
+              "fieldName": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "The number of visible text lines for the textarea."
+            },
+            {
+              "name": "textarea-aria-invalid",
+              "fieldName": "textareaAriaInvalid",
+              "type": {
+                "text": "'grammar' | 'spelling' | 'true' | 'false'"
+              },
+              "description": "Indicates whether the textarea has an invalid input."
+            },
+            {
+              "name": "textarea-dir",
+              "fieldName": "textareaDir",
+              "type": {
+                "text": "'' | 'ltr' | 'rtl' | 'auto'"
+              },
+              "description": "Specifies the text direction of the textarea content."
+            },
+            {
+              "name": "textarea-id",
+              "fieldName": "textareaId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the textarea element."
+            },
+            {
+              "name": "textarea-spellcheck",
+              "fieldName": "textareaSpellcheck",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
+            },
+            {
+              "name": "textarea-tab-index",
+              "fieldName": "textareaTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "The tabindex of the textarea."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the textarea."
+            }
+          ],
+          "tagName": "modus-wc-textarea",
+          "events": [
+            {
+              "kind": "field",
+              "name": "textareaBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the textarea loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "textareaChange",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Emitted when the textarea value changes."
+            },
+            {
+              "kind": "field",
+              "name": "textareaFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the textarea gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTextarea",
+          "declaration": {
+            "name": "ModusWcTextarea",
+            "module": "src/components/atoms/modus-wc-textarea/modus-wc-textarea.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-textarea",
+          "declaration": {
+            "name": "ModusWcTextarea",
+            "module": "src/components/atoms/modus-wc-textarea/modus-wc-textarea.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-typography/modus-wc-typography.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable typography component used to render text with different sizes, variants, weights, and text casing.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWCTypography",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label for the typography component."
+            },
+            {
+              "name": "body-size",
+              "fieldName": "bodySize",
+              "type": {
+                "text": "TypographyBodySize"
+              },
+              "description": "The size option when variant \"body\" is selected."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the typography element."
+            },
+            {
+              "name": "text-case",
+              "fieldName": "textCase",
+              "type": {
+                "text": "'sentence' | 'title' | 'uppercase'"
+              },
+              "description": "The text case."
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "type": {
+                "text": "TypographyVariant"
+              },
+              "description": "The variant of the typography component."
+            },
+            {
+              "name": "weight",
+              "fieldName": "weight",
+              "type": {
+                "text": "'regular' | 'semibold' | 'bold'"
+              },
+              "description": "The weight of the text."
+            }
+          ],
+          "tagName": "modus-wc-typography",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWCTypography",
+          "declaration": {
+            "name": "ModusWCTypography",
+            "module": "src/components/atoms/modus-wc-typography/modus-wc-typography.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-typography",
+          "declaration": {
+            "name": "ModusWCTypography",
+            "module": "src/components/atoms/modus-wc-typography/modus-wc-typography.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-theme-switcher/modus-wc-theme-switcher.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A theme switcher component used to toggle the application theme and/or mode.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcThemeSwitcher",
+          "members": [
+            {
+              "kind": "field",
+              "name": "isDarkMode"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the theme switcher element."
+            }
+          ],
+          "tagName": "modus-wc-theme-switcher",
+          "events": [
+            {
+              "name": "themeChange",
+              "type": {
+                "text": "EventEmitter<IThemeConfig>"
+              },
+              "description": "An event that fires when the theme is changed."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcThemeSwitcher",
+          "declaration": {
+            "name": "ModusWcThemeSwitcher",
+            "module": "src/components/molecules/modus-wc-theme-switcher/modus-wc-theme-switcher.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-theme-switcher",
+          "declaration": {
+            "name": "ModusWcThemeSwitcher",
+            "module": "src/components/molecules/modus-wc-theme-switcher/modus-wc-theme-switcher.tsx"
+          }
+        }
+      ]
+    }
+  ]
+}

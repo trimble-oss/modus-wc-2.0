@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/web-components';
+import { html } from 'lit';
 
 interface BadgeArgs {
-  ariaLabel: string;
+  'aria-label': string;
   color:
     | 'primary'
     | 'secondary'
@@ -11,7 +12,7 @@ interface BadgeArgs {
     | 'warning'
     | 'danger';
   content: string;
-  customClass: string;
+  'custom-class': string;
   size: 'sm' | 'md' | 'lg';
   type: 'counter' | 'filled' | 'text';
 }
@@ -19,9 +20,7 @@ interface BadgeArgs {
 const meta: Meta<BadgeArgs> = {
   title: 'Components/Atoms/Badge',
   component: 'modus-wc-badge',
-  tags: ['autodocs'],
   argTypes: {
-    ariaLabel: { control: 'text' },
     color: {
       control: { type: 'select' },
       options: [
@@ -34,14 +33,12 @@ const meta: Meta<BadgeArgs> = {
         'danger',
       ],
     },
-    content: { control: 'text' },
-    customClass: { control: 'text' },
     size: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['sm', 'md', 'lg'],
     },
     type: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['counter', 'filled', 'text'],
     },
   },
@@ -53,12 +50,12 @@ type Story = StoryObj<BadgeArgs>;
 
 const Template: Story = {
   render: (args) => {
-    return `
-      <modus-wc-badge 
-        aria-label="${args.ariaLabel}"
+    return html`
+      <modus-wc-badge
+        aria-label="${args['aria-label']}"
         color="${args.color}"
         content="${args.content}"
-        custom-class="${args.customClass}"
+        ?custom-class="${args['custom-class']}"
         size="${args.size}"
         type="${args.type}"
       ></modus-wc-badge>
@@ -69,10 +66,9 @@ const Template: Story = {
 export const Default: Story = {
   ...Template,
   args: {
-    ariaLabel: 'Example badge',
+    'aria-label': 'Example badge',
     color: 'primary',
     content: 'Badge',
-    customClass: '',
     size: 'md',
     type: 'filled',
   },
