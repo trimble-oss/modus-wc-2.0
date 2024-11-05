@@ -7,13 +7,14 @@ interface BadgeArgs {
     | 'primary'
     | 'secondary'
     | 'tertiary'
+    | 'high-contrast'
     | 'success'
     | 'warning'
     | 'danger';
   content: string;
   'custom-class': string;
-  size: 'small' | 'medium' | 'large';
-  type: 'filled' | 'text' | 'counter';
+  size: 'sm' | 'md' | 'lg';
+  type: 'counter' | 'filled' | 'text';
 }
 
 const meta: Meta<BadgeArgs> = {
@@ -26,6 +27,7 @@ const meta: Meta<BadgeArgs> = {
         'primary',
         'secondary',
         'tertiary',
+        'high-contrast',
         'success',
         'warning',
         'danger',
@@ -33,11 +35,11 @@ const meta: Meta<BadgeArgs> = {
     },
     size: {
       control: { type: 'inline-radio' },
-      options: ['small', 'medium', 'large'],
+      options: ['sm', 'md', 'lg'],
     },
     type: {
       control: { type: 'inline-radio' },
-      options: ['filled', 'text', 'counter'],
+      options: ['counter', 'filled', 'text'],
     },
   },
 };
@@ -67,7 +69,7 @@ export const Default: Story = {
     'aria-label': 'Example badge',
     color: 'primary',
     content: 'Badge',
-    size: 'medium',
+    size: 'md',
     type: 'filled',
   },
 };
