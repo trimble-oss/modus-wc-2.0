@@ -1,6 +1,8 @@
 import { Config } from '@stencil/core';
+import { angularOutputTarget } from '@stencil/angular-output-target';
 import { reactOutputTarget } from '@stencil/react-output-target';
 import { sass } from '@stencil/sass';
+import angularValueAccessorBindings from './angular-value-acessor-bindings';
 import tailwind, {
   setPluginConfigurationDefaults,
   tailwindGlobal,
@@ -38,6 +40,15 @@ export const config: Config = {
       type: 'www',
       serviceWorker: null,
     },
+    angularOutputTarget({
+      componentCorePackage: '@trimble-cms/modus-wc',
+      outputType: 'component',
+      directivesProxyFile:
+        './integrations/angular/ng18/projects/trimble-cms/modus-wc-ng/src/lib/stencil-generated/components.ts',
+      directivesArrayFile:
+        './integrations/angular/ng18/projects/trimble-cms/modus-wc-ng/src/lib/stencil-generated/index.ts',
+      valueAccessorConfigs: angularValueAccessorBindings,
+    }),
     reactOutputTarget({
       outDir: './integrations/react/stencil-generated',
       excludeComponents: [],

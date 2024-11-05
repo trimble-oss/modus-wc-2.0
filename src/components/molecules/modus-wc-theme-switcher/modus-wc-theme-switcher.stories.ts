@@ -21,7 +21,6 @@ const meta: Meta<ThemeSwitcherArgs> = {
           'Theme switcher component that allows consumers to set the initial theme (Modus Classic, Prism, etc) and end-users to toggle modes (Light, Dark).',
       },
     },
-    layout: 'centered',
   },
   args: {
     'aria-label': 'Toggle theme',

@@ -46,6 +46,7 @@
     "@babel/eslint-parser": "^7.25.7",
     "@custom-elements-manifest/analyzer": "^0.10.3",
     "@eslint/js": "^9.11.1",
+    "@stencil/angular-output-target": "^0.9.1",
     "@stencil/core": "^4.22.0",
     "@stencil/react-output-target": "^0.7.1",
     "@stencil/sass": "^3.0.12",
