@@ -1,16 +1,6 @@
 // This script will fix the generated custom-element.json file
 // to provide more useful information for Storybook to generate
 // auto-docs from.
-// For example, Events will properly get moved to the events array.
-// See the following pseudocode.
-/*
-modules[x].declarations[y].events += 
-    modules[x].declarations[y].members[z]
-
-    where members[z].type.text.includes('Event')
-*/
-
-// CommonJS
 
 const fs = require('fs');
 const path = require('path');
@@ -50,13 +40,14 @@ data.modules.forEach((module) => {
       );
       if (member) {
         attribute.description = member.description;
+        // Remove properties
         declaration.members = declaration.members?.filter((m) => m !== member);
       }
     });
 
-    declaration.members?.sort((a, b) => a.name.localeCompare(b.name));
     declaration.attributes?.sort((a, b) => a.name.localeCompare(b.name));
     declaration.events?.sort((a, b) => a.name.localeCompare(b.name));
+    declaration.members?.sort((a, b) => a.name.localeCompare(b.name));
   });
   module.declarations.sort((a, b) => a.name.localeCompare(b.name));
 });
