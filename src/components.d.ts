@@ -72,9 +72,9 @@ export namespace Components {
          */
         "size": 'sm' | 'md' | 'lg';
         /**
-          * The type of the badge.
+          * The variant of the badge.
          */
-        "type": 'counter' | 'filled' | 'text';
+        "variant": 'counter' | 'filled' | 'text';
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -86,9 +86,9 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
-          * The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'.
+          * The color variant of the button.
          */
-        "color": 'primary' | 'secondary' | 'tertiary';
+        "color": 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
         /**
           * Custom CSS class to apply to the button element.
          */
@@ -96,11 +96,11 @@ export namespace Components {
         /**
           * If true, the button will be disabled.
          */
-        "disabled": boolean;
+        "disabled"?: boolean;
         /**
           * If true, the button will take the full width of its container.
          */
-        "fullWidth": boolean;
+        "fullWidth"?: boolean;
         /**
           * The text label displayed on the button.
          */
@@ -110,15 +110,15 @@ export namespace Components {
          */
         "pressed": boolean;
         /**
-          * The size of the button. Can be 'small', 'medium', or 'large'.
+          * The size of the button.
          */
-        "size": 'small' | 'medium' | 'large';
+        "size": 'sm' | 'md' | 'lg';
         /**
-          * The type of the button. Can be 'button', 'submit', or 'reset'.
+          * The type of the button.
          */
         "type": 'button' | 'submit' | 'reset';
         /**
-          * The variant of the button. Can be 'filled', 'outlined', or 'text'.
+          * The variant of the button.
          */
         "variant": 'filled' | 'outlined' | 'text';
     }
@@ -602,9 +602,9 @@ declare namespace LocalJSX {
          */
         "size"?: 'sm' | 'md' | 'lg';
         /**
-          * The type of the badge.
+          * The variant of the badge.
          */
-        "type"?: 'counter' | 'filled' | 'text';
+        "variant"?: 'counter' | 'filled' | 'text';
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -616,9 +616,9 @@ declare namespace LocalJSX {
          */
         "ariaLabel": string;
         /**
-          * The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'.
+          * The color variant of the button.
          */
-        "color"?: 'primary' | 'secondary' | 'tertiary';
+        "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
         /**
           * Custom CSS class to apply to the button element.
          */
@@ -644,15 +644,15 @@ declare namespace LocalJSX {
          */
         "pressed"?: boolean;
         /**
-          * The size of the button. Can be 'small', 'medium', or 'large'.
+          * The size of the button.
          */
-        "size"?: 'small' | 'medium' | 'large';
+        "size"?: 'sm' | 'md' | 'lg';
         /**
-          * The type of the button. Can be 'button', 'submit', or 'reset'.
+          * The type of the button.
          */
         "type"?: 'button' | 'submit' | 'reset';
         /**
-          * The variant of the button. Can be 'filled', 'outlined', or 'text'.
+          * The variant of the button.
          */
         "variant"?: 'filled' | 'outlined' | 'text';
     }

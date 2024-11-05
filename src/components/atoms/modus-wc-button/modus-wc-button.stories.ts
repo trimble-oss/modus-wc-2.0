@@ -3,13 +3,13 @@ import { html } from 'lit';
 
 interface ButtonArgs {
   'aria-label': string;
-  color: 'primary' | 'secondary' | 'tertiary';
+  color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   'custom-class': string;
   disabled: boolean;
   'full-width': boolean;
   label: string;
   pressed: boolean;
-  size: 'small' | 'medium' | 'large';
+  size: 'sm' | 'md' | 'lg';
   type: 'button' | 'submit' | 'reset';
   variant: 'filled' | 'outlined' | 'text';
 }
@@ -20,7 +20,7 @@ const meta: Meta<ButtonArgs> = {
   argTypes: {
     size: {
       control: { type: 'inline-radio' },
-      options: ['small', 'medium', 'large'],
+      options: ['sm', 'md', 'lg'],
     },
     type: {
       control: { type: 'inline-radio' },
@@ -32,7 +32,7 @@ const meta: Meta<ButtonArgs> = {
     },
     color: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'tertiary'],
+      options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],
     },
   },
 };
@@ -46,8 +46,8 @@ const Template: Story = {
     return html`
       <modus-wc-button
         aria-label="${args['aria-label']}"
-        ?color="${args.color}"
-        ?custom-class="${args['custom-class']}"
+        color="${args.color}"
+        custom-class="${args['custom-class']}"
         ?disabled="${args.disabled}"
         ?full-width="${args['full-width']}"
         label="${args.label}"
@@ -64,8 +64,9 @@ export const Default: Story = {
   ...Template,
   args: {
     'aria-label': 'Click me button',
+    color: 'primary',
     label: 'Click me',
-    size: 'medium',
+    size: 'md',
     type: 'button',
     variant: 'filled',
   },

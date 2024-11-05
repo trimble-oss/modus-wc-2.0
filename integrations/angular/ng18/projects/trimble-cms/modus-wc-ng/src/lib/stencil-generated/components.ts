@@ -30,14 +30,14 @@ export declare interface ModusWcAvatar extends Components.ModusWcAvatar {}
 
 
 @ProxyCmp({
-  inputs: ['ariaLabel', 'color', 'content', 'customClass', 'size', 'type']
+  inputs: ['ariaLabel', 'color', 'content', 'customClass', 'size', 'variant']
 })
 @Component({
   selector: 'modus-wc-badge',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['ariaLabel', 'color', 'content', 'customClass', 'size', 'type'],
+  inputs: ['ariaLabel', 'color', 'content', 'customClass', 'size', 'variant'],
 })
 export class ModusWcBadge {
   protected el: HTMLElement;

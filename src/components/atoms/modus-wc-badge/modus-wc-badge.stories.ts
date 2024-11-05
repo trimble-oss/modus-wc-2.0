@@ -14,7 +14,7 @@ interface BadgeArgs {
   content: string;
   'custom-class': string;
   size: 'sm' | 'md' | 'lg';
-  type: 'counter' | 'filled' | 'text';
+  variant: 'counter' | 'filled' | 'text';
 }
 
 const meta: Meta<BadgeArgs> = {
@@ -37,7 +37,7 @@ const meta: Meta<BadgeArgs> = {
       control: { type: 'inline-radio' },
       options: ['sm', 'md', 'lg'],
     },
-    type: {
+    variant: {
       control: { type: 'inline-radio' },
       options: ['counter', 'filled', 'text'],
     },
@@ -57,7 +57,7 @@ const Template: Story = {
         content="${args.content}"
         ?custom-class="${args['custom-class']}"
         size="${args.size}"
-        type="${args.type}"
+        variant="${args.variant}"
       ></modus-wc-badge>
     `;
   },
@@ -70,6 +70,6 @@ export const Default: Story = {
     color: 'primary',
     content: 'Badge',
     size: 'md',
-    type: 'filled',
+    variant: 'filled',
   },
 };
