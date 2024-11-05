@@ -7,7 +7,8 @@ import { ValueAccessor } from './value-accessor';
   /* tslint:disable-next-line:directive-selector */
   selector: 'modus-wc-textarea, modus-wc-text-input',
   host: {
-    '(change)': 'handleChangeEvent($event.target.value)'
+    '(textareaChange)': 'handleChangeEvent($event.target.value)',
+    '(inputChange)': 'handleChangeEvent($event.target.value)'
   },
   providers: [
     {
