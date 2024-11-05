@@ -108,7 +108,7 @@ export namespace Components {
         /**
           * If true, the button will be in a pressed state (for toggle buttons).
          */
-        "pressed": boolean;
+        "pressed"?: boolean;
         /**
           * The size of the button.
          */

@@ -12,12 +12,28 @@ interface ButtonArgs {
   size: 'sm' | 'md' | 'lg';
   type: 'button' | 'submit' | 'reset';
   variant: 'filled' | 'outlined' | 'text';
+  buttonClick?: (event: CustomEvent) => void;
 }
 
 const meta: Meta<ButtonArgs> = {
   title: 'Components/Atoms/Button',
   component: 'modus-wc-button',
+  args: {
+    'aria-label': 'Click me button',
+    color: 'primary',
+    disabled: false,
+    'full-width': false,
+    label: 'Click me',
+    pressed: false,
+    size: 'md',
+    type: 'button',
+    variant: 'filled',
+  },
   argTypes: {
+    color: {
+      control: { type: 'inline-radio' },
+      options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],
+    },
     size: {
       control: { type: 'inline-radio' },
       options: ['sm', 'md', 'lg'],
@@ -30,9 +46,11 @@ const meta: Meta<ButtonArgs> = {
       control: { type: 'inline-radio' },
       options: ['filled', 'outlined', 'text'],
     },
-    color: {
-      control: { type: 'select' },
-      options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],
+    buttonClick: {
+      action: 'buttonClick',
+      table: {
+        category: 'Events',
+      },
     },
   },
 };
@@ -55,6 +73,7 @@ const Template: Story = {
         size="${args.size}"
         type="${args.type}"
         variant="${args.variant}"
+        @buttonClick=${args.buttonClick}
       ></modus-wc-button>
     `;
   },
@@ -62,12 +81,4 @@ const Template: Story = {
 
 export const Default: Story = {
   ...Template,
-  args: {
-    'aria-label': 'Click me button',
-    color: 'primary',
-    label: 'Click me',
-    size: 'md',
-    type: 'button',
-    variant: 'filled',
-  },
 };

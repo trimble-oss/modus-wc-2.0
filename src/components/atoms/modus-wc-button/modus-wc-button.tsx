@@ -54,7 +54,7 @@ export class ModusWcButton {
   /**
    * If true, the button will be in a pressed state (for toggle buttons).
    */
-  @Prop() pressed: boolean = false;
+  @Prop() pressed?: boolean = false;
 
   /**
    * The size of the button.

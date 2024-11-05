@@ -9,6 +9,21 @@
   &.modus-wc-btn-text {
     background-color: transparent;
     border: none;
+    box-shadow: none;
     color: var(--modus-wc-color-base-content);
+
+    &:active {
+      background-color: transparent;
+      border: none;
+      box-shadow: none;
+      color: var(--modus-wc-color-base-content);
+    }
+
+    &:hover {
+      background-color: transparent;
+      border: none;
+      box-shadow: none;
+      color: var(--modus-wc-color-base-content);
+    }
   }
 }
