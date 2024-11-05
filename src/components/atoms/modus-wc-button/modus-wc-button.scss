@@ -6,6 +6,23 @@
 */
 
 .modus-wc-btn {
+  border-radius: var(--modus-wc-border-radius-md) !important;
+  height: fit-content !important;
+  min-height: fit-content !important;
+
+  &.modus-wc-btn-sm {
+    font-size: var(--modus-wc-font-size-sm) !important;
+    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm) !important;
+  }
+
+  &.modus-wc-btn-md {
+    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm) !important;
+  }
+
+  &.modus-wc-btn-lg {
+    padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg) !important;
+  }
+
   &.modus-wc-btn-text {
     background-color: transparent;
     border: none;
