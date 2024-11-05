@@ -915,6 +915,74 @@
           }
         }
       ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-theme-switcher/modus-wc-theme-switcher.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A theme switcher component used to toggle the application theme and/or mode.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcThemeSwitcher",
+          "members": [
+            {
+              "kind": "field",
+              "name": "isDarkMode"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the theme switcher element."
+            }
+          ],
+          "tagName": "modus-wc-theme-switcher",
+          "events": [
+            {
+              "name": "themeChange",
+              "type": {
+                "text": "EventEmitter<IThemeConfig>"
+              },
+              "description": "An event that fires when the theme is changed."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcThemeSwitcher",
+          "declaration": {
+            "name": "ModusWcThemeSwitcher",
+            "module": "src/components/molecules/modus-wc-theme-switcher/modus-wc-theme-switcher.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-theme-switcher",
+          "declaration": {
+            "name": "ModusWcThemeSwitcher",
+            "module": "src/components/molecules/modus-wc-theme-switcher/modus-wc-theme-switcher.tsx"
+          }
+        }
+      ]
     }
   ]
 }

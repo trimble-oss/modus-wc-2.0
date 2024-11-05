@@ -22,7 +22,7 @@
     "loader/"
   ],
   "scripts": {
-    "analyze": "custom-elements-manifest analyze --stencil --globs \"src/components/atoms/**/*.tsx\" --outdir src && node .github/fixup-cem-json.cjs",
+    "analyze": "custom-elements-manifest analyze --stencil --globs \"src/components/**/*.tsx\" --outdir src && node .github/fixup-cem-json.cjs",
     "code-style": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yml}\"",
     "code-style:fix": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yml}\"",
     "lint": "eslint .",
