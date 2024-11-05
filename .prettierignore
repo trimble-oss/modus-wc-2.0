@@ -1,4 +1,5 @@
 integrations
 src/**/*.d.ts
+src/custom-elements.json
 src/components/**/readme.md
 src/providers/**/readme.md
