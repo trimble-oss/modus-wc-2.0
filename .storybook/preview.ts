@@ -3,6 +3,7 @@ import type { Preview } from '@storybook/web-components';
 import { setCustomElementsManifest } from '@storybook/web-components';
 import { defineCustomElements } from '../loader';
 import customElements from '../src/custom-elements.json';
+import a11yConfig from './a11yConfig';
 
 defineCustomElements();
 setCustomElementsManifest(customElements);
@@ -10,6 +11,7 @@ setCustomElementsManifest(customElements);
 const preview: Preview = {
   tags: ['autodocs'],
   parameters: {
+    a11y: a11yConfig,
     // To handle Tailwind dark mode if needed
     backgrounds: {
       disable: true,
