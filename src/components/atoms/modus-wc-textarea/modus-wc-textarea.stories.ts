@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/web-components';
-// import { action } from '@storybook/addon-actions';
+import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -43,6 +43,12 @@ const meta: Meta<TextAreaArgs> = {
       options: ['ltr', 'rtl', 'auto'],
     },
   },
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['textareaBlur', 'textareaChange', 'textareaFocus'],
+    },
+  },
 };
 
 export default meta;
@@ -69,18 +75,6 @@ const Template: Story = {
         ?textarea-spellcheck=${args['textarea-spellcheck']}
         ?textarea-tab-index=${args['textarea-tab-index']}
         .value=${args.value}
-        @textarea-blur=${(e: Event) => {
-          const target = e.target as HTMLTextAreaElement;
-          args.value = target.value;
-        }}
-        @textarea-change=${(e: Event) => {
-          const target = e.target as HTMLTextAreaElement;
-          args.value = target.value;
-        }}
-        @textarea-focus=${(e: Event) => {
-          const target = e.target as HTMLTextAreaElement;
-          args.value = target.value;
-        }}
       ></modus-wc-textarea>
     `;
   },

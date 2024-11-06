@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/web-components';
+import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 
 interface ButtonArgs {
@@ -12,7 +13,6 @@ interface ButtonArgs {
   size: 'sm' | 'md' | 'lg';
   type: 'button' | 'submit' | 'reset';
   variant: 'filled' | 'outlined' | 'text';
-  buttonClick?: (event: CustomEvent) => void;
 }
 
 const meta: Meta<ButtonArgs> = {
@@ -46,11 +46,11 @@ const meta: Meta<ButtonArgs> = {
       control: { type: 'inline-radio' },
       options: ['filled', 'outlined', 'text'],
     },
-    buttonClick: {
-      action: 'buttonClick',
-      table: {
-        category: 'Events',
-      },
+  },
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['buttonClick'],
     },
   },
 };
@@ -73,7 +73,6 @@ const Template: Story = {
         size="${args.size}"
         type="${args.type}"
         variant="${args.variant}"
-        @buttonClick=${args.buttonClick}
       ></modus-wc-button>
     `;
   },

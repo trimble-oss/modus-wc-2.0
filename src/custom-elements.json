@@ -922,7 +922,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A theme switcher component used to toggle the application theme and/or mode.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A theme switcher component used to toggle the application theme and/or mode.\r\n\r\nAllows consumers to set the initial theme (Modus Classic, Prism, etc) and end-users to toggle modes (Light, Dark).\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcThemeSwitcher",
           "members": [
             {

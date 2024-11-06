@@ -1,5 +1,6 @@
-import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
+import { withActions } from '@storybook/addon-actions/decorator';
+import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface TextInputArgs {
@@ -46,7 +47,6 @@ interface TextInputArgs {
 const meta: Meta<TextInputArgs> = {
   title: 'Components/Atoms/Text Input',
   component: 'modus-wc-text-input',
-  tags: ['autodocs'],
   args: {
     'aria-label': 'Enter your name',
     'input-mode': 'text',
@@ -91,6 +91,12 @@ const meta: Meta<TextInputArgs> = {
       options: ['email', 'password', 'search', 'tel', 'text', 'url'],
     },
   },
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['inputBlur', 'inputChange', 'inputFocus'],
+    },
+  },
 };
 
 export default meta;
@@ -124,18 +130,6 @@ const Template: Story = {
       ?tab-index=${args['input-tab-index']}
       type=${args.type}
       .value=${args.value}
-      @inputBlur=${(e: FocusEvent) => {
-        const target = e.target as HTMLInputElement;
-        args.value = target.value;
-      }}
-      @inputChange=${(e: Event) => {
-        const target = e.target as HTMLInputElement;
-        args.value = target.value;
-      }}
-      @inputFocus=${(e: FocusEvent) => {
-        const target = e.target as HTMLInputElement;
-        args.value = target.value;
-      }}
     ></modus-wc-text-input>
   `,
 };
