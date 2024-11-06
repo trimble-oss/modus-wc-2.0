@@ -100,19 +100,19 @@ describe('modus-wc-text-input', () => {
     expect(focusSpy).toHaveBeenCalled();
   });
 
-  it('warns when ariaLabel is not provided', async () => {
+  it('warns when aria-label is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
     await newSpecPage({
       components: [ModusWcTextInput],
       html: '<modus-wc-text-input></modus-wc-text-input>',
     });
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcInput: ariaLabel is required for accessibility.'
+      'ModusWcInput: aria-label is required for accessibility.'
     );
     consoleWarnSpy.mockRestore();
   });
 
-  it('does not warn when ariaLabel is provided', async () => {
+  it('does not warn when aria-label is provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
     await newSpecPage({
       components: [ModusWcTextInput],
@@ -136,7 +136,7 @@ describe('modus-wc-text-input', () => {
     }
   });
 
-  it('uses placeholder as aria-label when ariaLabel is not provided', async () => {
+  it('uses placeholder as aria-label when aria-label is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
     const page = await newSpecPage({
       components: [ModusWcTextInput],

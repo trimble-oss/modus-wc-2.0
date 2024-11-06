@@ -34,7 +34,7 @@ describe('modus-wc-avatar', () => {
     `);
   });
 
-  it('should warn when alt and ariaLabel are not provided', async () => {
+  it('should warn when alt and aria-label are not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({
@@ -43,13 +43,13 @@ describe('modus-wc-avatar', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcAvatar: alt and ariaLabel are required for accessibility.'
+      'ModusWcAvatar: alt and aria-label are required for accessibility.'
     );
 
     consoleWarnSpy.mockRestore();
   });
 
-  it('should not warn when both alt and ariaLabel are provided', async () => {
+  it('should not warn when both alt and aria-label are provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({

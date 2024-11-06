@@ -47,7 +47,7 @@ export class ModusWcAvatar {
   componentWillLoad() {
     if (!this.alt || !this.ariaLabel) {
       console.warn(
-        'ModusWcAvatar: alt and ariaLabel are required for accessibility.'
+        'ModusWcAvatar: alt and aria-label are required for accessibility.'
       );
     }
   }
@@ -55,13 +55,12 @@ export class ModusWcAvatar {
   private getClasses(): string {
     const classList = [];
 
-    // istanbul ignore next - not implemented
     const propClasses = convertPropsToClasses({
       shape: this.shape,
       size: this.size,
     });
 
-    // istanbul ignore next - not implemented
+    // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
 

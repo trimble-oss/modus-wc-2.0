@@ -8,7 +8,7 @@ export const convertPropsToClasses = (props: {
     | 'warning'
     | 'danger';
   size?: 'sm' | 'md' | 'lg';
-  type?: 'counter' | 'filled' | 'text';
+  variant?: 'counter' | 'filled' | 'text';
 }): string => {
   let classes = '';
 
@@ -52,8 +52,8 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'type') && props.type) {
-    switch (props.type) {
+  if (Object.prototype.hasOwnProperty.call(props, 'variant') && props.variant) {
+    switch (props.variant) {
       case 'counter':
         classes = `${classes} modus-wc-badge-counter`;
         break;

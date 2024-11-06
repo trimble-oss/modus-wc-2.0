@@ -117,7 +117,7 @@
               "name": "color",
               "fieldName": "color",
               "type": {
-                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
               },
               "description": "The color variant of the badge."
             },
@@ -141,17 +141,17 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'small' | 'medium' | 'large'"
+                "text": "'sm' | 'md' | 'lg'"
               },
               "description": "The size of the badge."
             },
             {
-              "name": "type",
-              "fieldName": "type",
+              "name": "variant",
+              "fieldName": "variant",
               "type": {
-                "text": "'filled' | 'text' | 'counter'"
+                "text": "'counter' | 'filled' | 'text'"
               },
-              "description": "The type of the badge."
+              "description": "The variant of the badge."
             }
           ],
           "tagName": "modus-wc-badge",
@@ -205,9 +205,9 @@
               "name": "color",
               "fieldName": "color",
               "type": {
-                "text": "'primary' | 'secondary' | 'tertiary'"
+                "text": "'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger'"
               },
-              "description": "The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'."
+              "description": "The color variant of the button."
             },
             {
               "name": "custom-class",
@@ -253,9 +253,9 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'small' | 'medium' | 'large'"
+                "text": "'sm' | 'md' | 'lg'"
               },
-              "description": "The size of the button. Can be 'small', 'medium', or 'large'."
+              "description": "The size of the button."
             },
             {
               "name": "type",
@@ -263,7 +263,7 @@
               "type": {
                 "text": "'button' | 'submit' | 'reset'"
               },
-              "description": "The type of the button. Can be 'button', 'submit', or 'reset'."
+              "description": "The type of the button."
             },
             {
               "name": "variant",
@@ -271,7 +271,7 @@
               "type": {
                 "text": "'filled' | 'outlined' | 'text'"
               },
-              "description": "The variant of the button. Can be 'filled', 'outlined', or 'text'."
+              "description": "The variant of the button."
             }
           ],
           "tagName": "modus-wc-button",
@@ -922,7 +922,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A theme switcher component used to toggle the application theme and/or mode.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A theme switcher component used to toggle the application theme and/or mode.\r\n\r\nAllows consumers to set the initial theme (Modus Classic, Prism, etc) and end-users to toggle modes (Light, Dark).\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcThemeSwitcher",
           "members": [
             {

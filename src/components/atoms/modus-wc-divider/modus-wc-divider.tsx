@@ -33,7 +33,7 @@ export class ModusWcDivider {
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcDivider: ariaLabel is required for accessibility.');
+      console.warn('ModusWcDivider: aria-label is required for accessibility.');
     }
   }
 

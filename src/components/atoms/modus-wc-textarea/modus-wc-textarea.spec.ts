@@ -93,19 +93,19 @@ describe('modus-wc-textarea', () => {
     expect(focusSpy).toHaveBeenCalled();
   });
 
-  it('warns when ariaLabel is not provided', async () => {
+  it('warns when aria-label is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
     await newSpecPage({
       components: [ModusWcTextarea],
       html: '<modus-wc-textarea></modus-wc-textarea>',
     });
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcTextarea: ariaLabel is required for accessibility.'
+      'ModusWcTextarea: aria-label is required for accessibility.'
     );
     consoleWarnSpy.mockRestore();
   });
 
-  it('does not warn when ariaLabel is provided', async () => {
+  it('does not warn when aria-label is provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
     await newSpecPage({
       components: [ModusWcTextarea],

@@ -11,6 +11,10 @@ interface DividerArgs {
 const meta: Meta<DividerArgs> = {
   title: 'Components/Atoms/Divider',
   component: 'modus-wc-divider',
+  args: {
+    'aria-label': 'Horizontal divider',
+    content: '',
+  },
 };
 
 export default meta;
@@ -32,8 +36,4 @@ const Template: Story = {
 
 export const Default: Story = {
   ...Template,
-  args: {
-    'aria-label': 'Horizontal divider',
-    content: '',
-  },
 };

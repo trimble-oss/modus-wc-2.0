@@ -56,7 +56,7 @@ export class ModusWCTypography {
   componentWillLoad() {
     if (!this.ariaLabel) {
       console.warn(
-        'ModusWcTypography: ariaLabel is required for accessibility.'
+        'ModusWcTypography: aria-label is required for accessibility.'
       );
     }
   }

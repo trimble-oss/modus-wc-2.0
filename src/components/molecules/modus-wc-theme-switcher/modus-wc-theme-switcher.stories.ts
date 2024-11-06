@@ -1,32 +1,22 @@
-import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
-import { fn } from '@storybook/test';
-import { IThemeConfig } from '../../../providers/theme/theme.types';
+import { withActions } from '@storybook/addon-actions/decorator';
+import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { IThemeConfig } from '../../../providers/theme/theme.types';
 
 interface ThemeSwitcherArgs {
   'aria-label': string;
   'custom-class'?: string;
   'initial-theme'?: Partial<IThemeConfig>;
-  themeChange?: (event: CustomEvent) => void;
 }
 
 const meta: Meta<ThemeSwitcherArgs> = {
   title: 'Components/Molecules/ThemeSwitcher',
   component: 'modus-wc-theme-switcher',
-  parameters: {
-    docs: {
-      description: {
-        component:
-          'Theme switcher component that allows consumers to set the initial theme (Modus Classic, Prism, etc) and end-users to toggle modes (Light, Dark).',
-      },
-    },
-  },
   args: {
     'aria-label': 'Toggle theme',
     'custom-class': undefined,
     'initial-theme': undefined,
-    themeChange: fn(),
   },
   argTypes: {
     'aria-label': {
@@ -44,12 +34,11 @@ const meta: Meta<ThemeSwitcherArgs> = {
         defaultValue: { summary: '{ theme: "modus-classic" }' },
       },
     },
-    themeChange: {
-      action: 'themeChange',
-      description: 'An event that fires when the theme is changed.',
-      table: {
-        category: 'Events',
-      },
+  },
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['themeChange'],
     },
   },
 };
@@ -64,7 +53,6 @@ const Template: Story = {
       <modus-wc-theme-switcher
         aria-label=${args['aria-label']}
         custom-class=${ifDefined(args['custom-class'])}
-        @themeChange=${args.themeChange}
       ></modus-wc-theme-switcher>
     </modus-wc-theme-provider>
   `,
