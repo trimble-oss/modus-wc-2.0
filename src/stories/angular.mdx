@@ -15,7 +15,61 @@ Please refer to the [official StencilJS documentation](https://stenciljs.com/doc
 
 ## Angular with Modules
 
+Install dependencies:
+
+```bash
+npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng
+```
+
+Import Modus Angular Web Components library into your Angular app's module:
+
+```ts
+// app.module.ts
+import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-ng';
+
+@NgModule({
+  ...
+  imports: [ComponentLibraryModule],
+  ...
+})
+export class AppModule {}
+```
+
+You can now use Modus Angular Web Components while leveraging Angular template binding syntax:
+```ts
+// app.component.html
+<modus-wc-button label="modus button" />
+```
+
 ## Angular with Standalone Components
+
+Install dependencies:
+
+```bash
+npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng
+```
+
+Import your component library into your component. You must distribute your components through a primary `NgModule` to use your components in a standalone component.
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+import { ModusAngularComponentsModule } from 'component-library';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [ModusAngularComponentsModule],
+  templateUrl: './app.component.html',
+})
+export class AppComponent {}
+```
+
+You can now use Modus Angular Web Components while leveraging Angular template binding syntax:
+```ts
+// app.component.html
+<modus-wc-button label="modus button" />
+```
 
 ## Consuming Modus Web Components Directly Instead of Using Modus Angular Components
 
