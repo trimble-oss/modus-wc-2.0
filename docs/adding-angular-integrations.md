@@ -2,7 +2,9 @@
 
 Stencil v4.22
 
-This documentation serves as a guide for setting up and integrating Stencil web components with Angular projects. For any updates or changes, please refer back to this document or the StencilJS [official documentation](https://stenciljs.com/docs/angular#creating-an-angular-component-library).
+This documentation serves as a guide for setting up and integrating Stencil web components with Angular projects. 
+
+For any updates or changes, please refer back to this document or the StencilJS [official documentation](https://stenciljs.com/docs/angular#creating-an-angular-component-library).
 
 ## How to Scaffold a Specific Version of Angular Integration
 
