@@ -5,7 +5,8 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-btn {
+[data-theme="modus-classic-light"] .modus-wc-btn,
+[data-theme="modus-classic-dark"] .modus-wc-btn {
   border-radius: var(--modus-wc-border-radius-md) !important;
   height: fit-content !important;
   min-height: fit-content !important;
