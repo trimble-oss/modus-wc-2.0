@@ -2,7 +2,7 @@
 
 Stencil v4.22
 
-This documentation serves as a guide for setting up and integrating Stencil web components with Angular projects. 
+This documentation serves as a guide for setting up and integrating Stencil web components with Angular projects.
 
 For any updates or changes, please refer back to this document or the StencilJS [official documentation](https://stenciljs.com/docs/angular#creating-an-angular-component-library).
 
@@ -11,7 +11,7 @@ For any updates or changes, please refer back to this document or the StencilJS 
 To scaffold a new Angular version integration (using version 18 as an example), follow these steps:
 
 > [!NOTE]
-> replace `@angular/cli@<version number>` with target version you're creating the integration for in the following steps. 
+> replace `@angular/cli@<version number>` with target version you're creating the integration for in the following steps.
 
 ### Step 1: Create a New Angular Workspace
 
@@ -46,18 +46,18 @@ Add `@trimble-cms/modus-wc` as a peer dependency in the `package.json` file of y
 In the root `stencil.config.ts` file, add the Angular output target to ensure proper integration with Angular:
 
 > [!NOTE]
-> The only thing that should change in the below paths is the version number corresponding to the Angular version you're targeting. 
+> The only thing that should change in the below paths is the version number corresponding to the Angular version you're targeting.
 
 ```ts
 angularOutputTarget({
-    componentCorePackage: '@trimble-cms/modus-wc',
-    outputType: 'component',
-    directivesProxyFile:
-        './integrations/angular/ng18/projects/trimble-cms/modus-wc-ng/src/lib/stencil-generated/components.ts',
-    directivesArrayFile:
-        './integrations/angular/ng18/projects/trimble-cms/modus-wc-ng/src/lib/stencil-generated/index.ts',
-    valueAccessorConfigs: angularValueAccessorBindings,
-})
+  componentCorePackage: '@trimble-cms/modus-wc',
+  outputType: 'component',
+  directivesProxyFile:
+    './integrations/angular/ng18/projects/trimble-cms/modus-wc-ng/src/lib/stencil-generated/components.ts',
+  directivesArrayFile:
+    './integrations/angular/ng18/projects/trimble-cms/modus-wc-ng/src/lib/stencil-generated/index.ts',
+  valueAccessorConfigs: angularValueAccessorBindings,
+});
 ```
 
 ### Step 6: Generate Angular Stencil Component Wrappers
@@ -83,11 +83,11 @@ import { DIRECTIVES } from './stencil-generated';
   exports: [...DIRECTIVES],
   providers: [
     {
-        provide: APP_INITIALIZER,
-        useFactory: () => defineCustomElements,
-        multi: true,
-    }
-  ]
+      provide: APP_INITIALIZER,
+      useFactory: () => defineCustomElements,
+      multi: true,
+    },
+  ],
 })
 export class ModusAngularComponentsModule {}
 ```
@@ -97,7 +97,6 @@ This module automatically defines/registers the custom elements during app initi
 ### Step 8: Update the Public API
 
 Update the `public-api.ts` file to export the components in the main entry point of your library:
-
 
 ```ts
 export * from './lib/modus-wc-ng.module';
@@ -109,7 +108,7 @@ Any components that are included in the exports array should additionally be exp
 
 ### Step 9: Install Dependencies and Build
 
-You may need to edit the build script in the angular workspace (`ng18/`) to specifically target the `projects/trimble-cms/modus-wc-ng` component library. 
+You may need to edit the build script in the angular workspace (`ng18/`) to specifically target the `projects/trimble-cms/modus-wc-ng` component library.
 
 For example:
 
@@ -131,4 +130,3 @@ You can package the angular component library for local testing by running the f
 ```bash
 npm pack ./dist/trimble-cms/modus-wc-ng
 ```
-
