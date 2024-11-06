@@ -30,7 +30,7 @@ describe('modus-wc-typography', () => {
     `);
   });
 
-  it('should warn when ariaLabel is not provided', async () => {
+  it('should warn when aria-label is not provided', async () => {
     const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({
@@ -39,7 +39,7 @@ describe('modus-wc-typography', () => {
     });
 
     expect(consoleSpy).toHaveBeenCalledWith(
-      'ModusWcTypography: ariaLabel is required for accessibility.'
+      'ModusWcTypography: aria-label is required for accessibility.'
     );
 
     consoleSpy.mockRestore();

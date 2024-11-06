@@ -14,12 +14,19 @@ interface BadgeArgs {
   content: string;
   'custom-class': string;
   size: 'sm' | 'md' | 'lg';
-  type: 'counter' | 'filled' | 'text';
+  variant: 'counter' | 'filled' | 'text';
 }
 
 const meta: Meta<BadgeArgs> = {
   title: 'Components/Atoms/Badge',
   component: 'modus-wc-badge',
+  args: {
+    'aria-label': 'Example badge',
+    color: 'primary',
+    content: 'Badge',
+    size: 'md',
+    variant: 'filled',
+  },
   argTypes: {
     color: {
       control: { type: 'select' },
@@ -37,7 +44,7 @@ const meta: Meta<BadgeArgs> = {
       control: { type: 'inline-radio' },
       options: ['sm', 'md', 'lg'],
     },
-    type: {
+    variant: {
       control: { type: 'inline-radio' },
       options: ['counter', 'filled', 'text'],
     },
@@ -57,7 +64,7 @@ const Template: Story = {
         content="${args.content}"
         ?custom-class="${args['custom-class']}"
         size="${args.size}"
-        type="${args.type}"
+        variant="${args.variant}"
       ></modus-wc-badge>
     `;
   },
@@ -65,11 +72,4 @@ const Template: Story = {
 
 export const Default: Story = {
   ...Template,
-  args: {
-    'aria-label': 'Example badge',
-    color: 'primary',
-    content: 'Badge',
-    size: 'md',
-    type: 'filled',
-  },
 };

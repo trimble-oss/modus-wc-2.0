@@ -2,7 +2,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcButton } from './modus-wc-button';
 
 describe('modus-wc-button', () => {
-  it('should warn if ariaLabel is not provided', async () => {
+  it('should warn if aria-label is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({
@@ -11,7 +11,7 @@ describe('modus-wc-button', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcButton: ariaLabel is required for accessibility.'
+      'ModusWcButton: aria-label is required for accessibility.'
     );
 
     consoleWarnSpy.mockRestore();
@@ -24,7 +24,7 @@ describe('modus-wc-button', () => {
     });
     expect(page.root).toEqualHtml(`
       <modus-wc-button aria-label="Default Button">
-        <button class="modus-wc-button modus-wc-button--medium modus-wc-button--filled modus-wc-button--primary" aria-label="Default Button" tabindex="0" type="button"></button>
+        <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-primary" aria-label="Default Button" tabindex="0" type="button"></button>
       </modus-wc-button>
     `);
   });
@@ -44,7 +44,7 @@ describe('modus-wc-button', () => {
     });
     expect(page.root).toEqualHtml(`
       <modus-wc-button aria-label="Disabled Button" disabled>
-        <button class="modus-wc-button modus-wc-button--medium modus-wc-button--filled modus-wc-button--primary modus-wc-button--disabled" aria-label="Disabled Button" disabled tabindex="-1" type="button"></button>
+        <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-primary modus-wc-btn-disabled" aria-label="Disabled Button" disabled tabindex="-1" type="button"></button>
       </modus-wc-button>
     `);
   });
@@ -56,7 +56,7 @@ describe('modus-wc-button', () => {
     });
     expect(page.root).toEqualHtml(`
       <modus-wc-button aria-label="Full Width Button" full-width>
-        <button class="modus-wc-button modus-wc-button--medium modus-wc-button--filled modus-wc-button--primary modus-wc-button--full-width" aria-label="Full Width Button" tabindex="0" type="button"></button>
+        <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-primary modus-wc-btn-block" aria-label="Full Width Button" tabindex="0" type="button"></button>
       </modus-wc-button>
     `);
   });
@@ -68,7 +68,7 @@ describe('modus-wc-button', () => {
     });
     expect(page.root).toEqualHtml(`
       <modus-wc-button aria-label="Pressed Button" pressed>
-        <button class="modus-wc-button modus-wc-button--medium modus-wc-button--filled modus-wc-button--primary" aria-label="Pressed Button" aria-pressed="true" tabindex="0" type="button"></button>
+        <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-primary" aria-label="Pressed Button" aria-pressed="true" tabindex="0" type="button"></button>
       </modus-wc-button>
     `);
   });

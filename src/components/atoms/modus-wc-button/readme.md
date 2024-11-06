@@ -69,18 +69,18 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property                 | Attribute      | Description                                                                    | Type                                     | Default     |
-| ------------------------ | -------------- | ------------------------------------------------------------------------------ | ---------------------------------------- | ----------- |
-| `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility.                                    | `string`                                 | `undefined` |
-| `color`                  | `color`        | The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'. | `"primary" \| "secondary" \| "tertiary"` | `'primary'` |
-| `customClass`            | `custom-class` | Custom CSS class to apply to the button element.                               | `string`                                 | `''`        |
-| `disabled`               | `disabled`     | If true, the button will be disabled.                                          | `boolean`                                | `false`     |
-| `fullWidth`              | `full-width`   | If true, the button will take the full width of its container.                 | `boolean`                                | `false`     |
-| `label` _(required)_     | `label`        | The text label displayed on the button.                                        | `string`                                 | `undefined` |
-| `pressed`                | `pressed`      | If true, the button will be in a pressed state (for toggle buttons).           | `boolean`                                | `false`     |
-| `size`                   | `size`         | The size of the button. Can be 'small', 'medium', or 'large'.                  | `"large" \| "medium" \| "small"`         | `'medium'`  |
-| `type`                   | `type`         | The type of the button. Can be 'button', 'submit', or 'reset'.                 | `"button" \| "reset" \| "submit"`        | `'button'`  |
-| `variant`                | `variant`      | The variant of the button. Can be 'filled', 'outlined', or 'text'.             | `"filled" \| "outlined" \| "text"`       | `'filled'`  |
+| Property                 | Attribute      | Description                                                          | Type                                                              | Default     |
+| ------------------------ | -------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------- | ----------- |
+| `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility.                          | `string`                                                          | `undefined` |
+| `color`                  | `color`        | The color variant of the button.                                     | `"danger" \| "primary" \| "secondary" \| "tertiary" \| "warning"` | `'primary'` |
+| `customClass`            | `custom-class` | Custom CSS class to apply to the button element.                     | `string`                                                          | `''`        |
+| `disabled`               | `disabled`     | If true, the button will be disabled.                                | `boolean \| undefined`                                            | `false`     |
+| `fullWidth`              | `full-width`   | If true, the button will take the full width of its container.       | `boolean \| undefined`                                            | `false`     |
+| `label` _(required)_     | `label`        | The text label displayed on the button.                              | `string`                                                          | `undefined` |
+| `pressed`                | `pressed`      | If true, the button will be in a pressed state (for toggle buttons). | `boolean \| undefined`                                            | `false`     |
+| `size`                   | `size`         | The size of the button.                                              | `"lg" \| "md" \| "sm"`                                            | `'md'`      |
+| `type`                   | `type`         | The type of the button.                                              | `"button" \| "reset" \| "submit"`                                 | `'button'`  |
+| `variant`                | `variant`      | The variant of the button.                                           | `"filled" \| "outlined" \| "text"`                                | `'filled'`  |
 
 
 ## Events

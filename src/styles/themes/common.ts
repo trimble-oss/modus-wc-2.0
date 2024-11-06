@@ -1,92 +1,30 @@
 export const common = {
   // Animation
   '--animation-btn': '0.3s',
-  '--animation-input': '0.3s',
-  '--carousel-animation-duration': '0.3s',
-  '--drawer-animation-duration': '0.3s',
-  '--dropdown-animation-duration': '0.2s',
-  '--loading-spinner-animation-duration': '0.45s',
-  '--modal-animation-duration': '0.2s',
-  '--skeleton-duration': '1.2s',
-  '--swap-animation-duration': '0.3s',
-  '--toast-animation-duration': '0.2s',
-  '--tooltip-animation-duration': '0.2s',
+  // '--animation-input': '0.3s',
 
-  // Border Radius
-  '--collapse-border-radius': '0.5rem',
-  '--dropdown-radius': '0.5rem',
-  '--input-radius': '0.5rem',
-  '--menu-item-radius': '0.5rem',
+  // Avatar Component
+
+  // Badge Component
   '--rounded-badge': '0.25rem',
-  '--rounded-box': '0.5rem',
-  '--rounded-btn': '0.25rem',
-  '--rounded-dropdown': '0.5rem',
-  '--rounded-tab': '0.5rem',
-  '--toast-radius': '0.5rem',
-  '--tooltip-radius': '0.25rem',
 
-  // Border Width & Style
+  // Button Component
   '--border-btn': '1px',
-  '--card-border-width': '1px',
-  '--checkbox-border': '2px',
-  '--divider-width': '1px',
-  '--handle-border': '2px',
-  '--input-border-width': '1px',
-  '--input-disabled-border': '1px solid currentColor',
-  '--radio-border': '2px',
-  '--tab-border': '1px',
-
-  // Effects
-  '--focus-ring': '2px',
-  '--focus-ring-offset': '2px',
-  '--glass-blur': '40px',
-  '--glass-opacity': '0.2',
-  '--glass-border-opacity': '0.05',
-  '--glass-reflex-degree': '100deg',
-  '--modal-backdrop-blur': '0.5rem',
-  '--modal-backdrop-opacity': '0.8',
-  '--modal-box-scale': '0.9',
-
-  // Size
-  '--badge-size': '1rem',
   '--btn-focus-scale': '0.95',
-  '--checkbox-size': '1.5rem',
-  '--drawer-width': '20rem',
-  '--input-focus-scale': '0.95',
-  '--loading-spinner-size': '3rem',
-  '--navbar-height': '4rem',
-  '--progress-bar-height': '0.5rem',
-  '--radio-size': '1.5rem',
-  '--range-sld-thumb-size': '1.5rem',
-  '--range-sld-track-height': '0.5rem',
-  '--skeleton-from': '0.4',
-  '--skeleton-to': '0.8',
-  '--tooltip-tail-size': '6px',
+  '--rounded-btn': '0.25rem',
 
-  // Spacing & Padding
-  '--badge-padding': '0.5rem',
-  '--card-compact-padding': '1rem',
-  '--card-normal-padding': '2rem',
-  '--collapse-content-padding': '1rem',
-  '--collapse-title-padding': '1rem',
-  '--divider-gap': '1rem',
-  '--menu-padding': '0.5rem',
-  '--modal-box-spacing': '2.5rem',
-  '--navbar-padding': '1rem',
-  '--padding-card': '2rem',
-  '--padding-dropdown': '0.5rem',
-  '--toast-padding': '1rem',
-  '--tooltip-padding': '0.5rem',
+  // Card Component
+  // '--rounded-box': '0.25rem',
 
-  // Typography
-  '--btn-text-case': 'uppercase',
+  // Tab Component
+  // '--circle-pos': '',
+  // '--tab-bg': '',
+  // '--tab-border': '1px',
+  // '--tab-border-color': '',
+  // '--tab-corner-bg': '',
+  // '--tab-grad': '',
+  // '--tab-padding': '',
+  // '--tab-radius': '0.25rem',
 
-  // Other
-  '--divider-color': 'currentColor',
-  '--dropdown-shadow': '0 10px 15px -3px rgb(0 0 0 / 0.1)',
-  '--input-color': 'currentColor',
-  '--input-disabled-bg': 'transparent',
-  '--placeholder-color': 'currentColor',
-  '--tab-border-color': 'currentColor',
-  '--toast-shadow': '3px 3px 10px rgb(0 0 0 / 0.1)',
+  // Additional component variables can be added here
 };

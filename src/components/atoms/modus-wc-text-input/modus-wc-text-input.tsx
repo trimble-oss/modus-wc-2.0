@@ -173,7 +173,7 @@ export class ModusWcTextInput {
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcInput: ariaLabel is required for accessibility.');
+      console.warn('ModusWcInput: aria-label is required for accessibility.');
     }
   }
 

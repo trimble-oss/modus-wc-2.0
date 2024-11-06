@@ -7,6 +7,7 @@ import {
   Listen,
   Prop,
 } from '@stencil/core';
+import { convertPropsToClasses } from './modus-wc-button.tailwind';
 
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -25,14 +26,10 @@ export class ModusWcButton {
   @Prop() ariaLabel!: string;
 
   /**
-   * Event emitted when the button is clicked or activated via keyboard.
+   * The color variant of the button.
    */
-  @Event() buttonClick!: EventEmitter<MouseEvent | KeyboardEvent>;
-
-  /**
-   * The color variant of the button. Can be 'primary', 'secondary', or 'tertiary'.
-   */
-  @Prop() color: 'primary' | 'secondary' | 'tertiary' = 'primary';
+  @Prop() color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger' =
+    'primary';
 
   /**
    * Custom CSS class to apply to the button element.
@@ -42,12 +39,12 @@ export class ModusWcButton {
   /**
    * If true, the button will be disabled.
    */
-  @Prop() disabled: boolean = false;
+  @Prop() disabled?: boolean = false;
 
   /**
    * If true, the button will take the full width of its container.
    */
-  @Prop() fullWidth: boolean = false;
+  @Prop() fullWidth?: boolean = false;
 
   /**
    * The text label displayed on the button.
@@ -57,27 +54,50 @@ export class ModusWcButton {
   /**
    * If true, the button will be in a pressed state (for toggle buttons).
    */
-  @Prop() pressed: boolean = false;
+  @Prop() pressed?: boolean = false;
 
   /**
-   * The size of the button. Can be 'small', 'medium', or 'large'.
+   * The size of the button.
    */
-  @Prop() size: 'small' | 'medium' | 'large' = 'medium';
+  @Prop() size: 'sm' | 'md' | 'lg' = 'md';
 
   /**
-   * The variant of the button. Can be 'filled', 'outlined', or 'text'.
+   * The variant of the button.
    */
   @Prop() variant: 'filled' | 'outlined' | 'text' = 'filled';
 
   /**
-   * The type of the button. Can be 'button', 'submit', or 'reset'.
+   * The type of the button.
    */
   @Prop() type: 'button' | 'submit' | 'reset' = 'button';
 
+  /**
+   * Event emitted when the button is clicked or activated via keyboard.
+   */
+  @Event() buttonClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcButton: ariaLabel is required for accessibility.');
+      console.warn('ModusWcButton: aria-label is required for accessibility.');
     }
+  }
+
+  private getClasses(): string {
+    const classList = [];
+    const propClasses = convertPropsToClasses({
+      color: this.color,
+      disabled: this.disabled,
+      fullWidth: this.fullWidth,
+      size: this.size,
+      variant: this.variant,
+    });
+
+    // The order CSS classes are added matters to CSS specificity
+    if (propClasses) classList.push(propClasses);
+    classList.push('modus-wc-btn');
+    if (this.customClass) classList.push(this.customClass);
+
+    return classList.join(' ');
   }
 
   private handleClick = (event: MouseEvent) => {
@@ -101,15 +121,7 @@ export class ModusWcButton {
     return (
       <Host>
         <button
-          class={{
-            'modus-wc-button': true,
-            [this.customClass]: !!this.customClass,
-            [`modus-wc-button--${this.size}`]: true,
-            [`modus-wc-button--${this.variant}`]: true,
-            [`modus-wc-button--${this.color}`]: true,
-            'modus-wc-button--full-width': this.fullWidth,
-            'modus-wc-button--disabled': this.disabled,
-          }}
+          class={this.getClasses()}
           aria-label={this.ariaLabel || this.label}
           aria-pressed={ariaPressed}
           disabled={this.disabled}

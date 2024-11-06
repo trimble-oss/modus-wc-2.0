@@ -47,25 +47,27 @@ export class ModusWcBadge {
   @Prop() size: 'sm' | 'md' | 'lg' = 'md';
 
   /**
-   * The type of the badge.
+   * The variant of the badge.
    */
-  @Prop() type: 'counter' | 'filled' | 'text' = 'filled';
+  @Prop() variant: 'counter' | 'filled' | 'text' = 'filled';
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcBadge: ariaLabel is required for accessibility.');
+      console.warn('ModusWcBadge: aria-label is required for accessibility.');
     }
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-badge'];
+    const classList: string[] = [];
     const propClasses = convertPropsToClasses({
       color: this.color,
       size: this.size,
-      type: this.type,
+      variant: this.variant,
     });
 
+    // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
+    classList.push('modus-wc-badge');
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
