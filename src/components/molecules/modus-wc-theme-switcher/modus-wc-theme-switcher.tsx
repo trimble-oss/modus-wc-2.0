@@ -37,7 +37,7 @@ export class ModusWcThemeSwitcher {
   componentWillLoad() {
     if (!this.ariaLabel) {
       console.warn(
-        'ModusWcThemeSwitcher: ariaLabel is required for accessibility.'
+        'ModusWcThemeSwitcher: aria-label is required for accessibility.'
       );
     }
   }

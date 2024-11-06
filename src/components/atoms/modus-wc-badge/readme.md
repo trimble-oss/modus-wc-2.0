@@ -71,7 +71,7 @@ Adheres to WCAG 2.2 standards.
 | `content` _(required)_   | `content`      | The content to display inside the badge. For 'counter' type, this should be a number. | `string`                                                                                          | `undefined` |
 | `customClass`            | `custom-class` | Custom CSS class to apply to the span element.                                        | `string`                                                                                          | `''`        |
 | `size`                   | `size`         | The size of the badge.                                                                | `"lg" \| "md" \| "sm"`                                                                            | `'md'`      |
-| `type`                   | `type`         | The type of the badge.                                                                | `"counter" \| "filled" \| "text"`                                                                 | `'filled'`  |
+| `variant`                | `variant`      | The variant of the badge.                                                             | `"counter" \| "filled" \| "text"`                                                                 | `'filled'`  |
 
 
 ----------------------------------------------

@@ -2,7 +2,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcBadge } from './modus-wc-badge';
 
 describe('modus-wc-badge', () => {
-  it('should warn if ariaLabel is not provided', async () => {
+  it('should warn if aria-label is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({
@@ -11,7 +11,7 @@ describe('modus-wc-badge', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcBadge: ariaLabel is required for accessibility.'
+      'ModusWcBadge: aria-label is required for accessibility.'
     );
 
     consoleWarnSpy.mockRestore();
@@ -32,22 +32,22 @@ describe('modus-wc-badge', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcBadge],
-      html: '<modus-wc-badge aria-label="Custom Badge" color="secondary" content="Test" custom-class="custom" size="large" type="text"></modus-wc-badge>',
+      html: '<modus-wc-badge aria-label="Custom Badge" color="secondary" content="Test" custom-class="custom" size="large" variant="text"></modus-wc-badge>',
     });
     expect(page.root).toEqualHtml(`
-      <modus-wc-badge aria-label="Custom Badge" color="secondary" content="Test" custom-class="custom" size="large" type="text">
+      <modus-wc-badge aria-label="Custom Badge" color="secondary" content="Test" custom-class="custom" size="large" variant="text">
         <span aria-label="Custom Badge" class="custom modus-wc-badge modus-wc-badge-secondary modus-wc-badge-text" role="status">Test</span>
       </modus-wc-badge>
     `);
   });
 
-  it('should render counter type correctly', async () => {
+  it('should render counter variant correctly', async () => {
     const page = await newSpecPage({
       components: [ModusWcBadge],
-      html: '<modus-wc-badge aria-label="Counter Badge" content="5" type="counter"></modus-wc-badge>',
+      html: '<modus-wc-badge aria-label="Counter Badge" content="5" variant="counter"></modus-wc-badge>',
     });
     expect(page.root).toEqualHtml(`
-      <modus-wc-badge aria-label="Counter Badge" content="5" type="counter">
+      <modus-wc-badge aria-label="Counter Badge" content="5" variant="counter">
         <span aria-label="Counter Badge" class="modus-wc-badge modus-wc-badge-counter modus-wc-badge-md modus-wc-badge-primary" role="status">5</span>
       </modus-wc-badge>
     `);

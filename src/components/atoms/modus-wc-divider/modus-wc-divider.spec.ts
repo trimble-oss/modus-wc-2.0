@@ -30,7 +30,7 @@ describe('modus-wc-divider', () => {
     `);
   });
 
-  it('should warn when ariaLabel is not provided', async () => {
+  it('should warn when aria-label is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({
@@ -39,13 +39,13 @@ describe('modus-wc-divider', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcDivider: ariaLabel is required for accessibility.'
+      'ModusWcDivider: aria-label is required for accessibility.'
     );
 
     consoleWarnSpy.mockRestore();
   });
 
-  it('should not warn when ariaLabel is provided', async () => {
+  it('should not warn when aria-label is provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({

@@ -25,6 +25,10 @@ interface TextAreaArgs {
 const meta: Meta<TextAreaArgs> = {
   title: 'Components/Atoms/Textarea',
   component: 'modus-wc-textarea',
+  args: {
+    'aria-label': 'Enter your comments',
+    placeholder: 'Type your comments here',
+  },
   argTypes: {
     'textarea-aria-invalid': {
       control: {
@@ -73,10 +77,6 @@ const Template: Story = {
         .value=${args.value}
       ></modus-wc-textarea>
     `;
-  },
-  args: {
-    'aria-label': 'Enter your comments',
-    placeholder: 'Type your comments here',
   },
 };
 

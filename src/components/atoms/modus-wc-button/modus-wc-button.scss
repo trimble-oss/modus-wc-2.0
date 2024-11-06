@@ -4,3 +4,44 @@
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
+
+[data-theme="modus-classic-light"] .modus-wc-btn,
+[data-theme="modus-classic-dark"] .modus-wc-btn {
+  border-radius: var(--modus-wc-border-radius-md);
+  height: fit-content;
+  min-height: fit-content;
+
+  &.modus-wc-btn-sm {
+    font-size: var(--modus-wc-font-size-sm);
+    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+  }
+
+  &.modus-wc-btn-md {
+    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+  }
+
+  &.modus-wc-btn-lg {
+    padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+  }
+
+  &.modus-wc-btn-text {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    color: var(--modus-wc-color-base-content);
+
+    &:active {
+      background-color: transparent;
+      border: none;
+      box-shadow: none;
+      color: var(--modus-wc-color-base-content);
+    }
+
+    &:hover {
+      background-color: transparent;
+      border: none;
+      box-shadow: none;
+      color: var(--modus-wc-color-base-content);
+    }
+  }
+}

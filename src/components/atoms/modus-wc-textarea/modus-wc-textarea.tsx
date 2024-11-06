@@ -116,7 +116,9 @@ export class ModusWcTextarea {
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcTextarea: ariaLabel is required for accessibility.');
+      console.warn(
+        'ModusWcTextarea: aria-label is required for accessibility.'
+      );
     }
   }
 

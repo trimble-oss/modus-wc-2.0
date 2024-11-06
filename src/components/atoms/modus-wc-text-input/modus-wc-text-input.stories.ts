@@ -47,6 +47,15 @@ interface TextInputArgs {
 const meta: Meta<TextInputArgs> = {
   title: 'Components/Atoms/Text Input',
   component: 'modus-wc-text-input',
+  args: {
+    'aria-label': 'Enter your name',
+    'input-mode': 'text',
+    name: '',
+    placeholder: 'Type your name here',
+    size: 'md',
+    type: 'text',
+    value: '',
+  },
   argTypes: {
     'auto-capitalize': {
       control: { type: 'select' },
@@ -121,29 +130,8 @@ const Template: Story = {
       ?tab-index=${args['input-tab-index']}
       type=${args.type}
       .value=${args.value}
-      @inputBlur=${(e: FocusEvent) => {
-        const target = e.target as HTMLInputElement;
-        args.value = target.value;
-      }}
-      @inputChange=${(e: Event) => {
-        const target = e.target as HTMLInputElement;
-        args.value = target.value;
-      }}
-      @inputFocus=${(e: FocusEvent) => {
-        const target = e.target as HTMLInputElement;
-        args.value = target.value;
-      }}
     ></modus-wc-text-input>
   `,
-  args: {
-    'aria-label': 'Enter your name',
-    'input-mode': 'text',
-    name: '',
-    placeholder: 'Type your name here',
-    size: 'md',
-    type: 'text',
-    value: '',
-  },
 };
 
 export const Default: Story = { ...Template };

@@ -15,6 +15,14 @@ interface TypographyArgs {
 const meta: Meta<TypographyArgs> = {
   title: 'Components/Atoms/Typography',
   component: 'modus-wc-typography',
+  args: {
+    'aria-label': 'Example typography',
+    'body-size': 'standard',
+    content: 'The quick brown fox jumps over the lazy dog',
+    'text-case': 'sentence',
+    variant: 'p',
+    weight: 'regular',
+  },
   argTypes: {
     'body-size': {
       control: { type: 'inline-radio' },
@@ -57,12 +65,4 @@ const Template: Story = {
 
 export const Default: Story = {
   ...Template,
-  args: {
-    'aria-label': 'Example typography',
-    'body-size': 'standard',
-    content: 'The quick brown fox jumps over the lazy dog',
-    'text-case': 'sentence',
-    variant: 'p',
-    weight: 'regular',
-  },
 };
