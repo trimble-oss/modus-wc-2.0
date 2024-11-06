@@ -1,5 +1,6 @@
-import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
+import { withActions } from '@storybook/addon-actions/decorator';
+import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface TextInputArgs {
@@ -46,7 +47,6 @@ interface TextInputArgs {
 const meta: Meta<TextInputArgs> = {
   title: 'Components/Atoms/Text Input',
   component: 'modus-wc-text-input',
-  tags: ['autodocs'],
   argTypes: {
     'auto-capitalize': {
       control: { type: 'select' },
@@ -80,6 +80,12 @@ const meta: Meta<TextInputArgs> = {
     type: {
       control: { type: 'select' },
       options: ['email', 'password', 'search', 'tel', 'text', 'url'],
+    },
+  },
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['inputBlur', 'inputChange', 'inputFocus'],
     },
   },
 };

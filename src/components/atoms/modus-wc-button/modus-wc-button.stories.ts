@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/web-components';
+import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 
 interface ButtonArgs {
@@ -33,6 +34,12 @@ const meta: Meta<ButtonArgs> = {
     color: {
       control: { type: 'select' },
       options: ['primary', 'secondary', 'tertiary'],
+    },
+  },
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['buttonClick'],
     },
   },
 };
