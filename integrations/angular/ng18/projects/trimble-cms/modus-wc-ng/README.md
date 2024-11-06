@@ -1,24 +1,44 @@
-# ModusWcNg
+# Modus Angular Components: modus-wc-ng
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
 
-## Code scaffolding
+The components in this library were programmatically generated using the [StencilJS](https://stenciljs.com/) [Angular Framework Integration](https://stenciljs.com/docs/angular).
 
-Run `ng generate component component-name --project modus-wc-ng` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project modus-wc-ng`.
-> Note: Don't forget to add `--project modus-wc-ng` or else it will be added to the default project in your `angular.json` file. 
+## Installation
+
+- Install the Modus Angular Components Library and its Modus Web Component peer dependency
+  `npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng`
+
+- Add the following snippet to your `main.ts` (or any main module)
+
+  ```typescript
+  import { defineCustomElements } from '@trimble-cms/modus-wc/loader';
+
+  defineCustomElements();
+  ```
+
+- Add the following snippet to your `app.module.ts` (or any app module)
+
+  ```typescript
+  import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+  @NgModule({
+    ...
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  })
+  ```
+
+## Example Usage
+
+- Use a modus button in your `app.component.html`
+
+  ```html
+  <modus-button color="primary" [disabled]="false">Modus Button</modus-button>
+  ```
 
 ## Build
 
-Run `ng build modus-wc-ng` to build the project. The build artifacts will be stored in the `dist/` directory.
+To rebuild the Modus Angular Components you need to perform the following steps:
 
-## Publishing
-
-After building your library with `ng build modus-wc-ng`, go to the dist folder `cd dist/modus-wc-ng` and run `npm publish`.
-
-## Running unit tests
-
-Run `ng test modus-wc-ng` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- From the `./integrations/angular/ng18` project directory run
+  `npm run build`
