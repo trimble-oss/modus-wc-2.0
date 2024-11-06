@@ -36,9 +36,10 @@ export class AppModule {}
 ```
 
 You can now use Modus Angular Web Components while leveraging Angular template binding syntax:
+
 ```ts
 // app.component.html
-<modus-wc-button label="modus button" />
+<modus-wc-button label="Click Me" />
 ```
 
 ## Angular with Standalone Components
@@ -54,7 +55,7 @@ Import your component library into your component. You must distribute your comp
 ```ts
 // app.component.ts
 import { Component } from '@angular/core';
-import { ModusAngularComponentsModule } from 'component-library';
+import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-ng';
 
 @Component({
   selector: 'app-root',
@@ -66,9 +67,10 @@ export class AppComponent {}
 ```
 
 You can now use Modus Angular Web Components while leveraging Angular template binding syntax:
+
 ```ts
 // app.component.html
-<modus-wc-button label="modus button" />
+<modus-wc-button label="Click Me" />
 ```
 
 ## Consuming Modus Web Components Directly Instead of Using Modus Angular Components
