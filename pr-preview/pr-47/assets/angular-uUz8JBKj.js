@@ -1,4 +1,4 @@
-import{ae as n,af as r}from"./index-DNl-h662.js";import{useMDXComponents as s}from"./index-BSj771as.js";import"./iframe-DKivDnSS.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function t(o){const e={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",h4:"h4",li:"li",p:"p",pre:"pre",ul:"ul",...s(),...o.components};return n.jsxs(n.Fragment,{children:[n.jsx(r,{title:"Documentation/Frameworks/Angular"}),`
+import{ae as n,af as r}from"./index-_Y2TvDK5.js";import{useMDXComponents as s}from"./index-BSj771as.js";import"./iframe-BwCYrzyt.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function t(o){const e={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",h4:"h4",li:"li",p:"p",pre:"pre",ul:"ul",...s(),...o.components};return n.jsxs(n.Fragment,{children:[n.jsx(r,{title:"Documentation/Frameworks/Angular"}),`
 `,n.jsx(e.h1,{id:"angular-framework-integration",children:"Angular Framework Integration"}),`
 `,n.jsx(e.p,{children:"This guide will help you get started with consuming the Modus Angular Web Component library in your Angular project."}),`
 `,n.jsx(e.p,{children:`We highly recommend using the Modus Angular Components library for Angular based projects.
@@ -81,7 +81,7 @@ so that it does not throw errors when unknown element names are used in the mark
 @Component({
   selector: 'button-component',
   template: \`
-    <modus-button
+    <modus-wc-button
       [buttonStyle]="buttonStyle"
       [color]="color"
       [disabled]="disabled"
@@ -89,7 +89,7 @@ so that it does not throw errors when unknown element names are used in the mark
       (buttonClick)="onButtonClick.emit()"
     >
       <ng-content></ng-content>
-    </modus-button>
+    </modus-wc-button>
   \`,
 })
 export class ButtonComponent {
@@ -113,7 +113,7 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'select-component',
   template: \`
-    <modus-select
+    <modus-wc-select
       #select
       [disabled]="disabled"
       [errorText]="errorText"
@@ -128,7 +128,7 @@ import { FormControl } from '@angular/forms';
       [validText]="validText"
       (valueChange)="onSelectValueChange.emit(select.value)"
     >
-    </modus-select>
+    </modus-wc-select>
   \`,
 })
 export class SelectComponent {
@@ -178,7 +178,7 @@ import {
 } from '@angular/forms';
 
 @Directive({
-  selector: 'modus-select',
+  selector: 'modus-wc-select',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
