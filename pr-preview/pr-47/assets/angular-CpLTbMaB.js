@@ -1,4 +1,4 @@
-import{ae as n,af as r}from"./index-C3XMkef_.js";import{useMDXComponents as s}from"./index-BSj771as.js";import"./iframe-wxZtS7vs.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function o(t){const e={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",h4:"h4",li:"li",p:"p",pre:"pre",ul:"ul",...s(),...t.components};return n.jsxs(n.Fragment,{children:[n.jsx(r,{title:"Documentation/Frameworks/Angular"}),`
+import{ae as n,af as r}from"./index-BPg7P-Qh.js";import{useMDXComponents as s}from"./index-BSj771as.js";import"./iframe-YHhsoujU.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function t(o){const e={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",h4:"h4",li:"li",p:"p",pre:"pre",ul:"ul",...s(),...o.components};return n.jsxs(n.Fragment,{children:[n.jsx(r,{title:"Documentation/Frameworks/Angular"}),`
 `,n.jsx(e.h1,{id:"angular-framework-integration",children:"Angular Framework Integration"}),`
 `,n.jsx(e.p,{children:"This guide will help you get started with consuming the Modus Angular Web Component library in your Angular project."}),`
 `,n.jsx(e.p,{children:`We highly recommend using the Modus Angular Components library for Angular based projects.
@@ -6,8 +6,10 @@ These components are automatically generated using the Stencil Angular Framework
 `,n.jsx(e.p,{children:"Follow the steps outlined below to integrate and use Modus Angular Web Components effectively."}),`
 `,n.jsxs(e.p,{children:["Please refer to the ",n.jsx(e.a,{href:"https://stenciljs.com/docs/angular#consumer-usage",rel:"nofollow",children:"official stencil documentation"})," for more information on how to integrate with your Angular project."]}),`
 `,n.jsx(e.h2,{id:"angular-with-modules",children:"Angular with Modules"}),`
-`,n.jsx(e.p,{children:"Install dependencies:"}),`
-`,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-bash",children:`npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng
+`,n.jsx(e.p,{children:`Modus Angular Components have a peer dependency with Modus Web Components and require the
+installation of both packages.`}),`
+`,n.jsxs(e.p,{children:["Install both ",n.jsx(e.code,{children:"modus-wc"})," and ",n.jsx(e.code,{children:"modus-wc-ng"})," dependencies:"]}),`
+`,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-bash",children:`npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng@<latest-version>-ng18
 `})}),`
 `,n.jsx(e.p,{children:"Import Modus Angular Web Components library into your Angular app's module:"}),`
 `,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-ts",children:`// app.module.ts
@@ -25,8 +27,10 @@ export class AppModule {}
 <modus-wc-button label="Click Me" />
 `})}),`
 `,n.jsx(e.h2,{id:"angular-with-standalone-components",children:"Angular with Standalone Components"}),`
-`,n.jsx(e.p,{children:"Install dependencies:"}),`
-`,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-bash",children:`npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng
+`,n.jsx(e.p,{children:`Modus Angular Components have a peer dependency with Modus Web Components and require the
+installation of both packages.`}),`
+`,n.jsxs(e.p,{children:["Install both ",n.jsx(e.code,{children:"modus-wc"})," and ",n.jsx(e.code,{children:"modus-wc-ng"})," dependencies:"]}),`
+`,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-bash",children:`npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng@<latest-version>-ng18
 `})}),`
 `,n.jsxs(e.p,{children:["Import your component library into your component. You must distribute your components through a primary ",n.jsx(e.code,{children:"NgModule"})," to use your components in a standalone component."]}),`
 `,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-ts",children:`// app.component.ts
@@ -267,4 +271,4 @@ export class ModusSelectDirective implements ControlValueAccessor, OnInit {
   [options]="options"
   [optionsDisplayProp]="'display'">
 </select-component>
-`})})]})}function g(t={}){const{wrapper:e}={...s(),...t.components};return e?n.jsx(e,{...t,children:n.jsx(o,{...t})}):o(t)}export{g as default};
+`})})]})}function g(o={}){const{wrapper:e}={...s(),...o.components};return e?n.jsx(e,{...o,children:n.jsx(t,{...o})}):t(o)}export{g as default};
