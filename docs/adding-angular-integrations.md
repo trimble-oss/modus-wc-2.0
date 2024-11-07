@@ -29,7 +29,7 @@ From the angular workspace directory (`ng18/`) created in the previous step gene
 npx -p @angular/cli@18 ng generate library @trimble-cms/modus-wc-ng
 ```
 
-### Step 4: Update Peer Dependencies
+### Step 3: Update Peer Dependencies
 
 Add `@trimble-cms/modus-wc` as a peer dependency in the `package.json` file of your library located at `ng18/projects/trimble-cms/modus-wc-ng/package.json`:
 
@@ -41,7 +41,7 @@ Add `@trimble-cms/modus-wc` as a peer dependency in the `package.json` file of y
 }
 ```
 
-### Step 5: Configure Stencil Output Target
+### Step 4: Configure Stencil Output Target
 
 In the root `stencil.config.ts` file, add the Angular output target to ensure proper integration with Angular:
 
@@ -60,7 +60,7 @@ angularOutputTarget({
 });
 ```
 
-### Step 6: Generate Angular Stencil Component Wrappers
+### Step 5: Generate Angular Stencil Component Wrappers
 
 Run the following command from the root directory to build the Stencil components and generate the Angular component wrappers:
 
@@ -68,7 +68,7 @@ Run the following command from the root directory to build the Stencil component
 npm run stencil:build
 ```
 
-### Step 7: Create Angular Module
+### Step 6: Create Angular Module
 
 Create a new module at `projects/trimble-cms/modus-wc-ng/src/lib/modus-wc-ng.module.ts` to import and export the generated component wrappers:
 
@@ -94,7 +94,7 @@ export class ModusAngularComponentsModule {}
 
 This module automatically defines/registers the custom elements during app initialization!
 
-### Step 8: Update the Public API
+### Step 7: Update the Public API
 
 Update the `public-api.ts` file to export the components in the main entry point of your library:
 
@@ -106,7 +106,13 @@ export * from './lib/stencil-generated/components';
 
 Any components that are included in the exports array should additionally be exported in your main entry point (either public-api.ts or index.ts). Skipping this step will lead to Angular Ivy errors when building for production.
 
-### Step 9: Install Dependencies and Build
+### Step 8: Install Dependencies and Build
+
+Ensure `modus-wc` dependency is installed in the `ng18/` angular workspace:
+
+```bash
+npm install @trimble-cms/modus-wc
+```
 
 You may need to edit the build script in the angular workspace (`ng18/`) to specifically target the `projects/trimble-cms/modus-wc-ng` component library.
 
@@ -123,7 +129,7 @@ npm install
 npm run build
 ```
 
-### Step 10: Package for Local Testing
+### Step 9: Package for Local Testing
 
 You can package the angular component library for local testing by running the following command:
 
