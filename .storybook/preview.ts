@@ -27,6 +27,7 @@ const preview: Preview = {
         sort: 'requiredFirst',
       },
     },
+    layout: 'centered',
   },
   decorators: [
     withThemeByDataAttribute({
