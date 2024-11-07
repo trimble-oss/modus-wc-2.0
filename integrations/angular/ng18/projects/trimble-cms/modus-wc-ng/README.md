@@ -33,7 +33,7 @@ The components in this library were programmatically generated using the [Stenci
 - Use a modus button in your `app.component.html`
 
   ```html
-  <modus-button color="primary" [disabled]="false">Modus Button</modus-button>
+  <modus-wc-button color="primary" [disabled]="false">Modus Button</modus-wc-button>
   ```
 
 ## Build
