@@ -23,15 +23,18 @@
   ],
   "scripts": {
     "analyze": "custom-elements-manifest analyze --stencil --globs \"src/components/**/*.tsx\" --outdir src && node .github/fixup-cem-json.cjs",
-    "code-style": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yml}\"",
-    "code-style:fix": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yml}\"",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "dev": "concurrently \"npm run stencil:dev\" \"storybook dev -p 6006\"",
+    "lint": "wireit",
+    "lint:eslint": "wireit",
+    "lint:fix": "wireit lint:eslint:fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "start": "concurrently \"npm run tailwind:watch\" \"stencil build --dev --watch --serve\"",
     "test": "stencil test --spec --e2e",
     "test:coverage": "stencil test --spec --coverage",
     "test:update-snapshot": "stencil test --spec --e2e --update-snapshot",
     "test:watch": "stencil test --spec --e2e --watchAll",
+    "stencil:dev": "npm run analyze && stencil build --dev --docs --watch",
     "stencil:build": "stencil build --docs",
     "stencil:build-react": "stencil build --ts --react",
     "stencil:generate": "stencil generate",
@@ -77,7 +80,28 @@
     "tailwindcss": "^3.4.14",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.2",
-    "unplugin-stencil": "^0.1.1",
-    "vite": "^5.4.10"
+    "wireit": "^0.14.9"
+  },
+  "wireit": {
+    "lint": {
+      "dependencies": [
+        "lint:eslint",
+        "format:check"
+      ]
+    },
+    "lint:eslint": {
+      "command": "eslint --color --cache --cache-location .eslintcache .",
+      "files": [
+        "src/**/*.{ts,tsx,js,jsx}",
+        "eslint.config.js"
+      ]
+    },
+    "lint:eslint:fix": {
+      "command": "eslint --color --cache --cache-location .eslintcache --fix .",
+      "files": [
+        "src/**/*.{ts,tsx,js,jsx}",
+        "eslint.config.js"
+      ]
+    }
   }
 }
