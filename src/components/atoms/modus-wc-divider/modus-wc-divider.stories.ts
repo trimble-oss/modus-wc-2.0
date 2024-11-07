@@ -64,6 +64,9 @@ const meta: Meta<DividerArgs> = {
       control: { type: 'boolean' },
     },
   },
+  parameters: {
+    layout: 'padded',
+  },
 };
 
 export default meta;
