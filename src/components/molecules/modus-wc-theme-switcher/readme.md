@@ -9,6 +9,8 @@
 
 A theme switcher component used to toggle the application theme and/or mode.
 
+Allows consumers to set the initial theme (Modus Classic, Prism, etc) and end-users to toggle modes (Light, Dark).
+
 Adheres to WCAG 2.2 standards.
 
 ## Properties
