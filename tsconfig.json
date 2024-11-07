@@ -1,23 +1,30 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "allowUnreachableCode": false,
-    "declaration": false,
-    "experimentalDecorators": true,
-    "lib": ["dom", "es2017"],
-    "moduleResolution": "node",
-    "module": "esnext",
+    // Basic Options
     "target": "es2017",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "module": "esnext",
+    "lib": ["dom", "es2017"],
     "jsx": "react",
     "jsxFactory": "h",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
+
+    // Type-Checking Options
     "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowUnreachableCode": false,
+
+    // Module Resolution Options
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    // Other Options
+    "declaration": false,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
     "types": ["jest", "marked"]
   },
   "include": ["src", "./*.ts"],
-  "exclude": ["node_modules", "**/*.config.ts"]
+  "exclude": ["node_modules"]
 }
