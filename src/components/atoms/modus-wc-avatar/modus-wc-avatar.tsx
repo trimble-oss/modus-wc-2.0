@@ -70,7 +70,7 @@ export class ModusWcAvatar {
   render() {
     return (
       <Host>
-        <div class="modus-wc-avatar">
+        <div class="modus-wc-avatar" aria-label={this.ariaLabel}>
           <div class={this.getClasses()}>
             <img src={this.imgSrc} alt={this.alt} />
           </div>
