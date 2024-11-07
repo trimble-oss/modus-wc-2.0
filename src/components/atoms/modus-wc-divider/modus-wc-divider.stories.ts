@@ -23,7 +23,7 @@ const meta: Meta<DividerArgs> = {
   component: 'modus-wc-divider',
   args: {
     'aria-label': 'Example divider',
-    color: 'primary',
+    color: 'tertiary',
     content: '',
     'custom-class': '',
     orientation: 'vertical',
