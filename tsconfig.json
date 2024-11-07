@@ -25,11 +25,6 @@
     "experimentalDecorators": true,
     "types": ["jest", "marked"]
   },
-  "include": [
-    "src",
-    "./*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src", "./*.ts"],
+  "exclude": ["node_modules"]
 }
