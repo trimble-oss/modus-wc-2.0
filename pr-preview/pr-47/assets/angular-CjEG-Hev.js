@@ -1,4 +1,4 @@
-import{ae as n,af as r}from"./index-BPg7P-Qh.js";import{useMDXComponents as s}from"./index-BSj771as.js";import"./iframe-YHhsoujU.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function t(o){const e={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",h4:"h4",li:"li",p:"p",pre:"pre",ul:"ul",...s(),...o.components};return n.jsxs(n.Fragment,{children:[n.jsx(r,{title:"Documentation/Frameworks/Angular"}),`
+import{ae as n,af as r}from"./index-DNl-h662.js";import{useMDXComponents as s}from"./index-BSj771as.js";import"./iframe-DKivDnSS.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function t(o){const e={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",h4:"h4",li:"li",p:"p",pre:"pre",ul:"ul",...s(),...o.components};return n.jsxs(n.Fragment,{children:[n.jsx(r,{title:"Documentation/Frameworks/Angular"}),`
 `,n.jsx(e.h1,{id:"angular-framework-integration",children:"Angular Framework Integration"}),`
 `,n.jsx(e.p,{children:"This guide will help you get started with consuming the Modus Angular Web Component library in your Angular project."}),`
 `,n.jsx(e.p,{children:`We highly recommend using the Modus Angular Components library for Angular based projects.
@@ -8,8 +8,8 @@ These components are automatically generated using the Stencil Angular Framework
 `,n.jsx(e.h2,{id:"angular-with-modules",children:"Angular with Modules"}),`
 `,n.jsx(e.p,{children:`Modus Angular Components have a peer dependency with Modus Web Components and require the
 installation of both packages.`}),`
-`,n.jsxs(e.p,{children:["Install both ",n.jsx(e.code,{children:"modus-wc"})," and ",n.jsx(e.code,{children:"modus-wc-ng"})," dependencies:"]}),`
-`,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-bash",children:`npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng@<latest-version>-ng18
+`,n.jsxs(e.p,{children:["Install both ",n.jsx(e.code,{children:"modus-wc"})," and ",n.jsx(e.code,{children:"modus-wc-ng"})," dependencies and ensure you specify the target version of Angular for the ",n.jsx(e.code,{children:"modus-wc-ng"})," package (e.g., ",n.jsx(e.code,{children:"ng18"})," for Angular 18):"]}),`
+`,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-bash",children:`npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng@<latest-version>-ng<target-version>
 `})}),`
 `,n.jsx(e.p,{children:"Import Modus Angular Web Components library into your Angular app's module:"}),`
 `,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-ts",children:`// app.module.ts
@@ -29,8 +29,8 @@ export class AppModule {}
 `,n.jsx(e.h2,{id:"angular-with-standalone-components",children:"Angular with Standalone Components"}),`
 `,n.jsx(e.p,{children:`Modus Angular Components have a peer dependency with Modus Web Components and require the
 installation of both packages.`}),`
-`,n.jsxs(e.p,{children:["Install both ",n.jsx(e.code,{children:"modus-wc"})," and ",n.jsx(e.code,{children:"modus-wc-ng"})," dependencies:"]}),`
-`,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-bash",children:`npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng@<latest-version>-ng18
+`,n.jsxs(e.p,{children:["Install both ",n.jsx(e.code,{children:"modus-wc"})," and ",n.jsx(e.code,{children:"modus-wc-ng"})," dependencies and ensure you specify the target version of Angular for the ",n.jsx(e.code,{children:"modus-wc-ng"})," package (e.g., ",n.jsx(e.code,{children:"ng18"})," for Angular 18):"]}),`
+`,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-bash",children:`npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng@<latest-version>-ng<target-version>
 `})}),`
 `,n.jsxs(e.p,{children:["Import your component library into your component. You must distribute your components through a primary ",n.jsx(e.code,{children:"NgModule"})," to use your components in a standalone component."]}),`
 `,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-ts",children:`// app.component.ts
