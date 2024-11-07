@@ -42,13 +42,11 @@
     "tailwind:watch": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --watch"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.7",
-    "@babel/eslint-parser": "^7.25.7",
     "@custom-elements-manifest/analyzer": "^0.10.3",
     "@eslint/js": "^9.11.1",
     "@stencil/angular-output-target": "^0.9.1",
     "@stencil/core": "^4.22.0",
-    "@stencil/react-output-target": "^0.7.1",
+    "@stencil/react-output-target": "^0.7.4",
     "@stencil/sass": "^3.0.12",
     "@stencil/store": "^2.0.16",
     "@storybook/addon-a11y": "^8.4.2",
@@ -61,8 +59,8 @@
     "@storybook/web-components-vite": "^8.4.2",
     "@tailwindcss/typography": "^0.5.15",
     "@types/jest": "^29.5.13",
-    "@typescript-eslint/eslint-plugin": "^8.8.0",
-    "@typescript-eslint/parser": "^8.8.0",
+    "@typescript-eslint/eslint-plugin": "^8.13.0",
+    "@typescript-eslint/parser": "^8.13.0",
     "concurrently": "^9.0.1",
     "daisyui": "^4.12.13",
     "eslint": "^9.11.1",
@@ -79,6 +77,7 @@
     "tailwindcss": "^3.4.14",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.2",
-    "webpack": "^5.95.0"
+    "unplugin-stencil": "^0.1.1",
+    "vite": "^5.4.10"
   }
 }
