@@ -1,4 +1,4 @@
-import { h, Component, Prop } from '@stencil/core';
+import { Component, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-avatar.tailwind';
 
 /**
@@ -69,11 +69,13 @@ export class ModusWcAvatar {
 
   render() {
     return (
-      <div class="modus-wc-avatar" aria-label={this.ariaLabel}>
-        <div class={this.getClasses()}>
-          <img src={this.imgSrc} alt={this.alt} />
+      <Host>
+        <div class="modus-wc-avatar">
+          <div class={this.getClasses()}>
+            <img src={this.imgSrc} alt={this.alt} />
+          </div>
         </div>
-      </div>
+      </Host>
     );
   }
 }
