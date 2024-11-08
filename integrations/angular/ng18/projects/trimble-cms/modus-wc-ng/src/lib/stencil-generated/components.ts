@@ -80,14 +80,14 @@ export declare interface ModusWcButton extends Components.ModusWcButton {
 
 
 @ProxyCmp({
-  inputs: ['ariaLabel', 'content', 'customClass', 'daisyClass']
+  inputs: ['ariaLabel', 'color', 'content', 'customClass', 'orientation', 'position', 'responsive']
 })
 @Component({
   selector: 'modus-wc-divider',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['ariaLabel', 'content', 'customClass', 'daisyClass'],
+  inputs: ['ariaLabel', 'color', 'content', 'customClass', 'orientation', 'position', 'responsive'],
 })
 export class ModusWcDivider {
   protected el: HTMLElement;
