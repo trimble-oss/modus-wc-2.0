@@ -181,6 +181,7 @@ Accessibility is validated by the Accessibility Check (axe-core) GitHub workflow
 ### Angular and React Wrappers
 
 - Create wrapper components for Angular and React using Stencil framework integrations
+- See [adding angular integrations](./adding-angular-integrations.md) for a guide on scaffolding new versions of Angular integrations
 
 ## Developer Experience
 
