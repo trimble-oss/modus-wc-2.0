@@ -23,21 +23,18 @@
   ],
   "scripts": {
     "build": "wireit",
-    "build:stencil": "wireit",
-    "dev": "concurrently \"npm run stencil:dev\" \"storybook dev -p 6006\"",
+    "clean": "npx rimraf .wireit .stencil .eslintcache .storybook-static dist loader",
+    "dev": "wireit",
     "lint": "wireit",
     "lint:eslint": "wireit",
-    "lint:fix": "wireit lint:eslint:fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "lint:prettier": "wireit",
+    "format": "wireit",
     "start": "concurrently \"npm run tailwind:watch\" \"stencil build --dev --watch --serve\"",
     "test": "stencil test --spec --e2e",
     "test:coverage": "stencil test --spec --coverage",
     "test:update-snapshot": "stencil test --spec --e2e --update-snapshot",
     "test:watch": "stencil test --spec --e2e --watchAll",
-    "stencil:dev": "stencil build --dev --docs --watch",
-    "stencil:build": "stencil build --docs",
-    "stencil:watch": "stencil build --dev --watch",
+    "stencil:watch": "wireit",
     "storybook": "wireit",
     "storybook:build": "wireit",
     "tailwind": "wireit"
@@ -102,7 +99,7 @@
         "build:custom-elements-json"
       ],
       "files": [
-        "src/**/*.{.css,.scss,.ts,.tsx}",
+        "src/**/*.{css,scss,ts,tsx}",
         "src/custom-elements.json",
         "!src/components.d.ts",
         "stencil.config.ts",
@@ -116,30 +113,93 @@
         "integrations/angular/ng18/projects/trimble-cms/modus-wc-ng/src/lib/stencil-generated/"
       ]
     },
-    "lint": {
+    "dev": {
       "dependencies": [
-        "lint:eslint",
-        "format:check"
+        "build:custom-elements-json",
+        "tailwind",
+        "stencil:watch"
       ]
     },
-    "lint:eslint": {
-      "command": "eslint --color --cache --cache-location .eslintcache .",
-      "files": [
-        "src/**/*.{ts,tsx,js,jsx}",
-        "eslint.config.js"
+    "format": {
+      "dependencies": [
+        "format:prettier",
+        "format:eslint"
       ]
     },
-    "lint:eslint:fix": {
+    "format:eslint": {
       "command": "eslint --color --cache --cache-location .eslintcache --fix .",
       "files": [
         "src/**/*.{ts,tsx,js,jsx}",
         "eslint.config.js"
       ]
     },
-    "storybook": {
-      "command": "storybook dev -p 6006",
+    "format:prettier": {
+      "command": "prettier --write .",
+      "files": [
+        "src/**/*.{ts,tsx,js,jsx,css,scss,json,md,html}"
+      ]
+    },
+    "lint": {
+      "dependencies": [
+        {
+          "script": "lint:eslint",
+          "cascade": false
+        },
+        {
+          "script": "lint:prettier",
+          "cascade": false
+        }
+      ]
+    },
+    "lint:eslint": {
+      "command": "eslint --color --cache --cache-location .eslintcache .",
+      "clean": false,
+      "files": [
+        "src/**/*.{ts,tsx,js,jsx}",
+        "!src/components.d.ts",
+        "eslint.config.js"
+      ],
+      "output": [
+        "src/**/*.{ts,tsx,js,jsx}",
+        "!src/components.d.ts",
+        ".eslintcache"
+      ]
+    },
+    "lint:prettier": {
+      "command": "prettier --check .",
+      "clean": false,
+      "files": [
+        "*.{ts,tsx,js,jsx,css,scss,json,md,html}"
+      ],
+      "output": [
+        "*.{ts,tsx,js,jsx,css,scss,json,md,html}",
+        "!src/components.d.ts"
+      ]
+    },
+    "stencil:watch": {
+      "command": "stencil build --dev --docs --watch",
+      "service": {
+        "readyWhen": {
+          "lineMatches": "build finished, watching for changes..."
+        }
+      },
       "dependencies": [
         "build"
+      ],
+      "files": [
+        "src/**/*.{css,scss,ts,tsx}",
+        "src/custom-elements.json",
+        "!src/components.d.ts",
+        "stencil.config.ts",
+        "tsconfig.json"
+      ]
+    },
+    "storybook": {
+      "command": "storybook dev -p 6006",
+      "service": true,
+      "dependencies": [
+        "build",
+        "stencil:watch"
       ],
       "files": [
         "src/",
@@ -147,8 +207,7 @@
         "dist/",
         "loader/",
         "stencil.config.ts"
-      ],
-      "service": true
+      ]
     },
     "storybook:build": {
       "command": "storybook build",

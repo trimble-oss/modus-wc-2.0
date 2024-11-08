@@ -16,5 +16,16 @@ const config: StorybookConfig = {
     options: {},
   },
   staticDirs: [{ from: 'public', to: 'public' }],
+  async viteFinal(config, { configType }) {
+    const { mergeConfig } = await import('vite');
+
+    return mergeConfig(config, {
+      server: {
+        hmr: {
+          overlay: true,
+        },
+      },
+    });
+  },
 };
 export default config;
