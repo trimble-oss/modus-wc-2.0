@@ -34,7 +34,7 @@ export class ModusWCTypography {
   /**
    * Custom CSS class to apply to the typography element.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The size of the font.
@@ -49,7 +49,7 @@ export class ModusWCTypography {
   /**
    * The weight of the text.
    */
-  @Prop() weight: TypographyWeight = 'normal';
+  @Prop() weight?: TypographyWeight = 'normal';
 
   componentWillLoad() {
     if (!this.ariaLabel) {

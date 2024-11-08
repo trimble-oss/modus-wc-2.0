@@ -376,7 +376,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the typography element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The size of the font.
          */
@@ -388,7 +388,7 @@ export namespace Components {
         /**
           * The weight of the text.
          */
-        "weight": TypographyWeight;
+        "weight"?: TypographyWeight;
     }
 }
 export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {

@@ -1,17 +1,16 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
-import {
-  TypographySize,
-  TypographyVariant,
-  TypographyWeight,
-} from './modus-wc-typography';
+import { TypographySize, TypographyWeight } from './modus-wc-typography';
+import { ifDefined } from 'lit/directives/if-defined.js';
+
+// Slot content was lost due to rendering issues when changing the "variant" attribute.
+// Because of this, each variant is rendered as a unique story below.
 
 interface TypographyArgs {
   'aria-label': string;
   content: string;
   'custom-class': string;
   size: TypographySize;
-  variant: TypographyVariant;
   weight: TypographyWeight;
 }
 
@@ -22,7 +21,6 @@ const meta: Meta<TypographyArgs> = {
     'aria-label': 'Example typography',
     content: 'The quick brown fox jumps over the lazy dog',
     size: 'md',
-    variant: 'p',
     weight: 'normal',
   },
   argTypes: {
@@ -32,10 +30,6 @@ const meta: Meta<TypographyArgs> = {
     size: {
       control: { type: 'radio' },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
-    },
-    variant: {
-      control: { type: 'radio' },
-      options: ['body', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
     },
     weight: {
       control: { type: 'radio' },
@@ -48,14 +42,14 @@ export default meta;
 
 type Story = StoryObj<TypographyArgs>;
 
-const Template: Story = {
+export const Body: Story = {
   render: (args) => {
     return html`
       <modus-wc-typography
         aria-label="${args['aria-label']}"
-        ?custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         size="${args.size}"
-        variant="${args.variant}"
+        variant="body"
         weight="${args.weight}"
         >${args.content}</modus-wc-typography
       >
@@ -63,6 +57,97 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = {
-  ...Template,
+export const Heading1: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        size="${args.size}"
+        variant="h1"
+        weight="${args.weight}"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
+};
+
+export const Heading2: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        variant="h2"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
+};
+
+export const Heading3: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        variant="h3"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
+};
+
+export const Heading4: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        variant="h4"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
+};
+
+export const Heading5: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        variant="h5"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
+};
+
+export const Heading6: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        variant="h6"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
+};
+
+export const Paragraph: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        size="${args.size}"
+        variant="p"
+        weight="${args.weight}"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
 };
