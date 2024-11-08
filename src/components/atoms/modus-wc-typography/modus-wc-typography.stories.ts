@@ -1,15 +1,18 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
-import { TypographyBodySize, TypographyVariant } from './modus-wc-typography';
+import {
+  TypographySize,
+  TypographyVariant,
+  TypographyWeight,
+} from './modus-wc-typography';
 
 interface TypographyArgs {
   'aria-label': string;
-  'body-size': TypographyBodySize;
-  'custom-class': string;
-  variant: TypographyVariant;
-  weight: 'regular' | 'semibold' | 'bold';
-  'text-case': 'sentence' | 'title' | 'uppercase';
   content: string;
+  'custom-class': string;
+  size: TypographySize;
+  variant: TypographyVariant;
+  weight: TypographyWeight;
 }
 
 const meta: Meta<TypographyArgs> = {
@@ -17,28 +20,26 @@ const meta: Meta<TypographyArgs> = {
   component: 'modus-wc-typography',
   args: {
     'aria-label': 'Example typography',
-    'body-size': 'standard',
     content: 'The quick brown fox jumps over the lazy dog',
-    'text-case': 'sentence',
+    size: 'md',
     variant: 'p',
-    weight: 'regular',
+    weight: 'normal',
   },
   argTypes: {
-    'body-size': {
-      control: { type: 'inline-radio' },
-      options: ['standard', 'small', 'mini'],
+    content: {
+      control: { type: 'text' },
+    },
+    size: {
+      control: { type: 'radio' },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     variant: {
-      control: { type: 'select' },
+      control: { type: 'radio' },
       options: ['body', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
     },
     weight: {
-      control: { type: 'inline-radio' },
-      options: ['regular', 'semibold', 'bold'],
-    },
-    'text-case': {
-      control: { type: 'inline-radio' },
-      options: ['sentence', 'title', 'uppercase'],
+      control: { type: 'radio' },
+      options: ['light', 'normal', 'bold'],
     },
   },
 };
@@ -52,11 +53,10 @@ const Template: Story = {
     return html`
       <modus-wc-typography
         aria-label="${args['aria-label']}"
-        body-size="${args['body-size']}"
         ?custom-class="${args['custom-class']}"
+        size="${args.size}"
         variant="${args.variant}"
         weight="${args.weight}"
-        text-case="${args['text-case']}"
         >${args.content}</modus-wc-typography
       >
     `;

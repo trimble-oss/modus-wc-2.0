@@ -6,9 +6,9 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IThemeConfig } from "./providers/theme/theme.types";
-import { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+import { TypographySize, TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { IThemeConfig } from "./providers/theme/theme.types";
-export { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+export { TypographySize, TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
      * A customizable avatar component used to create avatars with different images.
@@ -370,21 +370,17 @@ export namespace Components {
      */
     interface ModusWcTypography {
         /**
-          * The aria-label for the typography component.
+          * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
-        /**
-          * The size option when variant "body" is selected.
-         */
-        "bodySize"?: TypographyBodySize;
         /**
           * Custom CSS class to apply to the typography element.
          */
         "customClass": string;
         /**
-          * The text case.
+          * The size of the font.
          */
-        "textCase": 'sentence' | 'title' | 'uppercase';
+        "size"?: TypographySize;
         /**
           * The variant of the typography component.
          */
@@ -392,7 +388,7 @@ export namespace Components {
         /**
           * The weight of the text.
          */
-        "weight": 'regular' | 'semibold' | 'bold';
+        "weight": TypographyWeight;
     }
 }
 export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
@@ -952,21 +948,17 @@ declare namespace LocalJSX {
      */
     interface ModusWcTypography {
         /**
-          * The aria-label for the typography component.
+          * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
-        /**
-          * The size option when variant "body" is selected.
-         */
-        "bodySize"?: TypographyBodySize;
         /**
           * Custom CSS class to apply to the typography element.
          */
         "customClass"?: string;
         /**
-          * The text case.
+          * The size of the font.
          */
-        "textCase"?: 'sentence' | 'title' | 'uppercase';
+        "size"?: TypographySize;
         /**
           * The variant of the typography component.
          */
@@ -974,7 +966,7 @@ declare namespace LocalJSX {
         /**
           * The weight of the text.
          */
-        "weight"?: 'regular' | 'semibold' | 'bold';
+        "weight"?: TypographyWeight;
     }
     interface IntrinsicElements {
         "modus-wc-avatar": ModusWcAvatar;
