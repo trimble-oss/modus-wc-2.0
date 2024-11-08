@@ -83,6 +83,9 @@ const Template: Story = {
       orientation="${args.orientation}"
       position="${args.position}"
       responsive="${args.responsive}"
+      style="${args.orientation === 'horizontal'
+        ? 'display: flex; height: 100px'
+        : ''}"
     ></modus-wc-divider>
   `,
 };
