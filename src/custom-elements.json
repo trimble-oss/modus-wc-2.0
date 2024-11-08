@@ -858,7 +858,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable typography component used to render text with different sizes, variants, weights, and text casing.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable typography component used to render text with different sizes, variants, and weights.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWCTypography",
           "members": [
             {
@@ -873,15 +873,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "The aria-label for the typography component."
-            },
-            {
-              "name": "body-size",
-              "fieldName": "bodySize",
-              "type": {
-                "text": "TypographyBodySize"
-              },
-              "description": "The size option when variant \"body\" is selected."
+              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "custom-class",
@@ -892,12 +884,12 @@
               "description": "Custom CSS class to apply to the typography element."
             },
             {
-              "name": "text-case",
-              "fieldName": "textCase",
+              "name": "size",
+              "fieldName": "size",
               "type": {
-                "text": "'sentence' | 'title' | 'uppercase'"
+                "text": "TypographySize"
               },
-              "description": "The text case."
+              "description": "The size of the font."
             },
             {
               "name": "variant",
@@ -911,7 +903,7 @@
               "name": "weight",
               "fieldName": "weight",
               "type": {
-                "text": "'regular' | 'semibold' | 'bold'"
+                "text": "TypographyWeight"
               },
               "description": "The weight of the text."
             }

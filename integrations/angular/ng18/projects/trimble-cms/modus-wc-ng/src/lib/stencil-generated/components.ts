@@ -226,14 +226,14 @@ export declare interface ModusWcThemeSwitcher extends Components.ModusWcThemeSwi
 
 
 @ProxyCmp({
-  inputs: ['ariaLabel', 'bodySize', 'customClass', 'textCase', 'variant', 'weight']
+  inputs: ['ariaLabel', 'customClass', 'size', 'variant', 'weight']
 })
 @Component({
   selector: 'modus-wc-typography',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['ariaLabel', 'bodySize', 'customClass', 'textCase', 'variant', 'weight'],
+  inputs: ['ariaLabel', 'customClass', 'size', 'variant', 'weight'],
 })
 export class ModusWcTypography {
   protected el: HTMLElement;

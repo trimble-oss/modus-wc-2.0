@@ -1,6 +1,7 @@
 import { h, Component, Host, Prop } from '@stencil/core';
+import { convertPropsToClasses } from './modus-wc-typography.tailwind';
 
-export type TypographyBodySize = 'standard' | 'small' | 'mini';
+export type TypographySize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 export type TypographyVariant =
   | 'body'
@@ -12,8 +13,10 @@ export type TypographyVariant =
   | 'h6'
   | 'p';
 
+export type TypographyWeight = 'light' | 'normal' | 'bold';
+
 /**
- * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+ * A customizable typography component used to render text with different sizes, variants, and weights.
  *
  * Adheres to WCAG 2.2 standards.
  */
@@ -24,19 +27,19 @@ export type TypographyVariant =
 })
 export class ModusWCTypography {
   /**
-   * The aria-label for the typography component.
+   * The aria-label attribute for accessibility.
    */
   @Prop() ariaLabel!: string;
 
   /**
-   * The size option when variant "body" is selected.
-   */
-  @Prop() bodySize?: TypographyBodySize = 'standard';
-
-  /**
    * Custom CSS class to apply to the typography element.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
+
+  /**
+   * The size of the font.
+   */
+  @Prop() size?: TypographySize = 'md';
 
   /**
    * The variant of the typography component.
@@ -46,12 +49,7 @@ export class ModusWCTypography {
   /**
    * The weight of the text.
    */
-  @Prop() weight: 'regular' | 'semibold' | 'bold' = 'regular';
-
-  /**
-   * The text case.
-   */
-  @Prop() textCase: 'sentence' | 'title' | 'uppercase' = 'sentence';
+  @Prop() weight?: TypographyWeight = 'normal';
 
   componentWillLoad() {
     if (!this.ariaLabel) {
@@ -61,23 +59,29 @@ export class ModusWCTypography {
     }
   }
 
+  private getClasses(): string {
+    const classList = [];
+
+    const propClasses = convertPropsToClasses({
+      size: this.size,
+      variant: this.variant,
+      weight: this.weight,
+    });
+
+    // The order CSS classes are added matters to CSS specificity
+    if (propClasses) classList.push(propClasses);
+    classList.push('modus-wc-typography');
+    if (this.customClass) classList.push(this.customClass);
+
+    return classList.join(' ');
+  }
+
   render() {
     const Element = this.variant;
 
     return (
       <Host>
-        <Element
-          class={{
-            'modus-wc-typography': true,
-            [this.customClass]: !!this.customClass,
-            [`modus-wc-typography--body-${this.bodySize}`]:
-              this.variant === 'body',
-            [`modus-wc-typography--${this.textCase}`]: true,
-            [`modus-wc-typography--${this.variant}`]: true,
-            [`modus-wc-typography--${this.weight}`]: true,
-          }}
-          aria-label={this.ariaLabel}
-        >
+        <Element class={this.getClasses()}>
           <slot></slot>
         </Element>
       </Host>

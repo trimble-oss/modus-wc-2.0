@@ -6,9 +6,9 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IThemeConfig } from "./providers/theme/theme.types";
-import { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+import { TypographySize, TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { IThemeConfig } from "./providers/theme/theme.types";
-export { TypographyBodySize, TypographyVariant } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+export { TypographySize, TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
      * A customizable avatar component used to create avatars with different images.
@@ -365,26 +365,22 @@ export namespace Components {
         "customClass": string;
     }
     /**
-     * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+     * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTypography {
         /**
-          * The aria-label for the typography component.
+          * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
         /**
-          * The size option when variant "body" is selected.
-         */
-        "bodySize"?: TypographyBodySize;
-        /**
           * Custom CSS class to apply to the typography element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
-          * The text case.
+          * The size of the font.
          */
-        "textCase": 'sentence' | 'title' | 'uppercase';
+        "size"?: TypographySize;
         /**
           * The variant of the typography component.
          */
@@ -392,7 +388,7 @@ export namespace Components {
         /**
           * The weight of the text.
          */
-        "weight": 'regular' | 'semibold' | 'bold';
+        "weight"?: TypographyWeight;
     }
 }
 export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
@@ -538,7 +534,7 @@ declare global {
         new (): HTMLModusWcThemeSwitcherElement;
     };
     /**
-     * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+     * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcTypographyElement extends Components.ModusWcTypography, HTMLStencilElement {
@@ -947,26 +943,22 @@ declare namespace LocalJSX {
         "onThemeChange"?: (event: ModusWcThemeSwitcherCustomEvent<IThemeConfig>) => void;
     }
     /**
-     * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+     * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTypography {
         /**
-          * The aria-label for the typography component.
+          * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
-        /**
-          * The size option when variant "body" is selected.
-         */
-        "bodySize"?: TypographyBodySize;
         /**
           * Custom CSS class to apply to the typography element.
          */
         "customClass"?: string;
         /**
-          * The text case.
+          * The size of the font.
          */
-        "textCase"?: 'sentence' | 'title' | 'uppercase';
+        "size"?: TypographySize;
         /**
           * The variant of the typography component.
          */
@@ -974,7 +966,7 @@ declare namespace LocalJSX {
         /**
           * The weight of the text.
          */
-        "weight"?: 'regular' | 'semibold' | 'bold';
+        "weight"?: TypographyWeight;
     }
     interface IntrinsicElements {
         "modus-wc-avatar": ModusWcAvatar;
@@ -1030,7 +1022,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-theme-switcher": LocalJSX.ModusWcThemeSwitcher & JSXBase.HTMLAttributes<HTMLModusWcThemeSwitcherElement>;
             /**
-             * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+             * A customizable typography component used to render text with different sizes, variants, and weights.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-typography": LocalJSX.ModusWcTypography & JSXBase.HTMLAttributes<HTMLModusWcTypographyElement>;
