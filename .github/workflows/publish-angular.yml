@@ -5,15 +5,13 @@
 name: Publish & Release - Angular
 
 on:
-  workflow_dispatch:
+  # FIXME: changes from 'workflow_dispatch' to 'workflow_call'
+  workflow_call:
     inputs:
       version:
         description: 'Version to publish'
         required: true
         type: string
-
-permissions:
-  contents: write
 
 jobs:
   build-and-publish-angular:
