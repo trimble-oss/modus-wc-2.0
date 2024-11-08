@@ -69,13 +69,9 @@ jobs:
   # TODO: try not using that workflow dispatch action, instead use template job directly
   trigger-angular-publish:
     needs: build-and-publish-wc
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Angular Publish Workflow
-        uses: ./.github/workflows/publish-angular.yml
-        # TODO: left off here, need to figure out correct way to pass version in
-        with:
-          inputs: '{"version": "${{ github.event.inputs.version }}"}'
+    uses: ./.github/workflows/publish-angular.yml
+    with:
+      version: ${{ github.event.inputs.version }}
 
   trigger-react-publish:
     needs: build-and-publish-wc
