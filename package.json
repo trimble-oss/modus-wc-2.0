@@ -22,7 +22,8 @@
     "loader/"
   ],
   "scripts": {
-    "analyze": "custom-elements-manifest analyze --stencil --globs \"src/components/**/*.tsx\" --outdir src && node .github/fixup-cem-json.cjs",
+    "build": "wireit",
+    "build:stencil": "wireit",
     "dev": "concurrently \"npm run stencil:dev\" \"storybook dev -p 6006\"",
     "lint": "wireit",
     "lint:eslint": "wireit",
@@ -34,15 +35,12 @@
     "test:coverage": "stencil test --spec --coverage",
     "test:update-snapshot": "stencil test --spec --e2e --update-snapshot",
     "test:watch": "stencil test --spec --e2e --watchAll",
-    "stencil:dev": "npm run analyze && stencil build --dev --docs --watch",
+    "stencil:dev": "stencil build --dev --docs --watch",
     "stencil:build": "stencil build --docs",
-    "stencil:build-react": "stencil build --ts --react",
-    "stencil:generate": "stencil generate",
     "stencil:watch": "stencil build --dev --watch",
-    "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build",
-    "tailwind:build": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css -m",
-    "tailwind:watch": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --watch"
+    "storybook": "wireit",
+    "storybook:build": "wireit",
+    "tailwind": "wireit"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.3",
@@ -83,6 +81,41 @@
     "wireit": "^0.14.9"
   },
   "wireit": {
+    "build": {
+      "dependencies": [
+        "tailwind",
+        "build:stencil"
+      ]
+    },
+    "build:custom-elements-json": {
+      "command": "custom-elements-manifest analyze --stencil --globs \"src/components/**/*.tsx\" --outdir src && node .github/fixup-cem-json.cjs",
+      "files": [
+        "src/components/**/*.tsx"
+      ],
+      "output": [
+        "src/custom-elements.json"
+      ]
+    },
+    "build:stencil": {
+      "command": "stencil build --docs --ts",
+      "dependencies": [
+        "build:custom-elements-json"
+      ],
+      "files": [
+        "src/**/*.{.css,.scss,.ts,.tsx}",
+        "src/custom-elements.json",
+        "!src/components.d.ts",
+        "stencil.config.ts",
+        "tsconfig.json"
+      ],
+      "output": [
+        "src/components.d.ts",
+        "dist/",
+        "loader/",
+        "integrations/react/stencil-generated/",
+        "integrations/angular/ng18/projects/trimble-cms/modus-wc-ng/src/lib/stencil-generated/"
+      ]
+    },
     "lint": {
       "dependencies": [
         "lint:eslint",
@@ -101,6 +134,47 @@
       "files": [
         "src/**/*.{ts,tsx,js,jsx}",
         "eslint.config.js"
+      ]
+    },
+    "storybook": {
+      "command": "storybook dev -p 6006",
+      "dependencies": [
+        "build"
+      ],
+      "files": [
+        "src/",
+        ".storybook",
+        "dist/",
+        "loader/",
+        "stencil.config.ts"
+      ],
+      "service": true
+    },
+    "storybook:build": {
+      "command": "storybook build",
+      "clean": false,
+      "dependencies": [
+        "build"
+      ],
+      "files": [
+        "src/",
+        ".storybook",
+        "dist/",
+        "loader/",
+        "stencil.config.ts"
+      ],
+      "output": [
+        "storybook-static/"
+      ]
+    },
+    "tailwind": {
+      "command": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css -m",
+      "files": [
+        "src/styles/tailwind.css",
+        "tailwind.config.js"
+      ],
+      "output": [
+        "src/styles/output.css"
       ]
     }
   }

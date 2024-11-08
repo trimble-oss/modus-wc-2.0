@@ -36,10 +36,6 @@ export const config: Config = {
     {
       type: 'docs-readme',
     },
-    {
-      type: 'www',
-      serviceWorker: null,
-    },
     angularOutputTarget({
       componentCorePackage: '@trimble-cms/modus-wc',
       outputType: 'component',
