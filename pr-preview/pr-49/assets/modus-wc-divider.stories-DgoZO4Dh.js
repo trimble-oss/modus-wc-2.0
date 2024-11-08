@@ -7,6 +7,7 @@ import{k as i}from"./lit-element-DVRzCIa_.js";const c={title:"Components/Atoms/D
       orientation="${o.orientation}"
       position="${o.position}"
       responsive="${o.responsive}"
+      style="${o.orientation==="horizontal"?"display: flex; height: 100px":""}"
     ></modus-wc-divider>
   `},t={...a};var e,r,n;t.parameters={...t.parameters,docs:{...(e=t.parameters)==null?void 0:e.docs,source:{originalSource:`{
   ...Template
