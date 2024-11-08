@@ -16,7 +16,7 @@ export type TypographyVariant =
 export type TypographyWeight = 'light' | 'normal' | 'bold';
 
 /**
- * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+ * A customizable typography component used to render text with different sizes, variants, and weights.
  *
  * Adheres to WCAG 2.2 standards.
  */

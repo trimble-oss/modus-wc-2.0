@@ -365,7 +365,7 @@ export namespace Components {
         "customClass": string;
     }
     /**
-     * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+     * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTypography {
@@ -534,7 +534,7 @@ declare global {
         new (): HTMLModusWcThemeSwitcherElement;
     };
     /**
-     * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+     * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcTypographyElement extends Components.ModusWcTypography, HTMLStencilElement {
@@ -943,7 +943,7 @@ declare namespace LocalJSX {
         "onThemeChange"?: (event: ModusWcThemeSwitcherCustomEvent<IThemeConfig>) => void;
     }
     /**
-     * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+     * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTypography {
@@ -1022,7 +1022,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-theme-switcher": LocalJSX.ModusWcThemeSwitcher & JSXBase.HTMLAttributes<HTMLModusWcThemeSwitcherElement>;
             /**
-             * A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+             * A customizable typography component used to render text with different sizes, variants, and weights.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-typography": LocalJSX.ModusWcTypography & JSXBase.HTMLAttributes<HTMLModusWcTypographyElement>;
