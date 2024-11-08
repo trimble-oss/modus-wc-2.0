@@ -3,6 +3,7 @@
 # The packages consist of:
 # - The Web Components package
 # - The React package
+# - The Angular package
 # This is triggered by a manual run with a specified version number.
 
 name: Publish & Release
@@ -41,7 +42,7 @@ jobs:
           mv package.json.tmp package.json
 
       - name: Build web components
-        run: npm run stencil:build
+        run: npm run tailwind:build && npm run stencil:build
 
       - name: Configure npm registry
         run: npm config set registry https://artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/
@@ -64,6 +65,16 @@ jobs:
       - name: Publish
         run: npm publish
         continue-on-error: false
+
+  trigger-angular-publish:
+    needs: build-and-publish-wc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Angular Publish Workflow
+        uses: benc-uk/workflow-dispatch@v1.2
+        with:
+          workflow: publish-angular.yml
+          inputs: '{"version": "${{ github.event.inputs.version }}"}'
 
   trigger-react-publish:
     needs: build-and-publish-wc
