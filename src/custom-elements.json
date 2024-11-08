@@ -330,6 +330,14 @@
               "description": "The aria-label attribute used for accessibility."
             },
             {
+              "name": "color",
+              "fieldName": "color",
+              "type": {
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
+              },
+              "description": "The color of the divider line."
+            },
+            {
               "name": "content",
               "fieldName": "content",
               "type": {
@@ -343,15 +351,31 @@
               "type": {
                 "text": "string"
               },
-              "description": "Custom CSS class to apply to the outer div."
+              "description": "Custom CSS class to apply to the divider element."
             },
             {
-              "name": "daisy-class",
-              "fieldName": "daisyClass",
+              "name": "orientation",
+              "fieldName": "orientation",
               "type": {
-                "text": "string"
+                "text": "'horizontal' | 'vertical'"
               },
-              "description": "DaisyUI CSS class to apply to the inner div."
+              "description": "The orientation of the divider. This is in reference to how content will be rendered around the divider."
+            },
+            {
+              "name": "position",
+              "fieldName": "position",
+              "type": {
+                "text": "'center' | 'end' | 'start'"
+              },
+              "description": "The position of the divider."
+            },
+            {
+              "name": "responsive",
+              "fieldName": "responsive",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the divider is responsive or not."
             }
           ],
           "tagName": "modus-wc-divider",

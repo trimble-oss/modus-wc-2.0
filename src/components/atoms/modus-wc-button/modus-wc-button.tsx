@@ -1,8 +1,8 @@
 import {
   Component,
-  h,
   Event,
   EventEmitter,
+  h,
   Host,
   Listen,
   Prop,

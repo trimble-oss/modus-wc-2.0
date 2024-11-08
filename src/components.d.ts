@@ -132,17 +132,35 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
+          * The color of the divider line.
+         */
+        "color"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'high-contrast'
+    | 'success'
+    | 'warning'
+    | 'danger';
+        /**
           * The content to display in the divider.
          */
         "content"?: string;
         /**
-          * Custom CSS class to apply to the outer div.
+          * Custom CSS class to apply to the divider element.
          */
         "customClass": string;
         /**
-          * DaisyUI CSS class to apply to the inner div.
+          * The orientation of the divider. This is in reference to how content will be rendered around the divider.
          */
-        "daisyClass": string;
+        "orientation"?: 'horizontal' | 'vertical';
+        /**
+          * The position of the divider.
+         */
+        "position"?: 'center' | 'end' | 'start';
+        /**
+          * Whether the divider is responsive or not.
+         */
+        "responsive"?: boolean;
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -668,17 +686,35 @@ declare namespace LocalJSX {
          */
         "ariaLabel": string;
         /**
+          * The color of the divider line.
+         */
+        "color"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'high-contrast'
+    | 'success'
+    | 'warning'
+    | 'danger';
+        /**
           * The content to display in the divider.
          */
         "content"?: string;
         /**
-          * Custom CSS class to apply to the outer div.
+          * Custom CSS class to apply to the divider element.
          */
         "customClass"?: string;
         /**
-          * DaisyUI CSS class to apply to the inner div.
+          * The orientation of the divider. This is in reference to how content will be rendered around the divider.
          */
-        "daisyClass"?: string;
+        "orientation"?: 'horizontal' | 'vertical';
+        /**
+          * The position of the divider.
+         */
+        "position"?: 'center' | 'end' | 'start';
+        /**
+          * Whether the divider is responsive or not.
+         */
+        "responsive"?: boolean;
     }
     /**
      * A customizable input component used to create text inputs with types.
