@@ -60,7 +60,7 @@ export class ModusWCTypography {
   }
 
   private getClasses(): string {
-    const classList = [];
+    const classList = ['modus-wc-typography'];
 
     const propClasses = convertPropsToClasses({
       size: this.size,
@@ -70,7 +70,6 @@ export class ModusWCTypography {
 
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
-    classList.push('modus-wc-typography');
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
