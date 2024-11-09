@@ -613,6 +613,7 @@
           "tagName": "modus-wc-text-input",
           "events": [
             {
+              "kind": "field",
               "name": "inputBlur",
               "type": {
                 "text": "EventEmitter<FocusEvent>"
@@ -620,6 +621,7 @@
               "description": "Event emitted when the input loses focus."
             },
             {
+              "kind": "field",
               "name": "inputChange",
               "type": {
                 "text": "EventEmitter<Event>"
@@ -627,6 +629,7 @@
               "description": "Event emitted when the input value changes."
             },
             {
+              "kind": "field",
               "name": "inputFocus",
               "type": {
                 "text": "EventEmitter<FocusEvent>"

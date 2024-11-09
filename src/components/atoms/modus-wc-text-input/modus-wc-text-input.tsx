@@ -1,4 +1,11 @@
-import { h, Host, Component, Event, EventEmitter, Prop } from '@stencil/core';
+import {
+  h,
+  Host,
+  Component,
+  Event as StencilEvent,
+  EventEmitter,
+  Prop,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
 
 /**
@@ -152,17 +159,17 @@ export class ModusWcTextInput {
   /**
    * Event emitted when the input loses focus.
    */
-  @Event() inputBlur!: EventEmitter<FocusEvent>;
+  @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
   /**
    * Event emitted when the input value changes.
    */
-  @Event() inputChange!: EventEmitter<Event>;
+  @StencilEvent() inputChange!: EventEmitter<Event>;
 
   /**
    * Event emitted when the input gains focus.
    */
-  @Event() inputFocus!: EventEmitter<FocusEvent>;
+  @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
     if (!this.ariaLabel) {
