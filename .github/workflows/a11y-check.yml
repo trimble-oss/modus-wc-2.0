@@ -20,7 +20,7 @@ jobs:
         run: npm ci
 
       - name: Build Stencil components
-        run: npm run stencil:build
+        run: npm run build:ci
 
       - name: Install Puppeteer and axe-core
         run: npm install puppeteer axe-core

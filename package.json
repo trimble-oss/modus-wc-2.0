@@ -38,6 +38,7 @@
   },
   "scripts": {
     "build": "wireit",
+    "build:ci": "wireit",
     "clean": "npx rimraf .wireit .stencil .eslintcache .storybook-static dist loader",
     "lint": "wireit",
     "lint:eslint": "wireit",
@@ -101,6 +102,11 @@
       ],
       "output": [
         "src/custom-elements.json"
+      ]
+    },
+    "build:ci": {
+      "dependencies": [
+        "stencil:build"
       ]
     },
     "format": {

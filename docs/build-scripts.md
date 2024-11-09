@@ -16,6 +16,7 @@ graph LR
 
     build --> stencil_build
     build --> storybook_build
+    build:ci --> stencil_build
     stencil_build --> build_cem_json
     stencil_build --> tailwind
     storybook_build --> stencil_build
@@ -36,6 +37,7 @@ graph LR
 
     subgraph complex npm run scripts
         build
+        build:ci
         format
         lint
         start
