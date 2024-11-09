@@ -121,6 +121,8 @@ export class ModusWcTextInput {
 }
 
 
+import type { Event as IModusWcTextInputEvent } from '@trimble-cms/modus-wc';
+
 export declare interface ModusWcTextInput extends Components.ModusWcTextInput {
   /**
    * Event emitted when the input loses focus.
@@ -129,7 +131,7 @@ export declare interface ModusWcTextInput extends Components.ModusWcTextInput {
   /**
    * Event emitted when the input value changes.
    */
-  inputChange: EventEmitter<CustomEvent<Event>>;
+  inputChange: EventEmitter<CustomEvent<IModusWcTextInputEvent>>;
   /**
    * Event emitted when the input gains focus.
    */

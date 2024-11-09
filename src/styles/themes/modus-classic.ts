@@ -29,9 +29,9 @@ export const modusClassic = {
     'neutral-content': '#252A2E', // Trimble Gray
 
     // Base Colors
-    'base-100': '#CBCDD6', // Gray 1
-    'base-200': '#B7B9C3', // Gray 2
-    'base-300': '#A3A6B1', // Gray 3
+    'base-100': '#FFFFFF', // White
+    'base-200': '#CBCDD6', // Gray 1
+    'base-300': '#B7B9C3', // Gray 2
     'base-content': '#252A2E', // Trimble Gray
 
     // State/Feedback Colors
@@ -68,9 +68,9 @@ export const modusClassic = {
     'neutral-content': '#FFFFFF', // White
 
     // Base Colors
-    'base-100': '#464B52', // Gray 8
+    'base-100': '#171C1E', // Gray 10
     'base-200': '#353A40', // Gray 9
-    'base-300': '#171C1E', // Gray 10
+    'base-300': '#464B52', // Gray 8
     'base-content': '#FFFFFF', // White
 
     // State/Feedback Colors

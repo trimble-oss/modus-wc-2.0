@@ -1,11 +1,4 @@
-import {
-  h,
-  Host,
-  Component,
-  Event as StencilEvent,
-  EventEmitter,
-  Prop,
-} from '@stencil/core';
+import { h, Host, Component, Event, EventEmitter, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
 
 /**
@@ -58,12 +51,12 @@ export class ModusWcTextInput {
   /**
    * Custom CSS class to apply to the input.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * Whether the form control is disabled.
    */
-  @Prop() disabled: boolean = false;
+  @Prop() disabled?: boolean = false;
 
   /**
    * Indicates whether the input has an invalid input.
@@ -84,7 +77,7 @@ export class ModusWcTextInput {
    * Hints at the type of data that might be entered by the user while editing the element or its contents.
    * This allows a browser to display an appropriate virtual keyboard.
    */
-  @Prop() inputMode:
+  @Prop() inputMode?:
     | 'decimal'
     | 'email'
     | 'none'
@@ -106,21 +99,6 @@ export class ModusWcTextInput {
   @Prop() inputTabIndex?: number;
 
   /**
-   * Event emitted when the input loses focus.
-   */
-  @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
-
-  /**
-   * Event emitted when the input value changes.
-   */
-  @StencilEvent() inputChange!: EventEmitter<Event>;
-
-  /**
-   * Event emitted when the input gains focus.
-   */
-  @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
-
-  /**
    * Maximum length (number of characters) of value.
    */
   @Prop() maxLength?: number;
@@ -133,7 +111,7 @@ export class ModusWcTextInput {
   /**
    * Name of the form control. Submitted with the form as part of a name/value pai.
    */
-  @Prop() name: string = '';
+  @Prop() name?: string = '';
 
   /**
    * Pattern the value must match to be valid
@@ -143,17 +121,17 @@ export class ModusWcTextInput {
   /**
    * Text that appears in the form control when it has no value set.
    */
-  @Prop() placeholder: string = '';
+  @Prop() placeholder?: string = '';
 
   /**
    * Whether the value is editable.
    */
-  @Prop() readOnly: boolean = false;
+  @Prop() readOnly?: boolean = false;
 
   /**
    * A value is required or must be checked for the form to be submittable.
    */
-  @Prop() required: boolean = false;
+  @Prop() required?: boolean = false;
 
   /**
    * The size of the input.
@@ -163,7 +141,7 @@ export class ModusWcTextInput {
   /**
    * Type of form control.
    */
-  @Prop() type: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url' =
+  @Prop() type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url' =
     'text';
 
   /**
@@ -171,10 +149,41 @@ export class ModusWcTextInput {
    */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
+  /**
+   * Event emitted when the input loses focus.
+   */
+  @Event() inputBlur!: EventEmitter<FocusEvent>;
+
+  /**
+   * Event emitted when the input value changes.
+   */
+  @Event() inputChange!: EventEmitter<Event>;
+
+  /**
+   * Event emitted when the input gains focus.
+   */
+  @Event() inputFocus!: EventEmitter<FocusEvent>;
+
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcInput: aria-label is required for accessibility.');
+      console.warn(
+        'ModusWcTextInput: aria-label is required for accessibility.'
+      );
     }
+  }
+
+  private getClasses(): string {
+    const classList = ['modus-wc-input'];
+    const propClasses = convertPropsToClasses({
+      bordered: this.bordered,
+      size: this.size,
+    });
+
+    // The order CSS classes are added matters to CSS specificity
+    if (propClasses) classList.push(propClasses);
+    if (this.customClass) classList.push(this.customClass);
+
+    return classList.join(' ');
   }
 
   private handleBlur = (event: FocusEvent) => {
@@ -190,17 +199,6 @@ export class ModusWcTextInput {
   };
 
   render() {
-    const propClasses = convertPropsToClasses({
-      bordered: this.bordered,
-      size: this.size,
-    });
-
-    const classes = {
-      [this.customClass]: !!this.customClass,
-      [propClasses]: !!propClasses,
-      'modus-wc-input': true,
-    };
-
     return (
       <Host>
         <input
@@ -212,7 +210,7 @@ export class ModusWcTextInput {
           autocapitalize={this.autoCapitalize}
           autocomplete={this.autoComplete}
           autofocus={this.autoFocus}
-          class={classes}
+          class={this.getClasses()}
           dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}

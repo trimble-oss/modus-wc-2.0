@@ -5,8 +5,10 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { Event } from "@stencil/core";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographySize, TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+export { Event } from "@stencil/core";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographySize, TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
@@ -199,11 +201,11 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the input.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * Whether the form control is disabled.
          */
-        "disabled": boolean;
+        "disabled"?: boolean;
         /**
           * Indicates whether the input has an invalid input.
          */
@@ -219,7 +221,7 @@ export namespace Components {
         /**
           * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
          */
-        "inputMode": | 'decimal'
+        "inputMode"?: | 'decimal'
     | 'email'
     | 'none'
     | 'numeric'
@@ -246,7 +248,7 @@ export namespace Components {
         /**
           * Name of the form control. Submitted with the form as part of a name/value pai.
          */
-        "name": string;
+        "name"?: string;
         /**
           * Pattern the value must match to be valid
          */
@@ -254,15 +256,15 @@ export namespace Components {
         /**
           * Text that appears in the form control when it has no value set.
          */
-        "placeholder": string;
+        "placeholder"?: string;
         /**
           * Whether the value is editable.
          */
-        "readOnly": boolean;
+        "readOnly"?: boolean;
         /**
           * A value is required or must be checked for the form to be submittable.
          */
-        "required": boolean;
+        "required"?: boolean;
         /**
           * The size of the input.
          */
@@ -270,7 +272,7 @@ export namespace Components {
         /**
           * Type of form control.
          */
-        "type": 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
+        "type"?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
         /**
           * The value of the control.
          */
