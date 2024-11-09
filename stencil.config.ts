@@ -6,7 +6,6 @@ import angularValueAccessorBindings from './angular-value-acessor-bindings';
 import tailwind, {
   setPluginConfigurationDefaults,
   tailwindGlobal,
-  tailwindHMR,
 } from 'stencil-tailwind-plugin';
 import tailwindConfig from './tailwind.config';
 
@@ -57,11 +56,10 @@ export const config: Config = {
   ],
   plugins: [
     sass({
-      injectGlobalPaths: ['src/styles/global.scss'],
+      injectGlobalPaths: ['src/styles/global.scss', 'src/styles/output.css'],
     }),
     tailwindGlobal(),
     tailwind(),
-    tailwindHMR(),
   ],
   devServer: {
     reloadStrategy: 'pageReload',

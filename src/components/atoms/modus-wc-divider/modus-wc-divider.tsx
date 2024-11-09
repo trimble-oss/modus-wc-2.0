@@ -61,7 +61,7 @@ export class ModusWcDivider {
   }
 
   private getClasses(): string {
-    const classList = [];
+    const classList = ['modus-wc-divider'];
 
     const propClasses = convertPropsToClasses({
       color: this.color,
@@ -72,7 +72,6 @@ export class ModusWcDivider {
 
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
-    classList.push('modus-wc-divider');
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');

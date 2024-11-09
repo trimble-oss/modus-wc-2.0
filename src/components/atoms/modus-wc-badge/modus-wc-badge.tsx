@@ -58,7 +58,7 @@ export class ModusWcBadge {
   }
 
   private getClasses(): string {
-    const classList: string[] = [];
+    const classList = ['modus-wc-badge'];
     const propClasses = convertPropsToClasses({
       color: this.color,
       size: this.size,
@@ -67,7 +67,6 @@ export class ModusWcBadge {
 
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
-    classList.push('modus-wc-badge');
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
