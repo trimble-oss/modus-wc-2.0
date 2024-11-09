@@ -15,15 +15,23 @@ const config: StorybookConfig = {
     name: '@storybook/web-components-vite',
     options: {},
   },
-  staticDirs: [{ from: 'public', to: 'public' }],
+  staticDirs: [
+    { from: 'public', to: 'public' },
+    { from: '../dist/modus-wc', to: 'modus-wc' },
+  ],
   async viteFinal(config, { configType }) {
     const { mergeConfig } = await import('vite');
 
+    if (configType !== 'DEVELOPMENT') {
+      return config;
+    }
+
     return mergeConfig(config, {
-      server: {
-        hmr: {
-          overlay: true,
-        },
+      build: {
+        // this is set to 'dist' by default which causes hot-reloading for stencil components to break
+        // see: https://vitejs.dev/config/server-options.html#server-watch
+        // setting it to anything other than dist fixes the issue
+        outDir: 'dist-vite',
       },
     });
   },

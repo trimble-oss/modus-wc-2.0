@@ -60,7 +60,7 @@ export const config: Config = {
     tailwindHMR(),
   ],
   devServer: {
-    reloadStrategy: 'pageReload',
+    reloadStrategy: 'hmr',
   },
   buildEs5: 'prod',
   extras: {
@@ -68,6 +68,8 @@ export const config: Config = {
   },
   taskQueue: 'async',
   testing: {
+    browserHeadless: 'new',
+    modulePathIgnorePatterns: ['.wireit'],
     collectCoverageFrom: [
       'src/components/**/modus-wc-*.tsx',
       'src/utils/**/*.ts',
