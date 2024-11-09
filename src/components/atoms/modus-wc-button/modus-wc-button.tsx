@@ -1,8 +1,8 @@
 import {
   Component,
-  h,
   Event,
   EventEmitter,
+  h,
   Host,
   Listen,
   Prop,
@@ -83,7 +83,7 @@ export class ModusWcButton {
   }
 
   private getClasses(): string {
-    const classList = [];
+    const classList = ['modus-wc-btn'];
     const propClasses = convertPropsToClasses({
       color: this.color,
       disabled: this.disabled,
@@ -94,7 +94,6 @@ export class ModusWcButton {
 
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
-    classList.push('modus-wc-btn');
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');

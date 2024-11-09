@@ -180,7 +180,6 @@
       "output": [
         "src/components.d.ts",
         "dist/**",
-        "www/***",
         "loader/**",
         "integrations/react/stencil-generated/**",
         "integrations/angular/ng18/projects/trimble-cms/modus-wc-ng/src/lib/stencil-generated/**"

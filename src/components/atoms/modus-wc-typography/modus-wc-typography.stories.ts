@@ -1,15 +1,17 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
-import { TypographyBodySize, TypographyVariant } from './modus-wc-typography';
+import { TypographySize, TypographyWeight } from './modus-wc-typography';
+import { ifDefined } from 'lit/directives/if-defined.js';
+
+// Slot content was lost due to rendering issues when changing the "variant" attribute.
+// Because of this, each variant is rendered as a unique story below.
 
 interface TypographyArgs {
   'aria-label': string;
-  'body-size': TypographyBodySize;
-  'custom-class': string;
-  variant: TypographyVariant;
-  weight: 'regular' | 'semibold' | 'bold';
-  'text-case': 'sentence' | 'title' | 'uppercase';
   content: string;
+  'custom-class': string;
+  size: TypographySize;
+  weight: TypographyWeight;
 }
 
 const meta: Meta<TypographyArgs> = {
@@ -17,28 +19,21 @@ const meta: Meta<TypographyArgs> = {
   component: 'modus-wc-typography',
   args: {
     'aria-label': 'Example typography',
-    'body-size': 'standard',
     content: 'The quick brown fox jumps over the lazy dog',
-    'text-case': 'sentence',
-    variant: 'p',
-    weight: 'regular',
+    size: 'md',
+    weight: 'normal',
   },
   argTypes: {
-    'body-size': {
-      control: { type: 'inline-radio' },
-      options: ['standard', 'small', 'mini'],
+    content: {
+      control: { type: 'text' },
     },
-    variant: {
-      control: { type: 'select' },
-      options: ['body', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
+    size: {
+      control: { type: 'radio' },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     weight: {
-      control: { type: 'inline-radio' },
-      options: ['regular', 'semibold', 'bold'],
-    },
-    'text-case': {
-      control: { type: 'inline-radio' },
-      options: ['sentence', 'title', 'uppercase'],
+      control: { type: 'radio' },
+      options: ['light', 'normal', 'bold'],
     },
   },
 };
@@ -47,22 +42,112 @@ export default meta;
 
 type Story = StoryObj<TypographyArgs>;
 
-const Template: Story = {
+export const Body: Story = {
   render: (args) => {
     return html`
       <modus-wc-typography
         aria-label="${args['aria-label']}"
-        body-size="${args['body-size']}"
-        ?custom-class="${args['custom-class']}"
-        variant="${args.variant}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        size="${args.size}"
+        variant="body"
         weight="${args.weight}"
-        text-case="${args['text-case']}"
         >${args.content}</modus-wc-typography
       >
     `;
   },
 };
 
-export const Default: Story = {
-  ...Template,
+export const Heading1: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        size="${args.size}"
+        variant="h1"
+        weight="${args.weight}"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
+};
+
+export const Heading2: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        variant="h2"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
+};
+
+export const Heading3: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        variant="h3"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
+};
+
+export const Heading4: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        variant="h4"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
+};
+
+export const Heading5: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        variant="h5"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
+};
+
+export const Heading6: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        variant="h6"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
+};
+
+export const Paragraph: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-typography
+        aria-label="${args['aria-label']}"
+        custom-class="${ifDefined(args['custom-class'])}"
+        size="${args.size}"
+        variant="p"
+        weight="${args.weight}"
+        >${args.content}</modus-wc-typography
+      >
+    `;
+  },
 };

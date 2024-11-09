@@ -7,7 +7,7 @@
 
 ## Overview
 
-A customizable typography component used to render text with different sizes, variants, weights, and text casing.
+A customizable typography component used to render text with different sizes, variants, and weights.
 
 Adheres to WCAG 2.2 standards.
 
@@ -77,14 +77,13 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property                 | Attribute      | Description                                          | Type                                                            | Default      |
-| ------------------------ | -------------- | ---------------------------------------------------- | --------------------------------------------------------------- | ------------ |
-| `ariaLabel` _(required)_ | `aria-label`   | The aria-label for the typography component.         | `string`                                                        | `undefined`  |
-| `bodySize`               | `body-size`    | The size option when variant "body" is selected.     | `"mini" \| "small" \| "standard" \| undefined`                  | `'standard'` |
-| `customClass`            | `custom-class` | Custom CSS class to apply to the typography element. | `string`                                                        | `''`         |
-| `textCase`               | `text-case`    | The text case.                                       | `"sentence" \| "title" \| "uppercase"`                          | `'sentence'` |
-| `variant`                | `variant`      | The variant of the typography component.             | `"body" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "p"` | `'p'`        |
-| `weight`                 | `weight`       | The weight of the text.                              | `"bold" \| "regular" \| "semibold"`                             | `'regular'`  |
+| Property                 | Attribute      | Description                                          | Type                                                            | Default     |
+| ------------------------ | -------------- | ---------------------------------------------------- | --------------------------------------------------------------- | ----------- |
+| `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility.          | `string`                                                        | `undefined` |
+| `customClass`            | `custom-class` | Custom CSS class to apply to the typography element. | `string \| undefined`                                           | `''`        |
+| `size`                   | `size`         | The size of the font.                                | `"lg" \| "md" \| "sm" \| "xl" \| "xs" \| undefined`             | `'md'`      |
+| `variant`                | `variant`      | The variant of the typography component.             | `"body" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "p"` | `'p'`       |
+| `weight`                 | `weight`       | The weight of the text.                              | `"bold" \| "light" \| "normal" \| undefined`                    | `'normal'`  |
 
 
 ----------------------------------------------

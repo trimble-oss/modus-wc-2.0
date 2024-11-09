@@ -1,4 +1,5 @@
-import { h, Component, Host, Prop } from '@stencil/core';
+import { Component, h, Host, Prop } from '@stencil/core';
+import { convertPropsToClasses } from './modus-wc-divider.tailwind';
 
 /**
  * A customizable divider component used to separate content horizontally or vertically.
@@ -17,19 +18,41 @@ export class ModusWcDivider {
   @Prop() ariaLabel!: string;
 
   /**
+   * The color of the divider line.
+   */
+  @Prop() color?:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'high-contrast'
+    | 'success'
+    | 'warning'
+    | 'danger' = 'tertiary';
+
+  /**
    * The content to display in the divider.
    */
   @Prop() content?: string = '';
 
   /**
-   * Custom CSS class to apply to the outer div.
+   * Custom CSS class to apply to the divider element.
    */
   @Prop() customClass: string = '';
 
   /**
-   * DaisyUI CSS class to apply to the inner div.
+   * The orientation of the divider. This is in reference to how content will be rendered around the divider.
    */
-  @Prop() daisyClass: string = '';
+  @Prop() orientation?: 'horizontal' | 'vertical' = 'vertical';
+
+  /**
+   * The position of the divider.
+   */
+  @Prop() position?: 'center' | 'end' | 'start' = 'center';
+
+  /**
+   * Whether the divider is responsive or not.
+   */
+  @Prop() responsive?: boolean = true;
 
   componentWillLoad() {
     if (!this.ariaLabel) {
@@ -37,20 +60,32 @@ export class ModusWcDivider {
     }
   }
 
+  private getClasses(): string {
+    const classList = ['modus-wc-divider'];
+
+    const propClasses = convertPropsToClasses({
+      color: this.color,
+      orientation: this.orientation,
+      position: this.position,
+      responsive: this.responsive,
+    });
+
+    // The order CSS classes are added matters to CSS specificity
+    if (propClasses) classList.push(propClasses);
+    if (this.customClass) classList.push(this.customClass);
+
+    return classList.join(' ');
+  }
+
   render() {
     return (
       <Host>
-        <div class={this.customClass}>
-          <div
-            class={{
-              'modus-wc-divider': true,
-              [this.daisyClass]: !!this.daisyClass,
-            }}
-            aria-label={this.ariaLabel}
-            role="separator"
-          >
-            {this.content}
-          </div>
+        <div
+          class={this.getClasses()}
+          aria-label={this.ariaLabel}
+          role="separator"
+        >
+          {this.content}
         </div>
       </Host>
     );
