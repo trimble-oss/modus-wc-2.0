@@ -21,7 +21,7 @@ interface TextInputArgs {
   'input-aria-invalid'?: 'grammar' | 'spelling' | 'true' | 'false';
   'input-dir'?: '' | 'ltr' | 'rtl' | 'auto';
   'input-id'?: string;
-  'input-mode'?:
+  'input-mode':
     | 'decimal'
     | 'email'
     | 'none'
