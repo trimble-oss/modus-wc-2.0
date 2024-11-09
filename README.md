@@ -5,19 +5,28 @@ This is a web component library built with Stencil JS and SASS for large enterpr
 ## Getting Started
 
 1. Clone the repository
-2. Run `npm install`
-3. Run `npm start` to start the development server
-4. Run `npm run storybook` to start Storybook
+2. `npm install`
+3. `npm start` to start a development version of Stencil and Storybook
 
 ## Building
 
-Run `npm run stencil:build` to build the component library.
+`npm run build` to build the component library & storybook for production.
 
-Run `npm run storybook:build` to build the Storybook project.
+## Linting & Formatting
+
+`npm run format` to format your code using Prettier and ESlint.
+
+`npm run lint` to check your code for linting errors.
 
 ## Testing
 
-Run `npm test` to run the test suite.
+`npm test` to run the test suite.
+
+There is also:
+
+- `npm run test:coverage` - Check the code coverage of our unit tests.
+- `npm run test:update-snapshot` - Update the snapshot tests if you've changed a component.
+- `npm run test:watch` - Watches for changes and re-runs unit tests.
 
 ## Usage
 
