@@ -25,17 +25,6 @@
     "dist/",
     "loader/"
   ],
-  "exports": {
-    ".": {
-      "import": "./dist/modus-wc/modus-wc.esm.js",
-      "require": "./dist/modus-wc/modus-wc.js"
-    },
-    "./loader": {
-      "types": "./loader/index.d.ts",
-      "import": "./loader/index.js",
-      "require": "./loader/index.cjs"
-    }
-  },
   "scripts": {
     "build": "wireit",
     "build:ci": "wireit",
