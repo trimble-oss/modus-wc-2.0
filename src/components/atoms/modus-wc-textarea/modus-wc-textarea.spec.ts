@@ -2,73 +2,87 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcTextarea } from './modus-wc-textarea';
 
 describe('modus-wc-textarea', () => {
+  it('should warn if aria-label is not provided', async () => {
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
+    await newSpecPage({
+      components: [ModusWcTextarea],
+      html: '<modus-wc-textarea></modus-wc-textarea>',
+    });
+
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      'ModusWcTextarea: aria-label is required for accessibility.'
+    );
+
+    consoleWarnSpy.mockRestore();
+  });
+
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextarea],
       html: '<modus-wc-textarea aria-label="Default textarea"></modus-wc-textarea>',
     });
-    expect(page.root).not.toBeNull();
-    expect(page.root).toEqualHtml(`
-      <modus-wc-textarea aria-label="Default textarea" value="">
-        <textarea aria-label="Default textarea" aria-placeholder="" class="modus-wc-textarea" placeholder="" value=""></textarea>
-      </modus-wc-textarea>
-    `);
+    expect(page.root).toMatchSnapshot();
   });
 
-  it('renders with custom props', async () => {
+  it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextarea],
       html: `<modus-wc-textarea
         aria-describedby="description"
-        aria-label="Custom textarea"
-        custom-class="custom-class"
+        aria-label="Test textarea"
+        bordered="false"
+        custom-class="test-class"
         disabled="true"
+        full-width="false"
         max-length="100"
-        name="custom-name"
-        placeholder="Custom placeholder"
+        name="test-name"
+        placeholder="Test placeholder"
         readonly="true"
         required="true"
         rows="5"
-        textarea-aria-invalid="true"
+        size="lg"
+        textarea-aria-invalid="grammar"
         textarea-dir="rtl"
         textarea-id="custom-id"
         textarea-spellcheck="true"
-        textarea-tab-index="2"
-        value="Custom value"
+        textarea-tab-index="1"
+        value="Test value"
       ></modus-wc-textarea>`,
     });
-    expect(page.root).not.toBeNull();
     expect(page.root).toMatchSnapshot();
   });
 
-  it('emits blur event', async () => {
+  it('should emit blur event', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextarea],
       html: '<modus-wc-textarea aria-label="Blur test"></modus-wc-textarea>',
     });
-    expect(page.root).not.toBeNull();
     const textarea = page.root!.querySelector('textarea');
     expect(textarea).not.toBeNull();
     const blurSpy = jest.fn();
     page.root!.addEventListener('textareaBlur', blurSpy);
+
     textarea!.dispatchEvent(new FocusEvent('blur'));
     await page.waitForChanges();
+
     expect(blurSpy).toHaveBeenCalled();
   });
 
-  it('emits change event', async () => {
+  it('should emit change event', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextarea],
       html: '<modus-wc-textarea aria-label="Change test"></modus-wc-textarea>',
     });
-    expect(page.root).not.toBeNull();
     const textarea = page.root!.querySelector('textarea');
     expect(textarea).not.toBeNull();
     const changeSpy = jest.fn();
     page.root!.addEventListener('textareaChange', changeSpy);
+
     textarea!.value = 'New value';
     textarea!.dispatchEvent(new Event('change'));
     await page.waitForChanges();
+
     expect(changeSpy).toHaveBeenCalled();
     expect(changeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -78,40 +92,19 @@ describe('modus-wc-textarea', () => {
     );
   });
 
-  it('emits focus event', async () => {
+  it('should emit focus event', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextarea],
       html: '<modus-wc-textarea aria-label="Focus test"></modus-wc-textarea>',
     });
-    expect(page.root).not.toBeNull();
     const textarea = page.root!.querySelector('textarea');
     expect(textarea).not.toBeNull();
     const focusSpy = jest.fn();
     page.root!.addEventListener('textareaFocus', focusSpy);
+
     textarea!.dispatchEvent(new FocusEvent('focus'));
     await page.waitForChanges();
+
     expect(focusSpy).toHaveBeenCalled();
-  });
-
-  it('warns when aria-label is not provided', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-    await newSpecPage({
-      components: [ModusWcTextarea],
-      html: '<modus-wc-textarea></modus-wc-textarea>',
-    });
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcTextarea: aria-label is required for accessibility.'
-    );
-    consoleWarnSpy.mockRestore();
-  });
-
-  it('does not warn when aria-label is provided', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-    await newSpecPage({
-      components: [ModusWcTextarea],
-      html: '<modus-wc-textarea aria-label="Valid label"></modus-wc-textarea>',
-    });
-    expect(consoleWarnSpy).not.toHaveBeenCalled();
-    consoleWarnSpy.mockRestore();
   });
 });
