@@ -41,7 +41,7 @@ interface TextInputArgs {
   required?: boolean;
   size?: 'sm' | 'md' | 'lg';
   type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
-  value?: string;
+  value: string;
 }
 
 const meta: Meta<TextInputArgs> = {
@@ -60,45 +60,24 @@ const meta: Meta<TextInputArgs> = {
     value: '',
   },
   argTypes: {
-    'aria-describedby': {
-      control: { type: 'text' },
-    },
-    'aria-label': {
-      control: { type: 'text' },
-    },
     'auto-capitalize': {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['off', 'none', 'on', 'sentences', 'words', 'characters'],
     },
     'auto-complete': {
       control: { type: 'inline-radio' },
       options: ['on', 'off'],
     },
-    'auto-focus': {
-      control: { type: 'boolean' },
-    },
-    bordered: {
-      control: { type: 'boolean' },
-    },
-    'custom-class': {
-      control: { type: 'text' },
-    },
-    disabled: {
-      control: { type: 'boolean' },
-    },
     'input-aria-invalid': {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['grammar', 'spelling', 'true', 'false'],
     },
     'input-dir': {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['ltr', 'rtl', 'auto'],
     },
-    'input-id': {
-      control: { type: 'text' },
-    },
     'input-mode': {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: [
         'decimal',
         'email',
@@ -110,39 +89,12 @@ const meta: Meta<TextInputArgs> = {
         'url',
       ],
     },
-    'input-spellcheck': {
-      control: { type: 'boolean' },
-    },
-    'input-tab-index': {
-      control: { type: 'number' },
-    },
-    'max-length': {
-      control: { type: 'number' },
-    },
-    'min-length': {
-      control: { type: 'number' },
-    },
-    name: {
-      control: { type: 'text' },
-    },
-    pattern: {
-      control: { type: 'text' },
-    },
-    placeholder: {
-      control: { type: 'text' },
-    },
-    'read-only': {
-      control: { type: 'boolean' },
-    },
-    required: {
-      control: { type: 'boolean' },
-    },
     size: {
       control: { type: 'inline-radio' },
       options: ['sm', 'md', 'lg'],
     },
     type: {
-      control: { type: 'select' },
+      control: { type: 'inline-radio' },
       options: ['email', 'password', 'search', 'tel', 'text', 'url'],
     },
   },
