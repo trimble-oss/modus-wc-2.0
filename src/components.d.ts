@@ -290,13 +290,21 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
           * Custom CSS class to apply to the textarea (supports DaisyUI).
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The disabled state of the textarea.
          */
-        "disabled": boolean;
+        "disabled"?: boolean;
+        /**
+          * If true, the textarea will take the full width of its container.
+         */
+        "fullWidth"?: boolean;
         /**
           * The maximum number of characters allowed in the textarea.
          */
@@ -304,23 +312,27 @@ export namespace Components {
         /**
           * The name of the textarea.
          */
-        "name": string;
+        "name"?: string;
         /**
           * The placeholder text for the textarea.
          */
-        "placeholder": string;
+        "placeholder"?: string;
         /**
           * The readonly state of the textarea.
          */
-        "readonly": boolean;
+        "readonly"?: boolean;
         /**
           * The required state of the textarea.
          */
-        "required": boolean;
+        "required"?: boolean;
         /**
           * The number of visible text lines for the textarea.
          */
         "rows"?: number;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
         /**
           * Indicates whether the textarea has an invalid input.
          */
@@ -852,6 +864,10 @@ declare namespace LocalJSX {
          */
         "ariaLabel": string;
         /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
           * Custom CSS class to apply to the textarea (supports DaisyUI).
          */
         "customClass"?: string;
@@ -859,6 +875,10 @@ declare namespace LocalJSX {
           * The disabled state of the textarea.
          */
         "disabled"?: boolean;
+        /**
+          * If true, the textarea will take the full width of its container.
+         */
+        "fullWidth"?: boolean;
         /**
           * The maximum number of characters allowed in the textarea.
          */
@@ -895,6 +915,10 @@ declare namespace LocalJSX {
           * The number of visible text lines for the textarea.
          */
         "rows"?: number;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
         /**
           * Indicates whether the textarea has an invalid input.
          */
