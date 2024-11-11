@@ -63,7 +63,7 @@ jobs:
           mv package.json.tmp package.json
 
       - name: Build React integration
-        run: npm run build:ci
+        run: npm run build
 
       - name: Pack the package
         run: npm pack
