@@ -21,7 +21,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: integrations/react
+        working-directory: integrations/react/v18
 
     steps:
       - name: Checkout code
