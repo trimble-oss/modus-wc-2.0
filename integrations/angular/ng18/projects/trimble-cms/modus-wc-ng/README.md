@@ -41,7 +41,10 @@ The components in this library were programmatically generated using the [Stenci
 To rebuild the Modus Angular Components you need to perform the following steps:
 
 - From the `./integrations/angular/ng18` project directory run
-  `npm run build`
+  `npm install` then `npm run build`
+
+- If you want to reference a working build of `modus-wc` you can run `npm pack` from the project root 
+directory and then `npm install path/to/modus-wc-tarball.tgz` from `ng18` directory. 
 
 ## Debugging Locally
 
