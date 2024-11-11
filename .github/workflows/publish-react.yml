@@ -43,8 +43,12 @@ jobs:
         working-directory: .
 
       - name: Install dependencies
-        run: |
-          npm ci
+        run: npm ci
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          cache: 'npm'
+
+      - uses: google/wireit@setup-github-actions-caching/v2
 
       - name: Update to use new WebComponent version
         run: |
@@ -59,7 +63,7 @@ jobs:
           mv package.json.tmp package.json
 
       - name: Build React integration
-        run: npm run build
+        run: npm run build:ci
 
       - name: Pack the package
         run: npm pack

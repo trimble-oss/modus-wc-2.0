@@ -43,6 +43,7 @@ export default [
   {
     ignores: [
       '**/*.config.ts',
+      '.wireit/**',
       '.storybook/**',
       'dist/**',
       'integrations/**',

@@ -35,10 +35,6 @@ export const config: Config = {
     {
       type: 'docs-readme',
     },
-    {
-      type: 'www',
-      serviceWorker: null,
-    },
     angularOutputTarget({
       componentCorePackage: '@trimble-cms/modus-wc',
       outputType: 'component',
@@ -62,7 +58,7 @@ export const config: Config = {
     tailwind(),
   ],
   devServer: {
-    reloadStrategy: 'pageReload',
+    reloadStrategy: 'hmr',
   },
   buildEs5: 'prod',
   extras: {
@@ -70,6 +66,8 @@ export const config: Config = {
   },
   taskQueue: 'async',
   testing: {
+    browserHeadless: 'new',
+    modulePathIgnorePatterns: ['.wireit'],
     collectCoverageFrom: [
       'src/components/**/modus-wc-*.tsx',
       'src/utils/**/*.ts',

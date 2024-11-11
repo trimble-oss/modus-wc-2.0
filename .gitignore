@@ -9,6 +9,8 @@ dist/
 www/
 loader/
 storybook-static/
+.wireit/
+.eslintcache
 
 # Stencil
 .stencil/

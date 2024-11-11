@@ -31,6 +31,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ vars.NODE_VERSION }}
+          cache: 'npm'
+
+      - uses: google/wireit@setup-github-actions-caching/v2
 
       - name: Install dependencies
         run: npm ci
@@ -42,7 +45,7 @@ jobs:
           mv package.json.tmp package.json
 
       - name: Build web components
-        run: npm run tailwind:build && npm run stencil:build
+        run: npm run build:ci
 
       - name: Configure npm registry
         run: npm config set registry https://artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/
