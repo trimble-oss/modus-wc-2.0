@@ -3,4 +3,11 @@
  */
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const themeable = [];
+const themeable = [
+  'modus-wc-input-sm',
+  'modus-wc-input-md',
+  'modus-wc-input-lg',
+  'modus-wc-textarea-sm',
+  'modus-wc-textarea-md',
+  'modus-wc-textarea-lg',
+];
