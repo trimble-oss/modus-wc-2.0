@@ -1,0 +1,54 @@
+name: Build Angular Integration
+
+on:
+  workflow_call:
+    secrets:
+      NPM_TOKEN:
+        required: true
+
+jobs:
+  build-angular:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: 'npm' # what this do?
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Stencil components
+        id: stencil
+        run: npm run stencil:build
+        continue-on-error: false
+
+      - name: Pack modus-wc
+        id: npm_pack
+        run: |
+          modus_wc_tarball=$(npm pack --pack-destination integrations/angular | tail -n 1)
+          echo "modus_wc_tarball=${modus_wc_tarball}" >> $GITHUB_OUTPUT
+        continue-on-error: false
+
+      - name: Install dependencies for angular build
+        run: npm ci
+        working-directory: integrations/angular/ng18
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        continue-on-error: false
+
+      - name: Install current modus-wc implementation for angular integration
+        run: npm install ./${{ steps.npm_pack.outputs.modus_wc_tarball }}
+        working-directory: integrations/angular/ng18
+        continue-on-error: false
+
+      - name: Build angular integration
+        id: angular
+        run: npm run build
+        working-directory: integrations/angular/ng18
+        continue-on-error: false
