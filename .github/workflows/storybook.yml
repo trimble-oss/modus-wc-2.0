@@ -35,6 +35,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - run: |
+          ls -la
+
       - name: Build Storybook
         run: npm run build
 
