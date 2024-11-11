@@ -11,9 +11,6 @@ on:
         description: 'Version to publish'
         required: true
         type: string
-  pull_request:
-    branches:
-      - main
 
 permissions:
   contents: write
