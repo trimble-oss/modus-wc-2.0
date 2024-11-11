@@ -5,22 +5,21 @@ Component Structure:
 Use the @Component decorator with the appropriate tag name (prefix with 'modus-wc-').
 Set shadow: false in the @Component options.
 Use SASS for styling (styleUrl should point to a .scss file).
-In componentWillLoad, check for the ariaLabel attribute and add a console warning if not provided ("ComponentName: ariaLabel is required for accessibility").
+In componentWillLoad, check for the ariaLabel attribute and add a console warning if not provided ("ComponentName: aria-label is required for accessibility").
 
 Props:
 
-Include an 'ariaLabel' prop (string) for accessibility.
-Include a 'customClass' prop (string) for custom styling.
+Include an 'ariaLabel' prop (required string) for accessibility.
+Include a 'customClass' prop (optional string) for custom styling.
 Use appropriate prop types (string, boolean, union types) for other properties.
 Mark required props with a '!' in TypeScript.
 
 Styling:
 
 Create a corresponding .scss file in the same directory.
-Use BEM-like naming convention for classes (e.g., 'modus-wc-componentname--modifier').
-Import global styles and mixins.
-Implement responsive design using the modus-wc-responsive mixin.
-Use CSS custom properties for theming capabilities.
+Prefer using DaisyUI classes over custom styling in the .scss file.
+Use BEM-like naming convention for custom classes (e.g., 'modus-wc-componentname--modifier').
+Use CSS custom properties (variables) found in src/styles/variables.scss for theming capabilities.
 
 Accessibility:
 
@@ -48,20 +47,15 @@ Lifecycle Methods:
 Implement componentWillLoad for initial setup if required.
 Use other lifecycle methods as needed (componentDidLoad, componentWillRender, etc.).
 
-Theming:
-
-Import and use getCurrentModusWCMode from '../../../utils/theme'.
-Apply appropriate classes based on the current mode (default, dark, high-contrast).
-
 Testing:
 
 Create a corresponding .spec.ts file for unit tests.
+Use snapshot testing for tests that don't require user interaction.
 Aim for 100% test coverage.
 
 Documentation:
 
 Use JSDoc comments to describe the component and its props/methods.
-Include usage examples in the component's documentation.
 
 Storybook:
 

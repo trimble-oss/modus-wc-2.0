@@ -691,6 +691,14 @@
               "description": "The aria-label attribute for accessibility."
             },
             {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
@@ -705,6 +713,14 @@
                 "text": "boolean"
               },
               "description": "The disabled state of the textarea."
+            },
+            {
+              "name": "full-width",
+              "fieldName": "fullWidth",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "If true, the textarea will take the full width of its container."
             },
             {
               "name": "max-length",
@@ -753,6 +769,14 @@
                 "text": "number"
               },
               "description": "The number of visible text lines for the textarea."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "description": "The size of the input."
             },
             {
               "name": "textarea-aria-invalid",

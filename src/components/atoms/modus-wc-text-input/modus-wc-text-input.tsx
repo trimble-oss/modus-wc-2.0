@@ -58,12 +58,12 @@ export class ModusWcTextInput {
   /**
    * Custom CSS class to apply to the input.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * Whether the form control is disabled.
    */
-  @Prop() disabled: boolean = false;
+  @Prop() disabled?: boolean = false;
 
   /**
    * Indicates whether the input has an invalid input.
@@ -106,6 +106,57 @@ export class ModusWcTextInput {
   @Prop() inputTabIndex?: number;
 
   /**
+   * Maximum length (number of characters) of value.
+   */
+  @Prop() maxLength?: number;
+
+  /**
+   * Minimum length (number of characters) of value.
+   */
+  @Prop() minLength?: number;
+
+  /**
+   * Name of the form control. Submitted with the form as part of a name/value pai.
+   */
+  @Prop() name?: string = '';
+
+  /**
+   * Pattern the value must match to be valid
+   */
+  @Prop() pattern?: string;
+
+  /**
+   * Text that appears in the form control when it has no value set.
+   */
+  @Prop() placeholder?: string = '';
+
+  /**
+   * Whether the value is editable.
+   */
+  @Prop() readOnly?: boolean = false;
+
+  /**
+   * A value is required or must be checked for the form to be submittable.
+   */
+  @Prop() required?: boolean = false;
+
+  /**
+   * The size of the input.
+   */
+  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
+
+  /**
+   * Type of form control.
+   */
+  @Prop() type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url' =
+    'text';
+
+  /**
+   * The value of the control.
+   */
+  @Prop({ mutable: true, reflect: true }) value: string = '';
+
+  /**
    * Event emitted when the input loses focus.
    */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
@@ -120,61 +171,26 @@ export class ModusWcTextInput {
    */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
-  /**
-   * Maximum length (number of characters) of value.
-   */
-  @Prop() maxLength?: number;
-
-  /**
-   * Minimum length (number of characters) of value.
-   */
-  @Prop() minLength?: number;
-
-  /**
-   * Name of the form control. Submitted with the form as part of a name/value pai.
-   */
-  @Prop() name: string = '';
-
-  /**
-   * Pattern the value must match to be valid
-   */
-  @Prop() pattern?: string;
-
-  /**
-   * Text that appears in the form control when it has no value set.
-   */
-  @Prop() placeholder: string = '';
-
-  /**
-   * Whether the value is editable.
-   */
-  @Prop() readOnly: boolean = false;
-
-  /**
-   * A value is required or must be checked for the form to be submittable.
-   */
-  @Prop() required: boolean = false;
-
-  /**
-   * The size of the input.
-   */
-  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
-
-  /**
-   * Type of form control.
-   */
-  @Prop() type: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url' =
-    'text';
-
-  /**
-   * The value of the control.
-   */
-  @Prop({ mutable: true, reflect: true }) value: string = '';
-
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcInput: aria-label is required for accessibility.');
+      console.warn(
+        'ModusWcTextInput: aria-label is required for accessibility.'
+      );
     }
+  }
+
+  private getClasses(): string {
+    const classList = ['modus-wc-input'];
+    const propClasses = convertPropsToClasses({
+      bordered: this.bordered,
+      size: this.size,
+    });
+
+    // The order CSS classes are added matters to CSS specificity
+    if (propClasses) classList.push(propClasses);
+    if (this.customClass) classList.push(this.customClass);
+
+    return classList.join(' ');
   }
 
   private handleBlur = (event: FocusEvent) => {
@@ -190,17 +206,6 @@ export class ModusWcTextInput {
   };
 
   render() {
-    const propClasses = convertPropsToClasses({
-      bordered: this.bordered,
-      size: this.size,
-    });
-
-    const classes = {
-      [this.customClass]: !!this.customClass,
-      [propClasses]: !!propClasses,
-      'modus-wc-input': true,
-    };
-
     return (
       <Host>
         <input
@@ -212,7 +217,7 @@ export class ModusWcTextInput {
           autocapitalize={this.autoCapitalize}
           autocomplete={this.autoComplete}
           autofocus={this.autoFocus}
-          class={classes}
+          class={this.getClasses()}
           dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}

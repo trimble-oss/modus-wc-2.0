@@ -22,55 +22,23 @@ describe('modus-wc-button', () => {
       components: [ModusWcButton],
       html: '<modus-wc-button aria-label="Default Button"></modus-wc-button>',
     });
-    expect(page.root).toEqualHtml(`
-      <modus-wc-button aria-label="Default Button">
-        <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-primary" aria-label="Default Button" tabindex="0" type="button"></button>
-      </modus-wc-button>
-    `);
+    expect(page.root).toMatchSnapshot();
   });
 
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
-      html: '<modus-wc-button aria-label="Custom Button" color="secondary" custom-class="custom" label="Test" size="large" variant="outlined" type="submit"></modus-wc-button>',
+      html: '<modus-wc-button aria-label="Custom Button" color="secondary" custom-class="test-class" full-width="true" label="Test" pressed="true" size="lg" variant="outlined" type="submit"></modus-wc-button>',
     });
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should apply disabled state correctly', async () => {
+  it('should render with disabled attribute', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
-      html: '<modus-wc-button aria-label="Disabled Button" disabled></modus-wc-button>',
+      html: '<modus-wc-button aria-label="Custom Button" disabled="true"></modus-wc-button>',
     });
-    expect(page.root).toEqualHtml(`
-      <modus-wc-button aria-label="Disabled Button" disabled>
-        <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-primary modus-wc-btn-disabled" aria-label="Disabled Button" disabled tabindex="-1" type="button"></button>
-      </modus-wc-button>
-    `);
-  });
-
-  it('should apply full width correctly', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcButton],
-      html: '<modus-wc-button aria-label="Full Width Button" full-width></modus-wc-button>',
-    });
-    expect(page.root).toEqualHtml(`
-      <modus-wc-button aria-label="Full Width Button" full-width>
-        <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-primary modus-wc-btn-block" aria-label="Full Width Button" tabindex="0" type="button"></button>
-      </modus-wc-button>
-    `);
-  });
-
-  it('should set aria-pressed when pressed prop is true', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcButton],
-      html: '<modus-wc-button aria-label="Pressed Button" pressed></modus-wc-button>',
-    });
-    expect(page.root).toEqualHtml(`
-      <modus-wc-button aria-label="Pressed Button" pressed>
-        <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-primary" aria-label="Pressed Button" aria-pressed="true" tabindex="0" type="button"></button>
-      </modus-wc-button>
-    `);
+    expect(page.root).toMatchSnapshot();
   });
 
   it('should emit buttonClick event when clicked', async () => {

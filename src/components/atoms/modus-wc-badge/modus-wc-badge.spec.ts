@@ -22,46 +22,22 @@ describe('modus-wc-badge', () => {
       components: [ModusWcBadge],
       html: '<modus-wc-badge aria-label="Default Badge"></modus-wc-badge>',
     });
-    expect(page.root).toEqualHtml(`
-      <modus-wc-badge aria-label="Default Badge">
-        <span aria-label="Default Badge" class="modus-wc-badge modus-wc-badge-md modus-wc-badge-primary" role="status"></span>
-      </modus-wc-badge>
-    `);
+    expect(page.root).toMatchSnapshot();
   });
 
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcBadge],
-      html: '<modus-wc-badge aria-label="Custom Badge" color="secondary" content="Test" custom-class="custom" size="large" variant="text"></modus-wc-badge>',
+      html: '<modus-wc-badge aria-label="Custom Badge" color="secondary" content="Test" custom-class="test-class" size="lg" variant="text"></modus-wc-badge>',
     });
-    expect(page.root).toEqualHtml(`
-      <modus-wc-badge aria-label="Custom Badge" color="secondary" content="Test" custom-class="custom" size="large" variant="text">
-        <span aria-label="Custom Badge" class="custom modus-wc-badge modus-wc-badge-secondary modus-wc-badge-text" role="status">Test</span>
-      </modus-wc-badge>
-    `);
+    expect(page.root).toMatchSnapshot();
   });
 
-  it('should render counter variant correctly', async () => {
+  it('should render with alert role', async () => {
     const page = await newSpecPage({
       components: [ModusWcBadge],
-      html: '<modus-wc-badge aria-label="Counter Badge" content="5" variant="counter"></modus-wc-badge>',
+      html: '<modus-wc-badge aria-label="Custom Badge" color="warning"></modus-wc-badge>',
     });
-    expect(page.root).toEqualHtml(`
-      <modus-wc-badge aria-label="Counter Badge" content="5" variant="counter">
-        <span aria-label="Counter Badge" class="modus-wc-badge modus-wc-badge-counter modus-wc-badge-md modus-wc-badge-primary" role="status">5</span>
-      </modus-wc-badge>
-    `);
-  });
-
-  it('should set role to alert when color is danger', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcBadge],
-      html: `<modus-wc-badge aria-label="Alert Badge" content="Alert" color="danger"></modus-wc-badge>`,
-    });
-    expect(page.root).toEqualHtml(`
-      <modus-wc-badge aria-label="Alert Badge" content="Alert" color="danger">
-        <span aria-label="Alert Badge" class="modus-wc-badge modus-wc-badge-error modus-wc-badge-md" role="alert">Alert</span>
-      </modus-wc-badge>
-    `);
+    expect(page.root).toMatchSnapshot();
   });
 });

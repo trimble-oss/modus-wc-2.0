@@ -2,3 +2,35 @@
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
+
+[data-theme='modus-classic-light'] .modus-wc-textarea,
+[data-theme='modus-classic-dark'] .modus-wc-textarea {
+  border-radius: var(--modus-wc-border-radius-md);
+
+  &.modus-wc-textarea-sm {
+    font-size: var(--modus-wc-font-size-sm);
+    padding: var(--modus-wc-spacing-sm);
+  }
+
+  &.modus-wc-textarea-md {
+    font-size: var(--modus-wc-font-size-md);
+    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-sm)
+      var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
+  }
+
+  &.modus-wc-textarea-lg {
+    font-size: var(--modus-wc-font-size-lg);
+    padding: var(--modus-wc-spacing-md);
+  }
+
+  &.modus-wc-textarea-bordered:focus {
+    border-color: var(--modus-wc-color-blue-light);
+    border-width: 2px;
+    box-shadow: none; // Removes the Tailwind ring effect
+    outline: none; // Ensures there's no outline on focus
+  }
+
+  &:read-only {
+    background-color: var(--modus-wc-color-base-100);
+  }
+}

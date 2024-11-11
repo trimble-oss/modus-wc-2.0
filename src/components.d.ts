@@ -199,11 +199,11 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the input.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * Whether the form control is disabled.
          */
-        "disabled": boolean;
+        "disabled"?: boolean;
         /**
           * Indicates whether the input has an invalid input.
          */
@@ -246,7 +246,7 @@ export namespace Components {
         /**
           * Name of the form control. Submitted with the form as part of a name/value pai.
          */
-        "name": string;
+        "name"?: string;
         /**
           * Pattern the value must match to be valid
          */
@@ -254,15 +254,15 @@ export namespace Components {
         /**
           * Text that appears in the form control when it has no value set.
          */
-        "placeholder": string;
+        "placeholder"?: string;
         /**
           * Whether the value is editable.
          */
-        "readOnly": boolean;
+        "readOnly"?: boolean;
         /**
           * A value is required or must be checked for the form to be submittable.
          */
-        "required": boolean;
+        "required"?: boolean;
         /**
           * The size of the input.
          */
@@ -270,7 +270,7 @@ export namespace Components {
         /**
           * Type of form control.
          */
-        "type": 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
+        "type"?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
         /**
           * The value of the control.
          */
@@ -290,13 +290,21 @@ export namespace Components {
          */
         "ariaLabel": string;
         /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
           * Custom CSS class to apply to the textarea (supports DaisyUI).
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The disabled state of the textarea.
          */
-        "disabled": boolean;
+        "disabled"?: boolean;
+        /**
+          * If true, the textarea will take the full width of its container.
+         */
+        "fullWidth"?: boolean;
         /**
           * The maximum number of characters allowed in the textarea.
          */
@@ -304,23 +312,27 @@ export namespace Components {
         /**
           * The name of the textarea.
          */
-        "name": string;
+        "name"?: string;
         /**
           * The placeholder text for the textarea.
          */
-        "placeholder": string;
+        "placeholder"?: string;
         /**
           * The readonly state of the textarea.
          */
-        "readonly": boolean;
+        "readonly"?: boolean;
         /**
           * The required state of the textarea.
          */
-        "required": boolean;
+        "required"?: boolean;
         /**
           * The number of visible text lines for the textarea.
          */
         "rows"?: number;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
         /**
           * Indicates whether the textarea has an invalid input.
          */
@@ -852,6 +864,10 @@ declare namespace LocalJSX {
          */
         "ariaLabel": string;
         /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
           * Custom CSS class to apply to the textarea (supports DaisyUI).
          */
         "customClass"?: string;
@@ -859,6 +875,10 @@ declare namespace LocalJSX {
           * The disabled state of the textarea.
          */
         "disabled"?: boolean;
+        /**
+          * If true, the textarea will take the full width of its container.
+         */
+        "fullWidth"?: boolean;
         /**
           * The maximum number of characters allowed in the textarea.
          */
@@ -895,6 +915,10 @@ declare namespace LocalJSX {
           * The number of visible text lines for the textarea.
          */
         "rows"?: number;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
         /**
           * Indicates whether the textarea has an invalid input.
          */

@@ -2,3 +2,37 @@
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
+
+[data-theme='modus-classic-light'] .modus-wc-input,
+[data-theme='modus-classic-dark'] .modus-wc-input {
+  border-radius: var(--modus-wc-border-radius-md);
+
+  &.modus-wc-input-sm {
+    font-size: var(--modus-wc-font-size-sm);
+    height: 1.5rem;
+    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-xs);
+  }
+
+  &.modus-wc-input-md {
+    font-size: var(--modus-wc-font-size-md);
+    height: 2rem;
+    padding: var(--modus-wc-spacing-sm);
+  }
+
+  &.modus-wc-input-lg {
+    font-size: var(--modus-wc-font-size-lg);
+    height: 2.5rem;
+    padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
+  }
+
+  &.modus-wc-input-bordered:focus {
+    border-color: var(--modus-wc-color-blue-light);
+    border-width: 2px;
+    box-shadow: none; // Removes the Tailwind ring effect
+    outline: none; // Ensures there's no outline on focus
+  }
+
+  &:read-only {
+    background-color: var(--modus-wc-color-base-100);
+  }
+}
