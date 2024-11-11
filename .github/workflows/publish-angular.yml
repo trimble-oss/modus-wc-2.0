@@ -5,13 +5,15 @@
 name: Publish & Release - Angular
 
 on:
-  # FIXME: changes from 'workflow_dispatch' to 'workflow_call'
-  workflow_call:
+  workflow_dispatch:
     inputs:
       version:
         description: 'Version to publish'
         required: true
         type: string
+
+permissions:
+  contents: write
 
 jobs:
   build-and-publish-angular:
@@ -22,7 +24,7 @@ jobs:
         working-directory: integrations/angular/ng18
 
     env:
-      ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -33,13 +35,7 @@ jobs:
         with:
           node-version: ${{ vars.NODE_VERSION }}
 
-      - name: Configure npm registry
-        run: npm config set registry https://artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/
-
-      - name: Authenticate to Artifactory
-        run: echo "//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${ARTIFACTORY_TOKEN}" >> .npmrc
-
-      - name: Clean install dependencies
+      - name: Install dependencies
         run: npm ci
 
       - name: Update to use new WebComponent version
@@ -52,8 +48,11 @@ jobs:
           '.peerDependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
 
-      - name: Update dependencies
-        run: npm i && cd projects/trimble-cms/modus-wc-ng && npm i
+      - name: Update modus-wc-ng dependencies
+        run: cd ./projects/trimble-cms/modus-wc-ng && npm i
+
+      - name: Update ng18 dependencies
+        run: npm i
 
       - name: Update package.json version
         run: |
@@ -67,6 +66,7 @@ jobs:
 
       - name: Package distribution
         run: npm pack ./dist/trimble-cms/modus-wc-ng
+        id: npm_pack
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -76,6 +76,7 @@ jobs:
 
       - name: Publish distribution
         run: npm publish *.tgz
+        continue-on-error: false
 
   release-angular:
     needs: build-and-publish-angular
