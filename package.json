@@ -84,7 +84,8 @@
     "build": {
       "dependencies": [
         "stencil:build",
-        "storybook:build"
+        "storybook:build",
+        "lint"
       ]
     },
     "build:cem-json": {
@@ -98,7 +99,8 @@
     },
     "build:ci": {
       "dependencies": [
-        "stencil:build"
+        "stencil:build",
+        "lint"
       ]
     },
     "format": {
