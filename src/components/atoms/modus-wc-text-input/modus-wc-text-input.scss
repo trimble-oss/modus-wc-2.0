@@ -3,8 +3,8 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-[data-theme="modus-classic-light"] .modus-wc-input,
-[data-theme="modus-classic-dark"] .modus-wc-input {
+[data-theme='modus-classic-light'] .modus-wc-input,
+[data-theme='modus-classic-dark'] .modus-wc-input {
   border-radius: var(--modus-wc-border-radius-md);
 
   &.modus-wc-input-sm {

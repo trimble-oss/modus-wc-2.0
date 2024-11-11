@@ -3,8 +3,8 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-[data-theme="modus-classic-light"] .modus-wc-textarea,
-[data-theme="modus-classic-dark"] .modus-wc-textarea {
+[data-theme='modus-classic-light'] .modus-wc-textarea,
+[data-theme='modus-classic-dark'] .modus-wc-textarea {
   border-radius: var(--modus-wc-border-radius-md);
 
   &.modus-wc-textarea-sm {
@@ -14,7 +14,8 @@
 
   &.modus-wc-textarea-md {
     font-size: var(--modus-wc-font-size-md);
-    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
+    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-sm)
+      var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
   }
 
   &.modus-wc-textarea-lg {
