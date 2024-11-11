@@ -6,6 +6,7 @@ import {
   Host,
   Prop,
 } from '@stencil/core';
+import { convertPropsToClasses } from './modus-wc-textarea.tailwind';
 
 /**
  * A customizable textarea component.
@@ -29,14 +30,24 @@ export class ModusWcTextarea {
   @Prop() ariaLabel!: string;
 
   /**
+   * Indicates that the input should have a border.
+   */
+  @Prop() bordered?: boolean = true;
+
+  /**
    * Custom CSS class to apply to the textarea (supports DaisyUI).
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The disabled state of the textarea.
    */
-  @Prop() disabled: boolean = false;
+  @Prop() disabled?: boolean = false;
+
+  /**
+   * If true, the textarea will take the full width of its container.
+   */
+  @Prop() fullWidth?: boolean = true;
 
   /**
    * The maximum number of characters allowed in the textarea.
@@ -46,27 +57,32 @@ export class ModusWcTextarea {
   /**
    * The name of the textarea.
    */
-  @Prop() name: string = '';
+  @Prop() name?: string = '';
 
   /**
    * The placeholder text for the textarea.
    */
-  @Prop() placeholder: string = '';
+  @Prop() placeholder?: string = '';
 
   /**
    * The readonly state of the textarea.
    */
-  @Prop() readonly: boolean = false;
+  @Prop() readonly?: boolean = false;
 
   /**
    * The required state of the textarea.
    */
-  @Prop() required: boolean = false;
+  @Prop() required?: boolean = false;
 
   /**
    * The number of visible text lines for the textarea.
    */
   @Prop() rows?: number;
+
+  /**
+   * The size of the input.
+   */
+  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
 
   /**
    * Indicates whether the textarea has an invalid input.
@@ -95,6 +111,11 @@ export class ModusWcTextarea {
   @Prop() textareaTabIndex?: number;
 
   /**
+   * The value of the textarea.
+   */
+  @Prop({ mutable: true, reflect: true }) value: string = '';
+
+  /**
    * Emitted when the textarea loses focus.
    */
   @StencilEvent() textareaBlur!: EventEmitter<FocusEvent>;
@@ -109,17 +130,27 @@ export class ModusWcTextarea {
    */
   @StencilEvent() textareaFocus!: EventEmitter<FocusEvent>;
 
-  /**
-   * The value of the textarea.
-   */
-  @Prop({ mutable: true, reflect: true }) value: string = '';
-
   componentWillLoad() {
     if (!this.ariaLabel) {
       console.warn(
         'ModusWcTextarea: aria-label is required for accessibility.'
       );
     }
+  }
+
+  private getClasses(): string {
+    const classList = ['modus-wc-textarea'];
+    const propClasses = convertPropsToClasses({
+      bordered: this.bordered,
+      fullWidth: this.fullWidth,
+      size: this.size,
+    });
+
+    // The order CSS classes are added matters to CSS specificity
+    if (propClasses) classList.push(propClasses);
+    if (this.customClass) classList.push(this.customClass);
+
+    return classList.join(' ');
   }
 
   private handleBlur = (event: FocusEvent) => {
@@ -143,10 +174,7 @@ export class ModusWcTextarea {
           aria-label={this.ariaLabel || this.placeholder}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
-          class={{
-            'modus-wc-textarea': true,
-            [this.customClass]: !!this.customClass,
-          }}
+          class={this.getClasses()}
           dir={this.textareaDir}
           disabled={this.disabled}
           id={this.textareaId}
