@@ -31,7 +31,7 @@ jobs:
       - name: Pack modus-wc
         id: npm_pack
         run: |
-          modus_wc_tarball=$(npm pack --pack-destination integrations/angular | tail -n 1)
+          modus_wc_tarball=$(npm pack --pack-destination integrations/angular/ng18 | tail -n 1)
           echo "modus_wc_tarball=${modus_wc_tarball}" >> $GITHUB_OUTPUT
         continue-on-error: false
 
