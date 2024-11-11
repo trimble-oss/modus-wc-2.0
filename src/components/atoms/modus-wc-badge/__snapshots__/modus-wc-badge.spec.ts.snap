@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-badge should render with alert role 1`] = `
+<modus-wc-badge aria-label="Custom Badge" color="warning">
+  <span aria-label="Custom Badge" class="modus-wc-badge modus-wc-badge-md modus-wc-badge-warning" role="alert"></span>
+</modus-wc-badge>
+`;
+
+exports[`modus-wc-badge should render with custom props 1`] = `
+<modus-wc-badge aria-label="Custom Badge" color="secondary" content="Test" custom-class="test-class" size="lg" variant="text">
+  <span aria-label="Custom Badge" class="modus-wc-badge modus-wc-badge-lg modus-wc-badge-secondary modus-wc-badge-text test-class" role="status">
+    Test
+  </span>
+</modus-wc-badge>
+`;
+
+exports[`modus-wc-badge should render with default props 1`] = `
+<modus-wc-badge aria-label="Default Badge">
+  <span aria-label="Default Badge" class="modus-wc-badge modus-wc-badge-md modus-wc-badge-primary" role="status"></span>
+</modus-wc-badge>
+`;
