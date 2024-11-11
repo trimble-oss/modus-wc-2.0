@@ -43,17 +43,11 @@ jobs:
         run: |
           jq --arg version "${{ github.event.inputs.version }}" \
           '.dependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
-          mv package.json.tmp package.json && \
+          mv package.json.tmp package.json && npm i && \
           cd projects/trimble-cms/modus-wc-ng && \
           jq --arg version "${{ github.event.inputs.version }}" \
           '.peerDependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
-          mv package.json.tmp package.json
-
-      - name: Update modus-wc-ng dependencies
-        run: cd ./projects/trimble-cms/modus-wc-ng && npm i
-
-      - name: Update ng18 dependencies
-        run: npm i
+          mv package.json.tmp package.json && npm i
 
       - name: Update package.json version
         run: |
