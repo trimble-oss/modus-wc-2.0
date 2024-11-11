@@ -18,7 +18,7 @@ on:
 
 permissions:
   contents: write
-  actions: read
+  actions: write
 
 jobs:
   build-and-publish-wc:
