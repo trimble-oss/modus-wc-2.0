@@ -24,7 +24,7 @@ jobs:
 
       - name: Build Stencil components
         id: stencil
-        run: npm run stencil:build
+        run: npm run build:ci
         continue-on-error: false
 
       - name: Pack modus-wc

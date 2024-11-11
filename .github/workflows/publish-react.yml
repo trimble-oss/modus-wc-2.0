@@ -39,7 +39,7 @@ jobs:
       - name: Build Web Components
         run: |
           npm ci
-          npm run stencil:build
+          npm run build:ci
         working-directory: .
 
       - name: Install dependencies
