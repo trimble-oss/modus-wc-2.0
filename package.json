@@ -99,8 +99,7 @@
     },
     "build:ci": {
       "dependencies": [
-        "stencil:build",
-        "lint"
+        "stencil:build"
       ]
     },
     "format": {
@@ -155,7 +154,8 @@
     },
     "start": {
       "dependencies": [
-        "storybook:start"
+        "storybook:start",
+        "lint"
       ]
     },
     "stencil:build": {
