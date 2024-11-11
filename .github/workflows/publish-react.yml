@@ -24,6 +24,9 @@ jobs:
       run:
         working-directory: integrations/react/v18
 
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -36,8 +39,6 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Update to use new WebComponent version
         run: |
@@ -66,8 +67,6 @@ jobs:
 
       - name: Publish
         run: npm publish
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         continue-on-error: false
 
   release-react:
