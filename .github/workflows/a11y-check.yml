@@ -16,6 +16,8 @@ jobs:
         with:
           node-version: ${{ vars.NODE_VERSION }}
 
+      - uses: google/wireit@setup-github-actions-caching/v2
+
       - name: Install dependencies
         run: npm ci
 
