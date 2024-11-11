@@ -199,11 +199,11 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the input.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * Whether the form control is disabled.
          */
-        "disabled": boolean;
+        "disabled"?: boolean;
         /**
           * Indicates whether the input has an invalid input.
          */
@@ -246,7 +246,7 @@ export namespace Components {
         /**
           * Name of the form control. Submitted with the form as part of a name/value pai.
          */
-        "name": string;
+        "name"?: string;
         /**
           * Pattern the value must match to be valid
          */
@@ -254,15 +254,15 @@ export namespace Components {
         /**
           * Text that appears in the form control when it has no value set.
          */
-        "placeholder": string;
+        "placeholder"?: string;
         /**
           * Whether the value is editable.
          */
-        "readOnly": boolean;
+        "readOnly"?: boolean;
         /**
           * A value is required or must be checked for the form to be submittable.
          */
-        "required": boolean;
+        "required"?: boolean;
         /**
           * The size of the input.
          */
@@ -270,7 +270,7 @@ export namespace Components {
         /**
           * Type of form control.
          */
-        "type": 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
+        "type"?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
         /**
           * The value of the control.
          */
