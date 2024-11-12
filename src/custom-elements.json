@@ -404,6 +404,86 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-icon/modus-wc-icon.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable icon component used to render Modus icons.\r\n\r\nThis component requires Modus Icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcIcon",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility.\r\nThis provides an accessible name for screen readers."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the i element."
+            },
+            {
+              "name": "decorative",
+              "fieldName": "decorative",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the icon is decorative.\r\nWhen true, sets aria-hidden to hide the icon from screen readers."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "The icon name, should match the CSS class in the icon font."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "description": "The icon size, can be \"sm\", \"md\", \"lg\" (a custom size can be specified in CSS).\r\nThis adjusts the font size for the icon."
+            }
+          ],
+          "tagName": "modus-wc-icon",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcIcon",
+          "declaration": {
+            "name": "ModusWcIcon",
+            "module": "src/components/atoms/modus-wc-icon/modus-wc-icon.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-icon",
+          "declaration": {
+            "name": "ModusWcIcon",
+            "module": "src/components/atoms/modus-wc-icon/modus-wc-icon.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx",
       "declarations": [
         {

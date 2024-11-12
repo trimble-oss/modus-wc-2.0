@@ -163,6 +163,33 @@ export namespace Components {
         "responsive"?: boolean;
     }
     /**
+     * A customizable icon component used to render Modus icons.
+     * This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcIcon {
+        /**
+          * The aria-label attribute for accessibility. This provides an accessible name for screen readers.
+         */
+        "ariaLabel"?: string;
+        /**
+          * Custom CSS class to apply to the i element.
+         */
+        "customClass": string;
+        /**
+          * Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.
+         */
+        "decorative"?: boolean;
+        /**
+          * The icon name, should match the CSS class in the icon font.
+         */
+        "name": string;
+        /**
+          * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+    }
+    /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -471,6 +498,17 @@ declare global {
         prototype: HTMLModusWcDividerElement;
         new (): HTMLModusWcDividerElement;
     };
+    /**
+     * A customizable icon component used to render Modus icons.
+     * This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcIconElement extends Components.ModusWcIcon, HTMLStencilElement {
+    }
+    var HTMLModusWcIconElement: {
+        prototype: HTMLModusWcIconElement;
+        new (): HTMLModusWcIconElement;
+    };
     interface HTMLModusWcTextInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
@@ -560,6 +598,7 @@ declare global {
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
+        "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
@@ -723,6 +762,33 @@ declare namespace LocalJSX {
           * Whether the divider is responsive or not.
          */
         "responsive"?: boolean;
+    }
+    /**
+     * A customizable icon component used to render Modus icons.
+     * This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcIcon {
+        /**
+          * The aria-label attribute for accessibility. This provides an accessible name for screen readers.
+         */
+        "ariaLabel"?: string;
+        /**
+          * Custom CSS class to apply to the i element.
+         */
+        "customClass"?: string;
+        /**
+          * Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.
+         */
+        "decorative"?: boolean;
+        /**
+          * The icon name, should match the CSS class in the icon font.
+         */
+        "name": string;
+        /**
+          * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -997,6 +1063,7 @@ declare namespace LocalJSX {
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
         "modus-wc-divider": ModusWcDivider;
+        "modus-wc-icon": ModusWcIcon;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
@@ -1028,6 +1095,12 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-divider": LocalJSX.ModusWcDivider & JSXBase.HTMLAttributes<HTMLModusWcDividerElement>;
+            /**
+             * A customizable icon component used to render Modus icons.
+             * This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-icon": LocalJSX.ModusWcIcon & JSXBase.HTMLAttributes<HTMLModusWcIconElement>;
             /**
              * A customizable input component used to create text inputs with types.
              * Adheres to WCAG 2.2 standards.
