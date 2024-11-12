@@ -145,10 +145,10 @@
       "command": "prettier --check .",
       "clean": false,
       "files": [
-        "*.{ts,tsx,js,jsx,css,scss,json,md,html}"
+        "*.{ts,tsx,js,jsx,css,scss,json,md,mdx,html}"
       ],
       "output": [
-        "*.{ts,tsx,js,jsx,css,scss,json,md,html}",
+        "*.{ts,tsx,js,jsx,css,scss,json,md,mdx,html}",
         "!src/components.d.ts"
       ]
     },
