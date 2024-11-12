@@ -39,19 +39,11 @@ jobs:
 
       - uses: google/wireit@setup-github-actions-caching/v2
 
-      - name: Build Web Components
-        run: |
-          npm ci
-          npm run build:ci
-        working-directory: .
-
       - name: Install dependencies
         run: npm ci
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          cache: 'npm'
 
-      - uses: google/wireit@setup-github-actions-caching/v2
+      - name: Build Web Components
+        run: npm run build:ci
 
       - name: Update to use new WebComponent version
         run: |
