@@ -50,6 +50,9 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            integrations/react/v18/package-lock.json
 
       - uses: google/wireit@setup-github-actions-caching/v2
 
