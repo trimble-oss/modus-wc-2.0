@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng run @trimble-cms/modus-wc-ng:build:production",
+    "build": "ng run @trimble-cms/modus-wc-angular:build:production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

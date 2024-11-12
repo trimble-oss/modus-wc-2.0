@@ -1,4 +1,4 @@
-# Modus Angular Components: modus-wc-ng
+# Modus Angular Components: modus-wc-angular
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
 
