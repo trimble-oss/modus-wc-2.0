@@ -1,5 +1,4 @@
 import { Component, h, Host, Prop } from '@stencil/core';
-import '@trimble-oss/modus-icons/dist/modus-outlined/fonts/modus-icons.css';
 
 /**
  * A customizable icon component used to render Modus icons.
