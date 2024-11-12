@@ -35,6 +35,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ vars.NODE_VERSION }}
+          cache: 'npm'
+
+      - uses: google/wireit@setup-github-actions-caching/v2
 
       - name: Build Web Components
         run: |
