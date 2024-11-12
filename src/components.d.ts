@@ -164,7 +164,7 @@ export namespace Components {
     }
     /**
      * A customizable icon component used to render Modus icons.
-     * This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
+     * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcIcon {
@@ -500,7 +500,7 @@ declare global {
     };
     /**
      * A customizable icon component used to render Modus icons.
-     * This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
+     * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcIconElement extends Components.ModusWcIcon, HTMLStencilElement {
@@ -765,7 +765,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable icon component used to render Modus icons.
-     * This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
+     * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcIcon {
@@ -1097,7 +1097,7 @@ declare module "@stencil/core" {
             "modus-wc-divider": LocalJSX.ModusWcDivider & JSXBase.HTMLAttributes<HTMLModusWcDividerElement>;
             /**
              * A customizable icon component used to render Modus icons.
-             * This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
+             * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-icon": LocalJSX.ModusWcIcon & JSXBase.HTMLAttributes<HTMLModusWcIconElement>;

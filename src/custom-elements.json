@@ -408,7 +408,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable icon component used to render Modus icons.\r\n\r\nThis component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable icon component used to render Modus icons.\r\n\r\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcIcon",
           "members": [
             {

@@ -9,7 +9,7 @@
 
 A customizable icon component used to render Modus icons.
 
-This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
+<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
 
 Adheres to WCAG 2.2 standards.
 
