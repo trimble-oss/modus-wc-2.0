@@ -35,6 +35,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ vars.NODE_VERSION }}
+          cache: 'npm'
+
+      - uses: google/wireit@setup-github-actions-caching/v2
 
       - name: Build Web Components
         run: |
@@ -67,7 +70,6 @@ jobs:
 
       - name: Pack the package
         run: npm pack
-        id: npm_pack
 
       - name: Upload tarball as artifact
         uses: actions/upload-artifact@v4
@@ -77,7 +79,6 @@ jobs:
 
       - name: Publish
         run: npm publish
-        continue-on-error: false
 
   release-react:
     needs: build-and-publish-react
