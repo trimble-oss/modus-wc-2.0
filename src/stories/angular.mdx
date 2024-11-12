@@ -18,17 +18,17 @@ Please refer to the [official stencil documentation](https://stenciljs.com/docs/
 Modus Angular Components have a peer dependency with Modus Web Components and require the
 installation of both packages.
 
-Install both `modus-wc` and `modus-wc-ng` dependencies and ensure you specify the target version of Angular for the `modus-wc-ng` package (e.g., `ng18` for Angular 18):
+Install both `modus-wc` and `modus-wc-angular` dependencies and ensure you specify the target version of Angular for the `modus-wc-angular` package (e.g., `ng18` for Angular 18):
 
 ```bash
-npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng@<latest-version>-ng<target-version>
+npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-angular@<latest-version>-ng<target-version>
 ```
 
 Import Modus Angular Web Components library into your Angular app's module:
 
 ```ts
 // app.module.ts
-import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-ng';
+import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-angular';
 
 @NgModule({
   ...
@@ -50,10 +50,10 @@ You can now use Modus Angular Web Components while leveraging Angular template b
 Modus Angular Components have a peer dependency with Modus Web Components and require the
 installation of both packages.
 
-Install both `modus-wc` and `modus-wc-ng` dependencies and ensure you specify the target version of Angular for the `modus-wc-ng` package (e.g., `ng18` for Angular 18):
+Install both `modus-wc` and `modus-wc-angular` dependencies and ensure you specify the target version of Angular for the `modus-wc-angular` package (e.g., `ng18` for Angular 18):
 
 ```bash
-npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng@<latest-version>-ng<target-version>
+npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-angular@<latest-version>-ng<target-version>
 ```
 
 Import your component library into your component. You must distribute your components through a primary `NgModule` to use your components in a standalone component.
@@ -61,7 +61,7 @@ Import your component library into your component. You must distribute your comp
 ```ts
 // app.component.ts
 import { Component } from '@angular/core';
-import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-ng';
+import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-angular';
 
 @Component({
   selector: 'app-root',

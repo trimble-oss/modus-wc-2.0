@@ -1,4 +1,4 @@
-# Modus Angular Components: modus-wc-ng
+# Modus Angular Components: modus-wc-angular
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
 
@@ -7,7 +7,7 @@ The components in this library were programmatically generated using the [Stenci
 ## Installation
 
 - Install the Modus Angular Components Library and its Modus Web Component peer dependency
-  `npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-ng`
+  `npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-angular`
 
 - Add the following snippet to your `main.ts` (or any main module)
 
@@ -60,8 +60,8 @@ directory and then `npm install path/to/modus-wc-tarball.tgz` from `ng18` direct
 To use the Modus Angular components locally for debugging and other purposes:
 
 - From `./ng18` project directory run `npm run build`
-- From `./ng18` project directory run `npm pack ./dist/trimble-cms/modus-wc-ng`
-  - This will generate a tarball of the library: `trimble-cms-modus-wc-ng-0.0.1-ng18.tgz`
+- From `./ng18` project directory run `npm pack ./dist/trimble-cms/modus-wc-angular`
+  - This will generate a tarball of the library: `trimble-cms-modus-wc-angular-0.0.1-ng18.tgz`
 
-You can now test the build locally with any Angular project by running `npm install path/to/trimble-cms-modus-wc-ng-0.0.1-ng18.tgz` 
+You can now test the build locally with any Angular project by running `npm install path/to/trimble-cms-modus-wc-angular-0.0.1-ng18.tgz` 
 and following the [installation steps](#installation).
