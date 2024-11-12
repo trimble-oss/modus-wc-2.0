@@ -1,0 +1,89 @@
+import { Meta } from '@storybook/blocks';
+import { Canvas, Story } from '@storybook/blocks';
+
+<Meta title="Documentation/Custom Styling" />
+
+# Custom Styling
+
+The Modus Web Components library provides several ways to customize the appearance of components.
+
+## 1. Use a Theme
+
+Our components ship preloaded with several themes. A list of themes can be found
+[here](https://github.com/Trimble-Construction/modus-wc-2.0/blob/main/tailwind.config.ts)
+within the `daisyui.themes` array. Themes can be applied in multiple ways.
+
+### a. Using the `ThemeSwitcher` component:
+
+```html
+<modus-wc-theme-provider initial-theme='{ "theme": "modus-classic-light" }'>
+  <modus-wc-theme-switcher aria-label="Toggle theme" />
+</modus-wc-theme-provider>
+```
+
+The Theme Switcher will automatically handle theme switching through our theme store. Theme
+values are stored in local storage using the key `modus-theme-config`.
+
+### b. Manually applying the following HTML:
+
+```html
+<!-- Light theme -->
+<html class="light" data-theme="modus-classic-light" data-mode="light">
+  ...
+</html>
+
+<!-- Dark theme -->
+<html class="dark" data-theme="modus-classic-dark" data-mode="dark">
+  ...
+</html>
+```
+
+## 2. Override CSS Custom Properties
+
+Our components use CSS custom properties for styling. You can override these globally:
+
+```css
+:root {
+  --modus-wc-primary-color: purple;
+  --modus-wc-color-info: green;
+  --modus-wc-font-weight-normal: 500;
+}
+```
+
+A full list of overridable CSS custom properties can be found
+[here](https://github.com/Trimble-Construction/modus-wc-2.0/blob/main/src/styles/variables.scss).
+
+# 3. Use Custom CSS Classes
+
+Many components accept a `custom-class` attribute for additional styling:
+
+```html
+<modus-wc-button
+  label="Custom Button"
+  custom-class="my-custom-button"
+></modus-wc-button>
+````
+
+```css
+.my-custom-button {
+  background-color: purple;
+  border-color: purple;
+}
+```
+
+## 4. Apply Direct CSS Overrides
+
+Since Shadow DOM is disabled, you can directly target component classes:
+
+```css
+.modus-wc-btn {
+  background-color: yellow;
+  color: black;
+}
+```
+
+Our component classes are all prefixed with `modus-wc-` to avoid collisions.
+
+---
+Need help? Check out our [GitHub repository](https://github.com/trimble-oss/modus-web-components)
+or [raise an issue](https://github.com/trimble-oss/modus-web-components/issues).
