@@ -118,7 +118,7 @@
     "format:prettier": {
       "command": "prettier --write .",
       "files": [
-        "src/**/*.{ts,tsx,js,jsx,css,scss,json,md,html}"
+        "src/**/*.{ts,tsx,js,jsx,css,scss,json,md,mdx,html}"
       ]
     },
     "lint": {
