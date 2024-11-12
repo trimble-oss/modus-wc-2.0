@@ -234,7 +234,7 @@
     },
     "tailwind:watch": {
       "command": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --minify --watch",
-      "service":true,
+      "service": true,
       "files": [
         "src/**/*.scss",
         "src/styles/tailwind.css",
