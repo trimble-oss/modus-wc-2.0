@@ -52,14 +52,14 @@ jobs:
           jq --arg version "${{ github.event.inputs.version }}" \
           '.dependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json && npm i && \
-          cd projects/trimble-cms/modus-wc-ng && \
+          cd projects/trimble-cms/modus-wc-angular && \
           jq --arg version "${{ github.event.inputs.version }}" \
           '.peerDependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json && npm i
 
       - name: Update package.json version
         run: |
-          cd projects/trimble-cms/modus-wc-ng && \
+          cd projects/trimble-cms/modus-wc-angular && \
           jq --arg version "${{ github.event.inputs.version }}-ng18" \
           '.version = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
@@ -68,7 +68,7 @@ jobs:
         run: npm run build
 
       - name: Package distribution
-        run: npm pack ./dist/trimble-cms/modus-wc-ng
+        run: npm pack ./dist/trimble-cms/modus-wc-angular
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -100,7 +100,7 @@ jobs:
       - name: Find the release asset
         id: find-asset
         run: |
-          asset_path=$(find . -name 'trimble-cms-modus-wc-ng*.tgz')
+          asset_path=$(find . -name 'trimble-cms-modus-wc-angular*.tgz')
           full_asset_path="${{ github.workspace }}/integrations/angular/ng18/${asset_path}"
           echo "asset_path=$full_asset_path" >> $GITHUB_OUTPUT
 
@@ -111,6 +111,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: modus-wc-ng-${{ github.event.inputs.version }}-ng18
+          tag_name: modus-wc-angular-${{ github.event.inputs.version }}-ng18
           name: Modus Web Components Angular ${{ github.event.inputs.version }}-ng18
           files: package-angular-18.tgz
