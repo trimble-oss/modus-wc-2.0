@@ -17,7 +17,7 @@ export class ModusWcIcon {
    * The aria-label attribute for accessibility.
    * This provides an accessible name for screen readers.
    */
-  @Prop() ariaLabel?: string;
+  @Prop() ariaLabel!: string;
 
   /**
    * Custom CSS class to apply to the i element.

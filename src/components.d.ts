@@ -171,7 +171,7 @@ export namespace Components {
         /**
           * The aria-label attribute for accessibility. This provides an accessible name for screen readers.
          */
-        "ariaLabel"?: string;
+        "ariaLabel": string;
         /**
           * Custom CSS class to apply to the i element.
          */
@@ -772,7 +772,7 @@ declare namespace LocalJSX {
         /**
           * The aria-label attribute for accessibility. This provides an accessible name for screen readers.
          */
-        "ariaLabel"?: string;
+        "ariaLabel": string;
         /**
           * Custom CSS class to apply to the i element.
          */

@@ -15,13 +15,13 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property            | Attribute      | Description                                                                                                              | Type                                | Default     |
-| ------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------- | ----------- |
-| `ariaLabel`         | `aria-label`   | The aria-label attribute for accessibility. This provides an accessible name for screen readers.                         | `string \| undefined`               | `undefined` |
-| `customClass`       | `custom-class` | Custom CSS class to apply to the i element.                                                                              | `string`                            | `''`        |
-| `decorative`        | `decorative`   | Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.                 | `boolean \| undefined`              | `true`      |
-| `name` _(required)_ | `name`         | The icon name, should match the CSS class in the icon font.                                                              | `string`                            | `undefined` |
-| `size`              | `size`         | The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon. | `"lg" \| "md" \| "sm" \| undefined` | `'md'`      |
+| Property                 | Attribute      | Description                                                                                                              | Type                                | Default     |
+| ------------------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------- | ----------- |
+| `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility. This provides an accessible name for screen readers.                         | `string`                            | `undefined` |
+| `customClass`            | `custom-class` | Custom CSS class to apply to the i element.                                                                              | `string`                            | `''`        |
+| `decorative`             | `decorative`   | Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.                 | `boolean \| undefined`              | `true`      |
+| `name` _(required)_      | `name`         | The icon name, should match the CSS class in the icon font.                                                              | `string`                            | `undefined` |
+| `size`                   | `size`         | The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon. | `"lg" \| "md" \| "sm" \| undefined` | `'md'`      |
 
 
 ----------------------------------------------
