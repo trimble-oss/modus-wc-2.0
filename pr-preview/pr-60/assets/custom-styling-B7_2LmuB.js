@@ -1,4 +1,4 @@
-import{ae as e,af as r}from"./index-zV29CX8o.js";import{useMDXComponents as t}from"./index-BSj771as.js";import"./iframe-DaOqym8n.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function o(n){const s={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",hr:"hr",p:"p",pre:"pre",...t(),...n.components};return e.jsxs(e.Fragment,{children:[e.jsx(r,{title:"Documentation/Custom Styling"}),`
+import{ae as e,af as r}from"./index-Dw3oeJQ-.js";import{useMDXComponents as t}from"./index-BSj771as.js";import"./iframe-CM4m88O0.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function o(n){const s={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",hr:"hr",p:"p",pre:"pre",...t(),...n.components};return e.jsxs(e.Fragment,{children:[e.jsx(r,{title:"Documentation/Custom Styling"}),`
 `,e.jsx(s.h1,{id:"custom-styling",children:"Custom Styling"}),`
 `,e.jsx(s.p,{children:"The Modus Web Components library provides several ways to customize the appearance of components."}),`
 `,e.jsx(s.h2,{id:"1-use-a-theme",children:"1. Use a Theme"}),`
@@ -33,7 +33,7 @@ values are stored in local storage using the key `,e.jsx(s.code,{children:"modus
 `})}),`
 `,e.jsxs(s.p,{children:[`A full list of overridable CSS custom properties can be found
 `,e.jsx(s.a,{href:"https://github.com/Trimble-Construction/modus-wc-2.0/blob/main/src/styles/variables.scss",rel:"nofollow",children:"here"}),"."]}),`
-`,e.jsx(s.h1,{id:"3-use-custom-css-classes",children:"3. Use Custom CSS Classes"}),`
+`,e.jsx(s.h2,{id:"3-use-custom-css-classes",children:"3. Use Custom CSS Classes"}),`
 `,e.jsxs(s.p,{children:["Many components accept a ",e.jsx(s.code,{children:"custom-class"})," attribute for additional styling:"]}),`
 `,e.jsx(s.pre,{children:e.jsx(s.code,{className:"language-html",children:`<modus-wc-button
   label="Custom Button"
