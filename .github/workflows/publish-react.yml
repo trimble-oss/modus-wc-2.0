@@ -70,7 +70,6 @@ jobs:
 
       - name: Pack the package
         run: npm pack
-        id: npm_pack
 
       - name: Upload tarball as artifact
         uses: actions/upload-artifact@v4
@@ -80,7 +79,6 @@ jobs:
 
       - name: Publish
         run: npm publish
-        continue-on-error: false
 
   release-react:
     needs: build-and-publish-react

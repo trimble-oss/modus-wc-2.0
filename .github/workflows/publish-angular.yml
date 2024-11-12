@@ -70,7 +70,6 @@ jobs:
 
       - name: Package distribution
         run: npm pack ./dist/trimble-cms/modus-wc-ng
-        id: npm_pack
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -80,7 +79,6 @@ jobs:
 
       - name: Publish distribution
         run: npm publish *.tgz
-        continue-on-error: false
 
   release-angular:
     needs: build-and-publish-angular
