@@ -162,7 +162,7 @@
       "command": "stencil build --docs --prod",
       "dependencies": [
         "build:cem-json",
-        "tailwind"
+        "tailwind:build"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
@@ -188,7 +188,7 @@
       },
       "dependencies": [
         "build:cem-json",
-        "tailwind"
+        "tailwind:watch"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
@@ -221,8 +221,8 @@
         "stencil:watch"
       ]
     },
-    "tailwind": {
-      "command": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css -m",
+    "tailwind:build": {
+      "command": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --minify",
       "files": [
         "src/**/*.scss",
         "src/styles/tailwind.css",
@@ -230,6 +230,15 @@
       ],
       "output": [
         "src/styles/output.css"
+      ]
+    },
+    "tailwind:watch": {
+      "command": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --minify --watch",
+      "service":true,
+      "files": [
+        "src/**/*.scss",
+        "src/styles/tailwind.css",
+        "tailwind.config.js"
       ]
     }
   }
