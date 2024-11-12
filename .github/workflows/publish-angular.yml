@@ -1,8 +1,8 @@
 # This publishes various packages in this repository.
-# It will update the package.json version, build the react package, publish it to the Artifactory NPM registry, as well as create a GitHub release.
+# It will update the package.json version, build the Angular package, publish it to the Artifactory NPM registry, as well as create a GitHub release.
 # This is triggered by running the main 'Publish & Release' workflow.
 
-name: Publish & Release - React
+name: Publish & Release - Angular
 
 on:
   workflow_dispatch:
@@ -17,12 +17,12 @@ permissions:
   actions: write
 
 jobs:
-  build-and-publish-react:
+  build-and-publish-angular:
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: integrations/react/v18
+        working-directory: integrations/angular/ng18
 
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -44,48 +44,48 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          cache: 'npm'
-
-      - uses: google/wireit@setup-github-actions-caching/v2
 
       - name: Update to use new WebComponent version
         run: |
           jq --arg version "${{ github.event.inputs.version }}" \
           '.dependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
+          mv package.json.tmp package.json && npm i && \
+          cd projects/trimble-cms/modus-wc-ng && \
+          jq --arg version "${{ github.event.inputs.version }}" \
+          '.peerDependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json && npm i
 
       - name: Update package.json version
         run: |
-          jq --arg version "${{ github.event.inputs.version }}-react18" \
+          cd projects/trimble-cms/modus-wc-ng && \
+          jq --arg version "${{ github.event.inputs.version }}-ng18" \
           '.version = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
 
-      - name: Build React integration
+      - name: Build distribution
         run: npm run build
 
-      - name: Pack the package
-        run: npm pack
+      - name: Package distribution
+        run: npm pack ./dist/trimble-cms/modus-wc-ng
         id: npm_pack
 
-      - name: Upload tarball as artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: npm-tarball
+          name: angular-distribution
           path: '**/*.tgz'
 
-      - name: Publish
-        run: npm publish
+      - name: Publish distribution
+        run: npm publish *.tgz
         continue-on-error: false
 
-  release-react:
-    needs: build-and-publish-react
+  release-angular:
+    needs: build-and-publish-angular
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: integrations/react
+        working-directory: integrations/angular/ng18
 
     steps:
       - name: Checkout code
@@ -94,24 +94,23 @@ jobs:
       - name: Download tarball artifact
         uses: actions/download-artifact@v4
         with:
-          name: npm-tarball
+          name: angular-distribution
           path: .
 
-      - name: Find the asset
+      - name: Find the release asset
         id: find-asset
         run: |
-          asset_path=$(find . -name 'trimble-cms-modus-wc-react*.tgz')
-          full_asset_path="${{ github.workspace }}/integrations/react/${asset_path}"
+          asset_path=$(find . -name 'trimble-cms-modus-wc-ng*.tgz')
+          full_asset_path="${{ github.workspace }}/integrations/angular/ng18/${asset_path}"
           echo "asset_path=$full_asset_path" >> $GITHUB_OUTPUT
 
-      - name: Rename the asset to package-react.tgz
-        run: mv ${{ steps.find-asset.outputs.asset_path }} package-react.tgz
+      - name: Rename release asset
+        run: mv ${{ steps.find-asset.outputs.asset_path }} package-angular-18.tgz
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: modus-wc-react-${{ github.event.inputs.version }}
-          name: Modus Web Components React ${{ github.event.inputs.version }}
-          files: |
-            package-react.tgz
+          tag_name: modus-wc-ng-${{ github.event.inputs.version }}-ng18
+          name: Modus Web Components Angular ${{ github.event.inputs.version }}-ng18
+          files: package-angular-18.tgz
