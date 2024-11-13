@@ -39,13 +39,7 @@ jobs:
 
       - uses: google/wireit@setup-github-actions-caching/v2
 
-      - name: Build Web Components
-        run: |
-          npm ci
-          npm run build:ci
-        working-directory: .
-
-      - name: Install dependencies
+      - name: Install Web Component dependencies
         run: npm ci
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -54,7 +48,9 @@ jobs:
             package-lock.json
             integrations/react/v18/package-lock.json
 
-      - uses: google/wireit@setup-github-actions-caching/v2
+      - name: Build Web Components
+        run: npm run build:ci
+        working-directory: .
 
       - name: Update to use new WebComponent version
         run: |

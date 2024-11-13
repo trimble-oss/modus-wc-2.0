@@ -67,7 +67,6 @@ jobs:
 
       - name: Publish
         run: npm publish
-        continue-on-error: false
 
   trigger-angular-publish:
     needs: build-and-publish-wc

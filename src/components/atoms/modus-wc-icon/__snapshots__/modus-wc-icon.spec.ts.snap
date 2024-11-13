@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-icon should render with custom props 1`] = `
+<modus-wc-icon aria-label="Custom icon" custom-class="test-class" decorative="false" size="sm">
+  <i aria-label="Custom icon" class="modus-icons modus-wc-icon--sm test-class" role="img"></i>
+</modus-wc-icon>
+`;
+
+exports[`modus-wc-icon should render with default props 1`] = `
+<modus-wc-icon aria-label="Default icon">
+  <i aria-hidden="true" class="modus-icons modus-wc-icon--md"></i>
+</modus-wc-icon>
+`;
+
+exports[`modus-wc-icon should render with size prop lg 1`] = `
+<modus-wc-icon aria-label="Custom icon" size="lg">
+  <i aria-hidden="true" class="modus-icons modus-wc-icon--lg"></i>
+</modus-wc-icon>
+`;
