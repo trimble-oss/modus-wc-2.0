@@ -1,0 +1,50 @@
+import { html } from 'lit';
+import { Meta, StoryObj } from '@storybook/web-components';
+import { ifDefined } from 'lit/directives/if-defined.js';
+
+interface IconArgs {
+  'aria-label': string;
+  'custom-class': string;
+  decorative: boolean;
+  name: string;
+  size: 'sm' | 'md' | 'lg';
+}
+
+const meta: Meta<IconArgs> = {
+  title: 'Components/Atoms/Icon',
+  component: 'modus-wc-icon',
+  args: {
+    'aria-label': 'Alert icon',
+    'custom-class': '',
+    decorative: false,
+    name: 'alert',
+    size: 'md',
+  },
+  argTypes: {
+    size: {
+      control: { type: 'radio' },
+      options: ['sm', 'md', 'lg'],
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<IconArgs>;
+
+const Template: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-icon
+        aria-label="${ifDefined(args['aria-label'])}"
+        custom-class="${args['custom-class']}"
+        ?decorative="${ifDefined(args.decorative)}"
+        name="${args.name}"
+        size="${args.size}"
+      >
+      </modus-wc-icon>
+    `;
+  },
+};
+
+export const Default: Story = { ...Template };
