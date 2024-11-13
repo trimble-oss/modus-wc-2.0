@@ -41,7 +41,12 @@ jobs:
 
       - name: Install Web Component dependencies
         run: npm ci
-        working-directory: .
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            integrations/react/v18/package-lock.json
 
       - name: Build Web Components
         run: npm run build:ci
