@@ -13,18 +13,25 @@ Follow the steps outlined below to integrate and use Modus Angular Web Component
 
 Please refer to the [official stencil documentation](https://stenciljs.com/docs/angular#consumer-usage) for more information on how to integrate with your Angular project.
 
-## Angular with Modules
+## Angular with modules
 
 Modus Angular Components have a peer dependency with Modus Web Components and require the
 installation of both packages.
 
-Install both `modus-wc` and `modus-wc-angular` dependencies and ensure you specify the target version of Angular for the `modus-wc-angular` package (e.g., `ng18` for Angular 18):
+### 1. Install both `modus-wc` and `modus-wc-angular` dependencies:
+
+Ensure that you specify the target version of Angular for the `modus-wc-angular` package (e.g., `ng18` for Angular 18).
+
+<b>
+  Lock the installed package versions to avoid unintended breakages on future
+  npm installs.
+</b>
 
 ```bash
 npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-angular@<latest-version>-ng<target-version>
 ```
 
-Import Modus Angular Web Components library into your Angular app's module:
+### 2. Import Modus Angular Web Components library into your Angular app's module:
 
 ```ts
 // app.module.ts
@@ -38,25 +45,34 @@ import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-angular';
 export class AppModule {}
 ```
 
-You can now use Modus Angular Web Components while leveraging Angular template binding syntax:
+### 3. Use Modus Angular Web Components while leveraging Angular template binding syntax:
 
 ```ts
 // app.component.html
 <modus-wc-button label="Click Me" />
 ```
 
-## Angular with Standalone Components
+## Angular with standalone components
 
 Modus Angular Components have a peer dependency with Modus Web Components and require the
 installation of both packages.
 
-Install both `modus-wc` and `modus-wc-angular` dependencies and ensure you specify the target version of Angular for the `modus-wc-angular` package (e.g., `ng18` for Angular 18):
+### 1. Install both `modus-wc` and `modus-wc-angular` dependencies:
+
+Ensure that you specify the target version of Angular for the `modus-wc-angular` package (e.g., `ng18` for Angular 18).
+
+<b>
+  Lock the installed package versions to avoid unintended breakages on future
+  npm installs.
+</b>
 
 ```bash
 npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-angular@<latest-version>-ng<target-version>
 ```
 
-Import your component library into your component. You must distribute your components through a primary `NgModule` to use your components in a standalone component.
+### 2. Import your component library into your component.
+
+You must distribute your components through a primary `NgModule` to use your components in a standalone component.
 
 ```ts
 // app.component.ts
@@ -72,31 +88,11 @@ import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-angular';
 export class AppComponent {}
 ```
 
-You can now use Modus Angular Web Components while leveraging Angular template binding syntax:
+### 3. Use Modus Angular Web Components while leveraging Angular template binding syntax:
 
 ```ts
 // app.component.html
 <modus-wc-button label="Click Me" />
-```
-
-## Consuming Modus Web Components Directly Instead of Using Modus Angular Components
-
-### Installation
-
-Install the Modus Web Component library:
-
-```bash
-npm install @trimble-cms/modus-wc
-```
-
-Import and execute `defineCustomElements` in your application's main file (e.g., `main.ts`).
-
-If you're unsure about which file is your main file, you can check your application's `angular.json` under `projects`>`architect`>`build`>`options`>`main`
-
-```ts
-import { defineCustomElements } from '@trimble-cms/modus-wc/loader';
-
-defineCustomElements();
 ```
 
 ### Custom Elements Schema

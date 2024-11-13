@@ -6,13 +6,27 @@ import { Meta } from '@storybook/blocks';
 
 ## Installation
 
+<b>
+  Lock the installed package version to avoid unintended breakages on future npm
+  installs.
+</b>
+
 ```bash
 npm install @trimble-cms/modus-wc
 ```
 
 ## Usage
 
-1. Register custom elements:
+### 1. Set the theme:
+
+The theme can be set manually or by using the `ThemeSwitcher` component. See the "Use a Theme" section of [Custom Styling](/docs/documentation-custom-styling--docs) for guidance.
+
+The default themes are:
+
+- `modus-classic-light`
+- `modus-classic-dark`
+
+### 2. Register custom elements:
 
 ```javascript
 import { defineCustomElements } from '@trimble-cms/modus-wc/loader';
@@ -25,7 +39,7 @@ const Root = () => {
 };
 ```
 
-2. Use the components:
+### 3. Use the components:
 
 ```javascript
 // Use in HTML
