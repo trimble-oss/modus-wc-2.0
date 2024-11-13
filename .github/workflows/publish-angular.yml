@@ -41,7 +41,6 @@ jobs:
             integrations/angular/ng18/package-lock.json
             integrations/angular/ng18/projects/trimble-cms/modus-wc-angular/package-lock.json
 
-
       - uses: google/wireit@setup-github-actions-caching/v2
 
       - name: Install Web Component dependencies
