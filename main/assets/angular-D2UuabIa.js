@@ -1,20 +1,17 @@
-import{ae as n,af as r}from"./index-cdoO47EV.js";import{useMDXComponents as s}from"./index-BSj771as.js";import"./iframe-DlcAAV6B.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function o(t){const e={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",h4:"h4",li:"li",p:"p",pre:"pre",ul:"ul",...s(),...t.components};return n.jsxs(n.Fragment,{children:[n.jsx(r,{title:"Documentation/Frameworks/Angular"}),`
+import{ae as n,af as r}from"./index-DS8evEbC.js";import{useMDXComponents as s}from"./index-BSj771as.js";import"./iframe-B_5Is18N.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function t(o){const e={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",h4:"h4",li:"li",p:"p",pre:"pre",ul:"ul",...s(),...o.components};return n.jsxs(n.Fragment,{children:[n.jsx(r,{title:"Documentation/Frameworks/Angular"}),`
 `,n.jsx(e.h1,{id:"angular-framework-integration",children:"Angular Framework Integration"}),`
 `,n.jsx(e.p,{children:"This guide will help you get started with consuming the Modus Angular Web Component library in your Angular project."}),`
 `,n.jsx(e.p,{children:`We highly recommend using the Modus Angular Components library for Angular based projects.
 These components are automatically generated using the Stencil Angular Framework Integration.`}),`
 `,n.jsx(e.p,{children:"Follow the steps outlined below to integrate and use Modus Angular Web Components effectively."}),`
 `,n.jsxs(e.p,{children:["Please refer to the ",n.jsx(e.a,{href:"https://stenciljs.com/docs/angular#consumer-usage",rel:"nofollow",children:"official stencil documentation"})," for more information on how to integrate with your Angular project."]}),`
-`,n.jsx(e.h2,{id:"angular-with-modules",children:"Angular with modules"}),`
+`,n.jsx(e.h2,{id:"angular-with-modules",children:"Angular with Modules"}),`
 `,n.jsx(e.p,{children:`Modus Angular Components have a peer dependency with Modus Web Components and require the
 installation of both packages.`}),`
-`,n.jsxs(e.h3,{id:"1-install-both-modus-wc-and-modus-wc-angular-dependencies",children:["1. Install both ",n.jsx(e.code,{children:"modus-wc"})," and ",n.jsx(e.code,{children:"modus-wc-angular"})," dependencies:"]}),`
-`,n.jsxs(e.p,{children:["Ensure that you specify the target version of Angular for the ",n.jsx(e.code,{children:"modus-wc-angular"})," package (e.g., ",n.jsx(e.code,{children:"ng18"})," for Angular 18)."]}),`
-`,n.jsx("b",{children:n.jsx(e.p,{children:`Lock the installed package versions to avoid unintended breakages on future
-npm installs.`})}),`
+`,n.jsxs(e.p,{children:["Install both ",n.jsx(e.code,{children:"modus-wc"})," and ",n.jsx(e.code,{children:"modus-wc-angular"})," dependencies and ensure you specify the target version of Angular for the ",n.jsx(e.code,{children:"modus-wc-angular"})," package (e.g., ",n.jsx(e.code,{children:"ng18"})," for Angular 18):"]}),`
 `,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-bash",children:`npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-angular@<latest-version>-ng<target-version>
 `})}),`
-`,n.jsx(e.h3,{id:"2-import-modus-angular-web-components-library-into-your-angular-apps-module",children:"2. Import Modus Angular Web Components library into your Angular app's module:"}),`
+`,n.jsx(e.p,{children:"Import Modus Angular Web Components library into your Angular app's module:"}),`
 `,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-ts",children:`// app.module.ts
 import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-angular';
 
@@ -25,21 +22,17 @@ import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-angular';
 })
 export class AppModule {}
 `})}),`
-`,n.jsx(e.h3,{id:"3-use-modus-angular-web-components-while-leveraging-angular-template-binding-syntax",children:"3. Use Modus Angular Web Components while leveraging Angular template binding syntax:"}),`
+`,n.jsx(e.p,{children:"You can now use Modus Angular Web Components while leveraging Angular template binding syntax:"}),`
 `,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-ts",children:`// app.component.html
 <modus-wc-button label="Click Me" />
 `})}),`
-`,n.jsx(e.h2,{id:"angular-with-standalone-components",children:"Angular with standalone components"}),`
+`,n.jsx(e.h2,{id:"angular-with-standalone-components",children:"Angular with Standalone Components"}),`
 `,n.jsx(e.p,{children:`Modus Angular Components have a peer dependency with Modus Web Components and require the
 installation of both packages.`}),`
-`,n.jsxs(e.h3,{id:"1-install-both-modus-wc-and-modus-wc-angular-dependencies-1",children:["1. Install both ",n.jsx(e.code,{children:"modus-wc"})," and ",n.jsx(e.code,{children:"modus-wc-angular"})," dependencies:"]}),`
-`,n.jsxs(e.p,{children:["Ensure that you specify the target version of Angular for the ",n.jsx(e.code,{children:"modus-wc-angular"})," package (e.g., ",n.jsx(e.code,{children:"ng18"})," for Angular 18)."]}),`
-`,n.jsx("b",{children:n.jsx(e.p,{children:`Lock the installed package versions to avoid unintended breakages on future
-npm installs.`})}),`
+`,n.jsxs(e.p,{children:["Install both ",n.jsx(e.code,{children:"modus-wc"})," and ",n.jsx(e.code,{children:"modus-wc-angular"})," dependencies and ensure you specify the target version of Angular for the ",n.jsx(e.code,{children:"modus-wc-angular"})," package (e.g., ",n.jsx(e.code,{children:"ng18"})," for Angular 18):"]}),`
 `,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-bash",children:`npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-angular@<latest-version>-ng<target-version>
 `})}),`
-`,n.jsx(e.h3,{id:"2-import-your-component-library-into-your-component",children:"2. Import your component library into your component."}),`
-`,n.jsxs(e.p,{children:["You must distribute your components through a primary ",n.jsx(e.code,{children:"NgModule"})," to use your components in a standalone component."]}),`
+`,n.jsxs(e.p,{children:["Import your component library into your component. You must distribute your components through a primary ",n.jsx(e.code,{children:"NgModule"})," to use your components in a standalone component."]}),`
 `,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-ts",children:`// app.component.ts
 import { Component } from '@angular/core';
 import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-angular';
@@ -52,9 +45,20 @@ import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-angular';
 })
 export class AppComponent {}
 `})}),`
-`,n.jsx(e.h3,{id:"3-use-modus-angular-web-components-while-leveraging-angular-template-binding-syntax-1",children:"3. Use Modus Angular Web Components while leveraging Angular template binding syntax:"}),`
+`,n.jsx(e.p,{children:"You can now use Modus Angular Web Components while leveraging Angular template binding syntax:"}),`
 `,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-ts",children:`// app.component.html
 <modus-wc-button label="Click Me" />
+`})}),`
+`,n.jsx(e.h2,{id:"consuming-modus-web-components-directly-instead-of-using-modus-angular-components",children:"Consuming Modus Web Components Directly Instead of Using Modus Angular Components"}),`
+`,n.jsx(e.h3,{id:"installation",children:"Installation"}),`
+`,n.jsx(e.p,{children:"Install the Modus Web Component library:"}),`
+`,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-bash",children:`npm install @trimble-cms/modus-wc
+`})}),`
+`,n.jsxs(e.p,{children:["Import and execute ",n.jsx(e.code,{children:"defineCustomElements"})," in your application's main file (e.g., ",n.jsx(e.code,{children:"main.ts"}),")."]}),`
+`,n.jsxs(e.p,{children:["If you're unsure about which file is your main file, you can check your application's ",n.jsx(e.code,{children:"angular.json"})," under ",n.jsx(e.code,{children:"projects"}),">",n.jsx(e.code,{children:"architect"}),">",n.jsx(e.code,{children:"build"}),">",n.jsx(e.code,{children:"options"}),">",n.jsx(e.code,{children:"main"})]}),`
+`,n.jsx(e.pre,{children:n.jsx(e.code,{className:"language-ts",children:`import { defineCustomElements } from '@trimble-cms/modus-wc/loader';
+
+defineCustomElements();
 `})}),`
 `,n.jsx(e.h3,{id:"custom-elements-schema",children:"Custom Elements Schema"}),`
 `,n.jsxs(e.p,{children:["In the ",n.jsx(e.code,{children:"app.module.ts"}),` file, you need to tell angular that you are using custom element schemas
@@ -267,4 +271,4 @@ export class ModusSelectDirective implements ControlValueAccessor, OnInit {
   [options]="options"
   [optionsDisplayProp]="'display'">
 </select-component>
-`})})]})}function g(t={}){const{wrapper:e}={...s(),...t.components};return e?n.jsx(e,{...t,children:n.jsx(o,{...t})}):o(t)}export{g as default};
+`})})]})}function g(o={}){const{wrapper:e}={...s(),...o.components};return e?n.jsx(e,{...o,children:n.jsx(t,{...o})}):t(o)}export{g as default};
