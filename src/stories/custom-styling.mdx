@@ -15,14 +15,14 @@ within the `daisyui.themes` array. Themes can be applied in multiple ways.
 
 ### a. Using the `ThemeSwitcher` component:
 
+The Theme Switcher will automatically handle theme switching through our theme store. Theme
+values are stored in local storage using the key `modus-theme-config`.
+
 ```html
 <modus-wc-theme-provider initial-theme='{ "theme": "modus-classic-light" }'>
   <modus-wc-theme-switcher aria-label="Toggle theme" />
 </modus-wc-theme-provider>
 ```
-
-The Theme Switcher will automatically handle theme switching through our theme store. Theme
-values are stored in local storage using the key `modus-theme-config`.
 
 ### b. Manually applying the following HTML:
 
@@ -40,7 +40,10 @@ values are stored in local storage using the key `modus-theme-config`.
 
 ## 2. Override CSS Custom Properties
 
-Our components use CSS custom properties for styling. You can override these globally:
+Our components use CSS custom properties for styling. You can override these globally or at the component level.
+
+A full list of overridable CSS custom properties can be found
+[here](https://github.com/Trimble-Construction/modus-wc-2.0/blob/main/src/styles/variables.scss).
 
 ```css
 :root {
@@ -50,8 +53,11 @@ Our components use CSS custom properties for styling. You can override these glo
 }
 ```
 
-A full list of overridable CSS custom properties can be found
-[here](https://github.com/Trimble-Construction/modus-wc-2.0/blob/main/src/styles/variables.scss).
+```css
+.modus-wc-btn {
+  --modus-wc-border-radius-md: 20px;
+}
+```
 
 ## 3. Use Custom CSS Classes
 
@@ -73,7 +79,9 @@ Many components accept a `custom-class` attribute for additional styling:
 
 ## 4. Apply Direct CSS Overrides
 
-Since Shadow DOM is disabled, you can directly target component classes:
+Since Shadow DOM is disabled, you can directly target component classes.
+
+Our component classes are all prefixed with `modus-wc-` to avoid collisions.
 
 ```css
 .modus-wc-btn {
@@ -81,8 +89,6 @@ Since Shadow DOM is disabled, you can directly target component classes:
   color: black;
 }
 ```
-
-Our component classes are all prefixed with `modus-wc-` to avoid collisions.
 
 ---
 
