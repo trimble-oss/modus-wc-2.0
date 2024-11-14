@@ -248,6 +248,33 @@ export namespace Components {
         "size"?: 'sm' | 'md' | 'lg';
     }
     /**
+     * A customizable input label component.
+     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcInputLabel {
+        /**
+          * Additional classes for custom styling.
+         */
+        "customClass"?: string;
+        /**
+          * The `for` attribute of the label, matching the `id` of the associated input.
+         */
+        "forId"?: string;
+        /**
+          * Specifies the text direction of the label content.
+         */
+        "labelDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The text to display within the label.
+         */
+        "labelText"?: string;
+        /**
+          * Whether the label indicates a required field.
+         */
+        "required"?: boolean;
+    }
+    /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -594,6 +621,17 @@ declare global {
         prototype: HTMLModusWcIconElement;
         new (): HTMLModusWcIconElement;
     };
+    /**
+     * A customizable input label component.
+     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcInputLabelElement extends Components.ModusWcInputLabel, HTMLStencilElement {
+    }
+    var HTMLModusWcInputLabelElement: {
+        prototype: HTMLModusWcInputLabelElement;
+        new (): HTMLModusWcInputLabelElement;
+    };
     interface HTMLModusWcTextInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
@@ -685,6 +723,7 @@ declare global {
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
+        "modus-wc-input-label": HTMLModusWcInputLabelElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
@@ -945,6 +984,33 @@ declare namespace LocalJSX {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: 'sm' | 'md' | 'lg';
+    }
+    /**
+     * A customizable input label component.
+     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcInputLabel {
+        /**
+          * Additional classes for custom styling.
+         */
+        "customClass"?: string;
+        /**
+          * The `for` attribute of the label, matching the `id` of the associated input.
+         */
+        "forId"?: string;
+        /**
+          * Specifies the text direction of the label content.
+         */
+        "labelDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The text to display within the label.
+         */
+        "labelText"?: string;
+        /**
+          * Whether the label indicates a required field.
+         */
+        "required"?: boolean;
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -1221,6 +1287,7 @@ declare namespace LocalJSX {
         "modus-wc-checkbox": ModusWcCheckbox;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
+        "modus-wc-input-label": ModusWcInputLabel;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
@@ -1263,6 +1330,12 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-icon": LocalJSX.ModusWcIcon & JSXBase.HTMLAttributes<HTMLModusWcIconElement>;
+            /**
+             * A customizable input label component.
+             * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
             /**
              * A customizable input component used to create text inputs with types.
              * Adheres to WCAG 2.2 standards.
