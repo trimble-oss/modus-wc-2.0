@@ -431,7 +431,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Indicates whether the checkbox is checked or not."
+              "description": "The value of the checkbox."
             }
           ],
           "tagName": "modus-wc-checkbox",

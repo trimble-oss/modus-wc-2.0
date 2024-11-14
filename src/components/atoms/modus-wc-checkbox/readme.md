@@ -27,7 +27,7 @@ Adheres to WCAG 2.2 standards.
 | `name`                   | `name`               | The name of the checkbox.                             | `string \| undefined`                         | `''`        |
 | `required`               | `required`           | The required state of the checkbox.                   | `boolean \| undefined`                        | `false`     |
 | `size`                   | `size`               | The size of the input.                                | `"lg" \| "md" \| "sm" \| undefined`           | `'md'`      |
-| `value`                  | `value`              | Indicates whether the checkbox is checked or not.     | `boolean`                                     | `false`     |
+| `value`                  | `value`              | The value of the checkbox.                            | `boolean`                                     | `false`     |
 
 
 ## Events

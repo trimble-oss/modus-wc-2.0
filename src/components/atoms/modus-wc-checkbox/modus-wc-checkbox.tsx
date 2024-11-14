@@ -81,7 +81,7 @@ export class ModusWcCheckbox {
   @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
 
   /**
-   * Indicates whether the checkbox is checked or not.
+   * The value of the checkbox.
    */
   @Prop({ mutable: true, reflect: true }) value: boolean = false;
 
@@ -149,7 +149,7 @@ export class ModusWcCheckbox {
     return (
       <Host>
         <input
-          aria-checked={this.indeterminate ? 'mixed' : this.value.toString()}
+          aria-checked={this.indeterminate ? 'mixed' : this.value}
           aria-describedby={this.ariaDescribedby}
           aria-disabled={this.disabled}
           aria-label={this.ariaLabel}

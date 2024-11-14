@@ -176,7 +176,7 @@ export namespace Components {
          */
         "size"?: 'sm' | 'md' | 'lg';
         /**
-          * Indicates whether the checkbox is checked or not.
+          * The value of the checkbox.
          */
         "value": boolean;
     }
@@ -875,7 +875,7 @@ declare namespace LocalJSX {
          */
         "size"?: 'sm' | 'md' | 'lg';
         /**
-          * Indicates whether the checkbox is checked or not.
+          * The value of the checkbox.
          */
         "value"?: boolean;
     }
