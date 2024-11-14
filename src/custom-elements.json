@@ -308,6 +308,183 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-checkbox/modus-wc-checkbox.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable checkbox component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcCheckbox",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "fieldName": "ariaDescribedby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the element that describes the checkbox."
+            },
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "aria-labelledby",
+              "fieldName": "ariaLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label."
+            },
+            {
+              "name": "checkbox-dir",
+              "fieldName": "checkboxDir",
+              "type": {
+                "text": "'' | 'ltr' | 'rtl' | 'auto'"
+              },
+              "description": "Specifies the text direction of the checkbox content."
+            },
+            {
+              "name": "checkbox-id",
+              "fieldName": "checkboxId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the checkbox element."
+            },
+            {
+              "name": "checkbox-tab-index",
+              "fieldName": "checkboxTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "The tabindex of the checkbox."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The disabled state of the checkbox."
+            },
+            {
+              "name": "indeterminate",
+              "fieldName": "indeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The indeterminate state of the checkbox."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the checkbox."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The required state of the checkbox."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The value of the checkbox."
+            }
+          ],
+          "tagName": "modus-wc-checkbox",
+          "events": [
+            {
+              "kind": "field",
+              "name": "checkboxBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the checkbox loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "checkboxChange",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Emitted when the checkbox value changes."
+            },
+            {
+              "kind": "field",
+              "name": "checkboxFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the checkbox gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcCheckbox",
+          "declaration": {
+            "name": "ModusWcCheckbox",
+            "module": "src/components/atoms/modus-wc-checkbox/modus-wc-checkbox.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-checkbox",
+          "declaration": {
+            "name": "ModusWcCheckbox",
+            "module": "src/components/atoms/modus-wc-checkbox/modus-wc-checkbox.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-divider/modus-wc-divider.tsx",
       "declarations": [
         {
