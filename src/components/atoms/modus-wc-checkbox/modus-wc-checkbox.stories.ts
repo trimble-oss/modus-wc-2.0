@@ -56,7 +56,7 @@ export default meta;
 
 type Story = StoryObj<CheckboxArgs>;
 
-const Template: Story = {
+export const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-checkbox
@@ -78,4 +78,32 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = { ...Template };
+export const CheckboxWithLabel: Story = {
+  render: () => {
+    return html`
+      <form action="" class="form-example" method="get">
+        <div class="form-example">
+          <modus-wc-checkbox
+            aria-label="Example checkbox"
+            checkbox-id="checkbox-input"
+            name="example-checkbox"
+          ></modus-wc-checkbox>
+          <modus-wc-input-label
+            for-id="checkbox-input"
+            label-text="Example checkbox"
+          ></modus-wc-input-label>
+        </div>
+      </form>
+      <style>
+        .form-example {
+          display: flex;
+        }
+        modus-wc-checkbox {
+          padding-inline-end: 8px;
+        }
+      </style>
+    `;
+  },
+};
+
+// export const Default: Story = { ...Template};
