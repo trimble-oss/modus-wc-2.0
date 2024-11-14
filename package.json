@@ -118,7 +118,8 @@
     "format:prettier": {
       "command": "prettier --write .",
       "files": [
-        "src/**/*.{ts,tsx,js,jsx,css,scss,json,md,mdx,html}"
+        "*.{ts,tsx,js,jsx,css,scss,json,md,mdx,html}",
+        "!src/components.d.ts"
       ]
     },
     "lint": {
@@ -145,7 +146,8 @@
       "command": "prettier --check .",
       "clean": false,
       "files": [
-        "*.{ts,tsx,js,jsx,css,scss,json,md,mdx,html}"
+        "*.{ts,tsx,js,jsx,css,scss,json,md,mdx,html}",
+        "!src/components.d.ts"
       ],
       "output": [
         "*.{ts,tsx,js,jsx,css,scss,json,md,mdx,html}",
