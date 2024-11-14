@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-checkbox renders with default props 1`] = `
-<modus-wc-checkbox aria-label="Default checkbox" role="checkbox">
-  <input aria-checked="false" class="modus-wc-checkbox modus-wc-checkbox-md" type="checkbox">
+<modus-wc-checkbox aria-label="Default checkbox">
+  <input aria-checked="false" aria-label="Default checkbox" class="modus-wc-checkbox modus-wc-checkbox-md" type="checkbox">
 </modus-wc-checkbox>
 `;
 
 exports[`modus-wc-checkbox should render indeterminate state 1`] = `
-<modus-wc-checkbox aria-label="Test checkbox" indeterminate="" role="checkbox">
-  <input aria-checked="mixed" class="modus-wc-checkbox modus-wc-checkbox-md" type="checkbox">
+<modus-wc-checkbox aria-label="Test checkbox" indeterminate="">
+  <input aria-checked="mixed" aria-label="Test checkbox" class="modus-wc-checkbox modus-wc-checkbox-md" type="checkbox">
 </modus-wc-checkbox>
 `;
 
 exports[`modus-wc-checkbox should render with custom props 1`] = `
-<modus-wc-checkbox aria-describedby="active" aria-label="Test checkbox" aria-labelledby="checkbox-label" checkbox-dir="rtl" checkbox-id="custom-id" checkbox-tab-index="1" custom-class="test-class" disabled="true" name="test-name" required="true" role="checkbox" size="lg" value="">
-  <input aria-checked="true" aria-describedby="active" aria-disabled="" aria-labelledby="checkbox-label" checked="" class="modus-wc-checkbox modus-wc-checkbox-lg test-class" dir="rtl" disabled="" id="custom-id" required="" tabindex="1" type="checkbox">
+<modus-wc-checkbox aria-describedby="active" aria-label="Test checkbox" aria-labelledby="checkbox-label" checkbox-dir="rtl" checkbox-id="custom-id" checkbox-tab-index="1" custom-class="test-class" disabled="true" name="test-name" required="true" size="lg" value="">
+  <input aria-checked="true" aria-describedby="active" aria-disabled="" aria-label="Test checkbox" aria-labelledby="checkbox-label" checked="" class="modus-wc-checkbox modus-wc-checkbox-lg test-class" dir="rtl" disabled="" id="custom-id" required="" tabindex="1" type="checkbox">
 </modus-wc-checkbox>
 `;
