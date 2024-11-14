@@ -53,7 +53,7 @@ export class ModusWcInputLabel {
         <label class={this.getClasses()} htmlFor={this.forId}>
           {this.labelText}
           {this.required && (
-            <span class="required-indicator" aria-hidden="true">
+            <span aria-hidden="true" class="required-indicator">
               {' *'}
             </span>
           )}
