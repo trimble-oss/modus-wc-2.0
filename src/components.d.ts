@@ -123,6 +123,64 @@ export namespace Components {
         "variant": 'filled' | 'outlined' | 'text';
     }
     /**
+     * A customizable checkbox component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCheckbox {
+        /**
+          * The ID of the element that describes the checkbox.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Specifies the text direction of the checkbox content.
+         */
+        "checkboxDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the checkbox element.
+         */
+        "checkboxId"?: string;
+        /**
+          * The tabindex of the checkbox.
+         */
+        "checkboxTabIndex"?: number;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass": string;
+        /**
+          * The disabled state of the checkbox.
+         */
+        "disabled"?: boolean;
+        /**
+          * The indeterminate state of the checkbox.
+         */
+        "indeterminate": boolean;
+        /**
+          * The name of the checkbox.
+         */
+        "name"?: string;
+        /**
+          * The required state of the checkbox.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * Indicates whether the checkbox is checked or not.
+         */
+        "value": boolean;
+    }
+    /**
      * A customizable divider component used to separate content horizontally or vertically.
      * Adheres to WCAG 2.2 standards.
      */
@@ -434,6 +492,10 @@ export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcButtonElement;
 }
+export interface ModusWcCheckboxCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcCheckboxElement;
+}
 export interface ModusWcTextInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTextInputElement;
@@ -487,6 +549,29 @@ declare global {
     var HTMLModusWcButtonElement: {
         prototype: HTMLModusWcButtonElement;
         new (): HTMLModusWcButtonElement;
+    };
+    interface HTMLModusWcCheckboxElementEventMap {
+        "checkboxBlur": FocusEvent;
+        "checkboxChange": Event;
+        "checkboxFocus": FocusEvent;
+    }
+    /**
+     * A customizable checkbox component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcCheckboxElement extends Components.ModusWcCheckbox, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcCheckboxElementEventMap>(type: K, listener: (this: HTMLModusWcCheckboxElement, ev: ModusWcCheckboxCustomEvent<HTMLModusWcCheckboxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcCheckboxElementEventMap>(type: K, listener: (this: HTMLModusWcCheckboxElement, ev: ModusWcCheckboxCustomEvent<HTMLModusWcCheckboxElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcCheckboxElement: {
+        prototype: HTMLModusWcCheckboxElement;
+        new (): HTMLModusWcCheckboxElement;
     };
     /**
      * A customizable divider component used to separate content horizontally or vertically.
@@ -597,6 +682,7 @@ declare global {
         "modus-wc-avatar": HTMLModusWcAvatarElement;
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
+        "modus-wc-checkbox": HTMLModusWcCheckboxElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
@@ -722,6 +808,76 @@ declare namespace LocalJSX {
           * The variant of the button.
          */
         "variant"?: 'filled' | 'outlined' | 'text';
+    }
+    /**
+     * A customizable checkbox component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCheckbox {
+        /**
+          * The ID of the element that describes the checkbox.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Specifies the text direction of the checkbox content.
+         */
+        "checkboxDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the checkbox element.
+         */
+        "checkboxId"?: string;
+        /**
+          * The tabindex of the checkbox.
+         */
+        "checkboxTabIndex"?: number;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the checkbox.
+         */
+        "disabled"?: boolean;
+        /**
+          * The indeterminate state of the checkbox.
+         */
+        "indeterminate"?: boolean;
+        /**
+          * The name of the checkbox.
+         */
+        "name"?: string;
+        /**
+          * Emitted when the checkbox loses focus.
+         */
+        "onCheckboxBlur"?: (event: ModusWcCheckboxCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the checkbox value changes.
+         */
+        "onCheckboxChange"?: (event: ModusWcCheckboxCustomEvent<Event>) => void;
+        /**
+          * Emitted when the checkbox gains focus.
+         */
+        "onCheckboxFocus"?: (event: ModusWcCheckboxCustomEvent<FocusEvent>) => void;
+        /**
+          * The required state of the checkbox.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * Indicates whether the checkbox is checked or not.
+         */
+        "value"?: boolean;
     }
     /**
      * A customizable divider component used to separate content horizontally or vertically.
@@ -1062,6 +1218,7 @@ declare namespace LocalJSX {
         "modus-wc-avatar": ModusWcAvatar;
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
+        "modus-wc-checkbox": ModusWcCheckbox;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-text-input": ModusWcTextInput;
@@ -1090,6 +1247,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
+            /**
+             * A customizable checkbox component.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-checkbox": LocalJSX.ModusWcCheckbox & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
             /**
              * A customizable divider component used to separate content horizontally or vertically.
              * Adheres to WCAG 2.2 standards.
