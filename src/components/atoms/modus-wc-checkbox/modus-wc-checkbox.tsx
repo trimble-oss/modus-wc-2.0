@@ -147,12 +147,11 @@ export class ModusWcCheckbox {
 
   render() {
     return (
-      <Host>
+      <Host aria-label={this.ariaLabel} role="checkbox">
         <input
-          aria-checked={this.indeterminate ? 'mixed' : this.value}
+          aria-checked={this.indeterminate ? 'mixed' : this.value.toString()}
           aria-describedby={this.ariaDescribedby}
           aria-disabled={this.disabled}
-          aria-label={this.ariaLabel}
           aria-labelledby={this.ariaLabelledby}
           checked={this.value}
           class={this.getClasses()}
