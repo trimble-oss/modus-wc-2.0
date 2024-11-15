@@ -10,6 +10,10 @@ jobs:
   build-react:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        react-version: [17, 18]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -47,4 +51,4 @@ jobs:
       - name: Build react integration
         id: react
         run: npm run build
-        working-directory: integrations/react/v18
+        working-directory: integrations/react/v${{ matrix.react-version }}
