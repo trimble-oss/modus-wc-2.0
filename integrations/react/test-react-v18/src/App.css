@@ -1,0 +1,43 @@
+#root {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  /* outline: 0.01px dashed var(--modus-wc-color-blue-dark); */
+  grid-gap: 10px;
+  grid-template-columns: auto;
+  padding: 10px;
+}
+
+.grid-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-column-gap: 10px;
+  width: fit-content;
+}
+
+h1 {
+  background: var(--modus-wc-color-blue-dark);
+  color: var(--modus-wc-color-white);
+  padding: 15px;
+  margin-bottom: 10px;
+  width: 100%;
+  font-size: x-large;
+}
+
+h3 {
+  background: var(--modus-wc-color-blue-dark);
+  color: var(--modus-wc-color-white);
+  padding: 10px;
+  width: 100%;
+}
+
+.theme-toggle-switch {
+  display: flex;
+  justify-content: right;
+  position: sticky;
+  top: 10px;
+  width: 62%;
+}
