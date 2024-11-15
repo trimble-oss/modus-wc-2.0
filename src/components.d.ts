@@ -123,6 +123,64 @@ export namespace Components {
         "variant": 'filled' | 'outlined' | 'text';
     }
     /**
+     * A customizable checkbox component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCheckbox {
+        /**
+          * The ID of the element that describes the checkbox.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Specifies the text direction of the checkbox content.
+         */
+        "checkboxDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the checkbox element.
+         */
+        "checkboxId"?: string;
+        /**
+          * The tabindex of the checkbox.
+         */
+        "checkboxTabIndex"?: number;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass": string;
+        /**
+          * The disabled state of the checkbox.
+         */
+        "disabled"?: boolean;
+        /**
+          * The indeterminate state of the checkbox.
+         */
+        "indeterminate": boolean;
+        /**
+          * The name of the checkbox.
+         */
+        "name"?: string;
+        /**
+          * The required state of the checkbox.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * The value of the checkbox.
+         */
+        "value": boolean;
+    }
+    /**
      * A customizable divider component used to separate content horizontally or vertically.
      * Adheres to WCAG 2.2 standards.
      */
@@ -188,6 +246,33 @@ export namespace Components {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: 'sm' | 'md' | 'lg';
+    }
+    /**
+     * A customizable input label component.
+     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcInputLabel {
+        /**
+          * Additional classes for custom styling.
+         */
+        "customClass"?: string;
+        /**
+          * The `for` attribute of the label, matching the `id` of the associated input.
+         */
+        "forId"?: string;
+        /**
+          * Specifies the text direction of the label content.
+         */
+        "labelDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The text to display within the label.
+         */
+        "labelText"?: string;
+        /**
+          * Whether the label indicates a required field.
+         */
+        "required"?: boolean;
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -434,6 +519,10 @@ export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcButtonElement;
 }
+export interface ModusWcCheckboxCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcCheckboxElement;
+}
 export interface ModusWcTextInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTextInputElement;
@@ -488,6 +577,29 @@ declare global {
         prototype: HTMLModusWcButtonElement;
         new (): HTMLModusWcButtonElement;
     };
+    interface HTMLModusWcCheckboxElementEventMap {
+        "checkboxBlur": FocusEvent;
+        "checkboxChange": Event;
+        "checkboxFocus": FocusEvent;
+    }
+    /**
+     * A customizable checkbox component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcCheckboxElement extends Components.ModusWcCheckbox, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcCheckboxElementEventMap>(type: K, listener: (this: HTMLModusWcCheckboxElement, ev: ModusWcCheckboxCustomEvent<HTMLModusWcCheckboxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcCheckboxElementEventMap>(type: K, listener: (this: HTMLModusWcCheckboxElement, ev: ModusWcCheckboxCustomEvent<HTMLModusWcCheckboxElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcCheckboxElement: {
+        prototype: HTMLModusWcCheckboxElement;
+        new (): HTMLModusWcCheckboxElement;
+    };
     /**
      * A customizable divider component used to separate content horizontally or vertically.
      * Adheres to WCAG 2.2 standards.
@@ -508,6 +620,17 @@ declare global {
     var HTMLModusWcIconElement: {
         prototype: HTMLModusWcIconElement;
         new (): HTMLModusWcIconElement;
+    };
+    /**
+     * A customizable input label component.
+     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcInputLabelElement extends Components.ModusWcInputLabel, HTMLStencilElement {
+    }
+    var HTMLModusWcInputLabelElement: {
+        prototype: HTMLModusWcInputLabelElement;
+        new (): HTMLModusWcInputLabelElement;
     };
     interface HTMLModusWcTextInputElementEventMap {
         "inputBlur": FocusEvent;
@@ -597,8 +720,10 @@ declare global {
         "modus-wc-avatar": HTMLModusWcAvatarElement;
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
+        "modus-wc-checkbox": HTMLModusWcCheckboxElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
+        "modus-wc-input-label": HTMLModusWcInputLabelElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
@@ -724,6 +849,76 @@ declare namespace LocalJSX {
         "variant"?: 'filled' | 'outlined' | 'text';
     }
     /**
+     * A customizable checkbox component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCheckbox {
+        /**
+          * The ID of the element that describes the checkbox.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Specifies the text direction of the checkbox content.
+         */
+        "checkboxDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the checkbox element.
+         */
+        "checkboxId"?: string;
+        /**
+          * The tabindex of the checkbox.
+         */
+        "checkboxTabIndex"?: number;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the checkbox.
+         */
+        "disabled"?: boolean;
+        /**
+          * The indeterminate state of the checkbox.
+         */
+        "indeterminate"?: boolean;
+        /**
+          * The name of the checkbox.
+         */
+        "name"?: string;
+        /**
+          * Emitted when the checkbox loses focus.
+         */
+        "onCheckboxBlur"?: (event: ModusWcCheckboxCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the checkbox value changes.
+         */
+        "onCheckboxChange"?: (event: ModusWcCheckboxCustomEvent<Event>) => void;
+        /**
+          * Emitted when the checkbox gains focus.
+         */
+        "onCheckboxFocus"?: (event: ModusWcCheckboxCustomEvent<FocusEvent>) => void;
+        /**
+          * The required state of the checkbox.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * The value of the checkbox.
+         */
+        "value"?: boolean;
+    }
+    /**
      * A customizable divider component used to separate content horizontally or vertically.
      * Adheres to WCAG 2.2 standards.
      */
@@ -789,6 +984,33 @@ declare namespace LocalJSX {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: 'sm' | 'md' | 'lg';
+    }
+    /**
+     * A customizable input label component.
+     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcInputLabel {
+        /**
+          * Additional classes for custom styling.
+         */
+        "customClass"?: string;
+        /**
+          * The `for` attribute of the label, matching the `id` of the associated input.
+         */
+        "forId"?: string;
+        /**
+          * Specifies the text direction of the label content.
+         */
+        "labelDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The text to display within the label.
+         */
+        "labelText"?: string;
+        /**
+          * Whether the label indicates a required field.
+         */
+        "required"?: boolean;
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -1062,8 +1284,10 @@ declare namespace LocalJSX {
         "modus-wc-avatar": ModusWcAvatar;
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
+        "modus-wc-checkbox": ModusWcCheckbox;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
+        "modus-wc-input-label": ModusWcInputLabel;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
@@ -1091,6 +1315,11 @@ declare module "@stencil/core" {
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
             /**
+             * A customizable checkbox component.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-checkbox": LocalJSX.ModusWcCheckbox & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
+            /**
              * A customizable divider component used to separate content horizontally or vertically.
              * Adheres to WCAG 2.2 standards.
              */
@@ -1101,6 +1330,12 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-icon": LocalJSX.ModusWcIcon & JSXBase.HTMLAttributes<HTMLModusWcIconElement>;
+            /**
+             * A customizable input label component.
+             * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
             /**
              * A customizable input component used to create text inputs with types.
              * Adheres to WCAG 2.2 standards.
