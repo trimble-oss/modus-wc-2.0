@@ -3,6 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+// TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
 h1.modus-wc-typography {
   font-size: var(--modus-wc-font-size-3xl);
   font-weight: var(--modus-wc-font-weight-normal);

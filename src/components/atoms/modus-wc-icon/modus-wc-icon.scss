@@ -1,18 +1,13 @@
-/**
-* This component uses Tailwind CSS and DaisyUI.
-* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
-*/
-
 .modus-icons {
   &.modus-wc-icon--sm {
-    font-size: 16px;
+    font-size: var(--modus-wc-font-size-lg);
   }
 
   &.modus-wc-icon--md {
-    font-size: 24px;
+    font-size: var(--modus-wc-font-size-3xl);
   }
 
   &.modus-wc-icon--lg {
-    font-size: 32px;
+    font-size: var(--modus-wc-font-size-5xl);
   }
 }
