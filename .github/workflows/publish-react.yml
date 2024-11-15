@@ -19,10 +19,13 @@ permissions:
 jobs:
   build-and-publish-react:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        react-version: [17, 18]
 
     defaults:
       run:
-        working-directory: integrations/react/v18
+        working-directory: integrations/react/v${{ matrix.react-version }}
 
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -46,7 +49,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: |
             package-lock.json
-            integrations/react/v18/package-lock.json
+            integrations/react/v${{ matrix.react-version }}/package-lock.json
 
       - name: Build Web Components
         run: npm run build:ci
@@ -60,7 +63,7 @@ jobs:
 
       - name: Update package.json version
         run: |
-          jq --arg version "${{ github.event.inputs.version }}-react18" \
+          jq --arg version "${{ github.event.inputs.version }}-react${{ matrix.react-version }}" \
           '.version = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
 
@@ -73,7 +76,7 @@ jobs:
       - name: Upload tarball as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: npm-tarball
+          name: npm-tarball-react${{ matrix.react-version }}
           path: '**/*.tgz'
 
       - name: Publish
@@ -82,10 +85,13 @@ jobs:
   release-react:
     needs: build-and-publish-react
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        react-version: [17, 18]
 
     defaults:
       run:
-        working-directory: integrations/react
+        working-directory: integrations/react/v${{ matrix.react-version }}
 
     steps:
       - name: Checkout code
@@ -94,24 +100,24 @@ jobs:
       - name: Download tarball artifact
         uses: actions/download-artifact@v4
         with:
-          name: npm-tarball
+          name: npm-tarball-react${{ matrix.react-version }}
           path: .
 
       - name: Find the asset
         id: find-asset
         run: |
           asset_path=$(find . -name 'trimble-cms-modus-wc-react*.tgz')
-          full_asset_path="${{ github.workspace }}/integrations/react/${asset_path}"
+          full_asset_path="${{ github.workspace }}/integrations/react/v${{ matrix.react-version }}/${asset_path}"
           echo "asset_path=$full_asset_path" >> $GITHUB_OUTPUT
 
-      - name: Rename the asset to package-react.tgz
-        run: mv ${{ steps.find-asset.outputs.asset_path }} package-react.tgz
+      - name: Rename the asset to package-react${{ matrix.react-version }}.tgz
+        run: mv ${{ steps.find-asset.outputs.asset_path }} package-react${{ matrix.react-version }}.tgz
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: modus-wc-react-${{ github.event.inputs.version }}
-          name: Modus Web Components React ${{ github.event.inputs.version }}
+          tag_name: modus-wc-react-${{ github.event.inputs.version }}-react${{ matrix.react-version }}
+          name: Modus Web Components React ${{ github.event.inputs.version }} (React ${{ matrix.react-version }})
           files: |
-            package-react.tgz
+            package-react${{ matrix.react-version }}.tgz
