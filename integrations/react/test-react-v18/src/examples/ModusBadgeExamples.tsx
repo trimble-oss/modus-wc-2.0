@@ -6,55 +6,55 @@ export default function ModusBadgeExamples() {
 			<h3>Badge</h3>
 			<div className="grid">
 				<div className="grid-row">
-					<ModusBadge content="Default" />
-					<ModusBadge color="secondary" content="Secondary" />
-					<ModusBadge color="tertiary" content="Tertiary" />
-					<ModusBadge color="high-contrast" content="High Contrast" />
-					<ModusBadge color="success" content="Success" />
-					<ModusBadge color="warning" content="Warning" />
-					<ModusBadge color="danger" content="Danger" />
+					<ModusBadge aria-label="Badge" content="Default" />
+					<ModusBadge aria-label="Badge" color="secondary" content="Secondary" />
+					<ModusBadge aria-label="Badge" color="tertiary" content="Tertiary" />
+					<ModusBadge aria-label="Badge" color="high-contrast" content="High Contrast" />
+					<ModusBadge aria-label="Badge" color="success" content="Success" />
+					<ModusBadge aria-label="Badge" color="warning" content="Warning" />
+					<ModusBadge aria-label="Badge" color="danger" content="Danger" />
 				</div>
 
 				<div className="grid-row">
-					<ModusBadge size="sm" content="Small" />
-					<ModusBadge size="md" content="Medium" />
-					<ModusBadge size="lg" content="Large" />
+					<ModusBadge aria-label="Badge" size="sm" content="Small" />
+					<ModusBadge aria-label="Badge" size="md" content="Medium" />
+					<ModusBadge aria-label="Badge" size="lg" content="Large" />
 				</div>
 
 				<div className="grid-row">
-					<ModusBadge variant="counter" content="1" />
-					<ModusBadge color="secondary" variant="counter" content="2" />
-					<ModusBadge color="tertiary" variant="counter" content="3" />
-					<ModusBadge color="high-contrast" variant="counter" content="4" />
-					<ModusBadge color="success" variant="counter" content="5" />
-					<ModusBadge color="warning" variant="counter" content="6" />
-					<ModusBadge color="danger" variant="counter" content="7" />
+					<ModusBadge aria-label="Badge" variant="counter" content="1" />
+					<ModusBadge aria-label="Badge" color="secondary" variant="counter" content="2" />
+					<ModusBadge aria-label="Badge" color="tertiary" variant="counter" content="3" />
+					<ModusBadge aria-label="Badge" color="high-contrast" variant="counter" content="4" />
+					<ModusBadge aria-label="Badge" color="success" variant="counter" content="5" />
+					<ModusBadge aria-label="Badge" color="warning" variant="counter" content="6" />
+					<ModusBadge aria-label="Badge" color="danger" variant="counter" content="7" />
 				</div>
 
 				<div className="grid-row">
-					<ModusBadge size="sm" variant="counter" content="1">
+					<ModusBadge aria-label="Badge" size="sm" variant="counter" content="1">
 						Small&nbsp;
 					</ModusBadge>
-					<ModusBadge size="md" variant="counter" content="2">
+					<ModusBadge aria-label="Badge" size="md" variant="counter" content="2">
 						Medium&nbsp;
 					</ModusBadge>
-					<ModusBadge size="lg" variant="counter" content="3">
+					<ModusBadge aria-label="Badge" size="lg" variant="counter" content="3">
 						Large&nbsp;
 					</ModusBadge>
 				</div>
 
 				<div className="grid-row">
-					<ModusBadge variant="text" content="Primary" />
-					<ModusBadge color="secondary" variant="text" content="Secondary" />
-					<ModusBadge color="high-contrast" variant="text" content="High Contrast" />
-					<ModusBadge color="success" variant="text" content="Success" />
-					<ModusBadge color="danger" variant="text" content="Danger" />
+					<ModusBadge aria-label="Badge" variant="text" content="Primary" />
+					<ModusBadge aria-label="Badge" color="secondary" variant="text" content="Secondary" />
+					<ModusBadge aria-label="Badge" color="high-contrast" variant="text" content="High Contrast" />
+					<ModusBadge aria-label="Badge" color="success" variant="text" content="Success" />
+					<ModusBadge aria-label="Badge" color="danger" variant="text" content="Danger" />
 				</div>
 
 				<div className="grid-row">
-					<ModusBadge size="sm" variant="text" content="Small" />
-					<ModusBadge size="md" variant="text" content="Medium" />
-					<ModusBadge size="lg" variant="text" content="Large" />
+					<ModusBadge aria-label="Badge" size="sm" variant="text" content="Small" />
+					<ModusBadge aria-label="Badge" size="md" variant="text" content="Medium" />
+					<ModusBadge aria-label="Badge" size="lg" variant="text" content="Large" />
 				</div>
 			</div>
 		</>
