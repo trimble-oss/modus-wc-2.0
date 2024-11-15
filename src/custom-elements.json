@@ -661,6 +661,86 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-input-label/modus-wc-input-label.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable input label component.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcInputLabel",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Additional classes for custom styling."
+            },
+            {
+              "name": "for-id",
+              "fieldName": "forId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The `for` attribute of the label, matching the `id` of the associated input."
+            },
+            {
+              "name": "label-dir",
+              "fieldName": "labelDir",
+              "type": {
+                "text": "'' | 'ltr' | 'rtl' | 'auto'"
+              },
+              "description": "Specifies the text direction of the label content."
+            },
+            {
+              "name": "label-text",
+              "fieldName": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the label indicates a required field."
+            }
+          ],
+          "tagName": "modus-wc-input-label",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcInputLabel",
+          "declaration": {
+            "name": "ModusWcInputLabel",
+            "module": "src/components/atoms/modus-wc-input-label/modus-wc-input-label.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-input-label",
+          "declaration": {
+            "name": "ModusWcInputLabel",
+            "module": "src/components/atoms/modus-wc-input-label/modus-wc-input-label.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx",
       "declarations": [
         {
