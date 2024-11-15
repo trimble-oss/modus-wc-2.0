@@ -5,7 +5,7 @@ import { Canvas, Story } from '@storybook/blocks';
 
 # Modus Icon Usage
 
-Several components require Modus icons to be installed in the host application. To install
+Several components require [Modus icons](https://modus-icons.trimble.com) to be installed in the host application. To install
 icons, add the following html to your application.
 
 <b>
@@ -21,16 +21,13 @@ icons, add the following html to your application.
   <link
     rel="preload"
     href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@latest/dist/modus-outlined/fonts/modus-icons.css"
-    as="stylesheet"
-    onload="this.onload=null;this.rel='stylesheet'"
+    as="style"
     crossorigin="anonymous"
   />
-  <noscript>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@latest/dist/modus-outlined/fonts/modus-icons.css"
-    />
-  </noscript>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@latest/dist/modus-outlined/fonts/modus-icons.css"
+  />
 </head>
 ```
 
