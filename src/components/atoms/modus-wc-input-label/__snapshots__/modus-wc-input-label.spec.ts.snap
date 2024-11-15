@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-input-label should render with content in the primary slot 1`] = `
+<modus-wc-input-label>
+  <!---->
+  <label class="modus-wc-input-label">
+    <span>
+      Slot content
+    </span>
+  </label>
+</modus-wc-input-label>
+`;
+
+exports[`modus-wc-input-label should render with custom props 1`] = `
+<modus-wc-input-label custom-class="test-class" dir="rtl" for-id="input-id" label-dir="rtl" label-text="Custom label" required="true">
+  <!---->
+  <label class="modus-wc-input-label test-class" htmlfor="input-id">
+    Custom label
+    <span aria-hidden="true" class="required-indicator">
+      *
+    </span>
+  </label>
+</modus-wc-input-label>
+`;
+
+exports[`modus-wc-input-label should render with default props 1`] = `
+<modus-wc-input-label>
+  <!---->
+  <label class="modus-wc-input-label"></label>
+</modus-wc-input-label>
+`;
