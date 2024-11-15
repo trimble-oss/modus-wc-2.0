@@ -3,16 +3,6 @@ import { ModusWcIcon as ModusIcon } from "@trimble-cms/modus-wc-react";
 export default function ModusBadgeExamples() {
 	return (
 		<>
-			<style>
-				{`
-          .icon-blue {
-            color: var(--modus-wc-color-trimble-blue);
-          }
-          .icon-red {
-            color: var(--modus-wc-color-red);
-          }
-        `}
-			</style>
 			<h3>Icon</h3>
 			<div className="grid">
 				<div className="grid-row">
@@ -29,8 +19,16 @@ export default function ModusBadgeExamples() {
 					<ModusIcon name="file_type_pdf" decorative />
 				</div>
 				<div className="grid-row">
-					<ModusIcon name="add_bold" decorative className="icon-blue" />
-					<ModusIcon name="add_bold" decorative className="icon-red" />
+					<ModusIcon
+						name="add_bold"
+						decorative
+						style={{ color: "var(--modus-wc-color-trimble-blue)" }}
+					/>
+					<ModusIcon
+						name="add_bold"
+						decorative
+						style={{ color: "var(--modus-wc-color-red)" }}
+					/>
 				</div>
 			</div>
 		</>
