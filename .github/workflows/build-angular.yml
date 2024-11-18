@@ -10,6 +10,10 @@ jobs:
   build-angular:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        angular-version: [17, 18]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,19 +35,19 @@ jobs:
       - name: Pack modus-wc
         id: npm_pack
         run: |
-          modus_wc_tarball=$(npm pack --pack-destination integrations/angular/ng18 | tail -n 1)
+          modus_wc_tarball=$(npm pack --pack-destination integrations/angular/ng${{ matrix.angular-version }} | tail -n 1)
           echo "modus_wc_tarball=${modus_wc_tarball}" >> $GITHUB_OUTPUT
 
       - name: Install dependencies for angular build
         run: npm ci
-        working-directory: integrations/angular/ng18
+        working-directory: integrations/angular/ng${{ matrix.angular-version }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Install current modus-wc implementation for angular integration
         run: npm install ./${{ steps.npm_pack.outputs.modus_wc_tarball }}
-        working-directory: integrations/angular/ng18
+        working-directory: integrations/angular/ng${{ matrix.angular-version }}
 
       - name: Build angular integration
         run: npm run build
-        working-directory: integrations/angular/ng18
+        working-directory: integrations/angular/ng${{ matrix.angular-version }}

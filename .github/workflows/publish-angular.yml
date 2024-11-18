@@ -19,10 +19,13 @@ permissions:
 jobs:
   build-and-publish-angular:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        angular-version: [17, 18]
 
     defaults:
       run:
-        working-directory: integrations/angular/ng18
+        working-directory: integrations/angular/ng${{ matrix.angular-version }}
 
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -38,8 +41,8 @@ jobs:
           cache: 'npm'
           cache-dependency-path: |
             package-lock.json
-            integrations/angular/ng18/package-lock.json
-            integrations/angular/ng18/projects/trimble-cms/modus-wc-angular/package-lock.json
+            integrations/angular/ng${{ matrix.angular-version }}/package-lock.json
+            integrations/angular/ng${{ matrix.angular-version }}/projects/trimble-cms/modus-wc-angular/package-lock.json
 
       - uses: google/wireit@setup-github-actions-caching/v2
 
@@ -64,7 +67,7 @@ jobs:
       - name: Update package.json version
         run: |
           cd projects/trimble-cms/modus-wc-angular && \
-          jq --arg version "${{ github.event.inputs.version }}-ng18" \
+          jq --arg version "${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}" \
           '.version = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
 
@@ -86,10 +89,13 @@ jobs:
   release-angular:
     needs: build-and-publish-angular
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        angular-version: [17, 18]
 
     defaults:
       run:
-        working-directory: integrations/angular/ng18
+        working-directory: integrations/angular/ng${{ matrix.angular-version }}
 
     steps:
       - name: Checkout code
@@ -105,16 +111,16 @@ jobs:
         id: find-asset
         run: |
           asset_path=$(find . -name 'trimble-cms-modus-wc-angular*.tgz')
-          full_asset_path="${{ github.workspace }}/integrations/angular/ng18/${asset_path}"
+          full_asset_path="${{ github.workspace }}/integrations/angular/ng${{ matrix.angular-version }}/${asset_path}"
           echo "asset_path=$full_asset_path" >> $GITHUB_OUTPUT
 
       - name: Rename release asset
-        run: mv ${{ steps.find-asset.outputs.asset_path }} package-angular-18.tgz
+        run: mv ${{ steps.find-asset.outputs.asset_path }} package-angular-${{ matrix.angular-version }}.tgz
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: modus-wc-angular-${{ github.event.inputs.version }}-ng18
-          name: Modus Web Components Angular ${{ github.event.inputs.version }}-ng18
-          files: package-angular-18.tgz
+          tag_name: modus-wc-angular-${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
+          name: Modus Web Components Angular ${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
+          files: package-angular-${{ matrix.angular-version }}.tgz
