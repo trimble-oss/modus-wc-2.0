@@ -44,6 +44,7 @@ jobs:
 
       - name: Install Web Component dependencies
         run: npm ci
+        working-directory: .
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           cache: 'npm'
@@ -67,19 +68,19 @@ jobs:
           '.version = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
 
-      - name: Build React integration
+      - name: Build distribution
         run: npm run build
 
-      - name: Pack the package
+      - name: Package distribution
         run: npm pack
 
-      - name: Upload tarball as artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: npm-tarball-react${{ matrix.react-version }}
+          name: react-${{ matrix.react-version }}-distribution-v${{ github.event.inputs.version }}-react${{ matrix.react-version }}
           path: '**/*.tgz'
 
-      - name: Publish
+      - name: Publish distribution
         run: npm publish
 
   release-react:
@@ -97,20 +98,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download tarball artifact
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: npm-tarball-react${{ matrix.react-version }}
+          name: react-${{ matrix.react-version }}-distribution-v${{ github.event.inputs.version }}-react${{ matrix.react-version }}
           path: .
 
-      - name: Find the asset
+      - name: Find the release asset
         id: find-asset
         run: |
           asset_path=$(find . -name 'trimble-cms-modus-wc-react*.tgz')
           full_asset_path="${{ github.workspace }}/integrations/react/v${{ matrix.react-version }}/${asset_path}"
           echo "asset_path=$full_asset_path" >> $GITHUB_OUTPUT
 
-      - name: Rename the asset to package-react${{ matrix.react-version }}.tgz
+      - name: Rename release asset
         run: mv ${{ steps.find-asset.outputs.asset_path }} package-react${{ matrix.react-version }}.tgz
 
       - name: Create GitHub release
@@ -120,4 +121,4 @@ jobs:
           tag_name: modus-wc-react-${{ github.event.inputs.version }}-react${{ matrix.react-version }}
           name: Modus Web Components React ${{ github.event.inputs.version }} (React ${{ matrix.react-version }})
           files: |
-            package-react${{ matrix.react-version }}.tgz
+            **/package-react${{ matrix.react-version }}.tgz
