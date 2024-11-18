@@ -116,7 +116,8 @@ jobs:
 
       - name: Rename release asset
         run: |
-          mv ${{ steps.find-asset.outputs.asset_path }} package-angular-${{ matrix.angular-version }}-v${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}.tgz
+          mv ${{ steps.find-asset.outputs.asset_path }} package-ng${{ matrix.angular-version }}.tgz
+          ls -l
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
@@ -124,4 +125,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: modus-wc-angular-${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           name: Modus Web Components Angular ${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
-          files: package-angular-${{ matrix.angular-version }}-v${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}.tgz
+          files: |
+            package-ng${{ matrix.angular-version }}.tgz
