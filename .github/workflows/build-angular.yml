@@ -23,10 +23,6 @@ jobs:
         with:
           node-version: ${{ vars.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: |
-            package-lock.json
-            integrations/angular/ng${{ matrix.angular-version }}/package-lock.json
-            integrations/angular/ng${{ matrix.angular-version }}/projects/trimble-cms/modus-wc-angular/package-lock.json
 
       - uses: google/wireit@setup-github-actions-caching/v2
 
