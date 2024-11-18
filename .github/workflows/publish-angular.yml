@@ -62,7 +62,7 @@ jobs:
           cd projects/trimble-cms/modus-wc-angular && \
           jq --arg version "${{ github.event.inputs.version }}" \
           '.peerDependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
-          mv package.json.tmp package.json && npm i
+          mv package.json.tmp package.json
 
       - name: Update package.json version
         run: |
