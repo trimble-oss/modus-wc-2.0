@@ -126,4 +126,4 @@ jobs:
           tag_name: modus-wc-angular-${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           name: Modus Web Components Angular ${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           files: |
-            package-ng${{ matrix.angular-version }}.tgz
+            **/package-ng${{ matrix.angular-version }}.tgz
