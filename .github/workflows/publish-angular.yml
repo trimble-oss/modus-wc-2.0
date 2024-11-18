@@ -117,7 +117,6 @@ jobs:
       - name: Rename release asset
         run: |
           mv ${{ steps.find-asset.outputs.asset_path }} package-ng${{ matrix.angular-version }}.tgz
-          ls -l
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
