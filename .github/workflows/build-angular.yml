@@ -32,9 +32,6 @@ jobs:
       - name: Build Stencil components
         run: npm run build:ci
 
-      - name: DEBUG - List stencil generated files in ng${{ matrix.angular-version }}
-        run: ls -la integrations/angular/ng${{ matrix.angular-version }}/projects/trimble-cms/modus-wc-angular/src/lib/stencil-generated
-
       - name: Pack modus-wc
         id: npm_pack
         run: |
