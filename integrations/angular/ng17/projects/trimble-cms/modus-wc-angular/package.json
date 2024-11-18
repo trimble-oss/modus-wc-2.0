@@ -1,0 +1,13 @@
+{
+  "name": "@trimble-cms/modus-wc-angular",
+  "version": "0.0.1-ng17",
+  "peerDependencies": {
+    "@angular/common": "^17.3.0",
+    "@angular/core": "^17.3.0",
+    "@trimble-cms/modus-wc": "0.0.13"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}
