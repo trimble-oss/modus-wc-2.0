@@ -80,7 +80,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: angular-distribution
+          name: angular-${{ matrix.angular-version }}-distribution-v${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           path: '**/*.tgz'
 
       - name: Publish distribution
@@ -104,7 +104,7 @@ jobs:
       - name: Download tarball artifact
         uses: actions/download-artifact@v4
         with:
-          name: angular-distribution
+          name: angular-${{ matrix.angular-version }}-distribution-v${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           path: .
 
       - name: Find the release asset
@@ -115,7 +115,8 @@ jobs:
           echo "asset_path=$full_asset_path" >> $GITHUB_OUTPUT
 
       - name: Rename release asset
-        run: mv ${{ steps.find-asset.outputs.asset_path }} package-angular-${{ matrix.angular-version }}.tgz
+        run: |
+          mv ${{ steps.find-asset.outputs.asset_path }} package-angular-${{ matrix.angular-version }}-v${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}.tgz
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
@@ -123,4 +124,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: modus-wc-angular-${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           name: Modus Web Components Angular ${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
-          files: package-angular-${{ matrix.angular-version }}.tgz
+          files: package-angular-${{ matrix.angular-version }}-v${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}.tgz
