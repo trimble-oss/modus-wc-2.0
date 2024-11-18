@@ -101,7 +101,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download tarball artifact
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: angular-${{ matrix.angular-version }}-distribution-v${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
