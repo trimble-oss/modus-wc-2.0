@@ -35,7 +35,7 @@ jobs:
       - name: Pack modus-wc
         id: npm_pack
         run: |
-          modus_wc_tarball=$(npm pack --pack-destination integrations/react | tail -n 1)
+          modus_wc_tarball=$(npm pack --pack-destination integrations/react/v${{ matrix.react-version }} | tail -n 1)
           echo "modus_wc_tarball=${modus_wc_tarball}" >> $GITHUB_OUTPUT
 
       - name: Install dependencies for react build
