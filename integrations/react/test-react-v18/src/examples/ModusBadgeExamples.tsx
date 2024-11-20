@@ -1,4 +1,5 @@
 import { ModusWcBadge as ModusBadge } from "@trimble-cms/modus-wc-react";
+// import { ModusBadge } from "@trimble-oss/modus-react-components";
 
 export default function ModusBadgeExamples() {
 	return (
@@ -8,14 +9,14 @@ export default function ModusBadgeExamples() {
 				<div className="grid-row">
 					<ModusBadge aria-label="Badge" content="Default" />
 					<ModusBadge aria-label="Badge" color="secondary" content="Secondary" />
-					<ModusBadge aria-label="Badge" color="tertiary" content="Tertiary" />
-					<ModusBadge aria-label="Badge" color="high-contrast" content="High Contrast" />
+					<ModusBadge aria-label="Badge" color="tertiary" content="Tertiary" >ggg</ModusBadge>
+					{/* <ModusBadge aria-label="Badge" color="high-contrast" content="High Contrast" /> */}
 					<ModusBadge aria-label="Badge" color="success" content="Success" />
 					<ModusBadge aria-label="Badge" color="warning" content="Warning" />
 					<ModusBadge aria-label="Badge" color="danger" content="Danger" />
 				</div>
 
-				<div className="grid-row">
+				{/* <div className="grid-row">
 					<ModusBadge aria-label="Badge" size="sm" content="Small" />
 					<ModusBadge aria-label="Badge" size="md" content="Medium" />
 					<ModusBadge aria-label="Badge" size="lg" content="Large" />
@@ -55,7 +56,7 @@ export default function ModusBadgeExamples() {
 					<ModusBadge aria-label="Badge" size="sm" variant="text" content="Small" />
 					<ModusBadge aria-label="Badge" size="md" variant="text" content="Medium" />
 					<ModusBadge aria-label="Badge" size="lg" variant="text" content="Large" />
-				</div>
+				</div> */}
 			</div>
 		</>
 	);

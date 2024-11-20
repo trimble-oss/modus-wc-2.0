@@ -2,15 +2,17 @@
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
     "lib": [
       "dom",
-      "es2015"
+      "es2017"
     ],
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "bundler",
-    "target": "es2015",
+    "target": "es2017",
     "jsx": "react",
+    "types": [
+      "node"
+    ],
 
     "declaration": true,
     "declarationDir": "./dist/types",
@@ -28,7 +30,8 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "src"
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ],
   "exclude": [
     "dist",

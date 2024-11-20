@@ -2,10 +2,11 @@
   "compilerOptions": {
     // Basic Options
     "target": "es2017",
-    "module": "esnext",
+    "module": "ESNext",
     "lib": ["dom", "es2017"],
     "jsx": "react",
     "jsxFactory": "h",
+    "sourceMap": true,
 
     // Type-Checking Options
     "strict": true,
@@ -20,11 +21,15 @@
     "allowSyntheticDefaultImports": true,
 
     // Other Options
-    "declaration": false,
+    "declaration": true,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
     "skipLibCheck": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "types": ["jest", "marked"]
   },
   "include": ["src", "./*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "**/*.spec.ts", "**/__tests__/**"]
 }
