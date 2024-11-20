@@ -5,7 +5,6 @@ import App from "./App.tsx";
 
 const rootElement = document.getElementById("root");
 
-// biome-ignore lint/style/noNonNullAssertion: React root element is always present in this context
 const root = createRoot(rootElement!);
 root.render(
 	<StrictMode>

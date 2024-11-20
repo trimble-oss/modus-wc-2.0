@@ -21,4 +21,4 @@ No extra setup is required to use the Modus React Components. You can use the co
 
 ## Usage Notes
 
-If you are using [Vite](https://vite.dev/), you cannot use [plugin-react-swc](https://www.npmjs.com/package/@vitejs/plugin-react-swc) with this library. You will need to use the [default Vite React plugin](https://www.npmjs.com/package/@vitejs/plugin-react).
+If you are using [Vite](https://vite.dev/), you cannot use [plugin-react-swc](https://www.npmjs.com/package/@vitejs/plugin-react-swc) with this library. You will need to use the [default Vite React plugin](https://www.npmjs.com/package/@vitejs/plugin-react). This is due to parts of the plugin being unimplemented on the SWC side, and will fail for production builds.

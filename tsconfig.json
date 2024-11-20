@@ -23,13 +23,10 @@
     // Other Options
     "declaration": true,
     "noImplicitAny": false,
-    "removeComments": true,
-    "noLib": false,
     "skipLibCheck": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "types": ["jest", "marked"]
   },
   "include": ["src", "./*.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts", "**/__tests__/**"]
+  "exclude": ["node_modules"]
 }

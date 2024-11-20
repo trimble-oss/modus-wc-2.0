@@ -31,7 +31,6 @@ export const config: Config = {
     {
       // Required for the React integration
       type: 'dist-custom-elements',
-      // customElementsExportBehavior: 'auto-define-custom-elements',
       externalRuntime: false,
     },
     {
@@ -57,8 +56,6 @@ export const config: Config = {
     }),
     reactOutputTarget({
       outDir: './integrations/react/stencil-generated',
-      // excludeComponents: [],
-      // customElementsDir: 'dist/components',
     }),
   ],
   plugins: [

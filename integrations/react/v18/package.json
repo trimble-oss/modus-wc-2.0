@@ -1,6 +1,6 @@
 {
   "name": "@trimble-cms/modus-wc-react",
-  "version": "0.0.12-react18",
+  "version": "0.0.1-react18",
   "description": "Trimble Modus React Component Library",
   "license": "MIT",
   "author": "Trimble Inc.",
@@ -9,17 +9,13 @@
     "@trimble-cms/modus-wc": "0.0.13"
   },
   "devDependencies": {
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.1",
-    "react": "^18.2",
-    "react-dom": "^18.2",
     "rimraf": "^6.0.1",
     "symlink-dir": "^6.0.3",
     "typescript": "^5.6.3"
   },
   "peerDependencies": {
-    "react": "^18.2",
-    "react-dom": "^18.2"
+    "react": "^18.3",
+    "react-dom": "^18.3"
   },
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -30,9 +26,9 @@
   "scripts": {
     "prebuild": "npm run symlink",
     "build": "npm run clean && npm run tsc",
-    "clean": "npx rimraf dist",
+    "clean": "rimraf dist",
     "tsc": "tsc -p . --outDir ./dist",
-    "symlink": "npx symlink-dir ../stencil-generated/ src/stencil-generated/"
+    "symlink": "symlink-dir ../stencil-generated/ src/stencil-generated/"
   },
   "sideEffects": false
 }

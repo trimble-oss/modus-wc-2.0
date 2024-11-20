@@ -12,7 +12,7 @@ export default defineConfig({
 					if(id.includes('stencil-generated')){
 						return 'modus-wc';
 					}
-					if(id.includes('node_modules')){
+					else if(id.includes('node_modules')){
 						return 'vendor';
 					}
 				}
