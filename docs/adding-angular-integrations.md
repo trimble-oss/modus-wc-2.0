@@ -29,7 +29,23 @@ From the angular workspace directory (`ng18/`) created in the previous step gene
 npx -p @angular/cli@18 ng generate library @trimble-cms/modus-wc-angular
 ```
 
-### Step 3: Update Peer Dependencies
+### Step 3: Delete generated files
+
+You can delete the generated `*.component.ts`, `*.service.ts`, and `*.spec.ts` files.
+
+### Step 4: Update `modus-wc-angular` version to reflect target Angular version
+
+Append `ng<target-version>` to the version field in the `package.json`:
+
+```json
+{
+  "name": "@trimble-cms/modus-wc-angular",
+  "version": "0.0.1-ng18",
+  ...
+}
+```
+
+### Step 5: Update Peer Dependencies
 
 Add `@trimble-cms/modus-wc` as a peer dependency in the `package.json` file of your library located at `ng18/projects/trimble-cms/modus-wc-angular/package.json`:
 
@@ -41,7 +57,17 @@ Add `@trimble-cms/modus-wc` as a peer dependency in the `package.json` file of y
 }
 ```
 
-### Step 4: Configure Stencil Output Target
+### Step 6: Remove unnecessary testing packages
+
+Angular CLI will install Jasmine as a dependency in the angular workspace. However, Stencil uses Jest as it's testing solution,
+so to avoid type definition collisions when building stencil remove `jasmine-core` and `@types/jasmine`.
+
+```bash
+# from `/packages/ng18`
+npm uninstall jasmine-core @types/jasmine
+```
+
+### Step 7: Configure Stencil Output Target
 
 In the root `stencil.config.ts` file, add the Angular output target to ensure proper integration with Angular:
 
@@ -60,7 +86,7 @@ angularOutputTarget({
 });
 ```
 
-### Step 5: Generate Angular Stencil Component Wrappers
+### Step 8: Generate Angular Stencil Component Wrappers
 
 Run the following command from the root directory to build the Stencil components and generate the Angular component wrappers:
 
@@ -68,7 +94,22 @@ Run the following command from the root directory to build the Stencil component
 npm run stencil:build
 ```
 
-### Step 6: Create Angular Module
+You should now be able to see the stencil generated angular component wrappers under `projects/trimble-cms/modus-wc-angular/src/lib/stencil-generated`
+
+### Step 9: Add the following npmrc to your angular workspace
+
+Create this npmrc in the angular workspace and be sure to add your trimble artifactory token to your system's environment variables (i.e., NPM_TOKEN)
+Refer to [creating an artifactory token](https://jfrog.com/help/r/how-to-generate-an-access-token-video) for more information.
+
+```bash
+# .npmrc
+@trimble-cms:registry=https://artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/
+//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${NPM_TOKEN}
+
+registry=https://registry.npmjs.org/
+```
+
+### Step 10: Create Angular Module
 
 Create a new module at `projects/trimble-cms/modus-wc-angular/src/lib/modus-wc-angular.module.ts` to import and export the generated component wrappers:
 
@@ -94,7 +135,7 @@ export class ModusAngularComponentsModule {}
 
 This module automatically defines/registers the custom elements during app initialization!
 
-### Step 7: Update the Public API
+### Step 11: Update the Public API
 
 Update the `public-api.ts` file to export the components in the main entry point of your library:
 
@@ -106,7 +147,7 @@ export * from './lib/stencil-generated/components';
 
 Any components that are included in the exports array should additionally be exported in your main entry point (either public-api.ts or index.ts). Skipping this step will lead to Angular Ivy errors when building for production.
 
-### Step 8: Install Dependencies and Build
+### Step 12: Install Dependencies and Build
 
 Ensure `modus-wc` dependency is installed in the `ng18/` angular workspace:
 
@@ -129,7 +170,7 @@ npm install
 npm run build
 ```
 
-### Step 9: Package for Local Testing
+### Step 13: Package for Local Testing
 
 You can package the angular component library for local testing by running the following command:
 

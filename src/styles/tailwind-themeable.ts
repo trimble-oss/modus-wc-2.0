@@ -4,6 +4,9 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const themeable = [
+  'modus-wc-checkbox-sm',
+  'modus-wc-checkbox-md',
+  'modus-wc-checkbox-lg',
   'modus-wc-input-sm',
   'modus-wc-input-md',
   'modus-wc-input-lg',

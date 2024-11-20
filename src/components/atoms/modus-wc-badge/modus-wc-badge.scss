@@ -3,6 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+// TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
 .modus-wc-badge {
   // Colors
   &.modus-wc-badge-high-contrast {
@@ -18,7 +19,34 @@
 
   &.modus-wc-badge-text {
     background-color: transparent;
-    color: var(--modus-wc-color-base-content);
     border: none;
+
+    &.modus-wc-badge-primary {
+      color: var(--modus-wc-color-trimble-blue);
+    }
+
+    &.modus-wc-badge-secondary {
+      color: var(--modus-wc-color-gray-6);
+    }
+
+    &.modus-wc-badge-neutral {
+      color: var(--modus-wc-color-gray-1);
+    }
+
+    &.modus-wc-badge-high-contrast {
+      color: var(--modus-wc-color-base-content);
+    }
+
+    &.modus-wc-badge-success {
+      color: var(--modus-wc-color-success);
+    }
+
+    &.modus-wc-badge-warning {
+      color: var(--modus-wc-color-warning);
+    }
+
+    &.modus-wc-badge-error {
+      color: var(--modus-wc-color-error);
+    }
   }
 }
