@@ -6,7 +6,7 @@
   "author": "Trimble Inc.",
   "dependencies": {
     "@stencil/react-output-target": "^0.7.4",
-    "@trimble-cms/modus-wc": "0.0.13"
+    "@trimble-cms/modus-wc": "0.0.14"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",
