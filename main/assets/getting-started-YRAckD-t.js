@@ -1,4 +1,4 @@
-import{ae as e,af as r}from"./index-Ce9QHI59.js";import{useMDXComponents as i}from"./index-BSj771as.js";import"./iframe-CWvNqdp3.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function t(s){const n={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",hr:"hr",li:"li",p:"p",pre:"pre",ul:"ul",...i(),...s.components};return e.jsxs(e.Fragment,{children:[e.jsx(r,{title:"Documentation/Getting Started"}),`
+import{ae as e,af as r}from"./index-CyN2W3uh.js";import{useMDXComponents as i}from"./index-BSj771as.js";import"./iframe-D5HN8r4b.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function t(s){const n={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",hr:"hr",li:"li",p:"p",pre:"pre",ul:"ul",...i(),...s.components};return e.jsxs(e.Fragment,{children:[e.jsx(r,{title:"Documentation/Getting Started"}),`
 `,e.jsx(n.h1,{id:"getting-started",children:"Getting Started"}),`
 `,e.jsx(n.h2,{id:"installation",children:"Installation"}),`
 `,e.jsx("b",{children:e.jsx(n.p,{children:`Lock the installed package version to avoid unintended breakages on future npm
@@ -33,7 +33,7 @@ const Root = () => {
 `,e.jsx(n.h3,{id:"angular",children:e.jsx(n.a,{href:"?path=/docs/documentation-frameworks-angular--docs",children:"Angular"})}),`
 `]}),`
 `,e.jsxs(n.li,{children:[`
-`,e.jsx(n.h3,{id:"react",children:e.jsx(n.a,{href:"",children:"React"})}),`
+`,e.jsx(n.h3,{id:"react",children:e.jsx(n.a,{href:"?path=/docs/documentation-frameworks-react--docs",children:"React"})}),`
 `]}),`
 `,e.jsxs(n.li,{children:[`
 `,e.jsx(n.h3,{id:"vue",children:e.jsx(n.a,{href:"",children:"Vue"})}),`
