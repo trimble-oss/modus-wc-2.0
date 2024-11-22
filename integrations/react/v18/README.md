@@ -6,8 +6,12 @@ This is a React wrapper library for Modus Web Components 2.0 and the components 
 
 ## Installation
 
-Install the Modus React Components Library and its Modus Web Component dependency
-`npm install @trimble-cms/modus-wc`
+Install the Modus React Components Library using npm:
+```bash
+npm install @trimble-cms/modus-wc-react@<latest-version>-react<target-version>
+# e.g.,
+npm install @trimble-cms/modus-wc-react@1.0.0-react18
+```
 
 ## Example Usage
 
