@@ -32,11 +32,11 @@ describe('modus-wc-checkbox', () => {
         aria-describedby="active"
         aria-label="Test checkbox"
         aria-labelledby="checkbox-label"
-        checkbox-dir="rtl"
-        checkbox-id="custom-id"
-        checkbox-tab-index="1"
         custom-class="test-class"
         disabled="true"
+        input-dir="rtl"
+        input-id="custom-id"
+        input-tab-index="1"
         name="test-name"
         required="true"
         size="lg"
@@ -65,7 +65,7 @@ describe('modus-wc-checkbox', () => {
     const checkbox = page.root!.querySelector('input[type="checkbox"]');
     expect(checkbox).not.toBeNull();
     const blurSpy = jest.fn();
-    page.root!.addEventListener('checkboxBlur', blurSpy);
+    page.root!.addEventListener('inputBlur', blurSpy);
 
     checkbox!.dispatchEvent(new FocusEvent('blur'));
     await page.waitForChanges();
@@ -83,7 +83,7 @@ describe('modus-wc-checkbox', () => {
     ) as HTMLInputElement;
     expect(checkbox).not.toBeNull();
     const changeSpy = jest.fn();
-    page.root!.addEventListener('checkboxChange', changeSpy);
+    page.root!.addEventListener('inputChange', changeSpy);
 
     checkbox.value = 'true';
     checkbox.dispatchEvent(new Event('change'));
@@ -106,7 +106,7 @@ describe('modus-wc-checkbox', () => {
     const checkbox = page.root!.querySelector('input[type="checkbox"]');
     expect(checkbox).not.toBeNull();
     const focusSpy = jest.fn();
-    page.root!.addEventListener('checkboxFocus', focusSpy);
+    page.root!.addEventListener('inputFocus', focusSpy);
 
     checkbox!.dispatchEvent(new FocusEvent('focus'));
     await page.waitForChanges();

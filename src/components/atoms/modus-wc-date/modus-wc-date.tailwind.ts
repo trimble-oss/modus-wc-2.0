@@ -1,6 +1,6 @@
 export const convertPropsToClasses = (props: {
   bordered?: boolean;
-  size?: string;
+  size?: 'sm' | 'md' | 'lg';
 }): string => {
   let classes = '';
 
@@ -8,11 +8,11 @@ export const convertPropsToClasses = (props: {
     Object.prototype.hasOwnProperty.call(props, 'bordered') &&
     !!props.bordered
   ) {
-    classes = `${classes} modus-wc-textarea-bordered`;
+    classes = `${classes} modus-wc-input-bordered`;
   }
 
   if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-textarea-${props.size}`;
+    classes = `${classes} modus-wc-input-${props.size}`;
   }
 
   return classes;

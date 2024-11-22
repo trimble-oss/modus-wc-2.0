@@ -1,17 +1,17 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcTextarea } from './modus-wc-textarea';
+import { ModusWcDate } from './modus-wc-date';
 
-describe('modus-wc-textarea', () => {
+describe('modus-wc-date', () => {
   it('should warn if aria-label is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({
-      components: [ModusWcTextarea],
-      html: '<modus-wc-textarea></modus-wc-textarea>',
+      components: [ModusWcDate],
+      html: '<modus-wc-date></modus-wc-date>',
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcTextarea: aria-label is required for accessibility.'
+      'ModusWcDate: aria-label is required for accessibility.'
     );
 
     consoleWarnSpy.mockRestore();
@@ -19,50 +19,50 @@ describe('modus-wc-textarea', () => {
 
   it('renders with default props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTextarea],
-      html: '<modus-wc-textarea aria-label="Default textarea"></modus-wc-textarea>',
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Default date"></modus-wc-date>',
     });
     expect(page.root).toMatchSnapshot();
   });
 
   it('should render with custom props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTextarea],
-      html: `<modus-wc-textarea
+      components: [ModusWcDate],
+      html: `<modus-wc-date
         aria-describedby="description"
-        aria-label="Test textarea"
+        aria-label="Test date"
+        aria-labelledby="Another element"
+        auto-focus="true"
         bordered="false"
         custom-class="test-class"
         disabled="true"
-        input-aria-invalid="grammar"
         input-dir="rtl"
         input-id="custom-id"
-        input-spellcheck="true"
         input-tab-index="1"
-        max-length="100"
+        max="11/25/2024"
+        min="11/20/2024"
         name="test-name"
         placeholder="Test placeholder"
         readonly="true"
         required="true"
-        rows="5"
         size="lg"
         value="Test value"
-      ></modus-wc-textarea>`,
+      ></modus-wc-date>`,
     });
     expect(page.root).toMatchSnapshot();
   });
 
   it('should emit blur event', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTextarea],
-      html: '<modus-wc-textarea aria-label="Blur test"></modus-wc-textarea>',
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Blur test"></modus-wc-date>',
     });
-    const textarea = page.root!.querySelector('textarea');
-    expect(textarea).not.toBeNull();
+    const date = page.root!.querySelector('input');
+    expect(date).not.toBeNull();
     const blurSpy = jest.fn();
     page.root!.addEventListener('inputBlur', blurSpy);
 
-    textarea!.dispatchEvent(new FocusEvent('blur'));
+    date!.dispatchEvent(new FocusEvent('blur'));
     await page.waitForChanges();
 
     expect(blurSpy).toHaveBeenCalled();
@@ -70,16 +70,16 @@ describe('modus-wc-textarea', () => {
 
   it('should emit change event', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTextarea],
-      html: '<modus-wc-textarea aria-label="Change test"></modus-wc-textarea>',
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Change test"></modus-wc-date>',
     });
-    const textarea = page.root!.querySelector('textarea');
-    expect(textarea).not.toBeNull();
+    const date = page.root!.querySelector('input');
+    expect(date).not.toBeNull();
     const changeSpy = jest.fn();
     page.root!.addEventListener('inputChange', changeSpy);
 
-    textarea!.value = 'New value';
-    textarea!.dispatchEvent(new Event('change'));
+    date!.value = 'New value';
+    date!.dispatchEvent(new Event('change'));
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();
@@ -93,15 +93,15 @@ describe('modus-wc-textarea', () => {
 
   it('should emit focus event', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTextarea],
-      html: '<modus-wc-textarea aria-label="Focus test"></modus-wc-textarea>',
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Focus test"></modus-wc-date>',
     });
-    const textarea = page.root!.querySelector('textarea');
-    expect(textarea).not.toBeNull();
+    const date = page.root!.querySelector('input');
+    expect(date).not.toBeNull();
     const focusSpy = jest.fn();
     page.root!.addEventListener('inputFocus', focusSpy);
 
-    textarea!.dispatchEvent(new FocusEvent('focus'));
+    date!.dispatchEvent(new FocusEvent('focus'));
     await page.waitForChanges();
 
     expect(focusSpy).toHaveBeenCalled();

@@ -3,48 +3,41 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-interface TextAreaArgs {
+interface DateArgs {
   'aria-describedby'?: string;
   'aria-label': string;
+  'aria-labelledby'?: string;
+  'auto-focus'?: boolean;
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
-  'input-aria-invalid'?: 'grammar' | 'spelling' | 'true' | 'false';
   'input-dir'?: 'ltr' | 'rtl' | 'auto';
   'input-id'?: string;
-  'input-spellcheck'?: boolean;
   'input-tab-index'?: number;
-  'max-length'?: number;
+  max?: string;
+  min?: string;
   name?: string;
   placeholder?: string;
-  readonly?: boolean;
+  'read-only'?: boolean;
   required?: boolean;
-  rows?: number;
   size?: 'sm' | 'md' | 'lg';
   value: string;
 }
 
-const meta: Meta<TextAreaArgs> = {
-  title: 'Components/Atoms/Textarea',
-  component: 'modus-wc-textarea',
+const meta: Meta<DateArgs> = {
+  title: 'Components/Atoms/Date',
+  component: 'modus-wc-date',
   args: {
-    'aria-label': 'Enter your comments',
+    'aria-label': 'Date picker',
     bordered: true,
     'custom-class': '',
     disabled: false,
-    placeholder: 'Type your comments here',
-    readonly: false,
+    'read-only': false,
     required: false,
     size: 'md',
     value: '',
   },
   argTypes: {
-    'input-aria-invalid': {
-      control: {
-        type: 'inline-radio',
-      },
-      options: ['grammar', 'spelling', 'true', 'false'],
-    },
     'input-dir': {
       control: {
         type: 'inline-radio',
@@ -66,49 +59,49 @@ const meta: Meta<TextAreaArgs> = {
 
 export default meta;
 
-type Story = StoryObj<TextAreaArgs>;
+type Story = StoryObj<DateArgs>;
 
 export const Template: Story = {
   render: (args) => {
     return html`
-      <modus-wc-textarea
+      <modus-wc-date
         aria-describedby=${ifDefined(args['aria-describedby'])}
         aria-label=${args['aria-label']}
+        aria-labelledby=${ifDefined(args['aria-labelledby'])}
+        ?auto-focus=${args['auto-focus']}
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
-        input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
         input-dir=${ifDefined(args['input-dir'])}
         input-id=${ifDefined(args['input-id'])}
-        ?input-spellcheck=${ifDefined(args['input-spellcheck'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
-        max-length=${ifDefined(args['max-length'])}
+        max=${ifDefined(args.max)}
+        min=${ifDefined(args.min)}
         name=${ifDefined(args.name)}
         placeholder=${ifDefined(args.placeholder)}
-        ?readonly=${args.readonly}
+        ?read-only=${args['read-only']}
         ?required=${args.required}
-        rows=${ifDefined(args.rows)}
         size=${ifDefined(args.size)}
         .value=${args.value}
-      ></modus-wc-textarea>
+      ></modus-wc-date>
     `;
   },
 };
 
-export const TextareaWithLabel: Story = {
+export const DateWithLabel: Story = {
   render: () => {
     return html`
       <form action="" class="form-example" method="get">
         <div class="form-example">
           <modus-wc-input-label
-            for-id="textarea-input"
-            label-text="Example textarea"
+            for-id="date-input"
+            label-text="Example date"
           ></modus-wc-input-label>
-          <modus-wc-textarea
-            aria-label="Example textarea"
-            input-id="textarea-input"
-            name="example-textarea"
-          ></modus-wc-textarea>
+          <modus-wc-date
+            aria-label="Example date picker"
+            input-id="date-input"
+            name="example-date"
+          ></modus-wc-date>
         </div>
       </form>
       <style>

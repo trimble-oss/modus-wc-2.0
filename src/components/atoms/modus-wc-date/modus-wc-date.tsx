@@ -1,24 +1,24 @@
 import {
+  Component,
   h,
   Host,
-  Component,
+  Prop,
   Event as StencilEvent,
   EventEmitter,
-  Prop,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
+import { convertPropsToClasses } from './modus-wc-date.tailwind';
 
 /**
- * A customizable input component used to create text inputs with types.
+ * A customizable date picker component used to create date inputs.
  *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
-  tag: 'modus-wc-text-input',
-  styleUrl: 'modus-wc-text-input.scss',
+  tag: 'modus-wc-date',
+  styleUrl: 'modus-wc-date.scss',
   shadow: false,
 })
-export class ModusWcTextInput {
+export class ModusWcDate {
   /**
    * The ID of the element that describes the input.
    */
@@ -30,20 +30,9 @@ export class ModusWcTextInput {
   @Prop() ariaLabel!: string;
 
   /**
-   * Controls automatic capitalization in inputted text.
+   * The aria-labelledby attribute for usage with a label.
    */
-  @Prop() autoCapitalize?:
-    | 'off'
-    | 'none'
-    | 'on'
-    | 'sentences'
-    | 'words'
-    | 'characters';
-
-  /**
-   * Hint for form autofill feature.
-   */
-  @Prop() autoComplete?: 'on' | 'off';
+  @Prop() ariaLabelledby?: string;
 
   /**
    * Indicates that an element should be focused on page load.
@@ -66,11 +55,6 @@ export class ModusWcTextInput {
   @Prop() disabled?: boolean = false;
 
   /**
-   * Indicates whether the input has an invalid input.
-   */
-  @Prop() inputAriaInvalid?: 'grammar' | 'spelling' | 'true' | 'false';
-
-  /**
    * Specifies the text direction of the input content.
    */
   @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
@@ -81,39 +65,19 @@ export class ModusWcTextInput {
   @Prop() inputId?: string;
 
   /**
-   * Hints at the type of data that might be entered by the user while editing the element or its contents.
-   * This allows a browser to display an appropriate virtual keyboard.
-   */
-  @Prop() inputMode:
-    | 'decimal'
-    | 'email'
-    | 'none'
-    | 'numeric'
-    | 'search'
-    | 'tel'
-    | 'text'
-    | 'url' = 'text';
-
-  /**
-   * Whether the element may be checked for spelling errors.
-   * A hint for the browser, not a guarantee.
-   */
-  @Prop() inputSpellcheck?: boolean = false;
-
-  /**
    * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
    */
   @Prop() inputTabIndex?: number;
 
   /**
-   * Maximum length (number of characters) of value.
+   * Maximum date value.
    */
-  @Prop() maxLength?: number;
+  @Prop() max?: string;
 
   /**
-   * Minimum length (number of characters) of value.
+   * Minimum date value.
    */
-  @Prop() minLength?: number;
+  @Prop() min?: string;
 
   /**
    * Name of the form control. Submitted with the form as part of a name/value pair.
@@ -121,14 +85,9 @@ export class ModusWcTextInput {
   @Prop() name?: string;
 
   /**
-   * Pattern the value must match to be valid
+   * Placeholder text for the date input.
    */
-  @Prop() pattern?: string;
-
-  /**
-   * Text that appears in the form control when it has no value set.
-   */
-  @Prop() placeholder?: string = '';
+  @Prop() placeholder?: string;
 
   /**
    * Whether the value is editable.
@@ -136,7 +95,7 @@ export class ModusWcTextInput {
   @Prop() readOnly?: boolean = false;
 
   /**
-   * A value is required for the form to be submittable.
+   * A value is required or must be checked for the form to be submittable.
    */
   @Prop() required?: boolean = false;
 
@@ -144,12 +103,6 @@ export class ModusWcTextInput {
    * The size of the input.
    */
   @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
-
-  /**
-   * Type of form control.
-   */
-  @Prop() type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url' =
-    'text';
 
   /**
    * The value of the control.
@@ -173,14 +126,12 @@ export class ModusWcTextInput {
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn(
-        'ModusWcTextInput: aria-label is required for accessibility.'
-      );
+      console.warn('ModusWcDate: aria-label is required for accessibility.');
     }
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-input'];
+    const classList = ['modus-wc-date modus-wc-input modus-wc-w-full'];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       size: this.size,
@@ -210,31 +161,24 @@ export class ModusWcTextInput {
       <Host>
         <input
           aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.inputAriaInvalid}
           aria-label={this.ariaLabel || this.placeholder}
-          aria-placeholder={this.placeholder}
-          aria-required={this.required}
-          autocapitalize={this.autoCapitalize}
-          autocomplete={this.autoComplete}
+          aria-labelledby={this.ariaLabelledby}
           autofocus={this.autoFocus}
           class={this.getClasses()}
           dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}
-          inputmode={this.inputMode}
-          maxlength={this.maxLength}
-          minlength={this.minLength}
+          max={this.max}
+          min={this.min}
           name={this.name}
           onBlur={this.handleBlur}
           onChange={this.handleChange}
           onFocus={this.handleFocus}
-          pattern={this.pattern}
           placeholder={this.placeholder}
           readonly={this.readOnly}
           required={this.required}
-          spellcheck={this.inputSpellcheck}
           tabIndex={this.inputTabIndex}
-          type={this.type}
+          type="date"
           value={this.value}
         />
       </Host>
