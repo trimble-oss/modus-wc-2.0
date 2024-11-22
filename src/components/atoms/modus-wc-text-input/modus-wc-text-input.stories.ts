@@ -53,7 +53,6 @@ const meta: Meta<TextInputArgs> = {
     disabled: false,
     'input-mode': 'text',
     'input-spellcheck': false,
-    name: '',
     placeholder: 'Type your name here',
     size: 'md',
     type: 'text',
@@ -110,7 +109,7 @@ export default meta;
 
 type Story = StoryObj<TextInputArgs>;
 
-const Template: Story = {
+export const Template: Story = {
   render: (args) => html`
     <modus-wc-text-input
       aria-describedby=${ifDefined(args['aria-describedby'])}
@@ -129,7 +128,7 @@ const Template: Story = {
       input-tab-index=${ifDefined(args['input-tab-index'])}
       max-length=${ifDefined(args['max-length'])}
       min-length=${ifDefined(args['min-length'])}
-      name=${args.name}
+      name=${ifDefined(args.name)}
       pattern=${ifDefined(args.pattern)}
       placeholder=${args.placeholder}
       ?read-only=${args['read-only']}
@@ -141,4 +140,31 @@ const Template: Story = {
   `,
 };
 
-export const Default: Story = { ...Template };
+export const TextInputWithLabel: Story = {
+  render: () => {
+    return html`
+      <form action="" class="form-example" method="get">
+        <div class="form-example">
+          <modus-wc-input-label
+            for-id="text-input"
+            label-text="Example text input"
+          ></modus-wc-input-label>
+          <modus-wc-text-input
+            aria-label="Example text input"
+            input-id="text-input"
+            name="example-text-input"
+          ></modus-wc-text-input>
+        </div>
+      </form>
+      <style>
+        .form-example {
+          display: flex;
+          align-items: center;
+        }
+        .modus-wc-input-label {
+          padding-inline-end: 8px;
+        }
+      </style>
+    `;
+  },
+};

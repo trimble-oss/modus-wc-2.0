@@ -66,12 +66,12 @@ export class ModusWcCheckbox {
   @Prop() inputTabIndex?: number;
 
   /**
-   * The name of the checkbox.
+   * Name of the form control. Submitted with the form as part of a name/value pair.
    */
   @Prop() name?: string = '';
 
   /**
-   * The required state of the checkbox.
+   * A value is required for the form to be submittable.
    */
   @Prop() required?: boolean = false;
 

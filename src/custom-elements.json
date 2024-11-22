@@ -407,7 +407,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "The name of the checkbox."
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
             },
             {
               "name": "required",
@@ -415,7 +415,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "The required state of the checkbox."
+              "description": "A value is required for the form to be submittable."
             },
             {
               "name": "size",
@@ -499,12 +499,68 @@
           ],
           "attributes": [
             {
+              "name": "aria-describedby",
+              "fieldName": "ariaDescribedby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the element that describes the input."
+            },
+            {
               "name": "aria-label",
               "fieldName": "ariaLabel",
               "type": {
                 "text": "string"
               },
               "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "aria-labelledby",
+              "fieldName": "ariaLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label."
+            },
+            {
+              "name": "auto-focus",
+              "fieldName": "autoFocus",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that an element should be focused on page load."
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the input."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the form control is disabled."
+            },
+            {
+              "name": "input-dir",
+              "fieldName": "inputDir",
+              "type": {
+                "text": "'' | 'ltr' | 'rtl' | 'auto'"
+              },
+              "description": "Specifies the text direction of the input content."
             },
             {
               "name": "input-id",
@@ -515,12 +571,36 @@
               "description": "The ID of the input element."
             },
             {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+            },
+            {
+              "name": "max",
+              "fieldName": "max",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum date value."
+            },
+            {
+              "name": "min",
+              "fieldName": "min",
+              "type": {
+                "text": "string"
+              },
+              "description": "Minimum date value."
+            },
+            {
               "name": "name",
               "fieldName": "name",
               "type": {
                 "text": "string"
               },
-              "description": "The name attribute for the date input field."
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
             },
             {
               "name": "placeholder",
@@ -529,6 +609,30 @@
                 "text": "string"
               },
               "description": "Placeholder text for the date input."
+            },
+            {
+              "name": "read-only",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the value is editable."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required or must be checked for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "description": "The size of the input."
             },
             {
               "name": "value",
@@ -993,7 +1097,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pai."
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
             },
             {
               "name": "pattern",
@@ -1025,7 +1129,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "A value is required or must be checked for the form to be submittable."
+              "description": "A value is required for the form to be submittable."
             },
             {
               "name": "size",
@@ -1218,7 +1322,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "The name of the textarea."
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
             },
             {
               "name": "placeholder",
@@ -1242,7 +1346,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "The required state of the textarea."
+              "description": "A value is required for the form to be submittable."
             },
             {
               "name": "rows",

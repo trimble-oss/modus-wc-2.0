@@ -164,11 +164,11 @@ export namespace Components {
          */
         "inputTabIndex"?: number;
         /**
-          * The name of the checkbox.
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
-          * The required state of the checkbox.
+          * A value is required for the form to be submittable.
          */
         "required"?: boolean;
         /**
@@ -186,21 +186,73 @@ export namespace Components {
      */
     interface ModusWcDate {
         /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Indicates that an element should be focused on page load.
+         */
+        "autoFocus"?: boolean;
+        /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the input.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
         /**
           * The ID of the input element.
          */
         "inputId"?: string;
         /**
-          * The name attribute for the date input field.
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Maximum date value.
+         */
+        "max"?: string;
+        /**
+          * Minimum date value.
+         */
+        "min"?: string;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
           * Placeholder text for the date input.
          */
         "placeholder"?: string;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required or must be checked for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
         /**
           * The value of the control.
          */
@@ -382,7 +434,7 @@ export namespace Components {
          */
         "minLength"?: number;
         /**
-          * Name of the form control. Submitted with the form as part of a name/value pai.
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
@@ -398,7 +450,7 @@ export namespace Components {
          */
         "readOnly"?: boolean;
         /**
-          * A value is required or must be checked for the form to be submittable.
+          * A value is required for the form to be submittable.
          */
         "required"?: boolean;
         /**
@@ -468,7 +520,7 @@ export namespace Components {
          */
         "maxLength"?: number;
         /**
-          * The name of the textarea.
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
@@ -480,7 +532,7 @@ export namespace Components {
          */
         "readonly"?: boolean;
         /**
-          * The required state of the textarea.
+          * A value is required for the form to be submittable.
          */
         "required"?: boolean;
         /**
@@ -944,7 +996,7 @@ declare namespace LocalJSX {
          */
         "inputTabIndex"?: number;
         /**
-          * The name of the checkbox.
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
@@ -960,7 +1012,7 @@ declare namespace LocalJSX {
          */
         "onInputFocus"?: (event: ModusWcCheckboxCustomEvent<FocusEvent>) => void;
         /**
-          * The required state of the checkbox.
+          * A value is required for the form to be submittable.
          */
         "required"?: boolean;
         /**
@@ -978,15 +1030,55 @@ declare namespace LocalJSX {
      */
     interface ModusWcDate {
         /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
           * The aria-label attribute for accessibility.
          */
         "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Indicates that an element should be focused on page load.
+         */
+        "autoFocus"?: boolean;
+        /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the input.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
         /**
           * The ID of the input element.
          */
         "inputId"?: string;
         /**
-          * The name attribute for the date input field.
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Maximum date value.
+         */
+        "max"?: string;
+        /**
+          * Minimum date value.
+         */
+        "min"?: string;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
@@ -1005,6 +1097,18 @@ declare namespace LocalJSX {
           * Placeholder text for the date input.
          */
         "placeholder"?: string;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required or must be checked for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
         /**
           * The value of the control.
          */
@@ -1186,7 +1290,7 @@ declare namespace LocalJSX {
          */
         "minLength"?: number;
         /**
-          * Name of the form control. Submitted with the form as part of a name/value pai.
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
@@ -1214,7 +1318,7 @@ declare namespace LocalJSX {
          */
         "readOnly"?: boolean;
         /**
-          * A value is required or must be checked for the form to be submittable.
+          * A value is required for the form to be submittable.
          */
         "required"?: boolean;
         /**
@@ -1284,7 +1388,7 @@ declare namespace LocalJSX {
          */
         "maxLength"?: number;
         /**
-          * The name of the textarea.
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
@@ -1308,7 +1412,7 @@ declare namespace LocalJSX {
          */
         "readonly"?: boolean;
         /**
-          * The required state of the textarea.
+          * A value is required for the form to be submittable.
          */
         "required"?: boolean;
         /**

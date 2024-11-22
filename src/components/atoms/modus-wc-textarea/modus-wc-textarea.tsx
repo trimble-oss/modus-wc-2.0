@@ -81,9 +81,9 @@ export class ModusWcTextarea {
   @Prop() maxLength?: number;
 
   /**
-   * The name of the textarea.
+   * Name of the form control. Submitted with the form as part of a name/value pair.
    */
-  @Prop() name?: string = '';
+  @Prop() name?: string;
 
   /**
    * The placeholder text for the textarea.
@@ -96,7 +96,7 @@ export class ModusWcTextarea {
   @Prop() readonly?: boolean = false;
 
   /**
-   * The required state of the textarea.
+   * A value is required for the form to be submittable.
    */
   @Prop() required?: boolean = false;
 
