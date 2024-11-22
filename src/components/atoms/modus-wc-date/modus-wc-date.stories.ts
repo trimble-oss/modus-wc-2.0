@@ -79,9 +79,9 @@ export const Template: Story = {
         min=${ifDefined(args.min)}
         name=${ifDefined(args.name)}
         placeholder=${ifDefined(args.placeholder)}
-        ?read-only=${ifDefined(args['read-only'])}
+        ?read-only=${args['read-only']}
         ?required=${args.required}
-        size=${args.size}
+        size=${ifDefined(args.size)}
         .value=${args.value}
       ></modus-wc-date>
     `;
