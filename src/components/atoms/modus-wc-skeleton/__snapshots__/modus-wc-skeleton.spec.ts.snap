@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-skeleton renders with default props 1`] = `
+<modus-wc-skeleton aria-label="Default skeleton">
+  <div aria-label="Default skeleton" class="modus-wc-skeleton modus-wc-w-full"></div>
+</modus-wc-skeleton>
+`;
+
+exports[`modus-wc-skeleton should render with custom props 1`] = `
+<modus-wc-skeleton aria-describedby="active" aria-label="Test skeleton" aria-labelledby="skeleton-label" circle"="" custom-class="test-class
+            shape=" full-width="false">
+  <div aria-describedby="active" aria-label="Test skeleton" aria-labelledby="skeleton-label" class="modus-wc-skeleton shape= test-class"></div>
+</modus-wc-skeleton>
+`;

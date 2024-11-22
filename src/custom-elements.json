@@ -741,6 +741,102 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-skeleton/modus-wc-skeleton.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModusWcSkeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "fieldName": "ariaDescribedby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the element that describes the skeleton."
+            },
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "aria-labelledby",
+              "fieldName": "ariaLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "full-width",
+              "fieldName": "fullWidth",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Full width option for skeleton."
+            },
+            {
+              "name": "shape",
+              "fieldName": "shape",
+              "type": {
+                "text": "'circle' | 'rectangle'"
+              },
+              "description": "The shape of the skeleton."
+            }
+          ],
+          "tagName": "modus-wc-skeleton",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcSkeleton",
+          "declaration": {
+            "name": "ModusWcSkeleton",
+            "module": "src/components/atoms/modus-wc-skeleton/modus-wc-skeleton.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-skeleton",
+          "declaration": {
+            "name": "ModusWcSkeleton",
+            "module": "src/components/atoms/modus-wc-skeleton/modus-wc-skeleton.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx",
       "declarations": [
         {

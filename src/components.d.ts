@@ -274,6 +274,32 @@ export namespace Components {
          */
         "required"?: boolean;
     }
+    interface ModusWcSkeleton {
+        /**
+          * The ID of the element that describes the skeleton.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass": string;
+        /**
+          * Full width option for skeleton.
+         */
+        "fullWidth": boolean;
+        /**
+          * The shape of the skeleton.
+         */
+        "shape"?: 'circle' | 'rectangle';
+    }
     /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
@@ -632,6 +658,12 @@ declare global {
         prototype: HTMLModusWcInputLabelElement;
         new (): HTMLModusWcInputLabelElement;
     };
+    interface HTMLModusWcSkeletonElement extends Components.ModusWcSkeleton, HTMLStencilElement {
+    }
+    var HTMLModusWcSkeletonElement: {
+        prototype: HTMLModusWcSkeletonElement;
+        new (): HTMLModusWcSkeletonElement;
+    };
     interface HTMLModusWcTextInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
@@ -724,6 +756,7 @@ declare global {
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
+        "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
@@ -1012,6 +1045,32 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
     }
+    interface ModusWcSkeleton {
+        /**
+          * The ID of the element that describes the skeleton.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Full width option for skeleton.
+         */
+        "fullWidth"?: boolean;
+        /**
+          * The shape of the skeleton.
+         */
+        "shape"?: 'circle' | 'rectangle';
+    }
     /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
@@ -1288,6 +1347,7 @@ declare namespace LocalJSX {
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-label": ModusWcInputLabel;
+        "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
@@ -1336,6 +1396,7 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
+            "modus-wc-skeleton": LocalJSX.ModusWcSkeleton & JSXBase.HTMLAttributes<HTMLModusWcSkeletonElement>;
             /**
              * A customizable input component used to create text inputs with types.
              * Adheres to WCAG 2.2 standards.
