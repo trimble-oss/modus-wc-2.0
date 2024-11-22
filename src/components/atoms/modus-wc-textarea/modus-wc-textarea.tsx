@@ -50,6 +50,32 @@ export class ModusWcTextarea {
   @Prop() fullWidth?: boolean = true;
 
   /**
+   * Indicates whether the input is invalid.
+   */
+  @Prop() inputAriaInvalid?: 'grammar' | 'spelling' | 'true' | 'false';
+
+  /**
+   * Specifies the text direction of the input content.
+   */
+  @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
+
+  /**
+   * The ID of the input element.
+   */
+  @Prop() inputId?: string;
+
+  /**
+   * Whether the element may be checked for spelling errors.
+   * A hint for the browser, not a guarantee.
+   */
+  @Prop() inputSpellcheck?: boolean;
+
+  /**
+   * The tabindex of the input.
+   */
+  @Prop() inputTabIndex?: number;
+
+  /**
    * The maximum number of characters allowed in the textarea.
    */
   @Prop() maxLength?: number;
@@ -85,50 +111,24 @@ export class ModusWcTextarea {
   @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
 
   /**
-   * Indicates whether the textarea has an invalid input.
-   */
-  @Prop() textareaAriaInvalid?: 'grammar' | 'spelling' | 'true' | 'false';
-
-  /**
-   * Specifies the text direction of the textarea content.
-   */
-  @Prop() textareaDir?: '' | 'ltr' | 'rtl' | 'auto';
-
-  /**
-   * The ID of the textarea element.
-   */
-  @Prop() textareaId?: string;
-
-  /**
-   * Whether the element may be checked for spelling errors.
-   * A hint for the browser, not a guarantee.
-   */
-  @Prop() textareaSpellcheck?: boolean;
-
-  /**
-   * The tabindex of the textarea.
-   */
-  @Prop() textareaTabIndex?: number;
-
-  /**
    * The value of the textarea.
    */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
   /**
-   * Emitted when the textarea loses focus.
+   * Emitted when the input loses focus.
    */
-  @StencilEvent() textareaBlur!: EventEmitter<FocusEvent>;
+  @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
   /**
-   * Emitted when the textarea value changes.
+   * Emitted when the input value changes.
    */
-  @StencilEvent() textareaChange!: EventEmitter<Event>;
+  @StencilEvent() inputChange!: EventEmitter<Event>;
 
   /**
-   * Emitted when the textarea gains focus.
+   * Emitted when the input gains focus.
    */
-  @StencilEvent() textareaFocus!: EventEmitter<FocusEvent>;
+  @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
     if (!this.ariaLabel) {
@@ -154,15 +154,15 @@ export class ModusWcTextarea {
   }
 
   private handleBlur = (event: FocusEvent) => {
-    this.textareaBlur.emit(event);
+    this.inputBlur.emit(event);
   };
 
   private handleChange = (event: Event) => {
-    this.textareaChange.emit(event);
+    this.inputChange.emit(event);
   };
 
   private handleFocus = (event: FocusEvent) => {
-    this.textareaFocus.emit(event);
+    this.inputFocus.emit(event);
   };
 
   render() {
@@ -170,14 +170,14 @@ export class ModusWcTextarea {
       <Host>
         <textarea
           aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.textareaAriaInvalid}
+          aria-invalid={this.inputAriaInvalid}
           aria-label={this.ariaLabel || this.placeholder}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           class={this.getClasses()}
-          dir={this.textareaDir}
+          dir={this.inputDir}
           disabled={this.disabled}
-          id={this.textareaId}
+          id={this.inputId}
           maxLength={this.maxLength}
           name={this.name}
           onBlur={this.handleBlur}
@@ -187,8 +187,8 @@ export class ModusWcTextarea {
           readonly={this.readonly}
           required={this.required}
           rows={this.rows}
-          spellcheck={this.textareaSpellcheck}
-          tabIndex={this.textareaTabIndex}
+          spellcheck={this.inputSpellcheck}
+          tabIndex={this.inputTabIndex}
           value={this.value}
         />
       </Host>

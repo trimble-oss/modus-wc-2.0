@@ -36,21 +36,6 @@ export class ModusWcCheckbox {
   @Prop() ariaLabelledby?: string;
 
   /**
-   * Specifies the text direction of the checkbox content.
-   */
-  @Prop() checkboxDir?: '' | 'ltr' | 'rtl' | 'auto';
-
-  /**
-   * The ID of the checkbox element.
-   */
-  @Prop() checkboxId?: string;
-
-  /**
-   * The tabindex of the checkbox.
-   */
-  @Prop() checkboxTabIndex?: number;
-
-  /**
    * Custom CSS class to apply to the inner div.
    */
   @Prop() customClass: string = '';
@@ -64,6 +49,21 @@ export class ModusWcCheckbox {
    * The indeterminate state of the checkbox.
    */
   @Prop({ reflect: true, mutable: true }) indeterminate: boolean = false;
+
+  /**
+   * Specifies the text direction of the input content.
+   */
+  @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
+
+  /**
+   * The ID of the input element.
+   */
+  @Prop() inputId?: string;
+
+  /**
+   * The tabindex of the input.
+   */
+  @Prop() inputTabIndex?: number;
 
   /**
    * The name of the checkbox.
@@ -86,19 +86,19 @@ export class ModusWcCheckbox {
   @Prop({ mutable: true, reflect: true }) value: boolean = false;
 
   /**
-   * Emitted when the checkbox loses focus.
+   * Emitted when the input loses focus.
    */
-  @StencilEvent() checkboxBlur!: EventEmitter<FocusEvent>;
+  @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
   /**
-   * Emitted when the checkbox value changes.
+   * Emitted when the input value changes.
    */
-  @StencilEvent() checkboxChange!: EventEmitter<Event>;
+  @StencilEvent() inputChange!: EventEmitter<Event>;
 
   /**
-   * Emitted when the checkbox gains focus.
+   * Emitted when the input gains focus.
    */
-  @StencilEvent() checkboxFocus!: EventEmitter<FocusEvent>;
+  @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -134,15 +134,15 @@ export class ModusWcCheckbox {
   }
 
   private handleBlur = (event: FocusEvent) => {
-    this.checkboxBlur.emit(event);
+    this.inputBlur.emit(event);
   };
 
   private handleChange = (event: Event) => {
-    this.checkboxChange.emit(event);
+    this.inputChange.emit(event);
   };
 
   private handleFocus = (event: FocusEvent) => {
-    this.checkboxFocus.emit(event);
+    this.inputFocus.emit(event);
   };
 
   render() {
@@ -156,14 +156,14 @@ export class ModusWcCheckbox {
           aria-labelledby={this.ariaLabelledby}
           checked={this.value}
           class={this.getClasses()}
-          dir={this.checkboxDir}
+          dir={this.inputDir}
           disabled={this.disabled}
-          id={this.checkboxId}
+          id={this.inputId}
           onBlur={this.handleBlur}
           onChange={this.handleChange}
           onFocus={this.handleFocus}
           required={this.required}
-          tabIndex={this.checkboxTabIndex}
+          tabIndex={this.inputTabIndex}
           type="checkbox"
         />
       </Host>

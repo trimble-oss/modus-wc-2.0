@@ -65,7 +65,7 @@ describe('modus-wc-checkbox', () => {
     const checkbox = page.root!.querySelector('input[type="checkbox"]');
     expect(checkbox).not.toBeNull();
     const blurSpy = jest.fn();
-    page.root!.addEventListener('checkboxBlur', blurSpy);
+    page.root!.addEventListener('inputBlur', blurSpy);
 
     checkbox!.dispatchEvent(new FocusEvent('blur'));
     await page.waitForChanges();
@@ -83,7 +83,7 @@ describe('modus-wc-checkbox', () => {
     ) as HTMLInputElement;
     expect(checkbox).not.toBeNull();
     const changeSpy = jest.fn();
-    page.root!.addEventListener('checkboxChange', changeSpy);
+    page.root!.addEventListener('inputChange', changeSpy);
 
     checkbox.value = 'true';
     checkbox.dispatchEvent(new Event('change'));
@@ -106,7 +106,7 @@ describe('modus-wc-checkbox', () => {
     const checkbox = page.root!.querySelector('input[type="checkbox"]');
     expect(checkbox).not.toBeNull();
     const focusSpy = jest.fn();
-    page.root!.addEventListener('checkboxFocus', focusSpy);
+    page.root!.addEventListener('inputFocus', focusSpy);
 
     checkbox!.dispatchEvent(new FocusEvent('focus'));
     await page.waitForChanges();

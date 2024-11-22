@@ -10,6 +10,11 @@ interface TextAreaArgs {
   'custom-class'?: string;
   disabled?: boolean;
   'full-width'?: boolean;
+  'input-aria-invalid'?: 'grammar' | 'spelling' | 'true' | 'false';
+  'input-dir'?: 'ltr' | 'rtl' | 'auto';
+  'input-id'?: string;
+  'input-spellcheck'?: boolean;
+  'input-tab-index'?: number;
   'max-length'?: number;
   name?: string;
   placeholder?: string;
@@ -17,11 +22,6 @@ interface TextAreaArgs {
   required?: boolean;
   rows?: number;
   size?: 'sm' | 'md' | 'lg';
-  'textarea-aria-invalid'?: 'grammar' | 'spelling' | 'true' | 'false';
-  'textarea-dir'?: 'ltr' | 'rtl' | 'auto';
-  'textarea-id'?: string;
-  'textarea-spellcheck'?: boolean;
-  'textarea-tab-index'?: number;
   value: string;
 }
 
@@ -42,27 +42,27 @@ const meta: Meta<TextAreaArgs> = {
     value: '',
   },
   argTypes: {
-    size: {
-      control: { type: 'inline-radio' },
-      options: ['sm', 'md', 'lg'],
-    },
-    'textarea-aria-invalid': {
+    'input-aria-invalid': {
       control: {
         type: 'inline-radio',
       },
       options: ['grammar', 'spelling', 'true', 'false'],
     },
-    'textarea-dir': {
+    'input-dir': {
       control: {
         type: 'inline-radio',
       },
       options: ['ltr', 'rtl', 'auto'],
     },
+    size: {
+      control: { type: 'inline-radio' },
+      options: ['sm', 'md', 'lg'],
+    },
   },
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['textareaBlur', 'textareaChange', 'textareaFocus'],
+      handles: ['inputBlur', 'inputChange', 'inputFocus'],
     },
   },
 };
@@ -81,6 +81,11 @@ const Template: Story = {
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
         ?full-width=${args['full-width']}
+        input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
+        input-dir=${ifDefined(args['input-dir'])}
+        input-id=${ifDefined(args['input-id'])}
+        ?input-spellcheck=${ifDefined(args['input-spellcheck'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
         max-length=${ifDefined(args['max-length'])}
         name=${ifDefined(args.name)}
         placeholder=${ifDefined(args.placeholder)}
@@ -88,11 +93,6 @@ const Template: Story = {
         ?required=${args.required}
         rows=${ifDefined(args.rows)}
         size=${ifDefined(args.size)}
-        textarea-aria-invalid=${ifDefined(args['textarea-aria-invalid'])}
-        textarea-dir=${ifDefined(args['textarea-dir'])}
-        textarea-id=${ifDefined(args['textarea-id'])}
-        ?textarea-spellcheck=${ifDefined(args['textarea-spellcheck'])}
-        textarea-tab-index=${ifDefined(args['textarea-tab-index'])}
         .value=${args.value}
       ></modus-wc-textarea>
     `;

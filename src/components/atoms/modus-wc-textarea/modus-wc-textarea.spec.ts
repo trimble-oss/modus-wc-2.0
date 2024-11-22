@@ -61,7 +61,7 @@ describe('modus-wc-textarea', () => {
     const textarea = page.root!.querySelector('textarea');
     expect(textarea).not.toBeNull();
     const blurSpy = jest.fn();
-    page.root!.addEventListener('textareaBlur', blurSpy);
+    page.root!.addEventListener('inputBlur', blurSpy);
 
     textarea!.dispatchEvent(new FocusEvent('blur'));
     await page.waitForChanges();
@@ -77,7 +77,7 @@ describe('modus-wc-textarea', () => {
     const textarea = page.root!.querySelector('textarea');
     expect(textarea).not.toBeNull();
     const changeSpy = jest.fn();
-    page.root!.addEventListener('textareaChange', changeSpy);
+    page.root!.addEventListener('inputChange', changeSpy);
 
     textarea!.value = 'New value';
     textarea!.dispatchEvent(new Event('change'));
@@ -100,7 +100,7 @@ describe('modus-wc-textarea', () => {
     const textarea = page.root!.querySelector('textarea');
     expect(textarea).not.toBeNull();
     const focusSpy = jest.fn();
-    page.root!.addEventListener('textareaFocus', focusSpy);
+    page.root!.addEventListener('inputFocus', focusSpy);
 
     textarea!.dispatchEvent(new FocusEvent('focus'));
     await page.waitForChanges();

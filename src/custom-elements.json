@@ -354,30 +354,6 @@
               "description": "The aria-labelledby attribute for usage with a label."
             },
             {
-              "name": "checkbox-dir",
-              "fieldName": "checkboxDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the checkbox content."
-            },
-            {
-              "name": "checkbox-id",
-              "fieldName": "checkboxId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the checkbox element."
-            },
-            {
-              "name": "checkbox-tab-index",
-              "fieldName": "checkboxTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "The tabindex of the checkbox."
-            },
-            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
@@ -400,6 +376,30 @@
                 "text": "boolean"
               },
               "description": "The indeterminate state of the checkbox."
+            },
+            {
+              "name": "input-dir",
+              "fieldName": "inputDir",
+              "type": {
+                "text": "'' | 'ltr' | 'rtl' | 'auto'"
+              },
+              "description": "Specifies the text direction of the input content."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "The tabindex of the input."
             },
             {
               "name": "name",
@@ -438,27 +438,27 @@
           "events": [
             {
               "kind": "field",
-              "name": "checkboxBlur",
+              "name": "inputBlur",
               "type": {
                 "text": "EventEmitter<FocusEvent>"
               },
-              "description": "Emitted when the checkbox loses focus."
+              "description": "Emitted when the input loses focus."
             },
             {
               "kind": "field",
-              "name": "checkboxChange",
+              "name": "inputChange",
               "type": {
                 "text": "EventEmitter<Event>"
               },
-              "description": "Emitted when the checkbox value changes."
+              "description": "Emitted when the input value changes."
             },
             {
               "kind": "field",
-              "name": "checkboxFocus",
+              "name": "inputFocus",
               "type": {
                 "text": "EventEmitter<FocusEvent>"
               },
-              "description": "Emitted when the checkbox gains focus."
+              "description": "Emitted when the input gains focus."
             }
           ],
           "customElement": true
@@ -479,6 +479,111 @@
           "declaration": {
             "name": "ModusWcCheckbox",
             "module": "src/components/atoms/modus-wc-checkbox/modus-wc-checkbox.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-date/modus-wc-date.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable date picker component used to create date inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWCDate",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "The name attribute for the date input field."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Placeholder text for the date input."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the control."
+            }
+          ],
+          "tagName": "modus-wc-date",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Event emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWCDate",
+          "declaration": {
+            "name": "ModusWCDate",
+            "module": "src/components/atoms/modus-wc-date/modus-wc-date.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-date",
+          "declaration": {
+            "name": "ModusWCDate",
+            "module": "src/components/atoms/modus-wc-date/modus-wc-date.tsx"
           }
         }
       ]
@@ -1060,6 +1165,46 @@
               "description": "If true, the textarea will take the full width of its container."
             },
             {
+              "name": "input-aria-invalid",
+              "fieldName": "inputAriaInvalid",
+              "type": {
+                "text": "'grammar' | 'spelling' | 'true' | 'false'"
+              },
+              "description": "Indicates whether the input is invalid."
+            },
+            {
+              "name": "input-dir",
+              "fieldName": "inputDir",
+              "type": {
+                "text": "'' | 'ltr' | 'rtl' | 'auto'"
+              },
+              "description": "Specifies the text direction of the input content."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-spellcheck",
+              "fieldName": "inputSpellcheck",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "The tabindex of the input."
+            },
+            {
               "name": "max-length",
               "fieldName": "maxLength",
               "type": {
@@ -1116,46 +1261,6 @@
               "description": "The size of the input."
             },
             {
-              "name": "textarea-aria-invalid",
-              "fieldName": "textareaAriaInvalid",
-              "type": {
-                "text": "'grammar' | 'spelling' | 'true' | 'false'"
-              },
-              "description": "Indicates whether the textarea has an invalid input."
-            },
-            {
-              "name": "textarea-dir",
-              "fieldName": "textareaDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the textarea content."
-            },
-            {
-              "name": "textarea-id",
-              "fieldName": "textareaId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the textarea element."
-            },
-            {
-              "name": "textarea-spellcheck",
-              "fieldName": "textareaSpellcheck",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
-            },
-            {
-              "name": "textarea-tab-index",
-              "fieldName": "textareaTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "The tabindex of the textarea."
-            },
-            {
               "name": "value",
               "fieldName": "value",
               "type": {
@@ -1168,27 +1273,27 @@
           "events": [
             {
               "kind": "field",
-              "name": "textareaBlur",
+              "name": "inputBlur",
               "type": {
                 "text": "EventEmitter<FocusEvent>"
               },
-              "description": "Emitted when the textarea loses focus."
+              "description": "Emitted when the input loses focus."
             },
             {
               "kind": "field",
-              "name": "textareaChange",
+              "name": "inputChange",
               "type": {
                 "text": "EventEmitter<Event>"
               },
-              "description": "Emitted when the textarea value changes."
+              "description": "Emitted when the input value changes."
             },
             {
               "kind": "field",
-              "name": "textareaFocus",
+              "name": "inputFocus",
               "type": {
                 "text": "EventEmitter<FocusEvent>"
               },
-              "description": "Emitted when the textarea gains focus."
+              "description": "Emitted when the input gains focus."
             }
           ],
           "customElement": true
