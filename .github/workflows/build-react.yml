@@ -54,11 +54,9 @@ jobs:
         working-directory: integrations/react/v${{ matrix.react-version }}
 
       - name: Install Dependencies for Test React App
-        if: matrix.react-version == 18
         run: npm ci
         working-directory: integrations/react/test-react-v${{ matrix.react-version }}
 
       - name: Build Test React App
-        if: matrix.react-version == 18
         run: npm run build
         working-directory: integrations/react/test-react-v${{ matrix.react-version }}
