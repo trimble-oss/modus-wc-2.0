@@ -87,7 +87,7 @@ export const Template: Story = {
       auto-complete=${ifDefined(args['auto-complete'])}
       ?auto-focus=${args['auto-focus']}
       ?bordered=${args.bordered}
-      custom-class=${args['custom-class']}
+      custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-dir=${ifDefined(args['input-dir'])}
@@ -97,12 +97,12 @@ export const Template: Story = {
       max=${ifDefined(args.max)}
       min=${ifDefined(args.min)}
       name=${ifDefined(args.name)}
-      placeholder=${args.placeholder}
+      placeholder=${ifDefined(args.placeholder)}
       ?read-only=${args['read-only']}
       ?required=${args.required}
-      size=${args.size}
+      size=${ifDefined(args.size)}
       step=${args.step}
-      type=${args.type}
+      type=${ifDefined(args.type)}
       .value=${args.value}
     ></modus-wc-number-input>
   `,
