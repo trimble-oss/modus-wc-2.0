@@ -15,8 +15,8 @@ From inside the `/` (root stencil) directory:
 From inside the `/integrations/react/v18` directory:
 
 1. Run `npm install`
-2. Run `npm run build`
-3. Run `npm link @trimble-cms/modus-wc`
+2. Run `npm link @trimble-cms/modus-wc`
+3. Run `npm run build`
 
 From inside the `/integrations/react/test-react-v18` directory:
 
