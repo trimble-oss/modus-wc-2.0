@@ -1,0 +1,82 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/Frameworks/React" />
+
+# React Framework Integration
+
+This guide will help you get started with consuming the Modus React Web Component library in your React project.
+
+We highly recommend using the Modus React Components library for React based projects.
+These components are automatically generated using the Stencil React Framework Integration.
+
+Follow the steps outlined below to integrate and use Modus React Web Components effectively.
+
+Please refer to the [official stencil documentation](https://stenciljs.com/docs/react#consumer-usage) for more information on how to integrate with your React project.
+
+## Usage
+
+Modus React Components have a peer dependency with Modus Web Components and require the
+installation of both packages.
+
+### 1. Install `modus-wc-react`:
+
+Ensure that you specify the target version of React for the `modus-wc-react` package (e.g., `react18` for React 18).
+
+<b>
+  Lock the installed package versions to avoid unintended breakages on future
+  npm installs.
+</b>
+
+```bash
+npm install @trimble-cms/modus-wc-react@<latest-version>-react<target-version>
+# e.g.,
+npm install @trimble-cms/modus-wc-react@1.0.0-react18
+```
+
+### 2. Use the component library as normal.
+
+```tsx
+import { ModusWcBadge } from "@trimble-cms/modus-wc-react";
+
+<ModusBadge aria-label="Badge" content="Words" />
+```
+
+### Wrapping Components
+
+When using Modus React Components directly, it is recommended to wrap it in corresponding React components within your application.
+This will abstract away from the library dependency, allowing more flexibility for you and your application in the future.
+
+Wrapped Modus Button Example:
+
+```tsx
+import { ModusWcAvatar } from '@trimble-cms/modus-wc-react';
+
+export interface AvatarProps extends ModusAvatarProps {
+};
+
+const Avatar = (props: AvatarProps) => {
+  return <ModusAvatar {...props} />;
+};
+
+export default Avatar;
+```
+
+or, a more complex wrapper:
+```tsx
+import { ModusWcTextInput } from '@trimble-cms/modus-wc-react';
+
+export interface TextInputProps extends Omit<ModusWcTextInputProps, 'inputChange'> {
+    onValueChange?: (value: string) => void;
+};
+
+const TextInput = (props: TextInputProps) => {
+    const handleValueChange = (event: ModusWcTextInputCustomEvent<string>) => {
+        const value = event.detail === undefined || event.detail === null ? '' : event.detail;
+        props.onValueChange?.(value);
+    };
+
+    return <ModusWcTextInput {...props} inputChange={handleValueChange} />;
+};
+
+export default TextInput;
+```
