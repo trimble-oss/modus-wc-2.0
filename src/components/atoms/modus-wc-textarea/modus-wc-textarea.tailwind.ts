@@ -1,16 +1,8 @@
 export const convertPropsToClasses = (props: {
   bordered?: boolean;
-  fullWidth?: boolean;
   size?: string;
 }): string => {
   let classes = '';
-
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'fullWidth') &&
-    !!props.fullWidth
-  ) {
-    classes = `${classes} modus-wc-w-full`;
-  }
 
   if (
     Object.prototype.hasOwnProperty.call(props, 'bordered') &&

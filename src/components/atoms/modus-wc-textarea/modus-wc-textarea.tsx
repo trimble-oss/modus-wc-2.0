@@ -45,9 +45,30 @@ export class ModusWcTextarea {
   @Prop() disabled?: boolean = false;
 
   /**
-   * If true, the textarea will take the full width of its container.
+   * Indicates whether the input is invalid.
    */
-  @Prop() fullWidth?: boolean = true;
+  @Prop() inputAriaInvalid?: 'grammar' | 'spelling' | 'true' | 'false';
+
+  /**
+   * Specifies the text direction of the input content.
+   */
+  @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
+
+  /**
+   * The ID of the input element.
+   */
+  @Prop() inputId?: string;
+
+  /**
+   * Whether the element may be checked for spelling errors.
+   * A hint for the browser, not a guarantee.
+   */
+  @Prop() inputSpellcheck?: boolean;
+
+  /**
+   * The tabindex of the input.
+   */
+  @Prop() inputTabIndex?: number;
 
   /**
    * The maximum number of characters allowed in the textarea.
@@ -55,9 +76,9 @@ export class ModusWcTextarea {
   @Prop() maxLength?: number;
 
   /**
-   * The name of the textarea.
+   * Name of the form control. Submitted with the form as part of a name/value pair.
    */
-  @Prop() name?: string = '';
+  @Prop() name?: string;
 
   /**
    * The placeholder text for the textarea.
@@ -70,7 +91,7 @@ export class ModusWcTextarea {
   @Prop() readonly?: boolean = false;
 
   /**
-   * The required state of the textarea.
+   * A value is required for the form to be submittable.
    */
   @Prop() required?: boolean = false;
 
@@ -85,50 +106,24 @@ export class ModusWcTextarea {
   @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
 
   /**
-   * Indicates whether the textarea has an invalid input.
-   */
-  @Prop() textareaAriaInvalid?: 'grammar' | 'spelling' | 'true' | 'false';
-
-  /**
-   * Specifies the text direction of the textarea content.
-   */
-  @Prop() textareaDir?: '' | 'ltr' | 'rtl' | 'auto';
-
-  /**
-   * The ID of the textarea element.
-   */
-  @Prop() textareaId?: string;
-
-  /**
-   * Whether the element may be checked for spelling errors.
-   * A hint for the browser, not a guarantee.
-   */
-  @Prop() textareaSpellcheck?: boolean;
-
-  /**
-   * The tabindex of the textarea.
-   */
-  @Prop() textareaTabIndex?: number;
-
-  /**
    * The value of the textarea.
    */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
   /**
-   * Emitted when the textarea loses focus.
+   * Emitted when the input loses focus.
    */
-  @StencilEvent() textareaBlur!: EventEmitter<FocusEvent>;
+  @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
   /**
-   * Emitted when the textarea value changes.
+   * Emitted when the input value changes.
    */
-  @StencilEvent() textareaChange!: EventEmitter<Event>;
+  @StencilEvent() inputChange!: EventEmitter<Event>;
 
   /**
-   * Emitted when the textarea gains focus.
+   * Emitted when the input gains focus.
    */
-  @StencilEvent() textareaFocus!: EventEmitter<FocusEvent>;
+  @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
     if (!this.ariaLabel) {
@@ -139,10 +134,9 @@ export class ModusWcTextarea {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-textarea'];
+    const classList = ['modus-wc-textarea modus-wc-w-full'];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
-      fullWidth: this.fullWidth,
       size: this.size,
     });
 
@@ -154,15 +148,15 @@ export class ModusWcTextarea {
   }
 
   private handleBlur = (event: FocusEvent) => {
-    this.textareaBlur.emit(event);
+    this.inputBlur.emit(event);
   };
 
   private handleChange = (event: Event) => {
-    this.textareaChange.emit(event);
+    this.inputChange.emit(event);
   };
 
   private handleFocus = (event: FocusEvent) => {
-    this.textareaFocus.emit(event);
+    this.inputFocus.emit(event);
   };
 
   render() {
@@ -170,14 +164,14 @@ export class ModusWcTextarea {
       <Host>
         <textarea
           aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.textareaAriaInvalid}
+          aria-invalid={this.inputAriaInvalid}
           aria-label={this.ariaLabel || this.placeholder}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           class={this.getClasses()}
-          dir={this.textareaDir}
+          dir={this.inputDir}
           disabled={this.disabled}
-          id={this.textareaId}
+          id={this.inputId}
           maxLength={this.maxLength}
           name={this.name}
           onBlur={this.handleBlur}
@@ -187,8 +181,8 @@ export class ModusWcTextarea {
           readonly={this.readonly}
           required={this.required}
           rows={this.rows}
-          spellcheck={this.textareaSpellcheck}
-          tabIndex={this.textareaTabIndex}
+          spellcheck={this.inputSpellcheck}
+          tabIndex={this.inputTabIndex}
           value={this.value}
         />
       </Host>

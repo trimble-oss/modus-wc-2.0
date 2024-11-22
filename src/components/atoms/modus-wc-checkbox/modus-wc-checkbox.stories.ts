@@ -7,12 +7,12 @@ interface CheckboxArgs {
   'aria-describedby'?: string;
   'aria-label': string;
   'aria-labelledby'?: string;
-  'checkbox-dir'?: 'ltr' | 'rtl' | 'auto';
-  'checkbox-id'?: string;
-  'checkbox-tab-index'?: number;
   'custom-class'?: string;
   disabled?: boolean;
   indeterminate?: boolean;
+  'input-dir'?: 'ltr' | 'rtl' | 'auto';
+  'input-id'?: string;
+  'input-tab-index'?: number;
   name?: string;
   required?: boolean;
   size?: 'sm' | 'md' | 'lg';
@@ -33,7 +33,7 @@ const meta: Meta<CheckboxArgs> = {
     value: true,
   },
   argTypes: {
-    'checkbox-dir': {
+    'input-dir': {
       control: {
         type: 'inline-radio',
       },
@@ -47,7 +47,7 @@ const meta: Meta<CheckboxArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['checkboxBlur', 'checkboxChange', 'checkboxFocus'],
+      handles: ['inputBlur', 'inputChange', 'inputFocus'],
     },
   },
 };
@@ -63,12 +63,12 @@ export const Template: Story = {
         aria-describedby=${ifDefined(args['aria-describedby'])}
         aria-label=${args['aria-label']}
         aria-labelledby=${ifDefined(args['aria-labelledby'])}
-        checkbox-dir=${ifDefined(args['checkbox-dir'])}
-        checkbox-id=${ifDefined(args['checkbox-id'])}
-        checkbox-tab-index=${ifDefined(args['checkbox-tab-index'])}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
         .indeterminate=${args.indeterminate}
+        input-dir=${ifDefined(args['input-dir'])}
+        input-id=${ifDefined(args['input-id'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
         name=${ifDefined(args.name)}
         ?required=${args.required}
         size=${args.size}
@@ -85,7 +85,7 @@ export const CheckboxWithLabel: Story = {
         <div class="form-example">
           <modus-wc-checkbox
             aria-label="Example checkbox"
-            checkbox-id="checkbox-input"
+            input-id="checkbox-input"
             name="example-checkbox"
           ></modus-wc-checkbox>
           <modus-wc-input-label

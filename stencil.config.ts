@@ -1,4 +1,4 @@
-import { Config } from '@stencil/core';
+import type { Config } from '@stencil/core';
 import { angularOutputTarget } from '@stencil/angular-output-target';
 import { reactOutputTarget } from '@stencil/react-output-target';
 import { sass } from '@stencil/sass';
@@ -31,6 +31,7 @@ export const config: Config = {
     {
       // Required for the React integration
       type: 'dist-custom-elements',
+      externalRuntime: false,
     },
     {
       type: 'docs-readme',
@@ -55,8 +56,6 @@ export const config: Config = {
     }),
     reactOutputTarget({
       outDir: './integrations/react/stencil-generated',
-      excludeComponents: [],
-      customElementsDir: 'dist/components',
     }),
   ],
   plugins: [

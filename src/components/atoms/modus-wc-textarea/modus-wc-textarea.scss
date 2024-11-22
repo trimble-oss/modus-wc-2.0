@@ -24,7 +24,7 @@
     padding: var(--modus-wc-spacing-md);
   }
 
-  &.modus-wc-textarea-bordered:focus {
+  &:focus {
     border-color: var(--modus-wc-color-blue-light);
     border-width: 2px;
     box-shadow: none; // Removes the Tailwind ring effect
