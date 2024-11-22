@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-number-input should render with custom props 1`] = `
+<modus-wc-number-input aria-describedby="description" aria-label="Test number input" auto-complete="on" auto-focus="true" custom-class="test-class" disabled="true" input-aria-invalid="true" input-dir="rtl" input-id="test-id" input-mode="decimal" input-tab-index="1" max="10" min="1" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" type="range" value="test@example.com">
+  <input aria-describedby="description" aria-invalid="true" aria-label="Test number input" aria-placeholder="Test placeholder" aria-required="" autocomplete="on" autofocus="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-w-full test-class" dir="rtl" disabled="" id="test-id" inputmode="decimal" max="10" min="1" name="test-name" placeholder="Test placeholder" required="" tabindex="1" type="range" value="test@example.com">
+</modus-wc-number-input>
+`;
+
+exports[`modus-wc-number-input should render with default props 1`] = `
+<modus-wc-number-input aria-label="Default input" value="">
+  <input aria-label="Default input" aria-placeholder="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" inputmode="numeric" placeholder="" type="number" value="">
+</modus-wc-number-input>
+`;

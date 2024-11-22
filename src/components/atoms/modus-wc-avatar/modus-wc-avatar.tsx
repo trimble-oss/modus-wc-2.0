@@ -53,7 +53,7 @@ export class ModusWcAvatar {
   }
 
   private getClasses(): string {
-    const classList = [];
+    const classList: string[] = [];
 
     const propClasses = convertPropsToClasses({
       shape: this.shape,

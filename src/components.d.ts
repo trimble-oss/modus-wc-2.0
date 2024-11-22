@@ -353,6 +353,96 @@ export namespace Components {
         "required"?: boolean;
     }
     /**
+     * A customizable input component used to create number inputs with types.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcNumberInput {
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: 'on' | 'off';
+        /**
+          * Indicates that an element should be focused on page load.
+         */
+        "autoFocus"?: boolean;
+        /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the input.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Indicates whether the input has an invalid input.
+         */
+        "inputAriaInvalid"?: 'true' | 'false';
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
+         */
+        "inputMode": 'decimal' | 'none' | 'numeric';
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * The input's maximum value.
+         */
+        "max"?: number;
+        /**
+          * The input's minimum value.
+         */
+        "min"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Text that appears in the form control when it has no value set.
+         */
+        "placeholder"?: string;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * Type of form control.
+         */
+        "type"?: 'number' | 'range';
+        /**
+          * The value of the control.
+         */
+        "value": string;
+    }
+    /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -601,6 +691,10 @@ export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDateElement;
 }
+export interface ModusWcNumberInputCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcNumberInputElement;
+}
 export interface ModusWcTextInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTextInputElement;
@@ -733,6 +827,29 @@ declare global {
         prototype: HTMLModusWcInputLabelElement;
         new (): HTMLModusWcInputLabelElement;
     };
+    interface HTMLModusWcNumberInputElementEventMap {
+        "inputBlur": FocusEvent;
+        "inputChange": Event;
+        "inputFocus": FocusEvent;
+    }
+    /**
+     * A customizable input component used to create number inputs with types.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcNumberInputElement extends Components.ModusWcNumberInput, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcNumberInputElementEventMap>(type: K, listener: (this: HTMLModusWcNumberInputElement, ev: ModusWcNumberInputCustomEvent<HTMLModusWcNumberInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcNumberInputElementEventMap>(type: K, listener: (this: HTMLModusWcNumberInputElement, ev: ModusWcNumberInputCustomEvent<HTMLModusWcNumberInputElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcNumberInputElement: {
+        prototype: HTMLModusWcNumberInputElement;
+        new (): HTMLModusWcNumberInputElement;
+    };
     interface HTMLModusWcTextInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
@@ -826,6 +943,7 @@ declare global {
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
+        "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
@@ -1205,6 +1323,108 @@ declare namespace LocalJSX {
         "required"?: boolean;
     }
     /**
+     * A customizable input component used to create number inputs with types.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcNumberInput {
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: 'on' | 'off';
+        /**
+          * Indicates that an element should be focused on page load.
+         */
+        "autoFocus"?: boolean;
+        /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the input.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Indicates whether the input has an invalid input.
+         */
+        "inputAriaInvalid"?: 'true' | 'false';
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
+         */
+        "inputMode"?: 'decimal' | 'none' | 'numeric';
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * The input's maximum value.
+         */
+        "max"?: number;
+        /**
+          * The input's minimum value.
+         */
+        "min"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Event emitted when the input loses focus.
+         */
+        "onInputBlur"?: (event: ModusWcNumberInputCustomEvent<FocusEvent>) => void;
+        /**
+          * Event emitted when the input value changes.
+         */
+        "onInputChange"?: (event: ModusWcNumberInputCustomEvent<Event>) => void;
+        /**
+          * Event emitted when the input gains focus.
+         */
+        "onInputFocus"?: (event: ModusWcNumberInputCustomEvent<FocusEvent>) => void;
+        /**
+          * Text that appears in the form control when it has no value set.
+         */
+        "placeholder"?: string;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * Type of form control.
+         */
+        "type"?: 'number' | 'range';
+        /**
+          * The value of the control.
+         */
+        "value"?: string;
+    }
+    /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1477,6 +1697,7 @@ declare namespace LocalJSX {
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-label": ModusWcInputLabel;
+        "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
@@ -1530,6 +1751,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
+            /**
+             * A customizable input component used to create number inputs with types.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-number-input": LocalJSX.ModusWcNumberInput & JSXBase.HTMLAttributes<HTMLModusWcNumberInputElement>;
             /**
              * A customizable input component used to create text inputs with types.
              * Adheres to WCAG 2.2 standards.
