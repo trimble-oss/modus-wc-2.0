@@ -1,7 +1,7 @@
-import{ae as e,af as t}from"./index-BXzx9CKN.js";import{useMDXComponents as i}from"./index-BSj771as.js";import"./iframe-BP9xw95K.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function o(s){const n={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",hr:"hr",li:"li",p:"p",pre:"pre",ul:"ul",...i(),...s.components};return e.jsxs(e.Fragment,{children:[e.jsx(t,{title:"Documentation/Modus Icon Usage"}),`
+import{ae as e,af as t}from"./index-ClroZx8k.js";import{useMDXComponents as i}from"./index-BSj771as.js";import"./iframe-BZIsQLqW.js";import"../sb-preview/runtime.js";import"./index-B-o1Wr-g.js";import"./_commonjsHelpers-Cpj98o6Y.js";import"./index-D-8MO0q_.js";import"./index-BHYIh-Xd.js";import"./index-DrFu-skq.js";function o(s){const n={a:"a",code:"code",h1:"h1",h2:"h2",h3:"h3",hr:"hr",li:"li",p:"p",pre:"pre",ul:"ul",...i(),...s.components};return e.jsxs(e.Fragment,{children:[e.jsx(t,{title:"Documentation/Modus Icon Usage"}),`
 `,e.jsx(n.h1,{id:"modus-icon-usage",children:"Modus Icon Usage"}),`
-`,e.jsx(n.p,{children:`Several components require Modus icons to be installed in the host application. To install
-icons, add the following html to your application.`}),`
+`,e.jsxs(n.p,{children:["Several components require ",e.jsx(n.a,{href:"https://modus-icons.trimble.com",rel:"nofollow",children:"Modus icons"}),` to be installed in the host application. To install
+icons, add the following html to your application.`]}),`
 `,e.jsx("b",{children:e.jsxs(n.p,{children:[`Modus (font) icons currently only supports the usage of one icon set
 (outlined, filled, transportation) per application. If you require multiple
 sets, reach out to `,e.jsx(n.a,{href:"https://mail.google.com/chat/u/0/#chat/space/AAAAexugR1k",rel:"nofollow",children:`Modus
@@ -11,16 +11,13 @@ on this `,e.jsx(n.a,{href:"https://github.com/trimble-oss/modus-icons/issues/363
   <link
     rel="preload"
     href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@latest/dist/modus-outlined/fonts/modus-icons.css"
-    as="stylesheet"
-    onload="this.onload=null;this.rel='stylesheet'"
+    as="style"
     crossorigin="anonymous"
   />
-  <noscript>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@latest/dist/modus-outlined/fonts/modus-icons.css"
-    />
-  </noscript>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@latest/dist/modus-outlined/fonts/modus-icons.css"
+  />
 </head>
 `})}),`
 `,e.jsx(n.h2,{id:"offline-usage",children:"Offline usage"}),`
