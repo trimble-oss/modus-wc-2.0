@@ -116,6 +116,11 @@ export class ModusWcNumberInput {
   @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
 
   /**
+   * The granularity that the value adheres to.
+   */
+  @Prop() step?: number;
+
+  /**
    * Type of form control.
    */
   @Prop() type?: 'number' | 'range' = 'number';
@@ -199,6 +204,7 @@ export class ModusWcNumberInput {
           placeholder={this.placeholder}
           readonly={this.readOnly}
           required={this.required}
+          step={this.step}
           tabIndex={this.inputTabIndex}
           type={this.type}
           value={this.value}

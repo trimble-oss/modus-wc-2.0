@@ -47,6 +47,7 @@ describe('modus-wc-number-input', () => {
         readonly="true"
         required="true"
         size="lg"
+        step="2"
         type="range"
         value="test@example.com"
       ></modus-wc-number-input>`,

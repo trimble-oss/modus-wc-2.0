@@ -23,6 +23,7 @@ interface NumberInputArgs {
   'read-only'?: boolean;
   required?: boolean;
   size?: 'sm' | 'md' | 'lg';
+  step?: number;
   type?: 'number' | 'range';
   value: string;
 }
@@ -100,6 +101,7 @@ export const Template: Story = {
       ?read-only=${args['read-only']}
       ?required=${args.required}
       size=${args.size}
+      step=${args.step}
       type=${args.type}
       .value=${args.value}
     ></modus-wc-number-input>
