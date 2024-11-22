@@ -9,7 +9,6 @@ interface TextAreaArgs {
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
-  'full-width'?: boolean;
   'input-aria-invalid'?: 'grammar' | 'spelling' | 'true' | 'false';
   'input-dir'?: 'ltr' | 'rtl' | 'auto';
   'input-id'?: string;
@@ -33,7 +32,6 @@ const meta: Meta<TextAreaArgs> = {
     bordered: true,
     'custom-class': '',
     disabled: false,
-    'full-width': true,
     placeholder: 'Type your comments here',
     readonly: false,
     required: false,
@@ -79,7 +77,6 @@ export const Template: Story = {
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
-        ?full-width=${args['full-width']}
         input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
         input-dir=${ifDefined(args['input-dir'])}
         input-id=${ifDefined(args['input-id'])}

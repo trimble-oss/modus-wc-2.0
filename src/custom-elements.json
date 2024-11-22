@@ -490,7 +490,7 @@
         {
           "kind": "class",
           "description": "A customizable date picker component used to create date inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWCDate",
+          "name": "ModusWcDate",
           "members": [
             {
               "kind": "method",
@@ -676,9 +676,9 @@
       "exports": [
         {
           "kind": "js",
-          "name": "ModusWCDate",
+          "name": "ModusWcDate",
           "declaration": {
-            "name": "ModusWCDate",
+            "name": "ModusWcDate",
             "module": "src/components/atoms/modus-wc-date/modus-wc-date.tsx"
           }
         },
@@ -686,7 +686,7 @@
           "kind": "custom-element-definition",
           "name": "modus-wc-date",
           "declaration": {
-            "name": "ModusWCDate",
+            "name": "ModusWcDate",
             "module": "src/components/atoms/modus-wc-date/modus-wc-date.tsx"
           }
         }
@@ -1259,14 +1259,6 @@
                 "text": "boolean"
               },
               "description": "The disabled state of the textarea."
-            },
-            {
-              "name": "full-width",
-              "fieldName": "fullWidth",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "If true, the textarea will take the full width of its container."
             },
             {
               "name": "input-aria-invalid",

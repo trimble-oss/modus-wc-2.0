@@ -45,11 +45,6 @@ export class ModusWcTextarea {
   @Prop() disabled?: boolean = false;
 
   /**
-   * If true, the textarea will take the full width of its container.
-   */
-  @Prop() fullWidth?: boolean = true;
-
-  /**
    * Indicates whether the input is invalid.
    */
   @Prop() inputAriaInvalid?: 'grammar' | 'spelling' | 'true' | 'false';
@@ -139,10 +134,9 @@ export class ModusWcTextarea {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-textarea'];
+    const classList = ['modus-wc-textarea modus-wc-w-full'];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
-      fullWidth: this.fullWidth,
       size: this.size,
     });
 

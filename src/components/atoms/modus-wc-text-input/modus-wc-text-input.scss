@@ -10,19 +10,19 @@
 
   &.modus-wc-input-sm {
     font-size: var(--modus-wc-font-size-sm);
-    height: 1.5rem;
+    height: var(--modus-wc-input-height-sm);
     padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-xs);
   }
 
   &.modus-wc-input-md {
     font-size: var(--modus-wc-font-size-md);
-    height: 2rem;
+    height: var(--modus-wc-input-height-md);
     padding: var(--modus-wc-spacing-sm);
   }
 
   &.modus-wc-input-lg {
     font-size: var(--modus-wc-font-size-lg);
-    height: 2.5rem;
+    height: var(--modus-wc-input-height-lg);
     padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
   }
 

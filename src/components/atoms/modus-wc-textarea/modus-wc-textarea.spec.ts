@@ -34,7 +34,6 @@ describe('modus-wc-textarea', () => {
         bordered="false"
         custom-class="test-class"
         disabled="true"
-        full-width="false"
         input-aria-invalid="grammar"
         input-dir="rtl"
         input-id="custom-id"

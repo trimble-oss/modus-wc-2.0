@@ -492,10 +492,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * If true, the textarea will take the full width of its container.
-         */
-        "fullWidth"?: boolean;
-        /**
           * Indicates whether the input is invalid.
          */
         "inputAriaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
@@ -1359,10 +1355,6 @@ declare namespace LocalJSX {
           * The disabled state of the textarea.
          */
         "disabled"?: boolean;
-        /**
-          * If true, the textarea will take the full width of its container.
-         */
-        "fullWidth"?: boolean;
         /**
           * Indicates whether the input is invalid.
          */
