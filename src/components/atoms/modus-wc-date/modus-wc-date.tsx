@@ -18,7 +18,7 @@ import { convertPropsToClasses } from './modus-wc-date.tailwind';
   styleUrl: 'modus-wc-date.scss',
   shadow: false,
 })
-export class ModusWCDate {
+export class ModusWcDate {
   /**
    * The ID of the element that describes the input.
    */
