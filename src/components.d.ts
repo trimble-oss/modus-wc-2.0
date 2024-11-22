@@ -140,18 +140,6 @@ export namespace Components {
          */
         "ariaLabelledby"?: string;
         /**
-          * Specifies the text direction of the checkbox content.
-         */
-        "checkboxDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
-          * The ID of the checkbox element.
-         */
-        "checkboxId"?: string;
-        /**
-          * The tabindex of the checkbox.
-         */
-        "checkboxTabIndex"?: number;
-        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass": string;
@@ -164,11 +152,23 @@ export namespace Components {
          */
         "indeterminate": boolean;
         /**
-          * The name of the checkbox.
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * The tabindex of the input.
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
-          * The required state of the checkbox.
+          * A value is required for the form to be submittable.
          */
         "required"?: boolean;
         /**
@@ -179,6 +179,84 @@ export namespace Components {
           * The value of the checkbox.
          */
         "value": boolean;
+    }
+    /**
+     * A customizable date picker component used to create date inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcDate {
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Indicates that an element should be focused on page load.
+         */
+        "autoFocus"?: boolean;
+        /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the input.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Maximum date value.
+         */
+        "max"?: string;
+        /**
+          * Minimum date value.
+         */
+        "min"?: string;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Placeholder text for the date input.
+         */
+        "placeholder"?: string;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required or must be checked for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * The value of the control.
+         */
+        "value": string;
     }
     /**
      * A customizable divider component used to separate content horizontally or vertically.
@@ -356,7 +434,7 @@ export namespace Components {
          */
         "minLength"?: number;
         /**
-          * Name of the form control. Submitted with the form as part of a name/value pai.
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
@@ -372,7 +450,7 @@ export namespace Components {
          */
         "readOnly"?: boolean;
         /**
-          * A value is required or must be checked for the form to be submittable.
+          * A value is required for the form to be submittable.
          */
         "required"?: boolean;
         /**
@@ -414,15 +492,31 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * If true, the textarea will take the full width of its container.
+          * Indicates whether the input is invalid.
          */
-        "fullWidth"?: boolean;
+        "inputAriaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "inputSpellcheck"?: boolean;
+        /**
+          * The tabindex of the input.
+         */
+        "inputTabIndex"?: number;
         /**
           * The maximum number of characters allowed in the textarea.
          */
         "maxLength"?: number;
         /**
-          * The name of the textarea.
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
@@ -434,7 +528,7 @@ export namespace Components {
          */
         "readonly"?: boolean;
         /**
-          * The required state of the textarea.
+          * A value is required for the form to be submittable.
          */
         "required"?: boolean;
         /**
@@ -445,26 +539,6 @@ export namespace Components {
           * The size of the input.
          */
         "size"?: 'sm' | 'md' | 'lg';
-        /**
-          * Indicates whether the textarea has an invalid input.
-         */
-        "textareaAriaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
-        /**
-          * Specifies the text direction of the textarea content.
-         */
-        "textareaDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
-          * The ID of the textarea element.
-         */
-        "textareaId"?: string;
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "textareaSpellcheck"?: boolean;
-        /**
-          * The tabindex of the textarea.
-         */
-        "textareaTabIndex"?: number;
         /**
           * The value of the textarea.
          */
@@ -523,6 +597,10 @@ export interface ModusWcCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcCheckboxElement;
 }
+export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcDateElement;
+}
 export interface ModusWcTextInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTextInputElement;
@@ -578,9 +656,9 @@ declare global {
         new (): HTMLModusWcButtonElement;
     };
     interface HTMLModusWcCheckboxElementEventMap {
-        "checkboxBlur": FocusEvent;
-        "checkboxChange": Event;
-        "checkboxFocus": FocusEvent;
+        "inputBlur": FocusEvent;
+        "inputChange": Event;
+        "inputFocus": FocusEvent;
     }
     /**
      * A customizable checkbox component.
@@ -599,6 +677,29 @@ declare global {
     var HTMLModusWcCheckboxElement: {
         prototype: HTMLModusWcCheckboxElement;
         new (): HTMLModusWcCheckboxElement;
+    };
+    interface HTMLModusWcDateElementEventMap {
+        "inputBlur": FocusEvent;
+        "inputChange": Event;
+        "inputFocus": FocusEvent;
+    }
+    /**
+     * A customizable date picker component used to create date inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcDateElement extends Components.ModusWcDate, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcDateElementEventMap>(type: K, listener: (this: HTMLModusWcDateElement, ev: ModusWcDateCustomEvent<HTMLModusWcDateElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcDateElementEventMap>(type: K, listener: (this: HTMLModusWcDateElement, ev: ModusWcDateCustomEvent<HTMLModusWcDateElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcDateElement: {
+        prototype: HTMLModusWcDateElement;
+        new (): HTMLModusWcDateElement;
     };
     /**
      * A customizable divider component used to separate content horizontally or vertically.
@@ -656,9 +757,9 @@ declare global {
         new (): HTMLModusWcTextInputElement;
     };
     interface HTMLModusWcTextareaElementEventMap {
-        "textareaBlur": FocusEvent;
-        "textareaChange": Event;
-        "textareaFocus": FocusEvent;
+        "inputBlur": FocusEvent;
+        "inputChange": Event;
+        "inputFocus": FocusEvent;
     }
     /**
      * A customizable textarea component.
@@ -721,6 +822,7 @@ declare global {
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
+        "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
@@ -866,18 +968,6 @@ declare namespace LocalJSX {
          */
         "ariaLabelledby"?: string;
         /**
-          * Specifies the text direction of the checkbox content.
-         */
-        "checkboxDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
-          * The ID of the checkbox element.
-         */
-        "checkboxId"?: string;
-        /**
-          * The tabindex of the checkbox.
-         */
-        "checkboxTabIndex"?: number;
-        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
@@ -890,23 +980,35 @@ declare namespace LocalJSX {
          */
         "indeterminate"?: boolean;
         /**
-          * The name of the checkbox.
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * The tabindex of the input.
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
-          * Emitted when the checkbox loses focus.
+          * Emitted when the input loses focus.
          */
-        "onCheckboxBlur"?: (event: ModusWcCheckboxCustomEvent<FocusEvent>) => void;
+        "onInputBlur"?: (event: ModusWcCheckboxCustomEvent<FocusEvent>) => void;
         /**
-          * Emitted when the checkbox value changes.
+          * Emitted when the input value changes.
          */
-        "onCheckboxChange"?: (event: ModusWcCheckboxCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcCheckboxCustomEvent<Event>) => void;
         /**
-          * Emitted when the checkbox gains focus.
+          * Emitted when the input gains focus.
          */
-        "onCheckboxFocus"?: (event: ModusWcCheckboxCustomEvent<FocusEvent>) => void;
+        "onInputFocus"?: (event: ModusWcCheckboxCustomEvent<FocusEvent>) => void;
         /**
-          * The required state of the checkbox.
+          * A value is required for the form to be submittable.
          */
         "required"?: boolean;
         /**
@@ -917,6 +1019,96 @@ declare namespace LocalJSX {
           * The value of the checkbox.
          */
         "value"?: boolean;
+    }
+    /**
+     * A customizable date picker component used to create date inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcDate {
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Indicates that an element should be focused on page load.
+         */
+        "autoFocus"?: boolean;
+        /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the input.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Maximum date value.
+         */
+        "max"?: string;
+        /**
+          * Minimum date value.
+         */
+        "min"?: string;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Event emitted when the input loses focus.
+         */
+        "onInputBlur"?: (event: ModusWcDateCustomEvent<FocusEvent>) => void;
+        /**
+          * Event emitted when the input value changes.
+         */
+        "onInputChange"?: (event: ModusWcDateCustomEvent<Event>) => void;
+        /**
+          * Event emitted when the input gains focus.
+         */
+        "onInputFocus"?: (event: ModusWcDateCustomEvent<FocusEvent>) => void;
+        /**
+          * Placeholder text for the date input.
+         */
+        "placeholder"?: string;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required or must be checked for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * The value of the control.
+         */
+        "value"?: string;
     }
     /**
      * A customizable divider component used to separate content horizontally or vertically.
@@ -1094,7 +1286,7 @@ declare namespace LocalJSX {
          */
         "minLength"?: number;
         /**
-          * Name of the form control. Submitted with the form as part of a name/value pai.
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
@@ -1122,7 +1314,7 @@ declare namespace LocalJSX {
          */
         "readOnly"?: boolean;
         /**
-          * A value is required or must be checked for the form to be submittable.
+          * A value is required for the form to be submittable.
          */
         "required"?: boolean;
         /**
@@ -1164,29 +1356,45 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * If true, the textarea will take the full width of its container.
+          * Indicates whether the input is invalid.
          */
-        "fullWidth"?: boolean;
+        "inputAriaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
+         */
+        "inputSpellcheck"?: boolean;
+        /**
+          * The tabindex of the input.
+         */
+        "inputTabIndex"?: number;
         /**
           * The maximum number of characters allowed in the textarea.
          */
         "maxLength"?: number;
         /**
-          * The name of the textarea.
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
         /**
-          * Emitted when the textarea loses focus.
+          * Emitted when the input loses focus.
          */
-        "onTextareaBlur"?: (event: ModusWcTextareaCustomEvent<FocusEvent>) => void;
+        "onInputBlur"?: (event: ModusWcTextareaCustomEvent<FocusEvent>) => void;
         /**
-          * Emitted when the textarea value changes.
+          * Emitted when the input value changes.
          */
-        "onTextareaChange"?: (event: ModusWcTextareaCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcTextareaCustomEvent<Event>) => void;
         /**
-          * Emitted when the textarea gains focus.
+          * Emitted when the input gains focus.
          */
-        "onTextareaFocus"?: (event: ModusWcTextareaCustomEvent<FocusEvent>) => void;
+        "onInputFocus"?: (event: ModusWcTextareaCustomEvent<FocusEvent>) => void;
         /**
           * The placeholder text for the textarea.
          */
@@ -1196,7 +1404,7 @@ declare namespace LocalJSX {
          */
         "readonly"?: boolean;
         /**
-          * The required state of the textarea.
+          * A value is required for the form to be submittable.
          */
         "required"?: boolean;
         /**
@@ -1207,26 +1415,6 @@ declare namespace LocalJSX {
           * The size of the input.
          */
         "size"?: 'sm' | 'md' | 'lg';
-        /**
-          * Indicates whether the textarea has an invalid input.
-         */
-        "textareaAriaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
-        /**
-          * Specifies the text direction of the textarea content.
-         */
-        "textareaDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
-          * The ID of the textarea element.
-         */
-        "textareaId"?: string;
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "textareaSpellcheck"?: boolean;
-        /**
-          * The tabindex of the textarea.
-         */
-        "textareaTabIndex"?: number;
         /**
           * The value of the textarea.
          */
@@ -1285,6 +1473,7 @@ declare namespace LocalJSX {
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
         "modus-wc-checkbox": ModusWcCheckbox;
+        "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-label": ModusWcInputLabel;
@@ -1319,6 +1508,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-checkbox": LocalJSX.ModusWcCheckbox & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
+            /**
+             * A customizable date picker component used to create date inputs.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-date": LocalJSX.ModusWcDate & JSXBase.HTMLAttributes<HTMLModusWcDateElement>;
             /**
              * A customizable divider component used to separate content horizontally or vertically.
              * Adheres to WCAG 2.2 standards.

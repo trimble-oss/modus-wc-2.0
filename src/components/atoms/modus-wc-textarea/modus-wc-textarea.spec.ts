@@ -34,7 +34,11 @@ describe('modus-wc-textarea', () => {
         bordered="false"
         custom-class="test-class"
         disabled="true"
-        full-width="false"
+        input-aria-invalid="grammar"
+        input-dir="rtl"
+        input-id="custom-id"
+        input-spellcheck="true"
+        input-tab-index="1"
         max-length="100"
         name="test-name"
         placeholder="Test placeholder"
@@ -42,11 +46,6 @@ describe('modus-wc-textarea', () => {
         required="true"
         rows="5"
         size="lg"
-        textarea-aria-invalid="grammar"
-        textarea-dir="rtl"
-        textarea-id="custom-id"
-        textarea-spellcheck="true"
-        textarea-tab-index="1"
         value="Test value"
       ></modus-wc-textarea>`,
     });
@@ -61,7 +60,7 @@ describe('modus-wc-textarea', () => {
     const textarea = page.root!.querySelector('textarea');
     expect(textarea).not.toBeNull();
     const blurSpy = jest.fn();
-    page.root!.addEventListener('textareaBlur', blurSpy);
+    page.root!.addEventListener('inputBlur', blurSpy);
 
     textarea!.dispatchEvent(new FocusEvent('blur'));
     await page.waitForChanges();
@@ -77,7 +76,7 @@ describe('modus-wc-textarea', () => {
     const textarea = page.root!.querySelector('textarea');
     expect(textarea).not.toBeNull();
     const changeSpy = jest.fn();
-    page.root!.addEventListener('textareaChange', changeSpy);
+    page.root!.addEventListener('inputChange', changeSpy);
 
     textarea!.value = 'New value';
     textarea!.dispatchEvent(new Event('change'));
@@ -100,7 +99,7 @@ describe('modus-wc-textarea', () => {
     const textarea = page.root!.querySelector('textarea');
     expect(textarea).not.toBeNull();
     const focusSpy = jest.fn();
-    page.root!.addEventListener('textareaFocus', focusSpy);
+    page.root!.addEventListener('inputFocus', focusSpy);
 
     textarea!.dispatchEvent(new FocusEvent('focus'));
     await page.waitForChanges();

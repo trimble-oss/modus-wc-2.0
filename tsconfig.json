@@ -2,10 +2,11 @@
   "compilerOptions": {
     // Basic Options
     "target": "es2017",
-    "module": "esnext",
+    "module": "ESNext",
     "lib": ["dom", "es2017"],
     "jsx": "react",
     "jsxFactory": "h",
+    "sourceMap": true,
 
     // Type-Checking Options
     "strict": true,
@@ -20,7 +21,8 @@
     "allowSyntheticDefaultImports": true,
 
     // Other Options
-    "declaration": false,
+    "declaration": true,
+    "noImplicitAny": false,
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "types": ["jest", "marked"]

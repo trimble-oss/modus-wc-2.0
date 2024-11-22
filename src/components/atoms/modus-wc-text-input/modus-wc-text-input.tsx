@@ -116,9 +116,9 @@ export class ModusWcTextInput {
   @Prop() minLength?: number;
 
   /**
-   * Name of the form control. Submitted with the form as part of a name/value pai.
+   * Name of the form control. Submitted with the form as part of a name/value pair.
    */
-  @Prop() name?: string = '';
+  @Prop() name?: string;
 
   /**
    * Pattern the value must match to be valid
@@ -136,7 +136,7 @@ export class ModusWcTextInput {
   @Prop() readOnly?: boolean = false;
 
   /**
-   * A value is required or must be checked for the form to be submittable.
+   * A value is required for the form to be submittable.
    */
   @Prop() required?: boolean = false;
 

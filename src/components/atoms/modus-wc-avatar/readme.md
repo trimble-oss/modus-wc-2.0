@@ -11,21 +11,6 @@ A customizable avatar component used to create avatars with different images.
 
 Adheres to WCAG 2.2 standards.
 
-## Usage
-
-### Component-usage
-
-```html
-<!-- Basic avatar -->
-<modus-wc-avatar
-  alt="User avatar"
-  aria-label="User avatar"
-  img-src="https://example.com/avatar.jpg"
-></modus-wc-avatar>
-```
-
-
-
 ## Properties
 
 | Property                 | Attribute      | Description                                 | Type                                                | Default     |

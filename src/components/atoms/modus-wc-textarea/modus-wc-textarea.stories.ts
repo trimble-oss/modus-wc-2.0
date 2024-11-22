@@ -9,7 +9,11 @@ interface TextAreaArgs {
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
-  'full-width'?: boolean;
+  'input-aria-invalid'?: 'grammar' | 'spelling' | 'true' | 'false';
+  'input-dir'?: 'ltr' | 'rtl' | 'auto';
+  'input-id'?: string;
+  'input-spellcheck'?: boolean;
+  'input-tab-index'?: number;
   'max-length'?: number;
   name?: string;
   placeholder?: string;
@@ -17,11 +21,6 @@ interface TextAreaArgs {
   required?: boolean;
   rows?: number;
   size?: 'sm' | 'md' | 'lg';
-  'textarea-aria-invalid'?: 'grammar' | 'spelling' | 'true' | 'false';
-  'textarea-dir'?: 'ltr' | 'rtl' | 'auto';
-  'textarea-id'?: string;
-  'textarea-spellcheck'?: boolean;
-  'textarea-tab-index'?: number;
   value: string;
 }
 
@@ -33,8 +32,6 @@ const meta: Meta<TextAreaArgs> = {
     bordered: true,
     'custom-class': '',
     disabled: false,
-    'full-width': true,
-    name: '',
     placeholder: 'Type your comments here',
     readonly: false,
     required: false,
@@ -42,27 +39,27 @@ const meta: Meta<TextAreaArgs> = {
     value: '',
   },
   argTypes: {
-    size: {
-      control: { type: 'inline-radio' },
-      options: ['sm', 'md', 'lg'],
-    },
-    'textarea-aria-invalid': {
+    'input-aria-invalid': {
       control: {
         type: 'inline-radio',
       },
       options: ['grammar', 'spelling', 'true', 'false'],
     },
-    'textarea-dir': {
+    'input-dir': {
       control: {
         type: 'inline-radio',
       },
       options: ['ltr', 'rtl', 'auto'],
     },
+    size: {
+      control: { type: 'inline-radio' },
+      options: ['sm', 'md', 'lg'],
+    },
   },
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['textareaBlur', 'textareaChange', 'textareaFocus'],
+      handles: ['inputBlur', 'inputChange', 'inputFocus'],
     },
   },
 };
@@ -71,7 +68,7 @@ export default meta;
 
 type Story = StoryObj<TextAreaArgs>;
 
-const Template: Story = {
+export const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-textarea
@@ -80,7 +77,11 @@ const Template: Story = {
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
-        ?full-width=${args['full-width']}
+        input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
+        input-dir=${ifDefined(args['input-dir'])}
+        input-id=${ifDefined(args['input-id'])}
+        ?input-spellcheck=${ifDefined(args['input-spellcheck'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
         max-length=${ifDefined(args['max-length'])}
         name=${ifDefined(args.name)}
         placeholder=${ifDefined(args.placeholder)}
@@ -88,15 +89,37 @@ const Template: Story = {
         ?required=${args.required}
         rows=${ifDefined(args.rows)}
         size=${ifDefined(args.size)}
-        textarea-aria-invalid=${ifDefined(args['textarea-aria-invalid'])}
-        textarea-dir=${ifDefined(args['textarea-dir'])}
-        textarea-id=${ifDefined(args['textarea-id'])}
-        ?textarea-spellcheck=${ifDefined(args['textarea-spellcheck'])}
-        textarea-tab-index=${ifDefined(args['textarea-tab-index'])}
         .value=${args.value}
       ></modus-wc-textarea>
     `;
   },
 };
 
-export const Default: Story = { ...Template };
+export const TextareaWithLabel: Story = {
+  render: () => {
+    return html`
+      <form action="" class="form-example" method="get">
+        <div class="form-example">
+          <modus-wc-input-label
+            for-id="textarea-input"
+            label-text="Example textarea"
+          ></modus-wc-input-label>
+          <modus-wc-textarea
+            aria-label="Example textarea"
+            input-id="textarea-input"
+            name="example-textarea"
+          ></modus-wc-textarea>
+        </div>
+      </form>
+      <style>
+        .form-example {
+          display: flex;
+          align-items: center;
+        }
+        .modus-wc-input-label {
+          padding-inline-end: 8px;
+        }
+      </style>
+    `;
+  },
+};

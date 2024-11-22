@@ -35,20 +35,28 @@ jobs:
       - name: Pack modus-wc
         id: npm_pack
         run: |
-          modus_wc_tarball=$(npm pack --pack-destination integrations/react | tail -n 1)
+          modus_wc_tarball=$(npm pack --pack-destination integrations/react/v${{ matrix.react-version }} | tail -n 1)
           echo "modus_wc_tarball=${modus_wc_tarball}" >> $GITHUB_OUTPUT
 
       - name: Install dependencies for react build
         run: npm ci
-        working-directory: integrations/react
+        working-directory: integrations/react/v${{ matrix.react-version }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Install current modus-wc implementation for react integration
         run: npm install ./${{ steps.npm_pack.outputs.modus_wc_tarball }}
-        working-directory: integrations/react
+        working-directory: integrations/react/v${{ matrix.react-version }}
 
       - name: Build react integration
         id: react
         run: npm run build
         working-directory: integrations/react/v${{ matrix.react-version }}
+
+      - name: Install Dependencies for Test React App
+        run: npm ci
+        working-directory: integrations/react/test-react-v${{ matrix.react-version }}
+
+      - name: Build Test React App
+        run: npm run build
+        working-directory: integrations/react/test-react-v${{ matrix.react-version }}

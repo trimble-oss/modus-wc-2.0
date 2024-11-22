@@ -11,126 +11,37 @@ A customizable textarea component.
 
 Adheres to WCAG 2.2 standards.
 
-## Usage
-
-### Component-usage
-
-```html
-<!-- Basic Usage -->
-<modus-wc-textarea
-  aria-label="Enter your comments"
-  placeholder="Type your comments here"
-></modus-wc-textarea>
-
-<!-- With all properties -->
-<modus-wc-textarea
-  aria-describedby="textarea-description"
-  aria-invalid="false"
-  aria-label="Full example textarea"
-  custom-class="my-custom-class"
-  dir="ltr"
-  disabled="false"
-  id="full-example"
-  max-length="500"
-  name="full-example"
-  placeholder="Type here..."
-  readonly="false"
-  required="true"
-  rows="5"
-  tab-index="0"
-  value="Initial value"
-></modus-wc-textarea>
-
-<!-- Disabled textarea -->
-<modus-wc-textarea
-  aria-label="Disabled textarea"
-  disabled="true"
-  value="This textarea is disabled"
-></modus-wc-textarea>
-
-<!-- Required textarea -->
-<modus-wc-textarea
-  aria-label="Required textarea"
-  required="true"
-  placeholder="This field is required"
-></modus-wc-textarea>
-
-<!-- Readonly textarea -->
-<modus-wc-textarea
-  aria-label="Readonly textarea"
-  readonly="true"
-  value="This content is readonly"
-></modus-wc-textarea>
-
-<!-- RTL textarea -->
-<modus-wc-textarea
-  aria-label="RTL textarea"
-  dir="rtl"
-  placeholder="أدخل النص هنا"
-></modus-wc-textarea>
-
-<!-- Textarea with custom classes -->
-<modus-wc-textarea
-  aria-label="Styled textarea"
-  custom-class="modus-wc-textarea-bordered modus-wc-textarea-lg"
-  placeholder="This textarea has custom styling"
-></modus-wc-textarea>
-
-<!-- Textarea with event listeners -->
-<modus-wc-textarea
-  id="event-textarea"
-  aria-label="Textarea with events"
-  placeholder="Type here to see events in console"
-></modus-wc-textarea>
-
-<script>
-  const textarea = document.getElementById('event-textarea');
-  textarea.addEventListener('blur', (event) =>
-    console.log('Blur event:', event)
-  );
-  textarea.addEventListener('change', (event) =>
-    console.log('Change event:', event)
-  );
-  textarea.addEventListener('focus', (event) =>
-    console.log('Focus event:', event)
-  );
-</script>
-```
-
-
-
 ## Properties
 
-| Property                 | Attribute               | Description                                                                                      | Type                                                        | Default     |
-| ------------------------ | ----------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- | ----------- |
-| `ariaDescribedby`        | `aria-describedby`      | The ID of the element that describes the textarea.                                               | `string \| undefined`                                       | `undefined` |
-| `ariaLabel` _(required)_ | `aria-label`            | The aria-label attribute for accessibility.                                                      | `string`                                                    | `undefined` |
-| `bordered`               | `bordered`              | Indicates that the input should have a border.                                                   | `boolean \| undefined`                                      | `true`      |
-| `customClass`            | `custom-class`          | Custom CSS class to apply to the textarea (supports DaisyUI).                                    | `string \| undefined`                                       | `''`        |
-| `disabled`               | `disabled`              | The disabled state of the textarea.                                                              | `boolean \| undefined`                                      | `false`     |
-| `fullWidth`              | `full-width`            | If true, the textarea will take the full width of its container.                                 | `boolean \| undefined`                                      | `true`      |
-| `maxLength`              | `max-length`            | The maximum number of characters allowed in the textarea.                                        | `number \| undefined`                                       | `undefined` |
-| `name`                   | `name`                  | The name of the textarea.                                                                        | `string \| undefined`                                       | `''`        |
-| `placeholder`            | `placeholder`           | The placeholder text for the textarea.                                                           | `string \| undefined`                                       | `''`        |
-| `readonly`               | `readonly`              | The readonly state of the textarea.                                                              | `boolean \| undefined`                                      | `false`     |
-| `required`               | `required`              | The required state of the textarea.                                                              | `boolean \| undefined`                                      | `false`     |
-| `rows`                   | `rows`                  | The number of visible text lines for the textarea.                                               | `number \| undefined`                                       | `undefined` |
-| `size`                   | `size`                  | The size of the input.                                                                           | `"lg" \| "md" \| "sm" \| undefined`                         | `'md'`      |
-| `textareaAriaInvalid`    | `textarea-aria-invalid` | Indicates whether the textarea has an invalid input.                                             | `"false" \| "grammar" \| "spelling" \| "true" \| undefined` | `undefined` |
-| `textareaDir`            | `textarea-dir`          | Specifies the text direction of the textarea content.                                            | `"" \| "auto" \| "ltr" \| "rtl" \| undefined`               | `undefined` |
-| `textareaId`             | `textarea-id`           | The ID of the textarea element.                                                                  | `string \| undefined`                                       | `undefined` |
-| `textareaSpellcheck`     | `textarea-spellcheck`   | Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee. | `boolean \| undefined`                                      | `undefined` |
-| `textareaTabIndex`       | `textarea-tab-index`    | The tabindex of the textarea.                                                                    | `number \| undefined`                                       | `undefined` |
-| `value`                  | `value`                 | The value of the textarea.                                                                       | `string`                                                    | `''`        |
+| Property                 | Attribute            | Description                                                                                      | Type                                                        | Default     |
+| ------------------------ | -------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- | ----------- |
+| `ariaDescribedby`        | `aria-describedby`   | The ID of the element that describes the textarea.                                               | `string \| undefined`                                       | `undefined` |
+| `ariaLabel` _(required)_ | `aria-label`         | The aria-label attribute for accessibility.                                                      | `string`                                                    | `undefined` |
+| `bordered`               | `bordered`           | Indicates that the input should have a border.                                                   | `boolean \| undefined`                                      | `true`      |
+| `customClass`            | `custom-class`       | Custom CSS class to apply to the textarea (supports DaisyUI).                                    | `string \| undefined`                                       | `''`        |
+| `disabled`               | `disabled`           | The disabled state of the textarea.                                                              | `boolean \| undefined`                                      | `false`     |
+| `inputAriaInvalid`       | `input-aria-invalid` | Indicates whether the input is invalid.                                                          | `"false" \| "grammar" \| "spelling" \| "true" \| undefined` | `undefined` |
+| `inputDir`               | `input-dir`          | Specifies the text direction of the input content.                                               | `"" \| "auto" \| "ltr" \| "rtl" \| undefined`               | `undefined` |
+| `inputId`                | `input-id`           | The ID of the input element.                                                                     | `string \| undefined`                                       | `undefined` |
+| `inputSpellcheck`        | `input-spellcheck`   | Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee. | `boolean \| undefined`                                      | `undefined` |
+| `inputTabIndex`          | `input-tab-index`    | The tabindex of the input.                                                                       | `number \| undefined`                                       | `undefined` |
+| `maxLength`              | `max-length`         | The maximum number of characters allowed in the textarea.                                        | `number \| undefined`                                       | `undefined` |
+| `name`                   | `name`               | Name of the form control. Submitted with the form as part of a name/value pair.                  | `string \| undefined`                                       | `undefined` |
+| `placeholder`            | `placeholder`        | The placeholder text for the textarea.                                                           | `string \| undefined`                                       | `''`        |
+| `readonly`               | `readonly`           | The readonly state of the textarea.                                                              | `boolean \| undefined`                                      | `false`     |
+| `required`               | `required`           | A value is required for the form to be submittable.                                              | `boolean \| undefined`                                      | `false`     |
+| `rows`                   | `rows`               | The number of visible text lines for the textarea.                                               | `number \| undefined`                                       | `undefined` |
+| `size`                   | `size`               | The size of the input.                                                                           | `"lg" \| "md" \| "sm" \| undefined`                         | `'md'`      |
+| `value`                  | `value`              | The value of the textarea.                                                                       | `string`                                                    | `''`        |
 
 
 ## Events
 
-| Event            | Description                              | Type                      |
-| ---------------- | ---------------------------------------- | ------------------------- |
-| `textareaBlur`   | Emitted when the textarea loses focus.   | `CustomEvent<FocusEvent>` |
-| `textareaChange` | Emitted when the textarea value changes. | `CustomEvent<Event>`      |
-| `textareaFocus`  | Emitted when the textarea gains focus.   | `CustomEvent<FocusEvent>` |
+| Event         | Description                           | Type                      |
+| ------------- | ------------------------------------- | ------------------------- |
+| `inputBlur`   | Emitted when the input loses focus.   | `CustomEvent<FocusEvent>` |
+| `inputChange` | Emitted when the input value changes. | `CustomEvent<Event>`      |
+| `inputFocus`  | Emitted when the input gains focus.   | `CustomEvent<FocusEvent>` |
 
 
 ----------------------------------------------
