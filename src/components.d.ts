@@ -434,6 +434,10 @@ export namespace Components {
          */
         "size"?: 'sm' | 'md' | 'lg';
         /**
+          * The granularity that the value adheres to.
+         */
+        "step"?: number;
+        /**
           * Type of form control.
          */
         "type"?: 'number' | 'range';
@@ -1415,6 +1419,10 @@ declare namespace LocalJSX {
           * The size of the input.
          */
         "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * The granularity that the value adheres to.
+         */
+        "step"?: number;
         /**
           * Type of form control.
          */
