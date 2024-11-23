@@ -19,7 +19,7 @@ import{w as m}from"./decorator-Dt3Huotz.js";import{k as l}from"./lit-element-DVR
       ?read-only=${e["read-only"]}
       ?required=${e.required}
       size=${n(e.size)}
-      step=${e.step}
+      step=${n(e.step)}
       type=${n(e.type)}
       .value=${e.value}
     ></modus-wc-number-input>
@@ -68,7 +68,7 @@ import{w as m}from"./decorator-Dt3Huotz.js";import{k as l}from"./lit-element-DVR
       ?read-only=\${args['read-only']}
       ?required=\${args.required}
       size=\${ifDefined(args.size)}
-      step=\${args.step}
+      step=\${ifDefined(args.step)}
       type=\${ifDefined(args.type)}
       .value=\${args.value}
     ></modus-wc-number-input>
