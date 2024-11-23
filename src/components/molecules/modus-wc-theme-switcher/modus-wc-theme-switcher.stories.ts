@@ -11,7 +11,7 @@ interface ThemeSwitcherArgs {
 }
 
 const meta: Meta<ThemeSwitcherArgs> = {
-  title: 'Components/Molecules/ThemeSwitcher',
+  title: 'Components/ThemeSwitcher',
   component: 'modus-wc-theme-switcher',
   args: {
     'aria-label': 'Toggle theme',

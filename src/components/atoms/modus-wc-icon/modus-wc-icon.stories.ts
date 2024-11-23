@@ -11,7 +11,7 @@ interface IconArgs {
 }
 
 const meta: Meta<IconArgs> = {
-  title: 'Components/Atoms/Icon',
+  title: 'Components/Icon',
   component: 'modus-wc-icon',
   args: {
     'aria-label': 'Alert icon',

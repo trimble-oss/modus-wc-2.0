@@ -29,7 +29,7 @@ interface NumberInputArgs {
 }
 
 const meta: Meta<NumberInputArgs> = {
-  title: 'Components/Atoms/Number Input',
+  title: 'Components/Forms/Number Input',
   component: 'modus-wc-number-input',
   args: {
     'aria-label': 'Enter your age',

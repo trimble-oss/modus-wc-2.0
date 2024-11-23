@@ -45,7 +45,7 @@ interface TextInputArgs {
 }
 
 const meta: Meta<TextInputArgs> = {
-  title: 'Components/Atoms/Text Input',
+  title: 'Components/Forms/Text Input',
   component: 'modus-wc-text-input',
   args: {
     'aria-label': 'Enter your name',

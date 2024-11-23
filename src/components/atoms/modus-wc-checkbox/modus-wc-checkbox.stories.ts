@@ -20,7 +20,7 @@ interface CheckboxArgs {
 }
 
 const meta: Meta<CheckboxArgs> = {
-  title: 'Components/Atoms/Checkbox',
+  title: 'Components/Forms/Checkbox',
   component: 'modus-wc-checkbox',
   args: {
     'aria-label': 'Checkbox',

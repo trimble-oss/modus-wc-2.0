@@ -20,7 +20,7 @@ interface ToggleArgs {
 }
 
 const meta: Meta<ToggleArgs> = {
-  title: 'Components/Atoms/Toggle',
+  title: 'Components/Forms/Toggle',
   component: 'modus-wc-toggle',
   args: {
     'aria-label': 'Toggle',

@@ -11,7 +11,7 @@ interface AvatarArgs {
 }
 
 const meta: Meta<AvatarArgs> = {
-  title: 'Components/Atoms/Avatar',
+  title: 'Components/Avatar',
   component: 'modus-wc-avatar',
   args: {
     alt: 'Example avatar',

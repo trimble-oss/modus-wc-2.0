@@ -25,7 +25,7 @@ interface DateArgs {
 }
 
 const meta: Meta<DateArgs> = {
-  title: 'Components/Atoms/Date',
+  title: 'Components/Forms/Date',
   component: 'modus-wc-date',
   args: {
     'aria-label': 'Date picker',
