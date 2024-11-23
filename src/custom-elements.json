@@ -950,21 +950,13 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-skeleton/modus-wc-skeleton.tsx",
+      "path": "src/components/atoms/modus-wc-number-input/modus-wc-number-input.tsx",
       "declarations": [
         {
           "kind": "class",
-          "description": "",
-          "name": "ModusWcSkeleton",
+          "description": "A customizable input component used to create number inputs with types.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcNumberInput",
           "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
             {
               "kind": "method",
               "name": "render"
@@ -977,7 +969,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "The ID of the element that describes the skeleton."
+              "description": "The ID of the element that describes the input."
             },
             {
               "name": "aria-label",
@@ -988,12 +980,28 @@
               "description": "The aria-label attribute for accessibility."
             },
             {
-              "name": "aria-labelledby",
-              "fieldName": "ariaLabelledby",
+              "name": "auto-complete",
+              "fieldName": "autoComplete",
               "type": {
-                "text": "string"
+                "text": "'on' | 'off'"
               },
-              "description": "The aria-labelledby attribute for usage with a label."
+              "description": "Hint for form autofill feature."
+            },
+            {
+              "name": "auto-focus",
+              "fieldName": "autoFocus",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that an element should be focused on page load."
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
             },
             {
               "name": "custom-class",
@@ -1001,45 +1009,182 @@
               "type": {
                 "text": "string"
               },
-              "description": "Custom CSS class to apply to the inner div."
+              "description": "Custom CSS class to apply to the input."
             },
             {
-              "name": "full-width",
-              "fieldName": "fullWidth",
+              "name": "disabled",
+              "fieldName": "disabled",
               "type": {
                 "text": "boolean"
               },
-              "description": "Full width option for skeleton."
+              "description": "Whether the form control is disabled."
             },
             {
-              "name": "shape",
-              "fieldName": "shape",
+              "name": "input-aria-invalid",
+              "fieldName": "inputAriaInvalid",
               "type": {
-                "text": "'circle' | 'rectangle'"
+                "text": "'true' | 'false'"
               },
-              "description": "The shape of the skeleton."
+              "description": "Indicates whether the input has an invalid input."
+            },
+            {
+              "name": "input-dir",
+              "fieldName": "inputDir",
+              "type": {
+                "text": "'' | 'ltr' | 'rtl' | 'auto'"
+              },
+              "description": "Specifies the text direction of the input content."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-mode",
+              "fieldName": "inputMode",
+              "type": {
+                "text": "'decimal' | 'none' | 'numeric'"
+              },
+              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+            },
+            {
+              "name": "max",
+              "fieldName": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "The input's maximum value."
+            },
+            {
+              "name": "min",
+              "fieldName": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "The input's minimum value."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text that appears in the form control when it has no value set."
+            },
+            {
+              "name": "read-only",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the value is editable."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "step",
+              "fieldName": "step",
+              "type": {
+                "text": "number"
+              },
+              "description": "The granularity that the value adheres to."
+            },
+            {
+              "name": "type",
+              "fieldName": "type",
+              "type": {
+                "text": "'number' | 'range'"
+              },
+              "description": "Type of form control."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the control."
             }
           ],
-          "tagName": "modus-wc-skeleton",
-          "events": [],
+          "tagName": "modus-wc-number-input",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Event emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "ModusWcSkeleton",
+          "name": "ModusWcNumberInput",
           "declaration": {
-            "name": "ModusWcSkeleton",
-            "module": "src/components/atoms/modus-wc-skeleton/modus-wc-skeleton.tsx"
+            "name": "ModusWcNumberInput",
+            "module": "src/components/atoms/modus-wc-number-input/modus-wc-number-input.tsx"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "modus-wc-skeleton",
+          "name": "modus-wc-number-input",
           "declaration": {
-            "name": "ModusWcSkeleton",
-            "module": "src/components/atoms/modus-wc-skeleton/modus-wc-skeleton.tsx"
+            "name": "ModusWcNumberInput",
+            "module": "src/components/atoms/modus-wc-number-input/modus-wc-number-input.tsx"
           }
         }
       ]
