@@ -3,7 +3,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-interface CheckboxArgs {
+interface ToggleArgs {
   'aria-describedby'?: string;
   'aria-label': string;
   'aria-labelledby'?: string;
@@ -19,11 +19,11 @@ interface CheckboxArgs {
   value: boolean;
 }
 
-const meta: Meta<CheckboxArgs> = {
-  title: 'Components/Atoms/Checkbox',
-  component: 'modus-wc-checkbox',
+const meta: Meta<ToggleArgs> = {
+  title: 'Components/Atoms/Toggle',
+  component: 'modus-wc-toggle',
   args: {
-    'aria-label': 'Checkbox',
+    'aria-label': 'Toggle',
     'custom-class': '',
     disabled: false,
     indeterminate: false,
@@ -54,12 +54,12 @@ const meta: Meta<CheckboxArgs> = {
 
 export default meta;
 
-type Story = StoryObj<CheckboxArgs>;
+type Story = StoryObj<ToggleArgs>;
 
 export const Template: Story = {
   render: (args) => {
     return html`
-      <modus-wc-checkbox
+      <modus-wc-toggle
         aria-describedby=${ifDefined(args['aria-describedby'])}
         aria-label=${args['aria-label']}
         aria-labelledby=${ifDefined(args['aria-labelledby'])}
@@ -73,24 +73,24 @@ export const Template: Story = {
         ?required=${args.required}
         size=${ifDefined(args.size)}
         .value=${args.value}
-      ></modus-wc-checkbox>
+      ></modus-wc-toggle>
     `;
   },
 };
 
-export const CheckboxWithLabel: Story = {
+export const ToggleWithLabel: Story = {
   render: () => {
     return html`
       <form action="" class="form-example" method="get">
         <div class="form-example">
-          <modus-wc-checkbox
-            aria-label="Example checkbox"
-            input-id="checkbox-input"
-            name="example-checkbox"
-          ></modus-wc-checkbox>
+          <modus-wc-toggle
+            aria-label="Example toggle"
+            input-id="toggle-input"
+            name="example-toggle"
+          ></modus-wc-toggle>
           <modus-wc-input-label
-            for-id="checkbox-input"
-            label-text="Example checkbox"
+            for-id="toggle-input"
+            label-text="Example toggle"
           ></modus-wc-input-label>
         </div>
       </form>
@@ -98,7 +98,7 @@ export const CheckboxWithLabel: Story = {
         .form-example {
           display: flex;
         }
-        modus-wc-checkbox {
+        modus-wc-toggle {
           padding-inline-end: 8px;
         }
       </style>
