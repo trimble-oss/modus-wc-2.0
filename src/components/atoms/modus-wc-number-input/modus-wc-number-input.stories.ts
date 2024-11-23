@@ -101,7 +101,7 @@ export const Template: Story = {
       ?read-only=${args['read-only']}
       ?required=${args.required}
       size=${ifDefined(args.size)}
-      step=${args.step}
+      step=${ifDefined(args.step)}
       type=${ifDefined(args.type)}
       .value=${args.value}
     ></modus-wc-number-input>
