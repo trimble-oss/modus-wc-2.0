@@ -159,6 +159,7 @@ export class ModusWcCheckbox {
           dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}
+          name={this.name}
           onBlur={this.handleBlur}
           onChange={this.handleChange}
           onFocus={this.handleFocus}
