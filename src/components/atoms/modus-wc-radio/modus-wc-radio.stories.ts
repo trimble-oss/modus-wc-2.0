@@ -3,13 +3,12 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-interface CheckboxArgs {
+interface RadioArgs {
   'aria-describedby'?: string;
   'aria-label': string;
   'aria-labelledby'?: string;
   'custom-class'?: string;
   disabled?: boolean;
-  indeterminate?: boolean;
   'input-dir'?: 'ltr' | 'rtl' | 'auto';
   'input-id'?: string;
   'input-tab-index'?: number;
@@ -19,14 +18,13 @@ interface CheckboxArgs {
   value: boolean;
 }
 
-const meta: Meta<CheckboxArgs> = {
-  title: 'Components/Forms/Checkbox',
-  component: 'modus-wc-checkbox',
+const meta: Meta<RadioArgs> = {
+  title: 'Components/Forms/Radio',
+  component: 'modus-wc-radio',
   args: {
-    'aria-label': 'Checkbox',
+    'aria-label': 'Radio',
     'custom-class': '',
     disabled: false,
-    indeterminate: false,
     name: '',
     required: false,
     size: 'md',
@@ -54,18 +52,17 @@ const meta: Meta<CheckboxArgs> = {
 
 export default meta;
 
-type Story = StoryObj<CheckboxArgs>;
+type Story = StoryObj<RadioArgs>;
 
 export const Template: Story = {
   render: (args) => {
     return html`
-      <modus-wc-checkbox
+      <modus-wc-radio
         aria-describedby=${ifDefined(args['aria-describedby'])}
         aria-label=${args['aria-label']}
         aria-labelledby=${ifDefined(args['aria-labelledby'])}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
-        .indeterminate=${args.indeterminate}
         input-dir=${ifDefined(args['input-dir'])}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
@@ -73,24 +70,36 @@ export const Template: Story = {
         ?required=${args.required}
         size=${ifDefined(args.size)}
         .value=${args.value}
-      ></modus-wc-checkbox>
+      ></modus-wc-radio>
     `;
   },
 };
 
-export const CheckboxWithLabel: Story = {
+export const RadioWithLabel: Story = {
   render: () => {
     return html`
       <form action="" method="get">
         <div class="form-control">
-          <modus-wc-checkbox
-            aria-label="Example checkbox"
-            input-id="checkbox-input"
-            name="example-checkbox"
-          ></modus-wc-checkbox>
+          <modus-wc-radio
+            aria-label="Example radio 1"
+            input-id="radio-input-1"
+            name="example-radio-group"
+            value="true"
+          ></modus-wc-radio>
           <modus-wc-input-label
-            for-id="checkbox-input"
-            label-text="Example checkbox"
+            for-id="radio-input-1"
+            label-text="Radio Item One"
+          ></modus-wc-input-label>
+        </div>
+        <div class="form-control">
+          <modus-wc-radio
+            aria-label="Example radio 2"
+            input-id="radio-input-2"
+            name="example-radio-group"
+          ></modus-wc-radio>
+          <modus-wc-input-label
+            for-id="radio-input-2"
+            label-text="Radio Item Two"
           ></modus-wc-input-label>
         </div>
       </form>
@@ -98,7 +107,7 @@ export const CheckboxWithLabel: Story = {
         .form-control {
           display: flex;
         }
-        modus-wc-checkbox {
+        modus-wc-radio {
           padding-inline-end: 8px;
         }
       </style>
