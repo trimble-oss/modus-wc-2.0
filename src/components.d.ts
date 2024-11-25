@@ -501,6 +501,40 @@ export namespace Components {
         "value": boolean;
     }
     /**
+     * A customizable skeleton component used to create skeletons of various sizes and shapes.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcSkeleton {
+        /**
+          * Whether the skeleton is hidden from screen readers and other assistive technologies.
+         */
+        "ariaHidden": boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass": string;
+        /**
+          * The height of the skeleton.
+         */
+        "height": string;
+        /**
+          * The role of the skeleton.
+         */
+        "role": string;
+        /**
+          * The shape of the skeleton.
+         */
+        "shape"?: 'circle' | 'rectangle';
+        /**
+          * The tab index of the skeleton. Defaults to -1 to prevent the skeleton from being focusable.
+         */
+        "tabindex": number;
+        /**
+          * The width of the skeleton.
+         */
+        "width": string;
+    }
+    /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -997,6 +1031,16 @@ declare global {
         prototype: HTMLModusWcRadioElement;
         new (): HTMLModusWcRadioElement;
     };
+    /**
+     * A customizable skeleton component used to create skeletons of various sizes and shapes.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcSkeletonElement extends Components.ModusWcSkeleton, HTMLStencilElement {
+    }
+    var HTMLModusWcSkeletonElement: {
+        prototype: HTMLModusWcSkeletonElement;
+        new (): HTMLModusWcSkeletonElement;
+    };
     interface HTMLModusWcTextInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
@@ -1115,6 +1159,7 @@ declare global {
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
+        "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
@@ -1667,6 +1712,40 @@ declare namespace LocalJSX {
         "value"?: boolean;
     }
     /**
+     * A customizable skeleton component used to create skeletons of various sizes and shapes.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcSkeleton {
+        /**
+          * Whether the skeleton is hidden from screen readers and other assistive technologies.
+         */
+        "ariaHidden"?: boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * The height of the skeleton.
+         */
+        "height"?: string;
+        /**
+          * The role of the skeleton.
+         */
+        "role"?: string;
+        /**
+          * The shape of the skeleton.
+         */
+        "shape"?: 'circle' | 'rectangle';
+        /**
+          * The tab index of the skeleton. Defaults to -1 to prevent the skeleton from being focusable.
+         */
+        "tabindex"?: number;
+        /**
+          * The width of the skeleton.
+         */
+        "width"?: string;
+    }
+    /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -2011,6 +2090,7 @@ declare namespace LocalJSX {
         "modus-wc-input-label": ModusWcInputLabel;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-radio": ModusWcRadio;
+        "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
@@ -2075,6 +2155,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-radio": LocalJSX.ModusWcRadio & JSXBase.HTMLAttributes<HTMLModusWcRadioElement>;
+            /**
+             * A customizable skeleton component used to create skeletons of various sizes and shapes.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-skeleton": LocalJSX.ModusWcSkeleton & JSXBase.HTMLAttributes<HTMLModusWcSkeletonElement>;
             /**
              * A customizable input component used to create text inputs with types.
              * Adheres to WCAG 2.2 standards.
