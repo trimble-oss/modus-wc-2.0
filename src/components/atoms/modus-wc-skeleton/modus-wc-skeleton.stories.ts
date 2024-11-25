@@ -13,7 +13,7 @@ interface SkeletonArgs {
 }
 
 const meta: Meta<SkeletonArgs> = {
-  title: 'Components/Atoms/Skeleton',
+  title: 'Components/Skeleton',
   component: 'modus-wc-skeleton',
   args: {
     'aria-label': 'Skeleton',

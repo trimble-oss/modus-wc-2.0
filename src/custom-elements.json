@@ -1199,14 +1199,6 @@
           "name": "ModusWcSkeleton",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
