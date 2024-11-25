@@ -1205,30 +1205,6 @@
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the element that describes the skeleton."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
-            },
-            {
-              "name": "aria-labelledby",
-              "fieldName": "ariaLabelledby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-labelledby attribute for usage with a label."
-            },
-            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {

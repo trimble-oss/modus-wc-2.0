@@ -452,18 +452,6 @@ export namespace Components {
      */
     interface ModusWcSkeleton {
         /**
-          * The ID of the element that describes the skeleton.
-         */
-        "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
-          * The aria-labelledby attribute for usage with a label.
-         */
-        "ariaLabelledby"?: string;
-        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass": string;
@@ -1568,18 +1556,6 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcSkeleton {
-        /**
-          * The ID of the element that describes the skeleton.
-         */
-        "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
-          * The aria-labelledby attribute for usage with a label.
-         */
-        "ariaLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */

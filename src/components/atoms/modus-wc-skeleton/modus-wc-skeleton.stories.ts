@@ -3,9 +3,6 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface SkeletonArgs {
-  'aria-describedby'?: string;
-  'aria-label': string;
-  'aria-labelledby'?: string;
   'custom-class'?: string;
   height?: string;
   shape?: 'circle' | 'rectangle';
@@ -16,7 +13,6 @@ const meta: Meta<SkeletonArgs> = {
   title: 'Components/Skeleton',
   component: 'modus-wc-skeleton',
   args: {
-    'aria-label': 'Skeleton',
     'custom-class': '',
     shape: 'rectangle',
   },
@@ -41,10 +37,6 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-skeleton
-        aria-describedby=${ifDefined(args['aria-describedby'])}
-        aria-label=${args['aria-label']}
-        aria-labelledby=${ifDefined(args['aria-labelledby'])}
-        custom-class=${ifDefined(args['custom-class'])}
         height=${ifDefined(args.height)}
         shape=${ifDefined(args.shape)}
         width=${ifDefined(args.width)}
@@ -54,10 +46,9 @@ export const Default: Story = {
 };
 
 export const Circle: Story = {
-  render: (args) => {
+  render: () => {
     return html`
       <modus-wc-skeleton
-        aria-label=${args['aria-label']}
         height="5rem"
         shape="circle"
         width="5rem"
@@ -67,10 +58,9 @@ export const Circle: Story = {
 };
 
 export const Square: Story = {
-  render: (args) => {
+  render: () => {
     return html`
       <modus-wc-skeleton
-        aria-label=${args['aria-label']}
         height="5rem"
         shape="rectangle"
         width="5rem"
@@ -80,7 +70,7 @@ export const Square: Story = {
 };
 
 export const Composed: Story = {
-  render: (args) => {
+  render: () => {
     return html`
       <style>
         .skeleton-container {
@@ -105,26 +95,16 @@ export const Composed: Story = {
       <div class="skeleton-container">
         <div class="skeleton-profile">
           <modus-wc-skeleton
-            aria-label=${args['aria-label']}
-            shape="circle"
             height="4rem"
+            shape="circle"
             width="4rem"
           ></modus-wc-skeleton>
           <div class="skeleton-text">
-            <modus-wc-skeleton
-              aria-label=${args['aria-label']}
-              width="5rem"
-            ></modus-wc-skeleton>
-            <modus-wc-skeleton
-              aria-label=${args['aria-label']}
-              width="7rem"
-            ></modus-wc-skeleton>
+            <modus-wc-skeleton width="5rem"></modus-wc-skeleton>
+            <modus-wc-skeleton width="7rem"></modus-wc-skeleton>
           </div>
         </div>
-        <modus-wc-skeleton
-          aria-label=${args['aria-label']}
-          height="8rem"
-        ></modus-wc-skeleton>
+        <modus-wc-skeleton height="8rem"></modus-wc-skeleton>
       </div>
     `;
   },

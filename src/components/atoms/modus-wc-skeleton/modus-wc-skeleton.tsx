@@ -13,21 +13,6 @@ import { convertPropsToClasses } from './modus-wc-skeleton.tailwind';
 })
 export class ModusWcSkeleton {
   /**
-   * The ID of the element that describes the skeleton.
-   */
-  @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
-
-  /**
-   * The aria-labelledby attribute for usage with a label.
-   */
-  @Prop() ariaLabelledby?: string;
-
-  /**
    * Custom CSS class to apply to the inner div.
    */
   @Prop() customClass: string = '';
@@ -46,14 +31,6 @@ export class ModusWcSkeleton {
    * The width of the skeleton.
    */
   @Prop() width: string = 'var(--modus-wc-default-skeleton-width)';
-
-  componentWillLoad() {
-    if (!this.ariaLabel) {
-      console.warn(
-        'ModusWcSkeleton: aria-label is required for accessibility.'
-      );
-    }
-  }
 
   private getClasses(): string {
     const classList = ['modus-wc-skeleton'];
@@ -77,11 +54,11 @@ export class ModusWcSkeleton {
     return (
       <Host>
         <div
-          aria-describedby={this.ariaDescribedby}
-          aria-label={this.ariaLabel}
-          aria-labelledby={this.ariaLabelledby}
+          aria-hidden="true"
           class={this.getClasses()}
+          role="presentation"
           style={this.getStyles()}
+          tabIndex={-1}
         ></div>
       </Host>
     );
