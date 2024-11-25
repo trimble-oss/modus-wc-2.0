@@ -1205,6 +1205,14 @@
           ],
           "attributes": [
             {
+              "name": "aria-hidden",
+              "fieldName": "ariaHidden",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the skeleton is hidden from screen readers and other assistive technologies."
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
@@ -1221,12 +1229,28 @@
               "description": "The height of the skeleton."
             },
             {
+              "name": "role",
+              "fieldName": "role",
+              "type": {
+                "text": "string"
+              },
+              "description": "The role of the skeleton."
+            },
+            {
               "name": "shape",
               "fieldName": "shape",
               "type": {
                 "text": "'circle' | 'rectangle'"
               },
               "description": "The shape of the skeleton."
+            },
+            {
+              "name": "tabindex",
+              "fieldName": "tabindex",
+              "type": {
+                "text": "number"
+              },
+              "description": "The tab index of the skeleton. Defaults to -1 to prevent the skeleton from being focusable."
             },
             {
               "name": "width",

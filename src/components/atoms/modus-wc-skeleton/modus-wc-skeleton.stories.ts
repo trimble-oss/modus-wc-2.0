@@ -2,10 +2,43 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
+type ARIARole =
+  | 'alert'
+  | 'alertdialog'
+  | 'button'
+  | 'checkbox'
+  | 'dialog'
+  | 'gridcell'
+  | 'link'
+  | 'log'
+  | 'marquee'
+  | 'menuitem'
+  | 'menuitemcheckbox'
+  | 'menuitemradio'
+  | 'option'
+  | 'progressbar'
+  | 'radio'
+  | 'scrollbar'
+  | 'searchbox'
+  | 'slider'
+  | 'spinbutton'
+  | 'status'
+  | 'switch'
+  | 'tab'
+  | 'tabpanel'
+  | 'textbox'
+  | 'timer'
+  | 'tooltip'
+  | 'treeitem'
+  | 'presentation';
+
 interface SkeletonArgs {
+  'aria-hidden'?: boolean;
   'custom-class'?: string;
   height?: string;
+  role?: ARIARole;
   shape?: 'circle' | 'rectangle';
+  tabindex?: number;
   width?: string;
 }
 
@@ -13,8 +46,13 @@ const meta: Meta<SkeletonArgs> = {
   title: 'Components/Skeleton',
   component: 'modus-wc-skeleton',
   args: {
+    'aria-hidden': true,
     'custom-class': '',
+    height: '0.875rem',
+    role: 'presentation',
     shape: 'rectangle',
+    tabindex: -1,
+    width: '100%',
   },
   argTypes: {
     shape: {
@@ -37,8 +75,12 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-skeleton
+        aria-hidden=${ifDefined(args['aria-hidden'])}
+        custom-class=${ifDefined(args['custom-class'])}
         height=${ifDefined(args.height)}
+        role=${ifDefined(args.role)}
         shape=${ifDefined(args.shape)}
+        tabindex=${ifDefined(args.tabindex)}
         width=${ifDefined(args.width)}
       ></modus-wc-skeleton>
     `;
@@ -60,11 +102,7 @@ export const Circle: Story = {
 export const Square: Story = {
   render: () => {
     return html`
-      <modus-wc-skeleton
-        height="5rem"
-        shape="rectangle"
-        width="5rem"
-      ></modus-wc-skeleton>
+      <modus-wc-skeleton height="5rem" width="5rem"></modus-wc-skeleton>
     `;
   },
 };

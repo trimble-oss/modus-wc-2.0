@@ -452,6 +452,10 @@ export namespace Components {
      */
     interface ModusWcSkeleton {
         /**
+          * Whether the skeleton is hidden from screen readers and other assistive technologies.
+         */
+        "ariaHidden": boolean;
+        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass": string;
@@ -460,9 +464,17 @@ export namespace Components {
          */
         "height": string;
         /**
+          * The role of the skeleton.
+         */
+        "role": string;
+        /**
           * The shape of the skeleton.
          */
         "shape"?: 'circle' | 'rectangle';
+        /**
+          * The tab index of the skeleton. Defaults to -1 to prevent the skeleton from being focusable.
+         */
+        "tabindex": number;
         /**
           * The width of the skeleton.
          */
@@ -1557,6 +1569,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcSkeleton {
         /**
+          * Whether the skeleton is hidden from screen readers and other assistive technologies.
+         */
+        "ariaHidden"?: boolean;
+        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
@@ -1565,9 +1581,17 @@ declare namespace LocalJSX {
          */
         "height"?: string;
         /**
+          * The role of the skeleton.
+         */
+        "role"?: string;
+        /**
           * The shape of the skeleton.
          */
         "shape"?: 'circle' | 'rectangle';
+        /**
+          * The tab index of the skeleton. Defaults to -1 to prevent the skeleton from being focusable.
+         */
+        "tabindex"?: number;
         /**
           * The width of the skeleton.
          */

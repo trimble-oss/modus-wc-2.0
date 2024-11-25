@@ -13,6 +13,11 @@ import { convertPropsToClasses } from './modus-wc-skeleton.tailwind';
 })
 export class ModusWcSkeleton {
   /**
+   * Whether the skeleton is hidden from screen readers and other assistive technologies.
+   */
+  @Prop() ariaHidden: boolean = true;
+
+  /**
    * Custom CSS class to apply to the inner div.
    */
   @Prop() customClass: string = '';
@@ -23,9 +28,19 @@ export class ModusWcSkeleton {
   @Prop() height: string = 'var(--modus-wc-default-skeleton-height)';
 
   /**
+   * The role of the skeleton.
+   */
+  @Prop() role: string = 'presentation';
+
+  /**
    * The shape of the skeleton.
    */
   @Prop() shape?: 'circle' | 'rectangle' = 'rectangle';
+
+  /**
+   * The tab index of the skeleton. Defaults to -1 to prevent the skeleton from being focusable.
+   */
+  @Prop() tabindex: number = -1;
 
   /**
    * The width of the skeleton.
@@ -54,11 +69,11 @@ export class ModusWcSkeleton {
     return (
       <Host>
         <div
-          aria-hidden="true"
+          aria-hidden={this.ariaHidden}
           class={this.getClasses()}
-          role="presentation"
+          role={this.role}
           style={this.getStyles()}
-          tabIndex={-1}
+          tabindex={this.tabindex}
         ></div>
       </Host>
     );
