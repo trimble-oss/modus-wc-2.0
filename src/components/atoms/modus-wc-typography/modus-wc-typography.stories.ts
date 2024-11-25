@@ -15,7 +15,7 @@ interface TypographyArgs {
 }
 
 const meta: Meta<TypographyArgs> = {
-  title: 'Components/Atoms/Typography',
+  title: 'Components/Typography',
   component: 'modus-wc-typography',
   args: {
     'aria-label': 'Example typography',

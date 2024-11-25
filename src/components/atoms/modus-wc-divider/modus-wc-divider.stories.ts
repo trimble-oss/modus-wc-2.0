@@ -19,7 +19,7 @@ interface DividerArgs {
 }
 
 const meta: Meta<DividerArgs> = {
-  title: 'Components/Atoms/Divider',
+  title: 'Components/Divider',
   component: 'modus-wc-divider',
   args: {
     'aria-label': 'Example divider',

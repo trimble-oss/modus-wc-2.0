@@ -1,0 +1,27 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+[data-theme='modus-classic-light'] .modus-wc-toggle,
+[data-theme='modus-classic-dark'] .modus-wc-toggle {
+  --rounded-badge: 32px;
+
+  background-color: var(--modus-wc-color-white);
+  border: none;
+  outline-color: var(--modus-wc-color-highlight-blue);
+
+  // Set default colors
+  --fallback-b1: var(--modus-wc-color-gray-4);
+  color: var(--modus-wc-color-gray-4);
+
+  &:checked {
+    --fallback-b1: var(--modus-wc-color-blue-light);
+    color: var(--modus-wc-color-blue-light);
+  }
+
+  &:hover {
+    --fallback-b1: var(--modus-wc-color-trimble-blue);
+    color: var(--modus-wc-color-trimble-blue);
+  }
+}

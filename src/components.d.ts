@@ -691,6 +691,64 @@ export namespace Components {
         "customClass": string;
     }
     /**
+     * A customizable checkbox component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcToggle {
+        /**
+          * The ID of the element that describes the toggle.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass": string;
+        /**
+          * The disabled state of the toggle.
+         */
+        "disabled"?: boolean;
+        /**
+          * The indeterminate state of the toggle.
+         */
+        "indeterminate": boolean;
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * The tabindex of the input.
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * The value of the toggle.
+         */
+        "value": boolean;
+    }
+    /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
@@ -744,6 +802,10 @@ export interface ModusWcTextareaCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcThemeSwitcherCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcThemeSwitcherElement;
+}
+export interface ModusWcToggleCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcToggleElement;
 }
 declare global {
     /**
@@ -972,6 +1034,29 @@ declare global {
         prototype: HTMLModusWcThemeSwitcherElement;
         new (): HTMLModusWcThemeSwitcherElement;
     };
+    interface HTMLModusWcToggleElementEventMap {
+        "inputBlur": FocusEvent;
+        "inputChange": Event;
+        "inputFocus": FocusEvent;
+    }
+    /**
+     * A customizable checkbox component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcToggleElement extends Components.ModusWcToggle, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcToggleElementEventMap>(type: K, listener: (this: HTMLModusWcToggleElement, ev: ModusWcToggleCustomEvent<HTMLModusWcToggleElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcToggleElementEventMap>(type: K, listener: (this: HTMLModusWcToggleElement, ev: ModusWcToggleCustomEvent<HTMLModusWcToggleElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcToggleElement: {
+        prototype: HTMLModusWcToggleElement;
+        new (): HTMLModusWcToggleElement;
+    };
     /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
@@ -997,6 +1082,7 @@ declare global {
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
         "modus-wc-theme-switcher": HTMLModusWcThemeSwitcherElement;
+        "modus-wc-toggle": HTMLModusWcToggleElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
     }
 }
@@ -1750,6 +1836,76 @@ declare namespace LocalJSX {
         "onThemeChange"?: (event: ModusWcThemeSwitcherCustomEvent<IThemeConfig>) => void;
     }
     /**
+     * A customizable checkbox component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcToggle {
+        /**
+          * The ID of the element that describes the toggle.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the toggle.
+         */
+        "disabled"?: boolean;
+        /**
+          * The indeterminate state of the toggle.
+         */
+        "indeterminate"?: boolean;
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * The tabindex of the input.
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Emitted when the input loses focus.
+         */
+        "onInputBlur"?: (event: ModusWcToggleCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the input value changes.
+         */
+        "onInputChange"?: (event: ModusWcToggleCustomEvent<Event>) => void;
+        /**
+          * Emitted when the input gains focus.
+         */
+        "onInputFocus"?: (event: ModusWcToggleCustomEvent<FocusEvent>) => void;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * The value of the toggle.
+         */
+        "value"?: boolean;
+    }
+    /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1790,6 +1946,7 @@ declare namespace LocalJSX {
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
         "modus-wc-theme-switcher": ModusWcThemeSwitcher;
+        "modus-wc-toggle": ModusWcToggle;
         "modus-wc-typography": ModusWcTypography;
     }
 }
@@ -1866,6 +2023,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-theme-switcher": LocalJSX.ModusWcThemeSwitcher & JSXBase.HTMLAttributes<HTMLModusWcThemeSwitcherElement>;
+            /**
+             * A customizable checkbox component.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-toggle": LocalJSX.ModusWcToggle & JSXBase.HTMLAttributes<HTMLModusWcToggleElement>;
             /**
              * A customizable typography component used to render text with different sizes, variants, and weights.
              * Adheres to WCAG 2.2 standards.

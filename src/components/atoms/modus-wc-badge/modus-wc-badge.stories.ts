@@ -18,7 +18,7 @@ interface BadgeArgs {
 }
 
 const meta: Meta<BadgeArgs> = {
-  title: 'Components/Atoms/Badge',
+  title: 'Components/Badge',
   component: 'modus-wc-badge',
   args: {
     'aria-label': 'Example badge',

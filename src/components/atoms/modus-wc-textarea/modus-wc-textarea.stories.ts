@@ -25,7 +25,7 @@ interface TextAreaArgs {
 }
 
 const meta: Meta<TextAreaArgs> = {
-  title: 'Components/Atoms/Textarea',
+  title: 'Components/Forms/Textarea',
   component: 'modus-wc-textarea',
   args: {
     'aria-label': 'Enter your comments',
