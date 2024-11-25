@@ -5,6 +5,12 @@
 <!-- Auto Generated Below -->
 
 
+## Overview
+
+A customizable skeleton component used to create skeletons of various sizes and shapes.
+
+Adheres to WCAG 2.2 standards.
+
 ## Properties
 
 | Property                 | Attribute          | Description                                           | Type                                   | Default       |

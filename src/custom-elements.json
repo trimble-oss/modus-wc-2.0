@@ -1195,7 +1195,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
+          "description": "A customizable skeleton component used to create skeletons of various sizes and shapes.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcSkeleton",
           "members": [
             {

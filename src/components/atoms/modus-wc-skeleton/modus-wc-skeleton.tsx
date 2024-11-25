@@ -1,6 +1,11 @@
 import { Component, Element, Host, Prop, h } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-skeleton.tailwind';
 
+/**
+ * A customizable skeleton component used to create skeletons of various sizes and shapes.
+ *
+ * Adheres to WCAG 2.2 standards.
+ */
 @Component({
   tag: 'modus-wc-skeleton',
   styleUrl: 'modus-wc-skeleton.scss',

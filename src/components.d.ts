@@ -446,6 +446,10 @@ export namespace Components {
          */
         "value": string;
     }
+    /**
+     * A customizable skeleton component used to create skeletons of various sizes and shapes.
+     * Adheres to WCAG 2.2 standards.
+     */
     interface ModusWcSkeleton {
         /**
           * The ID of the element that describes the skeleton.
@@ -880,6 +884,10 @@ declare global {
         prototype: HTMLModusWcNumberInputElement;
         new (): HTMLModusWcNumberInputElement;
     };
+    /**
+     * A customizable skeleton component used to create skeletons of various sizes and shapes.
+     * Adheres to WCAG 2.2 standards.
+     */
     interface HTMLModusWcSkeletonElement extends Components.ModusWcSkeleton, HTMLStencilElement {
     }
     var HTMLModusWcSkeletonElement: {
@@ -1465,6 +1473,10 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    /**
+     * A customizable skeleton component used to create skeletons of various sizes and shapes.
+     * Adheres to WCAG 2.2 standards.
+     */
     interface ModusWcSkeleton {
         /**
           * The ID of the element that describes the skeleton.
@@ -1824,6 +1836,10 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-number-input": LocalJSX.ModusWcNumberInput & JSXBase.HTMLAttributes<HTMLModusWcNumberInputElement>;
+            /**
+             * A customizable skeleton component used to create skeletons of various sizes and shapes.
+             * Adheres to WCAG 2.2 standards.
+             */
             "modus-wc-skeleton": LocalJSX.ModusWcSkeleton & JSXBase.HTMLAttributes<HTMLModusWcSkeletonElement>;
             /**
              * A customizable input component used to create text inputs with types.
