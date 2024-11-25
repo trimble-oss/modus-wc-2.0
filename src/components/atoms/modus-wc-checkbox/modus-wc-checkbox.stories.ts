@@ -20,7 +20,7 @@ interface CheckboxArgs {
 }
 
 const meta: Meta<CheckboxArgs> = {
-  title: 'Components/Atoms/Checkbox',
+  title: 'Components/Forms/Checkbox',
   component: 'modus-wc-checkbox',
   args: {
     'aria-label': 'Checkbox',
@@ -71,7 +71,7 @@ export const Template: Story = {
         input-tab-index=${ifDefined(args['input-tab-index'])}
         name=${ifDefined(args.name)}
         ?required=${args.required}
-        size=${args.size}
+        size=${ifDefined(args.size)}
         .value=${args.value}
       ></modus-wc-checkbox>
     `;
@@ -105,5 +105,3 @@ export const CheckboxWithLabel: Story = {
     `;
   },
 };
-
-// export const Default: Story = { ...Template};

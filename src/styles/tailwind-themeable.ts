@@ -13,4 +13,7 @@ const themeable = [
   'modus-wc-textarea-sm',
   'modus-wc-textarea-md',
   'modus-wc-textarea-lg',
+  'modus-wc-toggle-sm',
+  'modus-wc-toggle-md',
+  'modus-wc-toggle-lg',
 ];

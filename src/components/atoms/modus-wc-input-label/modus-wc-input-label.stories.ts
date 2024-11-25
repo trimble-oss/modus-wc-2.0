@@ -11,7 +11,7 @@ interface InputLabelArgs {
 }
 
 const meta: Meta<InputLabelArgs> = {
-  title: 'Components/Atoms/Input Label',
+  title: 'Components/Forms/Input Label',
   component: 'modus-wc-input-label',
   args: {
     'label-text': 'Label',

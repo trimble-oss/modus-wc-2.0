@@ -16,7 +16,7 @@ interface ButtonArgs {
 }
 
 const meta: Meta<ButtonArgs> = {
-  title: 'Components/Atoms/Button',
+  title: 'Components/Button',
   component: 'modus-wc-button',
   args: {
     'aria-label': 'Click me button',
