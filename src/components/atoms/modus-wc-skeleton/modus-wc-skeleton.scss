@@ -5,5 +5,15 @@
 
 [data-theme='modus-classic-light'] .modus-wc-skeleton,
 [data-theme='modus-classic-dark'] .modus-wc-skeleton {
-  height: 1rem;
+  &.modus-wc-skeleton-height-sm {
+    height: var(--modus-wc-skeleton-height-sm);
+  }
+
+  &.modus-wc-skeleton-height-md {
+    height: var(--modus-wc-skeleton-height-md);
+  }
+
+  &.modus-wc-skeleton-height-lg {
+    height: var(--modus-wc-skeleton-height-lg);
+  }
 }

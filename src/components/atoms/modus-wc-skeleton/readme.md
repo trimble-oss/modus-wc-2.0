@@ -20,6 +20,7 @@ Adheres to WCAG 2.2 standards.
 | `ariaLabelledby`         | `aria-labelledby`  | The aria-labelledby attribute for usage with a label. | `string \| undefined`                  | `undefined`   |
 | `customClass`            | `custom-class`     | Custom CSS class to apply to the inner div.           | `string`                               | `''`          |
 | `fullWidth`              | `full-width`       | Full width option for skeleton.                       | `boolean`                              | `true`        |
+| `height`                 | `height`           | The height of the skeleton.                           | `"lg" \| "md" \| "sm"`                 | `'sm'`        |
 | `shape`                  | `shape`            | The shape of the skeleton.                            | `"circle" \| "rectangle" \| undefined` | `'rectangle'` |
 
 

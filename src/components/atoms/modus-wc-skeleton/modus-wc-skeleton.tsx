@@ -38,6 +38,11 @@ export class ModusWcSkeleton {
   @Prop() fullWidth: boolean = true;
 
   /**
+   * The height of the skeleton.
+   */
+  @Prop() height: 'sm' | 'md' | 'lg' = 'sm';
+
+  /**
    * The shape of the skeleton.
    */
   @Prop() shape?: 'circle' | 'rectangle' = 'rectangle';
@@ -57,8 +62,9 @@ export class ModusWcSkeleton {
     const classList = ['modus-wc-skeleton'];
 
     const propClasses = convertPropsToClasses({
-      shape: this.shape,
       fullWidth: this.fullWidth,
+      height: this.height,
+      shape: this.shape,
     });
 
     // The order CSS classes are added matters to CSS specificity
