@@ -81,8 +81,8 @@ export const Template: Story = {
 export const CheckboxWithLabel: Story = {
   render: () => {
     return html`
-      <form action="" class="form-example" method="get">
-        <div class="form-example">
+      <form action="" method="get">
+        <div class="form-control">
           <modus-wc-checkbox
             aria-label="Example checkbox"
             input-id="checkbox-input"
@@ -95,7 +95,7 @@ export const CheckboxWithLabel: Story = {
         </div>
       </form>
       <style>
-        .form-example {
+        .form-control {
           display: flex;
         }
         modus-wc-checkbox {

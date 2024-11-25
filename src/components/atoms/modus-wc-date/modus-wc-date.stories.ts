@@ -91,8 +91,8 @@ export const Template: Story = {
 export const DateWithLabel: Story = {
   render: () => {
     return html`
-      <form action="" class="form-example" method="get">
-        <div class="form-example">
+      <form action="" method="get">
+        <div class="form-control">
           <modus-wc-input-label
             for-id="date-input"
             label-text="Example date"
@@ -105,7 +105,7 @@ export const DateWithLabel: Story = {
         </div>
       </form>
       <style>
-        .form-example {
+        .form-control {
           display: flex;
           align-items: center;
         }

@@ -143,8 +143,8 @@ export const Template: Story = {
 export const TextInputWithLabel: Story = {
   render: () => {
     return html`
-      <form action="" class="form-example" method="get">
-        <div class="form-example">
+      <form action="" method="get">
+        <div class="form-control">
           <modus-wc-input-label
             for-id="text-input"
             label-text="Example text input"
@@ -157,7 +157,7 @@ export const TextInputWithLabel: Story = {
         </div>
       </form>
       <style>
-        .form-example {
+        .form-control {
           display: flex;
           align-items: center;
         }
