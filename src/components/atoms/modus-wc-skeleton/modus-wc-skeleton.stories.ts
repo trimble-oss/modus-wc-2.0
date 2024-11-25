@@ -33,7 +33,7 @@ type ARIARole =
   | 'presentation';
 
 interface SkeletonArgs {
-  'aria-hidden'?: boolean;
+  'aria-hidden'?: 'true' | 'false';
   'custom-class'?: string;
   height?: string;
   role?: ARIARole;
@@ -46,7 +46,7 @@ const meta: Meta<SkeletonArgs> = {
   title: 'Components/Skeleton',
   component: 'modus-wc-skeleton',
   args: {
-    'aria-hidden': true,
+    'aria-hidden': 'true',
     'custom-class': '',
     height: '0.875rem',
     role: 'presentation',

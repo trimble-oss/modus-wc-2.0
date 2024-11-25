@@ -508,7 +508,7 @@ export namespace Components {
         /**
           * Whether the skeleton is hidden from screen readers and other assistive technologies.
          */
-        "ariaHidden": boolean;
+        "ariaHidden": 'true' | 'false';
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -1719,7 +1719,7 @@ declare namespace LocalJSX {
         /**
           * Whether the skeleton is hidden from screen readers and other assistive technologies.
          */
-        "ariaHidden"?: boolean;
+        "ariaHidden"?: 'true' | 'false';
         /**
           * Custom CSS class to apply to the inner div.
          */

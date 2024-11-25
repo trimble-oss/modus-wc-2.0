@@ -15,7 +15,7 @@ export class ModusWcSkeleton {
   /**
    * Whether the skeleton is hidden from screen readers and other assistive technologies.
    */
-  @Prop() ariaHidden: boolean = true;
+  @Prop() ariaHidden: 'true' | 'false' = 'true';
 
   /**
    * Custom CSS class to apply to the inner div.

@@ -1369,7 +1369,7 @@
               "name": "aria-hidden",
               "fieldName": "ariaHidden",
               "type": {
-                "text": "boolean"
+                "text": "'true' | 'false'"
               },
               "description": "Whether the skeleton is hidden from screen readers and other assistive technologies."
             },

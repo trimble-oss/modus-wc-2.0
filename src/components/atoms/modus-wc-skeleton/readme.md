@@ -15,7 +15,7 @@ Adheres to WCAG 2.2 standards.
 
 | Property      | Attribute      | Description                                                                                 | Type                                   | Default                                     |
 | ------------- | -------------- | ------------------------------------------------------------------------------------------- | -------------------------------------- | ------------------------------------------- |
-| `ariaHidden`  | `aria-hidden`  | Whether the skeleton is hidden from screen readers and other assistive technologies.        | `boolean`                              | `true`                                      |
+| `ariaHidden`  | `aria-hidden`  | Whether the skeleton is hidden from screen readers and other assistive technologies.        | `"false" \| "true"`                    | `'true'`                                    |
 | `customClass` | `custom-class` | Custom CSS class to apply to the inner div.                                                 | `string`                               | `''`                                        |
 | `height`      | `height`       | The height of the skeleton.                                                                 | `string`                               | `'var(--modus-wc-default-skeleton-height)'` |
 | `role`        | `role`         | The role of the skeleton.                                                                   | `string`                               | `'presentation'`                            |
