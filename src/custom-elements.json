@@ -1253,6 +1253,14 @@
               "description": "Full width option for skeleton."
             },
             {
+              "name": "height",
+              "fieldName": "height",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "description": "The height of the skeleton."
+            },
+            {
               "name": "shape",
               "fieldName": "shape",
               "type": {

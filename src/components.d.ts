@@ -472,6 +472,10 @@ export namespace Components {
          */
         "fullWidth": boolean;
         /**
+          * The height of the skeleton.
+         */
+        "height": 'sm' | 'md' | 'lg';
+        /**
           * The shape of the skeleton.
          */
         "shape"?: 'circle' | 'rectangle';
@@ -1498,6 +1502,10 @@ declare namespace LocalJSX {
           * Full width option for skeleton.
          */
         "fullWidth"?: boolean;
+        /**
+          * The height of the skeleton.
+         */
+        "height"?: 'sm' | 'md' | 'lg';
         /**
           * The shape of the skeleton.
          */
