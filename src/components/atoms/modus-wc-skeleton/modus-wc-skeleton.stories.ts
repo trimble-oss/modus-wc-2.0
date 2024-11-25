@@ -78,3 +78,54 @@ export const Square: Story = {
     `;
   },
 };
+
+export const Composed: Story = {
+  render: (args) => {
+    return html`
+      <style>
+        .skeleton-container {
+          width: 13rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .skeleton-profile {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .skeleton-text {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+      </style>
+      <div class="skeleton-container">
+        <div class="skeleton-profile">
+          <modus-wc-skeleton
+            aria-label=${args['aria-label']}
+            shape="circle"
+            height="4rem"
+            width="4rem"
+          ></modus-wc-skeleton>
+          <div class="skeleton-text">
+            <modus-wc-skeleton
+              aria-label=${args['aria-label']}
+              width="5rem"
+            ></modus-wc-skeleton>
+            <modus-wc-skeleton
+              aria-label=${args['aria-label']}
+              width="7rem"
+            ></modus-wc-skeleton>
+          </div>
+        </div>
+        <modus-wc-skeleton
+          aria-label=${args['aria-label']}
+          height="8rem"
+        ></modus-wc-skeleton>
+      </div>
+    `;
+  },
+};
