@@ -1,4 +1,4 @@
-import { Component, Element, Host, Prop, h } from '@stencil/core';
+import { Component, Host, Prop, h } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-skeleton.tailwind';
 
 /**
@@ -46,9 +46,6 @@ export class ModusWcSkeleton {
    * The width of the skeleton.
    */
   @Prop() width: string = 'var(--modus-wc-default-skeleton-width)';
-
-  /** Reference to the host element */
-  @Element() el!: HTMLElement;
 
   componentWillLoad() {
     if (!this.ariaLabel) {
