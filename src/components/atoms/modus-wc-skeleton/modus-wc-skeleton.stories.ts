@@ -18,9 +18,7 @@ const meta: Meta<SkeletonArgs> = {
   args: {
     'aria-label': 'Skeleton',
     'custom-class': '',
-    height: '24px',
     shape: 'rectangle',
-    width: '100%',
   },
   argTypes: {
     shape: {
