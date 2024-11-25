@@ -1,0 +1,23 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+[data-theme='modus-classic-light'] .modus-wc-radio,
+[data-theme='modus-classic-dark'] .modus-wc-radio {
+  --fallback-bc: var(--modus-wc-color-gray-4);
+
+  border-width: 2px;
+
+  &:checked {
+    --fallback-bc: var(--modus-wc-color-blue-light);
+  }
+
+  &:focus {
+    outline-color: var(--modus-wc-color-highlight-blue);
+  }
+
+  &:hover {
+    --fallback-bc: var(--modus-wc-color-trimble-blue);
+  }
+}

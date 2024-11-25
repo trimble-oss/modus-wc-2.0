@@ -1,27 +1,26 @@
 import {
   Component,
-  Element,
   Event as StencilEvent,
   EventEmitter,
   h,
   Host,
   Prop,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-checkbox.tailwind';
+import { convertPropsToClasses } from './modus-wc-radio.tailwind';
 
 /**
- * A customizable checkbox component.
+ * A customizable radio component.
  *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
-  tag: 'modus-wc-checkbox',
-  styleUrl: 'modus-wc-checkbox.scss',
+  tag: 'modus-wc-radio',
+  styleUrl: 'modus-wc-radio.scss',
   shadow: false,
 })
-export class ModusWcCheckbox {
+export class ModusWcRadio {
   /**
-   * The ID of the element that describes the checkbox.
+   * The ID of the element that describes the radio.
    */
   @Prop() ariaDescribedby?: string;
 
@@ -41,14 +40,9 @@ export class ModusWcCheckbox {
   @Prop() customClass: string = '';
 
   /**
-   * The disabled state of the checkbox.
+   * The disabled state of the radio.
    */
   @Prop() disabled?: boolean = false;
-
-  /**
-   * The indeterminate state of the checkbox.
-   */
-  @Prop({ reflect: true, mutable: true }) indeterminate: boolean = false;
 
   /**
    * Specifies the text direction of the input content.
@@ -81,7 +75,7 @@ export class ModusWcCheckbox {
   @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
 
   /**
-   * The value of the checkbox.
+   * The value of the radio.
    */
   @Prop({ mutable: true, reflect: true }) value: boolean = false;
 
@@ -100,29 +94,14 @@ export class ModusWcCheckbox {
    */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
-  /** Reference to the host element */
-  @Element() el!: HTMLElement;
-
-  componentDidRender() {
-    const checkbox = this.el.querySelector(
-      'input[type="checkbox"]'
-    ) as HTMLInputElement;
-
-    if (checkbox) {
-      checkbox.indeterminate = this.indeterminate;
-    }
-  }
-
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn(
-        'ModusWcCheckbox: aria-label is required for accessibility.'
-      );
+      console.warn('ModusWcRadio: aria-label is required for accessibility.');
     }
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-checkbox'];
+    const classList = ['modus-wc-radio'];
 
     const propClasses = convertPropsToClasses({ size: this.size });
 
@@ -149,7 +128,7 @@ export class ModusWcCheckbox {
     return (
       <Host>
         <input
-          aria-checked={this.indeterminate ? 'mixed' : this.value}
+          aria-checked={this.value}
           aria-describedby={this.ariaDescribedby}
           aria-disabled={this.disabled}
           aria-label={this.ariaLabel}
@@ -165,7 +144,7 @@ export class ModusWcCheckbox {
           onFocus={this.handleFocus}
           required={this.required}
           tabIndex={this.inputTabIndex}
-          type="checkbox"
+          type="radio"
         />
       </Host>
     );

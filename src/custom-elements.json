@@ -1191,13 +1191,21 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-skeleton/modus-wc-skeleton.tsx",
+      "path": "src/components/atoms/modus-wc-radio/modus-wc-radio.tsx",
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable skeleton component used to create skeletons of various sizes and shapes.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcSkeleton",
+          "description": "A customizable radio component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcRadio",
           "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
             {
               "kind": "method",
               "name": "render"
@@ -1205,12 +1213,28 @@
           ],
           "attributes": [
             {
-              "name": "aria-hidden",
-              "fieldName": "ariaHidden",
+              "name": "aria-describedby",
+              "fieldName": "ariaDescribedby",
               "type": {
-                "text": "boolean"
+                "text": "string"
               },
-              "description": "Whether the skeleton is hidden from screen readers and other assistive technologies."
+              "description": "The ID of the element that describes the radio."
+            },
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "aria-labelledby",
+              "fieldName": "ariaLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label."
             },
             {
               "name": "custom-class",
@@ -1221,66 +1245,115 @@
               "description": "Custom CSS class to apply to the inner div."
             },
             {
-              "name": "height",
-              "fieldName": "height",
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The disabled state of the radio."
+            },
+            {
+              "name": "input-dir",
+              "fieldName": "inputDir",
+              "type": {
+                "text": "'' | 'ltr' | 'rtl' | 'auto'"
+              },
+              "description": "Specifies the text direction of the input content."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
               "type": {
                 "text": "string"
               },
-              "description": "The height of the skeleton."
+              "description": "The ID of the input element."
             },
             {
-              "name": "role",
-              "fieldName": "role",
-              "type": {
-                "text": "string"
-              },
-              "description": "The role of the skeleton."
-            },
-            {
-              "name": "shape",
-              "fieldName": "shape",
-              "type": {
-                "text": "'circle' | 'rectangle'"
-              },
-              "description": "The shape of the skeleton."
-            },
-            {
-              "name": "tabindex",
-              "fieldName": "tabindex",
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
               "type": {
                 "text": "number"
               },
-              "description": "The tab index of the skeleton. Defaults to -1 to prevent the skeleton from being focusable."
+              "description": "The tabindex of the input."
             },
             {
-              "name": "width",
-              "fieldName": "width",
+              "name": "name",
+              "fieldName": "name",
               "type": {
                 "text": "string"
               },
-              "description": "The width of the skeleton."
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The value of the radio."
             }
           ],
-          "tagName": "modus-wc-skeleton",
-          "events": [],
+          "tagName": "modus-wc-radio",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input gains focus."
+            }
+          ],
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "ModusWcSkeleton",
+          "name": "ModusWcRadio",
           "declaration": {
-            "name": "ModusWcSkeleton",
-            "module": "src/components/atoms/modus-wc-skeleton/modus-wc-skeleton.tsx"
+            "name": "ModusWcRadio",
+            "module": "src/components/atoms/modus-wc-radio/modus-wc-radio.tsx"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "modus-wc-skeleton",
+          "name": "modus-wc-radio",
           "declaration": {
-            "name": "ModusWcSkeleton",
-            "module": "src/components/atoms/modus-wc-skeleton/modus-wc-skeleton.tsx"
+            "name": "ModusWcRadio",
+            "module": "src/components/atoms/modus-wc-radio/modus-wc-radio.tsx"
           }
         }
       ]

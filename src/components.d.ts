@@ -447,38 +447,58 @@ export namespace Components {
         "value": string;
     }
     /**
-     * A customizable skeleton component used to create skeletons of various sizes and shapes.
+     * A customizable radio component.
      * Adheres to WCAG 2.2 standards.
      */
-    interface ModusWcSkeleton {
+    interface ModusWcRadio {
         /**
-          * Whether the skeleton is hidden from screen readers and other assistive technologies.
+          * The ID of the element that describes the radio.
          */
-        "ariaHidden": boolean;
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass": string;
         /**
-          * The height of the skeleton.
+          * The disabled state of the radio.
          */
-        "height": string;
+        "disabled"?: boolean;
         /**
-          * The role of the skeleton.
+          * Specifies the text direction of the input content.
          */
-        "role": string;
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
         /**
-          * The shape of the skeleton.
+          * The ID of the input element.
          */
-        "shape"?: 'circle' | 'rectangle';
+        "inputId"?: string;
         /**
-          * The tab index of the skeleton. Defaults to -1 to prevent the skeleton from being focusable.
+          * The tabindex of the input.
          */
-        "tabindex": number;
+        "inputTabIndex"?: number;
         /**
-          * The width of the skeleton.
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
-        "width": string;
+        "name"?: string;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * The value of the radio.
+         */
+        "value": boolean;
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -791,6 +811,10 @@ export interface ModusWcNumberInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcNumberInputElement;
 }
+export interface ModusWcRadioCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcRadioElement;
+}
 export interface ModusWcTextInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTextInputElement;
@@ -950,15 +974,28 @@ declare global {
         prototype: HTMLModusWcNumberInputElement;
         new (): HTMLModusWcNumberInputElement;
     };
+    interface HTMLModusWcRadioElementEventMap {
+        "inputBlur": FocusEvent;
+        "inputChange": Event;
+        "inputFocus": FocusEvent;
+    }
     /**
-     * A customizable skeleton component used to create skeletons of various sizes and shapes.
+     * A customizable radio component.
      * Adheres to WCAG 2.2 standards.
      */
-    interface HTMLModusWcSkeletonElement extends Components.ModusWcSkeleton, HTMLStencilElement {
+    interface HTMLModusWcRadioElement extends Components.ModusWcRadio, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcRadioElementEventMap>(type: K, listener: (this: HTMLModusWcRadioElement, ev: ModusWcRadioCustomEvent<HTMLModusWcRadioElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcRadioElementEventMap>(type: K, listener: (this: HTMLModusWcRadioElement, ev: ModusWcRadioCustomEvent<HTMLModusWcRadioElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
-    var HTMLModusWcSkeletonElement: {
-        prototype: HTMLModusWcSkeletonElement;
-        new (): HTMLModusWcSkeletonElement;
+    var HTMLModusWcRadioElement: {
+        prototype: HTMLModusWcRadioElement;
+        new (): HTMLModusWcRadioElement;
     };
     interface HTMLModusWcTextInputElementEventMap {
         "inputBlur": FocusEvent;
@@ -1077,7 +1114,7 @@ declare global {
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
-        "modus-wc-skeleton": HTMLModusWcSkeletonElement;
+        "modus-wc-radio": HTMLModusWcRadioElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
@@ -1564,38 +1601,70 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
-     * A customizable skeleton component used to create skeletons of various sizes and shapes.
+     * A customizable radio component.
      * Adheres to WCAG 2.2 standards.
      */
-    interface ModusWcSkeleton {
+    interface ModusWcRadio {
         /**
-          * Whether the skeleton is hidden from screen readers and other assistive technologies.
+          * The ID of the element that describes the radio.
          */
-        "ariaHidden"?: boolean;
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
         /**
-          * The height of the skeleton.
+          * The disabled state of the radio.
          */
-        "height"?: string;
+        "disabled"?: boolean;
         /**
-          * The role of the skeleton.
+          * Specifies the text direction of the input content.
          */
-        "role"?: string;
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
         /**
-          * The shape of the skeleton.
+          * The ID of the input element.
          */
-        "shape"?: 'circle' | 'rectangle';
+        "inputId"?: string;
         /**
-          * The tab index of the skeleton. Defaults to -1 to prevent the skeleton from being focusable.
+          * The tabindex of the input.
          */
-        "tabindex"?: number;
+        "inputTabIndex"?: number;
         /**
-          * The width of the skeleton.
+          * Name of the form control. Submitted with the form as part of a name/value pair.
          */
-        "width"?: string;
+        "name"?: string;
+        /**
+          * Emitted when the input loses focus.
+         */
+        "onInputBlur"?: (event: ModusWcRadioCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the input value changes.
+         */
+        "onInputChange"?: (event: ModusWcRadioCustomEvent<Event>) => void;
+        /**
+          * Emitted when the input gains focus.
+         */
+        "onInputFocus"?: (event: ModusWcRadioCustomEvent<FocusEvent>) => void;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * The value of the radio.
+         */
+        "value"?: boolean;
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -1941,7 +2010,7 @@ declare namespace LocalJSX {
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-label": ModusWcInputLabel;
         "modus-wc-number-input": ModusWcNumberInput;
-        "modus-wc-skeleton": ModusWcSkeleton;
+        "modus-wc-radio": ModusWcRadio;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
@@ -2002,10 +2071,10 @@ declare module "@stencil/core" {
              */
             "modus-wc-number-input": LocalJSX.ModusWcNumberInput & JSXBase.HTMLAttributes<HTMLModusWcNumberInputElement>;
             /**
-             * A customizable skeleton component used to create skeletons of various sizes and shapes.
+             * A customizable radio component.
              * Adheres to WCAG 2.2 standards.
              */
-            "modus-wc-skeleton": LocalJSX.ModusWcSkeleton & JSXBase.HTMLAttributes<HTMLModusWcSkeletonElement>;
+            "modus-wc-radio": LocalJSX.ModusWcRadio & JSXBase.HTMLAttributes<HTMLModusWcRadioElement>;
             /**
              * A customizable input component used to create text inputs with types.
              * Adheres to WCAG 2.2 standards.
