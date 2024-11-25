@@ -1,6 +1,5 @@
 import {
   Component,
-  Element,
   Event as StencilEvent,
   EventEmitter,
   h,
@@ -94,9 +93,6 @@ export class ModusWcRadio {
    * Emitted when the input gains focus.
    */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
-
-  /** Reference to the host element */
-  @Element() el!: HTMLElement;
 
   componentWillLoad() {
     if (!this.ariaLabel) {
