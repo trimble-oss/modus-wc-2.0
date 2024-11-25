@@ -5,15 +5,7 @@
 
 [data-theme='modus-classic-light'] .modus-wc-skeleton,
 [data-theme='modus-classic-dark'] .modus-wc-skeleton {
-  &.modus-wc-skeleton-height-sm {
-    height: var(--modus-wc-skeleton-height-sm);
-  }
-
-  &.modus-wc-skeleton-height-md {
-    height: var(--modus-wc-skeleton-height-md);
-  }
-
-  &.modus-wc-skeleton-height-lg {
-    height: var(--modus-wc-skeleton-height-lg);
-  }
+  // TODO: default height to base modus line height
+  --modus-wc-default-skeleton-height: var(--modus-wc-font-size-md);
+  --modus-wc-default-skeleton-width: '100%';
 }

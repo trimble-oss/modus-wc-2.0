@@ -33,19 +33,19 @@ export class ModusWcSkeleton {
   @Prop() customClass: string = '';
 
   /**
-   * Full width option for skeleton.
-   */
-  @Prop() fullWidth: boolean = true;
-
-  /**
    * The height of the skeleton.
    */
-  @Prop() height: 'sm' | 'md' | 'lg' = 'sm';
+  @Prop() height: string = 'var(--modus-wc-default-skeleton-height)';
 
   /**
    * The shape of the skeleton.
    */
   @Prop() shape?: 'circle' | 'rectangle' = 'rectangle';
+
+  /**
+   * The width of the skeleton.
+   */
+  @Prop() width: string = 'var(--modus-wc-default-skeleton-width)';
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -62,8 +62,6 @@ export class ModusWcSkeleton {
     const classList = ['modus-wc-skeleton'];
 
     const propClasses = convertPropsToClasses({
-      fullWidth: this.fullWidth,
-      height: this.height,
       shape: this.shape,
     });
 
@@ -74,6 +72,10 @@ export class ModusWcSkeleton {
     return classList.join(' ');
   }
 
+  private getStyles(): { [key: string]: string | undefined } | undefined {
+    return { height: this.height, width: this.width };
+  }
+
   render() {
     return (
       <Host>
@@ -82,6 +84,7 @@ export class ModusWcSkeleton {
           aria-label={this.ariaLabel}
           aria-labelledby={this.ariaLabelledby}
           class={this.getClasses()}
+          style={this.getStyles()}
         ></div>
       </Host>
     );

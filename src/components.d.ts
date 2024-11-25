@@ -468,17 +468,17 @@ export namespace Components {
          */
         "customClass": string;
         /**
-          * Full width option for skeleton.
-         */
-        "fullWidth": boolean;
-        /**
           * The height of the skeleton.
          */
-        "height": 'sm' | 'md' | 'lg';
+        "height": string;
         /**
           * The shape of the skeleton.
          */
         "shape"?: 'circle' | 'rectangle';
+        /**
+          * The width of the skeleton.
+         */
+        "width": string;
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -1499,17 +1499,17 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * Full width option for skeleton.
-         */
-        "fullWidth"?: boolean;
-        /**
           * The height of the skeleton.
          */
-        "height"?: 'sm' | 'md' | 'lg';
+        "height"?: string;
         /**
           * The shape of the skeleton.
          */
         "shape"?: 'circle' | 'rectangle';
+        /**
+          * The width of the skeleton.
+         */
+        "width"?: string;
     }
     /**
      * A customizable input component used to create text inputs with types.

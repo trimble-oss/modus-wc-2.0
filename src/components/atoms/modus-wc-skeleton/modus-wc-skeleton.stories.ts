@@ -7,8 +7,9 @@ interface SkeletonArgs {
   'aria-label': string;
   'aria-labelledby'?: string;
   'custom-class'?: string;
-  fullWidth?: boolean;
+  height?: string;
   shape?: 'circle' | 'rectangle';
+  width?: string;
 }
 
 const meta: Meta<SkeletonArgs> = {
@@ -17,8 +18,9 @@ const meta: Meta<SkeletonArgs> = {
   args: {
     'aria-label': 'Skeleton',
     'custom-class': '',
-    fullWidth: true,
+    height: '24px',
     shape: 'rectangle',
+    width: '100%',
   },
   argTypes: {
     shape: {
@@ -45,8 +47,9 @@ export const Template: Story = {
         aria-label=${args['aria-label']}
         aria-labelledby=${ifDefined(args['aria-labelledby'])}
         custom-class=${ifDefined(args['custom-class'])}
+        height=${ifDefined(args.height)}
         shape=${ifDefined(args.shape)}
-        full-width=${ifDefined(args.fullWidth)}
+        width=${ifDefined(args.width)}
       ></modus-wc-skeleton>
     `;
   },

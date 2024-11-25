@@ -1245,18 +1245,10 @@
               "description": "Custom CSS class to apply to the inner div."
             },
             {
-              "name": "full-width",
-              "fieldName": "fullWidth",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Full width option for skeleton."
-            },
-            {
               "name": "height",
               "fieldName": "height",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "string"
               },
               "description": "The height of the skeleton."
             },
@@ -1267,6 +1259,14 @@
                 "text": "'circle' | 'rectangle'"
               },
               "description": "The shape of the skeleton."
+            },
+            {
+              "name": "width",
+              "fieldName": "width",
+              "type": {
+                "text": "string"
+              },
+              "description": "The width of the skeleton."
             }
           ],
           "tagName": "modus-wc-skeleton",
