@@ -37,7 +37,7 @@ export default meta;
 
 type Story = StoryObj<SkeletonArgs>;
 
-export const Template: Story = {
+export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-skeleton
@@ -48,6 +48,32 @@ export const Template: Story = {
         height=${ifDefined(args.height)}
         shape=${ifDefined(args.shape)}
         width=${ifDefined(args.width)}
+      ></modus-wc-skeleton>
+    `;
+  },
+};
+
+export const Circle: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-skeleton
+        aria-label=${args['aria-label']}
+        height="5rem"
+        shape="circle"
+        width="5rem"
+      ></modus-wc-skeleton>
+    `;
+  },
+};
+
+export const Square: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-skeleton
+        aria-label=${args['aria-label']}
+        height="5rem"
+        shape="rectangle"
+        width="5rem"
       ></modus-wc-skeleton>
     `;
   },
