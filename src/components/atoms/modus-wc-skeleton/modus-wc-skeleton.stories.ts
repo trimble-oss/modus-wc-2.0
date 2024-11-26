@@ -3,7 +3,6 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface SkeletonArgs {
-  'aria-hidden'?: 'true' | 'false';
   'custom-class'?: string;
   height?: string;
   shape?: 'circle' | 'rectangle';
