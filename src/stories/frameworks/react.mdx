@@ -36,9 +36,9 @@ npm install @trimble-cms/modus-wc-react@1.0.0-react18
 ### 2. Use the component library as normal.
 
 ```tsx
-import { ModusWcBadge } from "@trimble-cms/modus-wc-react";
+import { ModusWcBadge } from '@trimble-cms/modus-wc-react';
 
-<ModusBadge aria-label="Badge" content="Words" />
+<ModusBadge aria-label="Badge" content="Words" />;
 ```
 
 ### Wrapping Components
@@ -51,8 +51,7 @@ Wrapped Modus Button Example:
 ```tsx
 import { ModusWcAvatar } from '@trimble-cms/modus-wc-react';
 
-export interface AvatarProps extends ModusAvatarProps {
-};
+export interface AvatarProps extends ModusAvatarProps {}
 
 const Avatar = (props: AvatarProps) => {
   return <ModusAvatar {...props} />;
@@ -62,20 +61,23 @@ export default Avatar;
 ```
 
 or, a more complex wrapper:
+
 ```tsx
 import { ModusWcTextInput } from '@trimble-cms/modus-wc-react';
 
-export interface TextInputProps extends Omit<ModusWcTextInputProps, 'inputChange'> {
-    onValueChange?: (value: string) => void;
-};
+export interface TextInputProps
+  extends Omit<ModusWcTextInputProps, 'inputChange'> {
+  onValueChange?: (value: string) => void;
+}
 
 const TextInput = (props: TextInputProps) => {
-    const handleValueChange = (event: ModusWcTextInputCustomEvent<string>) => {
-        const value = event.detail === undefined || event.detail === null ? '' : event.detail;
-        props.onValueChange?.(value);
-    };
+  const handleValueChange = (event: ModusWcTextInputCustomEvent<string>) => {
+    const value =
+      event.detail === undefined || event.detail === null ? '' : event.detail;
+    props.onValueChange?.(value);
+  };
 
-    return <ModusWcTextInput {...props} inputChange={handleValueChange} />;
+  return <ModusWcTextInput {...props} inputChange={handleValueChange} />;
 };
 
 export default TextInput;
