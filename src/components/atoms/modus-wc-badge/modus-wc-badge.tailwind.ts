@@ -1,3 +1,5 @@
+import { Size } from '../../types';
+
 export const convertPropsToClasses = (props: {
   color?:
     | 'primary'
@@ -7,7 +9,7 @@ export const convertPropsToClasses = (props: {
     | 'success'
     | 'warning'
     | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+  size?: Size;
   variant?: 'counter' | 'filled' | 'text';
 }): string => {
   let classes = '';
@@ -39,17 +41,7 @@ export const convertPropsToClasses = (props: {
   }
 
   if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    switch (props.size) {
-      case 'sm':
-        classes = `${classes} modus-wc-badge-sm`;
-        break;
-      case 'md':
-        classes = `${classes} modus-wc-badge-md`;
-        break;
-      case 'lg':
-        classes = `${classes} modus-wc-badge-lg`;
-        break;
-    }
+    classes = `${classes} modus-wc-badge-${props.size}`;
   }
 
   if (Object.prototype.hasOwnProperty.call(props, 'variant') && props.variant) {

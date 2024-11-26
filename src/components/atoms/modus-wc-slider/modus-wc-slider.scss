@@ -1,0 +1,13 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+[data-theme='modus-classic-light'] .modus-wc-range,
+[data-theme='modus-classic-dark'] .modus-wc-range {
+  --range-shdw: var(--modus-wc-color-trimble-blue);
+
+  &.modus-wc-range-xl {
+    height: 4rem;
+  }
+}

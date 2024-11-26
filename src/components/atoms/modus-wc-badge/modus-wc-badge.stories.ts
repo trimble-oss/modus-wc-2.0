@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { Size } from '../../types';
 
 interface BadgeArgs {
   'aria-label': string;
@@ -13,7 +14,7 @@ interface BadgeArgs {
     | 'danger';
   content: string;
   'custom-class': string;
-  size: 'sm' | 'md' | 'lg';
+  size: Size;
   variant: 'counter' | 'filled' | 'text';
 }
 

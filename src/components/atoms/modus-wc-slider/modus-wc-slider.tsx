@@ -1,27 +1,27 @@
 import {
-  h,
   Component,
   Event as StencilEvent,
   EventEmitter,
+  h,
   Host,
   Prop,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-textarea.tailwind';
+import { convertPropsToClasses } from './modus-wc-slider.tailwind';
 import { Size } from '../../types';
 
 /**
- * A customizable textarea component.
+ * A customizable slider component.
  *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
-  tag: 'modus-wc-textarea',
-  styleUrl: 'modus-wc-textarea.scss',
+  tag: 'modus-wc-slider',
+  styleUrl: 'modus-wc-slider.scss',
   shadow: false,
 })
-export class ModusWcTextarea {
+export class ModusWcSlider {
   /**
-   * The ID of the element that describes the textarea.
+   * The ID of the element that describes the slider.
    */
   @Prop() ariaDescribedby?: string;
 
@@ -31,24 +31,19 @@ export class ModusWcTextarea {
   @Prop() ariaLabel!: string;
 
   /**
-   * Indicates that the input should have a border.
+   * The aria-labelledby attribute for usage with a label.
    */
-  @Prop() bordered?: boolean = true;
+  @Prop() ariaLabelledby?: string;
 
   /**
-   * Custom CSS class to apply to the textarea (supports DaisyUI).
+   * Custom CSS class to apply to the inner div.
    */
-  @Prop() customClass?: string = '';
+  @Prop() customClass: string = '';
 
   /**
-   * The disabled state of the textarea.
+   * The disabled state of the slider.
    */
   @Prop() disabled?: boolean = false;
-
-  /**
-   * Indicates whether the input is invalid.
-   */
-  @Prop() inputAriaInvalid?: 'grammar' | 'spelling' | 'true' | 'false';
 
   /**
    * Specifies the text direction of the input content.
@@ -61,35 +56,24 @@ export class ModusWcTextarea {
   @Prop() inputId?: string;
 
   /**
-   * Whether the element may be checked for spelling errors.
-   * A hint for the browser, not a guarantee.
-   */
-  @Prop() inputSpellcheck?: boolean;
-
-  /**
    * The tabindex of the input.
    */
   @Prop() inputTabIndex?: number;
 
   /**
-   * The maximum number of characters allowed in the textarea.
+   * The maximum slider value.
    */
-  @Prop() maxLength?: number;
+  @Prop() max?: number;
+
+  /**
+   * The minimum slider value.
+   */
+  @Prop() min?: number;
 
   /**
    * Name of the form control. Submitted with the form as part of a name/value pair.
    */
-  @Prop() name?: string;
-
-  /**
-   * The placeholder text for the textarea.
-   */
-  @Prop() placeholder?: string = '';
-
-  /**
-   * The readonly state of the textarea.
-   */
-  @Prop() readonly?: boolean = false;
+  @Prop() name?: string = '';
 
   /**
    * A value is required for the form to be submittable.
@@ -97,19 +81,19 @@ export class ModusWcTextarea {
   @Prop() required?: boolean = false;
 
   /**
-   * The number of visible text lines for the textarea.
-   */
-  @Prop() rows?: number;
-
-  /**
    * The size of the input.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: Size = 'xs';
 
   /**
-   * The value of the textarea.
+   * The increment of the slider.
    */
-  @Prop({ mutable: true, reflect: true }) value: string = '';
+  @Prop() step?: number;
+
+  /**
+   * The value of the slider.
+   */
+  @Prop({ mutable: true, reflect: true }) value: number = 0;
 
   /**
    * Emitted when the input loses focus.
@@ -128,18 +112,14 @@ export class ModusWcTextarea {
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn(
-        'ModusWcTextarea: aria-label is required for accessibility.'
-      );
+      console.warn('ModusWcSlider: aria-label is required for accessibility.');
     }
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-textarea modus-wc-w-full'];
-    const propClasses = convertPropsToClasses({
-      bordered: this.bordered,
-      size: this.size,
-    });
+    const classList = ['modus-wc-range'];
+
+    const propClasses = convertPropsToClasses({ size: this.size });
 
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
@@ -163,27 +143,25 @@ export class ModusWcTextarea {
   render() {
     return (
       <Host>
-        <textarea
+        <input
           aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.inputAriaInvalid}
-          aria-label={this.ariaLabel || this.placeholder}
-          aria-placeholder={this.placeholder}
-          aria-required={this.required}
+          aria-disabled={this.disabled}
+          aria-label={this.ariaLabel}
+          aria-labelledby={this.ariaLabelledby}
           class={this.getClasses()}
           dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}
-          maxLength={this.maxLength}
+          max={this.max}
+          min={this.min}
           name={this.name}
           onBlur={this.handleBlur}
           onChange={this.handleChange}
           onFocus={this.handleFocus}
-          placeholder={this.placeholder}
-          readonly={this.readonly}
           required={this.required}
-          rows={this.rows}
-          spellcheck={this.inputSpellcheck}
+          step={this.step}
           tabIndex={this.inputTabIndex}
+          type="range"
           value={this.value}
         />
       </Host>

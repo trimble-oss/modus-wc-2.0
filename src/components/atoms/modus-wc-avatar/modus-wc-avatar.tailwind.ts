@@ -1,6 +1,8 @@
+import { Size } from '../../types';
+
 export const convertPropsToClasses = (props: {
   shape?: string;
-  size?: string;
+  size?: Size;
 }): string => {
   let classes = '';
 

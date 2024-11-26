@@ -11,6 +11,11 @@
   border-radius: var(--modus-wc-border-radius-sm);
   border-width: 2px;
 
+  &.modus-wc-checkbox-xl {
+    height: 4rem;
+    width: 4rem;
+  }
+
   &:disabled {
     opacity: 0.3;
   }

@@ -1,6 +1,6 @@
-export const convertPropsToClasses = (props: {
-  size?: 'sm' | 'md' | 'lg';
-}): string => {
+import { Size } from '../../types';
+
+export const convertPropsToClasses = (props: { size?: Size }): string => {
   let classes = '';
 
   if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {

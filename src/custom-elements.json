@@ -61,7 +61,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'xs' | 'sm' | 'md' | 'lg' | 'xl'"
+                "text": "Size"
               },
               "description": "The size of the avatar."
             }
@@ -421,7 +421,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "Size"
               },
               "description": "The size of the input."
             },
@@ -839,7 +839,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "Size"
               },
               "description": "The icon size, can be \"sm\", \"md\", \"lg\" (a custom size can be specified in CSS).\r\nThis adjusts the font size for the icon."
             }
@@ -1424,6 +1424,191 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-slider/modus-wc-slider.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable slider component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcSlider",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "fieldName": "ariaDescribedby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the element that describes the slider."
+            },
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "aria-labelledby",
+              "fieldName": "ariaLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The disabled state of the slider."
+            },
+            {
+              "name": "input-dir",
+              "fieldName": "inputDir",
+              "type": {
+                "text": "'' | 'ltr' | 'rtl' | 'auto'"
+              },
+              "description": "Specifies the text direction of the input content."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "The tabindex of the input."
+            },
+            {
+              "name": "max",
+              "fieldName": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "The maximum slider value."
+            },
+            {
+              "name": "min",
+              "fieldName": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "The minimum slider value."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "Size"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "step",
+              "fieldName": "step",
+              "type": {
+                "text": "number"
+              },
+              "description": "The increment of the slider."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "number"
+              },
+              "description": "The value of the slider."
+            }
+          ],
+          "tagName": "modus-wc-slider",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcSlider",
+          "declaration": {
+            "name": "ModusWcSlider",
+            "module": "src/components/atoms/modus-wc-slider/modus-wc-slider.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-slider",
+          "declaration": {
+            "name": "ModusWcSlider",
+            "module": "src/components/atoms/modus-wc-slider/modus-wc-slider.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx",
       "declarations": [
         {
@@ -1609,7 +1794,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "Size"
               },
               "description": "The size of the input."
             },
@@ -1826,7 +2011,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "Size"
               },
               "description": "The size of the input."
             },
@@ -2003,7 +2188,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "Size"
               },
               "description": "The size of the input."
             },
@@ -2100,7 +2285,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "TypographySize"
+                "text": "Size"
               },
               "description": "The size of the font."
             },

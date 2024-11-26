@@ -7,6 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
+import { Size } from '../../types';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -143,7 +144,7 @@ export class ModusWcTextInput {
   /**
    * The size of the input.
    */
-  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size?: Size = 'md';
 
   /**
    * Type of form control.

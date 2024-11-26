@@ -10,6 +10,8 @@
   height: fit-content;
   min-height: fit-content;
 
+  // TODO - add support for xs and xl once added to Modus Figma
+
   &.modus-wc-btn-sm {
     font-size: var(--modus-wc-font-size-sm);
     padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);

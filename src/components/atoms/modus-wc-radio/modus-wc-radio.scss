@@ -9,6 +9,11 @@
 
   border-width: 2px;
 
+  &.modus-wc-radio-xl {
+    height: 4rem;
+    width: 4rem;
+  }
+
   &:checked {
     --fallback-bc: var(--modus-wc-color-blue-light);
   }

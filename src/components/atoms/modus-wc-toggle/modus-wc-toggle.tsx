@@ -8,6 +8,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-toggle.tailwind';
+import { Size } from '../../types';
 
 /**
  * A customizable checkbox component.
@@ -78,7 +79,7 @@ export class ModusWcToggle {
   /**
    * The size of the input.
    */
-  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size?: Size = 'md';
 
   /**
    * The value of the toggle.

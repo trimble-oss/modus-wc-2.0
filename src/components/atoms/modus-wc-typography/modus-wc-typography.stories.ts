@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
-import { TypographySize, TypographyWeight } from './modus-wc-typography';
+import { TypographyWeight } from './modus-wc-typography';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { Size } from '../../types';
 
 // Slot content was lost due to rendering issues when changing the "variant" attribute.
 // Because of this, each variant is rendered as a unique story below.
@@ -10,7 +11,7 @@ interface TypographyArgs {
   'aria-label': string;
   content: string;
   'custom-class': string;
-  size: TypographySize;
+  size: Size;
   weight: TypographyWeight;
 }
 
@@ -28,7 +29,7 @@ const meta: Meta<TypographyArgs> = {
       control: { type: 'text' },
     },
     size: {
-      control: { type: 'radio' },
+      control: { type: 'inline-radio' },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     weight: {

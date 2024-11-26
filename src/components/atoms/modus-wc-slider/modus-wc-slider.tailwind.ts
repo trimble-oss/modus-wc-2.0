@@ -4,7 +4,7 @@ export const convertPropsToClasses = (props: { size?: Size }): string => {
   let classes = '';
 
   if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-checkbox-${props.size}`;
+    classes = `${classes} modus-wc-range-${props.size}`;
   }
 
   return classes;

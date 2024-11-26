@@ -15,6 +15,12 @@
   --fallback-b1: var(--modus-wc-color-gray-4);
   color: var(--modus-wc-color-gray-4);
 
+  &.modus-wc-toggle-xl {
+    --handleoffset: 2.5rem;
+    height: 2.5rem;
+    width: 5rem;
+  }
+
   &:checked {
     --fallback-b1: var(--modus-wc-color-blue-light);
     color: var(--modus-wc-color-blue-light);
@@ -22,6 +28,5 @@
 
   &:hover {
     --fallback-b1: var(--modus-wc-color-trimble-blue);
-    color: var(--modus-wc-color-trimble-blue);
   }
 }
