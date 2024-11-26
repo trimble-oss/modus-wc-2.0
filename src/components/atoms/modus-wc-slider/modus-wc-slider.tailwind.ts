@@ -1,5 +1,5 @@
 export const convertPropsToClasses = (props: {
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
 }): string => {
   let classes = '';
 

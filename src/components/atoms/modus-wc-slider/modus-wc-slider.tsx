@@ -82,7 +82,7 @@ export class ModusWcSlider {
   /**
    * The size of the input.
    */
-  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size?: 'xs' | 'sm' | 'md' | 'lg' = 'xs';
 
   /**
    * The increment of the slider.

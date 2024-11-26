@@ -16,7 +16,7 @@ interface SliderArgs {
   min?: number;
   name?: string;
   required?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   step?: number;
   value: boolean;
 }
@@ -30,7 +30,7 @@ const meta: Meta<SliderArgs> = {
     disabled: false,
     name: '',
     required: false,
-    size: 'md',
+    size: 'xs',
     value: true,
   },
   argTypes: {
@@ -42,7 +42,7 @@ const meta: Meta<SliderArgs> = {
     },
     size: {
       control: { type: 'inline-radio' },
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg'],
     },
   },
   decorators: [withActions],

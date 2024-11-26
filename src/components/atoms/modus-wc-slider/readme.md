@@ -27,7 +27,7 @@ Adheres to WCAG 2.2 standards.
 | `min`                    | `min`              | The minimum slider value.                                                       | `number \| undefined`                         | `undefined` |
 | `name`                   | `name`             | Name of the form control. Submitted with the form as part of a name/value pair. | `string \| undefined`                         | `''`        |
 | `required`               | `required`         | A value is required for the form to be submittable.                             | `boolean \| undefined`                        | `false`     |
-| `size`                   | `size`             | The size of the input.                                                          | `"lg" \| "md" \| "sm" \| undefined`           | `'md'`      |
+| `size`                   | `size`             | The size of the input.                                                          | `"lg" \| "md" \| "sm" \| "xs" \| undefined`   | `'xs'`      |
 | `step`                   | `step`             | The increment of the slider.                                                    | `number \| undefined`                         | `undefined` |
 | `value`                  | `value`            | The value of the slider.                                                        | `number`                                      | `0`         |
 

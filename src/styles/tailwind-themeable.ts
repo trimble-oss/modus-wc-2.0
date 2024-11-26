@@ -13,6 +13,7 @@ const themeable = [
   'modus-wc-radio-sm',
   'modus-wc-radio-md',
   'modus-wc-radio-lg',
+  'modus-wc-range-xs',
   'modus-wc-range-sm',
   'modus-wc-range-md',
   'modus-wc-range-lg',
