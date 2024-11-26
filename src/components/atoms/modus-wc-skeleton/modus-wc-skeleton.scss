@@ -2,9 +2,3 @@
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
-
-[data-theme='modus-classic-light'] .modus-wc-skeleton,
-[data-theme='modus-classic-dark'] .modus-wc-skeleton {
-  --modus-wc-default-skeleton-height: var(--modus-wc-font-size-md);
-  --modus-wc-default-skeleton-width: '100%';
-}

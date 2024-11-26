@@ -25,7 +25,7 @@ export class ModusWcSkeleton {
   /**
    * The height of the skeleton.
    */
-  @Prop() height: string = 'var(--modus-wc-default-skeleton-height)';
+  @Prop() height: string = 'var(--modus-wc-line-height-md)';
 
   /**
    * The role of the skeleton.
@@ -40,7 +40,7 @@ export class ModusWcSkeleton {
   /**
    * The width of the skeleton.
    */
-  @Prop() width: string = 'var(--modus-wc-default-skeleton-width)';
+  @Prop() width: string = '100%';
 
   private getClasses(): string {
     const classList = ['modus-wc-skeleton'];
