@@ -2,12 +2,12 @@
 
 exports[`modus-wc-skeleton renders with default props 1`] = `
 <modus-wc-skeleton>
-  <div aria-hidden="true" class="modus-wc-skeleton" role="presentation" tabindex="-1" style="height: var(--modus-wc-default-skeleton-height); width: var(--modus-wc-default-skeleton-width);"></div>
+  <div aria-hidden="true" class="modus-wc-skeleton" tabindex="-1" style="height: var(--modus-wc-line-height-md); width: 100%;"></div>
 </modus-wc-skeleton>
 `;
 
 exports[`modus-wc-skeleton should render with custom props 1`] = `
 <modus-wc-skeleton aria-hidden="false" custom-class="test-class" height="5rem" role="status" shape="circle" tabindex="1" width="5rem">
-  <div aria-hidden="false" class="modus-wc-rounded-full modus-wc-skeleton test-class" role="status" tabindex="-1" style="height: 5rem; width: 5rem;"></div>
+  <div aria-hidden="true" class="modus-wc-rounded-full modus-wc-skeleton test-class" tabindex="-1" style="height: 5rem; width: 5rem;"></div>
 </modus-wc-skeleton>
 `;
