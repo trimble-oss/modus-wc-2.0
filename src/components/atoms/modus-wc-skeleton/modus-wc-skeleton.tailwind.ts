@@ -5,7 +5,7 @@ export const convertPropsToClasses = (props: {
 
   if (
     Object.prototype.hasOwnProperty.call(props, 'shape') &&
-    props.shape == 'circle'
+    props.shape === 'circle'
   ) {
     classes = `${classes} modus-wc-rounded-full`;
   }
