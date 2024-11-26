@@ -5,10 +5,12 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { Size } from "./components/types";
 import { IThemeConfig } from "./providers/theme/theme.types";
-import { TypographySize, TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+export { Size } from "./components/types";
 export { IThemeConfig } from "./providers/theme/theme.types";
-export { TypographySize, TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
      * A customizable avatar component used to create avatars with different images.
@@ -38,7 +40,7 @@ export namespace Components {
         /**
           * The size of the avatar.
          */
-        "size"?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+        "size"?: Size;
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
@@ -174,7 +176,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: Size;
         /**
           * The value of the checkbox.
          */
@@ -323,7 +325,7 @@ export namespace Components {
         /**
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: Size;
     }
     /**
      * A customizable input label component.
@@ -523,6 +525,72 @@ export namespace Components {
         "width": string;
     }
     /**
+     * A customizable slider component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcSlider {
+        /**
+          * The ID of the element that describes the slider.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass": string;
+        /**
+          * The disabled state of the slider.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * The tabindex of the input.
+         */
+        "inputTabIndex"?: number;
+        /**
+          * The maximum slider value.
+         */
+        "max"?: number;
+        /**
+          * The minimum slider value.
+         */
+        "min"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: Size;
+        /**
+          * The increment of the slider.
+         */
+        "step"?: number;
+        /**
+          * The value of the slider.
+         */
+        "value": number;
+    }
+    /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -626,7 +694,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: Size;
         /**
           * Type of form control.
          */
@@ -708,7 +776,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: Size;
         /**
           * The value of the textarea.
          */
@@ -784,7 +852,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: Size;
         /**
           * The value of the toggle.
          */
@@ -806,7 +874,7 @@ export namespace Components {
         /**
           * The size of the font.
          */
-        "size"?: TypographySize;
+        "size"?: Size;
         /**
           * The variant of the typography component.
          */
@@ -836,6 +904,10 @@ export interface ModusWcNumberInputCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcRadioElement;
+}
+export interface ModusWcSliderCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcSliderElement;
 }
 export interface ModusWcTextInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1029,6 +1101,29 @@ declare global {
         prototype: HTMLModusWcSkeletonElement;
         new (): HTMLModusWcSkeletonElement;
     };
+    interface HTMLModusWcSliderElementEventMap {
+        "inputBlur": FocusEvent;
+        "inputChange": Event;
+        "inputFocus": FocusEvent;
+    }
+    /**
+     * A customizable slider component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcSliderElement extends Components.ModusWcSlider, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcSliderElementEventMap>(type: K, listener: (this: HTMLModusWcSliderElement, ev: ModusWcSliderCustomEvent<HTMLModusWcSliderElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcSliderElementEventMap>(type: K, listener: (this: HTMLModusWcSliderElement, ev: ModusWcSliderCustomEvent<HTMLModusWcSliderElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcSliderElement: {
+        prototype: HTMLModusWcSliderElement;
+        new (): HTMLModusWcSliderElement;
+    };
     interface HTMLModusWcTextInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
@@ -1148,6 +1243,7 @@ declare global {
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
+        "modus-wc-slider": HTMLModusWcSliderElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
@@ -1185,7 +1281,7 @@ declare namespace LocalJSX {
         /**
           * The size of the avatar.
          */
-        "size"?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+        "size"?: Size;
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
@@ -1337,7 +1433,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: Size;
         /**
           * The value of the checkbox.
          */
@@ -1498,7 +1594,7 @@ declare namespace LocalJSX {
         /**
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: Size;
     }
     /**
      * A customizable input label component.
@@ -1722,6 +1818,84 @@ declare namespace LocalJSX {
         "width"?: string;
     }
     /**
+     * A customizable slider component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcSlider {
+        /**
+          * The ID of the element that describes the slider.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label.
+         */
+        "ariaLabelledby"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the slider.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * The tabindex of the input.
+         */
+        "inputTabIndex"?: number;
+        /**
+          * The maximum slider value.
+         */
+        "max"?: number;
+        /**
+          * The minimum slider value.
+         */
+        "min"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Emitted when the input loses focus.
+         */
+        "onInputBlur"?: (event: ModusWcSliderCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the input value changes.
+         */
+        "onInputChange"?: (event: ModusWcSliderCustomEvent<Event>) => void;
+        /**
+          * Emitted when the input gains focus.
+         */
+        "onInputFocus"?: (event: ModusWcSliderCustomEvent<FocusEvent>) => void;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: Size;
+        /**
+          * The increment of the slider.
+         */
+        "step"?: number;
+        /**
+          * The value of the slider.
+         */
+        "value"?: number;
+    }
+    /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1837,7 +2011,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: Size;
         /**
           * Type of form control.
          */
@@ -1931,7 +2105,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: Size;
         /**
           * The value of the textarea.
          */
@@ -2023,7 +2197,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: Size;
         /**
           * The value of the toggle.
          */
@@ -2045,7 +2219,7 @@ declare namespace LocalJSX {
         /**
           * The size of the font.
          */
-        "size"?: TypographySize;
+        "size"?: Size;
         /**
           * The variant of the typography component.
          */
@@ -2067,6 +2241,7 @@ declare namespace LocalJSX {
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-radio": ModusWcRadio;
         "modus-wc-skeleton": ModusWcSkeleton;
+        "modus-wc-slider": ModusWcSlider;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
@@ -2136,6 +2311,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-skeleton": LocalJSX.ModusWcSkeleton & JSXBase.HTMLAttributes<HTMLModusWcSkeletonElement>;
+            /**
+             * A customizable slider component.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-slider": LocalJSX.ModusWcSlider & JSXBase.HTMLAttributes<HTMLModusWcSliderElement>;
             /**
              * A customizable input component used to create text inputs with types.
              * Adheres to WCAG 2.2 standards.
