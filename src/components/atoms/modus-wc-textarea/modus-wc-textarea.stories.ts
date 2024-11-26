@@ -80,7 +80,7 @@ export const Template: Story = {
         input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
         input-dir=${ifDefined(args['input-dir'])}
         input-id=${ifDefined(args['input-id'])}
-        ?input-spellcheck=${ifDefined(args['input-spellcheck'])}
+        ?input-spellcheck=${args['input-spellcheck']}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         max-length=${ifDefined(args['max-length'])}
         name=${ifDefined(args.name)}
@@ -98,6 +98,15 @@ export const Template: Story = {
 export const TextareaWithLabel: Story = {
   render: () => {
     return html`
+      <style>
+        .form-control {
+          display: flex;
+          align-items: center;
+        }
+        .modus-wc-input-label {
+          padding-inline-end: 8px;
+        }
+      </style>
       <form action="" method="get">
         <div class="form-control">
           <modus-wc-input-label
@@ -111,15 +120,6 @@ export const TextareaWithLabel: Story = {
           ></modus-wc-textarea>
         </div>
       </form>
-      <style>
-        .form-control {
-          display: flex;
-          align-items: center;
-        }
-        .modus-wc-input-label {
-          padding-inline-end: 8px;
-        }
-      </style>
     `;
   },
 };

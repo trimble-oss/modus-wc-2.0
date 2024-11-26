@@ -118,7 +118,7 @@ export const Template: Story = {
       auto-complete=${ifDefined(args['auto-complete'])}
       ?auto-focus=${args['auto-focus']}
       ?bordered=${args.bordered}
-      custom-class=${args['custom-class']}
+      custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-dir=${ifDefined(args['input-dir'])}
@@ -130,11 +130,11 @@ export const Template: Story = {
       min-length=${ifDefined(args['min-length'])}
       name=${ifDefined(args.name)}
       pattern=${ifDefined(args.pattern)}
-      placeholder=${args.placeholder}
+      placeholder=${ifDefined(args.placeholder)}
       ?read-only=${args['read-only']}
       ?required=${args.required}
-      size=${args.size}
-      type=${args.type}
+      size=${ifDefined(args.size)}
+      type=${ifDefined(args.type)}
       .value=${args.value}
     ></modus-wc-text-input>
   `,
@@ -143,6 +143,15 @@ export const Template: Story = {
 export const TextInputWithLabel: Story = {
   render: () => {
     return html`
+      <style>
+        .form-control {
+          display: flex;
+          align-items: center;
+        }
+        .modus-wc-input-label {
+          padding-inline-end: 8px;
+        }
+      </style>
       <form action="" method="get">
         <div class="form-control">
           <modus-wc-input-label
@@ -156,15 +165,6 @@ export const TextInputWithLabel: Story = {
           ></modus-wc-text-input>
         </div>
       </form>
-      <style>
-        .form-control {
-          display: flex;
-          align-items: center;
-        }
-        .modus-wc-input-label {
-          padding-inline-end: 8px;
-        }
-      </style>
     `;
   },
 };

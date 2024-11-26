@@ -81,6 +81,7 @@ export class ModusWcBadge {
           class={this.getClasses()}
           aria-label={this.ariaLabel}
           role={isAlert ? 'alert' : 'status'}
+          tabindex={-1}
         >
           {this.content}
         </span>

@@ -81,6 +81,14 @@ export const Template: Story = {
 export const CheckboxWithLabel: Story = {
   render: () => {
     return html`
+      <style>
+        .form-control {
+          display: flex;
+        }
+        modus-wc-checkbox {
+          padding-inline-end: 8px;
+        }
+      </style>
       <form action="" method="get">
         <div class="form-control">
           <modus-wc-checkbox
@@ -94,14 +102,6 @@ export const CheckboxWithLabel: Story = {
           ></modus-wc-input-label>
         </div>
       </form>
-      <style>
-        .form-control {
-          display: flex;
-        }
-        modus-wc-checkbox {
-          padding-inline-end: 8px;
-        }
-      </style>
     `;
   },
 };

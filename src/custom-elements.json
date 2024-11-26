@@ -1199,14 +1199,6 @@
           "name": "ModusWcRadio",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
@@ -1354,6 +1346,78 @@
           "declaration": {
             "name": "ModusWcRadio",
             "module": "src/components/atoms/modus-wc-radio/modus-wc-radio.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-skeleton/modus-wc-skeleton.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable skeleton component used to create skeletons of various sizes and shapes.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcSkeleton",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "height",
+              "fieldName": "height",
+              "type": {
+                "text": "string"
+              },
+              "description": "The height of the skeleton."
+            },
+            {
+              "name": "shape",
+              "fieldName": "shape",
+              "type": {
+                "text": "'circle' | 'rectangle'"
+              },
+              "description": "The shape of the skeleton."
+            },
+            {
+              "name": "width",
+              "fieldName": "width",
+              "type": {
+                "text": "string"
+              },
+              "description": "The width of the skeleton."
+            }
+          ],
+          "tagName": "modus-wc-skeleton",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcSkeleton",
+          "declaration": {
+            "name": "ModusWcSkeleton",
+            "module": "src/components/atoms/modus-wc-skeleton/modus-wc-skeleton.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-skeleton",
+          "declaration": {
+            "name": "ModusWcSkeleton",
+            "module": "src/components/atoms/modus-wc-skeleton/modus-wc-skeleton.tsx"
           }
         }
       ]

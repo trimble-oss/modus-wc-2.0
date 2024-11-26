@@ -83,6 +83,7 @@ export class ModusWcIcon {
           aria-label={this.decorative ? null : this.ariaLabel}
           class={this.getClasses()}
           role={role}
+          tabindex={-1}
         >
           {this.name}
         </i>

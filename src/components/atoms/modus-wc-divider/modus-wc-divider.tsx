@@ -84,6 +84,7 @@ export class ModusWcDivider {
           class={this.getClasses()}
           aria-label={this.ariaLabel}
           role="separator"
+          tabindex={-1}
         >
           {this.content}
         </div>

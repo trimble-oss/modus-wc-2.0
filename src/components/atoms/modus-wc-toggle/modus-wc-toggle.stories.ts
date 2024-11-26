@@ -81,6 +81,14 @@ export const Template: Story = {
 export const ToggleWithLabel: Story = {
   render: () => {
     return html`
+      <style>
+        .form-control {
+          display: flex;
+        }
+        modus-wc-toggle {
+          padding-inline-end: 8px;
+        }
+      </style>
       <form action="" method="get">
         <div class="form-control">
           <modus-wc-toggle
@@ -94,14 +102,6 @@ export const ToggleWithLabel: Story = {
           ></modus-wc-input-label>
         </div>
       </form>
-      <style>
-        .form-control {
-          display: flex;
-        }
-        modus-wc-toggle {
-          padding-inline-end: 8px;
-        }
-      </style>
     `;
   },
 };
