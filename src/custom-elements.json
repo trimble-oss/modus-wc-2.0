@@ -1390,14 +1390,6 @@
               "description": "The height of the skeleton."
             },
             {
-              "name": "role",
-              "fieldName": "role",
-              "type": {
-                "text": "string"
-              },
-              "description": "The role of the skeleton."
-            },
-            {
               "name": "shape",
               "fieldName": "shape",
               "type": {

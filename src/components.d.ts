@@ -518,10 +518,6 @@ export namespace Components {
          */
         "height": string;
         /**
-          * The role of the skeleton.
-         */
-        "role": string;
-        /**
           * The shape of the skeleton.
          */
         "shape"?: 'circle' | 'rectangle';
@@ -1724,10 +1720,6 @@ declare namespace LocalJSX {
           * The height of the skeleton.
          */
         "height"?: string;
-        /**
-          * The role of the skeleton.
-         */
-        "role"?: string;
         /**
           * The shape of the skeleton.
          */
