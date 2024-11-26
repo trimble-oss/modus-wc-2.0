@@ -1,42 +1,13 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-
-type ARIARole =
-  | 'alert'
-  | 'alertdialog'
-  | 'button'
-  | 'checkbox'
-  | 'dialog'
-  | 'gridcell'
-  | 'link'
-  | 'log'
-  | 'marquee'
-  | 'menuitem'
-  | 'menuitemcheckbox'
-  | 'menuitemradio'
-  | 'option'
-  | 'progressbar'
-  | 'radio'
-  | 'scrollbar'
-  | 'searchbox'
-  | 'slider'
-  | 'spinbutton'
-  | 'status'
-  | 'switch'
-  | 'tab'
-  | 'tabpanel'
-  | 'textbox'
-  | 'timer'
-  | 'tooltip'
-  | 'treeitem'
-  | 'presentation';
+import { AriaRole } from 'react';
 
 interface SkeletonArgs {
   'aria-hidden'?: 'true' | 'false';
   'custom-class'?: string;
   height?: string;
-  role?: ARIARole;
+  role?: AriaRole;
   shape?: 'circle' | 'rectangle';
   tabindex?: number;
   width?: string;
