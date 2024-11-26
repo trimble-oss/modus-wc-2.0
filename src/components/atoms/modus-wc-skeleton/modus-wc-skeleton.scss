@@ -5,7 +5,6 @@
 
 [data-theme='modus-classic-light'] .modus-wc-skeleton,
 [data-theme='modus-classic-dark'] .modus-wc-skeleton {
-  // TODO: default height to base modus line height
   --modus-wc-default-skeleton-height: var(--modus-wc-font-size-md);
   --modus-wc-default-skeleton-width: '100%';
 }
