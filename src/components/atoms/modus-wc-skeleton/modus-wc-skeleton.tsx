@@ -28,11 +28,6 @@ export class ModusWcSkeleton {
   @Prop() height: string = 'var(--modus-wc-line-height-md)';
 
   /**
-   * The role of the skeleton.
-   */
-  @Prop() role: string = 'presentation';
-
-  /**
    * The shape of the skeleton.
    */
   @Prop() shape?: 'circle' | 'rectangle' = 'rectangle';
@@ -66,7 +61,6 @@ export class ModusWcSkeleton {
         <div
           aria-hidden={this.ariaHidden}
           class={this.getClasses()}
-          role={this.role}
           style={this.getStyles()}
           tabindex={-1}
         ></div>

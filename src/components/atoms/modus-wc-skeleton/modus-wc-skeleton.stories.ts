@@ -1,13 +1,11 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { AriaRole } from 'react';
 
 interface SkeletonArgs {
   'aria-hidden'?: 'true' | 'false';
   'custom-class'?: string;
   height?: string;
-  role?: AriaRole;
   shape?: 'circle' | 'rectangle';
   width?: string;
 }
@@ -18,8 +16,7 @@ const meta: Meta<SkeletonArgs> = {
   args: {
     'aria-hidden': 'true',
     'custom-class': '',
-    height: '0.875rem',
-    role: 'presentation',
+    height: '1.5rem',
     shape: 'rectangle',
     width: '100%',
   },
@@ -47,7 +44,6 @@ export const Default: Story = {
         aria-hidden=${ifDefined(args['aria-hidden'])}
         custom-class=${ifDefined(args['custom-class'])}
         height=${ifDefined(args.height)}
-        role=${ifDefined(args.role)}
         shape=${ifDefined(args.shape)}
         width=${ifDefined(args.width)}
       ></modus-wc-skeleton>
