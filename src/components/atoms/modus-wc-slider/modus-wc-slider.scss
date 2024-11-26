@@ -6,4 +6,8 @@
 [data-theme='modus-classic-light'] .modus-wc-range,
 [data-theme='modus-classic-dark'] .modus-wc-range {
   --range-shdw: var(--modus-wc-color-trimble-blue);
+
+  &.modus-wc-range-xl {
+    height: 4rem;
+  }
 }

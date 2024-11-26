@@ -8,6 +8,8 @@
 [data-theme='modus-classic-dark'] .modus-wc-textarea {
   border-radius: var(--modus-wc-border-radius-md);
 
+  // TODO - add support for xs and xl once added to Modus Figma
+
   &.modus-wc-textarea-sm {
     font-size: var(--modus-wc-font-size-sm);
     padding: var(--modus-wc-spacing-sm);

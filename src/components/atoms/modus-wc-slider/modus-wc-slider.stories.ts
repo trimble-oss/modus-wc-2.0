@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { Size } from '../../types';
 
 interface SliderArgs {
   'aria-describedby'?: string;
@@ -16,7 +17,7 @@ interface SliderArgs {
   min?: number;
   name?: string;
   required?: boolean;
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  size?: Size;
   step?: number;
   value: boolean;
 }
@@ -42,7 +43,7 @@ const meta: Meta<SliderArgs> = {
     },
     size: {
       control: { type: 'inline-radio' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
   decorators: [withActions],

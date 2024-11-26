@@ -1,13 +1,21 @@
 .modus-icons {
+  &.modus-wc-icon--xs {
+    font-size: 1rem;
+  }
+
   &.modus-wc-icon--sm {
-    font-size: var(--modus-wc-font-size-lg);
+    font-size: 1.25rem;
   }
 
   &.modus-wc-icon--md {
-    font-size: var(--modus-wc-font-size-3xl);
+    font-size: 1.5rem;
   }
 
   &.modus-wc-icon--lg {
-    font-size: var(--modus-wc-font-size-5xl);
+    font-size: 2rem;
+  }
+
+  &.modus-wc-icon--xl {
+    font-size: 4rem;
   }
 }

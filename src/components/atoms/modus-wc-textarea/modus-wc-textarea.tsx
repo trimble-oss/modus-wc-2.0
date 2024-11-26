@@ -7,6 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-textarea.tailwind';
+import { Size } from '../../types';
 
 /**
  * A customizable textarea component.
@@ -103,7 +104,7 @@ export class ModusWcTextarea {
   /**
    * The size of the input.
    */
-  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size?: Size = 'md';
 
   /**
    * The value of the textarea.

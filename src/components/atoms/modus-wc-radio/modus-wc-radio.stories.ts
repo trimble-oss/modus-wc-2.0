@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { Size } from '../../types';
 
 interface RadioArgs {
   'aria-describedby'?: string;
@@ -14,7 +15,7 @@ interface RadioArgs {
   'input-tab-index'?: number;
   name?: string;
   required?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: Size;
   value: boolean;
 }
 
@@ -39,7 +40,7 @@ const meta: Meta<RadioArgs> = {
     },
     size: {
       control: { type: 'inline-radio' },
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
   decorators: [withActions],

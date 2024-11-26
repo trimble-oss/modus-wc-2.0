@@ -1,6 +1,8 @@
+import { Size } from '../../types';
+
 export const convertPropsToClasses = (props: {
   bordered?: boolean;
-  size?: string;
+  size?: Size;
 }): string => {
   let classes = '';
 

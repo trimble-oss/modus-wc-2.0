@@ -1,4 +1,5 @@
 import { Component, h, Host, Prop } from '@stencil/core';
+import { Size } from '../../types';
 
 /**
  * A customizable icon component used to render Modus icons.
@@ -39,7 +40,7 @@ export class ModusWcIcon {
    * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS).
    * This adjusts the font size for the icon.
    */
-  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size?: Size = 'md';
 
   componentWillLoad() {
     if (!this.decorative && !this.ariaLabel) {
@@ -52,24 +53,11 @@ export class ModusWcIcon {
   private getClasses(): string {
     const classList = ['modus-icons'];
 
-    const sizeClass = this.getSizeClass();
-
     // The order CSS classes are added matters to CSS specificity
-    if (sizeClass) classList.push(sizeClass);
+    classList.push(`modus-wc-icon--${this.size}`);
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
-  }
-
-  private getSizeClass() {
-    switch (this.size) {
-      case 'sm':
-        return 'modus-wc-icon--sm';
-      case 'md':
-        return 'modus-wc-icon--md';
-      case 'lg':
-        return 'modus-wc-icon--lg';
-    }
   }
 
   render() {

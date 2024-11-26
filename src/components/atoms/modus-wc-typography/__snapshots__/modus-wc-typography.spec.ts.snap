@@ -21,7 +21,7 @@ exports[`modus-wc-typography should render with custom props 1`] = `
 exports[`modus-wc-typography should render with default props 1`] = `
 <modus-wc-typography aria-label="Test typography">
   <!---->
-  <p class="modus-wc-font-normal modus-wc-text-base modus-wc-typography">
+  <p class="modus-wc-font-normal modus-wc-text-md modus-wc-typography">
     Test content
   </p>
 </modus-wc-typography>

@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
+import { Size } from '../../types';
 
 interface AvatarArgs {
   alt: string;
@@ -7,7 +8,7 @@ interface AvatarArgs {
   'custom-class': string;
   'img-src': string;
   shape: string;
-  size: string;
+  size: Size;
 }
 
 const meta: Meta<AvatarArgs> = {
@@ -27,7 +28,7 @@ const meta: Meta<AvatarArgs> = {
       options: ['circle', 'square'],
     },
     size: {
-      control: { type: 'radio' },
+      control: { type: 'inline-radio' },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },

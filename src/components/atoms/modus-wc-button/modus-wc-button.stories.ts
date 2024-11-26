@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
+import { Size } from '../../types';
 
 interface ButtonArgs {
   'aria-label': string;
@@ -10,7 +11,7 @@ interface ButtonArgs {
   'full-width': boolean;
   label: string;
   pressed: boolean;
-  size: 'sm' | 'md' | 'lg';
+  size: Size;
   type: 'button' | 'submit' | 'reset';
   variant: 'filled' | 'outlined' | 'text';
 }

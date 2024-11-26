@@ -1,13 +1,14 @@
 import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { Size } from '../../types';
 
 interface IconArgs {
   'aria-label': string;
   'custom-class': string;
   decorative: boolean;
   name: string;
-  size: 'sm' | 'md' | 'lg';
+  size: Size;
 }
 
 const meta: Meta<IconArgs> = {
@@ -22,8 +23,8 @@ const meta: Meta<IconArgs> = {
   },
   argTypes: {
     size: {
-      control: { type: 'radio' },
-      options: ['sm', 'md', 'lg'],
+      control: { type: 'inline-radio' },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
 };
