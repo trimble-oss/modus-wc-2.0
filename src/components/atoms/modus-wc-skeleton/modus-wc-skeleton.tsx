@@ -13,11 +13,6 @@ import { convertPropsToClasses } from './modus-wc-skeleton.tailwind';
 })
 export class ModusWcSkeleton {
   /**
-   * Whether the skeleton is hidden from screen readers and other assistive technologies.
-   */
-  @Prop() ariaHidden: 'true' | 'false' = 'true';
-
-  /**
    * Custom CSS class to apply to the inner div.
    */
   @Prop() customClass: string = '';
@@ -59,7 +54,7 @@ export class ModusWcSkeleton {
     return (
       <Host>
         <div
-          aria-hidden={this.ariaHidden}
+          aria-hidden="true"
           class={this.getClasses()}
           style={this.getStyles()}
           tabindex={-1}

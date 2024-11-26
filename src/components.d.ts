@@ -506,10 +506,6 @@ export namespace Components {
      */
     interface ModusWcSkeleton {
         /**
-          * Whether the skeleton is hidden from screen readers and other assistive technologies.
-         */
-        "ariaHidden": 'true' | 'false';
-        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass": string;
@@ -1708,10 +1704,6 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcSkeleton {
-        /**
-          * Whether the skeleton is hidden from screen readers and other assistive technologies.
-         */
-        "ariaHidden"?: 'true' | 'false';
         /**
           * Custom CSS class to apply to the inner div.
          */

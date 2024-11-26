@@ -14,7 +14,6 @@ const meta: Meta<SkeletonArgs> = {
   title: 'Components/Skeleton',
   component: 'modus-wc-skeleton',
   args: {
-    'aria-hidden': 'true',
     'custom-class': '',
     height: '1.5rem',
     shape: 'rectangle',
@@ -41,7 +40,6 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-skeleton
-        aria-hidden=${ifDefined(args['aria-hidden'])}
         custom-class=${ifDefined(args['custom-class'])}
         height=${ifDefined(args.height)}
         shape=${ifDefined(args.shape)}
