@@ -38,11 +38,6 @@ export class ModusWcSkeleton {
   @Prop() shape?: 'circle' | 'rectangle' = 'rectangle';
 
   /**
-   * The tab index of the skeleton. Defaults to -1 to prevent the skeleton from being focusable.
-   */
-  @Prop() tabindex: number = -1;
-
-  /**
    * The width of the skeleton.
    */
   @Prop() width: string = 'var(--modus-wc-default-skeleton-width)';
@@ -73,7 +68,7 @@ export class ModusWcSkeleton {
           class={this.getClasses()}
           role={this.role}
           style={this.getStyles()}
-          tabindex={this.tabindex}
+          tabindex={-1}
         ></div>
       </Host>
     );

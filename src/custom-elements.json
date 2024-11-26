@@ -1406,14 +1406,6 @@
               "description": "The shape of the skeleton."
             },
             {
-              "name": "tabindex",
-              "fieldName": "tabindex",
-              "type": {
-                "text": "number"
-              },
-              "description": "The tab index of the skeleton. Defaults to -1 to prevent the skeleton from being focusable."
-            },
-            {
               "name": "width",
               "fieldName": "width",
               "type": {

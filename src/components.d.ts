@@ -526,10 +526,6 @@ export namespace Components {
          */
         "shape"?: 'circle' | 'rectangle';
         /**
-          * The tab index of the skeleton. Defaults to -1 to prevent the skeleton from being focusable.
-         */
-        "tabindex": number;
-        /**
           * The width of the skeleton.
          */
         "width": string;
@@ -1736,10 +1732,6 @@ declare namespace LocalJSX {
           * The shape of the skeleton.
          */
         "shape"?: 'circle' | 'rectangle';
-        /**
-          * The tab index of the skeleton. Defaults to -1 to prevent the skeleton from being focusable.
-         */
-        "tabindex"?: number;
         /**
           * The width of the skeleton.
          */

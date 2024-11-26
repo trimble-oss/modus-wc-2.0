@@ -9,7 +9,6 @@ interface SkeletonArgs {
   height?: string;
   role?: AriaRole;
   shape?: 'circle' | 'rectangle';
-  tabindex?: number;
   width?: string;
 }
 
@@ -22,7 +21,6 @@ const meta: Meta<SkeletonArgs> = {
     height: '0.875rem',
     role: 'presentation',
     shape: 'rectangle',
-    tabindex: -1,
     width: '100%',
   },
   argTypes: {
@@ -51,7 +49,6 @@ export const Default: Story = {
         height=${ifDefined(args.height)}
         role=${ifDefined(args.role)}
         shape=${ifDefined(args.shape)}
-        tabindex=${ifDefined(args.tabindex)}
         width=${ifDefined(args.width)}
       ></modus-wc-skeleton>
     `;

@@ -8,6 +8,6 @@ exports[`modus-wc-skeleton renders with default props 1`] = `
 
 exports[`modus-wc-skeleton should render with custom props 1`] = `
 <modus-wc-skeleton aria-hidden="false" custom-class="test-class" height="5rem" role="status" shape="circle" tabindex="1" width="5rem">
-  <div aria-hidden="false" class="modus-wc-rounded-full modus-wc-skeleton test-class" role="status" tabindex="1" style="height: 5rem; width: 5rem;"></div>
+  <div aria-hidden="false" class="modus-wc-rounded-full modus-wc-skeleton test-class" role="status" tabindex="-1" style="height: 5rem; width: 5rem;"></div>
 </modus-wc-skeleton>
 `;
