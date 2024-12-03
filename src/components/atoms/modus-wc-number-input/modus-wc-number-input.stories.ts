@@ -108,31 +108,32 @@ export const Template: Story = {
   `,
 };
 
+// prettier-ignore
 export const NumberInputWithLabel: Story = {
   render: () => {
     return html`
-      <style>
-        .form-control {
-          display: flex;
-          align-items: center;
-        }
-        .modus-wc-input-label {
-          padding-inline-end: 8px;
-        }
-      </style>
-      <form action="" method="get">
-        <div class="form-control">
-          <modus-wc-input-label
-            for-id="number-input"
-            label-text="Example number input"
-          ></modus-wc-input-label>
-          <modus-wc-number-input
-            aria-label="Example number input"
-            input-id="number-input"
-            name="example-number-input"
-          ></modus-wc-number-input>
-        </div>
-      </form>
+<style>
+  .form-control {
+    display: flex;
+    align-items: center;
+  }
+  .modus-wc-input-label {
+    padding-inline-end: 8px;
+  }
+</style>
+<form action="" method="get">
+  <div class="form-control">
+    <modus-wc-input-label
+      for-id="number-input"
+      label-text="Example number input"
+    ></modus-wc-input-label>
+    <modus-wc-number-input
+      aria-label="Example number input"
+      input-id="number-input"
+      name="example-number-input"
+    ></modus-wc-number-input>
+  </div>
+</form>
     `;
   },
 };

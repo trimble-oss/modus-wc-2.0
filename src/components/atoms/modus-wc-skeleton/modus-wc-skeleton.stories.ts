@@ -68,43 +68,43 @@ export const Square: Story = {
   },
 };
 
+// prettier-ignore
 export const Composed: Story = {
   render: () => {
     return html`
-      <style>
-        .skeleton-container {
-          width: 13rem;
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-        }
+<style>
+  .skeleton-container {
+    width: 13rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-        .skeleton-profile {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-        }
+  .skeleton-profile {
+    display: flex;
+    gap: 1rem;
+  }
 
-        .skeleton-text {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-        }
-      </style>
-      <div class="skeleton-container">
-        <div class="skeleton-profile">
-          <modus-wc-skeleton
-            height="4rem"
-            shape="circle"
-            width="4rem"
-          ></modus-wc-skeleton>
-          <div class="skeleton-text">
-            <modus-wc-skeleton width="5rem"></modus-wc-skeleton>
-            <modus-wc-skeleton width="7rem"></modus-wc-skeleton>
-          </div>
-        </div>
-        <modus-wc-skeleton height="8rem"></modus-wc-skeleton>
-      </div>
+  .skeleton-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+</style>
+<div class="skeleton-container">
+  <div class="skeleton-profile">
+    <modus-wc-skeleton
+      height="4rem"
+      shape="circle"
+      width="4rem"
+    ></modus-wc-skeleton>
+    <div class="skeleton-text">
+      <modus-wc-skeleton width="5rem"></modus-wc-skeleton>
+      <modus-wc-skeleton width="7rem"></modus-wc-skeleton>
+    </div>
+  </div>
+  <modus-wc-skeleton height="8rem"></modus-wc-skeleton>
+</div>
     `;
   },
 };

@@ -47,14 +47,15 @@ export default meta;
 
 type Story = StoryObj<ThemeSwitcherArgs>;
 
+// prettier-ignore
 const Template: Story = {
   render: (args) => html`
-    <modus-wc-theme-provider .initialTheme=${args['initial-theme']}>
-      <modus-wc-theme-switcher
-        aria-label=${args['aria-label']}
-        custom-class=${ifDefined(args['custom-class'])}
-      ></modus-wc-theme-switcher>
-    </modus-wc-theme-provider>
+<modus-wc-theme-provider .initialTheme=${args['initial-theme']}>
+  <modus-wc-theme-switcher
+    aria-label=${args['aria-label']}
+    custom-class=${ifDefined(args['custom-class'])}
+  ></modus-wc-theme-switcher>
+</modus-wc-theme-provider>
   `,
 };
 
