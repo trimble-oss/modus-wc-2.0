@@ -2290,20 +2290,20 @@
               "description": "Use this attribute to force the tooltip to remain open."
             },
             {
-              "name": "id",
-              "fieldName": "id",
-              "type": {
-                "text": "string"
-              },
-              "description": "The unique identifier of the tooltip, useful for setting the \"aria-describedby\" attribute of related elements."
-            },
-            {
               "name": "position",
               "fieldName": "position",
               "type": {
                 "text": "'auto' | 'top' | 'right' | 'bottom' | 'left'"
               },
               "description": "The position that the tooltip will render in relation to the element."
+            },
+            {
+              "name": "tooltip-id",
+              "fieldName": "tooltipId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the tooltip element, useful for setting the \"aria-describedby\" attribute of related elements."
             }
           ],
           "tagName": "modus-wc-tooltip",

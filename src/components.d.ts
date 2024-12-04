@@ -876,13 +876,13 @@ export namespace Components {
          */
         "forceOpen"?: boolean;
         /**
-          * The unique identifier of the tooltip, useful for setting the "aria-describedby" attribute of related elements.
-         */
-        "id"?: string;
-        /**
           * The position that the tooltip will render in relation to the element.
          */
         "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
+          * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
+         */
+        "tooltipId"?: string;
     }
     /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
@@ -2258,13 +2258,13 @@ declare namespace LocalJSX {
          */
         "forceOpen"?: boolean;
         /**
-          * The unique identifier of the tooltip, useful for setting the "aria-describedby" attribute of related elements.
-         */
-        "id"?: string;
-        /**
           * The position that the tooltip will render in relation to the element.
          */
         "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
+          * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
+         */
+        "tooltipId"?: string;
     }
     /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
