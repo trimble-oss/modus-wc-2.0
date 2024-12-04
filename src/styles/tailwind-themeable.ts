@@ -62,4 +62,9 @@ const themeable = [
   'modus-wc-toggle-md',
   'modus-wc-toggle-lg',
   'modus-wc-toggle-xl',
+  // Tooltip
+  'modus-wc-tooltip-top',
+  'modus-wc-tooltip-right',
+  'modus-wc-tooltip-bottom',
+  'modus-wc-tooltip-left',
 ];

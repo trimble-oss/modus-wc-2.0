@@ -2252,6 +2252,86 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-tooltip/modus-wc-tooltip.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable tooltip component used to create tooltips with different content.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcTooltip",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "content",
+              "fieldName": "content",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text content of the tooltip."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "force-open",
+              "fieldName": "forceOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Use this attribute to force the tooltip to remain open."
+            },
+            {
+              "name": "position",
+              "fieldName": "position",
+              "type": {
+                "text": "'auto' | 'top' | 'right' | 'bottom' | 'left'"
+              },
+              "description": "The position that the tooltip will render in relation to the element."
+            },
+            {
+              "name": "tooltip-id",
+              "fieldName": "tooltipId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the tooltip element, useful for setting the \"aria-describedby\" attribute of related elements."
+            }
+          ],
+          "tagName": "modus-wc-tooltip",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTooltip",
+          "declaration": {
+            "name": "ModusWcTooltip",
+            "module": "src/components/atoms/modus-wc-tooltip/modus-wc-tooltip.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-tooltip",
+          "declaration": {
+            "name": "ModusWcTooltip",
+            "module": "src/components/atoms/modus-wc-tooltip/modus-wc-tooltip.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-typography/modus-wc-typography.tsx",
       "declarations": [
         {

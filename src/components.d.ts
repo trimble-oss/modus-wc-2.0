@@ -859,6 +859,32 @@ export namespace Components {
         "value": boolean;
     }
     /**
+     * A customizable tooltip component used to create tooltips with different content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTooltip {
+        /**
+          * The text content of the tooltip.
+         */
+        "content": string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass": string;
+        /**
+          * Use this attribute to force the tooltip to remain open.
+         */
+        "forceOpen"?: boolean;
+        /**
+          * The position that the tooltip will render in relation to the element.
+         */
+        "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
+          * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
+         */
+        "tooltipId"?: string;
+    }
+    /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1222,6 +1248,16 @@ declare global {
         new (): HTMLModusWcToggleElement;
     };
     /**
+     * A customizable tooltip component used to create tooltips with different content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcTooltipElement extends Components.ModusWcTooltip, HTMLStencilElement {
+    }
+    var HTMLModusWcTooltipElement: {
+        prototype: HTMLModusWcTooltipElement;
+        new (): HTMLModusWcTooltipElement;
+    };
+    /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1249,6 +1285,7 @@ declare global {
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
         "modus-wc-theme-switcher": HTMLModusWcThemeSwitcherElement;
         "modus-wc-toggle": HTMLModusWcToggleElement;
+        "modus-wc-tooltip": HTMLModusWcTooltipElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
     }
 }
@@ -2204,6 +2241,32 @@ declare namespace LocalJSX {
         "value"?: boolean;
     }
     /**
+     * A customizable tooltip component used to create tooltips with different content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTooltip {
+        /**
+          * The text content of the tooltip.
+         */
+        "content"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Use this attribute to force the tooltip to remain open.
+         */
+        "forceOpen"?: boolean;
+        /**
+          * The position that the tooltip will render in relation to the element.
+         */
+        "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
+          * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
+         */
+        "tooltipId"?: string;
+    }
+    /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
@@ -2247,6 +2310,7 @@ declare namespace LocalJSX {
         "modus-wc-theme-provider": ModusWcThemeProvider;
         "modus-wc-theme-switcher": ModusWcThemeSwitcher;
         "modus-wc-toggle": ModusWcToggle;
+        "modus-wc-tooltip": ModusWcTooltip;
         "modus-wc-typography": ModusWcTypography;
     }
 }
@@ -2338,6 +2402,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-toggle": LocalJSX.ModusWcToggle & JSXBase.HTMLAttributes<HTMLModusWcToggleElement>;
+            /**
+             * A customizable tooltip component used to create tooltips with different content.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**
              * A customizable typography component used to render text with different sizes, variants, and weights.
              * Adheres to WCAG 2.2 standards.
