@@ -950,6 +950,78 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-loading/modus-wc-loading.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable loading component used to indicate the loading of content.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcLoading",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used for accessibility."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the loading element."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "Size"
+              },
+              "description": "The size of the loading spinner."
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "type": {
+                "text": "LoadingVariant"
+              },
+              "description": "The variant of the loading spinner."
+            }
+          ],
+          "tagName": "modus-wc-loading",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcLoading",
+          "declaration": {
+            "name": "ModusWcLoading",
+            "module": "src/components/atoms/modus-wc-loading/modus-wc-loading.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-loading",
+          "declaration": {
+            "name": "ModusWcLoading",
+            "module": "src/components/atoms/modus-wc-loading/modus-wc-loading.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-number-input/modus-wc-number-input.tsx",
       "declarations": [
         {

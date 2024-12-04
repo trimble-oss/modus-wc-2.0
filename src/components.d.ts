@@ -6,9 +6,11 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { Size } from "./components/types";
+import { LoadingVariant } from "./components/atoms/modus-wc-loading/modus-wc-loading";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { Size } from "./components/types";
+export { LoadingVariant } from "./components/atoms/modus-wc-loading/modus-wc-loading";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
@@ -353,6 +355,28 @@ export namespace Components {
           * Whether the label indicates a required field.
          */
         "required"?: boolean;
+    }
+    /**
+     * A customizable loading component used to indicate the loading of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcLoading {
+        /**
+          * The aria-label attribute used for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the loading element.
+         */
+        "customClass": string;
+        /**
+          * The size of the loading spinner.
+         */
+        "size": Size;
+        /**
+          * The variant of the loading spinner.
+         */
+        "variant": LoadingVariant;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -1071,6 +1095,16 @@ declare global {
         prototype: HTMLModusWcInputLabelElement;
         new (): HTMLModusWcInputLabelElement;
     };
+    /**
+     * A customizable loading component used to indicate the loading of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcLoadingElement extends Components.ModusWcLoading, HTMLStencilElement {
+    }
+    var HTMLModusWcLoadingElement: {
+        prototype: HTMLModusWcLoadingElement;
+        new (): HTMLModusWcLoadingElement;
+    };
     interface HTMLModusWcNumberInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
@@ -1276,6 +1310,7 @@ declare global {
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
+        "modus-wc-loading": HTMLModusWcLoadingElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
@@ -1659,6 +1694,28 @@ declare namespace LocalJSX {
           * Whether the label indicates a required field.
          */
         "required"?: boolean;
+    }
+    /**
+     * A customizable loading component used to indicate the loading of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcLoading {
+        /**
+          * The aria-label attribute used for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the loading element.
+         */
+        "customClass"?: string;
+        /**
+          * The size of the loading spinner.
+         */
+        "size"?: Size;
+        /**
+          * The variant of the loading spinner.
+         */
+        "variant"?: LoadingVariant;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -2301,6 +2358,7 @@ declare namespace LocalJSX {
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-label": ModusWcInputLabel;
+        "modus-wc-loading": ModusWcLoading;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-radio": ModusWcRadio;
         "modus-wc-skeleton": ModusWcSkeleton;
@@ -2360,6 +2418,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
+            /**
+             * A customizable loading component used to indicate the loading of content.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-loading": LocalJSX.ModusWcLoading & JSXBase.HTMLAttributes<HTMLModusWcLoadingElement>;
             /**
              * A customizable input component used to create number inputs with types.
              * Adheres to WCAG 2.2 standards.
