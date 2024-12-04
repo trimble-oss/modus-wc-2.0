@@ -28,9 +28,9 @@ export class ModusWcTooltip {
   @Prop() forceOpen?: boolean;
 
   /**
-   * The unique identifier of the tooltip, useful for setting the "aria-describedby" attribute of related elements.
+   * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
    */
-  @Prop() id?: string;
+  @Prop() tooltipId?: string;
 
   /**
    * The position that the tooltip will render in relation to the element.
@@ -58,7 +58,7 @@ export class ModusWcTooltip {
         <div
           class={this.getClasses()}
           data-tip={this.content}
-          id={this.id}
+          id={this.tooltipId}
           role="tooltip"
         >
           <slot />

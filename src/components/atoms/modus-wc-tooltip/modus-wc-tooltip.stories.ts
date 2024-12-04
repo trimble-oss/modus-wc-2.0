@@ -6,7 +6,7 @@ interface TooltipArgs {
   content?: string;
   'custom-class': string;
   'force-open'?: boolean;
-  id?: string;
+  'tooltip-id'?: string;
   position: 'auto' | 'top' | 'right' | 'bottom' | 'left';
 }
 
@@ -36,7 +36,7 @@ const Template: Story = {
         content=${ifDefined(args.content)}
         custom-class="${args['custom-class']}"
         ?force-open="${ifDefined(args['force-open'])}"
-        id=${ifDefined(args.id)}
+        tooltip-id="${ifDefined(args['tooltip-id'])}"
         position=${ifDefined(args.position)}
       >
         <modus-wc-badge content="Hover"></modus-wc-badge>

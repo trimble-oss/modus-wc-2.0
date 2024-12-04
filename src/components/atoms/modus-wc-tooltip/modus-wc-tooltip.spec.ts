@@ -13,7 +13,7 @@ describe('modus-wc-tooltip', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTooltip],
-      html: '<modus-wc-tooltip content="Test" custom-class="test-class" force-open="true" id="test-id" position="bottom"></modus-wc-tooltip>',
+      html: '<modus-wc-tooltip content="Test" custom-class="test-class" force-open="true" tooltip-id="test-id" position="bottom"></modus-wc-tooltip>',
     });
     expect(page.root).toMatchSnapshot();
   });
