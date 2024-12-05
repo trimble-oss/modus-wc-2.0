@@ -449,6 +449,32 @@ export namespace Components {
         "value": string;
     }
     /**
+     * A customizable progress component used to show the progress of a task or show the passing of time.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcProgress {
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the progress element.
+         */
+        "customClass": string;
+        /**
+          * The indeterminate state of the progress component.
+         */
+        "indeterminate": boolean;
+        /**
+          * The progress component's maximum value.
+         */
+        "max"?: number;
+        /**
+          * The value of the progress component.
+         */
+        "value": number;
+    }
+    /**
      * A customizable radio component.
      * Adheres to WCAG 2.2 standards.
      */
@@ -859,6 +885,32 @@ export namespace Components {
         "value": boolean;
     }
     /**
+     * A customizable tooltip component used to create tooltips with different content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTooltip {
+        /**
+          * The text content of the tooltip.
+         */
+        "content": string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass": string;
+        /**
+          * Use this attribute to force the tooltip to remain open.
+         */
+        "forceOpen"?: boolean;
+        /**
+          * The position that the tooltip will render in relation to the element.
+         */
+        "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
+          * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
+         */
+        "tooltipId"?: string;
+    }
+    /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1068,6 +1120,16 @@ declare global {
         prototype: HTMLModusWcNumberInputElement;
         new (): HTMLModusWcNumberInputElement;
     };
+    /**
+     * A customizable progress component used to show the progress of a task or show the passing of time.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcProgressElement extends Components.ModusWcProgress, HTMLStencilElement {
+    }
+    var HTMLModusWcProgressElement: {
+        prototype: HTMLModusWcProgressElement;
+        new (): HTMLModusWcProgressElement;
+    };
     interface HTMLModusWcRadioElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
@@ -1222,6 +1284,16 @@ declare global {
         new (): HTMLModusWcToggleElement;
     };
     /**
+     * A customizable tooltip component used to create tooltips with different content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcTooltipElement extends Components.ModusWcTooltip, HTMLStencilElement {
+    }
+    var HTMLModusWcTooltipElement: {
+        prototype: HTMLModusWcTooltipElement;
+        new (): HTMLModusWcTooltipElement;
+    };
+    /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1241,6 +1313,7 @@ declare global {
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
+        "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
@@ -1249,6 +1322,7 @@ declare global {
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
         "modus-wc-theme-switcher": HTMLModusWcThemeSwitcherElement;
         "modus-wc-toggle": HTMLModusWcToggleElement;
+        "modus-wc-tooltip": HTMLModusWcTooltipElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
     }
 }
@@ -1730,6 +1804,32 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
+     * A customizable progress component used to show the progress of a task or show the passing of time.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcProgress {
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the progress element.
+         */
+        "customClass"?: string;
+        /**
+          * The indeterminate state of the progress component.
+         */
+        "indeterminate"?: boolean;
+        /**
+          * The progress component's maximum value.
+         */
+        "max"?: number;
+        /**
+          * The value of the progress component.
+         */
+        "value"?: number;
+    }
+    /**
      * A customizable radio component.
      * Adheres to WCAG 2.2 standards.
      */
@@ -2204,6 +2304,32 @@ declare namespace LocalJSX {
         "value"?: boolean;
     }
     /**
+     * A customizable tooltip component used to create tooltips with different content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTooltip {
+        /**
+          * The text content of the tooltip.
+         */
+        "content"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Use this attribute to force the tooltip to remain open.
+         */
+        "forceOpen"?: boolean;
+        /**
+          * The position that the tooltip will render in relation to the element.
+         */
+        "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
+          * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
+         */
+        "tooltipId"?: string;
+    }
+    /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
      * Adheres to WCAG 2.2 standards.
      */
@@ -2239,6 +2365,7 @@ declare namespace LocalJSX {
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-label": ModusWcInputLabel;
         "modus-wc-number-input": ModusWcNumberInput;
+        "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
@@ -2247,6 +2374,7 @@ declare namespace LocalJSX {
         "modus-wc-theme-provider": ModusWcThemeProvider;
         "modus-wc-theme-switcher": ModusWcThemeSwitcher;
         "modus-wc-toggle": ModusWcToggle;
+        "modus-wc-tooltip": ModusWcTooltip;
         "modus-wc-typography": ModusWcTypography;
     }
 }
@@ -2302,6 +2430,11 @@ declare module "@stencil/core" {
              */
             "modus-wc-number-input": LocalJSX.ModusWcNumberInput & JSXBase.HTMLAttributes<HTMLModusWcNumberInputElement>;
             /**
+             * A customizable progress component used to show the progress of a task or show the passing of time.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-progress": LocalJSX.ModusWcProgress & JSXBase.HTMLAttributes<HTMLModusWcProgressElement>;
+            /**
              * A customizable radio component.
              * Adheres to WCAG 2.2 standards.
              */
@@ -2338,6 +2471,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-toggle": LocalJSX.ModusWcToggle & JSXBase.HTMLAttributes<HTMLModusWcToggleElement>;
+            /**
+             * A customizable tooltip component used to create tooltips with different content.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**
              * A customizable typography component used to render text with different sizes, variants, and weights.
              * Adheres to WCAG 2.2 standards.
