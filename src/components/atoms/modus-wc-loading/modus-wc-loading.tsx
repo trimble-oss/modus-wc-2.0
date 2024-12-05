@@ -10,6 +10,8 @@ export type LoadingVariant =
   | 'bars'
   | 'infinity';
 
+export type LoadingColor = 'primary' | 'secondary' | 'tertiary';
+
 /**
  * A customizable loading component used to indicate the loading of content.
  *
@@ -25,6 +27,11 @@ export class ModusWcLoading {
    * The aria-label attribute used for accessibility.
    */
   @Prop() ariaLabel!: string;
+
+  /**
+   * The color of the loading spinner.
+   */
+  @Prop() color: LoadingColor = 'primary';
 
   /**
    * Custom CSS class to apply to the loading element.
@@ -51,6 +58,7 @@ export class ModusWcLoading {
     const classList = ['modus-wc-loading'];
 
     const propClasses = convertPropsToClasses({
+      color: this.color,
       size: this.size,
       variant: this.variant,
     });
@@ -66,6 +74,7 @@ export class ModusWcLoading {
     return (
       <Host>
         <span
+          aria-busy="true"
           aria-label={this.ariaLabel}
           class={this.getClasses()}
           role="status"

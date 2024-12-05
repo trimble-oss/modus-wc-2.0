@@ -6,11 +6,11 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { Size } from "./components/types";
-import { LoadingVariant } from "./components/atoms/modus-wc-loading/modus-wc-loading";
+import { LoadingColor, LoadingVariant } from "./components/atoms/modus-wc-loading/modus-wc-loading";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { Size } from "./components/types";
-export { LoadingVariant } from "./components/atoms/modus-wc-loading/modus-wc-loading";
+export { LoadingColor, LoadingVariant } from "./components/atoms/modus-wc-loading/modus-wc-loading";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
@@ -365,6 +365,10 @@ export namespace Components {
           * The aria-label attribute used for accessibility.
          */
         "ariaLabel": string;
+        /**
+          * The color of the loading spinner.
+         */
+        "color": LoadingColor;
         /**
           * Custom CSS class to apply to the loading element.
          */
@@ -1704,6 +1708,10 @@ declare namespace LocalJSX {
           * The aria-label attribute used for accessibility.
          */
         "ariaLabel": string;
+        /**
+          * The color of the loading spinner.
+         */
+        "color"?: LoadingColor;
         /**
           * Custom CSS class to apply to the loading element.
          */

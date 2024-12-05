@@ -2,3 +2,18 @@
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
+
+[data-theme='modus-classic-light'] .modus-wc-loading,
+[data-theme='modus-classic-dark'] .modus-wc-loading {
+  &.modus-wc-loading-primary {
+    background-color: var(--modus-wc-color-primary);
+  }
+
+  &.modus-wc-loading-secondary {
+    background-color: var(--modus-wc-color-secondary);
+  }
+
+  &.modus-wc-loading-tertiary {
+    background-color: var(--modus-wc-color-accent);
+  }
+}

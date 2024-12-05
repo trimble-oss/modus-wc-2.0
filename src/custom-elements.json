@@ -972,6 +972,14 @@
               "description": "The aria-label attribute used for accessibility."
             },
             {
+              "name": "color",
+              "fieldName": "color",
+              "type": {
+                "text": "LoadingColor"
+              },
+              "description": "The color of the loading spinner."
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
