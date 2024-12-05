@@ -32,18 +32,6 @@ const themeable = [
   'modus-wc-input-md',
   'modus-wc-input-lg',
   'modus-wc-input-xl',
-  // Loading Sizes
-  'modus-wc-loading-xs',
-  'modus-wc-loading-sm',
-  'modus-wc-loading-md',
-  'modus-wc-loading-lg',
-  // Loading Variants
-  'modus-wc-loading-ball',
-  'modus-wc-loading-bars',
-  'modus-wc-loading-dots',
-  'modus-wc-loading-infinity',
-  'modus-wc-loading-ring',
-  'modus-wc-loading-spinner',
   // Radio
   'modus-wc-radio-xs',
   'modus-wc-radio-sm',

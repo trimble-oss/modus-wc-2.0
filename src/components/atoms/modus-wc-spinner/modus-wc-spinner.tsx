@@ -1,8 +1,8 @@
 import { Component, h, Host, Prop } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-loading.tailwind';
+import { convertPropsToClasses } from './modus-wc-spinner.tailwind';
 import { Size } from '../../types';
 
-export type LoadingVariant =
+export type SpinnerVariant =
   | 'spinner'
   | 'dots'
   | 'ring'
@@ -10,52 +10,52 @@ export type LoadingVariant =
   | 'bars'
   | 'infinity';
 
-export type LoadingColor = 'primary' | 'secondary' | 'tertiary';
+export type SpinnerColor = 'primary' | 'secondary' | 'tertiary';
 
 /**
- * A customizable loading component used to indicate the loading of content.
+ * A customizable spinner component used to indicate the loading of content.
  *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
-  tag: 'modus-wc-loading',
-  styleUrl: 'modus-wc-loading.scss',
+  tag: 'modus-wc-spinner',
+  styleUrl: 'modus-wc-spinner.scss',
   shadow: false,
 })
-export class ModusWcLoading {
+export class ModusWcSpinner {
   /**
    * The aria-label attribute used for accessibility.
    */
   @Prop() ariaLabel!: string;
 
   /**
-   * The color of the loading spinner.
+   * The color of the spinner.
    */
-  @Prop() color: LoadingColor = 'primary';
+  @Prop() color: SpinnerColor = 'primary';
 
   /**
-   * Custom CSS class to apply to the loading element.
+   * Custom CSS class to apply to the spinner element.
    */
   @Prop() customClass: string = '';
 
   /**
-   * The size of the loading spinner.
+   * The size of the spinner.
    */
   @Prop() size: Size = 'md';
 
   /**
-   * The variant of the loading spinner.
+   * The variant of the spinner.
    */
-  @Prop() variant: LoadingVariant = 'spinner';
+  @Prop() variant: SpinnerVariant = 'spinner';
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcLoading: aria-label is required for accessibility.');
+      console.warn('ModusWcSpinner: aria-label is required for accessibility.');
     }
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-loading'];
+    const classList = ['modus-wc-spinner'];
 
     const propClasses = convertPropsToClasses({
       color: this.color,

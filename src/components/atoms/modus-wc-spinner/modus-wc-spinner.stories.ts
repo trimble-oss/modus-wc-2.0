@@ -2,19 +2,19 @@ import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Size } from '../../types';
-import { LoadingColor, LoadingVariant } from './modus-wc-loading';
+import { SpinnerColor, SpinnerVariant } from './modus-wc-spinner';
 
-interface LoadingArgs {
+interface SpinnerArgs {
   'aria-label': string;
-  color: LoadingColor;
+  color: SpinnerColor;
   'custom-class': string;
   size: Size;
-  variant: LoadingVariant;
+  variant: SpinnerVariant;
 }
 
-const meta: Meta<LoadingArgs> = {
-  title: 'Components/Loading',
-  component: 'modus-wc-loading',
+const meta: Meta<SpinnerArgs> = {
+  title: 'Components/Spinner',
+  component: 'modus-wc-spinner',
   args: {
     'aria-label': 'Loading spinner',
     color: 'primary',
@@ -43,18 +43,18 @@ const meta: Meta<LoadingArgs> = {
 
 export default meta;
 
-type Story = StoryObj<LoadingArgs>;
+type Story = StoryObj<SpinnerArgs>;
 
 export const Default: Story = {
   render: (args) => {
     return html`
-      <modus-wc-loading
+      <modus-wc-spinner
         aria-label="${ifDefined(args['aria-label'])}"
         color="${args.color}"
         custom-class="${args['custom-class']}"
         size="${args.size}"
         variant="${args.variant}"
-      ></modus-wc-loading>
+      ></modus-wc-spinner>
     `;
   },
 };
