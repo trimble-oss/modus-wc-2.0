@@ -1,0 +1,56 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+[data-theme='modus-classic-light'] .modus-wc-progress,
+[data-theme='modus-classic-dark'] .modus-wc-progress {
+  /* Override default progress element styling */
+  width: 100%;
+  overflow: hidden;
+  -webkit-appearance: none;
+  appearance: none;
+
+  background-color: transparent;
+  border: 1px solid var(--modus-wc-color-gray-6);
+  border-radius: var(--modus-wc-border-radius-sm);
+  height: var(--modus-wc-line-height-sm);
+
+  &::-webkit-progress-value {
+    border-radius: var(--modus-wc-border-radius-sm);
+  }
+
+  &::-moz-progress-bar {
+    border-radius: var(--modus-wc-border-radius-sm);
+  }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-progress {
+  &::-webkit-progress-value {
+    background-color: var(--modus-wc-color-trimble-blue);
+  }
+
+  &::-moz-progress-bar {
+    background-color: var(--modus-wc-color-trimble-blue);
+  }
+
+  &:indeterminate {
+    background-color: transparent;
+    --progress-color: var(--modus-wc-color-trimble-blue);
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-progress {
+  &::-webkit-progress-value {
+    background-color: var(--modus-wc-color-highlight-blue);
+  }
+
+  &::-moz-progress-bar {
+    background-color: var(--modus-wc-color-highlight-blue);
+  }
+
+  &:indeterminate {
+    background-color: transparent;
+    --progress-color: var(--modus-wc-color-highlight-blue);
+  }
+}
