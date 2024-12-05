@@ -454,6 +454,10 @@ export namespace Components {
      */
     interface ModusWcProgress {
         /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
           * Custom CSS class to apply to the progress element.
          */
         "customClass": string;
@@ -1804,6 +1808,10 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcProgress {
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
         /**
           * Custom CSS class to apply to the progress element.
          */

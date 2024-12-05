@@ -1,5 +1,5 @@
 import { Component, h, Host, Prop } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-progress.tailwind';
+// import { convertPropsToClasses } from './modus-wc-progress.tailwind';
 
 /**
  * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -12,6 +12,11 @@ import { convertPropsToClasses } from './modus-wc-progress.tailwind';
   shadow: false,
 })
 export class ModusWcProgress {
+  /**
+   * The aria-label attribute for accessibility.
+   */
+  @Prop() ariaLabel!: string;
+
   /**
    * Custom CSS class to apply to the progress element.
    */
@@ -32,13 +37,21 @@ export class ModusWcProgress {
    */
   @Prop({ mutable: true, reflect: true }) value: number = 0;
 
+  componentWillLoad() {
+    if (!this.ariaLabel) {
+      console.warn(
+        'ModusWcProgress: aria-label is required for accessibility.'
+      );
+    }
+  }
+
   private getClasses(): string {
     const classList: string[] = ['modus-wc-progress modus-wc-w-full'];
 
-    const propClasses = convertPropsToClasses();
+    // const propClasses = convertPropsToClasses();
 
     // The order CSS classes are added matters to CSS specificity
-    if (propClasses) classList.push(propClasses);
+    // if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
@@ -46,15 +59,22 @@ export class ModusWcProgress {
 
   render() {
     const valueAttributes = this.indeterminate
-      ? {}
+      ? { 'aria-hidden': 'true' }
       : {
           max: this.max,
           value: this.value,
+          'aria-valuenow': this.value,
+          'aria-valuemin': 0,
+          'aria-valuemax': this.max,
         };
 
     return (
       <Host>
-        <progress class={this.getClasses()} {...valueAttributes} />
+        <progress
+          aria-label={this.ariaLabel}
+          class={this.getClasses()}
+          {...valueAttributes}
+        />
       </Host>
     );
   }

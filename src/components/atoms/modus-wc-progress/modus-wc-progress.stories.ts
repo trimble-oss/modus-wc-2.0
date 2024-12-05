@@ -3,6 +3,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { Meta, StoryObj } from '@storybook/web-components';
 
 interface ProgressArgs {
+  'aria-label': string;
   'custom-class': string;
   indeterminate: boolean;
   max?: number;
@@ -13,6 +14,7 @@ const meta: Meta<ProgressArgs> = {
   title: 'Components/Progress',
   component: 'modus-wc-progress',
   args: {
+    'aria-label': 'Example progress bar',
     indeterminate: false,
     max: 100,
     value: 70,
@@ -30,6 +32,7 @@ export const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-progress
+        aria-label="${args['aria-label']}"
         custom-class="${args['custom-class']}"
         ?indeterminate=${args.indeterminate}
         max=${ifDefined(args.max)}

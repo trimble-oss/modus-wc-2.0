@@ -1205,6 +1205,14 @@
           ],
           "attributes": [
             {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
