@@ -1201,10 +1201,6 @@
             {
               "kind": "method",
               "name": "render"
-            },
-            {
-              "kind": "field",
-              "name": "valueAttributes"
             }
           ],
           "attributes": [
