@@ -477,6 +477,32 @@ export namespace Components {
         "value": string;
     }
     /**
+     * A customizable progress component used to show the progress of a task or show the passing of time.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcProgress {
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the progress element.
+         */
+        "customClass": string;
+        /**
+          * The indeterminate state of the progress component.
+         */
+        "indeterminate": boolean;
+        /**
+          * The progress component's maximum value.
+         */
+        "max"?: number;
+        /**
+          * The value of the progress component.
+         */
+        "value": number;
+    }
+    /**
      * A customizable radio component.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1132,6 +1158,16 @@ declare global {
         prototype: HTMLModusWcNumberInputElement;
         new (): HTMLModusWcNumberInputElement;
     };
+    /**
+     * A customizable progress component used to show the progress of a task or show the passing of time.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcProgressElement extends Components.ModusWcProgress, HTMLStencilElement {
+    }
+    var HTMLModusWcProgressElement: {
+        prototype: HTMLModusWcProgressElement;
+        new (): HTMLModusWcProgressElement;
+    };
     interface HTMLModusWcRadioElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
@@ -1316,6 +1352,7 @@ declare global {
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
         "modus-wc-loader": HTMLModusWcLoaderElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
+        "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
@@ -1830,6 +1867,32 @@ declare namespace LocalJSX {
           * The value of the control.
          */
         "value"?: string;
+    }
+    /**
+     * A customizable progress component used to show the progress of a task or show the passing of time.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcProgress {
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to the progress element.
+         */
+        "customClass"?: string;
+        /**
+          * The indeterminate state of the progress component.
+         */
+        "indeterminate"?: boolean;
+        /**
+          * The progress component's maximum value.
+         */
+        "max"?: number;
+        /**
+          * The value of the progress component.
+         */
+        "value"?: number;
     }
     /**
      * A customizable radio component.
@@ -2368,6 +2431,7 @@ declare namespace LocalJSX {
         "modus-wc-input-label": ModusWcInputLabel;
         "modus-wc-loader": ModusWcLoader;
         "modus-wc-number-input": ModusWcNumberInput;
+        "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
@@ -2436,6 +2500,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-number-input": LocalJSX.ModusWcNumberInput & JSXBase.HTMLAttributes<HTMLModusWcNumberInputElement>;
+            /**
+             * A customizable progress component used to show the progress of a task or show the passing of time.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-progress": LocalJSX.ModusWcProgress & JSXBase.HTMLAttributes<HTMLModusWcProgressElement>;
             /**
              * A customizable radio component.
              * Adheres to WCAG 2.2 standards.

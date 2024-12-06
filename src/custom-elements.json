@@ -1271,6 +1271,86 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-progress/modus-wc-progress.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcProgress",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the progress element."
+            },
+            {
+              "name": "indeterminate",
+              "fieldName": "indeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The indeterminate state of the progress component."
+            },
+            {
+              "name": "max",
+              "fieldName": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "The progress component's maximum value."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "number"
+              },
+              "description": "The value of the progress component."
+            }
+          ],
+          "tagName": "modus-wc-progress",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcProgress",
+          "declaration": {
+            "name": "ModusWcProgress",
+            "module": "src/components/atoms/modus-wc-progress/modus-wc-progress.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-progress",
+          "declaration": {
+            "name": "ModusWcProgress",
+            "module": "src/components/atoms/modus-wc-progress/modus-wc-progress.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-radio/modus-wc-radio.tsx",
       "declarations": [
         {
