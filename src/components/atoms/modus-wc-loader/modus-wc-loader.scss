@@ -6,8 +6,7 @@
 *   https://github.com/saadeghi/daisyui/blob/master/src/components/styled/loading.css
 */
 
-[data-theme='modus-classic-light'] .modus-wc-loader,
-[data-theme='modus-classic-dark'] .modus-wc-loader {
+.modus-wc-loader {
   aspect-ratio: 1 / 1;
   background-color: currentColor;
   display: inline-block;
