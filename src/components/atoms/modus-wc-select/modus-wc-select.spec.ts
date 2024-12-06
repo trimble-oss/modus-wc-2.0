@@ -1,0 +1,106 @@
+import { newSpecPage } from '@stencil/core/testing';
+import { ModusWcSelect } from './modus-wc-select';
+
+describe('modus-wc-select', () => {
+  it('should warn if aria-label is not provided', async () => {
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
+    await newSpecPage({
+      components: [ModusWcSelect],
+      html: '<modus-wc-select></modus-wc-select>',
+    });
+
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      'ModusWcSelect: aria-label is required for accessibility.'
+    );
+
+    consoleWarnSpy.mockRestore();
+  });
+
+  it('renders with default props', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: '<modus-wc-select aria-label="Default select"></modus-wc-select>',
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with custom props', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: `<modus-wc-select
+        aria-describedby="description"
+        aria-label="Test select"
+        auto-focus="true"
+        bordered="false"
+        custom-class="test-class"
+        disabled="true"
+        input-aria-invalid="true"
+        input-dir="rtl"
+        input-id="custom-id"
+        input-tab-index="1"
+        name="test-name"
+        options={[{ label: 'Option 1', value: '1' }]}
+        required="true"
+        size="lg"
+        value="1"
+      ></modus-wc-select>`,
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should emit blur event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: '<modus-wc-select aria-label="Blur test"></modus-wc-select>',
+    });
+    const select = page.root!.querySelector('select');
+    expect(select).not.toBeNull();
+    const blurSpy = jest.fn();
+    page.root!.addEventListener('inputBlur', blurSpy);
+
+    select!.dispatchEvent(new FocusEvent('blur'));
+    await page.waitForChanges();
+
+    expect(blurSpy).toHaveBeenCalled();
+  });
+
+  it('should emit change event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: '<modus-wc-select aria-label="Change test"></modus-wc-select>',
+    });
+    const select = page.root!.querySelector('select');
+    expect(select).not.toBeNull();
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    select!.value = 'New value';
+    select!.dispatchEvent(new Event('change'));
+    await page.waitForChanges();
+
+    expect(changeSpy).toHaveBeenCalled();
+    expect(changeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        detail: expect.any(Event),
+      })
+    );
+  });
+
+  it('should emit focus event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: '<modus-wc-select aria-label="Focus test"></modus-wc-select>',
+    });
+    const select = page.root!.querySelector('select');
+    expect(select).not.toBeNull();
+    const focusSpy = jest.fn();
+    page.root!.addEventListener('inputFocus', focusSpy);
+
+    select!.dispatchEvent(new FocusEvent('focus'));
+    await page.waitForChanges();
+
+    expect(focusSpy).toHaveBeenCalled();
+  });
+});
