@@ -60,7 +60,7 @@ export const Ball: Story = {
   render: (args) => {
     return html`
       <modus-wc-loader
-        aria-label="${ifDefined(args['aria-label'])}"
+        aria-label="Loading ball"
         color="${args.color}"
         custom-class="${args['custom-class']}"
         size="md"
@@ -74,7 +74,7 @@ export const Bars: Story = {
   render: (args) => {
     return html`
       <modus-wc-loader
-        aria-label="${ifDefined(args['aria-label'])}"
+        aria-label="Loading bars"
         color="${args.color}"
         custom-class="${args['custom-class']}"
         size="md"
@@ -88,7 +88,7 @@ export const Dots: Story = {
   render: (args) => {
     return html`
       <modus-wc-loader
-        aria-label="${ifDefined(args['aria-label'])}"
+        aria-label="Loading dots"
         color="${args.color}"
         custom-class="${args['custom-class']}"
         size="md"
@@ -103,7 +103,7 @@ export const Infinity: Story = {
   render: (args) => {
     return html`
       <modus-wc-loader
-        aria-label="${ifDefined(args['aria-label'])}"
+        aria-label="Loading infinity symbol"
         color="${args.color}"
         custom-class="${args['custom-class']}"
         size="md"
@@ -117,7 +117,7 @@ export const Ring: Story = {
   render: (args) => {
     return html`
       <modus-wc-loader
-        aria-label="${ifDefined(args['aria-label'])}"
+        aria-label="Loading ring"
         color="${args.color}"
         custom-class="${args['custom-class']}"
         size="md"
@@ -131,7 +131,7 @@ export const Spinner: Story = {
   render: (args) => {
     return html`
       <modus-wc-loader
-        aria-label="${ifDefined(args['aria-label'])}"
+        aria-label="Loading spinner"
         color="${args.color}"
         custom-class="${args['custom-class']}"
         size="md"
