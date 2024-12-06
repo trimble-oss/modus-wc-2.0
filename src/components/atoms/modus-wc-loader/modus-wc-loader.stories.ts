@@ -33,7 +33,7 @@ const meta: Meta<LoaderArgs> = {
     },
     variant: {
       control: { type: 'inline-radio' },
-      options: ['spinner', 'dots', 'ring', 'ball', 'bars', 'infinity'],
+      options: ['ball', 'bars', 'dots', 'infinity', 'ring', 'spinner'],
     },
   },
   parameters: {

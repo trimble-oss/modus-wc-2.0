@@ -3,12 +3,12 @@ import { convertPropsToClasses } from './modus-wc-loader.tailwind';
 import { Size } from '../../types';
 
 export type LoaderVariant =
-  | 'spinner'
-  | 'dots'
-  | 'ring'
   | 'ball'
   | 'bars'
-  | 'infinity';
+  | 'dots'
+  | 'infinity'
+  | 'ring'
+  | 'spinner';
 
 export type LoaderColor = 'primary' | 'secondary' | 'tertiary';
 
