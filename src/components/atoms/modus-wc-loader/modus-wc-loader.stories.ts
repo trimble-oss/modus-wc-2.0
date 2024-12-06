@@ -36,9 +36,6 @@ const meta: Meta<LoaderArgs> = {
       options: ['ball', 'bars', 'dots', 'infinity', 'ring', 'spinner'],
     },
   },
-  parameters: {
-    layout: 'padded',
-  },
 };
 
 export default meta;
