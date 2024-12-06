@@ -103,4 +103,28 @@ describe('modus-wc-select', () => {
 
     expect(focusSpy).toHaveBeenCalled();
   });
+
+  it('should render options with various states', async () => {
+    const options = [
+      { label: 'Option 1', value: '1' },
+      { label: 'Option 2', value: '2', disabled: true },
+      { label: 'Option 3', value: '3' },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: `<modus-wc-select aria-label="Options test"></modus-wc-select>`,
+    });
+
+    const component = page.rootInstance as ModusWcSelect;
+    component.options = options;
+    component.value = '2';
+
+    await page.waitForChanges();
+
+    const selectElement = page.root?.querySelector('select');
+    const renderedOptions = selectElement?.querySelectorAll('option');
+
+    expect(renderedOptions?.length).toBe(3);
+  });
 });
