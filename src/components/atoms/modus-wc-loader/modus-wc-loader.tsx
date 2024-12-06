@@ -74,7 +74,6 @@ export class ModusWcLoader {
     return (
       <Host>
         <span
-          aria-busy="true"
           aria-label={this.ariaLabel}
           class={this.getClasses()}
           role="status"

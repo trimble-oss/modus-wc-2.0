@@ -2,12 +2,12 @@
 
 exports[`modus-wc-loader should render with custom props 1`] = `
 <modus-wc-loader aria-label="Loading loader" custom-class="test-class" size="lg" variant="dots">
-  <span aria-busy="true" aria-label="Loading loader" class="modus-wc-loader modus-wc-loader-dots modus-wc-loader-lg modus-wc-loader-primary test-class" role="status" tabindex="-1"></span>
+  <span aria-label="Loading loader" class="modus-wc-loader modus-wc-loader-dots modus-wc-loader-lg modus-wc-loader-primary test-class" role="status" tabindex="-1"></span>
 </modus-wc-loader>
 `;
 
 exports[`modus-wc-loader should render with default props 1`] = `
 <modus-wc-loader aria-label="Loading loader">
-  <span aria-busy="true" aria-label="Loading loader" class="modus-wc-loader modus-wc-loader-md modus-wc-loader-primary modus-wc-loader-spinner" role="status" tabindex="-1"></span>
+  <span aria-label="Loading loader" class="modus-wc-loader modus-wc-loader-md modus-wc-loader-primary modus-wc-loader-spinner" role="status" tabindex="-1"></span>
 </modus-wc-loader>
 `;
