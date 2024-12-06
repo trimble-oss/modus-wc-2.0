@@ -55,3 +55,88 @@ export const Default: Story = {
     `;
   },
 };
+
+export const Ball: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-loader
+        aria-label="${ifDefined(args['aria-label'])}"
+        color="${args.color}"
+        custom-class="${args['custom-class']}"
+        size="md"
+        variant="ball"
+      ></modus-wc-loader>
+    `;
+  },
+};
+
+export const Bars: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-loader
+        aria-label="${ifDefined(args['aria-label'])}"
+        color="${args.color}"
+        custom-class="${args['custom-class']}"
+        size="md"
+        variant="bars"
+      ></modus-wc-loader>
+    `;
+  },
+};
+
+export const Dots: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-loader
+        aria-label="${ifDefined(args['aria-label'])}"
+        color="${args.color}"
+        custom-class="${args['custom-class']}"
+        size="md"
+        variant="dots"
+      ></modus-wc-loader>
+    `;
+  },
+};
+
+// eslint-disable-next-line no-shadow-restricted-names
+export const Infinity: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-loader
+        aria-label="${ifDefined(args['aria-label'])}"
+        color="${args.color}"
+        custom-class="${args['custom-class']}"
+        size="md"
+        variant="infinity"
+      ></modus-wc-loader>
+    `;
+  },
+};
+
+export const Ring: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-loader
+        aria-label="${ifDefined(args['aria-label'])}"
+        color="${args.color}"
+        custom-class="${args['custom-class']}"
+        size="md"
+        variant="ring"
+      ></modus-wc-loader>
+    `;
+  },
+};
+
+export const Spinner: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-loader
+        aria-label="${ifDefined(args['aria-label'])}"
+        color="${args.color}"
+        custom-class="${args['custom-class']}"
+        size="md"
+        variant="spinner"
+      ></modus-wc-loader>
+    `;
+  },
+};
