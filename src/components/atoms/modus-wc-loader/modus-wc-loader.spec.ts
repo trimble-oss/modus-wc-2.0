@@ -1,17 +1,17 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcSpinner } from './modus-wc-spinner';
+import { ModusWcLoader } from './modus-wc-loader';
 
-describe('modus-wc-spinner', () => {
+describe('modus-wc-loader', () => {
   it('should warn if aria-label is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({
-      components: [ModusWcSpinner],
-      html: '<modus-wc-spinner></modus-wc-spinner>',
+      components: [ModusWcLoader],
+      html: '<modus-wc-loader></modus-wc-loader>',
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcSpinner: aria-label is required for accessibility.'
+      'ModusWcLoader: aria-label is required for accessibility.'
     );
 
     consoleWarnSpy.mockRestore();
@@ -19,16 +19,16 @@ describe('modus-wc-spinner', () => {
 
   it('should render with default props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcSpinner],
-      html: '<modus-wc-spinner aria-label="Loading spinner"></modus-wc-spinner>',
+      components: [ModusWcLoader],
+      html: '<modus-wc-loader aria-label="Loading loader"></modus-wc-loader>',
     });
     expect(page.root).toMatchSnapshot();
   });
 
   it('should render with custom props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcSpinner],
-      html: '<modus-wc-spinner aria-label="Loading spinner" custom-class="test-class" size="lg" variant="dots"></modus-wc-spinner>',
+      components: [ModusWcLoader],
+      html: '<modus-wc-loader aria-label="Loading loader" custom-class="test-class" size="lg" variant="dots"></modus-wc-loader>',
     });
     expect(page.root).toMatchSnapshot();
   });

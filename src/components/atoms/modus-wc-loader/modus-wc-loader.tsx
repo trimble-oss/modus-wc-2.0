@@ -1,8 +1,8 @@
 import { Component, h, Host, Prop } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-spinner.tailwind';
+import { convertPropsToClasses } from './modus-wc-loader.tailwind';
 import { Size } from '../../types';
 
-export type SpinnerVariant =
+export type LoaderVariant =
   | 'spinner'
   | 'dots'
   | 'ring'
@@ -10,52 +10,52 @@ export type SpinnerVariant =
   | 'bars'
   | 'infinity';
 
-export type SpinnerColor = 'primary' | 'secondary' | 'tertiary';
+export type LoaderColor = 'primary' | 'secondary' | 'tertiary';
 
 /**
- * A customizable spinner component used to indicate the loading of content.
+ * A customizable loader component used to indicate the loading of content.
  *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
-  tag: 'modus-wc-spinner',
-  styleUrl: 'modus-wc-spinner.scss',
+  tag: 'modus-wc-loader',
+  styleUrl: 'modus-wc-loader.scss',
   shadow: false,
 })
-export class ModusWcSpinner {
+export class ModusWcLoader {
   /**
    * The aria-label attribute used for accessibility.
    */
   @Prop() ariaLabel!: string;
 
   /**
-   * The color of the spinner.
+   * The color of the loader.
    */
-  @Prop() color: SpinnerColor = 'primary';
+  @Prop() color: LoaderColor = 'primary';
 
   /**
-   * Custom CSS class to apply to the spinner element.
+   * Custom CSS class to apply to the loader element.
    */
   @Prop() customClass: string = '';
 
   /**
-   * The size of the spinner.
+   * The size of the loader.
    */
   @Prop() size: Size = 'md';
 
   /**
-   * The variant of the spinner.
+   * The variant of the loader.
    */
-  @Prop() variant: SpinnerVariant = 'spinner';
+  @Prop() variant: LoaderVariant = 'spinner';
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcSpinner: aria-label is required for accessibility.');
+      console.warn('ModusWcLoader: aria-label is required for accessibility.');
     }
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-spinner'];
+    const classList = ['modus-wc-loader'];
 
     const propClasses = convertPropsToClasses({
       color: this.color,

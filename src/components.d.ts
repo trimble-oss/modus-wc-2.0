@@ -6,11 +6,11 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { Size } from "./components/types";
-import { SpinnerColor, SpinnerVariant } from "./components/atoms/modus-wc-spinner/modus-wc-spinner";
+import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { Size } from "./components/types";
-export { SpinnerColor, SpinnerVariant } from "./components/atoms/modus-wc-spinner/modus-wc-spinner";
+export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
@@ -357,6 +357,32 @@ export namespace Components {
         "required"?: boolean;
     }
     /**
+     * A customizable loader component used to indicate the loading of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcLoader {
+        /**
+          * The aria-label attribute used for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The color of the loader.
+         */
+        "color": LoaderColor;
+        /**
+          * Custom CSS class to apply to the loader element.
+         */
+        "customClass": string;
+        /**
+          * The size of the loader.
+         */
+        "size": Size;
+        /**
+          * The variant of the loader.
+         */
+        "variant": LoaderVariant;
+    }
+    /**
      * A customizable input component used to create number inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -591,32 +617,6 @@ export namespace Components {
           * The value of the slider.
          */
         "value": number;
-    }
-    /**
-     * A customizable spinner component used to indicate the loading of content.
-     * Adheres to WCAG 2.2 standards.
-     */
-    interface ModusWcSpinner {
-        /**
-          * The aria-label attribute used for accessibility.
-         */
-        "ariaLabel": string;
-        /**
-          * The color of the spinner.
-         */
-        "color": SpinnerColor;
-        /**
-          * Custom CSS class to apply to the spinner element.
-         */
-        "customClass": string;
-        /**
-          * The size of the spinner.
-         */
-        "size": Size;
-        /**
-          * The variant of the spinner.
-         */
-        "variant": SpinnerVariant;
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -1099,6 +1099,16 @@ declare global {
         prototype: HTMLModusWcInputLabelElement;
         new (): HTMLModusWcInputLabelElement;
     };
+    /**
+     * A customizable loader component used to indicate the loading of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcLoaderElement extends Components.ModusWcLoader, HTMLStencilElement {
+    }
+    var HTMLModusWcLoaderElement: {
+        prototype: HTMLModusWcLoaderElement;
+        new (): HTMLModusWcLoaderElement;
+    };
     interface HTMLModusWcNumberInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
@@ -1177,16 +1187,6 @@ declare global {
     var HTMLModusWcSliderElement: {
         prototype: HTMLModusWcSliderElement;
         new (): HTMLModusWcSliderElement;
-    };
-    /**
-     * A customizable spinner component used to indicate the loading of content.
-     * Adheres to WCAG 2.2 standards.
-     */
-    interface HTMLModusWcSpinnerElement extends Components.ModusWcSpinner, HTMLStencilElement {
-    }
-    var HTMLModusWcSpinnerElement: {
-        prototype: HTMLModusWcSpinnerElement;
-        new (): HTMLModusWcSpinnerElement;
     };
     interface HTMLModusWcTextInputElementEventMap {
         "inputBlur": FocusEvent;
@@ -1314,11 +1314,11 @@ declare global {
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
+        "modus-wc-loader": HTMLModusWcLoaderElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
-        "modus-wc-spinner": HTMLModusWcSpinnerElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
@@ -1700,6 +1700,32 @@ declare namespace LocalJSX {
         "required"?: boolean;
     }
     /**
+     * A customizable loader component used to indicate the loading of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcLoader {
+        /**
+          * The aria-label attribute used for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The color of the loader.
+         */
+        "color"?: LoaderColor;
+        /**
+          * Custom CSS class to apply to the loader element.
+         */
+        "customClass"?: string;
+        /**
+          * The size of the loader.
+         */
+        "size"?: Size;
+        /**
+          * The variant of the loader.
+         */
+        "variant"?: LoaderVariant;
+    }
+    /**
      * A customizable input component used to create number inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1970,32 +1996,6 @@ declare namespace LocalJSX {
           * The value of the slider.
          */
         "value"?: number;
-    }
-    /**
-     * A customizable spinner component used to indicate the loading of content.
-     * Adheres to WCAG 2.2 standards.
-     */
-    interface ModusWcSpinner {
-        /**
-          * The aria-label attribute used for accessibility.
-         */
-        "ariaLabel": string;
-        /**
-          * The color of the spinner.
-         */
-        "color"?: SpinnerColor;
-        /**
-          * Custom CSS class to apply to the spinner element.
-         */
-        "customClass"?: string;
-        /**
-          * The size of the spinner.
-         */
-        "size"?: Size;
-        /**
-          * The variant of the spinner.
-         */
-        "variant"?: SpinnerVariant;
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -2366,11 +2366,11 @@ declare namespace LocalJSX {
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-label": ModusWcInputLabel;
+        "modus-wc-loader": ModusWcLoader;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-radio": ModusWcRadio;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
-        "modus-wc-spinner": ModusWcSpinner;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
@@ -2427,6 +2427,11 @@ declare module "@stencil/core" {
              */
             "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
             /**
+             * A customizable loader component used to indicate the loading of content.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-loader": LocalJSX.ModusWcLoader & JSXBase.HTMLAttributes<HTMLModusWcLoaderElement>;
+            /**
              * A customizable input component used to create number inputs with types.
              * Adheres to WCAG 2.2 standards.
              */
@@ -2446,11 +2451,6 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-slider": LocalJSX.ModusWcSlider & JSXBase.HTMLAttributes<HTMLModusWcSliderElement>;
-            /**
-             * A customizable spinner component used to indicate the loading of content.
-             * Adheres to WCAG 2.2 standards.
-             */
-            "modus-wc-spinner": LocalJSX.ModusWcSpinner & JSXBase.HTMLAttributes<HTMLModusWcSpinnerElement>;
             /**
              * A customizable input component used to create text inputs with types.
              * Adheres to WCAG 2.2 standards.

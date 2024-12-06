@@ -2,19 +2,19 @@ import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Size } from '../../types';
-import { SpinnerColor, SpinnerVariant } from './modus-wc-spinner';
+import { LoaderColor, LoaderVariant } from './modus-wc-loader';
 
-interface SpinnerArgs {
+interface LoaderArgs {
   'aria-label': string;
-  color: SpinnerColor;
+  color: LoaderColor;
   'custom-class': string;
   size: Size;
-  variant: SpinnerVariant;
+  variant: LoaderVariant;
 }
 
-const meta: Meta<SpinnerArgs> = {
-  title: 'Components/Spinner',
-  component: 'modus-wc-spinner',
+const meta: Meta<LoaderArgs> = {
+  title: 'Components/Loader',
+  component: 'modus-wc-loader',
   args: {
     'aria-label': 'Loading spinner',
     color: 'primary',
@@ -29,7 +29,7 @@ const meta: Meta<SpinnerArgs> = {
     },
     size: {
       control: { type: 'inline-radio' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     variant: {
       control: { type: 'inline-radio' },
@@ -43,18 +43,18 @@ const meta: Meta<SpinnerArgs> = {
 
 export default meta;
 
-type Story = StoryObj<SpinnerArgs>;
+type Story = StoryObj<LoaderArgs>;
 
 export const Default: Story = {
   render: (args) => {
     return html`
-      <modus-wc-spinner
+      <modus-wc-loader
         aria-label="${ifDefined(args['aria-label'])}"
         color="${args.color}"
         custom-class="${args['custom-class']}"
         size="${args.size}"
         variant="${args.variant}"
-      ></modus-wc-spinner>
+      ></modus-wc-loader>
     `;
   },
 };
