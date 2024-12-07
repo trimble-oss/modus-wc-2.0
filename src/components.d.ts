@@ -5,17 +5,43 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Size } from "./components/types";
+import { InputSize, Size } from "./components/types";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { Size } from "./components/types";
+export { InputSize, Size } from "./components/types";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
+    /**
+     * A customizable autocomplete component used to create searchable text inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcAutocomplete {
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to host element.
+         */
+        "customClass": string;
+        /**
+          * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
+         */
+        "debounceMs": number;
+        /**
+          * The size of the input.
+         */
+        "size"?: InputSize;
+        /**
+          * The value of the control.
+         */
+        "value": string;
+    }
     /**
      * A customizable avatar component used to create avatars with different images.
      * Adheres to WCAG 2.2 standards.
@@ -1033,6 +1059,10 @@ export namespace Components {
         "weight"?: TypographyWeight;
     }
 }
+export interface ModusWcAutocompleteCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcAutocompleteElement;
+}
 export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcButtonElement;
@@ -1078,6 +1108,29 @@ export interface ModusWcToggleCustomEvent<T> extends CustomEvent<T> {
     target: HTMLModusWcToggleElement;
 }
 declare global {
+    interface HTMLModusWcAutocompleteElementEventMap {
+        "inputBlur": ModusWcTextInputCustomEvent<FocusEvent>;
+        "inputChange": ModusWcTextInputCustomEvent<Event>;
+        "inputFocus": ModusWcTextInputCustomEvent<FocusEvent>;
+    }
+    /**
+     * A customizable autocomplete component used to create searchable text inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcAutocompleteElement extends Components.ModusWcAutocomplete, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcAutocompleteElementEventMap>(type: K, listener: (this: HTMLModusWcAutocompleteElement, ev: ModusWcAutocompleteCustomEvent<HTMLModusWcAutocompleteElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcAutocompleteElementEventMap>(type: K, listener: (this: HTMLModusWcAutocompleteElement, ev: ModusWcAutocompleteCustomEvent<HTMLModusWcAutocompleteElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcAutocompleteElement: {
+        prototype: HTMLModusWcAutocompleteElement;
+        new (): HTMLModusWcAutocompleteElement;
+    };
     /**
      * A customizable avatar component used to create avatars with different images.
      * Adheres to WCAG 2.2 standards.
@@ -1437,6 +1490,7 @@ declare global {
         new (): HTMLModusWcTypographyElement;
     };
     interface HTMLElementTagNameMap {
+        "modus-wc-autocomplete": HTMLModusWcAutocompleteElement;
         "modus-wc-avatar": HTMLModusWcAvatarElement;
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
@@ -1462,6 +1516,44 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    /**
+     * A customizable autocomplete component used to create searchable text inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcAutocomplete {
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Custom CSS class to apply to host element.
+         */
+        "customClass"?: string;
+        /**
+          * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
+         */
+        "debounceMs"?: number;
+        /**
+          * Event emitted when the input loses focus.
+         */
+        "onInputBlur"?: (event: ModusWcAutocompleteCustomEvent<ModusWcTextInputCustomEvent<FocusEvent>>) => void;
+        /**
+          * Event emitted when the input value changes. This event is debounced based on the debounceMs prop.
+         */
+        "onInputChange"?: (event: ModusWcAutocompleteCustomEvent<ModusWcTextInputCustomEvent<Event>>) => void;
+        /**
+          * Event emitted when the input gains focus.
+         */
+        "onInputFocus"?: (event: ModusWcAutocompleteCustomEvent<ModusWcTextInputCustomEvent<FocusEvent>>) => void;
+        /**
+          * The size of the input.
+         */
+        "size"?: InputSize;
+        /**
+          * The value of the control.
+         */
+        "value"?: string;
+    }
     /**
      * A customizable avatar component used to create avatars with different images.
      * Adheres to WCAG 2.2 standards.
@@ -2595,6 +2687,7 @@ declare namespace LocalJSX {
         "weight"?: TypographyWeight;
     }
     interface IntrinsicElements {
+        "modus-wc-autocomplete": ModusWcAutocomplete;
         "modus-wc-avatar": ModusWcAvatar;
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
@@ -2623,6 +2716,11 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * A customizable autocomplete component used to create searchable text inputs.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-autocomplete": LocalJSX.ModusWcAutocomplete & JSXBase.HTMLAttributes<HTMLModusWcAutocompleteElement>;
             /**
              * A customizable avatar component used to create avatars with different images.
              * Adheres to WCAG 2.2 standards.

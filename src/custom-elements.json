@@ -2757,6 +2757,111 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-autocomplete/modus-wc-autocomplete.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable autocomplete component used to create searchable text inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcAutocomplete",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to host element."
+            },
+            {
+              "name": "debounce-ms",
+              "fieldName": "debounceMs",
+              "type": {
+                "text": "number"
+              },
+              "description": "The debounce timeout in milliseconds.\r\nSet to 0 to disable debouncing."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "InputSize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the control."
+            }
+          ],
+          "tagName": "modus-wc-autocomplete",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<\r\n    ModusWcTextInputCustomEvent<FocusEvent>\r\n  >"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<\r\n    ModusWcTextInputCustomEvent<Event>\r\n  >"
+              },
+              "description": "Event emitted when the input value changes.\r\nThis event is debounced based on the debounceMs prop."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<\r\n    ModusWcTextInputCustomEvent<FocusEvent>\r\n  >"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcAutocomplete",
+          "declaration": {
+            "name": "ModusWcAutocomplete",
+            "module": "src/components/molecules/modus-wc-autocomplete/modus-wc-autocomplete.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-autocomplete",
+          "declaration": {
+            "name": "ModusWcAutocomplete",
+            "module": "src/components/molecules/modus-wc-autocomplete/modus-wc-autocomplete.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-theme-switcher/modus-wc-theme-switcher.tsx",
       "declarations": [
         {

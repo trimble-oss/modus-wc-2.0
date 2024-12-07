@@ -50,6 +50,19 @@ Adheres to WCAG 2.2 standards.
 | `inputFocus`  | Event emitted when the input gains focus.   | `CustomEvent<FocusEvent>` |
 
 
+## Dependencies
+
+### Used by
+
+ - [modus-wc-autocomplete](../../molecules/modus-wc-autocomplete)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-autocomplete --> modus-wc-text-input
+  style modus-wc-text-input fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
