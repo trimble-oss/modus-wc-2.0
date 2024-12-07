@@ -1,25 +1,31 @@
 import {
-  h,
-  Host,
   Component,
   Event as StencilEvent,
   EventEmitter,
+  h,
+  Host,
   Prop,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
+import { convertPropsToClasses } from './modus-wc-select.tailwind';
 import { Size } from '../../types';
 
+export interface ISelectOption {
+  disabled?: boolean;
+  label: string;
+  value: string;
+}
+
 /**
- * A customizable input component used to create text inputs with types.
+ * A customizable select component used to pick a value from a list of options.
  *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
-  tag: 'modus-wc-text-input',
-  styleUrl: 'modus-wc-text-input.scss',
+  tag: 'modus-wc-select',
+  styleUrl: 'modus-wc-select.scss',
   shadow: false,
 })
-export class ModusWcTextInput {
+export class ModusWcSelect {
   /**
    * The ID of the element that describes the input.
    */
@@ -29,22 +35,6 @@ export class ModusWcTextInput {
    * The aria-label attribute for accessibility.
    */
   @Prop() ariaLabel!: string;
-
-  /**
-   * Controls automatic capitalization in inputted text.
-   */
-  @Prop() autoCapitalize?:
-    | 'off'
-    | 'none'
-    | 'on'
-    | 'sentences'
-    | 'words'
-    | 'characters';
-
-  /**
-   * Hint for form autofill feature.
-   */
-  @Prop() autoComplete?: 'on' | 'off';
 
   /**
    * Indicates that an element should be focused on page load.
@@ -57,9 +47,9 @@ export class ModusWcTextInput {
   @Prop() bordered?: boolean = true;
 
   /**
-   * Custom CSS class to apply to the input.
+   * Custom CSS class to apply to the inner div.
    */
-  @Prop() customClass?: string = '';
+  @Prop() customClass: string = '';
 
   /**
    * Whether the form control is disabled.
@@ -69,7 +59,7 @@ export class ModusWcTextInput {
   /**
    * Indicates whether the input has an invalid input.
    */
-  @Prop() inputAriaInvalid?: 'grammar' | 'spelling' | 'true' | 'false';
+  @Prop() inputAriaInvalid?: 'true' | 'false';
 
   /**
    * Specifies the text direction of the input content.
@@ -82,39 +72,9 @@ export class ModusWcTextInput {
   @Prop() inputId?: string;
 
   /**
-   * Hints at the type of data that might be entered by the user while editing the element or its contents.
-   * This allows a browser to display an appropriate virtual keyboard.
-   */
-  @Prop() inputMode:
-    | 'decimal'
-    | 'email'
-    | 'none'
-    | 'numeric'
-    | 'search'
-    | 'tel'
-    | 'text'
-    | 'url' = 'text';
-
-  /**
-   * Whether the element may be checked for spelling errors.
-   * A hint for the browser, not a guarantee.
-   */
-  @Prop() inputSpellcheck?: boolean = false;
-
-  /**
    * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
    */
   @Prop() inputTabIndex?: number;
-
-  /**
-   * Maximum length (number of characters) of value.
-   */
-  @Prop() maxLength?: number;
-
-  /**
-   * Minimum length (number of characters) of value.
-   */
-  @Prop() minLength?: number;
 
   /**
    * Name of the form control. Submitted with the form as part of a name/value pair.
@@ -122,19 +82,9 @@ export class ModusWcTextInput {
   @Prop() name?: string;
 
   /**
-   * Pattern the value must match to be valid
+   * The options to display in the select dropdown.
    */
-  @Prop() pattern?: string;
-
-  /**
-   * Text that appears in the form control when it has no value set.
-   */
-  @Prop() placeholder?: string = '';
-
-  /**
-   * Whether the value is editable.
-   */
-  @Prop() readOnly?: boolean = false;
+  @Prop({ mutable: true, reflect: true }) options: ISelectOption[] = [];
 
   /**
    * A value is required for the form to be submittable.
@@ -145,12 +95,6 @@ export class ModusWcTextInput {
    * The size of the input.
    */
   @Prop() size?: Size = 'md';
-
-  /**
-   * Type of form control.
-   */
-  @Prop() type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url' =
-    'text';
 
   /**
    * The value of the control.
@@ -174,14 +118,13 @@ export class ModusWcTextInput {
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn(
-        'ModusWcTextInput: aria-label is required for accessibility.'
-      );
+      console.warn('ModusWcSelect: aria-label is required for accessibility.');
     }
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-input', 'modus-wc-w-full'];
+    const classList: string[] = ['modus-wc-select', 'modus-wc-w-full'];
+
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       size: this.size,
@@ -209,35 +152,32 @@ export class ModusWcTextInput {
   render() {
     return (
       <Host>
-        <input
+        <select
           aria-describedby={this.ariaDescribedby}
           aria-invalid={this.inputAriaInvalid}
-          aria-label={this.ariaLabel || this.placeholder}
-          aria-placeholder={this.placeholder}
-          aria-required={this.required}
-          autocapitalize={this.autoCapitalize}
-          autocomplete={this.autoComplete}
+          aria-label={this.ariaLabel}
           autofocus={this.autoFocus}
           class={this.getClasses()}
           dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}
-          inputmode={this.inputMode}
-          maxlength={this.maxLength}
-          minlength={this.minLength}
           name={this.name}
           onBlur={this.handleBlur}
           onChange={this.handleChange}
           onFocus={this.handleFocus}
-          pattern={this.pattern}
-          placeholder={this.placeholder}
-          readonly={this.readOnly}
           required={this.required}
-          spellcheck={this.inputSpellcheck}
-          tabIndex={this.inputTabIndex}
-          type={this.type}
-          value={this.value}
-        />
+          tabindex={this.inputTabIndex}
+        >
+          {this.options.map((option) => (
+            <option
+              disabled={option.disabled}
+              selected={option.value === this.value}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          ))}
+        </select>
       </Host>
     );
   }

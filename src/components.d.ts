@@ -6,11 +6,10 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { Size } from "./components/types";
-import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
+import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { Size } from "./components/types";
-export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
@@ -557,6 +556,72 @@ export namespace Components {
         "value": boolean;
     }
     /**
+     * A customizable select component used to pick a value from a list of options.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcSelect {
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Indicates that an element should be focused on page load.
+         */
+        "autoFocus"?: boolean;
+        /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass": string;
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Indicates whether the input has an invalid input.
+         */
+        "inputAriaInvalid"?: 'true' | 'false';
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * The options to display in the select dropdown.
+         */
+        "options": ISelectOption[];
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: Size;
+        /**
+          * The value of the control.
+         */
+        "value": string;
+    }
+    /**
      * A customizable skeleton component used to create skeletons of various sizes and shapes.
      * Adheres to WCAG 2.2 standards.
      */
@@ -985,6 +1050,10 @@ export interface ModusWcRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcRadioElement;
 }
+export interface ModusWcSelectCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcSelectElement;
+}
 export interface ModusWcSliderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSliderElement;
@@ -1191,6 +1260,29 @@ declare global {
         prototype: HTMLModusWcRadioElement;
         new (): HTMLModusWcRadioElement;
     };
+    interface HTMLModusWcSelectElementEventMap {
+        "inputBlur": FocusEvent;
+        "inputChange": Event;
+        "inputFocus": FocusEvent;
+    }
+    /**
+     * A customizable select component used to pick a value from a list of options.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcSelectElement extends Components.ModusWcSelect, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcSelectElementEventMap>(type: K, listener: (this: HTMLModusWcSelectElement, ev: ModusWcSelectCustomEvent<HTMLModusWcSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcSelectElementEventMap>(type: K, listener: (this: HTMLModusWcSelectElement, ev: ModusWcSelectCustomEvent<HTMLModusWcSelectElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcSelectElement: {
+        prototype: HTMLModusWcSelectElement;
+        new (): HTMLModusWcSelectElement;
+    };
     /**
      * A customizable skeleton component used to create skeletons of various sizes and shapes.
      * Adheres to WCAG 2.2 standards.
@@ -1354,6 +1446,7 @@ declare global {
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
+        "modus-wc-select": HTMLModusWcSelectElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
@@ -1961,6 +2054,84 @@ declare namespace LocalJSX {
         "value"?: boolean;
     }
     /**
+     * A customizable select component used to pick a value from a list of options.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcSelect {
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Indicates that an element should be focused on page load.
+         */
+        "autoFocus"?: boolean;
+        /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Indicates whether the input has an invalid input.
+         */
+        "inputAriaInvalid"?: 'true' | 'false';
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Event emitted when the input loses focus.
+         */
+        "onInputBlur"?: (event: ModusWcSelectCustomEvent<FocusEvent>) => void;
+        /**
+          * Event emitted when the input value changes.
+         */
+        "onInputChange"?: (event: ModusWcSelectCustomEvent<Event>) => void;
+        /**
+          * Event emitted when the input gains focus.
+         */
+        "onInputFocus"?: (event: ModusWcSelectCustomEvent<FocusEvent>) => void;
+        /**
+          * The options to display in the select dropdown.
+         */
+        "options"?: ISelectOption[];
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: Size;
+        /**
+          * The value of the control.
+         */
+        "value"?: string;
+    }
+    /**
      * A customizable skeleton component used to create skeletons of various sizes and shapes.
      * Adheres to WCAG 2.2 standards.
      */
@@ -2433,6 +2604,7 @@ declare namespace LocalJSX {
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
+        "modus-wc-select": ModusWcSelect;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
         "modus-wc-text-input": ModusWcTextInput;
@@ -2510,6 +2682,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-radio": LocalJSX.ModusWcRadio & JSXBase.HTMLAttributes<HTMLModusWcRadioElement>;
+            /**
+             * A customizable select component used to pick a value from a list of options.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-select": LocalJSX.ModusWcSelect & JSXBase.HTMLAttributes<HTMLModusWcSelectElement>;
             /**
              * A customizable skeleton component used to create skeletons of various sizes and shapes.
              * Adheres to WCAG 2.2 standards.

@@ -43,6 +43,12 @@ const themeable = [
   'modus-wc-radio-md',
   'modus-wc-radio-lg',
   'modus-wc-radio-xl',
+  // Select
+  'modus-wc-select-xs',
+  'modus-wc-select-sm',
+  'modus-wc-select-md',
+  'modus-wc-select-lg',
+  'modus-wc-select-xl',
   // Slider
   'modus-wc-range-xs',
   'modus-wc-range-sm',
