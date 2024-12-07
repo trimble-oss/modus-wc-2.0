@@ -6,10 +6,13 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { Size } from "./components/types";
+import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { Size } from "./components/types";
+export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
+export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
