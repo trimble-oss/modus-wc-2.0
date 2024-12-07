@@ -29,7 +29,7 @@ const meta: Meta<LoaderArgs> = {
     },
     size: {
       control: { type: 'inline-radio' },
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      options: ['xs', 'sm', 'md', 'lg'],
     },
     variant: {
       control: { type: 'inline-radio' },
@@ -122,20 +122,6 @@ export const Ring: Story = {
         custom-class="${args['custom-class']}"
         size="md"
         variant="ring"
-      ></modus-wc-loader>
-    `;
-  },
-};
-
-export const Spinner: Story = {
-  render: (args) => {
-    return html`
-      <modus-wc-loader
-        aria-label="Loading spinner"
-        color="${args.color}"
-        custom-class="${args['custom-class']}"
-        size="md"
-        variant="spinner"
       ></modus-wc-loader>
     `;
   },
