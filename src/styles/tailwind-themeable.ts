@@ -32,6 +32,11 @@ const themeable = [
   'modus-wc-input-md',
   'modus-wc-input-lg',
   'modus-wc-input-xl',
+  // Loading
+  'modus-wc-loading-xs',
+  'modus-wc-loading-sm',
+  'modus-wc-loading-md',
+  'modus-wc-loading-lg',
   // Radio
   'modus-wc-radio-xs',
   'modus-wc-radio-sm',
@@ -56,6 +61,15 @@ const themeable = [
   'modus-wc-text-md',
   'modus-wc-text-lg',
   'modus-wc-text-xl',
+  'modus-wc-text-primary',
+  'modus-wc-text-secondary',
+  'modus-wc-text-tertiary',
+  'modus-wc-text-accent',
+  'modus-wc-text-neutral',
+  'modus-wc-text-info',
+  'modus-wc-text-success',
+  'modus-wc-text-warning',
+  'modus-wc-text-error',
   // Textarea
   'modus-wc-textarea-xs',
   'modus-wc-textarea-sm',

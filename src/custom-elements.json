@@ -950,6 +950,86 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-loader/modus-wc-loader.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable loader component used to indicate the loading of content.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcLoader",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used for accessibility."
+            },
+            {
+              "name": "color",
+              "fieldName": "color",
+              "type": {
+                "text": "LoaderColor"
+              },
+              "description": "The color of the loader."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the loader element."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "Size"
+              },
+              "description": "The size of the loader."
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "type": {
+                "text": "LoaderVariant"
+              },
+              "description": "The variant of the loader."
+            }
+          ],
+          "tagName": "modus-wc-loader",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcLoader",
+          "declaration": {
+            "name": "ModusWcLoader",
+            "module": "src/components/atoms/modus-wc-loader/modus-wc-loader.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-loader",
+          "declaration": {
+            "name": "ModusWcLoader",
+            "module": "src/components/atoms/modus-wc-loader/modus-wc-loader.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-number-input/modus-wc-number-input.tsx",
       "declarations": [
         {

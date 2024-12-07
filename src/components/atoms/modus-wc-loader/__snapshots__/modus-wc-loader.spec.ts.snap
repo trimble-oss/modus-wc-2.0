@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-loader should render with custom props 1`] = `
+<modus-wc-loader aria-label="Loading loader" color="secondary" custom-class="test-class" size="lg" variant="dots">
+  <span aria-label="Loading loader" class="modus-wc-loader modus-wc-loader-dots modus-wc-loading-lg modus-wc-text-secondary test-class" role="status" tabindex="-1"></span>
+</modus-wc-loader>
+`;
+
+exports[`modus-wc-loader should render with default props 1`] = `
+<modus-wc-loader aria-label="Loading loader">
+  <span aria-label="Loading loader" class="modus-wc-loader modus-wc-loader-spinner modus-wc-loading-md modus-wc-text-primary" role="status" tabindex="-1"></span>
+</modus-wc-loader>
+`;

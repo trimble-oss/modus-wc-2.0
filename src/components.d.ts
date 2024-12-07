@@ -6,10 +6,12 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { Size } from "./components/types";
+import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { Size } from "./components/types";
+export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
@@ -355,6 +357,32 @@ export namespace Components {
           * Whether the label indicates a required field.
          */
         "required"?: boolean;
+    }
+    /**
+     * A customizable loader component used to indicate the loading of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcLoader {
+        /**
+          * The aria-label attribute used for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The color of the loader.
+         */
+        "color": LoaderColor;
+        /**
+          * Custom CSS class to apply to the loader element.
+         */
+        "customClass": string;
+        /**
+          * The size of the loader.
+         */
+        "size": Size;
+        /**
+          * The variant of the loader.
+         */
+        "variant": LoaderVariant;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -1169,6 +1197,16 @@ declare global {
         prototype: HTMLModusWcInputLabelElement;
         new (): HTMLModusWcInputLabelElement;
     };
+    /**
+     * A customizable loader component used to indicate the loading of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcLoaderElement extends Components.ModusWcLoader, HTMLStencilElement {
+    }
+    var HTMLModusWcLoaderElement: {
+        prototype: HTMLModusWcLoaderElement;
+        new (): HTMLModusWcLoaderElement;
+    };
     interface HTMLModusWcNumberInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
@@ -1407,6 +1445,7 @@ declare global {
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
+        "modus-wc-loader": HTMLModusWcLoaderElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
@@ -1792,6 +1831,32 @@ declare namespace LocalJSX {
           * Whether the label indicates a required field.
          */
         "required"?: boolean;
+    }
+    /**
+     * A customizable loader component used to indicate the loading of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcLoader {
+        /**
+          * The aria-label attribute used for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * The color of the loader.
+         */
+        "color"?: LoaderColor;
+        /**
+          * Custom CSS class to apply to the loader element.
+         */
+        "customClass"?: string;
+        /**
+          * The size of the loader.
+         */
+        "size"?: Size;
+        /**
+          * The variant of the loader.
+         */
+        "variant"?: LoaderVariant;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -2538,6 +2603,7 @@ declare namespace LocalJSX {
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-label": ModusWcInputLabel;
+        "modus-wc-loader": ModusWcLoader;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
@@ -2599,6 +2665,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
+            /**
+             * A customizable loader component used to indicate the loading of content.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-loader": LocalJSX.ModusWcLoader & JSXBase.HTMLAttributes<HTMLModusWcLoaderElement>;
             /**
              * A customizable input component used to create number inputs with types.
              * Adheres to WCAG 2.2 standards.
