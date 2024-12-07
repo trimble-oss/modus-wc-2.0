@@ -10,7 +10,15 @@ export type LoaderVariant =
   | 'ring'
   | 'spinner';
 
-export type LoaderColor = 'primary' | 'secondary' | 'tertiary';
+export type LoaderColor =
+  | 'primary'
+  | 'secondary'
+  | 'accent'
+  | 'neutral'
+  | 'info'
+  | 'success'
+  | 'warning'
+  | 'error';
 
 /**
  * A customizable loader component used to indicate the loading of content.

@@ -25,7 +25,16 @@ const meta: Meta<LoaderArgs> = {
   argTypes: {
     color: {
       control: { type: 'inline-radio' },
-      options: ['primary', 'secondary', 'tertiary'],
+      options: [
+        'primary',
+        'secondary',
+        'accent',
+        'neutral',
+        'info',
+        'success',
+        'warning',
+        'error',
+      ],
     },
     size: {
       control: { type: 'inline-radio' },
