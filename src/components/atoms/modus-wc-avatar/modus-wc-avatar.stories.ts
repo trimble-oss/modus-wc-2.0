@@ -1,11 +1,12 @@
 import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { Size } from '../../types';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface AvatarArgs {
   alt: string;
   'aria-label': string;
-  'custom-class': string;
+  'custom-class'?: string;
   'img-src': string;
   shape: string;
   size: Size;
@@ -44,7 +45,7 @@ const Template: Story = {
       <modus-wc-avatar
         alt="${args.alt}"
         aria-label="${args['aria-label']}"
-        ?custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         img-src="${args['img-src']}"
         shape="${args.shape}"
         size="${args.size}"

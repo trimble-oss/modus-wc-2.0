@@ -2252,7 +2252,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "InputSize"
               },
               "description": "The size of the input."
             },
@@ -2884,14 +2884,6 @@
           ],
           "attributes": [
             {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
-            },
-            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
@@ -2908,20 +2900,18 @@
               "description": "The debounce timeout in milliseconds.\r\nSet to 0 to disable debouncing."
             },
             {
-              "name": "size",
-              "fieldName": "size",
+              "name": "menu",
+              "fieldName": "menu",
               "type": {
-                "text": "InputSize"
-              },
-              "description": "The size of the input."
+                "text": "ModusWcMenu"
+              }
             },
             {
-              "name": "value",
-              "fieldName": "value",
+              "name": "text-input",
+              "fieldName": "textInput",
               "type": {
-                "text": "string"
-              },
-              "description": "The value of the control."
+                "text": "ModusWcTextInput"
+              }
             }
           ],
           "tagName": "modus-wc-autocomplete",
@@ -2949,6 +2939,14 @@
                 "text": "EventEmitter<\r\n    ModusWcTextInputCustomEvent<FocusEvent>\r\n  >"
               },
               "description": "Event emitted when the input gains focus."
+            },
+            {
+              "kind": "field",
+              "name": "menuItemSelect",
+              "type": {
+                "text": "EventEmitter<\r\n    ModusWcMenuCustomEvent<IMenuItem>\r\n  >"
+              },
+              "description": "Event emitted when a menu item is selected."
             }
           ],
           "customElement": true

@@ -23,7 +23,7 @@ export class ModusWcIcon {
   /**
    * Custom CSS class to apply to the i element.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * Indicates that the icon is decorative.

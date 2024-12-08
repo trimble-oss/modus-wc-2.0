@@ -20,7 +20,7 @@ export class ModusWcProgress {
   /**
    * Custom CSS class to apply to the progress element.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The indeterminate state of the progress component.

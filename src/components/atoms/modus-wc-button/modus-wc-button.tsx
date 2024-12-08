@@ -34,7 +34,7 @@ export class ModusWcButton {
   /**
    * Custom CSS class to apply to the button element.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * If true, the button will be disabled.

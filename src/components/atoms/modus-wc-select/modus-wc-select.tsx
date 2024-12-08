@@ -49,7 +49,7 @@ export class ModusWcSelect {
   /**
    * Custom CSS class to apply to the inner div.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * Whether the form control is disabled.

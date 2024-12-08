@@ -1,12 +1,13 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { Size } from '../../types';
 
 interface ButtonArgs {
   'aria-label': string;
   color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
-  'custom-class': string;
+  'custom-class'?: string;
   disabled: boolean;
   'full-width': boolean;
   label: string;
@@ -66,7 +67,7 @@ const Template: Story = {
       <modus-wc-button
         aria-label="${args['aria-label']}"
         color="${args.color}"
-        custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         ?disabled="${args.disabled}"
         ?full-width="${args['full-width']}"
         label="${args.label}"

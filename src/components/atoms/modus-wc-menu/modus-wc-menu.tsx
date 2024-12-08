@@ -44,7 +44,7 @@ export class ModusWcMenu {
   /**
    * Custom CSS class to apply to the ul element.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The items to display in the menu.

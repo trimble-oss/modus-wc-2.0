@@ -6,14 +6,12 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { InputSize, Orientation, Size } from "./components/types";
-import { ModusWcTextInputCustomEvent } from "./components";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { InputSize, Orientation, Size } from "./components/types";
-export { ModusWcTextInputCustomEvent } from "./components";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
@@ -26,10 +24,6 @@ export namespace Components {
      */
     interface ModusWcAutocomplete {
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Custom CSS class to apply to host element.
          */
         "customClass": string;
@@ -37,14 +31,8 @@ export namespace Components {
           * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
          */
         "debounceMs": number;
-        /**
-          * The size of the input.
-         */
-        "size"?: InputSize;
-        /**
-          * The value of the control.
-         */
-        "value": string;
+        "menu": ModusWcMenu;
+        "textInput": ModusWcTextInput;
     }
     /**
      * A customizable avatar component used to create avatars with different images.
@@ -434,7 +422,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the ul element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The items to display in the menu.
          */
@@ -884,7 +872,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: InputSize;
         /**
           * Type of form control.
          */
@@ -1158,6 +1146,7 @@ declare global {
         "inputBlur": ModusWcTextInputCustomEvent<FocusEvent>;
         "inputChange": ModusWcTextInputCustomEvent<Event>;
         "inputFocus": ModusWcTextInputCustomEvent<FocusEvent>;
+        "menuItemSelect": ModusWcMenuCustomEvent<IMenuItem>;
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
@@ -1590,10 +1579,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcAutocomplete {
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Custom CSS class to apply to host element.
          */
         "customClass"?: string;
@@ -1601,6 +1586,7 @@ declare namespace LocalJSX {
           * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
          */
         "debounceMs"?: number;
+        "menu"?: ModusWcMenu;
         /**
           * Event emitted when the input loses focus.
          */
@@ -1614,13 +1600,10 @@ declare namespace LocalJSX {
          */
         "onInputFocus"?: (event: ModusWcAutocompleteCustomEvent<ModusWcTextInputCustomEvent<FocusEvent>>) => void;
         /**
-          * The size of the input.
+          * Event emitted when a menu item is selected.
          */
-        "size"?: InputSize;
-        /**
-          * The value of the control.
-         */
-        "value"?: string;
+        "onMenuItemSelect"?: (event: ModusWcAutocompleteCustomEvent<ModusWcMenuCustomEvent<IMenuItem>>) => void;
+        "textInput"?: ModusWcTextInput;
     }
     /**
      * A customizable avatar component used to create avatars with different images.
@@ -2552,7 +2535,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: InputSize;
         /**
           * Type of form control.
          */

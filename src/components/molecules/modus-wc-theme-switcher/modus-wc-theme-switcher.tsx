@@ -26,7 +26,7 @@ export class ModusWcThemeSwitcher {
   /**
    * Custom CSS class to apply to the theme switcher element.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * An event that fires when the theme is changed.

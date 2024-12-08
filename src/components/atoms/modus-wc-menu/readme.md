@@ -18,7 +18,7 @@ Adheres to WCAG 2.2 standards.
 | `activeItemValue`        | `active-item-value` | The active menu item value, used to show an item as selected. | `string \| undefined`                     | `undefined`  |
 | `ariaLabel` _(required)_ | `aria-label`        | The aria-label attribute for accessibility.                   | `string`                                  | `undefined`  |
 | `bordered`               | `bordered`          | Indicates that the menu should have a border.                 | `boolean \| undefined`                    | `true`       |
-| `customClass`            | `custom-class`      | Custom CSS class to apply to the ul element.                  | `string`                                  | `''`         |
+| `customClass`            | `custom-class`      | Custom CSS class to apply to the ul element.                  | `string \| undefined`                     | `''`         |
 | `items`                  | --                  | The items to display in the menu.                             | `IMenuItem[]`                             | `[]`         |
 | `menuTitle`              | `menu-title`        | The menu title, rendered as the first item (disabled).        | `string \| undefined`                     | `undefined`  |
 | `orientation`            | `orientation`       | The orientation of the menu.                                  | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
@@ -31,6 +31,19 @@ Adheres to WCAG 2.2 standards.
 | ------------ | ------------------------------------------- | ------------------------ |
 | `itemSelect` | Event emitted when a menu item is selected. | `CustomEvent<IMenuItem>` |
 
+
+## Dependencies
+
+### Used by
+
+ - [modus-wc-autocomplete](../../molecules/modus-wc-autocomplete)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-autocomplete --> modus-wc-menu
+  style modus-wc-menu fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

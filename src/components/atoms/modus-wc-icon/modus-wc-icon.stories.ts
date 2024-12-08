@@ -5,7 +5,7 @@ import { Size } from '../../types';
 
 interface IconArgs {
   'aria-label': string;
-  'custom-class': string;
+  'custom-class'?: string;
   decorative: boolean;
   name: string;
   size: Size;
@@ -38,7 +38,7 @@ const Template: Story = {
     return html`
       <modus-wc-icon
         aria-label="${ifDefined(args['aria-label'])}"
-        custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         ?decorative="${ifDefined(args.decorative)}"
         name="${args.name}"
         size="${args.size}"

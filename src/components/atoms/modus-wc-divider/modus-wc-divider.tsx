@@ -38,7 +38,7 @@ export class ModusWcDivider {
   /**
    * Custom CSS class to apply to the divider element.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The orientation of the divider. This is in reference to how content will be rendered around the divider.

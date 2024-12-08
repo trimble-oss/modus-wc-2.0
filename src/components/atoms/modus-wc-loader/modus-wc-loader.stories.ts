@@ -7,7 +7,7 @@ import { LoaderColor, LoaderVariant } from './modus-wc-loader';
 interface LoaderArgs {
   'aria-label': string;
   color: LoaderColor;
-  'custom-class': string;
+  'custom-class'?: string;
   size: Size;
   variant: LoaderVariant;
 }
@@ -57,7 +57,7 @@ export const Default: Story = {
       <modus-wc-loader
         aria-label="${ifDefined(args['aria-label'])}"
         color="${args.color}"
-        custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         size="${args.size}"
         variant="${args.variant}"
       ></modus-wc-loader>
@@ -71,7 +71,7 @@ export const Ball: Story = {
       <modus-wc-loader
         aria-label="Loading ball"
         color="${args.color}"
-        custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         size="md"
         variant="ball"
       ></modus-wc-loader>
@@ -85,7 +85,7 @@ export const Bars: Story = {
       <modus-wc-loader
         aria-label="Loading bars"
         color="${args.color}"
-        custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         size="md"
         variant="bars"
       ></modus-wc-loader>
@@ -99,7 +99,7 @@ export const Dots: Story = {
       <modus-wc-loader
         aria-label="Loading dots"
         color="${args.color}"
-        custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         size="md"
         variant="dots"
       ></modus-wc-loader>
@@ -114,7 +114,7 @@ export const Infinity: Story = {
       <modus-wc-loader
         aria-label="Loading infinity symbol"
         color="${args.color}"
-        custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         size="md"
         variant="infinity"
       ></modus-wc-loader>
@@ -128,7 +128,7 @@ export const Ring: Story = {
       <modus-wc-loader
         aria-label="Loading ring"
         color="${args.color}"
-        custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         size="md"
         variant="ring"
       ></modus-wc-loader>

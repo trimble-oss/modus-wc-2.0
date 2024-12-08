@@ -44,7 +44,7 @@ export class ModusWcLoader {
   /**
    * Custom CSS class to apply to the loader element.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The size of the loader.

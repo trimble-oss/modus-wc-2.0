@@ -6,9 +6,15 @@ import {
   Host,
   Prop,
 } from '@stencil/core';
+import ModusWcTextInput = Components.ModusWcTextInput;
+import ModusWcMenu = Components.ModusWcMenu;
+import {
+  Components,
+  IMenuItem,
+  ModusWcMenuCustomEvent,
+  ModusWcTextInputCustomEvent,
+} from '../../../components';
 import { convertPropsToClasses } from './modus-wc-autocomplete.tailwind';
-import { InputSize } from '../../types';
-import { ModusWcTextInputCustomEvent } from '../../../components';
 
 /**
  * A customizable autocomplete component used to create searchable text inputs.
@@ -23,10 +29,13 @@ import { ModusWcTextInputCustomEvent } from '../../../components';
 export class ModusWcAutocomplete {
   private debounceTimer?: number;
 
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
+  @Prop() textInput: ModusWcTextInput = {
+    ariaLabel: 'Autocomplete input',
+    inputMode: 'text',
+    value: '',
+  };
+
+  @Prop() menu: ModusWcMenu = { ariaLabel: 'Autocomplete menu', items: [] };
 
   /**
    * Custom CSS class to apply to host element.
@@ -38,16 +47,6 @@ export class ModusWcAutocomplete {
    * Set to 0 to disable debouncing.
    */
   @Prop() debounceMs: number = 300;
-
-  /**
-   * The size of the input.
-   */
-  @Prop() size?: InputSize = 'md';
-
-  /**
-   * The value of the control.
-   */
-  @Prop({ mutable: true, reflect: true }) value: string = '';
 
   /**
    * Event emitted when the input loses focus.
@@ -71,13 +70,12 @@ export class ModusWcAutocomplete {
     ModusWcTextInputCustomEvent<FocusEvent>
   >;
 
-  componentWillLoad() {
-    if (!this.ariaLabel) {
-      console.warn(
-        'ModusWcAutocomplete: aria-label is required for accessibility.'
-      );
-    }
-  }
+  /**
+   * Event emitted when a menu item is selected.
+   */
+  @StencilEvent() menuItemSelect!: EventEmitter<
+    ModusWcMenuCustomEvent<IMenuItem>
+  >;
 
   disconnectedCallback() {
     // Clean up any existing debounce timer when component is destroyed
@@ -89,9 +87,7 @@ export class ModusWcAutocomplete {
   private getClasses(): string {
     const classList: string[] = ['modus-wc-autocomplete'];
 
-    const propClasses = convertPropsToClasses({
-      size: this.size,
-    });
+    const propClasses = convertPropsToClasses();
 
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
@@ -126,17 +122,23 @@ export class ModusWcAutocomplete {
     this.inputFocus.emit(event);
   };
 
+  private handleItemSelect = (event: ModusWcMenuCustomEvent<IMenuItem>) => {
+    this.menuItemSelect.emit(event);
+  };
+
   render() {
     return (
       <Host class={this.getClasses()}>
         <modus-wc-text-input
-          ariaLabel={this.ariaLabel}
           onInputBlur={this.handleBlur}
           onInputChange={this.handleChange}
           onInputFocus={this.handleFocus}
-          value={this.value}
+          {...this.textInput}
         />
-        /* TODO - add menu here */
+        <modus-wc-menu
+          onItemSelect={this.handleItemSelect}
+          {...this.menu}
+        ></modus-wc-menu>
       </Host>
     );
   }

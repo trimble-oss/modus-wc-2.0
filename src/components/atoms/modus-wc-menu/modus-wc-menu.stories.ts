@@ -15,7 +15,7 @@ interface MenuArgs {
   'active-item-value'?: string;
   'aria-label': string;
   bordered?: boolean;
-  'custom-class': string;
+  'custom-class'?: string;
   items: IMenuItem[];
   'menu-title'?: string;
   orientation?: Orientation;
@@ -61,7 +61,7 @@ export const Template: Story = {
         active-item-value="${ifDefined(args['active-item-value'])}"
         aria-label="${args['aria-label']}"
         ?bordered=${args.bordered}
-        custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         .items=${ifDefined(args.items)}
         orientation=${ifDefined(args.orientation)}
         size=${ifDefined(args.size)}

@@ -4,7 +4,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 
 interface ProgressArgs {
   'aria-label': string;
-  'custom-class': string;
+  'custom-class'?: string;
   indeterminate: boolean;
   max?: number;
   value: number;
@@ -33,7 +33,7 @@ export const Template: Story = {
     return html`
       <modus-wc-progress
         aria-label="${args['aria-label']}"
-        custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         ?indeterminate=${args.indeterminate}
         max=${ifDefined(args.max)}
         value=${args.value}
