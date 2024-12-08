@@ -35,7 +35,7 @@ describe('modus-wc-menu', () => {
     const page = await newSpecPage({
       components: [ModusWcMenu],
       html: `<modus-wc-menu
-        .active-item-value="2"
+        active-item-value="2"
         aria-label="Test menu"
         bordered="false"
         custom-class="test-class"
@@ -56,7 +56,7 @@ describe('modus-wc-menu', () => {
 
     const page = await newSpecPage({
       components: [ModusWcMenu],
-      html: `<modus-wc-menu aria-label="Items test"></modus-wc-menu>`,
+      html: `<modus-wc-menu active-item-value="2" aria-label="Items test"></modus-wc-menu>`,
     });
 
     const component = page.rootInstance as ModusWcMenu;
