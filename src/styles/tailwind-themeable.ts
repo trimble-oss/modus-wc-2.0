@@ -37,6 +37,11 @@ const themeable = [
   'modus-wc-loading-sm',
   'modus-wc-loading-md',
   'modus-wc-loading-lg',
+  // Menu
+  'modus-wc-menu-xs',
+  'modus-wc-menu-sm',
+  'modus-wc-menu-md',
+  'modus-wc-menu-lg',
   // Radio
   'modus-wc-radio-xs',
   'modus-wc-radio-sm',

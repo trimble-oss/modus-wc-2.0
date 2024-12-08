@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { Orientation } from '../../types';
 
 interface DividerArgs {
   'aria-label': string;
@@ -13,7 +14,7 @@ interface DividerArgs {
     | 'danger';
   content: string;
   'custom-class': string;
-  orientation: 'horizontal' | 'vertical';
+  orientation: Orientation;
   position: 'center' | 'end' | 'start';
   responsive: boolean;
 }

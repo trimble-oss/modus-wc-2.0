@@ -5,13 +5,17 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { InputSize, Size } from "./components/types";
+import { InputSize, Orientation, Size } from "./components/types";
+import { ModusWcTextInputCustomEvent } from "./components";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
+import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { InputSize, Size } from "./components/types";
+export { InputSize, Orientation, Size } from "./components/types";
+export { ModusWcTextInputCustomEvent } from "./components";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
+export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
@@ -320,7 +324,7 @@ export namespace Components {
         /**
           * The orientation of the divider. This is in reference to how content will be rendered around the divider.
          */
-        "orientation"?: 'horizontal' | 'vertical';
+        "orientation"?: Orientation;
         /**
           * The position of the divider.
          */
@@ -409,6 +413,44 @@ export namespace Components {
           * The variant of the loader.
          */
         "variant": LoaderVariant;
+    }
+    /**
+     * A customizable menu component used to display a list of links vertically or horizontally.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcMenu {
+        /**
+          * The active menu item value, used to show an item as selected.
+         */
+        "activeItemValue"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Indicates that the menu should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the ul element.
+         */
+        "customClass": string;
+        /**
+          * The items to display in the menu.
+         */
+        "items": IMenuItem[];
+        /**
+          * The menu title, rendered as the first item (disabled).
+         */
+        "menuTitle"?: string;
+        /**
+          * The orientation of the menu.
+         */
+        "orientation"?: Orientation;
+        /**
+          * The size of the menu.
+         */
+        "size"?: InputSize;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -1075,6 +1117,10 @@ export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDateElement;
 }
+export interface ModusWcMenuCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcMenuElement;
+}
 export interface ModusWcNumberInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcNumberInputElement;
@@ -1259,6 +1305,27 @@ declare global {
     var HTMLModusWcLoaderElement: {
         prototype: HTMLModusWcLoaderElement;
         new (): HTMLModusWcLoaderElement;
+    };
+    interface HTMLModusWcMenuElementEventMap {
+        "itemSelect": IMenuItem;
+    }
+    /**
+     * A customizable menu component used to display a list of links vertically or horizontally.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcMenuElement extends Components.ModusWcMenu, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcMenuElementEventMap>(type: K, listener: (this: HTMLModusWcMenuElement, ev: ModusWcMenuCustomEvent<HTMLModusWcMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcMenuElementEventMap>(type: K, listener: (this: HTMLModusWcMenuElement, ev: ModusWcMenuCustomEvent<HTMLModusWcMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcMenuElement: {
+        prototype: HTMLModusWcMenuElement;
+        new (): HTMLModusWcMenuElement;
     };
     interface HTMLModusWcNumberInputElementEventMap {
         "inputBlur": FocusEvent;
@@ -1500,6 +1567,7 @@ declare global {
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
         "modus-wc-loader": HTMLModusWcLoaderElement;
+        "modus-wc-menu": HTMLModusWcMenuElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
@@ -1860,7 +1928,7 @@ declare namespace LocalJSX {
         /**
           * The orientation of the divider. This is in reference to how content will be rendered around the divider.
          */
-        "orientation"?: 'horizontal' | 'vertical';
+        "orientation"?: Orientation;
         /**
           * The position of the divider.
          */
@@ -1949,6 +2017,48 @@ declare namespace LocalJSX {
           * The variant of the loader.
          */
         "variant"?: LoaderVariant;
+    }
+    /**
+     * A customizable menu component used to display a list of links vertically or horizontally.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcMenu {
+        /**
+          * The active menu item value, used to show an item as selected.
+         */
+        "activeItemValue"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Indicates that the menu should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the ul element.
+         */
+        "customClass"?: string;
+        /**
+          * The items to display in the menu.
+         */
+        "items"?: IMenuItem[];
+        /**
+          * The menu title, rendered as the first item (disabled).
+         */
+        "menuTitle"?: string;
+        /**
+          * Event emitted when a menu item is selected.
+         */
+        "onItemSelect"?: (event: ModusWcMenuCustomEvent<IMenuItem>) => void;
+        /**
+          * The orientation of the menu.
+         */
+        "orientation"?: Orientation;
+        /**
+          * The size of the menu.
+         */
+        "size"?: InputSize;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -2697,6 +2807,7 @@ declare namespace LocalJSX {
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-label": ModusWcInputLabel;
         "modus-wc-loader": ModusWcLoader;
+        "modus-wc-menu": ModusWcMenu;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
@@ -2768,6 +2879,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-loader": LocalJSX.ModusWcLoader & JSXBase.HTMLAttributes<HTMLModusWcLoaderElement>;
+            /**
+             * A customizable menu component used to display a list of links vertically or horizontally.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-menu": LocalJSX.ModusWcMenu & JSXBase.HTMLAttributes<HTMLModusWcMenuElement>;
             /**
              * A customizable input component used to create number inputs with types.
              * Adheres to WCAG 2.2 standards.

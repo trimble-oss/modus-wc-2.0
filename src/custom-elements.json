@@ -743,7 +743,7 @@
               "name": "orientation",
               "fieldName": "orientation",
               "type": {
-                "text": "'horizontal' | 'vertical'"
+                "text": "Orientation"
               },
               "description": "The orientation of the divider. This is in reference to how content will be rendered around the divider."
             },
@@ -1024,6 +1024,119 @@
           "declaration": {
             "name": "ModusWcLoader",
             "module": "src/components/atoms/modus-wc-loader/modus-wc-loader.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-menu/modus-wc-menu.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable menu component used to display a list of links vertically or horizontally.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcMenu",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "active-item-value",
+              "fieldName": "activeItemValue",
+              "type": {
+                "text": "string"
+              },
+              "description": "The active menu item value, used to show an item as selected."
+            },
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the menu should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the ul element."
+            },
+            {
+              "name": "items",
+              "fieldName": "items",
+              "type": {
+                "text": "IMenuItem[]"
+              },
+              "description": "The items to display in the menu."
+            },
+            {
+              "name": "menu-title",
+              "fieldName": "menuTitle",
+              "type": {
+                "text": "string"
+              },
+              "description": "The menu title, rendered as the first item (disabled)."
+            },
+            {
+              "name": "orientation",
+              "fieldName": "orientation",
+              "type": {
+                "text": "Orientation"
+              },
+              "description": "The orientation of the menu."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "InputSize"
+              },
+              "description": "The size of the menu."
+            }
+          ],
+          "tagName": "modus-wc-menu",
+          "events": [
+            {
+              "kind": "field",
+              "name": "itemSelect",
+              "type": {
+                "text": "EventEmitter<IMenuItem>"
+              },
+              "description": "Event emitted when a menu item is selected."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcMenu",
+          "declaration": {
+            "name": "ModusWcMenu",
+            "module": "src/components/atoms/modus-wc-menu/modus-wc-menu.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-menu",
+          "declaration": {
+            "name": "ModusWcMenu",
+            "module": "src/components/atoms/modus-wc-menu/modus-wc-menu.tsx"
           }
         }
       ]
