@@ -61,7 +61,6 @@ describe('modus-wc-menu', () => {
 
     const component = page.rootInstance as ModusWcMenu;
     component.items = updatedItems;
-    component.activeItemValue = '2';
 
     await page.waitForChanges();
 
