@@ -29,7 +29,7 @@ export class ModusWcMenu {
   /**
    * The active menu item value, used to show an item as selected.
    */
-  @Prop() activeItemValue?: string;
+  @Prop({ mutable: true, reflect: true }) activeItemValue?: string;
 
   /**
    * The aria-label attribute for accessibility.

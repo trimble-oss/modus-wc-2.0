@@ -58,7 +58,7 @@ export const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-menu
-        active-item-value="${ifDefined(args['active-item-value'])}"
+        .active-item-value="${ifDefined(args['active-item-value'])}"
         aria-label="${args['aria-label']}"
         ?bordered=${args.bordered}
         custom-class="${args['custom-class']}"
@@ -80,7 +80,7 @@ export const ItemVariations: Story = {
   render: () => {
     return html`
       <modus-wc-menu
-        active-item-value="2"
+        .active-item-value="2"
         aria-label="Example menu"
         .items=${updatedItems}
         menu-title="Items"
