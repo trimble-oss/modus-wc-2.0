@@ -15,10 +15,10 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property                 | Attribute      | Description                                              | Type     | Default     |
-| ------------------------ | -------------- | -------------------------------------------------------- | -------- | ----------- |
-| `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility.              | `string` | `undefined` |
-| `customClass`            | `custom-class` | Custom CSS class to apply to the theme switcher element. | `string` | `''`        |
+| Property                 | Attribute      | Description                                              | Type                  | Default     |
+| ------------------------ | -------------- | -------------------------------------------------------- | --------------------- | ----------- |
+| `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility.              | `string`              | `undefined` |
+| `customClass`            | `custom-class` | Custom CSS class to apply to the theme switcher element. | `string \| undefined` | `''`        |
 
 
 ## Events

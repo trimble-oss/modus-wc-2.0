@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ModusSize } from '../../types';
 
 interface NumberInputArgs {
   'aria-describedby'?: string;
@@ -22,7 +23,7 @@ interface NumberInputArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: ModusSize;
   step?: number;
   type?: 'number' | 'range';
   value: string;

@@ -1,8 +1,8 @@
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 export const convertPropsToClasses = (props: {
   shape?: string;
-  size?: Size;
+  size?: DaisySize;
 }): string => {
   let classes = '';
 
@@ -30,9 +30,6 @@ export const convertPropsToClasses = (props: {
         break;
       case 'lg':
         classes = `${classes} modus-wc-w-20`;
-        break;
-      case 'xl':
-        classes = `${classes} modus-wc-w-24`;
         break;
     }
   }

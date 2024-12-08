@@ -7,6 +7,7 @@ import {
   EventEmitter,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-date.tailwind';
+import { ModusSize } from '../../types';
 
 /**
  * A customizable date picker component used to create date inputs.
@@ -102,7 +103,7 @@ export class ModusWcDate {
   /**
    * The size of the input.
    */
-  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /**
    * The value of the control.

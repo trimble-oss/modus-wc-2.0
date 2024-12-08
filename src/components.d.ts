@@ -5,13 +5,13 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { InputSize, Orientation, Size } from "./components/types";
+import { DaisySize, ModusSize, Orientation } from "./components/types";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { InputSize, Orientation, Size } from "./components/types";
+export { DaisySize, ModusSize, Orientation } from "./components/types";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
@@ -50,7 +50,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The location of the image.
          */
@@ -62,7 +62,7 @@ export namespace Components {
         /**
           * The size of the avatar.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
@@ -94,7 +94,7 @@ export namespace Components {
         /**
           * The size of the badge.
          */
-        "size": 'sm' | 'md' | 'lg';
+        "size": ModusSize;
         /**
           * The variant of the badge.
          */
@@ -116,7 +116,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the button element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * If true, the button will be disabled.
          */
@@ -136,7 +136,7 @@ export namespace Components {
         /**
           * The size of the button.
          */
-        "size": 'sm' | 'md' | 'lg';
+        "size": ModusSize;
         /**
           * The type of the button.
          */
@@ -166,7 +166,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The disabled state of the checkbox.
          */
@@ -198,7 +198,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the checkbox.
          */
@@ -276,7 +276,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The value of the control.
          */
@@ -308,7 +308,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the divider element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The orientation of the divider. This is in reference to how content will be rendered around the divider.
          */
@@ -335,7 +335,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the i element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.
          */
@@ -347,7 +347,7 @@ export namespace Components {
         /**
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
     }
     /**
      * A customizable input label component.
@@ -392,11 +392,11 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the loader element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The size of the loader.
          */
-        "size": Size;
+        "size": DaisySize;
         /**
           * The variant of the loader.
          */
@@ -438,7 +438,7 @@ export namespace Components {
         /**
           * The size of the menu.
          */
-        "size"?: InputSize;
+        "size"?: ModusSize;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -520,7 +520,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The granularity that the value adheres to.
          */
@@ -546,7 +546,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the progress element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The indeterminate state of the progress component.
          */
@@ -580,7 +580,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The disabled state of the radio.
          */
@@ -608,7 +608,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The value of the radio.
          */
@@ -638,7 +638,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * Whether the form control is disabled.
          */
@@ -674,7 +674,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the control.
          */
@@ -688,7 +688,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The height of the skeleton.
          */
@@ -722,7 +722,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The disabled state of the slider.
          */
@@ -758,7 +758,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The increment of the slider.
          */
@@ -872,7 +872,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: InputSize;
+        "size"?: ModusSize;
         /**
           * Type of form control.
          */
@@ -954,7 +954,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the textarea.
          */
@@ -976,7 +976,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the theme switcher element.
          */
-        "customClass": string;
+        "customClass"?: string;
     }
     /**
      * A customizable checkbox component.
@@ -998,7 +998,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The disabled state of the toggle.
          */
@@ -1030,7 +1030,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the toggle.
          */
@@ -1048,7 +1048,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * Use this attribute to force the tooltip to remain open.
          */
@@ -1078,7 +1078,7 @@ export namespace Components {
         /**
           * The size of the font.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The variant of the typography component.
          */
@@ -1633,7 +1633,7 @@ declare namespace LocalJSX {
         /**
           * The size of the avatar.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
@@ -1665,7 +1665,7 @@ declare namespace LocalJSX {
         /**
           * The size of the badge.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The variant of the badge.
          */
@@ -1711,7 +1711,7 @@ declare namespace LocalJSX {
         /**
           * The size of the button.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The type of the button.
          */
@@ -1785,7 +1785,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the checkbox.
          */
@@ -1875,7 +1875,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The value of the control.
          */
@@ -1946,7 +1946,7 @@ declare namespace LocalJSX {
         /**
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
     }
     /**
      * A customizable input label component.
@@ -1995,7 +1995,7 @@ declare namespace LocalJSX {
         /**
           * The size of the loader.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The variant of the loader.
          */
@@ -2041,7 +2041,7 @@ declare namespace LocalJSX {
         /**
           * The size of the menu.
          */
-        "size"?: InputSize;
+        "size"?: ModusSize;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -2135,7 +2135,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The granularity that the value adheres to.
          */
@@ -2235,7 +2235,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The value of the radio.
          */
@@ -2313,7 +2313,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the control.
          */
@@ -2409,7 +2409,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The increment of the slider.
          */
@@ -2535,7 +2535,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: InputSize;
+        "size"?: ModusSize;
         /**
           * Type of form control.
          */
@@ -2629,7 +2629,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the textarea.
          */
@@ -2721,7 +2721,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the toggle.
          */
@@ -2769,7 +2769,7 @@ declare namespace LocalJSX {
         /**
           * The size of the font.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The variant of the typography component.
          */

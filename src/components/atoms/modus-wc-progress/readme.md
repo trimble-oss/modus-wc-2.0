@@ -16,7 +16,7 @@ Adheres to WCAG 2.2 standards.
 | Property                 | Attribute       | Description                                        | Type                  | Default     |
 | ------------------------ | --------------- | -------------------------------------------------- | --------------------- | ----------- |
 | `ariaLabel` _(required)_ | `aria-label`    | The aria-label attribute for accessibility.        | `string`              | `undefined` |
-| `customClass`            | `custom-class`  | Custom CSS class to apply to the progress element. | `string`              | `''`        |
+| `customClass`            | `custom-class`  | Custom CSS class to apply to the progress element. | `string \| undefined` | `''`        |
 | `indeterminate`          | `indeterminate` | The indeterminate state of the progress component. | `boolean`             | `false`     |
 | `max`                    | `max`           | The progress component's maximum value.            | `number \| undefined` | `100`       |
 | `value`                  | `value`         | The value of the progress component.               | `number`              | `0`         |

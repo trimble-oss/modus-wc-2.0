@@ -7,7 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu.tailwind';
-import { InputSize, Orientation } from '../../types';
+import { ModusSize, Orientation } from '../../types';
 
 export interface IMenuItem {
   disabled?: boolean;
@@ -64,7 +64,7 @@ export class ModusWcMenu {
   /**
    * The size of the menu.
    */
-  @Prop() size?: InputSize = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /**
    * Event emitted when a menu item is selected.

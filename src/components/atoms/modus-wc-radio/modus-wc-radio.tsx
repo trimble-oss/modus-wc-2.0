@@ -7,6 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-radio.tailwind';
+import { ModusSize } from '../../types';
 
 /**
  * A customizable radio component.
@@ -72,7 +73,7 @@ export class ModusWcRadio {
   /**
    * The size of the input.
    */
-  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /**
    * The value of the radio.

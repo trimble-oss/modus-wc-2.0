@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Size } from '../../types';
+import { ModusSize } from '../../types';
 
 interface ButtonArgs {
   'aria-label': string;
@@ -12,7 +12,7 @@ interface ButtonArgs {
   'full-width': boolean;
   label: string;
   pressed: boolean;
-  size: Size;
+  size: ModusSize;
   type: 'button' | 'submit' | 'reset';
   variant: 'filled' | 'outlined' | 'text';
 }

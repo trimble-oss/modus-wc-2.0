@@ -7,6 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-number-input.tailwind';
+import { ModusSize } from '../../types';
 
 /**
  * A customizable input component used to create number inputs with types.
@@ -113,7 +114,7 @@ export class ModusWcNumberInput {
   /**
    * The size of the input.
    */
-  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /**
    * The granularity that the value adheres to.

@@ -7,7 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-slider.tailwind';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 /**
  * A customizable slider component.
@@ -83,7 +83,7 @@ export class ModusWcSlider {
   /**
    * The size of the input.
    */
-  @Prop() size?: Size = 'xs';
+  @Prop() size?: DaisySize = 'xs';
 
   /**
    * The increment of the slider.

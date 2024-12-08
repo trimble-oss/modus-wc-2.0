@@ -1,14 +1,14 @@
 import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 import { LoaderColor, LoaderVariant } from './modus-wc-loader';
 
 interface LoaderArgs {
   'aria-label': string;
   color: LoaderColor;
   'custom-class'?: string;
-  size: Size;
+  size: DaisySize;
   variant: LoaderVariant;
 }
 

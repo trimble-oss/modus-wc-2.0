@@ -1,5 +1,5 @@
 import { Component, h, Host, Prop } from '@stencil/core';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 /**
  * A customizable icon component used to render Modus icons.
@@ -40,7 +40,7 @@ export class ModusWcIcon {
    * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS).
    * This adjusts the font size for the icon.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {
     if (!this.decorative && !this.ariaLabel) {

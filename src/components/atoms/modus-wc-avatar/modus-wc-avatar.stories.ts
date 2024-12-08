@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface AvatarArgs {
@@ -9,7 +9,7 @@ interface AvatarArgs {
   'custom-class'?: string;
   'img-src': string;
   shape: string;
-  size: Size;
+  size: DaisySize;
 }
 
 const meta: Meta<AvatarArgs> = {
@@ -30,7 +30,7 @@ const meta: Meta<AvatarArgs> = {
     },
     size: {
       control: { type: 'inline-radio' },
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      options: ['xs', 'sm', 'md', 'lg'],
     },
   },
 };

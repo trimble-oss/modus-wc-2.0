@@ -61,7 +61,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the avatar."
             }
@@ -141,7 +141,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "ModusSize"
               },
               "description": "The size of the badge."
             },
@@ -253,7 +253,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "ModusSize"
               },
               "description": "The size of the button."
             },
@@ -421,7 +421,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the input."
             },
@@ -630,7 +630,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "ModusSize"
               },
               "description": "The size of the input."
             },
@@ -839,7 +839,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The icon size, can be \"sm\", \"md\", \"lg\" (a custom size can be specified in CSS).\r\nThis adjusts the font size for the icon."
             }
@@ -991,7 +991,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the loader."
             },
@@ -1103,7 +1103,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "InputSize"
+                "text": "ModusSize"
               },
               "description": "The size of the menu."
             }
@@ -1304,7 +1304,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "ModusSize"
               },
               "description": "The size of the input."
             },
@@ -1561,7 +1561,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "ModusSize"
               },
               "description": "The size of the input."
             },
@@ -1746,7 +1746,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the input."
             },
@@ -1995,7 +1995,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the input."
             },
@@ -2252,7 +2252,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "InputSize"
+                "text": "ModusSize"
               },
               "description": "The size of the input."
             },
@@ -2469,7 +2469,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the input."
             },
@@ -2646,7 +2646,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the input."
             },
@@ -2823,7 +2823,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the font."
             },

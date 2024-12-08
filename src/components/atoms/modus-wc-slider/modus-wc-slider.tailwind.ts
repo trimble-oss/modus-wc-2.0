@@ -1,6 +1,6 @@
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
-export const convertPropsToClasses = (props: { size?: Size }): string => {
+export const convertPropsToClasses = (props: { size?: DaisySize }): string => {
   let classes = '';
 
   if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {

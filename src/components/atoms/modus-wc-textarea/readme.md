@@ -31,7 +31,7 @@ Adheres to WCAG 2.2 standards.
 | `readonly`               | `readonly`           | The readonly state of the textarea.                                                              | `boolean \| undefined`                                      | `false`     |
 | `required`               | `required`           | A value is required for the form to be submittable.                                              | `boolean \| undefined`                                      | `false`     |
 | `rows`                   | `rows`               | The number of visible text lines for the textarea.                                               | `number \| undefined`                                       | `undefined` |
-| `size`                   | `size`               | The size of the input.                                                                           | `"lg" \| "md" \| "sm" \| "xl" \| "xs" \| undefined`         | `'md'`      |
+| `size`                   | `size`               | The size of the input.                                                                           | `"lg" \| "md" \| "sm" \| "xs" \| undefined`                 | `'md'`      |
 | `value`                  | `value`              | The value of the textarea.                                                                       | `string`                                                    | `''`        |
 
 

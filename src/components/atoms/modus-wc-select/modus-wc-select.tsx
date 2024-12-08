@@ -7,7 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-select.tailwind';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 export interface ISelectOption {
   disabled?: boolean;
@@ -94,7 +94,7 @@ export class ModusWcSelect {
   /**
    * The size of the input.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: DaisySize = 'md';
 
   /**
    * The value of the control.

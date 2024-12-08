@@ -18,7 +18,7 @@ Adheres to WCAG 2.2 standards.
 | `ariaDescribedby`        | `aria-describedby` | The ID of the element that describes the radio.                                 | `string \| undefined`                         | `undefined` |
 | `ariaLabel` _(required)_ | `aria-label`       | The aria-label attribute for accessibility.                                     | `string`                                      | `undefined` |
 | `ariaLabelledby`         | `aria-labelledby`  | The aria-labelledby attribute for usage with a label.                           | `string \| undefined`                         | `undefined` |
-| `customClass`            | `custom-class`     | Custom CSS class to apply to the inner div.                                     | `string`                                      | `''`        |
+| `customClass`            | `custom-class`     | Custom CSS class to apply to the inner div.                                     | `string \| undefined`                         | `''`        |
 | `disabled`               | `disabled`         | The disabled state of the radio.                                                | `boolean \| undefined`                        | `false`     |
 | `inputDir`               | `input-dir`        | Specifies the text direction of the input content.                              | `"" \| "auto" \| "ltr" \| "rtl" \| undefined` | `undefined` |
 | `inputId`                | `input-id`         | The ID of the input element.                                                    | `string \| undefined`                         | `undefined` |

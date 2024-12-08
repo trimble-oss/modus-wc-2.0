@@ -1,9 +1,9 @@
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 import { LoaderColor, LoaderVariant } from './modus-wc-loader';
 
 export const convertPropsToClasses = (props: {
   color?: LoaderColor;
-  size?: Size;
+  size?: DaisySize;
   variant?: LoaderVariant;
 }): string => {
   let classes = '';

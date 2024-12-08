@@ -8,6 +8,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-button.tailwind';
+import { ModusSize } from '../../types';
 
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -59,7 +60,7 @@ export class ModusWcButton {
   /**
    * The size of the button.
    */
-  @Prop() size: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size: ModusSize = 'md';
 
   /**
    * The variant of the button.

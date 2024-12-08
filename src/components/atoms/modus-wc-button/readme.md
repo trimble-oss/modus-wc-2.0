@@ -15,7 +15,7 @@ Adheres to WCAG 2.2 standards.
 | ------------------------ | -------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------- | ----------- |
 | `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility.                          | `string`                                                          | `undefined` |
 | `color`                  | `color`        | The color variant of the button.                                     | `"danger" \| "primary" \| "secondary" \| "tertiary" \| "warning"` | `'primary'` |
-| `customClass`            | `custom-class` | Custom CSS class to apply to the button element.                     | `string`                                                          | `''`        |
+| `customClass`            | `custom-class` | Custom CSS class to apply to the button element.                     | `string \| undefined`                                             | `''`        |
 | `disabled`               | `disabled`     | If true, the button will be disabled.                                | `boolean \| undefined`                                            | `false`     |
 | `fullWidth`              | `full-width`   | If true, the button will take the full width of its container.       | `boolean \| undefined`                                            | `false`     |
 | `label` _(required)_     | `label`        | The text label displayed on the button.                              | `string`                                                          | `undefined` |

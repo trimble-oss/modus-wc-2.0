@@ -1,9 +1,9 @@
-import { InputSize, Orientation } from '../../types';
+import { ModusSize, Orientation } from '../../types';
 
 export const convertPropsToClasses = (props: {
   bordered?: boolean;
   orientation?: Orientation;
-  size?: InputSize;
+  size?: ModusSize;
 }): string => {
   let classes = '';
 

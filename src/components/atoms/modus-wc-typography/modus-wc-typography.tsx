@@ -1,6 +1,6 @@
 import { h, Component, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-typography.tailwind';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 export type TypographyVariant =
   | 'body'
@@ -38,7 +38,7 @@ export class ModusWCTypography {
   /**
    * The size of the font.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: DaisySize = 'md';
 
   /**
    * The variant of the typography component.

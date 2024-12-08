@@ -3,7 +3,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { IMenuItem } from './modus-wc-menu';
-import { InputSize, Orientation } from '../../types';
+import { ModusSize, Orientation } from '../../types';
 
 const items: IMenuItem[] = [
   { label: 'Item 1', value: '1' },
@@ -19,7 +19,7 @@ interface MenuArgs {
   items: IMenuItem[];
   'menu-title'?: string;
   orientation?: Orientation;
-  size?: InputSize;
+  size?: ModusSize;
 }
 
 const meta: Meta<MenuArgs> = {
