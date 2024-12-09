@@ -96,31 +96,32 @@ export const Template: Story = {
   },
 };
 
+// prettier-ignore
 export const TextareaWithLabel: Story = {
   render: () => {
     return html`
-      <style>
-        .form-control {
-          display: flex;
-          align-items: center;
-        }
-        .modus-wc-input-label {
-          padding-inline-end: 8px;
-        }
-      </style>
-      <form action="" method="get">
-        <div class="form-control">
-          <modus-wc-input-label
-            for-id="textarea-input"
-            label-text="Example textarea"
-          ></modus-wc-input-label>
-          <modus-wc-textarea
-            aria-label="Example textarea"
-            input-id="textarea-input"
-            name="example-textarea"
-          ></modus-wc-textarea>
-        </div>
-      </form>
+<style>
+  .form-control {
+    display: flex;
+    align-items: center;
+  }
+  .modus-wc-input-label {
+    padding-inline-end: 8px;
+  }
+</style>
+<form action="" method="get">
+  <div class="form-control">
+    <modus-wc-input-label
+      for-id="textarea-input"
+      label-text="Example textarea"
+    ></modus-wc-input-label>
+    <modus-wc-textarea
+      aria-label="Example textarea"
+      input-id="textarea-input"
+      name="example-textarea"
+    ></modus-wc-textarea>
+  </div>
+</form>
     `;
   },
 };

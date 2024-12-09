@@ -88,31 +88,32 @@ export const Template: Story = {
   },
 };
 
+// prettier-ignore
 export const DateWithLabel: Story = {
   render: () => {
     return html`
-      <style>
-        .form-control {
-          display: flex;
-          align-items: center;
-        }
-        .modus-wc-input-label {
-          padding-inline-end: 8px;
-        }
-      </style>
-      <form action="" method="get">
-        <div class="form-control">
-          <modus-wc-input-label
-            for-id="date-input"
-            label-text="Example date"
-          ></modus-wc-input-label>
-          <modus-wc-date
-            aria-label="Example date picker"
-            input-id="date-input"
-            name="example-date"
-          ></modus-wc-date>
-        </div>
-      </form>
+<style>
+  .form-control {
+    display: flex;
+    align-items: center;
+  }
+  .modus-wc-input-label {
+    padding-inline-end: 8px;
+  }
+</style>
+<form action="" method="get">
+  <div class="form-control">
+    <modus-wc-input-label
+      for-id="date-input"
+      label-text="Example date"
+    ></modus-wc-input-label>
+    <modus-wc-date
+      aria-label="Example date picker"
+      input-id="date-input"
+      name="example-date"
+    ></modus-wc-date>
+  </div>
+</form>
     `;
   },
 };

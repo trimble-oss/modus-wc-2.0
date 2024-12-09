@@ -76,42 +76,43 @@ export const Template: Story = {
   },
 };
 
+// prettier-ignore
 export const RadioWithLabel: Story = {
   render: () => {
     return html`
-      <form action="" method="get">
-        <div class="form-control">
-          <modus-wc-radio
-            aria-label="Example radio 1"
-            input-id="radio-input-1"
-            name="example-radio-group"
-            value="true"
-          ></modus-wc-radio>
-          <modus-wc-input-label
-            for-id="radio-input-1"
-            label-text="Radio Item One"
-          ></modus-wc-input-label>
-        </div>
-        <div class="form-control">
-          <modus-wc-radio
-            aria-label="Example radio 2"
-            input-id="radio-input-2"
-            name="example-radio-group"
-          ></modus-wc-radio>
-          <modus-wc-input-label
-            for-id="radio-input-2"
-            label-text="Radio Item Two"
-          ></modus-wc-input-label>
-        </div>
-      </form>
-      <style>
-        .form-control {
-          display: flex;
-        }
-        modus-wc-radio {
-          padding-inline-end: 8px;
-        }
-      </style>
+<style>
+  .form-control {
+    display: flex;
+  }
+  modus-wc-radio {
+    padding-inline-end: 8px;
+  }
+</style>
+<form action="" method="get">
+  <div class="form-control">
+    <modus-wc-radio
+      aria-label="Example radio 1"
+      input-id="radio-input-1"
+      name="example-radio-group"
+      value="true"
+    ></modus-wc-radio>
+    <modus-wc-input-label
+      for-id="radio-input-1"
+      label-text="Radio Item One"
+    ></modus-wc-input-label>
+  </div>
+  <div class="form-control">
+    <modus-wc-radio
+      aria-label="Example radio 2"
+      input-id="radio-input-2"
+      name="example-radio-group"
+    ></modus-wc-radio>
+    <modus-wc-input-label
+      for-id="radio-input-2"
+      label-text="Radio Item Two"
+    ></modus-wc-input-label>
+  </div>
+</form>
     `;
   },
 };
