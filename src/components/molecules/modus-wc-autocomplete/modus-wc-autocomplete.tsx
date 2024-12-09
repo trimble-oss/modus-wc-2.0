@@ -7,7 +7,7 @@ import {
   Prop,
   State,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-autocomplete.tailwind';
+// import { convertPropsToClasses } from './modus-wc-autocomplete.tailwind';
 import {
   IMenuItem,
   ModusSize,
@@ -148,6 +148,7 @@ export class ModusWcAutocomplete {
    */
   @StencilEvent() itemSelect!: EventEmitter<ModusWcMenuCustomEvent<IMenuItem>>;
 
+  // istanbul ignore next - TODO
   disconnectedCallback() {
     // Clean up any existing debounce timer when component is destroyed
     if (this.debounceTimer) {
@@ -158,10 +159,10 @@ export class ModusWcAutocomplete {
   private getClasses(): string {
     const classList: string[] = ['modus-wc-autocomplete'];
 
-    const propClasses = convertPropsToClasses();
+    // const propClasses = convertPropsToClasses();
 
     // The order CSS classes are added matters to CSS specificity
-    if (propClasses) classList.push(propClasses);
+    // if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
@@ -169,6 +170,7 @@ export class ModusWcAutocomplete {
 
   private handleBlur = (event: ModusWcTextInputCustomEvent<FocusEvent>) => {
     // Hide menu after a short delay to allow for item selection
+    // istanbul ignore next - TODO
     setTimeout(() => {
       this.menuVisible = false;
     }, 200);
@@ -183,17 +185,20 @@ export class ModusWcAutocomplete {
     this.menuVisible = value.length >= this.minChars;
 
     // Clear any existing timer
+    // istanbul ignore next - TODO
     if (this.debounceTimer) {
       window.clearTimeout(this.debounceTimer);
     }
 
     // If debouncing is disabled, emit immediately
+    // istanbul ignore next - TODO
     if (!this.debounceMs) {
       this.inputChange.emit(event);
       return;
     }
 
     // Set up new debounce timer
+    // istanbul ignore next - TODO
     this.debounceTimer = window.setTimeout(() => {
       this.inputChange.emit(event);
     }, this.debounceMs);

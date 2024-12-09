@@ -9,6 +9,7 @@ const angularValueAccessorBindings: ValueAccessorConfig[] = [
   },
   {
     elementSelectors: [
+      'modus-wc-autocomplete',
       'modus-wc-date',
       'modus-wc-number-input',
       'modus-wc-select',
