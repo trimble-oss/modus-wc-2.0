@@ -66,7 +66,7 @@ export namespace Components {
         /**
           * The items to display in the menu.
          */
-        "items": IMenuItem[];
+        "items": MenuItem[];
         /**
           * The minimum number of characters required to render the menu.
          */
@@ -1208,7 +1208,7 @@ declare global {
         "inputBlur": FocusEvent;
         "inputChange": Event;
         "inputFocus": FocusEvent;
-        "itemSelect": IMenuItem;
+        "itemSelect": MenuItem;
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
@@ -1683,7 +1683,7 @@ declare namespace LocalJSX {
         /**
           * The items to display in the menu.
          */
-        "items"?: IMenuItem[];
+        "items"?: MenuItem[];
         /**
           * The minimum number of characters required to render the menu.
          */
@@ -1707,7 +1707,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when a menu item is selected.
          */
-        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<IMenuItem>) => void;
+        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<MenuItem>) => void;
         /**
           * Text that appears in the form control when it has no value set.
          */

@@ -2967,7 +2967,7 @@
               "name": "items",
               "fieldName": "items",
               "type": {
-                "text": "IMenuItem[]"
+                "text": "MenuItem[]"
               },
               "description": "The items to display in the menu."
             },
@@ -3058,7 +3058,7 @@
               "kind": "field",
               "name": "itemSelect",
               "type": {
-                "text": "EventEmitter<IMenuItem>"
+                "text": "EventEmitter<MenuItem>"
               },
               "description": "Event emitted when a menu item is selected."
             }
