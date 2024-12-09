@@ -24,15 +24,77 @@ export namespace Components {
      */
     interface ModusWcAutocomplete {
         /**
+          * The active menu item value, used to show an item as selected.
+         */
+        "activeItemValue"?: string;
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Indicates that the autocomplete should have a border.
+         */
+        "bordered"?: boolean;
+        /**
           * Custom CSS class to apply to host element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
          */
-        "debounceMs": number;
-        "menu": ModusWcMenu;
-        "textInput": ModusWcTextInput;
+        "debounceMs"?: number;
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * The items to display in the menu.
+         */
+        "items": IMenuItem[];
+        /**
+          * The minimum number of characters required to render the menu.
+         */
+        "minChars": number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Text that appears in the form control when it has no value set.
+         */
+        "placeholder"?: string;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the autocomplete (input and menu).
+         */
+        "size"?: ModusSize;
+        /**
+          * The value of the control.
+         */
+        "value": string;
     }
     /**
      * A customizable avatar component used to create avatars with different images.
@@ -1146,7 +1208,7 @@ declare global {
         "inputBlur": ModusWcTextInputCustomEvent<FocusEvent>;
         "inputChange": ModusWcTextInputCustomEvent<Event>;
         "inputFocus": ModusWcTextInputCustomEvent<FocusEvent>;
-        "menuItemSelect": ModusWcMenuCustomEvent<IMenuItem>;
+        "itemSelect": ModusWcMenuCustomEvent<IMenuItem>;
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
@@ -1579,6 +1641,22 @@ declare namespace LocalJSX {
      */
     interface ModusWcAutocomplete {
         /**
+          * The active menu item value, used to show an item as selected.
+         */
+        "activeItemValue"?: string;
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Indicates that the autocomplete should have a border.
+         */
+        "bordered"?: boolean;
+        /**
           * Custom CSS class to apply to host element.
          */
         "customClass"?: string;
@@ -1586,7 +1664,34 @@ declare namespace LocalJSX {
           * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
          */
         "debounceMs"?: number;
-        "menu"?: ModusWcMenu;
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * The items to display in the menu.
+         */
+        "items"?: IMenuItem[];
+        /**
+          * The minimum number of characters required to render the menu.
+         */
+        "minChars"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
         /**
           * Event emitted when the input loses focus.
          */
@@ -1602,8 +1707,27 @@ declare namespace LocalJSX {
         /**
           * Event emitted when a menu item is selected.
          */
-        "onMenuItemSelect"?: (event: ModusWcAutocompleteCustomEvent<ModusWcMenuCustomEvent<IMenuItem>>) => void;
-        "textInput"?: ModusWcTextInput;
+        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<ModusWcMenuCustomEvent<IMenuItem>>) => void;
+        /**
+          * Text that appears in the form control when it has no value set.
+         */
+        "placeholder"?: string;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the autocomplete (input and menu).
+         */
+        "size"?: ModusSize;
+        /**
+          * The value of the control.
+         */
+        "value"?: string;
     }
     /**
      * A customizable avatar component used to create avatars with different images.
