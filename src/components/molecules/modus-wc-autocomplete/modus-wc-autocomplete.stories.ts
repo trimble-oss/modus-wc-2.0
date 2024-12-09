@@ -2,12 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import {
-  IMenuItem,
-  ModusSize,
-  ModusWcMenuCustomEvent,
-  ModusWcTextInputCustomEvent,
-} from '../../../components';
+import { IMenuItem, ModusSize } from '../../../components';
 
 const fruits: IMenuItem[] = [
   { label: 'Apple', value: 'apple' },
@@ -76,7 +71,7 @@ type Story = StoryObj<AutocompleteArgs>;
 
 const Template: Story = {
   render: (args) => {
-    const handleInputChange = (e: ModusWcTextInputCustomEvent<Event>) => {
+    const handleInputChange = (e: CustomEvent<Event>) => {
       if (!e.detail?.target) return;
 
       const input = e.detail.target as HTMLInputElement;
@@ -85,7 +80,9 @@ const Template: Story = {
         fruit.label.toLowerCase().includes(searchText)
       );
 
-      const autocomplete = e.target.closest('modus-wc-autocomplete');
+      const autocomplete = (e.target as HTMLInputElement).closest(
+        'modus-wc-autocomplete'
+      );
       if (autocomplete) {
         autocomplete.items = filteredFruits;
         autocomplete.value = input.value;
@@ -94,8 +91,10 @@ const Template: Story = {
       }
     };
 
-    const handleItemSelect = (e: ModusWcMenuCustomEvent<IMenuItem>) => {
-      const autocomplete = e.target.closest('modus-wc-autocomplete');
+    const handleItemSelect = (e: CustomEvent<IMenuItem>) => {
+      const autocomplete = (e.target as HTMLInputElement).closest(
+        'modus-wc-autocomplete'
+      );
       if (autocomplete) {
         autocomplete.activeItemValue = e.detail.value;
         autocomplete.value = e.detail.label;

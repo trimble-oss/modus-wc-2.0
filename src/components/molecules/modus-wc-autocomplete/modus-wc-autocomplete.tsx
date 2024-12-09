@@ -8,12 +8,7 @@ import {
   State,
 } from '@stencil/core';
 // import { convertPropsToClasses } from './modus-wc-autocomplete.tailwind';
-import {
-  IMenuItem,
-  ModusSize,
-  ModusWcMenuCustomEvent,
-  ModusWcTextInputCustomEvent,
-} from '../../../components';
+import { IMenuItem, ModusSize } from '../../../components';
 
 /**
  * A customizable autocomplete component used to create searchable text inputs.
@@ -162,18 +157,18 @@ export class ModusWcAutocomplete {
     return classList.join(' ');
   }
 
-  private handleBlur = (event: ModusWcTextInputCustomEvent<FocusEvent>) => {
+  private handleBlur = (event: CustomEvent<FocusEvent>) => {
     // Hide menu after a short delay to allow for item selection
     // istanbul ignore next - TODO
     setTimeout(() => {
       this.menuVisible = false;
     }, 200);
 
-    this.inputBlur.emit(event as unknown as FocusEvent);
+    this.inputBlur.emit(event.detail);
   };
 
-  private handleChange = (event: ModusWcTextInputCustomEvent<Event>) => {
-    const value = event.target.value;
+  private handleChange = (event: CustomEvent<Event>) => {
+    const value = (event.detail.target as HTMLInputElement).value;
 
     // Show menu only if we meet minimum character threshold
     this.menuVisible = value.length >= this.minChars;
@@ -187,29 +182,29 @@ export class ModusWcAutocomplete {
     // If debouncing is disabled, emit immediately
     // istanbul ignore next - TODO
     if (!this.debounceMs) {
-      this.inputChange.emit(event as unknown as Event);
+      this.inputChange.emit(event.detail);
       return;
     }
 
     // Set up new debounce timer
     // istanbul ignore next - TODO
     this.debounceTimer = window.setTimeout(() => {
-      this.inputChange.emit(event as unknown as Event);
+      this.inputChange.emit(event.detail);
     }, this.debounceMs);
   };
 
-  private handleFocus = (event: ModusWcTextInputCustomEvent<FocusEvent>) => {
-    const value = event.target.value;
+  private handleFocus = (event: CustomEvent<FocusEvent>) => {
+    const value = (event.detail.target as HTMLInputElement).value;
 
     // Show menu on focus if we meet minimum character threshold
     this.menuVisible = !this.readOnly && value.length >= this.minChars;
 
-    this.inputFocus.emit(event as unknown as FocusEvent);
+    this.inputFocus.emit(event.detail);
   };
 
-  private handleItemSelect = (event: ModusWcMenuCustomEvent<IMenuItem>) => {
+  private handleItemSelect = (event: CustomEvent<IMenuItem>) => {
     this.menuVisible = false;
-    this.itemSelect.emit(event as unknown as IMenuItem);
+    this.itemSelect.emit(event.detail);
   };
 
   render() {
