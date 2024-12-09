@@ -2,7 +2,8 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IMenuItem, ModusSize } from '../../../components';
+import { IMenuItem } from '../../atoms/modus-wc-menu/modus-wc-menu';
+import { ModusSize } from '../../types';
 
 const fruits: IMenuItem[] = [
   { label: 'Apple', value: 'apple' },

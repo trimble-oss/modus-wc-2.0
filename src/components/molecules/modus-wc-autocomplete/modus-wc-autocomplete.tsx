@@ -8,7 +8,8 @@ import {
   State,
 } from '@stencil/core';
 // import { convertPropsToClasses } from './modus-wc-autocomplete.tailwind';
-import { IMenuItem as MenuItem, ModusSize } from '../../../components';
+import { IMenuItem } from '../../atoms/modus-wc-menu/modus-wc-menu';
+import { ModusSize } from '../../types';
 
 /**
  * A customizable autocomplete component used to create searchable text inputs.
@@ -79,7 +80,7 @@ export class ModusWcAutocomplete {
   /**
    * The items to display in the menu.
    */
-  @Prop() items: MenuItem[] = [];
+  @Prop() items: IMenuItem[] = [];
 
   /**
    * The minimum number of characters required to render the menu.
@@ -135,7 +136,7 @@ export class ModusWcAutocomplete {
   /**
    * Event emitted when a menu item is selected.
    */
-  @StencilEvent() itemSelect!: EventEmitter<MenuItem>;
+  @StencilEvent() itemSelect!: EventEmitter<IMenuItem>;
 
   // istanbul ignore next - TODO
   disconnectedCallback() {
@@ -202,7 +203,7 @@ export class ModusWcAutocomplete {
     this.inputFocus.emit(event.detail);
   };
 
-  private handleItemSelect = (event: CustomEvent<MenuItem>) => {
+  private handleItemSelect = (event: CustomEvent<IMenuItem>) => {
     this.menuVisible = false;
     this.itemSelect.emit(event.detail);
   };
