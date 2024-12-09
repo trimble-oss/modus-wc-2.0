@@ -3034,7 +3034,7 @@
               "kind": "field",
               "name": "inputBlur",
               "type": {
-                "text": "EventEmitter<\r\n    ModusWcTextInputCustomEvent<FocusEvent>\r\n  >"
+                "text": "EventEmitter<FocusEvent>"
               },
               "description": "Event emitted when the input loses focus."
             },
@@ -3042,7 +3042,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<\r\n    ModusWcTextInputCustomEvent<Event>\r\n  >"
+                "text": "EventEmitter<Event>"
               },
               "description": "Event emitted when the input value changes.\r\nThis event is debounced based on the debounceMs prop."
             },
@@ -3050,7 +3050,7 @@
               "kind": "field",
               "name": "inputFocus",
               "type": {
-                "text": "EventEmitter<\r\n    ModusWcTextInputCustomEvent<FocusEvent>\r\n  >"
+                "text": "EventEmitter<FocusEvent>"
               },
               "description": "Event emitted when the input gains focus."
             },
@@ -3058,7 +3058,7 @@
               "kind": "field",
               "name": "itemSelect",
               "type": {
-                "text": "EventEmitter<ModusWcMenuCustomEvent<IMenuItem>>"
+                "text": "EventEmitter<IMenuItem>"
               },
               "description": "Event emitted when a menu item is selected."
             }

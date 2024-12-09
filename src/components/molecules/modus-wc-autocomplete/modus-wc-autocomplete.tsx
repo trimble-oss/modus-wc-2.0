@@ -124,29 +124,23 @@ export class ModusWcAutocomplete {
   /**
    * Event emitted when the input loses focus.
    */
-  @StencilEvent() inputBlur!: EventEmitter<
-    ModusWcTextInputCustomEvent<FocusEvent>
-  >;
+  @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
   /**
    * Event emitted when the input value changes.
    * This event is debounced based on the debounceMs prop.
    */
-  @StencilEvent() inputChange!: EventEmitter<
-    ModusWcTextInputCustomEvent<Event>
-  >;
+  @StencilEvent() inputChange!: EventEmitter<Event>;
 
   /**
    * Event emitted when the input gains focus.
    */
-  @StencilEvent() inputFocus!: EventEmitter<
-    ModusWcTextInputCustomEvent<FocusEvent>
-  >;
+  @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   /**
    * Event emitted when a menu item is selected.
    */
-  @StencilEvent() itemSelect!: EventEmitter<ModusWcMenuCustomEvent<IMenuItem>>;
+  @StencilEvent() itemSelect!: EventEmitter<IMenuItem>;
 
   // istanbul ignore next - TODO
   disconnectedCallback() {
@@ -175,7 +169,7 @@ export class ModusWcAutocomplete {
       this.menuVisible = false;
     }, 200);
 
-    this.inputBlur.emit(event);
+    this.inputBlur.emit(event as unknown as FocusEvent);
   };
 
   private handleChange = (event: ModusWcTextInputCustomEvent<Event>) => {
@@ -193,14 +187,14 @@ export class ModusWcAutocomplete {
     // If debouncing is disabled, emit immediately
     // istanbul ignore next - TODO
     if (!this.debounceMs) {
-      this.inputChange.emit(event);
+      this.inputChange.emit(event as unknown as Event);
       return;
     }
 
     // Set up new debounce timer
     // istanbul ignore next - TODO
     this.debounceTimer = window.setTimeout(() => {
-      this.inputChange.emit(event);
+      this.inputChange.emit(event as unknown as Event);
     }, this.debounceMs);
   };
 
@@ -210,12 +204,12 @@ export class ModusWcAutocomplete {
     // Show menu on focus if we meet minimum character threshold
     this.menuVisible = !this.readOnly && value.length >= this.minChars;
 
-    this.inputFocus.emit(event);
+    this.inputFocus.emit(event as unknown as FocusEvent);
   };
 
   private handleItemSelect = (event: ModusWcMenuCustomEvent<IMenuItem>) => {
     this.menuVisible = false;
-    this.itemSelect.emit(event);
+    this.itemSelect.emit(event as unknown as IMenuItem);
   };
 
   render() {

@@ -37,12 +37,12 @@ Adheres to WCAG 2.2 standards.
 
 ## Events
 
-| Event         | Description                                                                                       | Type                                                   |
-| ------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| `inputBlur`   | Event emitted when the input loses focus.                                                         | `CustomEvent<ModusWcTextInputCustomEvent<FocusEvent>>` |
-| `inputChange` | Event emitted when the input value changes. This event is debounced based on the debounceMs prop. | `CustomEvent<ModusWcTextInputCustomEvent<Event>>`      |
-| `inputFocus`  | Event emitted when the input gains focus.                                                         | `CustomEvent<ModusWcTextInputCustomEvent<FocusEvent>>` |
-| `itemSelect`  | Event emitted when a menu item is selected.                                                       | `CustomEvent<ModusWcMenuCustomEvent<IMenuItem>>`       |
+| Event         | Description                                                                                       | Type                      |
+| ------------- | ------------------------------------------------------------------------------------------------- | ------------------------- |
+| `inputBlur`   | Event emitted when the input loses focus.                                                         | `CustomEvent<FocusEvent>` |
+| `inputChange` | Event emitted when the input value changes. This event is debounced based on the debounceMs prop. | `CustomEvent<Event>`      |
+| `inputFocus`  | Event emitted when the input gains focus.                                                         | `CustomEvent<FocusEvent>` |
+| `itemSelect`  | Event emitted when a menu item is selected.                                                       | `CustomEvent<IMenuItem>`  |
 
 
 ## Dependencies

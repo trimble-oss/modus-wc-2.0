@@ -1205,10 +1205,10 @@ export interface ModusWcToggleCustomEvent<T> extends CustomEvent<T> {
 }
 declare global {
     interface HTMLModusWcAutocompleteElementEventMap {
-        "inputBlur": ModusWcTextInputCustomEvent<FocusEvent>;
-        "inputChange": ModusWcTextInputCustomEvent<Event>;
-        "inputFocus": ModusWcTextInputCustomEvent<FocusEvent>;
-        "itemSelect": ModusWcMenuCustomEvent<IMenuItem>;
+        "inputBlur": FocusEvent;
+        "inputChange": Event;
+        "inputFocus": FocusEvent;
+        "itemSelect": IMenuItem;
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
@@ -1695,19 +1695,19 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the input loses focus.
          */
-        "onInputBlur"?: (event: ModusWcAutocompleteCustomEvent<ModusWcTextInputCustomEvent<FocusEvent>>) => void;
+        "onInputBlur"?: (event: ModusWcAutocompleteCustomEvent<FocusEvent>) => void;
         /**
           * Event emitted when the input value changes. This event is debounced based on the debounceMs prop.
          */
-        "onInputChange"?: (event: ModusWcAutocompleteCustomEvent<ModusWcTextInputCustomEvent<Event>>) => void;
+        "onInputChange"?: (event: ModusWcAutocompleteCustomEvent<Event>) => void;
         /**
           * Event emitted when the input gains focus.
          */
-        "onInputFocus"?: (event: ModusWcAutocompleteCustomEvent<ModusWcTextInputCustomEvent<FocusEvent>>) => void;
+        "onInputFocus"?: (event: ModusWcAutocompleteCustomEvent<FocusEvent>) => void;
         /**
           * Event emitted when a menu item is selected.
          */
-        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<ModusWcMenuCustomEvent<IMenuItem>>) => void;
+        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<IMenuItem>) => void;
         /**
           * Text that appears in the form control when it has no value set.
          */
