@@ -1,0 +1,39 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+[data-theme='modus-classic-light'] .modus-wc-select,
+[data-theme='modus-classic-dark'] .modus-wc-select {
+  border-radius: var(--modus-wc-border-radius-md);
+
+  // TODO - add support for xs and xl once added to Modus Figma
+
+  &.modus-wc-select-sm {
+    font-size: var(--modus-wc-font-size-sm);
+    height: var(--modus-wc-input-height-sm);
+    line-height: var(--modus-wc-input-height-sm);
+    min-height: var(--modus-wc-input-height-sm);
+  }
+
+  &.modus-wc-select-md {
+    font-size: var(--modus-wc-font-size-md);
+    height: var(--modus-wc-input-height-md);
+    line-height: var(--modus-wc-input-height-md);
+    min-height: var(--modus-wc-input-height-md);
+  }
+
+  &.modus-wc-select-lg {
+    font-size: var(--modus-wc-font-size-lg);
+    height: var(--modus-wc-input-height-lg);
+    line-height: var(--modus-wc-font-size-lg);
+    min-height: var(--modus-wc-font-size-lg);
+  }
+
+  &:focus {
+    border-color: var(--modus-wc-color-blue-light);
+    border-width: 2px;
+    box-shadow: none; // Removes the Tailwind ring effect
+    outline: none; // Ensures there's no outline on focus
+  }
+}

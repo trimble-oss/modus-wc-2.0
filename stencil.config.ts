@@ -2,7 +2,7 @@ import type { Config } from '@stencil/core';
 import { angularOutputTarget } from '@stencil/angular-output-target';
 import { reactOutputTarget } from '@stencil/react-output-target';
 import { sass } from '@stencil/sass';
-import angularValueAccessorBindings from './angular-value-acessor-bindings';
+import angularValueAccessorBindings from './angular-value-accessor-bindings';
 import tailwind, {
   setPluginConfigurationDefaults,
   tailwindGlobal,

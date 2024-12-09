@@ -2,13 +2,19 @@ import { ValueAccessorConfig } from '@stencil/angular-output-target';
 
 const angularValueAccessorBindings: ValueAccessorConfig[] = [
   {
-    elementSelectors: ['modus-wc-textarea'],
-    event: 'textareaChange',
+    elementSelectors: ['modus-wc-checkbox', 'modus-wc-radio'],
+    event: 'inputChange',
     targetAttr: 'value',
-    type: 'text',
+    type: 'boolean',
   },
   {
-    elementSelectors: ['modus-wc-text-input'],
+    elementSelectors: [
+      'modus-wc-date',
+      'modus-wc-number-input',
+      'modus-wc-select',
+      'modus-wc-text-input',
+      'modus-wc-textarea',
+    ],
     event: 'inputChange',
     targetAttr: 'value',
     type: 'text',

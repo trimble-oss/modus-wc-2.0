@@ -131,7 +131,7 @@ export class ModusWcDate {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-date modus-wc-input modus-wc-w-full'];
+    const classList = ['modus-wc-date', 'modus-wc-input', 'modus-wc-w-full'];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       size: this.size,
