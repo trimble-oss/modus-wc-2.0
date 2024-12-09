@@ -28,6 +28,21 @@ const preview: Preview = {
       },
     },
     layout: 'centered',
+    options: {
+      storySort: (a, b) => {
+        // Get the full title paths
+        const aTitle = a.title.toLowerCase();
+        const bTitle = b.title.toLowerCase();
+
+        // Special case for Forms section to ensure atoms, molecules, and organisms are sorted together
+        if (aTitle.includes('forms/') && bTitle.includes('forms/')) {
+          return aTitle.localeCompare(bTitle);
+        }
+
+        // Default sorting for other stories
+        return aTitle.localeCompare(bTitle);
+      }
+    },
   },
   decorators: [
     withThemeByDataAttribute({
