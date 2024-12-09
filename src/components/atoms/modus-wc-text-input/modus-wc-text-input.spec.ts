@@ -84,7 +84,7 @@ describe('modus-wc-text-input', () => {
     page.root!.addEventListener('inputChange', changeSpy);
 
     input!.value = 'New value';
-    input!.dispatchEvent(new Event('change'));
+    input!.dispatchEvent(new Event('input'));
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();

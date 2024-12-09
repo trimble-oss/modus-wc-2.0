@@ -78,7 +78,7 @@ describe('modus-wc-slider', () => {
     page.root!.addEventListener('inputChange', changeSpy);
 
     range.value = 'true';
-    range.dispatchEvent(new Event('change'));
+    range.dispatchEvent(new Event('input'));
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();

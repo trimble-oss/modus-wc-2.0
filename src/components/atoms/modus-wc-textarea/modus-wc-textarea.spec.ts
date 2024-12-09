@@ -79,7 +79,7 @@ describe('modus-wc-textarea', () => {
     page.root!.addEventListener('inputChange', changeSpy);
 
     textarea!.value = 'New value';
-    textarea!.dispatchEvent(new Event('change'));
+    textarea!.dispatchEvent(new Event('input'));
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();

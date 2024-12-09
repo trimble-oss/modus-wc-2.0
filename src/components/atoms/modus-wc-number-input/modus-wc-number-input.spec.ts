@@ -82,7 +82,7 @@ describe('modus-wc-number-input', () => {
     page.root!.addEventListener('inputChange', changeSpy);
 
     number!.value = 'New value';
-    number!.dispatchEvent(new Event('change'));
+    number!.dispatchEvent(new Event('input'));
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();

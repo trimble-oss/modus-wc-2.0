@@ -79,7 +79,7 @@ describe('modus-wc-date', () => {
     page.root!.addEventListener('inputChange', changeSpy);
 
     date!.value = 'New value';
-    date!.dispatchEvent(new Event('change'));
+    date!.dispatchEvent(new Event('input'));
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();
