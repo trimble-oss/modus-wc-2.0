@@ -5,15 +5,17 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { DaisySize, ModusSize, Orientation } from "./components/types";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
-import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
+import { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { DaisySize, ModusSize, Orientation } from "./components/types";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
-export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
+export { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
@@ -66,7 +68,7 @@ export namespace Components {
         /**
           * The items to display in the menu.
          */
-        "items": MenuItem[];
+        "items": IMenuItem[];
         /**
           * The minimum number of characters required to render the menu.
          */
@@ -488,7 +490,7 @@ export namespace Components {
         /**
           * The items to display in the menu.
          */
-        "items": IMenuItem[];
+        "items": IMenuItem1[];
         /**
           * The menu title, rendered as the first item (disabled).
          */
@@ -1208,7 +1210,7 @@ declare global {
         "inputBlur": FocusEvent;
         "inputChange": Event;
         "inputFocus": FocusEvent;
-        "itemSelect": MenuItem;
+        "itemSelect": IMenuItem;
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
@@ -1358,7 +1360,7 @@ declare global {
         new (): HTMLModusWcLoaderElement;
     };
     interface HTMLModusWcMenuElementEventMap {
-        "itemSelect": IMenuItem;
+        "itemSelect": IMenuItem1;
     }
     /**
      * A customizable menu component used to display a list of links vertically or horizontally.
@@ -1683,7 +1685,7 @@ declare namespace LocalJSX {
         /**
           * The items to display in the menu.
          */
-        "items"?: MenuItem[];
+        "items"?: IMenuItem[];
         /**
           * The minimum number of characters required to render the menu.
          */
@@ -1707,7 +1709,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when a menu item is selected.
          */
-        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<MenuItem>) => void;
+        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<IMenuItem>) => void;
         /**
           * Text that appears in the form control when it has no value set.
          */
@@ -2149,7 +2151,7 @@ declare namespace LocalJSX {
         /**
           * The items to display in the menu.
          */
-        "items"?: IMenuItem[];
+        "items"?: IMenuItem1[];
         /**
           * The menu title, rendered as the first item (disabled).
          */
@@ -2157,7 +2159,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when a menu item is selected.
          */
-        "onItemSelect"?: (event: ModusWcMenuCustomEvent<IMenuItem>) => void;
+        "onItemSelect"?: (event: ModusWcMenuCustomEvent<IMenuItem1>) => void;
         /**
           * The orientation of the menu.
          */
