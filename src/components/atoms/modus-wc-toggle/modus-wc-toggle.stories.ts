@@ -79,30 +79,31 @@ export const Template: Story = {
   },
 };
 
+// prettier-ignore
 export const ToggleWithLabel: Story = {
   render: () => {
     return html`
-      <style>
-        .form-control {
-          display: flex;
-        }
-        modus-wc-toggle {
-          padding-inline-end: 8px;
-        }
-      </style>
-      <form action="" method="get">
-        <div class="form-control">
-          <modus-wc-toggle
-            aria-label="Example toggle"
-            input-id="toggle-input"
-            name="example-toggle"
-          ></modus-wc-toggle>
-          <modus-wc-input-label
-            for-id="toggle-input"
-            label-text="Example toggle"
-          ></modus-wc-input-label>
-        </div>
-      </form>
+<style>
+  .form-control {
+    display: flex;
+  }
+  modus-wc-toggle {
+    padding-inline-end: 8px;
+  }
+</style>
+<form action="" method="get">
+  <div class="form-control">
+    <modus-wc-toggle
+      aria-label="Example toggle"
+      input-id="toggle-input"
+      name="example-toggle"
+    ></modus-wc-toggle>
+    <modus-wc-input-label
+      for-id="toggle-input"
+      label-text="Example toggle"
+    ></modus-wc-input-label>
+  </div>
+</form>
     `;
   },
 };

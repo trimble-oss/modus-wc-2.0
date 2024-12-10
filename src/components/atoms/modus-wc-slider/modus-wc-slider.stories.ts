@@ -82,31 +82,32 @@ export const Template: Story = {
   },
 };
 
+// prettier-ignore
 export const SliderWithLabel: Story = {
   render: () => {
     return html`
-      <form action="" method="get">
-        <div class="form-control">
-          <modus-wc-input-label
-            for-id="slider-input"
-            label-text="Example slider"
-          ></modus-wc-input-label>
-          <modus-wc-slider
-            aria-label="Example slider"
-            input-id="slider-input"
-            value="70"
-          ></modus-wc-slider>
-        </div>
-      </form>
-      <style>
-        .form-control {
-          display: flex;
-          flex-direction: column;
-        }
-        modus-wc-input-label {
-          padding-bottom: 8px;
-        }
-      </style>
+<style>
+  .form-control {
+    display: flex;
+    flex-direction: column;
+  }
+  modus-wc-input-label {
+    padding-bottom: 8px;
+  }
+</style>
+<form action="" method="get">
+  <div class="form-control">
+    <modus-wc-input-label
+      for-id="slider-input"
+      label-text="Example slider"
+    ></modus-wc-input-label>
+    <modus-wc-slider
+      aria-label="Example slider"
+      input-id="slider-input"
+      value="70"
+    ></modus-wc-slider>
+  </div>
+</form>
     `;
   },
 };

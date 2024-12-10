@@ -141,31 +141,32 @@ export const Template: Story = {
   `,
 };
 
+// prettier-ignore
 export const TextInputWithLabel: Story = {
   render: () => {
     return html`
-      <style>
-        .form-control {
-          display: flex;
-          align-items: center;
-        }
-        .modus-wc-input-label {
-          padding-inline-end: 8px;
-        }
-      </style>
-      <form action="" method="get">
-        <div class="form-control">
-          <modus-wc-input-label
-            for-id="text-input"
-            label-text="Example text input"
-          ></modus-wc-input-label>
-          <modus-wc-text-input
-            aria-label="Example text input"
-            input-id="text-input"
-            name="example-text-input"
-          ></modus-wc-text-input>
-        </div>
-      </form>
+<style>
+  .form-control {
+    display: flex;
+    align-items: center;
+  }
+  .modus-wc-input-label {
+    padding-inline-end: 8px;
+  }
+</style>
+<form action="" method="get">
+  <div class="form-control">
+    <modus-wc-input-label
+      for-id="text-input"
+      label-text="Example text input"
+    ></modus-wc-input-label>
+    <modus-wc-text-input
+      aria-label="Example text input"
+      input-id="text-input"
+      name="example-text-input"
+    ></modus-wc-text-input>
+  </div>
+</form>
     `;
   },
 };

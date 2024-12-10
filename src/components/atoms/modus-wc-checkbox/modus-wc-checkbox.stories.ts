@@ -79,30 +79,31 @@ export const Template: Story = {
   },
 };
 
+// prettier-ignore
 export const CheckboxWithLabel: Story = {
   render: () => {
     return html`
-      <style>
-        .form-control {
-          display: flex;
-        }
-        modus-wc-checkbox {
-          padding-inline-end: 8px;
-        }
-      </style>
-      <form action="" method="get">
-        <div class="form-control">
-          <modus-wc-checkbox
-            aria-label="Example checkbox"
-            input-id="checkbox-input"
-            name="example-checkbox"
-          ></modus-wc-checkbox>
-          <modus-wc-input-label
-            for-id="checkbox-input"
-            label-text="Example checkbox"
-          ></modus-wc-input-label>
-        </div>
-      </form>
+<style>
+  .form-control {
+    display: flex;
+  }
+  modus-wc-checkbox {
+    padding-inline-end: 8px;
+  }
+</style>
+<form action="" method="get">
+  <div class="form-control">
+    <modus-wc-checkbox
+      aria-label="Example checkbox"
+      input-id="checkbox-input"
+      name="example-checkbox"
+    ></modus-wc-checkbox>
+    <modus-wc-input-label
+      for-id="checkbox-input"
+      label-text="Example checkbox"
+    ></modus-wc-input-label>
+  </div>
+</form>
     `;
   },
 };

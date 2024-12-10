@@ -88,32 +88,33 @@ export const Template: Story = {
   `,
 };
 
+// prettier-ignore
 export const SelectWithLabel: Story = {
   render: () => {
     return html`
-      <style>
-        .form-control {
-          display: flex;
-          align-items: center;
-        }
-        .modus-wc-input-label {
-          padding-inline-end: 8px;
-        }
-      </style>
-      <form action="" method="get">
-        <div class="form-control">
-          <modus-wc-input-label
-            for-id="select-input"
-            label-text="Example select"
-          ></modus-wc-input-label>
-          <modus-wc-select
-            aria-label="Example select"
-            input-id="select-input"
-            name="example-select-input"
-            .options=${options}
-          ></modus-wc-select>
-        </div>
-      </form>
+<style>
+  .form-control {
+    display: flex;
+    align-items: center;
+  }
+  .modus-wc-input-label {
+    padding-inline-end: 8px;
+  }
+</style>
+<form action="" method="get">
+  <div class="form-control">
+    <modus-wc-input-label
+      for-id="select-input"
+      label-text="Example select"
+    ></modus-wc-input-label>
+    <modus-wc-select
+      aria-label="Example select"
+      input-id="select-input"
+      name="example-select-input"
+      .options=${options}
+    ></modus-wc-select>
+  </div>
+</form>
     `;
   },
 };
