@@ -7,7 +7,6 @@ import {
   Prop,
   State,
 } from '@stencil/core';
-// import { convertPropsToClasses } from './modus-wc-autocomplete.tailwind';
 import { IMenuItem } from '../../atoms/modus-wc-menu/modus-wc-menu';
 import { ModusSize } from '../../types';
 
@@ -149,10 +148,7 @@ export class ModusWcAutocomplete {
   private getClasses(): string {
     const classList: string[] = ['modus-wc-autocomplete'];
 
-    // const propClasses = convertPropsToClasses();
-
     // The order CSS classes are added matters to CSS specificity
-    // if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');

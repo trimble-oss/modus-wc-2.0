@@ -56,16 +56,22 @@ type Story = StoryObj<MenuArgs>;
 
 export const Template: Story = {
   render: (args) => {
+    const handleItemSelect = (e: CustomEvent<IMenuItem>) => {
+      const menu = (e.target as HTMLElement).closest('modus-wc-menu');
+      if (menu) menu.activeItemValue = e.detail.value;
+    };
+
     return html`
       <modus-wc-menu
         active-item-value="${ifDefined(args['active-item-value'])}"
         aria-label="${args['aria-label']}"
         ?bordered=${args.bordered}
         custom-class="${ifDefined(args['custom-class'])}"
-        .items=${ifDefined(args.items)}
+        .items=${args.items}
         orientation=${ifDefined(args.orientation)}
         size=${ifDefined(args.size)}
         menu-title="${ifDefined(args['menu-title'])}"
+        @itemSelect=${handleItemSelect}
       ></modus-wc-menu>
     `;
   },
