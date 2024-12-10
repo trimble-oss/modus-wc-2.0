@@ -77,20 +77,30 @@ export const Template: Story = {
   },
 };
 
-const updatedItems = [
-  ...items,
-  { disabled: true, label: 'Item 4', value: '4' },
-];
-
+// prettier-ignore
 export const ItemVariations: Story = {
   render: () => {
+    const updatedItems = [
+      ...items,
+      { disabled: true, label: 'Item 4', value: '4' },
+    ];
+
     return html`
-      <modus-wc-menu
-        active-item-value="2"
-        aria-label="Example menu"
-        .items=${updatedItems}
-        menu-title="Items"
-      ></modus-wc-menu>
+<script>
+  // Items bound to modus-wc-menu "items" attribute
+  const items = [
+    { label: 'Item 1', value: '1' },
+    { label: 'Item 2', value: '2' },
+    { label: 'Item 3', value: '3' },
+    { disabled: true, label: 'Item 4', value: '4' },
+  ];
+</script>
+<modus-wc-menu
+  active-item-value="2"
+  aria-label="Example menu"
+  .items=${updatedItems}
+  menu-title="Items"
+></modus-wc-menu>
     `;
   },
 };
