@@ -2420,6 +2420,223 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-time-input/modus-wc-time-input.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable input component used to create time inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcTimeInput",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "fieldName": "ariaDescribedby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the element that describes the input."
+            },
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "auto-complete",
+              "fieldName": "autoComplete",
+              "type": {
+                "text": "'on' | 'off'"
+              },
+              "description": "Hint for form autofill feature."
+            },
+            {
+              "name": "auto-focus",
+              "fieldName": "autoFocus",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that an element should be focused on page load."
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the input."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the form control is disabled."
+            },
+            {
+              "name": "input-dir",
+              "fieldName": "inputDir",
+              "type": {
+                "text": "'' | 'ltr' | 'rtl' | 'auto'"
+              },
+              "description": "Specifies the time direction of the input content."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+            },
+            {
+              "name": "list",
+              "fieldName": "list",
+              "type": {
+                "text": "string"
+              },
+              "description": "Provide a list of pre-defined options to suggest to the user.\r\nThe value must be the ID of a <datalist> element in the same document."
+            },
+            {
+              "name": "max",
+              "fieldName": "max",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum value. Format: 'HH:mm', 'HH:mm:ss'."
+            },
+            {
+              "name": "min",
+              "fieldName": "min",
+              "type": {
+                "text": "string"
+              },
+              "description": "Minimum value. Format: 'HH:mm', 'HH:mm:ss.'"
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "read-only",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the value is editable."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "Size"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "step",
+              "fieldName": "step",
+              "type": {
+                "text": "number"
+              },
+              "description": "Value of step given in seconds with a scaling factor of 1000 (milliseconds). Default value is 60 (seconds)."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the time input.\r\nAlways in 24-hour format that includes leading zeros: HH:mm, regardless of input format which is likely to be selected based on user's locale (or by the user agent).\r\nIf time includes seconds the format is always HH:mm:ss."
+            }
+          ],
+          "tagName": "modus-wc-time-input",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Event emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTimeInput",
+          "declaration": {
+            "name": "ModusWcTimeInput",
+            "module": "src/components/atoms/modus-wc-time-input/modus-wc-time-input.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-time-input",
+          "declaration": {
+            "name": "ModusWcTimeInput",
+            "module": "src/components/atoms/modus-wc-time-input/modus-wc-time-input.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-toggle/modus-wc-toggle.tsx",
       "declarations": [
         {

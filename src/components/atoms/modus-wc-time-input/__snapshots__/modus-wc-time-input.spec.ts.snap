@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-time-input should render with default props 1`] = `
+<modus-wc-time-input aria-label="Default input" value="">
+  <input aria-label="Default input" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" max="23:59" min="00:00" type="time" value="">
+</modus-wc-time-input>
+`;
