@@ -20,7 +20,7 @@ export class ModusWcTooltip {
   /**
    * Custom CSS class to apply to the inner div.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * Use this attribute to force the tooltip to remain open.

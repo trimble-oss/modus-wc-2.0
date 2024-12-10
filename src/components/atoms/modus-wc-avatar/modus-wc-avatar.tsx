@@ -1,6 +1,6 @@
 import { Component, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-avatar.tailwind';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 /**
  * A customizable avatar component used to create avatars with different images.
@@ -26,7 +26,7 @@ export class ModusWcAvatar {
   /**
    * Custom CSS class to apply to the inner div.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The location of the image.
@@ -43,7 +43,7 @@ export class ModusWcAvatar {
   /**
    * The size of the avatar.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {
     if (!this.alt || !this.ariaLabel) {

@@ -1,5 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { Orientation } from '../../types';
 
 interface DividerArgs {
   'aria-label': string;
@@ -12,8 +14,8 @@ interface DividerArgs {
     | 'warning'
     | 'danger';
   content: string;
-  'custom-class': string;
-  orientation: 'horizontal' | 'vertical';
+  'custom-class'?: string;
+  orientation: Orientation;
   position: 'center' | 'end' | 'start';
   responsive: boolean;
 }
@@ -79,7 +81,7 @@ const Template: Story = {
       aria-label="${args['aria-label']}"
       color="${args.color}"
       content="${args.content}"
-      custom-class="${args['custom-class']}"
+      custom-class="${ifDefined(args['custom-class'])}"
       orientation="${args.orientation}"
       position="${args.position}"
       responsive="${args.responsive}"

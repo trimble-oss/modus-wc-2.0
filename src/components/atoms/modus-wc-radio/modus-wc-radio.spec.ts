@@ -75,7 +75,7 @@ describe('modus-wc-radio', () => {
     page.root!.addEventListener('inputChange', changeSpy);
 
     radio.value = 'true';
-    radio.dispatchEvent(new Event('change'));
+    radio.dispatchEvent(new Event('input'));
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();

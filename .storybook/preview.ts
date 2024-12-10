@@ -28,6 +28,29 @@ const preview: Preview = {
       },
     },
     layout: 'centered',
+    options: {
+      storySort: (a, b) => {
+        // Get the full title paths
+        const aTitle = a.title.toLowerCase();
+        const bTitle = b.title.toLowerCase();
+
+        // Make Documentation section appear first
+        if (aTitle.startsWith('documentation') && !bTitle.startsWith('documentation')) {
+          return -1;
+        }
+        if (!aTitle.startsWith('documentation') && bTitle.startsWith('documentation')) {
+          return 1;
+        }
+
+        // Special case for Forms section to ensure proper alphabetical ordering
+        if (aTitle.includes('forms/') && bTitle.includes('forms/')) {
+          return aTitle.localeCompare(bTitle);
+        }
+
+        // Default alphabetical sorting for everything else
+        return aTitle.localeCompare(bTitle);
+      },
+    },
   },
   decorators: [
     withThemeByDataAttribute({

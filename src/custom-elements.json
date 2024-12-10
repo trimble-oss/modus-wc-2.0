@@ -61,7 +61,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the avatar."
             }
@@ -141,7 +141,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "ModusSize"
               },
               "description": "The size of the badge."
             },
@@ -253,7 +253,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "ModusSize"
               },
               "description": "The size of the button."
             },
@@ -421,7 +421,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the input."
             },
@@ -630,7 +630,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "ModusSize"
               },
               "description": "The size of the input."
             },
@@ -743,7 +743,7 @@
               "name": "orientation",
               "fieldName": "orientation",
               "type": {
-                "text": "'horizontal' | 'vertical'"
+                "text": "Orientation"
               },
               "description": "The orientation of the divider. This is in reference to how content will be rendered around the divider."
             },
@@ -839,7 +839,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The icon size, can be \"sm\", \"md\", \"lg\" (a custom size can be specified in CSS).\r\nThis adjusts the font size for the icon."
             }
@@ -991,7 +991,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the loader."
             },
@@ -1024,6 +1024,119 @@
           "declaration": {
             "name": "ModusWcLoader",
             "module": "src/components/atoms/modus-wc-loader/modus-wc-loader.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-menu/modus-wc-menu.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable menu component used to display a list of links vertically or horizontally.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcMenu",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "active-item-value",
+              "fieldName": "activeItemValue",
+              "type": {
+                "text": "string"
+              },
+              "description": "The active menu item value, used to show an item as selected."
+            },
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the menu should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the ul element."
+            },
+            {
+              "name": "items",
+              "fieldName": "items",
+              "type": {
+                "text": "IMenuItem[]"
+              },
+              "description": "The items to display in the menu."
+            },
+            {
+              "name": "menu-title",
+              "fieldName": "menuTitle",
+              "type": {
+                "text": "string"
+              },
+              "description": "The menu title, rendered as the first item (disabled)."
+            },
+            {
+              "name": "orientation",
+              "fieldName": "orientation",
+              "type": {
+                "text": "Orientation"
+              },
+              "description": "The orientation of the menu."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the menu."
+            }
+          ],
+          "tagName": "modus-wc-menu",
+          "events": [
+            {
+              "kind": "field",
+              "name": "itemSelect",
+              "type": {
+                "text": "EventEmitter<IMenuItem>"
+              },
+              "description": "Event emitted when a menu item is selected."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcMenu",
+          "declaration": {
+            "name": "ModusWcMenu",
+            "module": "src/components/atoms/modus-wc-menu/modus-wc-menu.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-menu",
+          "declaration": {
+            "name": "ModusWcMenu",
+            "module": "src/components/atoms/modus-wc-menu/modus-wc-menu.tsx"
           }
         }
       ]
@@ -1191,7 +1304,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "ModusSize"
               },
               "description": "The size of the input."
             },
@@ -1448,7 +1561,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "'sm' | 'md' | 'lg'"
+                "text": "ModusSize"
               },
               "description": "The size of the input."
             },
@@ -1633,7 +1746,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the input."
             },
@@ -1882,7 +1995,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the input."
             },
@@ -2139,7 +2252,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "ModusSize"
               },
               "description": "The size of the input."
             },
@@ -2356,7 +2469,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the input."
             },
@@ -2533,7 +2646,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the input."
             },
@@ -2710,7 +2823,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "DaisySize"
               },
               "description": "The size of the font."
             },
@@ -2751,6 +2864,223 @@
           "declaration": {
             "name": "ModusWCTypography",
             "module": "src/components/atoms/modus-wc-typography/modus-wc-typography.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-autocomplete/modus-wc-autocomplete.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable autocomplete component used to create searchable text inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcAutocomplete",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "active-item-value",
+              "fieldName": "activeItemValue",
+              "type": {
+                "text": "string"
+              },
+              "description": "The active menu item value, used to show an item as selected."
+            },
+            {
+              "name": "aria-describedby",
+              "fieldName": "ariaDescribedby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the element that describes the input."
+            },
+            {
+              "name": "aria-label",
+              "fieldName": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute for accessibility."
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the autocomplete should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to host element."
+            },
+            {
+              "name": "debounce-ms",
+              "fieldName": "debounceMs",
+              "type": {
+                "text": "number"
+              },
+              "description": "The debounce timeout in milliseconds.\r\nSet to 0 to disable debouncing."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the form control is disabled."
+            },
+            {
+              "name": "input-dir",
+              "fieldName": "inputDir",
+              "type": {
+                "text": "'' | 'ltr' | 'rtl' | 'auto'"
+              },
+              "description": "Specifies the text direction of the input content."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+            },
+            {
+              "name": "items",
+              "fieldName": "items",
+              "type": {
+                "text": "IMenuItem[]"
+              },
+              "description": "The items to display in the menu."
+            },
+            {
+              "name": "min-chars",
+              "fieldName": "minChars",
+              "type": {
+                "text": "number"
+              },
+              "description": "The minimum number of characters required to render the menu."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text that appears in the form control when it has no value set."
+            },
+            {
+              "name": "read-only",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the value is editable."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the autocomplete (input and menu)."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the control."
+            }
+          ],
+          "tagName": "modus-wc-autocomplete",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Event emitted when the input value changes.\r\nThis event is debounced based on the debounceMs prop."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            },
+            {
+              "kind": "field",
+              "name": "itemSelect",
+              "type": {
+                "text": "EventEmitter<IMenuItem>"
+              },
+              "description": "Event emitted when a menu item is selected."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcAutocomplete",
+          "declaration": {
+            "name": "ModusWcAutocomplete",
+            "module": "src/components/molecules/modus-wc-autocomplete/modus-wc-autocomplete.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-autocomplete",
+          "declaration": {
+            "name": "ModusWcAutocomplete",
+            "module": "src/components/molecules/modus-wc-autocomplete/modus-wc-autocomplete.tsx"
           }
         }
       ]

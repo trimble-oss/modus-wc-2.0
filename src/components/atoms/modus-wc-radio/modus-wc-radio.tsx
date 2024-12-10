@@ -7,6 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-radio.tailwind';
+import { ModusSize } from '../../types';
 
 /**
  * A customizable radio component.
@@ -37,7 +38,7 @@ export class ModusWcRadio {
   /**
    * Custom CSS class to apply to the inner div.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The disabled state of the radio.
@@ -72,7 +73,7 @@ export class ModusWcRadio {
   /**
    * The size of the input.
    */
-  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /**
    * The value of the radio.
@@ -116,12 +117,12 @@ export class ModusWcRadio {
     this.inputBlur.emit(event);
   };
 
-  private handleChange = (event: Event) => {
-    this.inputChange.emit(event);
-  };
-
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
+  };
+
+  private handleInput = (event: Event) => {
+    this.inputChange.emit(event);
   };
 
   render() {
@@ -140,8 +141,8 @@ export class ModusWcRadio {
           id={this.inputId}
           name={this.name}
           onBlur={this.handleBlur}
-          onChange={this.handleChange}
           onFocus={this.handleFocus}
+          onInput={this.handleInput}
           required={this.required}
           tabIndex={this.inputTabIndex}
           type="radio"

@@ -7,7 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-slider.tailwind';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 /**
  * A customizable slider component.
@@ -38,7 +38,7 @@ export class ModusWcSlider {
   /**
    * Custom CSS class to apply to the inner div.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The disabled state of the slider.
@@ -83,7 +83,7 @@ export class ModusWcSlider {
   /**
    * The size of the input.
    */
-  @Prop() size?: Size = 'xs';
+  @Prop() size?: DaisySize = 'xs';
 
   /**
    * The increment of the slider.
@@ -132,12 +132,12 @@ export class ModusWcSlider {
     this.inputBlur.emit(event);
   };
 
-  private handleChange = (event: Event) => {
-    this.inputChange.emit(event);
-  };
-
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
+  };
+
+  private handleInput = (event: Event) => {
+    this.inputChange.emit(event);
   };
 
   render() {
@@ -156,8 +156,8 @@ export class ModusWcSlider {
           min={this.min}
           name={this.name}
           onBlur={this.handleBlur}
-          onChange={this.handleChange}
           onFocus={this.handleFocus}
+          onInput={this.handleInput}
           required={this.required}
           step={this.step}
           tabIndex={this.inputTabIndex}

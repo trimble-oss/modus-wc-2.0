@@ -86,7 +86,7 @@ describe('modus-wc-checkbox', () => {
     page.root!.addEventListener('inputChange', changeSpy);
 
     checkbox.value = 'true';
-    checkbox.dispatchEvent(new Event('change'));
+    checkbox.dispatchEvent(new Event('input'));
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();

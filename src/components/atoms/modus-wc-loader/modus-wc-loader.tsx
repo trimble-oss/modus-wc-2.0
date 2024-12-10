@@ -1,6 +1,6 @@
 import { Component, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-loader.tailwind';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 export type LoaderVariant =
   | 'ball'
@@ -44,12 +44,12 @@ export class ModusWcLoader {
   /**
    * Custom CSS class to apply to the loader element.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The size of the loader.
    */
-  @Prop() size: Size = 'md';
+  @Prop() size: DaisySize = 'md';
 
   /**
    * The variant of the loader.

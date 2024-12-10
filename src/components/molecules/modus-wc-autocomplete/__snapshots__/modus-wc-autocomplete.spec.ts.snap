@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-autocomplete should render with custom props 1`] = `
+<modus-wc-autocomplete .items="[{&quot;label&quot;:&quot;Item" 1","value":"1"},{"label":"item="" 2","value":"2"},{"label":"item="" 3","value":"3"}]="" active-item-value="1" aria-describedby="description" aria-label="Test autocomplete" bordered="false" class="modus-wc-autocomplete test-class" custom-class="test-class" debounce-ms="500" dir="rtl" disabled="true" input-dir="rtl" input-id="test-id" input-tab-index="1" min-chars="2" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" value="Item 1">
+  <modus-wc-text-input value="Item 1">
+    <input aria-describedby="description" aria-label="Autocomplete input" aria-placeholder="Test placeholder" aria-required="" class="modus-wc-input modus-wc-input-lg modus-wc-w-full" disabled="" id="test-id" inputmode="text" name="test-name" placeholder="Test placeholder" required="" tabindex="1" type="text" value="Item 1">
+  </modus-wc-text-input>
+</modus-wc-autocomplete>
+`;
+
+exports[`modus-wc-autocomplete should render with default props 1`] = `
+<modus-wc-autocomplete aria-label="Default autocomplete" class="modus-wc-autocomplete" value="">
+  <modus-wc-text-input value="">
+    <input aria-label="Autocomplete input" aria-placeholder="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" inputmode="text" placeholder="" type="text" value="">
+  </modus-wc-text-input>
+</modus-wc-autocomplete>
+`;

@@ -5,17 +5,99 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Size } from "./components/types";
+import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
+import { DaisySize, ModusSize, Orientation } from "./components/types";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
+import { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { Size } from "./components/types";
+export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
+export { DaisySize, ModusSize, Orientation } from "./components/types";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
+export { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
+    /**
+     * A customizable autocomplete component used to create searchable text inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcAutocomplete {
+        /**
+          * The active menu item value, used to show an item as selected.
+         */
+        "activeItemValue"?: string;
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Indicates that the autocomplete should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to host element.
+         */
+        "customClass"?: string;
+        /**
+          * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
+         */
+        "debounceMs"?: number;
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * The items to display in the menu.
+         */
+        "items": IMenuItem[];
+        /**
+          * The minimum number of characters required to render the menu.
+         */
+        "minChars": number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Text that appears in the form control when it has no value set.
+         */
+        "placeholder"?: string;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the autocomplete (input and menu).
+         */
+        "size"?: ModusSize;
+        /**
+          * The value of the control.
+         */
+        "value": string;
+    }
     /**
      * A customizable avatar component used to create avatars with different images.
      * Adheres to WCAG 2.2 standards.
@@ -32,7 +114,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The location of the image.
          */
@@ -44,7 +126,7 @@ export namespace Components {
         /**
           * The size of the avatar.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
@@ -76,7 +158,7 @@ export namespace Components {
         /**
           * The size of the badge.
          */
-        "size": 'sm' | 'md' | 'lg';
+        "size": ModusSize;
         /**
           * The variant of the badge.
          */
@@ -98,7 +180,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the button element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * If true, the button will be disabled.
          */
@@ -118,7 +200,7 @@ export namespace Components {
         /**
           * The size of the button.
          */
-        "size": 'sm' | 'md' | 'lg';
+        "size": ModusSize;
         /**
           * The type of the button.
          */
@@ -148,7 +230,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The disabled state of the checkbox.
          */
@@ -180,7 +262,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the checkbox.
          */
@@ -258,7 +340,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The value of the control.
          */
@@ -290,11 +372,11 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the divider element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The orientation of the divider. This is in reference to how content will be rendered around the divider.
          */
-        "orientation"?: 'horizontal' | 'vertical';
+        "orientation"?: Orientation;
         /**
           * The position of the divider.
          */
@@ -317,7 +399,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the i element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.
          */
@@ -329,7 +411,7 @@ export namespace Components {
         /**
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
     }
     /**
      * A customizable input label component.
@@ -374,15 +456,53 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the loader element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The size of the loader.
          */
-        "size": Size;
+        "size": DaisySize;
         /**
           * The variant of the loader.
          */
         "variant": LoaderVariant;
+    }
+    /**
+     * A customizable menu component used to display a list of links vertically or horizontally.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcMenu {
+        /**
+          * The active menu item value, used to show an item as selected.
+         */
+        "activeItemValue"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Indicates that the menu should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the ul element.
+         */
+        "customClass"?: string;
+        /**
+          * The items to display in the menu.
+         */
+        "items": IMenuItem1[];
+        /**
+          * The menu title, rendered as the first item (disabled).
+         */
+        "menuTitle"?: string;
+        /**
+          * The orientation of the menu.
+         */
+        "orientation"?: Orientation;
+        /**
+          * The size of the menu.
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -464,7 +584,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The granularity that the value adheres to.
          */
@@ -490,7 +610,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the progress element.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The indeterminate state of the progress component.
          */
@@ -524,7 +644,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The disabled state of the radio.
          */
@@ -552,7 +672,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The value of the radio.
          */
@@ -582,7 +702,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * Whether the form control is disabled.
          */
@@ -618,7 +738,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the control.
          */
@@ -632,7 +752,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The height of the skeleton.
          */
@@ -666,7 +786,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The disabled state of the slider.
          */
@@ -702,7 +822,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The increment of the slider.
          */
@@ -816,7 +936,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: ModusSize;
         /**
           * Type of form control.
          */
@@ -898,7 +1018,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the textarea.
          */
@@ -920,7 +1040,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the theme switcher element.
          */
-        "customClass": string;
+        "customClass"?: string;
     }
     /**
      * A customizable checkbox component.
@@ -942,7 +1062,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * The disabled state of the toggle.
          */
@@ -974,7 +1094,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the toggle.
          */
@@ -992,7 +1112,7 @@ export namespace Components {
         /**
           * Custom CSS class to apply to the inner div.
          */
-        "customClass": string;
+        "customClass"?: string;
         /**
           * Use this attribute to force the tooltip to remain open.
          */
@@ -1022,7 +1142,7 @@ export namespace Components {
         /**
           * The size of the font.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The variant of the typography component.
          */
@@ -1032,6 +1152,10 @@ export namespace Components {
          */
         "weight"?: TypographyWeight;
     }
+}
+export interface ModusWcAutocompleteCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcAutocompleteElement;
 }
 export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1044,6 +1168,10 @@ export interface ModusWcCheckboxCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDateElement;
+}
+export interface ModusWcMenuCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcMenuElement;
 }
 export interface ModusWcNumberInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1078,6 +1206,30 @@ export interface ModusWcToggleCustomEvent<T> extends CustomEvent<T> {
     target: HTMLModusWcToggleElement;
 }
 declare global {
+    interface HTMLModusWcAutocompleteElementEventMap {
+        "inputBlur": FocusEvent;
+        "inputChange": Event;
+        "inputFocus": FocusEvent;
+        "itemSelect": IMenuItem;
+    }
+    /**
+     * A customizable autocomplete component used to create searchable text inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcAutocompleteElement extends Components.ModusWcAutocomplete, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcAutocompleteElementEventMap>(type: K, listener: (this: HTMLModusWcAutocompleteElement, ev: ModusWcAutocompleteCustomEvent<HTMLModusWcAutocompleteElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcAutocompleteElementEventMap>(type: K, listener: (this: HTMLModusWcAutocompleteElement, ev: ModusWcAutocompleteCustomEvent<HTMLModusWcAutocompleteElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcAutocompleteElement: {
+        prototype: HTMLModusWcAutocompleteElement;
+        new (): HTMLModusWcAutocompleteElement;
+    };
     /**
      * A customizable avatar component used to create avatars with different images.
      * Adheres to WCAG 2.2 standards.
@@ -1206,6 +1358,27 @@ declare global {
     var HTMLModusWcLoaderElement: {
         prototype: HTMLModusWcLoaderElement;
         new (): HTMLModusWcLoaderElement;
+    };
+    interface HTMLModusWcMenuElementEventMap {
+        "itemSelect": IMenuItem1;
+    }
+    /**
+     * A customizable menu component used to display a list of links vertically or horizontally.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcMenuElement extends Components.ModusWcMenu, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcMenuElementEventMap>(type: K, listener: (this: HTMLModusWcMenuElement, ev: ModusWcMenuCustomEvent<HTMLModusWcMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcMenuElementEventMap>(type: K, listener: (this: HTMLModusWcMenuElement, ev: ModusWcMenuCustomEvent<HTMLModusWcMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcMenuElement: {
+        prototype: HTMLModusWcMenuElement;
+        new (): HTMLModusWcMenuElement;
     };
     interface HTMLModusWcNumberInputElementEventMap {
         "inputBlur": FocusEvent;
@@ -1437,6 +1610,7 @@ declare global {
         new (): HTMLModusWcTypographyElement;
     };
     interface HTMLElementTagNameMap {
+        "modus-wc-autocomplete": HTMLModusWcAutocompleteElement;
         "modus-wc-avatar": HTMLModusWcAvatarElement;
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
@@ -1446,6 +1620,7 @@ declare global {
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
         "modus-wc-loader": HTMLModusWcLoaderElement;
+        "modus-wc-menu": HTMLModusWcMenuElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
@@ -1462,6 +1637,100 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    /**
+     * A customizable autocomplete component used to create searchable text inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcAutocomplete {
+        /**
+          * The active menu item value, used to show an item as selected.
+         */
+        "activeItemValue"?: string;
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Indicates that the autocomplete should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to host element.
+         */
+        "customClass"?: string;
+        /**
+          * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
+         */
+        "debounceMs"?: number;
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the text direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * The items to display in the menu.
+         */
+        "items"?: IMenuItem[];
+        /**
+          * The minimum number of characters required to render the menu.
+         */
+        "minChars"?: number;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Event emitted when the input loses focus.
+         */
+        "onInputBlur"?: (event: ModusWcAutocompleteCustomEvent<FocusEvent>) => void;
+        /**
+          * Event emitted when the input value changes. This event is debounced based on the debounceMs prop.
+         */
+        "onInputChange"?: (event: ModusWcAutocompleteCustomEvent<Event>) => void;
+        /**
+          * Event emitted when the input gains focus.
+         */
+        "onInputFocus"?: (event: ModusWcAutocompleteCustomEvent<FocusEvent>) => void;
+        /**
+          * Event emitted when a menu item is selected.
+         */
+        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<IMenuItem>) => void;
+        /**
+          * Text that appears in the form control when it has no value set.
+         */
+        "placeholder"?: string;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the autocomplete (input and menu).
+         */
+        "size"?: ModusSize;
+        /**
+          * The value of the control.
+         */
+        "value"?: string;
+    }
     /**
      * A customizable avatar component used to create avatars with different images.
      * Adheres to WCAG 2.2 standards.
@@ -1490,7 +1759,7 @@ declare namespace LocalJSX {
         /**
           * The size of the avatar.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
@@ -1522,7 +1791,7 @@ declare namespace LocalJSX {
         /**
           * The size of the badge.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The variant of the badge.
          */
@@ -1568,7 +1837,7 @@ declare namespace LocalJSX {
         /**
           * The size of the button.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The type of the button.
          */
@@ -1642,7 +1911,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the checkbox.
          */
@@ -1732,7 +2001,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The value of the control.
          */
@@ -1768,7 +2037,7 @@ declare namespace LocalJSX {
         /**
           * The orientation of the divider. This is in reference to how content will be rendered around the divider.
          */
-        "orientation"?: 'horizontal' | 'vertical';
+        "orientation"?: Orientation;
         /**
           * The position of the divider.
          */
@@ -1803,7 +2072,7 @@ declare namespace LocalJSX {
         /**
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
     }
     /**
      * A customizable input label component.
@@ -1852,11 +2121,53 @@ declare namespace LocalJSX {
         /**
           * The size of the loader.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The variant of the loader.
          */
         "variant"?: LoaderVariant;
+    }
+    /**
+     * A customizable menu component used to display a list of links vertically or horizontally.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcMenu {
+        /**
+          * The active menu item value, used to show an item as selected.
+         */
+        "activeItemValue"?: string;
+        /**
+          * The aria-label attribute for accessibility.
+         */
+        "ariaLabel": string;
+        /**
+          * Indicates that the menu should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the ul element.
+         */
+        "customClass"?: string;
+        /**
+          * The items to display in the menu.
+         */
+        "items"?: IMenuItem1[];
+        /**
+          * The menu title, rendered as the first item (disabled).
+         */
+        "menuTitle"?: string;
+        /**
+          * Event emitted when a menu item is selected.
+         */
+        "onItemSelect"?: (event: ModusWcMenuCustomEvent<IMenuItem1>) => void;
+        /**
+          * The orientation of the menu.
+         */
+        "orientation"?: Orientation;
+        /**
+          * The size of the menu.
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -1950,7 +2261,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The granularity that the value adheres to.
          */
@@ -2050,7 +2361,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "size"?: ModusSize;
         /**
           * The value of the radio.
          */
@@ -2128,7 +2439,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the control.
          */
@@ -2224,7 +2535,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The increment of the slider.
          */
@@ -2350,7 +2661,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: ModusSize;
         /**
           * Type of form control.
          */
@@ -2444,7 +2755,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the textarea.
          */
@@ -2536,7 +2847,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The value of the toggle.
          */
@@ -2584,7 +2895,7 @@ declare namespace LocalJSX {
         /**
           * The size of the font.
          */
-        "size"?: Size;
+        "size"?: DaisySize;
         /**
           * The variant of the typography component.
          */
@@ -2595,6 +2906,7 @@ declare namespace LocalJSX {
         "weight"?: TypographyWeight;
     }
     interface IntrinsicElements {
+        "modus-wc-autocomplete": ModusWcAutocomplete;
         "modus-wc-avatar": ModusWcAvatar;
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
@@ -2604,6 +2916,7 @@ declare namespace LocalJSX {
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-label": ModusWcInputLabel;
         "modus-wc-loader": ModusWcLoader;
+        "modus-wc-menu": ModusWcMenu;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
@@ -2623,6 +2936,11 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * A customizable autocomplete component used to create searchable text inputs.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-autocomplete": LocalJSX.ModusWcAutocomplete & JSXBase.HTMLAttributes<HTMLModusWcAutocompleteElement>;
             /**
              * A customizable avatar component used to create avatars with different images.
              * Adheres to WCAG 2.2 standards.
@@ -2670,6 +2988,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-loader": LocalJSX.ModusWcLoader & JSXBase.HTMLAttributes<HTMLModusWcLoaderElement>;
+            /**
+             * A customizable menu component used to display a list of links vertically or horizontally.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-menu": LocalJSX.ModusWcMenu & JSXBase.HTMLAttributes<HTMLModusWcMenuElement>;
             /**
              * A customizable input component used to create number inputs with types.
              * Adheres to WCAG 2.2 standards.

@@ -1,5 +1,6 @@
 import { Component, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-divider.tailwind';
+import { Orientation } from '../../types';
 
 /**
  * A customizable divider component used to separate content horizontally or vertically.
@@ -37,12 +38,12 @@ export class ModusWcDivider {
   /**
    * Custom CSS class to apply to the divider element.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The orientation of the divider. This is in reference to how content will be rendered around the divider.
    */
-  @Prop() orientation?: 'horizontal' | 'vertical' = 'vertical';
+  @Prop() orientation?: Orientation = 'vertical';
 
   /**
    * The position of the divider.

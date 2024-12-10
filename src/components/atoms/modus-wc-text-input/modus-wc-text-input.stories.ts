@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Size } from '../../types';
+import { ModusSize } from '../../types';
 
 interface TextInputArgs {
   'aria-describedby'?: string;
@@ -40,7 +40,7 @@ interface TextInputArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
-  size?: Size;
+  size?: ModusSize;
   type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
   value: string;
 }

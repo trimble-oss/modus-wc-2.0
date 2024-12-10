@@ -7,6 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-number-input.tailwind';
+import { ModusSize } from '../../types';
 
 /**
  * A customizable input component used to create number inputs with types.
@@ -113,7 +114,7 @@ export class ModusWcNumberInput {
   /**
    * The size of the input.
    */
-  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /**
    * The granularity that the value adheres to.
@@ -171,12 +172,12 @@ export class ModusWcNumberInput {
     this.inputBlur.emit(event);
   };
 
-  private handleChange = (event: Event) => {
-    this.inputChange.emit(event);
-  };
-
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
+  };
+
+  private handleInput = (event: Event) => {
+    this.inputChange.emit(event);
   };
 
   render() {
@@ -199,8 +200,8 @@ export class ModusWcNumberInput {
           min={this.min}
           name={this.name}
           onBlur={this.handleBlur}
-          onChange={this.handleChange}
           onFocus={this.handleFocus}
+          onInput={this.handleInput}
           placeholder={this.placeholder}
           readonly={this.readOnly}
           required={this.required}

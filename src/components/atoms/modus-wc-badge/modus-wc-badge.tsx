@@ -1,5 +1,6 @@
 import { Component, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-badge.tailwind';
+import { ModusSize } from '../../types';
 
 const ALERT_COLORS = ['success', 'warning', 'danger'];
 
@@ -44,7 +45,7 @@ export class ModusWcBadge {
   /**
    * The size of the badge.
    */
-  @Prop() size: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size: ModusSize = 'md';
 
   /**
    * The variant of the badge.

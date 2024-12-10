@@ -36,7 +36,7 @@ Adheres to WCAG 2.2 standards.
 | `placeholder`            | `placeholder`        | Text that appears in the form control when it has no value set.                                                                                                          | `string \| undefined`                                                                 | `''`        |
 | `readOnly`               | `read-only`          | Whether the value is editable.                                                                                                                                           | `boolean \| undefined`                                                                | `false`     |
 | `required`               | `required`           | A value is required for the form to be submittable.                                                                                                                      | `boolean \| undefined`                                                                | `false`     |
-| `size`                   | `size`               | The size of the input.                                                                                                                                                   | `"lg" \| "md" \| "sm" \| "xl" \| "xs" \| undefined`                                   | `'md'`      |
+| `size`                   | `size`               | The size of the input.                                                                                                                                                   | `"lg" \| "md" \| "sm" \| undefined`                                                   | `'md'`      |
 | `type`                   | `type`               | Type of form control.                                                                                                                                                    | `"email" \| "password" \| "search" \| "tel" \| "text" \| "url" \| undefined`          | `'text'`    |
 | `value`                  | `value`              | The value of the control.                                                                                                                                                | `string`                                                                              | `''`        |
 
@@ -49,6 +49,19 @@ Adheres to WCAG 2.2 standards.
 | `inputChange` | Event emitted when the input value changes. | `CustomEvent<Event>`      |
 | `inputFocus`  | Event emitted when the input gains focus.   | `CustomEvent<FocusEvent>` |
 
+
+## Dependencies
+
+### Used by
+
+ - [modus-wc-autocomplete](../../molecules/modus-wc-autocomplete)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-autocomplete --> modus-wc-text-input
+  style modus-wc-text-input fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

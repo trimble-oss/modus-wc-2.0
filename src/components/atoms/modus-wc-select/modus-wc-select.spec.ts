@@ -76,7 +76,7 @@ describe('modus-wc-select', () => {
     page.root!.addEventListener('inputChange', changeSpy);
 
     select!.value = 'New value';
-    select!.dispatchEvent(new Event('change'));
+    select!.dispatchEvent(new Event('input'));
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();

@@ -7,7 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-select.tailwind';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 export interface ISelectOption {
   disabled?: boolean;
@@ -49,7 +49,7 @@ export class ModusWcSelect {
   /**
    * Custom CSS class to apply to the inner div.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * Whether the form control is disabled.
@@ -94,7 +94,7 @@ export class ModusWcSelect {
   /**
    * The size of the input.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: DaisySize = 'md';
 
   /**
    * The value of the control.
@@ -141,12 +141,12 @@ export class ModusWcSelect {
     this.inputBlur.emit(event);
   };
 
-  private handleChange = (event: Event) => {
-    this.inputChange.emit(event);
-  };
-
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
+  };
+
+  private handleInput = (event: Event) => {
+    this.inputChange.emit(event);
   };
 
   render() {
@@ -163,8 +163,8 @@ export class ModusWcSelect {
           id={this.inputId}
           name={this.name}
           onBlur={this.handleBlur}
-          onChange={this.handleChange}
           onFocus={this.handleFocus}
+          onInput={this.handleInput}
           required={this.required}
           tabindex={this.inputTabIndex}
         >

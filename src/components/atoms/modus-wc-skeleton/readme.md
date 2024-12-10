@@ -15,7 +15,7 @@ Adheres to WCAG 2.2 standards.
 
 | Property      | Attribute      | Description                                 | Type                                   | Default                            |
 | ------------- | -------------- | ------------------------------------------- | -------------------------------------- | ---------------------------------- |
-| `customClass` | `custom-class` | Custom CSS class to apply to the inner div. | `string`                               | `''`                               |
+| `customClass` | `custom-class` | Custom CSS class to apply to the inner div. | `string \| undefined`                  | `''`                               |
 | `height`      | `height`       | The height of the skeleton.                 | `string`                               | `'var(--modus-wc-line-height-md)'` |
 | `shape`       | `shape`        | The shape of the skeleton.                  | `"circle" \| "rectangle" \| undefined` | `'rectangle'`                      |
 | `width`       | `width`        | The width of the skeleton.                  | `string`                               | `'100%'`                           |

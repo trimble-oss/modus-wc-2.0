@@ -7,7 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
-import { Size } from '../../types';
+import { ModusSize } from '../../types';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -144,7 +144,7 @@ export class ModusWcTextInput {
   /**
    * The size of the input.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /**
    * Type of form control.
@@ -198,12 +198,12 @@ export class ModusWcTextInput {
     this.inputBlur.emit(event);
   };
 
-  private handleChange = (event: Event) => {
-    this.inputChange.emit(event);
-  };
-
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
+  };
+
+  private handleInput = (event: Event) => {
+    this.inputChange.emit(event);
   };
 
   render() {
@@ -227,8 +227,8 @@ export class ModusWcTextInput {
           minlength={this.minLength}
           name={this.name}
           onBlur={this.handleBlur}
-          onChange={this.handleChange}
           onFocus={this.handleFocus}
+          onInput={this.handleInput}
           pattern={this.pattern}
           placeholder={this.placeholder}
           readonly={this.readOnly}

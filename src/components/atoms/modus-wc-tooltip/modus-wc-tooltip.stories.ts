@@ -4,7 +4,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 
 interface TooltipArgs {
   content?: string;
-  'custom-class': string;
+  'custom-class'?: string;
   'force-open'?: boolean;
   'tooltip-id'?: string;
   position: 'auto' | 'top' | 'right' | 'bottom' | 'left';
@@ -33,15 +33,15 @@ type Story = StoryObj<TooltipArgs>;
 const Template: Story = {
   render: (args) => {
     return html`
-<modus-wc-tooltip
-  content=${ifDefined(args.content)}
-  custom-class="${args['custom-class']}"
-  ?force-open="${args['force-open']}"
-  tooltip-id="${ifDefined(args['tooltip-id'])}"
-  position=${ifDefined(args.position)}
->
-  <modus-wc-badge content="Hover"></modus-wc-badge>
-</modus-wc-tooltip>
+      <modus-wc-tooltip
+        content=${ifDefined(args.content)}
+        custom-class="${ifDefined(args['custom-class'])}"
+        ?force-open="${ifDefined(args['force-open'])}"
+        tooltip-id="${ifDefined(args['tooltip-id'])}"
+        position=${ifDefined(args.position)}
+      >
+        <modus-wc-badge content="Hover"></modus-wc-badge>
+      </modus-wc-tooltip>
     `;
   },
 };
