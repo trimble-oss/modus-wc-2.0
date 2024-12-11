@@ -21,7 +21,7 @@ interface TimeInputArgs {
   'read-only'?: boolean;
   required?: boolean;
   size?: Size;
-  step?: string;
+  step?: number;
   value: string;
 }
 
@@ -30,11 +30,11 @@ const meta: Meta<TimeInputArgs> = {
   component: 'modus-wc-time-input',
   args: {
     'aria-label': 'Time input',
-    'auto-complete': 'off',
-    bordered: true,
     disabled: false,
+    max: '23:59',
+    min: '11:00',
     size: 'md',
-    value: '',
+    step: 60,
   },
   argTypes: {
     'auto-complete': {

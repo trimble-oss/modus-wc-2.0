@@ -28,7 +28,8 @@
     padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
   }
 
-  &:focus {
+  &:focus,
+  &:focus-within {
     border-color: var(--modus-wc-color-blue-light);
     border-width: 2px;
     box-shadow: none; // Removes the Tailwind ring effect
