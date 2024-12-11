@@ -126,3 +126,20 @@ export const TimeInputWithSeconds: Story = {
     `;
   },
 };
+
+// prettier-ignore
+export const TimeInputWithDatalist: Story = {
+  render: () => {
+    return html`
+<modus-wc-time-input
+  aria-label="Example time input"
+  list="time-options"
+></modus-wc-time-input>
+<datalist id="time-options">
+  <option value="08:00"></option>
+  <option value="12:00"></option>
+  <option value="17:00"></option>
+</datalist>
+    `;
+  },
+};

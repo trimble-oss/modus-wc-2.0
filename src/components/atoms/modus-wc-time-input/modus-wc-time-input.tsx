@@ -65,8 +65,6 @@ export class ModusWcTimeInput {
    */
   @Prop() inputTabIndex?: number;
 
-  // TODO: create an abstraction where client passes in JSON object with pre-defined options
-  //       then convert to <datalist> element in the same document
   /**
    * Provide a list of pre-defined options to suggest to the user.
    * The value must be the ID of a <datalist> element in the same document.
