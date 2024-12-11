@@ -31,10 +31,7 @@ const meta: Meta<TimeInputArgs> = {
   args: {
     'aria-label': 'Time input',
     disabled: false,
-    max: '23:59',
-    min: '11:00',
     size: 'md',
-    step: 60,
   },
   argTypes: {
     'auto-complete': {
