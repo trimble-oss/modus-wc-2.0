@@ -20,6 +20,7 @@ interface TimeInputArgs {
   name?: string;
   'read-only'?: boolean;
   required?: boolean;
+  seconds?: 'true' | 'false';
   size?: Size;
   step?: number;
   value: string;
@@ -77,6 +78,7 @@ export const Template: Story = {
       name=${ifDefined(args.name)}
       ?read-only=${args['read-only']}
       ?required=${args.required}
+      seconds=${ifDefined(args.seconds)}
       size=${ifDefined(args.size)}
       step=${ifDefined(args.step)}
       .value=${args.value}
@@ -85,31 +87,42 @@ export const Template: Story = {
 };
 
 // prettier-ignore
-export const TextInputWithLabel: Story = {
+export const TimeInputWithLabel: Story = {
   render: () => {
     return html`
 <style>
-  .form-control {
-    display: flex;
-    align-items: center;
-  }
-  .modus-wc-input-label {
-    padding-inline-end: 8px;
-  }
+.form-control {
+  display: flex;
+  align-items: center;
+}
+.modus-wc-input-label {
+  padding-inline-end: 8px;
+}
 </style>
 <form action="" method="get">
-  <div class="form-control">
-    <modus-wc-input-label
-      for-id="time-input"
-      label-text="Example time input"
-    ></modus-wc-input-label>
-    <modus-wc-time-input
-      aria-label="Example time input"
-      input-id="time-input"
-      name="example-time-input"
-    ></modus-wc-time-input>
-  </div>
+<div class="form-control">
+  <modus-wc-input-label
+    for-id="time-input"
+    label-text="Example time input"
+  ></modus-wc-input-label>
+  <modus-wc-time-input
+    aria-label="Example time input"
+    input-id="time-input"
+    name="example-time-input"
+  ></modus-wc-time-input>
+</div>
 </form>
+    `;
+  },
+};
+
+export const TimeInputWithSeconds: Story = {
+  render: () => {
+    return html`
+      <modus-wc-time-input
+        aria-label="Example time input"
+        seconds="true"
+      ></modus-wc-time-input>
     `;
   },
 };

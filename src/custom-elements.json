@@ -2554,6 +2554,14 @@
               "description": "A value is required for the form to be submittable."
             },
             {
+              "name": "seconds",
+              "fieldName": "seconds",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Displays the time input format as `HH:mm:ss` if `true`.\r\nInternally sets the `step` to 1 second.\r\nIf a `step` value is provided, it will override this attribute."
+            },
+            {
               "name": "size",
               "fieldName": "size",
               "type": {
@@ -2567,7 +2575,7 @@
               "type": {
                 "text": "number"
               },
-              "description": "Value of step given in seconds with a scaling factor of 1000 (milliseconds). Default value is 60 (seconds)."
+              "description": "Specifies the granularity that the `value` must adhere to.\r\nValue of step given in seconds. Default value is 60 seconds.\r\nOverrides the `seconds` attribute if both are provided."
             },
             {
               "name": "value",
@@ -2575,7 +2583,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "The value of the time input.\r\nAlways in 24-hour format that includes leading zeros: HH:mm, regardless of input format which is likely to be selected based on user's locale (or by the user agent).\r\nIf time includes seconds the format is always HH:mm:ss."
+              "description": "The value of the time input.\r\nAlways in 24-hour format that includes leading zeros:\r\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\r\nto be selected based on user's locale (or by the user agent).\r\nIf time includes seconds the format is always `HH:mm:ss`."
             }
           ],
           "tagName": "modus-wc-time-input",

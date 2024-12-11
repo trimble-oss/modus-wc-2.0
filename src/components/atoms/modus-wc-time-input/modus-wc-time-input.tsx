@@ -99,19 +99,30 @@ export class ModusWcTimeInput {
   @Prop() required?: boolean = false;
 
   /**
+   * Displays the time input format as `HH:mm:ss` if `true`.
+   * Internally sets the `step` to 1 second.
+   * If a `step` value is provided, it will override this attribute.
+   */
+  @Prop() seconds?: boolean = false;
+
+  /**
    * The size of the input.
    */
   @Prop() size?: Size = 'md';
 
   /**
-   * Value of step given in seconds with a scaling factor of 1000 (milliseconds). Default value is 60 (seconds).
+   * Specifies the granularity that the `value` must adhere to.
+   * Value of step given in seconds. Default value is 60 seconds.
+   * Overrides the `seconds` attribute if both are provided.
    */
   @Prop() step?: number;
 
   /**
    * The value of the time input.
-   * Always in 24-hour format that includes leading zeros: HH:mm, regardless of input format which is likely to be selected based on user's locale (or by the user agent).
-   * If time includes seconds the format is always HH:mm:ss.
+   * Always in 24-hour format that includes leading zeros:
+   * `HH:mm` or `HH:mm:ss`, regardless of input format which is likely
+   * to be selected based on user's locale (or by the user agent).
+   * If time includes seconds the format is always `HH:mm:ss`.
    */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
@@ -186,7 +197,7 @@ export class ModusWcTimeInput {
           onFocus={this.handleFocus}
           readonly={this.readOnly}
           required={this.required}
-          step={this.step}
+          step={this.step || !!this.seconds ? 1 : 60}
           tabIndex={this.inputTabIndex}
           type="time"
           value={this.value}

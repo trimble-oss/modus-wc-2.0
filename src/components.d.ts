@@ -988,15 +988,19 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
+          * Displays the time input format as `HH:mm:ss` if `true`. Internally sets the `step` to 1 second. If a `step` value is provided, it will override this attribute.
+         */
+        "seconds"?: boolean;
+        /**
           * The size of the input.
          */
         "size"?: Size;
         /**
-          * Value of step given in seconds with a scaling factor of 1000 (milliseconds). Default value is 60 (seconds).
+          * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
          */
         "step"?: number;
         /**
-          * The value of the time input. Always in 24-hour format that includes leading zeros: HH:mm, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always HH:mm:ss.
+          * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
          */
         "value": string;
     }
@@ -2656,15 +2660,19 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
+          * Displays the time input format as `HH:mm:ss` if `true`. Internally sets the `step` to 1 second. If a `step` value is provided, it will override this attribute.
+         */
+        "seconds"?: boolean;
+        /**
           * The size of the input.
          */
         "size"?: Size;
         /**
-          * Value of step given in seconds with a scaling factor of 1000 (milliseconds). Default value is 60 (seconds).
+          * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
          */
         "step"?: number;
         /**
-          * The value of the time input. Always in 24-hour format that includes leading zeros: HH:mm, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always HH:mm:ss.
+          * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
          */
         "value"?: string;
     }
