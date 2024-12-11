@@ -36,11 +36,6 @@ export class ModusWcTimeInput {
   @Prop() autoComplete?: 'on' | 'off';
 
   /**
-   * Indicates that an element should be focused on page load.
-   */
-  @Prop() autoFocus?: boolean;
-
-  /**
    * Indicates that the input should have a border.
    */
   @Prop() bordered?: boolean = true;
@@ -79,12 +74,12 @@ export class ModusWcTimeInput {
   /**
    * Maximum value. Format: 'HH:mm', 'HH:mm:ss'.
    */
-  @Prop() max?: string = '23:59';
+  @Prop() max?: string;
 
   /**
    * Minimum value. Format: 'HH:mm', 'HH:mm:ss.'
    */
-  @Prop() min?: string = '00:00';
+  @Prop() min?: string;
 
   /**
    * Name of the form control. Submitted with the form as part of a name/value pair.
@@ -176,7 +171,6 @@ export class ModusWcTimeInput {
           aria-label={this.ariaLabel}
           aria-required={this.required}
           autocomplete={this.autoComplete}
-          autofocus={this.autoFocus}
           class={this.getClasses()}
           dir={this.inputDir}
           disabled={this.disabled}

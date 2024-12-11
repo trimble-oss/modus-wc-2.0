@@ -2458,14 +2458,6 @@
               "description": "Hint for form autofill feature."
             },
             {
-              "name": "auto-focus",
-              "fieldName": "autoFocus",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that an element should be focused on page load."
-            },
-            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
