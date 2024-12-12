@@ -4,6 +4,8 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Size } from '../../types';
 
+const timeOptions = ['08:00', '12:00', '17:00'];
+
 interface TimeInputArgs {
   'aria-describedby'?: string;
   'aria-label': string;
@@ -23,6 +25,7 @@ interface TimeInputArgs {
   seconds?: 'true' | 'false';
   size?: Size;
   step?: number;
+  timeOptions?: string[];
   value: string;
 }
 
@@ -33,6 +36,7 @@ const meta: Meta<TimeInputArgs> = {
     'aria-label': 'Time input',
     disabled: false,
     size: 'md',
+    timeOptions,
   },
   argTypes: {
     'auto-complete': {
@@ -81,6 +85,7 @@ export const Template: Story = {
       seconds=${ifDefined(args.seconds)}
       size=${ifDefined(args.size)}
       step=${ifDefined(args.step)}
+      .timeOptions=${args.timeOptions}
       .value=${args.value}
     ></modus-wc-time-input>
   `,

@@ -2578,6 +2578,14 @@
               "description": "Specifies the granularity that the `value` must adhere to.\r\nValue of step given in seconds. Default value is 60 seconds.\r\nOverrides the `seconds` attribute if both are provided."
             },
             {
+              "name": "time-options",
+              "fieldName": "timeOptions",
+              "type": {
+                "text": "string[]"
+              },
+              "description": "The options to display in the time input dropdown."
+            },
+            {
               "name": "value",
               "fieldName": "value",
               "type": {

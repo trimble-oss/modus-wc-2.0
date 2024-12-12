@@ -1000,6 +1000,10 @@ export namespace Components {
          */
         "step"?: number;
         /**
+          * The options to display in the time input dropdown.
+         */
+        "timeOptions": string[];
+        /**
           * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
          */
         "value": string;
@@ -2671,6 +2675,10 @@ declare namespace LocalJSX {
           * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
          */
         "step"?: number;
+        /**
+          * The options to display in the time input dropdown.
+         */
+        "timeOptions"?: string[];
         /**
           * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
          */

@@ -9,6 +9,8 @@ import {
 import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
 import { Size } from '../../types';
 
+const DEFAULT_DATALIST_ID = 'modus-wc-default-time-options';
+
 /**
  * A customizable input component used to create time inputs.
  *
@@ -69,7 +71,7 @@ export class ModusWcTimeInput {
    * Provide a list of pre-defined options to suggest to the user.
    * The value must be the ID of a <datalist> element in the same document.
    */
-  @Prop() list?: string;
+  @Prop() list?: string = DEFAULT_DATALIST_ID;
 
   /**
    * Maximum value. Format: 'HH:mm', 'HH:mm:ss'.
@@ -114,6 +116,11 @@ export class ModusWcTimeInput {
    * Overrides the `seconds` attribute if both are provided.
    */
   @Prop() step?: number;
+
+  /**
+   * The options to display in the time input dropdown.
+   */
+  @Prop() timeOptions: string[] = [];
 
   /**
    * The value of the time input.
@@ -174,6 +181,31 @@ export class ModusWcTimeInput {
     this.inputFocus.emit(event);
   };
 
+  /**
+   * Conditionally renders the datalist element with the time options.
+   * If no time options are provided or the list prop is not the default,
+   * the datalist element will not be rendered.
+   * @returns The datalist `HTMLElement` with the time options or `null`.
+   */
+  private renderDatalist(): HTMLElement | null {
+    if (!this.timeOptions?.length || this.list !== DEFAULT_DATALIST_ID) {
+      console.log('No time options provided or list prop is not default.');
+      // print value of this.timeOptions and this.list
+      console.log('this.timeOptions:', this.timeOptions);
+      console.log('this.list:', this.list);
+      return null;
+    }
+    console.log('Rendering datalist element with time options.');
+
+    return (
+      <datalist id={DEFAULT_DATALIST_ID}>
+        {this.timeOptions.map((time) => (
+          <option value={time} />
+        ))}
+      </datalist>
+    );
+  }
+
   render() {
     return (
       <Host>
@@ -200,6 +232,7 @@ export class ModusWcTimeInput {
           type="time"
           value={this.value}
         />
+        {this.renderDatalist()}
       </Host>
     );
   }
