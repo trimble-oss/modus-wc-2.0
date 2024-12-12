@@ -112,8 +112,11 @@ export class ModusWcSlider {
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcSlider: aria-label is required for accessibility.');
+      console.warn(
+        'ModusWcSlider: aria-label is required for accessibility. Using fallback label.'
+      );
     }
+    this.ariaLabel = 'Slider';
   }
 
   private getClasses(): string {

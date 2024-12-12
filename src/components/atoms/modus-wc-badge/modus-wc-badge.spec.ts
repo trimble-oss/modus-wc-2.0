@@ -11,10 +11,28 @@ describe('modus-wc-badge', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcBadge: aria-label is required for accessibility.'
+      'ModusWcBadge: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();
+  });
+
+  it('should set ariaLabel to "Badge {content}" if content is provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcBadge],
+      html: `<modus-wc-badge content="5"></modus-wc-badge>`,
+    });
+
+    expect(page.rootInstance.ariaLabel).toBe('Badge 5');
+  });
+
+  it('should set ariaLabel to "Badge" if content is not provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcBadge],
+      html: `<modus-wc-badge></modus-wc-badge>`,
+    });
+
+    expect(page.rootInstance.ariaLabel).toBe('Badge');
   });
 
   it('should render with default props', async () => {

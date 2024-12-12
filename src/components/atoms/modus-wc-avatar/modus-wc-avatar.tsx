@@ -48,8 +48,10 @@ export class ModusWcAvatar {
   componentWillLoad() {
     if (!this.alt || !this.ariaLabel) {
       console.warn(
-        'ModusWcAvatar: alt and aria-label are required for accessibility.'
+        'ModusWcAvatar: alt and aria-label are required for accessibility. Using fallback label.'
       );
+      this.ariaLabel = this.ariaLabel || `Avatar ${this.alt || 'image'}`;
+      this.alt = this.alt || 'Avatar image';
     }
   }
 

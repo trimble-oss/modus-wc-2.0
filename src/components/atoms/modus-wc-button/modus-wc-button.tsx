@@ -79,7 +79,10 @@ export class ModusWcButton {
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcButton: aria-label is required for accessibility.');
+      console.warn(
+        'ModusWcButton: aria-label is required for accessibility. Using fallback label.'
+      );
+      this.ariaLabel = this.label || 'Button';
     }
   }
 
@@ -122,7 +125,7 @@ export class ModusWcButton {
       <Host>
         <button
           class={this.getClasses()}
-          aria-label={this.ariaLabel || this.label}
+          aria-label={this.ariaLabel}
           aria-pressed={ariaPressed}
           disabled={this.disabled}
           onClick={this.handleClick}

@@ -54,7 +54,10 @@ export class ModusWcBadge {
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcBadge: aria-label is required for accessibility.');
+      console.warn(
+        'ModusWcBadge: aria-label is required for accessibility. Using fallback label.'
+      );
+      this.ariaLabel = this.content ? `Badge ${this.content}` : 'Badge';
     }
   }
 

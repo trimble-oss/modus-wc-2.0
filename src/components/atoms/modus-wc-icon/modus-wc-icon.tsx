@@ -45,8 +45,9 @@ export class ModusWcIcon {
   componentWillLoad() {
     if (!this.decorative && !this.ariaLabel) {
       console.warn(
-        'ModusWcIcon: aria-label is required for accessibility for non decorative icons.'
+        'ModusWcIcon: aria-label is required for accessibility for non decorative icons. Using fallback label.'
       );
+      this.ariaLabel = `${this.name} icon`;
     }
   }
 

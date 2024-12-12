@@ -11,7 +11,7 @@ describe('modus-wc-icon', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcIcon: aria-label is required for accessibility for non decorative icons.'
+      'ModusWcIcon: aria-label is required for accessibility for non decorative icons. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();

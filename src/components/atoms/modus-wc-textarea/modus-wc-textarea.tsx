@@ -129,8 +129,9 @@ export class ModusWcTextarea {
   componentWillLoad() {
     if (!this.ariaLabel) {
       console.warn(
-        'ModusWcTextarea: aria-label is required for accessibility.'
+        'ModusWcTextarea: aria-label is required for accessibility. Using fallback label.'
       );
+      this.ariaLabel = this.placeholder || 'Text area';
     }
   }
 
@@ -166,7 +167,7 @@ export class ModusWcTextarea {
         <textarea
           aria-describedby={this.ariaDescribedby}
           aria-invalid={this.inputAriaInvalid}
-          aria-label={this.ariaLabel || this.placeholder}
+          aria-label={this.ariaLabel}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           class={this.getClasses()}

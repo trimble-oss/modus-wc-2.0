@@ -117,8 +117,9 @@ export class ModusWcCheckbox {
   componentWillLoad() {
     if (!this.ariaLabel) {
       console.warn(
-        'ModusWcCheckbox: aria-label is required for accessibility.'
+        'ModusWcCheckbox: aria-label is required for accessibility. Using fallback label.'
       );
+      this.ariaLabel = 'Checkbox';
     }
   }
 

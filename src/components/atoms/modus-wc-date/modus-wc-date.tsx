@@ -127,8 +127,11 @@ export class ModusWcDate {
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcDate: aria-label is required for accessibility.');
+      console.warn(
+        'ModusWcDate: aria-label is required for accessibility. Using fallback label.'
+      );
     }
+    this.ariaLabel = this.placeholder || 'Date input';
   }
 
   private getClasses(): string {
@@ -162,7 +165,7 @@ export class ModusWcDate {
       <Host>
         <input
           aria-describedby={this.ariaDescribedby}
-          aria-label={this.ariaLabel || this.placeholder}
+          aria-label={this.ariaLabel}
           aria-labelledby={this.ariaLabelledby}
           autofocus={this.autoFocus}
           class={this.getClasses()}

@@ -116,8 +116,11 @@ export class ModusWcToggle {
 
   componentWillLoad() {
     if (!this.ariaLabel) {
-      console.warn('ModusWcToggle: aria-label is required for accessibility.');
+      console.warn(
+        'ModusWcToggle: aria-label is required for accessibility. Using fallback label.'
+      );
     }
+    this.ariaLabel = 'Toggle button';
   }
 
   private getClasses(): string {

@@ -1132,10 +1132,6 @@ export namespace Components {
      */
     interface ModusWcTypography {
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Custom CSS class to apply to the typography element.
          */
         "customClass"?: string;
@@ -2884,10 +2880,6 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTypography {
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * Custom CSS class to apply to the typography element.
          */

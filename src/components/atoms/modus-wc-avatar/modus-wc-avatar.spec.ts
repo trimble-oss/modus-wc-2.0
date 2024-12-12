@@ -11,7 +11,7 @@ describe('modus-wc-avatar', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcAvatar: alt and aria-label are required for accessibility.'
+      'ModusWcAvatar: alt and aria-label are required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();
