@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Size } from '../../types';
 
-const timeOptions = ['08:00', '12:00', '17:00'];
+// const timeOptions = ['08:00', '12:00', '17:00'];
 
 interface TimeInputArgs {
   'aria-describedby'?: string;
@@ -36,7 +36,6 @@ const meta: Meta<TimeInputArgs> = {
     'aria-label': 'Time input',
     disabled: false,
     size: 'md',
-    'time-options': timeOptions,
   },
   argTypes: {
     'auto-complete': {

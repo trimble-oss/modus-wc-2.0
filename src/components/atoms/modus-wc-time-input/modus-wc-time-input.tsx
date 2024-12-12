@@ -152,7 +152,9 @@ export class ModusWcTimeInput {
         'ModusWcTimeInput: aria-label is required for accessibility.'
       );
     }
+  }
 
+  componentWillRender() {
     if (!this.list) {
       INTERNAL_DATALIST_ID = `${INTERNAL_DATALIST_ID}-${Math.random().toString(36).substring(2, 11)}`;
       this.list = INTERNAL_DATALIST_ID;
