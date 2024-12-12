@@ -9,7 +9,7 @@ import {
 import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
 import { Size } from '../../types';
 
-const DEFAULT_DATALIST_ID = 'modus-wc-default-time-options';
+let INTERNAL_DATALIST_ID = 'modus-wc-internal-time-options';
 
 /**
  * A customizable input component used to create time inputs.
@@ -71,7 +71,7 @@ export class ModusWcTimeInput {
    * Provide a list of pre-defined options to suggest to the user.
    * The value must be the ID of a <datalist> element in the same document.
    */
-  @Prop() list?: string = DEFAULT_DATALIST_ID;
+  @Prop() list?: string;
 
   /**
    * Maximum value. Format: 'HH:mm', 'HH:mm:ss'.
@@ -152,6 +152,11 @@ export class ModusWcTimeInput {
         'ModusWcTimeInput: aria-label is required for accessibility.'
       );
     }
+
+    if (!this.list) {
+      INTERNAL_DATALIST_ID = `${INTERNAL_DATALIST_ID}-${Math.random().toString(36).substring(2, 11)}`;
+      this.list = INTERNAL_DATALIST_ID;
+    }
   }
 
   private getClasses(): string {
@@ -188,17 +193,24 @@ export class ModusWcTimeInput {
    * @returns The datalist `HTMLElement` with the time options or `null`.
    */
   private renderDatalist(): HTMLElement | null {
-    if (!this.timeOptions?.length || this.list !== DEFAULT_DATALIST_ID) {
-      console.log('No time options provided or list prop is not default.');
-      // print value of this.timeOptions and this.list
-      console.log('this.timeOptions:', this.timeOptions);
-      console.log('this.list:', this.list);
+    // if no time options are provided, do not render the datalist element
+    if (this.timeOptions?.length === 0) {
+      console.log('No time options provided.');
       return null;
     }
+
+    // if the list prop is provided, do not render the default datalist element
+    if (this.list !== INTERNAL_DATALIST_ID) {
+      console.log('Using list prop.');
+      return null;
+    }
+
     console.log('Rendering datalist element with time options.');
+    console.log('list:', this.list);
+    console.log('timeOptions:', this.timeOptions);
 
     return (
-      <datalist id={DEFAULT_DATALIST_ID}>
+      <datalist id={INTERNAL_DATALIST_ID}>
         {this.timeOptions.map((time) => (
           <option value={time} />
         ))}

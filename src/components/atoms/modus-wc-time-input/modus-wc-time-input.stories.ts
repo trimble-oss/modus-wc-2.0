@@ -25,7 +25,7 @@ interface TimeInputArgs {
   seconds?: 'true' | 'false';
   size?: Size;
   step?: number;
-  timeOptions?: string[];
+  'time-options'?: string[];
   value: string;
 }
 
@@ -36,7 +36,7 @@ const meta: Meta<TimeInputArgs> = {
     'aria-label': 'Time input',
     disabled: false,
     size: 'md',
-    timeOptions,
+    'time-options': timeOptions,
   },
   argTypes: {
     'auto-complete': {
@@ -85,7 +85,7 @@ export const Template: Story = {
       seconds=${ifDefined(args.seconds)}
       size=${ifDefined(args.size)}
       step=${ifDefined(args.step)}
-      .timeOptions=${args.timeOptions}
+      .timeOptions=${args['time-options']}
       .value=${args.value}
     ></modus-wc-time-input>
   `,
@@ -138,10 +138,10 @@ export const TimeInputWithDatalist: Story = {
     return html`
 <modus-wc-time-input
   aria-label="Example time input"
-  list="time-options"
+  list="datalist-id"
 ></modus-wc-time-input>
-<datalist id="time-options">
-  <option value="08:00"></option>
+<datalist id="datalist-id">
+  <option value="06:00"></option>
   <option value="12:00"></option>
   <option value="17:00"></option>
 </datalist>
