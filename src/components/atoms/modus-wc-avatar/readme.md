@@ -13,14 +13,13 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property                 | Attribute      | Description                                 | Type                                        | Default     |
-| ------------------------ | -------------- | ------------------------------------------- | ------------------------------------------- | ----------- |
-| `alt` _(required)_       | `alt`          | The image alt attribute for accessibility.  | `string`                                    | `undefined` |
-| `ariaLabel` _(required)_ | `aria-label`   | The aria-label attribute for accessibility. | `string`                                    | `undefined` |
-| `customClass`            | `custom-class` | Custom CSS class to apply to the inner div. | `string \| undefined`                       | `''`        |
-| `imgSrc`                 | `img-src`      | The location of the image.                  | `string`                                    | `''`        |
-| `shape`                  | `shape`        | The shape of the avatar.                    | `"circle" \| "square" \| undefined`         | `'circle'`  |
-| `size`                   | `size`         | The size of the avatar.                     | `"lg" \| "md" \| "sm" \| "xs" \| undefined` | `'md'`      |
+| Property           | Attribute      | Description                                 | Type                                        | Default     |
+| ------------------ | -------------- | ------------------------------------------- | ------------------------------------------- | ----------- |
+| `alt` _(required)_ | `alt`          | The image alt attribute for accessibility.  | `string`                                    | `undefined` |
+| `customClass`      | `custom-class` | Custom CSS class to apply to the inner div. | `string \| undefined`                       | `''`        |
+| `imgSrc`           | `img-src`      | The location of the image.                  | `string`                                    | `''`        |
+| `shape`            | `shape`        | The shape of the avatar.                    | `"circle" \| "square" \| undefined`         | `'circle'`  |
+| `size`             | `size`         | The size of the avatar.                     | `"lg" \| "md" \| "sm" \| "xs" \| undefined` | `'md'`      |
 
 
 ----------------------------------------------

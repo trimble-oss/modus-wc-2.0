@@ -1,5 +1,6 @@
 import {
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
   h,
@@ -20,15 +21,13 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcSlider {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the slider.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * The aria-labelledby attribute for usage with a label.
@@ -111,9 +110,12 @@ export class ModusWcSlider {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
-      console.warn('ModusWcSlider: aria-label is required for accessibility.');
+    if (!this.el.ariaLabel) {
+      console.warn(
+        'ModusWcSlider: aria-label is required for accessibility. Using fallback label.'
+      );
     }
+    this.el.ariaLabel = 'Slider';
   }
 
   private getClasses(): string {
@@ -146,7 +148,7 @@ export class ModusWcSlider {
         <input
           aria-describedby={this.ariaDescribedby}
           aria-disabled={this.disabled}
-          aria-label={this.ariaLabel}
+          aria-label={this.el.ariaLabel}
           aria-labelledby={this.ariaLabelledby}
           class={this.getClasses()}
           dir={this.inputDir}

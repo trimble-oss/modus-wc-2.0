@@ -8,7 +8,6 @@ import { DaisySize } from '../../types';
 // Because of this, each variant is rendered as a unique story below.
 
 interface TypographyArgs {
-  'aria-label': string;
   content: string;
   'custom-class': string;
   size: DaisySize;
@@ -19,7 +18,6 @@ const meta: Meta<TypographyArgs> = {
   title: 'Components/Typography',
   component: 'modus-wc-typography',
   args: {
-    'aria-label': 'Example typography',
     content: 'The quick brown fox jumps over the lazy dog',
     size: 'md',
     weight: 'normal',
@@ -47,7 +45,6 @@ export const Body: Story = {
   render: (args) => {
     return html`
       <modus-wc-typography
-        aria-label="${args['aria-label']}"
         custom-class="${ifDefined(args['custom-class'])}"
         size="${args.size}"
         variant="body"
@@ -62,7 +59,6 @@ export const Heading1: Story = {
   render: (args) => {
     return html`
       <modus-wc-typography
-        aria-label="${args['aria-label']}"
         custom-class="${ifDefined(args['custom-class'])}"
         size="${args.size}"
         variant="h1"

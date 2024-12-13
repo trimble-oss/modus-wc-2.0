@@ -3,6 +3,7 @@ import {
   h,
   Host,
   Prop,
+  Element,
   Event as StencilEvent,
   EventEmitter,
 } from '@stencil/core';
@@ -20,15 +21,13 @@ import { ModusSize } from '../../types';
   shadow: false,
 })
 export class ModusWcDate {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the input.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * The aria-labelledby attribute for usage with a label.
@@ -126,9 +125,12 @@ export class ModusWcDate {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
-      console.warn('ModusWcDate: aria-label is required for accessibility.');
+    if (!this.el.ariaLabel) {
+      console.warn(
+        'ModusWcDate: aria-label is required for accessibility. Using fallback label.'
+      );
     }
+    this.el.ariaLabel = this.placeholder || 'Date input';
   }
 
   private getClasses(): string {
@@ -162,7 +164,7 @@ export class ModusWcDate {
       <Host>
         <input
           aria-describedby={this.ariaDescribedby}
-          aria-label={this.ariaLabel || this.placeholder}
+          aria-label={this.el.ariaLabel}
           aria-labelledby={this.ariaLabelledby}
           autofocus={this.autoFocus}
           class={this.getClasses()}

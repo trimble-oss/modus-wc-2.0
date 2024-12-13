@@ -11,7 +11,7 @@ describe('modus-wc-select', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcSelect: aria-label is required for accessibility.'
+      'ModusWcSelect: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();
@@ -82,7 +82,6 @@ describe('modus-wc-select', () => {
     expect(changeSpy).toHaveBeenCalled();
     expect(changeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         detail: expect.any(Event),
       })
     );

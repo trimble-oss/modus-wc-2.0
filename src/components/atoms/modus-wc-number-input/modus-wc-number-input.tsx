@@ -1,9 +1,10 @@
 import {
-  h,
-  Host,
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
+  h,
+  Host,
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-number-input.tailwind';
@@ -20,15 +21,13 @@ import { ModusSize } from '../../types';
   shadow: false,
 })
 export class ModusWcNumberInput {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the input.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * Hint for form autofill feature.
@@ -147,10 +146,11 @@ export class ModusWcNumberInput {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcNumberInput: aria-label is required for accessibility.'
+        'ModusWcNumberInput: aria-label is required for accessibility. Using fallback label.'
       );
+      this.el.ariaLabel = this.placeholder || 'Number input';
     }
   }
 
@@ -186,7 +186,7 @@ export class ModusWcNumberInput {
         <input
           aria-describedby={this.ariaDescribedby}
           aria-invalid={this.inputAriaInvalid}
-          aria-label={this.ariaLabel || this.placeholder}
+          aria-label={this.el.ariaLabel}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           autocomplete={this.autoComplete}

@@ -11,7 +11,7 @@ describe('modus-wc-button', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcButton: aria-label is required for accessibility.'
+      'ModusWcButton: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();

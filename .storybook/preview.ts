@@ -35,10 +35,16 @@ const preview: Preview = {
         const bTitle = b.title.toLowerCase();
 
         // Make Documentation section appear first
-        if (aTitle.startsWith('documentation') && !bTitle.startsWith('documentation')) {
+        if (
+          aTitle.startsWith('documentation') &&
+          !bTitle.startsWith('documentation')
+        ) {
           return -1;
         }
-        if (!aTitle.startsWith('documentation') && bTitle.startsWith('documentation')) {
+        if (
+          !aTitle.startsWith('documentation') &&
+          bTitle.startsWith('documentation')
+        ) {
           return 1;
         }
 

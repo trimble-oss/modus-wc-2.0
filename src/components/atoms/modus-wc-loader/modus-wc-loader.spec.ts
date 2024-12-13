@@ -11,7 +11,7 @@ describe('modus-wc-loader', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcLoader: aria-label is required for accessibility.'
+      'ModusWcLoader: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();

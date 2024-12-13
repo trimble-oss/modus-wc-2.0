@@ -12,6 +12,14 @@
           "name": "ModusWcAvatar",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -24,14 +32,6 @@
                 "text": "string"
               },
               "description": "The image alt attribute for accessibility."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "custom-class",
@@ -100,19 +100,19 @@
           "name": "ModusWcBadge",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
-            },
             {
               "name": "color",
               "fieldName": "color",
@@ -188,19 +188,19 @@
           "name": "ModusWcButton",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
-            },
             {
               "name": "color",
               "fieldName": "color",
@@ -336,14 +336,6 @@
                 "text": "string"
               },
               "description": "The ID of the element that describes the checkbox."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "aria-labelledby",
@@ -493,6 +485,14 @@
           "name": "ModusWcDate",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -505,14 +505,6 @@
                 "text": "string"
               },
               "description": "The ID of the element that describes the input."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "aria-labelledby",
@@ -702,19 +694,19 @@
           "name": "ModusWcDivider",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute used for accessibility."
-            },
             {
               "name": "color",
               "fieldName": "color",
@@ -798,19 +790,19 @@
           "name": "ModusWcIcon",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility.\r\nThis provides an accessible name for screen readers."
-            },
             {
               "name": "custom-class",
               "fieldName": "customClass",
@@ -958,19 +950,19 @@
           "name": "ModusWcLoader",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute used for accessibility."
-            },
             {
               "name": "color",
               "fieldName": "color",
@@ -1038,6 +1030,14 @@
           "name": "ModusWcMenu",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -1050,14 +1050,6 @@
                 "text": "string"
               },
               "description": "The active menu item value, used to show an item as selected."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "bordered",
@@ -1151,6 +1143,14 @@
           "name": "ModusWcNumberInput",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -1163,14 +1163,6 @@
                 "text": "string"
               },
               "description": "The ID of the element that describes the input."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "auto-complete",
@@ -1392,19 +1384,19 @@
           "name": "ModusWcProgress",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
-            },
             {
               "name": "custom-class",
               "fieldName": "customClass",
@@ -1472,6 +1464,14 @@
           "name": "ModusWcRadio",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -1484,14 +1484,6 @@
                 "text": "string"
               },
               "description": "The ID of the element that describes the radio."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "aria-labelledby",
@@ -1633,6 +1625,14 @@
           "name": "ModusWcSelect",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -1645,14 +1645,6 @@
                 "text": "string"
               },
               "description": "The ID of the element that describes the input."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "auto-focus",
@@ -1890,6 +1882,14 @@
           "name": "ModusWcSlider",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -1902,14 +1902,6 @@
                 "text": "string"
               },
               "description": "The ID of the element that describes the slider."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "aria-labelledby",
@@ -2075,6 +2067,14 @@
           "name": "ModusWcTextInput",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -2087,14 +2087,6 @@
                 "text": "string"
               },
               "description": "The ID of the element that describes the input."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "auto-capitalize",
@@ -2332,6 +2324,14 @@
           "name": "ModusWcTextarea",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -2344,14 +2344,6 @@
                 "text": "string"
               },
               "description": "The ID of the element that describes the textarea."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "bordered",
@@ -2561,14 +2553,6 @@
                 "text": "string"
               },
               "description": "The ID of the element that describes the toggle."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "aria-labelledby",
@@ -2804,14 +2788,6 @@
           ],
           "attributes": [
             {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
-            },
-            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
@@ -2878,6 +2854,14 @@
           "name": "ModusWcAutocomplete",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -2898,14 +2882,6 @@
                 "text": "string"
               },
               "description": "The ID of the element that describes the input."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "bordered",
@@ -3096,6 +3072,14 @@
           "members": [
             {
               "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "field",
               "name": "isDarkMode"
             },
             {
@@ -3104,14 +3088,6 @@
             }
           ],
           "attributes": [
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
-            },
             {
               "name": "custom-class",
               "fieldName": "customClass",

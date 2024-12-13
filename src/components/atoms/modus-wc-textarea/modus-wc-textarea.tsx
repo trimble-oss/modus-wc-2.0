@@ -1,6 +1,7 @@
 import {
   h,
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
   Host,
@@ -20,15 +21,13 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcTextarea {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the textarea.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * Indicates that the input should have a border.
@@ -127,10 +126,11 @@ export class ModusWcTextarea {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcTextarea: aria-label is required for accessibility.'
+        'ModusWcTextarea: aria-label is required for accessibility. Using fallback label.'
       );
+      this.el.ariaLabel = this.placeholder || 'Text area';
     }
   }
 
@@ -166,7 +166,7 @@ export class ModusWcTextarea {
         <textarea
           aria-describedby={this.ariaDescribedby}
           aria-invalid={this.inputAriaInvalid}
-          aria-label={this.ariaLabel || this.placeholder}
+          aria-label={this.el.ariaLabel}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           class={this.getClasses()}

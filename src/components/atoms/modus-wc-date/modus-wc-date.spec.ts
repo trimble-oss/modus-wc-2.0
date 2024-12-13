@@ -11,7 +11,7 @@ describe('modus-wc-date', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcDate: aria-label is required for accessibility.'
+      'ModusWcDate: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();
@@ -85,7 +85,6 @@ describe('modus-wc-date', () => {
     expect(changeSpy).toHaveBeenCalled();
     expect(changeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         detail: expect.any(Event),
       })
     );

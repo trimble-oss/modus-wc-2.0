@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-avatar.tailwind';
 import { DaisySize } from '../../types';
 
@@ -13,15 +13,13 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcAvatar {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The image alt attribute for accessibility.
    */
   @Prop() alt!: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * Custom CSS class to apply to the inner div.
@@ -46,10 +44,12 @@ export class ModusWcAvatar {
   @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {
-    if (!this.alt || !this.ariaLabel) {
+    if (!this.alt || !this.el.ariaLabel) {
       console.warn(
-        'ModusWcAvatar: alt and aria-label are required for accessibility.'
+        'ModusWcAvatar: alt and aria-label are required for accessibility. Using fallback label.'
       );
+      this.el.ariaLabel = this.el.ariaLabel || `Avatar ${this.alt || 'image'}`;
+      this.alt = this.alt || 'Avatar image';
     }
   }
 
@@ -71,7 +71,11 @@ export class ModusWcAvatar {
   render() {
     return (
       <Host>
-        <div aria-label={this.ariaLabel} class="modus-wc-avatar" tabindex={-1}>
+        <div
+          aria-label={this.el.ariaLabel}
+          class="modus-wc-avatar"
+          tabindex={-1}
+        >
           <div class={this.getClasses()}>
             <img src={this.imgSrc} alt={this.alt} />
           </div>

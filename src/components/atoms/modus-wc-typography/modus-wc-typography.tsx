@@ -26,11 +26,6 @@ export type TypographyWeight = 'light' | 'normal' | 'bold';
 })
 export class ModusWCTypography {
   /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
-
-  /**
    * Custom CSS class to apply to the typography element.
    */
   @Prop() customClass?: string = '';
@@ -49,14 +44,6 @@ export class ModusWCTypography {
    * The weight of the text.
    */
   @Prop() weight?: TypographyWeight = 'normal';
-
-  componentWillLoad() {
-    if (!this.ariaLabel) {
-      console.warn(
-        'ModusWcTypography: aria-label is required for accessibility.'
-      );
-    }
-  }
 
   private getClasses(): string {
     const classList = ['modus-wc-typography'];

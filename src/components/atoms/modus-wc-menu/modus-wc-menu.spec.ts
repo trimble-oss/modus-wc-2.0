@@ -17,7 +17,7 @@ describe('modus-wc-menu', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcMenu: aria-label is required for accessibility.'
+      'ModusWcMenu: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();

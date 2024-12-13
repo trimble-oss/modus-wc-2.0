@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-badge.tailwind';
 import { ModusSize } from '../../types';
 
@@ -15,10 +15,8 @@ const ALERT_COLORS = ['success', 'warning', 'danger'];
   shadow: false,
 })
 export class ModusWcBadge {
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
    * The color variant of the badge.
@@ -53,8 +51,11 @@ export class ModusWcBadge {
   @Prop() variant: 'counter' | 'filled' | 'text' = 'filled';
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
-      console.warn('ModusWcBadge: aria-label is required for accessibility.');
+    if (!this.el.ariaLabel) {
+      console.warn(
+        'ModusWcBadge: aria-label is required for accessibility. Using fallback label.'
+      );
+      this.el.ariaLabel = this.content ? `Badge ${this.content}` : 'Badge';
     }
   }
 
@@ -80,7 +81,7 @@ export class ModusWcBadge {
       <Host>
         <span
           class={this.getClasses()}
-          aria-label={this.ariaLabel}
+          aria-label={this.el.ariaLabel}
           role={isAlert ? 'alert' : 'status'}
           tabindex={-1}
         >

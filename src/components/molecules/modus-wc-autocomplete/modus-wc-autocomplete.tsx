@@ -1,5 +1,6 @@
 import {
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
   h,
@@ -23,6 +24,9 @@ import { ModusSize } from '../../types';
 export class ModusWcAutocomplete {
   private debounceTimer?: number;
 
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   @State() private menuVisible: boolean = false;
 
   /**
@@ -34,11 +38,6 @@ export class ModusWcAutocomplete {
    * The ID of the element that describes the input.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * Indicates that the autocomplete should have a border.
@@ -207,13 +206,13 @@ export class ModusWcAutocomplete {
   render() {
     return (
       <Host
-        aria-label={this.ariaLabel}
+        aria-label={this.el.ariaLabel}
         class={this.getClasses()}
         dir={this.inputDir}
       >
         <modus-wc-text-input
           ariaDescribedby={this.ariaDescribedby}
-          ariaLabel="Autocomplete input"
+          aria-label="Autocomplete input"
           bordered={this.bordered}
           disabled={this.disabled}
           inputId={this.inputId}
@@ -231,7 +230,7 @@ export class ModusWcAutocomplete {
         {this.menuVisible && (
           <modus-wc-menu
             activeItemValue={this.activeItemValue}
-            ariaLabel="Autocomplete menu"
+            aria-label="Autocomplete menu"
             bordered={this.bordered}
             items={this.items}
             onItemSelect={this.handleItemSelect}
