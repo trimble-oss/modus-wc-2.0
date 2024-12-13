@@ -5,12 +5,11 @@ import {
   Event as StencilEvent,
   EventEmitter,
   Prop,
-  Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
 import { Size } from '../../types';
 
-let INTERNAL_DATALIST_ID = 'modus-wc-internal-time-options';
+const INTERNAL_DATALIST_NAME = 'modus-wc-internal-time-options';
 
 /**
  * A customizable input component used to create time inputs.
@@ -69,10 +68,10 @@ export class ModusWcTimeInput {
   @Prop() inputTabIndex?: number;
 
   /**
-   * Provide a list of pre-defined options to suggest to the user.
+   * ID of a <datalist> element that contains pre-defined time options.
    * The value must be the ID of a <datalist> element in the same document.
    */
-  @Prop() list?: string;
+  @Prop({ mutable: true }) list?: string;
 
   /**
    * Maximum value. Format: 'HH:mm', 'HH:mm:ss'.
@@ -121,7 +120,7 @@ export class ModusWcTimeInput {
   /**
    * The options to display in the time input dropdown. Time options must be in `HH:mm` or `HH:mm:ss` format.
    */
-  @Prop({ mutable: true }) timeOptions: string[] = [];
+  @Prop() timeOptions: string[] = [];
 
   /**
    * The value of the time input.
@@ -147,13 +146,6 @@ export class ModusWcTimeInput {
    */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
-  @Watch('timeOptions')
-  updateTimeOptions(newTimeOptions: string[]) {
-    // TODO: add validation for time options
-    this.timeOptions = [...newTimeOptions];
-    console.log('Watch() timeOptions:', this.timeOptions);
-  }
-
   componentWillLoad() {
     if (!this.ariaLabel) {
       console.warn(
@@ -162,8 +154,7 @@ export class ModusWcTimeInput {
     }
 
     if (!this.list) {
-      INTERNAL_DATALIST_ID = `${INTERNAL_DATALIST_ID}-${Math.random().toString(36).substring(2, 11)}`;
-      this.list = INTERNAL_DATALIST_ID;
+      this.list = this.internalDatalistId;
     }
   }
 
@@ -195,31 +186,27 @@ export class ModusWcTimeInput {
   };
 
   /**
+   * The ID of the internal <datalist> element. Unique to each instance of the time input component.
+   * This is used as the `list` id for when `timeOptions` are provided.
+   */
+  private readonly internalDatalistId = `${INTERNAL_DATALIST_NAME}-${Math.random().toString(36).substring(2, 11)}`;
+
+  /**
    * Conditionally renders the datalist element with the time options.
    * If no time options are provided or the list prop is not the default,
-   * the datalist element will not be rendered.
+   * the datalist element will not be rendered (returns `null`).
    * @returns The datalist `HTMLElement` with the time options or `null`.
    */
   private renderDatalist(): HTMLElement | null {
-    // if no time options are provided, do not render the datalist element
-    if (this.timeOptions?.length === 0) {
-      console.log('No time options provided.');
-      console.log('timeOptions:', this.timeOptions);
+    if (
+      this.timeOptions?.length === 0 ||
+      this.list !== this.internalDatalistId
+    ) {
       return null;
     }
-
-    // if the list prop is provided, do not render the default datalist element
-    if (this.list !== INTERNAL_DATALIST_ID) {
-      console.log('Using list prop.');
-      return null;
-    }
-
-    console.log('Rendering datalist element with time options.');
-    console.log('list:', this.list);
-    console.log('timeOptions:', this.timeOptions);
 
     return (
-      <datalist id={INTERNAL_DATALIST_ID}>
+      <datalist id={this.internalDatalistId}>
         {this.timeOptions.map((time) => (
           <option value={time} />
         ))}

@@ -153,8 +153,11 @@ export const TimeInputWithOptions: Story = {
   render: () => {
     return html`
 <script>
-  const preferredTimes = ['09:30', '12:00', '17:30'];
-  document.querySelector('#time-input-with-options').timeOptions = preferredTimes;
+  document.addEventListener('DOMContentLoaded', () => {
+    // Example of programmatically adding 'timeOptions'
+    const preferredTimes = ['09:30', '12:00', '17:30'];
+    document.querySelector('#time-input-with-options').timeOptions = preferredTimes;
+  });
 </script>
 <modus-wc-time-input
   aria-label="Example time input"

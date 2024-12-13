@@ -964,7 +964,7 @@ export namespace Components {
          */
         "inputTabIndex"?: number;
         /**
-          * Provide a list of pre-defined options to suggest to the user. The value must be the ID of a <datalist> element in the same document.
+          * ID of a <datalist> element that contains pre-defined time options. The value must be the ID of a <datalist> element in the same document.
          */
         "list"?: string;
         /**
@@ -2628,7 +2628,7 @@ declare namespace LocalJSX {
          */
         "inputTabIndex"?: number;
         /**
-          * Provide a list of pre-defined options to suggest to the user. The value must be the ID of a <datalist> element in the same document.
+          * ID of a <datalist> element that contains pre-defined time options. The value must be the ID of a <datalist> element in the same document.
          */
         "list"?: string;
         /**

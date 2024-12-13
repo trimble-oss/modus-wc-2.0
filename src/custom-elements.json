@@ -2430,18 +2430,6 @@
             {
               "kind": "method",
               "name": "render"
-            },
-            {
-              "kind": "method",
-              "name": "updateTimeOptions",
-              "parameters": [
-                {
-                  "name": "newTimeOptions",
-                  "type": {
-                    "text": "string[]"
-                  }
-                }
-              ]
             }
           ],
           "attributes": [
@@ -2523,7 +2511,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Provide a list of pre-defined options to suggest to the user.\r\nThe value must be the ID of a <datalist> element in the same document."
+              "description": "ID of a <datalist> element that contains pre-defined time options.\r\nThe value must be the ID of a <datalist> element in the same document."
             },
             {
               "name": "max",
