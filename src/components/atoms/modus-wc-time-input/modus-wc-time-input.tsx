@@ -2,6 +2,7 @@ import {
   h,
   Host,
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
   Prop,
@@ -22,15 +23,13 @@ const INTERNAL_DATALIST_NAME = 'modus-wc-internal-time-options';
   shadow: false,
 })
 export class ModusWcTimeInput {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the input.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * Hint for form autofill feature.
@@ -147,7 +146,7 @@ export class ModusWcTimeInput {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
         'ModusWcTimeInput: aria-label is required for accessibility.'
       );
@@ -219,7 +218,7 @@ export class ModusWcTimeInput {
       <Host>
         <input
           aria-describedby={this.ariaDescribedby}
-          aria-label={this.ariaLabel}
+          aria-label={this.el.ariaLabel}
           aria-required={this.required}
           autocomplete={this.autoComplete}
           class={this.getClasses()}

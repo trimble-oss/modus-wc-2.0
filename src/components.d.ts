@@ -980,10 +980,6 @@ export namespace Components {
          */
         "ariaDescribedby"?: string;
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Hint for form autofill feature.
          */
         "autoComplete"?: 'on' | 'off';
@@ -2754,10 +2750,6 @@ declare namespace LocalJSX {
           * The ID of the element that describes the input.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * Hint for form autofill feature.
          */

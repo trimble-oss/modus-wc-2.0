@@ -2533,6 +2533,14 @@
           "name": "ModusWcTimeInput",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -2545,14 +2553,6 @@
                 "text": "string"
               },
               "description": "The ID of the element that describes the input."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "auto-complete",
