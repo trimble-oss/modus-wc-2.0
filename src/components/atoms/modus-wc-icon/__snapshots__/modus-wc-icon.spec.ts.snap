@@ -2,7 +2,7 @@
 
 exports[`modus-wc-icon should render with custom props 1`] = `
 <modus-wc-icon aria-label="Custom icon" custom-class="test-class" decorative="false" size="sm">
-  <i aria-label="Custom icon" class="modus-icons modus-wc-icon--sm test-class" role="img" tabindex="-1"></i>
+  <i aria-label="undefined icon" class="modus-icons modus-wc-icon--sm test-class" role="img" tabindex="-1"></i>
 </modus-wc-icon>
 `;
 

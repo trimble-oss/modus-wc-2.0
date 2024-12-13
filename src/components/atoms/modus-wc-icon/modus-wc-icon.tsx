@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { DaisySize } from '../../types';
 
 /**
@@ -14,11 +14,8 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcIcon {
-  /**
-   * The aria-label attribute for accessibility.
-   * This provides an accessible name for screen readers.
-   */
-  @Prop() ariaLabel!: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
    * Custom CSS class to apply to the i element.
@@ -43,11 +40,11 @@ export class ModusWcIcon {
   @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {
-    if (!this.decorative && !this.ariaLabel) {
+    if (!this.decorative && !this.el.ariaLabel) {
       console.warn(
         'ModusWcIcon: aria-label is required for accessibility for non decorative icons. Using fallback label.'
       );
-      this.ariaLabel = `${this.name} icon`;
+      this.el.ariaLabel = `${this.name} icon`;
     }
   }
 
@@ -69,7 +66,7 @@ export class ModusWcIcon {
       <Host>
         <i
           aria-hidden={ariaHidden}
-          aria-label={this.decorative ? null : this.ariaLabel}
+          aria-label={this.decorative ? null : this.el.ariaLabel}
           class={this.getClasses()}
           role={role}
           tabindex={-1}

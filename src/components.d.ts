@@ -34,10 +34,6 @@ export namespace Components {
          */
         "ariaDescribedby"?: string;
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Indicates that the autocomplete should have a border.
          */
         "bordered"?: boolean;
@@ -130,10 +126,6 @@ export namespace Components {
      */
     interface ModusWcBadge {
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * The color variant of the badge.
          */
         "color": | 'primary'
@@ -165,10 +157,6 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * The color variant of the button.
          */
@@ -215,10 +203,6 @@ export namespace Components {
           * The ID of the element that describes the checkbox.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * The aria-labelledby attribute for usage with a label.
          */
@@ -273,10 +257,6 @@ export namespace Components {
           * The ID of the element that describes the input.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * The aria-labelledby attribute for usage with a label.
          */
@@ -348,10 +328,6 @@ export namespace Components {
      */
     interface ModusWcDivider {
         /**
-          * The aria-label attribute used for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * The color of the divider line.
          */
         "color"?: | 'primary'
@@ -388,10 +364,6 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcIcon {
-        /**
-          * The aria-label attribute for accessibility. This provides an accessible name for screen readers.
-         */
-        "ariaLabel": string;
         /**
           * Custom CSS class to apply to the i element.
          */
@@ -442,10 +414,6 @@ export namespace Components {
      */
     interface ModusWcLoader {
         /**
-          * The aria-label attribute used for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * The color of the loader.
          */
         "color": LoaderColor;
@@ -471,10 +439,6 @@ export namespace Components {
           * The active menu item value, used to show an item as selected.
          */
         "activeItemValue"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * Indicates that the menu should have a border.
          */
@@ -596,10 +560,6 @@ export namespace Components {
      */
     interface ModusWcProgress {
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Custom CSS class to apply to the progress element.
          */
         "customClass"?: string;
@@ -625,10 +585,6 @@ export namespace Components {
           * The ID of the element that describes the radio.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * The aria-labelledby attribute for usage with a label.
          */
@@ -679,10 +635,6 @@ export namespace Components {
           * The ID of the element that describes the input.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * Indicates that an element should be focused on page load.
          */
@@ -767,10 +719,6 @@ export namespace Components {
           * The ID of the element that describes the slider.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * The aria-labelledby attribute for usage with a label.
          */
@@ -944,10 +892,6 @@ export namespace Components {
          */
         "ariaDescribedby"?: string;
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -1022,10 +966,6 @@ export namespace Components {
      */
     interface ModusWcThemeSwitcher {
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Custom CSS class to apply to the theme switcher element.
          */
         "customClass"?: string;
@@ -1039,10 +979,6 @@ export namespace Components {
           * The ID of the element that describes the toggle.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * The aria-labelledby attribute for usage with a label.
          */
@@ -1635,10 +1571,6 @@ declare namespace LocalJSX {
          */
         "ariaDescribedby"?: string;
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Indicates that the autocomplete should have a border.
          */
         "bordered"?: boolean;
@@ -1747,10 +1679,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcBadge {
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * The color variant of the badge.
          */
         "color"?: | 'primary'
@@ -1782,10 +1710,6 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * The color variant of the button.
          */
@@ -1836,10 +1760,6 @@ declare namespace LocalJSX {
           * The ID of the element that describes the checkbox.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * The aria-labelledby attribute for usage with a label.
          */
@@ -1906,10 +1826,6 @@ declare namespace LocalJSX {
           * The ID of the element that describes the input.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * The aria-labelledby attribute for usage with a label.
          */
@@ -1993,10 +1909,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcDivider {
         /**
-          * The aria-label attribute used for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * The color of the divider line.
          */
         "color"?: | 'primary'
@@ -2033,10 +1945,6 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcIcon {
-        /**
-          * The aria-label attribute for accessibility. This provides an accessible name for screen readers.
-         */
-        "ariaLabel": string;
         /**
           * Custom CSS class to apply to the i element.
          */
@@ -2087,10 +1995,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcLoader {
         /**
-          * The aria-label attribute used for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * The color of the loader.
          */
         "color"?: LoaderColor;
@@ -2116,10 +2020,6 @@ declare namespace LocalJSX {
           * The active menu item value, used to show an item as selected.
          */
         "activeItemValue"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * Indicates that the menu should have a border.
          */
@@ -2257,10 +2157,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcProgress {
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Custom CSS class to apply to the progress element.
          */
         "customClass"?: string;
@@ -2286,10 +2182,6 @@ declare namespace LocalJSX {
           * The ID of the element that describes the radio.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * The aria-labelledby attribute for usage with a label.
          */
@@ -2352,10 +2244,6 @@ declare namespace LocalJSX {
           * The ID of the element that describes the input.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * Indicates that an element should be focused on page load.
          */
@@ -2452,10 +2340,6 @@ declare namespace LocalJSX {
           * The ID of the element that describes the slider.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * The aria-labelledby attribute for usage with a label.
          */
@@ -2653,10 +2537,6 @@ declare namespace LocalJSX {
          */
         "ariaDescribedby"?: string;
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -2743,10 +2623,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcThemeSwitcher {
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Custom CSS class to apply to the theme switcher element.
          */
         "customClass"?: string;
@@ -2764,10 +2640,6 @@ declare namespace LocalJSX {
           * The ID of the element that describes the toggle.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * The aria-labelledby attribute for usage with a label.
          */

@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-divider.tailwind';
 import { Orientation } from '../../types';
 
@@ -13,10 +13,8 @@ import { Orientation } from '../../types';
   shadow: false,
 })
 export class ModusWcDivider {
-  /**
-   * The aria-label attribute used for accessibility.
-   */
-  @Prop() ariaLabel!: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
    * The color of the divider line.
@@ -56,11 +54,11 @@ export class ModusWcDivider {
   @Prop() responsive?: boolean = true;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
         'ModusWcDivider: aria-label is required for accessibility. Using fallback label.'
       );
-      this.ariaLabel = 'Divider';
+      this.el.ariaLabel = 'Divider';
     }
   }
 
@@ -86,7 +84,7 @@ export class ModusWcDivider {
       <Host>
         <div
           class={this.getClasses()}
-          aria-label={this.ariaLabel}
+          aria-label={this.el.ariaLabel}
           role="separator"
           tabindex={-1}
         >

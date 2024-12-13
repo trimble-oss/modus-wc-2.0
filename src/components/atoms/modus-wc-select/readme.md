@@ -13,23 +13,22 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property                 | Attribute            | Description                                                                                             | Type                                          | Default     |
-| ------------------------ | -------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------- |
-| `ariaDescribedby`        | `aria-describedby`   | The ID of the element that describes the input.                                                         | `string \| undefined`                         | `undefined` |
-| `ariaLabel` _(required)_ | `aria-label`         | The aria-label attribute for accessibility.                                                             | `string`                                      | `undefined` |
-| `autoFocus`              | `auto-focus`         | Indicates that an element should be focused on page load.                                               | `boolean \| undefined`                        | `undefined` |
-| `bordered`               | `bordered`           | Indicates that the input should have a border.                                                          | `boolean \| undefined`                        | `true`      |
-| `customClass`            | `custom-class`       | Custom CSS class to apply to the inner div.                                                             | `string \| undefined`                         | `''`        |
-| `disabled`               | `disabled`           | Whether the form control is disabled.                                                                   | `boolean \| undefined`                        | `false`     |
-| `inputAriaInvalid`       | `input-aria-invalid` | Indicates whether the input has an invalid input.                                                       | `"false" \| "true" \| undefined`              | `undefined` |
-| `inputDir`               | `input-dir`          | Specifies the text direction of the input content.                                                      | `"" \| "auto" \| "ltr" \| "rtl" \| undefined` | `undefined` |
-| `inputId`                | `input-id`           | The ID of the input element.                                                                            | `string \| undefined`                         | `undefined` |
-| `inputTabIndex`          | `input-tab-index`    | Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). | `number \| undefined`                         | `undefined` |
-| `name`                   | `name`               | Name of the form control. Submitted with the form as part of a name/value pair.                         | `string \| undefined`                         | `undefined` |
-| `options`                | --                   | The options to display in the select dropdown.                                                          | `ISelectOption[]`                             | `[]`        |
-| `required`               | `required`           | A value is required for the form to be submittable.                                                     | `boolean \| undefined`                        | `false`     |
-| `size`                   | `size`               | The size of the input.                                                                                  | `"lg" \| "md" \| "sm" \| "xs" \| undefined`   | `'md'`      |
-| `value`                  | `value`              | The value of the control.                                                                               | `string`                                      | `''`        |
+| Property           | Attribute            | Description                                                                                             | Type                                          | Default     |
+| ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------- |
+| `ariaDescribedby`  | `aria-describedby`   | The ID of the element that describes the input.                                                         | `string \| undefined`                         | `undefined` |
+| `autoFocus`        | `auto-focus`         | Indicates that an element should be focused on page load.                                               | `boolean \| undefined`                        | `undefined` |
+| `bordered`         | `bordered`           | Indicates that the input should have a border.                                                          | `boolean \| undefined`                        | `true`      |
+| `customClass`      | `custom-class`       | Custom CSS class to apply to the inner div.                                                             | `string \| undefined`                         | `''`        |
+| `disabled`         | `disabled`           | Whether the form control is disabled.                                                                   | `boolean \| undefined`                        | `false`     |
+| `inputAriaInvalid` | `input-aria-invalid` | Indicates whether the input has an invalid input.                                                       | `"false" \| "true" \| undefined`              | `undefined` |
+| `inputDir`         | `input-dir`          | Specifies the text direction of the input content.                                                      | `"" \| "auto" \| "ltr" \| "rtl" \| undefined` | `undefined` |
+| `inputId`          | `input-id`           | The ID of the input element.                                                                            | `string \| undefined`                         | `undefined` |
+| `inputTabIndex`    | `input-tab-index`    | Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). | `number \| undefined`                         | `undefined` |
+| `name`             | `name`               | Name of the form control. Submitted with the form as part of a name/value pair.                         | `string \| undefined`                         | `undefined` |
+| `options`          | --                   | The options to display in the select dropdown.                                                          | `ISelectOption[]`                             | `[]`        |
+| `required`         | `required`           | A value is required for the form to be submittable.                                                     | `boolean \| undefined`                        | `false`     |
+| `size`             | `size`               | The size of the input.                                                                                  | `"lg" \| "md" \| "sm" \| "xs" \| undefined`   | `'md'`      |
+| `value`            | `value`              | The value of the control.                                                                               | `string`                                      | `''`        |
 
 
 ## Events

@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-loader.tailwind';
 import { DaisySize } from '../../types';
 
@@ -31,10 +31,8 @@ export type LoaderColor =
   shadow: false,
 })
 export class ModusWcLoader {
-  /**
-   * The aria-label attribute used for accessibility.
-   */
-  @Prop() ariaLabel!: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
    * The color of the loader.
@@ -57,11 +55,11 @@ export class ModusWcLoader {
   @Prop() variant: LoaderVariant = 'spinner';
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
         'ModusWcLoader: aria-label is required for accessibility. Using fallback label.'
       );
-      this.ariaLabel = 'Loading';
+      this.el.ariaLabel = 'Loading';
     }
   }
 
@@ -85,7 +83,7 @@ export class ModusWcLoader {
     return (
       <Host>
         <span
-          aria-label={this.ariaLabel}
+          aria-label={this.el.ariaLabel}
           class={this.getClasses()}
           role="status"
           tabindex={-1}
