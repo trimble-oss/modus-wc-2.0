@@ -21,15 +21,13 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcToggle {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the toggle.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * The aria-labelledby attribute for usage with a label.
@@ -101,9 +99,6 @@ export class ModusWcToggle {
    */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
-  /** Reference to the host element */
-  @Element() el!: HTMLElement;
-
   componentDidRender() {
     const checkbox = this.el.querySelector(
       'input[type="checkbox"]'
@@ -115,12 +110,12 @@ export class ModusWcToggle {
   }
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
         'ModusWcToggle: aria-label is required for accessibility. Using fallback label.'
       );
     }
-    this.ariaLabel = 'Toggle button';
+    this.el.ariaLabel = 'Toggle button';
   }
 
   private getClasses(): string {
@@ -154,7 +149,7 @@ export class ModusWcToggle {
           aria-checked={this.indeterminate ? 'mixed' : this.value}
           aria-describedby={this.ariaDescribedby}
           aria-disabled={this.disabled}
-          aria-label={this.ariaLabel}
+          aria-label={this.el.ariaLabel}
           aria-labelledby={this.ariaLabelledby}
           checked={this.value}
           class={this.getClasses()}

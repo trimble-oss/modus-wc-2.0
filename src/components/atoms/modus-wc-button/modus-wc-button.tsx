@@ -1,5 +1,6 @@
 import {
   Component,
+  Element,
   Event,
   EventEmitter,
   h,
@@ -21,10 +22,8 @@ import { ModusSize } from '../../types';
   shadow: false,
 })
 export class ModusWcButton {
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
    * The color variant of the button.
@@ -78,11 +77,11 @@ export class ModusWcButton {
   @Event() buttonClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
         'ModusWcButton: aria-label is required for accessibility. Using fallback label.'
       );
-      this.ariaLabel = this.label || 'Button';
+      this.el.ariaLabel = this.label || 'Button';
     }
   }
 
@@ -125,7 +124,7 @@ export class ModusWcButton {
       <Host>
         <button
           class={this.getClasses()}
-          aria-label={this.ariaLabel}
+          aria-label={this.el.ariaLabel}
           aria-pressed={ariaPressed}
           disabled={this.disabled}
           onClick={this.handleClick}

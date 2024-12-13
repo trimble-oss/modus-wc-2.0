@@ -1,5 +1,6 @@
 import {
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
   h,
@@ -26,15 +27,13 @@ export interface ISelectOption {
   shadow: false,
 })
 export class ModusWcSelect {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the input.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * Indicates that an element should be focused on page load.
@@ -117,11 +116,11 @@ export class ModusWcSelect {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
         'ModusWcSelect: aria-label is required for accessibility. Using fallback label.'
       );
-      this.ariaLabel = 'Select';
+      this.el.ariaLabel = 'Select';
     }
   }
 
@@ -158,7 +157,7 @@ export class ModusWcSelect {
         <select
           aria-describedby={this.ariaDescribedby}
           aria-invalid={this.inputAriaInvalid}
-          aria-label={this.ariaLabel}
+          aria-label={this.el.ariaLabel}
           autofocus={this.autoFocus}
           class={this.getClasses()}
           dir={this.inputDir}

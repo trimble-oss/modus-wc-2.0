@@ -13,6 +13,7 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcAvatar {
+  /** Reference to the host element */
   @Element() el!: HTMLElement;
 
   /**

@@ -21,6 +21,7 @@ import { ModusSize } from '../../types';
   shadow: false,
 })
 export class ModusWcNumberInput {
+  /** Reference to the host element */
   @Element() el!: HTMLElement;
 
   /**
