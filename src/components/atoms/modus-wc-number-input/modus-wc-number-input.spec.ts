@@ -11,7 +11,7 @@ describe('modus-wc-number-input', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcNumberInput: aria-label is required for accessibility.'
+      'ModusWcNumberInput: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();
@@ -82,13 +82,12 @@ describe('modus-wc-number-input', () => {
     page.root!.addEventListener('inputChange', changeSpy);
 
     number!.value = 'New value';
-    number!.dispatchEvent(new Event('change'));
+    number!.dispatchEvent(new Event('input'));
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();
     expect(changeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         detail: expect.any(Event),
       })
     );

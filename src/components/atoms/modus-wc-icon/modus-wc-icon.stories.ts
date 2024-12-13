@@ -1,14 +1,14 @@
 import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 interface IconArgs {
   'aria-label': string;
-  'custom-class': string;
+  'custom-class'?: string;
   decorative: boolean;
   name: string;
-  size: Size;
+  size: DaisySize;
 }
 
 const meta: Meta<IconArgs> = {
@@ -24,7 +24,7 @@ const meta: Meta<IconArgs> = {
   argTypes: {
     size: {
       control: { type: 'inline-radio' },
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      options: ['xs', 'sm', 'md', 'lg'],
     },
   },
 };
@@ -38,7 +38,7 @@ const Template: Story = {
     return html`
       <modus-wc-icon
         aria-label="${ifDefined(args['aria-label'])}"
-        custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         ?decorative="${ifDefined(args.decorative)}"
         name="${args.name}"
         size="${args.size}"

@@ -2,16 +2,15 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { TypographyWeight } from './modus-wc-typography';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 // Slot content was lost due to rendering issues when changing the "variant" attribute.
 // Because of this, each variant is rendered as a unique story below.
 
 interface TypographyArgs {
-  'aria-label': string;
   content: string;
   'custom-class': string;
-  size: Size;
+  size: DaisySize;
   weight: TypographyWeight;
 }
 
@@ -19,7 +18,6 @@ const meta: Meta<TypographyArgs> = {
   title: 'Components/Typography',
   component: 'modus-wc-typography',
   args: {
-    'aria-label': 'Example typography',
     content: 'The quick brown fox jumps over the lazy dog',
     size: 'md',
     weight: 'normal',
@@ -30,7 +28,7 @@ const meta: Meta<TypographyArgs> = {
     },
     size: {
       control: { type: 'inline-radio' },
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      options: ['xs', 'sm', 'md', 'lg'],
     },
     weight: {
       control: { type: 'radio' },
@@ -47,7 +45,6 @@ export const Body: Story = {
   render: (args) => {
     return html`
       <modus-wc-typography
-        aria-label="${args['aria-label']}"
         custom-class="${ifDefined(args['custom-class'])}"
         size="${args.size}"
         variant="body"
@@ -62,7 +59,6 @@ export const Heading1: Story = {
   render: (args) => {
     return html`
       <modus-wc-typography
-        aria-label="${args['aria-label']}"
         custom-class="${ifDefined(args['custom-class'])}"
         size="${args.size}"
         variant="h1"

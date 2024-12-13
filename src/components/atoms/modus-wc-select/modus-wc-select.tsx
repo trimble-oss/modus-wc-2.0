@@ -1,5 +1,6 @@
 import {
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
   h,
@@ -7,7 +8,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-select.tailwind';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 export interface ISelectOption {
   disabled?: boolean;
@@ -26,15 +27,13 @@ export interface ISelectOption {
   shadow: false,
 })
 export class ModusWcSelect {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the input.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * Indicates that an element should be focused on page load.
@@ -49,7 +48,7 @@ export class ModusWcSelect {
   /**
    * Custom CSS class to apply to the inner div.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * Whether the form control is disabled.
@@ -94,7 +93,7 @@ export class ModusWcSelect {
   /**
    * The size of the input.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: DaisySize = 'md';
 
   /**
    * The value of the control.
@@ -117,8 +116,11 @@ export class ModusWcSelect {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
-      console.warn('ModusWcSelect: aria-label is required for accessibility.');
+    if (!this.el.ariaLabel) {
+      console.warn(
+        'ModusWcSelect: aria-label is required for accessibility. Using fallback label.'
+      );
+      this.el.ariaLabel = 'Select';
     }
   }
 
@@ -141,12 +143,12 @@ export class ModusWcSelect {
     this.inputBlur.emit(event);
   };
 
-  private handleChange = (event: Event) => {
-    this.inputChange.emit(event);
-  };
-
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
+  };
+
+  private handleInput = (event: Event) => {
+    this.inputChange.emit(event);
   };
 
   render() {
@@ -155,7 +157,7 @@ export class ModusWcSelect {
         <select
           aria-describedby={this.ariaDescribedby}
           aria-invalid={this.inputAriaInvalid}
-          aria-label={this.ariaLabel}
+          aria-label={this.el.ariaLabel}
           autofocus={this.autoFocus}
           class={this.getClasses()}
           dir={this.inputDir}
@@ -163,8 +165,8 @@ export class ModusWcSelect {
           id={this.inputId}
           name={this.name}
           onBlur={this.handleBlur}
-          onChange={this.handleChange}
           onFocus={this.handleFocus}
+          onInput={this.handleInput}
           required={this.required}
           tabindex={this.inputTabIndex}
         >

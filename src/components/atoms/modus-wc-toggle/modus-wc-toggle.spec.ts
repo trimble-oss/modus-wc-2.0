@@ -11,7 +11,7 @@ describe('modus-wc-toggle', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcToggle: aria-label is required for accessibility.'
+      'ModusWcToggle: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();
@@ -86,13 +86,12 @@ describe('modus-wc-toggle', () => {
     page.root!.addEventListener('inputChange', changeSpy);
 
     checkbox.value = 'true';
-    checkbox.dispatchEvent(new Event('change'));
+    checkbox.dispatchEvent(new Event('input'));
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();
     expect(changeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         detail: expect.any(Event),
       })
     );

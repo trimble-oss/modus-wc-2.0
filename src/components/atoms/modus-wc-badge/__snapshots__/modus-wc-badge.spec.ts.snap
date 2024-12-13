@@ -2,13 +2,13 @@
 
 exports[`modus-wc-badge should render with alert role 1`] = `
 <modus-wc-badge aria-label="Custom Badge" color="warning">
-  <span aria-label="Custom Badge" class="modus-wc-badge modus-wc-badge-md modus-wc-badge-warning" role="alert" tabindex="-1"></span>
+  <span aria-label="Badge" class="modus-wc-badge modus-wc-badge-md modus-wc-badge-warning" role="alert" tabindex="-1"></span>
 </modus-wc-badge>
 `;
 
 exports[`modus-wc-badge should render with custom props 1`] = `
 <modus-wc-badge aria-label="Custom Badge" color="secondary" content="Test" custom-class="test-class" size="lg" variant="text">
-  <span aria-label="Custom Badge" class="modus-wc-badge modus-wc-badge-lg modus-wc-badge-secondary modus-wc-badge-text test-class" role="status" tabindex="-1">
+  <span aria-label="Badge Test" class="modus-wc-badge modus-wc-badge-lg modus-wc-badge-secondary modus-wc-badge-text test-class" role="status" tabindex="-1">
     Test
   </span>
 </modus-wc-badge>
@@ -16,6 +16,20 @@ exports[`modus-wc-badge should render with custom props 1`] = `
 
 exports[`modus-wc-badge should render with default props 1`] = `
 <modus-wc-badge aria-label="Default Badge">
-  <span aria-label="Default Badge" class="modus-wc-badge modus-wc-badge-md modus-wc-badge-primary" role="status" tabindex="-1"></span>
+  <span aria-label="Badge" class="modus-wc-badge modus-wc-badge-md modus-wc-badge-primary" role="status" tabindex="-1"></span>
+</modus-wc-badge>
+`;
+
+exports[`modus-wc-badge should set ariaLabel to "Badge {content}" if content is provided 1`] = `
+<modus-wc-badge content="5">
+  <span aria-label="Badge 5" class="modus-wc-badge modus-wc-badge-md modus-wc-badge-primary" role="status" tabindex="-1">
+    5
+  </span>
+</modus-wc-badge>
+`;
+
+exports[`modus-wc-badge should set ariaLabel to "Badge" if content is not provided 1`] = `
+<modus-wc-badge>
+  <span aria-label="Badge" class="modus-wc-badge modus-wc-badge-md modus-wc-badge-primary" role="status" tabindex="-1"></span>
 </modus-wc-badge>
 `;

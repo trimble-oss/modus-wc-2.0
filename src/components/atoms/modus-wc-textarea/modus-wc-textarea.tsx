@@ -1,13 +1,14 @@
 import {
   h,
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
   Host,
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-textarea.tailwind';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 /**
  * A customizable textarea component.
@@ -20,15 +21,13 @@ import { Size } from '../../types';
   shadow: false,
 })
 export class ModusWcTextarea {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the textarea.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * Indicates that the input should have a border.
@@ -104,7 +103,7 @@ export class ModusWcTextarea {
   /**
    * The size of the input.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: DaisySize = 'md';
 
   /**
    * The value of the textarea.
@@ -127,10 +126,11 @@ export class ModusWcTextarea {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcTextarea: aria-label is required for accessibility.'
+        'ModusWcTextarea: aria-label is required for accessibility. Using fallback label.'
       );
+      this.el.ariaLabel = this.placeholder || 'Text area';
     }
   }
 
@@ -152,12 +152,12 @@ export class ModusWcTextarea {
     this.inputBlur.emit(event);
   };
 
-  private handleChange = (event: Event) => {
-    this.inputChange.emit(event);
-  };
-
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
+  };
+
+  private handleInput = (event: Event) => {
+    this.inputChange.emit(event);
   };
 
   render() {
@@ -166,7 +166,7 @@ export class ModusWcTextarea {
         <textarea
           aria-describedby={this.ariaDescribedby}
           aria-invalid={this.inputAriaInvalid}
-          aria-label={this.ariaLabel || this.placeholder}
+          aria-label={this.el.ariaLabel}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           class={this.getClasses()}
@@ -176,8 +176,8 @@ export class ModusWcTextarea {
           maxLength={this.maxLength}
           name={this.name}
           onBlur={this.handleBlur}
-          onChange={this.handleChange}
           onFocus={this.handleFocus}
+          onInput={this.handleInput}
           placeholder={this.placeholder}
           readonly={this.readonly}
           required={this.required}

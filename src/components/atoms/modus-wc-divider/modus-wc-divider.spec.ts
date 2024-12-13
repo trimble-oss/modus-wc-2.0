@@ -11,7 +11,7 @@ describe('modus-wc-divider', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcDivider: aria-label is required for accessibility.'
+      'ModusWcDivider: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();

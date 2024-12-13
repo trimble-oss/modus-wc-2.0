@@ -1,5 +1,6 @@
 import {
   Component,
+  Element,
   Event,
   EventEmitter,
   h,
@@ -8,6 +9,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-button.tailwind';
+import { ModusSize } from '../../types';
 
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -20,10 +22,8 @@ import { convertPropsToClasses } from './modus-wc-button.tailwind';
   shadow: false,
 })
 export class ModusWcButton {
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
    * The color variant of the button.
@@ -34,7 +34,7 @@ export class ModusWcButton {
   /**
    * Custom CSS class to apply to the button element.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * If true, the button will be disabled.
@@ -59,7 +59,7 @@ export class ModusWcButton {
   /**
    * The size of the button.
    */
-  @Prop() size: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size: ModusSize = 'md';
 
   /**
    * The variant of the button.
@@ -77,8 +77,11 @@ export class ModusWcButton {
   @Event() buttonClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
-      console.warn('ModusWcButton: aria-label is required for accessibility.');
+    if (!this.el.ariaLabel) {
+      console.warn(
+        'ModusWcButton: aria-label is required for accessibility. Using fallback label.'
+      );
+      this.el.ariaLabel = this.label || 'Button';
     }
   }
 
@@ -121,7 +124,7 @@ export class ModusWcButton {
       <Host>
         <button
           class={this.getClasses()}
-          aria-label={this.ariaLabel || this.label}
+          aria-label={this.el.ariaLabel}
           aria-pressed={ariaPressed}
           disabled={this.disabled}
           onClick={this.handleClick}

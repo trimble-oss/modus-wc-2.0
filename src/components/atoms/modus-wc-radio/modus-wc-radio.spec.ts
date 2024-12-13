@@ -11,7 +11,7 @@ describe('modus-wc-radio', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcRadio: aria-label is required for accessibility.'
+      'ModusWcRadio: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();
@@ -75,13 +75,12 @@ describe('modus-wc-radio', () => {
     page.root!.addEventListener('inputChange', changeSpy);
 
     radio.value = 'true';
-    radio.dispatchEvent(new Event('change'));
+    radio.dispatchEvent(new Event('input'));
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();
     expect(changeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         detail: expect.any(Event),
       })
     );

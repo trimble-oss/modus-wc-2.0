@@ -1,5 +1,6 @@
 import {
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
   h,
@@ -7,7 +8,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-slider.tailwind';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 /**
  * A customizable slider component.
@@ -20,15 +21,13 @@ import { Size } from '../../types';
   shadow: false,
 })
 export class ModusWcSlider {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the slider.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * The aria-labelledby attribute for usage with a label.
@@ -38,7 +37,7 @@ export class ModusWcSlider {
   /**
    * Custom CSS class to apply to the inner div.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The disabled state of the slider.
@@ -83,7 +82,7 @@ export class ModusWcSlider {
   /**
    * The size of the input.
    */
-  @Prop() size?: Size = 'xs';
+  @Prop() size?: DaisySize = 'xs';
 
   /**
    * The increment of the slider.
@@ -111,9 +110,12 @@ export class ModusWcSlider {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
-      console.warn('ModusWcSlider: aria-label is required for accessibility.');
+    if (!this.el.ariaLabel) {
+      console.warn(
+        'ModusWcSlider: aria-label is required for accessibility. Using fallback label.'
+      );
     }
+    this.el.ariaLabel = 'Slider';
   }
 
   private getClasses(): string {
@@ -132,12 +134,12 @@ export class ModusWcSlider {
     this.inputBlur.emit(event);
   };
 
-  private handleChange = (event: Event) => {
-    this.inputChange.emit(event);
-  };
-
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
+  };
+
+  private handleInput = (event: Event) => {
+    this.inputChange.emit(event);
   };
 
   render() {
@@ -146,7 +148,7 @@ export class ModusWcSlider {
         <input
           aria-describedby={this.ariaDescribedby}
           aria-disabled={this.disabled}
-          aria-label={this.ariaLabel}
+          aria-label={this.el.ariaLabel}
           aria-labelledby={this.ariaLabelledby}
           class={this.getClasses()}
           dir={this.inputDir}
@@ -156,8 +158,8 @@ export class ModusWcSlider {
           min={this.min}
           name={this.name}
           onBlur={this.handleBlur}
-          onChange={this.handleChange}
           onFocus={this.handleFocus}
+          onInput={this.handleInput}
           required={this.required}
           step={this.step}
           tabIndex={this.inputTabIndex}

@@ -1,5 +1,6 @@
 import {
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
   h,
@@ -7,6 +8,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-radio.tailwind';
+import { ModusSize } from '../../types';
 
 /**
  * A customizable radio component.
@@ -19,15 +21,13 @@ import { convertPropsToClasses } from './modus-wc-radio.tailwind';
   shadow: false,
 })
 export class ModusWcRadio {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the radio.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * The aria-labelledby attribute for usage with a label.
@@ -37,7 +37,7 @@ export class ModusWcRadio {
   /**
    * Custom CSS class to apply to the inner div.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The disabled state of the radio.
@@ -72,7 +72,7 @@ export class ModusWcRadio {
   /**
    * The size of the input.
    */
-  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /**
    * The value of the radio.
@@ -95,9 +95,12 @@ export class ModusWcRadio {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
-      console.warn('ModusWcRadio: aria-label is required for accessibility.');
+    if (!this.el.ariaLabel) {
+      console.warn(
+        'ModusWcRadio: aria-label is required for accessibility. Using fallback label.'
+      );
     }
+    this.el.ariaLabel = 'Radio button';
   }
 
   private getClasses(): string {
@@ -116,12 +119,12 @@ export class ModusWcRadio {
     this.inputBlur.emit(event);
   };
 
-  private handleChange = (event: Event) => {
-    this.inputChange.emit(event);
-  };
-
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
+  };
+
+  private handleInput = (event: Event) => {
+    this.inputChange.emit(event);
   };
 
   render() {
@@ -131,7 +134,7 @@ export class ModusWcRadio {
           aria-checked={this.value}
           aria-describedby={this.ariaDescribedby}
           aria-disabled={this.disabled}
-          aria-label={this.ariaLabel}
+          aria-label={this.el.ariaLabel}
           aria-labelledby={this.ariaLabelledby}
           checked={this.value}
           class={this.getClasses()}
@@ -140,8 +143,8 @@ export class ModusWcRadio {
           id={this.inputId}
           name={this.name}
           onBlur={this.handleBlur}
-          onChange={this.handleChange}
           onFocus={this.handleFocus}
+          onInput={this.handleInput}
           required={this.required}
           tabIndex={this.inputTabIndex}
           type="radio"

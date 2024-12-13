@@ -1,13 +1,14 @@
 import {
-  h,
-  Host,
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
+  h,
+  Host,
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
-import { Size } from '../../types';
+import { ModusSize } from '../../types';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -20,15 +21,13 @@ import { Size } from '../../types';
   shadow: false,
 })
 export class ModusWcTextInput {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the input.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * Controls automatic capitalization in inputted text.
@@ -144,7 +143,7 @@ export class ModusWcTextInput {
   /**
    * The size of the input.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /**
    * Type of form control.
@@ -173,10 +172,11 @@ export class ModusWcTextInput {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcTextInput: aria-label is required for accessibility.'
+        'ModusWcTextInput: aria-label is required for accessibility. Using fallback label.'
       );
+      this.el.ariaLabel = this.placeholder || 'Text input';
     }
   }
 
@@ -198,12 +198,12 @@ export class ModusWcTextInput {
     this.inputBlur.emit(event);
   };
 
-  private handleChange = (event: Event) => {
-    this.inputChange.emit(event);
-  };
-
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
+  };
+
+  private handleInput = (event: Event) => {
+    this.inputChange.emit(event);
   };
 
   render() {
@@ -212,7 +212,7 @@ export class ModusWcTextInput {
         <input
           aria-describedby={this.ariaDescribedby}
           aria-invalid={this.inputAriaInvalid}
-          aria-label={this.ariaLabel || this.placeholder}
+          aria-label={this.el.ariaLabel}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           autocapitalize={this.autoCapitalize}
@@ -227,8 +227,8 @@ export class ModusWcTextInput {
           minlength={this.minLength}
           name={this.name}
           onBlur={this.handleBlur}
-          onChange={this.handleChange}
           onFocus={this.handleFocus}
+          onInput={this.handleInput}
           pattern={this.pattern}
           placeholder={this.placeholder}
           readonly={this.readOnly}

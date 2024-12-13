@@ -8,7 +8,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-checkbox.tailwind';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 /**
  * A customizable checkbox component.
@@ -21,15 +21,13 @@ import { Size } from '../../types';
   shadow: false,
 })
 export class ModusWcCheckbox {
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the checkbox.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * The aria-labelledby attribute for usage with a label.
@@ -39,7 +37,7 @@ export class ModusWcCheckbox {
   /**
    * Custom CSS class to apply to the inner div.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * The disabled state of the checkbox.
@@ -79,7 +77,7 @@ export class ModusWcCheckbox {
   /**
    * The size of the input.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: DaisySize = 'md';
 
   /**
    * The value of the checkbox.
@@ -101,9 +99,6 @@ export class ModusWcCheckbox {
    */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
-  /** Reference to the host element */
-  @Element() el!: HTMLElement;
-
   componentDidRender() {
     const checkbox = this.el.querySelector(
       'input[type="checkbox"]'
@@ -115,10 +110,11 @@ export class ModusWcCheckbox {
   }
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcCheckbox: aria-label is required for accessibility.'
+        'ModusWcCheckbox: aria-label is required for accessibility. Using fallback label.'
       );
+      this.el.ariaLabel = 'Checkbox';
     }
   }
 
@@ -138,12 +134,12 @@ export class ModusWcCheckbox {
     this.inputBlur.emit(event);
   };
 
-  private handleChange = (event: Event) => {
-    this.inputChange.emit(event);
-  };
-
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
+  };
+
+  private handleInput = (event: Event) => {
+    this.inputChange.emit(event);
   };
 
   render() {
@@ -153,7 +149,7 @@ export class ModusWcCheckbox {
           aria-checked={this.indeterminate ? 'mixed' : this.value}
           aria-describedby={this.ariaDescribedby}
           aria-disabled={this.disabled}
-          aria-label={this.ariaLabel}
+          aria-label={this.el.ariaLabel}
           aria-labelledby={this.ariaLabelledby}
           checked={this.value}
           class={this.getClasses()}
@@ -162,8 +158,8 @@ export class ModusWcCheckbox {
           id={this.inputId}
           name={this.name}
           onBlur={this.handleBlur}
-          onChange={this.handleChange}
           onFocus={this.handleFocus}
+          onInput={this.handleInput}
           required={this.required}
           tabIndex={this.inputTabIndex}
           type="checkbox"

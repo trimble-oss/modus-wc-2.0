@@ -3,7 +3,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ISelectOption } from './modus-wc-select';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 const options: ISelectOption[] = [
   { label: 'Option 1', value: '1' },
@@ -25,7 +25,7 @@ interface SelectArgs {
   name?: string;
   options: ISelectOption[];
   required?: boolean;
-  size?: Size;
+  size?: DaisySize;
   value: string;
 }
 

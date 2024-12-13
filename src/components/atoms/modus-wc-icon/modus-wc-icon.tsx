@@ -1,5 +1,5 @@
-import { Component, h, Host, Prop } from '@stencil/core';
-import { Size } from '../../types';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
+import { DaisySize } from '../../types';
 
 /**
  * A customizable icon component used to render Modus icons.
@@ -14,16 +14,13 @@ import { Size } from '../../types';
   shadow: false,
 })
 export class ModusWcIcon {
-  /**
-   * The aria-label attribute for accessibility.
-   * This provides an accessible name for screen readers.
-   */
-  @Prop() ariaLabel!: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
    * Custom CSS class to apply to the i element.
    */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /**
    * Indicates that the icon is decorative.
@@ -40,13 +37,14 @@ export class ModusWcIcon {
    * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS).
    * This adjusts the font size for the icon.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {
-    if (!this.decorative && !this.ariaLabel) {
+    if (!this.decorative && !this.el.ariaLabel) {
       console.warn(
-        'ModusWcIcon: aria-label is required for accessibility for non decorative icons.'
+        'ModusWcIcon: aria-label is required for accessibility for non decorative icons. Using fallback label.'
       );
+      this.el.ariaLabel = `${this.name} icon`;
     }
   }
 
@@ -68,7 +66,7 @@ export class ModusWcIcon {
       <Host>
         <i
           aria-hidden={ariaHidden}
-          aria-label={this.decorative ? null : this.ariaLabel}
+          aria-label={this.decorative ? null : this.el.ariaLabel}
           class={this.getClasses()}
           role={role}
           tabindex={-1}

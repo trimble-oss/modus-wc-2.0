@@ -11,7 +11,7 @@ describe('modus-wc-progress', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcProgress: aria-label is required for accessibility.'
+      'ModusWcProgress: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();

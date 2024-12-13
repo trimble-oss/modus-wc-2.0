@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 interface TextAreaArgs {
   'aria-describedby'?: string;
@@ -21,7 +21,7 @@ interface TextAreaArgs {
   readonly?: boolean;
   required?: boolean;
   rows?: number;
-  size?: Size;
+  size?: DaisySize;
   value: string;
 }
 

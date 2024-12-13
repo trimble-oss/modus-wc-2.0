@@ -1,6 +1,6 @@
 import { h, Component, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-typography.tailwind';
-import { Size } from '../../types';
+import { DaisySize } from '../../types';
 
 export type TypographyVariant =
   | 'body'
@@ -26,11 +26,6 @@ export type TypographyWeight = 'light' | 'normal' | 'bold';
 })
 export class ModusWCTypography {
   /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
-
-  /**
    * Custom CSS class to apply to the typography element.
    */
   @Prop() customClass?: string = '';
@@ -38,7 +33,7 @@ export class ModusWCTypography {
   /**
    * The size of the font.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: DaisySize = 'md';
 
   /**
    * The variant of the typography component.
@@ -49,14 +44,6 @@ export class ModusWCTypography {
    * The weight of the text.
    */
   @Prop() weight?: TypographyWeight = 'normal';
-
-  componentWillLoad() {
-    if (!this.ariaLabel) {
-      console.warn(
-        'ModusWcTypography: aria-label is required for accessibility.'
-      );
-    }
-  }
 
   private getClasses(): string {
     const classList = ['modus-wc-typography'];
