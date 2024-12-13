@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Size } from '../../types';
+import { ModusSize } from '../../types';
 
 // const timeOptions = ['08:00', '12:00', '17:00'];
 
@@ -23,7 +23,7 @@ interface TimeInputArgs {
   'read-only'?: boolean;
   required?: boolean;
   seconds?: 'true' | 'false';
-  size?: Size;
+  size?: ModusSize;
   step?: number;
   'time-options'?: string[];
   value: string;

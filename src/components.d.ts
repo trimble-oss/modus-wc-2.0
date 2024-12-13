@@ -1042,7 +1042,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: ModusSize;
         /**
           * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
          */
@@ -2829,7 +2829,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: Size;
+        "size"?: ModusSize;
         /**
           * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
          */

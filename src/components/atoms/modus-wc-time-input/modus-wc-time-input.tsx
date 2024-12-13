@@ -7,7 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
-import { Size } from '../../types';
+import { ModusSize } from '../../types';
 
 const INTERNAL_DATALIST_NAME = 'modus-wc-internal-time-options';
 
@@ -108,7 +108,7 @@ export class ModusWcTimeInput {
   /**
    * The size of the input.
    */
-  @Prop() size?: Size = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /**
    * Specifies the granularity that the `value` must adhere to.

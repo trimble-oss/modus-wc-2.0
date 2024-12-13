@@ -2670,7 +2670,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "Size"
+                "text": "ModusSize"
               },
               "description": "The size of the input."
             },
