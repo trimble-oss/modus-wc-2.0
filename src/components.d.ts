@@ -108,10 +108,6 @@ export namespace Components {
          */
         "alt": string;
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
@@ -514,10 +510,6 @@ export namespace Components {
          */
         "ariaDescribedby"?: string;
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Hint for form autofill feature.
          */
         "autoComplete"?: 'on' | 'off';
@@ -841,10 +833,6 @@ export namespace Components {
           * The ID of the element that describes the input.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * Controls automatic capitalization in inputted text.
          */
@@ -1737,10 +1725,6 @@ declare namespace LocalJSX {
          */
         "alt": string;
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
@@ -2175,10 +2159,6 @@ declare namespace LocalJSX {
          */
         "ariaDescribedby"?: string;
         /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
-        /**
           * Hint for form autofill feature.
          */
         "autoComplete"?: 'on' | 'off';
@@ -2550,10 +2530,6 @@ declare namespace LocalJSX {
           * The ID of the element that describes the input.
          */
         "ariaDescribedby"?: string;
-        /**
-          * The aria-label attribute for accessibility.
-         */
-        "ariaLabel": string;
         /**
           * Controls automatic capitalization in inputted text.
          */

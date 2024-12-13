@@ -12,6 +12,13 @@
           "name": "ModusWcAvatar",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -24,14 +31,6 @@
                 "text": "string"
               },
               "description": "The image alt attribute for accessibility."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "custom-class",
@@ -1151,6 +1150,13 @@
           "name": "ModusWcNumberInput",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -1163,14 +1169,6 @@
                 "text": "string"
               },
               "description": "The ID of the element that describes the input."
-            },
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
             },
             {
               "name": "auto-complete",
@@ -2803,14 +2801,6 @@
             }
           ],
           "attributes": [
-            {
-              "name": "aria-label",
-              "fieldName": "ariaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-label attribute for accessibility."
-            },
             {
               "name": "custom-class",
               "fieldName": "customClass",

@@ -1,9 +1,10 @@
 import {
-  h,
-  Host,
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
+  h,
+  Host,
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
@@ -20,15 +21,12 @@ import { ModusSize } from '../../types';
   shadow: false,
 })
 export class ModusWcTextInput {
+  @Element() el!: HTMLElement;
+
   /**
    * The ID of the element that describes the input.
    */
   @Prop() ariaDescribedby?: string;
-
-  /**
-   * The aria-label attribute for accessibility.
-   */
-  @Prop() ariaLabel!: string;
 
   /**
    * Controls automatic capitalization in inputted text.
@@ -173,11 +171,11 @@ export class ModusWcTextInput {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.ariaLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
         'ModusWcTextInput: aria-label is required for accessibility. Using fallback label.'
       );
-      this.ariaLabel = this.placeholder || 'Text input';
+      this.el.ariaLabel = this.placeholder || 'Text input';
     }
   }
 
@@ -213,7 +211,7 @@ export class ModusWcTextInput {
         <input
           aria-describedby={this.ariaDescribedby}
           aria-invalid={this.inputAriaInvalid}
-          aria-label={this.ariaLabel}
+          aria-label={this.el.ariaLabel}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           autocapitalize={this.autoCapitalize}
