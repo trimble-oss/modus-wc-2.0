@@ -1000,7 +1000,7 @@ export namespace Components {
          */
         "step"?: number;
         /**
-          * The options to display in the time input dropdown.
+          * The options to display in the time input dropdown. Time options must be in `HH:mm` or `HH:mm:ss` format.
          */
         "timeOptions": string[];
         /**
@@ -2676,7 +2676,7 @@ declare namespace LocalJSX {
          */
         "step"?: number;
         /**
-          * The options to display in the time input dropdown.
+          * The options to display in the time input dropdown. Time options must be in `HH:mm` or `HH:mm:ss` format.
          */
         "timeOptions"?: string[];
         /**

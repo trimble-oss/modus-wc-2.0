@@ -147,3 +147,19 @@ export const TimeInputWithDatalist: Story = {
     `;
   },
 };
+
+// prettier-ignore
+export const TimeInputWithOptions: Story = {
+  render: () => {
+    return html`
+<script>
+  const preferredTimes = ['09:30', '12:00', '17:30'];
+  document.querySelector('#time-input-with-options').timeOptions = preferredTimes;
+</script>
+<modus-wc-time-input
+  aria-label="Example time input"
+  id="time-input-with-options"
+></modus-wc-time-input>
+    `;
+  },
+};

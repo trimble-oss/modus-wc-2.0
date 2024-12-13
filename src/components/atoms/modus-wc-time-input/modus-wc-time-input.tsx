@@ -5,6 +5,7 @@ import {
   Event as StencilEvent,
   EventEmitter,
   Prop,
+  Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
 import { Size } from '../../types';
@@ -118,9 +119,9 @@ export class ModusWcTimeInput {
   @Prop() step?: number;
 
   /**
-   * The options to display in the time input dropdown.
+   * The options to display in the time input dropdown. Time options must be in `HH:mm` or `HH:mm:ss` format.
    */
-  @Prop() timeOptions: string[] = [];
+  @Prop({ mutable: true }) timeOptions: string[] = [];
 
   /**
    * The value of the time input.
@@ -146,15 +147,20 @@ export class ModusWcTimeInput {
    */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
+  @Watch('timeOptions')
+  updateTimeOptions(newTimeOptions: string[]) {
+    // TODO: add validation for time options
+    this.timeOptions = [...newTimeOptions];
+    console.log('Watch() timeOptions:', this.timeOptions);
+  }
+
   componentWillLoad() {
     if (!this.ariaLabel) {
       console.warn(
         'ModusWcTimeInput: aria-label is required for accessibility.'
       );
     }
-  }
 
-  componentWillRender() {
     if (!this.list) {
       INTERNAL_DATALIST_ID = `${INTERNAL_DATALIST_ID}-${Math.random().toString(36).substring(2, 11)}`;
       this.list = INTERNAL_DATALIST_ID;
@@ -198,6 +204,7 @@ export class ModusWcTimeInput {
     // if no time options are provided, do not render the datalist element
     if (this.timeOptions?.length === 0) {
       console.log('No time options provided.');
+      console.log('timeOptions:', this.timeOptions);
       return null;
     }
 

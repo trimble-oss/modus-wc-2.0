@@ -2430,6 +2430,18 @@
             {
               "kind": "method",
               "name": "render"
+            },
+            {
+              "kind": "method",
+              "name": "updateTimeOptions",
+              "parameters": [
+                {
+                  "name": "newTimeOptions",
+                  "type": {
+                    "text": "string[]"
+                  }
+                }
+              ]
             }
           ],
           "attributes": [
@@ -2583,7 +2595,7 @@
               "type": {
                 "text": "string[]"
               },
-              "description": "The options to display in the time input dropdown."
+              "description": "The options to display in the time input dropdown. Time options must be in `HH:mm` or `HH:mm:ss` format."
             },
             {
               "name": "value",
