@@ -1,10 +1,10 @@
 import {
-  h,
-  Host,
   Component,
   Element,
   Event as StencilEvent,
   EventEmitter,
+  h,
+  Host,
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
