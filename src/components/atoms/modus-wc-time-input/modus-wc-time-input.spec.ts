@@ -11,7 +11,7 @@ describe('modus-wc-time-input', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcTimeInput: aria-label is required for accessibility.'
+      'ModusWcTimeInput: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();
