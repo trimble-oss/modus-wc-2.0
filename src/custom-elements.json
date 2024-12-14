@@ -515,14 +515,6 @@
               "description": "The aria-labelledby attribute for usage with a label."
             },
             {
-              "name": "auto-focus",
-              "fieldName": "autoFocus",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that an element should be focused on page load."
-            },
-            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
@@ -1173,14 +1165,6 @@
               "description": "Hint for form autofill feature."
             },
             {
-              "name": "auto-focus",
-              "fieldName": "autoFocus",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that an element should be focused on page load."
-            },
-            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
@@ -1647,14 +1631,6 @@
               "description": "The ID of the element that describes the input."
             },
             {
-              "name": "auto-focus",
-              "fieldName": "autoFocus",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that an element should be focused on page load."
-            },
-            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
@@ -2103,14 +2079,6 @@
                 "text": "'on' | 'off'"
               },
               "description": "Hint for form autofill feature."
-            },
-            {
-              "name": "auto-focus",
-              "fieldName": "autoFocus",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that an element should be focused on page load."
             },
             {
               "name": "bordered",

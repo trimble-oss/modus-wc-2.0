@@ -46,11 +46,6 @@ export class ModusWcTextInput {
   @Prop() autoComplete?: 'on' | 'off';
 
   /**
-   * Indicates that an element should be focused on page load.
-   */
-  @Prop() autoFocus?: boolean;
-
-  /**
    * Indicates that the input should have a border.
    */
   @Prop() bordered?: boolean = true;
@@ -217,7 +212,6 @@ export class ModusWcTextInput {
           aria-required={this.required}
           autocapitalize={this.autoCapitalize}
           autocomplete={this.autoComplete}
-          autofocus={this.autoFocus}
           class={this.getClasses()}
           dir={this.inputDir}
           disabled={this.disabled}

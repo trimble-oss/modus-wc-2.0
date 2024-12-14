@@ -35,11 +35,6 @@ export class ModusWcDate {
   @Prop() ariaLabelledby?: string;
 
   /**
-   * Indicates that an element should be focused on page load.
-   */
-  @Prop() autoFocus?: boolean;
-
-  /**
    * Indicates that the input should have a border.
    */
   @Prop() bordered?: boolean = true;
@@ -166,7 +161,6 @@ export class ModusWcDate {
           aria-describedby={this.ariaDescribedby}
           aria-label={this.el.ariaLabel}
           aria-labelledby={this.ariaLabelledby}
-          autofocus={this.autoFocus}
           class={this.getClasses()}
           dir={this.inputDir}
           disabled={this.disabled}

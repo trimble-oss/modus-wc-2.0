@@ -262,10 +262,6 @@ export namespace Components {
          */
         "ariaLabelledby"?: string;
         /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -478,10 +474,6 @@ export namespace Components {
          */
         "autoComplete"?: 'on' | 'off';
         /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -635,10 +627,6 @@ export namespace Components {
           * The ID of the element that describes the input.
          */
         "ariaDescribedby"?: string;
-        /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
         /**
           * Indicates that the input should have a border.
          */
@@ -794,10 +782,6 @@ export namespace Components {
           * Hint for form autofill feature.
          */
         "autoComplete"?: 'on' | 'off';
-        /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
         /**
           * Indicates that the input should have a border.
          */
@@ -1941,10 +1925,6 @@ declare namespace LocalJSX {
          */
         "ariaLabelledby"?: string;
         /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -2173,10 +2153,6 @@ declare namespace LocalJSX {
          */
         "autoComplete"?: 'on' | 'off';
         /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -2354,10 +2330,6 @@ declare namespace LocalJSX {
           * The ID of the element that describes the input.
          */
         "ariaDescribedby"?: string;
-        /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
         /**
           * Indicates that the input should have a border.
          */
@@ -2537,10 +2509,6 @@ declare namespace LocalJSX {
           * Hint for form autofill feature.
          */
         "autoComplete"?: 'on' | 'off';
-        /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
         /**
           * Indicates that the input should have a border.
          */
