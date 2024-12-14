@@ -25,91 +25,104 @@ describe('modus-wc-time-input', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  // TODO: add test cases
-  // it('should render with custom props', async () => {
+  it('should render with all props', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input
+                aria-describedby="desc"
+                aria-label="Time input"
+                auto-complete="on"
+                bordered
+                custom-class="custom"
+                disabled
+                input-dir="ltr"
+                input-id="time-input"
+                input-tab-index="1"
+                list="time-options"
+                max="23:59"
+                min="00:00"
+                name="time"
+                read-only
+                required
+                seconds
+                size="lg"
+                step="30"
+                time-options='["00:00", "12:00", "23:59"]'
+                value="12:00">
+              </modus-wc-time-input>`,
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should emit blur event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Blur test"></modus-wc-time-input>',
+    });
+    const input = page.root!.querySelector('input');
+    expect(input).not.toBeNull();
+    const blurSpy = jest.fn();
+    page.root!.addEventListener('inputBlur', blurSpy);
+
+    input!.dispatchEvent(new FocusEvent('blur'));
+    await page.waitForChanges();
+
+    expect(blurSpy).toHaveBeenCalled();
+  });
+
+  it('should emit change event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Change test" list="test-list"></modus-wc-time-input>',
+    });
+    const input = page.root!.querySelector('input');
+    expect(input).not.toBeNull();
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    input!.value = '01:00';
+    input!.dispatchEvent(new Event('input'));
+    await page.waitForChanges();
+
+    expect(changeSpy).toHaveBeenCalled();
+    expect(changeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: expect.any(Event),
+      })
+    );
+  });
+
+  it('should emit focus event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Focus test"></modus-wc-time-input>',
+    });
+    const input = page.root!.querySelector('input');
+    expect(input).not.toBeNull();
+    const focusSpy = jest.fn();
+    page.root!.addEventListener('inputFocus', focusSpy);
+
+    input!.dispatchEvent(new FocusEvent('focus'));
+    await page.waitForChanges();
+
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  // TODO: fix these test cases to actually do what they say
+
+  // it('should render datalist when timeOptions are provided', async () => {
   //   const page = await newSpecPage({
   //     components: [ModusWcTimeInput],
-  //     html: `<modus-wc-time-input
-  //       aria-describedby="description"
-  //       aria-label="Test time input"
-  //       auto-capitalize="words"
-  //       auto-complete="on"
-  //       auto-focus="true"
-  //       custom-class="test-class"
-  //       disabled="true"
-  //       input-aria-invalid="grammar"
-  //       input-dir="rtl"
-  //       input-id="test-id"
-  //       input-mode="numeric"
-  //       input-spellcheck="true"
-  //       input-tab-index="1"
-  //       max-length="50"
-  //       min-length="5"
-  //       name="test-name"
-  //       pattern="[A-Za-z]{3}"
-  //       placeholder="Test placeholder"
-  //       readonly="true"
-  //       required="true"
-  //       size="lg"
-  //       type="email"
-  //       value="test@example.com"
-  //     ></modus-wc-time-input>`,
+  //     html: `<modus-wc-time-input aria-label="Time input" time-options='["00:00", "12:00", "23:59"]' list="test-list"></modus-wc-time-input>`,
   //   });
   //   expect(page.root).toMatchSnapshot();
   // });
 
-  // it('should emit blur event', async () => {
+  // it('should not render datalist when timeOptions are empty', async () => {
   //   const page = await newSpecPage({
   //     components: [ModusWcTimeInput],
-  //     html: '<modus-wc-time-input aria-label="Blur test"></modus-wc-time-input>',
+  //     html: `<modus-wc-time-input aria-label="Time input" list="test-list"></modus-wc-time-input>`,
   //   });
-  //   const input = page.root!.querySelector('input');
-  //   expect(input).not.toBeNull();
-  //   const blurSpy = jest.fn();
-  //   page.root!.addEventListener('inputBlur', blurSpy);
-
-  //   input!.dispatchEvent(new FocusEvent('blur'));
-  //   await page.waitForChanges();
-
-  //   expect(blurSpy).toHaveBeenCalled();
-  // });
-
-  // it('should emit change event', async () => {
-  //   const page = await newSpecPage({
-  //     components: [ModusWcTimeInput],
-  //     html: '<modus-wc-time-input aria-label="Change test"></modus-wc-time-input>',
-  //   });
-  //   const input = page.root!.querySelector('input');
-  //   expect(input).not.toBeNull();
-  //   const changeSpy = jest.fn();
-  //   page.root!.addEventListener('inputChange', changeSpy);
-
-  //   input!.value = 'New value';
-  //   input!.dispatchEvent(new Event('change'));
-  //   await page.waitForChanges();
-
-  //   expect(changeSpy).toHaveBeenCalled();
-  //   expect(changeSpy).toHaveBeenCalledWith(
-  //     expect.objectContaining({
-  //       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  //       detail: expect.any(Event),
-  //     })
-  //   );
-  // });
-
-  // it('should emit focus event', async () => {
-  //   const page = await newSpecPage({
-  //     components: [ModusWcTimeInput],
-  //     html: '<modus-wc-time-input aria-label="Focus test"></modus-wc-time-input>',
-  //   });
-  //   const input = page.root!.querySelector('input');
-  //   expect(input).not.toBeNull();
-  //   const focusSpy = jest.fn();
-  //   page.root!.addEventListener('inputFocus', focusSpy);
-
-  //   input!.dispatchEvent(new FocusEvent('focus'));
-  //   await page.waitForChanges();
-
-  //   expect(focusSpy).toHaveBeenCalled();
+  //   expect(page.root).toMatchSnapshot();
   // });
 });

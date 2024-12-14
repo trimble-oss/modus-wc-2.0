@@ -176,12 +176,12 @@ export class ModusWcTimeInput {
     this.inputBlur.emit(event);
   };
 
-  private handleChange = (event: Event) => {
-    this.inputChange.emit(event);
-  };
-
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
+  };
+
+  private handleInput = (event: Event) => {
+    this.inputChange.emit(event);
   };
 
   /**
@@ -230,8 +230,8 @@ export class ModusWcTimeInput {
           min={this.min}
           name={this.name}
           onBlur={this.handleBlur}
-          onChange={this.handleChange}
           onFocus={this.handleFocus}
+          onInput={this.handleInput}
           readonly={this.readOnly}
           required={this.required}
           step={this.step || !!this.seconds ? 1 : 60}
