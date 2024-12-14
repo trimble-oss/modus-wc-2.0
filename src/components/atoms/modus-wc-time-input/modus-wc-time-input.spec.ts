@@ -25,7 +25,7 @@ describe('modus-wc-time-input', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should render with all props', async () => {
+  it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
       html: `<modus-wc-time-input
@@ -47,7 +47,6 @@ describe('modus-wc-time-input', () => {
                 seconds
                 size="lg"
                 step="30"
-                time-options='["00:00", "12:00", "23:59"]'
                 value="12:00">
               </modus-wc-time-input>`,
     });
