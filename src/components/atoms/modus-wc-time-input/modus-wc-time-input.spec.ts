@@ -108,21 +108,66 @@ describe('modus-wc-time-input', () => {
     expect(focusSpy).toHaveBeenCalled();
   });
 
-  // TODO: fix these test cases to actually do what they say
+  it('should render datalist when timeOptions are provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Time input"></modus-wc-time-input>`,
+    });
+    const timeInput = page.rootInstance;
+    timeInput.timeOptions = ['00:00', '12:00', '23:59'];
+    await page.waitForChanges();
 
-  // it('should render datalist when timeOptions are provided', async () => {
-  //   const page = await newSpecPage({
-  //     components: [ModusWcTimeInput],
-  //     html: `<modus-wc-time-input aria-label="Time input" time-options='["00:00", "12:00", "23:59"]' list="test-list"></modus-wc-time-input>`,
-  //   });
-  //   expect(page.root).toMatchSnapshot();
-  // });
+    const datalist = page.root!.querySelector('datalist');
+    expect(datalist).not.toBeNull();
+    expect(datalist!.children.length).toBe(3);
+  });
 
-  // it('should not render datalist when timeOptions are empty', async () => {
-  //   const page = await newSpecPage({
-  //     components: [ModusWcTimeInput],
-  //     html: `<modus-wc-time-input aria-label="Time input" list="test-list"></modus-wc-time-input>`,
-  //   });
-  //   expect(page.root).toMatchSnapshot();
-  // });
+  it('should not render datalist when timeOptions are not provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Time input"></modus-wc-time-input>`,
+    });
+    const timeInput = page.rootInstance;
+    timeInput.timeOptions = [];
+    await page.waitForChanges();
+
+    const datalist = page.root!.querySelector('datalist');
+    expect(datalist).toBeNull();
+  });
+
+  it('should not render datalist with default props', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Time input"></modus-wc-time-input>`,
+    });
+    const datalist = page.root!.querySelector('datalist');
+    expect(datalist).toBeNull();
+  });
+
+  it('should render datalist with internal ID when list prop is not provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Time input"></modus-wc-time-input>`,
+    });
+    const timeInput = page.rootInstance;
+    timeInput.timeOptions = ['00:00', '12:00', '23:59'];
+    await page.waitForChanges();
+
+    const datalist = page.root!.querySelector('datalist');
+    expect(datalist).not.toBeNull();
+    expect(datalist!.id).toBe(timeInput.internalDatalistId);
+  });
+
+  it('should not render datalist when list prop is provided and does not match internal ID', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Time input" list="external-datalist"></modus-wc-time-input>`,
+    });
+    const timeInput = page.rootInstance;
+    timeInput.timeOptions = ['00:00', '12:00', '23:59'];
+    await page.waitForChanges();
+
+    const datalist = page.root!.querySelector('datalist');
+    expect(datalist).toBeNull();
+  });
 });

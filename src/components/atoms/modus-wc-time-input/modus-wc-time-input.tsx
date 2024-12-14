@@ -198,7 +198,7 @@ export class ModusWcTimeInput {
    */
   private renderDatalist(): HTMLElement | null {
     if (
-      this.timeOptions?.length === 0 ||
+      this.timeOptions.length === 0 ||
       this.list !== this.internalDatalistId
     ) {
       return null;
