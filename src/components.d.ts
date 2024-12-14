@@ -773,6 +773,46 @@ export namespace Components {
         "value": number;
     }
     /**
+     * A customizable tab component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTab {
+        /**
+          * If the tab is active.
+         */
+        "active"?: boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass": string;
+        /**
+          * If the tab is disabled.
+         */
+        "disabled"?: boolean;
+    }
+    /**
+     * A customizable tabs component used to create groups of tabs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTabs {
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass": string;
+        /**
+          * Default tab selected by index.
+         */
+        "selected": number;
+        /**
+          * The size of the tabs.
+         */
+        "size"?: DaisySize;
+        /**
+          * Additional styling for the tabs.
+         */
+        "tabStyle"?: 'boxed' | 'bordered' | 'lifted';
+    }
+    /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1109,6 +1149,10 @@ export interface ModusWcSliderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSliderElement;
 }
+export interface ModusWcTabsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTabsElement;
+}
 export interface ModusWcTextInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTextInputElement;
@@ -1412,6 +1456,37 @@ declare global {
         prototype: HTMLModusWcSliderElement;
         new (): HTMLModusWcSliderElement;
     };
+    /**
+     * A customizable tab component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcTabElement extends Components.ModusWcTab, HTMLStencilElement {
+    }
+    var HTMLModusWcTabElement: {
+        prototype: HTMLModusWcTabElement;
+        new (): HTMLModusWcTabElement;
+    };
+    interface HTMLModusWcTabsElementEventMap {
+        "tabChange": number;
+    }
+    /**
+     * A customizable tabs component used to create groups of tabs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcTabsElement extends Components.ModusWcTabs, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTabsElementEventMap>(type: K, listener: (this: HTMLModusWcTabsElement, ev: ModusWcTabsCustomEvent<HTMLModusWcTabsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTabsElementEventMap>(type: K, listener: (this: HTMLModusWcTabsElement, ev: ModusWcTabsCustomEvent<HTMLModusWcTabsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTabsElement: {
+        prototype: HTMLModusWcTabsElement;
+        new (): HTMLModusWcTabsElement;
+    };
     interface HTMLModusWcTextInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
@@ -1547,6 +1622,8 @@ declare global {
         "modus-wc-select": HTMLModusWcSelectElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
+        "modus-wc-tab": HTMLModusWcTabElement;
+        "modus-wc-tabs": HTMLModusWcTabsElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
@@ -2406,6 +2483,50 @@ declare namespace LocalJSX {
         "value"?: number;
     }
     /**
+     * A customizable tab component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTab {
+        /**
+          * If the tab is active.
+         */
+        "active"?: boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * If the tab is disabled.
+         */
+        "disabled"?: boolean;
+    }
+    /**
+     * A customizable tabs component used to create groups of tabs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTabs {
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Event emitted when the `selected` property changes.
+         */
+        "onTabChange"?: (event: ModusWcTabsCustomEvent<number>) => void;
+        /**
+          * Default tab selected by index.
+         */
+        "selected"?: number;
+        /**
+          * The size of the tabs.
+         */
+        "size"?: DaisySize;
+        /**
+          * Additional styling for the tabs.
+         */
+        "tabStyle"?: 'boxed' | 'bordered' | 'lifted';
+    }
+    /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -2763,6 +2884,8 @@ declare namespace LocalJSX {
         "modus-wc-select": ModusWcSelect;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
+        "modus-wc-tab": ModusWcTab;
+        "modus-wc-tabs": ModusWcTabs;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
@@ -2863,6 +2986,16 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-slider": LocalJSX.ModusWcSlider & JSXBase.HTMLAttributes<HTMLModusWcSliderElement>;
+            /**
+             * A customizable tab component.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-tab": LocalJSX.ModusWcTab & JSXBase.HTMLAttributes<HTMLModusWcTabElement>;
+            /**
+             * A customizable tabs component used to create groups of tabs.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-tabs": LocalJSX.ModusWcTabs & JSXBase.HTMLAttributes<HTMLModusWcTabsElement>;
             /**
              * A customizable input component used to create text inputs with types.
              * Adheres to WCAG 2.2 standards.
