@@ -20,7 +20,7 @@ describe('modus-wc-time-input', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input aria-label="Default input"></modus-wc-time-input>',
+      html: '<modus-wc-time-input aria-label="Default input" list="test-list"></modus-wc-time-input>',
     });
     expect(page.root).toMatchSnapshot();
   });

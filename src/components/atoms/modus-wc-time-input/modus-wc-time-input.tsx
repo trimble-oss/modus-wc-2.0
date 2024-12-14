@@ -186,7 +186,7 @@ export class ModusWcTimeInput {
 
   /**
    * The ID of the internal <datalist> element. Unique to each instance of the time input component.
-   * This is used as the `list` id for when `timeOptions` are provided.
+   * This is used as the `list` id when `timeOptions` are provided.
    */
   private readonly internalDatalistId = `${INTERNAL_DATALIST_NAME}-${Math.random().toString(36).substring(2, 11)}`;
 
