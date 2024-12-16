@@ -102,7 +102,7 @@ export class ModusWcSlider {
   /**
    * Emitted when the input value changes.
    */
-  @StencilEvent() inputChange!: EventEmitter<Event>;
+  @StencilEvent() inputChange!: EventEmitter<InputEvent>;
 
   /**
    * Emitted when the input gains focus.
@@ -138,7 +138,7 @@ export class ModusWcSlider {
     this.inputFocus.emit(event);
   };
 
-  private handleInput = (event: Event) => {
+  private handleInput = (event: InputEvent) => {
     this.inputChange.emit(event);
   };
 

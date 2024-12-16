@@ -440,7 +440,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Emitted when the input value changes."
             },
@@ -649,7 +649,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Event emitted when the input value changes."
             },
@@ -1339,7 +1339,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Event emitted when the input value changes."
             },
@@ -1580,7 +1580,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Emitted when the input value changes."
             },
@@ -1765,7 +1765,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Event emitted when the input value changes."
             },
@@ -2022,7 +2022,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Emitted when the input value changes."
             },
@@ -2279,7 +2279,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Event emitted when the input value changes."
             },
@@ -2488,7 +2488,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Emitted when the input value changes."
             },
@@ -2657,7 +2657,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Emitted when the input value changes."
             },
