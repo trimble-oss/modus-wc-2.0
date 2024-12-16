@@ -2627,8 +2627,8 @@
               "description": "A value is required for the form to be submittable."
             },
             {
-              "name": "seconds",
-              "fieldName": "seconds",
+              "name": "show-seconds",
+              "fieldName": "showSeconds",
               "type": {
                 "text": "boolean"
               },

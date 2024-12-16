@@ -22,7 +22,7 @@ interface TimeInputArgs {
   name?: string;
   'read-only'?: boolean;
   required?: boolean;
-  seconds?: boolean;
+  'show-seconds'?: boolean;
   size?: ModusSize;
   step?: number;
   'time-options'?: string[];
@@ -34,9 +34,7 @@ const meta: Meta<TimeInputArgs> = {
   component: 'modus-wc-time-input',
   args: {
     'aria-label': 'Time input',
-    bordered: true,
     disabled: false,
-    seconds: false,
     size: 'md',
   },
   argTypes: {
@@ -71,7 +69,7 @@ export const Template: Story = {
       aria-describedby=${ifDefined(args['aria-describedby'])}
       aria-label=${args['aria-label']}
       auto-complete=${ifDefined(args['auto-complete'])}
-      ?bordered=${args.bordered}
+      bordered=${ifDefined(args.bordered)}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       input-dir=${ifDefined(args['input-dir'])}
@@ -83,7 +81,7 @@ export const Template: Story = {
       name=${ifDefined(args.name)}
       ?read-only=${args['read-only']}
       ?required=${args.required}
-      seconds=${ifDefined(args.seconds)}
+      show-seconds=${ifDefined(args['show-seconds'])}
       size=${ifDefined(args.size)}
       step=${ifDefined(args.step)}
       .timeOptions=${args['time-options']}
@@ -127,7 +125,7 @@ export const TimeInputWithSeconds: Story = {
     return html`
       <modus-wc-time-input
         aria-label="Example time input"
-        seconds="true"
+        show-seconds="true"
       ></modus-wc-time-input>
     `;
   },

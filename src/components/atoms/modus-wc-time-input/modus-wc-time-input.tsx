@@ -102,7 +102,7 @@ export class ModusWcTimeInput {
    * Internally sets the `step` to 1 second.
    * If a `step` value is provided, it will override this attribute.
    */
-  @Prop() seconds?: boolean = false;
+  @Prop() showSeconds?: boolean = false;
 
   /**
    * The size of the input.
@@ -235,7 +235,7 @@ export class ModusWcTimeInput {
           onInput={this.handleInput}
           readonly={this.readOnly}
           required={this.required}
-          step={this.step || this.seconds ? 1 : 60}
+          step={this.step || this.showSeconds ? 1 : 60}
           tabIndex={this.inputTabIndex}
           type="time"
           value={this.value}

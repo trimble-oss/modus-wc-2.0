@@ -1018,7 +1018,7 @@ export namespace Components {
         /**
           * Displays the time input format as `HH:mm:ss` if `true`. Internally sets the `step` to 1 second. If a `step` value is provided, it will override this attribute.
          */
-        "seconds"?: boolean;
+        "showSeconds"?: boolean;
         /**
           * The size of the input.
          */
@@ -2785,7 +2785,7 @@ declare namespace LocalJSX {
         /**
           * Displays the time input format as `HH:mm:ss` if `true`. Internally sets the `step` to 1 second. If a `step` value is provided, it will override this attribute.
          */
-        "seconds"?: boolean;
+        "showSeconds"?: boolean;
         /**
           * The size of the input.
          */
