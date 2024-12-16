@@ -15,7 +15,6 @@ interface TextInputArgs {
     | 'words'
     | 'characters';
   'auto-complete'?: 'on' | 'off';
-  'auto-focus'?: boolean;
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
@@ -117,7 +116,6 @@ export const Template: Story = {
       aria-label=${args['aria-label']}
       auto-capitalize=${ifDefined(args['auto-capitalize'])}
       auto-complete=${ifDefined(args['auto-complete'])}
-      ?auto-focus=${args['auto-focus']}
       ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
