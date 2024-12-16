@@ -976,7 +976,7 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
-          * ID of a datalist element that contains pre-defined time options. The value must be the ID of a datalist element in the same document.
+          * ID of a `<datalist>` element that contains pre-defined time options. The value must be the ID of a `<datalist>` element in the same document.
          */
         "datalistId"?: string;
         /**
@@ -2731,7 +2731,7 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * ID of a datalist element that contains pre-defined time options. The value must be the ID of a datalist element in the same document.
+          * ID of a `<datalist>` element that contains pre-defined time options. The value must be the ID of a `<datalist>` element in the same document.
          */
         "datalistId"?: string;
         /**

@@ -154,7 +154,7 @@ export const TimeInputWithDatalistOptions: Story = {
     return html`
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // Example of programmatically adding 'timeOptions'
+    // Example of programmatically adding 'datalistOptions'
     const preferredTimes = ['09:30', '12:00', '17:30'];
     document.querySelector('#time-input-with-options').datalistOptions = preferredTimes;
   });

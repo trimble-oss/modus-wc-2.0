@@ -2552,7 +2552,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "ID of a datalist element that contains pre-defined time options.\r\nThe value must be the ID of a datalist element in the same document."
+              "description": "ID of a `<datalist>` element that contains pre-defined time options.\r\nThe value must be the ID of a `<datalist>` element in the same document."
             },
             {
               "name": "datalist-options",

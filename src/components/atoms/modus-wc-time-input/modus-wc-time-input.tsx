@@ -67,8 +67,8 @@ export class ModusWcTimeInput {
   @Prop() inputTabIndex?: number;
 
   /**
-   * ID of a datalist element that contains pre-defined time options.
-   * The value must be the ID of a datalist element in the same document.
+   * ID of a `<datalist>` element that contains pre-defined time options.
+   * The value must be the ID of a `<datalist>` element in the same document.
    */
   @Prop({ mutable: true }) datalistId?: string;
 
