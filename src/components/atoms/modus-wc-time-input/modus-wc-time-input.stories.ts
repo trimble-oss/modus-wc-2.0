@@ -97,13 +97,13 @@ export const TimeInputWithLabel: Story = {
   render: () => {
     return html`
 <style>
-.form-control {
-  display: flex;
-  align-items: center;
-}
-.modus-wc-input-label {
-  padding-inline-end: 8px;
-}
+  .form-control {
+    display: flex;
+    align-items: center;
+  }
+  .modus-wc-input-label {
+    padding-inline-end: 8px;
+  }
 </style>
 <form action="" method="get">
 <div class="form-control">
