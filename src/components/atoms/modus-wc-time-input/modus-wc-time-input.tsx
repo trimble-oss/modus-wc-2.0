@@ -186,17 +186,16 @@ export class ModusWcTimeInput {
     this.inputChange.emit(event);
   };
 
-  /**
+  /*
    * The ID of the internal <datalist> element. Unique to each instance of the time input component.
    * This is used as the `list` id when `timeOptions` are provided.
    */
   private readonly internalDatalistId = `${INTERNAL_DATALIST_NAME}-${Math.random().toString(36).substring(2, 11)}`;
 
-  /**
+  /*
    * Conditionally renders the datalist element with the time options.
    * If no time options are provided or the list prop is not the default,
    * the datalist element will not be rendered (returns `null`).
-   * @returns The datalist `HTMLElement` with the time options or `null`.
    */
   private renderDatalist(): HTMLElement | null {
     if (
