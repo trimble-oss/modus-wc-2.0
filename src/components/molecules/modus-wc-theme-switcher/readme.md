@@ -15,9 +15,10 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property      | Attribute      | Description                                              | Type                  | Default |
-| ------------- | -------------- | -------------------------------------------------------- | --------------------- | ------- |
-| `customClass` | `custom-class` | Custom CSS class to apply to the theme switcher element. | `string \| undefined` | `''`    |
+| Property                 | Attribute      | Description                                                                                                                                                                           | Type                  | Default     |
+| ------------------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
+| `a11yLabel` _(required)_ | `a-1-1y-label` | The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration. | `string`              | `undefined` |
+| `customClass`            | `custom-class` | Custom CSS class to apply to the theme switcher element.                                                                                                                              | `string \| undefined` | `''`        |
 
 
 ## Events

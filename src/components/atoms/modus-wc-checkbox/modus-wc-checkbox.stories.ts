@@ -5,9 +5,9 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { DaisySize } from '../../types';
 
 interface CheckboxArgs {
-  'aria-describedby'?: string;
-  'aria-label': string;
-  'aria-labelledby'?: string;
+  'a11y-describedby'?: string;
+  'a11y-label': string;
+  'a11y-labelledby'?: string;
   'custom-class'?: string;
   disabled?: boolean;
   indeterminate?: boolean;
@@ -24,7 +24,7 @@ const meta: Meta<CheckboxArgs> = {
   title: 'Components/Forms/Checkbox',
   component: 'modus-wc-checkbox',
   args: {
-    'aria-label': 'Checkbox',
+    'a11y-label': 'Checkbox',
     'custom-class': '',
     disabled: false,
     indeterminate: false,
@@ -61,9 +61,9 @@ export const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-checkbox
-        aria-describedby=${ifDefined(args['aria-describedby'])}
-        aria-label=${args['aria-label']}
-        aria-labelledby=${ifDefined(args['aria-labelledby'])}
+        a11y-describedby=${ifDefined(args['a11y-describedby'])}
+        a11y-label=${args['a11y-label']}
+        a11y-labelledby=${ifDefined(args['a11y-labelledby'])}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
         .indeterminate=${args.indeterminate}
@@ -94,7 +94,7 @@ export const CheckboxWithLabel: Story = {
 <form action="" method="get">
   <div class="form-control">
     <modus-wc-checkbox
-      aria-label="Example checkbox"
+      a11y-label="Example checkbox"
       input-id="checkbox-input"
       name="example-checkbox"
     ></modus-wc-checkbox>

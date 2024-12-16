@@ -3,7 +3,7 @@ import { html } from 'lit';
 import { ModusSize } from '../../types';
 
 interface BadgeArgs {
-  'aria-label': string;
+  'a11y-label': string;
   color:
     | 'primary'
     | 'secondary'
@@ -22,7 +22,7 @@ const meta: Meta<BadgeArgs> = {
   title: 'Components/Badge',
   component: 'modus-wc-badge',
   args: {
-    'aria-label': 'Example badge',
+    'a11y-label': 'Example badge',
     color: 'primary',
     content: 'Badge',
     size: 'md',
@@ -60,7 +60,7 @@ const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-badge
-        aria-label="${args['aria-label']}"
+        a11y-label="${args['a11y-label']}"
         color="${args.color}"
         content="${args.content}"
         ?custom-class="${args['custom-class']}"

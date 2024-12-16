@@ -1,4 +1,4 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import { Component, h, Host, Prop } from '@stencil/core';
 // import { convertPropsToClasses } from './modus-wc-progress.tailwind';
 
 /**
@@ -12,8 +12,11 @@ import { Component, Element, h, Host, Prop } from '@stencil/core';
   shadow: false,
 })
 export class ModusWcProgress {
-  /** Reference to the host element */
-  @Element() el!: HTMLElement;
+  /**
+   * The aria-label attribute used to define a string that labels the current element (accessibility).
+   * This property name is reserved by HTMLElement and omitted in the React integration.
+   */
+  @Prop({ mutable: true }) a11yLabel!: string;
 
   /**
    * Custom CSS class to apply to the progress element.
@@ -36,11 +39,11 @@ export class ModusWcProgress {
   @Prop({ mutable: true, reflect: true }) value: number = 0;
 
   componentWillLoad() {
-    if (!this.el.ariaLabel) {
+    if (!this.a11yLabel) {
       console.warn(
-        'ModusWcProgress: aria-label is required for accessibility. Using fallback label.'
+        'ModusWcProgress: a11y-label is required for accessibility. Using fallback label.'
       );
-      this.el.ariaLabel = 'Progress';
+      this.a11yLabel = 'Progress';
     }
   }
 
@@ -70,7 +73,7 @@ export class ModusWcProgress {
     return (
       <Host>
         <progress
-          aria-label={this.el.ariaLabel}
+          aria-label={this.a11yLabel}
           class={this.getClasses()}
           {...valueAttributes}
         />

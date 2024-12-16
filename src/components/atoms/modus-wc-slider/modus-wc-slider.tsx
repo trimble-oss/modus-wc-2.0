@@ -1,6 +1,5 @@
 import {
   Component,
-  Element,
   Event as StencilEvent,
   EventEmitter,
   h,
@@ -21,18 +20,23 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcSlider {
-  /** Reference to the host element */
-  @Element() el!: HTMLElement;
+  /**
+   * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).
+   * This property name is reserved by HTMLElement and omitted in the React integration.
+   */
+  @Prop({ mutable: true }) a11yDescribedby?: string;
 
   /**
-   * The ID of the element that describes the slider.
+   * The aria-label attribute used to define a string that labels the current element (accessibility).
+   * This property name is reserved by HTMLElement and omitted in the React integration.
    */
-  @Prop() ariaDescribedby?: string;
+  @Prop({ mutable: true }) a11yLabel!: string;
 
   /**
-   * The aria-labelledby attribute for usage with a label.
+   * The aria-labelledby attribute for usage with a label (accessibility).
+   * This property name is reserved by HTMLElement and omitted in the React integration.
    */
-  @Prop() ariaLabelledby?: string;
+  @Prop({ mutable: true }) a11yLabelledby?: string;
 
   /**
    * Custom CSS class to apply to the inner div.
@@ -110,12 +114,12 @@ export class ModusWcSlider {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.el.ariaLabel) {
+    if (!this.a11yLabel) {
       console.warn(
-        'ModusWcSlider: aria-label is required for accessibility. Using fallback label.'
+        'ModusWcSlider: a11y-label is required for accessibility. Using fallback label.'
       );
     }
-    this.el.ariaLabel = 'Slider';
+    this.a11yLabel = 'Slider';
   }
 
   private getClasses(): string {
@@ -146,10 +150,10 @@ export class ModusWcSlider {
     return (
       <Host>
         <input
-          aria-describedby={this.ariaDescribedby}
+          aria-describedby={this.a11yDescribedby}
           aria-disabled={this.disabled}
-          aria-label={this.el.ariaLabel}
-          aria-labelledby={this.ariaLabelledby}
+          aria-label={this.a11yLabel}
+          aria-labelledby={this.a11yLabelledby}
           class={this.getClasses()}
           dir={this.inputDir}
           disabled={this.disabled}

@@ -1,6 +1,5 @@
 import {
   Component,
-  Element,
   Event as StencilEvent,
   EventEmitter,
   h,
@@ -27,8 +26,23 @@ export interface ISelectOption {
   shadow: false,
 })
 export class ModusWcSelect {
-  /** Reference to the host element */
-  @Element() el!: HTMLElement;
+  /**
+   * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).
+   * This property name is reserved by HTMLElement and omitted in the React integration.
+   */
+  @Prop({ mutable: true }) a11yDescribedby?: string;
+
+  /**
+   * The aria-label attribute used to define a string that labels the current element (accessibility).
+   * This property name is reserved by HTMLElement and omitted in the React integration.
+   */
+  @Prop({ mutable: true }) a11yLabel!: string;
+
+  /**
+   * The aria-labelledby attribute for usage with a label (accessibility).
+   * This property name is reserved by HTMLElement and omitted in the React integration.
+   */
+  @Prop({ mutable: true }) a11yLabelledby?: string;
 
   /**
    * The ID of the element that describes the input.
@@ -116,11 +130,11 @@ export class ModusWcSelect {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.el.ariaLabel) {
+    if (!this.a11yLabel) {
       console.warn(
-        'ModusWcSelect: aria-label is required for accessibility. Using fallback label.'
+        'ModusWcSelect: a11y-label is required for accessibility. Using fallback label.'
       );
-      this.el.ariaLabel = 'Select';
+      this.a11yLabel = 'Select';
     }
   }
 
@@ -155,9 +169,10 @@ export class ModusWcSelect {
     return (
       <Host>
         <select
-          aria-describedby={this.ariaDescribedby}
+          aria-describedby={this.a11yDescribedby}
           aria-invalid={this.inputAriaInvalid}
-          aria-label={this.el.ariaLabel}
+          aria-label={this.a11yLabel}
+          aria-labelledby={this.a11yLabelledby}
           autofocus={this.autoFocus}
           class={this.getClasses()}
           dir={this.inputDir}

@@ -13,15 +13,16 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property          | Attribute           | Description                                                   | Type                                      | Default      |
-| ----------------- | ------------------- | ------------------------------------------------------------- | ----------------------------------------- | ------------ |
-| `activeItemValue` | `active-item-value` | The active menu item value, used to show an item as selected. | `string \| undefined`                     | `undefined`  |
-| `bordered`        | `bordered`          | Indicates that the menu should have a border.                 | `boolean \| undefined`                    | `true`       |
-| `customClass`     | `custom-class`      | Custom CSS class to apply to the ul element.                  | `string \| undefined`                     | `''`         |
-| `items`           | --                  | The items to display in the menu.                             | `IMenuItem[]`                             | `[]`         |
-| `menuTitle`       | `menu-title`        | The menu title, rendered as the first item (disabled).        | `string \| undefined`                     | `undefined`  |
-| `orientation`     | `orientation`       | The orientation of the menu.                                  | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
-| `size`            | `size`              | The size of the menu.                                         | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
+| Property                 | Attribute           | Description                                                                                                                                                                           | Type                                      | Default      |
+| ------------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ------------ |
+| `a11yLabel` _(required)_ | `a-1-1y-label`      | The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration. | `string`                                  | `undefined`  |
+| `activeItemValue`        | `active-item-value` | The active menu item value, used to show an item as selected.                                                                                                                         | `string \| undefined`                     | `undefined`  |
+| `bordered`               | `bordered`          | Indicates that the menu should have a border.                                                                                                                                         | `boolean \| undefined`                    | `true`       |
+| `customClass`            | `custom-class`      | Custom CSS class to apply to the ul element.                                                                                                                                          | `string \| undefined`                     | `''`         |
+| `items`                  | --                  | The items to display in the menu.                                                                                                                                                     | `IMenuItem[]`                             | `[]`         |
+| `menuTitle`              | `menu-title`        | The menu title, rendered as the first item (disabled).                                                                                                                                | `string \| undefined`                     | `undefined`  |
+| `orientation`            | `orientation`       | The orientation of the menu.                                                                                                                                                          | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
+| `size`                   | `size`              | The size of the menu.                                                                                                                                                                 | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
 
 
 ## Events

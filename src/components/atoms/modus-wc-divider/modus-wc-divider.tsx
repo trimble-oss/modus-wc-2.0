@@ -56,7 +56,7 @@ export class ModusWcDivider {
   componentWillLoad() {
     if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcDivider: aria-label is required for accessibility. Using fallback label.'
+        'ModusWcDivider: a11y-label is required for accessibility. Using fallback label.'
       );
       this.el.ariaLabel = 'Divider';
     }

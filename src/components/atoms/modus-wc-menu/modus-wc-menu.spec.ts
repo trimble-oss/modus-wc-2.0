@@ -8,7 +8,7 @@ describe('modus-wc-menu', () => {
     { label: 'Item 3', value: '3' },
   ];
 
-  it('should warn if aria-label is not provided', async () => {
+  it('should warn if a11y-label is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({
@@ -17,7 +17,7 @@ describe('modus-wc-menu', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcMenu: aria-label is required for accessibility. Using fallback label.'
+      'ModusWcMenu: a11y-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();

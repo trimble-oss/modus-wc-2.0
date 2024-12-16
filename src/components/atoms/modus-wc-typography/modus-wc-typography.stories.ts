@@ -73,7 +73,7 @@ export const Heading2: Story = {
   render: (args) => {
     return html`
       <modus-wc-typography
-        aria-label="${args['aria-label']}"
+        a11y-label="${args['a11y-label']}"
         custom-class="${ifDefined(args['custom-class'])}"
         variant="h2"
         >${args.content}</modus-wc-typography
@@ -86,7 +86,7 @@ export const Heading3: Story = {
   render: (args) => {
     return html`
       <modus-wc-typography
-        aria-label="${args['aria-label']}"
+        a11y-label="${args['a11y-label']}"
         custom-class="${ifDefined(args['custom-class'])}"
         variant="h3"
         >${args.content}</modus-wc-typography
@@ -99,7 +99,7 @@ export const Heading4: Story = {
   render: (args) => {
     return html`
       <modus-wc-typography
-        aria-label="${args['aria-label']}"
+        a11y-label="${args['a11y-label']}"
         custom-class="${ifDefined(args['custom-class'])}"
         variant="h4"
         >${args.content}</modus-wc-typography
@@ -112,7 +112,7 @@ export const Heading5: Story = {
   render: (args) => {
     return html`
       <modus-wc-typography
-        aria-label="${args['aria-label']}"
+        a11y-label="${args['a11y-label']}"
         custom-class="${ifDefined(args['custom-class'])}"
         variant="h5"
         >${args.content}</modus-wc-typography
@@ -125,7 +125,7 @@ export const Heading6: Story = {
   render: (args) => {
     return html`
       <modus-wc-typography
-        aria-label="${args['aria-label']}"
+        a11y-label="${args['a11y-label']}"
         custom-class="${ifDefined(args['custom-class'])}"
         variant="h6"
         >${args.content}</modus-wc-typography
@@ -138,7 +138,7 @@ export const Paragraph: Story = {
   render: (args) => {
     return html`
       <modus-wc-typography
-        aria-label="${args['aria-label']}"
+        a11y-label="${args['a11y-label']}"
         custom-class="${ifDefined(args['custom-class'])}"
         size="${args.size}"
         variant="p"

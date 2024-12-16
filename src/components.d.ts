@@ -26,13 +26,21 @@ export namespace Components {
      */
     interface ModusWcAutocomplete {
         /**
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yDescribedby"?: string;
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
+        /**
           * The active menu item value, used to show an item as selected.
          */
         "activeItemValue"?: string;
-        /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
         /**
           * Indicates that the autocomplete should have a border.
          */
@@ -100,6 +108,10 @@ export namespace Components {
      */
     interface ModusWcAvatar {
         /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
           * The image alt attribute for accessibility.
          */
         "alt": string;
@@ -125,6 +137,10 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcBadge {
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
         /**
           * The color variant of the badge.
          */
@@ -157,6 +173,10 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
         /**
           * The color variant of the button.
          */
@@ -200,13 +220,17 @@ export namespace Components {
      */
     interface ModusWcCheckbox {
         /**
-          * The ID of the element that describes the checkbox.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
         /**
-          * The aria-labelledby attribute for usage with a label.
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaLabelledby"?: string;
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -254,13 +278,17 @@ export namespace Components {
      */
     interface ModusWcDate {
         /**
-          * The ID of the element that describes the input.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
         /**
-          * The aria-labelledby attribute for usage with a label.
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaLabelledby"?: string;
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Indicates that an element should be focused on page load.
          */
@@ -414,6 +442,10 @@ export namespace Components {
      */
     interface ModusWcLoader {
         /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
           * The color of the loader.
          */
         "color": LoaderColor;
@@ -435,6 +467,10 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcMenu {
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
         /**
           * The active menu item value, used to show an item as selected.
          */
@@ -469,6 +505,18 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcNumberInput {
+        /**
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yDescribedby"?: string;
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * The ID of the element that describes the input.
          */
@@ -560,6 +608,10 @@ export namespace Components {
      */
     interface ModusWcProgress {
         /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
           * Custom CSS class to apply to the progress element.
          */
         "customClass"?: string;
@@ -582,13 +634,17 @@ export namespace Components {
      */
     interface ModusWcRadio {
         /**
-          * The ID of the element that describes the radio.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
         /**
-          * The aria-labelledby attribute for usage with a label.
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaLabelledby"?: string;
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -631,6 +687,18 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcSelect {
+        /**
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yDescribedby"?: string;
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * The ID of the element that describes the input.
          */
@@ -716,13 +784,17 @@ export namespace Components {
      */
     interface ModusWcSlider {
         /**
-          * The ID of the element that describes the slider.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
         /**
-          * The aria-labelledby attribute for usage with a label.
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaLabelledby"?: string;
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -778,9 +850,17 @@ export namespace Components {
      */
     interface ModusWcTextInput {
         /**
-          * The ID of the element that describes the input.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Controls automatic capitalization in inputted text.
          */
@@ -888,9 +968,17 @@ export namespace Components {
      */
     interface ModusWcTextarea {
         /**
-          * The ID of the element that describes the textarea.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Indicates that the input should have a border.
          */
@@ -966,6 +1054,10 @@ export namespace Components {
      */
     interface ModusWcThemeSwitcher {
         /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
           * Custom CSS class to apply to the theme switcher element.
          */
         "customClass"?: string;
@@ -976,13 +1068,17 @@ export namespace Components {
      */
     interface ModusWcToggle {
         /**
-          * The ID of the element that describes the toggle.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
         /**
-          * The aria-labelledby attribute for usage with a label.
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaLabelledby"?: string;
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -1563,13 +1659,21 @@ declare namespace LocalJSX {
      */
     interface ModusWcAutocomplete {
         /**
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yDescribedby"?: string;
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
+        /**
           * The active menu item value, used to show an item as selected.
          */
         "activeItemValue"?: string;
-        /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
         /**
           * Indicates that the autocomplete should have a border.
          */
@@ -1653,6 +1757,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcAvatar {
         /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
           * The image alt attribute for accessibility.
          */
         "alt": string;
@@ -1678,6 +1786,10 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcBadge {
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
         /**
           * The color variant of the badge.
          */
@@ -1710,6 +1822,10 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
         /**
           * The color variant of the button.
          */
@@ -1757,13 +1873,17 @@ declare namespace LocalJSX {
      */
     interface ModusWcCheckbox {
         /**
-          * The ID of the element that describes the checkbox.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
         /**
-          * The aria-labelledby attribute for usage with a label.
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaLabelledby"?: string;
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -1823,13 +1943,17 @@ declare namespace LocalJSX {
      */
     interface ModusWcDate {
         /**
-          * The ID of the element that describes the input.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
         /**
-          * The aria-labelledby attribute for usage with a label.
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaLabelledby"?: string;
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Indicates that an element should be focused on page load.
          */
@@ -1995,6 +2119,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcLoader {
         /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
           * The color of the loader.
          */
         "color"?: LoaderColor;
@@ -2016,6 +2144,10 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcMenu {
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
         /**
           * The active menu item value, used to show an item as selected.
          */
@@ -2054,6 +2186,18 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcNumberInput {
+        /**
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yDescribedby"?: string;
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * The ID of the element that describes the input.
          */
@@ -2157,6 +2301,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcProgress {
         /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
           * Custom CSS class to apply to the progress element.
          */
         "customClass"?: string;
@@ -2179,13 +2327,17 @@ declare namespace LocalJSX {
      */
     interface ModusWcRadio {
         /**
-          * The ID of the element that describes the radio.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
         /**
-          * The aria-labelledby attribute for usage with a label.
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaLabelledby"?: string;
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -2240,6 +2392,18 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcSelect {
+        /**
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yDescribedby"?: string;
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * The ID of the element that describes the input.
          */
@@ -2337,13 +2501,17 @@ declare namespace LocalJSX {
      */
     interface ModusWcSlider {
         /**
-          * The ID of the element that describes the slider.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
         /**
-          * The aria-labelledby attribute for usage with a label.
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaLabelledby"?: string;
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -2411,9 +2579,17 @@ declare namespace LocalJSX {
      */
     interface ModusWcTextInput {
         /**
-          * The ID of the element that describes the input.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Controls automatic capitalization in inputted text.
          */
@@ -2533,9 +2709,17 @@ declare namespace LocalJSX {
      */
     interface ModusWcTextarea {
         /**
-          * The ID of the element that describes the textarea.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
+        /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Indicates that the input should have a border.
          */
@@ -2623,6 +2807,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcThemeSwitcher {
         /**
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabel": string;
+        /**
           * Custom CSS class to apply to the theme switcher element.
          */
         "customClass"?: string;
@@ -2637,13 +2825,17 @@ declare namespace LocalJSX {
      */
     interface ModusWcToggle {
         /**
-          * The ID of the element that describes the toggle.
+          * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaDescribedby"?: string;
+        "a11yDescribedby"?: string;
         /**
-          * The aria-labelledby attribute for usage with a label.
+          * The aria-label attribute used to define a string that labels the current element (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
          */
-        "ariaLabelledby"?: string;
+        "a11yLabel": string;
+        /**
+          * The aria-labelledby attribute for usage with a label (accessibility). This property name is reserved by HTMLElement and omitted in the React integration.
+         */
+        "a11yLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */

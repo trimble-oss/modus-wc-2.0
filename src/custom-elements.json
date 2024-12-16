@@ -12,19 +12,19 @@
           "name": "ModusWcAvatar",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
+            {
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
             {
               "name": "alt",
               "fieldName": "alt",
@@ -100,19 +100,19 @@
           "name": "ModusWcBadge",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
+            {
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
             {
               "name": "color",
               "fieldName": "color",
@@ -188,19 +188,19 @@
           "name": "ModusWcButton",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
+            {
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
             {
               "name": "color",
               "fieldName": "color",
@@ -330,20 +330,28 @@
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
+              "name": "a-1-1y-describedby",
+              "fieldName": "a11yDescribedby",
               "type": {
                 "text": "string"
               },
-              "description": "The ID of the element that describes the checkbox."
+              "description": "The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
             },
             {
-              "name": "aria-labelledby",
-              "fieldName": "ariaLabelledby",
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
               "type": {
                 "text": "string"
               },
-              "description": "The aria-labelledby attribute for usage with a label."
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-labelledby",
+              "fieldName": "a11yLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
             },
             {
               "name": "custom-class",
@@ -485,34 +493,34 @@
           "name": "ModusWcDate",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
+              "name": "a-1-1y-describedby",
+              "fieldName": "a11yDescribedby",
               "type": {
                 "text": "string"
               },
-              "description": "The ID of the element that describes the input."
+              "description": "The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
             },
             {
-              "name": "aria-labelledby",
-              "fieldName": "ariaLabelledby",
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
               "type": {
                 "text": "string"
               },
-              "description": "The aria-labelledby attribute for usage with a label."
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-labelledby",
+              "fieldName": "a11yLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
             },
             {
               "name": "auto-focus",
@@ -950,19 +958,19 @@
           "name": "ModusWcLoader",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
+            {
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
             {
               "name": "color",
               "fieldName": "color",
@@ -1030,19 +1038,19 @@
           "name": "ModusWcMenu",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
+            {
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
             {
               "name": "active-item-value",
               "fieldName": "activeItemValue",
@@ -1143,19 +1151,35 @@
           "name": "ModusWcNumberInput",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
+            {
+              "name": "a-1-1y-describedby",
+              "fieldName": "a11yDescribedby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-labelledby",
+              "fieldName": "a11yLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
             {
               "name": "aria-describedby",
               "fieldName": "ariaDescribedby",
@@ -1384,19 +1408,19 @@
           "name": "ModusWcProgress",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
+            {
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
             {
               "name": "custom-class",
               "fieldName": "customClass",
@@ -1464,34 +1488,34 @@
           "name": "ModusWcRadio",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
+              "name": "a-1-1y-describedby",
+              "fieldName": "a11yDescribedby",
               "type": {
                 "text": "string"
               },
-              "description": "The ID of the element that describes the radio."
+              "description": "The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
             },
             {
-              "name": "aria-labelledby",
-              "fieldName": "ariaLabelledby",
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
               "type": {
                 "text": "string"
               },
-              "description": "The aria-labelledby attribute for usage with a label."
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-labelledby",
+              "fieldName": "a11yLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
             },
             {
               "name": "custom-class",
@@ -1625,19 +1649,35 @@
           "name": "ModusWcSelect",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
+            {
+              "name": "a-1-1y-describedby",
+              "fieldName": "a11yDescribedby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-labelledby",
+              "fieldName": "a11yLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
             {
               "name": "aria-describedby",
               "fieldName": "ariaDescribedby",
@@ -1882,34 +1922,34 @@
           "name": "ModusWcSlider",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
+              "name": "a-1-1y-describedby",
+              "fieldName": "a11yDescribedby",
               "type": {
                 "text": "string"
               },
-              "description": "The ID of the element that describes the slider."
+              "description": "The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
             },
             {
-              "name": "aria-labelledby",
-              "fieldName": "ariaLabelledby",
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
               "type": {
                 "text": "string"
               },
-              "description": "The aria-labelledby attribute for usage with a label."
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-labelledby",
+              "fieldName": "a11yLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
             },
             {
               "name": "custom-class",
@@ -2067,26 +2107,34 @@
           "name": "ModusWcTextInput",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
+              "name": "a-1-1y-describedby",
+              "fieldName": "a11yDescribedby",
               "type": {
                 "text": "string"
               },
-              "description": "The ID of the element that describes the input."
+              "description": "The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-labelledby",
+              "fieldName": "a11yLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
             },
             {
               "name": "auto-capitalize",
@@ -2324,26 +2372,34 @@
           "name": "ModusWcTextarea",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
+              "name": "a-1-1y-describedby",
+              "fieldName": "a11yDescribedby",
               "type": {
                 "text": "string"
               },
-              "description": "The ID of the element that describes the textarea."
+              "description": "The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-labelledby",
+              "fieldName": "a11yLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
             },
             {
               "name": "bordered",
@@ -2547,20 +2603,28 @@
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
+              "name": "a-1-1y-describedby",
+              "fieldName": "a11yDescribedby",
               "type": {
                 "text": "string"
               },
-              "description": "The ID of the element that describes the toggle."
+              "description": "The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
             },
             {
-              "name": "aria-labelledby",
-              "fieldName": "ariaLabelledby",
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
               "type": {
                 "text": "string"
               },
-              "description": "The aria-labelledby attribute for usage with a label."
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-labelledby",
+              "fieldName": "a11yLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
             },
             {
               "name": "custom-class",
@@ -2854,19 +2918,35 @@
           "name": "ModusWcAutocomplete",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
+            {
+              "name": "a-1-1y-describedby",
+              "fieldName": "a11yDescribedby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
+            {
+              "name": "a-1-1y-labelledby",
+              "fieldName": "a11yLabelledby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-labelledby attribute for usage with a label (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
             {
               "name": "active-item-value",
               "fieldName": "activeItemValue",
@@ -2874,14 +2954,6 @@
                 "text": "string"
               },
               "description": "The active menu item value, used to show an item as selected."
-            },
-            {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the element that describes the input."
             },
             {
               "name": "bordered",
@@ -3072,14 +3144,6 @@
           "members": [
             {
               "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "field",
               "name": "isDarkMode"
             },
             {
@@ -3088,6 +3152,14 @@
             }
           ],
           "attributes": [
+            {
+              "name": "a-1-1y-label",
+              "fieldName": "a11yLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The aria-label attribute used to define a string that labels the current element (accessibility).\r\nThis property name is reserved by HTMLElement and omitted in the React integration."
+            },
             {
               "name": "custom-class",
               "fieldName": "customClass",

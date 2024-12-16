@@ -5,8 +5,9 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { DaisySize } from '../../types';
 
 interface TextAreaArgs {
-  'aria-describedby'?: string;
-  'aria-label': string;
+  'a11y-describedby'?: string;
+  'a11y-label': string;
+  'a11y-labelledby'?: string;
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
@@ -29,7 +30,7 @@ const meta: Meta<TextAreaArgs> = {
   title: 'Components/Forms/Textarea',
   component: 'modus-wc-textarea',
   args: {
-    'aria-label': 'Enter your comments',
+    'a11y-label': 'Enter your comments',
     bordered: true,
     'custom-class': '',
     disabled: false,
@@ -73,8 +74,9 @@ export const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-textarea
-        aria-describedby=${ifDefined(args['aria-describedby'])}
-        aria-label=${args['aria-label']}
+        a11y-describedby=${ifDefined(args['a11y-describedby'])}
+        a11y-label=${args['a11y-label']}
+        a11y-labelledby=${args['a11y-labelledby']}
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
@@ -116,7 +118,7 @@ export const TextareaWithLabel: Story = {
       label-text="Example textarea"
     ></modus-wc-input-label>
     <modus-wc-textarea
-      aria-label="Example textarea"
+      a11y-label="Example textarea"
       input-id="textarea-input"
       name="example-textarea"
     ></modus-wc-textarea>

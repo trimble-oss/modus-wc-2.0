@@ -5,9 +5,9 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ModusSize } from '../../types';
 
 interface RadioArgs {
-  'aria-describedby'?: string;
-  'aria-label': string;
-  'aria-labelledby'?: string;
+  'a11y-describedby'?: string;
+  'a11y-label': string;
+  'a11y-labelledby'?: string;
   'custom-class'?: string;
   disabled?: boolean;
   'input-dir'?: 'ltr' | 'rtl' | 'auto';
@@ -23,7 +23,7 @@ const meta: Meta<RadioArgs> = {
   title: 'Components/Forms/Radio',
   component: 'modus-wc-radio',
   args: {
-    'aria-label': 'Radio',
+    'a11y-label': 'Radio',
     'custom-class': '',
     disabled: false,
     name: '',
@@ -59,9 +59,9 @@ export const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-radio
-        aria-describedby=${ifDefined(args['aria-describedby'])}
-        aria-label=${args['aria-label']}
-        aria-labelledby=${ifDefined(args['aria-labelledby'])}
+        a11y-describedby=${ifDefined(args['a11y-describedby'])}
+        a11y-label=${args['a11y-label']}
+        a11y-labelledby=${ifDefined(args['a11y-labelledby'])}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
         input-dir=${ifDefined(args['input-dir'])}
@@ -91,7 +91,7 @@ export const RadioWithLabel: Story = {
 <form action="" method="get">
   <div class="form-control">
     <modus-wc-radio
-      aria-label="Example radio 1"
+      a11y-label="Example radio 1"
       input-id="radio-input-1"
       name="example-radio-group"
       value="true"
@@ -103,7 +103,7 @@ export const RadioWithLabel: Story = {
   </div>
   <div class="form-control">
     <modus-wc-radio
-      aria-label="Example radio 2"
+      a11y-label="Example radio 2"
       input-id="radio-input-2"
       name="example-radio-group"
     ></modus-wc-radio>

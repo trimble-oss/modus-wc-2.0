@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface AvatarArgs {
   alt: string;
-  'aria-label': string;
+  'a11y-label': string;
   'custom-class'?: string;
   'img-src': string;
   shape: string;
@@ -17,7 +17,7 @@ const meta: Meta<AvatarArgs> = {
   component: 'modus-wc-avatar',
   args: {
     alt: 'Example avatar',
-    'aria-label': 'Example avatar',
+    'a11y-label': 'Example avatar',
     'img-src':
       'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',
     shape: 'circle',
@@ -44,7 +44,7 @@ const Template: Story = {
     return html`
       <modus-wc-avatar
         alt="${args.alt}"
-        aria-label="${args['aria-label']}"
+        a11y-label="${args['a11y-label']}"
         custom-class="${ifDefined(args['custom-class'])}"
         img-src="${args['img-src']}"
         shape="${args.shape}"

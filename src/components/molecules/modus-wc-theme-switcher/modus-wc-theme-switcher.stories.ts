@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { IThemeConfig } from '../../../providers/theme/theme.types';
 
 interface ThemeSwitcherArgs {
-  'aria-label': string;
+  'a11y-label': string;
   'custom-class'?: string;
   'initial-theme'?: Partial<IThemeConfig>;
 }
@@ -14,14 +14,14 @@ const meta: Meta<ThemeSwitcherArgs> = {
   title: 'Components/ThemeSwitcher',
   component: 'modus-wc-theme-switcher',
   args: {
-    'aria-label': 'Toggle theme',
+    'a11y-label': 'Toggle theme',
     'custom-class': undefined,
     'initial-theme': undefined,
   },
   argTypes: {
-    'aria-label': {
+    'a11y-label': {
       control: 'text',
-      description: 'The aria-label attribute for accessibility.',
+      description: 'The a11y-label attribute for accessibility.',
     },
     'custom-class': {
       control: 'text',
@@ -52,7 +52,7 @@ const Template: Story = {
   render: (args) => html`
 <modus-wc-theme-provider .initialTheme=${args['initial-theme']}>
   <modus-wc-theme-switcher
-    aria-label=${args['aria-label']}
+    a11y-label=${args['a11y-label']}
     custom-class=${ifDefined(args['custom-class'])}
   ></modus-wc-theme-switcher>
 </modus-wc-theme-provider>

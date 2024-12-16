@@ -5,9 +5,9 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ModusSize } from '../../types';
 
 interface DateArgs {
-  'aria-describedby'?: string;
-  'aria-label': string;
-  'aria-labelledby'?: string;
+  'a11y-describedby'?: string;
+  'a11y-label': string;
+  'a11y-labelledby'?: string;
   'auto-focus'?: boolean;
   bordered?: boolean;
   'custom-class'?: string;
@@ -29,7 +29,7 @@ const meta: Meta<DateArgs> = {
   title: 'Components/Forms/Date',
   component: 'modus-wc-date',
   args: {
-    'aria-label': 'Date picker',
+    'a11y-label': 'Date picker',
     bordered: true,
     'custom-class': '',
     disabled: false,
@@ -66,9 +66,9 @@ export const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-date
-        aria-describedby=${ifDefined(args['aria-describedby'])}
-        aria-label=${args['aria-label']}
-        aria-labelledby=${ifDefined(args['aria-labelledby'])}
+        a11y-describedby=${ifDefined(args['a11y-describedby'])}
+        a11y-label=${args['a11y-label']}
+        a11y-labelledby=${ifDefined(args['a11y-labelledby'])}
         ?auto-focus=${args['auto-focus']}
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
@@ -109,7 +109,7 @@ export const DateWithLabel: Story = {
       label-text="Example date"
     ></modus-wc-input-label>
     <modus-wc-date
-      aria-label="Example date picker"
+      a11y-label="Example date picker"
       input-id="date-input"
       name="example-date"
     ></modus-wc-date>

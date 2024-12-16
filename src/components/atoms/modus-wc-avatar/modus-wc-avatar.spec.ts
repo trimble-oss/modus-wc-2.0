@@ -2,7 +2,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcAvatar } from './modus-wc-avatar';
 
 describe('modus-wc-avatar', () => {
-  it('should warn when alt and aria-label are not provided', async () => {
+  it('should warn when alt and a11y-label are not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({
@@ -11,7 +11,7 @@ describe('modus-wc-avatar', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcAvatar: alt and aria-label are required for accessibility. Using fallback label.'
+      'ModusWcAvatar: alt and a11y-label are required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();

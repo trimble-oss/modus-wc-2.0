@@ -14,6 +14,6 @@ exports[`modus-wc-checkbox should render indeterminate state 1`] = `
 
 exports[`modus-wc-checkbox should render with custom props 1`] = `
 <modus-wc-checkbox aria-describedby="active" aria-label="Test checkbox" aria-labelledby="checkbox-label" custom-class="test-class" disabled="true" input-dir="rtl" input-id="custom-id" input-tab-index="1" name="test-name" required="true" size="lg" value="">
-  <input aria-checked="" aria-describedby="active" aria-disabled="" aria-label="Checkbox" aria-labelledby="checkbox-label" checked="" class="modus-wc-checkbox modus-wc-checkbox-lg test-class" dir="rtl" disabled="" id="custom-id" name="test-name" required="" tabindex="1" type="checkbox">
+  <input aria-checked="" aria-disabled="" aria-label="Checkbox" checked="" class="modus-wc-checkbox modus-wc-checkbox-lg test-class" dir="rtl" disabled="" id="custom-id" name="test-name" required="" tabindex="1" type="checkbox">
 </modus-wc-checkbox>
 `;
