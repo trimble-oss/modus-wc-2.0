@@ -117,9 +117,9 @@ export class ModusWcTimeInput {
   @Prop() step?: number;
 
   /**
-   * The options to display in the time input dropdown. Time options must be in `HH:mm` or `HH:mm:ss` format.
+   * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
    */
-  @Prop() timeOptions: string[] = [];
+  @Prop() datalistOptions: string[] = [];
 
   /**
    * The value of the time input.
@@ -188,7 +188,7 @@ export class ModusWcTimeInput {
 
   /*
    * The ID of the internal <datalist> element. Unique to each instance of the time input component.
-   * This is used as the `datalistId` id when `timeOptions` are provided.
+   * This is used as the `datalistId` id when `datalistOptions` are provided.
    */
   private readonly internalDatalistId = `${INTERNAL_DATALIST_NAME}-${Math.random().toString(36).substring(2, 11)}`;
 
@@ -199,7 +199,7 @@ export class ModusWcTimeInput {
    */
   private renderDatalist(): HTMLElement | null {
     if (
-      this.timeOptions.length === 0 ||
+      this.datalistOptions.length === 0 ||
       this.datalistId !== this.internalDatalistId
     ) {
       return null;
@@ -207,7 +207,7 @@ export class ModusWcTimeInput {
 
     return (
       <datalist id={this.internalDatalistId}>
-        {this.timeOptions.map((time) => (
+        {this.datalistOptions.map((time) => (
           <option value={time} />
         ))}
       </datalist>

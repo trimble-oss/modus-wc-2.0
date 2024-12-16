@@ -25,7 +25,7 @@ interface TimeInputArgs {
   'show-seconds'?: boolean;
   size?: ModusSize;
   step?: number;
-  'time-options'?: string[];
+  'datalist-options'?: string[];
   value: string;
 }
 
@@ -84,7 +84,7 @@ export const Template: Story = {
       show-seconds=${ifDefined(args['show-seconds'])}
       size=${ifDefined(args.size)}
       step=${ifDefined(args.step)}
-      .timeOptions=${args['time-options']}
+      .datalistOptions=${args['datalist-options']}
       .value=${args.value}
     ></modus-wc-time-input>
   `,
@@ -149,14 +149,14 @@ export const TimeInputWithDatalist: Story = {
 };
 
 // prettier-ignore
-export const TimeInputWithOptions: Story = {
+export const TimeInputWithDatalistOptions: Story = {
   render: () => {
     return html`
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     // Example of programmatically adding 'timeOptions'
     const preferredTimes = ['09:30', '12:00', '17:30'];
-    document.querySelector('#time-input-with-options').timeOptions = preferredTimes;
+    document.querySelector('#time-input-with-options').datalistOptions = preferredTimes;
   });
 </script>
 <modus-wc-time-input

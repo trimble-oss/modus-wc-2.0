@@ -2555,6 +2555,14 @@
               "description": "ID of a datalist element that contains pre-defined time options.\r\nThe value must be the ID of a datalist element in the same document."
             },
             {
+              "name": "datalist-options",
+              "fieldName": "datalistOptions",
+              "type": {
+                "text": "string[]"
+              },
+              "description": "The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format."
+            },
+            {
               "name": "disabled",
               "fieldName": "disabled",
               "type": {
@@ -2649,14 +2657,6 @@
                 "text": "number"
               },
               "description": "Specifies the granularity that the `value` must adhere to.\r\nValue of step given in seconds. Default value is 60 seconds.\r\nOverrides the `seconds` attribute if both are provided."
-            },
-            {
-              "name": "time-options",
-              "fieldName": "timeOptions",
-              "type": {
-                "text": "string[]"
-              },
-              "description": "The options to display in the time input dropdown. Time options must be in `HH:mm` or `HH:mm:ss` format."
             },
             {
               "name": "value",

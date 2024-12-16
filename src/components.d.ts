@@ -980,6 +980,10 @@ export namespace Components {
          */
         "datalistId"?: string;
         /**
+          * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
+         */
+        "datalistOptions": string[];
+        /**
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
@@ -1027,10 +1031,6 @@ export namespace Components {
           * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
          */
         "step"?: number;
-        /**
-          * The options to display in the time input dropdown. Time options must be in `HH:mm` or `HH:mm:ss` format.
-         */
-        "timeOptions": string[];
         /**
           * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
          */
@@ -2735,6 +2735,10 @@ declare namespace LocalJSX {
          */
         "datalistId"?: string;
         /**
+          * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
+         */
+        "datalistOptions"?: string[];
+        /**
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
@@ -2794,10 +2798,6 @@ declare namespace LocalJSX {
           * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
          */
         "step"?: number;
-        /**
-          * The options to display in the time input dropdown. Time options must be in `HH:mm` or `HH:mm:ss` format.
-         */
-        "timeOptions"?: string[];
         /**
           * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
          */
