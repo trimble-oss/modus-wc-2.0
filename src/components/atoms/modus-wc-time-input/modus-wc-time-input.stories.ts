@@ -22,7 +22,7 @@ interface TimeInputArgs {
   name?: string;
   'read-only'?: boolean;
   required?: boolean;
-  seconds?: 'true' | 'false';
+  seconds?: boolean;
   size?: ModusSize;
   step?: number;
   'time-options'?: string[];
@@ -34,7 +34,9 @@ const meta: Meta<TimeInputArgs> = {
   component: 'modus-wc-time-input',
   args: {
     'aria-label': 'Time input',
+    bordered: true,
     disabled: false,
+    seconds: false,
     size: 'md',
   },
   argTypes: {
