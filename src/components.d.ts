@@ -976,6 +976,10 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * ID of a datalist element that contains pre-defined time options. The value must be the ID of a datalist element in the same document.
+         */
+        "datalistId"?: string;
+        /**
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
@@ -992,15 +996,11 @@ export namespace Components {
          */
         "inputTabIndex"?: number;
         /**
-          * ID of a <datalist> element that contains pre-defined time options. The value must be the ID of a <datalist> element in the same document.
-         */
-        "list"?: string;
-        /**
-          * Maximum value. Format: 'HH:mm', 'HH:mm:ss'.
+          * Maximum value. Format: `HH:mm`, `HH:mm:ss`.
          */
         "max"?: string;
         /**
-          * Minimum value. Format: 'HH:mm', 'HH:mm:ss.'
+          * Minimum value. Format: `HH:mm`, `HH:mm:ss.`
          */
         "min"?: string;
         /**
@@ -2731,6 +2731,10 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
+          * ID of a datalist element that contains pre-defined time options. The value must be the ID of a datalist element in the same document.
+         */
+        "datalistId"?: string;
+        /**
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
@@ -2747,15 +2751,11 @@ declare namespace LocalJSX {
          */
         "inputTabIndex"?: number;
         /**
-          * ID of a <datalist> element that contains pre-defined time options. The value must be the ID of a <datalist> element in the same document.
-         */
-        "list"?: string;
-        /**
-          * Maximum value. Format: 'HH:mm', 'HH:mm:ss'.
+          * Maximum value. Format: `HH:mm`, `HH:mm:ss`.
          */
         "max"?: string;
         /**
-          * Minimum value. Format: 'HH:mm', 'HH:mm:ss.'
+          * Minimum value. Format: `HH:mm`, `HH:mm:ss.`
          */
         "min"?: string;
         /**

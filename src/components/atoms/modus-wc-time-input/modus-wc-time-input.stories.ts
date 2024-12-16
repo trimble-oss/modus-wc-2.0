@@ -16,7 +16,7 @@ interface TimeInputArgs {
   'input-dir'?: '' | 'ltr' | 'rtl' | 'auto';
   'input-id'?: string;
   'input-tab-index'?: number;
-  list?: string;
+  'datalist-id'?: string;
   max?: string;
   min?: string;
   name?: string;
@@ -75,7 +75,7 @@ export const Template: Story = {
       input-dir=${ifDefined(args['input-dir'])}
       input-id=${ifDefined(args['input-id'])}
       input-tab-index=${ifDefined(args['input-tab-index'])}
-      list=${ifDefined(args.list)}
+      datalist-id=${ifDefined(args['datalist-id'])}
       max=${ifDefined(args.max)}
       min=${ifDefined(args.min)}
       name=${ifDefined(args.name)}
@@ -137,9 +137,9 @@ export const TimeInputWithDatalist: Story = {
     return html`
 <modus-wc-time-input
   aria-label="Example time input"
-  list="datalist-id"
+  datalist-id="datalist-id-1"
 ></modus-wc-time-input>
-<datalist id="datalist-id">
+<datalist id="datalist-id-1">
   <option value="06:00"></option>
   <option value="12:00"></option>
   <option value="17:00"></option>

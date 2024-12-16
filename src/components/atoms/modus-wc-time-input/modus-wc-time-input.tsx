@@ -67,18 +67,18 @@ export class ModusWcTimeInput {
   @Prop() inputTabIndex?: number;
 
   /**
-   * ID of a <datalist> element that contains pre-defined time options.
-   * The value must be the ID of a <datalist> element in the same document.
+   * ID of a datalist element that contains pre-defined time options.
+   * The value must be the ID of a datalist element in the same document.
    */
-  @Prop({ mutable: true }) list?: string;
+  @Prop({ mutable: true }) datalistId?: string;
 
   /**
-   * Maximum value. Format: 'HH:mm', 'HH:mm:ss'.
+   * Maximum value. Format: `HH:mm`, `HH:mm:ss`.
    */
   @Prop() max?: string;
 
   /**
-   * Minimum value. Format: 'HH:mm', 'HH:mm:ss.'
+   * Minimum value. Format: `HH:mm`, `HH:mm:ss.`
    */
   @Prop() min?: string;
 
@@ -153,9 +153,9 @@ export class ModusWcTimeInput {
       this.el.ariaLabel = 'Time input';
     }
 
-    // if no list value provided, use internal datalist id to enable time options
-    if (!this.list) {
-      this.list = this.internalDatalistId;
+    // if no datalistId value provided, use internal datalist id to enable time options
+    if (!this.datalistId) {
+      this.datalistId = this.internalDatalistId;
     }
   }
 
@@ -188,19 +188,19 @@ export class ModusWcTimeInput {
 
   /*
    * The ID of the internal <datalist> element. Unique to each instance of the time input component.
-   * This is used as the `list` id when `timeOptions` are provided.
+   * This is used as the `datalistId` id when `timeOptions` are provided.
    */
   private readonly internalDatalistId = `${INTERNAL_DATALIST_NAME}-${Math.random().toString(36).substring(2, 11)}`;
 
   /*
    * Conditionally renders the datalist element with the time options.
-   * If no time options are provided or the list prop is not the default,
+   * If no time options are provided or the datalistId prop is not the default,
    * the datalist element will not be rendered (returns `null`).
    */
   private renderDatalist(): HTMLElement | null {
     if (
       this.timeOptions.length === 0 ||
-      this.list !== this.internalDatalistId
+      this.datalistId !== this.internalDatalistId
     ) {
       return null;
     }
@@ -226,7 +226,7 @@ export class ModusWcTimeInput {
           dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}
-          list={this.list}
+          list={this.datalistId}
           max={this.max}
           min={this.min}
           name={this.name}

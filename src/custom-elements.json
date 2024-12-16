@@ -2547,6 +2547,14 @@
               "description": "Custom CSS class to apply to the input."
             },
             {
+              "name": "datalist-id",
+              "fieldName": "datalistId",
+              "type": {
+                "text": "string"
+              },
+              "description": "ID of a datalist element that contains pre-defined time options.\r\nThe value must be the ID of a datalist element in the same document."
+            },
+            {
               "name": "disabled",
               "fieldName": "disabled",
               "type": {
@@ -2579,20 +2587,12 @@
               "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
             },
             {
-              "name": "list",
-              "fieldName": "list",
-              "type": {
-                "text": "string"
-              },
-              "description": "ID of a <datalist> element that contains pre-defined time options.\r\nThe value must be the ID of a <datalist> element in the same document."
-            },
-            {
               "name": "max",
               "fieldName": "max",
               "type": {
                 "text": "string"
               },
-              "description": "Maximum value. Format: 'HH:mm', 'HH:mm:ss'."
+              "description": "Maximum value. Format: `HH:mm`, `HH:mm:ss`."
             },
             {
               "name": "min",
@@ -2600,7 +2600,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Minimum value. Format: 'HH:mm', 'HH:mm:ss.'"
+              "description": "Minimum value. Format: `HH:mm`, `HH:mm:ss.`"
             },
             {
               "name": "name",
