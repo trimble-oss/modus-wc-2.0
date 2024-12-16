@@ -236,7 +236,7 @@ export class ModusWcTimeInput {
           onInput={this.handleInput}
           readonly={this.readOnly}
           required={this.required}
-          step={this.step || !!this.seconds ? 1 : 60}
+          step={this.step || this.seconds ? 1 : 60}
           tabIndex={this.inputTabIndex}
           type="time"
           value={this.value}
