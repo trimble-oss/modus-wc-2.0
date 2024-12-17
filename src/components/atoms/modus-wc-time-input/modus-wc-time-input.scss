@@ -7,7 +7,8 @@
   color-scheme: dark; // needed to ensure the clock icon button is visible in dark mode
 }
 
-.modus-wc-input {
+[data-theme='modus-classic-light'] .modus-wc-input,
+[data-theme='modus-classic-dark'] .modus-wc-input {
   border-radius: var(--modus-wc-border-radius-md);
 
   &.modus-wc-input-sm {
