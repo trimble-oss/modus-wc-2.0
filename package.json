@@ -39,9 +39,6 @@
     "test:update-snapshot": "stencil test --spec --update-snapshot",
     "test:watch": "stencil test --spec --watchAll"
   },
-  "dependencies": {
-    "nanoid": "^3.3.8"
-  },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.3",
     "@eslint/js": "^9.11.1",

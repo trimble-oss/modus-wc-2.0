@@ -9,7 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
 import { ModusSize } from '../../types';
-import { nanoid } from 'nanoid/non-secure';
+import { generateRandomId } from '../../utils';
 
 /**
  * A customizable input component used to create time inputs.
@@ -189,7 +189,7 @@ export class ModusWcTimeInput {
    * The ID of the internal <datalist> element. Unique to each instance of the time input component.
    * This is used as the `datalistId` id when `datalistOptions` are provided.
    */
-  private readonly internalDatalistId = `${'modus-wc-datalist-id'}-${nanoid(10)}`;
+  private readonly internalDatalistId = `modus-wc-datalist-${generateRandomId(10)}`;
 
   /*
    * Conditionally renders the datalist element with the time options.
