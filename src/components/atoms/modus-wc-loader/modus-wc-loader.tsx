@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-loader.tailwind';
 import { DaisySize } from '../../types';
 
@@ -31,11 +31,8 @@ export type LoaderColor =
   shadow: false,
 })
 export class ModusWcLoader {
-  /**
-   * The aria-label attribute used to define a string that labels the current element (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
-   */
-  @Prop({ mutable: true }) a11yLabel!: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
    * The color of the loader.
@@ -58,11 +55,11 @@ export class ModusWcLoader {
   @Prop() variant: LoaderVariant = 'spinner';
 
   componentWillLoad() {
-    if (!this.a11yLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcLoader: a11y-label is required for accessibility. Using fallback label.'
+        'ModusWcLoader: aria-label is required for accessibility. Using fallback label.'
       );
-      this.a11yLabel = 'Loading';
+      this.el.ariaLabel = 'Loading';
     }
   }
 
@@ -86,7 +83,7 @@ export class ModusWcLoader {
     return (
       <Host>
         <span
-          aria-label={this.a11yLabel}
+          aria-label={this.el.ariaLabel}
           class={this.getClasses()}
           role="status"
           tabindex={-1}

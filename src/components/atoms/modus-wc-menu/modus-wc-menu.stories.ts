@@ -13,7 +13,7 @@ const items: IMenuItem[] = [
 
 interface MenuArgs {
   'active-item-value'?: string;
-  'a11y-label': string;
+  'aria-label': string;
   bordered?: boolean;
   'custom-class'?: string;
   items: IMenuItem[];
@@ -26,7 +26,7 @@ const meta: Meta<MenuArgs> = {
   title: 'Components/Menu',
   component: 'modus-wc-menu',
   args: {
-    'a11y-label': 'Example menu',
+    'aria-label': 'Example menu',
     bordered: true,
     items,
     orientation: 'vertical',
@@ -64,7 +64,7 @@ export const Template: Story = {
     return html`
       <modus-wc-menu
         active-item-value="${ifDefined(args['active-item-value'])}"
-        a11y-label="${args['a11y-label']}"
+        aria-label="${args['aria-label']}"
         ?bordered=${args.bordered}
         custom-class="${ifDefined(args['custom-class'])}"
         .items=${args.items}
@@ -97,7 +97,7 @@ export const ItemVariations: Story = {
 </script>
 <modus-wc-menu
   active-item-value="2"
-  a11y-label="Example menu"
+  aria-label="Example menu"
   .items=${updatedItems}
   menu-title="Items"
 ></modus-wc-menu>
@@ -109,7 +109,7 @@ export const HorizontalMenu: Story = {
   render: () => {
     return html`
       <modus-wc-menu
-        a11y-label="Example menu"
+        aria-label="Example menu"
         .items=${items}
         orientation="horizontal"
       ></modus-wc-menu>

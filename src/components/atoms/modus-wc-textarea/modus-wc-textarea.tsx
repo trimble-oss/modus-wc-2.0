@@ -1,6 +1,7 @@
 import {
   h,
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
   Host,
@@ -20,23 +21,13 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcTextarea {
-  /**
-   * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
-   */
-  @Prop({ mutable: true }) a11yDescribedby?: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
-   * The aria-label attribute used to define a string that labels the current element (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
+   * The ID of the element that describes the textarea.
    */
-  @Prop({ mutable: true }) a11yLabel!: string;
-
-  /**
-   * The aria-labelledby attribute for usage with a label (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
-   */
-  @Prop({ mutable: true }) a11yLabelledby?: string;
+  @Prop() ariaDescribedby?: string;
 
   /**
    * Indicates that the input should have a border.
@@ -135,11 +126,11 @@ export class ModusWcTextarea {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.a11yLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcTextarea: a11y-label is required for accessibility. Using fallback label.'
+        'ModusWcTextarea: aria-label is required for accessibility. Using fallback label.'
       );
-      this.a11yLabel = this.placeholder || 'Text area';
+      this.el.ariaLabel = this.placeholder || 'Text area';
     }
   }
 
@@ -173,10 +164,9 @@ export class ModusWcTextarea {
     return (
       <Host>
         <textarea
-          aria-describedby={this.a11yDescribedby}
+          aria-describedby={this.ariaDescribedby}
           aria-invalid={this.inputAriaInvalid}
-          aria-label={this.a11yLabel}
-          aria-labelledby={this.a11yLabelledby}
+          aria-label={this.el.ariaLabel}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           class={this.getClasses()}

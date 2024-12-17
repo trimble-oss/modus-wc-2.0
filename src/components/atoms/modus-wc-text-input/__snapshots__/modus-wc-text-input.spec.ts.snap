@@ -2,7 +2,7 @@
 
 exports[`modus-wc-text-input should render with custom props 1`] = `
 <modus-wc-text-input aria-describedby="description" aria-label="Test text input" auto-capitalize="words" auto-complete="on" auto-focus="true" custom-class="test-class" disabled="true" input-aria-invalid="grammar" input-dir="rtl" input-id="test-id" input-mode="numeric" input-spellcheck="true" input-tab-index="1" max-length="50" min-length="5" name="test-name" pattern="[A-Za-z]{3}" placeholder="Test placeholder" readonly="true" required="true" size="lg" type="email" value="test@example.com">
-  <input aria-invalid="grammar" aria-label="Test placeholder" aria-placeholder="Test placeholder" aria-required="" autocapitalize="words" autocomplete="on" autofocus="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-w-full test-class" dir="rtl" disabled="" id="test-id" inputmode="numeric" maxlength="50" minlength="5" name="test-name" pattern="[A-Za-z]{3}" placeholder="Test placeholder" required="" spellcheck="" tabindex="1" type="email" value="test@example.com">
+  <input aria-describedby="description" aria-invalid="grammar" aria-label="Test placeholder" aria-placeholder="Test placeholder" aria-required="" autocapitalize="words" autocomplete="on" autofocus="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-w-full test-class" dir="rtl" disabled="" id="test-id" inputmode="numeric" maxlength="50" minlength="5" name="test-name" pattern="[A-Za-z]{3}" placeholder="Test placeholder" required="" spellcheck="" tabindex="1" type="email" value="test@example.com">
 </modus-wc-text-input>
 `;
 

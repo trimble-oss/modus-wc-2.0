@@ -12,9 +12,8 @@ const options: ISelectOption[] = [
 ];
 
 interface SelectArgs {
-  'a11y-describedby'?: string;
-  'a11y-labelledby'?: string;
-  'a11y-label': string;
+  'aria-describedby'?: string;
+  'aria-label': string;
   'auto-focus'?: boolean;
   bordered?: boolean;
   'custom-class'?: string;
@@ -34,7 +33,7 @@ const meta: Meta<SelectArgs> = {
   title: 'Components/Forms/Select',
   component: 'modus-wc-select',
   args: {
-    'a11y-label': 'Select a range',
+    'aria-label': 'Select a range',
     bordered: true,
     disabled: false,
     options,
@@ -70,9 +69,8 @@ type Story = StoryObj<SelectArgs>;
 export const Template: Story = {
   render: (args) => html`
     <modus-wc-select
-      a11y-describedby=${ifDefined(args['a11y-describedby'])}
-      a11y-label=${args['a11y-label']}
-      a11y-labelledby=${args['a11y-labelledby']}
+      aria-describedby=${ifDefined(args['aria-describedby'])}
+      aria-label=${args['aria-label']}
       ?auto-focus=${args['auto-focus']}
       ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
@@ -110,7 +108,7 @@ export const SelectWithLabel: Story = {
       label-text="Example select"
     ></modus-wc-input-label>
     <modus-wc-select
-      a11y-label="Example select"
+      aria-label="Example select"
       input-id="select-input"
       name="example-select-input"
       .options=${options}

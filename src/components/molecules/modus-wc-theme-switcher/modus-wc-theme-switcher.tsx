@@ -1,7 +1,15 @@
 // TODO - add coverage once finalized
 /* istanbul ignore file */
 
-import { Component, Event, EventEmitter, h, Prop, State } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Prop,
+  State,
+} from '@stencil/core';
 import { themeStore } from '../../../providers/theme/theme.store';
 import { IThemeConfig } from '../../../providers/theme/theme.types';
 
@@ -18,11 +26,8 @@ import { IThemeConfig } from '../../../providers/theme/theme.types';
   shadow: false,
 })
 export class ModusWcThemeSwitcher {
-  /**
-   * The aria-label attribute used to define a string that labels the current element (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
-   */
-  @Prop({ mutable: true }) a11yLabel!: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
    * Custom CSS class to apply to the theme switcher element.
@@ -38,11 +43,11 @@ export class ModusWcThemeSwitcher {
   @State() isDarkMode = themeStore.state.mode === 'dark';
 
   componentWillLoad() {
-    if (!this.a11yLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcThemeSwitcher: a11y-label is required for accessibility. Using fallback label.'
+        'ModusWcThemeSwitcher: aria-label is required for accessibility. Using fallback label.'
       );
-      this.a11yLabel = 'Switch between light and dark theme';
+      this.el.ariaLabel = 'Switch between light and dark theme';
     }
   }
 
@@ -76,7 +81,7 @@ export class ModusWcThemeSwitcher {
 
   render() {
     return (
-      <label class={this.getClasses()} aria-label={this.a11yLabel}>
+      <label class={this.getClasses()} aria-label={this.el.ariaLabel}>
         <input
           aria-checked={this.isDarkMode}
           checked={this.isDarkMode}

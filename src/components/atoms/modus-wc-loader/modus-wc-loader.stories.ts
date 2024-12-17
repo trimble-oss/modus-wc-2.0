@@ -5,7 +5,7 @@ import { DaisySize } from '../../types';
 import { LoaderColor, LoaderVariant } from './modus-wc-loader';
 
 interface LoaderArgs {
-  'a11y-label': string;
+  'aria-label': string;
   color: LoaderColor;
   'custom-class'?: string;
   size: DaisySize;
@@ -16,7 +16,7 @@ const meta: Meta<LoaderArgs> = {
   title: 'Components/Loader',
   component: 'modus-wc-loader',
   args: {
-    'a11y-label': 'Loading spinner',
+    'aria-label': 'Loading spinner',
     color: 'primary',
     'custom-class': '',
     size: 'md',
@@ -55,7 +55,7 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-loader
-        a11y-label="${ifDefined(args['a11y-label'])}"
+        aria-label="${ifDefined(args['aria-label'])}"
         color="${args.color}"
         custom-class="${ifDefined(args['custom-class'])}"
         size="${args.size}"
@@ -69,7 +69,7 @@ export const Ball: Story = {
   render: (args) => {
     return html`
       <modus-wc-loader
-        a11y-label="Loading ball"
+        aria-label="Loading ball"
         color="${args.color}"
         custom-class="${ifDefined(args['custom-class'])}"
         size="md"
@@ -83,7 +83,7 @@ export const Bars: Story = {
   render: (args) => {
     return html`
       <modus-wc-loader
-        a11y-label="Loading bars"
+        aria-label="Loading bars"
         color="${args.color}"
         custom-class="${ifDefined(args['custom-class'])}"
         size="md"
@@ -97,7 +97,7 @@ export const Dots: Story = {
   render: (args) => {
     return html`
       <modus-wc-loader
-        a11y-label="Loading dots"
+        aria-label="Loading dots"
         color="${args.color}"
         custom-class="${ifDefined(args['custom-class'])}"
         size="md"
@@ -112,7 +112,7 @@ export const Infinity: Story = {
   render: (args) => {
     return html`
       <modus-wc-loader
-        a11y-label="Loading infinity symbol"
+        aria-label="Loading infinity symbol"
         color="${args.color}"
         custom-class="${ifDefined(args['custom-class'])}"
         size="md"
@@ -126,7 +126,7 @@ export const Ring: Story = {
   render: (args) => {
     return html`
       <modus-wc-loader
-        a11y-label="Loading ring"
+        aria-label="Loading ring"
         color="${args.color}"
         custom-class="${ifDefined(args['custom-class'])}"
         size="md"

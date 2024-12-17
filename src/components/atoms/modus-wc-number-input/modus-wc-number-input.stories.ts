@@ -5,9 +5,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ModusSize } from '../../types';
 
 interface NumberInputArgs {
-  'a11y-describedby'?: string;
-  'a11y-label': string;
-  'a11y-labelledby': string;
+  'aria-describedby'?: string;
+  'aria-label': string;
   'auto-complete'?: 'on' | 'off';
   'auto-focus'?: boolean;
   bordered?: boolean;
@@ -34,7 +33,7 @@ const meta: Meta<NumberInputArgs> = {
   title: 'Components/Forms/Number Input',
   component: 'modus-wc-number-input',
   args: {
-    'a11y-label': 'Enter your age',
+    'aria-label': 'Enter your age',
     bordered: true,
     disabled: false,
     'input-mode': 'numeric',
@@ -84,9 +83,8 @@ type Story = StoryObj<NumberInputArgs>;
 export const Template: Story = {
   render: (args) => html`
     <modus-wc-number-input
-      .a11y-describedby=${ifDefined(args['a11y-describedby'])}
-      .a11y-label=${args['a11y-label']}
-      .a11y-labelledby=${args['a11y-labelledby']}
+      aria-describedby=${ifDefined(args['aria-describedby'])}
+      aria-label=${args['aria-label']}
       auto-complete=${ifDefined(args['auto-complete'])}
       ?auto-focus=${args['auto-focus']}
       ?bordered=${args.bordered}
@@ -131,7 +129,7 @@ export const NumberInputWithLabel: Story = {
       label-text="Example number input"
     ></modus-wc-input-label>
     <modus-wc-number-input
-      a11y-label="Example number input"
+      aria-label="Example number input"
       input-id="number-input"
       name="example-number-input"
     ></modus-wc-number-input>

@@ -5,9 +5,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ModusSize } from '../../types';
 
 interface TextInputArgs {
-  'a11y-describedby'?: string;
-  'a11y-label': string;
-  'a11y-labelledby'?: string;
+  'aria-describedby'?: string;
+  'aria-label': string;
   'auto-capitalize'?:
     | 'off'
     | 'none'
@@ -50,7 +49,7 @@ const meta: Meta<TextInputArgs> = {
   title: 'Components/Forms/Text Input',
   component: 'modus-wc-text-input',
   args: {
-    'a11y-label': 'Enter your name',
+    'aria-label': 'Enter your name',
     bordered: true,
     disabled: false,
     'input-mode': 'text',
@@ -114,9 +113,8 @@ type Story = StoryObj<TextInputArgs>;
 export const Template: Story = {
   render: (args) => html`
     <modus-wc-text-input
-      a11y-describedby=${ifDefined(args['a11y-describedby'])}
-      a11y-label=${args['a11y-label']}
-      a11y-labelledby=${args['a11y-labelledby']}
+      aria-describedby=${ifDefined(args['aria-describedby'])}
+      aria-label=${args['aria-label']}
       auto-capitalize=${ifDefined(args['auto-capitalize'])}
       auto-complete=${ifDefined(args['auto-complete'])}
       ?auto-focus=${args['auto-focus']}
@@ -163,7 +161,7 @@ export const TextInputWithLabel: Story = {
       label-text="Example text input"
     ></modus-wc-input-label>
     <modus-wc-text-input
-      a11y-label="Example text input"
+      aria-label="Example text input"
       input-id="text-input"
       name="example-text-input"
     ></modus-wc-text-input>

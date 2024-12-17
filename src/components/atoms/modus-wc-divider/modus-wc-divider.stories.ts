@@ -4,7 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { Orientation } from '../../types';
 
 interface DividerArgs {
-  'a11y-label': string;
+  'aria-label': string;
   color:
     | 'primary'
     | 'secondary'
@@ -24,7 +24,7 @@ const meta: Meta<DividerArgs> = {
   title: 'Components/Divider',
   component: 'modus-wc-divider',
   args: {
-    'a11y-label': 'Example divider',
+    'aria-label': 'Example divider',
     color: 'tertiary',
     content: '',
     'custom-class': '',
@@ -33,7 +33,7 @@ const meta: Meta<DividerArgs> = {
     responsive: true,
   },
   argTypes: {
-    'a11y-label': {
+    'aria-label': {
       control: 'text',
     },
     color: {
@@ -78,7 +78,7 @@ type Story = StoryObj<DividerArgs>;
 const Template: Story = {
   render: (args) => html`
     <modus-wc-divider
-      a11y-label="${args['a11y-label']}"
+      aria-label="${args['aria-label']}"
       color="${args.color}"
       content="${args.content}"
       custom-class="${ifDefined(args['custom-class'])}"

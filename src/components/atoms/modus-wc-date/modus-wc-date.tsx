@@ -3,6 +3,7 @@ import {
   h,
   Host,
   Prop,
+  Element,
   Event as StencilEvent,
   EventEmitter,
 } from '@stencil/core';
@@ -20,23 +21,18 @@ import { ModusSize } from '../../types';
   shadow: false,
 })
 export class ModusWcDate {
-  /**
-   * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
-   */
-  @Prop({ mutable: true }) a11yDescribedby?: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
-   * The aria-label attribute used to define a string that labels the current element (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
+   * The ID of the element that describes the input.
    */
-  @Prop({ mutable: true }) a11yLabel!: string;
+  @Prop() ariaDescribedby?: string;
 
   /**
-   * The aria-labelledby attribute for usage with a label (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
+   * The aria-labelledby attribute for usage with a label.
    */
-  @Prop({ mutable: true }) a11yLabelledby?: string;
+  @Prop() ariaLabelledby?: string;
 
   /**
    * Indicates that an element should be focused on page load.
@@ -129,12 +125,12 @@ export class ModusWcDate {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
-    if (!this.a11yLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcDate: a11y-label is required for accessibility. Using fallback label.'
+        'ModusWcDate: aria-label is required for accessibility. Using fallback label.'
       );
     }
-    this.a11yLabel = this.placeholder || 'Date input';
+    this.el.ariaLabel = this.placeholder || 'Date input';
   }
 
   private getClasses(): string {
@@ -167,9 +163,9 @@ export class ModusWcDate {
     return (
       <Host>
         <input
-          aria-describedby={this.a11yDescribedby}
-          aria-label={this.a11yLabel}
-          aria-labelledby={this.a11yLabelledby}
+          aria-describedby={this.ariaDescribedby}
+          aria-label={this.el.ariaLabel}
+          aria-labelledby={this.ariaLabelledby}
           autofocus={this.autoFocus}
           class={this.getClasses()}
           dir={this.inputDir}

@@ -25,22 +25,14 @@ export class ModusWcToggle {
   @Element() el!: HTMLElement;
 
   /**
-   * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
+   * The ID of the element that describes the toggle.
    */
-  @Prop({ mutable: true }) a11yDescribedby?: string;
+  @Prop() ariaDescribedby?: string;
 
   /**
-   * The aria-label attribute used to define a string that labels the current element (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
+   * The aria-labelledby attribute for usage with a label.
    */
-  @Prop({ mutable: true }) a11yLabel!: string;
-
-  /**
-   * The aria-labelledby attribute for usage with a label (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
-   */
-  @Prop({ mutable: true }) a11yLabelledby?: string;
+  @Prop() ariaLabelledby?: string;
 
   /**
    * Custom CSS class to apply to the inner div.
@@ -118,12 +110,12 @@ export class ModusWcToggle {
   }
 
   componentWillLoad() {
-    if (!this.a11yLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcToggle: a11y-label is required for accessibility. Using fallback label.'
+        'ModusWcToggle: aria-label is required for accessibility. Using fallback label.'
       );
     }
-    this.a11yLabel = 'Toggle button';
+    this.el.ariaLabel = 'Toggle button';
   }
 
   private getClasses(): string {
@@ -155,10 +147,10 @@ export class ModusWcToggle {
       <Host>
         <input
           aria-checked={this.indeterminate ? 'mixed' : this.value}
-          aria-describedby={this.a11yDescribedby}
+          aria-describedby={this.ariaDescribedby}
           aria-disabled={this.disabled}
-          aria-label={this.a11yLabel}
-          aria-labelledby={this.a11yLabelledby}
+          aria-label={this.el.ariaLabel}
+          aria-labelledby={this.ariaLabelledby}
           checked={this.value}
           class={this.getClasses()}
           dir={this.inputDir}

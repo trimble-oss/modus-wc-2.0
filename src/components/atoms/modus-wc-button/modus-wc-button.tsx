@@ -1,5 +1,6 @@
 import {
   Component,
+  Element,
   Event,
   EventEmitter,
   h,
@@ -21,11 +22,8 @@ import { ModusSize } from '../../types';
   shadow: false,
 })
 export class ModusWcButton {
-  /**
-   * The aria-label attribute used to define a string that labels the current element (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
-   */
-  @Prop({ mutable: true }) a11yLabel!: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
    * The color variant of the button.
@@ -79,11 +77,11 @@ export class ModusWcButton {
   @Event() buttonClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   componentWillLoad() {
-    if (!this.a11yLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcButton: a11y-label is required for accessibility. Using fallback label.'
+        'ModusWcButton: aria-label is required for accessibility. Using fallback label.'
       );
-      this.a11yLabel = this.label || 'Button';
+      this.el.ariaLabel = this.label || 'Button';
     }
   }
 
@@ -126,7 +124,7 @@ export class ModusWcButton {
       <Host>
         <button
           class={this.getClasses()}
-          aria-label={this.a11yLabel}
+          aria-label={this.el.ariaLabel}
           aria-pressed={ariaPressed}
           disabled={this.disabled}
           onClick={this.handleClick}

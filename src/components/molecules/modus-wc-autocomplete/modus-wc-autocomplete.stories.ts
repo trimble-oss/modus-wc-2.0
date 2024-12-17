@@ -20,9 +20,8 @@ const fruits: IMenuItem[] = [
 
 interface AutocompleteArgs {
   'active-item-value'?: string;
-  'a11y-describedby'?: string;
-  'a11y-label': string;
-  'a11y-labelledby'?: string;
+  'aria-describedby'?: string;
+  'aria-label': string;
   bordered?: boolean;
   'custom-class'?: string;
   'debounce-ms'?: number;
@@ -44,7 +43,7 @@ const meta: Meta<AutocompleteArgs> = {
   title: 'Components/Forms/Autocomplete',
   component: 'modus-wc-autocomplete',
   args: {
-    'a11y-label': 'Fruit selection autocomplete',
+    'aria-label': 'Fruit selection autocomplete',
     'debounce-ms': 300,
     disabled: false,
     items: fruits,
@@ -106,9 +105,8 @@ const Template: Story = {
     return html`
       <modus-wc-autocomplete
         active-item-value=${ifDefined(args['active-item-value'])}
-        a11y-describedby=${ifDefined(args['a11y-describedby'])}
-        a11y-label=${args['a11y-label']}
-        a11y-labelledby=${args['a11y-labelledby']}
+        aria-describedby=${ifDefined(args['aria-describedby'])}
+        aria-label=${args['aria-label']}
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         debounce-ms=${ifDefined(args['debounce-ms'])}

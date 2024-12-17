@@ -1,5 +1,6 @@
 import {
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
   h,
@@ -23,6 +24,9 @@ import { ModusSize } from '../../types';
 export class ModusWcAutocomplete {
   private debounceTimer?: number;
 
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   @State() private menuVisible: boolean = false;
 
   /**
@@ -31,22 +35,9 @@ export class ModusWcAutocomplete {
   @Prop() activeItemValue?: string;
 
   /**
-   * The aria-describedby attribute matching the ID of the element that describes the checkbox (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
+   * The ID of the element that describes the input.
    */
-  @Prop({ mutable: true }) a11yDescribedby?: string;
-
-  /**
-   * The aria-label attribute used to define a string that labels the current element (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
-   */
-  @Prop({ mutable: true }) a11yLabel!: string;
-
-  /**
-   * The aria-labelledby attribute for usage with a label (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
-   */
-  @Prop({ mutable: true }) a11yLabelledby?: string;
+  @Prop() ariaDescribedby?: string;
 
   /**
    * Indicates that the autocomplete should have a border.
@@ -145,15 +136,6 @@ export class ModusWcAutocomplete {
    */
   @StencilEvent() itemSelect!: EventEmitter<IMenuItem>;
 
-  componentWillLoad() {
-    if (!this.a11yLabel) {
-      console.warn(
-        'ModusWcAutocomplete: a11y-label is required for accessibility. Using fallback label.'
-      );
-      this.a11yLabel = this.placeholder || 'Autocomplete input';
-    }
-  }
-
   // istanbul ignore next - TODO
   disconnectedCallback() {
     // Clean up any existing debounce timer when component is destroyed
@@ -224,14 +206,13 @@ export class ModusWcAutocomplete {
   render() {
     return (
       <Host
-        aria-label={this.a11yLabel}
+        aria-label={this.el.ariaLabel}
         class={this.getClasses()}
         dir={this.inputDir}
       >
         <modus-wc-text-input
-          a11yDescribedby={this.a11yDescribedby}
-          a11yLabel="Autocomplete input"
-          a11yLabelledby={this.a11yLabelledby}
+          ariaDescribedby={this.ariaDescribedby}
+          aria-label="Autocomplete input"
           bordered={this.bordered}
           disabled={this.disabled}
           inputId={this.inputId}
@@ -249,7 +230,7 @@ export class ModusWcAutocomplete {
         {this.menuVisible && (
           <modus-wc-menu
             activeItemValue={this.activeItemValue}
-            a11yLabel="Autocomplete menu"
+            aria-label="Autocomplete menu"
             bordered={this.bordered}
             items={this.items}
             onItemSelect={this.handleItemSelect}

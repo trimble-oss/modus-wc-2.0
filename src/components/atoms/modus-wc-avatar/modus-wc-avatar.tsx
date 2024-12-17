@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-avatar.tailwind';
 import { DaisySize } from '../../types';
 
@@ -13,11 +13,8 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcAvatar {
-  /**
-   * The aria-label attribute used to define a string that labels the current element (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
-   */
-  @Prop({ mutable: true }) a11yLabel!: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
    * The image alt attribute for accessibility.
@@ -47,11 +44,11 @@ export class ModusWcAvatar {
   @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {
-    if (!this.alt || !this.a11yLabel) {
+    if (!this.alt || !this.el.ariaLabel) {
       console.warn(
-        'ModusWcAvatar: alt and a11y-label are required for accessibility. Using fallback label.'
+        'ModusWcAvatar: alt and aria-label are required for accessibility. Using fallback label.'
       );
-      this.a11yLabel = this.a11yLabel || `Avatar ${this.alt || 'image'}`;
+      this.el.ariaLabel = this.el.ariaLabel || `Avatar ${this.alt || 'image'}`;
       this.alt = this.alt || 'Avatar image';
     }
   }
@@ -74,7 +71,11 @@ export class ModusWcAvatar {
   render() {
     return (
       <Host>
-        <div aria-label={this.a11yLabel} class="modus-wc-avatar" tabindex={-1}>
+        <div
+          aria-label={this.el.ariaLabel}
+          class="modus-wc-avatar"
+          tabindex={-1}
+        >
           <div class={this.getClasses()}>
             <img src={this.imgSrc} alt={this.alt} />
           </div>

@@ -13,21 +13,6 @@ describe('modus-wc-autocomplete', () => {
     { label: 'Item 3', value: '3' },
   ];
 
-  it('should warn if a11y-label is not provided', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-    await newSpecPage({
-      components: [ModusWcAutocomplete],
-      html: '<modus-wc-autocomplete></modus-wc-autocomplete>',
-    });
-
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcAutocomplete: a11y-label is required for accessibility. Using fallback label.'
-    );
-
-    consoleWarnSpy.mockRestore();
-  });
-
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],

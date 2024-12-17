@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-badge.tailwind';
 import { ModusSize } from '../../types';
 
@@ -15,11 +15,8 @@ const ALERT_COLORS = ['success', 'warning', 'danger'];
   shadow: false,
 })
 export class ModusWcBadge {
-  /**
-   * The aria-label attribute used to define a string that labels the current element (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
-   */
-  @Prop({ mutable: true }) a11yLabel!: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
    * The color variant of the badge.
@@ -54,11 +51,11 @@ export class ModusWcBadge {
   @Prop() variant: 'counter' | 'filled' | 'text' = 'filled';
 
   componentWillLoad() {
-    if (!this.a11yLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcBadge: a11y-label is required for accessibility. Using fallback label.'
+        'ModusWcBadge: aria-label is required for accessibility. Using fallback label.'
       );
-      this.a11yLabel = this.content ? `Badge ${this.content}` : 'Badge';
+      this.el.ariaLabel = this.content ? `Badge ${this.content}` : 'Badge';
     }
   }
 
@@ -84,7 +81,7 @@ export class ModusWcBadge {
       <Host>
         <span
           class={this.getClasses()}
-          aria-label={this.a11yLabel}
+          aria-label={this.el.ariaLabel}
           role={isAlert ? 'alert' : 'status'}
           tabindex={-1}
         >

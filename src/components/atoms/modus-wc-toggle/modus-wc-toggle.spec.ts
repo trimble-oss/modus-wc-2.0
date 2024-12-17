@@ -2,7 +2,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcToggle } from './modus-wc-toggle';
 
 describe('modus-wc-toggle', () => {
-  it('should warn if a11y-label is not provided', async () => {
+  it('should warn if aria-label is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({
@@ -11,7 +11,7 @@ describe('modus-wc-toggle', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcToggle: a11y-label is required for accessibility. Using fallback label.'
+      'ModusWcToggle: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();

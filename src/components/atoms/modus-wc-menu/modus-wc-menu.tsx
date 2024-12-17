@@ -1,5 +1,6 @@
 import {
   Component,
+  Element,
   Event as StencilEvent,
   EventEmitter,
   h,
@@ -26,11 +27,8 @@ export interface IMenuItem {
   shadow: false,
 })
 export class ModusWcMenu {
-  /**
-   * The aria-label attribute used to define a string that labels the current element (accessibility).
-   * This property name is reserved by HTMLElement and omitted in the React integration.
-   */
-  @Prop({ mutable: true }) a11yLabel!: string;
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
 
   /**
    * The active menu item value, used to show an item as selected.
@@ -73,12 +71,12 @@ export class ModusWcMenu {
   @StencilEvent() itemSelect!: EventEmitter<IMenuItem>;
 
   componentWillLoad() {
-    if (!this.a11yLabel) {
+    if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcMenu: a11y-label is required for accessibility. Using fallback label.'
+        'ModusWcMenu: aria-label is required for accessibility. Using fallback label.'
       );
     }
-    this.a11yLabel = 'Menu';
+    this.el.ariaLabel = 'Menu';
   }
 
   private getClasses(): string {
@@ -128,7 +126,7 @@ export class ModusWcMenu {
     return (
       <Host>
         <ul
-          aria-label={this.a11yLabel}
+          aria-label={this.el.ariaLabel}
           aria-orientation={this.orientation}
           class={this.getClasses()}
           role={this.getMenuRole()}

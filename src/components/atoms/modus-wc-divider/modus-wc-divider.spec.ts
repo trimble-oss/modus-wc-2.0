@@ -2,7 +2,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcDivider } from './modus-wc-divider';
 
 describe('modus-wc-divider', () => {
-  it('should warn if a11y-label is not provided', async () => {
+  it('should warn if aria-label is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({
@@ -11,7 +11,7 @@ describe('modus-wc-divider', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcDivider: a11y-label is required for accessibility. Using fallback label.'
+      'ModusWcDivider: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();

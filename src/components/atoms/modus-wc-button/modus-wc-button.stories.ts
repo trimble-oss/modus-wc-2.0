@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ModusSize } from '../../types';
 
 interface ButtonArgs {
-  'a11y-label': string;
+  'aria-label': string;
   color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   'custom-class'?: string;
   disabled: boolean;
@@ -21,7 +21,7 @@ const meta: Meta<ButtonArgs> = {
   title: 'Components/Button',
   component: 'modus-wc-button',
   args: {
-    'a11y-label': 'Click me button',
+    'aria-label': 'Click me button',
     color: 'primary',
     disabled: false,
     'full-width': false,
@@ -65,7 +65,7 @@ const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-button
-        a11y-label="${args['a11y-label']}"
+        aria-label="${args['aria-label']}"
         color="${args.color}"
         custom-class="${ifDefined(args['custom-class'])}"
         ?disabled="${args.disabled}"
