@@ -20,7 +20,7 @@ describe('modus-wc-time-input', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input aria-label="Default input" list="test-list"></modus-wc-time-input>',
+      html: '<modus-wc-time-input aria-label="Default input" datalist-id="test-list"></modus-wc-time-input>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -38,13 +38,13 @@ describe('modus-wc-time-input', () => {
                 input-dir="ltr"
                 input-id="time-input"
                 input-tab-index="1"
-                list="time-options"
+                datalist-id="time-options"
                 max="23:59"
                 min="00:00"
                 name="time"
                 read-only
                 required
-                seconds
+                show-seconds
                 size="lg"
                 step="30"
                 value="12:00">
@@ -72,7 +72,7 @@ describe('modus-wc-time-input', () => {
   it('should emit change event', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input aria-label="Change test" list="test-list"></modus-wc-time-input>',
+      html: '<modus-wc-time-input aria-label="Change test" datalist-id="test-list"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input');
     expect(input).not.toBeNull();
@@ -113,7 +113,7 @@ describe('modus-wc-time-input', () => {
       html: `<modus-wc-time-input aria-label="Time input"></modus-wc-time-input>`,
     });
     const timeInput = page.rootInstance;
-    timeInput.timeOptions = ['00:00', '12:00', '23:59'];
+    timeInput.datalistOptions = ['00:00', '12:00', '23:59'];
     await page.waitForChanges();
 
     const datalist = page.root!.querySelector('datalist');
@@ -127,7 +127,7 @@ describe('modus-wc-time-input', () => {
       html: `<modus-wc-time-input aria-label="Time input"></modus-wc-time-input>`,
     });
     const timeInput = page.rootInstance;
-    timeInput.timeOptions = [];
+    timeInput.datalistOptions = [];
     await page.waitForChanges();
 
     const datalist = page.root!.querySelector('datalist');
@@ -149,7 +149,7 @@ describe('modus-wc-time-input', () => {
       html: `<modus-wc-time-input aria-label="Time input"></modus-wc-time-input>`,
     });
     const timeInput = page.rootInstance;
-    timeInput.timeOptions = ['00:00', '12:00', '23:59'];
+    timeInput.datalistOptions = ['00:00', '12:00', '23:59'];
     await page.waitForChanges();
 
     const datalist = page.root!.querySelector('datalist');
@@ -160,10 +160,10 @@ describe('modus-wc-time-input', () => {
   it('should not render datalist when list prop is provided and does not match internal ID', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
-      html: `<modus-wc-time-input aria-label="Time input" list="external-datalist"></modus-wc-time-input>`,
+      html: `<modus-wc-time-input aria-label="Time input" datalist-id="external-datalist"></modus-wc-time-input>`,
     });
     const timeInput = page.rootInstance;
-    timeInput.timeOptions = ['00:00', '12:00', '23:59'];
+    timeInput.datalistOptions = ['00:00', '12:00', '23:59'];
     await page.waitForChanges();
 
     const datalist = page.root!.querySelector('datalist');
