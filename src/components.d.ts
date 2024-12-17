@@ -1193,7 +1193,7 @@ declare global {
     };
     interface HTMLModusWcCheckboxElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1216,7 +1216,7 @@ declare global {
     };
     interface HTMLModusWcDateElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1302,7 +1302,7 @@ declare global {
     };
     interface HTMLModusWcNumberInputElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1335,7 +1335,7 @@ declare global {
     };
     interface HTMLModusWcRadioElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1358,7 +1358,7 @@ declare global {
     };
     interface HTMLModusWcSelectElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1391,7 +1391,7 @@ declare global {
     };
     interface HTMLModusWcSliderElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1414,7 +1414,7 @@ declare global {
     };
     interface HTMLModusWcTextInputElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1437,7 +1437,7 @@ declare global {
     };
     interface HTMLModusWcTextareaElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1488,7 +1488,7 @@ declare global {
     };
     interface HTMLModusWcToggleElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1799,7 +1799,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcCheckboxCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcCheckboxCustomEvent<InputEvent>) => void;
         /**
           * Emitted when the input gains focus.
          */
@@ -1877,7 +1877,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcDateCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcDateCustomEvent<InputEvent>) => void;
         /**
           * Event emitted when the input gains focus.
          */
@@ -2117,7 +2117,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcNumberInputCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcNumberInputCustomEvent<InputEvent>) => void;
         /**
           * Event emitted when the input gains focus.
          */
@@ -2217,7 +2217,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcRadioCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcRadioCustomEvent<InputEvent>) => void;
         /**
           * Emitted when the input gains focus.
          */
@@ -2287,7 +2287,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcSelectCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcSelectCustomEvent<InputEvent>) => void;
         /**
           * Event emitted when the input gains focus.
          */
@@ -2383,7 +2383,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcSliderCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcSliderCustomEvent<InputEvent>) => void;
         /**
           * Emitted when the input gains focus.
          */
@@ -2493,7 +2493,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcTextInputCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcTextInputCustomEvent<InputEvent>) => void;
         /**
           * Event emitted when the input gains focus.
          */
@@ -2583,7 +2583,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcTextareaCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcTextareaCustomEvent<InputEvent>) => void;
         /**
           * Emitted when the input gains focus.
          */
@@ -2679,7 +2679,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcToggleCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcToggleCustomEvent<InputEvent>) => void;
         /**
           * Emitted when the input gains focus.
          */

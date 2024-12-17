@@ -33,7 +33,7 @@ Adheres to WCAG 2.2 standards.
 | Event         | Description                           | Type                      |
 | ------------- | ------------------------------------- | ------------------------- |
 | `inputBlur`   | Emitted when the input loses focus.   | `CustomEvent<FocusEvent>` |
-| `inputChange` | Emitted when the input value changes. | `CustomEvent<Event>`      |
+| `inputChange` | Emitted when the input value changes. | `CustomEvent<InputEvent>` |
 | `inputFocus`  | Emitted when the input gains focus.   | `CustomEvent<FocusEvent>` |
 
 
