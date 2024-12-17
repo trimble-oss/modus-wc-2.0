@@ -159,7 +159,7 @@ export class ModusWcTextInput {
   /**
    * Event emitted when the input value changes.
    */
-  @StencilEvent() inputChange!: EventEmitter<Event>;
+  @StencilEvent() inputChange!: EventEmitter<InputEvent>;
 
   /**
    * Event emitted when the input gains focus.
@@ -197,7 +197,7 @@ export class ModusWcTextInput {
     this.inputFocus.emit(event);
   };
 
-  private handleInput = (event: Event) => {
+  private handleInput = (event: InputEvent) => {
     this.inputChange.emit(event);
   };
 

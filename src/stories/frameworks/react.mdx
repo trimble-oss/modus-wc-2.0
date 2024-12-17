@@ -38,7 +38,41 @@ npm install @trimble-cms/modus-wc-react@1.0.0-react18
 ```tsx
 import { ModusWcBadge } from '@trimble-cms/modus-wc-react';
 
-<ModusBadge aria-label="Badge" content="Words" />;
+<ModusWcBadge aria-label="Badge" content="Words" />;
+```
+
+### Using the Controlled Input Pattern
+
+The controlled input pattern involves maintaining the state of the input's value within the React application or
+component. The [React Docs](https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable)
+describe this in more detail.
+
+```tsx
+import React, { useState } from 'react';
+import { ModusWcTextInput } from '@trimble-cms/modus-wc-react';
+
+interface Props extends React.ComponentProps<typeof ModusWcTextInput> {}
+
+const MyComponent: React.FC<Props> = (props) => {
+  const [value, setValue] = useState('');
+
+  const handleInputChange = (
+    e: CustomEvent<HTMLModusWcTextInputElementEventMap['inputChange']>
+  ) => {
+    const value = e.detail.target.value;
+    setValue(value);
+  };
+
+  return (
+    <ModusWcTextInput
+      {...props}
+      onInputChange={handleInputChange}
+      value={value}
+    />
+  );
+};
+
+export default MyComponent;
 ```
 
 ### Wrapping Components
@@ -46,15 +80,16 @@ import { ModusWcBadge } from '@trimble-cms/modus-wc-react';
 When using Modus React Components directly, it is recommended to wrap it in corresponding React components within your application.
 This will abstract away from the library dependency, allowing more flexibility for you and your application in the future.
 
-Wrapped Modus Button Example:
+Wrapped Modus component example:
 
 ```tsx
+import React from 'react';
 import { ModusWcAvatar } from '@trimble-cms/modus-wc-react';
 
-export interface AvatarProps extends ModusAvatarProps {}
+interface Props extends React.ComponentProps<typeof ModusWcAvatar> {}
 
-const Avatar = (props: AvatarProps) => {
-  return <ModusAvatar {...props} />;
+const Avatar: React.FC<Props> = (props) => {
+  return <ModusWcAvatar {...props} />;
 };
 
 export default Avatar;
@@ -63,21 +98,23 @@ export default Avatar;
 or, a more complex wrapper:
 
 ```tsx
+import React from 'react';
 import { ModusWcTextInput } from '@trimble-cms/modus-wc-react';
 
-export interface TextInputProps
-  extends Omit<ModusWcTextInputProps, 'inputChange'> {
-  onValueChange?: (value: string) => void;
+interface Props
+  extends Omit<React.ComponentProps<typeof ModusWcTextInput>, 'inputChange'> {
+  onValueChange: (value: string) => void;
 }
 
-const TextInput = (props: TextInputProps) => {
-  const handleValueChange = (event: ModusWcTextInputCustomEvent<string>) => {
-    const value =
-      event.detail === undefined || event.detail === null ? '' : event.detail;
-    props.onValueChange?.(value);
+const TextInput: React.FC<Props> = (props) => {
+  const handleInputChange = (
+    e: CustomEvent<HTMLModusWcTextInputElementEventMap['inputChange']>
+  ) => {
+    const value = e.detail.target.value;
+    props.onValueChange(value);
   };
 
-  return <ModusWcTextInput {...props} inputChange={handleValueChange} />;
+  return <ModusWcTextInput {...props} onInputChange={handleInputChange} />;
 };
 
 export default TextInput;
