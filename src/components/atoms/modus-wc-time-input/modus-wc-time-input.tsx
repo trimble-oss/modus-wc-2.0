@@ -46,6 +46,11 @@ export class ModusWcTimeInput {
   @Prop() customClass?: string = '';
 
   /**
+   * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
+   */
+  @Prop() datalistOptions: string[] = [];
+
+  /**
    * Whether the form control is disabled.
    */
   @Prop() disabled?: boolean = false;
@@ -114,11 +119,6 @@ export class ModusWcTimeInput {
    * Overrides the `seconds` attribute if both are provided.
    */
   @Prop() step?: number;
-
-  /**
-   * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
-   */
-  @Prop() datalistOptions: string[] = [];
 
   /**
    * The value of the time input.

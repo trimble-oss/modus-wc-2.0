@@ -12,11 +12,12 @@ interface TimeInputArgs {
   'auto-complete'?: 'on' | 'off';
   bordered?: boolean;
   'custom-class'?: string;
+  'datalist-id'?: string;
+  'datalist-options'?: string[];
   disabled?: boolean;
   'input-dir'?: '' | 'ltr' | 'rtl' | 'auto';
   'input-id'?: string;
   'input-tab-index'?: number;
-  'datalist-id'?: string;
   max?: string;
   min?: string;
   name?: string;
@@ -25,7 +26,6 @@ interface TimeInputArgs {
   'show-seconds'?: boolean;
   size?: ModusSize;
   step?: number;
-  'datalist-options'?: string[];
   value: string;
 }
 
@@ -71,11 +71,11 @@ export const Template: Story = {
       auto-complete=${ifDefined(args['auto-complete'])}
       bordered=${ifDefined(args.bordered)}
       custom-class=${ifDefined(args['custom-class'])}
+      datalist-id=${ifDefined(args['datalist-id'])}
       ?disabled=${args.disabled}
       input-dir=${ifDefined(args['input-dir'])}
       input-id=${ifDefined(args['input-id'])}
       input-tab-index=${ifDefined(args['input-tab-index'])}
-      datalist-id=${ifDefined(args['datalist-id'])}
       max=${ifDefined(args.max)}
       min=${ifDefined(args.min)}
       name=${ifDefined(args.name)}
