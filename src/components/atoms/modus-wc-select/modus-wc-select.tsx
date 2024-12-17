@@ -36,11 +36,6 @@ export class ModusWcSelect {
   @Prop() ariaDescribedby?: string;
 
   /**
-   * Indicates that an element should be focused on page load.
-   */
-  @Prop() autoFocus?: boolean;
-
-  /**
    * Indicates that the input should have a border.
    */
   @Prop() bordered?: boolean = true;
@@ -158,7 +153,6 @@ export class ModusWcSelect {
           aria-describedby={this.ariaDescribedby}
           aria-invalid={this.inputAriaInvalid}
           aria-label={this.el.ariaLabel}
-          autofocus={this.autoFocus}
           class={this.getClasses()}
           dir={this.inputDir}
           disabled={this.disabled}

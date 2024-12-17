@@ -17,7 +17,6 @@ Adheres to WCAG 2.2 standards.
 | ----------------- | ------------------ | ------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------- |
 | `ariaDescribedby` | `aria-describedby` | The ID of the element that describes the input.                                                         | `string \| undefined`                         | `undefined` |
 | `ariaLabelledby`  | `aria-labelledby`  | The aria-labelledby attribute for usage with a label.                                                   | `string \| undefined`                         | `undefined` |
-| `autoFocus`       | `auto-focus`       | Indicates that an element should be focused on page load.                                               | `boolean \| undefined`                        | `undefined` |
 | `bordered`        | `bordered`         | Indicates that the input should have a border.                                                          | `boolean \| undefined`                        | `true`      |
 | `customClass`     | `custom-class`     | Custom CSS class to apply to the input.                                                                 | `string \| undefined`                         | `''`        |
 | `disabled`        | `disabled`         | Whether the form control is disabled.                                                                   | `boolean \| undefined`                        | `false`     |

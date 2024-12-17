@@ -262,10 +262,6 @@ export namespace Components {
          */
         "ariaLabelledby"?: string;
         /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -478,10 +474,6 @@ export namespace Components {
          */
         "autoComplete"?: 'on' | 'off';
         /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -635,10 +627,6 @@ export namespace Components {
           * The ID of the element that describes the input.
          */
         "ariaDescribedby"?: string;
-        /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
         /**
           * Indicates that the input should have a border.
          */
@@ -794,10 +782,6 @@ export namespace Components {
           * Hint for form autofill feature.
          */
         "autoComplete"?: 'on' | 'off';
-        /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
         /**
           * Indicates that the input should have a border.
          */
@@ -971,6 +955,88 @@ export namespace Components {
         "customClass"?: string;
     }
     /**
+     * A customizable input component used to create time inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTimeInput {
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: 'on' | 'off';
+        /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the input.
+         */
+        "customClass"?: string;
+        /**
+          * ID of a `<datalist>` element that contains pre-defined time options. The value must be the ID of a `<datalist>` element in the same document.
+         */
+        "datalistId"?: string;
+        /**
+          * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
+         */
+        "datalistOptions": string[];
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the time direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Maximum value. Format: `HH:mm`, `HH:mm:ss`.
+         */
+        "max"?: string;
+        /**
+          * Minimum value. Format: `HH:mm`, `HH:mm:ss.`
+         */
+        "min"?: string;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * Displays the time input format as `HH:mm:ss` if `true`. Internally sets the `step` to 1 second. If a `step` value is provided, it will override this attribute.
+         */
+        "showSeconds"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: ModusSize;
+        /**
+          * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
+         */
+        "step"?: number;
+        /**
+          * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
+         */
+        "value": string;
+    }
+    /**
      * A customizable checkbox component.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1120,6 +1186,10 @@ export interface ModusWcTextareaCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcThemeSwitcherCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcThemeSwitcherElement;
+}
+export interface ModusWcTimeInputCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTimeInputElement;
 }
 export interface ModusWcToggleCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1486,6 +1556,29 @@ declare global {
         prototype: HTMLModusWcThemeSwitcherElement;
         new (): HTMLModusWcThemeSwitcherElement;
     };
+    interface HTMLModusWcTimeInputElementEventMap {
+        "inputBlur": FocusEvent;
+        "inputChange": Event;
+        "inputFocus": FocusEvent;
+    }
+    /**
+     * A customizable input component used to create time inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcTimeInputElement extends Components.ModusWcTimeInput, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTimeInputElementEventMap>(type: K, listener: (this: HTMLModusWcTimeInputElement, ev: ModusWcTimeInputCustomEvent<HTMLModusWcTimeInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTimeInputElementEventMap>(type: K, listener: (this: HTMLModusWcTimeInputElement, ev: ModusWcTimeInputCustomEvent<HTMLModusWcTimeInputElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTimeInputElement: {
+        prototype: HTMLModusWcTimeInputElement;
+        new (): HTMLModusWcTimeInputElement;
+    };
     interface HTMLModusWcToggleElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
@@ -1551,6 +1644,7 @@ declare global {
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
         "modus-wc-theme-switcher": HTMLModusWcThemeSwitcherElement;
+        "modus-wc-time-input": HTMLModusWcTimeInputElement;
         "modus-wc-toggle": HTMLModusWcToggleElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
@@ -1831,10 +1925,6 @@ declare namespace LocalJSX {
          */
         "ariaLabelledby"?: string;
         /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -2063,10 +2153,6 @@ declare namespace LocalJSX {
          */
         "autoComplete"?: 'on' | 'off';
         /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -2244,10 +2330,6 @@ declare namespace LocalJSX {
           * The ID of the element that describes the input.
          */
         "ariaDescribedby"?: string;
-        /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
         /**
           * Indicates that the input should have a border.
          */
@@ -2427,10 +2509,6 @@ declare namespace LocalJSX {
           * Hint for form autofill feature.
          */
         "autoComplete"?: 'on' | 'off';
-        /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
         /**
           * Indicates that the input should have a border.
          */
@@ -2632,6 +2710,100 @@ declare namespace LocalJSX {
         "onThemeChange"?: (event: ModusWcThemeSwitcherCustomEvent<IThemeConfig>) => void;
     }
     /**
+     * A customizable input component used to create time inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTimeInput {
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: 'on' | 'off';
+        /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the input.
+         */
+        "customClass"?: string;
+        /**
+          * ID of a `<datalist>` element that contains pre-defined time options. The value must be the ID of a `<datalist>` element in the same document.
+         */
+        "datalistId"?: string;
+        /**
+          * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
+         */
+        "datalistOptions"?: string[];
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the time direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Maximum value. Format: `HH:mm`, `HH:mm:ss`.
+         */
+        "max"?: string;
+        /**
+          * Minimum value. Format: `HH:mm`, `HH:mm:ss.`
+         */
+        "min"?: string;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Event emitted when the input loses focus.
+         */
+        "onInputBlur"?: (event: ModusWcTimeInputCustomEvent<FocusEvent>) => void;
+        /**
+          * Event emitted when the input value changes.
+         */
+        "onInputChange"?: (event: ModusWcTimeInputCustomEvent<Event>) => void;
+        /**
+          * Event emitted when the input gains focus.
+         */
+        "onInputFocus"?: (event: ModusWcTimeInputCustomEvent<FocusEvent>) => void;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * Displays the time input format as `HH:mm:ss` if `true`. Internally sets the `step` to 1 second. If a `step` value is provided, it will override this attribute.
+         */
+        "showSeconds"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: ModusSize;
+        /**
+          * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
+         */
+        "step"?: number;
+        /**
+          * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
+         */
+        "value"?: string;
+    }
+    /**
      * A customizable checkbox component.
      * Adheres to WCAG 2.2 standards.
      */
@@ -2767,6 +2939,7 @@ declare namespace LocalJSX {
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
         "modus-wc-theme-switcher": ModusWcThemeSwitcher;
+        "modus-wc-time-input": ModusWcTimeInput;
         "modus-wc-toggle": ModusWcToggle;
         "modus-wc-tooltip": ModusWcTooltip;
         "modus-wc-typography": ModusWcTypography;
@@ -2880,6 +3053,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-theme-switcher": LocalJSX.ModusWcThemeSwitcher & JSXBase.HTMLAttributes<HTMLModusWcThemeSwitcherElement>;
+            /**
+             * A customizable input component used to create time inputs.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-time-input": LocalJSX.ModusWcTimeInput & JSXBase.HTMLAttributes<HTMLModusWcTimeInputElement>;
             /**
              * A customizable checkbox component.
              * Adheres to WCAG 2.2 standards.
