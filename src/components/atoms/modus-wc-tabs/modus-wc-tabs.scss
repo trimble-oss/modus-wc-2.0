@@ -42,19 +42,22 @@
 
   &:not(.modus-wc-tab-disabled):active {
     --tab-color: var(--modus-wc-color-white);
-    // Unfortunately needed, otherwise browsers act strange.
+    // Unfortunately needed, otherwise browsers sometimes don't apply.
     background-color: var(--modus-wc-color-trimble-blue) !important;
   }
 
   &.modus-wc-tab-active {
-    --fallback-bc: transparent;
     --tab-color: var(--modus-wc-color-white);
+    --tab-bg: var(--modus-wc-color-blue-light);
     background-color: var(--modus-wc-color-blue-light);
+
+    --fallback-bc: transparent;
   }
 }
 
 [data-theme='modus-classic-dark'] .modus-wc-tab {
   --tab-color: var(--modus-wc-color-white);
+  --tab-bg: var(--modus-wc-color-gray-10);
   background-color: var(--modus-wc-color-gray-10);
 
   --fallback-bc: var(--modus-wc-color-gray-8);
@@ -64,15 +67,17 @@
   }
 
   &:not(.modus-wc-tab-disabled):active {
-    // Unfortunately needed, otherwise browsers act strange.
+    // Unfortunately needed, otherwise browsers sometimes don't apply.
     background-color: var(--modus-wc-color-trimble-blue) !important;
   }
 
   &.modus-wc-tab-active {
-    --fallback-bc: transparent;
     --tab-color: var(--modus-wc-color-white);
+    --tab-bg: var(--modus-wc-color-blue-light);
     background-color: var(--modus-wc-color-blue-light);
-    border-color: var(--modus-wc-color-highlight-blue);
+
+    --fallback-bc: var(--modus-wc-color-highlight-blue);
+    border-width: 1px;
   }
 
   &.modus-wc-tab-disabled {
