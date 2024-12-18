@@ -10,6 +10,7 @@ import { DaisySize, ModusSize, Orientation } from "./components/types";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 import { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
+import { IModusWcTab } from "./components/atoms/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
@@ -17,6 +18,7 @@ export { DaisySize, ModusSize, Orientation } from "./components/types";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 export { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
+export { IModusWcTab } from "./components/atoms/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
@@ -773,24 +775,6 @@ export namespace Components {
         "value": number;
     }
     /**
-     * A customizable tab component.
-     * Adheres to WCAG 2.2 standards.
-     */
-    interface ModusWcTab {
-        /**
-          * If the tab is active.
-         */
-        "active"?: boolean;
-        /**
-          * Custom CSS class to apply to the inner div.
-         */
-        "customClass": string;
-        /**
-          * If the tab is disabled.
-         */
-        "disabled"?: boolean;
-    }
-    /**
      * A customizable tabs component used to create groups of tabs.
      * Adheres to WCAG 2.2 standards.
      */
@@ -810,7 +794,11 @@ export namespace Components {
         /**
           * Additional styling for the tabs.
          */
-        "tabStyle"?: 'boxed' | 'bordered' | 'lifted';
+        "tabStyle"?: 'boxed' | 'bordered' | 'lifted' | 'none';
+        /**
+          * The tabs to display.
+         */
+        "tabs": IModusWcTab[];
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -1456,18 +1444,8 @@ declare global {
         prototype: HTMLModusWcSliderElement;
         new (): HTMLModusWcSliderElement;
     };
-    /**
-     * A customizable tab component.
-     * Adheres to WCAG 2.2 standards.
-     */
-    interface HTMLModusWcTabElement extends Components.ModusWcTab, HTMLStencilElement {
-    }
-    var HTMLModusWcTabElement: {
-        prototype: HTMLModusWcTabElement;
-        new (): HTMLModusWcTabElement;
-    };
     interface HTMLModusWcTabsElementEventMap {
-        "tabChange": number;
+        "tabChange": string;
     }
     /**
      * A customizable tabs component used to create groups of tabs.
@@ -1622,7 +1600,6 @@ declare global {
         "modus-wc-select": HTMLModusWcSelectElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
-        "modus-wc-tab": HTMLModusWcTabElement;
         "modus-wc-tabs": HTMLModusWcTabsElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
@@ -2483,24 +2460,6 @@ declare namespace LocalJSX {
         "value"?: number;
     }
     /**
-     * A customizable tab component.
-     * Adheres to WCAG 2.2 standards.
-     */
-    interface ModusWcTab {
-        /**
-          * If the tab is active.
-         */
-        "active"?: boolean;
-        /**
-          * Custom CSS class to apply to the inner div.
-         */
-        "customClass"?: string;
-        /**
-          * If the tab is disabled.
-         */
-        "disabled"?: boolean;
-    }
-    /**
      * A customizable tabs component used to create groups of tabs.
      * Adheres to WCAG 2.2 standards.
      */
@@ -2512,7 +2471,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the `selected` property changes.
          */
-        "onTabChange"?: (event: ModusWcTabsCustomEvent<number>) => void;
+        "onTabChange"?: (event: ModusWcTabsCustomEvent<string>) => void;
         /**
           * Default tab selected by index.
          */
@@ -2524,7 +2483,11 @@ declare namespace LocalJSX {
         /**
           * Additional styling for the tabs.
          */
-        "tabStyle"?: 'boxed' | 'bordered' | 'lifted';
+        "tabStyle"?: 'boxed' | 'bordered' | 'lifted' | 'none';
+        /**
+          * The tabs to display.
+         */
+        "tabs"?: IModusWcTab[];
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -2884,7 +2847,6 @@ declare namespace LocalJSX {
         "modus-wc-select": ModusWcSelect;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
-        "modus-wc-tab": ModusWcTab;
         "modus-wc-tabs": ModusWcTabs;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
@@ -2986,11 +2948,6 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-slider": LocalJSX.ModusWcSlider & JSXBase.HTMLAttributes<HTMLModusWcSliderElement>;
-            /**
-             * A customizable tab component.
-             * Adheres to WCAG 2.2 standards.
-             */
-            "modus-wc-tab": LocalJSX.ModusWcTab & JSXBase.HTMLAttributes<HTMLModusWcTabElement>;
             /**
              * A customizable tabs component used to create groups of tabs.
              * Adheres to WCAG 2.2 standards.

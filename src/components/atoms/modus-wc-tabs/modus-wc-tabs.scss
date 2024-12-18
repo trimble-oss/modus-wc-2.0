@@ -3,132 +3,80 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-tabs-lifted .modus-wc-tab:focus-visible {
-    border-end-end-radius: 0;
-    border-end-start-radius: 0;
+.modus-wc-tab modus-wc-icon + span,
+.modus-wc-tab span + modus-wc-icon {
+  padding-left: 8px;
 }
-.modus-wc-tab {
-    @apply text-opacity-50 [@media(hover:hover)]:hover:text-opacity-100;
-    --tab-color: theme(colors.base-content);
-    --tab-bg: theme(colors.base-100);
-    --tab-border-color: theme(colors.base-300);
-    color: var(--tab-color);
-    padding-inline-start: var(--tab-padding, 1rem);
-    padding-inline-end: var(--tab-padding, 1rem);
-    &:is(.modus-wc-tab-active, [aria-selected="true"]):not(.modus-wc-tab-disabled):not([disabled]),
-    &:is(input:checked) {
-        @apply border-base-content border-opacity-100 text-opacity-100;
-    }
-    &:focus {
-        @apply outline-none;
-    }
-    &:focus-visible {
-        outline: 2px solid currentColor;
-        outline-offset: -5px;
-    }
-    /* disabled */
-    &-disabled,
-    &[disabled] {
-        @apply text-base-content cursor-not-allowed text-opacity-20;
-    }
-    @media (hover: hover) {
-        &[disabled],
-        &[disabled]:hover {
-            @apply text-base-content cursor-not-allowed text-opacity-20;
-        }
-    }
-}
-.modus-wc-tabs-bordered .modus-wc-tab {
-    @apply border-base-content border-opacity-20;
-    border-style: solid;
-    border-bottom-width: calc(var(--tab-border, 1px) + 1px);
-}
-.modus-wc-tabs-lifted .modus-wc-tab {
-    border: var(--tab-border, 1px) solid transparent;
-    border-width: 0 0 var(--tab-border, 1px) 0;
-    border-start-start-radius: var(--tab-radius, 0.5rem);
-    border-start-end-radius: var(--tab-radius, 0.5rem);
-    border-bottom-color: var(--tab-border-color);
-    padding-inline-start: var(--tab-padding, 1rem);
-    padding-inline-end: var(--tab-padding, 1rem);
-    padding-top: var(--tab-border, 1px);
-    &:is(.modus-wc-tab-active, [aria-selected="true"]):not(.modus-wc-tab-disabled):not([disabled]),
-    &:is(input:checked) {
-        background-color: var(--tab-bg);
-        border-width: var(--tab-border, 1px) var(--tab-border, 1px) 0 var(--tab-border, 1px);
-        border-inline-start-color: var(--tab-border-color);
-        border-inline-end-color: var(--tab-border-color);
-        border-top-color: var(--tab-border-color);
-        padding-inline-start: calc(var(--tab-padding, 1rem) - var(--tab-border, 1px));
-        padding-inline-end: calc(var(--tab-padding, 1rem) - var(--tab-border, 1px));
-        padding-bottom: var(--tab-border, 1px);
-        padding-top: 0;
-        &:before {
-            z-index: 1;
-            content: "";
-            display: block;
-            position: absolute;
-            width: calc(100% + var(--tab-radius, 0.5rem) * 2);
-            height: var(--tab-radius, 0.5rem);
-            bottom: 0;
-            background-size: var(--tab-radius, 0.5rem);
-            background-position:
-                top left,
-                top right;
-            background-repeat: no-repeat;
-            --tab-grad: calc(69% - var(--tab-border, 1px));
-            --radius-start: radial-gradient(
-                circle at top left,
-                transparent var(--tab-grad),
-                var(--tab-border-color) calc(var(--tab-grad) + 0.25px),
-                var(--tab-border-color) calc(var(--tab-grad) + var(--tab-border, 1px)),
-                var(--tab-bg) calc(var(--tab-grad) + var(--tab-border, 1px) + 0.25px)
-            );
-            --radius-end: radial-gradient(
-                circle at top right,
-                transparent var(--tab-grad),
-                var(--tab-border-color) calc(var(--tab-grad) + 0.25px),
-                var(--tab-border-color) calc(var(--tab-grad) + var(--tab-border, 1px)),
-                var(--tab-bg) calc(var(--tab-grad) + var(--tab-border, 1px) + 0.25px)
-            );
-            background-image: var(--radius-start), var(--radius-end);
-        }
 
-        &:first-child:before {
-            background-image: var(--radius-end);
-            background-position: top right;
-            [dir="rtl"] & {
-                background-image: var(--radius-start);
-                background-position: top left;
-            }
-        }
-        &:last-child:before {
-            background-image: var(--radius-start);
-            background-position: top left;
-            [dir="rtl"] & {
-                background-image: var(--radius-end);
-                background-position: top right;
-            }
-        }
-    }
+.modus-wc-tab {
+  display: inline-flex;
+  align-items: center;
+
+  font-weight: 700;
+
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+
+  // For centering purposes
+  modus-wc-icon {
+    height: 100%;
+  }
+  modus-wc-icon .modus-icons {
+    line-height: 2rem;
+  }
+
+  --tab-border: 0px; //! This is rendered as 1px due to a calc(+1)
 }
-.modus-wc-tabs-lifted
-    :is(.modus-wc-tab-active, [aria-selected="true"]):not(.modus-wc-tab-disabled):not([disabled])
-    + .modus-wc-tabs-lifted
-    :is(.modus-wc-tab-active, [aria-selected="true"]):not(.modus-wc-tab-disabled):not([disabled]),
-.modus-wc-tabs-lifted .modus-wc-tab:is(input:checked) + .modus-wc-tabs-lifted .modus-wc-tab:is(input:checked) {
-    &:before {
-        background-image: var(--radius-end);
-        background-position: top right;
-    }
+
+// By default, daisy doesn't apply --tab-bg to non-lifted tabs
+
+[data-theme='modus-classic-light'] .modus-wc-tab {
+  --tab-color: var(--modus-wc-color-trimble-gray);
+  --tab-bg: var(--modus-wc-color-white);
+
+  --fallback-bc: var(--modus-wc-color-gray-2);
+
+  &:not(.modus-wc-tab-active):not(.modus-wc-tab-disabled):hover {
+    background-color: var(--modus-wc-color-gray-0);
+  }
+
+  &:not(.modus-wc-tab-disabled):active {
+    --tab-color: var(--modus-wc-color-white);
+    // Unfortunately needed, otherwise browsers act strange.
+    background-color: var(--modus-wc-color-trimble-blue) !important;
+  }
+
+  &.modus-wc-tab-active {
+    --fallback-bc: transparent;
+    --tab-color: var(--modus-wc-color-white);
+    background-color: var(--modus-wc-color-blue-light);
+  }
 }
-.modus-wc-tabs-boxed {
-    @apply bg-base-200 rounded-btn p-1;
-    .modus-wc-tab {
-        @apply rounded-btn;
-    }
-    :is(.modus-wc-tab-active, [aria-selected="true"]):not(.modus-wc-tab-disabled):not([disabled]),
-    :is(input:checked) {
-        @apply bg-primary text-primary-content [@media(hover:hover)]:hover:text-primary-content;
-    }
+
+[data-theme='modus-classic-dark'] .modus-wc-tab {
+  --tab-color: var(--modus-wc-color-white);
+  background-color: var(--modus-wc-color-gray-10);
+
+  --fallback-bc: var(--modus-wc-color-gray-8);
+
+  &:not(.modus-wc-tab-active):not(.modus-wc-tab-disabled):hover {
+    background-color: var(--modus-wc-color-gray-8);
+  }
+
+  &:not(.modus-wc-tab-disabled):active {
+    // Unfortunately needed, otherwise browsers act strange.
+    background-color: var(--modus-wc-color-trimble-blue) !important;
+  }
+
+  &.modus-wc-tab-active {
+    --fallback-bc: transparent;
+    --tab-color: var(--modus-wc-color-white);
+    background-color: var(--modus-wc-color-blue-light);
+    border-color: var(--modus-wc-color-highlight-blue);
+  }
+
+  &.modus-wc-tab-disabled {
+    --tab-color: #fff;
+    background-color: var(--modus-wc-color-trimble-gray);
+  }
 }

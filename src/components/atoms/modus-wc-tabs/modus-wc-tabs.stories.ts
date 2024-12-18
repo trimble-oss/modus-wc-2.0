@@ -2,27 +2,34 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { DaisySize } from '../../types';
+import { IModusWcTab } from './modus-wc-tabs';
 
 interface TabsArgs {
-  alt: string;
   'aria-label': string;
   'custom-class'?: string;
-  tabStyle: 'boxed' | 'bordered' | 'lifted';
   size: DaisySize;
+  tabs: IModusWcTab[];
+  tabStyle: 'boxed' | 'bordered' | 'lifted' | 'none';
 }
 
 const meta: Meta<TabsArgs> = {
   title: 'Components/Tabs',
   component: 'modus-wc-tabs',
   args: {
-    alt: 'Example tabs',
-    'aria-label': 'Example tabs',
+    'aria-label': 'Example Tab Group',
     size: 'md',
+    tabStyle: 'bordered',
+    tabs: [
+      { id: 'tab1', label: 'Tab 1', active: true },
+      { id: 'tab2', label: 'Tab 2' },
+      { id: 'tab3', label: 'Tab 3', disabled: true },
+      { id: 'tab4', icon: 'home' },
+    ],
   },
   argTypes: {
     tabStyle: {
       control: { type: 'radio' },
-      options: [null, 'boxed', 'bordered', 'lifted'],
+      options: ['boxed', 'bordered', 'lifted', 'none'],
     },
     size: {
       control: { type: 'radio' },
@@ -40,20 +47,15 @@ const Template: Story = {
     // prettier-ignore
     return html`
 <modus-wc-tabs
-  alt="${args.alt}"
   aria-label="${args['aria-label']}"
   custom-class="${ifDefined(args['custom-class'])}"
   ?img-src="${args['img-src']}"
   tab-style="${ifDefined(args.tabStyle)}"
-  size="${args.size}"
+  .tabs="${args.tabs}"
+  size="${ifDefined(args.size)}"
 >
-  <modus-wc-tab active>Tab 1</modus-wc-tab>
-  <modus-wc-tab>Tab 2</modus-wc-tab>
-  <modus-wc-tab disabled>Tab 3</modus-wc-tab>
-  <modus-wc-tab>Tab 4</modus-wc-tab>
-  <modus-wc-tab>Tab 5</modus-wc-tab>
   <p slot="panel">
-    Modus (noun) ˈmōdəs' : a mode of procedure : a way of doing something
+    Modus (noun) : a mode of procedure : a way of doing something
   </p>
 </modus-wc-tabs>
     `;
@@ -62,22 +64,27 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
-// export const ActiveTabs: Story = {
-//   render: (args) => {
-//     // prettier-ignore
-//     return html`
-// <modus-wc-tabs
-//   alt="${args.alt}"
-//   aria-label="${args['aria-label']}"
-//   custom-class="${ifDefined(args['custom-class'])}"
-//   ?img-src="${args['img-src']}"
-//   tab-style="boxed"
-//   size="${args.size}"
-// >
-//   <modus-wc-tab active>Tab 1</modus-wc-tab>
-//   <modus-wc-tab>Tab 2</modus-wc-tab>
-//   <modus-wc-tab disabled>Tab 3</modus-wc-tab>
-// </modus-wc-tabs>
-//     `;
-//   },
-// };
+export const ActiveAndDisabled: Story = { ...Template };
+ActiveAndDisabled.args = {
+  tabs: [
+    { id: 'tab1', label: 'Active', active: true },
+    { id: 'tab2', label: 'Normal' },
+    { id: 'tab3', label: 'Disabled', disabled: true },
+  ],
+};
+
+export const Icons: Story = {
+  ...Template,
+  args: {
+    tabs: [
+      { id: 'tab1', icon: 'home' },
+      { id: 'tab2', icon: 'settings', iconPosition: 'left', label: 'Settings' },
+      {
+        id: 'tab3',
+        icon: 'alert',
+        iconPosition: 'right',
+        label: 'Alerts',
+      },
+    ],
+  },
+};

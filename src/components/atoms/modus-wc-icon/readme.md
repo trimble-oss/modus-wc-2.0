@@ -23,6 +23,19 @@ Adheres to WCAG 2.2 standards.
 | `size`              | `size`         | The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon. | `"lg" \| "md" \| "sm" \| "xs" \| undefined` | `'md'`      |
 
 
+## Dependencies
+
+### Used by
+
+ - [modus-wc-tabs](../modus-wc-tabs)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-tabs --> modus-wc-icon
+  style modus-wc-icon fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

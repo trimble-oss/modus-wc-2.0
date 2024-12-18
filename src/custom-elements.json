@@ -2059,78 +2059,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-tab/modus-wc-tab.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable tab component.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcTab",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "active",
-              "fieldName": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "If the tab is active."
-            },
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "If the tab is disabled."
-            }
-          ],
-          "tagName": "modus-wc-tab",
-          "events": [],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcTab",
-          "declaration": {
-            "name": "ModusWcTab",
-            "module": "src/components/atoms/modus-wc-tab/modus-wc-tab.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-tab",
-          "declaration": {
-            "name": "ModusWcTab",
-            "module": "src/components/atoms/modus-wc-tab/modus-wc-tab.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-tabs/modus-wc-tabs.tsx",
       "declarations": [
         {
@@ -2138,14 +2066,6 @@
           "description": "A customizable tabs component used to create groups of tabs.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTabs",
           "members": [
-            {
-              "kind": "field",
-              "name": "disabledTabs",
-              "type": {
-                "text": "string[]"
-              },
-              "default": "[]"
-            },
             {
               "kind": "field",
               "name": "el",
@@ -2185,9 +2105,17 @@
               "name": "tab-style",
               "fieldName": "tabStyle",
               "type": {
-                "text": "'boxed' | 'bordered' | 'lifted'"
+                "text": "'boxed' | 'bordered' | 'lifted' | 'none'"
               },
               "description": "Additional styling for the tabs."
+            },
+            {
+              "name": "tabs",
+              "fieldName": "tabs",
+              "type": {
+                "text": "IModusWcTab[]"
+              },
+              "description": "The tabs to display."
             }
           ],
           "tagName": "modus-wc-tabs",
@@ -2196,7 +2124,7 @@
               "kind": "field",
               "name": "tabChange",
               "type": {
-                "text": "EventEmitter<number>"
+                "text": "EventEmitter<string>"
               },
               "description": "Event emitted when the `selected` property changes."
             }

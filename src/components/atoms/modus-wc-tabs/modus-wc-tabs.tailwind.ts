@@ -1,7 +1,7 @@
 import { DaisySize } from '../../types';
 
 export const convertPropsToClasses = (props: {
-  tabStyle?: 'boxed' | 'bordered' | 'lifted';
+  tabStyle?: 'boxed' | 'bordered' | 'lifted' | 'none';
   size?: DaisySize;
 }): string => {
   let classes = '';
@@ -19,6 +19,8 @@ export const convertPropsToClasses = (props: {
         break;
       case 'lifted':
         classes = `${classes} modus-wc-tabs-lifted`;
+        break;
+      case 'none':
         break;
     }
   }
@@ -38,6 +40,26 @@ export const convertPropsToClasses = (props: {
         classes = `${classes} modus-wc-tabs-lg`;
         break;
     }
+  }
+
+  return classes;
+};
+
+export const convertPropsToClassesTab = (props: {
+  active?: boolean;
+  disabled?: boolean;
+}): string => {
+  let classes = '';
+
+  if (Object.prototype.hasOwnProperty.call(props, 'active') && props.active) {
+    classes = `${classes} modus-wc-tab-active`;
+  }
+
+  if (
+    Object.prototype.hasOwnProperty.call(props, 'disabled') &&
+    props.disabled
+  ) {
+    classes = `${classes} modus-wc-tab-disabled`;
   }
 
   return classes;
