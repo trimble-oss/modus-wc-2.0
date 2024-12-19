@@ -84,10 +84,6 @@ and live re-rendering. We are using it to build out the components.
 Storybook is a tool for developing components in isolation. It also provides a framework for developing component library
 documentation sites. We are using it to document our components.
 
-### npm
-
-We are hosting this package on both the @trimble-oss GitHub npm registry, and the public npm registry.
-
 ## Developing a Component
 
 Before starting development on a component, we suggest first reading the guidelines in our [project design](./docs/project-design.md#component-development) documentation.
@@ -132,7 +128,7 @@ For more information about Jest snapshot testing, check out the docs [here](http
 
 ## Changelog
 
-The release notes can be viewed on the [GitHub Releases](https://github.com/trimble-oss/modus-web-components/releases) page.
+The release notes can be viewed on the [GitHub Releases](https://github.com/Trimble-Construction/modus-wc-2.0/releases) page.
 
 ### Semantic Versioning
 
@@ -145,37 +141,10 @@ Given a version number [MAJOR.MINOR.PATCH], increment the following:
    Example: Version 1.0.0 has a function added in accordance with a minor version update. The new version will be 1.1.0.
    See: [semver.org](https://semver.org/spec/v2.0.0.html).
 
-## Releasing Framework Outputs
+## Releasing
 
-Before releasing any of the framework outputs, the targeted version of the Modus Web Components should be successfully released.
+New versions of the Modus Web Components library are published via automated GitHub action workflows.
 
-### Angular
+See our [RELEASING](./RELEASING.md) doc for more details on our automated release and publish workflows.
 
-The Angular component integration can be found under the `./angular-workspace` directory.
-
-Refer to the [adding angular integrations](./docs/adding-angular-integrations.md) doc for a guide on adding new versions of angular integrations.
-
-1. Update `./angular-workspace/ng-<version-number>/projects/trimble-oss/modus-angular-components/package.json`'s:
-   1. Dependency on the Modus Web Components library to the targeted version
-   2. The package's version to reflect the targeted version
-2. From the `./angular-workspace/ng-<version-number>/projects/trimble-oss/modus-angular-components` directory, run `npm i`.
-3. From the `./angular-workspace/ng-<version-number>/projects/trimble-oss/modus-angular-components` directory, run `npm run build`.
-4. From the newly generated `./angular-workspace/ng-<version-number>/dist/trimble-oss/modus-angular-components` directory, run `npm publish`.
-
-### React
-
-The React component integration can be found under the `./react-workspace` directory.
-Each version of React has a library `react-17` and a test harness app `test-react-v17`
-
-1. Update `./react-workspace/react-<version-number>`:
-   1. Dependency on the Modus Web Components library to the targeted version
-   2. The package's version to reflect the targeted version
-2. From the `./react-workspace/react-<version-number>` directory, run `npm i`.
-3. From the `./react-workspace/react-<version-number>` directory, run `npm run build`.
-4. From the `./react-workspace/react-<version-number>` directory, run `npm publish`.
-
-As an alternative to publish, this can be also consumed in a local react application using `npm link` or generate a tarball file using `npm pack`.
-
-#### Recommended
-
-Import the React library in `./react-workspace/test-react-v<version-number>` for testing the components locally, refer to `src/App.tsx` file for more details on how to test the components.
+Modus 2.0 only supports the two latest versions of React and Angular framework integrations.
