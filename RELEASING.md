@@ -28,7 +28,8 @@ After the workflow completes, verify that the following have been successfully p
 
 - The `@trimble-cms/modus-wc` package to the NPM registry.
 - The `@trimble-cms/modus-wc-react` package to the NPM registry.
-- The [GitHub releases](https://github.com/Trimble-Construction/poc-modus-wc-2.0/releases) for both packages.
+- The `@trimble-cms/modus-wc-angular` package to the NPM registry.
+- The [GitHub releases](https://github.com/Trimble-Construction/poc-modus-wc-2.0/releases) for all three packages.
 
 That's it! :octocat:
 
@@ -41,6 +42,9 @@ graph LR
     X --> C(build-and-publish-react)
     B --> D(release-wc)
     C --> E(release-react)
+    B --> F(trigger-angular-publish)
+    F --> G(build-and-publish-angular)
+    G --> H(release-angular)
 ```
 
 The `Publish & Release` workflow will handle the following steps:
@@ -48,8 +52,12 @@ The `Publish & Release` workflow will handle the following steps:
 - Update the version in `package.json`.
 - Build the `@trimble-cms/modus-wc` package.
 - Publish the `@trimble-cms/modus-wc` package to the NPM registry.
+- Trigger the `Publish & Release - Angular` workflow to publish the React package.
+  - Update the version in `integrations/angular/ng<version#>/package.json`.
+  - Build the `@trimble-cms/modus-wc-angular` package.
+  - Publish the `@trimble-cms/modus-wc-angular` package to the NPM registry.
 - Trigger the `Publish & Release - React` workflow to publish the React package.
   - Update the version in `integrations/react/package.json`.
   - Build the `@trimble-cms/modus-wc-react` package.
   - Publish the `@trimble-cms/modus-wc-react` package to the NPM registry.
-- Create GitHub releases for both packages.
+- Create GitHub releases for all three packages.
