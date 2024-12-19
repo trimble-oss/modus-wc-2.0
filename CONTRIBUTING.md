@@ -92,7 +92,7 @@ Refer to our [custom themes](./docs/custom-themes.md) doc on how to add addition
 
 Refer to our [response design](./docs/responsive-design.md) doc on how to create components with responsive designs.
 
-We use JSDoc comments for each component to auto-generate documentation for Storybook. Ensure that you add appropriate JSDoc comments to your component's properties, methods, and events.
+We use JSDoc comments for each component to auto-generate documentation for Storybook. Ensure that you add appropriate JSDoc comments to your component's properties, methods, and events. Documentation is generated upon running `npm run build` or `npm start`.
 
 ## Style Guide
 
