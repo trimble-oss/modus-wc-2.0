@@ -50,6 +50,7 @@
     --tab-color: var(--modus-wc-color-white);
     --tab-bg: var(--modus-wc-color-blue-light);
     background-color: var(--modus-wc-color-blue-light);
+    --fallback-p: var(--modus-wc-color-blue-light);
 
     --fallback-bc: transparent;
   }
@@ -75,6 +76,7 @@
     --tab-color: var(--modus-wc-color-white);
     --tab-bg: var(--modus-wc-color-blue-light);
     background-color: var(--modus-wc-color-blue-light);
+    --fallback-p: var(--modus-wc-color-blue-light);
 
     --fallback-bc: var(--modus-wc-color-highlight-blue);
     border-width: 1px;
