@@ -2,7 +2,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcTabs } from './modus-wc-tabs';
 
 describe('modus-wc-tabs', () => {
-  it('should warn when alt and aria-label are not provided', async () => {
+  it('should warn when aria-label is not provided', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     await newSpecPage({
@@ -11,7 +11,7 @@ describe('modus-wc-tabs', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcTabs: alt and aria-label are required for accessibility.'
+      'ModusWcTabs: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();
@@ -20,7 +20,7 @@ describe('modus-wc-tabs', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTabs],
-      html: '<modus-wc-tabs alt="Default tabs" aria-label="Default tabs"></modus-wc-tabs>',
+      html: '<modus-wc-tabs aria-label="Tab Group"></modus-wc-tabs>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -28,7 +28,15 @@ describe('modus-wc-tabs', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTabs],
-      html: '<modus-wc-tabs alt="Custom tabs" aria-label="Custom tabs" custom-class="test-class" img-src="https://example.com/tabs.jpg" shape="square" size="sm"></modus-wc-tabs>',
+      html: `
+      <modus-wc-tabs
+        aria-label="Custom Tab Group"
+        custom-class="test-class"
+        tabs='[{"id":"tab1","label":"Tab 1","active":true},{"id":"tab2","label":"Tab 2"},{"id":"tab3","label":"Tab 3","disabled":true},{"id":"tab4","icon":"home"}]'
+        tab-style="boxed"
+        size="sm">
+      </modus-wc-tabs>
+      `,
     });
     expect(page.root).toMatchSnapshot();
   });

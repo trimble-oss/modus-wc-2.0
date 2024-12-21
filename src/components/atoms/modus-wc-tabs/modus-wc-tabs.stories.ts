@@ -48,15 +48,10 @@ const Template: Story = {
     return html`
 <modus-wc-tabs
   aria-label="${args['aria-label']}"
-  custom-class="${ifDefined(args['custom-class'])}"
-  ?img-src="${args['img-src']}"
   tab-style="${ifDefined(args.tabStyle)}"
   .tabs="${args.tabs}"
   size="${ifDefined(args.size)}"
 >
-  <p slot="panel">
-    Modus (noun) : a mode of procedure : a way of doing something
-  </p>
 </modus-wc-tabs>
     `;
   },
@@ -86,5 +81,25 @@ export const Icons: Story = {
         label: 'Alerts',
       },
     ],
+  },
+};
+
+export const TabsWithPanel: Story = {
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-tabs
+  aria-label="${args['aria-label']}"
+  custom-class="${ifDefined(args['custom-class'])}"
+  ?img-src="${args['img-src']}"
+  tab-style="${ifDefined(args.tabStyle)}"
+  .tabs="${args.tabs}"
+  size="${ifDefined(args.size)}"
+>
+  <p>
+    Modus (noun) : a mode of procedure : a way of doing something
+  </p>
+</modus-wc-tabs>
+    `;
   },
 };

@@ -88,15 +88,15 @@ export class ModusWcTabs {
   render() {
     const renderTabContent = (tab: IModusWcTab) =>
       tab.label === undefined ? (
-        tab.icon && <modus-wc-icon name={tab.icon} />
+        tab.icon && <modus-wc-icon name={tab.icon} size={this.size} />
       ) : (
         <Fragment>
           {tab.icon && tab.iconPosition === 'left' && (
-            <modus-wc-icon name={tab.icon} />
+            <modus-wc-icon name={tab.icon} size={this.size} />
           )}
           <span>{tab.label}</span>
           {tab.icon && tab.iconPosition === 'right' && (
-            <modus-wc-icon name={tab.icon} />
+            <modus-wc-icon name={tab.icon} size={this.size} />
           )}
         </Fragment>
       );
@@ -124,7 +124,7 @@ export class ModusWcTabs {
           {tabs}
         </div>
         <div role="tabpanel" tabIndex={0}>
-          <slot name="panel" />
+          <slot />
         </div>
       </Host>
     );

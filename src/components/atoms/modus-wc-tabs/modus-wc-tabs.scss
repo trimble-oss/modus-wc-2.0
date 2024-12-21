@@ -16,19 +16,24 @@
 
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+  --tab-border: 0px; //! This is rendered as 1px due to a calc(+1)
 
   // For centering purposes
   modus-wc-icon {
-    height: 100%;
+    .modus-wc-icon--xs {
+      line-height: 1.25rem;
+    }
+    .modus-wc-icon--sm {
+      line-height: 1.5rem;
+    }
+    .modus-wc-icon--md {
+      line-height: 2rem;
+    }
+    .modus-wc-icon--lg {
+      line-height: 3rem;
+    }
   }
-  modus-wc-icon .modus-icons {
-    line-height: 2rem;
-  }
-
-  --tab-border: 0px; //! This is rendered as 1px due to a calc(+1)
 }
-
-// By default, daisy doesn't apply --tab-bg to non-lifted tabs
 
 [data-theme='modus-classic-light'] .modus-wc-tab {
   --tab-color: var(--modus-wc-color-trimble-gray);
