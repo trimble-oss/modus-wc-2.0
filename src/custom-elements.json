@@ -3321,6 +3321,143 @@
           }
         }
       ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/organisms/modus-wc-table/modus-wc-table.stories.tsx",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "Story"
+          },
+          "default": "{ ...Template }"
+        },
+        {
+          "kind": "variable",
+          "name": "meta",
+          "type": {
+            "text": "Meta<TableArgs>"
+          },
+          "default": "{ title: 'Components/Table', component: 'modus-wc-table', args: { 'aria-label': 'Example table', columns: defaultColumns, data: defaultData, density: 'comfortable', zebra: false, }, argTypes: { density: { control: { type: 'inline-radio' }, options: ['comfortable', 'compact'], }, }, decorators: [withActions], parameters: { actions: { handles: ['rowClick'], }, }, }"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "meta",
+            "module": "src/components/organisms/modus-wc-table/modus-wc-table.stories.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/organisms/modus-wc-table/modus-wc-table.stories.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/organisms/modus-wc-table/modus-wc-table.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable table component used to show a list of data in a table format.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcTable",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "columns",
+              "fieldName": "columns",
+              "type": {
+                "text": "ITableColumn[]"
+              },
+              "description": "An array of column definitions."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "data",
+              "fieldName": "data",
+              "type": {
+                "text": "Record<string, any>[]"
+              },
+              "description": "An array of data objects."
+            },
+            {
+              "name": "density",
+              "fieldName": "density",
+              "type": {
+                "text": "Density"
+              },
+              "description": "The density of the table, used to save space or increase readability."
+            },
+            {
+              "name": "zebra",
+              "fieldName": "zebra",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Zebra tables differentiate rows by styling them in an alternating fashion."
+            }
+          ],
+          "tagName": "modus-wc-table",
+          "events": [
+            {
+              "kind": "field",
+              "name": "rowClick",
+              "type": {
+                "text": "EventEmitter<{\r\n    row: Record<string, any>;\r\n    index: number;\r\n  }>"
+              },
+              "description": "Emits when a row is clicked."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTable",
+          "declaration": {
+            "name": "ModusWcTable",
+            "module": "src/components/organisms/modus-wc-table/modus-wc-table.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-table",
+          "declaration": {
+            "name": "ModusWcTable",
+            "module": "src/components/organisms/modus-wc-table/modus-wc-table.tsx"
+          }
+        }
+      ]
     }
   ]
 }
