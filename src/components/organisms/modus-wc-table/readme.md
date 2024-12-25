@@ -13,13 +13,13 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property               | Attribute      | Description                                                                | Type                                      | Default         |
-| ---------------------- | -------------- | -------------------------------------------------------------------------- | ----------------------------------------- | --------------- |
-| `columns` _(required)_ | --             | An array of column definitions.                                            | `ITableColumn[]`                          | `undefined`     |
-| `customClass`          | `custom-class` | Custom CSS class to apply to the inner div.                                | `string \| undefined`                     | `''`            |
-| `data` _(required)_    | --             | An array of data objects.                                                  | `Record<string, any>[]`                   | `undefined`     |
-| `density`              | `density`      | The density of the table, used to save space or increase readability.      | `"comfortable" \| "compact" \| undefined` | `'comfortable'` |
-| `zebra`                | `zebra`        | Zebra tables differentiate rows by styling them in an alternating fashion. | `boolean \| undefined`                    | `false`         |
+| Property               | Attribute      | Description                                                                        | Type                                      | Default         |
+| ---------------------- | -------------- | ---------------------------------------------------------------------------------- | ----------------------------------------- | --------------- |
+| `columns` _(required)_ | --             | An array of column definitions.                                                    | `ITableColumn[]`                          | `undefined`     |
+| `customClass`          | `custom-class` | Custom CSS class to apply to the inner div.                                        | `string \| undefined`                     | `''`            |
+| `data` _(required)_    | --             | An array of data objects.                                                          | `Record<string, any>[]`                   | `undefined`     |
+| `density`              | `density`      | The density of the table, used to save space or increase readability.              | `"comfortable" \| "compact" \| undefined` | `'comfortable'` |
+| `zebra`                | `zebra`        | Zebra striped tables differentiate rows by styling them in an alternating fashion. | `boolean \| undefined`                    | `false`         |
 
 
 ## Events

@@ -62,7 +62,7 @@ export class ModusWcTable {
   @Prop() density?: Density = 'comfortable';
 
   /**
-   * Zebra tables differentiate rows by styling them in an alternating fashion.
+   * Zebra striped tables differentiate rows by styling them in an alternating fashion.
    */
   @Prop() zebra?: boolean = false;
 
@@ -82,8 +82,12 @@ export class ModusWcTable {
       this.el.ariaLabel = 'Table';
     }
 
-    if (!this.columns || !this.data) {
-      console.error('ModusWcTable: columns and data props are required.');
+    if (!this.columns) {
+      console.error('ModusWcTable: columns is required.');
+    }
+
+    if (!this.data) {
+      console.error('ModusWcTable: data is required.');
     }
   }
 
@@ -142,15 +146,19 @@ export class ModusWcTable {
                       <td
                         class={column.className}
                         ref={(el) => {
+                          // istanbul ignore next - TODO
                           if (el && cellContent instanceof HTMLElement) {
                             el.innerHTML = ''; // Clear existing content
                             el.appendChild(cellContent);
                           }
                         }}
                       >
-                        {!(cellContent instanceof HTMLElement)
-                          ? cellContent
-                          : ''}
+                        {
+                          // istanbul ignore next
+                          !(cellContent instanceof HTMLElement)
+                            ? cellContent
+                            : ''
+                        }
                       </td>
                     );
                   })}

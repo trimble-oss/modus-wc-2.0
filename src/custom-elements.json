@@ -3324,43 +3324,9 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/organisms/modus-wc-table/modus-wc-table.stories.tsx",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "Default",
-          "type": {
-            "text": "Story"
-          },
-          "default": "{ ...Template }"
-        },
-        {
-          "kind": "variable",
-          "name": "meta",
-          "type": {
-            "text": "Meta<TableArgs>"
-          },
-          "default": "{ title: 'Components/Table', component: 'modus-wc-table', args: { 'aria-label': 'Example table', columns: defaultColumns, data: defaultData, density: 'comfortable', zebra: false, }, argTypes: { density: { control: { type: 'inline-radio' }, options: ['comfortable', 'compact'], }, }, decorators: [withActions], parameters: { actions: { handles: ['rowClick'], }, }, }"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "name": "meta",
-            "module": "src/components/organisms/modus-wc-table/modus-wc-table.stories.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Default",
-          "declaration": {
-            "name": "Default",
-            "module": "src/components/organisms/modus-wc-table/modus-wc-table.stories.tsx"
-          }
-        }
-      ]
+      "path": "src/components/organisms/modus-wc-table/modus-wc-table.spec.tsx",
+      "declarations": [],
+      "exports": []
     },
     {
       "kind": "javascript-module",
@@ -3423,7 +3389,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Zebra tables differentiate rows by styling them in an alternating fashion."
+              "description": "Zebra striped tables differentiate rows by styling them in an alternating fashion."
             }
           ],
           "tagName": "modus-wc-table",

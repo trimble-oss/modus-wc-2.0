@@ -784,7 +784,7 @@ export namespace Components {
          */
         "density"?: Density;
         /**
-          * Zebra tables differentiate rows by styling them in an alternating fashion.
+          * Zebra striped tables differentiate rows by styling them in an alternating fashion.
          */
         "zebra"?: boolean;
     }
@@ -2573,7 +2573,7 @@ declare namespace LocalJSX {
     index: number;
   }>) => void;
         /**
-          * Zebra tables differentiate rows by styling them in an alternating fashion.
+          * Zebra striped tables differentiate rows by styling them in an alternating fashion.
          */
         "zebra"?: boolean;
     }
