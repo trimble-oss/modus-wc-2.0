@@ -7,10 +7,25 @@ exports[`modus-wc-menu renders with default props 1`] = `
 `;
 
 exports[`modus-wc-menu should render with custom props 1`] = `
-<modus-wc-menu .items="[{&quot;label&quot;:&quot;Item" 1","value":"1"},{"label":"item="" 2","value":"2"},{"label":"item="" 3","value":"3"}]="" active-item-value="2" aria-label="Test menu" bordered="false" custom-class="test-class" menu-title="Title" orientation="horizontal" size="lg">
+<modus-wc-menu active-item-value="2" aria-label="Test menu" bordered="false" custom-class="test-class" menu-title="Title" orientation="horizontal" size="lg">
   <ul aria-label="Menu" aria-orientation="horizontal" class="modus-wc-menu modus-wc-menu-horizontal modus-wc-menu-lg modus-wc-w-full test-class" role="menubar">
     <li class="modus-wc-menu-title" role="presentation">
       Title
+    </li>
+    <li role="menuitem">
+      <a href="javascript:void(0);">
+        Item 1
+      </a>
+    </li>
+    <li aria-current="" role="menuitem">
+      <a class="modus-wc-active" href="javascript:void(0);">
+        Item 2
+      </a>
+    </li>
+    <li role="menuitem">
+      <a href="javascript:void(0);">
+        Item 3
+      </a>
     </li>
   </ul>
 </modus-wc-menu>
