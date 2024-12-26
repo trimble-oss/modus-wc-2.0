@@ -1,0 +1,24 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+.modus-wc-collapse {
+  modus-wc-icon {
+    height: 24px;
+    margin-inline-end: var(--modus-wc-spacing-sm)
+  }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-collapse,
+[data-theme='modus-classic-dark'] .modus-wc-collapse {
+  border-radius: var(--modus-wc-border-radius-md);
+}
+
+[data-theme='modus-classic-light'] .modus-wc-collapse {
+  background-color: var(--modus-wc-color-white);
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-collapse {
+  background-color: var(--modus-wc-color-trimble-gray);
+}
