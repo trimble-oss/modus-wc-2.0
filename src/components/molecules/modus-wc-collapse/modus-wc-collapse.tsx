@@ -1,4 +1,4 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop, Watch } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-collapse.tailwind';
 import { generateRandomId } from '../../utils';
 
@@ -27,6 +27,11 @@ export class ModusWcCollapse {
   @Prop() customClass?: string = '';
 
   /**
+   * Controls whether the collapse is expanded or not.
+   */
+  @Prop({ mutable: true }) expanded?: boolean = false;
+
+  /**
    * The icon name, should match the CSS class in the icon font.
    */
   @Prop() icon?: string = '';
@@ -41,13 +46,37 @@ export class ModusWcCollapse {
    */
   @Prop() title?: string = '';
 
+  @Watch('expanded')
+  expandedChanged(newValue: boolean) {
+    const checkbox = this.el.querySelector(
+      'input[type="checkbox"]'
+    ) as HTMLInputElement;
+    if (checkbox) checkbox.checked = newValue;
+  }
+
   private contentId = generateRandomId();
+
+  private handleClick = () => {
+    this.expanded = !this.expanded;
+  };
+
+  private handleContentClick = (event: Event) => {
+    event.stopPropagation();
+  };
+
+  private handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.handleClick();
+    }
+  };
 
   private getClasses(): string {
     const classList: string[] = ['modus-wc-collapse modus-wc-collapse-arrow'];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
+      expanded: this.expanded,
     });
 
     // The order CSS classes are added matters to CSS specificity
@@ -62,7 +91,10 @@ export class ModusWcCollapse {
       <Host>
         <div
           aria-controls={this.contentId}
+          aria-expanded={this.expanded}
           class={this.getClasses()}
+          onClick={this.handleClick}
+          onKeyDown={this.handleKeyDown}
           role="button"
           tabindex="0"
         >
@@ -76,7 +108,11 @@ export class ModusWcCollapse {
             )}
             {this.title}
           </div>
-          <div class="modus-wc-collapse-content" id={this.contentId}>
+          <div
+            class="modus-wc-collapse-content modus-wc-cursor-default"
+            id={this.contentId}
+            onClick={this.handleContentClick}
+          >
             <slot />
           </div>
         </div>

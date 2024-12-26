@@ -1,5 +1,6 @@
 export const convertPropsToClasses = (props: {
   bordered?: boolean;
+  expanded?: boolean;
 }): string => {
   let classes = '';
 
@@ -8,6 +9,15 @@ export const convertPropsToClasses = (props: {
     !!props.bordered
   ) {
     classes = `${classes} modus-wc-border`;
+  }
+
+  if (
+    Object.prototype.hasOwnProperty.call(props, 'expanded') &&
+    !!props.expanded
+  ) {
+    classes = `${classes} modus-wc-collapse-open`;
+  } else {
+    classes = `${classes} modus-wc-collapse-close`;
   }
 
   return classes;

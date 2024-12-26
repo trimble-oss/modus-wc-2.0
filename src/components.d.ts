@@ -264,6 +264,10 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * Controls whether the collapse is expanded or not.
+         */
+        "expanded"?: boolean;
+        /**
           * The icon name, should match the CSS class in the icon font.
          */
         "icon"?: string;
@@ -2018,6 +2022,10 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
+        /**
+          * Controls whether the collapse is expanded or not.
+         */
+        "expanded"?: boolean;
         /**
           * The icon name, should match the CSS class in the icon font.
          */

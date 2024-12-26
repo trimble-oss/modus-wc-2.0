@@ -6,6 +6,7 @@ interface CollapseArgs {
   'aria-label': string;
   bordered?: boolean;
   'custom-class'?: string;
+  expanded?: boolean;
   icon?: string;
   'icon-aria-label'?: string;
   title?: string;
@@ -17,6 +18,7 @@ const meta: Meta<CollapseArgs> = {
   args: {
     'aria-label': 'Example collapse',
     bordered: true,
+    expanded: false,
     icon: 'info',
     'icon-aria-label': 'Information icon',
     title: 'Component title',
@@ -38,6 +40,7 @@ const Template: Story = {
   aria-label=${args['aria-label']}
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
+  ?expanded=${args.expanded}
   icon=${ifDefined(args.icon)}
   icon-aria-label=${ifDefined(args['icon-aria-label'])}
   title=${ifDefined(args.title)}

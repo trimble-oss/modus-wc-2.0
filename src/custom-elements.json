@@ -3273,6 +3273,18 @@
             },
             {
               "kind": "method",
+              "name": "expandedChanged",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -3299,7 +3311,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Indicates that the control should be expanded."
+              "description": "Controls whether the collapse is expanded or not."
             },
             {
               "name": "icon",
