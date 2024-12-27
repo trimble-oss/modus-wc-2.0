@@ -13,6 +13,11 @@
 [data-theme='modus-classic-light'] .modus-wc-collapse,
 [data-theme='modus-classic-dark'] .modus-wc-collapse {
   border-radius: var(--modus-wc-border-radius-md);
+
+  .modus-wc-collapse-title {
+    min-height: unset;
+    width: auto;
+  }
 }
 
 [data-theme='modus-classic-light'] .modus-wc-collapse {
