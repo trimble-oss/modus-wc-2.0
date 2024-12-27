@@ -128,7 +128,6 @@ export class ModusWcCollapse {
             id={`${baseId}-checkbox`}
             onClick={this.handleClick}
             onKeyDown={this.handleKeyDown}
-            role="button"
             type="checkbox"
           />
           <div
@@ -138,7 +137,7 @@ export class ModusWcCollapse {
             <div class="modus-wc-inline-flex modus-wc-items-center modus-wc-text-xl modus-wc-font-medium">
               {this.icon && (
                 <modus-wc-icon
-                  aria-label={this.iconAriaLabel}
+                  decorative={true}
                   name={this.icon}
                 ></modus-wc-icon>
               )}
