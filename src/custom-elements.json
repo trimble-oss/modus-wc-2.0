@@ -3298,6 +3298,22 @@
               "description": "Indicates that the component should have a border."
             },
             {
+              "name": "collapse-description",
+              "fieldName": "collapseDescription",
+              "type": {
+                "text": "string"
+              },
+              "description": "The description of the collapse component."
+            },
+            {
+              "name": "collapse-title",
+              "fieldName": "collapseTitle",
+              "type": {
+                "text": "string"
+              },
+              "description": "The title of the collapse component."
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
@@ -3328,14 +3344,6 @@
                 "text": "string"
               },
               "description": "Sets the aria-label attribute of the icon component."
-            },
-            {
-              "name": "title",
-              "fieldName": "title",
-              "type": {
-                "text": "string"
-              },
-              "description": "The title of the collapse component, rendered on button."
             }
           ],
           "tagName": "modus-wc-collapse",

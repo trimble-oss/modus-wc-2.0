@@ -14,7 +14,7 @@ describe('modus-wc-collapse snapshot tests', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcCollapse, ModusWcIcon],
-      html: '<modus-wc-collapse bordered="false" custom-class="test-class" expanded="true" icon="alert" icon-aria-label="Alert icon" title="Test title"></modus-wc-collapse>',
+      html: '<modus-wc-collapse bordered="false" collapse-description="Test description" collapse-title="Test title" custom-class="test-class" expanded="true" icon="alert" icon-aria-label="Alert icon"></modus-wc-collapse>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -22,7 +22,7 @@ describe('modus-wc-collapse snapshot tests', () => {
   it('should render with content', async () => {
     const page = await newSpecPage({
       components: [ModusWcCollapse],
-      html: '<modus-wc-collapse title="With Content"><div>Test Content</div></modus-wc-collapse>',
+      html: '<modus-wc-collapse collapse-title="With Content"><div>Test Content</div></modus-wc-collapse>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -30,8 +30,105 @@ describe('modus-wc-collapse snapshot tests', () => {
   it('should render in expanded state', async () => {
     const page = await newSpecPage({
       components: [ModusWcCollapse],
-      html: '<modus-wc-collapse expanded="true" title="Expanded"><div>Expanded Content</div></modus-wc-collapse>',
+      html: '<modus-wc-collapse expanded="true" collapse-title="Expanded"><div>Expanded Content</div></modus-wc-collapse>',
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should emit expandedChange event when collapse is expanded', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcCollapse],
+      html: `<modus-wc-collapse></modus-wc-collapse>`,
+    });
+
+    const expandedChangeSpy = jest.fn();
+    page.root!.addEventListener('expandedChange', expandedChangeSpy);
+
+    const collapseElement = page.root!.querySelector(
+      'div.modus-wc-collapse'
+    ) as HTMLElement;
+    expect(collapseElement).not.toBeNull();
+
+    collapseElement?.click();
+    await page.waitForChanges();
+
+    expect(expandedChangeSpy).toHaveBeenCalled();
+    expect(expandedChangeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: true,
+      })
+    );
+  });
+
+  it('should emit expandedChange event when Enter key is pressed', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcCollapse],
+      html: `<modus-wc-collapse></modus-wc-collapse>`,
+    });
+
+    const expandedChangeSpy = jest.fn();
+    page.root!.addEventListener('expandedChange', expandedChangeSpy);
+
+    const collapseElement = page.root!.querySelector(
+      'div.modus-wc-collapse'
+    ) as HTMLElement;
+    expect(collapseElement).not.toBeNull();
+
+    collapseElement?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter' })
+    );
+    await page.waitForChanges();
+
+    expect(expandedChangeSpy).toHaveBeenCalled();
+    expect(expandedChangeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: true,
+      })
+    );
+  });
+
+  it('should emit expandedChange event when Space key is pressed', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcCollapse],
+      html: `<modus-wc-collapse></modus-wc-collapse>`,
+    });
+
+    const expandedChangeSpy = jest.fn();
+    page.root!.addEventListener('expandedChange', expandedChangeSpy);
+
+    const collapseElement = page.root!.querySelector(
+      'div.modus-wc-collapse'
+    ) as HTMLElement;
+    expect(collapseElement).not.toBeNull();
+
+    collapseElement?.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
+    await page.waitForChanges();
+
+    expect(expandedChangeSpy).toHaveBeenCalled();
+    expect(expandedChangeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: true,
+      })
+    );
+  });
+
+  it('should not emit expandedChange event when content is clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcCollapse],
+      html: `<modus-wc-collapse></modus-wc-collapse>`,
+    });
+
+    const expandedChangeSpy = jest.fn();
+    page.root!.addEventListener('expandedChange', expandedChangeSpy);
+
+    const contentElement = page.root!.querySelector(
+      'div.modus-wc-collapse-content'
+    ) as HTMLElement;
+    expect(contentElement).not.toBeNull();
+
+    contentElement?.click();
+    await page.waitForChanges();
+
+    expect(expandedChangeSpy).not.toHaveBeenCalled();
   });
 });

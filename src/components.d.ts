@@ -261,6 +261,14 @@ export namespace Components {
          */
         "bordered"?: boolean;
         /**
+          * The description of the collapse component.
+         */
+        "collapseDescription"?: string;
+        /**
+          * The title of the collapse component.
+         */
+        "collapseTitle"?: string;
+        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
@@ -276,10 +284,6 @@ export namespace Components {
           * Sets the aria-label attribute of the icon component.
          */
         "iconAriaLabel"?: string;
-        /**
-          * The title of the collapse component, rendered on button.
-         */
-        "title"?: string;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -2037,6 +2041,14 @@ declare namespace LocalJSX {
          */
         "bordered"?: boolean;
         /**
+          * The description of the collapse component.
+         */
+        "collapseDescription"?: string;
+        /**
+          * The title of the collapse component.
+         */
+        "collapseTitle"?: string;
+        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
@@ -2056,10 +2068,6 @@ declare namespace LocalJSX {
           * Event emitted when the expanded prop is internally changed.
          */
         "onExpandedChange"?: (event: ModusWcCollapseCustomEvent<boolean>) => void;
-        /**
-          * The title of the collapse component, rendered on button.
-         */
-        "title"?: string;
     }
     /**
      * A customizable date picker component used to create date inputs.

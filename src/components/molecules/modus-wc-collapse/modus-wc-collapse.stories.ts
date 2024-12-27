@@ -4,11 +4,12 @@ import { Meta, StoryObj } from '@storybook/web-components';
 
 interface CollapseArgs {
   bordered?: boolean;
+  'collapse-description'?: string;
+  'collapse-title'?: string;
   'custom-class'?: string;
   expanded?: boolean;
   icon?: string;
   'icon-aria-label'?: string;
-  title?: string;
 }
 
 const meta: Meta<CollapseArgs> = {
@@ -16,10 +17,11 @@ const meta: Meta<CollapseArgs> = {
   component: 'modus-wc-collapse',
   args: {
     bordered: true,
+    'collapse-description': 'Description',
+    'collapse-title': 'Component title',
     expanded: false,
     icon: 'info',
     'icon-aria-label': 'Information icon',
-    title: 'Component title',
   },
   parameters: {
     layout: 'padded',
@@ -36,11 +38,12 @@ const Template: Story = {
     return html`
 <modus-wc-collapse
   ?bordered=${args.bordered}
+  collapse-description=${ifDefined(args['collapse-description'])}
+  collapse-title=${ifDefined(args['collapse-title'])}
   custom-class=${ifDefined(args['custom-class'])}
   ?expanded=${args.expanded}
   icon=${ifDefined(args.icon)}
   icon-aria-label=${ifDefined(args['icon-aria-label'])}
-  title=${ifDefined(args.title)}
 >
   <div>Custom HTML content</div>
 </modus-wc-collapse>
@@ -75,9 +78,9 @@ export const Accordion: Story = {
 <div class="accordion-container">
   <modus-wc-collapse
     bordered
+    collapse-title="First Section"
     icon="email"
     icon-aria-label="Email icon"
-    title="First Section"
     @expandedChange=${handleExpandedChange}
   >
     <div>
@@ -87,9 +90,9 @@ export const Accordion: Story = {
 
   <modus-wc-collapse
     bordered
+    collapse-title="Second Section"
     icon="notifications"
     icon-aria-label="Notifications icon"
-    title="Second Section"
     @expandedChange=${handleExpandedChange}
   >
     <div>
@@ -99,9 +102,9 @@ export const Accordion: Story = {
 
   <modus-wc-collapse
     bordered
+    collapse-title="Third Section"
     icon="shopping_cart"
     icon-aria-label="Shopping cart icon"
-    title="Third Section"
     @expandedChange=${handleExpandedChange}
   >
     <div>

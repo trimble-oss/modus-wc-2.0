@@ -32,6 +32,16 @@ export class ModusWcCollapse {
   @Prop() bordered?: boolean = true;
 
   /**
+   * The description of the collapse component.
+   */
+  @Prop() collapseDescription?: string = '';
+
+  /**
+   * The title of the collapse component.
+   */
+  @Prop() collapseTitle?: string = '';
+
+  /**
    * Custom CSS class to apply to the inner div.
    */
   @Prop() customClass?: string = '';
@@ -50,11 +60,6 @@ export class ModusWcCollapse {
    * Sets the aria-label attribute of the icon component.
    */
   @Prop() iconAriaLabel?: string = '';
-
-  /**
-   * The title of the collapse component, rendered on button.
-   */
-  @Prop() title?: string = '';
 
   /**
    * Event emitted when the expanded prop is internally changed.
@@ -112,14 +117,19 @@ export class ModusWcCollapse {
           tabindex="0"
         >
           <input type="checkbox" />
-          <div class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-text-xl modus-wc-font-medium">
-            {this.icon && (
-              <modus-wc-icon
-                aria-label={this.iconAriaLabel}
-                name={this.icon}
-              ></modus-wc-icon>
+          <div class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between">
+            <div class="modus-wc-inline-flex modus-wc-items-center modus-wc-text-xl modus-wc-font-medium">
+              {this.icon && (
+                <modus-wc-icon
+                  aria-label={this.iconAriaLabel}
+                  name={this.icon}
+                ></modus-wc-icon>
+              )}
+              {this.collapseTitle}
+            </div>
+            {this.collapseDescription && (
+              <div class="modus-wc-font-light">{this.collapseDescription}</div>
             )}
-            {this.title}
           </div>
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
           <div

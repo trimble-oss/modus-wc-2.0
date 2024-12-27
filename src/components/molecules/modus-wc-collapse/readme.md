@@ -15,14 +15,15 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property        | Attribute         | Description                                                 | Type                   | Default |
-| --------------- | ----------------- | ----------------------------------------------------------- | ---------------------- | ------- |
-| `bordered`      | `bordered`        | Indicates that the component should have a border.          | `boolean \| undefined` | `true`  |
-| `customClass`   | `custom-class`    | Custom CSS class to apply to the inner div.                 | `string \| undefined`  | `''`    |
-| `expanded`      | `expanded`        | Controls whether the collapse is expanded or not.           | `boolean \| undefined` | `false` |
-| `icon`          | `icon`            | The icon name, should match the CSS class in the icon font. | `string \| undefined`  | `''`    |
-| `iconAriaLabel` | `icon-aria-label` | Sets the aria-label attribute of the icon component.        | `string \| undefined`  | `''`    |
-| `title`         | `title`           | The title of the collapse component, rendered on button.    | `string \| undefined`  | `''`    |
+| Property              | Attribute              | Description                                                 | Type                   | Default |
+| --------------------- | ---------------------- | ----------------------------------------------------------- | ---------------------- | ------- |
+| `bordered`            | `bordered`             | Indicates that the component should have a border.          | `boolean \| undefined` | `true`  |
+| `collapseDescription` | `collapse-description` | The description of the collapse component.                  | `string \| undefined`  | `''`    |
+| `collapseTitle`       | `collapse-title`       | The title of the collapse component.                        | `string \| undefined`  | `''`    |
+| `customClass`         | `custom-class`         | Custom CSS class to apply to the inner div.                 | `string \| undefined`  | `''`    |
+| `expanded`            | `expanded`             | Controls whether the collapse is expanded or not.           | `boolean \| undefined` | `false` |
+| `icon`                | `icon`                 | The icon name, should match the CSS class in the icon font. | `string \| undefined`  | `''`    |
+| `iconAriaLabel`       | `icon-aria-label`      | Sets the aria-label attribute of the icon component.        | `string \| undefined`  | `''`    |
 
 
 ## Events
