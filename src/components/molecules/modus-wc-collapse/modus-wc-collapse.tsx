@@ -9,7 +9,6 @@ import {
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-collapse.tailwind';
-import { generateRandomId } from '../../utils';
 
 /**
  * A customizable collapse component used for showing and hiding content.
@@ -70,8 +69,6 @@ export class ModusWcCollapse {
     if (checkbox) checkbox.checked = newValue;
   }
 
-  private contentId = generateRandomId();
-
   private handleClick = () => {
     this.expanded = !this.expanded;
     this.expandedChange.emit(this.expanded);
@@ -107,7 +104,6 @@ export class ModusWcCollapse {
     return (
       <Host>
         <div
-          aria-controls={this.contentId}
           aria-expanded={this.expanded}
           class={this.getClasses()}
           onClick={this.handleClick}
@@ -128,7 +124,6 @@ export class ModusWcCollapse {
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
           <div
             class="modus-wc-collapse-content modus-wc-cursor-default"
-            id={this.contentId}
             onClick={this.handleContentClick}
           >
             <slot />

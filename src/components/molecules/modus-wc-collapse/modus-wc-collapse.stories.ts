@@ -3,7 +3,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { Meta, StoryObj } from '@storybook/web-components';
 
 interface CollapseArgs {
-  'aria-label': string;
   bordered?: boolean;
   'custom-class'?: string;
   expanded?: boolean;
@@ -16,7 +15,6 @@ const meta: Meta<CollapseArgs> = {
   title: 'Components/Collapse',
   component: 'modus-wc-collapse',
   args: {
-    'aria-label': 'Example collapse',
     bordered: true,
     expanded: false,
     icon: 'info',
@@ -37,7 +35,6 @@ const Template: Story = {
   render: (args) => {
     return html`
 <modus-wc-collapse
-  aria-label=${args['aria-label']}
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
   ?expanded=${args.expanded}
@@ -77,7 +74,6 @@ export const Accordion: Story = {
     return html`
 <div class="accordion-container">
   <modus-wc-collapse
-    aria-label="First section"
     bordered
     icon="email"
     icon-aria-label="Email icon"
@@ -90,7 +86,6 @@ export const Accordion: Story = {
   </modus-wc-collapse>
 
   <modus-wc-collapse
-    aria-label="Second section"
     bordered
     icon="notifications"
     icon-aria-label="Notifications icon"
@@ -103,7 +98,6 @@ export const Accordion: Story = {
   </modus-wc-collapse>
 
   <modus-wc-collapse
-    aria-label="Third section"
     bordered
     icon="shopping_cart"
     icon-aria-label="Shopping cart icon"
