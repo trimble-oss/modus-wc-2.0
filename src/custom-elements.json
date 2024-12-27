@@ -3260,7 +3260,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable collapse component used for showing and hiding content.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable collapse component used for showing and hiding content.\r\n\r\nCan render any HTML content through a <slot> element.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcCollapse",
           "members": [
             {
@@ -3339,7 +3339,16 @@
             }
           ],
           "tagName": "modus-wc-collapse",
-          "events": [],
+          "events": [
+            {
+              "kind": "field",
+              "name": "expandedChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the expanded prop is internally changed."
+            }
+          ],
           "customElement": true
         }
       ],

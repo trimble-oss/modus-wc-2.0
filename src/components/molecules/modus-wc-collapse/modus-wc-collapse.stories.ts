@@ -52,3 +52,69 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+// prettier-ignore
+export const Accordion: Story = {
+  render: () => {
+    // Create a function to handle collapse state
+    const handleExpandedChange = (event: Event) => {
+      const clickedCollapse = event.target as HTMLElement;
+
+      // Find all collapse components in the container
+      const allCollapses =
+        clickedCollapse
+          .closest('.accordion-container')
+          ?.querySelectorAll('modus-wc-collapse') || [];
+
+      // Remove expanded state from all other collapses
+      allCollapses.forEach((collapse) => {
+        if (collapse !== clickedCollapse) {
+          collapse.setAttribute('expanded', 'false');
+        }
+      });
+    };
+
+    return html`
+<div class="accordion-container">
+  <modus-wc-collapse
+    aria-label="First section"
+    bordered
+    icon="email"
+    icon-aria-label="Email icon"
+    title="First Section"
+    @expandedChange=${handleExpandedChange}
+  >
+    <div>
+      <p>This is the content for the first section.</p>
+    </div>
+  </modus-wc-collapse>
+
+  <modus-wc-collapse
+    aria-label="Second section"
+    bordered
+    icon="notifications"
+    icon-aria-label="Notifications icon"
+    title="Second Section"
+    @expandedChange=${handleExpandedChange}
+  >
+    <div>
+      <p>This is the content for the second section.</p>
+    </div>
+  </modus-wc-collapse>
+
+  <modus-wc-collapse
+    aria-label="Third section"
+    bordered
+    icon="shopping_cart"
+    icon-aria-label="Shopping cart icon"
+    title="Third Section"
+    @expandedChange=${handleExpandedChange}
+  >
+    <div>
+      <p>This is the content for the third section.</p>
+    </div>
+  </modus-wc-collapse>
+</div>
+    `;
+  },
+};

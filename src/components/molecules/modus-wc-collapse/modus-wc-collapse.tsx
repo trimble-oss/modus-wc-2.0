@@ -1,9 +1,20 @@
-import { Component, Element, h, Host, Prop, Watch } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event as StencilEvent,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+  Watch,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-collapse.tailwind';
 import { generateRandomId } from '../../utils';
 
 /**
  * A customizable collapse component used for showing and hiding content.
+ *
+ * Can render any HTML content through a <slot> element.
  *
  * Adheres to WCAG 2.2 standards.
  */
@@ -46,6 +57,11 @@ export class ModusWcCollapse {
    */
   @Prop() title?: string = '';
 
+  /**
+   * Event emitted when the expanded prop is internally changed.
+   */
+  @StencilEvent() expandedChange!: EventEmitter<boolean>;
+
   @Watch('expanded')
   expandedChanged(newValue: boolean) {
     const checkbox = this.el.querySelector(
@@ -58,6 +74,7 @@ export class ModusWcCollapse {
 
   private handleClick = () => {
     this.expanded = !this.expanded;
+    this.expandedChange.emit(this.expanded);
   };
 
   private handleContentClick = (event: Event) => {
@@ -108,6 +125,7 @@ export class ModusWcCollapse {
             )}
             {this.title}
           </div>
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
           <div
             class="modus-wc-collapse-content modus-wc-cursor-default"
             id={this.contentId}

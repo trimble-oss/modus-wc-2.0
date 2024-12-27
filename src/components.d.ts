@@ -252,6 +252,7 @@ export namespace Components {
     }
     /**
      * A customizable collapse component used for showing and hiding content.
+     * Can render any HTML content through a <slot> element.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcCollapse {
@@ -1209,6 +1210,10 @@ export interface ModusWcCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcCheckboxElement;
 }
+export interface ModusWcCollapseCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcCollapseElement;
+}
 export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDateElement;
@@ -1346,11 +1351,23 @@ declare global {
         prototype: HTMLModusWcCheckboxElement;
         new (): HTMLModusWcCheckboxElement;
     };
+    interface HTMLModusWcCollapseElementEventMap {
+        "expandedChange": boolean;
+    }
     /**
      * A customizable collapse component used for showing and hiding content.
+     * Can render any HTML content through a <slot> element.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcCollapseElement extends Components.ModusWcCollapse, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcCollapseElementEventMap>(type: K, listener: (this: HTMLModusWcCollapseElement, ev: ModusWcCollapseCustomEvent<HTMLModusWcCollapseElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcCollapseElementEventMap>(type: K, listener: (this: HTMLModusWcCollapseElement, ev: ModusWcCollapseCustomEvent<HTMLModusWcCollapseElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcCollapseElement: {
         prototype: HTMLModusWcCollapseElement;
@@ -2011,6 +2028,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable collapse component used for showing and hiding content.
+     * Can render any HTML content through a <slot> element.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcCollapse {
@@ -2034,6 +2052,10 @@ declare namespace LocalJSX {
           * Sets the aria-label attribute of the icon component.
          */
         "iconAriaLabel"?: string;
+        /**
+          * Event emitted when the expanded prop is internally changed.
+         */
+        "onExpandedChange"?: (event: ModusWcCollapseCustomEvent<boolean>) => void;
         /**
           * The title of the collapse component, rendered on button.
          */
@@ -3139,6 +3161,7 @@ declare module "@stencil/core" {
             "modus-wc-checkbox": LocalJSX.ModusWcCheckbox & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
             /**
              * A customizable collapse component used for showing and hiding content.
+             * Can render any HTML content through a <slot> element.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-collapse": LocalJSX.ModusWcCollapse & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;

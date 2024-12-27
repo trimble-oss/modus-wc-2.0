@@ -9,6 +9,8 @@
 
 A customizable collapse component used for showing and hiding content.
 
+Can render any HTML content through a <slot> element.
+
 Adheres to WCAG 2.2 standards.
 
 ## Properties
@@ -21,6 +23,13 @@ Adheres to WCAG 2.2 standards.
 | `icon`          | `icon`            | The icon name, should match the CSS class in the icon font. | `string \| undefined`  | `''`    |
 | `iconAriaLabel` | `icon-aria-label` | Sets the aria-label attribute of the icon component.        | `string \| undefined`  | `''`    |
 | `title`         | `title`           | The title of the collapse component, rendered on button.    | `string \| undefined`  | `''`    |
+
+
+## Events
+
+| Event            | Description                                                 | Type                   |
+| ---------------- | ----------------------------------------------------------- | ---------------------- |
+| `expandedChange` | Event emitted when the expanded prop is internally changed. | `CustomEvent<boolean>` |
 
 
 ## Dependencies
