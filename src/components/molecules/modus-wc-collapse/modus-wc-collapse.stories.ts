@@ -17,8 +17,8 @@ const meta: Meta<CollapseArgs> = {
   component: 'modus-wc-collapse',
   args: {
     bordered: true,
-    'collapse-description': 'Description',
-    'collapse-title': 'Component title',
+    'collapse-description': 'Collapse description',
+    'collapse-title': 'Collapse title',
     expanded: false,
     icon: 'info',
     'icon-aria-label': 'Information icon',

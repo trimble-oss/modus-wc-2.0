@@ -74,6 +74,14 @@ export class ModusWcCollapse {
     if (checkbox) checkbox.checked = newValue;
   }
 
+  // Create deterministic ID based on props
+  private getBaseId(): string {
+    // Sanitize title to create a valid ID
+    return this.collapseTitle
+      ? this.collapseTitle.toLowerCase().replace(/[^a-z0-9]/g, '-')
+      : 'collapse';
+  }
+
   private handleClick = () => {
     this.expanded = !this.expanded;
     this.expandedChange.emit(this.expanded);
@@ -106,18 +114,27 @@ export class ModusWcCollapse {
   }
 
   render() {
+    const baseId = this.getBaseId();
+    const titleId = `${baseId}-title`;
+    const contentId = `${baseId}-content`;
+
     return (
       <Host>
-        <div
-          aria-expanded={this.expanded}
-          class={this.getClasses()}
-          onClick={this.handleClick}
-          onKeyDown={this.handleKeyDown}
-          role="button"
-          tabindex="0"
-        >
-          <input type="checkbox" />
-          <div class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between">
+        <div class={this.getClasses()}>
+          <input
+            aria-controls={contentId}
+            aria-expanded={this.expanded}
+            aria-labelledby={titleId}
+            id={`${baseId}-checkbox`}
+            onClick={this.handleClick}
+            onKeyDown={this.handleKeyDown}
+            role="button"
+            type="checkbox"
+          />
+          <div
+            class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between"
+            id={titleId}
+          >
             <div class="modus-wc-inline-flex modus-wc-items-center modus-wc-text-xl modus-wc-font-medium">
               {this.icon && (
                 <modus-wc-icon
@@ -133,7 +150,9 @@ export class ModusWcCollapse {
           </div>
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
           <div
+            aria-labelledby={titleId}
             class="modus-wc-collapse-content modus-wc-cursor-default"
+            id={contentId}
             onClick={this.handleContentClick}
           >
             <slot />

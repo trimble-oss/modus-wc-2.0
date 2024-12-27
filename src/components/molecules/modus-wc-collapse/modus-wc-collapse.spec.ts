@@ -2,7 +2,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcCollapse } from './modus-wc-collapse';
 import { ModusWcIcon } from '../../atoms/modus-wc-icon/modus-wc-icon';
 
-describe('modus-wc-collapse snapshot tests', () => {
+describe('modus-wc-collapse', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcCollapse],
@@ -38,18 +38,18 @@ describe('modus-wc-collapse snapshot tests', () => {
   it('should emit expandedChange event when collapse is expanded', async () => {
     const page = await newSpecPage({
       components: [ModusWcCollapse],
-      html: `<modus-wc-collapse></modus-wc-collapse>`,
+      html: `<modus-wc-collapse collapse-title="collapse"></modus-wc-collapse>`,
     });
 
     const expandedChangeSpy = jest.fn();
     page.root!.addEventListener('expandedChange', expandedChangeSpy);
 
-    const collapseElement = page.root!.querySelector(
-      'div.modus-wc-collapse'
+    const checkbox = page.root!.querySelector(
+      '#collapse-checkbox'
     ) as HTMLElement;
-    expect(collapseElement).not.toBeNull();
+    expect(checkbox).not.toBeNull();
 
-    collapseElement?.click();
+    checkbox?.click();
     await page.waitForChanges();
 
     expect(expandedChangeSpy).toHaveBeenCalled();
@@ -69,14 +69,12 @@ describe('modus-wc-collapse snapshot tests', () => {
     const expandedChangeSpy = jest.fn();
     page.root!.addEventListener('expandedChange', expandedChangeSpy);
 
-    const collapseElement = page.root!.querySelector(
-      'div.modus-wc-collapse'
+    const checkbox = page.root!.querySelector(
+      '#collapse-checkbox'
     ) as HTMLElement;
-    expect(collapseElement).not.toBeNull();
+    expect(checkbox).not.toBeNull();
 
-    collapseElement?.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'Enter' })
-    );
+    checkbox?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
     await page.waitForChanges();
 
     expect(expandedChangeSpy).toHaveBeenCalled();
@@ -96,12 +94,12 @@ describe('modus-wc-collapse snapshot tests', () => {
     const expandedChangeSpy = jest.fn();
     page.root!.addEventListener('expandedChange', expandedChangeSpy);
 
-    const collapseElement = page.root!.querySelector(
-      'div.modus-wc-collapse'
+    const checkbox = page.root!.querySelector(
+      '#collapse-checkbox'
     ) as HTMLElement;
-    expect(collapseElement).not.toBeNull();
+    expect(checkbox).not.toBeNull();
 
-    collapseElement?.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
+    checkbox?.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
     await page.waitForChanges();
 
     expect(expandedChangeSpy).toHaveBeenCalled();
