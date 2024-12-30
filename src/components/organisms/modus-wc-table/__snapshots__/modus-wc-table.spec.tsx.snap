@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-table renders with default props (empty table) 1`] = `
+<modus-wc-table aria-label="Default table">
+  <div class="modus-wc-overflow-x-auto">
+    <table class="modus-wc-table">
+      <thead>
+        <tr></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</modus-wc-table>
+`;
+
+exports[`modus-wc-table should render with custom props 1`] = `
+<modus-wc-table aria-label="Default table" custom-class="test-class" density="compact" zebra="true">
+  <div class="modus-wc-overflow-x-auto">
+    <table class="modus-wc-table modus-wc-table-xs modus-wc-table-zebra test-class">
+      <thead>
+        <tr>
+          <th style="width: 200px;">
+            Name
+          </th>
+          <th>
+            Email
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            John Smith
+          </td>
+          <td>
+            john.smith@example.com
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Jane Doe
+          </td>
+          <td>
+            jane.doe@example.com
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Bob Johnson
+          </td>
+          <td>
+            bob.johnson@example.com
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Carole Baskin
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</modus-wc-table>
+`;
