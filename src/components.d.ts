@@ -251,6 +251,41 @@ export namespace Components {
         "value": boolean;
     }
     /**
+     * A customizable collapse component used for showing and hiding content.
+     * Can render any HTML content through a <slot> element.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCollapse {
+        /**
+          * Indicates that the component should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * The description of the collapse component.
+         */
+        "collapseDescription"?: string;
+        /**
+          * The title of the collapse component.
+         */
+        "collapseTitle"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Controls whether the collapse is expanded or not.
+         */
+        "expanded"?: boolean;
+        /**
+          * The icon name, should match the CSS class in the icon font.
+         */
+        "icon"?: string;
+        /**
+          * Sets the aria-label attribute of the icon component.
+         */
+        "iconAriaLabel"?: string;
+    }
+    /**
      * A customizable date picker component used to create date inputs.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1179,6 +1214,10 @@ export interface ModusWcCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcCheckboxElement;
 }
+export interface ModusWcCollapseCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcCollapseElement;
+}
 export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDateElement;
@@ -1315,6 +1354,28 @@ declare global {
     var HTMLModusWcCheckboxElement: {
         prototype: HTMLModusWcCheckboxElement;
         new (): HTMLModusWcCheckboxElement;
+    };
+    interface HTMLModusWcCollapseElementEventMap {
+        "expandedChange": boolean;
+    }
+    /**
+     * A customizable collapse component used for showing and hiding content.
+     * Can render any HTML content through a <slot> element.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcCollapseElement extends Components.ModusWcCollapse, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcCollapseElementEventMap>(type: K, listener: (this: HTMLModusWcCollapseElement, ev: ModusWcCollapseCustomEvent<HTMLModusWcCollapseElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcCollapseElementEventMap>(type: K, listener: (this: HTMLModusWcCollapseElement, ev: ModusWcCollapseCustomEvent<HTMLModusWcCollapseElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcCollapseElement: {
+        prototype: HTMLModusWcCollapseElement;
+        new (): HTMLModusWcCollapseElement;
     };
     interface HTMLModusWcDateElementEventMap {
         "inputBlur": FocusEvent;
@@ -1684,6 +1745,7 @@ declare global {
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
+        "modus-wc-collapse": HTMLModusWcCollapseElement;
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
@@ -1967,6 +2029,45 @@ declare namespace LocalJSX {
           * The value of the checkbox.
          */
         "value"?: boolean;
+    }
+    /**
+     * A customizable collapse component used for showing and hiding content.
+     * Can render any HTML content through a <slot> element.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCollapse {
+        /**
+          * Indicates that the component should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * The description of the collapse component.
+         */
+        "collapseDescription"?: string;
+        /**
+          * The title of the collapse component.
+         */
+        "collapseTitle"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Controls whether the collapse is expanded or not.
+         */
+        "expanded"?: boolean;
+        /**
+          * The icon name, should match the CSS class in the icon font.
+         */
+        "icon"?: string;
+        /**
+          * Sets the aria-label attribute of the icon component.
+         */
+        "iconAriaLabel"?: string;
+        /**
+          * Event emitted when the expanded prop is internally changed.
+         */
+        "onExpandedChange"?: (event: ModusWcCollapseCustomEvent<boolean>) => void;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -3013,6 +3114,7 @@ declare namespace LocalJSX {
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
         "modus-wc-checkbox": ModusWcCheckbox;
+        "modus-wc-collapse": ModusWcCollapse;
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
@@ -3065,6 +3167,12 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-checkbox": LocalJSX.ModusWcCheckbox & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
+            /**
+             * A customizable collapse component used for showing and hiding content.
+             * Can render any HTML content through a <slot> element.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-collapse": LocalJSX.ModusWcCollapse & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;
             /**
              * A customizable date picker component used to create date inputs.
              * Adheres to WCAG 2.2 standards.
