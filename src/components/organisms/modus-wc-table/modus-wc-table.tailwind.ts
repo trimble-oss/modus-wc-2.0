@@ -8,9 +8,6 @@ export const convertTablePropsToClasses = (props: {
 
   if (Object.prototype.hasOwnProperty.call(props, 'density') && props.density) {
     switch (props.density) {
-      case 'comfortable':
-        // classes = `${classes} modus-wc-table-md`;
-        break;
       case 'compact':
         classes = `${classes} modus-wc-table-xs`;
         break;
