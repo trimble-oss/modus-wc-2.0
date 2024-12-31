@@ -194,7 +194,7 @@ export namespace Components {
         /**
           * The variant of the button.
          */
-        "variant": 'filled' | 'outlined' | 'text';
+        "variant": 'borderless' | 'filled' | 'outlined';
     }
     /**
      * A customizable checkbox component.
@@ -1962,7 +1962,7 @@ declare namespace LocalJSX {
         /**
           * The variant of the button.
          */
-        "variant"?: 'filled' | 'outlined' | 'text';
+        "variant"?: 'borderless' | 'filled' | 'outlined';
     }
     /**
      * A customizable checkbox component.

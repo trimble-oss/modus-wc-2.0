@@ -14,7 +14,7 @@ interface ButtonArgs {
   pressed: boolean;
   size: ModusSize;
   type: 'button' | 'submit' | 'reset';
-  variant: 'filled' | 'outlined' | 'text';
+  variant: 'borderless' | 'filled' | 'outlined';
 }
 
 const meta: Meta<ButtonArgs> = {
@@ -29,7 +29,7 @@ const meta: Meta<ButtonArgs> = {
     pressed: false,
     size: 'md',
     type: 'button',
-    variant: 'filled',
+    variant: 'borderless', // TODO - revert to filled
   },
   argTypes: {
     color: {
@@ -46,7 +46,7 @@ const meta: Meta<ButtonArgs> = {
     },
     variant: {
       control: { type: 'inline-radio' },
-      options: ['filled', 'outlined', 'text'],
+      options: ['borderless', 'filled', 'outlined'],
     },
   },
   decorators: [withActions],
