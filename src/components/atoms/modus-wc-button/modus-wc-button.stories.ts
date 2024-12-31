@@ -29,7 +29,7 @@ const meta: Meta<ButtonArgs> = {
     pressed: false,
     size: 'md',
     type: 'button',
-    variant: 'borderless', // TODO - revert to filled
+    variant: 'filled',
   },
   argTypes: {
     color: {
