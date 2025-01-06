@@ -156,6 +156,7 @@ export namespace Components {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
+     * Note: for buttons with icons you must follow the guide on  modus icon usage in our storybook documentation.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
@@ -176,9 +177,21 @@ export namespace Components {
          */
         "fullWidth"?: boolean;
         /**
+          * Takes the icon name and shows the icon aligned to the left of the button text.
+         */
+        "iconLeft"?: string;
+        /**
+          * Takes the icon name and renders an icon-only button.
+         */
+        "iconOnly"?: string;
+        /**
+          * Takes the icon name and shows the icon aligned to the right of the button text.
+         */
+        "iconRight"?: string;
+        /**
           * The text label displayed on the button.
          */
-        "label": string;
+        "label"?: string;
         /**
           * If true, the button will be in a pressed state (for toggle buttons).
          */
@@ -1316,6 +1329,7 @@ declare global {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
+     * Note: for buttons with icons you must follow the guide on  modus icon usage in our storybook documentation.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcButtonElement extends Components.ModusWcButton, HTMLStencilElement {
@@ -1920,6 +1934,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
+     * Note: for buttons with icons you must follow the guide on  modus icon usage in our storybook documentation.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
@@ -1940,9 +1955,21 @@ declare namespace LocalJSX {
          */
         "fullWidth"?: boolean;
         /**
+          * Takes the icon name and shows the icon aligned to the left of the button text.
+         */
+        "iconLeft"?: string;
+        /**
+          * Takes the icon name and renders an icon-only button.
+         */
+        "iconOnly"?: string;
+        /**
+          * Takes the icon name and shows the icon aligned to the right of the button text.
+         */
+        "iconRight"?: string;
+        /**
           * The text label displayed on the button.
          */
-        "label": string;
+        "label"?: string;
         /**
           * Event emitted when the button is clicked or activated via keyboard.
          */
@@ -3159,6 +3186,7 @@ declare module "@stencil/core" {
             "modus-wc-badge": LocalJSX.ModusWcBadge & JSXBase.HTMLAttributes<HTMLModusWcBadgeElement>;
             /**
              * A customizable button component used to create buttons with different sizes, variants, and types.
+             * Note: for buttons with icons you must follow the guide on  modus icon usage in our storybook documentation.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;

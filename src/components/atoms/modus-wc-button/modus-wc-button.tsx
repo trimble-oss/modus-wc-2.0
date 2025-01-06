@@ -3,6 +3,7 @@ import {
   Element,
   Event,
   EventEmitter,
+  Fragment,
   h,
   Host,
   Listen,
@@ -10,9 +11,12 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-button.tailwind';
 import { ModusSize } from '../../types';
+import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
+ *
+ * Note: for buttons with icons you must follow the guide on  modus icon usage in our storybook documentation.
  *
  * Adheres to WCAG 2.2 standards.
  */
@@ -47,9 +51,24 @@ export class ModusWcButton {
   @Prop() fullWidth?: boolean = false;
 
   /**
+   * Takes the icon name and shows the icon aligned to the left of the button text.
+   */
+  @Prop() iconLeft?: string;
+
+  /**
+   * Takes the icon name and renders an icon-only button.
+   */
+  @Prop() iconOnly?: string;
+
+  /**
+   * Takes the icon name and shows the icon aligned to the right of the button text.
+   */
+  @Prop() iconRight?: string;
+
+  /**
    * The text label displayed on the button.
    */
-  @Prop() label!: string;
+  @Prop() label?: string;
 
   /**
    * If true, the button will be in a pressed state (for toggle buttons).
@@ -62,14 +81,14 @@ export class ModusWcButton {
   @Prop() size: ModusSize = 'md';
 
   /**
-   * The variant of the button.
-   */
-  @Prop() variant: 'borderless' | 'filled' | 'outlined' = 'filled';
-
-  /**
    * The type of the button.
    */
   @Prop() type: 'button' | 'submit' | 'reset' = 'button';
+
+  /**
+   * The variant of the button.
+   */
+  @Prop() variant: 'borderless' | 'filled' | 'outlined' = 'filled';
 
   /**
    * Event emitted when the button is clicked or activated via keyboard.
@@ -117,6 +136,32 @@ export class ModusWcButton {
     }
   };
 
+  private renderButtonContent() {
+    if (this.iconOnly) {
+      console.log('iconOnly', this.iconOnly);
+      return <ModusWcIcon name={this.iconOnly} />;
+    } else if (this.iconLeft || this.iconRight) {
+      console.log('iconLeft', this.iconLeft);
+      console.log('iconRight', this.iconRight);
+      return (
+        <Fragment>
+          {this.iconLeft && (
+            <span>
+              <ModusWcIcon name={this.iconLeft} />
+            </span>
+          )}
+          <span>{this.label}</span>
+          {this.iconRight && (
+            <span>
+              <ModusWcIcon name={this.iconRight} />
+            </span>
+          )}
+        </Fragment>
+      );
+    }
+    return this.label ? <span>{this.label}</span> : <span></span>;
+  }
+
   render() {
     const ariaPressed = this.pressed ? 'true' : undefined;
 
@@ -132,7 +177,7 @@ export class ModusWcButton {
           tabIndex={this.disabled ? -1 : 0}
           type={this.type}
         >
-          {this.label}
+          {this.renderButtonContent()}
         </button>
       </Host>
     );

@@ -10,6 +10,9 @@ interface ButtonArgs {
   'custom-class'?: string;
   disabled: boolean;
   'full-width': boolean;
+  'icon-left'?: string;
+  'icon-only'?: string;
+  'icon-right'?: string;
   label: string;
   pressed: boolean;
   size: ModusSize;
@@ -82,4 +85,19 @@ const Template: Story = {
 
 export const Default: Story = {
   ...Template,
+};
+
+export const IconOnlyButton: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-button
+        aria-label="${args['aria-label']}"
+        color="${args.color}"
+        icon-only="alert"
+        size="md"
+        type="${args.type}"
+        variant="${args.variant}"
+      ></modus-wc-button>
+    `;
+  },
 };
