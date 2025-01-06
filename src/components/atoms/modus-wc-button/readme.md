@@ -36,6 +36,19 @@ Adheres to WCAG 2.2 standards.
 | `buttonClick` | Event emitted when the button is clicked or activated via keyboard. | `CustomEvent<KeyboardEvent \| MouseEvent>` |
 
 
+## Dependencies
+
+### Depends on
+
+- [modus-wc-icon](../modus-wc-icon)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-button --> modus-wc-icon
+  style modus-wc-button fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

@@ -11,7 +11,6 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-button.tailwind';
 import { ModusSize } from '../../types';
-import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -138,28 +137,24 @@ export class ModusWcButton {
 
   private renderButtonContent() {
     if (this.iconOnly) {
-      console.log('iconOnly', this.iconOnly);
-      return <ModusWcIcon name={this.iconOnly} />;
-    } else if (this.iconLeft || this.iconRight) {
-      console.log('iconLeft', this.iconLeft);
-      console.log('iconRight', this.iconRight);
+      return <modus-wc-icon name={this.iconOnly} size={this.size} />;
+    }
+
+    if (this.iconLeft || this.iconRight) {
       return (
         <Fragment>
           {this.iconLeft && (
-            <span>
-              <ModusWcIcon name={this.iconLeft} />
-            </span>
+            <modus-wc-icon name={this.iconLeft} size={this.size} />
           )}
-          <span>{this.label}</span>
+          {this.label && <span>{this.label}</span>}
           {this.iconRight && (
-            <span>
-              <ModusWcIcon name={this.iconRight} />
-            </span>
+            <modus-wc-icon name={this.iconRight} size={this.size} />
           )}
         </Fragment>
       );
     }
-    return this.label ? <span>{this.label}</span> : <span></span>;
+
+    return <span>{this.label || ''}</span>;
   }
 
   render() {

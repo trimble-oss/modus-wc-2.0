@@ -93,8 +93,8 @@ export const IconOnlyButton: Story = {
       <modus-wc-button
         aria-label="${args['aria-label']}"
         color="${args.color}"
-        icon-only="alert"
-        size="md"
+        icon-only="check"
+        size="sm"
         type="${args.type}"
         variant="${args.variant}"
       ></modus-wc-button>
