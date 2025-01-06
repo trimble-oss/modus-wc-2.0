@@ -33,6 +33,7 @@ To prepare for the predesign session please:
 
 - Bring your link to the approved Modus Figma designs (we only contribute Figma approved components)
 - Bring documentation on the component
+- Be ready to speak in the language of atomic design principles
 
 ### Running the App
 
