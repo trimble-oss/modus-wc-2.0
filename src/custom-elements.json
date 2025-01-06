@@ -269,7 +269,7 @@
               "name": "variant",
               "fieldName": "variant",
               "type": {
-                "text": "'filled' | 'outlined' | 'text'"
+                "text": "'borderless' | 'filled' | 'outlined'"
               },
               "description": "The variant of the button."
             }
