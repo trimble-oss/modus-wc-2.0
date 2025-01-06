@@ -5,7 +5,7 @@ export const convertPropsToClasses = (props: {
   disabled?: boolean;
   fullWidth?: boolean;
   size?: DaisySize;
-  variant?: 'filled' | 'outlined' | 'text';
+  variant?: 'borderless' | 'filled' | 'outlined';
 }): string => {
   let classes = '';
 
@@ -52,8 +52,8 @@ export const convertPropsToClasses = (props: {
       case 'outlined':
         classes = `${classes} modus-wc-btn-outline`;
         break;
-      case 'text':
-        classes = `${classes} modus-wc-btn-text`;
+      case 'borderless':
+        classes = `${classes} modus-wc-btn-borderless`;
         break;
     }
   }

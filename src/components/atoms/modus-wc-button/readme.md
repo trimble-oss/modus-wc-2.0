@@ -21,7 +21,7 @@ Adheres to WCAG 2.2 standards.
 | `pressed`            | `pressed`      | If true, the button will be in a pressed state (for toggle buttons). | `boolean \| undefined`                                            | `false`     |
 | `size`               | `size`         | The size of the button.                                              | `"lg" \| "md" \| "sm"`                                            | `'md'`      |
 | `type`               | `type`         | The type of the button.                                              | `"button" \| "reset" \| "submit"`                                 | `'button'`  |
-| `variant`            | `variant`      | The variant of the button.                                           | `"filled" \| "outlined" \| "text"`                                | `'filled'`  |
+| `variant`            | `variant`      | The variant of the button.                                           | `"borderless" \| "filled" \| "outlined"`                          | `'filled'`  |
 
 
 ## Events

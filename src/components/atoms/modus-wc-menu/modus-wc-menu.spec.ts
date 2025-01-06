@@ -39,12 +39,17 @@ describe('modus-wc-menu', () => {
         aria-label="Test menu"
         bordered="false"
         custom-class="test-class"
-        .items=${JSON.stringify(items)}
         menu-title="Title"
         orientation="horizontal"
         size="lg"
       ></modus-wc-menu>`,
     });
+
+    const component = page.rootInstance as ModusWcMenu;
+    component.items = items;
+
+    await page.waitForChanges();
+
     expect(page.root).toMatchSnapshot();
   });
 

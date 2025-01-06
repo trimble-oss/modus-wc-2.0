@@ -6,17 +6,19 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
-import { DaisySize, ModusSize, Orientation } from "./components/types";
+import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 import { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
+import { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
-export { DaisySize, ModusSize, Orientation } from "./components/types";
+export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 export { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
+export { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
@@ -192,7 +194,7 @@ export namespace Components {
         /**
           * The variant of the button.
          */
-        "variant": 'filled' | 'outlined' | 'text';
+        "variant": 'borderless' | 'filled' | 'outlined';
     }
     /**
      * A customizable checkbox component.
@@ -247,6 +249,41 @@ export namespace Components {
           * The value of the checkbox.
          */
         "value": boolean;
+    }
+    /**
+     * A customizable collapse component used for showing and hiding content.
+     * Can render any HTML content through a <slot> element.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCollapse {
+        /**
+          * Indicates that the component should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * The description of the collapse component.
+         */
+        "collapseDescription"?: string;
+        /**
+          * The title of the collapse component.
+         */
+        "collapseTitle"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Controls whether the collapse is expanded or not.
+         */
+        "expanded"?: boolean;
+        /**
+          * The icon name, should match the CSS class in the icon font.
+         */
+        "icon"?: string;
+        /**
+          * Sets the aria-label attribute of the icon component.
+         */
+        "iconAriaLabel"?: string;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -761,6 +798,32 @@ export namespace Components {
         "value": number;
     }
     /**
+     * A customizable table component used to show a list of data in a table format.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTable {
+        /**
+          * An array of column definitions.
+         */
+        "columns": ITableColumn[];
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * An array of data objects.
+         */
+        "data": Record<string, any>[];
+        /**
+          * The density of the table, used to save space or increase readability.
+         */
+        "density"?: Density;
+        /**
+          * Zebra striped tables differentiate rows by styling them in an alternating fashion.
+         */
+        "zebra"?: boolean;
+    }
+    /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1151,6 +1214,10 @@ export interface ModusWcCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcCheckboxElement;
 }
+export interface ModusWcCollapseCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcCollapseElement;
+}
 export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDateElement;
@@ -1174,6 +1241,10 @@ export interface ModusWcSelectCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcSliderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSliderElement;
+}
+export interface ModusWcTableCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTableElement;
 }
 export interface ModusWcTextInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1283,6 +1354,28 @@ declare global {
     var HTMLModusWcCheckboxElement: {
         prototype: HTMLModusWcCheckboxElement;
         new (): HTMLModusWcCheckboxElement;
+    };
+    interface HTMLModusWcCollapseElementEventMap {
+        "expandedChange": boolean;
+    }
+    /**
+     * A customizable collapse component used for showing and hiding content.
+     * Can render any HTML content through a <slot> element.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcCollapseElement extends Components.ModusWcCollapse, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcCollapseElementEventMap>(type: K, listener: (this: HTMLModusWcCollapseElement, ev: ModusWcCollapseCustomEvent<HTMLModusWcCollapseElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcCollapseElementEventMap>(type: K, listener: (this: HTMLModusWcCollapseElement, ev: ModusWcCollapseCustomEvent<HTMLModusWcCollapseElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcCollapseElement: {
+        prototype: HTMLModusWcCollapseElement;
+        new (): HTMLModusWcCollapseElement;
     };
     interface HTMLModusWcDateElementEventMap {
         "inputBlur": FocusEvent;
@@ -1482,6 +1575,30 @@ declare global {
         prototype: HTMLModusWcSliderElement;
         new (): HTMLModusWcSliderElement;
     };
+    interface HTMLModusWcTableElementEventMap {
+        "rowClick": {
+    row: Record<string, any>;
+    index: number;
+  };
+    }
+    /**
+     * A customizable table component used to show a list of data in a table format.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcTableElement extends Components.ModusWcTable, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTableElementEventMap>(type: K, listener: (this: HTMLModusWcTableElement, ev: ModusWcTableCustomEvent<HTMLModusWcTableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTableElementEventMap>(type: K, listener: (this: HTMLModusWcTableElement, ev: ModusWcTableCustomEvent<HTMLModusWcTableElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTableElement: {
+        prototype: HTMLModusWcTableElement;
+        new (): HTMLModusWcTableElement;
+    };
     interface HTMLModusWcTextInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
@@ -1628,6 +1745,7 @@ declare global {
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
+        "modus-wc-collapse": HTMLModusWcCollapseElement;
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
@@ -1640,6 +1758,7 @@ declare global {
         "modus-wc-select": HTMLModusWcSelectElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
+        "modus-wc-table": HTMLModusWcTableElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
@@ -1843,7 +1962,7 @@ declare namespace LocalJSX {
         /**
           * The variant of the button.
          */
-        "variant"?: 'filled' | 'outlined' | 'text';
+        "variant"?: 'borderless' | 'filled' | 'outlined';
     }
     /**
      * A customizable checkbox component.
@@ -1910,6 +2029,45 @@ declare namespace LocalJSX {
           * The value of the checkbox.
          */
         "value"?: boolean;
+    }
+    /**
+     * A customizable collapse component used for showing and hiding content.
+     * Can render any HTML content through a <slot> element.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCollapse {
+        /**
+          * Indicates that the component should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * The description of the collapse component.
+         */
+        "collapseDescription"?: string;
+        /**
+          * The title of the collapse component.
+         */
+        "collapseTitle"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Controls whether the collapse is expanded or not.
+         */
+        "expanded"?: boolean;
+        /**
+          * The icon name, should match the CSS class in the icon font.
+         */
+        "icon"?: string;
+        /**
+          * Sets the aria-label attribute of the icon component.
+         */
+        "iconAriaLabel"?: string;
+        /**
+          * Event emitted when the expanded prop is internally changed.
+         */
+        "onExpandedChange"?: (event: ModusWcCollapseCustomEvent<boolean>) => void;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -2488,6 +2646,39 @@ declare namespace LocalJSX {
         "value"?: number;
     }
     /**
+     * A customizable table component used to show a list of data in a table format.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTable {
+        /**
+          * An array of column definitions.
+         */
+        "columns": ITableColumn[];
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * An array of data objects.
+         */
+        "data": Record<string, any>[];
+        /**
+          * The density of the table, used to save space or increase readability.
+         */
+        "density"?: Density;
+        /**
+          * Emits when a row is clicked.
+         */
+        "onRowClick"?: (event: ModusWcTableCustomEvent<{
+    row: Record<string, any>;
+    index: number;
+  }>) => void;
+        /**
+          * Zebra striped tables differentiate rows by styling them in an alternating fashion.
+         */
+        "zebra"?: boolean;
+    }
+    /**
      * A customizable input component used to create text inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -2923,6 +3114,7 @@ declare namespace LocalJSX {
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
         "modus-wc-checkbox": ModusWcCheckbox;
+        "modus-wc-collapse": ModusWcCollapse;
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
@@ -2935,6 +3127,7 @@ declare namespace LocalJSX {
         "modus-wc-select": ModusWcSelect;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
+        "modus-wc-table": ModusWcTable;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
@@ -2974,6 +3167,12 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-checkbox": LocalJSX.ModusWcCheckbox & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
+            /**
+             * A customizable collapse component used for showing and hiding content.
+             * Can render any HTML content through a <slot> element.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-collapse": LocalJSX.ModusWcCollapse & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;
             /**
              * A customizable date picker component used to create date inputs.
              * Adheres to WCAG 2.2 standards.
@@ -3036,6 +3235,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-slider": LocalJSX.ModusWcSlider & JSXBase.HTMLAttributes<HTMLModusWcSliderElement>;
+            /**
+             * A customizable table component used to show a list of data in a table format.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-table": LocalJSX.ModusWcTable & JSXBase.HTMLAttributes<HTMLModusWcTableElement>;
             /**
              * A customizable input component used to create text inputs with types.
              * Adheres to WCAG 2.2 standards.
