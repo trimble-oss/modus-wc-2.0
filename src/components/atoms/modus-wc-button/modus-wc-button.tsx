@@ -15,7 +15,7 @@ import { ModusSize } from '../../types';
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
  *
- * Note: for buttons with icons you must follow the guide on  modus icon usage in our storybook documentation.
+ * <b>Note</b>: for buttons with icons you must follow the guide on [modus icon usage](/docs/documentation-modus-icon-usage--docs).
  *
  * Adheres to WCAG 2.2 standards.
  */
@@ -50,7 +50,7 @@ export class ModusWcButton {
   @Prop() fullWidth?: boolean = false;
 
   /**
-   * Takes the icon name and shows the icon aligned to the left of the button text.
+   * Takes the icon name and shows the icon aligned to the left of the button label.
    */
   @Prop() iconLeft?: string;
 
@@ -60,7 +60,7 @@ export class ModusWcButton {
   @Prop() iconOnly?: string;
 
   /**
-   * Takes the icon name and shows the icon aligned to the right of the button text.
+   * Takes the icon name and shows the icon aligned to the right of the button label.
    */
   @Prop() iconRight?: string;
 

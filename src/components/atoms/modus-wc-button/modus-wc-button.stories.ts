@@ -92,11 +92,31 @@ export const IconOnlyButton: Story = {
     return html`
       <modus-wc-button
         aria-label="${args['aria-label']}"
-        color="${args.color}"
         icon-only="check"
-        size="sm"
-        type="${args.type}"
-        variant="${args.variant}"
+      ></modus-wc-button>
+    `;
+  },
+};
+
+export const IconLeftButton: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-button
+        aria-label="${args['aria-label']}"
+        icon-left="check"
+        label="Click me"
+      ></modus-wc-button>
+    `;
+  },
+};
+
+export const IconRightButton: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-button
+        aria-label="${args['aria-label']}"
+        label="Click me"
+        icon-right="check"
       ></modus-wc-button>
     `;
   },

@@ -184,7 +184,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nNote: for buttons with icons you must follow the guide on  modus icon usage in our storybook documentation.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\n<b>Note</b>: for buttons with icons you must follow the guide on [modus icon usage](/docs/documentation-modus-icon-usage--docs).\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcButton",
           "members": [
             {
@@ -239,7 +239,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Takes the icon name and shows the icon aligned to the left of the button text."
+              "description": "Takes the icon name and shows the icon aligned to the left of the button label."
             },
             {
               "name": "icon-only",
@@ -255,7 +255,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Takes the icon name and shows the icon aligned to the right of the button text."
+              "description": "Takes the icon name and shows the icon aligned to the right of the button label."
             },
             {
               "name": "label",
