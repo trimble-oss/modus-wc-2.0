@@ -15,7 +15,7 @@ import { ModusSize } from '../../types';
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
  *
- * <b>Note</b>: for buttons with icons you must follow the guide on [modus icon usage](/docs/documentation-modus-icon-usage--docs).
+ * This component requires Modus icons to be installed in the host application if using buttons with icons. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
  *
  * Adheres to WCAG 2.2 standards.
  */
@@ -172,6 +172,7 @@ export class ModusWcButton {
           tabIndex={this.disabled ? -1 : 0}
           type={this.type}
         >
+          <slot />
           {this.renderButtonContent()}
         </button>
       </Host>

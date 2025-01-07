@@ -121,3 +121,16 @@ export const IconRightButton: Story = {
     `;
   },
 };
+
+export const IconLeftAndRightButton: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-button
+        aria-label="${args['aria-label']}"
+        label="Click me"
+        icon-left="check"
+        icon-right="check"
+      ></modus-wc-button>
+    `;
+  },
+};
