@@ -99,8 +99,8 @@ export const IconOnlyButton: Story = {
 export const IconLeftButton: Story = {
   render: (args) => {
     return html`
-<modus-wc-button aria-label="${args['aria-label']}" label="Click me">
-  <modus-wc-icon slot="left" name="check"></modus-wc-icon>
+<modus-wc-button aria-label="${args['aria-label']}" label="Download">
+  <modus-wc-icon slot="left" name="download"></modus-wc-icon>
 </modus-wc-button>
     `;
   },
@@ -110,8 +110,8 @@ export const IconLeftButton: Story = {
 export const IconRightButton: Story = {
   render: (args) => {
     return html`
-<modus-wc-button aria-label="${args['aria-label']}" label="Click me">
-  <modus-wc-icon slot="right" name="check"></modus-wc-icon>
+<modus-wc-button aria-label="${args['aria-label']}" label="Details">
+  <modus-wc-icon slot="right" name="launch"></modus-wc-icon>
 </modus-wc-button>
     `;
   },
@@ -121,9 +121,9 @@ export const IconRightButton: Story = {
 export const IconLeftAndRightButton: Story = {
   render: (args) => {
     return html`
-<modus-wc-button aria-label="${args['aria-label']}" label="Click me">
-  <modus-wc-icon slot="left" name="check"></modus-wc-icon>
-  <modus-wc-icon slot="right" name="check"></modus-wc-icon>
+<modus-wc-button aria-label="${args['aria-label']}" label="Checkout">
+  <modus-wc-icon slot="left" name="shopping_cart"></modus-wc-icon>
+  <modus-wc-icon slot="right" name="shopping_cart"></modus-wc-icon>
 </modus-wc-button>
     `;
   },
