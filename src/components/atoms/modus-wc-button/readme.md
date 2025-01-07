@@ -7,26 +7,21 @@
 
 A customizable button component used to create buttons with different sizes, variants, and types.
 
-This component requires Modus icons to be installed in the host application if using buttons with icons. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
-
 Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                      | Type                                                              | Default     |
-| ------------- | -------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ----------- |
-| `color`       | `color`        | The color variant of the button.                                                 | `"danger" \| "primary" \| "secondary" \| "tertiary" \| "warning"` | `'primary'` |
-| `customClass` | `custom-class` | Custom CSS class to apply to the button element.                                 | `string \| undefined`                                             | `''`        |
-| `disabled`    | `disabled`     | If true, the button will be disabled.                                            | `boolean \| undefined`                                            | `false`     |
-| `fullWidth`   | `full-width`   | If true, the button will take the full width of its container.                   | `boolean \| undefined`                                            | `false`     |
-| `iconLeft`    | `icon-left`    | Takes the icon name and shows the icon aligned to the left of the button label.  | `string \| undefined`                                             | `undefined` |
-| `iconOnly`    | `icon-only`    | Takes the icon name and renders an icon-only button.                             | `string \| undefined`                                             | `undefined` |
-| `iconRight`   | `icon-right`   | Takes the icon name and shows the icon aligned to the right of the button label. | `string \| undefined`                                             | `undefined` |
-| `label`       | `label`        | The text label displayed on the button.                                          | `string \| undefined`                                             | `undefined` |
-| `pressed`     | `pressed`      | If true, the button will be in a pressed state (for toggle buttons).             | `boolean \| undefined`                                            | `false`     |
-| `size`        | `size`         | The size of the button.                                                          | `"lg" \| "md" \| "sm"`                                            | `'md'`      |
-| `type`        | `type`         | The type of the button.                                                          | `"button" \| "reset" \| "submit"`                                 | `'button'`  |
-| `variant`     | `variant`      | The variant of the button.                                                       | `"borderless" \| "filled" \| "outlined"`                          | `'filled'`  |
+| Property      | Attribute      | Description                                                          | Type                                                              | Default     |
+| ------------- | -------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------- | ----------- |
+| `color`       | `color`        | The color variant of the button.                                     | `"danger" \| "primary" \| "secondary" \| "tertiary" \| "warning"` | `'primary'` |
+| `customClass` | `custom-class` | Custom CSS class to apply to the button element.                     | `string \| undefined`                                             | `''`        |
+| `disabled`    | `disabled`     | If true, the button will be disabled.                                | `boolean \| undefined`                                            | `false`     |
+| `fullWidth`   | `full-width`   | If true, the button will take the full width of its container.       | `boolean \| undefined`                                            | `false`     |
+| `label`       | `label`        | The text label displayed on the button.                              | `string \| undefined`                                             | `undefined` |
+| `pressed`     | `pressed`      | If true, the button will be in a pressed state (for toggle buttons). | `boolean \| undefined`                                            | `false`     |
+| `size`        | `size`         | The size of the button.                                              | `"lg" \| "md" \| "sm"`                                            | `'md'`      |
+| `type`        | `type`         | The type of the button.                                              | `"button" \| "reset" \| "submit"`                                 | `'button'`  |
+| `variant`     | `variant`      | The variant of the button.                                           | `"borderless" \| "filled" \| "outlined"`                          | `'filled'`  |
 
 
 ## Events
@@ -35,19 +30,6 @@ Adheres to WCAG 2.2 standards.
 | ------------- | ------------------------------------------------------------------- | ------------------------------------------ |
 | `buttonClick` | Event emitted when the button is clicked or activated via keyboard. | `CustomEvent<KeyboardEvent \| MouseEvent>` |
 
-
-## Dependencies
-
-### Depends on
-
-- [modus-wc-icon](../modus-wc-icon)
-
-### Graph
-```mermaid
-graph TD;
-  modus-wc-button --> modus-wc-icon
-  style modus-wc-button fill:#f9f,stroke:#333,stroke-width:4px
-```
 
 ----------------------------------------------
 

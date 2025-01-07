@@ -184,7 +184,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nThis component requires Modus icons to be installed in the host application if using buttons with icons. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcButton",
           "members": [
             {
@@ -232,30 +232,6 @@
                 "text": "boolean"
               },
               "description": "If true, the button will take the full width of its container."
-            },
-            {
-              "name": "icon-left",
-              "fieldName": "iconLeft",
-              "type": {
-                "text": "string"
-              },
-              "description": "Takes the icon name and shows the icon aligned to the left of the button label."
-            },
-            {
-              "name": "icon-only",
-              "fieldName": "iconOnly",
-              "type": {
-                "text": "string"
-              },
-              "description": "Takes the icon name and renders an icon-only button."
-            },
-            {
-              "name": "icon-right",
-              "fieldName": "iconRight",
-              "type": {
-                "text": "string"
-              },
-              "description": "Takes the icon name and shows the icon aligned to the right of the button label."
             },
             {
               "name": "label",

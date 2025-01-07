@@ -3,7 +3,6 @@ import {
   Element,
   Event,
   EventEmitter,
-  Fragment,
   h,
   Host,
   Listen,
@@ -14,8 +13,6 @@ import { ModusSize } from '../../types';
 
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
- *
- * This component requires Modus icons to be installed in the host application if using buttons with icons. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
  *
  * Adheres to WCAG 2.2 standards.
  */
@@ -48,21 +45,6 @@ export class ModusWcButton {
    * If true, the button will take the full width of its container.
    */
   @Prop() fullWidth?: boolean = false;
-
-  /**
-   * Takes the icon name and shows the icon aligned to the left of the button label.
-   */
-  @Prop() iconLeft?: string;
-
-  /**
-   * Takes the icon name and renders an icon-only button.
-   */
-  @Prop() iconOnly?: string;
-
-  /**
-   * Takes the icon name and shows the icon aligned to the right of the button label.
-   */
-  @Prop() iconRight?: string;
 
   /**
    * The text label displayed on the button.
@@ -135,28 +117,6 @@ export class ModusWcButton {
     }
   };
 
-  private renderButtonContent() {
-    if (this.iconOnly) {
-      return <modus-wc-icon name={this.iconOnly} size={this.size} />;
-    }
-
-    if (this.iconLeft || this.iconRight) {
-      return (
-        <Fragment>
-          {this.iconLeft && (
-            <modus-wc-icon name={this.iconLeft} size={this.size} />
-          )}
-          {this.label && <span>{this.label}</span>}
-          {this.iconRight && (
-            <modus-wc-icon name={this.iconRight} size={this.size} />
-          )}
-        </Fragment>
-      );
-    }
-
-    return <span>{this.label || ''}</span>;
-  }
-
   render() {
     const ariaPressed = this.pressed ? 'true' : undefined;
 
@@ -172,8 +132,10 @@ export class ModusWcButton {
           tabIndex={this.disabled ? -1 : 0}
           type={this.type}
         >
+          <slot name="left" />
           <slot />
-          {this.renderButtonContent()}
+          {this.label}
+          <slot name="right" />
         </button>
       </Host>
     );

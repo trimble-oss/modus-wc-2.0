@@ -156,7 +156,6 @@ export namespace Components {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
-     * This component requires Modus icons to be installed in the host application if using buttons with icons. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
@@ -176,18 +175,6 @@ export namespace Components {
           * If true, the button will take the full width of its container.
          */
         "fullWidth"?: boolean;
-        /**
-          * Takes the icon name and shows the icon aligned to the left of the button label.
-         */
-        "iconLeft"?: string;
-        /**
-          * Takes the icon name and renders an icon-only button.
-         */
-        "iconOnly"?: string;
-        /**
-          * Takes the icon name and shows the icon aligned to the right of the button label.
-         */
-        "iconRight"?: string;
         /**
           * The text label displayed on the button.
          */
@@ -1329,7 +1316,6 @@ declare global {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
-     * This component requires Modus icons to be installed in the host application if using buttons with icons. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcButtonElement extends Components.ModusWcButton, HTMLStencilElement {
@@ -1934,7 +1920,6 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
-     * This component requires Modus icons to be installed in the host application if using buttons with icons. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
@@ -1954,18 +1939,6 @@ declare namespace LocalJSX {
           * If true, the button will take the full width of its container.
          */
         "fullWidth"?: boolean;
-        /**
-          * Takes the icon name and shows the icon aligned to the left of the button label.
-         */
-        "iconLeft"?: string;
-        /**
-          * Takes the icon name and renders an icon-only button.
-         */
-        "iconOnly"?: string;
-        /**
-          * Takes the icon name and shows the icon aligned to the right of the button label.
-         */
-        "iconRight"?: string;
         /**
           * The text label displayed on the button.
          */
@@ -3186,7 +3159,6 @@ declare module "@stencil/core" {
             "modus-wc-badge": LocalJSX.ModusWcBadge & JSXBase.HTMLAttributes<HTMLModusWcBadgeElement>;
             /**
              * A customizable button component used to create buttons with different sizes, variants, and types.
-             * This component requires Modus icons to be installed in the host application if using buttons with icons. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
