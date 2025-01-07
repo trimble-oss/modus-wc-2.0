@@ -73,6 +73,9 @@ const Template: Story = {
         custom-class="${ifDefined(args['custom-class'])}"
         ?disabled="${args.disabled}"
         ?full-width="${args['full-width']}"
+        icon-left="${ifDefined(args['icon-left'])}"
+        icon-only="${ifDefined(args['icon-only'])}"
+        icon-right="${ifDefined(args['icon-right'])}"
         label="${args.label}"
         ?pressed="${args.pressed}"
         size="${args.size}"
@@ -131,6 +134,22 @@ export const IconLeftAndRightButton: Story = {
         icon-left="check"
         icon-right="check"
       ></modus-wc-button>
+    `;
+  },
+};
+
+// prettier-ignore
+export const LoadingButton: Story = {
+  render: (args) => {
+    return html`
+<style>
+  .modus-wc-button__loader {
+    color: inherit;
+  }
+</style>
+<modus-wc-button aria-label="${args['aria-label']}" label="Loading..."
+  ><modus-wc-loader custom-class="modus-wc-button__loader"
+/></modus-wc-button>
     `;
   },
 };
