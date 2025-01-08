@@ -1632,7 +1632,10 @@ declare global {
         new (): HTMLModusWcTableElement;
     };
     interface HTMLModusWcTabsElementEventMap {
-        "tabChange": any;
+        "tabChange": {
+    previousTab: number;
+    newTab: number;
+  };
     }
     /**
      * A customizable tabs component used to create groups of tabs.
@@ -2746,9 +2749,12 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * Event emitted when the `selected` property changes.
+          * When a tab is switched to, this event outputs the relevant indices
          */
-        "onTabChange"?: (event: ModusWcTabsCustomEvent<any>) => void;
+        "onTabChange"?: (event: ModusWcTabsCustomEvent<{
+    previousTab: number;
+    newTab: number;
+  }>) => void;
         /**
           * The size of the tabs.
          */

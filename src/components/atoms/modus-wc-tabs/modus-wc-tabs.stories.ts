@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Meta, StoryObj } from '@storybook/web-components';
+import { withActions } from '@storybook/addon-actions/decorator';
 import { DaisySize } from '../../types';
 import { IModusWcTab } from './modus-wc-tabs';
 
@@ -33,6 +34,12 @@ const meta: Meta<TabsArgs> = {
     size: {
       control: { type: 'radio' },
       options: ['xs', 'sm', 'md', 'lg'],
+    },
+  },
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['tabChange'],
     },
   },
 };

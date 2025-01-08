@@ -24,9 +24,9 @@ Adheres to WCAG 2.2 standards.
 
 ## Events
 
-| Event       | Description                                         | Type               |
-| ----------- | --------------------------------------------------- | ------------------ |
-| `tabChange` | Event emitted when the `selected` property changes. | `CustomEvent<any>` |
+| Event       | Description                                                        | Type                                                    |
+| ----------- | ------------------------------------------------------------------ | ------------------------------------------------------- |
+| `tabChange` | When a tab is switched to, this event outputs the relevant indices | `CustomEvent<{ previousTab: number; newTab: number; }>` |
 
 
 ## Dependencies

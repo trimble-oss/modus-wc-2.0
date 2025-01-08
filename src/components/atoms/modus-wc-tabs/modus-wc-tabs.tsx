@@ -43,8 +43,11 @@ export class ModusWcTabs {
   /** Additional styling for the tabs. */
   @Prop() tabStyle?: 'boxed' | 'bordered' | 'lifted' | 'none' = 'bordered';
 
-  /** Event emitted when the `selected` property changes. */
-  @StencilEvent() tabChange!: EventEmitter;
+  /** When a tab is switched to, this event outputs the relevant indices */
+  @StencilEvent() tabChange!: EventEmitter<{
+    previousTab: number;
+    newTab: number;
+  }>;
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
@@ -133,12 +136,15 @@ export class ModusWcTabs {
         >
           {tabs}
         </div>
-        <div role="tabpanel" tabIndex={0}>
+        <div class="modus-wc-tab-panel" role="tabpanel" tabIndex={0}>
           {this.tabs.map((_, index) => (
             <div
-              style={{
-                display: index === this.activeTabIndex ? undefined : 'none',
-              }}
+              class={
+                this.activeTabIndex === index
+                  ? 'modus-wc-tab-active'
+                  : undefined
+              }
+              hidden={this.activeTabIndex !== index}
             >
               <slot name={`tab-${index}`} />
             </div>

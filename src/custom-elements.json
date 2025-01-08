@@ -2057,17 +2057,17 @@
           ],
           "attributes": [
             {
+              "name": "active-tab-index",
+              "fieldName": "activeTabIndex",
+              "description": "The current active tab"
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
                 "text": "string"
               },
               "description": "Custom CSS class to apply to the inner div."
-            },
-            {
-              "name": "selected",
-              "fieldName": "selected",
-              "description": "Default tab selected by index."
             },
             {
               "name": "size",
@@ -2100,9 +2100,9 @@
               "kind": "field",
               "name": "tabChange",
               "type": {
-                "text": "EventEmitter<string>"
+                "text": "EventEmitter<{\r\n    previousTab: number;\r\n    newTab: number;\r\n  }>"
               },
-              "description": "Event emitted when the `selected` property changes."
+              "description": "When a tab is switched to, this event outputs the relevant indices"
             }
           ],
           "customElement": true
