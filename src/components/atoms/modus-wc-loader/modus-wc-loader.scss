@@ -1,9 +1,11 @@
 /**
-* This component uses Tailwind CSS and DaisyUI.
-* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
-*
-* Styles for this loader component were adapted from tailwindcss: 
+* This component uses styles adapted from DaisyUI's loading component. 
 *   https://github.com/saadeghi/daisyui/blob/master/src/components/styled/loading.css
+* 
+* We found that 'loading' classes from DaisyUI will break styles in the Modus Web Components during
+* the build process so we define all styles here for this component. 
+*
+* Note: do not use the 'loading' classes from DaisyUI in this component.
 */
 
 .modus-wc-loader {
@@ -14,6 +16,23 @@
   mask-repeat: no-repeat;
   mask-position: center;
   pointer-events: none;
+
+  // Sizes
+  &.modus-wc-loader-xs {
+    width: 1rem;
+  }
+
+  &.modus-wc-loader-sm {
+    width: 1.25rem;
+  }
+
+  &.modus-wc-loader-md {
+    width: 1.5rem;
+  }
+
+  &.modus-wc-loader-lg {
+    width: 2.5rem;
+  }
 
   // Variants
   &.modus-wc-loader-ball {
