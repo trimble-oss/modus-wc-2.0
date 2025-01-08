@@ -28,11 +28,11 @@ export class ModusWcTabs {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** The current active tab */
+  @Prop({ mutable: true }) activeTabIndex = 0;
+
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass: string = '';
-
-  /** Default tab selected by index. */
-  @Prop({ mutable: true }) selected = 0;
 
   /** The size of the tabs. */
   @Prop() size?: DaisySize = 'md';
@@ -44,7 +44,7 @@ export class ModusWcTabs {
   @Prop() tabStyle?: 'boxed' | 'bordered' | 'lifted' | 'none' = 'bordered';
 
   /** Event emitted when the `selected` property changes. */
-  @StencilEvent() tabChange!: EventEmitter<string>;
+  @StencilEvent() tabChange!: EventEmitter;
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
@@ -54,6 +54,16 @@ export class ModusWcTabs {
       this.el.ariaLabel = 'Tab Group';
     }
   }
+
+  /* Interactive Functionality */
+
+  private handleClick(tab: IModusWcTab, index: number) {
+    if (tab.disabled) return;
+    this.activeTabIndex = index;
+    this.tabChange.emit({ previousTab: this.activeTabIndex, newTab: index });
+  }
+
+  /* CSS Functionality */
 
   private getClasses(): string {
     const classList: string[] = ['modus-wc-tabs'];
@@ -70,11 +80,11 @@ export class ModusWcTabs {
     return classList.join(' ');
   }
 
-  private getClassesTab(tab: IModusWcTab): string {
+  private getClassesTab(tab: IModusWcTab, index: number): string {
     const classList: string[] = ['modus-wc-tab'];
 
     const propClasses = convertPropsToClassesTab({
-      active: tab.active,
+      active: index === this.activeTabIndex,
       disabled: tab.disabled,
     });
 
@@ -101,14 +111,14 @@ export class ModusWcTabs {
         </Fragment>
       );
 
-    const tabs = this.tabs.map((tab) => (
+    const tabs = this.tabs.map((tab, index) => (
       <button
         role="tab"
         aria-disabled={tab.disabled}
         aria-label={(tab.label ?? tab.icon) + ' tab'}
-        class={this.getClassesTab(tab)}
-        id={tab.id}
-        onClick={() => this.tabChange.emit(tab.id)}
+        class={this.getClassesTab(tab, index)}
+        id={`tab-${index}`}
+        onClick={() => this.handleClick(tab, index)}
       >
         {renderTabContent(tab)}
       </button>
@@ -124,7 +134,15 @@ export class ModusWcTabs {
           {tabs}
         </div>
         <div role="tabpanel" tabIndex={0}>
-          <slot />
+          {this.tabs.map((_, index) => (
+            <div
+              style={{
+                display: index === this.activeTabIndex ? undefined : 'none',
+              }}
+            >
+              <slot name={`tab-${index}`} />
+            </div>
+          ))}
         </div>
       </Host>
     );
@@ -132,9 +150,6 @@ export class ModusWcTabs {
 }
 
 export interface IModusWcTab {
-  /** Whether the tab is active. */
-  active?: boolean;
-
   /** An optional aria-label to apply to the tab button */
   ariaLabel?: string;
 
@@ -149,9 +164,6 @@ export interface IModusWcTab {
 
   /** The position of the icon. */
   iconPosition?: 'left' | 'right';
-
-  /** The unique identifier for the tab. */
-  id: string;
 
   /** The content to display in the tab. */
   label?: string;

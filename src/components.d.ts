@@ -831,13 +831,13 @@ export namespace Components {
      */
     interface ModusWcTabs {
         /**
+          * The current active tab
+         */
+        "activeTabIndex": number;
+        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass": string;
-        /**
-          * Default tab selected by index.
-         */
-        "selected": number;
         /**
           * The size of the tabs.
          */
@@ -1632,7 +1632,7 @@ declare global {
         new (): HTMLModusWcTableElement;
     };
     interface HTMLModusWcTabsElementEventMap {
-        "tabChange": string;
+        "tabChange": any;
     }
     /**
      * A customizable tabs component used to create groups of tabs.
@@ -2738,17 +2738,17 @@ declare namespace LocalJSX {
      */
     interface ModusWcTabs {
         /**
+          * The current active tab
+         */
+        "activeTabIndex"?: number;
+        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
         /**
           * Event emitted when the `selected` property changes.
          */
-        "onTabChange"?: (event: ModusWcTabsCustomEvent<string>) => void;
-        /**
-          * Default tab selected by index.
-         */
-        "selected"?: number;
+        "onTabChange"?: (event: ModusWcTabsCustomEvent<any>) => void;
         /**
           * The size of the tabs.
          */
