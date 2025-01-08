@@ -28,11 +28,6 @@ const themeable = [
   'modus-wc-input-sm',
   'modus-wc-input-md',
   'modus-wc-input-lg',
-  // Loading
-  'modus-wc-loading-xs',
-  'modus-wc-loading-sm',
-  'modus-wc-loading-md',
-  'modus-wc-loading-lg',
   // Menu
   'modus-wc-menu-xs',
   'modus-wc-menu-sm',

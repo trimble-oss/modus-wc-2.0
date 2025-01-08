@@ -15,6 +15,23 @@
   mask-position: center;
   pointer-events: none;
 
+  // Sizes
+  &.modus-wc-loader-xs {
+    width: 1rem;
+  }
+
+  &.modus-wc-loader-sm {
+    width: 1.25rem;
+  }
+
+  &.modus-wc-loader-md {
+    width: 1.5rem;
+  }
+
+  &.modus-wc-loader-lg {
+    width: 2.5rem;
+  }
+
   // Variants
   &.modus-wc-loader-ball {
     mask-image: url("data:image/svg+xml,%0A%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cstyle%3E.spinner_rXNP%7Banimation:spinner_YeBj .8s infinite%7D@keyframes spinner_YeBj%7B0%25%7Banimation-timing-function:cubic-bezier(0.33,0,.66,.33);cy:5px%7D46.875%25%7Bcy:20px;rx:4px;ry:4px%7D50%25%7Banimation-timing-function:cubic-bezier(0.33,.66,.66,1);cy:20.5px;rx:4.8px;ry:3px%7D53.125%25%7Brx:4px;ry:4px%7D100%25%7Bcy:5px%7D%7D%3C/style%3E%3Cellipse class='spinner_rXNP' cx='12' cy='5' rx='4' ry='4'/%3E%3C/svg%3E");

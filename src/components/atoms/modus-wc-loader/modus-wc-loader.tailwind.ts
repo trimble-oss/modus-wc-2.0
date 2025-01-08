@@ -13,7 +13,7 @@ export const convertPropsToClasses = (props: {
   }
 
   if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-loading-${props.size}`;
+    classes = `${classes} modus-wc-loader-${props.size}`;
   }
 
   if (Object.prototype.hasOwnProperty.call(props, 'variant') && props.variant) {
