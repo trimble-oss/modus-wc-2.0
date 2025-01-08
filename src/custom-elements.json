@@ -269,7 +269,7 @@
               "name": "variant",
               "fieldName": "variant",
               "type": {
-                "text": "'filled' | 'outlined' | 'text'"
+                "text": "'borderless' | 'filled' | 'outlined'"
               },
               "description": "The variant of the button."
             }
@@ -440,7 +440,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Emitted when the input value changes."
             },
@@ -513,14 +513,6 @@
                 "text": "string"
               },
               "description": "The aria-labelledby attribute for usage with a label."
-            },
-            {
-              "name": "auto-focus",
-              "fieldName": "autoFocus",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that an element should be focused on page load."
             },
             {
               "name": "bordered",
@@ -649,7 +641,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Event emitted when the input value changes."
             },
@@ -1173,14 +1165,6 @@
               "description": "Hint for form autofill feature."
             },
             {
-              "name": "auto-focus",
-              "fieldName": "autoFocus",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that an element should be focused on page load."
-            },
-            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
@@ -1339,7 +1323,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Event emitted when the input value changes."
             },
@@ -1580,7 +1564,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Emitted when the input value changes."
             },
@@ -1645,14 +1629,6 @@
                 "text": "string"
               },
               "description": "The ID of the element that describes the input."
-            },
-            {
-              "name": "auto-focus",
-              "fieldName": "autoFocus",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that an element should be focused on page load."
             },
             {
               "name": "bordered",
@@ -1765,7 +1741,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Event emitted when the input value changes."
             },
@@ -2022,7 +1998,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Emitted when the input value changes."
             },
@@ -2199,14 +2175,6 @@
               "description": "Hint for form autofill feature."
             },
             {
-              "name": "auto-focus",
-              "fieldName": "autoFocus",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that an element should be focused on page load."
-            },
-            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
@@ -2373,7 +2341,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Event emitted when the input value changes."
             },
@@ -2582,7 +2550,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Emitted when the input value changes."
             },
@@ -2613,6 +2581,231 @@
           "declaration": {
             "name": "ModusWcTextarea",
             "module": "src/components/atoms/modus-wc-textarea/modus-wc-textarea.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-time-input/modus-wc-time-input.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable input component used to create time inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcTimeInput",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-describedby",
+              "fieldName": "ariaDescribedby",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the element that describes the input."
+            },
+            {
+              "name": "auto-complete",
+              "fieldName": "autoComplete",
+              "type": {
+                "text": "'on' | 'off'"
+              },
+              "description": "Hint for form autofill feature."
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the input."
+            },
+            {
+              "name": "datalist-id",
+              "fieldName": "datalistId",
+              "type": {
+                "text": "string"
+              },
+              "description": "ID of a `<datalist>` element that contains pre-defined time options.\r\nThe value must be the ID of a `<datalist>` element in the same document."
+            },
+            {
+              "name": "datalist-options",
+              "fieldName": "datalistOptions",
+              "type": {
+                "text": "string[]"
+              },
+              "description": "The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the form control is disabled."
+            },
+            {
+              "name": "input-dir",
+              "fieldName": "inputDir",
+              "type": {
+                "text": "'' | 'ltr' | 'rtl' | 'auto'"
+              },
+              "description": "Specifies the time direction of the input content."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+            },
+            {
+              "name": "max",
+              "fieldName": "max",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum value. Format: `HH:mm`, `HH:mm:ss`."
+            },
+            {
+              "name": "min",
+              "fieldName": "min",
+              "type": {
+                "text": "string"
+              },
+              "description": "Minimum value. Format: `HH:mm`, `HH:mm:ss.`"
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "read-only",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the value is editable."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "show-seconds",
+              "fieldName": "showSeconds",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Displays the time input format as `HH:mm:ss` if `true`.\r\nInternally sets the `step` to 1 second.\r\nIf a `step` value is provided, it will override this attribute."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "step",
+              "fieldName": "step",
+              "type": {
+                "text": "number"
+              },
+              "description": "Specifies the granularity that the `value` must adhere to.\r\nValue of step given in seconds. Default value is 60 seconds.\r\nOverrides the `seconds` attribute if both are provided."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the time input.\r\nAlways in 24-hour format that includes leading zeros:\r\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\r\nto be selected based on user's locale (or by the user agent).\r\nIf time includes seconds the format is always `HH:mm:ss`."
+            }
+          ],
+          "tagName": "modus-wc-time-input",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Event emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTimeInput",
+          "declaration": {
+            "name": "ModusWcTimeInput",
+            "module": "src/components/atoms/modus-wc-time-input/modus-wc-time-input.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-time-input",
+          "declaration": {
+            "name": "ModusWcTimeInput",
+            "module": "src/components/atoms/modus-wc-time-input/modus-wc-time-input.tsx"
           }
         }
       ]
@@ -2751,7 +2944,7 @@
               "kind": "field",
               "name": "inputChange",
               "type": {
-                "text": "EventEmitter<Event>"
+                "text": "EventEmitter<InputEvent>"
               },
               "description": "Emitted when the input value changes."
             },
@@ -3157,6 +3350,131 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-collapse/modus-wc-collapse.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable collapse component used for showing and hiding content.\r\n\r\nCan render any HTML content through a <slot> element.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcCollapse",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "expandedChanged",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the component should have a border."
+            },
+            {
+              "name": "collapse-description",
+              "fieldName": "collapseDescription",
+              "type": {
+                "text": "string"
+              },
+              "description": "The description of the collapse component."
+            },
+            {
+              "name": "collapse-title",
+              "fieldName": "collapseTitle",
+              "type": {
+                "text": "string"
+              },
+              "description": "The title of the collapse component."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "expanded",
+              "fieldName": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Controls whether the collapse is expanded or not."
+            },
+            {
+              "name": "icon",
+              "fieldName": "icon",
+              "type": {
+                "text": "string"
+              },
+              "description": "The icon name, should match the CSS class in the icon font."
+            },
+            {
+              "name": "icon-aria-label",
+              "fieldName": "iconAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Sets the aria-label attribute of the icon component."
+            }
+          ],
+          "tagName": "modus-wc-collapse",
+          "events": [
+            {
+              "kind": "field",
+              "name": "expandedChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the expanded prop is internally changed."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcCollapse",
+          "declaration": {
+            "name": "ModusWcCollapse",
+            "module": "src/components/molecules/modus-wc-collapse/modus-wc-collapse.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-collapse",
+          "declaration": {
+            "name": "ModusWcCollapse",
+            "module": "src/components/molecules/modus-wc-collapse/modus-wc-collapse.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-theme-switcher/modus-wc-theme-switcher.tsx",
       "declarations": [
         {
@@ -3219,6 +3537,109 @@
           "declaration": {
             "name": "ModusWcThemeSwitcher",
             "module": "src/components/molecules/modus-wc-theme-switcher/modus-wc-theme-switcher.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/organisms/modus-wc-table/modus-wc-table.spec.tsx",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/organisms/modus-wc-table/modus-wc-table.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable table component used to show a list of data in a table format.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcTable",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "columns",
+              "fieldName": "columns",
+              "type": {
+                "text": "ITableColumn[]"
+              },
+              "description": "An array of column definitions."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "data",
+              "fieldName": "data",
+              "type": {
+                "text": "Record<string, any>[]"
+              },
+              "description": "An array of data objects."
+            },
+            {
+              "name": "density",
+              "fieldName": "density",
+              "type": {
+                "text": "Density"
+              },
+              "description": "The density of the table, used to save space or increase readability."
+            },
+            {
+              "name": "zebra",
+              "fieldName": "zebra",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Zebra striped tables differentiate rows by styling them in an alternating fashion."
+            }
+          ],
+          "tagName": "modus-wc-table",
+          "events": [
+            {
+              "kind": "field",
+              "name": "rowClick",
+              "type": {
+                "text": "EventEmitter<{\r\n    row: Record<string, any>;\r\n    index: number;\r\n  }>"
+              },
+              "description": "Emits when a row is clicked."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTable",
+          "declaration": {
+            "name": "ModusWcTable",
+            "module": "src/components/organisms/modus-wc-table/modus-wc-table.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-table",
+          "declaration": {
+            "name": "ModusWcTable",
+            "module": "src/components/organisms/modus-wc-table/modus-wc-table.tsx"
           }
         }
       ]

@@ -14,7 +14,6 @@ const options: ISelectOption[] = [
 interface SelectArgs {
   'aria-describedby'?: string;
   'aria-label': string;
-  'auto-focus'?: boolean;
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
@@ -71,7 +70,6 @@ export const Template: Story = {
     <modus-wc-select
       aria-describedby=${ifDefined(args['aria-describedby'])}
       aria-label=${args['aria-label']}
-      ?auto-focus=${args['auto-focus']}
       ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}

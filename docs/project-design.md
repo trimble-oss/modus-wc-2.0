@@ -47,12 +47,17 @@ The project follows a structured organization to maintain clarity and separation
   - Utilize Stencil's compiler for optimized output
   - Disable shadow DOM to provider greater flexibility and customization
 
+### Tailwind CSS and Daisy UI Integration
+
+- Use Tailwind CSS and Daisy UI for styling:
+  - Utilize Daisy UI for pre-built component classes
+  - Ensure styles are modular and customizable
+  - Configure Tailwind CSS for utility-first styling
+
 ### SASS Integration
 
-- Use SASS for styling with a modular approach:
-  - Implement a global styles directory for shared variables and mixins
-  - Create component-specific SASS files
-  - Only use SASS for styles that can't be overridden
+- Use SASS for additional styling with a modular approach:
+  - Only use SASS for styles that should not be applied by Tailwind, Daisy, or the theme.
   - Utilize CSS custom properties for theming capabilities
 
 ### Text Content Handling

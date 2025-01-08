@@ -6,18 +6,20 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
-import { DaisySize, ModusSize, Orientation } from "./components/types";
+import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 import { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
+import { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
 import { IModusWcTab } from "./components/atoms/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
-export { DaisySize, ModusSize, Orientation } from "./components/types";
+export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 export { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
+export { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
 export { IModusWcTab } from "./components/atoms/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
@@ -194,7 +196,7 @@ export namespace Components {
         /**
           * The variant of the button.
          */
-        "variant": 'filled' | 'outlined' | 'text';
+        "variant": 'borderless' | 'filled' | 'outlined';
     }
     /**
      * A customizable checkbox component.
@@ -251,6 +253,41 @@ export namespace Components {
         "value": boolean;
     }
     /**
+     * A customizable collapse component used for showing and hiding content.
+     * Can render any HTML content through a <slot> element.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCollapse {
+        /**
+          * Indicates that the component should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * The description of the collapse component.
+         */
+        "collapseDescription"?: string;
+        /**
+          * The title of the collapse component.
+         */
+        "collapseTitle"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Controls whether the collapse is expanded or not.
+         */
+        "expanded"?: boolean;
+        /**
+          * The icon name, should match the CSS class in the icon font.
+         */
+        "icon"?: string;
+        /**
+          * Sets the aria-label attribute of the icon component.
+         */
+        "iconAriaLabel"?: string;
+    }
+    /**
      * A customizable date picker component used to create date inputs.
      * Adheres to WCAG 2.2 standards.
      */
@@ -263,10 +300,6 @@ export namespace Components {
           * The aria-labelledby attribute for usage with a label.
          */
         "ariaLabelledby"?: string;
-        /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
         /**
           * Indicates that the input should have a border.
          */
@@ -480,10 +513,6 @@ export namespace Components {
          */
         "autoComplete"?: 'on' | 'off';
         /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -638,10 +667,6 @@ export namespace Components {
          */
         "ariaDescribedby"?: string;
         /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -775,6 +800,32 @@ export namespace Components {
         "value": number;
     }
     /**
+     * A customizable table component used to show a list of data in a table format.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTable {
+        /**
+          * An array of column definitions.
+         */
+        "columns": ITableColumn[];
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * An array of data objects.
+         */
+        "data": Record<string, any>[];
+        /**
+          * The density of the table, used to save space or increase readability.
+         */
+        "density"?: Density;
+        /**
+          * Zebra striped tables differentiate rows by styling them in an alternating fashion.
+         */
+        "zebra"?: boolean;
+    }
+    /**
      * A customizable tabs component used to create groups of tabs.
      * Adheres to WCAG 2.2 standards.
      */
@@ -822,10 +873,6 @@ export namespace Components {
           * Hint for form autofill feature.
          */
         "autoComplete"?: 'on' | 'off';
-        /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
         /**
           * Indicates that the input should have a border.
          */
@@ -999,6 +1046,88 @@ export namespace Components {
         "customClass"?: string;
     }
     /**
+     * A customizable input component used to create time inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTimeInput {
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: 'on' | 'off';
+        /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the input.
+         */
+        "customClass"?: string;
+        /**
+          * ID of a `<datalist>` element that contains pre-defined time options. The value must be the ID of a `<datalist>` element in the same document.
+         */
+        "datalistId"?: string;
+        /**
+          * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
+         */
+        "datalistOptions": string[];
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the time direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Maximum value. Format: `HH:mm`, `HH:mm:ss`.
+         */
+        "max"?: string;
+        /**
+          * Minimum value. Format: `HH:mm`, `HH:mm:ss.`
+         */
+        "min"?: string;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * Displays the time input format as `HH:mm:ss` if `true`. Internally sets the `step` to 1 second. If a `step` value is provided, it will override this attribute.
+         */
+        "showSeconds"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: ModusSize;
+        /**
+          * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
+         */
+        "step"?: number;
+        /**
+          * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
+         */
+        "value": string;
+    }
+    /**
      * A customizable checkbox component.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1113,6 +1242,10 @@ export interface ModusWcCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcCheckboxElement;
 }
+export interface ModusWcCollapseCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcCollapseElement;
+}
 export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDateElement;
@@ -1137,6 +1270,10 @@ export interface ModusWcSliderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSliderElement;
 }
+export interface ModusWcTableCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTableElement;
+}
 export interface ModusWcTabsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTabsElement;
@@ -1152,6 +1289,10 @@ export interface ModusWcTextareaCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcThemeSwitcherCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcThemeSwitcherElement;
+}
+export interface ModusWcTimeInputCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTimeInputElement;
 }
 export interface ModusWcToggleCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1225,7 +1366,7 @@ declare global {
     };
     interface HTMLModusWcCheckboxElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1246,9 +1387,31 @@ declare global {
         prototype: HTMLModusWcCheckboxElement;
         new (): HTMLModusWcCheckboxElement;
     };
+    interface HTMLModusWcCollapseElementEventMap {
+        "expandedChange": boolean;
+    }
+    /**
+     * A customizable collapse component used for showing and hiding content.
+     * Can render any HTML content through a <slot> element.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcCollapseElement extends Components.ModusWcCollapse, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcCollapseElementEventMap>(type: K, listener: (this: HTMLModusWcCollapseElement, ev: ModusWcCollapseCustomEvent<HTMLModusWcCollapseElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcCollapseElementEventMap>(type: K, listener: (this: HTMLModusWcCollapseElement, ev: ModusWcCollapseCustomEvent<HTMLModusWcCollapseElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcCollapseElement: {
+        prototype: HTMLModusWcCollapseElement;
+        new (): HTMLModusWcCollapseElement;
+    };
     interface HTMLModusWcDateElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1334,7 +1497,7 @@ declare global {
     };
     interface HTMLModusWcNumberInputElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1367,7 +1530,7 @@ declare global {
     };
     interface HTMLModusWcRadioElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1390,7 +1553,7 @@ declare global {
     };
     interface HTMLModusWcSelectElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1423,7 +1586,7 @@ declare global {
     };
     interface HTMLModusWcSliderElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1443,6 +1606,30 @@ declare global {
     var HTMLModusWcSliderElement: {
         prototype: HTMLModusWcSliderElement;
         new (): HTMLModusWcSliderElement;
+    };
+    interface HTMLModusWcTableElementEventMap {
+        "rowClick": {
+    row: Record<string, any>;
+    index: number;
+  };
+    }
+    /**
+     * A customizable table component used to show a list of data in a table format.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcTableElement extends Components.ModusWcTable, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTableElementEventMap>(type: K, listener: (this: HTMLModusWcTableElement, ev: ModusWcTableCustomEvent<HTMLModusWcTableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTableElementEventMap>(type: K, listener: (this: HTMLModusWcTableElement, ev: ModusWcTableCustomEvent<HTMLModusWcTableElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTableElement: {
+        prototype: HTMLModusWcTableElement;
+        new (): HTMLModusWcTableElement;
     };
     interface HTMLModusWcTabsElementEventMap {
         "tabChange": string;
@@ -1467,7 +1654,7 @@ declare global {
     };
     interface HTMLModusWcTextInputElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1490,7 +1677,7 @@ declare global {
     };
     interface HTMLModusWcTextareaElementEventMap {
         "inputBlur": FocusEvent;
-        "inputChange": Event;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1539,9 +1726,32 @@ declare global {
         prototype: HTMLModusWcThemeSwitcherElement;
         new (): HTMLModusWcThemeSwitcherElement;
     };
-    interface HTMLModusWcToggleElementEventMap {
+    interface HTMLModusWcTimeInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
+        "inputFocus": FocusEvent;
+    }
+    /**
+     * A customizable input component used to create time inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcTimeInputElement extends Components.ModusWcTimeInput, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTimeInputElementEventMap>(type: K, listener: (this: HTMLModusWcTimeInputElement, ev: ModusWcTimeInputCustomEvent<HTMLModusWcTimeInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTimeInputElementEventMap>(type: K, listener: (this: HTMLModusWcTimeInputElement, ev: ModusWcTimeInputCustomEvent<HTMLModusWcTimeInputElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTimeInputElement: {
+        prototype: HTMLModusWcTimeInputElement;
+        new (): HTMLModusWcTimeInputElement;
+    };
+    interface HTMLModusWcToggleElementEventMap {
+        "inputBlur": FocusEvent;
+        "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
@@ -1588,6 +1798,7 @@ declare global {
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
+        "modus-wc-collapse": HTMLModusWcCollapseElement;
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
@@ -1600,11 +1811,13 @@ declare global {
         "modus-wc-select": HTMLModusWcSelectElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
+        "modus-wc-table": HTMLModusWcTableElement;
         "modus-wc-tabs": HTMLModusWcTabsElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
         "modus-wc-textarea": HTMLModusWcTextareaElement;
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
         "modus-wc-theme-switcher": HTMLModusWcThemeSwitcherElement;
+        "modus-wc-time-input": HTMLModusWcTimeInputElement;
         "modus-wc-toggle": HTMLModusWcToggleElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
@@ -1803,7 +2016,7 @@ declare namespace LocalJSX {
         /**
           * The variant of the button.
          */
-        "variant"?: 'filled' | 'outlined' | 'text';
+        "variant"?: 'borderless' | 'filled' | 'outlined';
     }
     /**
      * A customizable checkbox component.
@@ -1853,7 +2066,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcCheckboxCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcCheckboxCustomEvent<InputEvent>) => void;
         /**
           * Emitted when the input gains focus.
          */
@@ -1872,6 +2085,45 @@ declare namespace LocalJSX {
         "value"?: boolean;
     }
     /**
+     * A customizable collapse component used for showing and hiding content.
+     * Can render any HTML content through a <slot> element.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCollapse {
+        /**
+          * Indicates that the component should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * The description of the collapse component.
+         */
+        "collapseDescription"?: string;
+        /**
+          * The title of the collapse component.
+         */
+        "collapseTitle"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Controls whether the collapse is expanded or not.
+         */
+        "expanded"?: boolean;
+        /**
+          * The icon name, should match the CSS class in the icon font.
+         */
+        "icon"?: string;
+        /**
+          * Sets the aria-label attribute of the icon component.
+         */
+        "iconAriaLabel"?: string;
+        /**
+          * Event emitted when the expanded prop is internally changed.
+         */
+        "onExpandedChange"?: (event: ModusWcCollapseCustomEvent<boolean>) => void;
+    }
+    /**
      * A customizable date picker component used to create date inputs.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1884,10 +2136,6 @@ declare namespace LocalJSX {
           * The aria-labelledby attribute for usage with a label.
          */
         "ariaLabelledby"?: string;
-        /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
         /**
           * Indicates that the input should have a border.
          */
@@ -1931,7 +2179,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcDateCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcDateCustomEvent<InputEvent>) => void;
         /**
           * Event emitted when the input gains focus.
          */
@@ -2117,10 +2365,6 @@ declare namespace LocalJSX {
          */
         "autoComplete"?: 'on' | 'off';
         /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -2171,7 +2415,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcNumberInputCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcNumberInputCustomEvent<InputEvent>) => void;
         /**
           * Event emitted when the input gains focus.
          */
@@ -2271,7 +2515,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcRadioCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcRadioCustomEvent<InputEvent>) => void;
         /**
           * Emitted when the input gains focus.
          */
@@ -2298,10 +2542,6 @@ declare namespace LocalJSX {
           * The ID of the element that describes the input.
          */
         "ariaDescribedby"?: string;
-        /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
         /**
           * Indicates that the input should have a border.
          */
@@ -2341,7 +2581,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcSelectCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcSelectCustomEvent<InputEvent>) => void;
         /**
           * Event emitted when the input gains focus.
          */
@@ -2437,7 +2677,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcSliderCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcSliderCustomEvent<InputEvent>) => void;
         /**
           * Emitted when the input gains focus.
          */
@@ -2458,6 +2698,39 @@ declare namespace LocalJSX {
           * The value of the slider.
          */
         "value"?: number;
+    }
+    /**
+     * A customizable table component used to show a list of data in a table format.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTable {
+        /**
+          * An array of column definitions.
+         */
+        "columns": ITableColumn[];
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * An array of data objects.
+         */
+        "data": Record<string, any>[];
+        /**
+          * The density of the table, used to save space or increase readability.
+         */
+        "density"?: Density;
+        /**
+          * Emits when a row is clicked.
+         */
+        "onRowClick"?: (event: ModusWcTableCustomEvent<{
+    row: Record<string, any>;
+    index: number;
+  }>) => void;
+        /**
+          * Zebra striped tables differentiate rows by styling them in an alternating fashion.
+         */
+        "zebra"?: boolean;
     }
     /**
      * A customizable tabs component used to create groups of tabs.
@@ -2511,10 +2784,6 @@ declare namespace LocalJSX {
           * Hint for form autofill feature.
          */
         "autoComplete"?: 'on' | 'off';
-        /**
-          * Indicates that an element should be focused on page load.
-         */
-        "autoFocus"?: boolean;
         /**
           * Indicates that the input should have a border.
          */
@@ -2577,7 +2846,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcTextInputCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcTextInputCustomEvent<InputEvent>) => void;
         /**
           * Event emitted when the input gains focus.
          */
@@ -2667,7 +2936,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcTextareaCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcTextareaCustomEvent<InputEvent>) => void;
         /**
           * Emitted when the input gains focus.
          */
@@ -2714,6 +2983,100 @@ declare namespace LocalJSX {
           * An event that fires when the theme is changed.
          */
         "onThemeChange"?: (event: ModusWcThemeSwitcherCustomEvent<IThemeConfig>) => void;
+    }
+    /**
+     * A customizable input component used to create time inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcTimeInput {
+        /**
+          * The ID of the element that describes the input.
+         */
+        "ariaDescribedby"?: string;
+        /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: 'on' | 'off';
+        /**
+          * Indicates that the input should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the input.
+         */
+        "customClass"?: string;
+        /**
+          * ID of a `<datalist>` element that contains pre-defined time options. The value must be the ID of a `<datalist>` element in the same document.
+         */
+        "datalistId"?: string;
+        /**
+          * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
+         */
+        "datalistOptions"?: string[];
+        /**
+          * Whether the form control is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the time direction of the input content.
+         */
+        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+         */
+        "inputTabIndex"?: number;
+        /**
+          * Maximum value. Format: `HH:mm`, `HH:mm:ss`.
+         */
+        "max"?: string;
+        /**
+          * Minimum value. Format: `HH:mm`, `HH:mm:ss.`
+         */
+        "min"?: string;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Event emitted when the input loses focus.
+         */
+        "onInputBlur"?: (event: ModusWcTimeInputCustomEvent<FocusEvent>) => void;
+        /**
+          * Event emitted when the input value changes.
+         */
+        "onInputChange"?: (event: ModusWcTimeInputCustomEvent<Event>) => void;
+        /**
+          * Event emitted when the input gains focus.
+         */
+        "onInputFocus"?: (event: ModusWcTimeInputCustomEvent<FocusEvent>) => void;
+        /**
+          * Whether the value is editable.
+         */
+        "readOnly"?: boolean;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * Displays the time input format as `HH:mm:ss` if `true`. Internally sets the `step` to 1 second. If a `step` value is provided, it will override this attribute.
+         */
+        "showSeconds"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: ModusSize;
+        /**
+          * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
+         */
+        "step"?: number;
+        /**
+          * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
+         */
+        "value"?: string;
     }
     /**
      * A customizable checkbox component.
@@ -2763,7 +3126,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when the input value changes.
          */
-        "onInputChange"?: (event: ModusWcToggleCustomEvent<Event>) => void;
+        "onInputChange"?: (event: ModusWcToggleCustomEvent<InputEvent>) => void;
         /**
           * Emitted when the input gains focus.
          */
@@ -2835,6 +3198,7 @@ declare namespace LocalJSX {
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-button": ModusWcButton;
         "modus-wc-checkbox": ModusWcCheckbox;
+        "modus-wc-collapse": ModusWcCollapse;
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
@@ -2847,11 +3211,13 @@ declare namespace LocalJSX {
         "modus-wc-select": ModusWcSelect;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
+        "modus-wc-table": ModusWcTable;
         "modus-wc-tabs": ModusWcTabs;
         "modus-wc-text-input": ModusWcTextInput;
         "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
         "modus-wc-theme-switcher": ModusWcThemeSwitcher;
+        "modus-wc-time-input": ModusWcTimeInput;
         "modus-wc-toggle": ModusWcToggle;
         "modus-wc-tooltip": ModusWcTooltip;
         "modus-wc-typography": ModusWcTypography;
@@ -2886,6 +3252,12 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-checkbox": LocalJSX.ModusWcCheckbox & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
+            /**
+             * A customizable collapse component used for showing and hiding content.
+             * Can render any HTML content through a <slot> element.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-collapse": LocalJSX.ModusWcCollapse & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;
             /**
              * A customizable date picker component used to create date inputs.
              * Adheres to WCAG 2.2 standards.
@@ -2949,6 +3321,11 @@ declare module "@stencil/core" {
              */
             "modus-wc-slider": LocalJSX.ModusWcSlider & JSXBase.HTMLAttributes<HTMLModusWcSliderElement>;
             /**
+             * A customizable table component used to show a list of data in a table format.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-table": LocalJSX.ModusWcTable & JSXBase.HTMLAttributes<HTMLModusWcTableElement>;
+            /**
              * A customizable tabs component used to create groups of tabs.
              * Adheres to WCAG 2.2 standards.
              */
@@ -2970,6 +3347,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-theme-switcher": LocalJSX.ModusWcThemeSwitcher & JSXBase.HTMLAttributes<HTMLModusWcThemeSwitcherElement>;
+            /**
+             * A customizable input component used to create time inputs.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-time-input": LocalJSX.ModusWcTimeInput & JSXBase.HTMLAttributes<HTMLModusWcTimeInputElement>;
             /**
              * A customizable checkbox component.
              * Adheres to WCAG 2.2 standards.

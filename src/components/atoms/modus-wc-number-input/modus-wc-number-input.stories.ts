@@ -8,7 +8,6 @@ interface NumberInputArgs {
   'aria-describedby'?: string;
   'aria-label': string;
   'auto-complete'?: 'on' | 'off';
-  'auto-focus'?: boolean;
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
@@ -86,7 +85,6 @@ export const Template: Story = {
       aria-describedby=${ifDefined(args['aria-describedby'])}
       aria-label=${args['aria-label']}
       auto-complete=${ifDefined(args['auto-complete'])}
-      ?auto-focus=${args['auto-focus']}
       ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}

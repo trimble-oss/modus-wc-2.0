@@ -64,7 +64,7 @@ export class ModusWcButton {
   /**
    * The variant of the button.
    */
-  @Prop() variant: 'filled' | 'outlined' | 'text' = 'filled';
+  @Prop() variant: 'borderless' | 'filled' | 'outlined' = 'filled';
 
   /**
    * The type of the button.

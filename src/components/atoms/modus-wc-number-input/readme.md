@@ -17,7 +17,6 @@ Adheres to WCAG 2.2 standards.
 | ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------- | ----------- |
 | `ariaDescribedby`  | `aria-describedby`   | The ID of the element that describes the input.                                                                                                                          | `string \| undefined`                         | `undefined` |
 | `autoComplete`     | `auto-complete`      | Hint for form autofill feature.                                                                                                                                          | `"off" \| "on" \| undefined`                  | `undefined` |
-| `autoFocus`        | `auto-focus`         | Indicates that an element should be focused on page load.                                                                                                                | `boolean \| undefined`                        | `undefined` |
 | `bordered`         | `bordered`           | Indicates that the input should have a border.                                                                                                                           | `boolean \| undefined`                        | `true`      |
 | `customClass`      | `custom-class`       | Custom CSS class to apply to the input.                                                                                                                                  | `string \| undefined`                         | `''`        |
 | `disabled`         | `disabled`           | Whether the form control is disabled.                                                                                                                                    | `boolean \| undefined`                        | `false`     |
@@ -43,7 +42,7 @@ Adheres to WCAG 2.2 standards.
 | Event         | Description                                 | Type                      |
 | ------------- | ------------------------------------------- | ------------------------- |
 | `inputBlur`   | Event emitted when the input loses focus.   | `CustomEvent<FocusEvent>` |
-| `inputChange` | Event emitted when the input value changes. | `CustomEvent<Event>`      |
+| `inputChange` | Event emitted when the input value changes. | `CustomEvent<InputEvent>` |
 | `inputFocus`  | Event emitted when the input gains focus.   | `CustomEvent<FocusEvent>` |
 
 

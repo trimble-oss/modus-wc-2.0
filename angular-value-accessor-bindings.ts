@@ -15,6 +15,7 @@ const angularValueAccessorBindings: ValueAccessorConfig[] = [
       'modus-wc-select',
       'modus-wc-text-input',
       'modus-wc-textarea',
+      'modus-wc-time-input',
     ],
     event: 'inputChange',
     targetAttr: 'value',

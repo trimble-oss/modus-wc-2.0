@@ -8,7 +8,6 @@ interface DateArgs {
   'aria-describedby'?: string;
   'aria-label': string;
   'aria-labelledby'?: string;
-  'auto-focus'?: boolean;
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
@@ -69,7 +68,6 @@ export const Template: Story = {
         aria-describedby=${ifDefined(args['aria-describedby'])}
         aria-label=${args['aria-label']}
         aria-labelledby=${ifDefined(args['aria-labelledby'])}
-        ?auto-focus=${args['auto-focus']}
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
