@@ -29,13 +29,15 @@ export class ModusWcTabs {
   @Element() el!: HTMLElement;
 
   /** The current active tab */
-  @Prop({ mutable: true }) activeTabIndex = 0;
+  @Prop({ mutable: true }) activeTabIndex? = 0;
 
   /** Custom CSS class to apply to the inner div. */
-  @Prop() customClass: string = '';
+  @Prop() customClass?: string = '';
 
   /** The size of the tabs. */
   @Prop() size?: DaisySize = 'md';
+
+  /// add nbsp to input label required * so it does't break ona newline
 
   /** The tabs to display. */
   @Prop() tabs: IModusWcTab[] = [];
