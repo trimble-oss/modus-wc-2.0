@@ -9,7 +9,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-button.tailwind';
-import { ModusSize } from '../../types';
+import { DaisySize } from '../../types';
 
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -49,7 +49,7 @@ export class ModusWcButton {
   /**
    * The text label displayed on the button.
    */
-  @Prop() label!: string;
+  @Prop() label?: string;
 
   /**
    * If true, the button will be in a pressed state (for toggle buttons).
@@ -57,19 +57,24 @@ export class ModusWcButton {
   @Prop() pressed?: boolean = false;
 
   /**
-   * The size of the button.
+   * The shape of the button.
    */
-  @Prop() size: ModusSize = 'md';
+  @Prop() shape: 'circle' | 'rectangle' | 'square' = 'rectangle';
 
   /**
-   * The variant of the button.
+   * The size of the button.
    */
-  @Prop() variant: 'borderless' | 'filled' | 'outlined' = 'filled';
+  @Prop() size: DaisySize = 'md';
 
   /**
    * The type of the button.
    */
   @Prop() type: 'button' | 'submit' | 'reset' = 'button';
+
+  /**
+   * The variant of the button.
+   */
+  @Prop() variant: 'borderless' | 'filled' | 'outlined' = 'filled';
 
   /**
    * Event emitted when the button is clicked or activated via keyboard.
@@ -91,6 +96,7 @@ export class ModusWcButton {
       color: this.color,
       disabled: this.disabled,
       fullWidth: this.fullWidth,
+      shape: this.shape,
       size: this.size,
       variant: this.variant,
     });
@@ -132,7 +138,10 @@ export class ModusWcButton {
           tabIndex={this.disabled ? -1 : 0}
           type={this.type}
         >
+          <slot name="left" />
+          <slot />
           {this.label}
+          <slot name="right" />
         </button>
       </Host>
     );

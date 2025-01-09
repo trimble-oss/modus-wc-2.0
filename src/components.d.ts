@@ -178,15 +178,19 @@ export namespace Components {
         /**
           * The text label displayed on the button.
          */
-        "label": string;
+        "label"?: string;
         /**
           * If true, the button will be in a pressed state (for toggle buttons).
          */
         "pressed"?: boolean;
         /**
+          * The shape of the button.
+         */
+        "shape": 'circle' | 'rectangle' | 'square';
+        /**
           * The size of the button.
          */
-        "size": ModusSize;
+        "size": DaisySize;
         /**
           * The type of the button.
          */
@@ -1942,7 +1946,7 @@ declare namespace LocalJSX {
         /**
           * The text label displayed on the button.
          */
-        "label": string;
+        "label"?: string;
         /**
           * Event emitted when the button is clicked or activated via keyboard.
          */
@@ -1952,9 +1956,13 @@ declare namespace LocalJSX {
          */
         "pressed"?: boolean;
         /**
+          * The shape of the button.
+         */
+        "shape"?: 'circle' | 'rectangle' | 'square';
+        /**
           * The size of the button.
          */
-        "size"?: ModusSize;
+        "size"?: DaisySize;
         /**
           * The type of the button.
          */

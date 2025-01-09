@@ -250,10 +250,18 @@
               "description": "If true, the button will be in a pressed state (for toggle buttons)."
             },
             {
+              "name": "shape",
+              "fieldName": "shape",
+              "type": {
+                "text": "'circle' | 'rectangle' | 'square'"
+              },
+              "description": "The shape of the button."
+            },
+            {
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "ModusSize"
+                "text": "DaisySize"
               },
               "description": "The size of the button."
             },
