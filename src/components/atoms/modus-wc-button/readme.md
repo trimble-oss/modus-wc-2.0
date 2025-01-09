@@ -19,7 +19,7 @@ Adheres to WCAG 2.2 standards.
 | `fullWidth`   | `full-width`   | If true, the button will take the full width of its container.       | `boolean \| undefined`                                            | `false`     |
 | `label`       | `label`        | The text label displayed on the button.                              | `string \| undefined`                                             | `undefined` |
 | `pressed`     | `pressed`      | If true, the button will be in a pressed state (for toggle buttons). | `boolean \| undefined`                                            | `false`     |
-| `size`        | `size`         | The size of the button.                                              | `"lg" \| "md" \| "sm"`                                            | `'md'`      |
+| `size`        | `size`         | The size of the button.                                              | `"lg" \| "md" \| "sm" \| "xs"`                                    | `'md'`      |
 | `type`        | `type`         | The type of the button.                                              | `"button" \| "reset" \| "submit"`                                 | `'button'`  |
 | `variant`     | `variant`      | The variant of the button.                                           | `"borderless" \| "filled" \| "outlined"`                          | `'filled'`  |
 

@@ -186,7 +186,7 @@ export namespace Components {
         /**
           * The size of the button.
          */
-        "size": ModusSize;
+        "size": DaisySize;
         /**
           * The type of the button.
          */
@@ -1954,7 +1954,7 @@ declare namespace LocalJSX {
         /**
           * The size of the button.
          */
-        "size"?: ModusSize;
+        "size"?: DaisySize;
         /**
           * The type of the button.
          */

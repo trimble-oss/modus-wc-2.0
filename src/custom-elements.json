@@ -253,7 +253,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "ModusSize"
+                "text": "DaisySize"
               },
               "description": "The size of the button."
             },

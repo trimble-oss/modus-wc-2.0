@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { ModusSize } from '../../types';
+import { DaisySize } from '../../types';
 
 interface ButtonArgs {
   'aria-label': string;
@@ -12,7 +12,7 @@ interface ButtonArgs {
   'full-width': boolean;
   label: string;
   pressed: boolean;
-  size: ModusSize;
+  size: DaisySize;
   type: 'button' | 'submit' | 'reset';
   variant: 'borderless' | 'filled' | 'outlined';
 }
@@ -38,7 +38,7 @@ const meta: Meta<ButtonArgs> = {
     },
     size: {
       control: { type: 'inline-radio' },
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg'],
     },
     type: {
       control: { type: 'inline-radio' },
