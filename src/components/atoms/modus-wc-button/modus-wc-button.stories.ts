@@ -111,10 +111,10 @@ export const ButtonShapes: Story = {
 
 // prettier-ignore
 export const IconOnlyButton: Story = {
-  render: (args) => {
+  render: () => {
     return html`
-<modus-wc-button aria-label="${args['aria-label']}">
-  <modus-wc-icon name="notifications"></modus-wc-icon>
+<modus-wc-button aria-label="notification button">
+  <modus-wc-icon aria-label="notify icon" decorative name="notifications"></modus-wc-icon>
 </modus-wc-button>
     `;
   },
@@ -122,10 +122,10 @@ export const IconOnlyButton: Story = {
 
 // prettier-ignore
 export const IconLeftButton: Story = {
-  render: (args) => {
+  render: () => {
     return html`
-<modus-wc-button aria-label="${args['aria-label']}" label="Download">
-  <modus-wc-icon slot="left" name="download"></modus-wc-icon>
+<modus-wc-button aria-label="download button" label="Download">
+  <modus-wc-icon aria-label="download icon" decorative name="download" slot="left"></modus-wc-icon>
 </modus-wc-button>
     `;
   },
@@ -133,10 +133,10 @@ export const IconLeftButton: Story = {
 
 // prettier-ignore
 export const IconRightButton: Story = {
-  render: (args) => {
+  render: () => {
     return html`
-<modus-wc-button aria-label="${args['aria-label']}" label="Details">
-  <modus-wc-icon slot="right" name="launch"></modus-wc-icon>
+<modus-wc-button aria-label="details button" label="Details">
+  <modus-wc-icon aria-label="launch icon" decorative name="launch" slot="right"></modus-wc-icon>
 </modus-wc-button>
     `;
   },
@@ -144,11 +144,11 @@ export const IconRightButton: Story = {
 
 // prettier-ignore
 export const IconLeftAndRightButton: Story = {
-  render: (args) => {
+  render: () => {
     return html`
-<modus-wc-button aria-label="${args['aria-label']}" label="Checkout">
-  <modus-wc-icon slot="left" name="shopping_cart"></modus-wc-icon>
-  <modus-wc-icon slot="right" name="shopping_cart"></modus-wc-icon>
+<modus-wc-button aria-label="checkout button" label="Checkout">
+  <modus-wc-icon aria-label="shopping cart icon" decorative name="shopping_cart" slot="left"></modus-wc-icon>
+  <modus-wc-icon aria-label="shopping cart icon" decorative name="shopping_cart" slot="right"></modus-wc-icon>
 </modus-wc-button>
     `;
   },
