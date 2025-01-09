@@ -12,6 +12,7 @@ interface ButtonArgs {
   'full-width': boolean;
   label: string;
   pressed: boolean;
+  shape: 'circle' | 'rectangle' | 'square';
   size: DaisySize;
   type: 'button' | 'submit' | 'reset';
   variant: 'borderless' | 'filled' | 'outlined';
@@ -27,6 +28,7 @@ const meta: Meta<ButtonArgs> = {
     'full-width': false,
     label: 'Click me',
     pressed: false,
+    shape: 'rectangle',
     size: 'md',
     type: 'button',
     variant: 'filled',
@@ -35,6 +37,10 @@ const meta: Meta<ButtonArgs> = {
     color: {
       control: { type: 'inline-radio' },
       options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],
+    },
+    shape: {
+      control: { type: 'inline-radio' },
+      options: ['circle', 'rectangle', 'square'],
     },
     size: {
       control: { type: 'inline-radio' },
@@ -72,6 +78,7 @@ const Template: Story = {
         ?full-width="${args['full-width']}"
         label="${args.label}"
         ?pressed="${args.pressed}"
+        shape="${args.shape}"
         size="${args.size}"
         type="${args.type}"
         variant="${args.variant}"
@@ -82,6 +89,28 @@ const Template: Story = {
 
 export const Default: Story = {
   ...Template,
+};
+
+// prettier-ignore
+export const ButtonShapes: Story = {
+  render: (args) => {
+    return html`
+<modus-wc-button
+  aria-label="${args['aria-label']}"
+  label="Rectangle"
+></modus-wc-button>
+<modus-wc-button
+  aria-label="${args['aria-label']}"
+  label="Circle"
+  shape="circle"
+></modus-wc-button>
+<modus-wc-button
+  aria-label="${args['aria-label']}"
+  label="Square"
+  shape="square"
+></modus-wc-button>
+    `;
+  },
 };
 
 // prettier-ignore

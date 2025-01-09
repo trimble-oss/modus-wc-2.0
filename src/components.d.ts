@@ -184,6 +184,10 @@ export namespace Components {
          */
         "pressed"?: boolean;
         /**
+          * The shape of the button.
+         */
+        "shape": 'circle' | 'rectangle' | 'square';
+        /**
           * The size of the button.
          */
         "size": DaisySize;
@@ -1951,6 +1955,10 @@ declare namespace LocalJSX {
           * If true, the button will be in a pressed state (for toggle buttons).
          */
         "pressed"?: boolean;
+        /**
+          * The shape of the button.
+         */
+        "shape"?: 'circle' | 'rectangle' | 'square';
         /**
           * The size of the button.
          */

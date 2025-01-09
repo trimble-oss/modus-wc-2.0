@@ -57,6 +57,11 @@ export class ModusWcButton {
   @Prop() pressed?: boolean = false;
 
   /**
+   * The shape of the button.
+   */
+  @Prop() shape: 'circle' | 'rectangle' | 'square' = 'rectangle';
+
+  /**
    * The size of the button.
    */
   @Prop() size: DaisySize = 'md';
@@ -91,6 +96,7 @@ export class ModusWcButton {
       color: this.color,
       disabled: this.disabled,
       fullWidth: this.fullWidth,
+      shape: this.shape,
       size: this.size,
       variant: this.variant,
     });
