@@ -97,16 +97,12 @@ export const ButtonShapes: Story = {
     return html`
 <modus-wc-button
   aria-label="${args['aria-label']}"
-  label="Rectangle"
-></modus-wc-button>
-<modus-wc-button
-  aria-label="${args['aria-label']}"
-  label="Circle"
+  label="Click me"
   shape="circle"
 ></modus-wc-button>
 <modus-wc-button
   aria-label="${args['aria-label']}"
-  label="Square"
+  label="Click me"
   shape="square"
 ></modus-wc-button>
     `;
