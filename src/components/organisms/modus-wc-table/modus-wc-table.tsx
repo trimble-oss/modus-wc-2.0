@@ -41,34 +41,22 @@ export class ModusWcTable {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * An array of column definitions.
-   */
+  /** An array of column definitions. */
   @Prop() columns!: ITableColumn[];
 
-  /**
-   * Custom CSS class to apply to the inner div.
-   */
+  /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
-  /**
-   * An array of data objects.
-   */
+  /** An array of data objects. */
   @Prop() data!: Record<string, any>[];
 
-  /**
-   * The density of the table, used to save space or increase readability.
-   */
+  /** The density of the table, used to save space or increase readability. */
   @Prop() density?: Density = 'comfortable';
 
-  /**
-   * Zebra striped tables differentiate rows by styling them in an alternating fashion.
-   */
+  /** Zebra striped tables differentiate rows by styling them in an alternating fashion. */
   @Prop() zebra?: boolean = false;
 
-  /**
-   * Emits when a row is clicked.
-   */
+  /** Emits when a row is clicked. */
   @StencilEvent() rowClick!: EventEmitter<{
     row: Record<string, any>;
     index: number;

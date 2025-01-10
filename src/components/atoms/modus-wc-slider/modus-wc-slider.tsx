@@ -24,89 +24,55 @@ export class ModusWcSlider {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * The ID of the element that describes the slider.
-   */
+  /** The ID of the element that describes the slider. */
   @Prop() ariaDescribedby?: string;
 
-  /**
-   * The aria-labelledby attribute for usage with a label.
-   */
+  /** The aria-labelledby attribute for usage with a label. */
   @Prop() ariaLabelledby?: string;
 
-  /**
-   * Custom CSS class to apply to the inner div.
-   */
+  /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
-  /**
-   * The disabled state of the slider.
-   */
+  /** The disabled state of the slider. */
   @Prop() disabled?: boolean = false;
 
-  /**
-   * Specifies the text direction of the input content.
-   */
+  /** Specifies the text direction of the input content. */
   @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
 
-  /**
-   * The ID of the input element.
-   */
+  /** The ID of the input element. */
   @Prop() inputId?: string;
 
-  /**
-   * The tabindex of the input.
-   */
+  /** The tabindex of the input. */
   @Prop() inputTabIndex?: number;
 
-  /**
-   * The maximum slider value.
-   */
+  /** The maximum slider value. */
   @Prop() max?: number;
 
-  /**
-   * The minimum slider value.
-   */
+  /** The minimum slider value. */
   @Prop() min?: number;
 
-  /**
-   * Name of the form control. Submitted with the form as part of a name/value pair.
-   */
+  /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string = '';
 
-  /**
-   * A value is required for the form to be submittable.
-   */
+  /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
 
-  /**
-   * The size of the input.
-   */
+  /** The size of the input. */
   @Prop() size?: DaisySize = 'xs';
 
-  /**
-   * The increment of the slider.
-   */
+  /** The increment of the slider. */
   @Prop() step?: number;
 
-  /**
-   * The value of the slider.
-   */
+  /** The value of the slider. */
   @Prop({ mutable: true, reflect: true }) value: number = 0;
 
-  /**
-   * Emitted when the input loses focus.
-   */
+  /** Emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
-  /**
-   * Emitted when the input value changes.
-   */
+  /** Emitted when the input value changes. */
   @StencilEvent() inputChange!: EventEmitter<InputEvent>;
 
-  /**
-   * Emitted when the input gains focus.
-   */
+  /** Emitted when the input gains focus. */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {

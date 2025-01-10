@@ -25,24 +25,16 @@ export type TypographyWeight = 'light' | 'normal' | 'bold';
   shadow: false,
 })
 export class ModusWCTypography {
-  /**
-   * Custom CSS class to apply to the typography element.
-   */
+  /** Custom CSS class to apply to the typography element. */
   @Prop() customClass?: string = '';
 
-  /**
-   * The size of the font.
-   */
+  /** The size of the font. */
   @Prop() size?: DaisySize = 'md';
 
-  /**
-   * The variant of the typography component.
-   */
+  /** The variant of the typography component. */
   @Prop() variant: TypographyVariant = 'p';
 
-  /**
-   * The weight of the text.
-   */
+  /** The weight of the text. */
   @Prop() weight?: TypographyWeight = 'normal';
 
   private getClasses(): string {

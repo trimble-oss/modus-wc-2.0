@@ -17,26 +17,16 @@ export class ModusWcIcon {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * Custom CSS class to apply to the i element.
-   */
+  /** Custom CSS class to apply to the i element. */
   @Prop() customClass?: string = '';
 
-  /**
-   * Indicates that the icon is decorative.
-   * When true, sets aria-hidden to hide the icon from screen readers.
-   */
+  /** Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers. */
   @Prop() decorative?: boolean = true;
 
-  /**
-   * The icon name, should match the CSS class in the icon font.
-   */
+  /** The icon name, should match the CSS class in the icon font. */
   @Prop() name!: string;
 
-  /**
-   * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS).
-   * This adjusts the font size for the icon.
-   */
+  /** The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon. */
   @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {

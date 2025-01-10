@@ -24,99 +24,61 @@ export class ModusWcDate {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * The ID of the element that describes the input.
-   */
+  /** The ID of the element that describes the input. */
   @Prop() ariaDescribedby?: string;
 
-  /**
-   * The aria-labelledby attribute for usage with a label.
-   */
+  /** The aria-labelledby attribute for usage with a label. */
   @Prop() ariaLabelledby?: string;
 
-  /**
-   * Indicates that the input should have a border.
-   */
+  /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
-  /**
-   * Custom CSS class to apply to the input.
-   */
+  /** Custom CSS class to apply to the input. */
   @Prop() customClass?: string = '';
 
-  /**
-   * Whether the form control is disabled.
-   */
+  /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
 
-  /**
-   * Specifies the text direction of the input content.
-   */
+  /** Specifies the text direction of the input content. */
   @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
 
-  /**
-   * The ID of the input element.
-   */
+  /** The ID of the input element. */
   @Prop() inputId?: string;
 
-  /**
-   * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
-   */
+  /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
 
-  /**
-   * Maximum date value.
-   */
+  /** Maximum date value. */
   @Prop() max?: string;
 
-  /**
-   * Minimum date value.
-   */
+  /** Minimum date value. */
   @Prop() min?: string;
 
-  /**
-   * Name of the form control. Submitted with the form as part of a name/value pair.
-   */
+  /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string;
 
-  /**
-   * Placeholder text for the date input.
-   */
+  /** Placeholder text for the date input. */
   @Prop() placeholder?: string;
 
-  /**
-   * Whether the value is editable.
-   */
+  /** Whether the value is editable. */
   @Prop() readOnly?: boolean = false;
 
-  /**
-   * A value is required or must be checked for the form to be submittable.
-   */
+  /** A value is required or must be checked for the form to be submittable. */
   @Prop() required?: boolean = false;
 
-  /**
-   * The size of the input.
-   */
+  /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
 
-  /**
-   * The value of the control.
-   */
+  /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
-  /**
-   * Event emitted when the input loses focus.
-   */
+  /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
-  /**
-   * Event emitted when the input value changes.
-   */
+  /** Event emitted when the input value changes. */
   @StencilEvent() inputChange!: EventEmitter<InputEvent>;
 
-  /**
-   * Event emitted when the input gains focus.
-   */
+  /** Event emitted when the input gains focus. */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {

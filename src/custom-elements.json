@@ -817,7 +817,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Indicates that the icon is decorative.\r\nWhen true, sets aria-hidden to hide the icon from screen readers."
+              "description": "Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers."
             },
             {
               "name": "name",
@@ -833,7 +833,7 @@
               "type": {
                 "text": "DaisySize"
               },
-              "description": "The icon size, can be \"sm\", \"md\", \"lg\" (a custom size can be specified in CSS).\r\nThis adjusts the font size for the icon."
+              "description": "The icon size, can be \"sm\", \"md\", \"lg\" (a custom size can be specified in CSS). This adjusts the font size for the icon."
             }
           ],
           "tagName": "modus-wc-icon",

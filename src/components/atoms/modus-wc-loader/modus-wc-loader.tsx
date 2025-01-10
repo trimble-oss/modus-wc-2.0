@@ -34,24 +34,16 @@ export class ModusWcLoader {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * The color of the loader.
-   */
+  /** The color of the loader. */
   @Prop() color: LoaderColor = 'primary';
 
-  /**
-   * Custom CSS class to apply to the loader element.
-   */
+  /** Custom CSS class to apply to the loader element. */
   @Prop() customClass?: string = '';
 
-  /**
-   * The size of the loader.
-   */
+  /** The size of the loader. */
   @Prop() size: DaisySize = 'md';
 
-  /**
-   * The variant of the loader.
-   */
+  /** The variant of the loader. */
   @Prop() variant: LoaderVariant = 'spinner';
 
   componentWillLoad() {

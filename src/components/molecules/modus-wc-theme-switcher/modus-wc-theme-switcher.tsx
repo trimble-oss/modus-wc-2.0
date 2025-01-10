@@ -29,14 +29,10 @@ export class ModusWcThemeSwitcher {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * Custom CSS class to apply to the theme switcher element.
-   */
+  /** Custom CSS class to apply to the theme switcher element. */
   @Prop() customClass?: string = '';
 
-  /**
-   * An event that fires when the theme is changed.
-   */
+  /** An event that fires when the theme is changed. */
   @Event() themeChange!: EventEmitter<IThemeConfig>;
 
   private modeUnsubscribe: (() => void) | undefined;

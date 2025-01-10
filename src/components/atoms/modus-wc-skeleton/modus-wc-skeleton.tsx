@@ -12,24 +12,16 @@ import { convertPropsToClasses } from './modus-wc-skeleton.tailwind';
   shadow: false,
 })
 export class ModusWcSkeleton {
-  /**
-   * Custom CSS class to apply to the inner div.
-   */
+  /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
-  /**
-   * The height of the skeleton.
-   */
+  /** The height of the skeleton. */
   @Prop() height: string = 'var(--modus-wc-line-height-md)';
 
-  /**
-   * The shape of the skeleton.
-   */
+  /** The shape of the skeleton. */
   @Prop() shape?: 'circle' | 'rectangle' = 'rectangle';
 
-  /**
-   * The width of the skeleton.
-   */
+  /** The width of the skeleton. */
   @Prop() width: string = '100%';
 
   private getClasses(): string {
