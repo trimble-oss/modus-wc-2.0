@@ -78,6 +78,9 @@ export class ModusWcTabs {
       );
       this.el.ariaLabel = 'Tab Group';
     }
+    if (!this.tabs || this.tabs.length === 0) {
+      console.error('ModusWcTabs: tab data is required.');
+    }
   }
 
   /* Interactive Functionality */
