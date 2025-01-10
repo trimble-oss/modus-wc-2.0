@@ -15,24 +15,16 @@ export class ModusWcProgress {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * Custom CSS class to apply to the progress element.
-   */
+  /** Custom CSS class to apply to the progress element. */
   @Prop() customClass?: string = '';
 
-  /**
-   * The indeterminate state of the progress component.
-   */
+  /** The indeterminate state of the progress component. */
   @Prop({ reflect: true, mutable: true }) indeterminate: boolean = false;
 
-  /**
-   * The progress component's maximum value.
-   */
+  /** The progress component's maximum value. */
   @Prop() max?: number = 100;
 
-  /**
-   * The value of the progress component.
-   */
+  /** The value of the progress component. */
   @Prop({ mutable: true, reflect: true }) value: number = 0;
 
   componentWillLoad() {

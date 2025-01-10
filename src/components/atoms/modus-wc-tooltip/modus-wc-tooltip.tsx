@@ -12,29 +12,19 @@ import { convertPropsToClasses } from './modus-wc-tooltip.tailwind';
   shadow: false,
 })
 export class ModusWcTooltip {
-  /**
-   * The text content of the tooltip.
-   */
+  /** The text content of the tooltip. */
   @Prop() content: string = '';
 
-  /**
-   * Custom CSS class to apply to the inner div.
-   */
+  /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
-  /**
-   * Use this attribute to force the tooltip to remain open.
-   */
+  /** Use this attribute to force the tooltip to remain open. */
   @Prop() forceOpen?: boolean;
 
-  /**
-   * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
-   */
+  /** The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements. */
   @Prop() tooltipId?: string;
 
-  /**
-   * The position that the tooltip will render in relation to the element.
-   */
+  /** The position that the tooltip will render in relation to the element. */
   @Prop() position?: 'auto' | 'top' | 'right' | 'bottom' | 'left' = 'auto';
 
   private getClasses(): string {

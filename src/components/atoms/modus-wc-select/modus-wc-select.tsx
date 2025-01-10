@@ -30,84 +30,52 @@ export class ModusWcSelect {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * The ID of the element that describes the input.
-   */
+  /** The ID of the element that describes the input. */
   @Prop() ariaDescribedby?: string;
 
-  /**
-   * Indicates that the input should have a border.
-   */
+  /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
-  /**
-   * Custom CSS class to apply to the inner div.
-   */
+  /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
-  /**
-   * Whether the form control is disabled.
-   */
+  /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
 
-  /**
-   * Indicates whether the input has an invalid input.
-   */
+  /** Indicates whether the input has an invalid input. */
   @Prop() inputAriaInvalid?: 'true' | 'false';
 
-  /**
-   * Specifies the text direction of the input content.
-   */
+  /** Specifies the text direction of the input content. */
   @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
 
-  /**
-   * The ID of the input element.
-   */
+  /** The ID of the input element. */
   @Prop() inputId?: string;
 
-  /**
-   * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
-   */
+  /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
 
-  /**
-   * Name of the form control. Submitted with the form as part of a name/value pair.
-   */
+  /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string;
 
-  /**
-   * The options to display in the select dropdown.
-   */
+  /** The options to display in the select dropdown. */
   @Prop({ mutable: true, reflect: true }) options: ISelectOption[] = [];
 
-  /**
-   * A value is required for the form to be submittable.
-   */
+  /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
 
-  /**
-   * The size of the input.
-   */
+  /** The size of the input. */
   @Prop() size?: DaisySize = 'md';
 
-  /**
-   * The value of the control.
-   */
+  /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
-  /**
-   * Event emitted when the input loses focus.
-   */
+  /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
-  /**
-   * Event emitted when the input value changes.
-   */
+  /** Event emitted when the input value changes. */
   @StencilEvent() inputChange!: EventEmitter<InputEvent>;
 
-  /**
-   * Event emitted when the input gains focus.
-   */
+  /** Event emitted when the input gains focus. */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {

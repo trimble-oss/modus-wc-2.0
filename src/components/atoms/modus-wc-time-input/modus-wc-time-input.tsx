@@ -25,49 +25,31 @@ export class ModusWcTimeInput {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * The ID of the element that describes the input.
-   */
+  /** The ID of the element that describes the input. */
   @Prop() ariaDescribedby?: string;
 
-  /**
-   * Hint for form autofill feature.
-   */
+  /** Hint for form autofill feature. */
   @Prop() autoComplete?: 'on' | 'off';
 
-  /**
-   * Indicates that the input should have a border.
-   */
+  /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
-  /**
-   * Custom CSS class to apply to the input.
-   */
+  /** Custom CSS class to apply to the input. */
   @Prop() customClass?: string = '';
 
-  /**
-   * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
-   */
+  /** The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format. */
   @Prop() datalistOptions: string[] = [];
 
-  /**
-   * Whether the form control is disabled.
-   */
+  /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
 
-  /**
-   * Specifies the time direction of the input content.
-   */
+  /** Specifies the time direction of the input content. */
   @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
 
-  /**
-   * The ID of the input element.
-   */
+  /** The ID of the input element. */
   @Prop() inputId?: string;
 
-  /**
-   * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
-   */
+  /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
 
   /**
@@ -76,29 +58,19 @@ export class ModusWcTimeInput {
    */
   @Prop({ mutable: true }) datalistId?: string;
 
-  /**
-   * Maximum value. Format: `HH:mm`, `HH:mm:ss`.
-   */
+  /** Maximum value. Format: `HH:mm`, `HH:mm:ss`. */
   @Prop() max?: string;
 
-  /**
-   * Minimum value. Format: `HH:mm`, `HH:mm:ss.`
-   */
+  /** Minimum value. Format: `HH:mm`, `HH:mm:ss.`*/
   @Prop() min?: string;
 
-  /**
-   * Name of the form control. Submitted with the form as part of a name/value pair.
-   */
+  /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string;
 
-  /**
-   * Whether the value is editable.
-   */
+  /** Whether the value is editable. */
   @Prop() readOnly?: boolean = false;
 
-  /**
-   * A value is required for the form to be submittable.
-   */
+  /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
 
   /**
@@ -108,9 +80,7 @@ export class ModusWcTimeInput {
    */
   @Prop() showSeconds?: boolean = false;
 
-  /**
-   * The size of the input.
-   */
+  /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
 
   /**
@@ -129,19 +99,13 @@ export class ModusWcTimeInput {
    */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
-  /**
-   * Event emitted when the input loses focus.
-   */
+  /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
-  /**
-   * Event emitted when the input value changes.
-   */
+  /** Event emitted when the input value changes. */
   @StencilEvent() inputChange!: EventEmitter<Event>;
 
-  /**
-   * Event emitted when the input gains focus.
-   */
+  /** Event emitted when the input gains focus. */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
