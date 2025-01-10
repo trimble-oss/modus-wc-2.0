@@ -3052,7 +3052,7 @@
         {
           "kind": "class",
           "description": "A customizable alert component used to inform the user about important events.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcIcon",
+          "name": "ModusWcAlert",
           "members": [
             {
               "kind": "field",
@@ -3082,7 +3082,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "The description text of the alert. *"
+              "description": "The description of the alert. *"
             },
             {
               "name": "icon",
@@ -3117,9 +3117,9 @@
       "exports": [
         {
           "kind": "js",
-          "name": "ModusWcIcon",
+          "name": "ModusWcAlert",
           "declaration": {
-            "name": "ModusWcIcon",
+            "name": "ModusWcAlert",
             "module": "src/components/molecules/modus-wc-alert/modus-wc-alert.tsx"
           }
         },
@@ -3127,7 +3127,7 @@
           "kind": "custom-element-definition",
           "name": "modus-wc-alert",
           "declaration": {
-            "name": "ModusWcIcon",
+            "name": "ModusWcAlert",
             "module": "src/components/molecules/modus-wc-alert/modus-wc-alert.tsx"
           }
         }

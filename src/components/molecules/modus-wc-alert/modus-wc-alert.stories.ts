@@ -21,7 +21,7 @@ const meta: Meta<AlertArgs> = {
   argTypes: {
     variant: {
       control: { type: 'inline-radio' },
-      options: ['error', 'info', 'success', 'warning'],
+      options: ['', 'error', 'info', 'success', 'warning'],
     },
   },
   parameters: {
@@ -46,6 +46,7 @@ const Template: Story = {
 >
   <modus-wc-button
     aria-label="View messages"
+    color="secondary"
     label="View Messages"
     slot="button"
   />
