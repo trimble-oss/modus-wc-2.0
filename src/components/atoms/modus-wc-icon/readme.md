@@ -27,11 +27,13 @@ Adheres to WCAG 2.2 standards.
 
 ### Used by
 
+ - [modus-wc-alert](../../molecules/modus-wc-alert)
  - [modus-wc-collapse](../../molecules/modus-wc-collapse)
 
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-alert --> modus-wc-icon
   modus-wc-collapse --> modus-wc-icon
   style modus-wc-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```
