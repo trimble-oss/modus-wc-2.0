@@ -15,7 +15,7 @@ Adheres to WCAG 2.2 standards.
 
 | Property         | Attribute          | Description                                 | Type                                                       | Default      |
 | ---------------- | ------------------ | ------------------------------------------- | ---------------------------------------------------------- | ------------ |
-| `activeTabIndex` | `active-tab-index` | The current active tab                      | `number \| undefined`                                      | `0`          |
+| `activeTabIndex` | `active-tab-index` | The current active tab                      | `number`                                                   | `0`          |
 | `customClass`    | `custom-class`     | Custom CSS class to apply to the inner div. | `string \| undefined`                                      | `''`         |
 | `size`           | `size`             | The size of the tabs.                       | `"lg" \| "md" \| "sm" \| undefined`                        | `'md'`       |
 | `tabStyle`       | `tab-style`        | Additional styling for the tabs.            | `"bordered" \| "boxed" \| "lifted" \| "none" \| undefined` | `'bordered'` |

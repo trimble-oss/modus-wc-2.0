@@ -49,7 +49,7 @@ export class ModusWcTabs {
   @Element() el!: HTMLElement;
 
   /** The current active tab */
-  @Prop({ mutable: true }) activeTabIndex? = 0;
+  @Prop({ mutable: true }) activeTabIndex = 0;
 
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
@@ -84,8 +84,8 @@ export class ModusWcTabs {
 
   private handleClick(tab: IModusWcTab, index: number) {
     if (tab.disabled) return;
-    this.activeTabIndex = index;
     this.tabChange.emit({ previousTab: this.activeTabIndex, newTab: index });
+    this.activeTabIndex = index;
   }
 
   /* CSS Functionality */

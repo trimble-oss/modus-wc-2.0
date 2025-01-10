@@ -833,7 +833,7 @@ export namespace Components {
         /**
           * The current active tab
          */
-        "activeTabIndex"?: number | undefined;
+        "activeTabIndex": number;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -2743,7 +2743,7 @@ declare namespace LocalJSX {
         /**
           * The current active tab
          */
-        "activeTabIndex"?: number | undefined;
+        "activeTabIndex"?: number;
         /**
           * Custom CSS class to apply to the inner div.
          */

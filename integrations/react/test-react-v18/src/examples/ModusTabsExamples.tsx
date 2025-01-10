@@ -1,24 +1,27 @@
 import { ModusWcTabs as ModusTabs } from "@trimble-cms/modus-wc-react";
-// import { IModusWcTab } from "@trimble-cms/modus-wc-react/modus-wc-tabs";
-
 
 export default function ModusTabsExamples() {
-	// type ModusTabsProps = React.ComponentProps<typeof ModusTabs>
-	// type ModusTabsTabsPropType = ModusTabsProps['tabs'];
+	type TabType = React.ComponentProps<typeof ModusTabs>['tabs'];
 
-	const sampleTabs: HTMLModusWcTabsElement = [
+	type OnTabChange = React.ComponentProps<typeof ModusTabs>['onTabChange'];
+	type ModusTabChangeEvent = Parameters<NonNullable<OnTabChange>>[0];
+
+	const sampleTabs: TabType = [
 		{ label: "Tab 1" },
 		{ label: "Tab 2" },
 		{ label: "Tab 3", disabled: true },
 	];
-	const sampleTabs2: typeof ModusTabs['tabs'] = [
+	const sampleTabs2: TabType = [
 		{ icon: "alert" },
 		{ label: "Home", icon: "home", iconPosition: "left" },
 		{ label: "Settings", icon: "settings", iconPosition: "right" },
 	];
 
-	function onTabChange(event: React.ComponentProps<typeof ModusTabs>['onTabChange']) {
-		window.alert(`Tab changed to ${event.newTab} from ${event.previousTab}`);
+	function onTabChange(event: ModusTabChangeEvent) {
+		if (!event) {
+			return;
+		}
+		window.alert(`Tab changed to ${event.detail.newTab} from ${event.detail.previousTab}`);
 	}
 
 	return (
