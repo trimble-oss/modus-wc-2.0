@@ -9,9 +9,9 @@ exports[`modus-wc-tabs should render with custom props 1`] = `
         Tab 1
       </span>
     </button>
-    <button aria-disabled="" aria-label="Tab 3 tab" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
+    <button aria-disabled="" aria-label="Tab 2 tab" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
       <span>
-        Tab 3
+        Tab 2
       </span>
     </button>
     <button aria-label="home tab" class="modus-wc-tab" id="tab-2" role="tab">
@@ -29,9 +29,15 @@ exports[`modus-wc-tabs should render with custom props 1`] = `
       </span>
       <modus-wc-icon name="alert" size="sm"></modus-wc-icon>
     </button>
+    <button aria-label="Custom Tab tab" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
+      <span>
+        Custom Tab
+      </span>
+    </button>
   </div>
   <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0">
     <div class="modus-wc-tab-active"></div>
+    <div hidden=""></div>
     <div hidden=""></div>
     <div hidden=""></div>
     <div hidden=""></div>
@@ -57,9 +63,9 @@ exports[`modus-wc-tabs should render with default props (with tab data) 1`] = `
         Tab 1
       </span>
     </button>
-    <button aria-disabled="" aria-label="Tab 3 tab" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
+    <button aria-disabled="" aria-label="Tab 2 tab" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
       <span>
-        Tab 3
+        Tab 2
       </span>
     </button>
     <button aria-label="home tab" class="modus-wc-tab" id="tab-2" role="tab">
@@ -77,9 +83,15 @@ exports[`modus-wc-tabs should render with default props (with tab data) 1`] = `
       </span>
       <modus-wc-icon name="alert" size="md"></modus-wc-icon>
     </button>
+    <button aria-label="Custom Tab tab" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
+      <span>
+        Custom Tab
+      </span>
+    </button>
   </div>
   <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0">
     <div class="modus-wc-tab-active"></div>
+    <div hidden=""></div>
     <div hidden=""></div>
     <div hidden=""></div>
     <div hidden=""></div>
@@ -97,9 +109,9 @@ exports[`modus-wc-tabs should render with default props (with tab panel) 1`] = `
         Tab 1
       </span>
     </button>
-    <button aria-disabled="" aria-label="Tab 3 tab" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
+    <button aria-disabled="" aria-label="Tab 2 tab" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
       <span>
-        Tab 3
+        Tab 2
       </span>
     </button>
     <button aria-label="home tab" class="modus-wc-tab" id="tab-2" role="tab">
@@ -117,6 +129,11 @@ exports[`modus-wc-tabs should render with default props (with tab panel) 1`] = `
       </span>
       <modus-wc-icon name="alert" size="md"></modus-wc-icon>
     </button>
+    <button aria-label="Custom Tab tab" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
+      <span>
+        Custom Tab
+      </span>
+    </button>
   </div>
   <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0">
     <div class="modus-wc-tab-active">
@@ -129,6 +146,7 @@ exports[`modus-wc-tabs should render with default props (with tab panel) 1`] = `
         secret (noun) : kept from knowledge or view : hidden
       </p>
     </div>
+    <div hidden=""></div>
     <div hidden=""></div>
     <div hidden=""></div>
     <div hidden=""></div>

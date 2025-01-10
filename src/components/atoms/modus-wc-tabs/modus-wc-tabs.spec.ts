@@ -8,7 +8,7 @@ describe('modus-wc-tabs', () => {
       label: 'Tab 1',
     },
     {
-      label: 'Tab 3',
+      label: 'Tab 2',
       disabled: true,
     },
     {
@@ -19,6 +19,10 @@ describe('modus-wc-tabs', () => {
       icon: 'alert',
       iconPosition: 'right',
       label: 'Alerts',
+    },
+    {
+      label: 'Custom Tab',
+      customClass: 'custom-tab-class',
     },
   ];
 
@@ -121,5 +125,59 @@ describe('modus-wc-tabs', () => {
     );
 
     consoleErrorSpy.mockRestore();
+  });
+
+  it('should emit tabChange event when a tab is changed', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTabs],
+      html: '<modus-wc-tabs aria-label="Tab Group"></modus-wc-tabs>',
+    });
+
+    const component = page.rootInstance as ModusWcTabs;
+    component.tabs = defaultTabs;
+
+    await page.waitForChanges();
+
+    const tabChangeSpy = jest.fn();
+    page.root!.addEventListener('tabChange', tabChangeSpy);
+
+    const thirdTab = page.root!.querySelector(
+      'div[role="tablist"] > button[role="tab"]:nth-child(3)'
+    ) as HTMLButtonElement;
+    expect(thirdTab).not.toBeNull();
+
+    thirdTab.click();
+    await page.waitForChanges();
+
+    expect(tabChangeSpy).toHaveBeenCalled();
+    expect(tabChangeSpy.mock.calls[0][0].detail).toEqual({
+      previousTab: 0,
+      newTab: 2,
+    });
+  });
+
+  it('should not emit tabChange event when a disabled tab is clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTabs],
+      html: '<modus-wc-tabs aria-label="Tab Group"></modus-wc-tabs>',
+    });
+
+    const component = page.rootInstance as ModusWcTabs;
+    component.tabs = defaultTabs;
+
+    await page.waitForChanges();
+
+    const tabChangeSpy = jest.fn();
+    page.root!.addEventListener('tabChange', tabChangeSpy);
+
+    const disabledTab = page.root!.querySelector(
+      'div[role="tablist"] > button[role="tab"]:nth-child(2)'
+    ) as HTMLButtonElement;
+    expect(disabledTab).not.toBeNull();
+
+    disabledTab.click();
+    await page.waitForChanges();
+
+    expect(tabChangeSpy).not.toHaveBeenCalled();
   });
 });
