@@ -3141,6 +3141,94 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-alert/modus-wc-alert.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable alert component used to inform the user about important events.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcAlert",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the outer div element."
+            },
+            {
+              "name": "description",
+              "fieldName": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "The description of the alert. *"
+            },
+            {
+              "name": "icon",
+              "fieldName": "icon",
+              "type": {
+                "text": "string"
+              },
+              "description": "The Modus icon to render. *"
+            },
+            {
+              "name": "title",
+              "fieldName": "title",
+              "type": {
+                "text": "string"
+              },
+              "description": "The title of the alert. *"
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "type": {
+                "text": "'error' | 'info' | 'success' | 'warning'"
+              },
+              "description": "The variant of the alert."
+            }
+          ],
+          "tagName": "modus-wc-alert",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcAlert",
+          "declaration": {
+            "name": "ModusWcAlert",
+            "module": "src/components/molecules/modus-wc-alert/modus-wc-alert.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-alert",
+          "declaration": {
+            "name": "ModusWcAlert",
+            "module": "src/components/molecules/modus-wc-alert/modus-wc-alert.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-autocomplete/modus-wc-autocomplete.tsx",
       "declarations": [
         {
