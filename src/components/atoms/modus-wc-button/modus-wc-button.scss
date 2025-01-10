@@ -3,27 +3,8 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-// TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
-[data-theme='modus-classic-light'] .modus-wc-btn,
-[data-theme='modus-classic-dark'] .modus-wc-btn {
-  border-radius: var(--modus-wc-border-radius-md);
-  height: fit-content;
-  min-height: fit-content;
-
-  // TODO - add support for xs and xl once added to Modus Figma
-
-  &.modus-wc-btn-sm {
-    font-size: var(--modus-wc-font-size-sm);
-    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
-  }
-
-  &.modus-wc-btn-md {
-    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
-  }
-
-  &.modus-wc-btn-lg {
-    padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
-  }
+.modus-wc-btn {
+  --rounded-btn: var(--modus-wc-border-radius-lg);
 
   &.modus-wc-btn-borderless {
     --tw-bg-opacity: 0;

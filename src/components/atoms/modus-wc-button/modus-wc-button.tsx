@@ -9,7 +9,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-button.tailwind';
-import { ModusSize } from '../../types';
+import { DaisySize } from '../../types';
 
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -25,55 +25,38 @@ export class ModusWcButton {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * The color variant of the button.
-   */
+  /** The color variant of the button. */
   @Prop() color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger' =
     'primary';
 
-  /**
-   * Custom CSS class to apply to the button element.
-   */
+  /** Custom CSS class to apply to the button element. */
   @Prop() customClass?: string = '';
 
-  /**
-   * If true, the button will be disabled.
-   */
+  /** If true, the button will be disabled. */
   @Prop() disabled?: boolean = false;
 
-  /**
-   * If true, the button will take the full width of its container.
-   */
+  /** If true, the button will take the full width of its container. */
   @Prop() fullWidth?: boolean = false;
 
-  /**
-   * The text label displayed on the button.
-   */
-  @Prop() label!: string;
+  /** The text label displayed on the button. */
+  @Prop() label?: string;
 
-  /**
-   * If true, the button will be in a pressed state (for toggle buttons).
-   */
+  /** If true, the button will be in a pressed state (for toggle buttons). */
   @Prop() pressed?: boolean = false;
 
-  /**
-   * The size of the button.
-   */
-  @Prop() size: ModusSize = 'md';
+  /** The shape of the button. */
+  @Prop() shape: 'circle' | 'rectangle' | 'square' = 'rectangle';
 
-  /**
-   * The variant of the button.
-   */
-  @Prop() variant: 'borderless' | 'filled' | 'outlined' = 'filled';
+  /** The size of the button. */
+  @Prop() size: DaisySize = 'md';
 
-  /**
-   * The type of the button.
-   */
+  /** The type of the button. */
   @Prop() type: 'button' | 'submit' | 'reset' = 'button';
 
-  /**
-   * Event emitted when the button is clicked or activated via keyboard.
-   */
+  /** The variant of the button. */
+  @Prop() variant: 'borderless' | 'filled' | 'outlined' = 'filled';
+
+  /** Event emitted when the button is clicked or activated via keyboard. */
   @Event() buttonClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   componentWillLoad() {
@@ -91,6 +74,7 @@ export class ModusWcButton {
       color: this.color,
       disabled: this.disabled,
       fullWidth: this.fullWidth,
+      shape: this.shape,
       size: this.size,
       variant: this.variant,
     });
@@ -132,7 +116,10 @@ export class ModusWcButton {
           tabIndex={this.disabled ? -1 : 0}
           type={this.type}
         >
+          <slot name="left" />
+          <slot />
           {this.label}
+          <slot name="right" />
         </button>
       </Host>
     );

@@ -14,7 +14,7 @@ If you'd like to add a new theme to the library:
 1. Add your theme to the `ThemeName` type in `src/providers/theme/theme.types.ts`
 
 ```typescript
-export type ThemeName = 'modus-classic' | 'my-theme' | 'prism';
+export type ThemeName = 'modus-classic' | 'modus-modern' | 'my-theme';
 ```
 
 2. Create a new theme file in `src/styles/themes/`
@@ -26,7 +26,6 @@ import { common } from './common';
 /* Overrides of common DaisyUI CSS variables */
 const commonOverrides = {
   ...common,
-
   '--rounded-badge': '0.75rem',
 };
 
@@ -54,6 +53,8 @@ export default {
     themes: [
       { 'modus-classic-light': modusClassic.light },
       { 'modus-classic-dark': modusClassic.dark },
+      { 'modus-modern-light': modusModern.light },
+      { 'modus-modern-dark': modusModern.dark },
       { 'my-theme-light': myNewTheme.light },
       { 'my-theme-dark': myNewTheme.dark },
     ],

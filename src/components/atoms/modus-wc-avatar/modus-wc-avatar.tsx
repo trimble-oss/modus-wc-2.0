@@ -16,31 +16,21 @@ export class ModusWcAvatar {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * The image alt attribute for accessibility.
-   */
+  /** The image alt attribute for accessibility. */
   @Prop() alt!: string;
 
-  /**
-   * Custom CSS class to apply to the inner div.
-   */
+  /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
-  /**
-   * The location of the image.
-   */
+  /** The location of the image. */
   @Prop() imgSrc: string = '';
 
   // TODO - add placeholder support (need UX logic)
 
-  /**
-   * The shape of the avatar.
-   */
+  /** The shape of the avatar. */
   @Prop() shape?: 'circle' | 'square' = 'circle';
 
-  /**
-   * The size of the avatar.
-   */
+  /** The size of the avatar. */
   @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {

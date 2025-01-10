@@ -24,44 +24,28 @@ export class ModusWcNumberInput {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * The ID of the element that describes the input.
-   */
+  /** The ID of the element that describes the input. */
   @Prop() ariaDescribedby?: string;
 
-  /**
-   * Hint for form autofill feature.
-   */
+  /** Hint for form autofill feature. */
   @Prop() autoComplete?: 'on' | 'off';
 
-  /**
-   * Indicates that the input should have a border.
-   */
+  /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
-  /**
-   * Custom CSS class to apply to the input.
-   */
+  /** Custom CSS class to apply to the input. */
   @Prop() customClass?: string = '';
 
-  /**
-   * Whether the form control is disabled.
-   */
+  /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
 
-  /**
-   * Indicates whether the input has an invalid input.
-   */
+  /** Indicates whether the input has an invalid input. */
   @Prop() inputAriaInvalid?: 'true' | 'false';
 
-  /**
-   * Specifies the text direction of the input content.
-   */
+  /** Specifies the text direction of the input content. */
   @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
 
-  /**
-   * The ID of the input element.
-   */
+  /** The ID of the input element. */
   @Prop() inputId?: string;
 
   /**
@@ -70,74 +54,46 @@ export class ModusWcNumberInput {
    */
   @Prop() inputMode: 'decimal' | 'none' | 'numeric' = 'numeric';
 
-  /**
-   * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
-   */
+  /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
 
-  /**
-   * The input's maximum value.
-   */
+  /** The input's maximum value. */
   @Prop() max?: number;
 
-  /**
-   * The input's minimum value.
-   */
+  /** The input's minimum value. */
   @Prop() min?: number;
 
-  /**
-   * Name of the form control. Submitted with the form as part of a name/value pair.
-   */
+  /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string;
 
-  /**
-   * Text that appears in the form control when it has no value set.
-   */
+  /** Text that appears in the form control when it has no value set. */
   @Prop() placeholder?: string = '';
 
-  /**
-   * Whether the value is editable.
-   */
+  /** Whether the value is editable. */
   @Prop() readOnly?: boolean = false;
 
-  /**
-   * A value is required for the form to be submittable.
-   */
+  /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
 
-  /**
-   * The size of the input.
-   */
+  /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
 
-  /**
-   * The granularity that the value adheres to.
-   */
+  /** The granularity that the value adheres to. */
   @Prop() step?: number;
 
-  /**
-   * Type of form control.
-   */
+  /** Type of form control. */
   @Prop() type?: 'number' | 'range' = 'number';
 
-  /**
-   * The value of the control.
-   */
+  /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
-  /**
-   * Event emitted when the input loses focus.
-   */
+  /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
-  /**
-   * Event emitted when the input value changes.
-   */
+  /** Event emitted when the input value changes. */
   @StencilEvent() inputChange!: EventEmitter<InputEvent>;
 
-  /**
-   * Event emitted when the input gains focus.
-   */
+  /** Event emitted when the input gains focus. */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {

@@ -13,29 +13,19 @@ import { Component, h, Host, Prop } from '@stencil/core';
   shadow: false,
 })
 export class ModusWcInputLabel {
-  /**
-   * The `for` attribute of the label, matching the `id` of the associated input.
-   * */
+  /** The `for` attribute of the label, matching the `id` of the associated input. */
   @Prop() forId?: string;
 
-  /**
-   * Additional classes for custom styling.
-   * */
+  /** Additional classes for custom styling. */
   @Prop() customClass?: string = '';
 
-  /**
-   * Specifies the text direction of the label content.
-   */
+  /** Specifies the text direction of the label content. */
   @Prop() labelDir?: '' | 'ltr' | 'rtl' | 'auto';
 
-  /**
-   * The text to display within the label.
-   * */
+  /** The text to display within the label. */
   @Prop() labelText?: string;
 
-  /**
-   * Whether the label indicates a required field.
-   * */
+  /** Whether the label indicates a required field. */
   @Prop() required?: boolean = false;
 
   private getClasses = (): string => {

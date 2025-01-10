@@ -18,9 +18,7 @@ export class ModusWcBadge {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * The color variant of the badge.
-   */
+  /** The color variant of the badge. */
   @Prop() color:
     | 'primary'
     | 'secondary'
@@ -30,24 +28,16 @@ export class ModusWcBadge {
     | 'warning'
     | 'danger' = 'primary';
 
-  /**
-   * The content to display inside the badge. For 'counter' type, this should be a number.
-   */
+  /** The content to display inside the badge. For 'counter' type, this should be a number. */
   @Prop() content!: string;
 
-  /**
-   * Custom CSS class to apply to the span element.
-   */
+  /** Custom CSS class to apply to the span element. */
   @Prop() customClass: string = '';
 
-  /**
-   * The size of the badge.
-   */
+  /** The size of the badge. */
   @Prop() size: ModusSize = 'md';
 
-  /**
-   * The variant of the badge.
-   */
+  /** The variant of the badge. */
   @Prop() variant: 'counter' | 'filled' | 'text' = 'filled';
 
   componentWillLoad() {

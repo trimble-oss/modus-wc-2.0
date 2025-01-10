@@ -16,9 +16,7 @@ export class ModusWcDivider {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * The color of the divider line.
-   */
+  /** The color of the divider line. */
   @Prop() color?:
     | 'primary'
     | 'secondary'
@@ -28,29 +26,19 @@ export class ModusWcDivider {
     | 'warning'
     | 'danger' = 'tertiary';
 
-  /**
-   * The content to display in the divider.
-   */
+  /** The content to display in the divider. */
   @Prop() content?: string = '';
 
-  /**
-   * Custom CSS class to apply to the divider element.
-   */
+  /** Custom CSS class to apply to the divider element. */
   @Prop() customClass?: string = '';
 
-  /**
-   * The orientation of the divider. This is in reference to how content will be rendered around the divider.
-   */
+  /** The orientation of the divider. This is in reference to how content will be rendered around the divider. */
   @Prop() orientation?: Orientation = 'vertical';
 
-  /**
-   * The position of the divider.
-   */
+  /** The position of the divider. */
   @Prop() position?: 'center' | 'end' | 'start' = 'center';
 
-  /**
-   * Whether the divider is responsive or not.
-   */
+  /** Whether the divider is responsive or not. */
   @Prop() responsive?: boolean = true;
 
   componentWillLoad() {

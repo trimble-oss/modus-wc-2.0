@@ -24,39 +24,25 @@ export class ModusWcTextarea {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * The ID of the element that describes the textarea.
-   */
+  /** The ID of the element that describes the textarea. */
   @Prop() ariaDescribedby?: string;
 
-  /**
-   * Indicates that the input should have a border.
-   */
+  /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
-  /**
-   * Custom CSS class to apply to the textarea (supports DaisyUI).
-   */
+  /** Custom CSS class to apply to the textarea (supports DaisyUI). */
   @Prop() customClass?: string = '';
 
-  /**
-   * The disabled state of the textarea.
-   */
+  /** The disabled state of the textarea. */
   @Prop() disabled?: boolean = false;
 
-  /**
-   * Indicates whether the input is invalid.
-   */
+  /** Indicates whether the input is invalid. */
   @Prop() inputAriaInvalid?: 'grammar' | 'spelling' | 'true' | 'false';
 
-  /**
-   * Specifies the text direction of the input content.
-   */
+  /** Specifies the text direction of the input content. */
   @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
 
-  /**
-   * The ID of the input element.
-   */
+  /** The ID of the input element. */
   @Prop() inputId?: string;
 
   /**
@@ -65,64 +51,40 @@ export class ModusWcTextarea {
    */
   @Prop() inputSpellcheck?: boolean;
 
-  /**
-   * The tabindex of the input.
-   */
+  /** The tabindex of the input. */
   @Prop() inputTabIndex?: number;
 
-  /**
-   * The maximum number of characters allowed in the textarea.
-   */
+  /** The maximum number of characters allowed in the textarea. */
   @Prop() maxLength?: number;
 
-  /**
-   * Name of the form control. Submitted with the form as part of a name/value pair.
-   */
+  /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string;
 
-  /**
-   * The placeholder text for the textarea.
-   */
+  /** The placeholder text for the textarea. */
   @Prop() placeholder?: string = '';
 
-  /**
-   * The readonly state of the textarea.
-   */
+  /** The readonly state of the textarea. */
   @Prop() readonly?: boolean = false;
 
-  /**
-   * A value is required for the form to be submittable.
-   */
+  /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
 
-  /**
-   * The number of visible text lines for the textarea.
-   */
+  /** The number of visible text lines for the textarea. */
   @Prop() rows?: number;
 
-  /**
-   * The size of the input.
-   */
+  /** The size of the input. */
   @Prop() size?: DaisySize = 'md';
 
-  /**
-   * The value of the textarea.
-   */
+  /** The value of the textarea. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
-  /**
-   * Emitted when the input loses focus.
-   */
+  /** Emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
-  /**
-   * Emitted when the input value changes.
-   */
+  /** Emitted when the input value changes. */
   @StencilEvent() inputChange!: EventEmitter<InputEvent>;
 
-  /**
-   * Emitted when the input gains focus.
-   */
+  /** Emitted when the input gains focus. */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {

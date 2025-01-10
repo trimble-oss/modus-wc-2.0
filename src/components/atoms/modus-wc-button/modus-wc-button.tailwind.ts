@@ -4,6 +4,7 @@ export const convertPropsToClasses = (props: {
   color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   disabled?: boolean;
   fullWidth?: boolean;
+  shape?: 'circle' | 'rectangle' | 'square';
   size?: DaisySize;
   variant?: 'borderless' | 'filled' | 'outlined';
 }): string => {
@@ -41,6 +42,17 @@ export const convertPropsToClasses = (props: {
     !!props.fullWidth
   ) {
     classes = `${classes} modus-wc-btn-block`;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(props, 'shape') && props.shape) {
+    switch (props.shape) {
+      case 'circle':
+        classes = `${classes} modus-wc-btn-circle`;
+        break;
+      case 'square':
+        classes = `${classes} modus-wc-btn-square`;
+        break;
+    }
   }
 
   if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {

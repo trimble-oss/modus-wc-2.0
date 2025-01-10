@@ -30,44 +30,28 @@ export class ModusWcMenu {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * The active menu item value, used to show an item as selected.
-   */
+  /** The active menu item value, used to show an item as selected. */
   @Prop() activeItemValue?: string;
 
-  /**
-   * Indicates that the menu should have a border.
-   */
+  /** Indicates that the menu should have a border. */
   @Prop() bordered?: boolean = true;
 
-  /**
-   * Custom CSS class to apply to the ul element.
-   */
+  /** Custom CSS class to apply to the ul element. */
   @Prop() customClass?: string = '';
 
-  /**
-   * The items to display in the menu.
-   */
+  /** The items to display in the menu. */
   @Prop({ mutable: true, reflect: true }) items: IMenuItem[] = [];
 
-  /**
-   * The menu title, rendered as the first item (disabled).
-   */
+  /** The menu title, rendered as the first item (disabled). */
   @Prop() menuTitle?: string;
 
-  /**
-   * The orientation of the menu.
-   */
+  /** The orientation of the menu. */
   @Prop() orientation?: Orientation = 'vertical';
 
-  /**
-   * The size of the menu.
-   */
+  /** The size of the menu. */
   @Prop() size?: ModusSize = 'md';
 
-  /**
-   * Event emitted when a menu item is selected.
-   */
+  /** Event emitted when a menu item is selected. */
   @StencilEvent() itemSelect!: EventEmitter<IMenuItem>;
 
   componentWillLoad() {

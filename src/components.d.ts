@@ -180,15 +180,19 @@ export namespace Components {
         /**
           * The text label displayed on the button.
          */
-        "label": string;
+        "label"?: string;
         /**
           * If true, the button will be in a pressed state (for toggle buttons).
          */
         "pressed"?: boolean;
         /**
+          * The shape of the button.
+         */
+        "shape": 'circle' | 'rectangle' | 'square';
+        /**
           * The size of the button.
          */
-        "size": ModusSize;
+        "size": DaisySize;
         /**
           * The type of the button.
          */
@@ -1036,7 +1040,7 @@ export namespace Components {
     }
     /**
      * A theme switcher component used to toggle the application theme and/or mode.
-     * Allows consumers to set the initial theme (Modus Classic, Prism, etc) and end-users to toggle modes (Light, Dark).
+     * Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcThemeSwitcher {
@@ -1712,7 +1716,7 @@ declare global {
     }
     /**
      * A theme switcher component used to toggle the application theme and/or mode.
-     * Allows consumers to set the initial theme (Modus Classic, Prism, etc) and end-users to toggle modes (Light, Dark).
+     * Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcThemeSwitcherElement extends Components.ModusWcThemeSwitcher, HTMLStencilElement {
@@ -1999,7 +2003,7 @@ declare namespace LocalJSX {
         /**
           * The text label displayed on the button.
          */
-        "label": string;
+        "label"?: string;
         /**
           * Event emitted when the button is clicked or activated via keyboard.
          */
@@ -2009,9 +2013,13 @@ declare namespace LocalJSX {
          */
         "pressed"?: boolean;
         /**
+          * The shape of the button.
+         */
+        "shape"?: 'circle' | 'rectangle' | 'square';
+        /**
           * The size of the button.
          */
-        "size"?: ModusSize;
+        "size"?: DaisySize;
         /**
           * The type of the button.
          */
@@ -2977,7 +2985,7 @@ declare namespace LocalJSX {
     }
     /**
      * A theme switcher component used to toggle the application theme and/or mode.
-     * Allows consumers to set the initial theme (Modus Classic, Prism, etc) and end-users to toggle modes (Light, Dark).
+     * Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcThemeSwitcher {
@@ -3349,7 +3357,7 @@ declare module "@stencil/core" {
             "modus-wc-theme-provider": LocalJSX.ModusWcThemeProvider & JSXBase.HTMLAttributes<HTMLModusWcThemeProviderElement>;
             /**
              * A theme switcher component used to toggle the application theme and/or mode.
-             * Allows consumers to set the initial theme (Modus Classic, Prism, etc) and end-users to toggle modes (Light, Dark).
+             * Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-theme-switcher": LocalJSX.ModusWcThemeSwitcher & JSXBase.HTMLAttributes<HTMLModusWcThemeSwitcherElement>;

@@ -26,44 +26,28 @@ export class ModusWcCollapse {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /**
-   * Indicates that the component should have a border.
-   */
+  /** Indicates that the component should have a border. */
   @Prop() bordered?: boolean = true;
 
-  /**
-   * The description of the collapse component.
-   */
+  /** The description of the collapse component. */
   @Prop() collapseDescription?: string = '';
 
-  /**
-   * The title of the collapse component.
-   */
+  /** The title of the collapse component. */
   @Prop() collapseTitle?: string = '';
 
-  /**
-   * Custom CSS class to apply to the inner div.
-   */
+  /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
-  /**
-   * Controls whether the collapse is expanded or not.
-   */
+  /** Controls whether the collapse is expanded or not. */
   @Prop({ mutable: true }) expanded?: boolean = false;
 
-  /**
-   * The icon name, should match the CSS class in the icon font.
-   */
+  /** The icon name, should match the CSS class in the icon font. */
   @Prop() icon?: string = '';
 
-  /**
-   * Sets the aria-label attribute of the icon component.
-   */
+  /** Sets the aria-label attribute of the icon component. */
   @Prop() iconAriaLabel?: string = '';
 
-  /**
-   * Event emitted when the expanded prop is internally changed.
-   */
+  /** Event emitted when the expanded prop is internally changed. */
   @StencilEvent() expandedChange!: EventEmitter<boolean>;
 
   @Watch('expanded')
