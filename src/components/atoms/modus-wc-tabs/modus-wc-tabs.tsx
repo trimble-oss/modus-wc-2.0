@@ -12,7 +12,27 @@ import {
   convertPropsToClasses,
   convertPropsToClassesTab,
 } from './modus-wc-tabs.tailwind';
-import { DaisySize } from '../../types';
+import { ModusSize } from '../../types';
+
+export interface IModusWcTab {
+  /** An optional aria-label to apply to the tab button */
+  ariaLabel?: string;
+
+  /** Custom CSS class to apply to the inner button. */
+  customClass?: string;
+
+  /** Whether the tab is disabled. */
+  disabled?: boolean;
+
+  /** A Modus Icon to display in the tab. */
+  icon?: string;
+
+  /** The position of the icon. */
+  iconPosition?: 'left' | 'right';
+
+  /** The content to display in the tab. */
+  label?: string;
+}
 
 /**
  * A customizable tabs component used to create groups of tabs.
@@ -35,7 +55,7 @@ export class ModusWcTabs {
   @Prop() customClass?: string = '';
 
   /** The size of the tabs. */
-  @Prop() size?: DaisySize = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /// add nbsp to input label required * so it does't break ona newline
 
@@ -155,24 +175,4 @@ export class ModusWcTabs {
       </Host>
     );
   }
-}
-
-export interface IModusWcTab {
-  /** An optional aria-label to apply to the tab button */
-  ariaLabel?: string;
-
-  /** Custom CSS class to apply to the inner button. */
-  customClass?: string;
-
-  /** Whether the tab is disabled. */
-  disabled?: boolean;
-
-  /** A Modus Icon to display in the tab. */
-  icon?: string;
-
-  /** The position of the icon. */
-  iconPosition?: 'left' | 'right';
-
-  /** The content to display in the tab. */
-  label?: string;
 }

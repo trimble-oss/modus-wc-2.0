@@ -841,7 +841,7 @@ export namespace Components {
         /**
           * The size of the tabs.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * Additional styling for the tabs.
          */
@@ -2758,7 +2758,7 @@ declare namespace LocalJSX {
         /**
           * The size of the tabs.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * Additional styling for the tabs.
          */
