@@ -31,7 +31,7 @@ const meta: Meta<ThemeSwitcherArgs> = {
       control: 'object',
       description: 'Initial theme configuration (set on the theme provider).',
       table: {
-        defaultValue: { summary: '{ theme: "modus-classic" }' },
+        defaultValue: { summary: '{ theme: "modus-modern" }' },
       },
     },
   },

@@ -63,10 +63,10 @@ const preview: Preview = {
       themes: {
         'modus-classic-light': 'modus-classic-light',
         'modus-classic-dark': 'modus-classic-dark',
-        'prism-light': 'prism-light',
-        'prism-dark': 'prism-dark',
+        'modus-modern-light': 'modus-modern-light',
+        'modus-modern-dark': 'modus-modern-dark',
       },
-      defaultTheme: 'modus-classic-light',
+      defaultTheme: 'modus-modern-light',
       attributeName: 'data-theme',
     }),
   ],
