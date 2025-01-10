@@ -4,7 +4,7 @@ import { IThemeConfig, ThemeMode, ThemeName } from './theme.types';
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const { state, onChange, reset, dispose } = createStore<IThemeConfig>({
   mode: 'light' as ThemeMode,
-  theme: 'modus-classic' as ThemeName,
+  theme: 'modus-modern' as ThemeName,
 });
 
 export const themeStore = {
@@ -19,7 +19,7 @@ export const themeStore = {
 // Initialize theme store with system preferences and stored values
 export const initializeThemeStore = (initialConfig?: Partial<IThemeConfig>) => {
   // Set default theme
-  state.theme = initialConfig?.theme || 'modus-classic';
+  state.theme = initialConfig?.theme || 'modus-modern';
 
   // Get mode from storage or system preferences
   const stored = localStorage.getItem('modus-theme-config');
