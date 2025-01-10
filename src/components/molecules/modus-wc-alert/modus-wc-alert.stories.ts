@@ -46,7 +46,6 @@ const Template: Story = {
 >
   <modus-wc-button
     aria-label="View messages"
-    color="tertiary"
     label="View Messages"
     slot="button"
   />

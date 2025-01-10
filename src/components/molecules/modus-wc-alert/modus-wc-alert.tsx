@@ -11,7 +11,7 @@ import { convertPropsToClasses } from './modus-wc-alert.tailwind';
   styleUrl: 'modus-wc-alert.scss',
   shadow: false,
 })
-export class ModusWcIcon {
+export class ModusWcAlert {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
