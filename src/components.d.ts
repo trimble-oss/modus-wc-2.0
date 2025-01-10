@@ -1012,7 +1012,7 @@ export namespace Components {
     }
     /**
      * A theme switcher component used to toggle the application theme and/or mode.
-     * Allows consumers to set the initial theme (Modus Classic, Prism, etc) and end-users to toggle modes (Light, Dark).
+     * Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcThemeSwitcher {
@@ -1660,7 +1660,7 @@ declare global {
     }
     /**
      * A theme switcher component used to toggle the application theme and/or mode.
-     * Allows consumers to set the initial theme (Modus Classic, Prism, etc) and end-users to toggle modes (Light, Dark).
+     * Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcThemeSwitcherElement extends Components.ModusWcThemeSwitcher, HTMLStencilElement {
@@ -2895,7 +2895,7 @@ declare namespace LocalJSX {
     }
     /**
      * A theme switcher component used to toggle the application theme and/or mode.
-     * Allows consumers to set the initial theme (Modus Classic, Prism, etc) and end-users to toggle modes (Light, Dark).
+     * Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcThemeSwitcher {
@@ -3261,7 +3261,7 @@ declare module "@stencil/core" {
             "modus-wc-theme-provider": LocalJSX.ModusWcThemeProvider & JSXBase.HTMLAttributes<HTMLModusWcThemeProviderElement>;
             /**
              * A theme switcher component used to toggle the application theme and/or mode.
-             * Allows consumers to set the initial theme (Modus Classic, Prism, etc) and end-users to toggle modes (Light, Dark).
+             * Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-theme-switcher": LocalJSX.ModusWcThemeSwitcher & JSXBase.HTMLAttributes<HTMLModusWcThemeSwitcherElement>;
