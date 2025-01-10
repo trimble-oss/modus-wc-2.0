@@ -1,4 +1,5 @@
 import { h, Component, Host, Prop } from '@stencil/core';
+
 import { convertPropsToClasses } from './modus-wc-typography.tailwind';
 import { DaisySize } from '../../types';
 

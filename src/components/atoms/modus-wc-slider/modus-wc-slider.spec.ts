@@ -1,4 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
+
 import { ModusWcSlider } from './modus-wc-slider';
 
 describe('modus-wc-slider', () => {

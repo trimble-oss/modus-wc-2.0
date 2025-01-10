@@ -10,6 +10,7 @@ import {
   Prop,
   State,
 } from '@stencil/core';
+
 import { themeStore } from '../../../providers/theme/theme.store';
 import { IThemeConfig } from '../../../providers/theme/theme.types';
 

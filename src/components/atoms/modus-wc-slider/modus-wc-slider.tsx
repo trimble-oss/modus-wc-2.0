@@ -7,6 +7,7 @@ import {
   Host,
   Prop,
 } from '@stencil/core';
+
 import { convertPropsToClasses } from './modus-wc-slider.tailwind';
 import { DaisySize } from '../../types';
 

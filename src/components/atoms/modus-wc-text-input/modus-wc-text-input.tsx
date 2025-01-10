@@ -7,6 +7,7 @@ import {
   Host,
   Prop,
 } from '@stencil/core';
+
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
 import { ModusSize } from '../../types';
 

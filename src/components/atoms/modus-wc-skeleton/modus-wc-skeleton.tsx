@@ -1,4 +1,5 @@
 import { Component, Host, Prop, h } from '@stencil/core';
+
 import { convertPropsToClasses } from './modus-wc-skeleton.tailwind';
 
 /**

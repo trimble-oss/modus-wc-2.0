@@ -1,4 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
+
 import { ModusWcBadge } from './modus-wc-badge';
 
 describe('modus-wc-badge', () => {

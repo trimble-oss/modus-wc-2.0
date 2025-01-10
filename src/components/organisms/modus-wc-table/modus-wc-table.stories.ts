@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { html } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
-import { Density } from '../../types';
+import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+
 import { ITableColumn } from './modus-wc-table';
+import { Density } from '../../types';
 
 const defaultColumns: ITableColumn[] = [
   {

@@ -1,4 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
+
 import { ITableColumn, ModusWcTable } from './modus-wc-table';
 
 describe('modus-wc-table', () => {

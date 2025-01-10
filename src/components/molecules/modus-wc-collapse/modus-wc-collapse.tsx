@@ -8,6 +8,7 @@ import {
   Prop,
   Watch,
 } from '@stencil/core';
+
 import { convertPropsToClasses } from './modus-wc-collapse.tailwind';
 
 /**

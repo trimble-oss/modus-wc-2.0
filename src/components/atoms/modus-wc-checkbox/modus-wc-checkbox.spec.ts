@@ -1,4 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
+
 import { ModusWcCheckbox } from './modus-wc-checkbox';
 
 describe('modus-wc-checkbox', () => {

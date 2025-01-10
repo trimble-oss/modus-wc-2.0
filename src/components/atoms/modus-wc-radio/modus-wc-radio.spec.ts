@@ -1,4 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
+
 import { ModusWcRadio } from './modus-wc-radio';
 
 describe('modus-wc-radio', () => {

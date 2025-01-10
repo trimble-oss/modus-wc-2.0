@@ -8,6 +8,7 @@ import {
   Listen,
   Prop,
 } from '@stencil/core';
+
 import { convertPropsToClasses } from './modus-wc-button.tailwind';
 import { DaisySize } from '../../types';
 

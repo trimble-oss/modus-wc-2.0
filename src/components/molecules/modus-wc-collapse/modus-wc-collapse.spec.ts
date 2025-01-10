@@ -1,4 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
+
 import { ModusWcCollapse } from './modus-wc-collapse';
 import { ModusWcIcon } from '../../atoms/modus-wc-icon/modus-wc-icon';
 

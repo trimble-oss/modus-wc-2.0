@@ -1,4 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
+
 import { ModusWcSelect } from './modus-wc-select';
 
 describe('modus-wc-select', () => {

@@ -1,4 +1,5 @@
 import { Component, h, Host, Prop } from '@stencil/core';
+
 import { convertPropsToClasses } from './modus-wc-tooltip.tailwind';
 
 /**

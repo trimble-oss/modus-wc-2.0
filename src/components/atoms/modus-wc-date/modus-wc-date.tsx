@@ -7,6 +7,7 @@ import {
   Event as StencilEvent,
   EventEmitter,
 } from '@stencil/core';
+
 import { convertPropsToClasses } from './modus-wc-date.tailwind';
 import { ModusSize } from '../../types';
 

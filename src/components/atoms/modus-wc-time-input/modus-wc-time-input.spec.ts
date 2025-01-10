@@ -1,4 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
+
 import { ModusWcTimeInput } from './modus-wc-time-input';
 
 describe('modus-wc-time-input', () => {

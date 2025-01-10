@@ -1,7 +1,8 @@
-import { html } from 'lit';
 import { Meta, StoryObj } from '@storybook/web-components';
-import { DaisySize } from '../../types';
+import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
+import { DaisySize } from '../../types';
 
 interface AvatarArgs {
   alt: string;
