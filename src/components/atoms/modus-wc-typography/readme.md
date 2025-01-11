@@ -21,6 +21,19 @@ Adheres to WCAG 2.2 standards.
 | `weight`      | `weight`       | The weight of the text.                              | `"bold" \| "light" \| "normal" \| undefined`                    | `'normal'` |
 
 
+## Dependencies
+
+### Used by
+
+ - [modus-wc-alert](../../molecules/modus-wc-alert)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-alert --> modus-wc-typography
+  style modus-wc-typography fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

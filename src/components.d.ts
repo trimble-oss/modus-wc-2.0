@@ -23,6 +23,32 @@ export { IThemeConfig } from "./providers/theme/theme.types";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
+     * A customizable alert component used to inform the user about important events.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcAlert {
+        /**
+          * Custom CSS class to apply to the outer div element.
+         */
+        "customClass"?: string;
+        /**
+          * The description of the alert. *
+         */
+        "description"?: string;
+        /**
+          * The Modus icon to render. *
+         */
+        "icon"?: string;
+        /**
+          * The title of the alert. *
+         */
+        "title": string;
+        /**
+          * The variant of the alert.
+         */
+        "variant"?: 'error' | 'info' | 'success' | 'warning';
+    }
+    /**
      * A customizable autocomplete component used to create searchable text inputs.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1271,6 +1297,16 @@ export interface ModusWcToggleCustomEvent<T> extends CustomEvent<T> {
     target: HTMLModusWcToggleElement;
 }
 declare global {
+    /**
+     * A customizable alert component used to inform the user about important events.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcAlertElement extends Components.ModusWcAlert, HTMLStencilElement {
+    }
+    var HTMLModusWcAlertElement: {
+        prototype: HTMLModusWcAlertElement;
+        new (): HTMLModusWcAlertElement;
+    };
     interface HTMLModusWcAutocompleteElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": Event;
@@ -1744,6 +1780,7 @@ declare global {
         new (): HTMLModusWcTypographyElement;
     };
     interface HTMLElementTagNameMap {
+        "modus-wc-alert": HTMLModusWcAlertElement;
         "modus-wc-autocomplete": HTMLModusWcAutocompleteElement;
         "modus-wc-avatar": HTMLModusWcAvatarElement;
         "modus-wc-badge": HTMLModusWcBadgeElement;
@@ -1774,6 +1811,32 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    /**
+     * A customizable alert component used to inform the user about important events.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcAlert {
+        /**
+          * Custom CSS class to apply to the outer div element.
+         */
+        "customClass"?: string;
+        /**
+          * The description of the alert. *
+         */
+        "description"?: string;
+        /**
+          * The Modus icon to render. *
+         */
+        "icon"?: string;
+        /**
+          * The title of the alert. *
+         */
+        "title": string;
+        /**
+          * The variant of the alert.
+         */
+        "variant"?: 'error' | 'info' | 'success' | 'warning';
+    }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
      * Adheres to WCAG 2.2 standards.
@@ -3117,6 +3180,7 @@ declare namespace LocalJSX {
         "weight"?: TypographyWeight;
     }
     interface IntrinsicElements {
+        "modus-wc-alert": ModusWcAlert;
         "modus-wc-autocomplete": ModusWcAutocomplete;
         "modus-wc-avatar": ModusWcAvatar;
         "modus-wc-badge": ModusWcBadge;
@@ -3150,6 +3214,11 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * A customizable alert component used to inform the user about important events.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-alert": LocalJSX.ModusWcAlert & JSXBase.HTMLAttributes<HTMLModusWcAlertElement>;
             /**
              * A customizable autocomplete component used to create searchable text inputs.
              * Adheres to WCAG 2.2 standards.

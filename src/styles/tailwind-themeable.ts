@@ -4,6 +4,11 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const themeable = [
+  //Alert
+  'modus-wc-alert-error',
+  'modus-wc-alert-info',
+  'modus-wc-alert-success',
+  'modus-wc-alert-warning',
   // Badge
   'modus-wc-badge-xs',
   'modus-wc-badge-sm',
