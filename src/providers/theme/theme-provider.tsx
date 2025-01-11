@@ -1,8 +1,8 @@
 import { Component, h, Prop } from '@stencil/core';
 
 import {
-  themeStore,
   initializeThemeStore,
+  themeStore,
   watchSystemTheme,
 } from './theme.store';
 import { IThemeConfig } from './theme.types';

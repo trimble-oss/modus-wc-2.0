@@ -1,11 +1,11 @@
 import {
   Component,
   Element,
-  Event as StencilEvent,
   EventEmitter,
   h,
   Host,
   Prop,
+  Event as StencilEvent,
 } from '@stencil/core';
 
 import { convertPropsToClasses } from './modus-wc-menu.tailwind';
