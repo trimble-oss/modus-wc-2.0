@@ -58,13 +58,13 @@ export default [
           },
         },
       ],
-      // Alphabetize named imports inside curly braces
       'sort-imports': [
         'error',
         {
+          allowSeparatedGroups: true,
           ignoreCase: true,
-          ignoreDeclarationSort: false, // Ensure that imports are alphabetized
-          memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+          ignoreDeclarationSort: true,
+          ignoreMemberSort: false,
         },
       ],
     },
