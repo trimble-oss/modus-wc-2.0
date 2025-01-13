@@ -1,5 +1,4 @@
 import { newSpecPage } from '@stencil/core/testing';
-
 import { ModusWcDivider } from './modus-wc-divider';
 
 describe('modus-wc-divider', () => {

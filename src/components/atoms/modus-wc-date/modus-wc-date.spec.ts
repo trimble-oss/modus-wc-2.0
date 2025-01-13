@@ -1,5 +1,4 @@
 import { newSpecPage } from '@stencil/core/testing';
-
 import { ModusWcDate } from './modus-wc-date';
 
 describe('modus-wc-date', () => {

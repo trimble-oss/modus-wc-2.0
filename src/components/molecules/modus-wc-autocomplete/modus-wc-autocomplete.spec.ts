@@ -1,5 +1,4 @@
 import { newSpecPage } from '@stencil/core/testing';
-
 import { ModusWcAutocomplete } from './modus-wc-autocomplete';
 import {
   IMenuItem,

@@ -8,7 +8,6 @@ import {
   Event as StencilEvent,
   Watch,
 } from '@stencil/core';
-
 import { convertPropsToClasses } from './modus-wc-collapse.tailwind';
 
 /**

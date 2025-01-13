@@ -1,5 +1,4 @@
 import { newSpecPage } from '@stencil/core/testing';
-
 import { ModusWcNumberInput } from './modus-wc-number-input';
 
 describe('modus-wc-number-input', () => {

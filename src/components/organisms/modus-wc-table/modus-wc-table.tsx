@@ -9,7 +9,6 @@ import {
   Prop,
   Event as StencilEvent,
 } from '@stencil/core';
-
 import { convertTablePropsToClasses } from './modus-wc-table.tailwind';
 import { Density } from '../../types';
 

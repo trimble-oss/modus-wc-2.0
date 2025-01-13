@@ -1,5 +1,4 @@
 import { newSpecPage } from '@stencil/core/testing';
-
 import { IMenuItem, ModusWcMenu } from './modus-wc-menu';
 
 describe('modus-wc-menu', () => {

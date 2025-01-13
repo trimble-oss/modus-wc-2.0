@@ -1,5 +1,4 @@
 import { newSpecPage } from '@stencil/core/testing';
-
 import { ModusWcSkeleton } from './modus-wc-skeleton';
 
 describe('modus-wc-skeleton', () => {

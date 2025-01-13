@@ -1,5 +1,4 @@
 import { newSpecPage } from '@stencil/core/testing';
-
 import { ModusWcTooltip } from './modus-wc-tooltip';
 
 describe('modus-wc-tooltip', () => {

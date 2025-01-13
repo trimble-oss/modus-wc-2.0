@@ -1,5 +1,4 @@
 import { newSpecPage } from '@stencil/core/testing';
-
 import { ModusWcTextarea } from './modus-wc-textarea';
 
 describe('modus-wc-textarea', () => {

@@ -7,7 +7,6 @@ import {
   Prop,
   Event as StencilEvent,
 } from '@stencil/core';
-
 import { convertPropsToClasses } from './modus-wc-checkbox.tailwind';
 import { DaisySize } from '../../types';
 

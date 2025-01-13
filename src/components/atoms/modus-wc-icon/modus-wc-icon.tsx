@@ -1,5 +1,4 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-
 import { DaisySize } from '../../types';
 
 /**

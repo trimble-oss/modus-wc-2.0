@@ -1,5 +1,4 @@
 import { newSpecPage } from '@stencil/core/testing';
-
 import { ModusWCTypography } from './modus-wc-typography';
 
 describe('modus-wc-typography', () => {

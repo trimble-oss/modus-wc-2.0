@@ -1,5 +1,4 @@
 import { newSpecPage } from '@stencil/core/testing';
-
 import { ModusWcIcon } from './modus-wc-icon';
 
 describe('modus-wc-icon', () => {

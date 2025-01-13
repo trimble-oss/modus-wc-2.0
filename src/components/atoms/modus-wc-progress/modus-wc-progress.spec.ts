@@ -1,5 +1,4 @@
 import { newSpecPage } from '@stencil/core/testing';
-
 import { ModusWcProgress } from './modus-wc-progress';
 
 describe('modus-wc-progress', () => {

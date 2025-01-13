@@ -1,5 +1,4 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-
 import { convertPropsToClasses } from './modus-wc-divider.tailwind';
 import { Orientation } from '../../types';
 

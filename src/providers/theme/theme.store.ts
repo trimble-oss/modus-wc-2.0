@@ -1,5 +1,4 @@
 import { createStore } from '@stencil/store';
-
 import { IThemeConfig, ThemeMode, ThemeName } from './theme.types';
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
