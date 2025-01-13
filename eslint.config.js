@@ -51,7 +51,7 @@ export default [
             ['internal'],
             ['parent', 'sibling', 'index'],
           ],
-          'newlines-between': 'always',
+          'newlines-between': 'never',
           alphabetize: {
             order: 'asc' /* or 'desc' */,
             caseInsensitive: true,
