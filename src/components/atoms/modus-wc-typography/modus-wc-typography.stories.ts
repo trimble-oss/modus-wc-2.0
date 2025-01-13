@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html, render } from 'lit';
-import { TypographyVariant, TypographyWeight } from './modus-wc-typography';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { TypographyVariant, TypographyWeight } from './modus-wc-typography';
 import { DaisySize } from '../../types';
 
 // Slot content was lost due to rendering issues when changing the "variant" attribute.

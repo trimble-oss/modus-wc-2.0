@@ -1,12 +1,12 @@
 import {
   Component,
   Element,
-  Event as StencilEvent,
   EventEmitter,
   h,
   Host,
   Prop,
   State,
+  Event as StencilEvent,
 } from '@stencil/core';
 import { IMenuItem } from '../../atoms/modus-wc-menu/modus-wc-menu';
 import { ModusSize } from '../../types';
