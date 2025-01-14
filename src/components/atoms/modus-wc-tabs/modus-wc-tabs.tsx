@@ -10,7 +10,7 @@ import {
 } from '@stencil/core';
 import {
   convertPropsToClasses,
-  convertPropsToClassesTab,
+  convertPropsToClassesTab as convertPropsToTabClasses,
 } from './modus-wc-tabs.tailwind';
 import { ModusSize } from '../../types';
 
@@ -78,20 +78,18 @@ export class ModusWcTabs {
       );
       this.el.ariaLabel = 'Tab Group';
     }
+
     if (!this.tabs || this.tabs.length === 0) {
       console.error('ModusWcTabs: tab data is required.');
     }
   }
 
-  /* Interactive Functionality */
-
   private handleClick(tab: IModusWcTab, index: number) {
     if (tab.disabled) return;
+
     this.tabChange.emit({ previousTab: this.activeTabIndex, newTab: index });
     this.activeTabIndex = index;
   }
-
-  /* CSS Functionality */
 
   private getClasses(): string {
     const classList: string[] = ['modus-wc-tabs'];
@@ -108,10 +106,10 @@ export class ModusWcTabs {
     return classList.join(' ');
   }
 
-  private getClassesTab(tab: IModusWcTab, index: number): string {
+  private getTabClasses(tab: IModusWcTab, index: number): string {
     const classList: string[] = ['modus-wc-tab'];
 
-    const propClasses = convertPropsToClassesTab({
+    const propClasses = convertPropsToTabClasses({
       active: index === this.activeTabIndex,
       disabled: tab.disabled,
     });
@@ -144,7 +142,7 @@ export class ModusWcTabs {
         role="tab"
         aria-disabled={tab.disabled}
         aria-label={(tab.label ?? tab.icon) + ' tab'}
-        class={this.getClassesTab(tab, index)}
+        class={this.getTabClasses(tab, index)}
         id={`tab-${index}`}
         onClick={() => this.handleClick(tab, index)}
       >
