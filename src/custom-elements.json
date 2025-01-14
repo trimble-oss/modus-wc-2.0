@@ -3440,6 +3440,14 @@
                 "text": "string"
               },
               "description": "Sets the aria-label attribute of the icon component."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "DaisySize"
+              },
+              "description": "Sets the size of the collapse component."
             }
           ],
           "tagName": "modus-wc-collapse",

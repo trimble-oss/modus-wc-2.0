@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { DaisySize } from '../../types';
 
 interface CollapseArgs {
   bordered?: boolean;
@@ -10,6 +11,7 @@ interface CollapseArgs {
   expanded?: boolean;
   icon?: string;
   'icon-aria-label'?: string;
+  size?: DaisySize;
 }
 
 const meta: Meta<CollapseArgs> = {
@@ -22,6 +24,13 @@ const meta: Meta<CollapseArgs> = {
     expanded: false,
     icon: 'info',
     'icon-aria-label': 'Information icon',
+    size: 'md',
+  },
+  argTypes: {
+    size: {
+      control: { type: 'inline-radio' },
+      options: ['xs', 'sm', 'md', 'lg'],
+    },
   },
   parameters: {
     layout: 'padded',
@@ -44,6 +53,7 @@ const Template: Story = {
   ?expanded=${args.expanded}
   icon=${ifDefined(args.icon)}
   icon-aria-label=${ifDefined(args['icon-aria-label'])}
+  size=${ifDefined(args.size)}
 >
   <div>Custom HTML content</div>
 </modus-wc-collapse>

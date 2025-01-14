@@ -8,7 +8,12 @@ import {
   Event as StencilEvent,
   Watch,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-collapse.tailwind';
+import {
+  convertCollapseSizeToDescriptionSizeClass,
+  convertCollapseSizeToTitleSizeClass,
+  convertPropsToClasses,
+} from './modus-wc-collapse.tailwind';
+import { DaisySize } from '../../types';
 
 /**
  * A customizable collapse component used for showing and hiding content.
@@ -47,6 +52,9 @@ export class ModusWcCollapse {
   /** Sets the aria-label attribute of the icon component. */
   @Prop() iconAriaLabel?: string = '';
 
+  /** Sets the size of the collapse component. */
+  @Prop() size?: DaisySize = 'md';
+
   /** Event emitted when the expanded prop is internally changed. */
   @StencilEvent() expandedChange!: EventEmitter<boolean>;
 
@@ -82,7 +90,7 @@ export class ModusWcCollapse {
     }
   };
 
-  private getClasses(): string {
+  private getOuterDivClasses(): string {
     const classList: string[] = ['modus-wc-collapse modus-wc-collapse-arrow'];
 
     const propClasses = convertPropsToClasses({
@@ -97,6 +105,32 @@ export class ModusWcCollapse {
     return classList.join(' ');
   }
 
+  private getInnerTitleDivClasses(): string {
+    const classList: string[] = [
+      'modus-wc-inline-flex modus-wc-items-center modus-wc-font-medium',
+    ];
+
+    const titleFontSize = convertCollapseSizeToTitleSizeClass({
+      size: this.size,
+    });
+
+    if (titleFontSize) classList.push(titleFontSize);
+
+    return classList.join(' ');
+  }
+
+  private getDescriptionDivClasses(): string {
+    const classList: string[] = ['modus-wc-font-light'];
+
+    const descriptionFontSize = convertCollapseSizeToDescriptionSizeClass({
+      size: this.size,
+    });
+
+    if (descriptionFontSize) classList.push(descriptionFontSize);
+
+    return classList.join(' ');
+  }
+
   render() {
     const baseId = this.getBaseId();
     const titleId = `${baseId}-title`;
@@ -104,7 +138,7 @@ export class ModusWcCollapse {
 
     return (
       <Host>
-        <div class={this.getClasses()}>
+        <div class={this.getOuterDivClasses()}>
           <input
             aria-controls={contentId}
             aria-expanded={this.expanded}
@@ -118,17 +152,20 @@ export class ModusWcCollapse {
             class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between"
             id={titleId}
           >
-            <div class="modus-wc-inline-flex modus-wc-items-center modus-wc-text-xl modus-wc-font-medium">
+            <div class={this.getInnerTitleDivClasses()}>
               {this.icon && (
                 <modus-wc-icon
                   decorative={true}
                   name={this.icon}
+                  size={this.size}
                 ></modus-wc-icon>
               )}
               {this.collapseTitle}
             </div>
             {this.collapseDescription && (
-              <div class="modus-wc-font-light">{this.collapseDescription}</div>
+              <div class={this.getDescriptionDivClasses()}>
+                {this.collapseDescription}
+              </div>
             )}
           </div>
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
