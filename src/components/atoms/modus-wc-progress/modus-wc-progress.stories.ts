@@ -1,6 +1,6 @@
+import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Meta, StoryObj } from '@storybook/web-components';
 
 interface ProgressArgs {
   'aria-label': string;
