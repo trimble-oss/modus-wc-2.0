@@ -10,6 +10,10 @@
   }
 }
 
+.modus-wc-collapse-arrow > .modus-wc-collapse-title:after {
+  top: 50%;
+}
+
 [data-theme='modus-classic-light'] .modus-wc-collapse,
 [data-theme='modus-classic-dark'] .modus-wc-collapse {
   border-radius: var(--modus-wc-border-radius-md);
