@@ -44,7 +44,8 @@ export class ModusWcInputLabel {
           {this.labelText}
           {this.required && (
             <span aria-hidden="true" class="required-indicator">
-              {' *'}
+              {/* Non-breaking space */}
+              {'\u00A0*'}
             </span>
           )}
           <slot />
