@@ -10,6 +10,7 @@ import {
 } from '@stencil/core';
 import {
   convertCollapseSizeToDescriptionSizeClass,
+  convertCollapseSizeToTitleCollapsePadding,
   convertCollapseSizeToTitleSizeClass,
   convertPropsToClasses,
 } from './modus-wc-collapse.tailwind';
@@ -105,6 +106,19 @@ export class ModusWcCollapse {
     return classList.join(' ');
   }
 
+  private getTitleCollapseDivClasses(): string {
+    const classList: string[] = [
+      'modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4',
+    ];
+    const paddingClass = convertCollapseSizeToTitleCollapsePadding({
+      size: this.size,
+    });
+
+    if (paddingClass) classList.push(paddingClass);
+
+    return classList.join(' ');
+  }
+
   private getInnerTitleDivClasses(): string {
     const classList: string[] = [
       'modus-wc-inline-flex modus-wc-items-center modus-wc-font-medium',
@@ -143,15 +157,13 @@ export class ModusWcCollapse {
             aria-controls={contentId}
             aria-expanded={this.expanded}
             aria-labelledby={titleId}
+            class="modus-wc-min-h-4"
             id={`${baseId}-checkbox`}
             onClick={this.handleClick}
             onKeyDown={this.handleKeyDown}
             type="checkbox"
           />
-          <div
-            class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between"
-            id={titleId}
-          >
+          <div class={this.getTitleCollapseDivClasses()} id={titleId}>
             <div class={this.getInnerTitleDivClasses()}>
               {this.icon && (
                 <modus-wc-icon
