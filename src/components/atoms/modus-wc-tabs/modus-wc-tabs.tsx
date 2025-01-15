@@ -15,9 +15,6 @@ import {
 import { ModusSize } from '../../types';
 
 export interface IModusWcTab {
-  /** An optional aria-label to apply to the tab button */
-  ariaLabel?: string;
-
   /** Custom CSS class to apply to the inner button. */
   customClass?: string;
 
@@ -56,8 +53,6 @@ export class ModusWcTabs {
 
   /** The size of the tabs. */
   @Prop() size?: ModusSize = 'md';
-
-  /// add nbsp to input label required * so it does't break ona newline
 
   /** The tabs to display. */
   @Prop() tabs: IModusWcTab[] = [];
