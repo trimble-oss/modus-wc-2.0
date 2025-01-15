@@ -45,14 +45,14 @@ exports[`modus-wc-collapse should render with custom props 1`] = `
     <input aria-controls="test-title-content" aria-expanded="" aria-labelledby="test-title-title" id="test-title-checkbox" type="checkbox">
     <div class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between" id="test-title-title">
       <div class="modus-wc-font-medium modus-wc-inline-flex modus-wc-items-center modus-wc-text-xl">
-        <modus-wc-icon>
+        <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
           <i aria-hidden="true" class="modus-icons modus-wc-icon--md" tabindex="-1">
             alert
           </i>
         </modus-wc-icon>
         Test title
       </div>
-      <div class="modus-wc-font-light">
+      <div class="modus-wc-font-light modus-wc-text-md">
         Test description
       </div>
     </div>
