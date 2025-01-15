@@ -5,32 +5,32 @@
 
 .modus-wc-tab modus-wc-icon + span,
 .modus-wc-tab span + modus-wc-icon {
-  padding-left: 8px;
+  padding-left: var(--modus-wc-spacing-sm);
 }
 
 .modus-wc-tab {
   display: inline-flex;
   align-items: center;
 
-  font-weight: 700;
+  font-weight: var(--modus-wc-font-weight-bold);
 
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
+  border-top-left-radius: var(--modus-wc-border-radius-md);
+  border-top-right-radius: var(--modus-wc-border-radius-md);
   --tab-border: 0px; //! This is rendered as 1px due to a calc(+1)
 
   // For centering purposes
   modus-wc-icon {
     .modus-wc-icon--xs {
-      line-height: 1.25rem;
+      line-height: calc(var(--modus-wc-line-height-sm) + 0.25rem);
     }
     .modus-wc-icon--sm {
-      line-height: 1.5rem;
+      line-height: var(--modus-wc-line-height-md);
     }
     .modus-wc-icon--md {
-      line-height: 2rem;
+      line-height: var(--modus-wc-line-height-lg);
     }
     .modus-wc-icon--lg {
-      line-height: 3rem;
+      line-height: var(--modus-wc-line-height-xl);
     }
   }
 }
@@ -88,7 +88,7 @@
   }
 
   &.modus-wc-tab-disabled {
-    --tab-color: #fff;
+    --tab-color: var(--modus-wc-color-white);
     background-color: var(--modus-wc-color-trimble-gray);
   }
 }
