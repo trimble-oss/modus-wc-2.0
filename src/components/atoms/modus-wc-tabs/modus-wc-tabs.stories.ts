@@ -19,12 +19,14 @@ const meta: Meta<TabsArgs> = {
   component: 'modus-wc-tabs',
   args: {
     'aria-label': 'Example Tab Group',
+    size: 'md',
     tabs: [
       { label: 'Tab 1' },
       { label: 'Tab 2' },
       { label: 'Tab 3', disabled: true },
       { icon: 'home' },
     ],
+    tabStyle: 'bordered',
   },
   argTypes: {
     tabStyle: {
