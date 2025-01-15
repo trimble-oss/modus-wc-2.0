@@ -1,12 +1,12 @@
 import {
   Component,
+  Element,
+  EventEmitter,
+  Fragment,
   h,
   Host,
   Prop,
-  Element,
   Event as StencilEvent,
-  EventEmitter,
-  Fragment,
 } from '@stencil/core';
 import {
   convertPropsToClasses,

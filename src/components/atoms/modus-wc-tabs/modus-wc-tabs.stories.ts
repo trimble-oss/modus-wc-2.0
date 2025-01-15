@@ -1,9 +1,9 @@
+import { withActions } from '@storybook/addon-actions/decorator';
+import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { Meta, StoryObj } from '@storybook/web-components';
-import { withActions } from '@storybook/addon-actions/decorator';
-import { DaisySize } from '../../types';
 import { IModusWcTab } from './modus-wc-tabs';
+import { DaisySize } from '../../types';
 
 interface TabsArgs {
   'aria-label': string;
