@@ -51,13 +51,13 @@ export const convertPropsToClassesTab = (props: {
 }): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'active') && props.active) {
+  if (Object.prototype.hasOwnProperty.call(props, 'active') && !!props.active) {
     classes = `${classes} modus-wc-tab-active`;
   }
 
   if (
     Object.prototype.hasOwnProperty.call(props, 'disabled') &&
-    props.disabled
+    !!props.disabled
   ) {
     classes = `${classes} modus-wc-tab-disabled`;
   }
