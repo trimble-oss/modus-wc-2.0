@@ -1,0 +1,155 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-tabs should render with custom props 1`] = `
+<modus-wc-tabs aria-label="Custom Tab Group" custom-class="test-class" size="sm" tab-style="boxed">
+  <!---->
+  <div aria-label="Tab Group" class="modus-wc-tabs modus-wc-tabs-boxed modus-wc-tabs-sm test-class" role="tablist">
+    <button aria-label="Tab 1 tab" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
+      <span>
+        Tab 1
+      </span>
+    </button>
+    <button aria-disabled="" aria-label="Tab 2 tab" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
+      <span>
+        Tab 2
+      </span>
+    </button>
+    <button aria-label="home tab" class="modus-wc-tab" id="tab-2" role="tab">
+      <modus-wc-icon name="home" size="sm"></modus-wc-icon>
+    </button>
+    <button aria-label="Settings tab" class="modus-wc-tab" id="tab-3" role="tab">
+      <modus-wc-icon name="settings" size="sm"></modus-wc-icon>
+      <span>
+        Settings
+      </span>
+    </button>
+    <button aria-label="Alerts tab" class="modus-wc-tab" id="tab-4" role="tab">
+      <span>
+        Alerts
+      </span>
+      <modus-wc-icon name="alert" size="sm"></modus-wc-icon>
+    </button>
+    <button aria-label="Custom Tab tab" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
+      <span>
+        Custom Tab
+      </span>
+    </button>
+  </div>
+  <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0">
+    <div class="modus-wc-tab-active"></div>
+    <div hidden=""></div>
+    <div hidden=""></div>
+    <div hidden=""></div>
+    <div hidden=""></div>
+    <div hidden=""></div>
+  </div>
+</modus-wc-tabs>
+`;
+
+exports[`modus-wc-tabs should render with default props (empty tabs) 1`] = `
+<modus-wc-tabs aria-label="Tab Group">
+  <!---->
+  <div aria-label="Tab Group" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist"></div>
+  <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0"></div>
+</modus-wc-tabs>
+`;
+
+exports[`modus-wc-tabs should render with default props (with tab data) 1`] = `
+<modus-wc-tabs aria-label="Tab Group">
+  <!---->
+  <div aria-label="Tab Group" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist">
+    <button aria-label="Tab 1 tab" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
+      <span>
+        Tab 1
+      </span>
+    </button>
+    <button aria-disabled="" aria-label="Tab 2 tab" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
+      <span>
+        Tab 2
+      </span>
+    </button>
+    <button aria-label="home tab" class="modus-wc-tab" id="tab-2" role="tab">
+      <modus-wc-icon name="home" size="md"></modus-wc-icon>
+    </button>
+    <button aria-label="Settings tab" class="modus-wc-tab" id="tab-3" role="tab">
+      <modus-wc-icon name="settings" size="md"></modus-wc-icon>
+      <span>
+        Settings
+      </span>
+    </button>
+    <button aria-label="Alerts tab" class="modus-wc-tab" id="tab-4" role="tab">
+      <span>
+        Alerts
+      </span>
+      <modus-wc-icon name="alert" size="md"></modus-wc-icon>
+    </button>
+    <button aria-label="Custom Tab tab" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
+      <span>
+        Custom Tab
+      </span>
+    </button>
+  </div>
+  <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0">
+    <div class="modus-wc-tab-active"></div>
+    <div hidden=""></div>
+    <div hidden=""></div>
+    <div hidden=""></div>
+    <div hidden=""></div>
+    <div hidden=""></div>
+  </div>
+</modus-wc-tabs>
+`;
+
+exports[`modus-wc-tabs should render with default props (with tab panel) 1`] = `
+<modus-wc-tabs aria-label="Tab Group">
+  <!---->
+  <div aria-label="Tab Group" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist">
+    <button aria-label="Tab 1 tab" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
+      <span>
+        Tab 1
+      </span>
+    </button>
+    <button aria-disabled="" aria-label="Tab 2 tab" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
+      <span>
+        Tab 2
+      </span>
+    </button>
+    <button aria-label="home tab" class="modus-wc-tab" id="tab-2" role="tab">
+      <modus-wc-icon name="home" size="md"></modus-wc-icon>
+    </button>
+    <button aria-label="Settings tab" class="modus-wc-tab" id="tab-3" role="tab">
+      <modus-wc-icon name="settings" size="md"></modus-wc-icon>
+      <span>
+        Settings
+      </span>
+    </button>
+    <button aria-label="Alerts tab" class="modus-wc-tab" id="tab-4" role="tab">
+      <span>
+        Alerts
+      </span>
+      <modus-wc-icon name="alert" size="md"></modus-wc-icon>
+    </button>
+    <button aria-label="Custom Tab tab" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
+      <span>
+        Custom Tab
+      </span>
+    </button>
+  </div>
+  <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0">
+    <div class="modus-wc-tab-active">
+      <p slot="tab-0">
+        Modus (noun) : a mode of procedure : a way of doing something
+      </p>
+    </div>
+    <div hidden="">
+      <p slot="tab-1">
+        secret (noun) : kept from knowledge or view : hidden
+      </p>
+    </div>
+    <div hidden=""></div>
+    <div hidden=""></div>
+    <div hidden=""></div>
+    <div hidden=""></div>
+  </div>
+</modus-wc-tabs>
+`;
