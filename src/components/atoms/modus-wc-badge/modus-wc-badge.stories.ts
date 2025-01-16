@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { ModusSize } from '../../types';
 
 interface BadgeArgs {
@@ -13,7 +14,7 @@ interface BadgeArgs {
     | 'warning'
     | 'danger';
   content: string;
-  'custom-class': string;
+  'custom-class'?: string;
   size: ModusSize;
   variant: 'counter' | 'filled' | 'text';
 }
@@ -63,7 +64,7 @@ const Template: Story = {
         aria-label="${args['aria-label']}"
         color="${args.color}"
         content="${args.content}"
-        ?custom-class="${args['custom-class']}"
+        custom-class="${ifDefined(args['custom-class'])}"
         size="${args.size}"
         variant="${args.variant}"
       ></modus-wc-badge>
