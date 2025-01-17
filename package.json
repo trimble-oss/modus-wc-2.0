@@ -111,11 +111,7 @@
       ]
     },
     "format:eslint": {
-      "command": "eslint --color --cache --cache-location .eslintcache --fix .",
-      "files": [
-        "src/**/*.{ts,tsx,js,jsx}",
-        "eslint.config.js"
-      ]
+      "command": "eslint --color --cache --cache-location .eslintcache --fix ."
     },
     "format:prettier": {
       "command": "prettier --write .",
@@ -131,18 +127,7 @@
       ]
     },
     "lint:eslint": {
-      "command": "eslint --color --cache --cache-location .eslintcache .",
-      "clean": false,
-      "files": [
-        "src/**/*.{ts,tsx,js,jsx}",
-        "!src/components.d.ts",
-        "eslint.config.js"
-      ],
-      "output": [
-        "src/**/*.{ts,tsx,js,jsx}",
-        "!src/components.d.ts",
-        ".eslintcache"
-      ]
+      "command": "eslint --color --cache --cache-location .eslintcache ."
     },
     "lint:prettier": {
       "command": "prettier --check .",
