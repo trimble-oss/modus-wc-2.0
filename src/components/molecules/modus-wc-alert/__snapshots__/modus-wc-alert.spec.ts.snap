@@ -4,7 +4,7 @@ exports[`modus-wc-alert should render error variant with alert icon 1`] = `
 <modus-wc-alert title="Custom title" variant="error">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-error" role="alert">
-    <modus-wc-icon>
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
       <i aria-hidden="true" class="modus-icons modus-wc-icon--md" tabindex="-1">
         alert
       </i>
@@ -25,7 +25,7 @@ exports[`modus-wc-alert should render info variant with info icon 1`] = `
 <modus-wc-alert title="Custom title" variant="info">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-info" role="alert">
-    <modus-wc-icon>
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
       <i aria-hidden="true" class="modus-icons modus-wc-icon--md" tabindex="-1">
         info
       </i>
@@ -46,7 +46,7 @@ exports[`modus-wc-alert should render success variant with check_circle icon 1`]
 <modus-wc-alert title="Custom title" variant="success">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-success" role="alert">
-    <modus-wc-icon>
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
       <i aria-hidden="true" class="modus-icons modus-wc-icon--md" tabindex="-1">
         check_circle
       </i>
@@ -67,7 +67,7 @@ exports[`modus-wc-alert should render warning variant with info icon 1`] = `
 <modus-wc-alert title="Custom title" variant="warning">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-warning" role="alert">
-    <modus-wc-icon>
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
       <i aria-hidden="true" class="modus-icons modus-wc-icon--md" tabindex="-1">
         info
       </i>
@@ -105,7 +105,7 @@ exports[`modus-wc-alert should render with default props 1`] = `
 <modus-wc-alert title="Custom title">
   <!---->
   <div class="modus-wc-alert" role="alert">
-    <modus-wc-icon>
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
       <i aria-hidden="true" class="modus-icons modus-wc-icon--md" tabindex="-1">
         info
       </i>

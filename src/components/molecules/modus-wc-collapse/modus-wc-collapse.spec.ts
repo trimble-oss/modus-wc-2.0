@@ -14,7 +14,7 @@ describe('modus-wc-collapse', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcCollapse, ModusWcIcon],
-      html: '<modus-wc-collapse bordered="false" collapse-description="Test description" collapse-title="Test title" custom-class="test-class" expanded="true" icon="alert" icon-aria-label="Alert icon"></modus-wc-collapse>',
+      html: '<modus-wc-collapse bordered="false" collapse-description="Test description" collapse-title="Test title" custom-class="test-class" expanded="true" icon="alert" icon-aria-label="Alert icon" size="sm"></modus-wc-collapse>',
     });
     expect(page.root).toMatchSnapshot();
   });

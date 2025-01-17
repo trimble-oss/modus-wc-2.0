@@ -316,6 +316,10 @@ export namespace Components {
           * Sets the aria-label attribute of the icon component.
          */
         "iconAriaLabel"?: string;
+        /**
+          * Sets the size of the collapse component.
+         */
+        "size"?: DaisySize;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -2196,6 +2200,10 @@ declare namespace LocalJSX {
           * Event emitted when the expanded prop is internally changed.
          */
         "onExpandedChange"?: (event: ModusWcCollapseCustomEvent<boolean>) => void;
+        /**
+          * Sets the size of the collapse component.
+         */
+        "size"?: DaisySize;
     }
     /**
      * A customizable date picker component used to create date inputs.

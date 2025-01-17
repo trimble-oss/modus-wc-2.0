@@ -1,8 +1,10 @@
 @import 'mixins';
 @import 'variables';
 
-// Reset styles
+// Universal resets
 *,
 *::before,
 *::after {
+  font-family: var(--modus-wc-font-family), sans-serif;
+  box-sizing: border-box;
 }
