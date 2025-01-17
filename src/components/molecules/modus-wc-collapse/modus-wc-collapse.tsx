@@ -9,10 +9,10 @@ import {
   Watch,
 } from '@stencil/core';
 import {
-  convertCollapseSizeToDescriptionSizeClass,
-  convertCollapseSizeToTitleCollapsePadding,
-  convertCollapseSizeToTitleSizeClass,
   convertPropsToClasses,
+  convertPropsToDescriptionDivClasses,
+  convertPropsToTitleChildDivClasses,
+  convertPropsToTitleDivClasses,
 } from './modus-wc-collapse.tailwind';
 import { DaisySize } from '../../types';
 
@@ -106,11 +106,12 @@ export class ModusWcCollapse {
     return classList.join(' ');
   }
 
-  private getTitleCollapseDivClasses(): string {
+  private getTitleDivClasses(): string {
     const classList: string[] = [
       'modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4',
     ];
-    const paddingClass = convertCollapseSizeToTitleCollapsePadding({
+
+    const paddingClass = convertPropsToTitleDivClasses({
       size: this.size,
     });
 
@@ -119,12 +120,12 @@ export class ModusWcCollapse {
     return classList.join(' ');
   }
 
-  private getInnerTitleDivClasses(): string {
+  private getTitleChildDivClasses(): string {
     const classList: string[] = [
       'modus-wc-inline-flex modus-wc-items-center modus-wc-font-medium',
     ];
 
-    const titleFontSize = convertCollapseSizeToTitleSizeClass({
+    const titleFontSize = convertPropsToTitleChildDivClasses({
       size: this.size,
     });
 
@@ -136,7 +137,7 @@ export class ModusWcCollapse {
   private getDescriptionDivClasses(): string {
     const classList: string[] = ['modus-wc-font-light'];
 
-    const descriptionFontSize = convertCollapseSizeToDescriptionSizeClass({
+    const descriptionFontSize = convertPropsToDescriptionDivClasses({
       size: this.size,
     });
 
@@ -163,8 +164,8 @@ export class ModusWcCollapse {
             onKeyDown={this.handleKeyDown}
             type="checkbox"
           />
-          <div class={this.getTitleCollapseDivClasses()} id={titleId}>
-            <div class={this.getInnerTitleDivClasses()}>
+          <div class={this.getTitleDivClasses()} id={titleId}>
+            <div class={this.getTitleChildDivClasses()}>
               {this.icon && (
                 <modus-wc-icon
                   decorative={true}

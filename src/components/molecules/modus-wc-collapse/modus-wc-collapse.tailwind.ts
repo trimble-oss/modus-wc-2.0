@@ -25,7 +25,7 @@ export const convertPropsToClasses = (props: {
   return classes;
 };
 
-export const convertCollapseSizeToDescriptionSizeClass = (props: {
+export const convertPropsToDescriptionDivClasses = (props: {
   size?: DaisySize;
 }): string => {
   let sizeClass = 'modus-wc-text-base';
@@ -37,7 +37,7 @@ export const convertCollapseSizeToDescriptionSizeClass = (props: {
   return sizeClass;
 };
 
-export const convertCollapseSizeToTitleSizeClass = (props: {
+export const convertPropsToTitleChildDivClasses = (props: {
   size?: DaisySize;
 }): string => {
   let classes = '';
@@ -61,7 +61,7 @@ export const convertCollapseSizeToTitleSizeClass = (props: {
   return classes;
 };
 
-export const convertCollapseSizeToTitleCollapsePadding = (props: {
+export const convertPropsToTitleDivClasses = (props: {
   size?: DaisySize;
 }): string => {
   let classes = '';
