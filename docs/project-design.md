@@ -23,14 +23,15 @@ The project follows a structured organization to maintain clarity and separation
 
 - Utilize a monorepo architecture for better project management:
   - `/docs`: Documentation files
-  - `/scripts`: Build related utility scripts
+  - `/integrations`: Integrations with 3rd party SPA frameworks (e.g., Angular, React)
   - `/src`: Source code for components
     - `/components`: Web components following atomic design
       - `/atoms`: Basic building blocks (e.g., buttons, input fields)
       - `/molecules`: Simple groups of UI elements (e.g., search bar)
       - `/organisms`: Complex UI components (e.g., header, footer)
+    - `/providers`: App wide state management code
+    - `/stories`: App wide Storybook stories
     - `/styles`: Global styles and variables
-    - `/utils`: Utility functions and helpers
 
 ### Atomic Design Principles
 
@@ -53,6 +54,7 @@ The project follows a structured organization to maintain clarity and separation
   - Utilize Daisy UI for pre-built component classes
   - Ensure styles are modular and customizable
   - Configure Tailwind CSS for utility-first styling
+  - Use the prefix `modus-wc-` for all Tailwind CSS and Daisy UI classes
 
 ### SASS Integration
 
