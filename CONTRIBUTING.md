@@ -96,6 +96,7 @@ Refer to our [responsive design](./docs/responsive-design.md) doc on how to crea
 We use JSDoc comments for each component to auto-generate documentation for Storybook. Ensure that you add appropriate JSDoc comments to your component's properties, methods, and events. Documentation is generated upon running `npm run build` or `npm start`.
 
 **Important tips for success:**
+
 - Follow the patterns of existing components (directory structure, file naming, code organization, etc.)
 - Do not use inline styling!
 - Prefix all CSS class names with `modus-wc-`
