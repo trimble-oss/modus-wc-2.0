@@ -91,9 +91,18 @@ Before starting development on a component, we suggest first reading the guideli
 
 Refer to our [custom themes](./docs/custom-themes.md) doc on how to add additional themes.
 
-Refer to our [response design](./docs/responsive-design.md) doc on how to create components with responsive designs.
+Refer to our [responsive design](./docs/responsive-design.md) doc on how to create components with responsive designs.
 
 We use JSDoc comments for each component to auto-generate documentation for Storybook. Ensure that you add appropriate JSDoc comments to your component's properties, methods, and events. Documentation is generated upon running `npm run build` or `npm start`.
+
+**Important tips for success:**
+- Follow the patterns of existing components (directory structure, file naming, code organization, etc.)
+- Do not use inline styling!
+- Prefix all CSS class names with `modus-wc-`
+- Keep the JSX clean and readable by encapsulating complex styling logic within functions
+  - If Tailwind related, within a `<component_name>.tailwind.ts` file
+- Prefer Tailwind and Daisy classes to custom Sass (SCSS)
+- Use the `<component_name>.scss` file for theme specific styling
 
 ## Style Guide
 
@@ -119,9 +128,9 @@ For more information about Jest snapshot testing, check out the docs [here](http
 1. Before working on an issue, the repository should be forked with intent to contribute to the parent repository.
 2. Branch from your fork using the naming convention `issue-{#}/{description}`. For example, `issue-123/my-bug-fix`.
 3. Make your changes. Be sure to update or add relevant tests!
-4. Run `npm run lint`, `npm run build`, and `npm run test`. If all is well, continue.
-5. If there is any change to the library's API, update the Storybook documentation under `./storybook/stories`.
-   - To run the Storybook site, `cd` into the directory and run `npm run storybook`. The library build will need to be up to date. The changes to the site will be deployed upon the PR merge to `main`.
+4. Run `npm run lint`, `npm run build`, and `npm run test:coverage`. If all is well, continue.
+5. If there is any change to the library's API, update the Storybook documentation under `./storybook/stories` or the component specific story.
+   - To run the Storybook site, `cd` into the root directory and run `npm start`. The library build will need to be up to date. The changes to the site will be deployed upon the PR merge to `main`.
 6. Once all of your changes have been made, squash your commits down to a singular commit with a relevant message.
    - If you prefer to do this with a GUI, GitHub Desktop has a [great squashing feature](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/managing-commits/squashing-commits).
 7. Submit your PR with your branch as the `head`, and the `@trimble-oss/modus-web-components` `main` branch as the `base`.
