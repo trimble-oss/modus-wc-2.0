@@ -13,6 +13,7 @@ import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-selec
 import { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
 import { IModusWcTab } from "./components/atoms/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
+import { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
@@ -22,6 +23,7 @@ export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-selec
 export { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
 export { IModusWcTab } from "./components/atoms/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
+export { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
@@ -30,21 +32,21 @@ export namespace Components {
      */
     interface ModusWcAlert {
         /**
+          * The description of the alert. *
+         */
+        "alertDescription"?: string;
+        /**
+          * The title of the alert. *
+         */
+        "alertTitle": string;
+        /**
           * Custom CSS class to apply to the outer div element.
          */
         "customClass"?: string;
         /**
-          * The description of the alert. *
-         */
-        "description"?: string;
-        /**
           * The Modus icon to render. *
          */
         "icon"?: string;
-        /**
-          * The title of the alert. *
-         */
-        "title": string;
         /**
           * The variant of the alert.
          */
@@ -1162,6 +1164,18 @@ export namespace Components {
         "value": string;
     }
     /**
+     * A customizable toast component used to stack elements, positioned on the corner of a page.
+     * The component supports a `<slot>` for injecting additional custom content inside the toast.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcToast {
+        /**
+          * Additional classes for custom styling.
+         */
+        "customClass"?: string;
+        "position"?: ToastPosition;
+    }
+    /**
      * A customizable checkbox component.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1796,6 +1810,17 @@ declare global {
         prototype: HTMLModusWcTimeInputElement;
         new (): HTMLModusWcTimeInputElement;
     };
+    /**
+     * A customizable toast component used to stack elements, positioned on the corner of a page.
+     * The component supports a `<slot>` for injecting additional custom content inside the toast.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcToastElement extends Components.ModusWcToast, HTMLStencilElement {
+    }
+    var HTMLModusWcToastElement: {
+        prototype: HTMLModusWcToastElement;
+        new (): HTMLModusWcToastElement;
+    };
     interface HTMLModusWcToggleElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
@@ -1866,6 +1891,7 @@ declare global {
         "modus-wc-theme-provider": HTMLModusWcThemeProviderElement;
         "modus-wc-theme-switcher": HTMLModusWcThemeSwitcherElement;
         "modus-wc-time-input": HTMLModusWcTimeInputElement;
+        "modus-wc-toast": HTMLModusWcToastElement;
         "modus-wc-toggle": HTMLModusWcToggleElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
@@ -1878,21 +1904,21 @@ declare namespace LocalJSX {
      */
     interface ModusWcAlert {
         /**
+          * The description of the alert. *
+         */
+        "alertDescription"?: string;
+        /**
+          * The title of the alert. *
+         */
+        "alertTitle": string;
+        /**
           * Custom CSS class to apply to the outer div element.
          */
         "customClass"?: string;
         /**
-          * The description of the alert. *
-         */
-        "description"?: string;
-        /**
           * The Modus icon to render. *
          */
         "icon"?: string;
-        /**
-          * The title of the alert. *
-         */
-        "title": string;
         /**
           * The variant of the alert.
          */
@@ -3164,6 +3190,18 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
+     * A customizable toast component used to stack elements, positioned on the corner of a page.
+     * The component supports a `<slot>` for injecting additional custom content inside the toast.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcToast {
+        /**
+          * Additional classes for custom styling.
+         */
+        "customClass"?: string;
+        "position"?: ToastPosition;
+    }
+    /**
      * A customizable checkbox component.
      * Adheres to WCAG 2.2 standards.
      */
@@ -3304,6 +3342,7 @@ declare namespace LocalJSX {
         "modus-wc-theme-provider": ModusWcThemeProvider;
         "modus-wc-theme-switcher": ModusWcThemeSwitcher;
         "modus-wc-time-input": ModusWcTimeInput;
+        "modus-wc-toast": ModusWcToast;
         "modus-wc-toggle": ModusWcToggle;
         "modus-wc-tooltip": ModusWcTooltip;
         "modus-wc-typography": ModusWcTypography;
@@ -3443,6 +3482,12 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-time-input": LocalJSX.ModusWcTimeInput & JSXBase.HTMLAttributes<HTMLModusWcTimeInputElement>;
+            /**
+             * A customizable toast component used to stack elements, positioned on the corner of a page.
+             * The component supports a `<slot>` for injecting additional custom content inside the toast.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-toast": LocalJSX.ModusWcToast & JSXBase.HTMLAttributes<HTMLModusWcToastElement>;
             /**
              * A customizable checkbox component.
              * Adheres to WCAG 2.2 standards.

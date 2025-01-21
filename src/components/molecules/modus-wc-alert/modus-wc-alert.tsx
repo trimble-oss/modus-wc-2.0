@@ -15,17 +15,17 @@ export class ModusWcAlert {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** The description of the alert. **/
+  @Prop() alertDescription?: string;
+
+  /** The title of the alert. **/
+  @Prop() alertTitle!: string;
+
   /** Custom CSS class to apply to the outer div element. */
   @Prop() customClass?: string = '';
 
-  /** The description of the alert. **/
-  @Prop() description?: string;
-
   /** The Modus icon to render. **/
   @Prop() icon?: string;
-
-  /** The title of the alert. **/
-  @Prop() title!: string;
 
   /** The variant of the alert. */
   @Prop() variant?: 'error' | 'info' | 'success' | 'warning';
@@ -67,10 +67,10 @@ export class ModusWcAlert {
           <modus-wc-icon name={this.getIconName()} />
           <div>
             <modus-wc-typography variant="h3" weight="bold">
-              {this.title}
+              {this.alertTitle}
             </modus-wc-typography>
-            {this.description && (
-              <modus-wc-typography>{this.description}</modus-wc-typography>
+            {this.alertDescription && (
+              <modus-wc-typography>{this.alertDescription}</modus-wc-typography>
             )}
           </div>
           <slot name="button" />

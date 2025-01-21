@@ -13,13 +13,13 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property             | Attribute      | Description                                         | Type                                                       | Default     |
-| -------------------- | -------------- | --------------------------------------------------- | ---------------------------------------------------------- | ----------- |
-| `customClass`        | `custom-class` | Custom CSS class to apply to the outer div element. | `string \| undefined`                                      | `''`        |
-| `description`        | `description`  | The description of the alert. *                     | `string \| undefined`                                      | `undefined` |
-| `icon`               | `icon`         | The Modus icon to render. *                         | `string \| undefined`                                      | `undefined` |
-| `title` _(required)_ | `title`        | The title of the alert. *                           | `string`                                                   | `undefined` |
-| `variant`            | `variant`      | The variant of the alert.                           | `"error" \| "info" \| "success" \| "warning" \| undefined` | `undefined` |
+| Property                  | Attribute           | Description                                         | Type                                                       | Default     |
+| ------------------------- | ------------------- | --------------------------------------------------- | ---------------------------------------------------------- | ----------- |
+| `alertDescription`        | `alert-description` | The description of the alert. *                     | `string \| undefined`                                      | `undefined` |
+| `alertTitle` _(required)_ | `alert-title`       | The title of the alert. *                           | `string`                                                   | `undefined` |
+| `customClass`             | `custom-class`      | Custom CSS class to apply to the outer div element. | `string \| undefined`                                      | `''`        |
+| `icon`                    | `icon`              | The Modus icon to render. *                         | `string \| undefined`                                      | `undefined` |
+| `variant`                 | `variant`           | The variant of the alert.                           | `"error" \| "info" \| "success" \| "warning" \| undefined` | `undefined` |
 
 
 ## Dependencies
