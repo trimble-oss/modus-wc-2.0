@@ -2820,6 +2820,61 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-toast/modus-wc-toast.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable toast component used to stack elements, positioned on the corner of a page.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the toast.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcToast",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Additional classes for custom styling."
+            },
+            {
+              "name": "position",
+              "fieldName": "position",
+              "type": {
+                "text": "ToastPosition"
+              }
+            }
+          ],
+          "tagName": "modus-wc-toast",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcToast",
+          "declaration": {
+            "name": "ModusWcToast",
+            "module": "src/components/atoms/modus-wc-toast/modus-wc-toast.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-toast",
+          "declaration": {
+            "name": "ModusWcToast",
+            "module": "src/components/atoms/modus-wc-toast/modus-wc-toast.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-toggle/modus-wc-toggle.tsx",
       "declarations": [
         {
@@ -3163,6 +3218,22 @@
           ],
           "attributes": [
             {
+              "name": "alert-description",
+              "fieldName": "alertDescription",
+              "type": {
+                "text": "string"
+              },
+              "description": "The description of the alert. *"
+            },
+            {
+              "name": "alert-title",
+              "fieldName": "alertTitle",
+              "type": {
+                "text": "string"
+              },
+              "description": "The title of the alert. *"
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
@@ -3171,28 +3242,12 @@
               "description": "Custom CSS class to apply to the outer div element."
             },
             {
-              "name": "description",
-              "fieldName": "description",
-              "type": {
-                "text": "string"
-              },
-              "description": "The description of the alert. *"
-            },
-            {
               "name": "icon",
               "fieldName": "icon",
               "type": {
                 "text": "string"
               },
               "description": "The Modus icon to render. *"
-            },
-            {
-              "name": "title",
-              "fieldName": "title",
-              "type": {
-                "text": "string"
-              },
-              "description": "The title of the alert. *"
             },
             {
               "name": "variant",
