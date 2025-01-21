@@ -28,6 +28,7 @@ export class ModusWcToast {
   /** Additional classes for custom styling. */
   @Prop() customClass?: string = '';
 
+  /** The position of the toast in the parent container. */
   @Prop() position?: ToastPosition = 'top-end';
 
   private getClasses = (): string => {

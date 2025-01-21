@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`modus-wc-badge should render with custom props 1`] = `
+exports[`modus-wc-toast should render with custom props 1`] = `
 <modus-wc-toast custom-class="test-class">
   <!---->
   <div class="modus-wc-toast modus-wc-toast-end modus-wc-toast-top test-class">
@@ -11,7 +11,7 @@ exports[`modus-wc-badge should render with custom props 1`] = `
 </modus-wc-toast>
 `;
 
-exports[`modus-wc-badge should render with default props 1`] = `
+exports[`modus-wc-toast should render with default props 1`] = `
 <modus-wc-toast>
   <!---->
   <div class="modus-wc-toast modus-wc-toast-end modus-wc-toast-top">
@@ -22,7 +22,7 @@ exports[`modus-wc-badge should render with default props 1`] = `
 </modus-wc-toast>
 `;
 
-exports[`modus-wc-badge should render with position bottom-center 1`] = `
+exports[`modus-wc-toast should render with position bottom-center 1`] = `
 <modus-wc-toast position="bottom-center">
   <!---->
   <div class="modus-wc-toast modus-wc-toast-center">
@@ -33,7 +33,7 @@ exports[`modus-wc-badge should render with position bottom-center 1`] = `
 </modus-wc-toast>
 `;
 
-exports[`modus-wc-badge should render with position bottom-end 1`] = `
+exports[`modus-wc-toast should render with position bottom-end 1`] = `
 <modus-wc-toast position="bottom-end">
   <!---->
   <div class="modus-wc-toast modus-wc-toast-end">
@@ -44,7 +44,7 @@ exports[`modus-wc-badge should render with position bottom-end 1`] = `
 </modus-wc-toast>
 `;
 
-exports[`modus-wc-badge should render with position bottom-start 1`] = `
+exports[`modus-wc-toast should render with position bottom-start 1`] = `
 <modus-wc-toast position="bottom-start">
   <!---->
   <div class="modus-wc-toast modus-wc-toast-start">
@@ -55,7 +55,7 @@ exports[`modus-wc-badge should render with position bottom-start 1`] = `
 </modus-wc-toast>
 `;
 
-exports[`modus-wc-badge should render with position middle-center 1`] = `
+exports[`modus-wc-toast should render with position middle-center 1`] = `
 <modus-wc-toast position="middle-center">
   <!---->
   <div class="modus-wc-toast modus-wc-toast-center modus-wc-toast-middle">
@@ -66,7 +66,7 @@ exports[`modus-wc-badge should render with position middle-center 1`] = `
 </modus-wc-toast>
 `;
 
-exports[`modus-wc-badge should render with position middle-end 1`] = `
+exports[`modus-wc-toast should render with position middle-end 1`] = `
 <modus-wc-toast position="middle-end">
   <!---->
   <div class="modus-wc-toast modus-wc-toast-end modus-wc-toast-middle">
@@ -77,7 +77,7 @@ exports[`modus-wc-badge should render with position middle-end 1`] = `
 </modus-wc-toast>
 `;
 
-exports[`modus-wc-badge should render with position middle-start 1`] = `
+exports[`modus-wc-toast should render with position middle-start 1`] = `
 <modus-wc-toast position="middle-start">
   <!---->
   <div class="modus-wc-toast modus-wc-toast-middle modus-wc-toast-start">
@@ -88,7 +88,7 @@ exports[`modus-wc-badge should render with position middle-start 1`] = `
 </modus-wc-toast>
 `;
 
-exports[`modus-wc-badge should render with position top-center 1`] = `
+exports[`modus-wc-toast should render with position top-center 1`] = `
 <modus-wc-toast position="top-center">
   <!---->
   <div class="modus-wc-toast modus-wc-toast-center modus-wc-toast-top">
@@ -99,7 +99,7 @@ exports[`modus-wc-badge should render with position top-center 1`] = `
 </modus-wc-toast>
 `;
 
-exports[`modus-wc-badge should render with position top-end 1`] = `
+exports[`modus-wc-toast should render with position top-end 1`] = `
 <modus-wc-toast position="top-end">
   <!---->
   <div class="modus-wc-toast modus-wc-toast-end modus-wc-toast-top">
@@ -110,7 +110,7 @@ exports[`modus-wc-badge should render with position top-end 1`] = `
 </modus-wc-toast>
 `;
 
-exports[`modus-wc-badge should render with position top-start 1`] = `
+exports[`modus-wc-toast should render with position top-start 1`] = `
 <modus-wc-toast position="top-start">
   <!---->
   <div class="modus-wc-toast modus-wc-toast-start modus-wc-toast-top">

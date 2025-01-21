@@ -5,8 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
+import { IAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
 import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
+import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 import { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
@@ -15,8 +16,9 @@ import { IModusWcTab } from "./components/atoms/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
+export { IAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
 export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
+export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 export { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
@@ -26,6 +28,28 @@ export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export namespace Components {
+    /**
+     * A customizable accordion component used for showing and hiding related groups of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcAccordion {
+        /**
+          * Indicates that the component should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Accordion items, used to render collapse components *
+         */
+        "items": IAccordionItem[];
+        /**
+          * Sets the size of the accordion component.
+         */
+        "size"?: DaisySize;
+    }
     /**
      * A customizable alert component used to inform the user about important events.
      * Adheres to WCAG 2.2 standards.
@@ -1173,6 +1197,9 @@ export namespace Components {
           * Additional classes for custom styling.
          */
         "customClass"?: string;
+        /**
+          * The position of the toast in the parent container.
+         */
         "position"?: ToastPosition;
     }
     /**
@@ -1278,6 +1305,10 @@ export namespace Components {
         "weight"?: TypographyWeight;
     }
 }
+export interface ModusWcAccordionCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcAccordionElement;
+}
 export interface ModusWcAutocompleteCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcAutocompleteElement;
@@ -1347,6 +1378,30 @@ export interface ModusWcToggleCustomEvent<T> extends CustomEvent<T> {
     target: HTMLModusWcToggleElement;
 }
 declare global {
+    interface HTMLModusWcAccordionElementEventMap {
+        "expandedChange": {
+    expanded: boolean;
+    index: number;
+  };
+    }
+    /**
+     * A customizable accordion component used for showing and hiding related groups of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcAccordionElement extends Components.ModusWcAccordion, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcAccordionElementEventMap>(type: K, listener: (this: HTMLModusWcAccordionElement, ev: ModusWcAccordionCustomEvent<HTMLModusWcAccordionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcAccordionElementEventMap>(type: K, listener: (this: HTMLModusWcAccordionElement, ev: ModusWcAccordionCustomEvent<HTMLModusWcAccordionElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcAccordionElement: {
+        prototype: HTMLModusWcAccordionElement;
+        new (): HTMLModusWcAccordionElement;
+    };
     /**
      * A customizable alert component used to inform the user about important events.
      * Adheres to WCAG 2.2 standards.
@@ -1865,6 +1920,7 @@ declare global {
         new (): HTMLModusWcTypographyElement;
     };
     interface HTMLElementTagNameMap {
+        "modus-wc-accordion": HTMLModusWcAccordionElement;
         "modus-wc-alert": HTMLModusWcAlertElement;
         "modus-wc-autocomplete": HTMLModusWcAutocompleteElement;
         "modus-wc-avatar": HTMLModusWcAvatarElement;
@@ -1898,6 +1954,35 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    /**
+     * A customizable accordion component used for showing and hiding related groups of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcAccordion {
+        /**
+          * Indicates that the component should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Accordion items, used to render collapse components *
+         */
+        "items"?: IAccordionItem[];
+        /**
+          * When a collapse expanded state is changed, this event outputs the relevant index and state
+         */
+        "onExpandedChange"?: (event: ModusWcAccordionCustomEvent<{
+    expanded: boolean;
+    index: number;
+  }>) => void;
+        /**
+          * Sets the size of the accordion component.
+         */
+        "size"?: DaisySize;
+    }
     /**
      * A customizable alert component used to inform the user about important events.
      * Adheres to WCAG 2.2 standards.
@@ -3199,6 +3284,9 @@ declare namespace LocalJSX {
           * Additional classes for custom styling.
          */
         "customClass"?: string;
+        /**
+          * The position of the toast in the parent container.
+         */
         "position"?: ToastPosition;
     }
     /**
@@ -3316,6 +3404,7 @@ declare namespace LocalJSX {
         "weight"?: TypographyWeight;
     }
     interface IntrinsicElements {
+        "modus-wc-accordion": ModusWcAccordion;
         "modus-wc-alert": ModusWcAlert;
         "modus-wc-autocomplete": ModusWcAutocomplete;
         "modus-wc-avatar": ModusWcAvatar;
@@ -3352,6 +3441,11 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * A customizable accordion component used for showing and hiding related groups of content.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-accordion": LocalJSX.ModusWcAccordion & JSXBase.HTMLAttributes<HTMLModusWcAccordionElement>;
             /**
              * A customizable alert component used to inform the user about important events.
              * Adheres to WCAG 2.2 standards.

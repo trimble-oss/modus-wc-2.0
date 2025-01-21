@@ -2846,7 +2846,8 @@
               "fieldName": "position",
               "type": {
                 "text": "ToastPosition"
-              }
+              },
+              "description": "The position of the toast in the parent container."
             }
           ],
           "tagName": "modus-wc-toast",
@@ -3190,6 +3191,95 @@
           "declaration": {
             "name": "ModusWCTypography",
             "module": "src/components/atoms/modus-wc-typography/modus-wc-typography.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-accordion/modus-wc-accordion.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcAccordion",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the component should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "items",
+              "fieldName": "items",
+              "type": {
+                "text": "IAccordionItem[]"
+              },
+              "description": "Accordion items, used to render collapse components *"
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "DaisySize"
+              },
+              "description": "Sets the size of the accordion component."
+            }
+          ],
+          "tagName": "modus-wc-accordion",
+          "events": [
+            {
+              "kind": "field",
+              "name": "expandedChange",
+              "type": {
+                "text": "EventEmitter<{\r\n    expanded: boolean;\r\n    index: number;\r\n  }>"
+              },
+              "description": "When a collapse expanded state is changed, this event outputs the relevant index and state"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcAccordion",
+          "declaration": {
+            "name": "ModusWcAccordion",
+            "module": "src/components/molecules/modus-wc-accordion/modus-wc-accordion.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-accordion",
+          "declaration": {
+            "name": "ModusWcAccordion",
+            "module": "src/components/molecules/modus-wc-accordion/modus-wc-accordion.tsx"
           }
         }
       ]
