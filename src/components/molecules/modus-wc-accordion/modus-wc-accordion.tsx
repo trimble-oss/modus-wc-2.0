@@ -79,7 +79,7 @@ export class ModusWcAccordion {
               expanded={item.expanded}
               icon={item.icon}
               iconAriaLabel={item.iconAriaLabel}
-              onExpandedChange={(e) =>
+              onExpandedChange={(e: CustomEvent<boolean>) =>
                 this.handleCollapseExpandedChange(e, index)
               }
               size={this.size}
