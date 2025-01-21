@@ -36,6 +36,10 @@ Adheres to WCAG 2.2 standards.
 
 ## Dependencies
 
+### Used by
+
+ - [modus-wc-accordion](../modus-wc-accordion)
+
 ### Depends on
 
 - [modus-wc-icon](../../atoms/modus-wc-icon)
@@ -44,6 +48,7 @@ Adheres to WCAG 2.2 standards.
 ```mermaid
 graph TD;
   modus-wc-collapse --> modus-wc-icon
+  modus-wc-accordion --> modus-wc-collapse
   style modus-wc-collapse fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -15,10 +15,10 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property      | Attribute      | Description                            | Type                                                                                                                                                              | Default     |
-| ------------- | -------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `customClass` | `custom-class` | Additional classes for custom styling. | `string \| undefined`                                                                                                                                             | `''`        |
-| `position`    | `position`     |                                        | `"bottom-center" \| "bottom-end" \| "bottom-start" \| "middle-center" \| "middle-end" \| "middle-start" \| "top-center" \| "top-end" \| "top-start" \| undefined` | `'top-end'` |
+| Property      | Attribute      | Description                                        | Type                                                                                                                                                              | Default     |
+| ------------- | -------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `customClass` | `custom-class` | Additional classes for custom styling.             | `string \| undefined`                                                                                                                                             | `''`        |
+| `position`    | `position`     | The position of the toast in the parent container. | `"bottom-center" \| "bottom-end" \| "bottom-start" \| "middle-center" \| "middle-end" \| "middle-start" \| "top-center" \| "top-end" \| "top-start" \| undefined` | `'top-end'` |
 
 
 ----------------------------------------------

@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcToast } from './modus-wc-toast';
 
-describe('modus-wc-badge', () => {
+describe('modus-wc-toast', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcToast],
