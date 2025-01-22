@@ -9,6 +9,7 @@ interface IconArgs {
   decorative: boolean;
   name: string;
   size: DaisySize;
+  color?: string;
 }
 
 const meta: Meta<IconArgs> = {
@@ -20,11 +21,15 @@ const meta: Meta<IconArgs> = {
     decorative: false,
     name: 'alert',
     size: 'md',
+    color: '',
   },
   argTypes: {
     size: {
       control: { type: 'inline-radio' },
       options: ['xs', 'sm', 'md', 'lg'],
+    },
+    color: {
+      control: { type: 'color' },
     },
   },
 };
@@ -42,6 +47,7 @@ const Template: Story = {
         ?decorative="${ifDefined(args.decorative)}"
         name="${args.name}"
         size="${args.size}"
+        color="${ifDefined(args.color)}"
       >
       </modus-wc-icon>
     `;
