@@ -66,14 +66,14 @@ export class ModusWcBreadcrumbs {
         <nav aria-label={this.el.ariaLabel} class={this.getClasses()}>
           <ol>
             {this.items.map((item, index) => {
-              const isLast = index === this.items.length - 1;
+              const isCurrentPage = index === this.items.length - 1;
 
               return (
                 <li
                   key={item.label}
-                  {...(isLast ? { 'aria-current': 'page' } : {})}
+                  {...(isCurrentPage ? { 'aria-current': 'page' } : {})}
                 >
-                  {isLast ? (
+                  {isCurrentPage ? (
                     <span>{item.label}</span>
                   ) : (
                     <a href={item.url}>{item.label}</a>
