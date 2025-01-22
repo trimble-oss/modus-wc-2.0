@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-alert should render error variant with alert icon 1`] = `
-<modus-wc-alert title="Custom title" variant="error">
+<modus-wc-alert alert-title="Custom title" variant="error">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-error" role="alert">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -22,7 +22,7 @@ exports[`modus-wc-alert should render error variant with alert icon 1`] = `
 `;
 
 exports[`modus-wc-alert should render info variant with info icon 1`] = `
-<modus-wc-alert title="Custom title" variant="info">
+<modus-wc-alert alert-title="Custom title" variant="info">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-info" role="alert">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -43,7 +43,7 @@ exports[`modus-wc-alert should render info variant with info icon 1`] = `
 `;
 
 exports[`modus-wc-alert should render success variant with check_circle icon 1`] = `
-<modus-wc-alert title="Custom title" variant="success">
+<modus-wc-alert alert-title="Custom title" variant="success">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-success" role="alert">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -64,7 +64,7 @@ exports[`modus-wc-alert should render success variant with check_circle icon 1`]
 `;
 
 exports[`modus-wc-alert should render warning variant with info icon 1`] = `
-<modus-wc-alert title="Custom title" variant="warning">
+<modus-wc-alert alert-title="Custom title" variant="warning">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-warning" role="alert">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -85,7 +85,7 @@ exports[`modus-wc-alert should render warning variant with info icon 1`] = `
 `;
 
 exports[`modus-wc-alert should render with custom props 1`] = `
-<modus-wc-alert custom-class="test-class" description="Custom description" icon="help" title="Custom title" variant="info">
+<modus-wc-alert alert-description="Custom description" alert-title="Custom title" custom-class="test-class" icon="help" variant="info">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-info test-class" role="alert">
     <modus-wc-icon name="help"></modus-wc-icon>
@@ -102,7 +102,7 @@ exports[`modus-wc-alert should render with custom props 1`] = `
 `;
 
 exports[`modus-wc-alert should render with default props 1`] = `
-<modus-wc-alert title="Custom title">
+<modus-wc-alert alerttitle="Custom title">
   <!---->
   <div class="modus-wc-alert" role="alert">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -113,9 +113,7 @@ exports[`modus-wc-alert should render with default props 1`] = `
     <div>
       <modus-wc-typography>
         <!---->
-        <h3 class="modus-wc-typography">
-          Custom title
-        </h3>
+        <h3 class="modus-wc-typography"></h3>
       </modus-wc-typography>
     </div>
   </div>
