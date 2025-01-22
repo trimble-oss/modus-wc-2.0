@@ -5,9 +5,10 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
+import { IModusWcAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
 import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
+import { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 import { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
@@ -16,9 +17,10 @@ import { IModusWcTab } from "./components/atoms/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { IAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
+export { IModusWcAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
 export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
+export { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 export { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
@@ -44,7 +46,7 @@ export namespace Components {
         /**
           * Accordion items, used to render collapse components *
          */
-        "items": IAccordionItem[];
+        "items": IModusWcAccordionItem[];
         /**
           * Sets the size of the accordion component.
          */
@@ -207,6 +209,24 @@ export namespace Components {
           * The variant of the badge.
          */
         "variant": 'counter' | 'filled' | 'text';
+    }
+    /**
+     * A customizable breadcrumbs component used to help users navigate through a website.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcBreadcrumbs {
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * The breadcrumbs to render.
+         */
+        "items": IModusWcBreadcrumb[];
+        /**
+          * The size of the breadcrumbs.
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -1456,6 +1476,16 @@ declare global {
         prototype: HTMLModusWcBadgeElement;
         new (): HTMLModusWcBadgeElement;
     };
+    /**
+     * A customizable breadcrumbs component used to help users navigate through a website.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcBreadcrumbsElement extends Components.ModusWcBreadcrumbs, HTMLStencilElement {
+    }
+    var HTMLModusWcBreadcrumbsElement: {
+        prototype: HTMLModusWcBreadcrumbsElement;
+        new (): HTMLModusWcBreadcrumbsElement;
+    };
     interface HTMLModusWcButtonElementEventMap {
         "buttonClick": MouseEvent | KeyboardEvent;
     }
@@ -1925,6 +1955,7 @@ declare global {
         "modus-wc-autocomplete": HTMLModusWcAutocompleteElement;
         "modus-wc-avatar": HTMLModusWcAvatarElement;
         "modus-wc-badge": HTMLModusWcBadgeElement;
+        "modus-wc-breadcrumbs": HTMLModusWcBreadcrumbsElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
         "modus-wc-collapse": HTMLModusWcCollapseElement;
@@ -1970,7 +2001,7 @@ declare namespace LocalJSX {
         /**
           * Accordion items, used to render collapse components *
          */
-        "items"?: IAccordionItem[];
+        "items"?: IModusWcAccordionItem[];
         /**
           * When a collapse expanded state is changed, this event outputs the relevant index and state
          */
@@ -2156,6 +2187,24 @@ declare namespace LocalJSX {
           * The variant of the badge.
          */
         "variant"?: 'counter' | 'filled' | 'text';
+    }
+    /**
+     * A customizable breadcrumbs component used to help users navigate through a website.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcBreadcrumbs {
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * The breadcrumbs to render.
+         */
+        "items"?: IModusWcBreadcrumb[];
+        /**
+          * The size of the breadcrumbs.
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -3409,6 +3458,7 @@ declare namespace LocalJSX {
         "modus-wc-autocomplete": ModusWcAutocomplete;
         "modus-wc-avatar": ModusWcAvatar;
         "modus-wc-badge": ModusWcBadge;
+        "modus-wc-breadcrumbs": ModusWcBreadcrumbs;
         "modus-wc-button": ModusWcButton;
         "modus-wc-checkbox": ModusWcCheckbox;
         "modus-wc-collapse": ModusWcCollapse;
@@ -3466,6 +3516,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-badge": LocalJSX.ModusWcBadge & JSXBase.HTMLAttributes<HTMLModusWcBadgeElement>;
+            /**
+             * A customizable breadcrumbs component used to help users navigate through a website.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-breadcrumbs": LocalJSX.ModusWcBreadcrumbs & JSXBase.HTMLAttributes<HTMLModusWcBreadcrumbsElement>;
             /**
              * A customizable button component used to create buttons with different sizes, variants, and types.
              * Adheres to WCAG 2.2 standards.

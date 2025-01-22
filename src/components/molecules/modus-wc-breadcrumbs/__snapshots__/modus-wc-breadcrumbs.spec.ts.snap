@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-breadcrumbs should render with custom props 1`] = `
+<modus-wc-breadcrumbs aria-label="Default breadcrumbs" custom-class="test-class" size="lg">
+  <nav aria-label="Breadcrumbs" class="modus-wc-breadcrumbs modus-wc-text-lg test-class">
+    <ol>
+      <li>
+        <a href="#">
+          Root
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          Subpage
+        </a>
+      </li>
+      <li aria-current="page">
+        <span>
+          Current Page
+        </span>
+      </li>
+    </ol>
+  </nav>
+</modus-wc-breadcrumbs>
+`;
+
+exports[`modus-wc-breadcrumbs should render with default props 1`] = `
+<modus-wc-breadcrumbs aria-label="Default breadcrumbs">
+  <nav aria-label="Breadcrumbs" class="modus-wc-breadcrumbs modus-wc-text-md">
+    <ol></ol>
+  </nav>
+</modus-wc-breadcrumbs>
+`;
