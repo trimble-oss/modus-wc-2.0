@@ -26,6 +26,8 @@ const preview: Preview = {
       },
     },
     docs: {
+      // Sets the background color of the autodocs page to match the theme.
+      // This needs to be updated if any additional dark themes are added.
       container: (props: any) => {
         const el = document.querySelector('html');
         const theme =
