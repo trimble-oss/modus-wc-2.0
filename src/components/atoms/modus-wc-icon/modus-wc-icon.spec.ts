@@ -40,12 +40,4 @@ describe('modus-wc-icon', () => {
     });
     expect(page.root).toMatchSnapshot();
   });
-
-  it('should render with color prop', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcIcon],
-      html: '<modus-wc-icon aria-label="Colored icon" color="red"></modus-wc-icon>',
-    });
-    expect(page.root).toMatchSnapshot();
-  });
 });

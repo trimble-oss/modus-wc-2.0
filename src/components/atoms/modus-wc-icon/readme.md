@@ -17,7 +17,6 @@ Adheres to WCAG 2.2 standards.
 
 | Property            | Attribute      | Description                                                                                                              | Type                                        | Default     |
 | ------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------- | ----------- |
-| `color`             | `color`        | The icon color, can be any valid CSS color value.                                                                        | `string \| undefined`                       | `undefined` |
 | `customClass`       | `custom-class` | Custom CSS class to apply to the i element.                                                                              | `string \| undefined`                       | `''`        |
 | `decorative`        | `decorative`   | Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.                 | `boolean \| undefined`                      | `true`      |
 | `name` _(required)_ | `name`         | The icon name, should match the CSS class in the icon font.                                                              | `string`                                    | `undefined` |

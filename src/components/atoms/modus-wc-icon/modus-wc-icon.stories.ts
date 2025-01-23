@@ -40,14 +40,19 @@ type Story = StoryObj<IconArgs>;
 
 const Template: Story = {
   render: (args) => {
+    const colorClass = args.color ? `color-${args.color.replace('#', '')}` : '';
     return html`
+      <style>
+        .color-${args.color?.replace('#', '')} {
+          color: ${args.color};
+        }
+      </style>
       <modus-wc-icon
         aria-label="${ifDefined(args['aria-label'])}"
-        custom-class="${ifDefined(args['custom-class'])}"
+        custom-class="${ifDefined(args['custom-class'])} ${colorClass}"
         ?decorative="${ifDefined(args.decorative)}"
         name="${args.name}"
         size="${args.size}"
-        color="${ifDefined(args.color)}"
       >
       </modus-wc-icon>
     `;

@@ -29,9 +29,6 @@ export class ModusWcIcon {
   /** The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon. */
   @Prop() size?: DaisySize = 'md';
 
-  /** The icon color, can be any valid CSS color value. */
-  @Prop() color?: string;
-
   componentWillLoad() {
     if (!this.decorative && !this.el.ariaLabel) {
       console.warn(
@@ -54,7 +51,6 @@ export class ModusWcIcon {
   render() {
     const ariaHidden = this.decorative ? 'true' : null;
     const role = this.decorative ? undefined : 'img';
-    const style = this.color ? { color: this.color } : {};
 
     return (
       <Host class="modus-wc-flex modus-wc-items-center">
@@ -64,7 +60,6 @@ export class ModusWcIcon {
           class={this.getClasses()}
           role={role}
           tabindex={-1}
-          style={style}
         >
           {this.name}
         </i>
