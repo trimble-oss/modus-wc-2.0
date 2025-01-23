@@ -1,8 +1,8 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { IAccordionItem, ModusWcAccordion } from './modus-wc-accordion';
+import { IModusWcAccordionItem, ModusWcAccordion } from './modus-wc-accordion';
 
 describe('modus-wc-accordion', () => {
-  const items: IAccordionItem[] = [
+  const items: IModusWcAccordionItem[] = [
     {
       customClass: 'test-class',
       description: 'Sports played by a team.',
