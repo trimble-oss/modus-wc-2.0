@@ -2,10 +2,10 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IAccordionItem } from './modus-wc-accordion';
+import { IModusWcAccordionItem } from './modus-wc-accordion';
 import { DaisySize } from '../../types';
 
-const items: IAccordionItem[] = [
+const items: IModusWcAccordionItem[] = [
   {
     customClass: 'test-class',
     description: 'Sports played by a team.',
@@ -35,7 +35,7 @@ const items: IAccordionItem[] = [
 interface AccordionArgs {
   bordered?: boolean;
   'custom-class'?: string;
-  items: IAccordionItem[];
+  items: IModusWcAccordionItem[];
   size?: DaisySize;
 }
 

@@ -3238,7 +3238,7 @@
               "name": "items",
               "fieldName": "items",
               "type": {
-                "text": "IAccordionItem[]"
+                "text": "IModusWcAccordionItem[]"
               },
               "description": "Accordion items, used to render collapse components *"
             },
@@ -3585,6 +3585,78 @@
           "declaration": {
             "name": "ModusWcAutocomplete",
             "module": "src/components/molecules/modus-wc-autocomplete/modus-wc-autocomplete.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable breadcrumbs component used to help users navigate through a website.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcBreadcrumbs",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "items",
+              "fieldName": "items",
+              "type": {
+                "text": "IModusWcBreadcrumb[]"
+              },
+              "description": "The breadcrumbs to render."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the breadcrumbs."
+            }
+          ],
+          "tagName": "modus-wc-breadcrumbs",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcBreadcrumbs",
+          "declaration": {
+            "name": "ModusWcBreadcrumbs",
+            "module": "src/components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-breadcrumbs",
+          "declaration": {
+            "name": "ModusWcBreadcrumbs",
+            "module": "src/components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs.tsx"
           }
         }
       ]

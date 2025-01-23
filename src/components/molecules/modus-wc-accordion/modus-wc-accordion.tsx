@@ -9,7 +9,7 @@ import {
 } from '@stencil/core';
 import { DaisySize } from '../../types';
 
-export interface IAccordionItem {
+export interface IModusWcAccordionItem {
   customClass?: string;
   description?: string;
   expanded?: boolean;
@@ -39,7 +39,7 @@ export class ModusWcAccordion {
   @Prop() customClass?: string = '';
 
   /** Accordion items, used to render collapse components **/
-  @Prop() items: IAccordionItem[] = [];
+  @Prop() items: IModusWcAccordionItem[] = [];
 
   /** Sets the size of the accordion component. */
   @Prop() size?: DaisySize = 'md';
@@ -49,6 +49,12 @@ export class ModusWcAccordion {
     expanded: boolean;
     index: number;
   }>;
+
+  componentWillLoad() {
+    if (!this.items || this.items.length === 0) {
+      console.error('ModusWcAccordion: accordion items data is required.');
+    }
+  }
 
   private getClasses(): string {
     const classList = [''];
