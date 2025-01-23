@@ -1531,7 +1531,7 @@ declare global {
         new (): HTMLModusWcCheckboxElement;
     };
     interface HTMLModusWcCollapseElementEventMap {
-        "expandedChange": boolean;
+        "expandedChange": { expanded: boolean };
     }
     /**
      * A customizable collapse component used for showing and hiding content.
@@ -2359,7 +2359,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the expanded prop is internally changed.
          */
-        "onExpandedChange"?: (event: ModusWcCollapseCustomEvent<boolean>) => void;
+        "onExpandedChange"?: (event: ModusWcCollapseCustomEvent<{ expanded: boolean }>) => void;
         /**
           * Sets the size of the collapse component.
          */
