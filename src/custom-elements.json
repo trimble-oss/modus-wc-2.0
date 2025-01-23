@@ -3673,7 +3673,7 @@
               "kind": "field",
               "name": "expandedChange",
               "type": {
-                "text": "EventEmitter<boolean>"
+                "text": "EventEmitter<{ expanded: boolean }>"
               },
               "description": "Event emitted when the expanded prop is internally changed."
             }

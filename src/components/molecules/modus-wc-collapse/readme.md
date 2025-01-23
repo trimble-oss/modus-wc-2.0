@@ -29,9 +29,9 @@ Adheres to WCAG 2.2 standards.
 
 ## Events
 
-| Event            | Description                                                 | Type                   |
-| ---------------- | ----------------------------------------------------------- | ---------------------- |
-| `expandedChange` | Event emitted when the expanded prop is internally changed. | `CustomEvent<boolean>` |
+| Event            | Description                                                 | Type                                  |
+| ---------------- | ----------------------------------------------------------- | ------------------------------------- |
+| `expandedChange` | Event emitted when the expanded prop is internally changed. | `CustomEvent<{ expanded: boolean; }>` |
 
 
 ## Dependencies
