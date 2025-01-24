@@ -66,10 +66,10 @@ export class ModusWcAccordion {
   }
 
   private handleCollapseExpandedChange = (
-    e: CustomEvent<boolean>,
+    e: CustomEvent<{ expanded: boolean }>,
     index: number
   ) => {
-    this.expandedChange.emit({ expanded: e.detail, index });
+    this.expandedChange.emit({ expanded: e.detail.expanded, index });
   };
 
   render() {
@@ -85,7 +85,7 @@ export class ModusWcAccordion {
               expanded={item.expanded}
               icon={item.icon}
               iconAriaLabel={item.iconAriaLabel}
-              onExpandedChange={(e: CustomEvent<boolean>) =>
+              onExpandedChange={(e: CustomEvent<{ expanded: boolean }>) =>
                 this.handleCollapseExpandedChange(e, index)
               }
               size={this.size}

@@ -2043,100 +2043,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-tabs/modus-wc-tabs.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable tabs component used to create groups of tabs.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcTabs",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "active-tab-index",
-              "fieldName": "activeTabIndex",
-              "description": "The current active tab"
-            },
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "ModusSize"
-              },
-              "description": "The size of the tabs."
-            },
-            {
-              "name": "tab-style",
-              "fieldName": "tabStyle",
-              "type": {
-                "text": "'boxed' | 'bordered' | 'lifted' | 'none'"
-              },
-              "description": "Additional styling for the tabs."
-            },
-            {
-              "name": "tabs",
-              "fieldName": "tabs",
-              "type": {
-                "text": "IModusWcTab[]"
-              },
-              "description": "The tabs to display."
-            }
-          ],
-          "tagName": "modus-wc-tabs",
-          "events": [
-            {
-              "kind": "field",
-              "name": "tabChange",
-              "type": {
-                "text": "EventEmitter<{\r\n    previousTab: number;\r\n    newTab: number;\r\n  }>"
-              },
-              "description": "When a tab is switched to, this event outputs the relevant indices"
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcTabs",
-          "declaration": {
-            "name": "ModusWcTabs",
-            "module": "src/components/atoms/modus-wc-tabs/modus-wc-tabs.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-tabs",
-          "declaration": {
-            "name": "ModusWcTabs",
-            "module": "src/components/atoms/modus-wc-tabs/modus-wc-tabs.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx",
       "declarations": [
         {
@@ -3767,7 +3673,7 @@
               "kind": "field",
               "name": "expandedChange",
               "type": {
-                "text": "EventEmitter<boolean>"
+                "text": "EventEmitter<{ expanded: boolean }>"
               },
               "description": "Event emitted when the expanded prop is internally changed."
             }
@@ -3790,6 +3696,100 @@
           "declaration": {
             "name": "ModusWcCollapse",
             "module": "src/components/molecules/modus-wc-collapse/modus-wc-collapse.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-tabs/modus-wc-tabs.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable tabs component used to create groups of tabs.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcTabs",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "active-tab-index",
+              "fieldName": "activeTabIndex",
+              "description": "The current active tab"
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the tabs."
+            },
+            {
+              "name": "tab-style",
+              "fieldName": "tabStyle",
+              "type": {
+                "text": "'boxed' | 'bordered' | 'lifted' | 'none'"
+              },
+              "description": "Additional styling for the tabs."
+            },
+            {
+              "name": "tabs",
+              "fieldName": "tabs",
+              "type": {
+                "text": "IModusWcTab[]"
+              },
+              "description": "The tabs to display."
+            }
+          ],
+          "tagName": "modus-wc-tabs",
+          "events": [
+            {
+              "kind": "field",
+              "name": "tabChange",
+              "type": {
+                "text": "EventEmitter<{\r\n    previousTab: number;\r\n    newTab: number;\r\n  }>"
+              },
+              "description": "When a tab is switched to, this event outputs the relevant indices"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTabs",
+          "declaration": {
+            "name": "ModusWcTabs",
+            "module": "src/components/molecules/modus-wc-tabs/modus-wc-tabs.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-tabs",
+          "declaration": {
+            "name": "ModusWcTabs",
+            "module": "src/components/molecules/modus-wc-tabs/modus-wc-tabs.tsx"
           }
         }
       ]

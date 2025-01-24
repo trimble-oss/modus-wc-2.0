@@ -13,7 +13,7 @@ import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/m
 import { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 import { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
-import { IModusWcTab } from "./components/atoms/modus-wc-tabs/modus-wc-tabs";
+import { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
@@ -25,7 +25,7 @@ export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/m
 export { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 export { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
-export { IModusWcTab } from "./components/atoms/modus-wc-tabs/modus-wc-tabs";
+export { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
 export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
@@ -1531,7 +1531,7 @@ declare global {
         new (): HTMLModusWcCheckboxElement;
     };
     interface HTMLModusWcCollapseElementEventMap {
-        "expandedChange": boolean;
+        "expandedChange": { expanded: boolean };
     }
     /**
      * A customizable collapse component used for showing and hiding content.
@@ -2359,7 +2359,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the expanded prop is internally changed.
          */
-        "onExpandedChange"?: (event: ModusWcCollapseCustomEvent<boolean>) => void;
+        "onExpandedChange"?: (event: ModusWcCollapseCustomEvent<{ expanded: boolean }>) => void;
         /**
           * Sets the size of the collapse component.
          */

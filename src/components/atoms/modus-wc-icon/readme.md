@@ -29,7 +29,7 @@ Adheres to WCAG 2.2 standards.
 
  - [modus-wc-alert](../../molecules/modus-wc-alert)
  - [modus-wc-collapse](../../molecules/modus-wc-collapse)
- - [modus-wc-tabs](../modus-wc-tabs)
+ - [modus-wc-tabs](../../molecules/modus-wc-tabs)
 
 ### Graph
 ```mermaid
