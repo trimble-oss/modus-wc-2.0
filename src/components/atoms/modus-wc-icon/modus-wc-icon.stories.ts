@@ -9,7 +9,6 @@ interface IconArgs {
   decorative: boolean;
   name: string;
   size: DaisySize;
-  color?: string;
 }
 
 const meta: Meta<IconArgs> = {
@@ -21,15 +20,11 @@ const meta: Meta<IconArgs> = {
     decorative: false,
     name: 'alert',
     size: 'md',
-    color: '',
   },
   argTypes: {
     size: {
       control: { type: 'inline-radio' },
       options: ['xs', 'sm', 'md', 'lg'],
-    },
-    color: {
-      control: { type: 'color' },
     },
   },
 };
@@ -40,16 +35,10 @@ type Story = StoryObj<IconArgs>;
 
 const Template: Story = {
   render: (args) => {
-    const colorClass = args.color ? `color-${args.color.replace('#', '')}` : '';
     return html`
-      <style>
-        .color-${args.color?.replace('#', '')} {
-          color: ${args.color};
-        }
-      </style>
       <modus-wc-icon
         aria-label="${ifDefined(args['aria-label'])}"
-        custom-class="${ifDefined(args['custom-class'])} ${colorClass}"
+        custom-class="${ifDefined(args['custom-class'])}"
         ?decorative="${ifDefined(args.decorative)}"
         name="${args.name}"
         size="${args.size}"
@@ -60,3 +49,22 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const CustomColor: Story = {
+  render: (args) => {
+    return html`
+      <style>
+        .red-icon {
+          color: red;
+        }
+      </style>
+      <modus-wc-icon
+        aria-label="Red alert icon"
+        custom-class="red-icon"
+        name="alert"
+        size="${args.size}"
+      >
+      </modus-wc-icon>
+    `;
+  },
+};
