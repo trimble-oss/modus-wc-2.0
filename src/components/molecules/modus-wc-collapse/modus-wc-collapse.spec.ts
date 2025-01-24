@@ -55,7 +55,9 @@ describe('modus-wc-collapse', () => {
     expect(expandedChangeSpy).toHaveBeenCalled();
     expect(expandedChangeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        detail: true,
+        detail: {
+          expanded: true,
+        },
       })
     );
   });
@@ -80,7 +82,9 @@ describe('modus-wc-collapse', () => {
     expect(expandedChangeSpy).toHaveBeenCalled();
     expect(expandedChangeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        detail: true,
+        detail: {
+          expanded: true,
+        },
       })
     );
   });
@@ -105,7 +109,9 @@ describe('modus-wc-collapse', () => {
     expect(expandedChangeSpy).toHaveBeenCalled();
     expect(expandedChangeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        detail: true,
+        detail: {
+          expanded: true,
+        },
       })
     );
   });

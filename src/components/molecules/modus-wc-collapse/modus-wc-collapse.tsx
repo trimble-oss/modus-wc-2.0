@@ -57,7 +57,7 @@ export class ModusWcCollapse {
   @Prop() size?: DaisySize = 'md';
 
   /** Event emitted when the expanded prop is internally changed. */
-  @StencilEvent() expandedChange!: EventEmitter<boolean>;
+  @StencilEvent() expandedChange!: EventEmitter<{ expanded: boolean }>;
 
   @Watch('expanded')
   expandedChanged(newValue: boolean) {
@@ -77,7 +77,7 @@ export class ModusWcCollapse {
 
   private handleClick = () => {
     this.expanded = !this.expanded;
-    this.expandedChange.emit(this.expanded);
+    this.expandedChange.emit({ expanded: this.expanded });
   };
 
   private handleContentClick = (event: Event) => {
