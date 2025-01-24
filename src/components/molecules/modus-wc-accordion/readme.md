@@ -17,7 +17,7 @@ Adheres to WCAG 2.2 standards.
 | ------------- | -------------- | ----------------------------------------------------- | ------------------------------------------- | ------- |
 | `bordered`    | `bordered`     | Indicates that the component should have a border.    | `boolean \| undefined`                      | `true`  |
 | `customClass` | `custom-class` | Custom CSS class to apply to the inner div.           | `string \| undefined`                       | `''`    |
-| `items`       | --             | Accordion items, used to render collapse components * | `IAccordionItem[]`                          | `[]`    |
+| `items`       | --             | Accordion items, used to render collapse components * | `IModusWcAccordionItem[]`                   | `[]`    |
 | `size`        | `size`         | Sets the size of the accordion component.             | `"lg" \| "md" \| "sm" \| "xs" \| undefined` | `'md'`  |
 
 
