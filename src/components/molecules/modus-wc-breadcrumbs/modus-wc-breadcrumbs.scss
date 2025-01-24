@@ -1,0 +1,16 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+[data-theme='modus-classic-light'] .modus-wc-breadcrumbs {
+  a {
+    color: var(--modus-wc-color-blue-light);
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-breadcrumbs {
+  a {
+    color: var(--modus-wc-color-highlight-blue);
+  }
+}

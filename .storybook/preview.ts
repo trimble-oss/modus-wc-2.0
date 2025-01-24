@@ -1,6 +1,9 @@
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
+import { DocsContainer } from '@storybook/blocks';
+import { themes } from '@storybook/theming';
 import type { Preview } from '@storybook/web-components';
 import { setCustomElementsManifest } from '@storybook/web-components';
+import { createElement } from 'react';
 import { defineCustomElements } from '../loader';
 import customElements from '../src/custom-elements.json';
 import a11yConfig from './a11yConfig';
@@ -23,6 +26,20 @@ const preview: Preview = {
       },
     },
     docs: {
+      // Sets the background color of the autodocs page to match the theme.
+      // This needs to be updated if any additional dark themes are added.
+      container: (props: any) => {
+        const el = document.querySelector('html');
+        const theme =
+          props?.context.store.userGlobals.globals.theme ===
+            'modus-classic-dark' ||
+          props?.context.store.userGlobals.globals.theme === 'modus-modern-dark'
+            ? themes.dark
+            : themes.light;
+        el!.dataset['theme'] = props?.context.store.userGlobals.globals.theme;
+        const newProps = { ...props, theme };
+        return createElement(DocsContainer, newProps);
+      },
       controls: {
         sort: 'requiredFirst',
       },
