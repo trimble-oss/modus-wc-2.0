@@ -11,10 +11,6 @@
 [data-theme='modus-classic-dark'] .modus-wc-input {
   border-radius: var(--modus-wc-border-radius-md);
 
-  &.modus-wc-input-bordered{
-    border: 1px solid var(--modus-wc-color-gray-6);
-  }
-
   &.modus-wc-input-sm {
     font-size: var(--modus-wc-font-size-sm);
     height: var(--modus-wc-input-height-sm);
@@ -43,5 +39,11 @@
 
   &:read-only {
     background-color: var(--modus-wc-color-base-100);
+  }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-input {
+  &.modus-wc-input-bordered {
+    border: 1px solid var(--modus-wc-color-gray-6);
   }
 }
