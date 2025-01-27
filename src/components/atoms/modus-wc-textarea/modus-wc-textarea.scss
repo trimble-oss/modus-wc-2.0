@@ -40,6 +40,6 @@
 
 [data-theme='modus-classic-light'] .modus-wc-textarea {
   &.modus-wc-textarea-bordered {
-    border: 1px solid var(--modus-wc-color-gray-6);
+    border-color: var(--modus-wc-color-gray-6);
   }
 }
