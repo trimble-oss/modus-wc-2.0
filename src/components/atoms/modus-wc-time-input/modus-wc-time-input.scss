@@ -11,6 +11,10 @@
 [data-theme='modus-classic-dark'] .modus-wc-input {
   border-radius: var(--modus-wc-border-radius-md);
 
+  &.modus-wc-input-bordered{
+    border: 1px solid var(--modus-wc-color-gray-6);
+  }
+
   &.modus-wc-input-sm {
     font-size: var(--modus-wc-font-size-sm);
     height: var(--modus-wc-input-height-sm);
@@ -31,7 +35,7 @@
 
   &:focus,
   &:focus-within {
-    border-color: var(--modus-wc-color-blue-light);
+    border-color: var(--modus-wc-color-highlight-blue);
     border-width: 2px;
     box-shadow: none; // Removes the Tailwind ring effect
     outline: none; // Ensures there's no outline on focus
