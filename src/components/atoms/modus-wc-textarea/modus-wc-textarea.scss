@@ -10,10 +10,6 @@
 
   // TODO - add support for xs and xl once added to Modus Figma
 
-  &.modus-wc-textarea-bordered{
-    border: 1px solid var(--modus-wc-color-gray-6);
-  }
-
   &.modus-wc-textarea-sm {
     font-size: var(--modus-wc-font-size-sm);
     padding: var(--modus-wc-spacing-sm);
@@ -39,5 +35,11 @@
 
   &:read-only {
     background-color: var(--modus-wc-color-base-100);
+  }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-textarea {
+  &.modus-wc-textarea-bordered {
+    border: 1px solid var(--modus-wc-color-gray-6);
   }
 }
