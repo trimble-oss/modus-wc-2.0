@@ -13,6 +13,15 @@ export type DaisySize = 'xs' | 'sm' | 'md' | 'lg';
 
 export type Density = 'comfortable' | 'compact';
 
+export type ModusColor =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'high-contrast'
+  | 'success'
+  | 'warning'
+  | 'danger';
+
 export type ModusSize = Extract<DaisySize, 'sm' | 'md' | 'lg'>;
 
 export type Orientation = 'horizontal' | 'vertical';
