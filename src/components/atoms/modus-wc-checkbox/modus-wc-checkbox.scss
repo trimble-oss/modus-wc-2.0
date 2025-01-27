@@ -30,3 +30,8 @@
     --fallback-bc: var(--modus-wc-color-trimble-blue);
   }
 }
+
+[data-theme='modus-classic-light'] .modus-wc-checkbox {
+  --chkbg: var(--modus-wc-color-blue-light);
+  --fallback-bc: var(--modus-wc-color-blue-light);
+}
