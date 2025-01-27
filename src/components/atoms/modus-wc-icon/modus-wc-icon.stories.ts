@@ -49,3 +49,22 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const CustomColor: Story = {
+  render: (args) => {
+    return html`
+      <style>
+        .red-icon {
+          color: red;
+        }
+      </style>
+      <modus-wc-icon
+        aria-label="Red alert icon"
+        custom-class="red-icon"
+        name="alert"
+        size="${args.size}"
+      >
+      </modus-wc-icon>
+    `;
+  },
+};
