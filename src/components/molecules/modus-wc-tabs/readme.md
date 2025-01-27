@@ -33,7 +33,7 @@ Adheres to WCAG 2.2 standards.
 
 ### Depends on
 
-- [modus-wc-icon](../modus-wc-icon)
+- [modus-wc-icon](../../atoms/modus-wc-icon)
 
 ### Graph
 ```mermaid

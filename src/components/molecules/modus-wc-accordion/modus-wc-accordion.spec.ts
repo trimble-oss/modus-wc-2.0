@@ -67,7 +67,7 @@ describe('modus-wc-accordion', () => {
     const collapsePanel = page.root?.querySelector('modus-wc-collapse');
     collapsePanel?.dispatchEvent(
       new CustomEvent('expandedChange', {
-        detail: false, // Simulating collapse
+        detail: { expanded: false }, // Simulating collapse
       })
     );
     await page.waitForChanges();
