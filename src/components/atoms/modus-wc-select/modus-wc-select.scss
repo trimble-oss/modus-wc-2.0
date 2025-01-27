@@ -9,10 +9,6 @@
 
   // TODO - add support for xs and xl once added to Modus Figma
 
-  &.modus-wc-select-bordered {
-    border: 1px solid var(--modus-wc-color-gray-6);
-  }
-
   &.modus-wc-select-sm {
     font-size: var(--modus-wc-font-size-sm);
     height: var(--modus-wc-input-height-sm);
@@ -39,5 +35,11 @@
     border-width: 2px;
     box-shadow: none; // Removes the Tailwind ring effect
     outline: none; // Ensures there's no outline on focus
+  }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-select {
+  &.modus-wc-select-bordered {
+    border: 1px solid var(--modus-wc-color-gray-6);
   }
 }
