@@ -39,7 +39,7 @@
 }
 
 [data-theme='modus-classic-light'] .modus-wc-select {
-  &.modus-wc-select-bordered {
+  &.modus-wc-select-bordered:not(:disabled) {
     border-color: var(--modus-wc-color-gray-6);
   }
 }
