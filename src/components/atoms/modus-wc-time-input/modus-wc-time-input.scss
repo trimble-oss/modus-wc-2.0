@@ -31,7 +31,7 @@
 
   &:focus,
   &:focus-within {
-    border-color: var(--modus-wc-color-highlight-blue);
+    border-color: var(--modus-wc-color-blue-light);
     border-width: 2px;
     box-shadow: none; // Removes the Tailwind ring effect
     outline: none; // Ensures there's no outline on focus
@@ -46,4 +46,8 @@
   &.modus-wc-input-bordered:not(:disabled):not(:focus) {
     border-color: var(--modus-wc-color-gray-6);
   }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-input:focus {
+  border-color: var(--modus-wc-color-highlight-blue);
 }
