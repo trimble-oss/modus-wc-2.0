@@ -3569,6 +3569,101 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-chip/modus-wc-chip.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable chip component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcChip",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "color",
+              "fieldName": "color",
+              "type": {
+                "text": "DaisyColor"
+              },
+              "description": "The color of the chip."
+            },
+            {
+              "name": "content",
+              "fieldName": "content",
+              "type": {
+                "text": "string"
+              },
+              "description": "The content to display in the chip."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the chip is disabled."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "DaisySize"
+              },
+              "description": "The size of the chip."
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "type": {
+                "text": "'default' | 'outline'"
+              }
+            }
+          ],
+          "tagName": "modus-wc-chip",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcChip",
+          "declaration": {
+            "name": "ModusWcChip",
+            "module": "src/components/molecules/modus-wc-chip/modus-wc-chip.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-chip",
+          "declaration": {
+            "name": "ModusWcChip",
+            "module": "src/components/molecules/modus-wc-chip/modus-wc-chip.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-collapse/modus-wc-collapse.tsx",
       "declarations": [
         {

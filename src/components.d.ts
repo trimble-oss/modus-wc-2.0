@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IModusWcAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
-import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
+import { DaisyColor, DaisySize, Density, ModusSize, Orientation } from "./components/types";
 import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
@@ -18,7 +18,7 @@ import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { IModusWcAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
-export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
+export { DaisyColor, DaisySize, Density, ModusSize, Orientation } from "./components/types";
 export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
@@ -327,6 +327,33 @@ export namespace Components {
           * The value of the checkbox.
          */
         "value": boolean;
+    }
+    /**
+     * A customizable chip component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcChip {
+        /**
+          * The color of the chip.
+         */
+        "color"?: DaisyColor;
+        /**
+          * The content to display in the chip.
+         */
+        "content": string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the chip is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * The size of the chip.
+         */
+        "size"?: DaisySize;
+        "variant"?: 'default' | 'outline';
     }
     /**
      * A customizable collapse component used for showing and hiding content.
@@ -1530,6 +1557,16 @@ declare global {
         prototype: HTMLModusWcCheckboxElement;
         new (): HTMLModusWcCheckboxElement;
     };
+    /**
+     * A customizable chip component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcChipElement extends Components.ModusWcChip, HTMLStencilElement {
+    }
+    var HTMLModusWcChipElement: {
+        prototype: HTMLModusWcChipElement;
+        new (): HTMLModusWcChipElement;
+    };
     interface HTMLModusWcCollapseElementEventMap {
         "expandedChange": { expanded: boolean };
     }
@@ -1958,6 +1995,7 @@ declare global {
         "modus-wc-breadcrumbs": HTMLModusWcBreadcrumbsElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
+        "modus-wc-chip": HTMLModusWcChipElement;
         "modus-wc-collapse": HTMLModusWcCollapseElement;
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
@@ -2321,6 +2359,33 @@ declare namespace LocalJSX {
           * The value of the checkbox.
          */
         "value"?: boolean;
+    }
+    /**
+     * A customizable chip component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcChip {
+        /**
+          * The color of the chip.
+         */
+        "color"?: DaisyColor;
+        /**
+          * The content to display in the chip.
+         */
+        "content"?: string;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the chip is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * The size of the chip.
+         */
+        "size"?: DaisySize;
+        "variant"?: 'default' | 'outline';
     }
     /**
      * A customizable collapse component used for showing and hiding content.
@@ -3461,6 +3526,7 @@ declare namespace LocalJSX {
         "modus-wc-breadcrumbs": ModusWcBreadcrumbs;
         "modus-wc-button": ModusWcButton;
         "modus-wc-checkbox": ModusWcCheckbox;
+        "modus-wc-chip": ModusWcChip;
         "modus-wc-collapse": ModusWcCollapse;
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
@@ -3531,6 +3597,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-checkbox": LocalJSX.ModusWcCheckbox & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
+            /**
+             * A customizable chip component.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-chip": LocalJSX.ModusWcChip & JSXBase.HTMLAttributes<HTMLModusWcChipElement>;
             /**
              * A customizable collapse component used for showing and hiding content.
              * Can render any HTML content through a <slot> element.
