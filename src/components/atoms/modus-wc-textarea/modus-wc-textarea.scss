@@ -39,7 +39,7 @@
 }
 
 [data-theme='modus-classic-light'] .modus-wc-textarea {
-  &.modus-wc-textarea-bordered:not(:disabled) {
+  &.modus-wc-textarea-bordered:not(:disabled):not(:focus) {
     border-color: var(--modus-wc-color-gray-6);
   }
 }
