@@ -40,7 +40,7 @@
 }
 
 [data-theme='modus-classic-light'] .modus-wc-input { 
-  &.modus-wc-input-bordered { 
+  &.modus-wc-input-bordered:not(:disabled) { 
     border-color: var(--modus-wc-color-accent); 
   }
   
