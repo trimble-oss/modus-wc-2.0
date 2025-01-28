@@ -43,7 +43,7 @@
 }
 
 [data-theme='modus-classic-light'] .modus-wc-input {
-  &.modus-wc-input-bordered {
+  &.modus-wc-input-bordered:not(:disabled):not(:focus) {
     border-color: var(--modus-wc-color-gray-6);
   }
 }
