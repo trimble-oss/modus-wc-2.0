@@ -25,20 +25,22 @@
     color: var(--modus-wc-color-blue-light);
   }
 
-  &:hover:not(:checked) {
-    background-color: white;
-    outline: 2px solid var(--modus-wc-color-blue-light);
-    outline-offset: -2px;
-  }
+  &:not(:disabled) {
+    &:hover:not(:checked) {
+      background-color: white;
+      outline: 2px solid var(--modus-wc-color-blue-light);
+      outline-offset: -2px;
+    }
 
-  &:hover:checked {
-    background-color: white;
-    --fallback-b1: var(--modus-wc-color-trimble-blue);
-  }
+    &:hover:checked {
+      background-color: white;
+      --fallback-b1: var(--modus-wc-color-trimble-blue);
+    }
 
-  &:focus-visible {
-    outline: 2px solid var(--modus-wc-color-highlight-blue);
-    outline-offset: 2px;
+    &:focus-visible {
+      outline: 2px solid var(--modus-wc-color-highlight-blue);
+      outline-offset: 2px;
+    }
   }
 
   &:disabled {
@@ -54,14 +56,16 @@
     color: var(--modus-wc-color-highlight-blue);
   }
 
-  &:hover:not(:checked) {
-    background-color: white;
-    outline: 2px solid var(--modus-wc-color-highlight-blue);
-    outline-offset: -2px;
-  }
-  
-  &:hover:checked {
-    background-color: white;
-    --fallback-b1: var(--modus-wc-color-blue-light);
-  }
+  &:not(:disabled) {
+    &:hover:not(:checked) {
+      background-color: white;
+      outline: 2px solid var(--modus-wc-color-highlight-blue);
+      outline-offset: -2px;
+    }
+    
+    &:hover:checked {
+      background-color: white;
+      --fallback-b1: var(--modus-wc-color-blue-light);
+    }
+}
 }
