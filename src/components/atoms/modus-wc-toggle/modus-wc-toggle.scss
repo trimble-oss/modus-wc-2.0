@@ -25,15 +25,24 @@
     color: var(--modus-wc-color-blue-light);
   }
 
-  &:hover {
+  &:hover:not(:checked) {
     background-color: white;
     outline: 2px solid var(--modus-wc-color-blue-light);
     outline-offset: -2px;
   }
 
+  &:hover:checked {
+    background-color: white;
+    --fallback-b1: var(--modus-wc-color-trimble-blue);
+  }
+
   &:focus-visible {
-    outline: 2px solid var(--modus-wc-color-blue-light);
+    outline: 2px solid var(--modus-wc-color-highlight-blue);
     outline-offset: 2px;
+  }
+
+  &:disabled {
+    background-color: white ;
   }
 }
 
@@ -45,14 +54,14 @@
     color: var(--modus-wc-color-highlight-blue);
   }
 
-  &:hover {
+  &:hover:not(:checked) {
     background-color: white;
     outline: 2px solid var(--modus-wc-color-highlight-blue);
     outline-offset: -2px;
   }
-
-  &:focus-visible {
-    outline: 2px solid var(--modus-wc-color-highlight-blue);
-    outline-offset: 2px;
+  
+  &:hover:checked {
+    background-color: white;
+    --fallback-b1: var(--modus-wc-color-blue-light);
   }
 }
