@@ -56,3 +56,42 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const CloseIcon: Story = {
+  render: (args) => {
+    return html`
+      <style>
+        modus-wc-button {
+          align-items: center;
+        }
+      </style>
+      <modus-wc-alert
+        alert-description=${ifDefined(args['alert-description'])}
+        alert-title=${args['alert-title']}
+        custom-class=${ifDefined(args['custom-class'])}
+        icon=${ifDefined(args.icon)}
+        variant=${ifDefined(args.variant)}
+      >
+        <modus-wc-button
+          aria-label="View messages"
+          color="secondary"
+          label="View Messages"
+          slot="button"
+        ></modus-wc-button>
+        <modus-wc-button
+          aria-label="notification button"
+          color="tertiary"
+          size="xs"
+          variant="borderless"
+          slot="button"
+        >
+          <modus-wc-icon
+            aria-label="notify icon"
+            decorative=""
+            name="close"
+          ></modus-wc-icon>
+        </modus-wc-button>
+      </modus-wc-alert>
+    `;
+  },
+};
