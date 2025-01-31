@@ -44,13 +44,11 @@
   }
 
   &:disabled {
-    background-color: white ;
+    background-color: white;
   }
 }
 
-
 [data-theme='modus-classic-dark'] .modus-wc-toggle {
-  
   &:checked {
     --fallback-b1: var(--modus-wc-color-highlight-blue);
     color: var(--modus-wc-color-highlight-blue);
@@ -62,10 +60,10 @@
       outline: 2px solid var(--modus-wc-color-highlight-blue);
       outline-offset: -2px;
     }
-    
+
     &:hover:checked {
       background-color: white;
       --fallback-b1: var(--modus-wc-color-blue-light);
     }
-}
+  }
 }
