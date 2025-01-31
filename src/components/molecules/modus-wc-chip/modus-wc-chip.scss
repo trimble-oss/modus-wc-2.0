@@ -6,6 +6,8 @@
 [data-theme='modus-classic-light'] .modus-wc-chip,
 [data-theme='modus-classic-dark'] .modus-wc-chip {
   &.modus-wc-btn {
+    --rounded-btn: 1rem;
+
     &.modus-wc-btn-sm {
       font-size: var(--modus-wc-font-size-sm);
       padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
@@ -17,6 +19,10 @@
 
     &.modus-wc-btn-lg {
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+    }
+
+    &.modus-wc-chip--outline {
+      --tw-bg-opacity: 0.2;
     }
   }
 }

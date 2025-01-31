@@ -39,7 +39,7 @@ export const convertPropsToClasses = (props: {
   if (Object.prototype.hasOwnProperty.call(props, 'variant') && props.variant) {
     switch (props.variant) {
       case 'outline':
-        classes = `${classes} modus-wc-btn-outline`;
+        classes = `${classes} modus-wc-chip--outline`;
         break;
     }
   }
