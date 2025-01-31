@@ -1,6 +1,7 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-avatar.tailwind';
 import { DaisySize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable avatar component used to create avatars with different images.
@@ -13,6 +14,8 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcAvatar {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -34,6 +37,7 @@ export class ModusWcAvatar {
   @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
     if (!this.alt || !this.el.ariaLabel) {
       console.warn(
         'ModusWcAvatar: alt and aria-label are required for accessibility. Using fallback label.'
@@ -65,6 +69,7 @@ export class ModusWcAvatar {
           aria-label={this.el.ariaLabel}
           class="modus-wc-avatar"
           tabindex={-1}
+          {...this.inheritedAttributes}
         >
           <div class={this.getClasses()}>
             <img src={this.imgSrc} alt={this.alt} />
