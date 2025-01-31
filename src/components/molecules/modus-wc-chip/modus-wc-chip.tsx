@@ -16,22 +16,29 @@ export class ModusWcChip {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Custom CSS class to apply to the inner div. */
-  @Prop() customClass?: string = '';
+  /** Active state of chip. */
+  @Prop() active?: boolean = false;
 
   /** The color of the chip. */
   @Prop() color?: DaisyColor = 'primary';
 
-  /** The content to display in the chip. */
-  @Prop() content: string = '';
+  /** Custom CSS class to apply to the inner div. */
+  @Prop() customClass?: string = '';
 
   /** Whether the chip is disabled. */
   @Prop() disabled?: boolean = false;
 
+  /** Whether the chip has an error. */
+  @Prop() hasError?: boolean = false;
+
+  /** The label to display in the chip. */
+  @Prop() label: string = '';
+
   /** The size of the chip. */
   @Prop() size?: DaisySize = 'md';
 
-  @Prop() variant?: 'default' | 'outline' = 'default';
+  /** The variant of the chip. */
+  @Prop() variant?: 'filled' | 'outline' = 'filled';
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
@@ -46,7 +53,10 @@ export class ModusWcChip {
     const classList: string[] = ['modus-wc-badge'];
 
     const propClasses = convertPropsToClasses({
+      active: this.active,
       color: this.color,
+      disabled: this.disabled,
+      hasError: this.hasError,
       size: this.size,
       variant: this.variant,
     });
@@ -64,14 +74,15 @@ export class ModusWcChip {
         <button
           aria-disabled={this.disabled ? 'true' : undefined}
           aria-label={this.el.ariaLabel}
+          class="modus-wc-chip"
           tabIndex={0}
           type="button"
         >
           <span class={this.getClasses()}>
             <slot name="left" />
-            {this.content}
+            {this.label}
             <slot />
-            <slot name="right" />{' '}
+            <slot name="right" />
           </span>
         </button>
       </Host>

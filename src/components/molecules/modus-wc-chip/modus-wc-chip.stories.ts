@@ -1,14 +1,18 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { DaisyColor, DaisySize } from '../../types';
 
 interface ChipArgs {
   'aria-label': string;
+  active?: boolean;
   color: DaisyColor;
-  content: string;
   'custom-class'?: string;
+  disabled?: boolean;
+  'has-error'?: boolean;
+  label: string;
   size: DaisySize;
-  variant: 'default' | 'outline';
+  variant: 'filled' | 'outline';
 }
 
 const meta: Meta<ChipArgs> = {
@@ -17,9 +21,9 @@ const meta: Meta<ChipArgs> = {
   args: {
     'aria-label': 'Example chip',
     color: 'primary',
-    content: 'Chip',
+    label: 'Chip',
     size: 'md',
-    variant: 'default',
+    variant: 'filled',
   },
   argTypes: {
     color: {
@@ -41,7 +45,7 @@ const meta: Meta<ChipArgs> = {
     },
     variant: {
       control: { type: 'inline-radio' },
-      options: ['default', 'outline'],
+      options: ['filled', 'outline'],
     },
   },
 };
@@ -54,8 +58,11 @@ const Template: Story = {
   render: (args) => {
     return html` <modus-wc-chip
       aria-label=${args['aria-label']}
+      active=${ifDefined(args.active)}
       color=${args.color}
-      content=${args.content}
+      disabled=${ifDefined(args.disabled)}
+      has-error=${ifDefined(args['has-error'])}
+      label=${args.label}
       size=${args.size}
       variant=${args.variant}
     />`;
