@@ -74,14 +74,16 @@ export const CloseIcon: Story = {
       >
         <modus-wc-button
           aria-label="View messages"
-          color="secondary"
-          label="View Messages"
+          color="tertiary"
+          variant="outlined"
+          size="md"
+          label="Button"
           slot="button"
         ></modus-wc-button>
         <modus-wc-button
           aria-label="notification button"
           color="tertiary"
-          size="xs"
+          size="sm"
           variant="borderless"
           slot="button"
         >

@@ -74,7 +74,6 @@ export class ModusWcAlert {
             )}
           </div>
           <slot name="button" />
-          <slot name="close-icon" />
         </div>
       </Host>
     );
