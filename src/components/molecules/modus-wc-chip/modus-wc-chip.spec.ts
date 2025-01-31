@@ -28,7 +28,7 @@ describe('modus-wc-chip', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
-      html: '<modus-wc-chip aria-label="Custom chip" color="secondary" custom-class="test-class" size="lg"></modus-wc-chip>',
+      html: '<modus-wc-chip aria-label="Custom chip" color="secondary" custom-class="test-class" size="lg" variant="outline"></modus-wc-chip>',
     });
     expect(page.root).toMatchSnapshot();
   });

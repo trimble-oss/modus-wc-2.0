@@ -334,13 +334,13 @@ export namespace Components {
      */
     interface ModusWcChip {
         /**
+          * Active state of chip.
+         */
+        "active"?: boolean;
+        /**
           * The color of the chip.
          */
         "color"?: DaisyColor;
-        /**
-          * The content to display in the chip.
-         */
-        "content": string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -350,10 +350,21 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * Whether the chip has an error.
+         */
+        "hasError"?: boolean;
+        /**
+          * The label to display in the chip.
+         */
+        "label"?: string;
+        /**
           * The size of the chip.
          */
         "size"?: DaisySize;
-        "variant"?: 'default' | 'outline';
+        /**
+          * The variant of the chip.
+         */
+        "variant"?: 'filled' | 'outline';
     }
     /**
      * A customizable collapse component used for showing and hiding content.
@@ -2366,13 +2377,13 @@ declare namespace LocalJSX {
      */
     interface ModusWcChip {
         /**
+          * Active state of chip.
+         */
+        "active"?: boolean;
+        /**
           * The color of the chip.
          */
         "color"?: DaisyColor;
-        /**
-          * The content to display in the chip.
-         */
-        "content"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -2382,10 +2393,21 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Whether the chip has an error.
+         */
+        "hasError"?: boolean;
+        /**
+          * The label to display in the chip.
+         */
+        "label"?: string;
+        /**
           * The size of the chip.
          */
         "size"?: DaisySize;
-        "variant"?: 'default' | 'outline';
+        /**
+          * The variant of the chip.
+         */
+        "variant"?: 'filled' | 'outline';
     }
     /**
      * A customizable collapse component used for showing and hiding content.

@@ -15,12 +15,14 @@ Adheres to WCAG 2.2 standards.
 
 | Property      | Attribute      | Description                                 | Type                                                                                                            | Default     |
 | ------------- | -------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------- |
+| `active`      | `active`       | Active state of chip.                       | `boolean \| undefined`                                                                                          | `false`     |
 | `color`       | `color`        | The color of the chip.                      | `"accent" \| "error" \| "info" \| "neutral" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
-| `content`     | `content`      | The content to display in the chip.         | `string`                                                                                                        | `''`        |
 | `customClass` | `custom-class` | Custom CSS class to apply to the inner div. | `string \| undefined`                                                                                           | `''`        |
 | `disabled`    | `disabled`     | Whether the chip is disabled.               | `boolean \| undefined`                                                                                          | `false`     |
+| `hasError`    | `has-error`    | Whether the chip has an error.              | `boolean \| undefined`                                                                                          | `false`     |
+| `label`       | `label`        | The label to display in the chip.           | `string \| undefined`                                                                                           | `''`        |
 | `size`        | `size`         | The size of the chip.                       | `"lg" \| "md" \| "sm" \| "xs" \| undefined`                                                                     | `'md'`      |
-| `variant`     | `variant`      |                                             | `"default" \| "outline" \| undefined`                                                                           | `'default'` |
+| `variant`     | `variant`      | The variant of the chip.                    | `"filled" \| "outline" \| undefined`                                                                            | `'filled'`  |
 
 
 ----------------------------------------------

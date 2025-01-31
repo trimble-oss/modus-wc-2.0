@@ -32,7 +32,7 @@ export class ModusWcChip {
   @Prop() hasError?: boolean = false;
 
   /** The label to display in the chip. */
-  @Prop() label: string = '';
+  @Prop() label?: string = '';
 
   /** The size of the chip. */
   @Prop() size?: DaisySize = 'md';
@@ -50,7 +50,7 @@ export class ModusWcChip {
   }
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-badge'];
+    const classList: string[] = ['modus-wc-chip', 'modus-wc-btn'];
 
     const propClasses = convertPropsToClasses({
       active: this.active,
@@ -74,16 +74,14 @@ export class ModusWcChip {
         <button
           aria-disabled={this.disabled ? 'true' : undefined}
           aria-label={this.el.ariaLabel}
-          class="modus-wc-chip"
+          class={this.getClasses()}
           tabIndex={0}
           type="button"
         >
-          <span class={this.getClasses()}>
-            <slot name="left" />
-            {this.label}
-            <slot />
-            <slot name="right" />
-          </span>
+          <slot name="left" />
+          {this.label}
+          <slot />
+          <slot name="right" />
         </button>
       </Host>
     );

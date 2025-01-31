@@ -3591,20 +3591,20 @@
           ],
           "attributes": [
             {
+              "name": "active",
+              "fieldName": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Active state of chip."
+            },
+            {
               "name": "color",
               "fieldName": "color",
               "type": {
                 "text": "DaisyColor"
               },
               "description": "The color of the chip."
-            },
-            {
-              "name": "content",
-              "fieldName": "content",
-              "type": {
-                "text": "string"
-              },
-              "description": "The content to display in the chip."
             },
             {
               "name": "custom-class",
@@ -3623,6 +3623,22 @@
               "description": "Whether the chip is disabled."
             },
             {
+              "name": "has-error",
+              "fieldName": "hasError",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the chip has an error."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The label to display in the chip."
+            },
+            {
               "name": "size",
               "fieldName": "size",
               "type": {
@@ -3634,8 +3650,9 @@
               "name": "variant",
               "fieldName": "variant",
               "type": {
-                "text": "'default' | 'outline'"
-              }
+                "text": "'filled' | 'outline'"
+              },
+              "description": "The variant of the chip."
             }
           ],
           "tagName": "modus-wc-chip",
