@@ -11,18 +11,26 @@
     &.modus-wc-btn-sm {
       font-size: var(--modus-wc-font-size-sm);
       padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+      height: 1.5rem;
     }
 
     &.modus-wc-btn-md {
       padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+      height: 1.875rem;
     }
 
     &.modus-wc-btn-lg {
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+      height: 3rem;
     }
 
     &.modus-wc-chip--outline {
       --tw-bg-opacity: 0.2;
     }
   }
+}
+
+[data-theme='modus-modern-light'] .modus-wc-chip,
+[data-theme='modus-modern-dark'] .modus-wc-chip {
+  --rounded-btn: 0.25rem;
 }
