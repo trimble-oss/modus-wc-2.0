@@ -1,6 +1,6 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-chip.tailwind';
-import { DaisyColor, DaisySize } from '../../types';
+import { DaisyColor, ModusSize } from '../../types';
 
 /**
  * A customizable chip component.
@@ -35,7 +35,7 @@ export class ModusWcChip {
   @Prop() label?: string = '';
 
   /** The size of the chip. */
-  @Prop() size?: DaisySize = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /** The variant of the chip. */
   @Prop() variant?: 'filled' | 'outline' = 'filled';

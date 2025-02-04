@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DaisyColor, DaisySize } from '../../types';
+import { DaisyColor, ModusSize } from '../../types';
 
 interface ChipArgs {
   'aria-label': string;
@@ -11,7 +11,7 @@ interface ChipArgs {
   disabled?: boolean;
   'has-error'?: boolean;
   label: string;
-  size: DaisySize;
+  size: ModusSize;
   variant: 'filled' | 'outline';
 }
 
@@ -41,7 +41,7 @@ const meta: Meta<ChipArgs> = {
     },
     size: {
       control: { type: 'inline-radio' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['sm', 'md', 'lg'],
     },
     variant: {
       control: { type: 'inline-radio' },

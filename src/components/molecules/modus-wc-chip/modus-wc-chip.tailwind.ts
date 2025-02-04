@@ -1,11 +1,11 @@
-import { DaisyColor, DaisySize } from '../../types';
+import { DaisyColor, ModusSize } from '../../types';
 
 export const convertPropsToClasses = (props: {
   active?: boolean;
   color?: DaisyColor;
   disabled?: boolean;
   hasError?: boolean;
-  size?: DaisySize;
+  size?: ModusSize;
   variant?: 'filled' | 'outline';
 }): string => {
   let classes = '';
