@@ -70,3 +70,21 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const WithAvatar: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-chip
+        label=${args.label}
+        size=${args.size}
+        variant=${args.variant}
+      >
+        <modus-wc-avatar
+          img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg"
+          slot="left"
+          size="xs"
+        ></modus-wc-avatar>
+      </modus-wc-chip>
+    `;
+  },
+};
