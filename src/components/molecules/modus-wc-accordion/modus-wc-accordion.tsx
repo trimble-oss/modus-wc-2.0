@@ -8,6 +8,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { DaisySize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 export interface IModusWcAccordionItem {
   customClass?: string;
@@ -29,6 +30,8 @@ export interface IModusWcAccordionItem {
   shadow: false,
 })
 export class ModusWcAccordion {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -54,6 +57,7 @@ export class ModusWcAccordion {
     if (!this.items || this.items.length === 0) {
       console.error('ModusWcAccordion: accordion items data is required.');
     }
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -75,7 +79,7 @@ export class ModusWcAccordion {
   render() {
     return (
       <Host>
-        <div class={this.getClasses()}>
+        <div class={this.getClasses()} {...this.inheritedAttributes}>
           {this.items.map((item, index) => (
             <modus-wc-collapse
               bordered={this.bordered}

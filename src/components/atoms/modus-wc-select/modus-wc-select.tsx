@@ -9,6 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-select.tailwind';
 import { DaisySize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 export interface ISelectOption {
   disabled?: boolean;
@@ -27,11 +28,10 @@ export interface ISelectOption {
   shadow: false,
 })
 export class ModusWcSelect {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
-
-  /** The ID of the element that describes the input. */
-  @Prop() ariaDescribedby?: string;
 
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
@@ -41,9 +41,6 @@ export class ModusWcSelect {
 
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
-
-  /** Indicates whether the input has an invalid input. */
-  @Prop() inputAriaInvalid?: 'true' | 'false';
 
   /** Specifies the text direction of the input content. */
   @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
@@ -85,6 +82,7 @@ export class ModusWcSelect {
       );
       this.el.ariaLabel = 'Select';
     }
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -118,9 +116,6 @@ export class ModusWcSelect {
     return (
       <Host>
         <select
-          aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.inputAriaInvalid}
-          aria-label={this.el.ariaLabel}
           class={this.getClasses()}
           dir={this.inputDir}
           disabled={this.disabled}
@@ -131,6 +126,7 @@ export class ModusWcSelect {
           onInput={this.handleInput}
           required={this.required}
           tabindex={this.inputTabIndex}
+          {...this.inheritedAttributes}
         >
           {this.options.map((option) => (
             <option

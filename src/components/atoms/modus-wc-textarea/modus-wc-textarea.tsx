@@ -9,6 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-textarea.tailwind';
 import { DaisySize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable textarea component.
@@ -21,11 +22,10 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcTextarea {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
-
-  /** The ID of the element that describes the textarea. */
-  @Prop() ariaDescribedby?: string;
 
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
@@ -35,9 +35,6 @@ export class ModusWcTextarea {
 
   /** The disabled state of the textarea. */
   @Prop() disabled?: boolean = false;
-
-  /** Indicates whether the input is invalid. */
-  @Prop() inputAriaInvalid?: 'grammar' | 'spelling' | 'true' | 'false';
 
   /** Specifies the text direction of the input content. */
   @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
@@ -94,6 +91,7 @@ export class ModusWcTextarea {
       );
       this.el.ariaLabel = this.placeholder || 'Text area';
     }
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -126,9 +124,6 @@ export class ModusWcTextarea {
     return (
       <Host>
         <textarea
-          aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.inputAriaInvalid}
-          aria-label={this.el.ariaLabel}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           class={this.getClasses()}
@@ -147,6 +142,7 @@ export class ModusWcTextarea {
           spellcheck={this.inputSpellcheck}
           tabIndex={this.inputTabIndex}
           value={this.value}
+          {...this.inheritedAttributes}
         />
       </Host>
     );

@@ -9,6 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-slider.tailwind';
 import { DaisySize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable slider component.
@@ -21,14 +22,10 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcSlider {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
-
-  /** The ID of the element that describes the slider. */
-  @Prop() ariaDescribedby?: string;
-
-  /** The aria-labelledby attribute for usage with a label. */
-  @Prop() ariaLabelledby?: string;
 
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
@@ -80,8 +77,9 @@ export class ModusWcSlider {
       console.warn(
         'ModusWcSlider: aria-label is required for accessibility. Using fallback label.'
       );
+      this.el.ariaLabel = 'Slider';
     }
-    this.el.ariaLabel = 'Slider';
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -112,10 +110,7 @@ export class ModusWcSlider {
     return (
       <Host>
         <input
-          aria-describedby={this.ariaDescribedby}
           aria-disabled={this.disabled}
-          aria-label={this.el.ariaLabel}
-          aria-labelledby={this.ariaLabelledby}
           class={this.getClasses()}
           dir={this.inputDir}
           disabled={this.disabled}
@@ -131,6 +126,7 @@ export class ModusWcSlider {
           tabIndex={this.inputTabIndex}
           type="range"
           value={this.value}
+          {...this.inheritedAttributes}
         />
       </Host>
     );

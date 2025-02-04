@@ -9,6 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-number-input.tailwind';
 import { ModusSize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable input component used to create number inputs with types.
@@ -21,11 +22,10 @@ import { ModusSize } from '../../types';
   shadow: false,
 })
 export class ModusWcNumberInput {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
-
-  /** The ID of the element that describes the input. */
-  @Prop() ariaDescribedby?: string;
 
   /** Hint for form autofill feature. */
   @Prop() autoComplete?: 'on' | 'off';
@@ -38,9 +38,6 @@ export class ModusWcNumberInput {
 
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
-
-  /** Indicates whether the input has an invalid input. */
-  @Prop() inputAriaInvalid?: 'true' | 'false';
 
   /** Specifies the text direction of the input content. */
   @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
@@ -103,6 +100,7 @@ export class ModusWcNumberInput {
       );
       this.el.ariaLabel = this.placeholder || 'Number input';
     }
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -135,9 +133,6 @@ export class ModusWcNumberInput {
     return (
       <Host>
         <input
-          aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.inputAriaInvalid}
-          aria-label={this.el.ariaLabel}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           autocomplete={this.autoComplete}
@@ -159,6 +154,7 @@ export class ModusWcNumberInput {
           tabIndex={this.inputTabIndex}
           type={this.type}
           value={this.value}
+          {...this.inheritedAttributes}
         />
       </Host>
     );

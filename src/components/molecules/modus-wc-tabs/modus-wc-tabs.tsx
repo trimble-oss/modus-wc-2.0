@@ -13,6 +13,7 @@ import {
   convertPropsToClassesTab as convertPropsToTabClasses,
 } from './modus-wc-tabs.tailwind';
 import { ModusSize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 export interface IModusWcTab {
   /** Custom CSS class to apply to the inner button. */
@@ -42,6 +43,8 @@ export interface IModusWcTab {
   shadow: false,
 })
 export class ModusWcTabs {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -77,6 +80,7 @@ export class ModusWcTabs {
     if (!this.tabs || this.tabs.length === 0) {
       console.error('ModusWcTabs: tab data is required.');
     }
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private handleClick(tab: IModusWcTab, index: number) {
@@ -149,8 +153,8 @@ export class ModusWcTabs {
       <Host>
         <div
           role="tablist"
-          aria-label={this.el.ariaLabel}
           class={this.getClasses()}
+          {...this.inheritedAttributes}
         >
           {tabs}
         </div>

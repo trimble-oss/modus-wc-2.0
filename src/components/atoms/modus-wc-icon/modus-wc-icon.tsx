@@ -1,5 +1,6 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { DaisySize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable icon component used to render Modus icons.
@@ -14,6 +15,8 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcIcon {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -36,6 +39,7 @@ export class ModusWcIcon {
       );
       this.el.ariaLabel = `${this.name} icon`;
     }
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -60,6 +64,7 @@ export class ModusWcIcon {
           class={this.getClasses()}
           role={role}
           tabindex={-1}
+          {...this.inheritedAttributes}
         >
           {this.name}
         </i>

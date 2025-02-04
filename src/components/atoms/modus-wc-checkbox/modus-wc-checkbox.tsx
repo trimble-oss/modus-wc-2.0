@@ -9,6 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-checkbox.tailwind';
 import { DaisySize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable checkbox component.
@@ -21,14 +22,10 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcCheckbox {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
-
-  /** The ID of the element that describes the checkbox. */
-  @Prop() ariaDescribedby?: string;
-
-  /** The aria-labelledby attribute for usage with a label. */
-  @Prop() ariaLabelledby?: string;
 
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
@@ -86,6 +83,7 @@ export class ModusWcCheckbox {
       );
       this.el.ariaLabel = 'Checkbox';
     }
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -117,10 +115,7 @@ export class ModusWcCheckbox {
       <Host>
         <input
           aria-checked={this.indeterminate ? 'mixed' : this.value}
-          aria-describedby={this.ariaDescribedby}
           aria-disabled={this.disabled}
-          aria-label={this.el.ariaLabel}
-          aria-labelledby={this.ariaLabelledby}
           checked={this.value}
           class={this.getClasses()}
           dir={this.inputDir}
@@ -133,6 +128,7 @@ export class ModusWcCheckbox {
           required={this.required}
           tabIndex={this.inputTabIndex}
           type="checkbox"
+          {...this.inheritedAttributes}
         />
       </Host>
     );

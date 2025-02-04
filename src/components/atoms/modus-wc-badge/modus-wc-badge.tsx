@@ -1,6 +1,7 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-badge.tailwind';
 import { ModusSize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 const ALERT_COLORS = ['success', 'warning', 'danger'];
 
@@ -15,6 +16,8 @@ const ALERT_COLORS = ['success', 'warning', 'danger'];
   shadow: false,
 })
 export class ModusWcBadge {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -47,6 +50,7 @@ export class ModusWcBadge {
       );
       this.el.ariaLabel = this.content ? `Badge ${this.content}` : 'Badge';
     }
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -71,9 +75,9 @@ export class ModusWcBadge {
       <Host>
         <span
           class={this.getClasses()}
-          aria-label={this.el.ariaLabel}
           role={isAlert ? 'alert' : 'status'}
           tabindex={-1}
+          {...this.inheritedAttributes}
         >
           {this.content}
         </span>

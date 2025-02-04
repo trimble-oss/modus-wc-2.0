@@ -37,7 +37,6 @@ export class ModusWcAvatar {
   @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
     if (!this.alt || !this.el.ariaLabel) {
       console.warn(
         'ModusWcAvatar: alt and aria-label are required for accessibility. Using fallback label.'
@@ -45,6 +44,7 @@ export class ModusWcAvatar {
       this.el.ariaLabel = this.el.ariaLabel || `Avatar ${this.alt || 'image'}`;
       this.alt = this.alt || 'Avatar image';
     }
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -66,7 +66,6 @@ export class ModusWcAvatar {
     return (
       <Host>
         <div
-          aria-label={this.el.ariaLabel}
           class="modus-wc-avatar"
           tabindex={-1}
           {...this.inheritedAttributes}

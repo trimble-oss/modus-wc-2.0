@@ -1,5 +1,6 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-tooltip.tailwind';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable tooltip component used to create tooltips with different content.
@@ -12,6 +13,11 @@ import { convertPropsToClasses } from './modus-wc-tooltip.tailwind';
   shadow: false,
 })
 export class ModusWcTooltip {
+  private inheritedAttributes: Attributes = {};
+
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /** The text content of the tooltip. */
   @Prop() content: string = '';
 
@@ -26,6 +32,10 @@ export class ModusWcTooltip {
 
   /** The position that the tooltip will render in relation to the element. */
   @Prop() position?: 'auto' | 'top' | 'right' | 'bottom' | 'left' = 'auto';
+
+  componentWillLoad() {
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
 
   private getClasses(): string {
     const classList: string[] = ['modus-wc-tooltip'];
@@ -50,6 +60,7 @@ export class ModusWcTooltip {
           data-tip={this.content}
           id={this.tooltipId}
           role="tooltip"
+          {...this.inheritedAttributes}
         >
           <slot />
         </div>

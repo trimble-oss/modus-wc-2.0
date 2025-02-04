@@ -1,6 +1,7 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-loader.tailwind';
 import { DaisySize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 export type LoaderVariant =
   | 'ball'
@@ -31,6 +32,8 @@ export type LoaderColor =
   shadow: false,
 })
 export class ModusWcLoader {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -53,6 +56,7 @@ export class ModusWcLoader {
       );
       this.el.ariaLabel = 'Loading';
     }
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -75,10 +79,10 @@ export class ModusWcLoader {
     return (
       <Host>
         <span
-          aria-label={this.el.ariaLabel}
           class={this.getClasses()}
           role="status"
           tabindex={-1}
+          {...this.inheritedAttributes}
         ></span>
       </Host>
     );

@@ -1,6 +1,7 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-breadcrumbs.tailwind';
 import { ModusSize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 export interface IModusWcBreadcrumb {
   /** The text to render in the breadcrumb. */
@@ -21,6 +22,8 @@ export interface IModusWcBreadcrumb {
   shadow: false,
 })
 export class ModusWcBreadcrumbs {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -44,6 +47,7 @@ export class ModusWcBreadcrumbs {
     if (!this.items || this.items.length === 0) {
       console.error('ModusWcBreadcrumbs: breadcrumb items data is required.');
     }
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -63,7 +67,7 @@ export class ModusWcBreadcrumbs {
   render() {
     return (
       <Host>
-        <nav aria-label={this.el.ariaLabel} class={this.getClasses()}>
+        <nav class={this.getClasses()} {...this.inheritedAttributes}>
           <ol>
             {this.items.map((item, index) => {
               const isCurrentPage = index === this.items.length - 1;
