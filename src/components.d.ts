@@ -360,7 +360,7 @@ export namespace Components {
         /**
           * The size of the chip.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * The variant of the chip.
          */
@@ -2403,7 +2403,7 @@ declare namespace LocalJSX {
         /**
           * The size of the chip.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * The variant of the chip.
          */

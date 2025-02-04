@@ -21,7 +21,7 @@ Adheres to WCAG 2.2 standards.
 | `disabled`    | `disabled`     | Whether the chip is disabled.               | `boolean \| undefined`                                                                                          | `false`     |
 | `hasError`    | `has-error`    | Whether the chip has an error.              | `boolean \| undefined`                                                                                          | `false`     |
 | `label`       | `label`        | The label to display in the chip.           | `string \| undefined`                                                                                           | `''`        |
-| `size`        | `size`         | The size of the chip.                       | `"lg" \| "md" \| "sm" \| "xs" \| undefined`                                                                     | `'md'`      |
+| `size`        | `size`         | The size of the chip.                       | `"lg" \| "md" \| "sm" \| undefined`                                                                             | `'md'`      |
 | `variant`     | `variant`      | The variant of the chip.                    | `"filled" \| "outline" \| undefined`                                                                            | `'filled'`  |
 
 
