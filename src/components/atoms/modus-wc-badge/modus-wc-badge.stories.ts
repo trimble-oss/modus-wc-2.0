@@ -75,3 +75,12 @@ const Template: Story = {
 export const Default: Story = {
   ...Template,
 };
+
+// prettier-ignore
+export const Text: Story = {
+  render: () => {
+    return html`
+    <modus-wc-badge aria-label="Example badge" color="primary" content="Badge" size="md" variant="text"></modus-wc-badge>
+    `;
+  },
+};
