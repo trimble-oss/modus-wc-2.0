@@ -41,3 +41,13 @@
     background-color: var(--modus-wc-color-base-100);
   }
 }
+
+[data-theme='modus-classic-light'] .modus-wc-input {
+  &.modus-wc-input-bordered:not(:disabled):not(:focus) {
+    border-color: var(--modus-wc-color-gray-6);
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-input:focus {
+  border-color: var(--modus-wc-color-highlight-blue);
+}
