@@ -10,6 +10,7 @@ interface ChipArgs {
   'custom-class'?: string;
   disabled?: boolean;
   'has-error'?: boolean;
+  'image-url'?: string;
   label: string;
   size: ModusSize;
   variant: 'filled' | 'outline';
@@ -22,6 +23,8 @@ const meta: Meta<ChipArgs> = {
     'aria-label': 'Example chip',
     color: 'primary',
     label: 'Chip',
+    'image-url':
+      'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',
     size: 'md',
     variant: 'filled',
   },
@@ -62,6 +65,7 @@ const Template: Story = {
       color=${args.color}
       disabled=${ifDefined(args.disabled)}
       has-error=${ifDefined(args['has-error'])}
+      image-url=${ifDefined(args['image-url'])}
       label=${args.label}
       size=${args.size}
       variant=${args.variant}
@@ -70,21 +74,3 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
-
-export const WithAvatar: Story = {
-  render: (args) => {
-    return html`
-      <modus-wc-chip
-        label=${args.label}
-        size=${args.size}
-        variant=${args.variant}
-      >
-        <modus-wc-avatar
-          img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg"
-          slot="left"
-          size="xs"
-        ></modus-wc-avatar>
-      </modus-wc-chip>
-    `;
-  },
-};

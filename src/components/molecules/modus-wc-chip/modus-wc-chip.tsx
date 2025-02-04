@@ -13,7 +13,7 @@ import { DaisyColor, ModusSize } from '../../types';
   shadow: false,
 })
 export class ModusWcChip {
-  /** Reference to the host element */
+  /** Reference to the host element. */
   @Element() el!: HTMLElement;
 
   /** Active state of chip. */
@@ -30,6 +30,9 @@ export class ModusWcChip {
 
   /** Whether the chip has an error. */
   @Prop() hasError?: boolean = false;
+
+  /** The URL of the image to display on left side of the chip. */
+  @Prop() imageUrl?: string = '';
 
   /** The label to display in the chip. */
   @Prop() label?: string = '';
@@ -78,10 +81,15 @@ export class ModusWcChip {
           tabIndex={0}
           type="button"
         >
-          <slot name="left" />
+          {this.imageUrl && (
+            <modus-wc-avatar
+              alt={this.el.ariaLabel || 'chip image'}
+              imgSrc={this.imageUrl}
+              size="xs"
+            ></modus-wc-avatar>
+          )}
           {this.label}
           <slot />
-          <slot name="right" />
         </button>
       </Host>
     );
