@@ -3642,7 +3642,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "DaisySize"
+                "text": "ModusSize"
               },
               "description": "The size of the chip."
             },
