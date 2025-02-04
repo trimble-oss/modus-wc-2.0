@@ -44,12 +44,6 @@ export class ModusWcBadge {
   @Prop() variant: 'counter' | 'filled' | 'text' = 'filled';
 
   componentWillLoad() {
-    if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcBadge: aria-label is required for accessibility. Using fallback label.'
-      );
-      this.el.ariaLabel = this.content ? `Badge ${this.content}` : 'Badge';
-    }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
