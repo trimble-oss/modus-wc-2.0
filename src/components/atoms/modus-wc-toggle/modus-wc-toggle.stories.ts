@@ -95,12 +95,6 @@ export const ToggleWithLabel: Story = {
     font-size: 14px;
     font-weight: 400;
   }
-  [data-theme='modus-classic-light'] .modus-wc-input-label{
-      color: #464B52;
-  }
-  [data-theme='modus-classic-dark'] .modus-wc-input-label{
-      color: #B7B9C3;
-  }
 
 </style>
 <form action="" method="get">
