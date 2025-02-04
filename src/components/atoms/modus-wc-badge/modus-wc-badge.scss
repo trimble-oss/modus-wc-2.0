@@ -4,8 +4,7 @@
 */
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
-[data-theme='modus-classic-light'] .modus-wc-badge,
-[data-theme='modus-classic-dark'] .modus-wc-badge {
+.modus-wc-badge {
   &.modus-wc-badge-sm {
     font-size: 0.625rem;
   }
@@ -76,7 +75,7 @@
 
   &.modus-wc-badge-neutral {
     background-color: var(--modus-wc-color-gray-1);
-    color: var(--modus-wc-color-gray-10);
+    color: var(--modus-wc-color-trimble-gray);
   }
 
   &.modus-wc-badge-high-contrast {
