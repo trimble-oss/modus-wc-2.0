@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-time-input should render with custom props 1`] = `
-<modus-wc-time-input aria-describedby="desc" aria-label="Time input" auto-complete="on" bordered="" custom-class="custom" datalist-id="time-options" disabled="" input-dir="ltr" input-id="time-input" input-tab-index="1" max="23:59" min="00:00" name="time" read-only="" required="" show-seconds="" size="lg" step="30" value="12:00">
+<modus-wc-time-input auto-complete="on" bordered="" custom-class="custom" datalist-id="time-options" disabled="" input-dir="ltr" input-id="time-input" input-tab-index="1" max="23:59" min="00:00" name="time" read-only="" required="" show-seconds="" size="lg" step="30" value="12:00">
   <input aria-describedby="desc" aria-label="Time input" aria-required="" autocomplete="on" class="custom modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-w-full" dir="ltr" disabled="" id="time-input" list="time-options" max="23:59" min="00:00" name="time" readonly="" required="" step="1" tabindex="1" type="time" value="12:00">
 </modus-wc-time-input>
 `;
 
 exports[`modus-wc-time-input should render with default props 1`] = `
-<modus-wc-time-input aria-label="Default input" datalist-id="test-list" value="">
-  <input aria-label="Time input" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" list="test-list" step="60" type="time" value="">
+<modus-wc-time-input datalist-id="test-list" value="">
+  <input aria-label="Default input" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" list="test-list" step="60" type="time" value="">
 </modus-wc-time-input>
 `;
