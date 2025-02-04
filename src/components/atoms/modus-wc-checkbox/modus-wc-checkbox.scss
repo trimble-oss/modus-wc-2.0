@@ -5,8 +5,9 @@
 
 [data-theme='modus-classic-light'] .modus-wc-checkbox,
 [data-theme='modus-classic-dark'] .modus-wc-checkbox {
-  --chkbg: var(--modus-wc-color-blue-light);
-  --fallback-bc: var(--modus-wc-color-blue-light);
+  --chkbg: var(--modus-wc-color-highlight-blue);
+  --fallback-bc: var(--modus-wc-color-highlight-blue);
+  --chkfg: var(--modus-wc-color-white);
 
   border-radius: var(--modus-wc-border-radius-sm);
   border-width: 2px;
@@ -28,4 +29,9 @@
     --chkbg: var(--modus-wc-color-trimble-blue);
     --fallback-bc: var(--modus-wc-color-trimble-blue);
   }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-checkbox {
+  --chkbg: var(--modus-wc-color-blue-light);
+  --fallback-bc: var(--modus-wc-color-blue-light);
 }
