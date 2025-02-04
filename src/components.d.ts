@@ -354,9 +354,17 @@ export namespace Components {
          */
         "hasError"?: boolean;
         /**
+          * The URL of the image to display on left side of the chip.
+         */
+        "imageUrl"?: string;
+        /**
           * The label to display in the chip.
          */
         "label"?: string;
+        /**
+          * Whether to show the close icon on right side of the chip.
+         */
+        "showClose"?: boolean;
         /**
           * The size of the chip.
          */
@@ -2397,9 +2405,17 @@ declare namespace LocalJSX {
          */
         "hasError"?: boolean;
         /**
+          * The URL of the image to display on left side of the chip.
+         */
+        "imageUrl"?: string;
+        /**
           * The label to display in the chip.
          */
         "label"?: string;
+        /**
+          * Whether to show the close icon on right side of the chip.
+         */
+        "showClose"?: boolean;
         /**
           * The size of the chip.
          */

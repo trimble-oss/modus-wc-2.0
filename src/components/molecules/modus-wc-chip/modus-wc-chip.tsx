@@ -37,6 +37,9 @@ export class ModusWcChip {
   /** The label to display in the chip. */
   @Prop() label?: string = '';
 
+  /** Whether to show the close icon on right side of the chip. */
+  @Prop() showClose?: boolean = false;
+
   /** The size of the chip. */
   @Prop() size?: ModusSize = 'md';
 
@@ -52,6 +55,8 @@ export class ModusWcChip {
     }
   }
 
+  // TODO: pass imageUrl and showClose to convertPropsToClasses in order to get proper styles
+  //       for cases when there is either no image or close icon etc...
   private getClasses(): string {
     const classList: string[] = ['modus-wc-chip', 'modus-wc-btn'];
 
@@ -71,6 +76,18 @@ export class ModusWcChip {
     return classList.join(' ');
   }
 
+  // Used svg markup here to avoid any dependencies on modus-icons setup
+  private SolidCancelIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="currentColor"
+      class="mi-solid mi-cancel-circle modus-wc-close-icon"
+      viewBox="0 0 24 24"
+    >
+      <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m4.3 14.3a.996.996 0 0 1-1.41 0L12 13.41 9.11 16.3a.996.996 0 1 1-1.41-1.41L10.59 12 7.7 9.11A.996.996 0 1 1 9.11 7.7L12 10.59l2.89-2.89a.996.996 0 1 1 1.41 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41" />
+    </svg>
+  );
+
   render() {
     return (
       <Host>
@@ -83,13 +100,14 @@ export class ModusWcChip {
         >
           {this.imageUrl && (
             <modus-wc-avatar
-              alt={this.el.ariaLabel || 'chip image'}
+              alt={this.el.ariaLabel || 'chip avatar'}
               imgSrc={this.imageUrl}
               size="xs"
             ></modus-wc-avatar>
           )}
           {this.label}
           <slot />
+          {this.showClose && this.SolidCancelIcon}
         </button>
       </Host>
     );

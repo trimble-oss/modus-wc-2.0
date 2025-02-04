@@ -12,6 +12,7 @@ interface ChipArgs {
   'has-error'?: boolean;
   'image-url'?: string;
   label: string;
+  'show-close'?: boolean;
   size: ModusSize;
   variant: 'filled' | 'outline';
 }
@@ -25,6 +26,7 @@ const meta: Meta<ChipArgs> = {
     label: 'Chip',
     'image-url':
       'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',
+    'show-close': true,
     size: 'md',
     variant: 'filled',
   },
@@ -67,6 +69,7 @@ const Template: Story = {
       has-error=${ifDefined(args['has-error'])}
       image-url=${ifDefined(args['image-url'])}
       label=${args.label}
+      show-close=${ifDefined(args['show-close'])}
       size=${args.size}
       variant=${args.variant}
     />`;

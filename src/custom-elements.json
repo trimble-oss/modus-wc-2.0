@@ -3582,7 +3582,7 @@
               "type": {
                 "text": "HTMLElement"
               },
-              "description": "Reference to the host element"
+              "description": "Reference to the host element."
             },
             {
               "kind": "method",
@@ -3631,12 +3631,28 @@
               "description": "Whether the chip has an error."
             },
             {
+              "name": "image-url",
+              "fieldName": "imageUrl",
+              "type": {
+                "text": "string"
+              },
+              "description": "The URL of the image to display on left side of the chip."
+            },
+            {
               "name": "label",
               "fieldName": "label",
               "type": {
                 "text": "string"
               },
               "description": "The label to display in the chip."
+            },
+            {
+              "name": "show-close",
+              "fieldName": "showClose",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether to show the close icon on right side of the chip."
             },
             {
               "name": "size",
