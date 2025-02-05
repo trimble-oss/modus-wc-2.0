@@ -1,6 +1,6 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-chip.tailwind';
-import { DaisyColor, ModusSize } from '../../types';
+import { ModusSize } from '../../types';
 
 /**
  * A customizable chip component.
@@ -18,9 +18,6 @@ export class ModusWcChip {
 
   /** Active state of chip. */
   @Prop() active?: boolean = false;
-
-  /** The color of the chip. */
-  @Prop() color?: DaisyColor = 'primary';
 
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
@@ -62,7 +59,6 @@ export class ModusWcChip {
 
     const propClasses = convertPropsToClasses({
       active: this.active,
-      color: this.color,
       disabled: this.disabled,
       hasError: this.hasError,
       size: this.size,
@@ -76,7 +72,6 @@ export class ModusWcChip {
     return classList.join(' ');
   }
 
-  // Used svg markup here to avoid any dependencies on modus-icons setup
   private SolidCancelIcon = (
     <svg
       xmlns="http://www.w3.org/2000/svg"

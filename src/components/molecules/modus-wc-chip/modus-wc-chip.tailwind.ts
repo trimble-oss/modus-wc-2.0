@@ -1,8 +1,7 @@
-import { DaisyColor, ModusSize } from '../../types';
+import { ModusSize } from '../../types';
 
 export const convertPropsToClasses = (props: {
   active?: boolean;
-  color?: DaisyColor;
   disabled?: boolean;
   hasError?: boolean;
   size?: ModusSize;
@@ -12,10 +11,6 @@ export const convertPropsToClasses = (props: {
 
   if (Object.prototype.hasOwnProperty.call(props, 'active') && !!props.active) {
     classes = `${classes} modus-wc-chip--active`;
-  }
-
-  if (Object.prototype.hasOwnProperty.call(props, 'color') && props.color) {
-    classes = `${classes} modus-wc-btn-${props.color}`;
   }
 
   if (

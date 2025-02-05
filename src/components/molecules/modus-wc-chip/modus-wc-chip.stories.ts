@@ -1,12 +1,11 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DaisyColor, ModusSize } from '../../types';
+import { ModusSize } from '../../types';
 
 interface ChipArgs {
   'aria-label': string;
   active?: boolean;
-  color: DaisyColor;
   'custom-class'?: string;
   disabled?: boolean;
   'has-error'?: boolean;
@@ -22,7 +21,6 @@ const meta: Meta<ChipArgs> = {
   component: 'modus-wc-chip',
   args: {
     'aria-label': 'Example chip',
-    color: 'primary',
     label: 'Chip',
     'image-url':
       'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',
@@ -31,19 +29,6 @@ const meta: Meta<ChipArgs> = {
     variant: 'filled',
   },
   argTypes: {
-    color: {
-      control: { type: 'select' },
-      options: [
-        'primary',
-        'secondary',
-        'accent',
-        'neutral',
-        'info',
-        'success',
-        'warning',
-        'error',
-      ],
-    },
     size: {
       control: { type: 'inline-radio' },
       options: ['sm', 'md', 'lg'],
@@ -64,7 +49,6 @@ const Template: Story = {
     return html` <modus-wc-chip
       aria-label=${args['aria-label']}
       active=${ifDefined(args.active)}
-      color=${args.color}
       disabled=${ifDefined(args.disabled)}
       has-error=${ifDefined(args['has-error'])}
       image-url=${ifDefined(args['image-url'])}

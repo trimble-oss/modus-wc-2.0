@@ -8,6 +8,19 @@
   &.modus-wc-btn {
     --rounded-btn: 1rem;
 
+    background-color: var(--modus-wc-color-gray-1);
+    color: var(--modus-wc-color-gray-9);
+
+    &:hover {
+      background-color: var(--modus-wc-color-gray-0);
+      color: var(--modus-wc-color-gray-9);
+    }
+
+    &.modus-wc-chip--error {
+      background-color: var(--modus-wc-color-red-pale);
+      color: var(--modus-wc-color-red-dark);
+    }
+
     &.modus-wc-btn-sm {
       height: 1.5rem;
       min-height: 1.5rem;
@@ -58,6 +71,19 @@
     &.modus-wc-chip--outline {
       --tw-bg-opacity: 0.5;
     }
+  }
+}
+
+// TODO: include variables for opacity in 'variables.scss'
+[data-theme='modus-classic-light'] .modus-wc-chip {
+  &.modus-wc-chip--disabled {
+    opacity: 0.3;
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-chip {
+  &.modus-wc-chip--disabled {
+    opacity: 0.6;
   }
 }
 
@@ -119,5 +145,4 @@
 
 .modus-wc-chip-avatar--disabled {
   filter: grayscale(100%);
-  opacity: 0.5;
 }

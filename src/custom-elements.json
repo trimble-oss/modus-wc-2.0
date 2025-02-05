@@ -3599,14 +3599,6 @@
               "description": "Active state of chip."
             },
             {
-              "name": "color",
-              "fieldName": "color",
-              "type": {
-                "text": "DaisyColor"
-              },
-              "description": "The color of the chip."
-            },
-            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {

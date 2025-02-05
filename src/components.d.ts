@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IModusWcAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
-import { DaisyColor, DaisySize, Density, ModusSize, Orientation } from "./components/types";
+import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
@@ -18,7 +18,7 @@ import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { IModusWcAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
-export { DaisyColor, DaisySize, Density, ModusSize, Orientation } from "./components/types";
+export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
@@ -337,10 +337,6 @@ export namespace Components {
           * Active state of chip.
          */
         "active"?: boolean;
-        /**
-          * The color of the chip.
-         */
-        "color"?: DaisyColor;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -2388,10 +2384,6 @@ declare namespace LocalJSX {
           * Active state of chip.
          */
         "active"?: boolean;
-        /**
-          * The color of the chip.
-         */
-        "color"?: DaisyColor;
         /**
           * Custom CSS class to apply to the inner div.
          */
