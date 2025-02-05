@@ -40,15 +40,6 @@ export class ModusWcBadge {
   /** The variant of the badge. */
   @Prop() variant: 'counter' | 'filled' | 'text' = 'filled';
 
-  componentWillLoad() {
-    if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcBadge: aria-label is required for accessibility. Using fallback label.'
-      );
-      this.el.ariaLabel = this.content ? `Badge ${this.content}` : 'Badge';
-    }
-  }
-
   private getClasses(): string {
     const classList = ['modus-wc-badge'];
     const propClasses = convertPropsToClasses({
@@ -71,7 +62,6 @@ export class ModusWcBadge {
       <Host>
         <span
           class={this.getClasses()}
-          aria-label={this.el.ariaLabel}
           role={isAlert ? 'alert' : 'status'}
           tabindex={-1}
         >
