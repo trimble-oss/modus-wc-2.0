@@ -6,7 +6,8 @@
 [data-theme='modus-classic-light'] .modus-wc-chip,
 [data-theme='modus-classic-dark'] .modus-wc-chip {
   &.modus-wc-btn {
-    --rounded-btn: 1rem;
+    --rounded-btn: 1rem; // DaisyUI override
+    $modus-wc-chip-active-bg: #217cbb4d; // modus-wc-color-blue-light with 30% opacity
 
     background-color: var(--modus-wc-color-gray-1);
     color: var(--modus-wc-color-gray-9);
@@ -19,6 +20,11 @@
     &.modus-wc-chip--error {
       background-color: var(--modus-wc-color-red-pale);
       color: var(--modus-wc-color-red-dark);
+    }
+
+    &.modus-wc-chip--active {
+      background-color: $modus-wc-chip-active-bg;
+      color: var(--modus-wc-color-trimble-gray);
     }
 
     &.modus-wc-btn-sm {
