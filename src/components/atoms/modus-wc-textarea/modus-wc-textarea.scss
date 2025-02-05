@@ -37,3 +37,13 @@
     background-color: var(--modus-wc-color-base-100);
   }
 }
+
+[data-theme='modus-classic-light'] .modus-wc-textarea {
+  &.modus-wc-textarea-bordered:not(:disabled):not(:focus) {
+    border-color: var(--modus-wc-color-gray-6);
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-textarea:focus {
+  border-color: var(--modus-wc-color-highlight-blue);
+}
