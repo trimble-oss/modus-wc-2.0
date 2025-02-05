@@ -5,9 +5,9 @@
 }
 
 [data-theme='modus-classic-light'] .modus-wc-input-label {
-  color: #464b52;
+  color: var(--modus-wc-color-gray-8);
 }
 
 [data-theme='modus-classic-dark'] .modus-wc-input-label {
-  color: #b7b9c3;
+  color: var(--modus-wc-color-gray-2);
 }
