@@ -4,7 +4,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ModusSize } from '../../types';
 
 interface BadgeArgs {
-  'aria-label': string;
   color:
     | 'primary'
     | 'secondary'
@@ -23,7 +22,6 @@ const meta: Meta<BadgeArgs> = {
   title: 'Components/Badge',
   component: 'modus-wc-badge',
   args: {
-    'aria-label': 'Example badge',
     color: 'primary',
     content: 'Badge',
     size: 'md',
@@ -61,7 +59,6 @@ const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-badge
-        aria-label="${args['aria-label']}"
         color="${args.color}"
         content="${args.content}"
         custom-class="${ifDefined(args['custom-class'])}"
