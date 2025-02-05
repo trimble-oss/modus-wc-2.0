@@ -12,6 +12,6 @@
     "selector-class-pattern": "^[a-z][a-z0-9\\-]*[a-z0-9]$",
     "selector-not-notation": null,
     "scss/no-global-function-names": null,
-    "value-keyword-case": ["lower", {"camelCaseSvgKeywords": true}]
+    "value-keyword-case": ["lower", { "camelCaseSvgKeywords": true }]
   }
 }
