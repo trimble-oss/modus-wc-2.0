@@ -9,26 +9,28 @@
 }
 
 .modus-wc-tab {
-  display: inline-flex;
   align-items: center;
-
-  font-weight: var(--modus-wc-font-weight-bold);
-
   border-top-left-radius: var(--modus-wc-border-radius-md);
   border-top-right-radius: var(--modus-wc-border-radius-md);
-  --tab-border: 0px; //! This is rendered as 1px due to a calc(+1)
+  display: inline-flex;
+  font-weight: var(--modus-wc-font-weight-bold);
+
+  --tab-border: 0px; // ! This is rendered as 1px due to a calc(+1)
 
   // For centering purposes
   modus-wc-icon {
     .modus-wc-icon--xs {
       line-height: calc(var(--modus-wc-line-height-sm) + 0.25rem);
     }
+
     .modus-wc-icon--sm {
       line-height: var(--modus-wc-line-height-md);
     }
+
     .modus-wc-icon--md {
       line-height: var(--modus-wc-line-height-lg);
     }
+
     .modus-wc-icon--lg {
       line-height: var(--modus-wc-line-height-xl);
     }
@@ -38,7 +40,6 @@
 [data-theme='modus-classic-light'] .modus-wc-tab {
   --tab-color: var(--modus-wc-color-trimble-gray);
   --tab-bg: var(--modus-wc-color-white);
-
   --fallback-bc: var(--modus-wc-color-gray-2);
 
   &:not(.modus-wc-tab-active):not(.modus-wc-tab-disabled):hover {
@@ -47,6 +48,7 @@
 
   &:not(.modus-wc-tab-disabled):active {
     --tab-color: var(--modus-wc-color-white);
+
     // Unfortunately needed, otherwise browsers sometimes don't apply.
     background-color: var(--modus-wc-color-trimble-blue) !important;
   }
@@ -54,9 +56,10 @@
   &.modus-wc-tab-active {
     --tab-color: var(--modus-wc-color-white);
     --tab-bg: var(--modus-wc-color-blue-light);
-    background-color: var(--modus-wc-color-blue-light);
-    --fallback-p: var(--modus-wc-color-blue-light);
 
+    background-color: var(--modus-wc-color-blue-light);
+
+    --fallback-p: var(--modus-wc-color-blue-light);
     --fallback-bc: transparent;
   }
 }
@@ -64,6 +67,7 @@
 [data-theme='modus-classic-dark'] .modus-wc-tab {
   --tab-color: var(--modus-wc-color-white);
   --tab-bg: var(--modus-wc-color-gray-10);
+
   background-color: var(--modus-wc-color-gray-10);
 
   --fallback-bc: var(--modus-wc-color-gray-8);
@@ -80,16 +84,18 @@
   &.modus-wc-tab-active {
     --tab-color: var(--modus-wc-color-white);
     --tab-bg: var(--modus-wc-color-blue-light);
+
     // rgba(var(--modus-wc-color-highlight-blue), 0.3) applied on a background of --modus-wc-color-neutral
     background-color: #255773;
-    --fallback-p: var(--modus-wc-color-blue-light);
-
-    --fallback-bc: var(--modus-wc-color-highlight-blue);
     border-width: 1px;
+
+    --fallback-p: var(--modus-wc-color-blue-light);
+    --fallback-bc: var(--modus-wc-color-highlight-blue);
   }
 
   &.modus-wc-tab-disabled {
     --tab-color: var(--modus-wc-color-gray-2);
+
     background-color: var(--modus-wc-color-gray-10);
   }
 }
