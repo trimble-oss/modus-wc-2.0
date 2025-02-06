@@ -3569,6 +3569,54 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-card/modus-wc-card.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable card component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcCard",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            }
+          ],
+          "tagName": "modus-wc-card",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcCard",
+          "declaration": {
+            "name": "ModusWcCard",
+            "module": "src/components/molecules/modus-wc-card/modus-wc-card.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-card",
+          "declaration": {
+            "name": "ModusWcCard",
+            "module": "src/components/molecules/modus-wc-card/modus-wc-card.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-collapse/modus-wc-collapse.tsx",
       "declarations": [
         {

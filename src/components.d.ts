@@ -275,6 +275,16 @@ export namespace Components {
         "variant": 'borderless' | 'filled' | 'outlined';
     }
     /**
+     * A customizable card component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCard {
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+    }
+    /**
      * A customizable checkbox component.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1507,6 +1517,16 @@ declare global {
         prototype: HTMLModusWcButtonElement;
         new (): HTMLModusWcButtonElement;
     };
+    /**
+     * A customizable card component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcCardElement extends Components.ModusWcCard, HTMLStencilElement {
+    }
+    var HTMLModusWcCardElement: {
+        prototype: HTMLModusWcCardElement;
+        new (): HTMLModusWcCardElement;
+    };
     interface HTMLModusWcCheckboxElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
@@ -1957,6 +1977,7 @@ declare global {
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-breadcrumbs": HTMLModusWcBreadcrumbsElement;
         "modus-wc-button": HTMLModusWcButtonElement;
+        "modus-wc-card": HTMLModusWcCardElement;
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
         "modus-wc-collapse": HTMLModusWcCollapseElement;
         "modus-wc-date": HTMLModusWcDateElement;
@@ -2255,6 +2276,16 @@ declare namespace LocalJSX {
           * The variant of the button.
          */
         "variant"?: 'borderless' | 'filled' | 'outlined';
+    }
+    /**
+     * A customizable card component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCard {
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
     }
     /**
      * A customizable checkbox component.
@@ -3460,6 +3491,7 @@ declare namespace LocalJSX {
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-breadcrumbs": ModusWcBreadcrumbs;
         "modus-wc-button": ModusWcButton;
+        "modus-wc-card": ModusWcCard;
         "modus-wc-checkbox": ModusWcCheckbox;
         "modus-wc-collapse": ModusWcCollapse;
         "modus-wc-date": ModusWcDate;
@@ -3526,6 +3558,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
+            /**
+             * A customizable card component.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-card": LocalJSX.ModusWcCard & JSXBase.HTMLAttributes<HTMLModusWcCardElement>;
             /**
              * A customizable checkbox component.
              * Adheres to WCAG 2.2 standards.
