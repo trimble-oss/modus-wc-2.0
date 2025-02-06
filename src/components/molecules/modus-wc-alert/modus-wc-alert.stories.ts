@@ -65,6 +65,10 @@ export const CloseIcon: Story = {
   modus-wc-button {
     align-items: center;
   }
+    
+  [data-theme='modus-classic-dark'] modus-wc-icon {
+    color: #fff;
+  }
 </style>
 <modus-wc-alert
   alert-description=${ifDefined(args['alert-description'])}
