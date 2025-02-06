@@ -91,9 +91,7 @@ export const ToggleWithLabel: Story = {
     padding-inline-end: 8px;
   }
   modus-wc-input-label {
-    font-family: Open Sans;
     font-size: 14px;
-    font-weight: 400;
   }
 
 </style>
