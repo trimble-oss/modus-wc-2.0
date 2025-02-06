@@ -1,6 +1,7 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-divider.tailwind';
 import { Orientation } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable divider component used to separate content horizontally or vertically.
@@ -13,6 +14,8 @@ import { Orientation } from '../../types';
   shadow: false,
 })
 export class ModusWcDivider {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -48,6 +51,8 @@ export class ModusWcDivider {
       );
       this.el.ariaLabel = 'Divider';
     }
+
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -72,9 +77,9 @@ export class ModusWcDivider {
       <Host>
         <div
           class={this.getClasses()}
-          aria-label={this.el.ariaLabel}
           role="separator"
           tabindex={-1}
+          {...this.inheritedAttributes}
         >
           {this.content}
         </div>

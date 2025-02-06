@@ -1,4 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 // import { convertPropsToClasses } from './modus-wc-progress.tailwind';
 
 /**
@@ -12,6 +13,8 @@ import { Component, Element, h, Host, Prop } from '@stencil/core';
   shadow: false,
 })
 export class ModusWcProgress {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -34,6 +37,8 @@ export class ModusWcProgress {
       );
       this.el.ariaLabel = 'Progress';
     }
+
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -62,9 +67,9 @@ export class ModusWcProgress {
     return (
       <Host>
         <progress
-          aria-label={this.el.ariaLabel}
           class={this.getClasses()}
           {...valueAttributes}
+          {...this.inheritedAttributes}
         />
       </Host>
     );

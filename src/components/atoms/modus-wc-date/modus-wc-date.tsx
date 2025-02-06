@@ -9,6 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-date.tailwind';
 import { ModusSize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable date picker component used to create date inputs.
@@ -21,14 +22,10 @@ import { ModusSize } from '../../types';
   shadow: false,
 })
 export class ModusWcDate {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
-
-  /** The ID of the element that describes the input. */
-  @Prop() ariaDescribedby?: string;
-
-  /** The aria-labelledby attribute for usage with a label. */
-  @Prop() ariaLabelledby?: string;
 
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
@@ -88,6 +85,7 @@ export class ModusWcDate {
       );
     }
     this.el.ariaLabel = this.placeholder || 'Date input';
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -120,9 +118,7 @@ export class ModusWcDate {
     return (
       <Host>
         <input
-          aria-describedby={this.ariaDescribedby}
-          aria-label={this.el.ariaLabel}
-          aria-labelledby={this.ariaLabelledby}
+          aria-disabled={this.disabled}
           class={this.getClasses()}
           dir={this.inputDir}
           disabled={this.disabled}
@@ -139,6 +135,7 @@ export class ModusWcDate {
           tabIndex={this.inputTabIndex}
           type="date"
           value={this.value}
+          {...this.inheritedAttributes}
         />
       </Host>
     );

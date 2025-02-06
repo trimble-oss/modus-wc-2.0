@@ -10,6 +10,7 @@ import {
 } from '@stencil/core';
 import { IMenuItem } from '../../atoms/modus-wc-menu/modus-wc-menu';
 import { ModusSize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable autocomplete component used to create searchable text inputs.
@@ -23,6 +24,7 @@ import { ModusSize } from '../../types';
 })
 export class ModusWcAutocomplete {
   private debounceTimer?: number;
+  private inheritedAttributes: Attributes = {};
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -31,9 +33,6 @@ export class ModusWcAutocomplete {
 
   /** The active menu item value, used to show an item as selected. */
   @Prop() activeItemValue?: string;
-
-  /** The ID of the element that describes the input. */
-  @Prop() ariaDescribedby?: string;
 
   /** Indicates that the autocomplete should have a border. */
   @Prop() bordered?: boolean = true;
@@ -106,6 +105,14 @@ export class ModusWcAutocomplete {
     }
   }
 
+  componentWillLoad() {
+    if (!this.el.ariaLabel) {
+      this.el.ariaLabel = 'Autocomplete input';
+    }
+
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
   private getClasses(): string {
     const classList: string[] = ['modus-wc-autocomplete'];
 
@@ -167,14 +174,8 @@ export class ModusWcAutocomplete {
 
   render() {
     return (
-      <Host
-        aria-label={this.el.ariaLabel}
-        class={this.getClasses()}
-        dir={this.inputDir}
-      >
+      <Host class={this.getClasses()} dir={this.inputDir}>
         <modus-wc-text-input
-          ariaDescribedby={this.ariaDescribedby}
-          aria-label="Autocomplete input"
           bordered={this.bordered}
           disabled={this.disabled}
           inputId={this.inputId}
@@ -188,6 +189,7 @@ export class ModusWcAutocomplete {
           required={this.required}
           size={this.size}
           value={this.value}
+          {...this.inheritedAttributes}
         />
         {this.menuVisible && (
           <modus-wc-menu
