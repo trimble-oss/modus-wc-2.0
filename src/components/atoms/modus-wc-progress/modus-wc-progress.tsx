@@ -37,6 +37,7 @@ export class ModusWcProgress {
       );
       this.el.ariaLabel = 'Progress';
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

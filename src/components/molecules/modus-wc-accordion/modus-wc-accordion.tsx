@@ -57,6 +57,7 @@ export class ModusWcAccordion {
     if (!this.items || this.items.length === 0) {
       console.error('ModusWcAccordion: accordion items data is required.');
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

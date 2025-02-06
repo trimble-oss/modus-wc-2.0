@@ -83,6 +83,7 @@ export class ModusWcCheckbox {
       );
       this.el.ariaLabel = 'Checkbox';
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

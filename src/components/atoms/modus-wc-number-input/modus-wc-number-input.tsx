@@ -100,6 +100,7 @@ export class ModusWcNumberInput {
       );
       this.el.ariaLabel = this.placeholder || 'Number input';
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

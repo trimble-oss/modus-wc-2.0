@@ -47,6 +47,7 @@ export class ModusWcBreadcrumbs {
     if (!this.items || this.items.length === 0) {
       console.error('ModusWcBreadcrumbs: breadcrumb items data is required.');
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

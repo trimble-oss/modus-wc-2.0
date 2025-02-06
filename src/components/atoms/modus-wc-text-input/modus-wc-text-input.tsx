@@ -124,6 +124,7 @@ export class ModusWcTextInput {
       );
       this.el.ariaLabel = this.placeholder || 'Text input';
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

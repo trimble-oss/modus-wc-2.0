@@ -120,6 +120,7 @@ export class ModusWcTimeInput {
     if (!this.datalistId) {
       this.datalistId = this.internalDatalistId;
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

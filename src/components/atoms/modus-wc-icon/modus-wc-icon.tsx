@@ -39,6 +39,7 @@ export class ModusWcIcon {
       );
       this.el.ariaLabel = `${this.name} icon`;
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

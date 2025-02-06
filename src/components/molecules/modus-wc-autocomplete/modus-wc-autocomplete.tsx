@@ -109,6 +109,7 @@ export class ModusWcAutocomplete {
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Autocomplete input';
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

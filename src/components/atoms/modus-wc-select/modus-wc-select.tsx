@@ -82,6 +82,7 @@ export class ModusWcSelect {
       );
       this.el.ariaLabel = 'Select';
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

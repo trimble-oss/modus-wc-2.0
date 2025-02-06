@@ -69,6 +69,7 @@ export class ModusWcButton {
       );
       this.el.ariaLabel = this.label || 'Button';
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

@@ -91,6 +91,7 @@ export class ModusWcTextarea {
       );
       this.el.ariaLabel = this.placeholder || 'Text area';
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

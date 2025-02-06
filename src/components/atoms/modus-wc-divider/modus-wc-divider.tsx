@@ -51,6 +51,7 @@ export class ModusWcDivider {
       );
       this.el.ariaLabel = 'Divider';
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

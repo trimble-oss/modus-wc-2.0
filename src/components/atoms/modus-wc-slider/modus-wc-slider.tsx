@@ -79,6 +79,7 @@ export class ModusWcSlider {
       );
       this.el.ariaLabel = 'Slider';
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

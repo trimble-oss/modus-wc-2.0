@@ -56,6 +56,7 @@ export class ModusWcLoader {
       );
       this.el.ariaLabel = 'Loading';
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

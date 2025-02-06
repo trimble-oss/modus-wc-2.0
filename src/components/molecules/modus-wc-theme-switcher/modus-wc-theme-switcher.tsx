@@ -48,6 +48,7 @@ export class ModusWcThemeSwitcher {
       );
       this.el.ariaLabel = 'Switch between light and dark theme';
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

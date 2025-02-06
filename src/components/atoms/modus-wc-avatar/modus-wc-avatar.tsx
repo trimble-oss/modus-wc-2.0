@@ -44,6 +44,7 @@ export class ModusWcAvatar {
       this.el.ariaLabel = this.el.ariaLabel || `Avatar ${this.alt || 'image'}`;
       this.alt = this.alt || 'Avatar image';
     }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
