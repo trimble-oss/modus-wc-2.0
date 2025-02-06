@@ -31,30 +31,28 @@
       --rounded-btn: 0.75rem;
       height: 1.5rem;
       min-height: 1.5rem;
-      padding: 0.0625rem 0.125rem;
 
       .modus-wc-chip-avatar {
-        width: 1.25rem;
-        display: flex;
+        width: 1rem;
       }
 
       .modus-wc-chip-close-icon {
-        width: 1.25rem;
+        width: 1rem;
+        height: 1rem;
       }
     }
 
     &.modus-wc-btn-md {
       height: 1.875rem;
       min-height: 1.875rem;
-      padding: 0.125rem 0.25rem;
 
       .modus-wc-chip-avatar {
         width: 1.5rem;
-        display: flex;
       }
 
       .modus-wc-chip-close-icon {
         width: 1.5rem;
+        height: 1.5rem;
       }
     }
 
@@ -62,15 +60,14 @@
       --rounded-btn: 1.5rem;
       height: 2.25rem;
       min-height: 2.25rem;
-      padding: 0.1875rem 0.375rem;
 
       .modus-wc-chip-avatar {
         width: 1.75rem;
-        display: flex;
       }
 
       .modus-wc-chip-close-icon {
         width: 1.75rem;
+        height: 1.75rem;
       }
     }
 
@@ -101,45 +98,42 @@
     &.modus-wc-btn-sm {
       height: 1.5rem;
       min-height: 1.5rem;
-      padding: 0.0625rem 0.125rem;
 
       .modus-wc-chip-avatar {
         width: 1.25rem;
-        display: flex;
       }
 
       .modus-wc-chip-close-icon {
         width: 1.25rem;
+        height: 1.25rem;
       }
     }
 
     &.modus-wc-btn-md {
       height: 1.875rem;
       min-height: 1.875rem;
-      padding: 0.125rem 0.25rem;
 
       .modus-wc-chip-avatar {
         width: 1.5rem;
-        display: flex;
       }
 
       .modus-wc-chip-close-icon {
         width: 1.5rem;
+        height: 1.5rem;
       }
     }
 
     &.modus-wc-btn-lg {
       height: 2.25rem;
       min-height: 2.25rem;
-      padding: 0.1875rem 0.375rem;
 
       .modus-wc-chip-avatar {
         width: 1.75rem;
-        display: flex;
       }
 
       .modus-wc-chip-close-icon {
         width: 1.75rem;
+        height: 1.75rem;
       }
     }
 
@@ -149,6 +143,10 @@
       --tw-bg-opacity: 0.5;
     }
   }
+}
+
+.modus-wc-chip-avatar-container {
+  display: flex;
 }
 
 .modus-wc-chip-avatar--disabled {
