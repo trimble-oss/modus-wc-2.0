@@ -1,4 +1,5 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable input label component.
@@ -13,6 +14,11 @@ import { Component, h, Host, Prop } from '@stencil/core';
   shadow: false,
 })
 export class ModusWcInputLabel {
+  private inheritedAttributes: Attributes = {};
+
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /** The `for` attribute of the label, matching the `id` of the associated input. */
   @Prop() forId?: string;
 
@@ -28,6 +34,10 @@ export class ModusWcInputLabel {
   /** Whether the label indicates a required field. */
   @Prop() required?: boolean = false;
 
+  componentWillLoad() {
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
   private getClasses = (): string => {
     const classList = ['modus-wc-input-label'];
 
@@ -40,7 +50,11 @@ export class ModusWcInputLabel {
   render() {
     return (
       <Host dir={this.labelDir}>
-        <label class={this.getClasses()} htmlFor={this.forId}>
+        <label
+          class={this.getClasses()}
+          htmlFor={this.forId}
+          {...this.inheritedAttributes}
+        >
           {this.labelText}
           {this.required && (
             <span aria-hidden="true" class="required-indicator">
