@@ -103,45 +103,54 @@
 [data-theme='modus-modern-light'] .modus-wc-chip,
 [data-theme='modus-modern-dark'] .modus-wc-chip {
   &.modus-wc-btn {
+    --rounded-btn: 0.5rem;
+    box-sizing: border-box;
+
     &.modus-wc-btn-sm {
       height: 1.5rem;
       min-height: 1.5rem;
+      padding: 0.1875rem 0.75rem; // 3px 12px
 
       .modus-wc-chip-avatar {
-        width: 1.25rem;
+        width: 1rem;
+        height: 1rem;
       }
 
       .modus-wc-chip-close-icon {
-        width: 1.25rem;
-        height: 1.25rem;
+        width: 1rem;
+        height: 1rem;
       }
     }
 
     &.modus-wc-btn-md {
-      height: 1.875rem;
-      min-height: 1.875rem;
+      height: 2rem; // 32px
+      min-height: 2rem;
+      padding: 0.4375rem 0.75rem; // 7px 12px
 
       .modus-wc-chip-avatar {
-        width: 1.5rem;
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .modus-wc-chip-close-icon {
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+
+    &.modus-wc-btn-lg {
+      height: 3rem; // 48px
+      min-height: 3rem;
+      padding: 0.75rem 1rem; // 12px 16px
+
+      .modus-wc-chip-avatar {
+        width: 1.5rem; // 24px
+        height: 1.5rem;
       }
 
       .modus-wc-chip-close-icon {
         width: 1.5rem;
         height: 1.5rem;
-      }
-    }
-
-    &.modus-wc-btn-lg {
-      height: 2.25rem;
-      min-height: 2.25rem;
-
-      .modus-wc-chip-avatar {
-        width: 1.75rem;
-      }
-
-      .modus-wc-chip-close-icon {
-        width: 1.75rem;
-        height: 1.75rem;
       }
     }
 
