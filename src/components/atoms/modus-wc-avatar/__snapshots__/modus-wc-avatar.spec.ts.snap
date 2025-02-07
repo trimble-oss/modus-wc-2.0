@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-avatar should render with custom props 1`] = `
-<modus-wc-avatar alt="Custom avatar" aria-label="Custom avatar" custom-class="test-class" img-src="https://example.com/avatar.jpg" shape="square" size="sm">
-  <div aria-label="Avatar Custom avatar" class="modus-wc-avatar" tabindex="-1">
+<modus-wc-avatar alt="Custom avatar" custom-class="test-class" img-src="https://example.com/avatar.jpg" shape="square" size="sm">
+  <div aria-label="Custom avatar" class="modus-wc-avatar" tabindex="-1">
     <div class="modus-wc-rounded-lg modus-wc-w-12 test-class">
       <img alt="Custom avatar" src="https://example.com/avatar.jpg">
     </div>
@@ -11,8 +11,8 @@ exports[`modus-wc-avatar should render with custom props 1`] = `
 `;
 
 exports[`modus-wc-avatar should render with default props 1`] = `
-<modus-wc-avatar alt="Default avatar" aria-label="Default avatar">
-  <div aria-label="Avatar Default avatar" class="modus-wc-avatar" tabindex="-1">
+<modus-wc-avatar alt="Default avatar">
+  <div aria-label="Default avatar" class="modus-wc-avatar" tabindex="-1">
     <div class="modus-wc-rounded-full modus-wc-w-16">
       <img alt="Default avatar" src="">
     </div>

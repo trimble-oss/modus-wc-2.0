@@ -15,6 +15,7 @@ import {
   convertPropsToTitleDivClasses,
 } from './modus-wc-collapse.tailwind';
 import { DaisySize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable collapse component used for showing and hiding content.
@@ -29,6 +30,8 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcCollapse {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -90,6 +93,10 @@ export class ModusWcCollapse {
       this.handleClick();
     }
   };
+
+  componentWillLoad() {
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
 
   private getOuterDivClasses(): string {
     const classList: string[] = ['modus-wc-collapse modus-wc-collapse-arrow'];
@@ -153,7 +160,7 @@ export class ModusWcCollapse {
 
     return (
       <Host>
-        <div class={this.getOuterDivClasses()}>
+        <div class={this.getOuterDivClasses()} {...this.inheritedAttributes}>
           <input
             aria-controls={contentId}
             aria-expanded={this.expanded}
@@ -168,6 +175,7 @@ export class ModusWcCollapse {
             <div class={this.getTitleChildDivClasses()}>
               {this.icon && (
                 <modus-wc-icon
+                  aria-label={this.iconAriaLabel}
                   decorative={true}
                   name={this.icon}
                   size={this.size}

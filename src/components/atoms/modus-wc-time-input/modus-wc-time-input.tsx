@@ -10,6 +10,7 @@ import {
 import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
 import { ModusSize } from '../../types';
 import { generateRandomId } from '../../utils';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable input component used to create time inputs.
@@ -22,11 +23,10 @@ import { generateRandomId } from '../../utils';
   shadow: false,
 })
 export class ModusWcTimeInput {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
-
-  /** The ID of the element that describes the input. */
-  @Prop() ariaDescribedby?: string;
 
   /** Hint for form autofill feature. */
   @Prop() autoComplete?: 'on' | 'off';
@@ -120,6 +120,8 @@ export class ModusWcTimeInput {
     if (!this.datalistId) {
       this.datalistId = this.internalDatalistId;
     }
+
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -181,8 +183,6 @@ export class ModusWcTimeInput {
     return (
       <Host>
         <input
-          aria-describedby={this.ariaDescribedby}
-          aria-label={this.el.ariaLabel}
           aria-required={this.required}
           autocomplete={this.autoComplete}
           class={this.getClasses()}
@@ -202,6 +202,7 @@ export class ModusWcTimeInput {
           tabIndex={this.inputTabIndex}
           type="time"
           value={this.value}
+          {...this.inheritedAttributes}
         />
         {this.renderDatalist()}
       </Host>

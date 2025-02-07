@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-date renders with default props 1`] = `
-<modus-wc-date aria-label="Default date" value="">
-  <input aria-label="Date input" class="modus-wc-date modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" type="date" value="">
+<modus-wc-date value="">
+  <input aria-label="Default date" class="modus-wc-date modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" type="date" value="">
 </modus-wc-date>
 `;
 
 exports[`modus-wc-date should render with custom props 1`] = `
-<modus-wc-date aria-describedby="description" aria-label="Test date" aria-labelledby="Another element" auto-focus="true" bordered="false" custom-class="test-class" disabled="true" input-dir="rtl" input-id="custom-id" input-tab-index="1" max="11/25/2024" min="11/20/2024" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" value="Test value">
-  <input aria-describedby="description" aria-label="Test placeholder" aria-labelledby="Another element" class="modus-wc-date modus-wc-input modus-wc-input-lg modus-wc-w-full test-class" dir="rtl" disabled="" id="custom-id" max="11/25/2024" min="11/20/2024" name="test-name" placeholder="Test placeholder" required="" tabindex="1" type="date" value="Test value">
+<modus-wc-date auto-focus="true" bordered="false" custom-class="test-class" disabled="true" input-dir="rtl" input-id="custom-id" input-tab-index="1" max="11/25/2024" min="11/20/2024" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" value="Test value">
+  <input aria-describedby="description" aria-disabled="" aria-label="Test date" aria-labelledby="Another element" class="modus-wc-date modus-wc-input modus-wc-input-lg modus-wc-w-full test-class" dir="rtl" disabled="" id="custom-id" max="11/25/2024" min="11/20/2024" name="test-name" placeholder="Test placeholder" required="" tabindex="1" type="date" value="Test value">
 </modus-wc-date>
 `;
