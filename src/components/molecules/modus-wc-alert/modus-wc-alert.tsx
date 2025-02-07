@@ -1,5 +1,6 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable alert component used to inform the user about important events.
@@ -12,6 +13,8 @@ import { convertPropsToClasses } from './modus-wc-alert.tailwind';
   shadow: false,
 })
 export class ModusWcAlert {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -29,6 +32,10 @@ export class ModusWcAlert {
 
   /** The variant of the alert. */
   @Prop() variant?: 'error' | 'info' | 'success' | 'warning';
+
+  componentWillLoad() {
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
 
   private getClasses(): string {
     const classList = ['modus-wc-alert'];
@@ -63,7 +70,11 @@ export class ModusWcAlert {
   render() {
     return (
       <Host>
-        <div class={this.getClasses()} role="alert">
+        <div
+          class={this.getClasses()}
+          role="alert"
+          {...this.inheritedAttributes}
+        >
           <modus-wc-icon name={this.getIconName()} />
           <div>
             <modus-wc-typography variant="h3" weight="bold">

@@ -9,6 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
 import { ModusSize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -21,11 +22,10 @@ import { ModusSize } from '../../types';
   shadow: false,
 })
 export class ModusWcTextInput {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
-
-  /** The ID of the element that describes the input. */
-  @Prop() ariaDescribedby?: string;
 
   /** Controls automatic capitalization in inputted text. */
   @Prop() autoCapitalize?:
@@ -47,9 +47,6 @@ export class ModusWcTextInput {
 
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
-
-  /** Indicates whether the input has an invalid input. */
-  @Prop() inputAriaInvalid?: 'grammar' | 'spelling' | 'true' | 'false';
 
   /** Specifies the text direction of the input content. */
   @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
@@ -127,6 +124,8 @@ export class ModusWcTextInput {
       );
       this.el.ariaLabel = this.placeholder || 'Text input';
     }
+
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -159,9 +158,6 @@ export class ModusWcTextInput {
     return (
       <Host>
         <input
-          aria-describedby={this.ariaDescribedby}
-          aria-invalid={this.inputAriaInvalid}
-          aria-label={this.el.ariaLabel}
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           autocapitalize={this.autoCapitalize}
@@ -185,6 +181,7 @@ export class ModusWcTextInput {
           tabIndex={this.inputTabIndex}
           type={this.type}
           value={this.value}
+          {...this.inheritedAttributes}
         />
       </Host>
     );

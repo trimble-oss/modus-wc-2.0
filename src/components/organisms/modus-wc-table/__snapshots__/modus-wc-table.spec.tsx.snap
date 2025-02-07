@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-table renders with default props (empty table) 1`] = `
-<modus-wc-table aria-label="Default table">
-  <div class="modus-wc-overflow-x-auto">
+<modus-wc-table>
+  <div aria-label="Default table" class="modus-wc-overflow-x-auto">
     <table class="modus-wc-table">
       <thead>
         <tr></tr>
@@ -14,8 +14,8 @@ exports[`modus-wc-table renders with default props (empty table) 1`] = `
 `;
 
 exports[`modus-wc-table should render with custom props 1`] = `
-<modus-wc-table aria-label="Default table" custom-class="test-class" density="compact" zebra="true">
-  <div class="modus-wc-overflow-x-auto">
+<modus-wc-table custom-class="test-class" density="compact" zebra="true">
+  <div aria-label="Default table" class="modus-wc-overflow-x-auto">
     <table class="modus-wc-table modus-wc-table-xs modus-wc-table-zebra test-class">
       <thead>
         <tr>

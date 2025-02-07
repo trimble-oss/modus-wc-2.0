@@ -34,6 +34,12 @@ describe('modus-wc-accordion', () => {
       components: [ModusWcAccordion],
       html: '<modus-wc-accordion />',
     });
+
+    const component = page.rootInstance as ModusWcAccordion;
+    component.items = items;
+
+    await page.waitForChanges();
+
     expect(page.root).toMatchSnapshot();
   });
 
