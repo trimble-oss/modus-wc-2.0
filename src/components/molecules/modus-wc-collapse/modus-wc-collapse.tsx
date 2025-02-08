@@ -160,7 +160,10 @@ export class ModusWcCollapse {
 
     return (
       <Host>
-        <div class={this.getOuterDivClasses()} {...this.inheritedAttributes}>
+        <details
+          class={this.getOuterDivClasses()}
+          {...this.inheritedAttributes}
+        >
           <input
             aria-controls={contentId}
             aria-expanded={this.expanded}
@@ -171,7 +174,7 @@ export class ModusWcCollapse {
             onKeyDown={this.handleKeyDown}
             type="checkbox"
           />
-          <div class={this.getTitleDivClasses()} id={titleId}>
+          <summary class={this.getTitleDivClasses()} id={titleId}>
             <div class={this.getTitleChildDivClasses()}>
               {this.icon && (
                 <modus-wc-icon
@@ -188,7 +191,7 @@ export class ModusWcCollapse {
                 {this.collapseDescription}
               </div>
             )}
-          </div>
+          </summary>
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
           <div
             aria-labelledby={titleId}
@@ -198,7 +201,7 @@ export class ModusWcCollapse {
           >
             <slot />
           </div>
-        </div>
+        </details>
       </Host>
     );
   }
