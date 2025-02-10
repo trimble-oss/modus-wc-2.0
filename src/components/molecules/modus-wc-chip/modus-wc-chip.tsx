@@ -52,7 +52,7 @@ export class ModusWcChip {
     }
   }
 
-  // TODO: pass imageUrl and showClose to convertPropsToClasses in order to get proper styles
+  // TODO: pass imageUrl and showClose to convertPropsToClasses in order to get proper padding
   //       for cases when there is either no image or close icon etc...
   private getClasses(): string {
     const classList: string[] = ['modus-wc-chip', 'modus-wc-btn'];

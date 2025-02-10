@@ -6,26 +6,47 @@
 [data-theme='modus-classic-light'] .modus-wc-chip,
 [data-theme='modus-classic-dark'] .modus-wc-chip {
   &.modus-wc-btn {
-    $modus-wc-chip-active-bg: #217cbb4d; // modus-wc-color-blue-light with 30% opacity
-
-    box-sizing: border-box;
+    $modus-wc-chip-active-filled-bg: #217cbb4d; // --modus-wc-color-blue-light with 30% opacity
 
     background-color: var(--modus-wc-color-gray-1);
+    box-sizing: border-box;
     color: var(--modus-wc-color-gray-9);
 
     &:hover {
       background-color: var(--modus-wc-color-gray-0);
+      border-color: transparent;
       color: var(--modus-wc-color-gray-9);
+
+      &.modus-wc-chip--outline {
+        background-color: var(--modus-wc-color-gray-0);
+        border-color: var(--modus-wc-color-gray-4);
+        color: var(--modus-wc-color-gray-7);
+      }
     }
 
     &.modus-wc-chip--error {
       background-color: var(--modus-wc-color-red-pale);
+      border-color: transparent;
       color: var(--modus-wc-color-red-dark);
+
+      &.modus-wc-chip--outline {
+        border-color: var(--modus-wc-color-red-dark);
+      }
     }
 
     &.modus-wc-chip--active {
-      background-color: $modus-wc-chip-active-bg;
+      background-color: $modus-wc-chip-active-filled-bg;
       color: var(--modus-wc-color-trimble-gray);
+
+      &.modus-wc-chip--outline {
+        background-color: var(--modus-wc-color-blue-pale);
+        border-color: var(--modus-wc-color-blue-light);
+        color: var(--modus-wc-color-blue-light);
+
+        .modus-wc-chip-label {
+          color: var(--modus-wc-color-gray-9);
+        }
+      }
     }
 
     &.modus-wc-btn-sm {
@@ -79,10 +100,9 @@
       }
     }
 
-    // FIXME: change this to use specific color variables for
-    //        background, border, and text colors
     &.modus-wc-chip--outline {
-      --tw-bg-opacity: 0.5;
+      background-color: transparent;
+      border-color: var(--modus-wc-color-gray-4);
     }
   }
 }
