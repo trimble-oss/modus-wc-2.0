@@ -1,6 +1,7 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-typography.tailwind';
 import { DaisySize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 export type TypographyVariant =
   | 'body'
@@ -25,6 +26,11 @@ export type TypographyWeight = 'light' | 'normal' | 'bold';
   shadow: false,
 })
 export class ModusWCTypography {
+  private inheritedAttributes: Attributes = {};
+
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /** Custom CSS class to apply to the typography element. */
   @Prop() customClass?: string = '';
 
@@ -36,6 +42,10 @@ export class ModusWCTypography {
 
   /** The weight of the text. */
   @Prop() weight?: TypographyWeight = 'normal';
+
+  componentWillLoad() {
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
 
   private getClasses(): string {
     const classList = ['modus-wc-typography'];
@@ -58,7 +68,7 @@ export class ModusWCTypography {
 
     return (
       <Host>
-        <Element class={this.getClasses()}>
+        <Element class={this.getClasses()} {...this.inheritedAttributes}>
           <slot></slot>
         </Element>
       </Host>

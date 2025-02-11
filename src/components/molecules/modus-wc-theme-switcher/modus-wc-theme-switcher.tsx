@@ -12,6 +12,7 @@ import {
 } from '@stencil/core';
 import { themeStore } from '../../../providers/theme/theme.store';
 import { IThemeConfig } from '../../../providers/theme/theme.types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A theme switcher component used to toggle the application theme and/or mode.
@@ -26,6 +27,8 @@ import { IThemeConfig } from '../../../providers/theme/theme.types';
   shadow: false,
 })
 export class ModusWcThemeSwitcher {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -45,6 +48,8 @@ export class ModusWcThemeSwitcher {
       );
       this.el.ariaLabel = 'Switch between light and dark theme';
     }
+
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   connectedCallback() {
@@ -77,7 +82,7 @@ export class ModusWcThemeSwitcher {
 
   render() {
     return (
-      <label class={this.getClasses()} aria-label={this.el.ariaLabel}>
+      <label class={this.getClasses()} {...this.inheritedAttributes}>
         <input
           aria-checked={this.isDarkMode}
           checked={this.isDarkMode}

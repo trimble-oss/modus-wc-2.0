@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-divider should render with custom props 1`] = `
-<modus-wc-divider aria-label="Divider" color="primary" content="Test" custom-class="test-class" orientation="horizontal" position="start" responsive="false">
+<modus-wc-divider color="primary" content="Test" custom-class="test-class" orientation="horizontal" position="start" responsive="false">
   <div aria-label="Divider" class="modus-wc-divider modus-wc-divider-end modus-wc-divider-horizontal modus-wc-divider-primary test-class" role="separator" tabindex="-1">
     Test
   </div>
@@ -9,7 +9,7 @@ exports[`modus-wc-divider should render with custom props 1`] = `
 `;
 
 exports[`modus-wc-divider should render with default props 1`] = `
-<modus-wc-divider aria-label="Divider">
+<modus-wc-divider>
   <div aria-label="Divider" class="flex-grow modus-wc-divider modus-wc-divider-neutral modus-wc-divider-vertical place-items-center" role="separator" tabindex="-1"></div>
 </modus-wc-divider>
 `;

@@ -11,6 +11,7 @@ import {
 } from '@stencil/core';
 import { convertTablePropsToClasses } from './modus-wc-table.tailwind';
 import { Density } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 export interface ITableColumn {
   /** Key to access data from row object */
@@ -38,6 +39,8 @@ export interface ITableColumn {
   shadow: false,
 })
 export class ModusWcTable {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -77,6 +80,7 @@ export class ModusWcTable {
     if (!this.data) {
       console.error('ModusWcTable: data is required.');
     }
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -114,7 +118,7 @@ export class ModusWcTable {
   render() {
     return (
       <Host>
-        <div class="modus-wc-overflow-x-auto">
+        <div class="modus-wc-overflow-x-auto" {...this.inheritedAttributes}>
           <table class={this.getClasses()}>
             <thead>
               <tr>
