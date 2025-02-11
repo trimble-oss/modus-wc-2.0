@@ -60,7 +60,7 @@
 }
 
 [data-theme='modus-classic-light'] .modus-wc-badge,
-[data-theme='modus-classic-dark'] .modus-wc-badge  {
+[data-theme='modus-classic-dark'] .modus-wc-badge {
   border-radius: 4px;
   &.modus-wc-badge-success {
     background-color: var(--modus-wc-color-green-dark);
@@ -72,19 +72,18 @@
     height: var(--modus-wc-font-size-md);
     padding: 0 4px;
   }
-  
+
   &.modus-wc-badge-md {
     font-size: var(--modus-wc-font-size-sm);
     height: var(--modus-wc-font-size-2xl);
     padding: 0 7px;
   }
-  
+
   &.modus-wc-badge-lg {
     font-size: var(--modus-wc-font-size-lg);
     height: 28px;
     padding: 0 12px;
   }
-  
 }
 
 [data-theme='modus-classic-dark'] .modus-wc-badge {
