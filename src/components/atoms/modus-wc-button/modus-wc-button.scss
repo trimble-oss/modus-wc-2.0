@@ -6,19 +6,16 @@
 .modus-wc-btn {
   --rounded-btn: var(--modus-wc-border-radius-lg);
 
-  &.modus-wc-btn-square,
-  &.modus-wc-btn-circle {
-    &.modus-wc-btn-xs {
-      width: 3rem;
-      height: 3rem;
-      font-size: var(--modus-wc-font-size-xs);
-    }
+  &.modus-wc-btn-xs {
+    font-size: var(--modus-wc-font-size-xs);
+  }
 
-    &.modus-wc-btn-sm {
-      width: 3rem;
-      height: 3rem;
-      font-size: var(--modus-wc-font-size-sm);
-    }
+  &.modus-wc-btn-sm {
+    font-size: var(--modus-wc-font-size-sm);
+  }
+
+  &.modus-wc-btn-lg {
+    font-size: var(--modus-wc-font-size-lg);
   }
 
   &.modus-wc-btn-borderless {
