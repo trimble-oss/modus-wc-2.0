@@ -93,7 +93,6 @@ export const ToggleWithLabel: Story = {
   modus-wc-input-label {
     font-size: 14px;
   }
-
 </style>
 <form action="" method="get">
   <div class="form-control">

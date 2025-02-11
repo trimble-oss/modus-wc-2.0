@@ -27,13 +27,13 @@
 
   &:not(:disabled) {
     &:hover:not(:checked) {
-      background-color: white;
+      background-color: var(--modus-wc-color-white);
       outline: 2px solid var(--modus-wc-color-blue-light);
       outline-offset: -2px;
     }
 
     &:hover:checked {
-      background-color: white;
+      background-color: var(--modus-wc-color-white);
       --fallback-b1: var(--modus-wc-color-trimble-blue);
     }
 
@@ -44,7 +44,7 @@
   }
 
   &:disabled {
-    background-color: white;
+    background-color: var(--modus-wc-color-white);
   }
 }
 
@@ -56,13 +56,13 @@
 
   &:not(:disabled) {
     &:hover:not(:checked) {
-      background-color: white;
+      background-color: var(--modus-wc-color-white);
       outline: 2px solid var(--modus-wc-color-highlight-blue);
       outline-offset: -2px;
     }
 
     &:hover:checked {
-      background-color: white;
+      background-color: var(--modus-wc-color-white);
       --fallback-b1: var(--modus-wc-color-blue-light);
     }
   }
