@@ -3,60 +3,13 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+// Classic sizing
 [data-theme='modus-classic-light'] .modus-wc-chip,
 [data-theme='modus-classic-dark'] .modus-wc-chip {
   &.modus-wc-btn {
     box-sizing: border-box;
 
-    // Classic colors
-    $modus-wc-chip-active-filled-bg: #217cbb4d; // --modus-wc-color-blue-light with 30% opacity
-
-    background-color: var(--modus-wc-color-gray-1);
-    color: var(--modus-wc-color-gray-9);
-
-    &.modus-wc-chip--active {
-      background-color: $modus-wc-chip-active-filled-bg;
-      color: var(--modus-wc-color-trimble-gray);
-
-      &.modus-wc-chip--outline {
-        background-color: var(--modus-wc-color-blue-pale);
-        border-color: var(--modus-wc-color-blue-light);
-        color: var(--modus-wc-color-blue-light);
-
-        .modus-wc-chip-label {
-          color: var(--modus-wc-color-gray-9);
-        }
-      }
-    }
-
-    &.modus-wc-chip--error {
-      background-color: var(--modus-wc-color-red-pale);
-      border-color: transparent;
-      color: var(--modus-wc-color-red-dark);
-
-      &.modus-wc-chip--outline {
-        border-color: var(--modus-wc-color-red-dark);
-      }
-    }
-
-    &.modus-wc-chip--outline {
-      background-color: transparent;
-      border-color: var(--modus-wc-color-gray-4);
-    }
-
-    &:hover {
-      background-color: var(--modus-wc-color-gray-0);
-      border-color: transparent;
-      color: var(--modus-wc-color-gray-9);
-
-      &.modus-wc-chip--outline {
-        background-color: var(--modus-wc-color-gray-0);
-        border-color: var(--modus-wc-color-gray-4);
-        color: var(--modus-wc-color-gray-7);
-      }
-    }
-
-    // Classic sizing
+    // TODO: create utility CSS variables for px -> rem conversions
     &.modus-wc-btn-sm {
       --rounded-btn: 0.75rem;
       height: 1.5rem; // 24px
@@ -110,14 +63,115 @@
   }
 }
 
-// TODO: include variables for opacity in 'variables.scss'
+// Classic light colors
 [data-theme='modus-classic-light'] .modus-wc-chip {
+  &.modus-wc-btn {
+    $modus-wc-chip-active-filled-bg: #217cbb4d; // --modus-wc-color-blue-light with 30% opacity
+
+    background-color: var(--modus-wc-color-gray-1);
+    color: var(--modus-wc-color-gray-9);
+
+    &.modus-wc-chip--active {
+      background-color: $modus-wc-chip-active-filled-bg;
+      color: var(--modus-wc-color-trimble-gray);
+
+      &.modus-wc-chip--outline {
+        background-color: var(--modus-wc-color-blue-pale);
+        border-color: var(--modus-wc-color-blue-light);
+        color: var(--modus-wc-color-blue-light);
+
+        .modus-wc-chip-label {
+          color: var(--modus-wc-color-gray-9);
+        }
+      }
+    }
+
+    &.modus-wc-chip--error {
+      background-color: var(--modus-wc-color-red-pale);
+      border-color: transparent;
+      color: var(--modus-wc-color-red-dark);
+
+      &.modus-wc-chip--outline {
+        border-color: var(--modus-wc-color-red-dark);
+      }
+    }
+
+    &.modus-wc-chip--outline {
+      background-color: transparent;
+      border-color: var(--modus-wc-color-gray-4);
+    }
+
+    &:hover {
+      background-color: var(--modus-wc-color-gray-0);
+      border-color: transparent;
+      color: var(--modus-wc-color-gray-9);
+
+      &.modus-wc-chip--outline {
+        background-color: var(--modus-wc-color-gray-0);
+        border-color: var(--modus-wc-color-gray-4);
+        color: var(--modus-wc-color-gray-7);
+      }
+    }
+  }
+
   &.modus-wc-chip--disabled {
     opacity: 0.3;
   }
 }
 
+// Classic dark colors
 [data-theme='modus-classic-dark'] .modus-wc-chip {
+  &.modus-wc-btn {
+    $modus-wc-chip-active-filled-bg: #217cbb4d; // --modus-wc-color-blue-light with 30% opacity
+    $modus-wc-chip-outline-hover-bg: #cbcdd61f; // --modus-wc-color-gray-1 with 12% opacity
+    $modus-wc-chip-outline-active-bg: #0e416c80; // --modus-wc-color-blue-dark with 50% opacity
+
+    background-color: var(--modus-wc-color-gray-1);
+    color: var(--modus-wc-color-gray-9);
+
+    &.modus-wc-chip--active {
+      background-color: var(--modus-wc-color-highlight-blue);
+      color: var(--modus-wc-color-gray-10);
+
+      &.modus-wc-chip--outline {
+        background-color: $modus-wc-chip-outline-active-bg;
+        border-color: var(--modus-wc-color-highlight-blue);
+        color: var(--modus-wc-color-gray-1);
+      }
+    }
+
+    &.modus-wc-chip--error {
+      background-color: var(--modus-wc-color-red-pale);
+      border-color: transparent;
+      color: var(--modus-wc-color-red-dark);
+
+      &.modus-wc-chip--outline {
+        border-color: var(--modus-wc-color-red-dark);
+        background-color: var(--modus-wc-color-red-pale);
+        color: var(--modus-wc-color-red-dark);
+      }
+    }
+
+    &.modus-wc-chip--outline {
+      background-color: transparent;
+      border-color: var(--modus-wc-color-gray-1);
+      color: var(--modus-wc-color-gray-1);
+    }
+
+    &:hover {
+      background-color: var(--modus-wc-color-gray-0);
+      border-color: transparent;
+      color: var(--modus-wc-color-gray-9);
+
+      &.modus-wc-chip--outline {
+        background-color: $modus-wc-chip-outline-hover-bg;
+        border-color: var(--modus-wc-color-gray-5);
+        color: var(--modus-wc-color-gray-1);
+      }
+    }
+  }
+
+  // TODO: include variables for opacity in 'variables.scss'
   &.modus-wc-chip--disabled {
     opacity: 0.6;
   }
