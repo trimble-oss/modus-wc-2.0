@@ -101,7 +101,7 @@
       border-color: var(--modus-wc-color-gray-4);
     }
 
-    &:hover {
+    &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {
       background-color: var(--modus-wc-color-gray-0);
       border-color: transparent;
       color: var(--modus-wc-color-gray-9);
@@ -158,7 +158,7 @@
       color: var(--modus-wc-color-gray-1);
     }
 
-    &:hover {
+    &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {
       background-color: var(--modus-wc-color-gray-0);
       border-color: transparent;
       color: var(--modus-wc-color-gray-9);
