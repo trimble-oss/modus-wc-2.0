@@ -12,7 +12,7 @@
   -moz-transition: none !important;
   -o-transition: none !important;
   transition: none !important;
-  &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-collapse-openmodus-wc-cursor-pointer {
+  &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-cursor-pointer.modus-wc-collapse-open {
     .modus-wc-collapse-content {
       padding: 1rem;
     }
@@ -35,7 +35,7 @@
 
 [data-theme='modus-classic-light'] .modus-wc-collapse {
   background-color: var(--modus-wc-color-white);
-  &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-collapse-openmodus-wc-cursor-pointer {
+  &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-cursor-pointer.modus-wc-collapse-open {
     border-left: 4px solid var(--modus-wc-color-trimble-blue);
     .modus-wc-collapse-title {
       padding-left: 12px;
@@ -46,7 +46,7 @@
 
 [data-theme='modus-classic-dark'] .modus-wc-collapse {
   background-color: var(--modus-wc-color-trimble-gray);
-  &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-collapse-openmodus-wc-cursor-pointer {
+  &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-cursor-pointer.modus-wc-collapse-open {
     border-left: 4px solid var(--modus-wc-color-highlight-blue);
     .modus-wc-collapse-title {
       padding-left: 12px;
