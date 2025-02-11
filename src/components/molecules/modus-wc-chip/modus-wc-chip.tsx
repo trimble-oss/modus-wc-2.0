@@ -102,7 +102,7 @@ export class ModusWcChip {
               img-src={this.imageUrl}
             ></modus-wc-avatar>
           )}
-          <span class="modus-wc-chip-label">{this.label}</span>
+          {this.label && <span class="modus-wc-chip-label">{this.label}</span>}
           <slot />
           {this.showClose && this.SolidCancelIcon}
         </button>

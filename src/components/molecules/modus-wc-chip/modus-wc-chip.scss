@@ -73,6 +73,7 @@
 
     &.modus-wc-chip--active {
       background-color: $modus-wc-chip-active-filled-bg;
+      border-color: transparent;
       color: var(--modus-wc-color-trimble-gray);
 
       &.modus-wc-chip--outline {
@@ -131,6 +132,7 @@
 
     &.modus-wc-chip--active {
       background-color: var(--modus-wc-color-highlight-blue);
+      border-color: transparent;
       color: var(--modus-wc-color-gray-10);
 
       &.modus-wc-chip--outline {
