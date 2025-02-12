@@ -61,3 +61,26 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+// prettier-ignore
+export const Composable: Story = {
+  render: () => {
+    return html`
+<modus-wc-chip>
+  <modus-wc-icon name="heart" size="xs" ></modus-wc-icon>
+  Chip
+</modus-wc-chip>
+
+<modus-wc-chip show-close="true">
+  <modus-wc-icon name="heart" size="xs" ></modus-wc-icon>
+  Chip
+</modus-wc-chip>
+
+<modus-wc-chip>
+  <modus-wc-icon name="heart" size="xs" ></modus-wc-icon>
+  Chip
+  <modus-wc-icon name="heart" size="xs" ></modus-wc-icon>
+</modus-wc-chip>
+    `;
+  },
+};
