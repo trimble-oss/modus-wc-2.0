@@ -95,6 +95,10 @@
     color: var(--modus-wc-color-gray-10);
   }
 
+  &.modus-wc-badge-success {
+    background-color: var(--modus-wc-color-success);
+  }
+
   &.modus-wc-badge-secondary {
     background-color: var(--modus-wc-color-gray-6);
     color: var(--modus-wc-color-white);
