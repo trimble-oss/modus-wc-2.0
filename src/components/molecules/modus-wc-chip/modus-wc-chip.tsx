@@ -52,8 +52,6 @@ export class ModusWcChip {
     }
   }
 
-  // TODO: pass imageUrl and showClose to convertPropsToClasses in order to get proper padding
-  //       for cases when there is either no image or close icon etc...
   private getClasses(): string {
     const classList: string[] = ['modus-wc-chip', 'modus-wc-btn'];
 
@@ -65,7 +63,6 @@ export class ModusWcChip {
       variant: this.variant,
     });
 
-    // // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
 
