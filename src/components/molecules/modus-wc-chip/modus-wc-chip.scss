@@ -5,9 +5,8 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-// Sizing
-[data-theme='modus-classic-light'] .modus-wc-chip,
-[data-theme='modus-classic-dark'] .modus-wc-chip {
+// Default Classic Sizing
+.modus-wc-chip {
   &.modus-wc-btn {
     box-sizing: border-box;
 
@@ -64,65 +63,8 @@
   }
 }
 
-[data-theme='modus-modern-light'] .modus-wc-chip,
-[data-theme='modus-modern-dark'] .modus-wc-chip {
-  &.modus-wc-btn {
-    --rounded-btn: #{$rem-8px}; // 8px
-    box-sizing: border-box;
-
-    &.modus-wc-btn-sm {
-      height: $rem-24px;
-      min-height: $rem-24px;
-      padding: $rem-3px $rem-12px;
-
-      .modus-wc-chip-avatar {
-        width: $rem-16px;
-        height: $rem-16px;
-      }
-
-      .modus-wc-chip-close-icon {
-        width: $rem-16px;
-        height: $rem-16px;
-      }
-    }
-
-    &.modus-wc-btn-md {
-      height: $rem-32px;
-      min-height: $rem-32px;
-      padding: $rem-7px $rem-12px;
-
-      .modus-wc-chip-avatar {
-        width: $rem-16px;
-        height: $rem-16px;
-      }
-
-      .modus-wc-chip-close-icon {
-        width: $rem-16px;
-        height: $rem-16px;
-      }
-    }
-
-    &.modus-wc-btn-lg {
-      height: $rem-48px;
-      min-height: $rem-48px;
-      padding: $rem-12px $rem-16px;
-
-      .modus-wc-chip-avatar {
-        width: $rem-24px;
-        height: $rem-24px;
-      }
-
-      .modus-wc-chip-close-icon {
-        width: $rem-24px;
-        height: $rem-24px;
-      }
-    }
-  }
-}
-
-// Colors
-[data-theme='modus-modern-light'] .modus-wc-chip,
-[data-theme='modus-classic-light'] .modus-wc-chip {
+// Default Classic Light Theme
+.modus-wc-chip {
   &.modus-wc-btn {
     $modus-wc-chip-active-filled-bg: #217cbb4d; // --modus-wc-color-blue-light with 30% opacity
 
@@ -179,6 +121,7 @@
   }
 }
 
+// Dark Theme Styles
 [data-theme='modus-modern-dark'] .modus-wc-chip,
 [data-theme='modus-classic-dark'] .modus-wc-chip {
   &.modus-wc-btn {
@@ -198,6 +141,10 @@
         background-color: $modus-wc-chip-outline-active-bg;
         border-color: var(--modus-wc-color-highlight-blue);
         color: var(--modus-wc-color-gray-1);
+
+        .modus-wc-chip-label {
+          color: var(--modus-wc-color-gray-1);
+        }
       }
     }
 
