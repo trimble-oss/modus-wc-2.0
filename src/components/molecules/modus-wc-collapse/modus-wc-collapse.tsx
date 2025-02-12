@@ -99,7 +99,7 @@ export class ModusWcCollapse {
   }
 
   private getOuterDivClasses(): string {
-    const classList: string[] = ['modus-wc-collapse modus-wc-collapse-arrow modus-wc-pointer-events-auto'];
+    const classList: string[] = ['modus-wc-collapse modus-wc-collapse-arrow'];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,

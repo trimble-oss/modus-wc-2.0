@@ -3,8 +3,8 @@
 exports[`modus-wc-collapse should render in expanded state 1`] = `
 <modus-wc-collapse collapse-title="Expanded" expanded="true">
   <!---->
-  <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-openmodus-wc-cursor-pointer">
-    <input aria-controls="expanded-content" aria-expanded="" aria-labelledby="expanded-title" class="modus-wc-min-h-4" id="expanded-checkbox" type="checkbox">
+  <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-open">
+    <input aria-controls="expanded-content" aria-expanded="" aria-labelledby="expanded-title" class="modus-wc-cursor-pointer modus-wc-min-h-4" id="expanded-checkbox" type="checkbox">
     <div class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4 modus-wc-pb-4 modus-wc-pl-4 modus-wc-pt-4" id="expanded-title">
       <div class="modus-wc-font-medium modus-wc-inline-flex modus-wc-items-center modus-wc-text-xl">
         Expanded
@@ -22,8 +22,8 @@ exports[`modus-wc-collapse should render in expanded state 1`] = `
 exports[`modus-wc-collapse should render with content 1`] = `
 <modus-wc-collapse collapse-title="With Content">
   <!---->
-  <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-closemodus-wc-cursor-pointer">
-    <input aria-controls="with-content-content" aria-labelledby="with-content-title" class="modus-wc-min-h-4" id="with-content-checkbox" type="checkbox">
+  <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close">
+    <input aria-controls="with-content-content" aria-labelledby="with-content-title" class="modus-wc-cursor-pointer modus-wc-min-h-4" id="with-content-checkbox" type="checkbox">
     <div class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4 modus-wc-pb-4 modus-wc-pl-4 modus-wc-pt-4" id="with-content-title">
       <div class="modus-wc-font-medium modus-wc-inline-flex modus-wc-items-center modus-wc-text-xl">
         With Content
@@ -41,8 +41,8 @@ exports[`modus-wc-collapse should render with content 1`] = `
 exports[`modus-wc-collapse should render with custom props 1`] = `
 <modus-wc-collapse bordered="false" collapse-description="Test description" collapse-title="Test title" custom-class="test-class" expanded="true" icon="alert" icon-aria-label="Alert icon" size="sm">
   <!---->
-  <div class="modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-openmodus-wc-cursor-pointer test-class">
-    <input aria-controls="test-title-content" aria-expanded="" aria-labelledby="test-title-title" class="modus-wc-min-h-4" id="test-title-checkbox" type="checkbox">
+  <div class="modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-open test-class">
+    <input aria-controls="test-title-content" aria-expanded="" aria-labelledby="test-title-title" class="modus-wc-cursor-pointer modus-wc-min-h-4" id="test-title-checkbox" type="checkbox">
     <div class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4 modus-wc-pb-3 modus-wc-pl-3 modus-wc-pt-3" id="test-title-title">
       <div class="modus-wc-font-medium modus-wc-inline-flex modus-wc-items-center modus-wc-text-lg">
         <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -64,8 +64,8 @@ exports[`modus-wc-collapse should render with custom props 1`] = `
 exports[`modus-wc-collapse should render with default props 1`] = `
 <modus-wc-collapse>
   <!---->
-  <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-closemodus-wc-cursor-pointer">
-    <input aria-controls="collapse-content" aria-labelledby="collapse-title" class="modus-wc-min-h-4" id="collapse-checkbox" type="checkbox">
+  <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close">
+    <input aria-controls="collapse-content" aria-labelledby="collapse-title" class="modus-wc-cursor-pointer modus-wc-min-h-4" id="collapse-checkbox" type="checkbox">
     <div class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4 modus-wc-pb-4 modus-wc-pl-4 modus-wc-pt-4" id="collapse-title">
       <div class="modus-wc-font-medium modus-wc-inline-flex modus-wc-items-center modus-wc-text-xl"></div>
     </div>
