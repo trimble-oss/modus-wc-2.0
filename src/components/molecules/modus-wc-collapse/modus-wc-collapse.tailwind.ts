@@ -17,9 +17,9 @@ export const convertPropsToClasses = (props: {
     Object.prototype.hasOwnProperty.call(props, 'expanded') &&
     !!props.expanded
   ) {
-    classes = `${classes} modus-wc-collapse-open modus-wc-cursor-pointer`;
+    classes = `${classes} modus-wc-collapse-open`;
   } else {
-    classes = `${classes} modus-wc-collapse-close modus-wc-cursor-pointer`;
+    classes = `${classes} modus-wc-collapse-close`;
   }
 
   return classes;
