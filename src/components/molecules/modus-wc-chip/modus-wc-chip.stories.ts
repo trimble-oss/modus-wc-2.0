@@ -11,6 +11,7 @@ interface ChipArgs {
   'has-error'?: boolean;
   'image-url'?: string;
   label: string;
+  'show-check'?: boolean;
   'show-close'?: boolean;
   size: ModusSize;
   variant: 'filled' | 'outline';
@@ -53,6 +54,7 @@ const Template: Story = {
       has-error=${ifDefined(args['has-error'])}
       image-url=${ifDefined(args['image-url'])}
       label=${args.label}
+      show-check=${ifDefined(args['show-check'])}
       show-close=${ifDefined(args['show-close'])}
       size=${args.size}
       variant=${args.variant}

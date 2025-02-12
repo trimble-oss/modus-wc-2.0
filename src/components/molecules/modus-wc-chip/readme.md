@@ -21,6 +21,7 @@ Adheres to WCAG 2.2 standards.
 | `hasError`    | `has-error`    | Whether the chip has an error.                            | `boolean \| undefined`               | `false`    |
 | `imageUrl`    | `image-url`    | The URL of the image to display on left side of the chip. | `string \| undefined`                | `''`       |
 | `label`       | `label`        | The label to display in the chip.                         | `string \| undefined`                | `''`       |
+| `showCheck`   | `show-check`   | Whether to show the check icon on left side of the chip.  | `boolean \| undefined`               | `false`    |
 | `showClose`   | `show-close`   | Whether to show the close icon on right side of the chip. | `boolean \| undefined`               | `false`    |
 | `size`        | `size`         | The size of the chip.                                     | `"lg" \| "md" \| "sm" \| undefined`  | `'md'`     |
 | `variant`     | `variant`      | The variant of the chip.                                  | `"filled" \| "outline" \| undefined` | `'filled'` |

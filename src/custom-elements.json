@@ -3639,6 +3639,14 @@
               "description": "The label to display in the chip."
             },
             {
+              "name": "show-check",
+              "fieldName": "showCheck",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether to show the check icon on left side of the chip."
+            },
+            {
               "name": "show-close",
               "fieldName": "showClose",
               "type": {

@@ -358,6 +358,10 @@ export namespace Components {
          */
         "label"?: string;
         /**
+          * Whether to show the check icon on left side of the chip.
+         */
+        "showCheck"?: boolean;
+        /**
           * Whether to show the close icon on right side of the chip.
          */
         "showClose"?: boolean;
@@ -2404,6 +2408,10 @@ declare namespace LocalJSX {
           * The label to display in the chip.
          */
         "label"?: string;
+        /**
+          * Whether to show the check icon on left side of the chip.
+         */
+        "showCheck"?: boolean;
         /**
           * Whether to show the close icon on right side of the chip.
          */
