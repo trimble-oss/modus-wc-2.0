@@ -16,7 +16,6 @@ Adheres to WCAG 2.2 standards.
 | Property          | Attribute           | Description                                                                                             | Type                                          | Default     |
 | ----------------- | ------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------- |
 | `activeItemValue` | `active-item-value` | The active menu item value, used to show an item as selected.                                           | `string \| undefined`                         | `undefined` |
-| `ariaDescribedby` | `aria-describedby`  | The ID of the element that describes the input.                                                         | `string \| undefined`                         | `undefined` |
 | `bordered`        | `bordered`          | Indicates that the autocomplete should have a border.                                                   | `boolean \| undefined`                        | `true`      |
 | `customClass`     | `custom-class`      | Custom CSS class to apply to host element.                                                              | `string \| undefined`                         | `''`        |
 | `debounceMs`      | `debounce-ms`       | The debounce timeout in milliseconds. Set to 0 to disable debouncing.                                   | `number \| undefined`                         | `300`       |

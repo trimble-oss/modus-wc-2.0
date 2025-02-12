@@ -1,5 +1,6 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-card.tailwind';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable card component based on DaisyUI card.
@@ -12,27 +13,38 @@ import { convertPropsToClasses } from './modus-wc-card.tailwind';
   shadow: false,
 })
 export class ModusWcCard {
+  private inheritedAttributes: Attributes = {};
+
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /** Custom CSS class to apply */
   @Prop() customClass?: string = '';
 
-  /** Adds border to the card */
+  /** Adds a border to the card */
   @Prop() bordered?: boolean = false;
 
-  /** Makes the image in figure element the background */
+  /** Makes any \<figure> in the 'figure' slot cover the background */
   @Prop() imageFull?: boolean = false;
 
-  /** Card padding variant - normal (default) or compact */
+  /** Card padding variant - normal or compact */
   @Prop() padding?: 'normal' | 'compact' = 'normal';
 
-  /** Display mode - stacked (default) or side image */
+  /** Display mode - stacked or side image */
   @Prop() layout?: 'stacked' | 'side' = 'stacked';
 
+  componentWillLoad() {
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
   private getClasses(): string {
-    const classList = ['card'];
+    const classList = ['modus-wc-card'];
 
     const propClasses = convertPropsToClasses({
-      padding: this.padding,
+      bordered: this.bordered,
+      fullImage: this.imageFull,
       layout: this.layout,
+      padding: this.padding,
     });
 
     if (propClasses) classList.push(propClasses);
@@ -44,14 +56,27 @@ export class ModusWcCard {
   render() {
     return (
       <Host>
-        <div class={this.getClasses()} tabindex={-1}>
-          <slot name="figure"></slot>
-          <div class="card-body">
-            <slot name="title"></slot>
-            <slot></slot>
-            <slot name="actions"></slot>
+        <article
+          class={this.getClasses()}
+          tabindex={-1}
+          {...this.inheritedAttributes}
+        >
+          <figure>
+            <slot name="figure"></slot>
+          </figure>
+          <div class="modus-wc-card-header">
+            <slot name="header"></slot>
           </div>
-        </div>
+          <div class="modus-wc-card-body">
+            <div class="modus-wc-card-title">
+              <slot name="title"></slot>
+            </div>
+            <slot></slot>
+            <div class="modus-wc-card-actions">
+              <slot name="footer"></slot>
+            </div>
+          </div>
+        </article>
       </Host>
     );
   }

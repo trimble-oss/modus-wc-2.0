@@ -3,27 +3,30 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface CardArgs {
+  bordered?: boolean;
   'custom-class'?: string;
-  height?: string;
-  shape?: 'circle' | 'rectangle';
-  width?: string;
+  'image-full'?: boolean;
+  layout?: 'stacked' | 'side';
+  padding?: 'normal' | 'compact';
 }
 
 const meta: Meta<CardArgs> = {
   title: 'Components/Card',
   component: 'modus-wc-card',
   args: {
-    'custom-class': '',
-    height: '1.5rem',
-    shape: 'rectangle',
-    width: '100%',
+    bordered: false,
+    'image-full': false,
+    layout: 'stacked',
+    padding: 'normal',
   },
   argTypes: {
-    shape: {
-      control: {
-        type: 'inline-radio',
-      },
-      options: ['circle', 'rectangle'],
+    layout: {
+      control: { type: 'inline-radio' },
+      options: ['stacked', 'side'],
+    },
+    padding: {
+      control: { type: 'inline-radio' },
+      options: ['normal', 'compact'],
     },
   },
   parameters: {
@@ -35,70 +38,40 @@ export default meta;
 
 type Story = StoryObj<CardArgs>;
 
-export const Default: Story = {
+const Template: Story = {
   render: (args) => {
-    return html`
-      <modus-wc-card
-        custom-class=${ifDefined(args['custom-class'])}
-        height=${ifDefined(args.height)}
-        shape=${ifDefined(args.shape)}
-        width=${ifDefined(args.width)}
-      ></modus-wc-card>
-    `;
-  },
-};
-
-export const Circle: Story = {
-  render: () => {
-    return html`
-      <modus-wc-card height="5rem" shape="circle" width="5rem"></modus-wc-card>
-    `;
-  },
-};
-
-export const Square: Story = {
-  render: () => {
-    return html` <modus-wc-card height="5rem" width="5rem"></modus-wc-card> `;
-  },
-};
-
-// prettier-ignore
-export const Composed: Story = {
-  render: () => {
+    // prettier-ignore
     return html`
 <style>
-  .card-container {
-    width: 13rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .card-profile {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .card-text {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  .modus-wc-card {
+    width: 400px;
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 8px 10px -6px rgba(0, 0, 0, 0.1);
   }
 </style>
-<div class="card-container">
-  <div class="card-profile">
-    <modus-wc-card
-      height="4rem"
-      shape="circle"
-      width="4rem"
-    ></modus-wc-card>
-    <div class="card-text">
-      <modus-wc-card width="5rem"></modus-wc-card>
-      <modus-wc-card width="7rem"></modus-wc-card>
-    </div>
+<modus-wc-card
+  aria-label="Sample card"
+  ?bordered=${args.bordered}
+  custom-class=${ifDefined(args['custom-class'])}
+  ?image-full=${args['image-full']}
+  layout=${ifDefined(args.layout)}
+  padding=${ifDefined(args.padding)}
+>
+  <img
+    slot="figure"
+    src="https://picsum.photos/400/200"
+    alt="Sample card image"
+  />
+  <h3 slot="header">Card Header</h3>
+  <h2 slot="title">Card Title</h2>
+  <p>This is a sample card content. You can place any content here.</p>
+  <div slot="footer" class="modus-wc-justify-end">
+    <modus-wc-button label="Click me"></modus-wc-button>
   </div>
-  <modus-wc-card height="8rem"></modus-wc-card>
-</div>
+</modus-wc-card>
     `;
   },
 };
+
+export const Default: Story = { ...Template };
