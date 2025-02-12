@@ -64,7 +64,7 @@ export class ModusWcThemeSwitcher {
 
   private getClasses(): string {
     const classList = [
-      'modus-wc-inline-grid modus-wc-cursor-text modus-wc-justify-center modus-wc-place-items-center',
+      'modus-wc-inline-grid modus-wc-cursor-pointer modus-wc-justify-center modus-wc-place-items-center',
     ];
 
     if (this.customClass) classList.push(this.customClass);
