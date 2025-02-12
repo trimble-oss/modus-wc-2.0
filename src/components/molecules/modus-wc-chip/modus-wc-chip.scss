@@ -5,10 +5,14 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-// Default Classic Sizing
+// Default Styles
 .modus-wc-chip {
   &.modus-wc-btn {
+    $modus-wc-chip-active-filled-bg: #217cbb4d; // --modus-wc-color-blue-light with 30% opacity
+
+    background-color: var(--modus-wc-color-gray-1);
     box-sizing: border-box;
+    color: var(--modus-wc-color-gray-9);
 
     &.modus-wc-btn-sm {
       --rounded-btn: #{$rem-12px};
@@ -60,16 +64,6 @@
         height: $rem-24px;
       }
     }
-  }
-}
-
-// Default Classic Light Theme
-.modus-wc-chip {
-  &.modus-wc-btn {
-    $modus-wc-chip-active-filled-bg: #217cbb4d; // --modus-wc-color-blue-light with 30% opacity
-
-    background-color: var(--modus-wc-color-gray-1);
-    color: var(--modus-wc-color-gray-9);
 
     &.modus-wc-chip--active {
       background-color: $modus-wc-chip-active-filled-bg;
@@ -118,6 +112,14 @@
 
   &.modus-wc-chip--disabled {
     opacity: 0.3;
+  }
+
+  .modus-wc-chip-avatar-container {
+    display: flex;
+  }
+
+  .modus-wc-chip-avatar--disabled {
+    filter: grayscale(100%);
   }
 }
 
@@ -182,12 +184,4 @@
   &.modus-wc-chip--disabled {
     opacity: 0.6;
   }
-}
-
-.modus-wc-chip-avatar-container {
-  display: flex;
-}
-
-.modus-wc-chip-avatar--disabled {
-  filter: grayscale(100%);
 }
