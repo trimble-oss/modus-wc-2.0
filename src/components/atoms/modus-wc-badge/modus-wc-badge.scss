@@ -51,6 +51,17 @@
   }
 }
 
+[data-theme='modus-classic-light'] .modus-wc-badge,
+[data-theme='modus-classic-dark'] .modus-wc-badge {
+  &.modus-wc-badge-sm {
+    font-size: var(--modus-wc-font-size-xs);
+  }
+
+  &.modus-wc-badge-md {
+    font-size: var(--modus-wc-font-size-sm);
+  }
+}
+
 [data-theme='modus-classic-dark'] .modus-wc-badge {
   border: unset;
 
