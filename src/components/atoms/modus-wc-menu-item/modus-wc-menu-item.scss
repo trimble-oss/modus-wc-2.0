@@ -1,0 +1,50 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+li.modus-wc-menu-item {
+  border-radius: var(--modus-wc-border-radius-sm);
+
+  &.modus-wc-disabled {
+    button {
+      pointer-events: none;
+    }
+  }
+
+  .modus-wc-menu-item-sublabel {
+    font-size: var(--modus-wc-font-size-sm);
+  }
+}
+
+[data-theme='modus-classic-light'] li.modus-wc-menu-item {
+  &.modus-wc-disabled {
+    color: var(--modus-wc-color-gray-2);
+  }
+
+  &:hover {
+    --fallback-b1: var(--modus-wc-color-gray-0);
+  }
+
+  button {
+    &.modus-wc-active {
+      --fallback-n: var(--modus-wc-color-blue-pale);
+    }
+  }
+}
+
+[data-theme='modus-classic-dark'] li.modus-wc-menu-item {
+  &.modus-wc-disabled {
+    color: var(--modus-wc-color-gray-6);
+  }
+
+  &:hover {
+    --fallback-b1: var(--modus-wc-color-gray-8);
+  }
+
+  button {
+    &.modus-wc-active {
+      --fallback-n: var(--modus-wc-color-highlight-blue);
+    }
+  }
+}
