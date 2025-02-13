@@ -1,13 +1,13 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcAutocomplete } from './modus-wc-autocomplete';
 import {
-  IMenuItem,
-  ModusWcMenu,
-} from '../../atoms/modus-wc-menu/modus-wc-menu';
+  IAutocompleteItem,
+  ModusWcAutocomplete,
+} from './modus-wc-autocomplete';
+import { ModusWcMenu } from '../../atoms/modus-wc-menu/modus-wc-menu';
 import { ModusWcTextInput } from '../../atoms/modus-wc-text-input/modus-wc-text-input';
 
 describe('modus-wc-autocomplete', () => {
-  const items: IMenuItem[] = [
+  const items: IAutocompleteItem[] = [
     { label: 'Item 1', value: '1' },
     { label: 'Item 2', value: '2' },
     { label: 'Item 3', value: '3' },

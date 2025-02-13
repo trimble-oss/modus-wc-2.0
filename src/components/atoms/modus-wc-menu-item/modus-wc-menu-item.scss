@@ -6,45 +6,97 @@
 li.modus-wc-menu-item {
   border-radius: var(--modus-wc-border-radius-sm);
 
-  &.modus-wc-disabled {
+  &.modus-wc-menu-item-bordered {
+    border-top: 1px solid var(--modus-wc-color-gray-0);
+    border-bottom: 1px solid var(--modus-wc-color-gray-0);
+  }
+
+  &.modus-wc-menu-item-disabled {
     button {
       pointer-events: none;
     }
   }
 
-  .modus-wc-menu-item-sublabel {
-    font-size: var(--modus-wc-font-size-sm);
+  &.modus-wc-menu-item-sm {
+    button {
+      font-size: var(--modus-wc-font-size-sm);
+
+      .modus-wc-menu-item-sublabel {
+        font-size: var(--modus-wc-font-size-xs);
+      }
+    }
+  }
+
+  &.modus-wc-menu-item-md {
+    button {
+      font-size: var(--modus-wc-font-size-md);
+
+      .modus-wc-menu-item-sublabel {
+        font-size: var(--modus-wc-font-size-sm);
+      }
+    }
+  }
+
+  &.modus-wc-menu-item-lg {
+    button {
+      font-size: var(--modus-wc-font-size-lg);
+
+      .modus-wc-menu-item-sublabel {
+        font-size: var(--modus-wc-font-size-md);
+      }
+    }
+  }
+
+  button {
+    display: flex;
+
+    .modus-wc-menu-item-content {
+      display: flex;
+      width: 100%;
+
+      .modus-wc-menu-item-start-icon {
+        padding-inline-end: var(--modus-wc-spacing-lg);
+      }
+
+      .modus-wc-menu-item-labels {
+        padding-inline-end: var(--modus-wc-spacing-md);
+      }
+
+      .modus-wc-menu-item-sublabel {
+        font-size: var(--modus-wc-font-size-sm);
+      }
+
+      .modus-wc-menu-item-selected-icon {
+        margin-left: auto;
+      }
+    }
   }
 }
 
 [data-theme='modus-classic-light'] li.modus-wc-menu-item {
-  &.modus-wc-disabled {
+  &.modus-wc-menu-item-disabled {
     color: var(--modus-wc-color-gray-2);
+  }
+
+  &.modus-wc-menu-item-selected {
+    background-color: var(--modus-wc-color-blue-pale);
   }
 
   &:hover {
     --fallback-b1: var(--modus-wc-color-gray-0);
   }
-
-  button {
-    &.modus-wc-active {
-      --fallback-n: var(--modus-wc-color-blue-pale);
-    }
-  }
 }
 
 [data-theme='modus-classic-dark'] li.modus-wc-menu-item {
-  &.modus-wc-disabled {
+  &.modus-wc-menu-item-disabled {
     color: var(--modus-wc-color-gray-6);
+  }
+
+  &.modus-wc-menu-item-selected {
+    background-color: #019aeb4d;
   }
 
   &:hover {
     --fallback-b1: var(--modus-wc-color-gray-8);
-  }
-
-  button {
-    &.modus-wc-active {
-      --fallback-n: var(--modus-wc-color-highlight-blue);
-    }
   }
 }

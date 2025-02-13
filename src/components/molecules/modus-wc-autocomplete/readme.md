@@ -23,7 +23,7 @@ Adheres to WCAG 2.2 standards.
 | `inputDir`        | `input-dir`         | Specifies the text direction of the input content.                                                      | `"" \| "auto" \| "ltr" \| "rtl" \| undefined` | `undefined` |
 | `inputId`         | `input-id`          | The ID of the input element.                                                                            | `string \| undefined`                         | `undefined` |
 | `inputTabIndex`   | `input-tab-index`   | Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). | `number \| undefined`                         | `undefined` |
-| `items`           | --                  | The items to display in the menu.                                                                       | `IMenuItem[]`                                 | `[]`        |
+| `items`           | --                  | The items to display in the menu.                                                                       | `IAutocompleteItem[]`                         | `[]`        |
 | `minChars`        | `min-chars`         | The minimum number of characters required to render the menu.                                           | `number`                                      | `0`         |
 | `name`            | `name`              | Name of the form control. Submitted with the form as part of a name/value pair.                         | `string \| undefined`                         | `undefined` |
 | `placeholder`     | `placeholder`       | Text that appears in the form control when it has no value set.                                         | `string \| undefined`                         | `''`        |
@@ -35,26 +35,29 @@ Adheres to WCAG 2.2 standards.
 
 ## Events
 
-| Event         | Description                                                                                       | Type                      |
-| ------------- | ------------------------------------------------------------------------------------------------- | ------------------------- |
-| `inputBlur`   | Event emitted when the input loses focus.                                                         | `CustomEvent<FocusEvent>` |
-| `inputChange` | Event emitted when the input value changes. This event is debounced based on the debounceMs prop. | `CustomEvent<Event>`      |
-| `inputFocus`  | Event emitted when the input gains focus.                                                         | `CustomEvent<FocusEvent>` |
-| `itemSelect`  | Event emitted when a menu item is selected.                                                       | `CustomEvent<IMenuItem>`  |
+| Event         | Description                                                                                       | Type                             |
+| ------------- | ------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `inputBlur`   | Event emitted when the input loses focus.                                                         | `CustomEvent<FocusEvent>`        |
+| `inputChange` | Event emitted when the input value changes. This event is debounced based on the debounceMs prop. | `CustomEvent<Event>`             |
+| `inputFocus`  | Event emitted when the input gains focus.                                                         | `CustomEvent<FocusEvent>`        |
+| `itemSelect`  | Event emitted when a menu item is selected.                                                       | `CustomEvent<IAutocompleteItem>` |
 
 
 ## Dependencies
 
 ### Depends on
 
+- [modus-wc-menu-item](../../atoms/modus-wc-menu-item)
 - [modus-wc-text-input](../../atoms/modus-wc-text-input)
 - [modus-wc-menu](../../atoms/modus-wc-menu)
 
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-autocomplete --> modus-wc-menu-item
   modus-wc-autocomplete --> modus-wc-text-input
   modus-wc-autocomplete --> modus-wc-menu
+  modus-wc-menu-item --> modus-wc-icon
   style modus-wc-autocomplete fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
