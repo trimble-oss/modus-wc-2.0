@@ -18,20 +18,20 @@ export class ModusWcCard {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Custom CSS class to apply */
-  @Prop() customClass?: string = '';
-
   /** Adds a border to the card */
   @Prop() bordered?: boolean = false;
+
+  /** Custom CSS class to apply */
+  @Prop() customClass?: string = '';
 
   /** Makes any \<figure> in the 'figure' slot cover the background */
   @Prop() imageFull?: boolean = false;
 
-  /** Card padding variant - normal or compact */
-  @Prop() padding?: 'normal' | 'compact' = 'normal';
-
   /** Display mode - stacked or side image */
   @Prop() layout?: 'stacked' | 'side' = 'stacked';
+
+  /** Card padding variant - normal or compact */
+  @Prop() padding?: 'normal' | 'compact' = 'normal';
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -47,6 +47,7 @@ export class ModusWcCard {
       padding: this.padding,
     });
 
+    // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
 
