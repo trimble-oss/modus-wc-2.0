@@ -62,6 +62,7 @@
 [data-theme='modus-classic-light'] .modus-wc-badge,
 [data-theme='modus-classic-dark'] .modus-wc-badge {
   border-radius: 4px;
+  font-weight: 700;
   &.modus-wc-badge-success {
     background-color: var(--modus-wc-color-green-dark);
   }
