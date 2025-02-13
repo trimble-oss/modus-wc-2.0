@@ -15,6 +15,7 @@ describe('modus-wc-card', () => {
       components: [ModusWcCard],
       html: `<modus-wc-card
             aria-hidden="false"
+            padding="compact"
             custom-class="test-class"
             ></modus-wc-card>`,
     });

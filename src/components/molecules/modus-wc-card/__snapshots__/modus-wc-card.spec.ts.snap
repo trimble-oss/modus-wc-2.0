@@ -13,9 +13,9 @@ exports[`modus-wc-card renders with default props 1`] = `
 `;
 
 exports[`modus-wc-card should render with custom props 1`] = `
-<modus-wc-card custom-class="test-class">
+<modus-wc-card custom-class="test-class" padding="compact">
   <!---->
-  <article aria-hidden="false" class="modus-wc-card test-class" tabindex="-1">
+  <article aria-hidden="false" class="modus-wc-card modus-wc-card-compact test-class" tabindex="-1">
     <div class="modus-wc-card-body">
       <div class="modus-wc-card-title"></div>
       <div class="modus-wc-card-actions"></div>
