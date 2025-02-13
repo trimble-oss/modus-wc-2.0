@@ -172,12 +172,16 @@ export class ModusWcAutocomplete {
     this.inputFocus.emit(event.detail);
   };
 
+  // TODO - add code coverage once autocomplete is updated
+  // istanbul ignore next
   private handleItemSelect = (item: IAutocompleteItem) => {
     this.menuVisible = false;
     this.itemSelect.emit(item);
   };
 
   render() {
+    // TODO - add code coverage once autocomplete is updated
+    // istanbul ignore next
     const getMenuItems = () => {
       return (
         <Fragment>

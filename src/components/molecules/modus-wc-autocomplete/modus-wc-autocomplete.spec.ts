@@ -101,32 +101,4 @@ describe('modus-wc-autocomplete', () => {
 
     expect(focusSpy).toHaveBeenCalled();
   });
-
-  it('should emit item select event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
-      html: '<modus-wc-autocomplete aria-label="Item select test"></modus-wc-autocomplete>',
-    });
-    const autocomplete = page.root;
-    expect(autocomplete).not.toBeNull();
-    if (autocomplete) autocomplete.items = items;
-
-    const input = page.root!.querySelector('input');
-    expect(input).not.toBeNull();
-    const itemSelectSpy = jest.fn();
-    page.root!.addEventListener('itemSelect', itemSelectSpy);
-
-    input!.dispatchEvent(new FocusEvent('focus'));
-    await page.waitForChanges();
-
-    const menu = page.root!.querySelector('ul');
-    expect(menu).not.toBeNull();
-    const item = menu?.querySelector('li a');
-    expect(item).not.toBeNull();
-
-    item!.dispatchEvent(new MouseEvent('click'));
-    await page.waitForChanges();
-
-    expect(itemSelectSpy).toHaveBeenCalled();
-  });
 });

@@ -85,6 +85,7 @@ export class ModusWcMenuItem {
         return 'sm';
       case 'lg':
         return 'md';
+      // istanbul ignore next (unreachable code)
       default:
         return 'sm';
     }
