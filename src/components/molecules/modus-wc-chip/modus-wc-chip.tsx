@@ -5,6 +5,7 @@ import {
   EventEmitter,
   h,
   Host,
+  Listen,
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-chip.tailwind';
@@ -59,6 +60,22 @@ export class ModusWcChip {
 
   /** Event emitted when the close chip icon button is clicked. */
   @Event() closeClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
+  @Listen('keydown')
+  private handleKeyDown(event: KeyboardEvent) {
+    if (event.code === 'Enter' || event.code === 'Space') {
+      event.preventDefault();
+      this.chipClick.emit(event);
+    }
+  }
+
+  @Listen('keyup')
+  private handleKeyup(event: KeyboardEvent) {
+    if (event.code === 'Escape') {
+      event.preventDefault();
+      this.closeClick.emit(event);
+    }
+  }
 
   private handleChipClick = (event: MouseEvent) => {
     if (!this.disabled) {
@@ -130,6 +147,8 @@ export class ModusWcChip {
           class={this.getClasses()}
           disabled={this.disabled}
           onClick={this.handleChipClick}
+          onKeyDown={(event) => this.handleKeyDown(event)}
+          onKeyUp={(event) => this.handleKeyup(event)}
           tabIndex={0}
           type="button"
         >
