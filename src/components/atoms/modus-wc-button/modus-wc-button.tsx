@@ -10,6 +10,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-button.tailwind';
 import { DaisySize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -22,6 +23,8 @@ import { DaisySize } from '../../types';
   shadow: false,
 })
 export class ModusWcButton {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -66,6 +69,8 @@ export class ModusWcButton {
       );
       this.el.ariaLabel = this.label || 'Button';
     }
+
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -108,13 +113,13 @@ export class ModusWcButton {
       <Host>
         <button
           class={this.getClasses()}
-          aria-label={this.el.ariaLabel}
           aria-pressed={ariaPressed}
           disabled={this.disabled}
           onClick={this.handleClick}
           onKeyDown={this.handleKeyDown}
           tabIndex={this.disabled ? -1 : 0}
           type={this.type}
+          {...this.inheritedAttributes}
         >
           <slot name="left" />
           <slot />
