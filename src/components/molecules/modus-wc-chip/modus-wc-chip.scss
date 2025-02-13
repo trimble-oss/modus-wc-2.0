@@ -204,6 +204,22 @@
         color: var(--modus-wc-color-gray-1);
       }
     }
+
+    &:active:not(.modus-wc-chip--error):not(.modus-wc-chip--active) {
+      background-color: var(--modus-wc-color-highlight-blue);
+      border-color: transparent;
+      color: var(--modus-wc-color-gray-10);
+
+      &.modus-wc-chip--outline {
+        background-color: $modus-wc-chip-outline-active-bg;
+        border-color: var(--modus-wc-color-highlight-blue);
+        color: var(--modus-wc-color-gray-1);
+
+        .modus-wc-chip-label {
+          color: var(--modus-wc-color-gray-1);
+        }
+      }
+    }
   }
 
   &.modus-wc-chip--disabled {
