@@ -11,8 +11,8 @@
     $modus-wc-chip-active-filled-bg: #217cbb4d; // --modus-wc-color-blue-light with 30% opacity
 
     background-color: var(--modus-wc-color-gray-1);
-    border: none;
-    box-shadow: none;
+    border-color: transparent;
+    box-sizing: border-box;
     color: var(--modus-wc-color-gray-9);
 
     &.modus-wc-btn-sm {
@@ -68,7 +68,7 @@
 
     &.modus-wc-chip--active {
       background-color: $modus-wc-chip-active-filled-bg;
-      border-color: $modus-wc-chip-active-filled-bg;
+      border-color: transparent;
       color: var(--modus-wc-color-trimble-gray);
 
       &.modus-wc-chip--outline {
@@ -84,12 +84,12 @@
 
     &.modus-wc-chip--error {
       background-color: var(--modus-wc-color-red-pale);
-      border-color: var(--modus-wc-color-red-pale);
+      border-color: transparent;
       color: var(--modus-wc-color-red-dark);
 
       &.modus-wc-chip--outline {
-        border-color: var(--modus-wc-color-red-dark);
         background-color: var(--modus-wc-color-red-pale);
+        border-color: var(--modus-wc-color-red-dark);
       }
     }
 
@@ -100,7 +100,7 @@
 
     &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {
       background-color: var(--modus-wc-color-gray-0);
-      border-color: var(--modus-wc-color-gray-0);
+      border-color: transparent;
       color: var(--modus-wc-color-gray-9);
 
       &.modus-wc-chip--outline {
@@ -142,7 +142,7 @@
 
     &.modus-wc-chip--active {
       background-color: var(--modus-wc-color-highlight-blue);
-      border-color: var(--modus-wc-color-highlight-blue);
+      border-color: transparent;
       color: var(--modus-wc-color-gray-10);
 
       &.modus-wc-chip--outline {
@@ -158,12 +158,12 @@
 
     &.modus-wc-chip--error {
       background-color: var(--modus-wc-color-red-pale);
-      border-color: var(--modus-wc-color-red-pale);
+      border-color: transparent;
       color: var(--modus-wc-color-red-dark);
 
       &.modus-wc-chip--outline {
-        border-color: var(--modus-wc-color-red-dark);
         background-color: var(--modus-wc-color-red-pale);
+        border-color: var(--modus-wc-color-red-dark);
         color: var(--modus-wc-color-red-dark);
       }
     }
@@ -176,7 +176,7 @@
 
     &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {
       background-color: var(--modus-wc-color-gray-0);
-      border-color: var(--modus-wc-color-gray-0);
+      border-color: transparent;
       color: var(--modus-wc-color-gray-9);
 
       &.modus-wc-chip--outline {
