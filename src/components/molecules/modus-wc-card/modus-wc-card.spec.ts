@@ -1,11 +1,11 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcCard } from './modus-wc-card';
 
-describe('modus-wc-skeleton', () => {
+describe('modus-wc-card', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcCard],
-      html: '<modus-wc-skeleton></modus-wc-skeleton>',
+      html: '<modus-wc-card></modus-wc-card>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -13,15 +13,10 @@ describe('modus-wc-skeleton', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcCard],
-      html: `<modus-wc-skeleton
+      html: `<modus-wc-card
             aria-hidden="false"
             custom-class="test-class"
-            height="5rem"
-            role="status"
-            shape="circle"
-            tabindex="1"
-            width="5rem"
-            ></modus-wc-skeleton>`,
+            ></modus-wc-card>`,
     });
     expect(page.root).toMatchSnapshot();
   });
