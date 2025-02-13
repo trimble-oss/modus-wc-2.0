@@ -75,17 +75,17 @@ export const Default: Story = { ...Template };
 export const Composable: Story = {
   render: () => {
     return html`
-<modus-wc-chip>
+<modus-wc-chip aria-label="Example chip">
   <modus-wc-icon name="heart" size="xs" ></modus-wc-icon>
   Chip
 </modus-wc-chip>
 
-<modus-wc-chip show-close="true">
+<modus-wc-chip aria-label="Example chip" show-close="true">
   <modus-wc-icon name="heart" size="xs" ></modus-wc-icon>
   Chip
 </modus-wc-chip>
 
-<modus-wc-chip>
+<modus-wc-chip aria-label="Example chip">
   <modus-wc-icon name="heart" size="xs" ></modus-wc-icon>
   Chip
   <modus-wc-icon name="heart" size="xs" ></modus-wc-icon>
