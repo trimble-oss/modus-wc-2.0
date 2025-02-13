@@ -1,3 +1,4 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -37,6 +38,12 @@ const meta: Meta<ChipArgs> = {
     variant: {
       control: { type: 'inline-radio' },
       options: ['filled', 'outline'],
+    },
+  },
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['chipClick', 'closeClick'],
     },
   },
 };

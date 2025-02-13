@@ -1,4 +1,12 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-chip.tailwind';
 import { ModusSize } from '../../types';
 
@@ -46,6 +54,24 @@ export class ModusWcChip {
   /** The variant of the chip. */
   @Prop() variant?: 'filled' | 'outline' = 'filled';
 
+  /** Event emitted when the chip is clicked or activated via keyboard. */
+  @Event() chipClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
+  /** Event emitted when the close chip icon button is clicked. */
+  @Event() closeClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
+  private handleChipClick = (event: MouseEvent) => {
+    if (!this.disabled) {
+      this.chipClick.emit(event);
+    }
+  };
+
+  private handleCloseClick = (event: MouseEvent) => {
+    if (!this.disabled) {
+      this.closeClick.emit(event);
+    }
+  };
+
   componentWillLoad() {
     if (!this.el.ariaLabel) {
       console.warn(
@@ -77,6 +103,7 @@ export class ModusWcChip {
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"
       class="mi-solid mi-cancel-circle modus-wc-chip-icon"
+      onClick={this.handleCloseClick}
       viewBox="0 0 24 24"
     >
       <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m4.3 14.3a.996.996 0 0 1-1.41 0L12 13.41 9.11 16.3a.996.996 0 1 1-1.41-1.41L10.59 12 7.7 9.11A.996.996 0 1 1 9.11 7.7L12 10.59l2.89-2.89a.996.996 0 1 1 1.41 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41" />
@@ -101,9 +128,10 @@ export class ModusWcChip {
           aria-disabled={this.disabled ? 'true' : undefined}
           aria-label={this.el.ariaLabel}
           class={this.getClasses()}
+          disabled={this.disabled}
+          onClick={this.handleChipClick}
           tabIndex={0}
           type="button"
-          disabled={this.disabled}
         >
           {this.imageUrl ? (
             <modus-wc-avatar

@@ -3672,7 +3672,22 @@
             }
           ],
           "tagName": "modus-wc-chip",
-          "events": [],
+          "events": [
+            {
+              "name": "chipClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the chip is clicked or activated via keyboard."
+            },
+            {
+              "name": "closeClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the close chip icon button is clicked."
+            }
+          ],
           "customElement": true
         }
       ],

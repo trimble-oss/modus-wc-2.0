@@ -1387,6 +1387,10 @@ export interface ModusWcCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcCheckboxElement;
 }
+export interface ModusWcChipCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcChipElement;
+}
 export interface ModusWcCollapseCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcCollapseElement;
@@ -1576,11 +1580,23 @@ declare global {
         prototype: HTMLModusWcCheckboxElement;
         new (): HTMLModusWcCheckboxElement;
     };
+    interface HTMLModusWcChipElementEventMap {
+        "chipClick": MouseEvent | KeyboardEvent;
+        "closeClick": MouseEvent | KeyboardEvent;
+    }
     /**
      * A customizable chip component.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcChipElement extends Components.ModusWcChip, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcChipElementEventMap>(type: K, listener: (this: HTMLModusWcChipElement, ev: ModusWcChipCustomEvent<HTMLModusWcChipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcChipElementEventMap>(type: K, listener: (this: HTMLModusWcChipElement, ev: ModusWcChipCustomEvent<HTMLModusWcChipElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcChipElement: {
         prototype: HTMLModusWcChipElement;
@@ -2408,6 +2424,14 @@ declare namespace LocalJSX {
           * The label to display in the chip.
          */
         "label"?: string;
+        /**
+          * Event emitted when the chip is clicked or activated via keyboard.
+         */
+        "onChipClick"?: (event: ModusWcChipCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the close chip icon button is clicked.
+         */
+        "onCloseClick"?: (event: ModusWcChipCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
           * Whether to show the check icon on left side of the chip.
          */
