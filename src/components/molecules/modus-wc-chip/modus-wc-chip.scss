@@ -15,6 +15,7 @@
     box-sizing: border-box;
     color: var(--modus-wc-color-gray-9);
 
+    // Sizes
     &.modus-wc-btn-sm {
       --rounded-btn: #{$rem-12px};
       height: $rem-24px;
@@ -66,6 +67,7 @@
       }
     }
 
+    // States
     &.modus-wc-chip--active {
       background-color: $modus-wc-chip-active-filled-bg;
       border-color: transparent;
@@ -135,6 +137,7 @@
     opacity: 0.3;
   }
 
+  // Avatar
   .modus-wc-chip-avatar-container {
     display: flex;
   }
