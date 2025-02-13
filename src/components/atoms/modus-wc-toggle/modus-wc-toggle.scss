@@ -9,7 +9,6 @@
 
   background-color: var(--modus-wc-color-white);
   border: none;
-  outline-color: var(--modus-wc-color-highlight-blue);
 
   // Set default colors
   --fallback-b1: var(--modus-wc-color-gray-4);
@@ -26,7 +25,45 @@
     color: var(--modus-wc-color-blue-light);
   }
 
-  &:hover {
-    --fallback-b1: var(--modus-wc-color-trimble-blue);
+  &:not(:disabled) {
+    &:hover:not(:checked) {
+      background-color: var(--modus-wc-color-white);
+      outline: 2px solid var(--modus-wc-color-blue-light);
+      outline-offset: -2px;
+    }
+
+    &:hover:checked {
+      background-color: var(--modus-wc-color-white);
+      --fallback-b1: var(--modus-wc-color-trimble-blue);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--modus-wc-color-highlight-blue);
+      outline-offset: 2px;
+    }
+  }
+
+  &:disabled {
+    background-color: var(--modus-wc-color-white);
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-toggle {
+  &:checked {
+    --fallback-b1: var(--modus-wc-color-highlight-blue);
+    color: var(--modus-wc-color-highlight-blue);
+  }
+
+  &:not(:disabled) {
+    &:hover:not(:checked) {
+      background-color: var(--modus-wc-color-white);
+      outline: 2px solid var(--modus-wc-color-highlight-blue);
+      outline-offset: -2px;
+    }
+
+    &:hover:checked {
+      background-color: var(--modus-wc-color-white);
+      --fallback-b1: var(--modus-wc-color-blue-light);
+    }
   }
 }
