@@ -90,6 +90,9 @@ export const ToggleWithLabel: Story = {
   modus-wc-toggle {
     padding-inline-end: 8px;
   }
+  modus-wc-input-label {
+    font-size: 14px;
+  }
 </style>
 <form action="" method="get">
   <div class="form-control">

@@ -3,3 +3,11 @@
     color: var(--modus-wc-color-error);
   }
 }
+
+[data-theme='modus-classic-light'] .modus-wc-input-label {
+  color: var(--modus-wc-color-gray-8);
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-input-label {
+  color: var(--modus-wc-color-gray-2);
+}
