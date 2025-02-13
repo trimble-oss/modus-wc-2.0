@@ -63,7 +63,7 @@ export class ModusWcChip {
 
   @Listen('keydown')
   private handleKeyDown(event: KeyboardEvent) {
-    if (event.code === 'Enter' || event.code === 'Space') {
+    if (!this.disabled && (event.code === 'Enter' || event.code === 'Space')) {
       event.preventDefault();
       this.chipClick.emit(event);
     }
@@ -71,7 +71,7 @@ export class ModusWcChip {
 
   @Listen('keyup')
   private handleKeyup(event: KeyboardEvent) {
-    if (event.code === 'Escape') {
+    if (!this.disabled && event.code === 'Escape') {
       event.preventDefault();
       this.closeClick.emit(event);
     }
