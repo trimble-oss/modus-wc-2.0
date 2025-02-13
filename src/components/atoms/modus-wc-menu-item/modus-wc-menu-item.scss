@@ -12,6 +12,8 @@ li.modus-wc-menu-item {
   }
 
   &.modus-wc-menu-item-disabled {
+    color: var(--modus-wc-color-gray-2);
+
     button {
       pointer-events: none;
     }
