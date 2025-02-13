@@ -8,14 +8,14 @@ export const convertPropsToClasses = (props: {
 
   if (
     Object.prototype.hasOwnProperty.call(props, 'bordered') &&
-    props.bordered
+    !!props.bordered
   ) {
     classes = `${classes} modus-wc-card-bordered`;
   }
 
   if (
     Object.prototype.hasOwnProperty.call(props, 'fullImage') &&
-    props.fullImage
+    !!props.fullImage
   ) {
     classes = `${classes} modus-wc-image-full`; // no -card
   }
