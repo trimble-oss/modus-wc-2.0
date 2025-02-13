@@ -37,3 +37,13 @@
     outline: none; // Ensures there's no outline on focus
   }
 }
+
+[data-theme='modus-classic-light'] .modus-wc-select {
+  &.modus-wc-select-bordered:not(:disabled):not(:focus) {
+    border-color: var(--modus-wc-color-gray-6);
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-select:focus {
+  border-color: var(--modus-wc-color-highlight-blue);
+}
