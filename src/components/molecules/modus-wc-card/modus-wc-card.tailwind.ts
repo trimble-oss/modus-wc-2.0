@@ -32,8 +32,7 @@ export const convertPropsToClasses = (props: {
 
   if (Object.prototype.hasOwnProperty.call(props, 'padding') && props.padding) {
     switch (props.padding) {
-      case 'normal':
-        classes = `${classes} modus-wc-card-normal`;
+      case 'normal': // normal is default, no class needed
         break;
       case 'compact':
         classes = `${classes} modus-wc-card-compact`;

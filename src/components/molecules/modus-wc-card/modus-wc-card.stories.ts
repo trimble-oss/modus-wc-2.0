@@ -58,15 +58,15 @@ const Template: Story = {
   layout=${ifDefined(args.layout)}
   padding=${ifDefined(args.padding)}
 >
-  <img
-    slot="figure"
-    src="https://picsum.photos/400/200"
-    alt="Sample card image"
-  />
-  <h3 slot="header">Card Header</h3>
+  <figure slot="header">
+    <img
+      src="https://picsum.photos/400/150"
+      alt="Sample card image"
+    />
+  </figure>
   <h2 slot="title">Card Title</h2>
   <p>This is a sample card content. You can place any content here.</p>
-  <div slot="footer" class="modus-wc-justify-end">
+  <div slot="actions" class="modus-wc-justify-end">
     <modus-wc-button label="Click me"></modus-wc-button>
   </div>
 </modus-wc-card>

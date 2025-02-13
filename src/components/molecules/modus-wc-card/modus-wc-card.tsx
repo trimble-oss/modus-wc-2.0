@@ -61,21 +61,17 @@ export class ModusWcCard {
           tabindex={-1}
           {...this.inheritedAttributes}
         >
-          <figure>
-            <slot name="figure"></slot>
-          </figure>
-          <div class="modus-wc-card-header">
-            <slot name="header"></slot>
-          </div>
+          <slot name="header" />
           <div class="modus-wc-card-body">
             <div class="modus-wc-card-title">
-              <slot name="title"></slot>
+              <slot name="title" />
             </div>
-            <slot></slot>
+            <slot /> {/* Default body slot */}
             <div class="modus-wc-card-actions">
-              <slot name="footer"></slot>
+              <slot name="actions" />
             </div>
           </div>
+          <slot name="footer" />
         </article>
       </Host>
     );
