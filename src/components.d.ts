@@ -88,10 +88,6 @@ export namespace Components {
          */
         "activeItemValue"?: string;
         /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
-        /**
           * Indicates that the autocomplete should have a border.
          */
         "bordered"?: boolean;
@@ -275,18 +271,36 @@ export namespace Components {
         "variant": 'borderless' | 'filled' | 'outlined';
     }
     /**
+     * A customizable card component based on DaisyUI card.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCard {
+        /**
+          * Adds a border to the card
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
+        /**
+          * Makes any \<figure> in the 'figure' slot cover the background
+         */
+        "imageFull"?: boolean;
+        /**
+          * Display mode - stacked or side image
+         */
+        "layout"?: 'stacked' | 'side';
+        /**
+          * Card padding variant - normal or compact
+         */
+        "padding"?: 'normal' | 'compact';
+    }
+    /**
      * A customizable checkbox component.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcCheckbox {
-        /**
-          * The ID of the element that describes the checkbox.
-         */
-        "ariaDescribedby"?: string;
-        /**
-          * The aria-labelledby attribute for usage with a label.
-         */
-        "ariaLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -372,14 +386,6 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcDate {
-        /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
-        /**
-          * The aria-labelledby attribute for usage with a label.
-         */
-        "ariaLabelledby"?: string;
         /**
           * Indicates that the input should have a border.
          */
@@ -585,10 +591,6 @@ export namespace Components {
      */
     interface ModusWcNumberInput {
         /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
-        /**
           * Hint for form autofill feature.
          */
         "autoComplete"?: 'on' | 'off';
@@ -604,10 +606,6 @@ export namespace Components {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
-        /**
-          * Indicates whether the input has an invalid input.
-         */
-        "inputAriaInvalid"?: 'true' | 'false';
         /**
           * Specifies the text direction of the input content.
          */
@@ -693,14 +691,6 @@ export namespace Components {
      */
     interface ModusWcRadio {
         /**
-          * The ID of the element that describes the radio.
-         */
-        "ariaDescribedby"?: string;
-        /**
-          * The aria-labelledby attribute for usage with a label.
-         */
-        "ariaLabelledby"?: string;
-        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
@@ -743,10 +733,6 @@ export namespace Components {
      */
     interface ModusWcSelect {
         /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -758,10 +744,6 @@ export namespace Components {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
-        /**
-          * Indicates whether the input has an invalid input.
-         */
-        "inputAriaInvalid"?: 'true' | 'false';
         /**
           * Specifies the text direction of the input content.
          */
@@ -822,14 +804,6 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcSlider {
-        /**
-          * The ID of the element that describes the slider.
-         */
-        "ariaDescribedby"?: string;
-        /**
-          * The aria-labelledby attribute for usage with a label.
-         */
-        "ariaLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -937,10 +911,6 @@ export namespace Components {
      */
     interface ModusWcTextInput {
         /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
-        /**
           * Controls automatic capitalization in inputted text.
          */
         "autoCapitalize"?: | 'off'
@@ -965,10 +935,6 @@ export namespace Components {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
-        /**
-          * Indicates whether the input has an invalid input.
-         */
-        "inputAriaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * Specifies the text direction of the input content.
          */
@@ -1043,10 +1009,6 @@ export namespace Components {
      */
     interface ModusWcTextarea {
         /**
-          * The ID of the element that describes the textarea.
-         */
-        "ariaDescribedby"?: string;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -1058,10 +1020,6 @@ export namespace Components {
           * The disabled state of the textarea.
          */
         "disabled"?: boolean;
-        /**
-          * Indicates whether the input is invalid.
-         */
-        "inputAriaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * Specifies the text direction of the input content.
          */
@@ -1130,10 +1088,6 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTimeInput {
-        /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
         /**
           * Hint for form autofill feature.
          */
@@ -1227,14 +1181,6 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcToggle {
-        /**
-          * The ID of the element that describes the toggle.
-         */
-        "ariaDescribedby"?: string;
-        /**
-          * The aria-labelledby attribute for usage with a label.
-         */
-        "ariaLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -1506,6 +1452,16 @@ declare global {
     var HTMLModusWcButtonElement: {
         prototype: HTMLModusWcButtonElement;
         new (): HTMLModusWcButtonElement;
+    };
+    /**
+     * A customizable card component based on DaisyUI card.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcCardElement extends Components.ModusWcCard, HTMLStencilElement {
+    }
+    var HTMLModusWcCardElement: {
+        prototype: HTMLModusWcCardElement;
+        new (): HTMLModusWcCardElement;
     };
     interface HTMLModusWcCheckboxElementEventMap {
         "inputBlur": FocusEvent;
@@ -1957,6 +1913,7 @@ declare global {
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-breadcrumbs": HTMLModusWcBreadcrumbsElement;
         "modus-wc-button": HTMLModusWcButtonElement;
+        "modus-wc-card": HTMLModusWcCardElement;
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
         "modus-wc-collapse": HTMLModusWcCollapseElement;
         "modus-wc-date": HTMLModusWcDateElement;
@@ -2049,10 +2006,6 @@ declare namespace LocalJSX {
           * The active menu item value, used to show an item as selected.
          */
         "activeItemValue"?: string;
-        /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
         /**
           * Indicates that the autocomplete should have a border.
          */
@@ -2257,18 +2210,36 @@ declare namespace LocalJSX {
         "variant"?: 'borderless' | 'filled' | 'outlined';
     }
     /**
+     * A customizable card component based on DaisyUI card.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcCard {
+        /**
+          * Adds a border to the card
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
+        /**
+          * Makes any \<figure> in the 'figure' slot cover the background
+         */
+        "imageFull"?: boolean;
+        /**
+          * Display mode - stacked or side image
+         */
+        "layout"?: 'stacked' | 'side';
+        /**
+          * Card padding variant - normal or compact
+         */
+        "padding"?: 'normal' | 'compact';
+    }
+    /**
      * A customizable checkbox component.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcCheckbox {
-        /**
-          * The ID of the element that describes the checkbox.
-         */
-        "ariaDescribedby"?: string;
-        /**
-          * The aria-labelledby attribute for usage with a label.
-         */
-        "ariaLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -2370,14 +2341,6 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcDate {
-        /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
-        /**
-          * The aria-labelledby attribute for usage with a label.
-         */
-        "ariaLabelledby"?: string;
         /**
           * Indicates that the input should have a border.
          */
@@ -2599,10 +2562,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcNumberInput {
         /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
-        /**
           * Hint for form autofill feature.
          */
         "autoComplete"?: 'on' | 'off';
@@ -2618,10 +2577,6 @@ declare namespace LocalJSX {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
-        /**
-          * Indicates whether the input has an invalid input.
-         */
-        "inputAriaInvalid"?: 'true' | 'false';
         /**
           * Specifies the text direction of the input content.
          */
@@ -2719,14 +2674,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcRadio {
         /**
-          * The ID of the element that describes the radio.
-         */
-        "ariaDescribedby"?: string;
-        /**
-          * The aria-labelledby attribute for usage with a label.
-         */
-        "ariaLabelledby"?: string;
-        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
@@ -2781,10 +2728,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcSelect {
         /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -2796,10 +2739,6 @@ declare namespace LocalJSX {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
-        /**
-          * Indicates whether the input has an invalid input.
-         */
-        "inputAriaInvalid"?: 'true' | 'false';
         /**
           * Specifies the text direction of the input content.
          */
@@ -2872,14 +2811,6 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcSlider {
-        /**
-          * The ID of the element that describes the slider.
-         */
-        "ariaDescribedby"?: string;
-        /**
-          * The aria-labelledby attribute for usage with a label.
-         */
-        "ariaLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -3013,10 +2944,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcTextInput {
         /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
-        /**
           * Controls automatic capitalization in inputted text.
          */
         "autoCapitalize"?: | 'off'
@@ -3041,10 +2968,6 @@ declare namespace LocalJSX {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
-        /**
-          * Indicates whether the input has an invalid input.
-         */
-        "inputAriaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * Specifies the text direction of the input content.
          */
@@ -3131,10 +3054,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcTextarea {
         /**
-          * The ID of the element that describes the textarea.
-         */
-        "ariaDescribedby"?: string;
-        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -3146,10 +3065,6 @@ declare namespace LocalJSX {
           * The disabled state of the textarea.
          */
         "disabled"?: boolean;
-        /**
-          * Indicates whether the input is invalid.
-         */
-        "inputAriaInvalid"?: 'grammar' | 'spelling' | 'true' | 'false';
         /**
           * Specifies the text direction of the input content.
          */
@@ -3234,10 +3149,6 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTimeInput {
-        /**
-          * The ID of the element that describes the input.
-         */
-        "ariaDescribedby"?: string;
         /**
           * Hint for form autofill feature.
          */
@@ -3343,14 +3254,6 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcToggle {
-        /**
-          * The ID of the element that describes the toggle.
-         */
-        "ariaDescribedby"?: string;
-        /**
-          * The aria-labelledby attribute for usage with a label.
-         */
-        "ariaLabelledby"?: string;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -3460,6 +3363,7 @@ declare namespace LocalJSX {
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-breadcrumbs": ModusWcBreadcrumbs;
         "modus-wc-button": ModusWcButton;
+        "modus-wc-card": ModusWcCard;
         "modus-wc-checkbox": ModusWcCheckbox;
         "modus-wc-collapse": ModusWcCollapse;
         "modus-wc-date": ModusWcDate;
@@ -3526,6 +3430,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
+            /**
+             * A customizable card component based on DaisyUI card.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-card": LocalJSX.ModusWcCard & JSXBase.HTMLAttributes<HTMLModusWcCardElement>;
             /**
              * A customizable checkbox component.
              * Adheres to WCAG 2.2 standards.

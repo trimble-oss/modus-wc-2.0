@@ -338,22 +338,6 @@
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the element that describes the checkbox."
-            },
-            {
-              "name": "aria-labelledby",
-              "fieldName": "ariaLabelledby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-labelledby attribute for usage with a label."
-            },
-            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
@@ -506,22 +490,6 @@
             }
           ],
           "attributes": [
-            {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the element that describes the input."
-            },
-            {
-              "name": "aria-labelledby",
-              "fieldName": "ariaLabelledby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-labelledby attribute for usage with a label."
-            },
             {
               "name": "bordered",
               "fieldName": "bordered",
@@ -870,6 +838,14 @@
           "name": "ModusWcInputLabel",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -1157,14 +1133,6 @@
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the element that describes the input."
-            },
-            {
               "name": "auto-complete",
               "fieldName": "autoComplete",
               "type": {
@@ -1195,14 +1163,6 @@
                 "text": "boolean"
               },
               "description": "Whether the form control is disabled."
-            },
-            {
-              "name": "input-aria-invalid",
-              "fieldName": "inputAriaInvalid",
-              "type": {
-                "text": "'true' | 'false'"
-              },
-              "description": "Indicates whether the input has an invalid input."
             },
             {
               "name": "input-dir",
@@ -1470,22 +1430,6 @@
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the element that describes the radio."
-            },
-            {
-              "name": "aria-labelledby",
-              "fieldName": "ariaLabelledby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-labelledby attribute for usage with a label."
-            },
-            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
@@ -1631,14 +1575,6 @@
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the element that describes the input."
-            },
-            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
@@ -1661,14 +1597,6 @@
                 "text": "boolean"
               },
               "description": "Whether the form control is disabled."
-            },
-            {
-              "name": "input-aria-invalid",
-              "fieldName": "inputAriaInvalid",
-              "type": {
-                "text": "'true' | 'false'"
-              },
-              "description": "Indicates whether the input has an invalid input."
             },
             {
               "name": "input-dir",
@@ -1794,6 +1722,14 @@
           "name": "ModusWcSkeleton",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -1879,22 +1815,6 @@
             }
           ],
           "attributes": [
-            {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the element that describes the slider."
-            },
-            {
-              "name": "aria-labelledby",
-              "fieldName": "ariaLabelledby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-labelledby attribute for usage with a label."
-            },
             {
               "name": "custom-class",
               "fieldName": "customClass",
@@ -2065,14 +1985,6 @@
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the element that describes the input."
-            },
-            {
               "name": "auto-capitalize",
               "fieldName": "autoCapitalize",
               "type": {
@@ -2111,14 +2023,6 @@
                 "text": "boolean"
               },
               "description": "Whether the form control is disabled."
-            },
-            {
-              "name": "input-aria-invalid",
-              "fieldName": "inputAriaInvalid",
-              "type": {
-                "text": "'grammar' | 'spelling' | 'true' | 'false'"
-              },
-              "description": "Indicates whether the input has an invalid input."
             },
             {
               "name": "input-dir",
@@ -2314,14 +2218,6 @@
           ],
           "attributes": [
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the element that describes the textarea."
-            },
-            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
@@ -2344,14 +2240,6 @@
                 "text": "boolean"
               },
               "description": "The disabled state of the textarea."
-            },
-            {
-              "name": "input-aria-invalid",
-              "fieldName": "inputAriaInvalid",
-              "type": {
-                "text": "'grammar' | 'spelling' | 'true' | 'false'"
-              },
-              "description": "Indicates whether the input is invalid."
             },
             {
               "name": "input-dir",
@@ -2522,14 +2410,6 @@
             }
           ],
           "attributes": [
-            {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the element that describes the input."
-            },
             {
               "name": "auto-complete",
               "fieldName": "autoComplete",
@@ -2734,6 +2614,14 @@
           "name": "ModusWcToast",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -2803,22 +2691,6 @@
             }
           ],
           "attributes": [
-            {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the element that describes the toggle."
-            },
-            {
-              "name": "aria-labelledby",
-              "fieldName": "ariaLabelledby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The aria-labelledby attribute for usage with a label."
-            },
             {
               "name": "custom-class",
               "fieldName": "customClass",
@@ -2959,6 +2831,14 @@
           "name": "ModusWcTooltip",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -3038,6 +2918,14 @@
           "description": "A customizable typography component used to render text with different sizes, variants, and weights.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWCTypography",
           "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
             {
               "kind": "method",
               "name": "render"
@@ -3310,14 +3198,6 @@
               "description": "The active menu item value, used to show an item as selected."
             },
             {
-              "name": "aria-describedby",
-              "fieldName": "ariaDescribedby",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the element that describes the input."
-            },
-            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
@@ -3563,6 +3443,94 @@
           "declaration": {
             "name": "ModusWcBreadcrumbs",
             "module": "src/components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-card/modus-wc-card.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable card component based on DaisyUI card.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcCard",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Adds a border to the card"
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply"
+            },
+            {
+              "name": "image-full",
+              "fieldName": "imageFull",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Makes any \\<figure> in the 'figure' slot cover the background"
+            },
+            {
+              "name": "layout",
+              "fieldName": "layout",
+              "type": {
+                "text": "'stacked' | 'side'"
+              },
+              "description": "Display mode - stacked or side image"
+            },
+            {
+              "name": "padding",
+              "fieldName": "padding",
+              "type": {
+                "text": "'normal' | 'compact'"
+              },
+              "description": "Card padding variant - normal or compact"
+            }
+          ],
+          "tagName": "modus-wc-card",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcCard",
+          "declaration": {
+            "name": "ModusWcCard",
+            "module": "src/components/molecules/modus-wc-card/modus-wc-card.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-card",
+          "declaration": {
+            "name": "ModusWcCard",
+            "module": "src/components/molecules/modus-wc-card/modus-wc-card.tsx"
           }
         }
       ]
