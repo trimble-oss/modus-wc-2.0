@@ -998,11 +998,139 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/atoms/modus-wc-menu-item/modus-wc-menu-item.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable menu item component used to display the item portion of a menu.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcMenuItem",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the li element."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The disabled state of the menu item."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text rendered in the menu item."
+            },
+            {
+              "name": "selected",
+              "fieldName": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The selected state of the menu item."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the menu item."
+            },
+            {
+              "name": "start-icon",
+              "fieldName": "startIcon",
+              "type": {
+                "text": "string"
+              },
+              "description": "The modus icon name to render on the start of the menu item."
+            },
+            {
+              "name": "sub-label",
+              "fieldName": "subLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text rendered beneath the label."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The unique identifying value of the menu item."
+            }
+          ],
+          "tagName": "modus-wc-menu-item",
+          "events": [
+            {
+              "kind": "field",
+              "name": "itemSelect",
+              "type": {
+                "text": "EventEmitter<{ value: string }>"
+              },
+              "description": "Event emitted when a menu item is selected."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcMenuItem",
+          "declaration": {
+            "name": "ModusWcMenuItem",
+            "module": "src/components/atoms/modus-wc-menu-item/modus-wc-menu-item.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-menu-item",
+          "declaration": {
+            "name": "ModusWcMenuItem",
+            "module": "src/components/atoms/modus-wc-menu-item/modus-wc-menu-item.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-menu/modus-wc-menu.tsx",
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable menu component used to display a list of links vertically or horizontally.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\r\n\r\nThe component supports a `<slot>` for injecting custom li elements inside the ul.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcMenu",
           "members": [
             {
@@ -1020,44 +1148,12 @@
           ],
           "attributes": [
             {
-              "name": "active-item-value",
-              "fieldName": "activeItemValue",
-              "type": {
-                "text": "string"
-              },
-              "description": "The active menu item value, used to show an item as selected."
-            },
-            {
-              "name": "bordered",
-              "fieldName": "bordered",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that the menu should have a border."
-            },
-            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
                 "text": "string"
               },
               "description": "Custom CSS class to apply to the ul element."
-            },
-            {
-              "name": "items",
-              "fieldName": "items",
-              "type": {
-                "text": "IMenuItem[]"
-              },
-              "description": "The items to display in the menu."
-            },
-            {
-              "name": "menu-title",
-              "fieldName": "menuTitle",
-              "type": {
-                "text": "string"
-              },
-              "description": "The menu title, rendered as the first item (disabled)."
             },
             {
               "name": "orientation",
@@ -1077,16 +1173,7 @@
             }
           ],
           "tagName": "modus-wc-menu",
-          "events": [
-            {
-              "kind": "field",
-              "name": "itemSelect",
-              "type": {
-                "text": "EventEmitter<IMenuItem>"
-              },
-              "description": "Event emitted when a menu item is selected."
-            }
-          ],
+          "events": [],
           "customElement": true
         }
       ],
@@ -3257,7 +3344,7 @@
               "name": "items",
               "fieldName": "items",
               "type": {
-                "text": "IMenuItem[]"
+                "text": "IAutocompleteItem[]"
               },
               "description": "The items to display in the menu."
             },
@@ -3348,7 +3435,7 @@
               "kind": "field",
               "name": "itemSelect",
               "type": {
-                "text": "EventEmitter<IMenuItem>"
+                "text": "EventEmitter<IAutocompleteItem>"
               },
               "description": "Event emitted when a menu item is selected."
             }
@@ -3453,7 +3540,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable card component based on DaisyUI card.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable card component used to group and display content in a way that is easily readable.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcCard",
           "members": [
             {

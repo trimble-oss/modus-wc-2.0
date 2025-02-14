@@ -7,7 +7,7 @@
 
 ## Overview
 
-A customizable card component based on DaisyUI card.
+A customizable card component used to group and display content in a way that is easily readable.
 
 Adheres to WCAG 2.2 standards.
 

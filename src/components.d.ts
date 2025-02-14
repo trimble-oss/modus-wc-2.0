@@ -7,10 +7,9 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IModusWcAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
 import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
-import { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
+import { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
 import { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
-import { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 import { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
 import { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs";
@@ -19,10 +18,9 @@ import { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast"
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { IModusWcAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
 export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
-export { IMenuItem } from "./components/atoms/modus-wc-menu/modus-wc-menu";
+export { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
 export { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
-export { IMenuItem as IMenuItem1 } from "./components/atoms/modus-wc-menu/modus-wc-menu";
 export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
 export { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
 export { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs";
@@ -118,7 +116,7 @@ export namespace Components {
         /**
           * The items to display in the menu.
          */
-        "items": IMenuItem[];
+        "items": IAutocompleteItem[];
         /**
           * The minimum number of characters required to render the menu.
          */
@@ -271,7 +269,7 @@ export namespace Components {
         "variant": 'borderless' | 'filled' | 'outlined';
     }
     /**
-     * A customizable card component based on DaisyUI card.
+     * A customizable card component used to group and display content in a way that is easily readable.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcCard {
@@ -552,30 +550,15 @@ export namespace Components {
         "variant": LoaderVariant;
     }
     /**
-     * A customizable menu component used to display a list of links vertically or horizontally.
+     * A customizable menu component used to display a list of li elements vertically or horizontally.
+     * The component supports a `<slot>` for injecting custom li elements inside the ul.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcMenu {
         /**
-          * The active menu item value, used to show an item as selected.
-         */
-        "activeItemValue"?: string;
-        /**
-          * Indicates that the menu should have a border.
-         */
-        "bordered"?: boolean;
-        /**
           * Custom CSS class to apply to the ul element.
          */
         "customClass"?: string;
-        /**
-          * The items to display in the menu.
-         */
-        "items": IMenuItem1[];
-        /**
-          * The menu title, rendered as the first item (disabled).
-         */
-        "menuTitle"?: string;
         /**
           * The orientation of the menu.
          */
@@ -584,6 +567,45 @@ export namespace Components {
           * The size of the menu.
          */
         "size"?: ModusSize;
+    }
+    /**
+     * A customizable menu item component used to display the item portion of a menu.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcMenuItem {
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the li element.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the menu item.
+         */
+        "disabled"?: boolean;
+        /**
+          * The text rendered in the menu item.
+         */
+        "label": string;
+        /**
+          * The selected state of the menu item.
+         */
+        "selected"?: boolean;
+        /**
+          * The size of the menu item.
+         */
+        "size"?: ModusSize;
+        /**
+          * The modus icon name to render on the start of the menu item.
+         */
+        "startIcon"?: string;
+        /**
+          * The text rendered beneath the label.
+         */
+        "subLabel"?: string;
+        /**
+          * The unique identifying value of the menu item.
+         */
+        "value": string;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -1295,9 +1317,9 @@ export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDateElement;
 }
-export interface ModusWcMenuCustomEvent<T> extends CustomEvent<T> {
+export interface ModusWcMenuItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLModusWcMenuElement;
+    target: HTMLModusWcMenuItemElement;
 }
 export interface ModusWcNumberInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1382,7 +1404,7 @@ declare global {
         "inputBlur": FocusEvent;
         "inputChange": Event;
         "inputFocus": FocusEvent;
-        "itemSelect": IMenuItem;
+        "itemSelect": IAutocompleteItem;
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
@@ -1454,7 +1476,7 @@ declare global {
         new (): HTMLModusWcButtonElement;
     };
     /**
-     * A customizable card component based on DaisyUI card.
+     * A customizable card component used to group and display content in a way that is easily readable.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcCardElement extends Components.ModusWcCard, HTMLStencilElement {
@@ -1573,26 +1595,37 @@ declare global {
         prototype: HTMLModusWcLoaderElement;
         new (): HTMLModusWcLoaderElement;
     };
-    interface HTMLModusWcMenuElementEventMap {
-        "itemSelect": IMenuItem1;
-    }
     /**
-     * A customizable menu component used to display a list of links vertically or horizontally.
+     * A customizable menu component used to display a list of li elements vertically or horizontally.
+     * The component supports a `<slot>` for injecting custom li elements inside the ul.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcMenuElement extends Components.ModusWcMenu, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLModusWcMenuElementEventMap>(type: K, listener: (this: HTMLModusWcMenuElement, ev: ModusWcMenuCustomEvent<HTMLModusWcMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLModusWcMenuElementEventMap>(type: K, listener: (this: HTMLModusWcMenuElement, ev: ModusWcMenuCustomEvent<HTMLModusWcMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcMenuElement: {
         prototype: HTMLModusWcMenuElement;
         new (): HTMLModusWcMenuElement;
+    };
+    interface HTMLModusWcMenuItemElementEventMap {
+        "itemSelect": { value: string };
+    }
+    /**
+     * A customizable menu item component used to display the item portion of a menu.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcMenuItemElement extends Components.ModusWcMenuItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcMenuItemElementEventMap>(type: K, listener: (this: HTMLModusWcMenuItemElement, ev: ModusWcMenuItemCustomEvent<HTMLModusWcMenuItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcMenuItemElementEventMap>(type: K, listener: (this: HTMLModusWcMenuItemElement, ev: ModusWcMenuItemCustomEvent<HTMLModusWcMenuItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcMenuItemElement: {
+        prototype: HTMLModusWcMenuItemElement;
+        new (): HTMLModusWcMenuItemElement;
     };
     interface HTMLModusWcNumberInputElementEventMap {
         "inputBlur": FocusEvent;
@@ -1922,6 +1955,7 @@ declare global {
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
         "modus-wc-loader": HTMLModusWcLoaderElement;
         "modus-wc-menu": HTMLModusWcMenuElement;
+        "modus-wc-menu-item": HTMLModusWcMenuItemElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
@@ -2037,7 +2071,7 @@ declare namespace LocalJSX {
         /**
           * The items to display in the menu.
          */
-        "items"?: IMenuItem[];
+        "items"?: IAutocompleteItem[];
         /**
           * The minimum number of characters required to render the menu.
          */
@@ -2061,7 +2095,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when a menu item is selected.
          */
-        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<IMenuItem>) => void;
+        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<IAutocompleteItem>) => void;
         /**
           * Text that appears in the form control when it has no value set.
          */
@@ -2210,7 +2244,7 @@ declare namespace LocalJSX {
         "variant"?: 'borderless' | 'filled' | 'outlined';
     }
     /**
-     * A customizable card component based on DaisyUI card.
+     * A customizable card component used to group and display content in a way that is easily readable.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcCard {
@@ -2519,34 +2553,15 @@ declare namespace LocalJSX {
         "variant"?: LoaderVariant;
     }
     /**
-     * A customizable menu component used to display a list of links vertically or horizontally.
+     * A customizable menu component used to display a list of li elements vertically or horizontally.
+     * The component supports a `<slot>` for injecting custom li elements inside the ul.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcMenu {
         /**
-          * The active menu item value, used to show an item as selected.
-         */
-        "activeItemValue"?: string;
-        /**
-          * Indicates that the menu should have a border.
-         */
-        "bordered"?: boolean;
-        /**
           * Custom CSS class to apply to the ul element.
          */
         "customClass"?: string;
-        /**
-          * The items to display in the menu.
-         */
-        "items"?: IMenuItem1[];
-        /**
-          * The menu title, rendered as the first item (disabled).
-         */
-        "menuTitle"?: string;
-        /**
-          * Event emitted when a menu item is selected.
-         */
-        "onItemSelect"?: (event: ModusWcMenuCustomEvent<IMenuItem1>) => void;
         /**
           * The orientation of the menu.
          */
@@ -2555,6 +2570,49 @@ declare namespace LocalJSX {
           * The size of the menu.
          */
         "size"?: ModusSize;
+    }
+    /**
+     * A customizable menu item component used to display the item portion of a menu.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcMenuItem {
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the li element.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the menu item.
+         */
+        "disabled"?: boolean;
+        /**
+          * The text rendered in the menu item.
+         */
+        "label"?: string;
+        /**
+          * Event emitted when a menu item is selected.
+         */
+        "onItemSelect"?: (event: ModusWcMenuItemCustomEvent<{ value: string }>) => void;
+        /**
+          * The selected state of the menu item.
+         */
+        "selected"?: boolean;
+        /**
+          * The size of the menu item.
+         */
+        "size"?: ModusSize;
+        /**
+          * The modus icon name to render on the start of the menu item.
+         */
+        "startIcon"?: string;
+        /**
+          * The text rendered beneath the label.
+         */
+        "subLabel"?: string;
+        /**
+          * The unique identifying value of the menu item.
+         */
+        "value"?: string;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -3372,6 +3430,7 @@ declare namespace LocalJSX {
         "modus-wc-input-label": ModusWcInputLabel;
         "modus-wc-loader": ModusWcLoader;
         "modus-wc-menu": ModusWcMenu;
+        "modus-wc-menu-item": ModusWcMenuItem;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
@@ -3431,7 +3490,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
             /**
-             * A customizable card component based on DaisyUI card.
+             * A customizable card component used to group and display content in a way that is easily readable.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-card": LocalJSX.ModusWcCard & JSXBase.HTMLAttributes<HTMLModusWcCardElement>;
@@ -3474,10 +3533,16 @@ declare module "@stencil/core" {
              */
             "modus-wc-loader": LocalJSX.ModusWcLoader & JSXBase.HTMLAttributes<HTMLModusWcLoaderElement>;
             /**
-             * A customizable menu component used to display a list of links vertically or horizontally.
+             * A customizable menu component used to display a list of li elements vertically or horizontally.
+             * The component supports a `<slot>` for injecting custom li elements inside the ul.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-menu": LocalJSX.ModusWcMenu & JSXBase.HTMLAttributes<HTMLModusWcMenuElement>;
+            /**
+             * A customizable menu item component used to display the item portion of a menu.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-menu-item": LocalJSX.ModusWcMenuItem & JSXBase.HTMLAttributes<HTMLModusWcMenuItemElement>;
             /**
              * A customizable input component used to create number inputs with types.
              * Adheres to WCAG 2.2 standards.
