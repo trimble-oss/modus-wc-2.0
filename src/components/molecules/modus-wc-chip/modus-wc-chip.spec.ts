@@ -35,6 +35,7 @@ describe('modus-wc-chip', () => {
 });
 
 describe('modus-wc-chip event handling', () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let page: any, chip: HTMLElement, button: HTMLButtonElement;
 
   beforeEach(async () => {
@@ -118,7 +119,13 @@ describe('modus-wc-chip event handling', () => {
       'svg.mi-cancel-circle'
     ) as SVGElement;
     expect(closeIcon).not.toBeNull();
-    closeIcon.click();
+    closeIcon.dispatchEvent(
+      new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        composed: true,
+      })
+    );
     await page.waitForChanges();
     expect(closeClickHandler).toHaveBeenCalled();
   });
