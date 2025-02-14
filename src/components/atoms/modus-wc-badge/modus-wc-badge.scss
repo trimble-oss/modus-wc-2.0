@@ -46,7 +46,7 @@
     }
 
     &.modus-wc-badge-success {
-      color: var(--modus-wc-color-success);
+      color: var(--modus-wc-color-green-dark);
     }
 
     &.modus-wc-badge-warning {
@@ -126,6 +126,10 @@
 
     &.modus-wc-badge-high-contrast {
       color: var(--modus-wc-color-gray-light);
+    }
+
+    &.modus-wc-badge-success {
+      color: var(--modus-wc-color-success);
     }
   }
 }
