@@ -152,6 +152,7 @@ export class ModusWcChip {
           {this.imageUrl ? (
             <modus-wc-avatar
               alt={this.el.ariaLabel || 'chip avatar'}
+              aria-label={this.el.ariaLabel || 'chip avatar'}
               class="modus-wc-chip-avatar-container"
               custom-class={`modus-wc-chip-avatar ${this.disabled && 'modus-wc-chip-avatar--disabled'}`}
               img-src={this.imageUrl}
