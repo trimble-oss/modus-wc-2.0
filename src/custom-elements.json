@@ -3631,7 +3631,7 @@
           "name": "SolidCancelIcon",
           "parameters": [
             {
-              "name": "{ onClick }"
+              "name": "{\r\n  onClick,\r\n}"
             }
           ]
         },

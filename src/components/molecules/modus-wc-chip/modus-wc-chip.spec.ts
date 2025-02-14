@@ -11,7 +11,7 @@ describe('modus-wc-chip', () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcChip: alt and aria-label are required for accessibility. Using fallback label.'
+      'ModusWcChip: aria-label is required for accessibility. Using fallback label.'
     );
 
     consoleWarnSpy.mockRestore();
@@ -186,7 +186,7 @@ describe('modus-wc-chip', () => {
     const clickSpy = jest.fn();
     page.root?.addEventListener('chipClick', clickSpy);
 
-    button?.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter' }));
+    button?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
     await page.waitForChanges();
 
     expect(clickSpy).toHaveBeenCalledTimes(1);
@@ -201,7 +201,7 @@ describe('modus-wc-chip', () => {
     const clickSpy = jest.fn();
     page.root?.addEventListener('chipClick', clickSpy);
 
-    button?.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter' }));
+    button?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
     await page.waitForChanges();
 
     expect(clickSpy).not.toHaveBeenCalled();
@@ -216,7 +216,7 @@ describe('modus-wc-chip', () => {
     const clickSpy = jest.fn();
     page.root?.addEventListener('chipClick', clickSpy);
 
-    button?.dispatchEvent(new KeyboardEvent('keydown', { code: 'Space' }));
+    button?.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
     await page.waitForChanges();
 
     expect(clickSpy).toHaveBeenCalledTimes(1);
@@ -231,7 +231,7 @@ describe('modus-wc-chip', () => {
     const clickSpy = jest.fn();
     page.root?.addEventListener('chipClick', clickSpy);
 
-    button?.dispatchEvent(new KeyboardEvent('keydown', { code: 'Space' }));
+    button?.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
     await page.waitForChanges();
 
     expect(clickSpy).not.toHaveBeenCalled();
@@ -246,7 +246,7 @@ describe('modus-wc-chip', () => {
     const clickSpy = jest.fn();
     page.root?.addEventListener('closeClick', clickSpy);
 
-    button?.dispatchEvent(new KeyboardEvent('keyup', { code: 'Escape' }));
+    button?.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }));
     await page.waitForChanges();
 
     expect(clickSpy).toHaveBeenCalledTimes(1);
@@ -261,7 +261,7 @@ describe('modus-wc-chip', () => {
     const clickSpy = jest.fn();
     page.root?.addEventListener('closeClick', clickSpy);
 
-    button?.dispatchEvent(new KeyboardEvent('keyup', { code: 'Escape' }));
+    button?.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }));
     await page.waitForChanges();
 
     expect(clickSpy).not.toHaveBeenCalled();

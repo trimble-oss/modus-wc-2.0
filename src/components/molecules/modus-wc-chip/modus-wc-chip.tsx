@@ -94,6 +94,13 @@ export class ModusWcChip {
   };
 
   componentWillLoad() {
+    if (!this.el.ariaLabel) {
+      console.warn(
+        'ModusWcChip: aria-label is required for accessibility. Using fallback label.'
+      );
+      this.el.ariaLabel = this.label || 'Chip';
+    }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
