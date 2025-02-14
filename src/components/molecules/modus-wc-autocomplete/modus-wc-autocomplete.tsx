@@ -14,6 +14,7 @@ import { Attributes, inheritAriaAttributes } from '../../utils';
 
 export interface IAutocompleteItem {
   label: string;
+  selected?: boolean;
   value: string;
 }
 
@@ -35,9 +36,6 @@ export class ModusWcAutocomplete {
   @Element() el!: HTMLElement;
 
   @State() private menuVisible: boolean = false;
-
-  /** The active menu item value, used to show an item as selected. */
-  @Prop() activeItemValue?: string;
 
   /** Indicates that the autocomplete should have a border. */
   @Prop() bordered?: boolean = true;
@@ -86,6 +84,9 @@ export class ModusWcAutocomplete {
 
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
+
+  /** Event emitted when a selected item chip is removed. */
+  @StencilEvent() chipRemove!: EventEmitter<IAutocompleteItem>;
 
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
@@ -179,7 +180,36 @@ export class ModusWcAutocomplete {
     this.itemSelect.emit(item);
   };
 
+  private handleChipRemove = (item: IAutocompleteItem) => {
+    this.chipRemove.emit(item);
+  };
+
   render() {
+    const getChips = () => {
+      const selectedItems = this.items.filter((item) => item.selected);
+
+      // TODO - use `<modus-wc-chip>` elements once completed
+      return (
+        <Fragment>
+          {selectedItems.map((item) => (
+            <div class="chip">
+              <modus-wc-button
+                aria-label="Remove item button"
+                color="secondary"
+                onClick={() => this.handleChipRemove(item)}
+                shape="circle"
+                size="xs"
+              >
+                <modus-wc-icon decorative={true} name="close" />
+              </modus-wc-button>
+              <div class="label">{item.label}</div>
+            </div>
+          ))}
+        </Fragment>
+      );
+    };
+
+    // TODO - to improve flexibility, allow users to pass their own `<modus-wc-menu-item>` elements
     // TODO - add code coverage once autocomplete is updated
     // istanbul ignore next
     const getMenuItems = () => {
@@ -187,9 +217,9 @@ export class ModusWcAutocomplete {
         <Fragment>
           {this.items.map((item) => (
             <modus-wc-menu-item
-              bordered={true}
               label={item.label}
               onItemSelect={() => this.handleItemSelect(item)}
+              selected={item.selected}
               value={item.value}
             />
           ))}
@@ -199,22 +229,27 @@ export class ModusWcAutocomplete {
 
     return (
       <Host class={this.getClasses()} dir={this.inputDir}>
-        <modus-wc-text-input
-          bordered={this.bordered}
-          disabled={this.disabled}
-          inputId={this.inputId}
-          inputTabIndex={this.inputTabIndex}
-          name={this.name}
-          onInputBlur={this.handleBlur}
-          onInputChange={this.handleChange}
-          onInputFocus={this.handleFocus}
-          placeholder={this.placeholder}
-          readOnly={this.readOnly}
-          required={this.required}
-          size={this.size}
-          value={this.value}
-          {...this.inheritedAttributes}
-        />
+        <div
+          class={`modus-wc-autocomplete-top ${this.bordered ? 'modus-wc-autocomplete-top--bordered' : ''}`}
+        >
+          {getChips()}
+          <modus-wc-text-input
+            bordered={false}
+            disabled={this.disabled}
+            inputId={this.inputId}
+            inputTabIndex={this.inputTabIndex}
+            name={this.name}
+            onInputBlur={this.handleBlur}
+            onInputChange={this.handleChange}
+            onInputFocus={this.handleFocus}
+            placeholder={this.placeholder}
+            readOnly={this.readOnly}
+            required={this.required}
+            size={this.size}
+            value={this.value}
+            {...this.inheritedAttributes}
+          />
+        </div>
         {this.menuVisible && (
           <modus-wc-menu aria-label="Autocomplete menu" size={this.size}>
             {getMenuItems()}

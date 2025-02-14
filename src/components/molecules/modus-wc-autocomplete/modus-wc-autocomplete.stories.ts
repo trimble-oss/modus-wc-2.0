@@ -1,4 +1,5 @@
 import { withActions } from '@storybook/addon-actions/decorator';
+import { useArgs } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -9,17 +10,16 @@ const fruits: IAutocompleteItem[] = [
   { label: 'Apple', value: 'apple' },
   { label: 'Banana', value: 'banana' },
   { label: 'Blueberry', value: 'blueberry' },
-  { label: 'Cherry', value: 'cherry' },
+  { label: 'Cherry', value: 'cherry', selected: true },
   { label: 'Grape', value: 'grape' },
   { label: 'Lemon', value: 'lemon' },
   { label: 'Orange', value: 'orange' },
-  { label: 'Peach', value: 'peach' },
+  { label: 'Peach', value: 'peach', selected: true },
   { label: 'Pear', value: 'pear' },
   { label: 'Strawberry', value: 'strawberry' },
 ];
 
 interface AutocompleteArgs {
-  'active-item-value'?: string;
   'aria-describedby'?: string;
   'aria-label': string;
   bordered?: boolean;
@@ -44,6 +44,7 @@ const meta: Meta<AutocompleteArgs> = {
   component: 'modus-wc-autocomplete',
   args: {
     'aria-label': 'Fruit selection autocomplete',
+    bordered: true,
     'debounce-ms': 300,
     disabled: false,
     items: fruits,
@@ -61,7 +62,13 @@ const meta: Meta<AutocompleteArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['inputBlur', 'inputChange', 'inputFocus', 'itemSelect'],
+      handles: [
+        'chipRemove',
+        'inputBlur',
+        'inputChange',
+        'inputFocus',
+        'itemSelect',
+      ],
     },
   },
 };
@@ -72,6 +79,16 @@ type Story = StoryObj<AutocompleteArgs>;
 
 const Template: Story = {
   render: (args) => {
+    const [, updateArgs] = useArgs();
+
+    const handleChipRemove = (e: CustomEvent<IAutocompleteItem>) => {
+      const fruit = fruits.find((fruit) => fruit.value === e.detail.value);
+      if (fruit) {
+        fruit.selected = false;
+        updateArgs({ items: [...fruits] });
+      }
+    };
+
     const handleInputChange = (e: CustomEvent<Event>) => {
       if (!e.detail?.target) return;
 
@@ -87,8 +104,6 @@ const Template: Story = {
       if (autocomplete) {
         autocomplete.items = filteredFruits;
         autocomplete.value = input.value;
-
-        if (!searchText) autocomplete.activeItemValue = input.value;
       }
     };
 
@@ -96,15 +111,18 @@ const Template: Story = {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
       );
+
       if (autocomplete) {
-        autocomplete.activeItemValue = e.detail.value;
-        autocomplete.value = e.detail.label;
+        const fruit = fruits.find((fruit) => fruit.value === e.detail.value);
+        if (fruit) {
+          fruit.selected = true;
+          updateArgs({ items: [...fruits] });
+        }
       }
     };
 
     return html`
       <modus-wc-autocomplete
-        active-item-value=${ifDefined(args['active-item-value'])}
         aria-describedby=${ifDefined(args['aria-describedby'])}
         aria-label=${args['aria-label']}
         ?bordered=${args.bordered}
@@ -122,6 +140,7 @@ const Template: Story = {
         ?required=${args.required}
         size=${ifDefined(args.size)}
         value=${args.value}
+        @chipRemove=${handleChipRemove}
         @inputChange=${handleInputChange}
         @itemSelect=${handleItemSelect}
       ></modus-wc-autocomplete>

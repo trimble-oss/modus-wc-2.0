@@ -6,6 +6,10 @@
 ul.modus-wc-menu {
   border-radius: var(--modus-wc-border-radius-sm);
   padding: 0;
+
+  &.modus-wc-menu--bordered {
+    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-0);
+  }
 }
 
 [data-theme='modus-classic-light'] ul.modus-wc-menu {
