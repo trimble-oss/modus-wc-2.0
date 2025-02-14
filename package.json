@@ -5,9 +5,12 @@
   "keywords": [],
   "license": "MIT",
   "author": "Trimble Inc.",
+  "bugs": {
+    "url": "https://github.com/Trimble-Construction/modus-wc-2.0/issues/"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Trimble-Construction/poc-modus-wc-2.0.git"
+    "url": "https://github.com/Trimble-Construction/modus-wc-2.0.git"
   },
   "type": "module",
   "main": "dist/index.cjs.js",
@@ -71,7 +74,7 @@
     "jest": "^29.7.0",
     "jest-cli": "^29.7.0",
     "marked": "^14.1.2",
-    "prettier": "^3.3.3",
+    "prettier": "3.5.1",
     "puppeteer": "^23.5.3",
     "stencil-tailwind-plugin": "^1.8.0",
     "tailwindcss": "^3.4.14",
@@ -231,5 +234,11 @@
         "tailwind.config.js"
       ]
     }
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "volta": {
+    "node": "18.20.5"
   }
 }

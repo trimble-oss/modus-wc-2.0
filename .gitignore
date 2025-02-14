@@ -21,7 +21,6 @@ coverage/
 
 # IDE and editor files
 .idea/
-.vscode/
 
 # Logs
 *.log
