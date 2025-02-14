@@ -3624,6 +3624,149 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-chip/modus-wc-chip.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable chip component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcChip",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element."
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "active",
+              "fieldName": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Active state of chip."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the chip is disabled."
+            },
+            {
+              "name": "has-error",
+              "fieldName": "hasError",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the chip has an error."
+            },
+            {
+              "name": "image-url",
+              "fieldName": "imageUrl",
+              "type": {
+                "text": "string"
+              },
+              "description": "The URL of the image to display on left side of the chip."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The label to display in the chip."
+            },
+            {
+              "name": "show-check",
+              "fieldName": "showCheck",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether to show the check icon on left side of the chip."
+            },
+            {
+              "name": "show-close",
+              "fieldName": "showClose",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether to show the close icon on right side of the chip."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the chip."
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "type": {
+                "text": "'filled' | 'outline'"
+              },
+              "description": "The variant of the chip."
+            }
+          ],
+          "tagName": "modus-wc-chip",
+          "events": [
+            {
+              "name": "chipClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the chip is clicked or activated via keyboard."
+            },
+            {
+              "name": "closeClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the close chip icon button is clicked."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcChip",
+          "declaration": {
+            "name": "ModusWcChip",
+            "module": "src/components/molecules/modus-wc-chip/modus-wc-chip.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-chip",
+          "declaration": {
+            "name": "ModusWcChip",
+            "module": "src/components/molecules/modus-wc-chip/modus-wc-chip.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-collapse/modus-wc-collapse.tsx",
       "declarations": [
         {
