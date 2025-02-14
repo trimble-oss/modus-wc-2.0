@@ -2,10 +2,10 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IMenuItem } from '../../atoms/modus-wc-menu/modus-wc-menu';
+import { IAutocompleteItem } from './modus-wc-autocomplete';
 import { ModusSize } from '../../types';
 
-const fruits: IMenuItem[] = [
+const fruits: IAutocompleteItem[] = [
   { label: 'Apple', value: 'apple' },
   { label: 'Banana', value: 'banana' },
   { label: 'Blueberry', value: 'blueberry' },
@@ -29,7 +29,7 @@ interface AutocompleteArgs {
   'input-dir'?: string;
   'input-id'?: string;
   'input-tab-index'?: number;
-  items: IMenuItem[];
+  items: IAutocompleteItem[];
   'min-chars': number;
   name?: string;
   placeholder?: string;
@@ -92,7 +92,7 @@ const Template: Story = {
       }
     };
 
-    const handleItemSelect = (e: CustomEvent<IMenuItem>) => {
+    const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
       );
