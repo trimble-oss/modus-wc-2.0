@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-chip should render with custom props 1`] = `
-<modus-wc-chip aria-label="Custom chip" color="secondary" custom-class="test-class" size="lg" variant="outline">
+<modus-wc-chip active="true" aria-label="Custom chip" custom-class="test-class" size="lg" variant="outline">
   <!---->
-  <button aria-label="chip" tabindex="0" type="button">
-    <span class="modus-wc-badge modus-wc-badge-lg modus-wc-badge-outline modus-wc-badge-secondary test-class">
-    </span>
+  <button aria-label="chip" class="modus-wc-btn modus-wc-btn-lg modus-wc-chip modus-wc-chip--active modus-wc-chip--outline test-class" tabindex="0" type="button">
   </button>
 </modus-wc-chip>
 `;
@@ -13,9 +11,7 @@ exports[`modus-wc-chip should render with custom props 1`] = `
 exports[`modus-wc-chip should render with default props 1`] = `
 <modus-wc-chip aria-label="Default chip">
   <!---->
-  <button aria-label="chip" tabindex="0" type="button">
-    <span class="modus-wc-badge modus-wc-badge-md modus-wc-badge-primary">
-    </span>
+  <button aria-label="chip" class="modus-wc-btn modus-wc-btn-md modus-wc-chip" tabindex="0" type="button">
   </button>
 </modus-wc-chip>
 `;
