@@ -3540,7 +3540,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable card component based on DaisyUI card.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable card component used to group and display content in a way that is easily readable.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcCard",
           "members": [
             {

@@ -269,7 +269,7 @@ export namespace Components {
         "variant": 'borderless' | 'filled' | 'outlined';
     }
     /**
-     * A customizable card component based on DaisyUI card.
+     * A customizable card component used to group and display content in a way that is easily readable.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcCard {
@@ -1476,7 +1476,7 @@ declare global {
         new (): HTMLModusWcButtonElement;
     };
     /**
-     * A customizable card component based on DaisyUI card.
+     * A customizable card component used to group and display content in a way that is easily readable.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcCardElement extends Components.ModusWcCard, HTMLStencilElement {
@@ -2244,7 +2244,7 @@ declare namespace LocalJSX {
         "variant"?: 'borderless' | 'filled' | 'outlined';
     }
     /**
-     * A customizable card component based on DaisyUI card.
+     * A customizable card component used to group and display content in a way that is easily readable.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcCard {
@@ -3490,7 +3490,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
             /**
-             * A customizable card component based on DaisyUI card.
+             * A customizable card component used to group and display content in a way that is easily readable.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-card": LocalJSX.ModusWcCard & JSXBase.HTMLAttributes<HTMLModusWcCardElement>;
