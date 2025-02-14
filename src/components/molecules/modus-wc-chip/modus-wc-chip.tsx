@@ -9,6 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-chip.tailwind';
 import { ModusSize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable chip component.
@@ -21,6 +22,8 @@ import { ModusSize } from '../../types';
   shadow: false,
 })
 export class ModusWcChip {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element. */
   @Element() el!: HTMLElement;
 
@@ -87,12 +90,7 @@ export class ModusWcChip {
   };
 
   componentWillLoad() {
-    if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcChip: alt and aria-label are required for accessibility. Using fallback label.'
-      );
-      this.el.ariaLabel = this.el.ariaLabel || `chip`;
-    }
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -140,7 +138,6 @@ export class ModusWcChip {
       <Host>
         <button
           aria-disabled={this.disabled ? 'true' : undefined}
-          aria-label={this.el.ariaLabel}
           class={this.getClasses()}
           disabled={this.disabled}
           onClick={this.handleChipClick}
@@ -148,6 +145,7 @@ export class ModusWcChip {
           onKeyUp={this.handleKeyup}
           tabIndex={0}
           type="button"
+          {...this.inheritedAttributes}
         >
           {this.imageUrl ? (
             <modus-wc-avatar
