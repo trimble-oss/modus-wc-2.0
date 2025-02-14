@@ -3624,6 +3624,43 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-chip/modus-wc-chip.icons.tsx",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "SolidCancelIcon",
+          "parameters": [
+            {
+              "name": "{ onClick }"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "SolidCheckIcon"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SolidCancelIcon",
+          "declaration": {
+            "name": "SolidCancelIcon",
+            "module": "src/components/molecules/modus-wc-chip/modus-wc-chip.icons.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SolidCheckIcon",
+          "declaration": {
+            "name": "SolidCheckIcon",
+            "module": "src/components/molecules/modus-wc-chip/modus-wc-chip.icons.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-chip/modus-wc-chip.tsx",
       "declarations": [
         {
