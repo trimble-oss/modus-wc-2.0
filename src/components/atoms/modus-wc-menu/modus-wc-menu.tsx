@@ -9,6 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu.tailwind';
 import { ModusSize, Orientation } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 export interface IMenuItem {
   disabled?: boolean;
@@ -27,6 +28,8 @@ export interface IMenuItem {
   shadow: false,
 })
 export class ModusWcMenu {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -61,6 +64,7 @@ export class ModusWcMenu {
       );
     }
     this.el.ariaLabel = 'Menu';
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -110,10 +114,10 @@ export class ModusWcMenu {
     return (
       <Host>
         <ul
-          aria-label={this.el.ariaLabel}
           aria-orientation={this.orientation}
           class={this.getClasses()}
           role={this.getMenuRole()}
+          {...this.inheritedAttributes}
         >
           {this.menuTitle && (
             <li class="modus-wc-menu-title" role="presentation">

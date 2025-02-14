@@ -1,5 +1,6 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-skeleton.tailwind';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
  * A customizable skeleton component used to create skeletons of various sizes and shapes.
@@ -12,6 +13,11 @@ import { convertPropsToClasses } from './modus-wc-skeleton.tailwind';
   shadow: false,
 })
 export class ModusWcSkeleton {
+  private inheritedAttributes: Attributes = {};
+
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
@@ -23,6 +29,10 @@ export class ModusWcSkeleton {
 
   /** The width of the skeleton. */
   @Prop() width: string = '100%';
+
+  componentWillLoad() {
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
 
   private getClasses(): string {
     const classList = ['modus-wc-skeleton'];
@@ -50,6 +60,7 @@ export class ModusWcSkeleton {
           class={this.getClasses()}
           style={this.getStyles()}
           tabindex={-1}
+          {...this.inheritedAttributes}
         ></div>
       </Host>
     );
