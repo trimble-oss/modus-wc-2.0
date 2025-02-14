@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-card renders with default props 1`] = `
+<modus-wc-card>
+  <!---->
+  <article class="modus-wc-card" tabindex="-1">
+    <div class="modus-wc-card-body">
+      <div class="modus-wc-card-title"></div>
+      <div class="modus-wc-card-actions"></div>
+    </div>
+  </article>
+</modus-wc-card>
+`;
+
+exports[`modus-wc-card should render with custom props 1`] = `
+<modus-wc-card custom-class="test-class" padding="compact">
+  <!---->
+  <article aria-hidden="false" class="modus-wc-card modus-wc-card-compact test-class" tabindex="-1">
+    <div class="modus-wc-card-body">
+      <div class="modus-wc-card-title"></div>
+      <div class="modus-wc-card-actions"></div>
+    </div>
+  </article>
+</modus-wc-card>
+`;
