@@ -1,5 +1,6 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-toast.tailwind';
+import { Attributes, inheritAriaAttributes } from '../../utils';
 
 export type ToastPosition =
   | 'top-start'
@@ -25,11 +26,20 @@ export type ToastPosition =
   shadow: false,
 })
 export class ModusWcToast {
+  private inheritedAttributes: Attributes = {};
+
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /** Additional classes for custom styling. */
   @Prop() customClass?: string = '';
 
   /** The position of the toast in the parent container. */
   @Prop() position?: ToastPosition = 'top-end';
+
+  componentWillLoad() {
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
 
   private getClasses = (): string => {
     const classList = ['modus-wc-toast'];
@@ -47,7 +57,7 @@ export class ModusWcToast {
   render() {
     return (
       <Host>
-        <div class={this.getClasses()}>
+        <div class={this.getClasses()} {...this.inheritedAttributes}>
           <slot />
         </div>
       </Host>

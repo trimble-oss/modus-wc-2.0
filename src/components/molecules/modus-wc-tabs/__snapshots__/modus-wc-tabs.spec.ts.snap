@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-tabs should render with custom props 1`] = `
-<modus-wc-tabs aria-label="Custom Tab Group" custom-class="test-class" size="sm" tab-style="boxed">
+<modus-wc-tabs custom-class="test-class" size="sm" tab-style="boxed">
   <!---->
-  <div aria-label="Tab Group" class="modus-wc-tabs modus-wc-tabs-boxed modus-wc-tabs-sm test-class" role="tablist">
+  <div aria-label="Custom Tab Group" class="modus-wc-tabs modus-wc-tabs-boxed modus-wc-tabs-sm test-class" role="tablist">
     <button aria-label="Tab 1 tab" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
       <span>
         Tab 1
@@ -47,7 +47,7 @@ exports[`modus-wc-tabs should render with custom props 1`] = `
 `;
 
 exports[`modus-wc-tabs should render with default props (empty tabs) 1`] = `
-<modus-wc-tabs aria-label="Tab Group">
+<modus-wc-tabs>
   <!---->
   <div aria-label="Tab Group" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist"></div>
   <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0"></div>
@@ -55,7 +55,7 @@ exports[`modus-wc-tabs should render with default props (empty tabs) 1`] = `
 `;
 
 exports[`modus-wc-tabs should render with default props (with tab data) 1`] = `
-<modus-wc-tabs aria-label="Tab Group">
+<modus-wc-tabs>
   <!---->
   <div aria-label="Tab Group" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist">
     <button aria-label="Tab 1 tab" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
@@ -101,7 +101,7 @@ exports[`modus-wc-tabs should render with default props (with tab data) 1`] = `
 `;
 
 exports[`modus-wc-tabs should render with default props (with tab panel) 1`] = `
-<modus-wc-tabs aria-label="Tab Group">
+<modus-wc-tabs>
   <!---->
   <div aria-label="Tab Group" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist">
     <button aria-label="Tab 1 tab" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">

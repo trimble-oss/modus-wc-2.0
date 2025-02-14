@@ -22,6 +22,10 @@ exports[`modus-wc-accordion should render with custom props 1`] = `
 exports[`modus-wc-accordion should render with default props 1`] = `
 <modus-wc-accordion>
   <!---->
-  <div></div>
+  <div>
+    <modus-wc-collapse bordered="" collapse-description="Sports played by a team." collapse-title="Team Sports" custom-class="test-class" expanded="" icon="people_group" iconarialabel="Team icon" size="md"></modus-wc-collapse>
+    <modus-wc-collapse bordered="" collapse-description="Sports played by individuals." collapse-title="Individual Sports" custom-class="test-class" icon="person" iconarialabel="Person icon" size="md"></modus-wc-collapse>
+    <modus-wc-collapse bordered="" collapse-description="Sports played in water." collapse-title="Water Sports" custom-class="test-class" icon="fog" iconarialabel="Water icon" size="md"></modus-wc-collapse>
+  </div>
 </modus-wc-accordion>
 `;

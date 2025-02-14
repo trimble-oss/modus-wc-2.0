@@ -2,14 +2,20 @@ import {
   Component,
   Element,
   EventEmitter,
+  Fragment,
   h,
   Host,
   Prop,
   State,
   Event as StencilEvent,
 } from '@stencil/core';
-import { IMenuItem } from '../../atoms/modus-wc-menu/modus-wc-menu';
 import { ModusSize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
+
+export interface IAutocompleteItem {
+  label: string;
+  value: string;
+}
 
 /**
  * A customizable autocomplete component used to create searchable text inputs.
@@ -23,6 +29,7 @@ import { ModusSize } from '../../types';
 })
 export class ModusWcAutocomplete {
   private debounceTimer?: number;
+  private inheritedAttributes: Attributes = {};
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -31,9 +38,6 @@ export class ModusWcAutocomplete {
 
   /** The active menu item value, used to show an item as selected. */
   @Prop() activeItemValue?: string;
-
-  /** The ID of the element that describes the input. */
-  @Prop() ariaDescribedby?: string;
 
   /** Indicates that the autocomplete should have a border. */
   @Prop() bordered?: boolean = true;
@@ -60,7 +64,7 @@ export class ModusWcAutocomplete {
   @Prop() inputTabIndex?: number;
 
   /** The items to display in the menu. */
-  @Prop() items: IMenuItem[] = [];
+  @Prop() items: IAutocompleteItem[] = [];
 
   /** The minimum number of characters required to render the menu. */
   @Prop() minChars: number = 0;
@@ -96,7 +100,7 @@ export class ModusWcAutocomplete {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   /** Event emitted when a menu item is selected. */
-  @StencilEvent() itemSelect!: EventEmitter<IMenuItem>;
+  @StencilEvent() itemSelect!: EventEmitter<IAutocompleteItem>;
 
   // istanbul ignore next - TODO
   disconnectedCallback() {
@@ -104,6 +108,14 @@ export class ModusWcAutocomplete {
     if (this.debounceTimer) {
       window.clearTimeout(this.debounceTimer);
     }
+  }
+
+  componentWillLoad() {
+    if (!this.el.ariaLabel) {
+      this.el.ariaLabel = 'Autocomplete input';
+    }
+
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -160,21 +172,34 @@ export class ModusWcAutocomplete {
     this.inputFocus.emit(event.detail);
   };
 
-  private handleItemSelect = (event: CustomEvent<IMenuItem>) => {
+  // TODO - add code coverage once autocomplete is updated
+  // istanbul ignore next
+  private handleItemSelect = (item: IAutocompleteItem) => {
     this.menuVisible = false;
-    this.itemSelect.emit(event.detail);
+    this.itemSelect.emit(item);
   };
 
   render() {
+    // TODO - add code coverage once autocomplete is updated
+    // istanbul ignore next
+    const getMenuItems = () => {
+      return (
+        <Fragment>
+          {this.items.map((item) => (
+            <modus-wc-menu-item
+              bordered={true}
+              label={item.label}
+              onItemSelect={() => this.handleItemSelect(item)}
+              value={item.value}
+            />
+          ))}
+        </Fragment>
+      );
+    };
+
     return (
-      <Host
-        aria-label={this.el.ariaLabel}
-        class={this.getClasses()}
-        dir={this.inputDir}
-      >
+      <Host class={this.getClasses()} dir={this.inputDir}>
         <modus-wc-text-input
-          ariaDescribedby={this.ariaDescribedby}
-          aria-label="Autocomplete input"
           bordered={this.bordered}
           disabled={this.disabled}
           inputId={this.inputId}
@@ -188,16 +213,12 @@ export class ModusWcAutocomplete {
           required={this.required}
           size={this.size}
           value={this.value}
+          {...this.inheritedAttributes}
         />
         {this.menuVisible && (
-          <modus-wc-menu
-            activeItemValue={this.activeItemValue}
-            aria-label="Autocomplete menu"
-            bordered={this.bordered}
-            items={this.items}
-            onItemSelect={this.handleItemSelect}
-            size={this.size}
-          ></modus-wc-menu>
+          <modus-wc-menu aria-label="Autocomplete menu" size={this.size}>
+            {getMenuItems()}
+          </modus-wc-menu>
         )}
       </Host>
     );
