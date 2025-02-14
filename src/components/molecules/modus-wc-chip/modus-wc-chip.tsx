@@ -10,7 +10,7 @@ import {
 import { SolidCancelIcon, SolidCheckIcon } from './modus-wc-chip.icons';
 import { convertPropsToClasses } from './modus-wc-chip.tailwind';
 import { ModusSize } from '../../types';
-import { Attributes, inheritAriaAttributes } from '../../utils';
+import { Attributes, inheritAriaAttributes, KEY } from '../../utils';
 
 /**
  * A customizable chip component.
@@ -65,14 +65,17 @@ export class ModusWcChip {
   @Event() closeClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   private handleKeyDown = (event: KeyboardEvent) => {
-    if (!this.disabled && (event.code === 'Enter' || event.code === 'Space')) {
+    if (
+      !this.disabled &&
+      (event.key === KEY.Enter || event.key === KEY.Space)
+    ) {
       event.preventDefault();
       this.chipClick.emit(event);
     }
   };
 
-  private handleKeyup = (event: KeyboardEvent) => {
-    if (!this.disabled && event.code === 'Escape') {
+  private handleKeyUp = (event: KeyboardEvent) => {
+    if (!this.disabled && event.key === KEY.Escape) {
       event.preventDefault();
       this.closeClick.emit(event);
     }
@@ -120,7 +123,7 @@ export class ModusWcChip {
           disabled={this.disabled}
           onClick={this.handleChipClick}
           onKeyDown={this.handleKeyDown}
-          onKeyUp={this.handleKeyup}
+          onKeyUp={this.handleKeyUp}
           tabIndex={0}
           type="button"
           {...this.inheritedAttributes}
