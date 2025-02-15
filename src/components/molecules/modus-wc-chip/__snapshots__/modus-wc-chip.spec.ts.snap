@@ -3,7 +3,7 @@
 exports[`modus-wc-chip should apply disabled class to avatar when chip is disabled 1`] = `
 <modus-wc-chip disabled="true" image-url="test.jpg">
   <!---->
-  <button aria-disabled="true" aria-label="Disabled chip with avatar" class="modus-wc-btn modus-wc-btn-md modus-wc-chip modus-wc-chip--disabled" disabled="" tabindex="0" type="button">
+  <button aria-disabled="" aria-label="Disabled chip with avatar" class="modus-wc-btn modus-wc-btn-md modus-wc-chip modus-wc-chip--disabled" disabled="" tabindex="0" type="button">
     <modus-wc-avatar alt="chip avatar image" aria-label="chip avatar" class="modus-wc-chip-avatar-container" custom-class="modus-wc-chip-avatar modus-wc-chip-avatar--disabled" img-src="test.jpg"></modus-wc-avatar>
   </button>
 </modus-wc-chip>
@@ -80,7 +80,7 @@ exports[`modus-wc-chip should render with default props 1`] = `
 exports[`modus-wc-chip should render with disabled attribute 1`] = `
 <modus-wc-chip disabled="true">
   <!---->
-  <button aria-disabled="true" aria-label="Disabled chip" class="modus-wc-btn modus-wc-btn-md modus-wc-chip modus-wc-chip--disabled" disabled="" tabindex="0" type="button">
+  <button aria-disabled="" aria-label="Disabled chip" class="modus-wc-btn modus-wc-btn-md modus-wc-chip modus-wc-chip--disabled" disabled="" tabindex="0" type="button">
   </button>
 </modus-wc-chip>
 `;
