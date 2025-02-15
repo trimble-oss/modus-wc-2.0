@@ -341,7 +341,7 @@ export namespace Components {
         "value": boolean;
     }
     /**
-     * A customizable chip component.
+     * A customizable chip component used to display information in a compact area.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcChip {
@@ -370,7 +370,7 @@ export namespace Components {
          */
         "label"?: string;
         /**
-          * Whether to show the check icon on left side of the chip.
+          * Whether to show the check icon on left side of the chip. The check icon only renders if the `image-url` is not set.
          */
         "showCheck"?: boolean;
         /**
@@ -1563,7 +1563,7 @@ declare global {
         "closeClick": MouseEvent | KeyboardEvent;
     }
     /**
-     * A customizable chip component.
+     * A customizable chip component used to display information in a compact area.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcChipElement extends Components.ModusWcChip, HTMLStencilElement {
@@ -2401,7 +2401,7 @@ declare namespace LocalJSX {
         "value"?: boolean;
     }
     /**
-     * A customizable chip component.
+     * A customizable chip component used to display information in a compact area.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcChip {
@@ -2438,7 +2438,7 @@ declare namespace LocalJSX {
          */
         "onCloseClick"?: (event: ModusWcChipCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
-          * Whether to show the check icon on left side of the chip.
+          * Whether to show the check icon on left side of the chip. The check icon only renders if the `image-url` is not set.
          */
         "showCheck"?: boolean;
         /**
@@ -3628,7 +3628,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-checkbox": LocalJSX.ModusWcCheckbox & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
             /**
-             * A customizable chip component.
+             * A customizable chip component used to display information in a compact area.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-chip": LocalJSX.ModusWcChip & JSXBase.HTMLAttributes<HTMLModusWcChipElement>;

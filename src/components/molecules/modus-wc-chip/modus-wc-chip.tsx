@@ -13,7 +13,7 @@ import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../../utils';
 
 /**
- * A customizable chip component.
+ * A customizable chip component used to display information in a compact area.
  *
  * Adheres to WCAG 2.2 standards.
  */
@@ -46,7 +46,10 @@ export class ModusWcChip {
   /** The label to display in the chip. */
   @Prop() label?: string = '';
 
-  /** Whether to show the check icon on left side of the chip. */
+  /**
+   * Whether to show the check icon on left side of the chip.
+   * The check icon only renders if the `image-url` is not set.
+   */
   @Prop() showCheck?: boolean = false;
 
   /** Whether to show the close icon on right side of the chip. */

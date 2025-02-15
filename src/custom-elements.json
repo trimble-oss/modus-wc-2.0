@@ -3665,7 +3665,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable chip component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable chip component used to display information in a compact area.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcChip",
           "members": [
             {
@@ -3736,7 +3736,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Whether to show the check icon on left side of the chip."
+              "description": "Whether to show the check icon on left side of the chip.\r\nThe check icon only renders if the `image-url` is not set."
             },
             {
               "name": "show-close",
