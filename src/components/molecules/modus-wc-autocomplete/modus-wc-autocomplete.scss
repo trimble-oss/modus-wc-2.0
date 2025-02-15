@@ -8,6 +8,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    gap: .5rem;
     padding: var(--modus-wc-spacing-sm);
 
     &.modus-wc-autocomplete-top--bordered {
@@ -21,7 +22,6 @@
       align-items: center;
       background-color: var(--modus-wc-color-gray-1);
       border-radius: var(--modus-wc-border-radius-xl);
-      margin-right: var(--modus-wc-spacing-sm);
 
       button {
         i {
