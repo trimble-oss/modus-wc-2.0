@@ -1,5 +1,3 @@
-@import '../../../styles/utility.scss';
-
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
@@ -17,53 +15,53 @@
 
     // Sizes
     &.modus-wc-btn-sm {
-      --rounded-btn: #{$rem-12px};
-      height: $rem-24px;
-      min-height: $rem-24px;
-      padding: $rem-3px $rem-12px;
+      --rounded-btn: #{var(--modus-wc-spacing-md)};
+      height: var(--modus-wc-spacing-xl);
+      min-height: var(--modus-wc-spacing-xl);
+      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-md);
 
       .modus-wc-chip-avatar {
-        width: $rem-16px;
-        height: $rem-16px;
+        width: var(--modus-wc-spacing-lg);
+        height: var(--modus-wc-spacing-lg);
       }
 
       .modus-wc-chip-icon {
-        width: $rem-16px;
-        height: $rem-16px;
+        width: var(--modus-wc-spacing-lg);
+        height: var(--modus-wc-spacing-lg);
       }
     }
 
     &.modus-wc-btn-md {
-      --rounded-btn: #{$rem-16px};
-      height: $rem-32px;
-      min-height: $rem-32px;
-      padding: $rem-7px $rem-12px;
+      --rounded-btn: #{var(--modus-wc-spacing-lg)};
+      height: var(--modus-wc-spacing-2xl);
+      min-height: var(--modus-wc-spacing-2xl);
+      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
 
       .modus-wc-chip-avatar {
-        width: $rem-16px;
-        height: $rem-16px;
+        width: var(--modus-wc-spacing-lg);
+        height: var(--modus-wc-spacing-lg);
       }
 
       .modus-wc-chip-icon {
-        width: $rem-16px;
-        height: $rem-16px;
+        width: var(--modus-wc-spacing-lg);
+        height: var(--modus-wc-spacing-lg);
       }
     }
 
     &.modus-wc-btn-lg {
-      --rounded-btn: #{$rem-24px};
-      height: $rem-48px;
-      min-height: $rem-48px;
-      padding: $rem-12px $rem-16px;
+      --rounded-btn: #{var(--modus-wc-spacing-xl)};
+      height: var(--modus-wc-spacing-3xl);
+      min-height: var(--modus-wc-spacing-3xl);
+      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
 
       .modus-wc-chip-avatar {
-        width: $rem-24px;
-        height: $rem-24px;
+        width: var(--modus-wc-spacing-xl);
+        height: var(--modus-wc-spacing-xl);
       }
 
       .modus-wc-chip-icon {
-        width: $rem-24px;
-        height: $rem-24px;
+        width: var(--modus-wc-spacing-xl);
+        height: var(--modus-wc-spacing-xl);
       }
     }
 
