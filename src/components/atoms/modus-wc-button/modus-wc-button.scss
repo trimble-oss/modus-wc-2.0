@@ -8,33 +8,40 @@
 
   &.modus-wc-btn-borderless {
     --tw-bg-opacity: 0;
+
     border: none;
     box-shadow: none;
 
     &.modus-wc-btn-primary {
       color: var(--modus-wc-color-primary);
     }
+
     &.modus-wc-btn-secondary {
       color: var(--modus-wc-color-accent);
     }
+
     &.modus-wc-btn-neutral {
       color: var(--modus-wc-color-neutral);
     }
+
     &.modus-wc-btn-warning {
       color: var(--modus-wc-color-warning);
     }
+
     &.modus-wc-btn-error {
       color: var(--modus-wc-color-error);
     }
 
     &:hover {
       --tw-bg-opacity: 0.05;
+
       border: none;
       box-shadow: none;
     }
 
     &:active {
       --tw-bg-opacity: 0.1;
+
       border: none;
       box-shadow: none;
     }
