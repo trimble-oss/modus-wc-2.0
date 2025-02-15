@@ -8,12 +8,13 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: .5rem;
+    gap: 0.5rem;
     padding: var(--modus-wc-spacing-sm);
 
     &.modus-wc-autocomplete-top--bordered {
       border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-0);
-      border-radius: var(--modus-wc-border-radius-md) var(--modus-wc-border-radius-md) 0 0;
+      border-radius: var(--modus-wc-border-radius-md)
+        var(--modus-wc-border-radius-md) 0 0;
     }
 
     /** TODO - chip styling is temporary, remove once chip component is implemented */
@@ -25,7 +26,7 @@
 
       button {
         i {
-          font-size: .75rem;
+          font-size: 0.75rem;
         }
       }
 
@@ -49,7 +50,6 @@
   }
 
   ul.modus-wc-menu {
-    box-shadow: 0 0 4px 0 rgba(54, 53, 69, 0.30);
+    box-shadow: 0 0 4px 0 rgba(54, 53, 69, 0.3);
   }
 }
-
