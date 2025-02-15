@@ -118,6 +118,7 @@ export class ModusWcChip {
       variant: this.variant,
     });
 
+    // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
 
