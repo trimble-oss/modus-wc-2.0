@@ -129,7 +129,7 @@ export class ModusWcChip {
     return (
       <Host>
         <button
-          aria-disabled={this.disabled ? 'true' : undefined}
+          aria-disabled={this.disabled}
           class={this.getClasses()}
           disabled={this.disabled}
           onClick={this.handleChipClick}
