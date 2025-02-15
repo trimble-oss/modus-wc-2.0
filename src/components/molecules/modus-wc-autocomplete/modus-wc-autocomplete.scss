@@ -6,6 +6,7 @@
 .modus-wc-autocomplete {
   .modus-wc-autocomplete-top {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     padding: var(--modus-wc-spacing-sm);
 
