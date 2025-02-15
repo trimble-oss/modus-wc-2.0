@@ -180,6 +180,8 @@ export class ModusWcAutocomplete {
     this.itemSelect.emit(item);
   };
 
+  // TODO - add code coverage once chip component is implemented
+  // istanbul ignore next
   private handleChipRemove = (item: IAutocompleteItem) => {
     this.chipRemove.emit(item);
   };
@@ -188,7 +190,9 @@ export class ModusWcAutocomplete {
     const getChips = () => {
       const selectedItems = this.items.filter((item) => item.selected);
 
-      // TODO - use `<modus-wc-chip>` elements once completed
+      // TODO - use chip component
+      // TODO - add code coverage once chip component is implemented
+      // istanbul ignore next
       return (
         <Fragment>
           {selectedItems.map((item) => (

@@ -30,6 +30,7 @@ describe('modus-wc-menu', () => {
       components: [ModusWcMenu],
       html: `<modus-wc-menu
         aria-label="Test menu"
+        bordered="true"
         custom-class="test-class"
         orientation="horizontal"
         size="lg"
