@@ -64,6 +64,46 @@ describe('modus-wc-autocomplete', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should render multi select with selected items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Default autocomplete" multi-select="true"></modus-wc-autocomplete>',
+    });
+
+    // Set items attribute
+    const component = page.rootInstance as ModusWcAutocomplete;
+    items[0].selected = true;
+    items[1].selected = true;
+    component.items = items;
+
+    // Focus input so the menu is visible
+    const input = page.root!.querySelector('input');
+    input?.focus();
+
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render multi select without border', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Default autocomplete" bordered="false" multi-select="true"></modus-wc-autocomplete>',
+    });
+
+    // Set items attribute
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    // Focus input so the menu is visible
+    const input = page.root!.querySelector('input');
+    input?.focus();
+
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
+  });
+
   it('should emit blur event', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],

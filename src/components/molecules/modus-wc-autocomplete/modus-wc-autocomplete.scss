@@ -6,7 +6,7 @@
 .modus-wc-autocomplete {
   .modus-wc-input-bordered {
     border-radius: var(--modus-wc-border-radius-md)
-    var(--modus-wc-border-radius-md) 0 0;
+      var(--modus-wc-border-radius-md) 0 0;
   }
 
   .modus-wc-autocomplete-multi-select {
@@ -44,7 +44,7 @@
 
   .modus-wc-menu {
     border-radius: 0 0 var(--modus-wc-border-radius-md)
-    var(--modus-wc-border-radius-md)
+      var(--modus-wc-border-radius-md);
   }
 }
 

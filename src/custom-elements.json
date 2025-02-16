@@ -3346,7 +3346,7 @@
               "type": {
                 "text": "IAutocompleteItem[]"
               },
-              "description": "It's important to create a new array when updating 'items' to ensure proper component re-rendering."
+              "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render."
             },
             {
               "name": "min-chars",
