@@ -5,16 +5,16 @@
 
 [data-theme='modus-classic-light'] .modus-wc-progress,
 [data-theme='modus-classic-dark'] .modus-wc-progress {
-  /* Override default progress element styling */
-  width: 100%;
-  overflow: hidden;
   -webkit-appearance: none;
   appearance: none;
-
   background-color: transparent;
   border: 1px solid var(--modus-wc-color-gray-6);
   border-radius: var(--modus-wc-border-radius-sm);
   height: var(--modus-wc-line-height-sm);
+  overflow: hidden;
+
+  /* Override default progress element styling */
+  width: 100%;
 
   &::-webkit-progress-value {
     border-radius: var(--modus-wc-border-radius-sm);
@@ -36,6 +36,7 @@
 
   &:indeterminate {
     background-color: transparent;
+
     --progress-color: var(--modus-wc-color-trimble-blue);
   }
 }
@@ -51,6 +52,7 @@
 
   &:indeterminate {
     background-color: transparent;
+
     --progress-color: var(--modus-wc-color-highlight-blue);
   }
 }
