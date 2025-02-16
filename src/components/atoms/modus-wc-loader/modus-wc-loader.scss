@@ -12,9 +12,9 @@
   aspect-ratio: 1 / 1;
   background-color: currentColor;
   display: inline-block;
-  mask-size: 100%;
-  mask-repeat: no-repeat;
   mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 100%;
   pointer-events: none;
 
   // Sizes
