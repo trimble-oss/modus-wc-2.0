@@ -9,9 +9,9 @@ import { ModusWcTextInput } from '../../atoms/modus-wc-text-input/modus-wc-text-
 
 describe('modus-wc-autocomplete', () => {
   const items: IAutocompleteItem[] = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
+    { label: 'Item 1', value: '1', visibleInMenu: true },
+    { label: 'Item 2', value: '2', visibleInMenu: true },
+    { label: 'Item 3', value: '3', visibleInMenu: true },
   ];
 
   it('should render with default props', async () => {

@@ -3346,7 +3346,7 @@
               "type": {
                 "text": "IAutocompleteItem[]"
               },
-              "description": "The items to display in the menu."
+              "description": "It's important to create a new array when updating 'items' to ensure proper component re-rendering."
             },
             {
               "name": "min-chars",
@@ -3355,6 +3355,14 @@
                 "text": "number"
               },
               "description": "The minimum number of characters required to render the menu."
+            },
+            {
+              "name": "multi-select",
+              "fieldName": "multiSelect",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the input allows multiple items to be selected."
             },
             {
               "name": "name",

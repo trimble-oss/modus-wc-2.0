@@ -110,13 +110,17 @@ export namespace Components {
          */
         "inputTabIndex"?: number;
         /**
-          * The items to display in the menu.
+          * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
         "items": IAutocompleteItem[];
         /**
           * The minimum number of characters required to render the menu.
          */
         "minChars": number;
+        /**
+          * Whether the input allows multiple items to be selected.
+         */
+        "multiSelect"?: boolean;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -2066,13 +2070,17 @@ declare namespace LocalJSX {
          */
         "inputTabIndex"?: number;
         /**
-          * The items to display in the menu.
+          * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
         "items"?: IAutocompleteItem[];
         /**
           * The minimum number of characters required to render the menu.
          */
         "minChars"?: number;
+        /**
+          * Whether the input allows multiple items to be selected.
+         */
+        "multiSelect"?: boolean;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */

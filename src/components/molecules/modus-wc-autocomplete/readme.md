@@ -22,8 +22,9 @@ Adheres to WCAG 2.2 standards.
 | `inputDir`      | `input-dir`       | Specifies the text direction of the input content.                                                      | `"" \| "auto" \| "ltr" \| "rtl" \| undefined` | `undefined` |
 | `inputId`       | `input-id`        | The ID of the input element.                                                                            | `string \| undefined`                         | `undefined` |
 | `inputTabIndex` | `input-tab-index` | Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). | `number \| undefined`                         | `undefined` |
-| `items`         | --                | The items to display in the menu.                                                                       | `IAutocompleteItem[]`                         | `[]`        |
+| `items`         | --                | The items to display in the menu. Creating a new array of items will ensure proper component re-render. | `IAutocompleteItem[]`                         | `[]`        |
 | `minChars`      | `min-chars`       | The minimum number of characters required to render the menu.                                           | `number`                                      | `0`         |
+| `multiSelect`   | `multi-select`    | Whether the input allows multiple items to be selected.                                                 | `boolean \| undefined`                        | `false`     |
 | `name`          | `name`            | Name of the form control. Submitted with the form as part of a name/value pair.                         | `string \| undefined`                         | `undefined` |
 | `placeholder`   | `placeholder`     | Text that appears in the form control when it has no value set.                                         | `string \| undefined`                         | `''`        |
 | `readOnly`      | `read-only`       | Whether the value is editable.                                                                          | `boolean \| undefined`                        | `false`     |
@@ -49,8 +50,8 @@ Adheres to WCAG 2.2 standards.
 
 - [modus-wc-button](../../atoms/modus-wc-button)
 - [modus-wc-icon](../../atoms/modus-wc-icon)
-- [modus-wc-menu-item](../../atoms/modus-wc-menu-item)
 - [modus-wc-text-input](../../atoms/modus-wc-text-input)
+- [modus-wc-menu-item](../../atoms/modus-wc-menu-item)
 - [modus-wc-menu](../../atoms/modus-wc-menu)
 
 ### Graph
@@ -58,8 +59,8 @@ Adheres to WCAG 2.2 standards.
 graph TD;
   modus-wc-autocomplete --> modus-wc-button
   modus-wc-autocomplete --> modus-wc-icon
-  modus-wc-autocomplete --> modus-wc-menu-item
   modus-wc-autocomplete --> modus-wc-text-input
+  modus-wc-autocomplete --> modus-wc-menu-item
   modus-wc-autocomplete --> modus-wc-menu
   modus-wc-menu-item --> modus-wc-icon
   style modus-wc-autocomplete fill:#f9f,stroke:#333,stroke-width:4px
