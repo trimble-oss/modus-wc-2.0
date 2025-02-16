@@ -62,31 +62,33 @@
 [data-theme='modus-classic-light'] .modus-wc-badge,
 [data-theme='modus-classic-dark'] .modus-wc-badge {
   border: unset;
+  font-weight: 700;
+
   &:not(.modus-wc-badge-counter) {
     border-radius: 4px;
   }
-  font-weight: 700;
+
   &.modus-wc-badge-success:not(.modus-wc-badge-text) {
     background-color: var(--modus-wc-color-green-dark);
   }
 
   &.modus-wc-badge-sm {
-    border-radius: 2px;
+    border-radius: var( --modus-wc-border-radius-sm);
     font-size: var(--modus-wc-font-size-xs);
-    height: var(--modus-wc-font-size-md);
-    padding: 0 4px;
+    height: 14px;
+    padding: 0 var(--modus-wc-spacing-xs);
   }
 
   &.modus-wc-badge-md {
     font-size: var(--modus-wc-font-size-sm);
-    height: var(--modus-wc-font-size-2xl);
-    padding: 0 7px;
+    height: 20px;
+    padding: 0 var(--modus-wc-spacing-sm);
   }
 
   &.modus-wc-badge-lg {
     font-size: var(--modus-wc-font-size-lg);
     height: 28px;
-    padding: 0 12px;
+    padding: 0 var(--modus-wc-spacing-md);
   }
 }
 
