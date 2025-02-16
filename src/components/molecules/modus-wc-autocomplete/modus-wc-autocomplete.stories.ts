@@ -129,6 +129,12 @@ const Template: Story = {
 
     // prettier-ignore
     return html`
+<style>
+  /* Only for Storybook */
+  div[id^="story--components-forms-autocomplete--default"] {
+    height: 400px;
+  }
+</style>
 <script>
   const handleInputChange = (e) => {
     if (!e.detail?.target) return;
@@ -265,6 +271,12 @@ export const MultiSelect: Story = {
 
     // prettier-ignore
     return html`
+<style>
+  /* Only for Storybook */
+  div#story--components-forms-autocomplete--multi-select-inner {
+    height: 400px;
+  }
+</style>
 <script>
   const handleChipRemove = (e) => {
     const autocomplete = (e.target as HTMLInputElement).closest(
