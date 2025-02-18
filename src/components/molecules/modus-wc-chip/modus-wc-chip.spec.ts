@@ -147,14 +147,14 @@ describe('modus-wc-chip', () => {
     expect(clickSpy).not.toHaveBeenCalled();
   });
 
-  it('should emit closeClick event when close icon is clicked', async () => {
+  it('should emit chipRemove event when close icon is clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
       html: '<modus-wc-chip aria-label="Closable chip" show-close="true"></modus-wc-chip>',
     });
     const closeIcon = page.root?.querySelector('svg.mi-cancel-circle');
     const clickSpy = jest.fn();
-    page.root?.addEventListener('closeClick', clickSpy);
+    page.root?.addEventListener('chipRemove', clickSpy);
 
     closeIcon?.dispatchEvent(new MouseEvent('click'));
     await page.waitForChanges();
@@ -162,14 +162,14 @@ describe('modus-wc-chip', () => {
     expect(clickSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should not emit closeClick event when close icon is clicked and chip is disabled', async () => {
+  it('should not emit chipRemove event when close icon is clicked and chip is disabled', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
       html: '<modus-wc-chip aria-label="Disabled closable chip" show-close="true" disabled="true"></modus-wc-chip>',
     });
     const closeIcon = page.root?.querySelector('svg.mi-cancel-circle');
     const clickSpy = jest.fn();
-    page.root?.addEventListener('closeClick', clickSpy);
+    page.root?.addEventListener('chipRemove', clickSpy);
 
     closeIcon?.dispatchEvent(new MouseEvent('click'));
     await page.waitForChanges();
@@ -237,14 +237,14 @@ describe('modus-wc-chip', () => {
     expect(clickSpy).not.toHaveBeenCalled();
   });
 
-  it('should emit closeClick event on Escape keyup', async () => {
+  it('should emit chipRemove event on Escape keyup', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
       html: '<modus-wc-chip aria-label="Escape key chip" show-close="true"></modus-wc-chip>',
     });
     const button = page.root?.querySelector('button');
     const clickSpy = jest.fn();
-    page.root?.addEventListener('closeClick', clickSpy);
+    page.root?.addEventListener('chipRemove', clickSpy);
 
     button?.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }));
     await page.waitForChanges();
@@ -252,14 +252,14 @@ describe('modus-wc-chip', () => {
     expect(clickSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should not emit closeClick event on Escape keyup when disabled', async () => {
+  it('should not emit chipRemove event on Escape keyup when disabled', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
       html: '<modus-wc-chip aria-label="Disabled Escape key chip" show-close="true" disabled="true"></modus-wc-chip>',
     });
     const button = page.root?.querySelector('button');
     const clickSpy = jest.fn();
-    page.root?.addEventListener('closeClick', clickSpy);
+    page.root?.addEventListener('chipRemove', clickSpy);
 
     button?.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }));
     await page.waitForChanges();
