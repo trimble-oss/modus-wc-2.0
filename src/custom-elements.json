@@ -3773,7 +3773,7 @@
               "description": "Event emitted when the chip is clicked or activated via keyboard."
             },
             {
-              "name": "closeClick",
+              "name": "chipRemove",
               "type": {
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
               },

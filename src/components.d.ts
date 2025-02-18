@@ -1560,7 +1560,7 @@ declare global {
     };
     interface HTMLModusWcChipElementEventMap {
         "chipClick": MouseEvent | KeyboardEvent;
-        "closeClick": MouseEvent | KeyboardEvent;
+        "chipRemove": MouseEvent | KeyboardEvent;
     }
     /**
      * A customizable chip component used to display information in a compact area.
@@ -2436,7 +2436,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the close chip icon button is clicked.
          */
-        "onCloseClick"?: (event: ModusWcChipCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        "onChipRemove"?: (event: ModusWcChipCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
           * Whether to show the check icon on left side of the chip. The check icon only renders if the `image-url` is not set.
          */

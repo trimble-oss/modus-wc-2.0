@@ -65,7 +65,7 @@ export class ModusWcChip {
   @Event() chipClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the close chip icon button is clicked. */
-  @Event() closeClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+  @Event() chipRemove!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   private handleKeyDown = (event: KeyboardEvent) => {
     if (
@@ -80,7 +80,7 @@ export class ModusWcChip {
   private handleKeyUp = (event: KeyboardEvent) => {
     if (!this.disabled && event.key === KEY.Escape) {
       event.preventDefault();
-      this.closeClick.emit(event);
+      this.chipRemove.emit(event);
     }
   };
 
@@ -90,9 +90,9 @@ export class ModusWcChip {
     }
   };
 
-  private handleCloseClick = (event: MouseEvent) => {
+  private handleChipRemove = (event: MouseEvent) => {
     if (!this.disabled) {
-      this.closeClick.emit(event);
+      this.chipRemove.emit(event);
     }
   };
 
@@ -153,7 +153,7 @@ export class ModusWcChip {
           {this.label && <span class="modus-wc-chip-label">{this.label}</span>}
           <slot />
           {this.showClose && (
-            <SolidCancelIcon onClick={this.handleCloseClick} />
+            <SolidCancelIcon onClick={this.handleChipRemove} />
           )}
         </button>
       </Host>

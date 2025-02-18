@@ -32,7 +32,7 @@ Adheres to WCAG 2.2 standards.
 | Event        | Description                                                       | Type                                       |
 | ------------ | ----------------------------------------------------------------- | ------------------------------------------ |
 | `chipClick`  | Event emitted when the chip is clicked or activated via keyboard. | `CustomEvent<KeyboardEvent \| MouseEvent>` |
-| `closeClick` | Event emitted when the close chip icon button is clicked.         | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+| `chipRemove` | Event emitted when the close chip icon button is clicked.         | `CustomEvent<KeyboardEvent \| MouseEvent>` |
 
 
 ## Dependencies

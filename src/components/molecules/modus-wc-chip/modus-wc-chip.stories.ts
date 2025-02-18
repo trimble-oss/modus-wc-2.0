@@ -43,7 +43,7 @@ const meta: Meta<ChipArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['chipClick', 'closeClick'],
+      handles: ['chipClick', 'chipRemove'],
     },
   },
 };
