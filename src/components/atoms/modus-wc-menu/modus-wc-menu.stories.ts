@@ -5,6 +5,7 @@ import { ModusSize, Orientation } from '../../types';
 
 interface MenuArgs {
   'aria-label': string;
+  bordered?: boolean;
   'custom-class'?: string;
   orientation?: Orientation;
   size?: ModusSize;
@@ -39,8 +40,9 @@ export const Template: Story = {
     // prettier-ignore
     return html`
 <modus-wc-menu
-  aria-label="${args['aria-label']}"
-  custom-class="${ifDefined(args['custom-class'])}"
+  aria-label=${args['aria-label']}
+  ?bordered=${args.bordered}
+  custom-class=${ifDefined(args['custom-class'])}
   orientation=${ifDefined(args.orientation)}
   size=${ifDefined(args.size)}
 >
@@ -56,14 +58,14 @@ export const Template: Story = {
     size="lg"
   ></modus-wc-menu-item>
   <modus-wc-menu-item
-    label="With Sub-label"
-    value="3"
-    sub-label="Sub-label"
-  ></modus-wc-menu-item>
-  <modus-wc-menu-item
     label="Bordered"
     value="3"
     bordered="true"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="With Sub-label"
+    value="3"
+    sub-label="Sub-label"
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Selected"

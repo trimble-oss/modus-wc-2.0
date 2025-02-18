@@ -1148,6 +1148,14 @@
           ],
           "attributes": [
             {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the menu should have a border."
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
@@ -3277,14 +3285,6 @@
           ],
           "attributes": [
             {
-              "name": "active-item-value",
-              "fieldName": "activeItemValue",
-              "type": {
-                "text": "string"
-              },
-              "description": "The active menu item value, used to show an item as selected."
-            },
-            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
@@ -3346,7 +3346,7 @@
               "type": {
                 "text": "IAutocompleteItem[]"
               },
-              "description": "The items to display in the menu."
+              "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render."
             },
             {
               "name": "min-chars",
@@ -3355,6 +3355,14 @@
                 "text": "number"
               },
               "description": "The minimum number of characters required to render the menu."
+            },
+            {
+              "name": "multi-select",
+              "fieldName": "multiSelect",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the input allows multiple items to be selected."
             },
             {
               "name": "name",
@@ -3407,6 +3415,14 @@
           ],
           "tagName": "modus-wc-autocomplete",
           "events": [
+            {
+              "kind": "field",
+              "name": "chipRemove",
+              "type": {
+                "text": "EventEmitter<IAutocompleteItem>"
+              },
+              "description": "Event emitted when a selected item chip is removed."
+            },
             {
               "kind": "field",
               "name": "inputBlur",

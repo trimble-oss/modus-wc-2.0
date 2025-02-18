@@ -82,10 +82,6 @@ export namespace Components {
      */
     interface ModusWcAutocomplete {
         /**
-          * The active menu item value, used to show an item as selected.
-         */
-        "activeItemValue"?: string;
-        /**
           * Indicates that the autocomplete should have a border.
          */
         "bordered"?: boolean;
@@ -114,13 +110,17 @@ export namespace Components {
          */
         "inputTabIndex"?: number;
         /**
-          * The items to display in the menu.
+          * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
         "items": IAutocompleteItem[];
         /**
           * The minimum number of characters required to render the menu.
          */
         "minChars": number;
+        /**
+          * Whether the input allows multiple items to be selected.
+         */
+        "multiSelect"?: boolean;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -601,6 +601,10 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcMenu {
+        /**
+          * Indicates that the menu should have a border.
+         */
+        "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the ul element.
          */
@@ -1451,6 +1455,7 @@ declare global {
         new (): HTMLModusWcAlertElement;
     };
     interface HTMLModusWcAutocompleteElementEventMap {
+        "chipRemove": IAutocompleteItem;
         "inputBlur": FocusEvent;
         "inputChange": Event;
         "inputFocus": FocusEvent;
@@ -2110,10 +2115,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcAutocomplete {
         /**
-          * The active menu item value, used to show an item as selected.
-         */
-        "activeItemValue"?: string;
-        /**
           * Indicates that the autocomplete should have a border.
          */
         "bordered"?: boolean;
@@ -2142,7 +2143,7 @@ declare namespace LocalJSX {
          */
         "inputTabIndex"?: number;
         /**
-          * The items to display in the menu.
+          * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
         "items"?: IAutocompleteItem[];
         /**
@@ -2150,9 +2151,17 @@ declare namespace LocalJSX {
          */
         "minChars"?: number;
         /**
+          * Whether the input allows multiple items to be selected.
+         */
+        "multiSelect"?: boolean;
+        /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
+        /**
+          * Event emitted when a selected item chip is removed.
+         */
+        "onChipRemove"?: (event: ModusWcAutocompleteCustomEvent<IAutocompleteItem>) => void;
         /**
           * Event emitted when the input loses focus.
          */
@@ -2685,6 +2694,10 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcMenu {
+        /**
+          * Indicates that the menu should have a border.
+         */
+        "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the ul element.
          */
