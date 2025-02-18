@@ -19,8 +19,6 @@ const items: IAutocompleteItem[] = [
 ];
 
 interface AutocompleteArgs {
-  'aria-describedby'?: string;
-  'aria-label': string;
   bordered?: boolean;
   'custom-class'?: string;
   'debounce-ms'?: number;
@@ -43,7 +41,6 @@ const meta: Meta<AutocompleteArgs> = {
   title: 'Components/Forms/Autocomplete',
   component: 'modus-wc-autocomplete',
   args: {
-    'aria-label': 'Fruit selection autocomplete',
     bordered: true,
     'debounce-ms': 300,
     disabled: false,
@@ -179,8 +176,7 @@ const Template: Story = {
   };
 </script>
 <modus-wc-autocomplete
-  aria-describedby=${ifDefined(args['aria-describedby'])}
-  aria-label=${args['aria-label']}
+  aria-label="Fruit autocomplete"
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
   debounce-ms=${ifDefined(args['debounce-ms'])}
@@ -343,8 +339,7 @@ export const MultiSelect: Story = {
   };
 </script>
 <modus-wc-autocomplete
-  aria-describedby=${ifDefined(args['aria-describedby'])}
-  aria-label=${args['aria-label']}
+  aria-label="Fruit autocomplete"
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
   debounce-ms=${ifDefined(args['debounce-ms'])}
