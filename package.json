@@ -35,6 +35,7 @@
     "lint": "wireit",
     "lint:eslint": "wireit",
     "lint:prettier": "wireit",
+    "lint:stylelint": "stylelint \"src/**/*.scss\" --fix",
     "format": "wireit",
     "start": "wireit",
     "test": "stencil test --spec",
@@ -77,6 +78,9 @@
     "prettier": "3.5.1",
     "puppeteer": "^23.5.3",
     "stencil-tailwind-plugin": "^1.8.0",
+    "stylelint": "16.14.1",
+    "stylelint-config-standard-scss": "14.0.0",
+    "stylelint-order": "6.0.4",
     "tailwindcss": "^3.4.14",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.2",
@@ -237,8 +241,5 @@
   },
   "engines": {
     "node": ">=18"
-  },
-  "volta": {
-    "node": "18.20.5"
   }
 }
