@@ -7,28 +7,20 @@
 
 ## Overview
 
-A customizable menu component used to display a list of links vertically or horizontally.
+A customizable menu component used to display a list of li elements vertically or horizontally.
+
+The component supports a `<slot>` for injecting custom li elements inside the ul.
 
 Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property          | Attribute           | Description                                                   | Type                                      | Default      |
-| ----------------- | ------------------- | ------------------------------------------------------------- | ----------------------------------------- | ------------ |
-| `activeItemValue` | `active-item-value` | The active menu item value, used to show an item as selected. | `string \| undefined`                     | `undefined`  |
-| `bordered`        | `bordered`          | Indicates that the menu should have a border.                 | `boolean \| undefined`                    | `true`       |
-| `customClass`     | `custom-class`      | Custom CSS class to apply to the ul element.                  | `string \| undefined`                     | `''`         |
-| `items`           | --                  | The items to display in the menu.                             | `IMenuItem[]`                             | `[]`         |
-| `menuTitle`       | `menu-title`        | The menu title, rendered as the first item (disabled).        | `string \| undefined`                     | `undefined`  |
-| `orientation`     | `orientation`       | The orientation of the menu.                                  | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
-| `size`            | `size`              | The size of the menu.                                         | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
-
-
-## Events
-
-| Event        | Description                                 | Type                     |
-| ------------ | ------------------------------------------- | ------------------------ |
-| `itemSelect` | Event emitted when a menu item is selected. | `CustomEvent<IMenuItem>` |
+| Property      | Attribute      | Description                                   | Type                                      | Default      |
+| ------------- | -------------- | --------------------------------------------- | ----------------------------------------- | ------------ |
+| `bordered`    | `bordered`     | Indicates that the menu should have a border. | `boolean \| undefined`                    | `undefined`  |
+| `customClass` | `custom-class` | Custom CSS class to apply to the ul element.  | `string \| undefined`                     | `''`         |
+| `orientation` | `orientation`  | The orientation of the menu.                  | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
+| `size`        | `size`         | The size of the menu.                         | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
 
 
 ## Dependencies
