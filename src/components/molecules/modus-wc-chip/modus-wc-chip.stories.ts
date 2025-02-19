@@ -67,9 +67,18 @@ export const Default: Story = { ...Template };
 
 // prettier-ignore
 export const AvatarChip: Story = {
-  render: () => {
+  render: (args) => {
     return html`
-<modus-wc-chip aria-label="Example chip" label="Chip" show-remove="true">
+<modus-wc-chip
+  aria-label=${args['aria-label']}
+  active=${ifDefined(args.active)}
+  disabled=${ifDefined(args.disabled)}
+  has-error=${ifDefined(args['has-error'])}
+  label=${args.label}
+  show-remove=${ifDefined(args['show-remove'])}
+  size=${args.size}
+  variant=${args.variant}
+>
   <modus-wc-avatar
     img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg"
     alt="sonic the hedgehog"
@@ -81,9 +90,18 @@ export const AvatarChip: Story = {
 
 // prettier-ignore
 export const CheckIconChip: Story = {
-  render: () => {
+  render: (args) => {
     return html`
-<modus-wc-chip aria-label="Example chip" label="Chip" show-remove="true">
+<modus-wc-chip
+  aria-label=${args['aria-label']}
+  active=${ifDefined(args.active)}
+  disabled=${ifDefined(args.disabled)}
+  has-error=${ifDefined(args['has-error'])}
+  label=${args.label}
+  show-remove=${ifDefined(args['show-remove'])}
+  size=${args.size}
+  variant=${args.variant}
+>
   <modus-wc-icon name="check" size="xs"></modus-wc-icon>
 </modus-wc-chip>
     `;
@@ -92,22 +110,46 @@ export const CheckIconChip: Story = {
 
 // prettier-ignore
 export const Composable: Story = {
-  render: () => {
+  render: (args) => {
     return html`
-<modus-wc-chip aria-label="Example chip">
-  <modus-wc-icon name="heart" size="xs" ></modus-wc-icon>
+<modus-wc-chip
+  aria-label=${args['aria-label']}
+  active=${ifDefined(args.active)}
+  disabled=${ifDefined(args.disabled)}
+  has-error=${ifDefined(args['has-error'])}
+  show-remove=${ifDefined(args['show-remove'])}
+  size=${args.size}
+  variant=${args.variant}
+>
+  <modus-wc-icon name="heart" size="xs"></modus-wc-icon>
   Chip
 </modus-wc-chip>
 
-<modus-wc-chip aria-label="Example chip" show-remove="true">
-  <modus-wc-icon name="heart" size="xs" ></modus-wc-icon>
+<modus-wc-chip
+  aria-label=${args['aria-label']}
+  active=${ifDefined(args.active)}
+  disabled=${ifDefined(args.disabled)}
+  has-error=${ifDefined(args['has-error'])}
+  show-remove=${ifDefined(args['show-remove'])}
+  size=${args.size}
+  variant=${args.variant}
+>
+  <modus-wc-icon name="heart" size="xs"></modus-wc-icon>
   Chip
 </modus-wc-chip>
 
-<modus-wc-chip aria-label="Example chip">
-  <modus-wc-icon name="heart" size="xs" ></modus-wc-icon>
+<modus-wc-chip
+  aria-label=${args['aria-label']}
+  active=${ifDefined(args.active)}
+  disabled=${ifDefined(args.disabled)}
+  has-error=${ifDefined(args['has-error'])}
+  show-remove=${ifDefined(args['show-remove'])}
+  size=${args.size}
+  variant=${args.variant}
+>
+  <modus-wc-icon name="heart" size="xs"></modus-wc-icon>
   Chip
-  <modus-wc-icon name="heart" size="xs" ></modus-wc-icon>
+  <modus-wc-icon name="heart" size="xs"></modus-wc-icon>
 </modus-wc-chip>
     `;
   },

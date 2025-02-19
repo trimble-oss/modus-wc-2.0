@@ -10,7 +10,7 @@ export const SolidCancelIcon: FunctionalComponent<SolidCancelIconProps> = ({
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="currentColor"
-    class="mi-solid mi-cancel-circle modus-wc-chip-icon"
+    class="mi-solid mi-cancel-circle modus-wc-chip-remove-icon"
     onClick={onClick}
     viewBox="0 0 24 24"
   >
