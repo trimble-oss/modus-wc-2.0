@@ -3453,7 +3453,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable card component based on DaisyUI card.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable card component used to group and display content in a way that is easily readable.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcCard",
           "members": [
             {
@@ -3471,12 +3471,20 @@
           ],
           "attributes": [
             {
+              "name": "background-figure",
+              "fieldName": "backgroundFigure",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Makes any \\<figure> in the 'header' slot cover the background"
+            },
+            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
                 "text": "boolean"
               },
-              "description": "Adds a border to the card"
+              "description": "Adds a hard border to the card"
             },
             {
               "name": "custom-class",
@@ -3487,20 +3495,12 @@
               "description": "Custom CSS class to apply"
             },
             {
-              "name": "image-full",
-              "fieldName": "imageFull",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Makes any \\<figure> in the 'figure' slot cover the background"
-            },
-            {
               "name": "layout",
               "fieldName": "layout",
               "type": {
-                "text": "'stacked' | 'side'"
+                "text": "'vertical' | 'horizontal'"
               },
-              "description": "Display mode - stacked or side image"
+              "description": "Determines how the card is laid out"
             },
             {
               "name": "padding",
@@ -3508,7 +3508,7 @@
               "type": {
                 "text": "'normal' | 'compact'"
               },
-              "description": "Card padding variant - normal or compact"
+              "description": "Determines if the interior padding is compact or not"
             }
           ],
           "tagName": "modus-wc-card",
