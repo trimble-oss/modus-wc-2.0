@@ -13,8 +13,17 @@ import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
 export interface IAutocompleteItem {
+  /** The display text shown for the autocomplete item */
   label: string;
+
+  /** Whether the item is currently selected */
+  selected?: boolean;
+
+  /** The unique value identifier for the item */
   value: string;
+
+  /** Whether the item should be shown in the dropdown menu */
+  visibleInMenu: boolean;
 }
 
 /**
@@ -35,9 +44,6 @@ export class ModusWcAutocomplete {
   @Element() el!: HTMLElement;
 
   @State() private menuVisible: boolean = false;
-
-  /** The active menu item value, used to show an item as selected. */
-  @Prop() activeItemValue?: string;
 
   /** Indicates that the autocomplete should have a border. */
   @Prop() bordered?: boolean = true;
@@ -63,11 +69,17 @@ export class ModusWcAutocomplete {
   /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
 
-  /** The items to display in the menu. */
+  /**
+   * The items to display in the menu.
+   * Creating a new array of items will ensure proper component re-render.
+   **/
   @Prop() items: IAutocompleteItem[] = [];
 
   /** The minimum number of characters required to render the menu. */
   @Prop() minChars: number = 0;
+
+  /** Whether the input allows multiple items to be selected.  */
+  @Prop() multiSelect?: boolean = false;
 
   /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string;
@@ -86,6 +98,9 @@ export class ModusWcAutocomplete {
 
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
+
+  /** Event emitted when a selected item chip is removed. */
+  @StencilEvent() chipRemove!: EventEmitter<IAutocompleteItem>;
 
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
@@ -179,17 +194,71 @@ export class ModusWcAutocomplete {
     this.itemSelect.emit(item);
   };
 
+  // TODO - add code coverage once chip component is implemented
+  // istanbul ignore next
+  private handleChipRemove = (item: IAutocompleteItem) => {
+    this.chipRemove.emit(item);
+  };
+
   render() {
+    const getChips = () => {
+      const selectedItems = this.items.filter((item) => item.selected);
+
+      // TODO - use chip component
+      // TODO - add code coverage once chip component is implemented
+      // istanbul ignore next
+      return (
+        <Fragment>
+          {selectedItems?.map((item) => (
+            <div class="chip">
+              <modus-wc-button
+                aria-label="Remove item button"
+                color="secondary"
+                onClick={() => this.handleChipRemove(item)}
+                shape="circle"
+                size="xs"
+              >
+                <modus-wc-icon decorative={true} name="close" />
+              </modus-wc-button>
+              <div class="label">{item.label}</div>
+            </div>
+          ))}
+        </Fragment>
+      );
+    };
+
+    const getInput = () => (
+      <modus-wc-text-input
+        bordered={this.bordered && !this.multiSelect}
+        disabled={this.disabled}
+        inputId={this.inputId}
+        inputTabIndex={this.inputTabIndex}
+        name={this.name}
+        onInputBlur={this.handleBlur}
+        onInputChange={this.handleChange}
+        onInputFocus={this.handleFocus}
+        placeholder={this.placeholder}
+        readOnly={this.readOnly}
+        required={this.required}
+        size={this.size}
+        value={this.value}
+        {...this.inheritedAttributes}
+      />
+    );
+
+    // TODO - to improve flexibility, allow users to pass their own `<modus-wc-menu-item>` elements
     // TODO - add code coverage once autocomplete is updated
     // istanbul ignore next
     const getMenuItems = () => {
+      const menuItems = this.items.filter((item) => item.visibleInMenu);
+
       return (
         <Fragment>
-          {this.items.map((item) => (
+          {menuItems.map((item) => (
             <modus-wc-menu-item
-              bordered={true}
               label={item.label}
               onItemSelect={() => this.handleItemSelect(item)}
+              selected={item.selected}
               value={item.value}
             />
           ))}
@@ -199,24 +268,22 @@ export class ModusWcAutocomplete {
 
     return (
       <Host class={this.getClasses()} dir={this.inputDir}>
-        <modus-wc-text-input
-          bordered={this.bordered}
-          disabled={this.disabled}
-          inputId={this.inputId}
-          inputTabIndex={this.inputTabIndex}
-          name={this.name}
-          onInputBlur={this.handleBlur}
-          onInputChange={this.handleChange}
-          onInputFocus={this.handleFocus}
-          placeholder={this.placeholder}
-          readOnly={this.readOnly}
-          required={this.required}
-          size={this.size}
-          value={this.value}
-          {...this.inheritedAttributes}
-        />
+        {this.multiSelect ? (
+          <div
+            class={`modus-wc-autocomplete-multi-select ${this.bordered ? 'modus-wc-autocomplete-multi-select--bordered' : ''}`}
+          >
+            {getChips()}
+            {getInput()}
+          </div>
+        ) : (
+          <Fragment>{getInput()}</Fragment>
+        )}
         {this.menuVisible && (
-          <modus-wc-menu aria-label="Autocomplete menu" size={this.size}>
+          <modus-wc-menu
+            aria-label="Autocomplete menu"
+            bordered={this.bordered}
+            size={this.size}
+          >
             {getMenuItems()}
           </modus-wc-menu>
         )}

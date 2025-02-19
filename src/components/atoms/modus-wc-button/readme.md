@@ -32,6 +32,19 @@ Adheres to WCAG 2.2 standards.
 | `buttonClick` | Event emitted when the button is clicked or activated via keyboard. | `CustomEvent<KeyboardEvent \| MouseEvent>` |
 
 
+## Dependencies
+
+### Used by
+
+ - [modus-wc-autocomplete](../../molecules/modus-wc-autocomplete)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-autocomplete --> modus-wc-button
+  style modus-wc-button fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
