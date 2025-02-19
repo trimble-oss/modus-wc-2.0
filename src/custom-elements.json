@@ -3650,10 +3650,6 @@
               "name": "{\r\n  onClick,\r\n}"
             }
           ]
-        },
-        {
-          "kind": "function",
-          "name": "SolidCheckIcon"
         }
       ],
       "exports": [
@@ -3662,14 +3658,6 @@
           "name": "SolidCancelIcon",
           "declaration": {
             "name": "SolidCancelIcon",
-            "module": "src/components/molecules/modus-wc-chip/modus-wc-chip.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SolidCheckIcon",
-          "declaration": {
-            "name": "SolidCheckIcon",
             "module": "src/components/molecules/modus-wc-chip/modus-wc-chip.icons.tsx"
           }
         }
@@ -3731,14 +3719,6 @@
               "description": "Whether the chip has an error."
             },
             {
-              "name": "image-url",
-              "fieldName": "imageUrl",
-              "type": {
-                "text": "string"
-              },
-              "description": "The URL of the image to display on left side of the chip."
-            },
-            {
               "name": "label",
               "fieldName": "label",
               "type": {
@@ -3747,16 +3727,8 @@
               "description": "The label to display in the chip."
             },
             {
-              "name": "show-check",
-              "fieldName": "showCheck",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether to show the check icon on left side of the chip.\r\nThe check icon only renders if the `image-url` is not set."
-            },
-            {
-              "name": "show-close",
-              "fieldName": "showClose",
+              "name": "show-remove",
+              "fieldName": "showRemove",
               "type": {
                 "text": "boolean"
               },

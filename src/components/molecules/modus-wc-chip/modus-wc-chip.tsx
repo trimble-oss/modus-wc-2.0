@@ -7,7 +7,7 @@ import {
   Host,
   Prop,
 } from '@stencil/core';
-import { SolidCancelIcon, SolidCheckIcon } from './modus-wc-chip.icons';
+import { SolidCancelIcon } from './modus-wc-chip.icons';
 import { convertPropsToClasses } from './modus-wc-chip.tailwind';
 import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../../utils';
@@ -40,20 +40,11 @@ export class ModusWcChip {
   /** Whether the chip has an error. */
   @Prop() hasError?: boolean = false;
 
-  /** The URL of the image to display on left side of the chip. */
-  @Prop() imageUrl?: string = '';
-
   /** The label to display in the chip. */
   @Prop() label?: string = '';
 
-  /**
-   * Whether to show the check icon on left side of the chip.
-   * The check icon only renders if the `image-url` is not set.
-   */
-  @Prop() showCheck?: boolean = false;
-
   /** Whether to show the close icon on right side of the chip. */
-  @Prop() showClose?: boolean = false;
+  @Prop() showRemove?: boolean = false;
 
   /** The size of the chip. */
   @Prop() size?: ModusSize = 'md';
@@ -139,20 +130,9 @@ export class ModusWcChip {
           type="button"
           {...this.inheritedAttributes}
         >
-          {this.imageUrl ? (
-            <modus-wc-avatar
-              alt="chip avatar image"
-              aria-label="chip avatar"
-              class="modus-wc-chip-avatar-container"
-              custom-class={`modus-wc-chip-avatar ${this.disabled && 'modus-wc-chip-avatar--disabled'}`}
-              img-src={this.imageUrl}
-            ></modus-wc-avatar>
-          ) : this.showCheck ? (
-            <SolidCheckIcon />
-          ) : null}
-          {this.label && <span class="modus-wc-chip-label">{this.label}</span>}
           <slot />
-          {this.showClose && (
+          {this.label && <span class="modus-wc-chip-label">{this.label}</span>}
+          {this.showRemove && (
             <SolidCancelIcon onClick={this.handleChipRemove} />
           )}
         </button>

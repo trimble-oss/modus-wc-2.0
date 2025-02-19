@@ -362,21 +362,13 @@ export namespace Components {
          */
         "hasError"?: boolean;
         /**
-          * The URL of the image to display on left side of the chip.
-         */
-        "imageUrl"?: string;
-        /**
           * The label to display in the chip.
          */
         "label"?: string;
         /**
-          * Whether to show the check icon on left side of the chip. The check icon only renders if the `image-url` is not set.
-         */
-        "showCheck"?: boolean;
-        /**
           * Whether to show the close icon on right side of the chip.
          */
-        "showClose"?: boolean;
+        "showRemove"?: boolean;
         /**
           * The size of the chip.
          */
@@ -2431,10 +2423,6 @@ declare namespace LocalJSX {
          */
         "hasError"?: boolean;
         /**
-          * The URL of the image to display on left side of the chip.
-         */
-        "imageUrl"?: string;
-        /**
           * The label to display in the chip.
          */
         "label"?: string;
@@ -2447,13 +2435,9 @@ declare namespace LocalJSX {
          */
         "onChipRemove"?: (event: ModusWcChipCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
-          * Whether to show the check icon on left side of the chip. The check icon only renders if the `image-url` is not set.
-         */
-        "showCheck"?: boolean;
-        /**
           * Whether to show the close icon on right side of the chip.
          */
-        "showClose"?: boolean;
+        "showRemove"?: boolean;
         /**
           * The size of the chip.
          */

@@ -10,10 +10,8 @@ interface ChipArgs {
   'custom-class'?: string;
   disabled?: boolean;
   'has-error'?: boolean;
-  'image-url'?: string;
   label: string;
-  'show-check'?: boolean;
-  'show-close'?: boolean;
+  'show-remove'?: boolean;
   size: ModusSize;
   variant: 'filled' | 'outline';
 }
@@ -24,9 +22,7 @@ const meta: Meta<ChipArgs> = {
   args: {
     'aria-label': 'Example chip',
     label: 'Chip',
-    'image-url':
-      'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',
-    'show-close': true,
+    'show-remove': true,
     size: 'md',
     variant: 'filled',
   },
@@ -59,10 +55,8 @@ const Template: Story = {
       active=${ifDefined(args.active)}
       disabled=${ifDefined(args.disabled)}
       has-error=${ifDefined(args['has-error'])}
-      image-url=${ifDefined(args['image-url'])}
       label=${args.label}
-      show-check=${ifDefined(args['show-check'])}
-      show-close=${ifDefined(args['show-close'])}
+      show-remove=${ifDefined(args['show-remove'])}
       size=${args.size}
       variant=${args.variant}
     />`;
@@ -80,7 +74,7 @@ export const Composable: Story = {
   Chip
 </modus-wc-chip>
 
-<modus-wc-chip aria-label="Example chip" show-close="true">
+<modus-wc-chip aria-label="Example chip" show-remove="true">
   <modus-wc-icon name="heart" size="xs" ></modus-wc-icon>
   Chip
 </modus-wc-chip>
