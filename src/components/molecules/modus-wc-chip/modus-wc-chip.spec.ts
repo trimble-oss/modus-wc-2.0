@@ -41,29 +41,6 @@ describe('modus-wc-chip', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should render with image avatar when imageUrl is provided', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcChip],
-      html: '<modus-wc-chip aria-label="Chip with avatar" image-url="test.jpg"></modus-wc-chip>',
-    });
-
-    expect(page.root).toMatchSnapshot();
-
-    const avatar = page.root!.querySelector('modus-wc-avatar');
-    expect(avatar).toBeTruthy();
-    expect(avatar!.getAttribute('img-src')).toBe('test.jpg');
-  });
-
-  it('should render check icon when no imageUrl is provided and showCheck is true', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcChip],
-      html: '<modus-wc-chip aria-label="Check chip" show-check="true"></modus-wc-chip>',
-    });
-    expect(page.root).toMatchSnapshot();
-    const checkIcon = page.root!.querySelector('svg.mi-check');
-    expect(checkIcon).toBeTruthy();
-  });
-
   it('should render label when provided', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
@@ -75,38 +52,14 @@ describe('modus-wc-chip', () => {
     expect(label!.textContent).toBe('Test Label');
   });
 
-  it('should not render image or check icon when imgUrl not provided and showCheck is false', async () => {
+  it('should render remove icon when showRemove is true', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
-      html: '<modus-wc-chip aria-label="No avatar chip"></modus-wc-chip>',
-    });
-    expect(page.root).toMatchSnapshot();
-    const avatar = page.root!.querySelector('modus-wc-avatar');
-    expect(avatar).toBeFalsy();
-    const checkIcon = page.root!.querySelector('svg.mi-check');
-    expect(checkIcon).toBeFalsy();
-  });
-
-  it('should render close icon when showClose is true', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcChip],
-      html: '<modus-wc-chip aria-label="Close chip" show-close="true"></modus-wc-chip>',
+      html: '<modus-wc-chip aria-label="Close chip" show-remove="true"></modus-wc-chip>',
     });
     expect(page.root).toMatchSnapshot();
     const closeIcon = page.root!.querySelector('svg.mi-cancel-circle');
     expect(closeIcon).toBeTruthy();
-  });
-
-  it('should apply disabled class to avatar when chip is disabled', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcChip],
-      html: '<modus-wc-chip aria-label="Disabled chip with avatar" image-url="test.jpg" disabled="true"></modus-wc-chip>',
-    });
-    expect(page.root).toMatchSnapshot();
-    const avatar = page.root!.querySelector('modus-wc-avatar');
-    expect(avatar!.getAttribute('custom-class')).toContain(
-      'modus-wc-chip-avatar--disabled'
-    );
   });
 
   it('should render with disabled attribute', async () => {
@@ -150,7 +103,7 @@ describe('modus-wc-chip', () => {
   it('should emit chipRemove event when close icon is clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
-      html: '<modus-wc-chip aria-label="Closable chip" show-close="true"></modus-wc-chip>',
+      html: '<modus-wc-chip aria-label="Closable chip" show-remove="true"></modus-wc-chip>',
     });
     const closeIcon = page.root?.querySelector('svg.mi-cancel-circle');
     const clickSpy = jest.fn();
@@ -165,7 +118,7 @@ describe('modus-wc-chip', () => {
   it('should not emit chipRemove event when close icon is clicked and chip is disabled', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
-      html: '<modus-wc-chip aria-label="Disabled closable chip" show-close="true" disabled="true"></modus-wc-chip>',
+      html: '<modus-wc-chip aria-label="Disabled closable chip" show-remove="true" disabled="true"></modus-wc-chip>',
     });
     const closeIcon = page.root?.querySelector('svg.mi-cancel-circle');
     const clickSpy = jest.fn();
@@ -240,7 +193,7 @@ describe('modus-wc-chip', () => {
   it('should emit chipRemove event on Escape keyup', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
-      html: '<modus-wc-chip aria-label="Escape key chip" show-close="true"></modus-wc-chip>',
+      html: '<modus-wc-chip aria-label="Escape key chip" show-remove="true"></modus-wc-chip>',
     });
     const button = page.root?.querySelector('button');
     const clickSpy = jest.fn();
@@ -255,7 +208,7 @@ describe('modus-wc-chip', () => {
   it('should not emit chipRemove event on Escape keyup when disabled', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
-      html: '<modus-wc-chip aria-label="Disabled Escape key chip" show-close="true" disabled="true"></modus-wc-chip>',
+      html: '<modus-wc-chip aria-label="Disabled Escape key chip" show-remove="true" disabled="true"></modus-wc-chip>',
     });
     const button = page.root?.querySelector('button');
     const clickSpy = jest.fn();
