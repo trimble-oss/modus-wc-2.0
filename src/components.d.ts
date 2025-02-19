@@ -274,7 +274,11 @@ export namespace Components {
      */
     interface ModusWcCard {
         /**
-          * Adds a border to the card
+          * Makes any \<figure> in the 'header' slot cover the background
+         */
+        "backgroundFigure"?: boolean;
+        /**
+          * Adds a hard border to the card
          */
         "bordered"?: boolean;
         /**
@@ -282,15 +286,11 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
-          * Makes any \<figure> in the 'figure' slot cover the background
+          * Determines how the card is laid out
          */
-        "imageFull"?: boolean;
+        "layout"?: 'vertical' | 'horizontal';
         /**
-          * Display mode - stacked or side image
-         */
-        "layout"?: 'stacked' | 'side';
-        /**
-          * Card padding variant - normal or compact
+          * Determines if the interior padding is compact or not
          */
         "padding"?: 'normal' | 'compact';
     }
@@ -2258,7 +2258,11 @@ declare namespace LocalJSX {
      */
     interface ModusWcCard {
         /**
-          * Adds a border to the card
+          * Makes any \<figure> in the 'header' slot cover the background
+         */
+        "backgroundFigure"?: boolean;
+        /**
+          * Adds a hard border to the card
          */
         "bordered"?: boolean;
         /**
@@ -2266,15 +2270,11 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * Makes any \<figure> in the 'figure' slot cover the background
+          * Determines how the card is laid out
          */
-        "imageFull"?: boolean;
+        "layout"?: 'vertical' | 'horizontal';
         /**
-          * Display mode - stacked or side image
-         */
-        "layout"?: 'stacked' | 'side';
-        /**
-          * Card padding variant - normal or compact
+          * Determines if the interior padding is compact or not
          */
         "padding"?: 'normal' | 'compact';
     }
