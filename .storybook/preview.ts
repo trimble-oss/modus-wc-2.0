@@ -83,7 +83,7 @@ const preview: Preview = {
         'modus-modern-light': 'modus-modern-light',
         'modus-modern-dark': 'modus-modern-dark',
       },
-      defaultTheme: 'modus-modern-light',
+      defaultTheme: 'modus-classic-light',
       attributeName: 'data-theme',
     }),
   ],
