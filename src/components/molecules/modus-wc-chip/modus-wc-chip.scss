@@ -1,0 +1,237 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+// Default Styles
+.modus-wc-chip {
+  &.modus-wc-btn {
+    $modus-wc-chip-active-filled-bg: color-mix(
+      in srgb,
+      var(--modus-wc-color-blue-light) 30%,
+      transparent
+    );
+
+    background-color: var(--modus-wc-color-gray-1);
+    border-color: transparent;
+    box-sizing: border-box;
+    color: var(--modus-wc-color-gray-9);
+
+    // Sizes
+    &.modus-wc-btn-sm {
+      --rounded-btn: #{var(--modus-wc-border-radius-xl)};
+      height: var(--modus-wc-spacing-xl);
+      min-height: var(--modus-wc-spacing-xl);
+      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-md);
+
+      .modus-wc-avatar {
+        width: var(--modus-wc-spacing-lg);
+        height: var(--modus-wc-spacing-lg);
+      }
+
+      .modus-wc-chip-remove-icon {
+        width: var(--modus-wc-spacing-lg);
+        height: var(--modus-wc-spacing-lg);
+      }
+    }
+
+    &.modus-wc-btn-md {
+      --rounded-btn: #{var(--modus-wc-border-radius-2xl)};
+      height: var(--modus-wc-spacing-2xl);
+      min-height: var(--modus-wc-spacing-2xl);
+      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
+
+      .modus-wc-avatar {
+        width: var(--modus-wc-spacing-lg);
+        height: var(--modus-wc-spacing-lg);
+      }
+
+      .modus-wc-chip-remove-icon {
+        width: var(--modus-wc-spacing-lg);
+        height: var(--modus-wc-spacing-lg);
+      }
+    }
+
+    &.modus-wc-btn-lg {
+      --rounded-btn: #{var(--modus-wc-border-radius-3xl)};
+      height: var(--modus-wc-spacing-3xl);
+      min-height: var(--modus-wc-spacing-3xl);
+      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+
+      .modus-wc-avatar {
+        width: var(--modus-wc-spacing-xl);
+        height: var(--modus-wc-spacing-xl);
+      }
+
+      .modus-wc-chip-remove-icon {
+        width: var(--modus-wc-spacing-xl);
+        height: var(--modus-wc-spacing-xl);
+      }
+    }
+
+    // States
+    &.modus-wc-chip--active {
+      background-color: $modus-wc-chip-active-filled-bg;
+      border-color: transparent;
+      color: var(--modus-wc-color-trimble-gray);
+
+      &.modus-wc-chip--outline {
+        background-color: var(--modus-wc-color-blue-pale);
+        border-color: var(--modus-wc-color-blue-light);
+        color: var(--modus-wc-color-blue-light);
+
+        .modus-wc-chip-label {
+          color: var(--modus-wc-color-gray-9);
+        }
+      }
+    }
+
+    &.modus-wc-chip--error {
+      background-color: var(--modus-wc-color-red-pale);
+      border-color: transparent;
+      color: var(--modus-wc-color-red-dark);
+
+      &.modus-wc-chip--outline {
+        background-color: var(--modus-wc-color-red-pale);
+        border-color: var(--modus-wc-color-red-dark);
+      }
+    }
+
+    &.modus-wc-chip--outline {
+      background-color: transparent;
+      border-color: var(--modus-wc-color-gray-4);
+    }
+
+    &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {
+      background-color: var(--modus-wc-color-gray-0);
+      border-color: transparent;
+      color: var(--modus-wc-color-gray-9);
+
+      &.modus-wc-chip--outline {
+        background-color: var(--modus-wc-color-gray-0);
+        border-color: var(--modus-wc-color-gray-4);
+        color: var(--modus-wc-color-gray-7);
+      }
+    }
+
+    &:active:not(.modus-wc-chip--error):not(.modus-wc-chip--active) {
+      background-color: $modus-wc-chip-active-filled-bg;
+      border-color: transparent;
+      color: var(--modus-wc-color-trimble-gray);
+
+      &.modus-wc-chip--outline {
+        background-color: var(--modus-wc-color-blue-pale);
+        border-color: var(--modus-wc-color-blue-light);
+        color: var(--modus-wc-color-blue-light);
+
+        .modus-wc-chip-label {
+          color: var(--modus-wc-color-gray-9);
+        }
+      }
+    }
+
+    &:focus {
+      outline-offset: 0;
+    }
+  }
+
+  &.modus-wc-chip--disabled {
+    opacity: 0.3;
+
+    .modus-wc-avatar {
+      filter: grayscale(100%);
+    }
+  }
+
+  .modus-wc-avatar {
+    display: flex;
+  }
+}
+
+// Dark Theme Styles
+[data-theme='modus-modern-dark'] .modus-wc-chip,
+[data-theme='modus-classic-dark'] .modus-wc-chip {
+  &.modus-wc-btn {
+    $modus-wc-chip-outline-hover-bg: color-mix(
+      in srgb,
+      var(--modus-wc-color-gray-1) 12%,
+      transparent
+    );
+
+    $modus-wc-chip-outline-active-bg: color-mix(
+      in srgb,
+      var(--modus-wc-color-blue-dark) 50%,
+      transparent
+    );
+
+    background-color: var(--modus-wc-color-gray-1);
+    border-color: var(--modus-wc-color-gray-1);
+    color: var(--modus-wc-color-gray-9);
+
+    &.modus-wc-chip--active {
+      background-color: var(--modus-wc-color-highlight-blue);
+      border-color: transparent;
+      color: var(--modus-wc-color-gray-10);
+
+      &.modus-wc-chip--outline {
+        background-color: $modus-wc-chip-outline-active-bg;
+        border-color: var(--modus-wc-color-highlight-blue);
+        color: var(--modus-wc-color-gray-1);
+
+        .modus-wc-chip-label {
+          color: var(--modus-wc-color-gray-1);
+        }
+      }
+    }
+
+    &.modus-wc-chip--error {
+      background-color: var(--modus-wc-color-red-pale);
+      border-color: transparent;
+      color: var(--modus-wc-color-red-dark);
+
+      &.modus-wc-chip--outline {
+        background-color: var(--modus-wc-color-red-pale);
+        border-color: var(--modus-wc-color-red-dark);
+        color: var(--modus-wc-color-red-dark);
+      }
+    }
+
+    &.modus-wc-chip--outline {
+      background-color: transparent;
+      border-color: var(--modus-wc-color-gray-1);
+      color: var(--modus-wc-color-gray-1);
+    }
+
+    &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {
+      background-color: var(--modus-wc-color-gray-0);
+      border-color: transparent;
+      color: var(--modus-wc-color-gray-9);
+
+      &.modus-wc-chip--outline {
+        background-color: $modus-wc-chip-outline-hover-bg;
+        border-color: var(--modus-wc-color-gray-5);
+        color: var(--modus-wc-color-gray-1);
+      }
+    }
+
+    &:active:not(.modus-wc-chip--error):not(.modus-wc-chip--active) {
+      background-color: var(--modus-wc-color-highlight-blue);
+      border-color: transparent;
+      color: var(--modus-wc-color-gray-10);
+
+      &.modus-wc-chip--outline {
+        background-color: $modus-wc-chip-outline-active-bg;
+        border-color: var(--modus-wc-color-highlight-blue);
+        color: var(--modus-wc-color-gray-1);
+
+        .modus-wc-chip-label {
+          color: var(--modus-wc-color-gray-1);
+        }
+      }
+    }
+  }
+
+  &.modus-wc-chip--disabled {
+    opacity: 0.6;
+  }
+}
