@@ -20,7 +20,7 @@
       min-height: var(--modus-wc-spacing-xl);
       padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-md);
 
-      .modus-wc-chip-avatar {
+      .modus-wc-avatar {
         width: var(--modus-wc-spacing-lg);
         height: var(--modus-wc-spacing-lg);
       }
@@ -37,7 +37,7 @@
       min-height: var(--modus-wc-spacing-2xl);
       padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
 
-      .modus-wc-chip-avatar {
+      .modus-wc-avatar {
         width: var(--modus-wc-spacing-lg);
         height: var(--modus-wc-spacing-lg);
       }
@@ -54,7 +54,7 @@
       min-height: var(--modus-wc-spacing-3xl);
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
 
-      .modus-wc-chip-avatar {
+      .modus-wc-avatar {
         width: var(--modus-wc-spacing-xl);
         height: var(--modus-wc-spacing-xl);
       }
@@ -135,8 +135,8 @@
     opacity: 0.3;
   }
 
-  // Avatar
-  .modus-wc-chip-avatar-container {
+  // Fixes
+  .modus-wc-avatar {
     display: flex;
   }
 

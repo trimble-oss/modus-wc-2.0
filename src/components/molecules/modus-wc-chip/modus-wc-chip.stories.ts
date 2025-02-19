@@ -66,6 +66,31 @@ const Template: Story = {
 export const Default: Story = { ...Template };
 
 // prettier-ignore
+export const AvatarChip: Story = {
+  render: () => {
+    return html`
+<modus-wc-chip aria-label="Example chip" label="Chip" show-remove="true">
+  <modus-wc-avatar
+    img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg"
+    alt="sonic the hedgehog"
+  ></modus-wc-avatar>
+</modus-wc-chip>
+    `;
+  },
+};
+
+// prettier-ignore
+export const CheckIconChip: Story = {
+  render: () => {
+    return html`
+<modus-wc-chip aria-label="Example chip" label="Chip" show-remove="true">
+  <modus-wc-icon name="check" size="xs"></modus-wc-icon>
+</modus-wc-chip>
+    `;
+  },
+};
+
+// prettier-ignore
 export const Composable: Story = {
   render: () => {
     return html`
