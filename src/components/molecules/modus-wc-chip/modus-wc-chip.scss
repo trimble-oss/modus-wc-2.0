@@ -15,7 +15,7 @@
 
     // Sizes
     &.modus-wc-btn-sm {
-      --rounded-btn: #{var(--modus-wc-spacing-md)};
+      --rounded-btn: #{var(--modus-wc-border-radius-xl)}; // 12px
       height: var(--modus-wc-spacing-xl);
       min-height: var(--modus-wc-spacing-xl);
       padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-md);
@@ -32,7 +32,7 @@
     }
 
     &.modus-wc-btn-md {
-      --rounded-btn: #{var(--modus-wc-spacing-lg)};
+      --rounded-btn: #{var(--modus-wc-border-radius-2xl)}; // 16px
       height: var(--modus-wc-spacing-2xl);
       min-height: var(--modus-wc-spacing-2xl);
       padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
@@ -49,7 +49,7 @@
     }
 
     &.modus-wc-btn-lg {
-      --rounded-btn: #{var(--modus-wc-spacing-xl)};
+      --rounded-btn: #{var(--modus-wc-border-radius-3xl)}; // 24px
       height: var(--modus-wc-spacing-3xl);
       min-height: var(--modus-wc-spacing-3xl);
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
