@@ -11,7 +11,7 @@ export const convertPropsToClasses = (props: {
     Object.prototype.hasOwnProperty.call(props, 'bordered') &&
     !!props.bordered
   ) {
-    classes = `${classes} modus-wc-border-solid modus-wc-border-2 modus-wc-rounded`;
+    classes = `${classes} modus-wc-menu--bordered`;
   }
 
   if (

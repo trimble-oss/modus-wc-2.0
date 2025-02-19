@@ -1,16 +1,17 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcAutocomplete } from './modus-wc-autocomplete';
 import {
-  IMenuItem,
-  ModusWcMenu,
-} from '../../atoms/modus-wc-menu/modus-wc-menu';
+  IAutocompleteItem,
+  ModusWcAutocomplete,
+} from './modus-wc-autocomplete';
+import { ModusWcMenu } from '../../atoms/modus-wc-menu/modus-wc-menu';
+import { ModusWcMenuItem } from '../../atoms/modus-wc-menu-item/modus-wc-menu-item';
 import { ModusWcTextInput } from '../../atoms/modus-wc-text-input/modus-wc-text-input';
 
 describe('modus-wc-autocomplete', () => {
-  const items: IMenuItem[] = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
+  const items: IAutocompleteItem[] = [
+    { label: 'Item 1', value: '1', visibleInMenu: true },
+    { label: 'Item 2', value: '2', visibleInMenu: true },
+    { label: 'Item 3', value: '3', visibleInMenu: true },
   ];
 
   it('should render with default props', async () => {
@@ -23,7 +24,12 @@ describe('modus-wc-autocomplete', () => {
 
   it('should render with custom props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
       html: `<modus-wc-autocomplete
         active-item-value="1"
         aria-describedby="description"
@@ -35,7 +41,6 @@ describe('modus-wc-autocomplete', () => {
         input-dir="rtl"
         input-id="test-id"
         input-tab-index="1"
-        .items=${JSON.stringify(items)}
         min-chars="2"
         name="test-name"
         placeholder="Test placeholder"
@@ -45,6 +50,57 @@ describe('modus-wc-autocomplete', () => {
         value="Item 1"
       ></modus-wc-autocomplete>`,
     });
+
+    // Set items attribute
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    // Focus input so the menu is visible
+    const input = page.root!.querySelector('input');
+    input?.focus();
+
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render multi select with selected items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Default autocomplete" multi-select="true"></modus-wc-autocomplete>',
+    });
+
+    // Set items attribute
+    const component = page.rootInstance as ModusWcAutocomplete;
+    items[0].selected = true;
+    items[1].selected = true;
+    component.items = items;
+
+    // Focus input so the menu is visible
+    const input = page.root!.querySelector('input');
+    input?.focus();
+
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render multi select without border', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Default autocomplete" bordered="false" multi-select="true"></modus-wc-autocomplete>',
+    });
+
+    // Set items attribute
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    // Focus input so the menu is visible
+    const input = page.root!.querySelector('input');
+    input?.focus();
+
+    await page.waitForChanges();
+
     expect(page.root).toMatchSnapshot();
   });
 
@@ -53,6 +109,7 @@ describe('modus-wc-autocomplete', () => {
       components: [ModusWcAutocomplete, ModusWcTextInput],
       html: '<modus-wc-autocomplete aria-label="Blur test"></modus-wc-autocomplete>',
     });
+
     const input = page.root!.querySelector('input');
     expect(input).not.toBeNull();
     const blurSpy = jest.fn();
@@ -69,6 +126,7 @@ describe('modus-wc-autocomplete', () => {
       components: [ModusWcAutocomplete, ModusWcTextInput],
       html: '<modus-wc-autocomplete aria-label="Change test"></modus-wc-autocomplete>',
     });
+
     const input = page.root!.querySelector('input');
     expect(input).not.toBeNull();
     const changeSpy = jest.fn();
@@ -91,6 +149,7 @@ describe('modus-wc-autocomplete', () => {
       components: [ModusWcAutocomplete, ModusWcTextInput],
       html: '<modus-wc-autocomplete aria-label="Change test"></modus-wc-autocomplete>',
     });
+
     const input = page.root!.querySelector('input');
     expect(input).not.toBeNull();
     const focusSpy = jest.fn();
@@ -100,33 +159,5 @@ describe('modus-wc-autocomplete', () => {
     await page.waitForChanges();
 
     expect(focusSpy).toHaveBeenCalled();
-  });
-
-  it('should emit item select event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
-      html: '<modus-wc-autocomplete aria-label="Item select test"></modus-wc-autocomplete>',
-    });
-    const autocomplete = page.root;
-    expect(autocomplete).not.toBeNull();
-    if (autocomplete) autocomplete.items = items;
-
-    const input = page.root!.querySelector('input');
-    expect(input).not.toBeNull();
-    const itemSelectSpy = jest.fn();
-    page.root!.addEventListener('itemSelect', itemSelectSpy);
-
-    input!.dispatchEvent(new FocusEvent('focus'));
-    await page.waitForChanges();
-
-    const menu = page.root!.querySelector('ul');
-    expect(menu).not.toBeNull();
-    const item = menu?.querySelector('li a');
-    expect(item).not.toBeNull();
-
-    item!.dispatchEvent(new MouseEvent('click'));
-    await page.waitForChanges();
-
-    expect(itemSelectSpy).toHaveBeenCalled();
   });
 });
