@@ -139,7 +139,7 @@ export const ComplexCard: Story = {
   <span slot="subtitle">With Shadow</span>
   <p>
     This is a more of a traditional Card, featuring a header image, content,
-    multiple buttons, and a large shadow that appears on hover.
+    multiple buttons, and a larger shadow that appears on hover.
   </p>
   <div slot="actions" class="modus-wc-justify-end">
     <modus-wc-button label="Action 1"></modus-wc-button>
