@@ -1,7 +1,7 @@
 export const convertPropsToClasses = (props: {
   bordered?: boolean;
   fullImage?: boolean;
-  layout?: 'stacked' | 'side';
+  layout?: 'vertical' | 'horizontal';
   padding?: 'normal' | 'compact';
 }): string => {
   let classes = '';
@@ -22,11 +22,11 @@ export const convertPropsToClasses = (props: {
 
   if (Object.prototype.hasOwnProperty.call(props, 'layout') && props.layout) {
     switch (props.layout) {
-      case 'side':
+      case 'horizontal':
         classes = `${classes} modus-wc-card-side`;
         break;
-      case 'stacked':
-        break; // stacked is default, no class needed
+      case 'vertical':
+        break; // vertical is default, no class needed
     }
   }
 

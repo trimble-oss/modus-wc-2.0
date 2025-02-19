@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-chip should render label when provided 1`] = `
+<modus-wc-chip label="Test Label">
+  <!---->
+  <button aria-label="Labeled chip" class="modus-wc-btn modus-wc-btn-md modus-wc-chip" tabindex="0" type="button">
+    <span class="modus-wc-chip-label">
+      Test Label
+    </span>
+  </button>
+</modus-wc-chip>
+`;
+
+exports[`modus-wc-chip should render remove icon when showRemove is true 1`] = `
+<modus-wc-chip show-remove="true">
+  <!---->
+  <button aria-label="Close chip" class="modus-wc-btn modus-wc-btn-md modus-wc-chip" tabindex="0" type="button">
+    <svg class="mi-cancel-circle mi-solid modus-wc-chip-remove-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m4.3 14.3a.996.996 0 0 1-1.41 0L12 13.41 9.11 16.3a.996.996 0 1 1-1.41-1.41L10.59 12 7.7 9.11A.996.996 0 1 1 9.11 7.7L12 10.59l2.89-2.89a.996.996 0 1 1 1.41 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41"></path>
+    </svg>
+  </button>
+</modus-wc-chip>
+`;
+
+exports[`modus-wc-chip should render with content in the primary slot 1`] = `
+<modus-wc-chip>
+  <!---->
+  <button aria-label="Slotted chip" class="modus-wc-btn modus-wc-btn-md modus-wc-chip" tabindex="0" type="button">
+    <span>
+      Slot content
+    </span>
+  </button>
+</modus-wc-chip>
+`;
+
+exports[`modus-wc-chip should render with custom props 1`] = `
+<modus-wc-chip active="true" custom-class="test-class" size="lg" variant="outline">
+  <!---->
+  <button aria-label="Custom chip" class="modus-wc-btn modus-wc-btn-lg modus-wc-chip modus-wc-chip--active modus-wc-chip--outline test-class" tabindex="0" type="button">
+  </button>
+</modus-wc-chip>
+`;
+
+exports[`modus-wc-chip should render with default props 1`] = `
+<modus-wc-chip>
+  <!---->
+  <button aria-label="Default chip" class="modus-wc-btn modus-wc-btn-md modus-wc-chip" tabindex="0" type="button">
+  </button>
+</modus-wc-chip>
+`;
+
+exports[`modus-wc-chip should render with disabled attribute 1`] = `
+<modus-wc-chip disabled="true">
+  <!---->
+  <button aria-disabled="" aria-label="Disabled chip" class="modus-wc-btn modus-wc-btn-md modus-wc-chip modus-wc-chip--disabled" disabled="" tabindex="0" type="button">
+  </button>
+</modus-wc-chip>
+`;
