@@ -6,7 +6,11 @@
 // Default Styles
 .modus-wc-chip {
   &.modus-wc-btn {
-    $modus-wc-chip-active-filled-bg: #217cbb4d; // --modus-wc-color-blue-light with 30% opacity
+    $modus-wc-chip-active-filled-bg: color-mix(
+      in srgb,
+      var(--modus-wc-color-blue-light) 30%,
+      transparent
+    );
 
     background-color: var(--modus-wc-color-gray-1);
     border-color: transparent;
@@ -148,9 +152,17 @@
 [data-theme='modus-modern-dark'] .modus-wc-chip,
 [data-theme='modus-classic-dark'] .modus-wc-chip {
   &.modus-wc-btn {
-    $modus-wc-chip-active-filled-bg: #217cbb4d; // --modus-wc-color-blue-light with 30% opacity
-    $modus-wc-chip-outline-hover-bg: #cbcdd61f; // --modus-wc-color-gray-1 with 12% opacity
-    $modus-wc-chip-outline-active-bg: #0e416c80; // --modus-wc-color-blue-dark with 50% opacity
+    $modus-wc-chip-outline-hover-bg: color-mix(
+      in srgb,
+      var(--modus-wc-color-gray-1) 12%,
+      transparent
+    );
+
+    $modus-wc-chip-outline-active-bg: color-mix(
+      in srgb,
+      var(--modus-wc-color-blue-dark) 50%,
+      transparent
+    );
 
     background-color: var(--modus-wc-color-gray-1);
     border-color: var(--modus-wc-color-gray-1);
