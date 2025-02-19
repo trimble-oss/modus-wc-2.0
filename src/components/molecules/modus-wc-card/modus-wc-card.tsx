@@ -18,19 +18,19 @@ export class ModusWcCard {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Adds a border to the card */
+  /** Makes any \<figure> in the 'header' slot cover the background */
+  @Prop() backgroundFigure?: boolean = false;
+
+  /** Adds a hard border to the card */
   @Prop() bordered?: boolean = false;
 
   /** Custom CSS class to apply */
   @Prop() customClass?: string = '';
 
-  /** Makes any \<figure> in the 'figure' slot cover the background */
-  @Prop() imageFull?: boolean = false;
+  /** Determines how the card is laid out */
+  @Prop() layout?: 'vertical' | 'horizontal' = 'vertical';
 
-  /** Display mode - stacked or side image */
-  @Prop() layout?: 'stacked' | 'side' = 'stacked';
-
-  /** Card padding variant - normal or compact */
+  /** Determines if the interior padding is compact or not */
   @Prop() padding?: 'normal' | 'compact' = 'normal';
 
   componentWillLoad() {
@@ -42,7 +42,7 @@ export class ModusWcCard {
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
-      fullImage: this.imageFull,
+      fullImage: this.backgroundFigure,
       layout: this.layout,
       padding: this.padding,
     });
@@ -66,6 +66,9 @@ export class ModusWcCard {
           <div class="modus-wc-card-body">
             <div class="modus-wc-card-title">
               <slot name="title" />
+            </div>
+            <div class="modus-wc-card-subtitle">
+              <slot name="subtitle" />
             </div>
             <slot /> {/* Default body slot */}
             <div class="modus-wc-card-actions">
