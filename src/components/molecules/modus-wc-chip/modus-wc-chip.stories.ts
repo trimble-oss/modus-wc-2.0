@@ -5,7 +5,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ModusSize } from '../../types';
 
 interface ChipArgs {
-  'aria-label': string;
   active?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
@@ -20,7 +19,6 @@ const meta: Meta<ChipArgs> = {
   title: 'Components/Chip',
   component: 'modus-wc-chip',
   args: {
-    'aria-label': 'Example chip',
     label: 'Chip',
     'show-remove': true,
     size: 'md',
@@ -51,7 +49,7 @@ type Story = StoryObj<ChipArgs>;
 const Template: Story = {
   render: (args) => {
     return html` <modus-wc-chip
-      aria-label=${args['aria-label']}
+      aria-label="Chip example"
       active=${ifDefined(args.active)}
       disabled=${ifDefined(args.disabled)}
       has-error=${ifDefined(args['has-error'])}
@@ -70,7 +68,7 @@ export const AvatarChip: Story = {
   render: (args) => {
     return html`
 <modus-wc-chip
-  aria-label=${args['aria-label']}
+  aria-label="Chip example"
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
@@ -93,7 +91,7 @@ export const CheckIconChip: Story = {
   render: (args) => {
     return html`
 <modus-wc-chip
-  aria-label=${args['aria-label']}
+  aria-label="Chip example"
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
@@ -113,7 +111,7 @@ export const Composable: Story = {
   render: (args) => {
     return html`
 <modus-wc-chip
-  aria-label=${args['aria-label']}
+  aria-label="Chip example"
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
@@ -126,7 +124,7 @@ export const Composable: Story = {
 </modus-wc-chip>
 
 <modus-wc-chip
-  aria-label=${args['aria-label']}
+  aria-label="Chip example"
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
@@ -139,7 +137,7 @@ export const Composable: Story = {
 </modus-wc-chip>
 
 <modus-wc-chip
-  aria-label=${args['aria-label']}
+  aria-label="Chip example"
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
