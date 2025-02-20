@@ -234,14 +234,6 @@
               "description": "If true, the button will take the full width of its container."
             },
             {
-              "name": "label",
-              "fieldName": "label",
-              "type": {
-                "text": "string"
-              },
-              "description": "The text label displayed on the button."
-            },
-            {
               "name": "pressed",
               "fieldName": "pressed",
               "type": {
