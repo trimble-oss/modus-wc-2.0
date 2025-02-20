@@ -55,7 +55,8 @@
   }
 
   &.modus-wc-btn-outline {
-    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-trimble-gray);
+    border: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-trimble-gray);
     background-color: transparent;
   }
 }
