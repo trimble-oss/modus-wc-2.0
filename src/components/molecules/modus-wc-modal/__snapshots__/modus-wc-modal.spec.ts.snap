@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-modal renders with default props 1`] = `
+<modus-wc-modal>
+  <!---->
+  <dialog class="modus-wc-modal">
+    <div class="modus-wc-modal-box">
+      <div class="modus-wc-font-bold modus-wc-text-lg"></div>
+      <div class="modus-wc-py-4"></div>
+      <div class="modus-wc-modal-action"></div>
+    </div>
+  </dialog>
+</modus-wc-modal>
+`;
+
+exports[`modus-wc-modal should render with custom props 1`] = `
+<modus-wc-card
+  custom-class="test-class"
+/>
+`;

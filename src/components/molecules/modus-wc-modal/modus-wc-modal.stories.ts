@@ -31,9 +31,7 @@ export const DefaultModal: Story = {
         modal-id="my_modal_1"
       >
         <span slot="title">Modal Title</span>
-        <span slot="content">
-          This is a sample modal content. You can place any content here.
-        </span>
+        <span slot="content"> This is a sample modal content. </span>
         <div slot="actions">
           <modus-wc-button onclick="my_modal_1.close()">
             Close
