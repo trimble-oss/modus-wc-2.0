@@ -6,18 +6,6 @@
 .modus-wc-btn {
   --rounded-btn: var(--modus-wc-border-radius-lg);
 
-  &.modus-wc-btn-xs {
-    font-size: var(--modus-wc-font-size-xs);
-  }
-
-  &.modus-wc-btn-sm {
-    font-size: var(--modus-wc-font-size-sm);
-  }
-
-  &.modus-wc-btn-lg {
-    font-size: var(--modus-wc-font-size-lg);
-  }
-
   &.modus-wc-btn-borderless {
     --tw-bg-opacity: 0;
 
@@ -57,5 +45,20 @@
       border: none;
       box-shadow: none;
     }
+  }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-btn,
+[data-theme='modus-classic-dark'] .modus-wc-btn {
+  &.modus-wc-btn-xs {
+    font-size: var(--modus-wc-font-size-xs);
+  }
+
+  &.modus-wc-btn-sm {
+    font-size: var(--modus-wc-font-size-sm);
+  }
+
+  &.modus-wc-btn-lg {
+    font-size: var(--modus-wc-font-size-lg);
   }
 }
