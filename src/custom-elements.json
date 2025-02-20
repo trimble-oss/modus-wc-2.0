@@ -3925,6 +3925,70 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-modal/modus-wc-modal.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable modal component used to display content in a dialog.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcModal",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply"
+            },
+            {
+              "name": "modal-id",
+              "fieldName": "modalId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the inner dialog element"
+            }
+          ],
+          "tagName": "modus-wc-modal",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcModal",
+          "declaration": {
+            "name": "ModusWcModal",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-modal",
+          "declaration": {
+            "name": "ModusWcModal",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-tabs/modus-wc-tabs.tsx",
       "declarations": [
         {
