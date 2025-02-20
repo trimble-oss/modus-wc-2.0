@@ -118,3 +118,9 @@ export const inheritAriaAttributes = (
   }
   return inheritAttributes(el, attributesToInherit);
 };
+
+export const KEY: { [key: string]: string } = {
+  Enter: 'Enter',
+  Space: ' ',
+  Escape: 'Escape',
+};

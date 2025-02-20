@@ -10,7 +10,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-button.tailwind';
 import { DaisySize } from '../../types';
-import { Attributes, inheritAriaAttributes } from '../../utils';
+import { Attributes, inheritAriaAttributes, KEY } from '../../utils';
 
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -100,7 +100,10 @@ export class ModusWcButton {
   // @ts-expect-error: TODO fixes linting issue, test thoroughly
   @Listen('keydown')
   private handleKeyDown = (event: KeyboardEvent) => {
-    if (!this.disabled && (event.key === 'Enter' || event.key === ' ')) {
+    if (
+      !this.disabled &&
+      (event.key === KEY.Enter || event.key === KEY.Space)
+    ) {
       event.preventDefault();
       this.buttonClick.emit(event);
     }

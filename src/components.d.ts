@@ -82,10 +82,6 @@ export namespace Components {
      */
     interface ModusWcAutocomplete {
         /**
-          * The active menu item value, used to show an item as selected.
-         */
-        "activeItemValue"?: string;
-        /**
           * Indicates that the autocomplete should have a border.
          */
         "bordered"?: boolean;
@@ -114,13 +110,17 @@ export namespace Components {
          */
         "inputTabIndex"?: number;
         /**
-          * The items to display in the menu.
+          * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
         "items": IAutocompleteItem[];
         /**
           * The minimum number of characters required to render the menu.
          */
         "minChars": number;
+        /**
+          * Whether the input allows multiple items to be selected.
+         */
+        "multiSelect"?: boolean;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -274,7 +274,11 @@ export namespace Components {
      */
     interface ModusWcCard {
         /**
-          * Adds a border to the card
+          * Makes any \<figure> in the 'header' slot cover the background
+         */
+        "backgroundFigure"?: boolean;
+        /**
+          * Adds a hard border to the card
          */
         "bordered"?: boolean;
         /**
@@ -282,15 +286,11 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
-          * Makes any \<figure> in the 'figure' slot cover the background
+          * Determines how the card is laid out
          */
-        "imageFull"?: boolean;
+        "layout"?: 'vertical' | 'horizontal';
         /**
-          * Display mode - stacked or side image
-         */
-        "layout"?: 'stacked' | 'side';
-        /**
-          * Card padding variant - normal or compact
+          * Determines if the interior padding is compact or not
          */
         "padding"?: 'normal' | 'compact';
     }
@@ -339,6 +339,44 @@ export namespace Components {
           * The value of the checkbox.
          */
         "value": boolean;
+    }
+    /**
+     * A customizable chip component used to display information in a compact area.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcChip {
+        /**
+          * Active state of chip.
+         */
+        "active"?: boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the chip is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Whether the chip has an error.
+         */
+        "hasError"?: boolean;
+        /**
+          * The label to display in the chip.
+         */
+        "label"?: string;
+        /**
+          * Whether to show the close icon on right side of the chip.
+         */
+        "showRemove"?: boolean;
+        /**
+          * The size of the chip.
+         */
+        "size"?: ModusSize;
+        /**
+          * The variant of the chip.
+         */
+        "variant"?: 'filled' | 'outline';
     }
     /**
      * A customizable collapse component used for showing and hiding content.
@@ -555,6 +593,10 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcMenu {
+        /**
+          * Indicates that the menu should have a border.
+         */
+        "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the ul element.
          */
@@ -1309,6 +1351,10 @@ export interface ModusWcCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcCheckboxElement;
 }
+export interface ModusWcChipCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcChipElement;
+}
 export interface ModusWcCollapseCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcCollapseElement;
@@ -1401,6 +1447,7 @@ declare global {
         new (): HTMLModusWcAlertElement;
     };
     interface HTMLModusWcAutocompleteElementEventMap {
+        "chipRemove": IAutocompleteItem;
         "inputBlur": FocusEvent;
         "inputChange": Event;
         "inputFocus": FocusEvent;
@@ -1507,6 +1554,28 @@ declare global {
     var HTMLModusWcCheckboxElement: {
         prototype: HTMLModusWcCheckboxElement;
         new (): HTMLModusWcCheckboxElement;
+    };
+    interface HTMLModusWcChipElementEventMap {
+        "chipClick": MouseEvent | KeyboardEvent;
+        "chipRemove": MouseEvent | KeyboardEvent;
+    }
+    /**
+     * A customizable chip component used to display information in a compact area.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcChipElement extends Components.ModusWcChip, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcChipElementEventMap>(type: K, listener: (this: HTMLModusWcChipElement, ev: ModusWcChipCustomEvent<HTMLModusWcChipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcChipElementEventMap>(type: K, listener: (this: HTMLModusWcChipElement, ev: ModusWcChipCustomEvent<HTMLModusWcChipElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcChipElement: {
+        prototype: HTMLModusWcChipElement;
+        new (): HTMLModusWcChipElement;
     };
     interface HTMLModusWcCollapseElementEventMap {
         "expandedChange": { expanded: boolean };
@@ -1948,6 +2017,7 @@ declare global {
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-card": HTMLModusWcCardElement;
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
+        "modus-wc-chip": HTMLModusWcChipElement;
         "modus-wc-collapse": HTMLModusWcCollapseElement;
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
@@ -2037,10 +2107,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcAutocomplete {
         /**
-          * The active menu item value, used to show an item as selected.
-         */
-        "activeItemValue"?: string;
-        /**
           * Indicates that the autocomplete should have a border.
          */
         "bordered"?: boolean;
@@ -2069,7 +2135,7 @@ declare namespace LocalJSX {
          */
         "inputTabIndex"?: number;
         /**
-          * The items to display in the menu.
+          * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
         "items"?: IAutocompleteItem[];
         /**
@@ -2077,9 +2143,17 @@ declare namespace LocalJSX {
          */
         "minChars"?: number;
         /**
+          * Whether the input allows multiple items to be selected.
+         */
+        "multiSelect"?: boolean;
+        /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
+        /**
+          * Event emitted when a selected item chip is removed.
+         */
+        "onChipRemove"?: (event: ModusWcAutocompleteCustomEvent<IAutocompleteItem>) => void;
         /**
           * Event emitted when the input loses focus.
          */
@@ -2249,7 +2323,11 @@ declare namespace LocalJSX {
      */
     interface ModusWcCard {
         /**
-          * Adds a border to the card
+          * Makes any \<figure> in the 'header' slot cover the background
+         */
+        "backgroundFigure"?: boolean;
+        /**
+          * Adds a hard border to the card
          */
         "bordered"?: boolean;
         /**
@@ -2257,15 +2335,11 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * Makes any \<figure> in the 'figure' slot cover the background
+          * Determines how the card is laid out
          */
-        "imageFull"?: boolean;
+        "layout"?: 'vertical' | 'horizontal';
         /**
-          * Display mode - stacked or side image
-         */
-        "layout"?: 'stacked' | 'side';
-        /**
-          * Card padding variant - normal or compact
+          * Determines if the interior padding is compact or not
          */
         "padding"?: 'normal' | 'compact';
     }
@@ -2326,6 +2400,52 @@ declare namespace LocalJSX {
           * The value of the checkbox.
          */
         "value"?: boolean;
+    }
+    /**
+     * A customizable chip component used to display information in a compact area.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcChip {
+        /**
+          * Active state of chip.
+         */
+        "active"?: boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the chip is disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Whether the chip has an error.
+         */
+        "hasError"?: boolean;
+        /**
+          * The label to display in the chip.
+         */
+        "label"?: string;
+        /**
+          * Event emitted when the chip is clicked or activated via keyboard.
+         */
+        "onChipClick"?: (event: ModusWcChipCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the close chip icon button is clicked.
+         */
+        "onChipRemove"?: (event: ModusWcChipCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Whether to show the close icon on right side of the chip.
+         */
+        "showRemove"?: boolean;
+        /**
+          * The size of the chip.
+         */
+        "size"?: ModusSize;
+        /**
+          * The variant of the chip.
+         */
+        "variant"?: 'filled' | 'outline';
     }
     /**
      * A customizable collapse component used for showing and hiding content.
@@ -2558,6 +2678,10 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcMenu {
+        /**
+          * Indicates that the menu should have a border.
+         */
+        "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the ul element.
          */
@@ -3423,6 +3547,7 @@ declare namespace LocalJSX {
         "modus-wc-button": ModusWcButton;
         "modus-wc-card": ModusWcCard;
         "modus-wc-checkbox": ModusWcCheckbox;
+        "modus-wc-chip": ModusWcChip;
         "modus-wc-collapse": ModusWcCollapse;
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
@@ -3499,6 +3624,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-checkbox": LocalJSX.ModusWcCheckbox & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
+            /**
+             * A customizable chip component used to display information in a compact area.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-chip": LocalJSX.ModusWcChip & JSXBase.HTMLAttributes<HTMLModusWcChipElement>;
             /**
              * A customizable collapse component used for showing and hiding content.
              * Can render any HTML content through a <slot> element.
