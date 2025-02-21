@@ -11,7 +11,6 @@ interface CheckboxArgs {
   'custom-class'?: string;
   disabled?: boolean;
   indeterminate?: boolean;
-  'input-dir'?: 'ltr' | 'rtl' | 'auto';
   'input-id'?: string;
   'input-tab-index'?: number;
   label?: string;
@@ -36,12 +35,6 @@ const meta: Meta<CheckboxArgs> = {
     value: true,
   },
   argTypes: {
-    'input-dir': {
-      control: {
-        type: 'select',
-      },
-      options: ['ltr', 'rtl', 'auto'],
-    },
     size: {
       control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
@@ -69,7 +62,6 @@ export const Template: Story = {
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
         .indeterminate=${args.indeterminate}
-        input-dir=${ifDefined(args['input-dir'])}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         label=${ifDefined(args.label)}

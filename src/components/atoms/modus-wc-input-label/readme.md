@@ -22,6 +22,7 @@ Adheres to WCAG 2.2 standards.
 | `labelDir`    | `label-dir`    | Specifies the text direction of the label content.                           | `"" \| "auto" \| "ltr" \| "rtl" \| undefined` | `undefined` |
 | `labelText`   | `label-text`   | The text to display within the label.                                        | `string \| undefined`                         | `undefined` |
 | `required`    | `required`     | Whether the label indicates a required field.                                | `boolean \| undefined`                        | `false`     |
+| `size`        | `size`         | The size of the label.                                                       | `"lg" \| "md" \| "sm" \| undefined`           | `'md'`      |
 
 
 ## Dependencies

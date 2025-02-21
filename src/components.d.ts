@@ -306,10 +306,6 @@ export namespace Components {
          */
         "indeterminate": boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -562,6 +558,10 @@ export namespace Components {
           * Whether the label indicates a required field.
          */
         "required"?: boolean;
+        /**
+          * The size of the label.
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable loader component used to indicate the loading of content.
@@ -2355,10 +2355,6 @@ declare namespace LocalJSX {
          */
         "indeterminate"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2647,6 +2643,10 @@ declare namespace LocalJSX {
           * Whether the label indicates a required field.
          */
         "required"?: boolean;
+        /**
+          * The size of the label.
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable loader component used to indicate the loading of content.

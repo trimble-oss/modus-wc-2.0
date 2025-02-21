@@ -721,6 +721,14 @@
                 "text": "boolean"
               },
               "description": "Whether the label indicates a required field."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the label."
             }
           ],
           "tagName": "modus-wc-input-label",
@@ -3515,14 +3523,6 @@
                 "text": "boolean"
               },
               "description": "The indeterminate state of the checkbox."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
             },
             {
               "name": "input-id",

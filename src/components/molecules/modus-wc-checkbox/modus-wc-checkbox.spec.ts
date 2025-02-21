@@ -34,7 +34,6 @@ describe('modus-wc-checkbox', () => {
         aria-labelledby="checkbox-label"
         custom-class="test-class"
         disabled="true"
-        input-dir="rtl"
         input-id="custom-id"
         input-tab-index="1"
         label="Test label"

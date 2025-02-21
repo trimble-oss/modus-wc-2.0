@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ModusSize } from '../../types';
 
 interface InputLabelArgs {
   'for-id'?: string;
@@ -8,6 +9,7 @@ interface InputLabelArgs {
   'label-dir'?: '' | 'ltr' | 'rtl' | 'auto';
   'label-text'?: string;
   required?: boolean;
+  size?: ModusSize;
 }
 
 const meta: Meta<InputLabelArgs> = {
@@ -19,8 +21,12 @@ const meta: Meta<InputLabelArgs> = {
   },
   argTypes: {
     'label-dir': {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['ltr', 'rtl', 'auto'],
+    },
+    size: {
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg'],
     },
   },
 };
@@ -32,11 +38,12 @@ type Story = StoryObj<InputLabelArgs>;
 const Template: Story = {
   render: (args) => html`
     <modus-wc-input-label
-      for-id="${ifDefined(args['for-id'])}"
-      custom-class="${ifDefined(args['custom-class'])}"
-      label-dir="${ifDefined(args['label-dir'])}"
-      label-text="${ifDefined(args['label-text'])}"
-      ?required="${args['required']}"
+      for-id=${ifDefined(args['for-id'])}
+      custom-class=${ifDefined(args['custom-class'])}
+      label-dir=${ifDefined(args['label-dir'])}
+      label-text=${ifDefined(args['label-text'])}
+      ?required=${args['required']}
+      size=${args.size}
     ></modus-wc-input-label>
   `,
 };
@@ -54,11 +61,12 @@ export const RequiredTextarea: Story = {
   },
   render: (args) => html`
     <modus-wc-input-label
-      for-id="${ifDefined(args['for-id'])}"
-      custom-class="${ifDefined(args['custom-class'])}"
-      label-dir="${ifDefined(args['label-dir'])}"
-      label-text="${ifDefined(args['label-text'])}"
-      ?required="${args['required']}"
+      for-id=${ifDefined(args['for-id'])}
+      custom-class=${ifDefined(args['custom-class'])}
+      label-dir=${ifDefined(args['label-dir'])}
+      label-text=${ifDefined(args['label-text'])}
+      ?required=${args['required']}
+      size=${ifDefined(args.size)}
     ></modus-wc-input-label>
     <modus-wc-textarea id="textarea-input" required></modus-wc-textarea>
   `,
