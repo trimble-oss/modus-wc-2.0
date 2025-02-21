@@ -23,10 +23,10 @@ interface AutocompleteArgs {
   'custom-class'?: string;
   'debounce-ms'?: number;
   disabled?: boolean;
-  'input-dir'?: string;
   'input-id'?: string;
   'input-tab-index'?: number;
   items: IAutocompleteItem[];
+  label?: string;
   'min-chars': number;
   'multi-select'?: boolean;
   name?: string;
@@ -45,15 +45,15 @@ const meta: Meta<AutocompleteArgs> = {
     'debounce-ms': 300,
     disabled: false,
     items: items,
+    label: 'Label',
     'min-chars': 0,
     'multi-select': false,
-    placeholder: 'Search for fruits...',
     size: 'md',
     value: '',
   },
   argTypes: {
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
   },
@@ -181,10 +181,10 @@ const Template: Story = {
   custom-class=${ifDefined(args['custom-class'])}
   debounce-ms=${ifDefined(args['debounce-ms'])}
   ?disabled=${args.disabled}
-  input-dir=${ifDefined(args['input-dir'])}
   input-id=${ifDefined(args['input-id'])}
   input-tab-index=${ifDefined(args['input-tab-index'])}
   .items=${args.items}
+  label=${ifDefined(args.label)}
   min-chars=${args['min-chars']}
   ?multi-select=${false}
   name=${ifDefined(args.name)}
@@ -288,14 +288,14 @@ export const MultiSelect: Story = {
       }
     }
   };
-  
+
   const handleInputChange = (e) => {
     if (!e.detail?.target) return;
 
     const autocomplete = (e.target as HTMLInputElement).closest(
       'modus-wc-autocomplete'
     );
-    
+
     if (autocomplete) {
       const input = e.detail.target as HTMLInputElement;
       const searchText = input.value.toLowerCase();
@@ -306,13 +306,13 @@ export const MultiSelect: Story = {
         selected: searchText ? item.selected : false,
         visibleInMenu: item.label.toLowerCase().includes(searchText),
       }));
-      
+
       // Ensuring that a new array is created when updating items is critical to component re-render.
       autocomplete.items = [...updatedItems];
       autocomplete.value = input.value;
     }
   };
-  
+
   const handleItemSelect = (e) => {
     const autocomplete = (e.target
     as
@@ -344,10 +344,10 @@ export const MultiSelect: Story = {
   custom-class=${ifDefined(args['custom-class'])}
   debounce-ms=${ifDefined(args['debounce-ms'])}
   ?disabled=${args.disabled}
-  input-dir=${ifDefined(args['input-dir'])}
   input-id=${ifDefined(args['input-id'])}
   input-tab-index=${ifDefined(args['input-tab-index'])}
   .items=${args.items}
+  label=${ifDefined(args.label)}
   min-chars=${args['min-chars']}
   ?multi-select=${true}
   name=${ifDefined(args.name)}
