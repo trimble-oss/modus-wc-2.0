@@ -5,9 +5,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { DaisySize } from '../../types';
 
 interface CheckboxArgs {
-  'aria-describedby'?: string;
-  'aria-label': string;
-  'aria-labelledby'?: string;
   'custom-class'?: string;
   disabled?: boolean;
   indeterminate?: boolean;
@@ -24,7 +21,6 @@ const meta: Meta<CheckboxArgs> = {
   title: 'Components/Forms/Checkbox',
   component: 'modus-wc-checkbox',
   args: {
-    'aria-label': 'Checkbox',
     'custom-class': '',
     disabled: false,
     indeterminate: false,
@@ -56,9 +52,7 @@ export const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-checkbox
-        aria-describedby=${ifDefined(args['aria-describedby'])}
-        aria-label=${args['aria-label']}
-        aria-labelledby=${ifDefined(args['aria-labelledby'])}
+        aria-label="Checkbox"
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
         .indeterminate=${args.indeterminate}
