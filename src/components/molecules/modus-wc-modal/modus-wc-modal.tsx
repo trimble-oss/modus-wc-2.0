@@ -24,6 +24,9 @@ export class ModusWcModal {
   /** The ID of the inner dialog element */
   @Prop() modalId!: string;
 
+  /** Specifies if the modal can be closed by clicking outside of it */
+  @Prop() outsideClickClose?: boolean = true;
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -59,6 +62,11 @@ export class ModusWcModal {
               <slot name="actions" />
             </div>
           </div>
+          {this.outsideClickClose && (
+            <form method="dialog" class="modus-wc-modal-backdrop">
+              <button>close</button>
+            </form>
+          )}
         </dialog>
       </Host>
     );

@@ -9,6 +9,11 @@ exports[`modus-wc-modal renders with default props 1`] = `
       <div class="modus-wc-py-4"></div>
       <div class="modus-wc-modal-action"></div>
     </div>
+    <form class="modus-wc-modal-backdrop" method="dialog">
+      <button>
+        close
+      </button>
+    </form>
   </dialog>
 </modus-wc-modal>
 `;
@@ -16,5 +21,6 @@ exports[`modus-wc-modal renders with default props 1`] = `
 exports[`modus-wc-modal should render with custom props 1`] = `
 <modus-wc-card
   custom-class="test-class"
+  outside-click-close="false"
 />
 `;

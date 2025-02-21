@@ -15,6 +15,7 @@ describe('modus-wc-modal', () => {
       components: [ModusWcModal],
       html: `<modus-wc-card
             custom-class="test-class"
+            outside-click-close="false"
             ></modus-wc-card>`,
     });
     expect(page.root).toMatchSnapshot();

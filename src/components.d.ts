@@ -662,6 +662,10 @@ export namespace Components {
           * The ID of the inner dialog element
          */
         "modalId": string;
+        /**
+          * Specifies if the modal can be closed by clicking outside of it
+         */
+        "outsideClickClose"?: boolean;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -2776,6 +2780,10 @@ declare namespace LocalJSX {
           * The ID of the inner dialog element
          */
         "modalId": string;
+        /**
+          * Specifies if the modal can be closed by clicking outside of it
+         */
+        "outsideClickClose"?: boolean;
     }
     /**
      * A customizable input component used to create number inputs with types.
