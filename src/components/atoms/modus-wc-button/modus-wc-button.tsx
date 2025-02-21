@@ -15,6 +15,8 @@ import { Attributes, inheritAriaAttributes, KEY } from '../../utils';
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
  *
+ * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
+ *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
@@ -41,9 +43,6 @@ export class ModusWcButton {
   /** If true, the button will take the full width of its container. */
   @Prop() fullWidth?: boolean = false;
 
-  /** The text label displayed on the button. */
-  @Prop() label?: string;
-
   /** If true, the button will be in a pressed state (for toggle buttons). */
   @Prop() pressed?: boolean = false;
 
@@ -67,7 +66,7 @@ export class ModusWcButton {
       console.warn(
         'ModusWcButton: aria-label is required for accessibility. Using fallback label.'
       );
-      this.el.ariaLabel = this.label || 'Button';
+      this.el.ariaLabel = 'Button';
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -124,10 +123,7 @@ export class ModusWcButton {
           type={this.type}
           {...this.inheritedAttributes}
         >
-          <slot name="left" />
           <slot />
-          {this.label}
-          <slot name="right" />
         </button>
       </Host>
     );

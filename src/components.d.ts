@@ -10,7 +10,7 @@ import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 import { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
 import { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
-import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
+import { ISelectOption } from "./components/molecules/modus-wc-select/modus-wc-select";
 import { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
 import { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
@@ -21,7 +21,7 @@ export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 export { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
 export { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
-export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
+export { ISelectOption } from "./components/molecules/modus-wc-select/modus-wc-select";
 export { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
 export { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
@@ -98,10 +98,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -113,6 +109,10 @@ export namespace Components {
           * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
         "items": IAutocompleteItem[];
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * The minimum number of characters required to render the menu.
          */
@@ -174,6 +174,7 @@ export namespace Components {
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
+     * The component supports a `<slot>` for injecting content within the badge.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcBadge {
@@ -187,10 +188,6 @@ export namespace Components {
     | 'success'
     | 'warning'
     | 'danger';
-        /**
-          * The content to display inside the badge. For 'counter' type, this should be a number.
-         */
-        "content": string;
         /**
           * Custom CSS class to apply to the span element.
          */
@@ -224,6 +221,7 @@ export namespace Components {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
+     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
@@ -243,10 +241,6 @@ export namespace Components {
           * If true, the button will take the full width of its container.
          */
         "fullWidth"?: boolean;
-        /**
-          * The text label displayed on the button.
-         */
-        "label"?: string;
         /**
           * If true, the button will be in a pressed state (for toggle buttons).
          */
@@ -312,10 +306,6 @@ export namespace Components {
          */
         "indeterminate": boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -323,6 +313,10 @@ export namespace Components {
           * The tabindex of the input.
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -435,10 +429,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -446,6 +436,10 @@ export namespace Components {
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Maximum date value.
          */
@@ -564,6 +558,10 @@ export namespace Components {
           * Whether the label indicates a required field.
          */
         "required"?: boolean;
+        /**
+          * The size of the label.
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable loader component used to indicate the loading of content.
@@ -697,10 +695,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -712,6 +706,10 @@ export namespace Components {
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * The input's maximum value.
          */
@@ -789,10 +787,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -800,6 +794,10 @@ export namespace Components {
           * The tabindex of the input.
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -835,10 +833,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -846,6 +840,10 @@ export namespace Components {
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -861,7 +859,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * The value of the control.
          */
@@ -903,10 +901,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -914,6 +908,10 @@ export namespace Components {
           * The tabindex of the input.
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * The maximum slider value.
          */
@@ -933,7 +931,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * The increment of the slider.
          */
@@ -1509,6 +1507,7 @@ declare global {
     };
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
+     * The component supports a `<slot>` for injecting content within the badge.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcBadgeElement extends Components.ModusWcBadge, HTMLStencilElement {
@@ -1532,6 +1531,7 @@ declare global {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
+     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcButtonElement extends Components.ModusWcButton, HTMLStencilElement {
@@ -2160,10 +2160,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2175,6 +2171,10 @@ declare namespace LocalJSX {
           * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
         "items"?: IAutocompleteItem[];
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * The minimum number of characters required to render the menu.
          */
@@ -2256,6 +2256,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
+     * The component supports a `<slot>` for injecting content within the badge.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcBadge {
@@ -2269,10 +2270,6 @@ declare namespace LocalJSX {
     | 'success'
     | 'warning'
     | 'danger';
-        /**
-          * The content to display inside the badge. For 'counter' type, this should be a number.
-         */
-        "content": string;
         /**
           * Custom CSS class to apply to the span element.
          */
@@ -2306,6 +2303,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
+     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcButton {
@@ -2325,10 +2323,6 @@ declare namespace LocalJSX {
           * If true, the button will take the full width of its container.
          */
         "fullWidth"?: boolean;
-        /**
-          * The text label displayed on the button.
-         */
-        "label"?: string;
         /**
           * Event emitted when the button is clicked or activated via keyboard.
          */
@@ -2398,10 +2392,6 @@ declare namespace LocalJSX {
          */
         "indeterminate"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2409,6 +2399,10 @@ declare namespace LocalJSX {
           * The tabindex of the input.
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -2545,10 +2539,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2556,6 +2546,10 @@ declare namespace LocalJSX {
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Maximum date value.
          */
@@ -2686,6 +2680,10 @@ declare namespace LocalJSX {
           * Whether the label indicates a required field.
          */
         "required"?: boolean;
+        /**
+          * The size of the label.
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable loader component used to indicate the loading of content.
@@ -2823,10 +2821,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2838,6 +2832,10 @@ declare namespace LocalJSX {
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * The input's maximum value.
          */
@@ -2927,10 +2925,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2938,6 +2932,10 @@ declare namespace LocalJSX {
           * The tabindex of the input.
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -2985,10 +2983,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2996,6 +2990,10 @@ declare namespace LocalJSX {
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -3023,7 +3021,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * The value of the control.
          */
@@ -3065,10 +3063,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -3076,6 +3070,10 @@ declare namespace LocalJSX {
           * The tabindex of the input.
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * The maximum slider value.
          */
@@ -3107,7 +3105,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * The increment of the slider.
          */
@@ -3665,6 +3663,7 @@ declare module "@stencil/core" {
             "modus-wc-avatar": LocalJSX.ModusWcAvatar & JSXBase.HTMLAttributes<HTMLModusWcAvatarElement>;
             /**
              * A customizable badge component used to create badges with different sizes, types, and colors.
+             * The component supports a `<slot>` for injecting content within the badge.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-badge": LocalJSX.ModusWcBadge & JSXBase.HTMLAttributes<HTMLModusWcBadgeElement>;
@@ -3675,6 +3674,7 @@ declare module "@stencil/core" {
             "modus-wc-breadcrumbs": LocalJSX.ModusWcBreadcrumbs & JSXBase.HTMLAttributes<HTMLModusWcBreadcrumbsElement>;
             /**
              * A customizable button component used to create buttons with different sizes, variants, and types.
+             * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;

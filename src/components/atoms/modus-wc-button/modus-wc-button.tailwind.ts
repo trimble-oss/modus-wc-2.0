@@ -61,11 +61,14 @@ export const convertPropsToClasses = (props: {
 
   if (Object.prototype.hasOwnProperty.call(props, 'variant') && props.variant) {
     switch (props.variant) {
-      case 'outlined':
-        classes = `${classes} modus-wc-btn-outline`;
-        break;
       case 'borderless':
         classes = `${classes} modus-wc-btn-borderless`;
+        break;
+      case 'filled':
+        classes = `${classes} modus-wc-btn-filled`;
+        break;
+      case 'outlined':
+        classes = `${classes} modus-wc-btn-outline`;
         break;
     }
   }

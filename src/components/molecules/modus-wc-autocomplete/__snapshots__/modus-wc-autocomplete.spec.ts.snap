@@ -69,7 +69,8 @@ exports[`modus-wc-autocomplete should render multi select without border 1`] = `
 `;
 
 exports[`modus-wc-autocomplete should render with custom props 1`] = `
-<modus-wc-autocomplete active-item-value="1" bordered="false" class="modus-wc-autocomplete test-class" custom-class="test-class" debounce-ms="500" dir="rtl" disabled="true" input-dir="rtl" input-id="test-id" input-tab-index="1" min-chars="2" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" value="Item 1">
+<modus-wc-autocomplete active-item-value="1" bordered="false" class="modus-wc-autocomplete test-class" custom-class="test-class" debounce-ms="500" disabled="true" input-id="test-id" input-tab-index="1" label="Test label" min-chars="2" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" value="Item 1">
+  <modus-wc-input-label forid="test-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
   <modus-wc-text-input value="Item 1">
     <input aria-describedby="description" aria-label="Test autocomplete" aria-placeholder="Test placeholder" aria-required="" class="modus-wc-input modus-wc-input-lg modus-wc-w-full" disabled="" id="test-id" inputmode="text" name="test-name" placeholder="Test placeholder" required="" tabindex="1" type="text" value="Item 1">
   </modus-wc-text-input>

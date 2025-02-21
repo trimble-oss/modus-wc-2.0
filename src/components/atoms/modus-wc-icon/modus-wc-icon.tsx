@@ -44,7 +44,7 @@ export class ModusWcIcon {
   }
 
   private getClasses(): string {
-    const classList = ['modus-icons'];
+    const classList = ['modus-wc-icon modus-icons'];
 
     // The order CSS classes are added matters to CSS specificity
     classList.push(`modus-wc-icon--${this.size}`);
