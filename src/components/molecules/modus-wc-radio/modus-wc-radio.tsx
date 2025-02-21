@@ -8,8 +8,15 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-radio.tailwind';
-import { ModusSize } from '../../types';
+import { DaisySize, ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
+
+const LABEL_SIZE: Record<DaisySize, ModusSize> = {
+  xs: 'sm',
+  sm: 'md',
+  md: 'lg',
+  lg: 'lg',
+};
 
 /**
  * A customizable radio component.
@@ -33,14 +40,14 @@ export class ModusWcRadio {
   /** The disabled state of the radio. */
   @Prop() disabled?: boolean = false;
 
-  /** Specifies the text direction of the input content. */
-  @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
-
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
   /** The tabindex of the input. */
   @Prop() inputTabIndex?: number;
+
+  /** The text to display within the label. */
+  @Prop() label?: string;
 
   /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string = '';
@@ -98,14 +105,15 @@ export class ModusWcRadio {
   };
 
   render() {
+    const labelSize = this.size && LABEL_SIZE[this.size];
+
     return (
-      <Host>
+      <Host class="modus-wc-radio-host">
         <input
           aria-checked={this.value}
           aria-disabled={this.disabled}
           checked={this.value}
           class={this.getClasses()}
-          dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}
           name={this.name}
@@ -117,6 +125,14 @@ export class ModusWcRadio {
           type="radio"
           {...this.inheritedAttributes}
         />
+        {this.label && (
+          <modus-wc-input-label
+            forId={this.inputId}
+            labelText={this.label}
+            required={this.required}
+            size={labelSize}
+          />
+        )}
       </Host>
     );
   }

@@ -3,6 +3,15 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+.modus-wc-radio-host {
+  display: flex;
+  align-items: center;
+
+  .modus-wc-input-label {
+    padding-inline-start: var(--modus-wc-spacing-md);
+  }
+}
+
 [data-theme='modus-classic-light'] .modus-wc-radio,
 [data-theme='modus-classic-dark'] .modus-wc-radio {
   --fallback-bc: var(--modus-wc-color-gray-4);
