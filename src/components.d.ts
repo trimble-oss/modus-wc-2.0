@@ -98,10 +98,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -113,6 +109,10 @@ export namespace Components {
           * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
         "items": IAutocompleteItem[];
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * The minimum number of characters required to render the menu.
          */
@@ -2123,10 +2123,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2138,6 +2134,10 @@ declare namespace LocalJSX {
           * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
         "items"?: IAutocompleteItem[];
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * The minimum number of characters required to render the menu.
          */

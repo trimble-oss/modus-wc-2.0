@@ -60,9 +60,6 @@ export class ModusWcAutocomplete {
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
 
-  /** Specifies the text direction of the input content. */
-  @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
-
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
@@ -74,6 +71,9 @@ export class ModusWcAutocomplete {
    * Creating a new array of items will ensure proper component re-render.
    **/
   @Prop() items: IAutocompleteItem[] = [];
+
+  /** The text to display within the label. */
+  @Prop() label?: string;
 
   /** The minimum number of characters required to render the menu. */
   @Prop() minChars: number = 0;
@@ -267,7 +267,15 @@ export class ModusWcAutocomplete {
     };
 
     return (
-      <Host class={this.getClasses()} dir={this.inputDir}>
+      <Host class={this.getClasses()}>
+        {this.label && (
+          <modus-wc-input-label
+            forId={this.inputId}
+            labelText={this.label}
+            required={this.required}
+            size={this.size}
+          />
+        )}
         {this.multiSelect ? (
           <div
             class={`modus-wc-autocomplete-multi-select ${this.bordered ? 'modus-wc-autocomplete-multi-select--bordered' : ''}`}

@@ -3156,14 +3156,6 @@
               "description": "Whether the form control is disabled."
             },
             {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
               "name": "input-id",
               "fieldName": "inputId",
               "type": {
@@ -3186,6 +3178,14 @@
                 "text": "IAutocompleteItem[]"
               },
               "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
             },
             {
               "name": "min-chars",
