@@ -666,6 +666,10 @@ export namespace Components {
           * Specifies if the modal can be closed by clicking outside of it
          */
         "outsideClickClose"?: boolean;
+        /**
+          * Specifies whether to show the close icon button at the top right of modal
+         */
+        "showCornerCloseButton"?: boolean;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -2784,6 +2788,10 @@ declare namespace LocalJSX {
           * Specifies if the modal can be closed by clicking outside of it
          */
         "outsideClickClose"?: boolean;
+        /**
+          * Specifies whether to show the close icon button at the top right of modal
+         */
+        "showCornerCloseButton"?: boolean;
     }
     /**
      * A customizable input component used to create number inputs with types.

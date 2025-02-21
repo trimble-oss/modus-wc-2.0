@@ -3969,6 +3969,14 @@
                 "text": "boolean"
               },
               "description": "Specifies if the modal can be closed by clicking outside of it"
+            },
+            {
+              "name": "show-corner-close-button",
+              "fieldName": "showCornerCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Specifies whether to show the close icon button at the top right of modal"
             }
           ],
           "tagName": "modus-wc-modal",

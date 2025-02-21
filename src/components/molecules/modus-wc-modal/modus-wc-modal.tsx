@@ -27,6 +27,9 @@ export class ModusWcModal {
   /** Specifies if the modal can be closed by clicking outside of it */
   @Prop() outsideClickClose?: boolean = true;
 
+  /** Specifies whether to show the close icon button at the top right of modal */
+  @Prop() showCornerCloseButton?: boolean = true;
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -52,6 +55,13 @@ export class ModusWcModal {
           {...this.inheritedAttributes}
         >
           <div class="modus-wc-modal-box">
+            {this.showCornerCloseButton && (
+              <form method="dialog">
+                <button class="modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-absolute modus-wc-right-2 modus-wc-top-2">
+                  ✕
+                </button>
+              </form>
+            )}
             <div class="modus-wc-text-lg modus-wc-font-bold">
               <slot name="title" />
             </div>

@@ -6,6 +6,7 @@ interface ModalArgs {
   'custom-class'?: string;
   'modal-id'?: string;
   'outside-click-close'?: boolean;
+  'show-corner-close-button'?: boolean;
 }
 
 const meta: Meta<ModalArgs> = {
@@ -14,6 +15,7 @@ const meta: Meta<ModalArgs> = {
   args: {
     'modal-id': 'my_modal_1',
     'outside-click-close': true,
+    'show-corner-close-button': true,
   },
   parameters: {
     layout: 'centered',
@@ -36,11 +38,12 @@ export const DefaultModal: Story = {
   custom-class=${ifDefined(args['custom-class'])}
   modal-id=${ifDefined(args['modal-id'])}
   outside-click-close=${ifDefined(args['outside-click-close'])}
+  show-corner-close-button=${ifDefined(args['show-corner-close-button'])}
 >
   <span slot="title">Modal Title</span>
   <span slot="content"> This is a sample modal content. </span>
   <div slot="actions">
-    <modus-wc-button onclick="my_modal_1.close()">
+    <modus-wc-button onclick="${ifDefined(args['modal-id'])}.close()">
       Close
     </modus-wc-button>
   </div>
