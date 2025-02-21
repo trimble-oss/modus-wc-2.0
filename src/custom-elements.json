@@ -234,14 +234,6 @@
               "description": "If true, the button will take the full width of its container."
             },
             {
-              "name": "label",
-              "fieldName": "label",
-              "type": {
-                "text": "string"
-              },
-              "description": "The text label displayed on the button."
-            },
-            {
               "name": "pressed",
               "fieldName": "pressed",
               "type": {
@@ -3574,12 +3566,20 @@
           ],
           "attributes": [
             {
+              "name": "background-figure",
+              "fieldName": "backgroundFigure",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Makes any \\<figure> in the 'header' slot cover the background"
+            },
+            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
                 "text": "boolean"
               },
-              "description": "Adds a border to the card"
+              "description": "Adds a hard border to the card"
             },
             {
               "name": "custom-class",
@@ -3590,20 +3590,12 @@
               "description": "Custom CSS class to apply"
             },
             {
-              "name": "image-full",
-              "fieldName": "imageFull",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Makes any \\<figure> in the 'figure' slot cover the background"
-            },
-            {
               "name": "layout",
               "fieldName": "layout",
               "type": {
-                "text": "'stacked' | 'side'"
+                "text": "'vertical' | 'horizontal'"
               },
-              "description": "Display mode - stacked or side image"
+              "description": "Determines how the card is laid out"
             },
             {
               "name": "padding",
@@ -3611,7 +3603,7 @@
               "type": {
                 "text": "'normal' | 'compact'"
               },
-              "description": "Card padding variant - normal or compact"
+              "description": "Determines if the interior padding is compact or not"
             }
           ],
           "tagName": "modus-wc-card",
@@ -3634,6 +3626,158 @@
           "declaration": {
             "name": "ModusWcCard",
             "module": "src/components/molecules/modus-wc-card/modus-wc-card.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-chip/modus-wc-chip.icons.tsx",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "SolidCancelIcon",
+          "parameters": [
+            {
+              "name": "{\r\n  onClick,\r\n}"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SolidCancelIcon",
+          "declaration": {
+            "name": "SolidCancelIcon",
+            "module": "src/components/molecules/modus-wc-chip/modus-wc-chip.icons.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-chip/modus-wc-chip.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable chip component used to display information in a compact area.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcChip",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element."
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "active",
+              "fieldName": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Active state of chip."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the chip is disabled."
+            },
+            {
+              "name": "has-error",
+              "fieldName": "hasError",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the chip has an error."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The label to display in the chip."
+            },
+            {
+              "name": "show-remove",
+              "fieldName": "showRemove",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether to show the close icon on right side of the chip."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the chip."
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "type": {
+                "text": "'filled' | 'outline'"
+              },
+              "description": "The variant of the chip."
+            }
+          ],
+          "tagName": "modus-wc-chip",
+          "events": [
+            {
+              "name": "chipClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the chip is clicked or activated via keyboard."
+            },
+            {
+              "name": "chipRemove",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the close chip icon button is clicked."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcChip",
+          "declaration": {
+            "name": "ModusWcChip",
+            "module": "src/components/molecules/modus-wc-chip/modus-wc-chip.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-chip",
+          "declaration": {
+            "name": "ModusWcChip",
+            "module": "src/components/molecules/modus-wc-chip/modus-wc-chip.tsx"
           }
         }
       ]

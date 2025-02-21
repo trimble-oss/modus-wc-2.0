@@ -5,12 +5,10 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { DaisySize } from '../../types';
 
 interface ButtonArgs {
-  'aria-label': string;
   color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   'custom-class'?: string;
   disabled: boolean;
   'full-width': boolean;
-  label: string;
   pressed: boolean;
   shape: 'circle' | 'rectangle' | 'square';
   size: DaisySize;
@@ -22,11 +20,9 @@ const meta: Meta<ButtonArgs> = {
   title: 'Components/Button',
   component: 'modus-wc-button',
   args: {
-    'aria-label': 'Click me button',
     color: 'primary',
     disabled: false,
     'full-width': false,
-    label: 'Click me',
     pressed: false,
     shape: 'rectangle',
     size: 'md',
@@ -35,23 +31,23 @@ const meta: Meta<ButtonArgs> = {
   },
   argTypes: {
     color: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],
     },
     shape: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['circle', 'rectangle', 'square'],
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
     },
     type: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['button', 'submit', 'reset'],
     },
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['borderless', 'filled', 'outlined'],
     },
   },
@@ -69,20 +65,22 @@ type Story = StoryObj<ButtonArgs>;
 
 const Template: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
-      <modus-wc-button
-        aria-label="${args['aria-label']}"
-        color="${args.color}"
-        custom-class="${ifDefined(args['custom-class'])}"
-        ?disabled="${args.disabled}"
-        ?full-width="${args['full-width']}"
-        label="${args.label}"
-        ?pressed="${args.pressed}"
-        shape="${args.shape}"
-        size="${args.size}"
-        type="${args.type}"
-        variant="${args.variant}"
-      ></modus-wc-button>
+<modus-wc-button
+  aria-label="Click me button"
+  color="${args.color}"
+  custom-class="${ifDefined(args['custom-class'])}"
+  ?disabled="${args.disabled}"
+  ?full-width="${args['full-width']}"
+  ?pressed="${args.pressed}"
+  shape="${args.shape}"
+  size="${args.size}"
+  type="${args.type}"
+  variant="${args.variant}"
+>
+  Click me
+</modus-wc-button>
     `;
   },
 };
@@ -91,64 +89,69 @@ export const Default: Story = {
   ...Template,
 };
 
-// prettier-ignore
 export const ButtonShapes: Story = {
-  render: (args) => {
+  render: () => {
+    // prettier-ignore
     return html`
 <modus-wc-button
-  aria-label="${args['aria-label']}"
-  label="Click me"
+  aria-label="Circle button"
   shape="circle"
-></modus-wc-button>
+>
+  Circle
+</modus-wc-button>
 <modus-wc-button
-  aria-label="${args['aria-label']}"
-  label="Click me"
+  aria-label="Square button"
   shape="square"
-></modus-wc-button>
+>
+  Square
+</modus-wc-button>
     `;
   },
 };
 
-// prettier-ignore
 export const IconOnlyButton: Story = {
   render: () => {
+    // prettier-ignore
     return html`
-<modus-wc-button aria-label="notification button">
-  <modus-wc-icon aria-label="notify icon" decorative name="notifications"></modus-wc-icon>
+<modus-wc-button aria-label="Notification button">
+  <modus-wc-icon decorative name="notifications"></modus-wc-icon>
 </modus-wc-button>
     `;
   },
 };
 
-// prettier-ignore
 export const IconLeftButton: Story = {
   render: () => {
+    // prettier-ignore
     return html`
-<modus-wc-button aria-label="download button" label="Download">
-  <modus-wc-icon aria-label="download icon" decorative name="download" slot="left"></modus-wc-icon>
+<modus-wc-button aria-label="Download button">
+  <modus-wc-icon decorative name="download"></modus-wc-icon>
+  Download
 </modus-wc-button>
     `;
   },
 };
 
-// prettier-ignore
 export const IconRightButton: Story = {
   render: () => {
+    // prettier-ignore
     return html`
-<modus-wc-button aria-label="details button" label="Details">
-  <modus-wc-icon aria-label="launch icon" decorative name="launch" slot="right"></modus-wc-icon>
+<modus-wc-button aria-label="Details button">
+  Details
+  <modus-wc-icon decorative name="launch"></modus-wc-icon>
 </modus-wc-button>
     `;
   },
 };
 
-// prettier-ignore
 export const IconLeftAndRightButton: Story = {
   render: () => {
+    // prettier-ignore
     return html`
-<modus-wc-button aria-label="checkout button" label="Checkout">
-  <modus-wc-icon aria-label="shopping cart icon" decorative name="shopping_cart" slot="left"></modus-wc-icon>
-  <modus-wc-icon aria-label="shopping cart icon" decorative name="shopping_cart" slot="right"></modus-wc-icon>
+<modus-wc-button aria-label="Checkout button">
+  <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
+  Checkout
+  <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
 </modus-wc-button>
     `;
   },

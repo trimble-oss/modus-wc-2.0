@@ -13,13 +13,13 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property      | Attribute      | Description                                                   | Type                                 | Default     |
-| ------------- | -------------- | ------------------------------------------------------------- | ------------------------------------ | ----------- |
-| `bordered`    | `bordered`     | Adds a border to the card                                     | `boolean \| undefined`               | `false`     |
-| `customClass` | `custom-class` | Custom CSS class to apply                                     | `string \| undefined`                | `''`        |
-| `imageFull`   | `image-full`   | Makes any \<figure> in the 'figure' slot cover the background | `boolean \| undefined`               | `false`     |
-| `layout`      | `layout`       | Display mode - stacked or side image                          | `"side" \| "stacked" \| undefined`   | `'stacked'` |
-| `padding`     | `padding`      | Card padding variant - normal or compact                      | `"compact" \| "normal" \| undefined` | `'normal'`  |
+| Property           | Attribute           | Description                                                   | Type                                      | Default      |
+| ------------------ | ------------------- | ------------------------------------------------------------- | ----------------------------------------- | ------------ |
+| `backgroundFigure` | `background-figure` | Makes any \<figure> in the 'header' slot cover the background | `boolean \| undefined`                    | `false`      |
+| `bordered`         | `bordered`          | Adds a hard border to the card                                | `boolean \| undefined`                    | `false`      |
+| `customClass`      | `custom-class`      | Custom CSS class to apply                                     | `string \| undefined`                     | `''`         |
+| `layout`           | `layout`            | Determines how the card is laid out                           | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
+| `padding`          | `padding`           | Determines if the interior padding is compact or not          | `"compact" \| "normal" \| undefined`      | `'normal'`   |
 
 
 ----------------------------------------------
