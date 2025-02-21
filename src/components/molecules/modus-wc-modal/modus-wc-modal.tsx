@@ -27,6 +27,9 @@ export class ModusWcModal {
   /** Specifies if the modal can be closed by clicking outside of it */
   @Prop() outsideClickClose?: boolean = true;
 
+  /** Specifies the position of the modal */
+  @Prop() position?: 'center' | 'top' | 'bottom' = 'center';
+
   /** Specifies whether to show the close icon button at the top right of modal */
   @Prop() showCornerCloseButton?: boolean = true;
 
@@ -37,7 +40,9 @@ export class ModusWcModal {
   private getClasses(): string {
     const classList = ['modus-wc-modal'];
 
-    const propClasses = convertPropsToClasses({});
+    const propClasses = convertPropsToClasses({
+      position: this.position,
+    });
 
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
@@ -57,6 +62,7 @@ export class ModusWcModal {
           <div class="modus-wc-modal-box">
             {this.showCornerCloseButton && (
               <form method="dialog">
+                {/* TODO: try to use modus-wc-button instead */}
                 <button class="modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-absolute modus-wc-right-2 modus-wc-top-2">
                   ✕
                 </button>

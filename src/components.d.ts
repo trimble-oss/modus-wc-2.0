@@ -667,6 +667,10 @@ export namespace Components {
          */
         "outsideClickClose"?: boolean;
         /**
+          * Specifies the position of the modal
+         */
+        "position"?: 'center' | 'top' | 'bottom';
+        /**
           * Specifies whether to show the close icon button at the top right of modal
          */
         "showCornerCloseButton"?: boolean;
@@ -2788,6 +2792,10 @@ declare namespace LocalJSX {
           * Specifies if the modal can be closed by clicking outside of it
          */
         "outsideClickClose"?: boolean;
+        /**
+          * Specifies the position of the modal
+         */
+        "position"?: 'center' | 'top' | 'bottom';
         /**
           * Specifies whether to show the close icon button at the top right of modal
          */

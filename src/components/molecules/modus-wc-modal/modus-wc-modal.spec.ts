@@ -16,6 +16,8 @@ describe('modus-wc-modal', () => {
       html: `<modus-wc-card
             custom-class="test-class"
             outside-click-close="false"
+            position="top"
+            show-corner-close-button="false"
             ></modus-wc-card>`,
     });
     expect(page.root).toMatchSnapshot();

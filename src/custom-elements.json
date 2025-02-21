@@ -3971,6 +3971,14 @@
               "description": "Specifies if the modal can be closed by clicking outside of it"
             },
             {
+              "name": "position",
+              "fieldName": "position",
+              "type": {
+                "text": "'center' | 'top' | 'bottom'"
+              },
+              "description": "Specifies the position of the modal"
+            },
+            {
               "name": "show-corner-close-button",
               "fieldName": "showCornerCloseButton",
               "type": {
