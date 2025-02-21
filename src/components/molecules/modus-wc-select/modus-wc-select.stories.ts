@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ISelectOption } from './modus-wc-select';
-import { DaisySize } from '../../types';
+import { ModusSize } from '../../types';
 
 const options: ISelectOption[] = [
   { label: 'Option 1', value: '1' },
@@ -12,19 +12,17 @@ const options: ISelectOption[] = [
 ];
 
 interface SelectArgs {
-  'aria-describedby'?: string;
-  'aria-label': string;
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
   'input-aria-invalid'?: 'true' | 'false';
-  'input-dir'?: '' | 'ltr' | 'rtl' | 'auto';
   'input-id'?: string;
   'input-tab-index'?: number;
+  label?: string;
   name?: string;
   options: ISelectOption[];
   required?: boolean;
-  size?: DaisySize;
+  size?: ModusSize;
   value: string;
 }
 
@@ -32,24 +30,20 @@ const meta: Meta<SelectArgs> = {
   title: 'Components/Forms/Select',
   component: 'modus-wc-select',
   args: {
-    'aria-label': 'Select a range',
     bordered: true,
     disabled: false,
+    label: 'Label',
     options,
     size: 'md',
     value: '',
   },
   argTypes: {
     'input-aria-invalid': {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['true', 'false'],
     },
-    'input-dir': {
-      control: { type: 'inline-radio' },
-      options: ['ltr', 'rtl', 'auto'],
-    },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
   },
@@ -68,15 +62,14 @@ type Story = StoryObj<SelectArgs>;
 export const Template: Story = {
   render: (args) => html`
     <modus-wc-select
-      aria-describedby=${ifDefined(args['aria-describedby'])}
-      aria-label=${args['aria-label']}
+      aria-label="Select input"
       ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
-      input-dir=${ifDefined(args['input-dir'])}
       input-id=${ifDefined(args['input-id'])}
       input-tab-index=${ifDefined(args['input-tab-index'])}
+      label=${ifDefined(args.label)}
       name=${ifDefined(args.name)}
       .options=${args.options}
       ?required=${args.required}

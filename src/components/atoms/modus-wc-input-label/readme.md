@@ -34,6 +34,8 @@ Adheres to WCAG 2.2 standards.
  - [modus-wc-date](../../molecules/modus-wc-date)
  - [modus-wc-number-input](../../molecules/modus-wc-number-input)
  - [modus-wc-radio](../../molecules/modus-wc-radio)
+ - [modus-wc-select](../../molecules/modus-wc-select)
+ - [modus-wc-slider](../../molecules/modus-wc-slider)
 
 ### Graph
 ```mermaid
@@ -43,6 +45,8 @@ graph TD;
   modus-wc-date --> modus-wc-input-label
   modus-wc-number-input --> modus-wc-input-label
   modus-wc-radio --> modus-wc-input-label
+  modus-wc-select --> modus-wc-input-label
+  modus-wc-slider --> modus-wc-input-label
   style modus-wc-input-label fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-select renders with default props 1`] = `
+<modus-wc-select value="">
+  <select aria-label="Default select" class="modus-wc-select modus-wc-select-bordered modus-wc-select-md modus-wc-w-full"></select>
+</modus-wc-select>
+`;
+
+exports[`modus-wc-select should render with custom props 1`] = `
+<modus-wc-select '1'="" 'option="" 1',="" auto-focus="true" bordered="false" custom-class="test-class" disabled="true" input-aria-invalid="true" input-id="custom-id" input-tab-index="1" label="Test label" label:="" name="test-name" options="{[{" required="true" size="lg" value="1" value:="" }]}="">
+  <modus-wc-input-label forid="custom-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
+  <select aria-describedby="description" aria-label="Test select" class="modus-wc-select modus-wc-select-lg modus-wc-w-full test-class" disabled="" id="custom-id" name="test-name" required="" tabindex="1"></select>
+</modus-wc-select>
+`;
