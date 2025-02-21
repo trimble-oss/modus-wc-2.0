@@ -8,15 +8,9 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-radio.tailwind';
-import { DaisySize, ModusSize } from '../../types';
+import { DAISY_TO_MODUS_LABEL_SIZE } from '../../constants';
+import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
-
-const LABEL_SIZE: Record<DaisySize, ModusSize> = {
-  xs: 'sm',
-  sm: 'md',
-  md: 'lg',
-  lg: 'lg',
-};
 
 /**
  * A customizable radio component.
@@ -105,7 +99,7 @@ export class ModusWcRadio {
   };
 
   render() {
-    const labelSize = this.size && LABEL_SIZE[this.size];
+    const labelSize = this.size && DAISY_TO_MODUS_LABEL_SIZE[this.size];
 
     return (
       <Host class="modus-wc-radio-host">
