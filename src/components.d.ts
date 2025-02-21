@@ -429,10 +429,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -440,6 +436,10 @@ export namespace Components {
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Maximum date value.
          */
@@ -2502,10 +2502,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2513,6 +2509,10 @@ declare namespace LocalJSX {
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Maximum date value.
          */

@@ -31,12 +31,14 @@ Adheres to WCAG 2.2 standards.
 
  - [modus-wc-autocomplete](../../molecules/modus-wc-autocomplete)
  - [modus-wc-checkbox](../../molecules/modus-wc-checkbox)
+ - [modus-wc-date](../../molecules/modus-wc-date)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-autocomplete --> modus-wc-input-label
   modus-wc-checkbox --> modus-wc-input-label
+  modus-wc-date --> modus-wc-input-label
   style modus-wc-input-label fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
