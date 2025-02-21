@@ -26,9 +26,6 @@ export class ModusWcInputLabel {
   /** Additional classes for custom styling. */
   @Prop() customClass?: string = '';
 
-  /** Specifies the text direction of the label content. */
-  @Prop() labelDir?: '' | 'ltr' | 'rtl' | 'auto';
-
   /** The text to display within the label. */
   @Prop() labelText?: string;
 
@@ -54,7 +51,7 @@ export class ModusWcInputLabel {
 
   render() {
     return (
-      <Host dir={this.labelDir}>
+      <Host>
         <label
           class={this.getClasses()}
           htmlFor={this.forId}

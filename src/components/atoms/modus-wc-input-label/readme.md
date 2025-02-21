@@ -15,14 +15,13 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                  | Type                                          | Default     |
-| ------------- | -------------- | ---------------------------------------------------------------------------- | --------------------------------------------- | ----------- |
-| `customClass` | `custom-class` | Additional classes for custom styling.                                       | `string \| undefined`                         | `''`        |
-| `forId`       | `for-id`       | The `for` attribute of the label, matching the `id` of the associated input. | `string \| undefined`                         | `undefined` |
-| `labelDir`    | `label-dir`    | Specifies the text direction of the label content.                           | `"" \| "auto" \| "ltr" \| "rtl" \| undefined` | `undefined` |
-| `labelText`   | `label-text`   | The text to display within the label.                                        | `string \| undefined`                         | `undefined` |
-| `required`    | `required`     | Whether the label indicates a required field.                                | `boolean \| undefined`                        | `false`     |
-| `size`        | `size`         | The size of the label.                                                       | `"lg" \| "md" \| "sm" \| undefined`           | `'md'`      |
+| Property      | Attribute      | Description                                                                  | Type                                | Default     |
+| ------------- | -------------- | ---------------------------------------------------------------------------- | ----------------------------------- | ----------- |
+| `customClass` | `custom-class` | Additional classes for custom styling.                                       | `string \| undefined`               | `''`        |
+| `forId`       | `for-id`       | The `for` attribute of the label, matching the `id` of the associated input. | `string \| undefined`               | `undefined` |
+| `labelText`   | `label-text`   | The text to display within the label.                                        | `string \| undefined`               | `undefined` |
+| `required`    | `required`     | Whether the label indicates a required field.                                | `boolean \| undefined`              | `false`     |
+| `size`        | `size`         | The size of the label.                                                       | `"lg" \| "md" \| "sm" \| undefined` | `'md'`      |
 
 
 ## Dependencies
@@ -38,6 +37,8 @@ Adheres to WCAG 2.2 standards.
  - [modus-wc-slider](../../molecules/modus-wc-slider)
  - [modus-wc-text-input](../../molecules/modus-wc-text-input)
  - [modus-wc-textarea](../../molecules/modus-wc-textarea)
+ - [modus-wc-time-input](../../molecules/modus-wc-time-input)
+ - [modus-wc-toggle](../../molecules/modus-wc-toggle)
 
 ### Graph
 ```mermaid
@@ -51,6 +52,8 @@ graph TD;
   modus-wc-slider --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-input-label
   modus-wc-textarea --> modus-wc-input-label
+  modus-wc-time-input --> modus-wc-input-label
+  modus-wc-toggle --> modus-wc-input-label
   style modus-wc-input-label fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

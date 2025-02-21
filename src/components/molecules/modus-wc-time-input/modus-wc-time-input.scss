@@ -3,13 +3,13 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-[data-theme='modus-classic-dark'] .modus-wc-input {
-  color-scheme: dark; // needed to ensure the clock icon button is visible in dark mode
-}
-
 [data-theme='modus-classic-light'] .modus-wc-input,
 [data-theme='modus-classic-dark'] .modus-wc-input {
   border-radius: var(--modus-wc-border-radius-md);
+
+  .modus-wc-input-label {
+    padding-bottom: var(--modus-wc-spacing-2xs);
+  }
 
   &.modus-wc-input-sm {
     font-size: var(--modus-wc-font-size-sm);
@@ -48,6 +48,10 @@
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-input:focus {
-  border-color: var(--modus-wc-color-highlight-blue);
+[data-theme='modus-classic-dark'] .modus-wc-input {
+  color-scheme: dark; // needed to ensure the clock icon button is visible in dark mode
+
+  &:focus {
+    border-color: var(--modus-wc-color-highlight-blue);
+  }
 }

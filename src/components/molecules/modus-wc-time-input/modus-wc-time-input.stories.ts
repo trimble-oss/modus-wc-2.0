@@ -7,17 +7,15 @@ import { ModusSize } from '../../types';
 // const timeOptions = ['08:00', '12:00', '17:00'];
 
 interface TimeInputArgs {
-  'aria-describedby'?: string;
-  'aria-label': string;
   'auto-complete'?: 'on' | 'off';
   bordered?: boolean;
   'custom-class'?: string;
   'datalist-id'?: string;
   'datalist-options'?: string[];
   disabled?: boolean;
-  'input-dir'?: '' | 'ltr' | 'rtl' | 'auto';
   'input-id'?: string;
   'input-tab-index'?: number;
+  label?: string;
   max?: string;
   min?: string;
   name?: string;
@@ -33,21 +31,17 @@ const meta: Meta<TimeInputArgs> = {
   title: 'Components/Forms/Time Input',
   component: 'modus-wc-time-input',
   args: {
-    'aria-label': 'Time input',
     disabled: false,
+    label: 'Label',
     size: 'md',
   },
   argTypes: {
     'auto-complete': {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['on', 'off'],
     },
-    'input-dir': {
-      control: { type: 'inline-radio' },
-      options: ['ltr', 'rtl', 'auto'],
-    },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
   },
@@ -66,16 +60,15 @@ type Story = StoryObj<TimeInputArgs>;
 export const Template: Story = {
   render: (args) => html`
     <modus-wc-time-input
-      aria-describedby=${ifDefined(args['aria-describedby'])}
-      aria-label=${args['aria-label']}
+      aria-label="Time input"
       auto-complete=${ifDefined(args['auto-complete'])}
       bordered=${ifDefined(args.bordered)}
       custom-class=${ifDefined(args['custom-class'])}
       datalist-id=${ifDefined(args['datalist-id'])}
       ?disabled=${args.disabled}
-      input-dir=${ifDefined(args['input-dir'])}
       input-id=${ifDefined(args['input-id'])}
       input-tab-index=${ifDefined(args['input-tab-index'])}
+      label=${ifDefined(args.label)}
       max=${ifDefined(args.max)}
       min=${ifDefined(args.min)}
       name=${ifDefined(args.name)}
@@ -90,36 +83,6 @@ export const Template: Story = {
   `,
 };
 
-// prettier-ignore
-export const TimeInputWithLabel: Story = {
-  render: () => {
-    return html`
-<style>
-  .form-control {
-    display: flex;
-    align-items: center;
-  }
-  .modus-wc-input-label {
-    padding-inline-end: 8px;
-  }
-</style>
-<form action="" method="get">
-<div class="form-control">
-  <modus-wc-input-label
-    for-id="time-input"
-    label-text="Example time input"
-  ></modus-wc-input-label>
-  <modus-wc-time-input
-    aria-label="Example time input"
-    input-id="time-input"
-    name="example-time-input"
-  ></modus-wc-time-input>
-</div>
-</form>
-    `;
-  },
-};
-
 export const TimeInputWithSeconds: Story = {
   render: () => {
     return html`
@@ -131,9 +94,9 @@ export const TimeInputWithSeconds: Story = {
   },
 };
 
-// prettier-ignore
 export const TimeInputWithDatalist: Story = {
   render: () => {
+    // prettier-ignore
     return html`
 <modus-wc-time-input
   aria-label="Example time input"
@@ -148,9 +111,9 @@ export const TimeInputWithDatalist: Story = {
   },
 };
 
-// prettier-ignore
 export const TimeInputWithDatalistOptions: Story = {
   render: () => {
+    // prettier-ignore
     return html`
 <script>
   document.addEventListener('DOMContentLoaded', () => {
