@@ -10,7 +10,7 @@ import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 import { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
 import { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
-import { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
+import { ISelectOption } from "./components/molecules/modus-wc-select/modus-wc-select";
 import { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
 import { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
@@ -21,7 +21,7 @@ export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 export { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
 export { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
-export { ISelectOption } from "./components/atoms/modus-wc-select/modus-wc-select";
+export { ISelectOption } from "./components/molecules/modus-wc-select/modus-wc-select";
 export { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
 export { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
@@ -807,10 +807,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -818,6 +814,10 @@ export namespace Components {
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -833,7 +833,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * The value of the control.
          */
@@ -875,10 +875,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -886,6 +882,10 @@ export namespace Components {
           * The tabindex of the input.
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * The maximum slider value.
          */
@@ -905,7 +905,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * The increment of the slider.
          */
@@ -2920,10 +2920,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2931,6 +2927,10 @@ declare namespace LocalJSX {
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -2958,7 +2958,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * The value of the control.
          */
@@ -3000,10 +3000,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -3011,6 +3007,10 @@ declare namespace LocalJSX {
           * The tabindex of the input.
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * The maximum slider value.
          */
@@ -3042,7 +3042,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * The increment of the slider.
          */

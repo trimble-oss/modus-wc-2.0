@@ -7,6 +7,10 @@
 [data-theme='modus-classic-dark'] .modus-wc-range {
   --range-shdw: var(--modus-wc-color-trimble-blue);
 
+  .modus-wc-input-label {
+    padding-bottom: var(--modus-wc-spacing-2xs);
+  }
+
   &.modus-wc-range-xl {
     height: 4rem;
   }

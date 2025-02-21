@@ -8,7 +8,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-slider.tailwind';
-import { DaisySize } from '../../types';
+import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
@@ -33,14 +33,14 @@ export class ModusWcSlider {
   /** The disabled state of the slider. */
   @Prop() disabled?: boolean = false;
 
-  /** Specifies the text direction of the input content. */
-  @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
-
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
   /** The tabindex of the input. */
   @Prop() inputTabIndex?: number;
+
+  /** The text to display within the label. */
+  @Prop() label?: string;
 
   /** The maximum slider value. */
   @Prop() max?: number;
@@ -55,7 +55,7 @@ export class ModusWcSlider {
   @Prop() required?: boolean = false;
 
   /** The size of the input. */
-  @Prop() size?: DaisySize = 'xs';
+  @Prop() size?: ModusSize = 'md';
 
   /** The increment of the slider. */
   @Prop() step?: number;
@@ -110,10 +110,17 @@ export class ModusWcSlider {
   render() {
     return (
       <Host>
+        {this.label && (
+          <modus-wc-input-label
+            forId={this.inputId}
+            labelText={this.label}
+            required={this.required}
+            size={this.size}
+          />
+        )}
         <input
           aria-disabled={this.disabled}
           class={this.getClasses()}
-          dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}
           max={this.max}
