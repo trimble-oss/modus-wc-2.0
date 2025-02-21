@@ -35,10 +35,10 @@ describe('modus-wc-time-input', () => {
                 bordered
                 custom-class="custom"
                 disabled
-                input-dir="ltr"
                 input-id="time-input"
                 input-tab-index="1"
                 datalist-id="time-options"
+                label="Test label"
                 max="23:59"
                 min="00:00"
                 name="time"

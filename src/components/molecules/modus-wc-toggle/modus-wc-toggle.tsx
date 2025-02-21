@@ -8,7 +8,8 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-toggle.tailwind';
-import { DaisySize } from '../../types';
+import { DAISY_TO_MODUS_LABEL_SIZE } from '../../constants';
+import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
@@ -36,14 +37,14 @@ export class ModusWcToggle {
   /** The indeterminate state of the toggle. */
   @Prop({ reflect: true, mutable: true }) indeterminate: boolean = false;
 
-  /** Specifies the text direction of the input content. */
-  @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
-
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
   /** The tabindex of the input. */
   @Prop() inputTabIndex?: number;
+
+  /** The text to display within the label. */
+  @Prop() label?: string;
 
   /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string = '';
@@ -52,7 +53,7 @@ export class ModusWcToggle {
   @Prop() required?: boolean = false;
 
   /** The size of the input. */
-  @Prop() size?: DaisySize = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /** The value of the toggle. */
   @Prop({ mutable: true, reflect: true }) value: boolean = false;
@@ -111,14 +112,15 @@ export class ModusWcToggle {
   };
 
   render() {
+    const labelSize = this.size && DAISY_TO_MODUS_LABEL_SIZE[this.size];
+
     return (
-      <Host>
+      <Host class="modus-wc-toggle-host">
         <input
           aria-checked={this.indeterminate ? 'mixed' : this.value}
           aria-disabled={this.disabled}
           checked={this.value}
           class={this.getClasses()}
-          dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}
           onBlur={this.handleBlur}
@@ -129,6 +131,14 @@ export class ModusWcToggle {
           type="checkbox"
           {...this.inheritedAttributes}
         />
+        {this.label && (
+          <modus-wc-input-label
+            forId={this.inputId}
+            labelText={this.label}
+            required={this.required}
+            size={labelSize}
+          />
+        )}
       </Host>
     );
   }

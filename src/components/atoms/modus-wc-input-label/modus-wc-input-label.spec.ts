@@ -13,12 +13,11 @@ describe('modus-wc-input-label', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcInputLabel],
-      html: `<modus-wc-input-label 
-              for-id="input-id" 
-              custom-class="test-class" 
-              label-dir="rtl" 
-              label-text="Custom label" 
-              required="true" 
+      html: `<modus-wc-input-label
+              for-id="input-id"
+              custom-class="test-class"
+              label-text="Custom label"
+              required="true"
               size="lg">
             </modus-wc-input-label>`,
     });
