@@ -14,6 +14,7 @@ interface CheckboxArgs {
   'input-dir'?: 'ltr' | 'rtl' | 'auto';
   'input-id'?: string;
   'input-tab-index'?: number;
+  label?: string;
   name?: string;
   required?: boolean;
   size?: DaisySize;
@@ -28,6 +29,7 @@ const meta: Meta<CheckboxArgs> = {
     'custom-class': '',
     disabled: false,
     indeterminate: false,
+    label: 'Label',
     name: '',
     required: false,
     size: 'md',
@@ -36,12 +38,12 @@ const meta: Meta<CheckboxArgs> = {
   argTypes: {
     'input-dir': {
       control: {
-        type: 'inline-radio',
+        type: 'select',
       },
       options: ['ltr', 'rtl', 'auto'],
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
     },
   },
@@ -70,40 +72,12 @@ export const Template: Story = {
         input-dir=${ifDefined(args['input-dir'])}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
+        label=${ifDefined(args.label)}
         name=${ifDefined(args.name)}
         ?required=${args.required}
         size=${ifDefined(args.size)}
         .value=${args.value}
       ></modus-wc-checkbox>
-    `;
-  },
-};
-
-// prettier-ignore
-export const CheckboxWithLabel: Story = {
-  render: () => {
-    return html`
-<style>
-  .form-control {
-    display: flex;
-  }
-  modus-wc-checkbox {
-    padding-inline-end: 8px;
-  }
-</style>
-<form action="" method="get">
-  <div class="form-control">
-    <modus-wc-checkbox
-      aria-label="Example checkbox"
-      input-id="checkbox-input"
-      name="example-checkbox"
-    ></modus-wc-checkbox>
-    <modus-wc-input-label
-      for-id="checkbox-input"
-      label-text="Example checkbox"
-    ></modus-wc-input-label>
-  </div>
-</form>
     `;
   },
 };

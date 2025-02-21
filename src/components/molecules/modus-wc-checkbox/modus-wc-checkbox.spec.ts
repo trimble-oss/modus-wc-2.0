@@ -37,6 +37,7 @@ describe('modus-wc-checkbox', () => {
         input-dir="rtl"
         input-id="custom-id"
         input-tab-index="1"
+        label="Test label"
         name="test-name"
         required="true"
         size="lg"

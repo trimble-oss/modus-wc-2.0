@@ -24,6 +24,19 @@ Adheres to WCAG 2.2 standards.
 | `required`    | `required`     | Whether the label indicates a required field.                                | `boolean \| undefined`                        | `false`     |
 
 
+## Dependencies
+
+### Used by
+
+ - [modus-wc-checkbox](../../molecules/modus-wc-checkbox)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-checkbox --> modus-wc-input-label
+  style modus-wc-input-label fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

@@ -318,6 +318,10 @@ export namespace Components {
          */
         "inputTabIndex"?: number;
         /**
+          * The text to display within the label.
+         */
+        "label"?: string;
+        /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
@@ -2362,6 +2366,10 @@ declare namespace LocalJSX {
           * The tabindex of the input.
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */

@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-checkbox renders with default props 1`] = `
+<modus-wc-checkbox class="modus-wc-checkbox-host">
+  <input aria-label="Default checkbox" class="modus-wc-checkbox modus-wc-checkbox-md" type="checkbox">
+</modus-wc-checkbox>
+`;
+
+exports[`modus-wc-checkbox should render indeterminate state 1`] = `
+<modus-wc-checkbox class="modus-wc-checkbox-host" indeterminate="">
+  <input aria-checked="mixed" aria-label="Test checkbox" class="modus-wc-checkbox modus-wc-checkbox-md" type="checkbox">
+</modus-wc-checkbox>
+`;
+
+exports[`modus-wc-checkbox should render with custom props 1`] = `
+<modus-wc-checkbox class="modus-wc-checkbox-host" custom-class="test-class" dir="rtl" disabled="true" input-dir="rtl" input-id="custom-id" input-tab-index="1" label="Test label" name="test-name" required="true" size="lg" value="">
+  <input aria-checked="" aria-describedby="active" aria-disabled="" aria-label="Test checkbox" aria-labelledby="checkbox-label" checked="" class="modus-wc-checkbox modus-wc-checkbox-lg test-class" disabled="" id="custom-id" name="test-name" required="" tabindex="1" type="checkbox">
+  <modus-wc-input-label forid="custom-id" labeltext="Test label" required=""></modus-wc-input-label>
+</modus-wc-checkbox>
+`;
