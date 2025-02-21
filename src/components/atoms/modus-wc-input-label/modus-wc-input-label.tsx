@@ -46,8 +46,8 @@ export class ModusWcInputLabel {
     const classList = ['modus-wc-input-label'];
 
     // The order CSS classes are added matters to CSS specificity
-    if (this.customClass) classList.push(this.customClass);
     if (this.size) classList.push(`modus-wc-input-label-size-${this.size}`);
+    if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
   };
