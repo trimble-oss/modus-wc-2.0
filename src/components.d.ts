@@ -174,6 +174,7 @@ export namespace Components {
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
+     * The component supports a `<slot>` for injecting content within the badge.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcBadge {
@@ -187,10 +188,6 @@ export namespace Components {
     | 'success'
     | 'warning'
     | 'danger';
-        /**
-          * The content to display inside the badge. For 'counter' type, this should be a number.
-         */
-        "content": string;
         /**
           * Custom CSS class to apply to the span element.
          */
@@ -1480,6 +1477,7 @@ declare global {
     };
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
+     * The component supports a `<slot>` for injecting content within the badge.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcBadgeElement extends Components.ModusWcBadge, HTMLStencilElement {
@@ -2217,6 +2215,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
+     * The component supports a `<slot>` for injecting content within the badge.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcBadge {
@@ -2230,10 +2229,6 @@ declare namespace LocalJSX {
     | 'success'
     | 'warning'
     | 'danger';
-        /**
-          * The content to display inside the badge. For 'counter' type, this should be a number.
-         */
-        "content": string;
         /**
           * Custom CSS class to apply to the span element.
          */
@@ -3596,6 +3591,7 @@ declare module "@stencil/core" {
             "modus-wc-avatar": LocalJSX.ModusWcAvatar & JSXBase.HTMLAttributes<HTMLModusWcAvatarElement>;
             /**
              * A customizable badge component used to create badges with different sizes, types, and colors.
+             * The component supports a `<slot>` for injecting content within the badge.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-badge": LocalJSX.ModusWcBadge & JSXBase.HTMLAttributes<HTMLModusWcBadgeElement>;
