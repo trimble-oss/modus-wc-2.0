@@ -96,7 +96,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\r\n\r\nThe component supports a `<slot>` for injecting content within the badge.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcBadge",
           "members": [
             {
@@ -120,14 +120,6 @@
                 "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
               },
               "description": "The color variant of the badge."
-            },
-            {
-              "name": "content",
-              "fieldName": "content",
-              "type": {
-                "text": "string"
-              },
-              "description": "The content to display inside the badge. For 'counter' type, this should be a number."
             },
             {
               "name": "custom-class",
@@ -302,159 +294,6 @@
           "declaration": {
             "name": "ModusWcButton",
             "module": "src/components/atoms/modus-wc-button/modus-wc-button.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-checkbox/modus-wc-checkbox.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable checkbox component.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcCheckbox",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The disabled state of the checkbox."
-            },
-            {
-              "name": "indeterminate",
-              "fieldName": "indeterminate",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The indeterminate state of the checkbox."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "The tabindex of the input."
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "type": {
-                "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "DaisySize"
-              },
-              "description": "The size of the input."
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The value of the checkbox."
-            }
-          ],
-          "tagName": "modus-wc-checkbox",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<InputEvent>"
-              },
-              "description": "Emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcCheckbox",
-          "declaration": {
-            "name": "ModusWcCheckbox",
-            "module": "src/components/atoms/modus-wc-checkbox/modus-wc-checkbox.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-checkbox",
-          "declaration": {
-            "name": "ModusWcCheckbox",
-            "module": "src/components/atoms/modus-wc-checkbox/modus-wc-checkbox.tsx"
           }
         }
       ]
@@ -882,6 +721,14 @@
                 "text": "boolean"
               },
               "description": "Whether the label indicates a required field."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the label."
             }
           ],
           "tagName": "modus-wc-input-label",
@@ -3626,6 +3473,159 @@
           "declaration": {
             "name": "ModusWcCard",
             "module": "src/components/molecules/modus-wc-card/modus-wc-card.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-checkbox/modus-wc-checkbox.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable checkbox component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcCheckbox",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The disabled state of the checkbox."
+            },
+            {
+              "name": "indeterminate",
+              "fieldName": "indeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The indeterminate state of the checkbox."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "The tabindex of the input."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "DaisySize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The value of the checkbox."
+            }
+          ],
+          "tagName": "modus-wc-checkbox",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcCheckbox",
+          "declaration": {
+            "name": "ModusWcCheckbox",
+            "module": "src/components/molecules/modus-wc-checkbox/modus-wc-checkbox.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-checkbox",
+          "declaration": {
+            "name": "ModusWcCheckbox",
+            "module": "src/components/molecules/modus-wc-checkbox/modus-wc-checkbox.tsx"
           }
         }
       ]

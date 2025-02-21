@@ -3,6 +3,15 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+.modus-wc-checkbox-host {
+  display: flex;
+  align-items: center;
+
+  .modus-wc-input-label {
+    padding-inline-start: var(--modus-wc-spacing-md);
+  }
+}
+
 [data-theme='modus-classic-light'] .modus-wc-checkbox,
 [data-theme='modus-classic-dark'] .modus-wc-checkbox {
   --chkbg: var(--modus-wc-color-highlight-blue);

@@ -306,10 +306,6 @@ export namespace Components {
          */
         "indeterminate": boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -317,6 +313,10 @@ export namespace Components {
           * The tabindex of the input.
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -558,6 +558,10 @@ export namespace Components {
           * Whether the label indicates a required field.
          */
         "required"?: boolean;
+        /**
+          * The size of the label.
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable loader component used to indicate the loading of content.
@@ -2351,10 +2355,6 @@ declare namespace LocalJSX {
          */
         "indeterminate"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2362,6 +2362,10 @@ declare namespace LocalJSX {
           * The tabindex of the input.
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -2639,6 +2643,10 @@ declare namespace LocalJSX {
           * Whether the label indicates a required field.
          */
         "required"?: boolean;
+        /**
+          * The size of the label.
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable loader component used to indicate the loading of content.

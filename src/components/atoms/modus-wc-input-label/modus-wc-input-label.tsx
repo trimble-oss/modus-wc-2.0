@@ -1,4 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
+import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
@@ -34,6 +35,9 @@ export class ModusWcInputLabel {
   /** Whether the label indicates a required field. */
   @Prop() required?: boolean = false;
 
+  /** The size of the label. */
+  @Prop() size?: ModusSize = 'md';
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -42,6 +46,7 @@ export class ModusWcInputLabel {
     const classList = ['modus-wc-input-label'];
 
     // The order CSS classes are added matters to CSS specificity
+    if (this.size) classList.push(`modus-wc-input-label-size-${this.size}`);
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
