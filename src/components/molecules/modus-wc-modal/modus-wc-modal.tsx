@@ -37,6 +37,11 @@ export class ModusWcModal {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
+  private closeDialog() {
+    const dialog = this.el.querySelector('dialog');
+    if (dialog) dialog.close();
+  }
+
   private getClasses(): string {
     const classList = ['modus-wc-modal'];
 
@@ -61,12 +66,15 @@ export class ModusWcModal {
         >
           <div class="modus-wc-modal-box">
             {this.showCornerCloseButton && (
-              <form method="dialog">
-                {/* TODO: try to use modus-wc-button instead */}
-                <button class="modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-absolute modus-wc-right-2 modus-wc-top-2">
-                  ✕
-                </button>
-              </form>
+              <modus-wc-button
+                custom-class="modus-wc-modal-close-icon-btn"
+                onButtonClick={() => this.closeDialog()}
+                shape="circle"
+                size="sm"
+                variant="borderless"
+              >
+                ✕
+              </modus-wc-button>
             )}
             <div class="modus-wc-text-lg modus-wc-font-bold">
               <slot name="title" />

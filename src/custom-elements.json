@@ -3225,6 +3225,94 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-modal/modus-wc-modal.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable modal component used to display content in a dialog.\n\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcModal",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply"
+            },
+            {
+              "name": "modal-id",
+              "fieldName": "modalId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the inner dialog element"
+            },
+            {
+              "name": "outside-click-close",
+              "fieldName": "outsideClickClose",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Specifies if the modal can be closed by clicking outside of it"
+            },
+            {
+              "name": "position",
+              "fieldName": "position",
+              "type": {
+                "text": "'center' | 'top' | 'bottom'"
+              },
+              "description": "Specifies the position of the modal"
+            },
+            {
+              "name": "show-corner-close-button",
+              "fieldName": "showCornerCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Specifies whether to show the close icon button at the top right of modal"
+            }
+          ],
+          "tagName": "modus-wc-modal",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcModal",
+          "declaration": {
+            "name": "ModusWcModal",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-modal",
+          "declaration": {
+            "name": "ModusWcModal",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-number-input/modus-wc-number-input.tsx",
       "declarations": [
         {

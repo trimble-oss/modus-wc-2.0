@@ -22,6 +22,19 @@ Adheres to WCAG 2.2 standards.
 | `showCornerCloseButton` | `show-corner-close-button` | Specifies whether to show the close icon button at the top right of modal | `boolean \| undefined`                       | `true`      |
 
 
+## Dependencies
+
+### Depends on
+
+- [modus-wc-button](../../atoms/modus-wc-button)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-modal --> modus-wc-button
+  style modus-wc-modal fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
