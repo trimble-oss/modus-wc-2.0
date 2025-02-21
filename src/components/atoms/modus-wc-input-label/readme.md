@@ -36,6 +36,8 @@ Adheres to WCAG 2.2 standards.
  - [modus-wc-radio](../../molecules/modus-wc-radio)
  - [modus-wc-select](../../molecules/modus-wc-select)
  - [modus-wc-slider](../../molecules/modus-wc-slider)
+ - [modus-wc-text-input](../../molecules/modus-wc-text-input)
+ - [modus-wc-textarea](../../molecules/modus-wc-textarea)
 
 ### Graph
 ```mermaid
@@ -47,6 +49,8 @@ graph TD;
   modus-wc-radio --> modus-wc-input-label
   modus-wc-select --> modus-wc-input-label
   modus-wc-slider --> modus-wc-input-label
+  modus-wc-text-input --> modus-wc-input-label
+  modus-wc-textarea --> modus-wc-input-label
   style modus-wc-input-label fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

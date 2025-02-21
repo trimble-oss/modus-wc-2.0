@@ -8,7 +8,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-textarea.tailwind';
-import { DaisySize } from '../../types';
+import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
@@ -36,9 +36,6 @@ export class ModusWcTextarea {
   /** The disabled state of the textarea. */
   @Prop() disabled?: boolean = false;
 
-  /** Specifies the text direction of the input content. */
-  @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
-
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
@@ -50,6 +47,9 @@ export class ModusWcTextarea {
 
   /** The tabindex of the input. */
   @Prop() inputTabIndex?: number;
+
+  /** The text to display within the label. */
+  @Prop() label?: string;
 
   /** The maximum number of characters allowed in the textarea. */
   @Prop() maxLength?: number;
@@ -70,7 +70,7 @@ export class ModusWcTextarea {
   @Prop() rows?: number;
 
   /** The size of the input. */
-  @Prop() size?: DaisySize = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /** The value of the textarea. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
@@ -124,11 +124,18 @@ export class ModusWcTextarea {
   render() {
     return (
       <Host>
+        {this.label && (
+          <modus-wc-input-label
+            forId={this.inputId}
+            labelText={this.label}
+            required={this.required}
+            size={this.size}
+          />
+        )}
         <textarea
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           class={this.getClasses()}
-          dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}
           maxLength={this.maxLength}
