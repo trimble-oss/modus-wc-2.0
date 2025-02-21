@@ -669,10 +669,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -684,6 +680,10 @@ export namespace Components {
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * The input's maximum value.
          */
@@ -761,10 +761,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -772,6 +768,10 @@ export namespace Components {
           * The tabindex of the input.
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -2758,10 +2758,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2773,6 +2769,10 @@ declare namespace LocalJSX {
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * The input's maximum value.
          */
@@ -2862,10 +2862,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the text direction of the input content.
-         */
-        "inputDir"?: '' | 'ltr' | 'rtl' | 'auto';
-        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2873,6 +2869,10 @@ declare namespace LocalJSX {
           * The tabindex of the input.
          */
         "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
