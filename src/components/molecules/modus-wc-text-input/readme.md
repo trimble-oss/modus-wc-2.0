@@ -20,11 +20,11 @@ Adheres to WCAG 2.2 standards.
 | `bordered`        | `bordered`         | Indicates that the input should have a border.                                                                                                                           | `boolean \| undefined`                                                                | `true`      |
 | `customClass`     | `custom-class`     | Custom CSS class to apply to the input.                                                                                                                                  | `string \| undefined`                                                                 | `''`        |
 | `disabled`        | `disabled`         | Whether the form control is disabled.                                                                                                                                    | `boolean \| undefined`                                                                | `false`     |
-| `inputDir`        | `input-dir`        | Specifies the text direction of the input content.                                                                                                                       | `"" \| "auto" \| "ltr" \| "rtl" \| undefined`                                         | `undefined` |
 | `inputId`         | `input-id`         | The ID of the input element.                                                                                                                                             | `string \| undefined`                                                                 | `undefined` |
 | `inputMode`       | `input-mode`       | Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard. | `"decimal" \| "email" \| "none" \| "numeric" \| "search" \| "tel" \| "text" \| "url"` | `'text'`    |
 | `inputSpellcheck` | `input-spellcheck` | Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.                                                                         | `boolean \| undefined`                                                                | `false`     |
 | `inputTabIndex`   | `input-tab-index`  | Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).                                                                  | `number \| undefined`                                                                 | `undefined` |
+| `label`           | `label`            | The text to display within the label.                                                                                                                                    | `string \| undefined`                                                                 | `undefined` |
 | `maxLength`       | `max-length`       | Maximum length (number of characters) of value.                                                                                                                          | `number \| undefined`                                                                 | `undefined` |
 | `minLength`       | `min-length`       | Minimum length (number of characters) of value.                                                                                                                          | `number \| undefined`                                                                 | `undefined` |
 | `name`            | `name`             | Name of the form control. Submitted with the form as part of a name/value pair.                                                                                          | `string \| undefined`                                                                 | `undefined` |
@@ -50,11 +50,16 @@ Adheres to WCAG 2.2 standards.
 
 ### Used by
 
- - [modus-wc-autocomplete](../../molecules/modus-wc-autocomplete)
+ - [modus-wc-autocomplete](../modus-wc-autocomplete)
+
+### Depends on
+
+- [modus-wc-input-label](../../atoms/modus-wc-input-label)
 
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-text-input --> modus-wc-input-label
   modus-wc-autocomplete --> modus-wc-text-input
   style modus-wc-text-input fill:#f9f,stroke:#333,stroke-width:4px
 ```

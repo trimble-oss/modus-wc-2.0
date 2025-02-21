@@ -1020,432 +1020,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable input component used to create text inputs with types.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcTextInput",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "auto-capitalize",
-              "fieldName": "autoCapitalize",
-              "type": {
-                "text": "| 'off'\r\n    | 'none'\r\n    | 'on'\r\n    | 'sentences'\r\n    | 'words'\r\n    | 'characters'"
-              },
-              "description": "Controls automatic capitalization in inputted text."
-            },
-            {
-              "name": "auto-complete",
-              "fieldName": "autoComplete",
-              "type": {
-                "text": "'on' | 'off'"
-              },
-              "description": "Hint for form autofill feature."
-            },
-            {
-              "name": "bordered",
-              "fieldName": "bordered",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
-            },
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the input."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the form control is disabled."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "name": "input-mode",
-              "fieldName": "inputMode",
-              "type": {
-                "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
-              },
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
-            },
-            {
-              "name": "input-spellcheck",
-              "fieldName": "inputSpellcheck",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
-            },
-            {
-              "name": "max-length",
-              "fieldName": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum length (number of characters) of value."
-            },
-            {
-              "name": "min-length",
-              "fieldName": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum length (number of characters) of value."
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "type": {
-                "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
-            },
-            {
-              "name": "pattern",
-              "fieldName": "pattern",
-              "type": {
-                "text": "string"
-              },
-              "description": "Pattern the value must match to be valid"
-            },
-            {
-              "name": "placeholder",
-              "fieldName": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "description": "Text that appears in the form control when it has no value set."
-            },
-            {
-              "name": "read-only",
-              "fieldName": "readOnly",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the value is editable."
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "ModusSize"
-              },
-              "description": "The size of the input."
-            },
-            {
-              "name": "type",
-              "fieldName": "type",
-              "type": {
-                "text": "'email' | 'password' | 'search' | 'tel' | 'text' | 'url'"
-              },
-              "description": "Type of form control."
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the control."
-            }
-          ],
-          "tagName": "modus-wc-text-input",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<InputEvent>"
-              },
-              "description": "Event emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcTextInput",
-          "declaration": {
-            "name": "ModusWcTextInput",
-            "module": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-text-input",
-          "declaration": {
-            "name": "ModusWcTextInput",
-            "module": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-textarea/modus-wc-textarea.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable textarea component.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcTextarea",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "bordered",
-              "fieldName": "bordered",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
-            },
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the textarea (supports DaisyUI)."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The disabled state of the textarea."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "name": "input-spellcheck",
-              "fieldName": "inputSpellcheck",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "The tabindex of the input."
-            },
-            {
-              "name": "max-length",
-              "fieldName": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "The maximum number of characters allowed in the textarea."
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "type": {
-                "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
-            },
-            {
-              "name": "placeholder",
-              "fieldName": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "description": "The placeholder text for the textarea."
-            },
-            {
-              "name": "readonly",
-              "fieldName": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The readonly state of the textarea."
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
-            },
-            {
-              "name": "rows",
-              "fieldName": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "The number of visible text lines for the textarea."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "DaisySize"
-              },
-              "description": "The size of the input."
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the textarea."
-            }
-          ],
-          "tagName": "modus-wc-textarea",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<InputEvent>"
-              },
-              "description": "Emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcTextarea",
-          "declaration": {
-            "name": "ModusWcTextarea",
-            "module": "src/components/atoms/modus-wc-textarea/modus-wc-textarea.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-textarea",
-          "declaration": {
-            "name": "ModusWcTextarea",
-            "module": "src/components/atoms/modus-wc-textarea/modus-wc-textarea.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-time-input/modus-wc-time-input.tsx",
       "declarations": [
         {
@@ -4005,6 +3579,432 @@
           "declaration": {
             "name": "ModusWcTabs",
             "module": "src/components/molecules/modus-wc-tabs/modus-wc-tabs.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-text-input/modus-wc-text-input.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable input component used to create text inputs with types.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcTextInput",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "auto-capitalize",
+              "fieldName": "autoCapitalize",
+              "type": {
+                "text": "| 'off'\r\n    | 'none'\r\n    | 'on'\r\n    | 'sentences'\r\n    | 'words'\r\n    | 'characters'"
+              },
+              "description": "Controls automatic capitalization in inputted text."
+            },
+            {
+              "name": "auto-complete",
+              "fieldName": "autoComplete",
+              "type": {
+                "text": "'on' | 'off'"
+              },
+              "description": "Hint for form autofill feature."
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the input."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the form control is disabled."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-mode",
+              "fieldName": "inputMode",
+              "type": {
+                "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
+              },
+              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
+            },
+            {
+              "name": "input-spellcheck",
+              "fieldName": "inputSpellcheck",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "max-length",
+              "fieldName": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum length (number of characters) of value."
+            },
+            {
+              "name": "min-length",
+              "fieldName": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum length (number of characters) of value."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "pattern",
+              "fieldName": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "description": "Pattern the value must match to be valid"
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text that appears in the form control when it has no value set."
+            },
+            {
+              "name": "read-only",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the value is editable."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "type",
+              "fieldName": "type",
+              "type": {
+                "text": "'email' | 'password' | 'search' | 'tel' | 'text' | 'url'"
+              },
+              "description": "Type of form control."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the control."
+            }
+          ],
+          "tagName": "modus-wc-text-input",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Event emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTextInput",
+          "declaration": {
+            "name": "ModusWcTextInput",
+            "module": "src/components/molecules/modus-wc-text-input/modus-wc-text-input.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-text-input",
+          "declaration": {
+            "name": "ModusWcTextInput",
+            "module": "src/components/molecules/modus-wc-text-input/modus-wc-text-input.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-textarea/modus-wc-textarea.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable textarea component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcTextarea",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the textarea (supports DaisyUI)."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The disabled state of the textarea."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-spellcheck",
+              "fieldName": "inputSpellcheck",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "The tabindex of the input."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "max-length",
+              "fieldName": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "The maximum number of characters allowed in the textarea."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "The placeholder text for the textarea."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The readonly state of the textarea."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "rows",
+              "fieldName": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "The number of visible text lines for the textarea."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the textarea."
+            }
+          ],
+          "tagName": "modus-wc-textarea",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTextarea",
+          "declaration": {
+            "name": "ModusWcTextarea",
+            "module": "src/components/molecules/modus-wc-textarea/modus-wc-textarea.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-textarea",
+          "declaration": {
+            "name": "ModusWcTextarea",
+            "module": "src/components/molecules/modus-wc-textarea/modus-wc-textarea.tsx"
           }
         }
       ]
