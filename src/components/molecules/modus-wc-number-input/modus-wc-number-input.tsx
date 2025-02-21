@@ -39,9 +39,6 @@ export class ModusWcNumberInput {
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
 
-  /** Specifies the text direction of the input content. */
-  @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
-
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
@@ -53,6 +50,9 @@ export class ModusWcNumberInput {
 
   /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
+
+  /** The text to display within the label. */
+  @Prop() label?: string;
 
   /** The input's maximum value. */
   @Prop() max?: number;
@@ -133,12 +133,19 @@ export class ModusWcNumberInput {
   render() {
     return (
       <Host>
+        {this.label && (
+          <modus-wc-input-label
+            forId={this.inputId}
+            labelText={this.label}
+            required={this.required}
+            size={this.size}
+          />
+        )}
         <input
           aria-placeholder={this.placeholder}
           aria-required={this.required}
           autocomplete={this.autoComplete}
           class={this.getClasses()}
-          dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}
           inputmode={this.inputMode}

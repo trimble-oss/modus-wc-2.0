@@ -5,17 +5,15 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ModusSize } from '../../types';
 
 interface NumberInputArgs {
-  'aria-describedby'?: string;
-  'aria-label': string;
   'auto-complete'?: 'on' | 'off';
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
   'input-aria-invalid'?: 'true' | 'false';
-  'input-dir'?: '' | 'ltr' | 'rtl' | 'auto';
   'input-id'?: string;
   'input-mode': 'decimal' | 'none' | 'numeric';
   'input-tab-index'?: number;
+  label?: string;
   max?: number;
   min?: number;
   name?: string;
@@ -32,38 +30,33 @@ const meta: Meta<NumberInputArgs> = {
   title: 'Components/Forms/Number Input',
   component: 'modus-wc-number-input',
   args: {
-    'aria-label': 'Enter your age',
     bordered: true,
     disabled: false,
     'input-mode': 'numeric',
-    placeholder: 'Type your age here',
+    label: 'Label',
     size: 'md',
     type: 'number',
     value: '',
   },
   argTypes: {
     'auto-complete': {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['on', 'off'],
     },
     'input-aria-invalid': {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['true', 'false'],
     },
-    'input-dir': {
-      control: { type: 'inline-radio' },
-      options: ['ltr', 'rtl', 'auto'],
-    },
     'input-mode': {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['decimal', 'none', 'numeric'],
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
     type: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['number', 'range'],
     },
   },
@@ -82,17 +75,16 @@ type Story = StoryObj<NumberInputArgs>;
 export const Template: Story = {
   render: (args) => html`
     <modus-wc-number-input
-      aria-describedby=${ifDefined(args['aria-describedby'])}
-      aria-label=${args['aria-label']}
+      aria-label="Number input"
       auto-complete=${ifDefined(args['auto-complete'])}
       ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
-      input-dir=${ifDefined(args['input-dir'])}
       input-id=${ifDefined(args['input-id'])}
       input-mode=${args['input-mode']}
       input-tab-index=${ifDefined(args['input-tab-index'])}
+      label=${ifDefined(args.label)}
       max=${ifDefined(args.max)}
       min=${ifDefined(args.min)}
       name=${ifDefined(args.name)}
@@ -105,34 +97,4 @@ export const Template: Story = {
       .value=${args.value}
     ></modus-wc-number-input>
   `,
-};
-
-// prettier-ignore
-export const NumberInputWithLabel: Story = {
-  render: () => {
-    return html`
-<style>
-  .form-control {
-    display: flex;
-    align-items: center;
-  }
-  .modus-wc-input-label {
-    padding-inline-end: 8px;
-  }
-</style>
-<form action="" method="get">
-  <div class="form-control">
-    <modus-wc-input-label
-      for-id="number-input"
-      label-text="Example number input"
-    ></modus-wc-input-label>
-    <modus-wc-number-input
-      aria-label="Example number input"
-      input-id="number-input"
-      name="example-number-input"
-    ></modus-wc-number-input>
-  </div>
-</form>
-    `;
-  },
 };
