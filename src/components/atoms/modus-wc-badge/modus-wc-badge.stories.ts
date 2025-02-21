@@ -78,7 +78,7 @@ export const WithIcon: Story = {
     // prettier-ignore
     return html`
 <style>
-  i {
+  .modus-wc-icon {
     padding-inline-end: 4px;
   }
 </style>
