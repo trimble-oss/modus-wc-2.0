@@ -7,129 +7,96 @@ import {
   Prop,
   Event as StencilEvent,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
+import { convertPropsToClasses } from './modus-wc-textarea.tailwind';
 import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
- * A customizable input component used to create text inputs with types.
+ * A customizable textarea component.
  *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
-  tag: 'modus-wc-text-input',
-  styleUrl: 'modus-wc-text-input.scss',
+  tag: 'modus-wc-textarea',
+  styleUrl: 'modus-wc-textarea.scss',
   shadow: false,
 })
-export class ModusWcTextInput {
+export class ModusWcTextarea {
   private inheritedAttributes: Attributes = {};
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Controls automatic capitalization in inputted text. */
-  @Prop() autoCapitalize?:
-    | 'off'
-    | 'none'
-    | 'on'
-    | 'sentences'
-    | 'words'
-    | 'characters';
-
-  /** Hint for form autofill feature. */
-  @Prop() autoComplete?: 'on' | 'off';
-
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
-  /** Custom CSS class to apply to the input. */
+  /** Custom CSS class to apply to the textarea (supports DaisyUI). */
   @Prop() customClass?: string = '';
 
-  /** Whether the form control is disabled. */
+  /** The disabled state of the textarea. */
   @Prop() disabled?: boolean = false;
-
-  /** Specifies the text direction of the input content. */
-  @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
   /**
-   * Hints at the type of data that might be entered by the user while editing the element or its contents.
-   * This allows a browser to display an appropriate virtual keyboard.
-   */
-  @Prop() inputMode:
-    | 'decimal'
-    | 'email'
-    | 'none'
-    | 'numeric'
-    | 'search'
-    | 'tel'
-    | 'text'
-    | 'url' = 'text';
-
-  /**
    * Whether the element may be checked for spelling errors.
    * A hint for the browser, not a guarantee.
    */
-  @Prop() inputSpellcheck?: boolean = false;
+  @Prop() inputSpellcheck?: boolean;
 
-  /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
+  /** The tabindex of the input. */
   @Prop() inputTabIndex?: number;
 
-  /** Maximum length (number of characters) of value. */
-  @Prop() maxLength?: number;
+  /** The text to display within the label. */
+  @Prop() label?: string;
 
-  /** Minimum length (number of characters) of value. */
-  @Prop() minLength?: number;
+  /** The maximum number of characters allowed in the textarea. */
+  @Prop() maxLength?: number;
 
   /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string;
 
-  /** Pattern the value must match to be valid */
-  @Prop() pattern?: string;
-
-  /** Text that appears in the form control when it has no value set. */
+  /** The placeholder text for the textarea. */
   @Prop() placeholder?: string = '';
 
-  /** Whether the value is editable. */
-  @Prop() readOnly?: boolean = false;
+  /** The readonly state of the textarea. */
+  @Prop() readonly?: boolean = false;
 
   /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
 
+  /** The number of visible text lines for the textarea. */
+  @Prop() rows?: number;
+
   /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
 
-  /** Type of form control. */
-  @Prop() type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url' =
-    'text';
-
-  /** The value of the control. */
+  /** The value of the textarea. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
-  /** Event emitted when the input loses focus. */
+  /** Emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
-  /** Event emitted when the input value changes. */
+  /** Emitted when the input value changes. */
   @StencilEvent() inputChange!: EventEmitter<InputEvent>;
 
-  /** Event emitted when the input gains focus. */
+  /** Emitted when the input gains focus. */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcTextInput: aria-label is required for accessibility. Using fallback label.'
+        'ModusWcTextarea: aria-label is required for accessibility. Using fallback label.'
       );
-      this.el.ariaLabel = this.placeholder || 'Text input';
+      this.el.ariaLabel = this.placeholder || 'Text area';
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-input', 'modus-wc-w-full'];
+    const classList = ['modus-wc-textarea', 'modus-wc-w-full'];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       size: this.size,
@@ -157,29 +124,31 @@ export class ModusWcTextInput {
   render() {
     return (
       <Host>
-        <input
+        {this.label && (
+          <modus-wc-input-label
+            forId={this.inputId}
+            labelText={this.label}
+            required={this.required}
+            size={this.size}
+          />
+        )}
+        <textarea
           aria-placeholder={this.placeholder}
           aria-required={this.required}
-          autocapitalize={this.autoCapitalize}
-          autocomplete={this.autoComplete}
           class={this.getClasses()}
-          dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}
-          inputmode={this.inputMode}
-          maxlength={this.maxLength}
-          minlength={this.minLength}
+          maxLength={this.maxLength}
           name={this.name}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
           onInput={this.handleInput}
-          pattern={this.pattern}
           placeholder={this.placeholder}
-          readonly={this.readOnly}
+          readonly={this.readonly}
           required={this.required}
+          rows={this.rows}
           spellcheck={this.inputSpellcheck}
           tabIndex={this.inputTabIndex}
-          type={this.type}
           value={this.value}
           {...this.inheritedAttributes}
         />

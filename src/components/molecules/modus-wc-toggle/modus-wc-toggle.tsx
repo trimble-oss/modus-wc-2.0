@@ -7,73 +7,56 @@ import {
   Prop,
   Event as StencilEvent,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-textarea.tailwind';
-import { DaisySize } from '../../types';
+import { convertPropsToClasses } from './modus-wc-toggle.tailwind';
+import { DAISY_TO_MODUS_LABEL_SIZE } from '../../constants';
+import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
- * A customizable textarea component.
+ * A customizable checkbox component.
  *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
-  tag: 'modus-wc-textarea',
-  styleUrl: 'modus-wc-textarea.scss',
+  tag: 'modus-wc-toggle',
+  styleUrl: 'modus-wc-toggle.scss',
   shadow: false,
 })
-export class ModusWcTextarea {
+export class ModusWcToggle {
   private inheritedAttributes: Attributes = {};
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Indicates that the input should have a border. */
-  @Prop() bordered?: boolean = true;
-
-  /** Custom CSS class to apply to the textarea (supports DaisyUI). */
+  /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
-  /** The disabled state of the textarea. */
+  /** The disabled state of the toggle. */
   @Prop() disabled?: boolean = false;
 
-  /** Specifies the text direction of the input content. */
-  @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
+  /** The indeterminate state of the toggle. */
+  @Prop({ reflect: true, mutable: true }) indeterminate: boolean = false;
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
-  /**
-   * Whether the element may be checked for spelling errors.
-   * A hint for the browser, not a guarantee.
-   */
-  @Prop() inputSpellcheck?: boolean;
-
   /** The tabindex of the input. */
   @Prop() inputTabIndex?: number;
 
-  /** The maximum number of characters allowed in the textarea. */
-  @Prop() maxLength?: number;
+  /** The text to display within the label. */
+  @Prop() label?: string;
 
   /** Name of the form control. Submitted with the form as part of a name/value pair. */
-  @Prop() name?: string;
-
-  /** The placeholder text for the textarea. */
-  @Prop() placeholder?: string = '';
-
-  /** The readonly state of the textarea. */
-  @Prop() readonly?: boolean = false;
+  @Prop() name?: string = '';
 
   /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
 
-  /** The number of visible text lines for the textarea. */
-  @Prop() rows?: number;
-
   /** The size of the input. */
-  @Prop() size?: DaisySize = 'md';
+  @Prop() size?: ModusSize = 'md';
 
-  /** The value of the textarea. */
-  @Prop({ mutable: true, reflect: true }) value: string = '';
+  /** The value of the toggle. */
+  @Prop({ mutable: true, reflect: true }) value: boolean = false;
 
   /** Emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
@@ -84,23 +67,30 @@ export class ModusWcTextarea {
   /** Emitted when the input gains focus. */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
+  componentDidRender() {
+    const checkbox = this.el.querySelector(
+      'input[type="checkbox"]'
+    ) as HTMLInputElement;
+
+    if (checkbox) {
+      checkbox.indeterminate = this.indeterminate;
+    }
+  }
+
   componentWillLoad() {
     if (!this.el.ariaLabel) {
       console.warn(
-        'ModusWcTextarea: aria-label is required for accessibility. Using fallback label.'
+        'ModusWcToggle: aria-label is required for accessibility. Using fallback label.'
       );
-      this.el.ariaLabel = this.placeholder || 'Text area';
     }
-
+    this.el.ariaLabel = 'Toggle button';
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-textarea', 'modus-wc-w-full'];
-    const propClasses = convertPropsToClasses({
-      bordered: this.bordered,
-      size: this.size,
-    });
+    const classList = ['modus-wc-toggle'];
+
+    const propClasses = convertPropsToClasses({ size: this.size });
 
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
@@ -122,29 +112,33 @@ export class ModusWcTextarea {
   };
 
   render() {
+    const labelSize = this.size && DAISY_TO_MODUS_LABEL_SIZE[this.size];
+
     return (
-      <Host>
-        <textarea
-          aria-placeholder={this.placeholder}
-          aria-required={this.required}
+      <Host class="modus-wc-toggle-host">
+        <input
+          aria-checked={this.indeterminate ? 'mixed' : this.value}
+          aria-disabled={this.disabled}
+          checked={this.value}
           class={this.getClasses()}
-          dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}
-          maxLength={this.maxLength}
-          name={this.name}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
           onInput={this.handleInput}
-          placeholder={this.placeholder}
-          readonly={this.readonly}
           required={this.required}
-          rows={this.rows}
-          spellcheck={this.inputSpellcheck}
           tabIndex={this.inputTabIndex}
-          value={this.value}
+          type="checkbox"
           {...this.inheritedAttributes}
         />
+        {this.label && (
+          <modus-wc-input-label
+            forId={this.inputId}
+            labelText={this.label}
+            required={this.required}
+            size={labelSize}
+          />
+        )}
       </Host>
     );
   }

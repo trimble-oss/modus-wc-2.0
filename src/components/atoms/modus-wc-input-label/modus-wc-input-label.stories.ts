@@ -6,7 +6,6 @@ import { ModusSize } from '../../types';
 interface InputLabelArgs {
   'for-id'?: string;
   'custom-class'?: string;
-  'label-dir'?: '' | 'ltr' | 'rtl' | 'auto';
   'label-text'?: string;
   required?: boolean;
   size?: ModusSize;
@@ -20,10 +19,6 @@ const meta: Meta<InputLabelArgs> = {
     required: false,
   },
   argTypes: {
-    'label-dir': {
-      control: { type: 'select' },
-      options: ['ltr', 'rtl', 'auto'],
-    },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
@@ -40,7 +35,6 @@ const Template: Story = {
     <modus-wc-input-label
       for-id=${ifDefined(args['for-id'])}
       custom-class=${ifDefined(args['custom-class'])}
-      label-dir=${ifDefined(args['label-dir'])}
       label-text=${ifDefined(args['label-text'])}
       ?required=${args['required']}
       size=${args.size}
@@ -63,7 +57,6 @@ export const RequiredTextarea: Story = {
     <modus-wc-input-label
       for-id=${ifDefined(args['for-id'])}
       custom-class=${ifDefined(args['custom-class'])}
-      label-dir=${ifDefined(args['label-dir'])}
       label-text=${ifDefined(args['label-text'])}
       ?required=${args['required']}
       size=${ifDefined(args.size)}

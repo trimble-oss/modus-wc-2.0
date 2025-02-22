@@ -3,12 +3,13 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-// TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
 [data-theme='modus-classic-light'] .modus-wc-input,
 [data-theme='modus-classic-dark'] .modus-wc-input {
   border-radius: var(--modus-wc-border-radius-md);
 
-  // TODO - add support for xs and xl once added to Modus Figma
+  .modus-wc-input-label {
+    padding-bottom: var(--modus-wc-spacing-2xs);
+  }
 
   &.modus-wc-input-sm {
     font-size: var(--modus-wc-font-size-sm);
@@ -28,7 +29,9 @@
     padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
   }
 
-  &:focus {
+  &:focus,
+  &:focus-within {
+    border-color: var(--modus-wc-color-blue-light);
     border-width: 2px;
     box-shadow: none; // Removes the Tailwind ring effect
     outline: none; // Ensures there's no outline on focus
@@ -40,15 +43,15 @@
 }
 
 [data-theme='modus-classic-light'] .modus-wc-input {
-  &.modus-wc-input-bordered:not(:disabled) {
-    border-color: var(--modus-wc-color-accent);
-
-    &:focus {
-      border-color: var(--modus-wc-color-blue-light);
-    }
+  &.modus-wc-input-bordered:not(:disabled):not(:focus) {
+    border-color: var(--modus-wc-color-gray-6);
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-input:focus {
-  border-color: var(--modus-wc-color-highlight-blue);
+[data-theme='modus-classic-dark'] .modus-wc-input {
+  color-scheme: dark; // needed to ensure the clock icon button is visible in dark mode
+
+  &:focus {
+    border-color: var(--modus-wc-color-highlight-blue);
+  }
 }

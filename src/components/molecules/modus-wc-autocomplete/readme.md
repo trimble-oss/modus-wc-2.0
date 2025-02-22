@@ -50,7 +50,7 @@ Adheres to WCAG 2.2 standards.
 
 - [modus-wc-button](../../atoms/modus-wc-button)
 - [modus-wc-icon](../../atoms/modus-wc-icon)
-- [modus-wc-text-input](../../atoms/modus-wc-text-input)
+- [modus-wc-text-input](../modus-wc-text-input)
 - [modus-wc-menu-item](../../atoms/modus-wc-menu-item)
 - [modus-wc-input-label](../../atoms/modus-wc-input-label)
 - [modus-wc-menu](../../atoms/modus-wc-menu)
@@ -64,6 +64,7 @@ graph TD;
   modus-wc-autocomplete --> modus-wc-menu-item
   modus-wc-autocomplete --> modus-wc-input-label
   modus-wc-autocomplete --> modus-wc-menu
+  modus-wc-text-input --> modus-wc-input-label
   modus-wc-menu-item --> modus-wc-icon
   style modus-wc-autocomplete fill:#f9f,stroke:#333,stroke-width:4px
 ```

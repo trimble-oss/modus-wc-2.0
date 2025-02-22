@@ -43,9 +43,6 @@ export class ModusWcTimeInput {
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
 
-  /** Specifies the time direction of the input content. */
-  @Prop() inputDir?: '' | 'ltr' | 'rtl' | 'auto';
-
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
@@ -57,6 +54,9 @@ export class ModusWcTimeInput {
    * The value must be the ID of a `<datalist>` element in the same document.
    */
   @Prop({ mutable: true }) datalistId?: string;
+
+  /** The text to display within the label. */
+  @Prop() label?: string;
 
   /** Maximum value. Format: `HH:mm`, `HH:mm:ss`. */
   @Prop() max?: string;
@@ -182,11 +182,18 @@ export class ModusWcTimeInput {
   render() {
     return (
       <Host>
+        {this.label && (
+          <modus-wc-input-label
+            forId={this.inputId}
+            labelText={this.label}
+            required={this.required}
+            size={this.size}
+          />
+        )}
         <input
           aria-required={this.required}
           autocomplete={this.autoComplete}
           class={this.getClasses()}
-          dir={this.inputDir}
           disabled={this.disabled}
           id={this.inputId}
           list={this.datalistId}
