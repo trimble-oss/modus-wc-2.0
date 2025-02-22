@@ -1,5 +1,8 @@
 .modus-wc-modal-close-icon-btn {
-  color: inherit;
+  color: var(
+    --modus-wc-color-trimble-gray
+  ) !important; // TODO: fix specificity issue that requires !important
+
   position: absolute;
   right: 0.5rem;
   top: 0.5rem;

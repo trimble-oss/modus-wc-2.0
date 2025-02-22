@@ -2425,7 +2425,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable modal component used to display content in a dialog.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable modal component used to display content in a dialog.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcModal",
           "members": [
             {
