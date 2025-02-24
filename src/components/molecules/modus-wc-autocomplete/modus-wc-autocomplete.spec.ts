@@ -5,7 +5,7 @@ import {
 } from './modus-wc-autocomplete';
 import { ModusWcMenu } from '../../atoms/modus-wc-menu/modus-wc-menu';
 import { ModusWcMenuItem } from '../../atoms/modus-wc-menu-item/modus-wc-menu-item';
-import { ModusWcTextInput } from '../../atoms/modus-wc-text-input/modus-wc-text-input';
+import { ModusWcTextInput } from '../modus-wc-text-input/modus-wc-text-input';
 
 describe('modus-wc-autocomplete', () => {
   const items: IAutocompleteItem[] = [
@@ -38,9 +38,9 @@ describe('modus-wc-autocomplete', () => {
         custom-class="test-class"
         debounce-ms="500"
         disabled="true"
-        input-dir="rtl"
         input-id="test-id"
         input-tab-index="1"
+        label="Test label"
         min-chars="2"
         name="test-name"
         placeholder="Test placeholder"

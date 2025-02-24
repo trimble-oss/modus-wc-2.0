@@ -96,7 +96,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\r\n\r\nThe component supports a `<slot>` for injecting content within the badge.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcBadge",
           "members": [
             {
@@ -120,14 +120,6 @@
                 "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
               },
               "description": "The color variant of the badge."
-            },
-            {
-              "name": "content",
-              "fieldName": "content",
-              "type": {
-                "text": "string"
-              },
-              "description": "The content to display inside the badge. For 'counter' type, this should be a number."
             },
             {
               "name": "custom-class",
@@ -184,7 +176,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcButton",
           "members": [
             {
@@ -232,14 +224,6 @@
                 "text": "boolean"
               },
               "description": "If true, the button will take the full width of its container."
-            },
-            {
-              "name": "label",
-              "fieldName": "label",
-              "type": {
-                "text": "string"
-              },
-              "description": "The text label displayed on the button."
             },
             {
               "name": "pressed",
@@ -310,344 +294,6 @@
           "declaration": {
             "name": "ModusWcButton",
             "module": "src/components/atoms/modus-wc-button/modus-wc-button.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-checkbox/modus-wc-checkbox.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable checkbox component.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcCheckbox",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The disabled state of the checkbox."
-            },
-            {
-              "name": "indeterminate",
-              "fieldName": "indeterminate",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The indeterminate state of the checkbox."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "The tabindex of the input."
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "type": {
-                "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "DaisySize"
-              },
-              "description": "The size of the input."
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The value of the checkbox."
-            }
-          ],
-          "tagName": "modus-wc-checkbox",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<InputEvent>"
-              },
-              "description": "Emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcCheckbox",
-          "declaration": {
-            "name": "ModusWcCheckbox",
-            "module": "src/components/atoms/modus-wc-checkbox/modus-wc-checkbox.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-checkbox",
-          "declaration": {
-            "name": "ModusWcCheckbox",
-            "module": "src/components/atoms/modus-wc-checkbox/modus-wc-checkbox.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-date/modus-wc-date.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable date picker component used to create date inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcDate",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "bordered",
-              "fieldName": "bordered",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
-            },
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the input."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the form control is disabled."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
-            },
-            {
-              "name": "max",
-              "fieldName": "max",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum date value."
-            },
-            {
-              "name": "min",
-              "fieldName": "min",
-              "type": {
-                "text": "string"
-              },
-              "description": "Minimum date value."
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "type": {
-                "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
-            },
-            {
-              "name": "placeholder",
-              "fieldName": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "description": "Placeholder text for the date input."
-            },
-            {
-              "name": "read-only",
-              "fieldName": "readOnly",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the value is editable."
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "A value is required or must be checked for the form to be submittable."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "ModusSize"
-              },
-              "description": "The size of the input."
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the control."
-            }
-          ],
-          "tagName": "modus-wc-date",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<InputEvent>"
-              },
-              "description": "Event emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcDate",
-          "declaration": {
-            "name": "ModusWcDate",
-            "module": "src/components/atoms/modus-wc-date/modus-wc-date.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-date",
-          "declaration": {
-            "name": "ModusWcDate",
-            "module": "src/components/atoms/modus-wc-date/modus-wc-date.tsx"
           }
         }
       ]
@@ -868,14 +514,6 @@
               "description": "The `for` attribute of the label, matching the `id` of the associated input."
             },
             {
-              "name": "label-dir",
-              "fieldName": "labelDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the label content."
-            },
-            {
               "name": "label-text",
               "fieldName": "labelText",
               "type": {
@@ -890,6 +528,14 @@
                 "text": "boolean"
               },
               "description": "Whether the label indicates a required field."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the label."
             }
           ],
           "tagName": "modus-wc-input-label",
@@ -1206,223 +852,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-number-input/modus-wc-number-input.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable input component used to create number inputs with types.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcNumberInput",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "auto-complete",
-              "fieldName": "autoComplete",
-              "type": {
-                "text": "'on' | 'off'"
-              },
-              "description": "Hint for form autofill feature."
-            },
-            {
-              "name": "bordered",
-              "fieldName": "bordered",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
-            },
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the input."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the form control is disabled."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "name": "input-mode",
-              "fieldName": "inputMode",
-              "type": {
-                "text": "'decimal' | 'none' | 'numeric'"
-              },
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
-            },
-            {
-              "name": "max",
-              "fieldName": "max",
-              "type": {
-                "text": "number"
-              },
-              "description": "The input's maximum value."
-            },
-            {
-              "name": "min",
-              "fieldName": "min",
-              "type": {
-                "text": "number"
-              },
-              "description": "The input's minimum value."
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "type": {
-                "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
-            },
-            {
-              "name": "placeholder",
-              "fieldName": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "description": "Text that appears in the form control when it has no value set."
-            },
-            {
-              "name": "read-only",
-              "fieldName": "readOnly",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the value is editable."
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "ModusSize"
-              },
-              "description": "The size of the input."
-            },
-            {
-              "name": "step",
-              "fieldName": "step",
-              "type": {
-                "text": "number"
-              },
-              "description": "The granularity that the value adheres to."
-            },
-            {
-              "name": "type",
-              "fieldName": "type",
-              "type": {
-                "text": "'number' | 'range'"
-              },
-              "description": "Type of form control."
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the control."
-            }
-          ],
-          "tagName": "modus-wc-number-input",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<InputEvent>"
-              },
-              "description": "Event emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcNumberInput",
-          "declaration": {
-            "name": "ModusWcNumberInput",
-            "module": "src/components/atoms/modus-wc-number-input/modus-wc-number-input.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-number-input",
-          "declaration": {
-            "name": "ModusWcNumberInput",
-            "module": "src/components/atoms/modus-wc-number-input/modus-wc-number-input.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-progress/modus-wc-progress.tsx",
       "declarations": [
         {
@@ -1497,312 +926,6 @@
           "declaration": {
             "name": "ModusWcProgress",
             "module": "src/components/atoms/modus-wc-progress/modus-wc-progress.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-radio/modus-wc-radio.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable radio component.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcRadio",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The disabled state of the radio."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "The tabindex of the input."
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "type": {
-                "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "ModusSize"
-              },
-              "description": "The size of the input."
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The value of the radio."
-            }
-          ],
-          "tagName": "modus-wc-radio",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<InputEvent>"
-              },
-              "description": "Emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcRadio",
-          "declaration": {
-            "name": "ModusWcRadio",
-            "module": "src/components/atoms/modus-wc-radio/modus-wc-radio.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-radio",
-          "declaration": {
-            "name": "ModusWcRadio",
-            "module": "src/components/atoms/modus-wc-radio/modus-wc-radio.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-select/modus-wc-select.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable select component used to pick a value from a list of options.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcSelect",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "bordered",
-              "fieldName": "bordered",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
-            },
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the form control is disabled."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "type": {
-                "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
-            },
-            {
-              "name": "options",
-              "fieldName": "options",
-              "type": {
-                "text": "ISelectOption[]"
-              },
-              "description": "The options to display in the select dropdown."
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "DaisySize"
-              },
-              "description": "The size of the input."
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the control."
-            }
-          ],
-          "tagName": "modus-wc-select",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<InputEvent>"
-              },
-              "description": "Event emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcSelect",
-          "declaration": {
-            "name": "ModusWcSelect",
-            "module": "src/components/atoms/modus-wc-select/modus-wc-select.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-select",
-          "declaration": {
-            "name": "ModusWcSelect",
-            "module": "src/components/atoms/modus-wc-select/modus-wc-select.tsx"
           }
         }
       ]
@@ -1889,818 +1012,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-slider/modus-wc-slider.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable slider component.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcSlider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The disabled state of the slider."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "The tabindex of the input."
-            },
-            {
-              "name": "max",
-              "fieldName": "max",
-              "type": {
-                "text": "number"
-              },
-              "description": "The maximum slider value."
-            },
-            {
-              "name": "min",
-              "fieldName": "min",
-              "type": {
-                "text": "number"
-              },
-              "description": "The minimum slider value."
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "type": {
-                "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "DaisySize"
-              },
-              "description": "The size of the input."
-            },
-            {
-              "name": "step",
-              "fieldName": "step",
-              "type": {
-                "text": "number"
-              },
-              "description": "The increment of the slider."
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "type": {
-                "text": "number"
-              },
-              "description": "The value of the slider."
-            }
-          ],
-          "tagName": "modus-wc-slider",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<InputEvent>"
-              },
-              "description": "Emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcSlider",
-          "declaration": {
-            "name": "ModusWcSlider",
-            "module": "src/components/atoms/modus-wc-slider/modus-wc-slider.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-slider",
-          "declaration": {
-            "name": "ModusWcSlider",
-            "module": "src/components/atoms/modus-wc-slider/modus-wc-slider.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable input component used to create text inputs with types.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcTextInput",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "auto-capitalize",
-              "fieldName": "autoCapitalize",
-              "type": {
-                "text": "| 'off'\r\n    | 'none'\r\n    | 'on'\r\n    | 'sentences'\r\n    | 'words'\r\n    | 'characters'"
-              },
-              "description": "Controls automatic capitalization in inputted text."
-            },
-            {
-              "name": "auto-complete",
-              "fieldName": "autoComplete",
-              "type": {
-                "text": "'on' | 'off'"
-              },
-              "description": "Hint for form autofill feature."
-            },
-            {
-              "name": "bordered",
-              "fieldName": "bordered",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
-            },
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the input."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the form control is disabled."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "name": "input-mode",
-              "fieldName": "inputMode",
-              "type": {
-                "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
-              },
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
-            },
-            {
-              "name": "input-spellcheck",
-              "fieldName": "inputSpellcheck",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
-            },
-            {
-              "name": "max-length",
-              "fieldName": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum length (number of characters) of value."
-            },
-            {
-              "name": "min-length",
-              "fieldName": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum length (number of characters) of value."
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "type": {
-                "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
-            },
-            {
-              "name": "pattern",
-              "fieldName": "pattern",
-              "type": {
-                "text": "string"
-              },
-              "description": "Pattern the value must match to be valid"
-            },
-            {
-              "name": "placeholder",
-              "fieldName": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "description": "Text that appears in the form control when it has no value set."
-            },
-            {
-              "name": "read-only",
-              "fieldName": "readOnly",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the value is editable."
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "ModusSize"
-              },
-              "description": "The size of the input."
-            },
-            {
-              "name": "type",
-              "fieldName": "type",
-              "type": {
-                "text": "'email' | 'password' | 'search' | 'tel' | 'text' | 'url'"
-              },
-              "description": "Type of form control."
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the control."
-            }
-          ],
-          "tagName": "modus-wc-text-input",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<InputEvent>"
-              },
-              "description": "Event emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcTextInput",
-          "declaration": {
-            "name": "ModusWcTextInput",
-            "module": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-text-input",
-          "declaration": {
-            "name": "ModusWcTextInput",
-            "module": "src/components/atoms/modus-wc-text-input/modus-wc-text-input.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-textarea/modus-wc-textarea.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable textarea component.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcTextarea",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "bordered",
-              "fieldName": "bordered",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
-            },
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the textarea (supports DaisyUI)."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The disabled state of the textarea."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "name": "input-spellcheck",
-              "fieldName": "inputSpellcheck",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "The tabindex of the input."
-            },
-            {
-              "name": "max-length",
-              "fieldName": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "The maximum number of characters allowed in the textarea."
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "type": {
-                "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
-            },
-            {
-              "name": "placeholder",
-              "fieldName": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "description": "The placeholder text for the textarea."
-            },
-            {
-              "name": "readonly",
-              "fieldName": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The readonly state of the textarea."
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
-            },
-            {
-              "name": "rows",
-              "fieldName": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "The number of visible text lines for the textarea."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "DaisySize"
-              },
-              "description": "The size of the input."
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the textarea."
-            }
-          ],
-          "tagName": "modus-wc-textarea",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<InputEvent>"
-              },
-              "description": "Emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcTextarea",
-          "declaration": {
-            "name": "ModusWcTextarea",
-            "module": "src/components/atoms/modus-wc-textarea/modus-wc-textarea.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-textarea",
-          "declaration": {
-            "name": "ModusWcTextarea",
-            "module": "src/components/atoms/modus-wc-textarea/modus-wc-textarea.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-time-input/modus-wc-time-input.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable input component used to create time inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcTimeInput",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "auto-complete",
-              "fieldName": "autoComplete",
-              "type": {
-                "text": "'on' | 'off'"
-              },
-              "description": "Hint for form autofill feature."
-            },
-            {
-              "name": "bordered",
-              "fieldName": "bordered",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
-            },
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the input."
-            },
-            {
-              "name": "datalist-id",
-              "fieldName": "datalistId",
-              "type": {
-                "text": "string"
-              },
-              "description": "ID of a `<datalist>` element that contains pre-defined time options.\r\nThe value must be the ID of a `<datalist>` element in the same document."
-            },
-            {
-              "name": "datalist-options",
-              "fieldName": "datalistOptions",
-              "type": {
-                "text": "string[]"
-              },
-              "description": "The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the form control is disabled."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the time direction of the input content."
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
-            },
-            {
-              "name": "max",
-              "fieldName": "max",
-              "type": {
-                "text": "string"
-              },
-              "description": "Maximum value. Format: `HH:mm`, `HH:mm:ss`."
-            },
-            {
-              "name": "min",
-              "fieldName": "min",
-              "type": {
-                "text": "string"
-              },
-              "description": "Minimum value. Format: `HH:mm`, `HH:mm:ss.`"
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "type": {
-                "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
-            },
-            {
-              "name": "read-only",
-              "fieldName": "readOnly",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the value is editable."
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
-            },
-            {
-              "name": "show-seconds",
-              "fieldName": "showSeconds",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Displays the time input format as `HH:mm:ss` if `true`.\r\nInternally sets the `step` to 1 second.\r\nIf a `step` value is provided, it will override this attribute."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "ModusSize"
-              },
-              "description": "The size of the input."
-            },
-            {
-              "name": "step",
-              "fieldName": "step",
-              "type": {
-                "text": "number"
-              },
-              "description": "Specifies the granularity that the `value` must adhere to.\r\nValue of step given in seconds. Default value is 60 seconds.\r\nOverrides the `seconds` attribute if both are provided."
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the time input.\r\nAlways in 24-hour format that includes leading zeros:\r\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\r\nto be selected based on user's locale (or by the user agent).\r\nIf time includes seconds the format is always `HH:mm:ss`."
-            }
-          ],
-          "tagName": "modus-wc-time-input",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<Event>"
-              },
-              "description": "Event emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Event emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcTimeInput",
-          "declaration": {
-            "name": "ModusWcTimeInput",
-            "module": "src/components/atoms/modus-wc-time-input/modus-wc-time-input.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-time-input",
-          "declaration": {
-            "name": "ModusWcTimeInput",
-            "module": "src/components/atoms/modus-wc-time-input/modus-wc-time-input.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/atoms/modus-wc-toast/modus-wc-toast.tsx",
       "declarations": [
         {
@@ -2759,159 +1070,6 @@
           "declaration": {
             "name": "ModusWcToast",
             "module": "src/components/atoms/modus-wc-toast/modus-wc-toast.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/atoms/modus-wc-toggle/modus-wc-toggle.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable checkbox component.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcToggle",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "type": {
-                "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The disabled state of the toggle."
-            },
-            {
-              "name": "indeterminate",
-              "fieldName": "indeterminate",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The indeterminate state of the toggle."
-            },
-            {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "type": {
-                "text": "string"
-              },
-              "description": "The ID of the input element."
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "type": {
-                "text": "number"
-              },
-              "description": "The tabindex of the input."
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "type": {
-                "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "DaisySize"
-              },
-              "description": "The size of the input."
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "The value of the toggle."
-            }
-          ],
-          "tagName": "modus-wc-toggle",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<InputEvent>"
-              },
-              "description": "Emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcToggle",
-          "declaration": {
-            "name": "ModusWcToggle",
-            "module": "src/components/atoms/modus-wc-toggle/modus-wc-toggle.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-toggle",
-          "declaration": {
-            "name": "ModusWcToggle",
-            "module": "src/components/atoms/modus-wc-toggle/modus-wc-toggle.tsx"
           }
         }
       ]
@@ -3317,14 +1475,6 @@
               "description": "Whether the form control is disabled."
             },
             {
-              "name": "input-dir",
-              "fieldName": "inputDir",
-              "type": {
-                "text": "'' | 'ltr' | 'rtl' | 'auto'"
-              },
-              "description": "Specifies the text direction of the input content."
-            },
-            {
               "name": "input-id",
               "fieldName": "inputId",
               "type": {
@@ -3347,6 +1497,14 @@
                 "text": "IAutocompleteItem[]"
               },
               "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
             },
             {
               "name": "min-chars",
@@ -3640,6 +1798,159 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-checkbox/modus-wc-checkbox.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable checkbox component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcCheckbox",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The disabled state of the checkbox."
+            },
+            {
+              "name": "indeterminate",
+              "fieldName": "indeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The indeterminate state of the checkbox."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "The tabindex of the input."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "DaisySize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The value of the checkbox."
+            }
+          ],
+          "tagName": "modus-wc-checkbox",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcCheckbox",
+          "declaration": {
+            "name": "ModusWcCheckbox",
+            "module": "src/components/molecules/modus-wc-checkbox/modus-wc-checkbox.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-checkbox",
+          "declaration": {
+            "name": "ModusWcCheckbox",
+            "module": "src/components/molecules/modus-wc-checkbox/modus-wc-checkbox.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-chip/modus-wc-chip.icons.tsx",
       "declarations": [
         {
@@ -3925,6 +2236,883 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-date/modus-wc-date.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable date picker component used to create date inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcDate",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the input."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the form control is disabled."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "max",
+              "fieldName": "max",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum date value."
+            },
+            {
+              "name": "min",
+              "fieldName": "min",
+              "type": {
+                "text": "string"
+              },
+              "description": "Minimum date value."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Placeholder text for the date input."
+            },
+            {
+              "name": "read-only",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the value is editable."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required or must be checked for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the control."
+            }
+          ],
+          "tagName": "modus-wc-date",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Event emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcDate",
+          "declaration": {
+            "name": "ModusWcDate",
+            "module": "src/components/molecules/modus-wc-date/modus-wc-date.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-date",
+          "declaration": {
+            "name": "ModusWcDate",
+            "module": "src/components/molecules/modus-wc-date/modus-wc-date.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-number-input/modus-wc-number-input.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable input component used to create number inputs with types.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcNumberInput",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "auto-complete",
+              "fieldName": "autoComplete",
+              "type": {
+                "text": "'on' | 'off'"
+              },
+              "description": "Hint for form autofill feature."
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the input."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the form control is disabled."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-mode",
+              "fieldName": "inputMode",
+              "type": {
+                "text": "'decimal' | 'none' | 'numeric'"
+              },
+              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "max",
+              "fieldName": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "The input's maximum value."
+            },
+            {
+              "name": "min",
+              "fieldName": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "The input's minimum value."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text that appears in the form control when it has no value set."
+            },
+            {
+              "name": "read-only",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the value is editable."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "step",
+              "fieldName": "step",
+              "type": {
+                "text": "number"
+              },
+              "description": "The granularity that the value adheres to."
+            },
+            {
+              "name": "type",
+              "fieldName": "type",
+              "type": {
+                "text": "'number' | 'range'"
+              },
+              "description": "Type of form control."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the control."
+            }
+          ],
+          "tagName": "modus-wc-number-input",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Event emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcNumberInput",
+          "declaration": {
+            "name": "ModusWcNumberInput",
+            "module": "src/components/molecules/modus-wc-number-input/modus-wc-number-input.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-number-input",
+          "declaration": {
+            "name": "ModusWcNumberInput",
+            "module": "src/components/molecules/modus-wc-number-input/modus-wc-number-input.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-radio/modus-wc-radio.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable radio component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcRadio",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The disabled state of the radio."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "The tabindex of the input."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The value of the radio."
+            }
+          ],
+          "tagName": "modus-wc-radio",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcRadio",
+          "declaration": {
+            "name": "ModusWcRadio",
+            "module": "src/components/molecules/modus-wc-radio/modus-wc-radio.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-radio",
+          "declaration": {
+            "name": "ModusWcRadio",
+            "module": "src/components/molecules/modus-wc-radio/modus-wc-radio.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-select/modus-wc-select.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable select component used to pick a value from a list of options.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcSelect",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the form control is disabled."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "options",
+              "fieldName": "options",
+              "type": {
+                "text": "ISelectOption[]"
+              },
+              "description": "The options to display in the select dropdown."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the control."
+            }
+          ],
+          "tagName": "modus-wc-select",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Event emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcSelect",
+          "declaration": {
+            "name": "ModusWcSelect",
+            "module": "src/components/molecules/modus-wc-select/modus-wc-select.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-select",
+          "declaration": {
+            "name": "ModusWcSelect",
+            "module": "src/components/molecules/modus-wc-select/modus-wc-select.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-slider/modus-wc-slider.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable slider component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcSlider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The disabled state of the slider."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "The tabindex of the input."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "max",
+              "fieldName": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "The maximum slider value."
+            },
+            {
+              "name": "min",
+              "fieldName": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "The minimum slider value."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "step",
+              "fieldName": "step",
+              "type": {
+                "text": "number"
+              },
+              "description": "The increment of the slider."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "number"
+              },
+              "description": "The value of the slider."
+            }
+          ],
+          "tagName": "modus-wc-slider",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcSlider",
+          "declaration": {
+            "name": "ModusWcSlider",
+            "module": "src/components/molecules/modus-wc-slider/modus-wc-slider.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-slider",
+          "declaration": {
+            "name": "ModusWcSlider",
+            "module": "src/components/molecules/modus-wc-slider/modus-wc-slider.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-tabs/modus-wc-tabs.tsx",
       "declarations": [
         {
@@ -4019,6 +3207,432 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-text-input/modus-wc-text-input.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable input component used to create text inputs with types.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcTextInput",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "auto-capitalize",
+              "fieldName": "autoCapitalize",
+              "type": {
+                "text": "| 'off'\r\n    | 'none'\r\n    | 'on'\r\n    | 'sentences'\r\n    | 'words'\r\n    | 'characters'"
+              },
+              "description": "Controls automatic capitalization in inputted text."
+            },
+            {
+              "name": "auto-complete",
+              "fieldName": "autoComplete",
+              "type": {
+                "text": "'on' | 'off'"
+              },
+              "description": "Hint for form autofill feature."
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the input."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the form control is disabled."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-mode",
+              "fieldName": "inputMode",
+              "type": {
+                "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
+              },
+              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
+            },
+            {
+              "name": "input-spellcheck",
+              "fieldName": "inputSpellcheck",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "max-length",
+              "fieldName": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum length (number of characters) of value."
+            },
+            {
+              "name": "min-length",
+              "fieldName": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum length (number of characters) of value."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "pattern",
+              "fieldName": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "description": "Pattern the value must match to be valid"
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text that appears in the form control when it has no value set."
+            },
+            {
+              "name": "read-only",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the value is editable."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "type",
+              "fieldName": "type",
+              "type": {
+                "text": "'email' | 'password' | 'search' | 'tel' | 'text' | 'url'"
+              },
+              "description": "Type of form control."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the control."
+            }
+          ],
+          "tagName": "modus-wc-text-input",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Event emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTextInput",
+          "declaration": {
+            "name": "ModusWcTextInput",
+            "module": "src/components/molecules/modus-wc-text-input/modus-wc-text-input.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-text-input",
+          "declaration": {
+            "name": "ModusWcTextInput",
+            "module": "src/components/molecules/modus-wc-text-input/modus-wc-text-input.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-textarea/modus-wc-textarea.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable textarea component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcTextarea",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the textarea (supports DaisyUI)."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The disabled state of the textarea."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-spellcheck",
+              "fieldName": "inputSpellcheck",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "The tabindex of the input."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "max-length",
+              "fieldName": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "The maximum number of characters allowed in the textarea."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "The placeholder text for the textarea."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The readonly state of the textarea."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "rows",
+              "fieldName": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "The number of visible text lines for the textarea."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the textarea."
+            }
+          ],
+          "tagName": "modus-wc-textarea",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTextarea",
+          "declaration": {
+            "name": "ModusWcTextarea",
+            "module": "src/components/molecules/modus-wc-textarea/modus-wc-textarea.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-textarea",
+          "declaration": {
+            "name": "ModusWcTextarea",
+            "module": "src/components/molecules/modus-wc-textarea/modus-wc-textarea.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-theme-switcher/modus-wc-theme-switcher.tsx",
       "declarations": [
         {
@@ -4081,6 +3695,376 @@
           "declaration": {
             "name": "ModusWcThemeSwitcher",
             "module": "src/components/molecules/modus-wc-theme-switcher/modus-wc-theme-switcher.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-time-input/modus-wc-time-input.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable input component used to create time inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcTimeInput",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "auto-complete",
+              "fieldName": "autoComplete",
+              "type": {
+                "text": "'on' | 'off'"
+              },
+              "description": "Hint for form autofill feature."
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the input."
+            },
+            {
+              "name": "datalist-id",
+              "fieldName": "datalistId",
+              "type": {
+                "text": "string"
+              },
+              "description": "ID of a `<datalist>` element that contains pre-defined time options.\r\nThe value must be the ID of a `<datalist>` element in the same document."
+            },
+            {
+              "name": "datalist-options",
+              "fieldName": "datalistOptions",
+              "type": {
+                "text": "string[]"
+              },
+              "description": "The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the form control is disabled."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "max",
+              "fieldName": "max",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum value. Format: `HH:mm`, `HH:mm:ss`."
+            },
+            {
+              "name": "min",
+              "fieldName": "min",
+              "type": {
+                "text": "string"
+              },
+              "description": "Minimum value. Format: `HH:mm`, `HH:mm:ss.`"
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "read-only",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the value is editable."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "show-seconds",
+              "fieldName": "showSeconds",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Displays the time input format as `HH:mm:ss` if `true`.\r\nInternally sets the `step` to 1 second.\r\nIf a `step` value is provided, it will override this attribute."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "step",
+              "fieldName": "step",
+              "type": {
+                "text": "number"
+              },
+              "description": "Specifies the granularity that the `value` must adhere to.\r\nValue of step given in seconds. Default value is 60 seconds.\r\nOverrides the `seconds` attribute if both are provided."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the time input.\r\nAlways in 24-hour format that includes leading zeros:\r\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\r\nto be selected based on user's locale (or by the user agent).\r\nIf time includes seconds the format is always `HH:mm:ss`."
+            }
+          ],
+          "tagName": "modus-wc-time-input",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Event emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTimeInput",
+          "declaration": {
+            "name": "ModusWcTimeInput",
+            "module": "src/components/molecules/modus-wc-time-input/modus-wc-time-input.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-time-input",
+          "declaration": {
+            "name": "ModusWcTimeInput",
+            "module": "src/components/molecules/modus-wc-time-input/modus-wc-time-input.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-toggle/modus-wc-toggle.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable checkbox component.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcToggle",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The disabled state of the toggle."
+            },
+            {
+              "name": "indeterminate",
+              "fieldName": "indeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The indeterminate state of the toggle."
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the input element."
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "type": {
+                "text": "number"
+              },
+              "description": "The tabindex of the input."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text to display within the label."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A value is required for the form to be submittable."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "The size of the input."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The value of the toggle."
+            }
+          ],
+          "tagName": "modus-wc-toggle",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcToggle",
+          "declaration": {
+            "name": "ModusWcToggle",
+            "module": "src/components/molecules/modus-wc-toggle/modus-wc-toggle.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-toggle",
+          "declaration": {
+            "name": "ModusWcToggle",
+            "module": "src/components/molecules/modus-wc-toggle/modus-wc-toggle.tsx"
           }
         }
       ]

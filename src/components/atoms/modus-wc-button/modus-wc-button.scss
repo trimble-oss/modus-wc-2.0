@@ -3,47 +3,418 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-btn {
-  --rounded-btn: var(--modus-wc-border-radius-lg);
+[data-theme='modus-classic-light'] .modus-wc-btn,
+[data-theme='modus-classic-dark'] .modus-wc-btn {
+  --rounded-btn: var(--modus-wc-border-radius-md);
+  border: none;
+  outline: none;
 
+  // Allow Daisy to style circle and square shapes
+  &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+    height: fit-content;
+    min-height: fit-content;
+  }
+
+  // Sizes
+  &.modus-wc-btn-xs {
+    font-size: var(--modus-wc-font-size-xs);
+
+    &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+    }
+  }
+
+  &.modus-wc-btn-sm {
+    font-size: var(--modus-wc-font-size-sm);
+
+    &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
+    }
+  }
+
+  &.modus-wc-btn-md {
+    font-size: var(--modus-wc-font-size-md);
+
+    &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+    }
+  }
+
+  &.modus-wc-btn-lg {
+    font-size: var(--modus-wc-font-size-lg);
+
+    &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
+    }
+  }
+
+  // Variants
   &.modus-wc-btn-borderless {
-    --tw-bg-opacity: 0;
-
-    border: none;
+    background-color: transparent;
     box-shadow: none;
+  }
 
+  &.modus-wc-btn-outline {
+    border: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-trimble-gray);
+    background-color: transparent;
+  }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-btn {
+  &.modus-wc-btn-disabled {
+    opacity: 0.3;
+  }
+
+  // Variants
+  &.modus-wc-btn-borderless {
+    // Colors
     &.modus-wc-btn-primary {
-      color: var(--modus-wc-color-primary);
+      color: var(--modus-wc-color-trimble-blue);
     }
 
     &.modus-wc-btn-secondary {
-      color: var(--modus-wc-color-accent);
+      color: var(--modus-wc-color-gray-6);
     }
 
+    // tertiary
     &.modus-wc-btn-neutral {
-      color: var(--modus-wc-color-neutral);
+      color: var(--modus-wc-color-gray-1);
     }
 
     &.modus-wc-btn-warning {
-      color: var(--modus-wc-color-warning);
+      color: var(--modus-wc-color-yellow);
     }
 
     &.modus-wc-btn-error {
-      color: var(--modus-wc-color-error);
+      color: var(--modus-wc-color-red);
+    }
+  }
+
+  &.modus-wc-btn-filled {
+    // Colors
+    &.modus-wc-btn-primary {
+      color: var(--modus-wc-color-white);
+      background-color: var(--modus-wc-color-trimble-blue);
+
+      &:hover {
+        background-color: var(--modus-wc-color-blue-light);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-blue-dark);
+      }
     }
 
-    &:hover {
-      --tw-bg-opacity: 0.05;
+    &.modus-wc-btn-secondary {
+      color: var(--modus-wc-color-white);
+      background-color: var(--modus-wc-color-gray-6);
 
-      border: none;
-      box-shadow: none;
+      &:hover {
+        background-color: var(--modus-wc-color-gray-5);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-gray-7);
+      }
     }
 
-    &:active {
-      --tw-bg-opacity: 0.1;
+    // tertiary
+    &.modus-wc-btn-neutral {
+      color: var(--modus-wc-color-trimble-gray);
+      background-color: var(--modus-wc-color-gray-1);
 
-      border: none;
-      box-shadow: none;
+      &:hover {
+        background-color: var(--modus-wc-color-gray-0);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-gray-2);
+      }
+    }
+
+    &.modus-wc-btn-warning {
+      color: var(--modus-wc-color-trimble-gray);
+      background-color: var(--modus-wc-color-yellow);
+
+      &:hover {
+        background-color: var(--modus-wc-color-yellow-light);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-yellow-dark);
+      }
+    }
+
+    &.modus-wc-btn-error {
+      color: var(--modus-wc-color-white);
+      background-color: var(--modus-wc-color-red);
+
+      &:hover {
+        background-color: var(--modus-wc-color-red-light);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-red-dark);
+      }
+    }
+  }
+
+  &.modus-wc-btn-outline {
+    // Colors
+    &.modus-wc-btn-primary {
+      color: var(--modus-wc-color-trimble-blue);
+      border-color: var(--modus-wc-color-trimble-blue);
+
+      &:hover {
+        color: var(--modus-wc-color-blue-light);
+        border-color: var(--modus-wc-color-blue-light);
+      }
+
+      &:active {
+        color: var(--modus-wc-color-blue-dark);
+        border-color: var(--modus-wc-color-blue-dark);
+      }
+    }
+
+    &.modus-wc-btn-secondary {
+      color: var(--modus-wc-color-gray-6);
+      border-color: var(--modus-wc-color-gray-6);
+
+      &:hover {
+        color: var(--modus-wc-color-gray-5);
+        border-color: var(--modus-wc-color-gray-5);
+      }
+
+      &:active {
+        color: var(--modus-wc-color-gray-7);
+        border-color: var(--modus-wc-color-gray-7);
+      }
+    }
+
+    // tertiary
+    &.modus-wc-btn-neutral {
+      color: var(--modus-wc-color-gray-1);
+      border-color: var(--modus-wc-color-gray-1);
+
+      &:hover {
+        color: var(--modus-wc-color-gray-0);
+        border-color: var(--modus-wc-color-gray-0);
+      }
+
+      &:active {
+        color: var(--modus-wc-color-gray-2);
+        border-color: var(--modus-wc-color-gray-2);
+      }
+    }
+
+    &.modus-wc-btn-warning {
+      color: var(--modus-wc-color-yellow);
+      border-color: var(--modus-wc-color-yellow);
+
+      &:hover {
+        color: var(--modus-wc-color-yellow-light);
+        border-color: var(--modus-wc-color-yellow-light);
+      }
+
+      &:active {
+        color: var(--modus-wc-color-yellow-dark);
+        border-color: var(--modus-wc-color-yellow-dark);
+      }
+    }
+
+    &.modus-wc-btn-error {
+      color: var(--modus-wc-color-red);
+      border-color: var(--modus-wc-color-red);
+
+      &:hover {
+        color: var(--modus-wc-color-red-light);
+        border-color: var(--modus-wc-color-red-light);
+      }
+
+      &:active {
+        color: var(--modus-wc-color-red-dark);
+        border-color: var(--modus-wc-color-red-dark);
+      }
+    }
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-btn {
+  &.modus-wc-btn-disabled {
+    opacity: 0.4;
+  }
+
+  // Variants
+  &.modus-wc-btn-borderless {
+    // Colors
+    &.modus-wc-btn-primary {
+      color: var(--modus-wc-color-highlight-blue);
+    }
+
+    &.modus-wc-btn-secondary {
+      color: var(--modus-wc-color-gray-6);
+    }
+
+    // tertiary
+    &.modus-wc-btn-neutral {
+      color: var(--modus-wc-color-gray-1);
+    }
+
+    &.modus-wc-btn-warning {
+      color: var(--modus-wc-color-yellow);
+    }
+
+    &.modus-wc-btn-error {
+      color: var(--modus-wc-color-red);
+    }
+  }
+
+  &.modus-wc-btn-filled {
+    // Colors
+    &.modus-wc-btn-primary {
+      color: var(--modus-wc-color-gray-10);
+      background-color: var(--modus-wc-color-highlight-blue);
+
+      &:hover {
+        background-color: var(--modus-wc-color-blue-light);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-blue-dark);
+      }
+    }
+
+    &.modus-wc-btn-secondary {
+      color: var(--modus-wc-color-white);
+      background-color: var(--modus-wc-color-gray-6);
+
+      &:hover {
+        background-color: var(--modus-wc-color-gray-5);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-gray-7);
+      }
+    }
+
+    // tertiary
+    &.modus-wc-btn-neutral {
+      color: var(--modus-wc-color-trimble-gray);
+      background-color: var(--modus-wc-color-gray-1);
+
+      &:hover {
+        background-color: var(--modus-wc-color-gray-0);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-gray-4);
+      }
+    }
+
+    &.modus-wc-btn-warning {
+      color: var(--modus-wc-color-trimble-gray);
+      background-color: var(--modus-wc-color-yellow);
+
+      &:hover {
+        background-color: var(--modus-wc-color-yellow-light);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-yellow-dark);
+      }
+    }
+
+    &.modus-wc-btn-error {
+      color: var(--modus-wc-color-white);
+      background-color: var(--modus-wc-color-red);
+
+      &:hover {
+        background-color: var(--modus-wc-color-red-light);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-red-dark);
+      }
+    }
+  }
+
+  &.modus-wc-btn-outline {
+    // Colors
+    &.modus-wc-btn-primary {
+      color: var(--modus-wc-color-highlight-blue);
+      border-color: var(--modus-wc-color-highlight-blue);
+
+      &:hover {
+        color: var(--modus-wc-color-blue-light);
+        border-color: var(--modus-wc-color-blue-light);
+      }
+
+      &:active {
+        color: var(--modus-wc-color-blue-dark);
+        border-color: var(--modus-wc-color-blue-dark);
+      }
+    }
+
+    &.modus-wc-btn-secondary {
+      color: var(--modus-wc-color-gray-6);
+      border-color: var(--modus-wc-color-gray-6);
+
+      &:hover {
+        color: var(--modus-wc-color-gray-5);
+        border-color: var(--modus-wc-color-gray-5);
+      }
+
+      &:active {
+        color: var(--modus-wc-color-gray-7);
+        border-color: var(--modus-wc-color-gray-7);
+      }
+    }
+
+    // tertiary
+    &.modus-wc-btn-neutral {
+      color: var(--modus-wc-color-gray-1);
+      border-color: var(--modus-wc-color-gray-1);
+
+      &:hover {
+        color: var(--modus-wc-color-gray-0);
+        border-color: var(--modus-wc-color-gray-0);
+      }
+
+      &:active {
+        color: var(--modus-wc-color-gray-2);
+        border-color: var(--modus-wc-color-gray-4);
+      }
+    }
+
+    &.modus-wc-btn-warning {
+      color: var(--modus-wc-color-yellow);
+      border-color: var(--modus-wc-color-yellow);
+
+      &:hover {
+        color: var(--modus-wc-color-yellow-light);
+        border-color: var(--modus-wc-color-yellow-light);
+      }
+
+      &:active {
+        color: var(--modus-wc-color-yellow-dark);
+        border-color: var(--modus-wc-color-yellow-dark);
+      }
+    }
+
+    &.modus-wc-btn-error {
+      color: var(--modus-wc-color-red);
+      border-color: var(--modus-wc-color-red);
+
+      &:hover {
+        color: var(--modus-wc-color-red-light);
+        border-color: var(--modus-wc-color-red-light);
+      }
+
+      &:active {
+        color: var(--modus-wc-color-red-dark);
+        border-color: var(--modus-wc-color-red-dark);
+      }
     }
   }
 }
