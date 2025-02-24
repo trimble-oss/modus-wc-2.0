@@ -16,7 +16,6 @@ const meta: Meta<ThemeSwitcherArgs> = {
     'custom-class': undefined,
     'initial-theme': undefined,
   },
-  argTypes: {},
   decorators: [withActions],
   parameters: {
     actions: {
