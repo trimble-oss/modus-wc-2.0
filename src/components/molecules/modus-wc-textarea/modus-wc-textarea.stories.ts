@@ -60,7 +60,7 @@ export default meta;
 
 type Story = StoryObj<TextAreaArgs>;
 
-export const Template: Story = {
+export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-textarea

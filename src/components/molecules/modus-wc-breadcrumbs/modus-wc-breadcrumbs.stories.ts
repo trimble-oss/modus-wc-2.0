@@ -46,9 +46,9 @@ export default meta;
 
 type Story = StoryObj<BreadcrumbArgs>;
 
-// prettier-ignore
 const Template: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
 <modus-wc-breadcrumbs
   custom-class=${ifDefined(args['custom-class'])}

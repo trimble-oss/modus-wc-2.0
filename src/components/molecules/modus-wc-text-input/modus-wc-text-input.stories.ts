@@ -102,7 +102,7 @@ export default meta;
 
 type Story = StoryObj<TextInputArgs>;
 
-export const Template: Story = {
+export const Default: Story = {
   render: (args) => html`
     <modus-wc-text-input
       aria-label="Text input"

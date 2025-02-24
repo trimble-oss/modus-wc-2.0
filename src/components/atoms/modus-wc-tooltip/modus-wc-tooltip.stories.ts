@@ -19,7 +19,7 @@ const meta: Meta<TooltipArgs> = {
   },
   argTypes: {
     position: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['auto', 'top', 'right', 'left', 'bottom'],
     },
   },
@@ -29,9 +29,9 @@ export default meta;
 
 type Story = StoryObj<TooltipArgs>;
 
-// prettier-ignore
 const Template: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
       <modus-wc-tooltip
         content=${ifDefined(args.content)}

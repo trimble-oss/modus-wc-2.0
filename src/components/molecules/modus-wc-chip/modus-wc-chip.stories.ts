@@ -26,11 +26,11 @@ const meta: Meta<ChipArgs> = {
   },
   argTypes: {
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['filled', 'outline'],
     },
   },
@@ -63,9 +63,9 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
-// prettier-ignore
 export const AvatarChip: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
 <modus-wc-chip
   aria-label="Chip example"
@@ -86,9 +86,9 @@ export const AvatarChip: Story = {
   },
 };
 
-// prettier-ignore
 export const CheckIconChip: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
 <modus-wc-chip
   aria-label="Chip example"

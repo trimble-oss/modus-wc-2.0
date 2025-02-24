@@ -49,7 +49,7 @@ export default meta;
 
 type Story = StoryObj<SliderArgs>;
 
-export const Template: Story = {
+export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-slider
