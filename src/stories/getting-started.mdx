@@ -48,6 +48,27 @@ const Root = () => {
 <modus-wc-button variant="primary">Click me</modus-wc-button>
 ```
 
+## Types
+
+Types are a crucial part of our component library, providing robust type safety and enhanced developer experience through comprehensive TypeScript definitions for all components.
+
+```javascript
+import { ISelectOption, ModusWcSelectCustomEvent } from '@trimble-cms/modus-wc';
+
+const options: ISelectOption[] = [
+  {
+    label: 'Option 1',
+    value: '1',
+  },
+  {
+    label: 'Option 2',
+    value: '2',
+  },
+];
+
+const handleEvent = (e: ModusWcSelectCustomEvent<ISelectOption>) => {}
+```
+
 ## Framework Integrations
 
 - ### [Angular](?path=/docs/documentation-frameworks-angular--docs)

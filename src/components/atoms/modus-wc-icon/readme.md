@@ -28,6 +28,7 @@ Adheres to WCAG 2.2 standards.
 ### Used by
 
  - [modus-wc-alert](../../molecules/modus-wc-alert)
+ - [modus-wc-autocomplete](../../molecules/modus-wc-autocomplete)
  - [modus-wc-collapse](../../molecules/modus-wc-collapse)
  - [modus-wc-menu-item](../modus-wc-menu-item)
  - [modus-wc-tabs](../../molecules/modus-wc-tabs)
@@ -36,6 +37,7 @@ Adheres to WCAG 2.2 standards.
 ```mermaid
 graph TD;
   modus-wc-alert --> modus-wc-icon
+  modus-wc-autocomplete --> modus-wc-icon
   modus-wc-collapse --> modus-wc-icon
   modus-wc-menu-item --> modus-wc-icon
   modus-wc-tabs --> modus-wc-icon

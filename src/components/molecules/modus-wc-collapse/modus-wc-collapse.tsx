@@ -15,7 +15,7 @@ import {
   convertPropsToTitleDivClasses,
 } from './modus-wc-collapse.tailwind';
 import { DaisySize } from '../../types';
-import { Attributes, inheritAriaAttributes } from '../../utils';
+import { Attributes, inheritAriaAttributes, KEY } from '../../utils';
 
 /**
  * A customizable collapse component used for showing and hiding content.
@@ -88,7 +88,7 @@ export class ModusWcCollapse {
   };
 
   private handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'Enter' || event.key === ' ') {
+    if (event.key === KEY.Enter || event.key === KEY.Space) {
       event.preventDefault();
       this.handleClick();
     }

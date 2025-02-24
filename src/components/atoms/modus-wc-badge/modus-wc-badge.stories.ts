@@ -12,7 +12,6 @@ interface BadgeArgs {
     | 'success'
     | 'warning'
     | 'danger';
-  content: string;
   'custom-class'?: string;
   size: ModusSize;
   variant: 'counter' | 'filled' | 'text';
@@ -23,7 +22,6 @@ const meta: Meta<BadgeArgs> = {
   component: 'modus-wc-badge',
   args: {
     color: 'primary',
-    content: 'Badge',
     size: 'md',
     variant: 'filled',
   },
@@ -41,11 +39,11 @@ const meta: Meta<BadgeArgs> = {
       ],
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['counter', 'filled', 'text'],
     },
   },
@@ -57,18 +55,37 @@ type Story = StoryObj<BadgeArgs>;
 
 const Template: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
-      <modus-wc-badge
-        color="${args.color}"
-        content="${args.content}"
-        custom-class="${ifDefined(args['custom-class'])}"
-        size="${args.size}"
-        variant="${args.variant}"
-      ></modus-wc-badge>
+<modus-wc-badge
+  color="${args.color}"
+  custom-class="${ifDefined(args['custom-class'])}"
+  size="${args.size}"
+  variant="${args.variant}"
+>
+  Badge
+</modus-wc-badge>
     `;
   },
 };
 
 export const Default: Story = {
   ...Template,
+};
+
+export const WithIcon: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<style>
+  .modus-wc-icon {
+    padding-inline-end: 4px;
+  }
+</style>
+<modus-wc-badge>
+  <modus-wc-icon decorative name="check" size="xs"></modus-wc-icon>
+  Item
+</modus-wc-badge>
+    `;
+  },
 };

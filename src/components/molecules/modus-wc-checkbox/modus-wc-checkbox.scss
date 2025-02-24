@@ -1,0 +1,46 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+.modus-wc-checkbox-host {
+  display: flex;
+  align-items: center;
+
+  .modus-wc-input-label {
+    padding-inline-start: var(--modus-wc-spacing-md);
+  }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-checkbox,
+[data-theme='modus-classic-dark'] .modus-wc-checkbox {
+  --chkbg: var(--modus-wc-color-highlight-blue);
+  --fallback-bc: var(--modus-wc-color-highlight-blue);
+  --chkfg: var(--modus-wc-color-white);
+
+  border-radius: var(--modus-wc-border-radius-sm);
+  border-width: 2px;
+
+  &.modus-wc-checkbox-xl {
+    height: 4rem;
+    width: 4rem;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+  }
+
+  &:focus {
+    outline-color: var(--modus-wc-color-highlight-blue);
+  }
+
+  &:hover {
+    --chkbg: var(--modus-wc-color-trimble-blue);
+    --fallback-bc: var(--modus-wc-color-trimble-blue);
+  }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-checkbox {
+  --chkbg: var(--modus-wc-color-blue-light);
+  --fallback-bc: var(--modus-wc-color-blue-light);
+}

@@ -1,10 +1,18 @@
 import { ModusSize, Orientation } from '../../types';
 
 export const convertPropsToClasses = (props: {
+  bordered?: boolean;
   orientation?: Orientation;
   size?: ModusSize;
 }): string => {
   let classes = '';
+
+  if (
+    Object.prototype.hasOwnProperty.call(props, 'bordered') &&
+    !!props.bordered
+  ) {
+    classes = `${classes} modus-wc-menu--bordered`;
+  }
 
   if (
     Object.prototype.hasOwnProperty.call(props, 'orientation') &&
