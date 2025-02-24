@@ -8,6 +8,8 @@ const ALERT_COLORS = ['success', 'warning', 'danger'];
 /**
  * A customizable badge component used to create badges with different sizes, types, and colors.
  *
+ * The component supports a `<slot>` for injecting content within the badge.
+ *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
@@ -30,9 +32,6 @@ export class ModusWcBadge {
     | 'success'
     | 'warning'
     | 'danger' = 'primary';
-
-  /** The content to display inside the badge. For 'counter' type, this should be a number. */
-  @Prop() content!: string;
 
   /** Custom CSS class to apply to the span element. */
   @Prop() customClass: string = '';
@@ -73,7 +72,7 @@ export class ModusWcBadge {
           tabindex={-1}
           {...this.inheritedAttributes}
         >
-          {this.content}
+          <slot />
         </span>
       </Host>
     );

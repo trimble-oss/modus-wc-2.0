@@ -29,6 +29,7 @@
     background-color: transparent;
     border: none;
 
+    // Colors
     &.modus-wc-badge-primary {
       color: var(--modus-wc-color-trimble-blue);
     }
@@ -76,19 +77,19 @@
     border-radius: var(--modus-wc-border-radius-sm);
     font-size: var(--modus-wc-font-size-xs);
     height: 14px;
-    padding: 0 var(--modus-wc-spacing-xs);
+    padding: var(--modus-wc-spacing-2xs) var(--modus-wc-spacing-xs);
   }
 
   &.modus-wc-badge-md {
     font-size: var(--modus-wc-font-size-sm);
     height: 20px;
-    padding: 0 var(--modus-wc-spacing-sm);
+    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
   }
 
   &.modus-wc-badge-lg {
-    font-size: var(--modus-wc-font-size-lg);
+    font-size: var(--modus-wc-font-size-md);
     height: 28px;
-    padding: 0 var(--modus-wc-spacing-md);
+    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
   }
 }
 

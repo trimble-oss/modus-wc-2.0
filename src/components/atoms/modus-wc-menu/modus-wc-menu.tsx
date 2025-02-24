@@ -21,6 +21,9 @@ export class ModusWcMenu {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** Indicates that the menu should have a border. */
+  @Prop() bordered?: boolean;
+
   /** Custom CSS class to apply to the ul element. */
   @Prop() customClass?: string = '';
 
@@ -44,6 +47,7 @@ export class ModusWcMenu {
     const classList: string[] = ['modus-wc-menu modus-wc-w-full'];
 
     const propClasses = convertPropsToClasses({
+      bordered: this.bordered,
       orientation: this.orientation,
       size: this.size,
     });

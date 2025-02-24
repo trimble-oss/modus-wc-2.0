@@ -15,11 +15,12 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property      | Attribute      | Description                                  | Type                                      | Default      |
-| ------------- | -------------- | -------------------------------------------- | ----------------------------------------- | ------------ |
-| `customClass` | `custom-class` | Custom CSS class to apply to the ul element. | `string \| undefined`                     | `''`         |
-| `orientation` | `orientation`  | The orientation of the menu.                 | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
-| `size`        | `size`         | The size of the menu.                        | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
+| Property      | Attribute      | Description                                   | Type                                      | Default      |
+| ------------- | -------------- | --------------------------------------------- | ----------------------------------------- | ------------ |
+| `bordered`    | `bordered`     | Indicates that the menu should have a border. | `boolean \| undefined`                    | `undefined`  |
+| `customClass` | `custom-class` | Custom CSS class to apply to the ul element.  | `string \| undefined`                     | `''`         |
+| `orientation` | `orientation`  | The orientation of the menu.                  | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
+| `size`        | `size`         | The size of the menu.                         | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
 
 
 ## Dependencies
