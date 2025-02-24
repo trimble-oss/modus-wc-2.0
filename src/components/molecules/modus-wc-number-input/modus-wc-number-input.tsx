@@ -5,7 +5,9 @@ import {
   h,
   Host,
   Prop,
+  State,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-number-input.tailwind';
 import { ModusSize } from '../../types';
@@ -23,6 +25,11 @@ import { Attributes, inheritAriaAttributes } from '../../utils';
 })
 export class ModusWcNumberInput {
   private inheritedAttributes: Attributes = {};
+  private isInputFocused = false;
+  input!: HTMLInputElement;
+
+  /** Displayed only when the input is not focused. */
+  @State() formattedValue = this.getFormattedValue();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -35,6 +42,9 @@ export class ModusWcNumberInput {
 
   /** Custom CSS class to apply to the input. */
   @Prop() customClass?: string = '';
+
+  /** The input's currency. */
+  @Prop() currency?: string;
 
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
@@ -53,6 +63,9 @@ export class ModusWcNumberInput {
 
   /** The text to display within the label. */
   @Prop() label?: string;
+
+  /** The input's locale. */
+  @Prop() locale?: string;
 
   /** The input's maximum value. */
   @Prop() max?: number;
@@ -93,6 +106,20 @@ export class ModusWcNumberInput {
   /** Event emitted when the input gains focus. */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
+  @Watch('value')
+  watchValue(newValue: string, oldValue: string): void {
+    if (isNaN(+newValue)) {
+      this.value = oldValue;
+    } else {
+      this.value = newValue;
+    }
+
+    // Only updated when the input value is changed programmatically by the consumer
+    if ((this.currency || this.locale) && !this.isInputFocused) {
+      this.formattedValue = this.getFormattedValue();
+    }
+  }
+
   componentWillLoad() {
     if (!this.el.ariaLabel) {
       console.warn(
@@ -102,6 +129,37 @@ export class ModusWcNumberInput {
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  getFormattedValue() {
+    const numericValue = parseFloat(
+      (this.value !== undefined ? this.value : '').replace(/[^0-9.-]+/g, '')
+    );
+
+    if (this.value) {
+      let formattedValue;
+
+      if (this.currency && this.locale) {
+        formattedValue = new Intl.NumberFormat(this.locale, {
+          style: 'currency',
+          currency: this.currency,
+        }).format(numericValue);
+      } else if (this.currency) {
+        formattedValue = new Intl.NumberFormat(undefined, {
+          style: 'currency',
+          currency: this.currency,
+        }).format(numericValue);
+      } else if (this.locale) {
+        formattedValue = new Intl.NumberFormat(this.locale).format(
+          numericValue
+        );
+      } else {
+        formattedValue = numericValue.toString();
+      }
+      return formattedValue;
+    }
+
+    return '';
   }
 
   private getClasses(): string {
@@ -119,10 +177,23 @@ export class ModusWcNumberInput {
   }
 
   private handleBlur = (event: FocusEvent) => {
+    if (this.currency || this.locale) {
+      this.isInputFocused = false;
+      this.formattedValue = this.getFormattedValue();
+      this.input.type = 'text';
+      this.input.value = this.formattedValue;
+    }
+
     this.inputBlur.emit(event);
   };
 
   private handleFocus = (event: FocusEvent) => {
+    if (this.currency || this.locale) {
+      this.isInputFocused = true;
+      this.input.value = this.value;
+      this.input.type = 'number';
+    }
+
     this.inputFocus.emit(event);
   };
 
@@ -131,6 +202,8 @@ export class ModusWcNumberInput {
   };
 
   render() {
+    const inputType = this.currency || this.locale ? 'text' : this.type;
+
     return (
       <Host>
         {this.label && (
@@ -157,11 +230,12 @@ export class ModusWcNumberInput {
           onInput={this.handleInput}
           placeholder={this.placeholder}
           readonly={this.readOnly}
+          ref={(el) => (this.input = el as HTMLInputElement)}
           required={this.required}
           step={this.step}
           tabIndex={this.inputTabIndex}
-          type={this.type}
-          value={this.value}
+          type={inputType}
+          value={inputType === 'text' ? this.formattedValue : this.value}
           {...this.inheritedAttributes}
         />
       </Host>

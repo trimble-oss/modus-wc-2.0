@@ -2437,8 +2437,47 @@
               "description": "Reference to the host element"
             },
             {
+              "kind": "field",
+              "name": "formattedValue",
+              "description": "Displayed only when the input is not focused."
+            },
+            {
+              "kind": "method",
+              "name": "getFormattedValue"
+            },
+            {
+              "kind": "field",
+              "name": "input",
+              "type": {
+                "text": "HTMLInputElement"
+              }
+            },
+            {
               "kind": "method",
               "name": "render"
+            },
+            {
+              "kind": "method",
+              "name": "watchValue",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "oldValue",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
             }
           ],
           "attributes": [
@@ -2457,6 +2496,14 @@
                 "text": "boolean"
               },
               "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "currency",
+              "fieldName": "currency",
+              "type": {
+                "text": "string"
+              },
+              "description": "The input's currency."
             },
             {
               "name": "custom-class",
@@ -2505,6 +2552,14 @@
                 "text": "string"
               },
               "description": "The text to display within the label."
+            },
+            {
+              "name": "locale",
+              "fieldName": "locale",
+              "type": {
+                "text": "string"
+              },
+              "description": "The input's locale."
             },
             {
               "name": "max",

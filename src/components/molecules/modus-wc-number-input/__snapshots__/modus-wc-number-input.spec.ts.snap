@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-number-input should render with currency prop 1`] = `
+<modus-wc-number-input currency="USD" value="1234">
+  <input aria-label="currency prop" aria-placeholder="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" inputmode="numeric" placeholder="" type="text" value="$1,234.00">
+</modus-wc-number-input>
+`;
+
 exports[`modus-wc-number-input should render with custom props 1`] = `
 <modus-wc-number-input auto-complete="on" auto-focus="true" custom-class="test-class" disabled="true" input-aria-invalid="true" input-id="test-id" input-mode="decimal" input-tab-index="1" label="Test label" max="10" min="1" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" step="2" type="range" value="test@example.com">
   <modus-wc-input-label forid="test-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
@@ -10,5 +16,17 @@ exports[`modus-wc-number-input should render with custom props 1`] = `
 exports[`modus-wc-number-input should render with default props 1`] = `
 <modus-wc-number-input value="">
   <input aria-label="Default input" aria-placeholder="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" inputmode="numeric" placeholder="" type="number" value="">
+</modus-wc-number-input>
+`;
+
+exports[`modus-wc-number-input should render with locale and currency props 1`] = `
+<modus-wc-number-input currency="USD" locale="en-US" value="1234">
+  <input aria-label="currency and locale props" aria-placeholder="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" inputmode="numeric" placeholder="" type="text" value="$1,234.00">
+</modus-wc-number-input>
+`;
+
+exports[`modus-wc-number-input should render with locale prop 1`] = `
+<modus-wc-number-input locale="en-US" value="1234">
+  <input aria-label="locale prop" aria-placeholder="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" inputmode="numeric" placeholder="" type="text" value="1,234">
 </modus-wc-number-input>
 `;

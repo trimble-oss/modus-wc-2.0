@@ -657,6 +657,10 @@ export namespace Components {
          */
         "bordered"?: boolean;
         /**
+          * The input's currency.
+         */
+        "currency"?: string;
+        /**
           * Custom CSS class to apply to the input.
          */
         "customClass"?: string;
@@ -680,6 +684,10 @@ export namespace Components {
           * The text to display within the label.
          */
         "label"?: string;
+        /**
+          * The input's locale.
+         */
+        "locale"?: string;
         /**
           * The input's maximum value.
          */
@@ -2742,6 +2750,10 @@ declare namespace LocalJSX {
          */
         "bordered"?: boolean;
         /**
+          * The input's currency.
+         */
+        "currency"?: string;
+        /**
           * Custom CSS class to apply to the input.
          */
         "customClass"?: string;
@@ -2765,6 +2777,10 @@ declare namespace LocalJSX {
           * The text to display within the label.
          */
         "label"?: string;
+        /**
+          * The input's locale.
+         */
+        "locale"?: string;
         /**
           * The input's maximum value.
          */

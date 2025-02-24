@@ -8,12 +8,14 @@ interface NumberInputArgs {
   'auto-complete'?: 'on' | 'off';
   bordered?: boolean;
   'custom-class'?: string;
+  currency?: string;
   disabled?: boolean;
   'input-aria-invalid'?: 'true' | 'false';
   'input-id'?: string;
   'input-mode': 'decimal' | 'none' | 'numeric';
   'input-tab-index'?: number;
   label?: string;
+  locale?: string;
   max?: number;
   min?: number;
   name?: string;
@@ -43,6 +45,12 @@ const meta: Meta<NumberInputArgs> = {
       control: { type: 'select' },
       options: ['on', 'off'],
     },
+    currency: {
+      name: 'currency',
+      description:
+        'The currency symbol.\nNote: Follow the currency codes from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) for the `currencySymbol` property.\n',
+      table: { type: { summary: 'string' }, defaultValue: { summary: "''" } },
+    },
     'input-aria-invalid': {
       control: { type: 'select' },
       options: ['true', 'false'],
@@ -50,6 +58,14 @@ const meta: Meta<NumberInputArgs> = {
     'input-mode': {
       control: { type: 'select' },
       options: ['decimal', 'none', 'numeric'],
+    },
+    locale: {
+      name: 'locale',
+      description:
+        'The locale of the selected currency. Note: Follow the locale codes from [BCP 47](https://tools.ietf.org/html/bcp47) for the `locale` property.',
+      table: {
+        type: { summary: 'string' },
+      },
     },
     size: {
       control: { type: 'select' },
