@@ -4,7 +4,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ModusSize, Orientation } from '../../types';
 
 interface MenuArgs {
-  'aria-label': string;
   bordered?: boolean;
   'custom-class'?: string;
   orientation?: Orientation;
@@ -15,7 +14,6 @@ const meta: Meta<MenuArgs> = {
   title: 'Components/Menu',
   component: 'modus-wc-menu',
   args: {
-    'aria-label': 'Example menu',
     orientation: 'vertical',
     size: 'md',
   },
@@ -35,12 +33,12 @@ export default meta;
 
 type Story = StoryObj<MenuArgs>;
 
-export const Template: Story = {
+export const Default: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
 <modus-wc-menu
-  aria-label=${args['aria-label']}
+  aria-label="Menu"
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
   orientation=${ifDefined(args.orientation)}

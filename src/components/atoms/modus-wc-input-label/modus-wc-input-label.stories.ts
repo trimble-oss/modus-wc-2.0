@@ -45,22 +45,3 @@ const Template: Story = {
 export const Default: Story = { ...Template };
 
 export const Required: Story = { ...Template, args: { required: true } };
-
-export const RequiredTextarea: Story = {
-  ...Template,
-  args: {
-    'label-text': 'Very Long Label With Lots Of Words',
-    required: true,
-    'for-id': 'textarea-input',
-  },
-  render: (args) => html`
-    <modus-wc-input-label
-      for-id=${ifDefined(args['for-id'])}
-      custom-class=${ifDefined(args['custom-class'])}
-      label-text=${ifDefined(args['label-text'])}
-      ?required=${args['required']}
-      size=${ifDefined(args.size)}
-    ></modus-wc-input-label>
-    <modus-wc-textarea id="textarea-input" required></modus-wc-textarea>
-  `,
-};

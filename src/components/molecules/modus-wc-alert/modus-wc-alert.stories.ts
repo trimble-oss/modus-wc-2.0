@@ -20,7 +20,7 @@ const meta: Meta<AlertArgs> = {
   },
   argTypes: {
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['', 'error', 'info', 'success', 'warning'],
     },
   },
@@ -33,9 +33,9 @@ export default meta;
 
 type Story = StoryObj<AlertArgs>;
 
-// prettier-ignore
 const Template: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
 <modus-wc-alert
   alert-description=${ifDefined(args['alert-description'])}
@@ -47,9 +47,8 @@ const Template: Story = {
   <modus-wc-button
     aria-label="View messages"
     color="secondary"
-    label="View Messages"
     slot="button"
-  />
+  >View Messages</modus-wc-button>
 </modus-wc-alert>
     `;
   },
@@ -57,15 +56,15 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
-// prettier-ignore
 export const CloseIcon: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
 <style>
   modus-wc-button {
     align-items: center;
   }
-    
+
   [data-theme='modus-classic-dark'] modus-wc-icon {
     color: #fff;
   }
@@ -78,19 +77,11 @@ export const CloseIcon: Story = {
   variant=${ifDefined(args.variant)}
 >
   <modus-wc-button
-    aria-label="View messages"
-    color="tertiary"
-    variant="outlined"
-    size="md"
-    label="Button"
-    slot="button"
-  ></modus-wc-button>
-  <modus-wc-button
     aria-label="notification button"
-    color="tertiary"
+    color="secondary"
     size="sm"
-    variant="borderless"
     slot="button"
+    variant="borderless"
   >
     <modus-wc-icon
       aria-label="notify icon"

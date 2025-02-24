@@ -29,7 +29,7 @@ const meta: Meta<CollapseArgs> = {
   },
   argTypes: {
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
     },
   },
@@ -46,9 +46,9 @@ export default meta;
 
 type Story = StoryObj<CollapseArgs>;
 
-// prettier-ignore
 const Template: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
 <modus-wc-collapse
   ?bordered=${args.bordered}

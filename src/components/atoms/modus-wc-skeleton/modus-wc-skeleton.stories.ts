@@ -21,7 +21,7 @@ const meta: Meta<SkeletonArgs> = {
   argTypes: {
     shape: {
       control: {
-        type: 'inline-radio',
+        type: 'select',
       },
       options: ['circle', 'rectangle'],
     },
@@ -68,9 +68,9 @@ export const Square: Story = {
   },
 };
 
-// prettier-ignore
 export const Composed: Story = {
   render: () => {
+    // prettier-ignore
     return html`
 <style>
   .skeleton-container {

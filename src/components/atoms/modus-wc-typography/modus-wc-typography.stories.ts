@@ -26,15 +26,15 @@ const meta: Meta<TypographyArgs> = {
   },
   argTypes: {
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
     },
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['body', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
     },
     weight: {
-      control: { type: 'radio' },
+      control: { type: 'select' },
       options: ['light', 'normal', 'bold'],
     },
   },
@@ -65,7 +65,7 @@ export default meta;
 
 type Story = StoryObj<TypographyArgs>;
 
-export const Template: Story = {
+export const Default: Story = {
   render: (args) => html`
     <modus-wc-typography
       custom-class=${ifDefined(args['custom-class'])}

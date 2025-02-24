@@ -67,9 +67,9 @@ export default meta;
 
 type Story = StoryObj<AccordionArgs>;
 
-// prettier-ignore
 const Template: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
 <div style="padding: 20px;">
   <modus-wc-accordion

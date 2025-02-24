@@ -42,7 +42,6 @@ const defaultData = [
 ];
 
 interface TableArgs {
-  'aria-label': string;
   columns: ITableColumn[];
   'custom-class'?: string;
   data: Record<string, any>[];
@@ -54,7 +53,6 @@ const meta: Meta<TableArgs> = {
   title: 'Components/Table',
   component: 'modus-wc-table',
   args: {
-    'aria-label': 'Example table',
     columns: defaultColumns,
     data: defaultData,
     density: 'comfortable',
@@ -62,7 +60,7 @@ const meta: Meta<TableArgs> = {
   },
   argTypes: {
     density: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['comfortable', 'compact'],
     },
   },
@@ -78,12 +76,11 @@ export default meta;
 
 type Story = StoryObj<TableArgs>;
 
-// prettier-ignore
 const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-table
-        aria-label=${args['aria-label']}
+        aria-label="User data"
         .columns=${args.columns}
         custom-class=${ifDefined(args['custom-class'])}
         .data=${args.data}
