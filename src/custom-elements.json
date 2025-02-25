@@ -2425,7 +2425,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable modal component used to display content in a dialog.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable modal component used to display content in a dialog.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcModal",
           "members": [
             {
@@ -2443,6 +2443,14 @@
           ],
           "attributes": [
             {
+              "name": "backdrop",
+              "fieldName": "backdrop",
+              "type": {
+                "text": "'static' | 'default'"
+              },
+              "description": "The modal's backdrop.\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content."
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
@@ -2459,14 +2467,6 @@
               "description": "The ID of the inner dialog element"
             },
             {
-              "name": "outside-click-close",
-              "fieldName": "outsideClickClose",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Specifies if the modal can be closed by clicking outside of it"
-            },
-            {
               "name": "position",
               "fieldName": "position",
               "type": {
@@ -2475,8 +2475,8 @@
               "description": "Specifies the position of the modal"
             },
             {
-              "name": "show-corner-close-button",
-              "fieldName": "showCornerCloseButton",
+              "name": "show-close",
+              "fieldName": "showClose",
               "type": {
                 "text": "boolean"
               },

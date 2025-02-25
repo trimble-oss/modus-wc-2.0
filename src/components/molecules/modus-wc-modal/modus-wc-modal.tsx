@@ -24,14 +24,17 @@ export class ModusWcModal {
   /** The ID of the inner dialog element */
   @Prop() modalId!: string;
 
-  /** Specifies if the modal can be closed by clicking outside of it */
-  @Prop() outsideClickClose?: boolean = true;
+  /**
+   * The modal's backdrop.
+   * Specify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.
+   */
+  @Prop() backdrop?: 'static' | 'default' = 'default';
 
   /** Specifies the position of the modal */
   @Prop() position?: 'center' | 'top' | 'bottom' = 'center';
 
   /** Specifies whether to show the close icon button at the top right of modal */
-  @Prop() showCornerCloseButton?: boolean = true;
+  @Prop() showClose?: boolean = true;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -65,28 +68,26 @@ export class ModusWcModal {
           {...this.inheritedAttributes}
         >
           <div class="modus-wc-modal-box">
-            {this.showCornerCloseButton && (
-              <modus-wc-button
-                custom-class="modus-wc-modal-close-icon-btn"
-                onButtonClick={() => this.closeDialog()}
-                shape="circle"
-                size="sm"
-                variant="borderless"
+            {this.showClose && (
+              <button
+                aria-label="Close modal"
+                onClick={() => this.closeDialog()}
+                class="modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-modal-close-icon-btn"
               >
                 ✕
-              </modus-wc-button>
+              </button>
             )}
-            <div class="modus-wc-text-lg modus-wc-font-bold">
-              <slot name="title" />
+            <div class="modus-wc-modal-header modus-wc-text-lg modus-wc-font-bold">
+              <slot name="header" />
             </div>
-            <div class="modus-wc-py-4">
+            <div class="modus-wc-modal-content modus-wc-py-4">
               <slot name="content" />
             </div>
             <div class="modus-wc-modal-action">
-              <slot name="actions" />
+              <slot name="footer" />
             </div>
           </div>
-          {this.outsideClickClose && (
+          {this.backdrop === 'default' && (
             <form method="dialog" class="modus-wc-modal-backdrop">
               <button>close</button>
             </form>

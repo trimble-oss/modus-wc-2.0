@@ -649,6 +649,10 @@ export namespace Components {
      */
     interface ModusWcModal {
         /**
+          * The modal's backdrop. Specify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.
+         */
+        "backdrop"?: 'static' | 'default';
+        /**
           * Custom CSS class to apply
          */
         "customClass"?: string;
@@ -657,17 +661,13 @@ export namespace Components {
          */
         "modalId": string;
         /**
-          * Specifies if the modal can be closed by clicking outside of it
-         */
-        "outsideClickClose"?: boolean;
-        /**
           * Specifies the position of the modal
          */
         "position"?: 'center' | 'top' | 'bottom';
         /**
           * Specifies whether to show the close icon button at the top right of modal
          */
-        "showCornerCloseButton"?: boolean;
+        "showClose"?: boolean;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -2771,6 +2771,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcModal {
         /**
+          * The modal's backdrop. Specify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.
+         */
+        "backdrop"?: 'static' | 'default';
+        /**
           * Custom CSS class to apply
          */
         "customClass"?: string;
@@ -2779,17 +2783,13 @@ declare namespace LocalJSX {
          */
         "modalId": string;
         /**
-          * Specifies if the modal can be closed by clicking outside of it
-         */
-        "outsideClickClose"?: boolean;
-        /**
           * Specifies the position of the modal
          */
         "position"?: 'center' | 'top' | 'bottom';
         /**
           * Specifies whether to show the close icon button at the top right of modal
          */
-        "showCornerCloseButton"?: boolean;
+        "showClose"?: boolean;
     }
     /**
      * A customizable input component used to create number inputs with types.

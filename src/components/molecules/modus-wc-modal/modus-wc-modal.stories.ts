@@ -5,9 +5,9 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 interface ModalArgs {
   'custom-class'?: string;
   'modal-id'?: string;
-  'outside-click-close'?: boolean;
+  backdrop?: 'static' | 'default';
   position?: 'center' | 'top' | 'bottom';
-  'show-corner-close-button'?: boolean;
+  'show-close'?: boolean;
 }
 
 const meta: Meta<ModalArgs> = {
@@ -15,10 +15,12 @@ const meta: Meta<ModalArgs> = {
   component: 'modus-wc-modal',
   args: {
     'modal-id': 'my_modal_1',
-    'outside-click-close': true,
-    'show-corner-close-button': true,
   },
   argTypes: {
+    backdrop: {
+      control: { type: 'select' },
+      options: ['static', 'default'],
+    },
     position: {
       control: { type: 'select' },
       options: ['top', 'center', 'bottom'],
@@ -33,9 +35,9 @@ export default meta;
 
 type Story = StoryObj<ModalArgs>;
 
-// prettier-ignore
-export const DefaultModal: Story = {
+export const Default: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
 <modus-wc-button onclick="${ifDefined(args['modal-id'])}.showModal()">
   Open modal
@@ -44,13 +46,13 @@ export const DefaultModal: Story = {
   aria-label="Example modal"
   custom-class=${ifDefined(args['custom-class'])}
   modal-id=${ifDefined(args['modal-id'])}
-  outside-click-close=${ifDefined(args['outside-click-close'])}
+  backdrop=${ifDefined(args.backdrop)}
   position=${ifDefined(args.position)}
-  show-corner-close-button=${ifDefined(args['show-corner-close-button'])}
+  show-close=${ifDefined(args['show-close'])}
 >
-  <span slot="title">Modal Title</span>
-  <span slot="content"> This is a sample modal content. </span>
-  <div slot="actions">
+  <span slot="header">Modal Title</span>
+  <span slot="content"> This is sample modal content. </span>
+  <div slot="footer">
     <modus-wc-button onclick="${ifDefined(args['modal-id'])}.close()">
       Close
     </modus-wc-button>
