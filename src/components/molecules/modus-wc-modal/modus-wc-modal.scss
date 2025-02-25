@@ -1,5 +1,24 @@
-.modus-wc-modal-close-icon-btn {
-  position: absolute;
-  right: 0.5rem;
-  top: 0.5rem;
+.modus-wc-modal {
+  .modus-wc-modal-box {
+    .modus-wc-btn {
+      &.modus-wc-modal-close-icon-btn {
+        position: absolute;
+        right: 0.5rem;
+        top: 0.5rem;
+
+        &:hover {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-modal-box,
+[data-theme='modus-classic-light'] .modus-wc-modal-box {
+  --rounded-box: var(--modus-wc-border-radius-lg);
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-modal-box {
+  background-color: var(--modus-wc-color-gray-9);
 }
