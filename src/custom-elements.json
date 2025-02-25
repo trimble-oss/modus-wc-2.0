@@ -1266,28 +1266,12 @@
           ],
           "attributes": [
             {
-              "name": "bordered",
-              "fieldName": "bordered",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that the component should have a border."
-            },
-            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
                 "text": "string"
               },
               "description": "Custom CSS class to apply to the inner div."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "DaisySize"
-              },
-              "description": "Sets the size of the accordion component."
             }
           ],
           "tagName": "modus-wc-accordion",

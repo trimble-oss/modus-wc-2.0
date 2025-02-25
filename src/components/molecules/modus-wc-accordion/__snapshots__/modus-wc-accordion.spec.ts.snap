@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-accordion should render with collapse elements 1`] = `
-<modus-wc-accordion bordered="false" custom-class="test-class" size="sm">
+<modus-wc-accordion custom-class="test-class">
   <!---->
   <div class="test-class">
     <modus-wc-collapse collapse-id="123" options="{options[0]}">
@@ -30,7 +30,7 @@ exports[`modus-wc-accordion should render with collapse elements 1`] = `
 `;
 
 exports[`modus-wc-accordion should render with custom props 1`] = `
-<modus-wc-accordion bordered="false" custom-class="test-class" size="sm">
+<modus-wc-accordion custom-class="test-class">
   <!---->
   <div class="test-class"></div>
 </modus-wc-accordion>

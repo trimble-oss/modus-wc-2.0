@@ -15,11 +15,9 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property      | Attribute      | Description                                        | Type                                        | Default |
-| ------------- | -------------- | -------------------------------------------------- | ------------------------------------------- | ------- |
-| `bordered`    | `bordered`     | Indicates that the component should have a border. | `boolean \| undefined`                      | `true`  |
-| `customClass` | `custom-class` | Custom CSS class to apply to the inner div.        | `string \| undefined`                       | `''`    |
-| `size`        | `size`         | Sets the size of the accordion component.          | `"lg" \| "md" \| "sm" \| "xs" \| undefined` | `'md'`  |
+| Property      | Attribute      | Description                                 | Type                  | Default |
+| ------------- | -------------- | ------------------------------------------- | --------------------- | ------- |
+| `customClass` | `custom-class` | Custom CSS class to apply to the inner div. | `string \| undefined` | `''`    |
 
 
 ## Events

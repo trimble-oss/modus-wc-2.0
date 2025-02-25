@@ -7,7 +7,6 @@ import {
   Prop,
   Event as StencilEvent,
 } from '@stencil/core';
-import { DaisySize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
@@ -28,14 +27,8 @@ export class ModusWcAccordion {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Indicates that the component should have a border. */
-  @Prop() bordered?: boolean = true;
-
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
-
-  /** Sets the size of the accordion component. */
-  @Prop() size?: DaisySize = 'md';
 
   /** When a collapse expanded state is changed, this event outputs the relevant index and state */
   @StencilEvent() expandedChange!: EventEmitter<{

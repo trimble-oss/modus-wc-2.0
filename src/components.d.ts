@@ -5,8 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 import { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
+import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 import { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { IModusWcCollapseOptions } from "./components/molecules/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
@@ -16,8 +16,8 @@ import { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs"
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 export { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
+export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 export { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { IModusWcCollapseOptions } from "./components/molecules/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
@@ -35,17 +35,9 @@ export namespace Components {
      */
     interface ModusWcAccordion {
         /**
-          * Indicates that the component should have a border.
-         */
-        "bordered"?: boolean;
-        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
-        /**
-          * Sets the size of the accordion component.
-         */
-        "size"?: DaisySize;
     }
     /**
      * A customizable alert component used to inform the user about important events.
@@ -2037,10 +2029,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcAccordion {
         /**
-          * Indicates that the component should have a border.
-         */
-        "bordered"?: boolean;
-        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
@@ -2051,10 +2039,6 @@ declare namespace LocalJSX {
     expanded: boolean;
     index: number;
   }>) => void;
-        /**
-          * Sets the size of the accordion component.
-         */
-        "size"?: DaisySize;
     }
     /**
      * A customizable alert component used to inform the user about important events.
