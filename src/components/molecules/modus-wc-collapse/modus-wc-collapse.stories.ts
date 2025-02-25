@@ -2,36 +2,30 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DaisySize } from '../../types';
+import { IModusWcCollapseOptions } from './modus-wc-collapse';
 
 interface CollapseArgs {
   bordered?: boolean;
-  'collapse-description'?: string;
-  'collapse-title'?: string;
   'custom-class'?: string;
   expanded?: boolean;
-  icon?: string;
-  'icon-aria-label'?: string;
-  size?: DaisySize;
+  id?: string;
+  options?: IModusWcCollapseOptions;
 }
+
+const options: IModusWcCollapseOptions = {
+  title: 'Collapse Title',
+  description: 'Collapse description',
+  icon: 'alert',
+  iconAriaLabel: 'Alert',
+};
 
 const meta: Meta<CollapseArgs> = {
   title: 'Components/Collapse',
   component: 'modus-wc-collapse',
   args: {
     bordered: true,
-    'collapse-description': 'Collapse description',
-    'collapse-title': 'Collapse title',
     expanded: false,
-    icon: 'info',
-    'icon-aria-label': 'Information icon',
-    size: 'md',
-  },
-  argTypes: {
-    size: {
-      control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg'],
-    },
+    options,
   },
   decorators: [withActions],
   parameters: {
@@ -52,18 +46,32 @@ const Template: Story = {
     return html`
 <modus-wc-collapse
   ?bordered=${args.bordered}
-  collapse-description=${ifDefined(args['collapse-description'])}
-  collapse-title=${ifDefined(args['collapse-title'])}
   custom-class=${ifDefined(args['custom-class'])}
   ?expanded=${args.expanded}
-  icon=${ifDefined(args.icon)}
-  icon-aria-label=${ifDefined(args['icon-aria-label'])}
-  size=${ifDefined(args.size)}
+  id=${ifDefined(args.id)}
+  .options=${ifDefined(args.options)}
 >
-  <div>Custom HTML content</div>
+  <div slot="content">Collapse content</div>
 </modus-wc-collapse>
     `;
   },
 };
 
 export const Default: Story = { ...Template };
+
+export const WithCustomContent = {
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-collapse
+  ?bordered=${args.bordered}
+  custom-class=${ifDefined(args['custom-class'])}
+  ?expanded=${args.expanded}
+  id="123"
+>
+  <div slot="header" class="modus-wc-collapse-title" id="123">Custom header</div>
+  <div slot="content">Collapse content</div>
+</modus-wc-collapse>
+    `;
+  },
+};

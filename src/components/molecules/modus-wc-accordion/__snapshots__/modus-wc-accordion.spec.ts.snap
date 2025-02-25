@@ -1,31 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`modus-wc-accordion should render with custom props 1`] = `
+exports[`modus-wc-accordion should render with collapse elements 1`] = `
 <modus-wc-accordion bordered="false" custom-class="test-class" size="sm">
   <!---->
   <div class="test-class">
-    <modus-wc-collapse collapse-description="Sports played by a team." collapse-title="Team Sports" custom-class="test-class" expanded="" icon="people_group" iconarialabel="Team icon" size="sm">
-      <div slot="item-0">
-        Item 0 Content
-      </div>
-    </modus-wc-collapse>
-    <modus-wc-collapse collapse-description="Sports played by individuals." collapse-title="Individual Sports" custom-class="test-class" icon="person" iconarialabel="Person icon" size="sm"></modus-wc-collapse>
-    <modus-wc-collapse collapse-description="Sports played in water." collapse-title="Water Sports" custom-class="test-class" icon="fog" iconarialabel="Water icon" size="sm">
-      <div slot="item-2">
-        Item 2 Content
+    <modus-wc-collapse collapse-id="123" options="{options[0]}">
+      <!---->
+      <modus-wc-collapse collapse-id="123" hidden="" options="{options[1]}">
+        <!---->
+        <modus-wc-collapse collapse-id="123" hidden="" options="{options[2]}">
+          <!---->
+          <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close">
+            <input aria-controls="123-content" aria-labelledby="123-title" class="modus-wc-min-h-4" id="123-checkbox" type="checkbox">
+            <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content"></div>
+          </div>
+        </modus-wc-collapse>
+        <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close">
+          <input aria-controls="123-content" aria-labelledby="123-title" class="modus-wc-min-h-4" id="123-checkbox" type="checkbox">
+          <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content"></div>
+        </div>
+      </modus-wc-collapse>
+      <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close">
+        <input aria-controls="123-content" aria-labelledby="123-title" class="modus-wc-min-h-4" id="123-checkbox" type="checkbox">
+        <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content"></div>
       </div>
     </modus-wc-collapse>
   </div>
 </modus-wc-accordion>
 `;
 
+exports[`modus-wc-accordion should render with custom props 1`] = `
+<modus-wc-accordion bordered="false" custom-class="test-class" size="sm">
+  <!---->
+  <div class="test-class"></div>
+</modus-wc-accordion>
+`;
+
 exports[`modus-wc-accordion should render with default props 1`] = `
 <modus-wc-accordion>
   <!---->
-  <div>
-    <modus-wc-collapse bordered="" collapse-description="Sports played by a team." collapse-title="Team Sports" custom-class="test-class" expanded="" icon="people_group" iconarialabel="Team icon" size="md"></modus-wc-collapse>
-    <modus-wc-collapse bordered="" collapse-description="Sports played by individuals." collapse-title="Individual Sports" custom-class="test-class" icon="person" iconarialabel="Person icon" size="md"></modus-wc-collapse>
-    <modus-wc-collapse bordered="" collapse-description="Sports played in water." collapse-title="Water Sports" custom-class="test-class" icon="fog" iconarialabel="Water icon" size="md"></modus-wc-collapse>
-  </div>
+  <div></div>
 </modus-wc-accordion>
 `;

@@ -10,17 +10,10 @@ import {
 import { DaisySize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
-export interface IModusWcAccordionItem {
-  customClass?: string;
-  description?: string;
-  expanded?: boolean;
-  icon?: string;
-  iconAriaLabel?: string;
-  title?: string;
-}
-
 /**
  * A customizable accordion component used for showing and hiding related groups of content.
+ *
+ * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
  *
  * Adheres to WCAG 2.2 standards.
  */
@@ -41,9 +34,6 @@ export class ModusWcAccordion {
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
-  /** Accordion items, used to render collapse components **/
-  @Prop() items: IModusWcAccordionItem[] = [];
-
   /** Sets the size of the accordion component. */
   @Prop() size?: DaisySize = 'md';
 
@@ -54,10 +44,6 @@ export class ModusWcAccordion {
   }>;
 
   componentWillLoad() {
-    if (!this.items || this.items.length === 0) {
-      console.error('ModusWcAccordion: accordion items data is required.');
-    }
-
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
@@ -70,34 +56,11 @@ export class ModusWcAccordion {
     return classList.join(' ');
   }
 
-  private handleCollapseExpandedChange = (
-    e: CustomEvent<{ expanded: boolean }>,
-    index: number
-  ) => {
-    this.expandedChange.emit({ expanded: e.detail.expanded, index });
-  };
-
   render() {
     return (
       <Host>
         <div class={this.getClasses()} {...this.inheritedAttributes}>
-          {this.items.map((item, index) => (
-            <modus-wc-collapse
-              bordered={this.bordered}
-              collapse-description={item.description}
-              collapse-title={item.title}
-              custom-class={item.customClass}
-              expanded={item.expanded}
-              icon={item.icon}
-              iconAriaLabel={item.iconAriaLabel}
-              onExpandedChange={(e: CustomEvent<{ expanded: boolean }>) =>
-                this.handleCollapseExpandedChange(e, index)
-              }
-              size={this.size}
-            >
-              <slot name={`item-${index}`} />
-            </modus-wc-collapse>
-          ))}
+          <slot />
         </div>
       </Host>
     );
