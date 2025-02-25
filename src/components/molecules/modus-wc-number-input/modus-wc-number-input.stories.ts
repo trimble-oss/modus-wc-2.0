@@ -7,6 +7,7 @@ import { ModusSize } from '../../types';
 interface NumberInputArgs {
   'auto-complete'?: 'on' | 'off';
   bordered?: boolean;
+  'currency-symbol'?: string;
   'custom-class'?: string;
   disabled?: boolean;
   'input-aria-invalid'?: 'true' | 'false';
@@ -78,6 +79,7 @@ export const Default: Story = {
       aria-label="Number input"
       auto-complete=${ifDefined(args['auto-complete'])}
       ?bordered=${args.bordered}
+      currency-symbol=${ifDefined(args['currency-symbol'])}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}

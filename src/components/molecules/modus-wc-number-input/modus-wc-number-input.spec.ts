@@ -33,6 +33,7 @@ describe('modus-wc-number-input', () => {
         aria-label="Test number input"
         auto-complete="on"
         auto-focus="true"
+        currency-symbol="$"
         custom-class="test-class"
         disabled="true"
         input-aria-invalid="true"

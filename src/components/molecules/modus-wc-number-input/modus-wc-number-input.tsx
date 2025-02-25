@@ -33,6 +33,9 @@ export class ModusWcNumberInput {
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
+  /** The currency symbol to display. */
+  @Prop() currencySymbol?: string = '';
+
   /** Custom CSS class to apply to the input. */
   @Prop() customClass?: string = '';
 
@@ -105,13 +108,16 @@ export class ModusWcNumberInput {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-input', 'modus-wc-w-full'];
+    const classList: string[] = [];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       size: this.size,
     });
 
     // The order CSS classes are added matters to CSS specificity
+    if (this.currencySymbol) classList.push('currency-activated');
+    else classList.push('modus-wc-w-full');
+
     if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
 
@@ -141,29 +147,36 @@ export class ModusWcNumberInput {
             size={this.size}
           />
         )}
-        <input
-          aria-placeholder={this.placeholder}
-          aria-required={this.required}
-          autocomplete={this.autoComplete}
-          class={this.getClasses()}
-          disabled={this.disabled}
-          id={this.inputId}
-          inputmode={this.inputMode}
-          max={this.max}
-          min={this.min}
-          name={this.name}
-          onBlur={this.handleBlur}
-          onFocus={this.handleFocus}
-          onInput={this.handleInput}
-          placeholder={this.placeholder}
-          readonly={this.readOnly}
-          required={this.required}
-          step={this.step}
-          tabIndex={this.inputTabIndex}
-          type={this.type}
-          value={this.value}
-          {...this.inheritedAttributes}
-        />
+        <div class="modus-wc-input-container">
+          {this.currencySymbol && (
+            <div class={`modus-wc-input-currency ${this.getClasses()}`}>
+              {this.currencySymbol}
+            </div>
+          )}
+          <input
+            aria-placeholder={this.placeholder}
+            aria-required={this.required}
+            autocomplete={this.autoComplete}
+            class={`modus-wc-input ${this.getClasses()}`}
+            disabled={this.disabled}
+            id={this.inputId}
+            inputmode={this.inputMode}
+            max={this.max}
+            min={this.min}
+            name={this.name}
+            onBlur={this.handleBlur}
+            onFocus={this.handleFocus}
+            onInput={this.handleInput}
+            placeholder={this.placeholder}
+            readonly={this.readOnly}
+            required={this.required}
+            step={this.step}
+            tabIndex={this.inputTabIndex}
+            type={this.type}
+            value={this.value}
+            {...this.inheritedAttributes}
+          />
+        </div>
       </Host>
     );
   }

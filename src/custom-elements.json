@@ -2411,6 +2411,14 @@
               "description": "Indicates that the input should have a border."
             },
             {
+              "name": "currency-symbol",
+              "fieldName": "currencySymbol",
+              "type": {
+                "text": "string"
+              },
+              "description": "The currency symbol to display."
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
