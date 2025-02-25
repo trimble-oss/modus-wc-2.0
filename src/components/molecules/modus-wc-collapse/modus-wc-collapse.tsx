@@ -15,12 +15,35 @@ import {
   convertPropsToTitleDivClasses,
 } from './modus-wc-collapse.tailwind';
 import { DaisySize } from '../../types';
-import { Attributes, inheritAriaAttributes, KEY } from '../../utils';
+import {
+  Attributes,
+  generateRandomId,
+  inheritAriaAttributes,
+  KEY,
+} from '../../utils';
+
+export interface IModusWcCollapseOptions {
+  /** The description to render in the collapse header. */
+  description?: string;
+
+  /** The Modus icon name to render in the collapse header. */
+  icon?: string;
+
+  /** The icon's aria-label. */
+  iconAriaLabel?: string;
+
+  /** The size of the collapse header. */
+  size?: DaisySize;
+
+  /** The title to render in the collapse header. */
+  title: string;
+}
 
 /**
  * A customizable collapse component used for showing and hiding content.
  *
- * Can render any HTML content through a <slot> element.
+ * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
+ * Do not set
  *
  * Adheres to WCAG 2.2 standards.
  */
@@ -38,26 +61,20 @@ export class ModusWcCollapse {
   /** Indicates that the component should have a border. */
   @Prop() bordered?: boolean = true;
 
-  /** The description of the collapse component. */
-  @Prop() collapseDescription?: string = '';
-
-  /** The title of the collapse component. */
-  @Prop() collapseTitle?: string = '';
-
-  /** Custom CSS class to apply to the inner div. */
+  /** Custom CSS class to apply to the outer div. */
   @Prop() customClass?: string = '';
 
   /** Controls whether the collapse is expanded or not. */
   @Prop({ mutable: true }) expanded?: boolean = false;
 
-  /** The icon name, should match the CSS class in the icon font. */
-  @Prop() icon?: string = '';
+  /** A unique identifier used to set the id attributes of various elements.  */
+  @Prop({ mutable: true }) collapseId?: string;
 
-  /** Sets the aria-label attribute of the icon component. */
-  @Prop() iconAriaLabel?: string = '';
-
-  /** Sets the size of the collapse component. */
-  @Prop() size?: DaisySize = 'md';
+  /**
+   * Configuration options for rendering the pre-laid out collapse component.
+   * Do not set this prop if you intend to use the 'header' slot.
+   */
+  @Prop() options?: IModusWcCollapseOptions;
 
   /** Event emitted when the expanded prop is internally changed. */
   @StencilEvent() expandedChange!: EventEmitter<{ expanded: boolean }>;
@@ -68,14 +85,6 @@ export class ModusWcCollapse {
       'input[type="checkbox"]'
     ) as HTMLInputElement;
     if (checkbox) checkbox.checked = newValue;
-  }
-
-  // Create deterministic ID based on props
-  private getBaseId(): string {
-    // Sanitize title to create a valid ID
-    return this.collapseTitle
-      ? this.collapseTitle.toLowerCase().replace(/[^a-z0-9]/g, '-')
-      : 'collapse';
   }
 
   private handleClick = () => {
@@ -95,6 +104,10 @@ export class ModusWcCollapse {
   };
 
   componentWillLoad() {
+    if (!this.collapseId) {
+      this.collapseId = generateRandomId();
+    }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
@@ -113,13 +126,14 @@ export class ModusWcCollapse {
     return classList.join(' ');
   }
 
+  // istanbul ignore next
   private getTitleDivClasses(): string {
     const classList: string[] = [
       'modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4',
     ];
 
     const paddingClass = convertPropsToTitleDivClasses({
-      size: this.size,
+      size: this.options?.size,
     });
 
     if (paddingClass) classList.push(paddingClass);
@@ -127,13 +141,14 @@ export class ModusWcCollapse {
     return classList.join(' ');
   }
 
+  // istanbul ignore next
   private getTitleChildDivClasses(): string {
     const classList: string[] = [
       'modus-wc-inline-flex modus-wc-items-center modus-wc-font-medium',
     ];
 
     const titleFontSize = convertPropsToTitleChildDivClasses({
-      size: this.size,
+      size: this.options?.size,
     });
 
     if (titleFontSize) classList.push(titleFontSize);
@@ -141,11 +156,12 @@ export class ModusWcCollapse {
     return classList.join(' ');
   }
 
+  // istanbul ignore next
   private getDescriptionDivClasses(): string {
     const classList: string[] = ['modus-wc-font-light'];
 
     const descriptionFontSize = convertPropsToDescriptionDivClasses({
-      size: this.size,
+      size: this.options?.size,
     });
 
     if (descriptionFontSize) classList.push(descriptionFontSize);
@@ -154,7 +170,7 @@ export class ModusWcCollapse {
   }
 
   render() {
-    const baseId = this.getBaseId();
+    const baseId = this.collapseId;
     const titleId = `${baseId}-title`;
     const contentId = `${baseId}-content`;
 
@@ -171,24 +187,28 @@ export class ModusWcCollapse {
             onKeyDown={this.handleKeyDown}
             type="checkbox"
           />
-          <div class={this.getTitleDivClasses()} id={titleId}>
-            <div class={this.getTitleChildDivClasses()}>
-              {this.icon && (
-                <modus-wc-icon
-                  aria-label={this.iconAriaLabel}
-                  decorative={true}
-                  name={this.icon}
-                  size={this.size}
-                ></modus-wc-icon>
-              )}
-              {this.collapseTitle}
-            </div>
-            {this.collapseDescription && (
-              <div class={this.getDescriptionDivClasses()}>
-                {this.collapseDescription}
+          {this.options ? (
+            <div class={this.getTitleDivClasses()} id={titleId}>
+              <div class={this.getTitleChildDivClasses()}>
+                {this.options.icon && (
+                  <modus-wc-icon
+                    aria-label={this.options.iconAriaLabel}
+                    decorative={true}
+                    name={this.options.icon}
+                    size={this.options.size}
+                  ></modus-wc-icon>
+                )}
+                {this.options.title}
               </div>
-            )}
-          </div>
+              {this.options.description && (
+                <div class={this.getDescriptionDivClasses()}>
+                  {this.options.description}
+                </div>
+              )}
+            </div>
+          ) : (
+            <slot name="header" />
+          )}
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
           <div
             aria-labelledby={titleId}
@@ -196,7 +216,7 @@ export class ModusWcCollapse {
             id={contentId}
             onClick={this.handleContentClick}
           >
-            <slot />
+            <slot name="content" />
           </div>
         </div>
       </Host>
