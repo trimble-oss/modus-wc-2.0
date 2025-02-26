@@ -3479,15 +3479,6 @@
               }
             },
             {
-              "name": "spellcheck",
-              "fieldName": "spellcheck",
-              "default": "false",
-              "description": "Whether the element may be checked for spelling errors.\nA hint for the browser, not a guarantee.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
               "name": "type",
               "fieldName": "type",
               "default": "'text'",

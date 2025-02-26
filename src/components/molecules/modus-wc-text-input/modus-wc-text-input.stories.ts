@@ -65,22 +65,18 @@ const meta: Meta<TextInputArgs> = {
   },
   argTypes: {
     'auto-capitalize': {
-      control: { type: 'select' },
       options: ['off', 'none', 'on', 'sentences', 'words', 'characters'],
     },
     'auto-complete': {
       control: { type: 'text' },
     },
     'auto-correct': {
-      control: { type: 'select' },
       options: ['on', 'off'],
     },
     enterkeyhint: {
-      control: { type: 'select' },
       options: ['enter', 'done', 'go', 'next', 'previous', 'search', 'send'],
     },
     'input-mode': {
-      control: { type: 'select' },
       options: [
         'decimal',
         'email',
@@ -93,11 +89,17 @@ const meta: Meta<TextInputArgs> = {
       ],
     },
     size: {
-      control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
+    spellcheck: {
+      description:
+        'Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.',
+      table: {
+        category: 'attributes',
+        defaultValue: { summary: 'false' },
+      },
+    },
     type: {
-      control: { type: 'select' },
       options: ['email', 'password', 'search', 'tel', 'text', 'url'],
     },
   },

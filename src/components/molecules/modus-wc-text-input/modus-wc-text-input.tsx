@@ -9,7 +9,11 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
 import { AutocompleteTypes, ModusSize, TextFieldTypes } from '../../types';
-import { Attributes, inheritAriaAttributes } from '../../utils';
+import {
+  Attributes,
+  inheritAriaAttributes,
+  inheritAttributes,
+} from '../../utils';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -108,12 +112,6 @@ export class ModusWcTextInput {
   /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
 
-  /**
-   * Whether the element may be checked for spelling errors.
-   * A hint for the browser, not a guarantee.
-   */
-  @Prop() spellcheck?: boolean = false;
-
   /** Type of form control. */
   @Prop() type?: TextFieldTypes = 'text';
 
@@ -137,7 +135,10 @@ export class ModusWcTextInput {
       this.el.ariaLabel = this.placeholder || 'Text input';
     }
 
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.inheritedAttributes = {
+      ...inheritAriaAttributes(this.el),
+      ...inheritAttributes(this.el, ['spellcheck']),
+    };
   }
 
   private getClasses(): string {
@@ -198,7 +199,6 @@ export class ModusWcTextInput {
           placeholder={this.placeholder}
           readonly={this.readOnly}
           required={this.required}
-          spellcheck={this.spellcheck}
           tabIndex={this.inputTabIndex}
           type={this.type}
           value={this.value}

@@ -1041,10 +1041,6 @@ export namespace Components {
          */
         "size"?: ModusSize;
         /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "spellcheck"?: boolean;
-        /**
           * Type of form control.
          */
         "type"?: TextFieldTypes;
@@ -3193,10 +3189,6 @@ declare namespace LocalJSX {
           * The size of the input.
          */
         "size"?: ModusSize;
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "spellcheck"?: boolean;
         /**
           * Type of form control.
          */
