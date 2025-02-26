@@ -623,13 +623,14 @@ export namespace Components {
     }
     /**
      * A customizable modal component used to display content in a dialog.
+     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcModal {
         /**
           * The modal's backdrop. Specify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.
          */
-        "backdrop"?: 'static' | 'default';
+        "backdrop"?: 'default' | 'static';
         /**
           * Custom CSS class to apply
          */
@@ -641,7 +642,7 @@ export namespace Components {
         /**
           * Specifies the position of the modal
          */
-        "position"?: 'center' | 'top' | 'bottom';
+        "position"?: 'bottom' | 'center' | 'top';
         /**
           * Specifies whether to show the close icon button at the top right of modal
          */
@@ -1700,6 +1701,7 @@ declare global {
     };
     /**
      * A customizable modal component used to display content in a dialog.
+     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcModalElement extends Components.ModusWcModal, HTMLStencilElement {
@@ -2725,13 +2727,14 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable modal component used to display content in a dialog.
+     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcModal {
         /**
           * The modal's backdrop. Specify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.
          */
-        "backdrop"?: 'static' | 'default';
+        "backdrop"?: 'default' | 'static';
         /**
           * Custom CSS class to apply
          */
@@ -2743,7 +2746,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the position of the modal
          */
-        "position"?: 'center' | 'top' | 'bottom';
+        "position"?: 'bottom' | 'center' | 'top';
         /**
           * Specifies whether to show the close icon button at the top right of modal
          */
@@ -3691,6 +3694,7 @@ declare module "@stencil/core" {
             "modus-wc-menu-item": LocalJSX.ModusWcMenuItem & JSXBase.HTMLAttributes<HTMLModusWcMenuItemElement>;
             /**
              * A customizable modal component used to display content in a dialog.
+             * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;

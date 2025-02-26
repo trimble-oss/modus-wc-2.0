@@ -2377,7 +2377,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable modal component used to display content in a dialog.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable modal component used to display content in a dialog.\n\nThe component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcModal",
           "members": [
             {
@@ -2398,7 +2398,7 @@
               "name": "backdrop",
               "fieldName": "backdrop",
               "type": {
-                "text": "'static' | 'default'"
+                "text": "'default' | 'static'"
               },
               "description": "The modal's backdrop.\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content."
             },
@@ -2422,7 +2422,7 @@
               "name": "position",
               "fieldName": "position",
               "type": {
-                "text": "'center' | 'top' | 'bottom'"
+                "text": "'bottom' | 'center' | 'top'"
               },
               "description": "Specifies the position of the modal"
             },

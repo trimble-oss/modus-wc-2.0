@@ -9,6 +9,8 @@
 
 A customizable modal component used to display content in a dialog.
 
+The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
+
 Adheres to WCAG 2.2 standards.
 
 ## Properties

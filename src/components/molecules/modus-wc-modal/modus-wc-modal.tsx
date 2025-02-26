@@ -20,20 +20,20 @@ export class ModusWcModal {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /**
+   * The modal's backdrop.
+   * Specify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.
+   */
+  @Prop() backdrop?: 'default' | 'static' = 'default';
+
   /** Custom CSS class to apply */
   @Prop() customClass?: string = '';
 
   /** The ID of the inner dialog element */
   @Prop() modalId!: string;
 
-  /**
-   * The modal's backdrop.
-   * Specify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.
-   */
-  @Prop() backdrop?: 'static' | 'default' = 'default';
-
   /** Specifies the position of the modal */
-  @Prop() position?: 'center' | 'top' | 'bottom' = 'center';
+  @Prop() position?: 'bottom' | 'center' | 'top' = 'center';
 
   /** Specifies whether to show the close icon button at the top right of modal */
   @Prop() showClose?: boolean = true;
