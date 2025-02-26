@@ -54,9 +54,6 @@ export class ModusWcDate {
   /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string;
 
-  /** Placeholder text for the date input. */
-  @Prop() placeholder?: string;
-
   /** Whether the value is editable. */
   @Prop() readOnly?: boolean = false;
 
@@ -66,7 +63,7 @@ export class ModusWcDate {
   /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
 
-  /** The value of the control. */
+  /** The value of the control (yyyy-mm-dd). */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
   /** Event emitted when the input loses focus. */
@@ -84,7 +81,7 @@ export class ModusWcDate {
         'ModusWcDate: aria-label is required for accessibility. Using fallback label.'
       );
     }
-    this.el.ariaLabel = this.placeholder || 'Date input';
+    this.el.ariaLabel = 'Date input';
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
@@ -136,7 +133,6 @@ export class ModusWcDate {
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
           onInput={this.handleInput}
-          placeholder={this.placeholder}
           readonly={this.readOnly}
           required={this.required}
           tabIndex={this.inputTabIndex}
