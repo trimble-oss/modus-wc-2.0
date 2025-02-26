@@ -8,7 +8,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
-import { ModusSize } from '../../types';
+import { AutocompleteTypes, ModusSize, TextFieldTypes } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
@@ -37,7 +37,10 @@ export class ModusWcTextInput {
     | 'characters';
 
   /** Hint for form autofill feature. */
-  @Prop() autoComplete?: 'on' | 'off';
+  @Prop() autoComplete?: AutocompleteTypes;
+
+  /** Controls automatic correction in inputted text. Support by browser varies. */
+  @Prop() autocorrect?: 'on' | 'off';
 
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
@@ -47,6 +50,16 @@ export class ModusWcTextInput {
 
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
+
+  /** A hint to the browser for which enter key to display. */
+  @Prop() enterkeyhint?:
+    | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
@@ -64,12 +77,6 @@ export class ModusWcTextInput {
     | 'tel'
     | 'text'
     | 'url' = 'text';
-
-  /**
-   * Whether the element may be checked for spelling errors.
-   * A hint for the browser, not a guarantee.
-   */
-  @Prop() inputSpellcheck?: boolean = false;
 
   /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
@@ -101,9 +108,14 @@ export class ModusWcTextInput {
   /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
 
+  /**
+   * Whether the element may be checked for spelling errors.
+   * A hint for the browser, not a guarantee.
+   */
+  @Prop() spellcheck?: boolean = false;
+
   /** Type of form control. */
-  @Prop() type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url' =
-    'text';
+  @Prop() type?: TextFieldTypes = 'text';
 
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
@@ -170,8 +182,10 @@ export class ModusWcTextInput {
           aria-required={this.required}
           autocapitalize={this.autoCapitalize}
           autocomplete={this.autoComplete}
+          autocorrect={this.autocorrect}
           class={this.getClasses()}
           disabled={this.disabled}
+          enterkeyhint={this.enterkeyhint}
           id={this.inputId}
           inputmode={this.inputMode}
           maxlength={this.maxLength}
@@ -184,7 +198,7 @@ export class ModusWcTextInput {
           placeholder={this.placeholder}
           readonly={this.readOnly}
           required={this.required}
-          spellcheck={this.inputSpellcheck}
+          spellcheck={this.spellcheck}
           tabIndex={this.inputTabIndex}
           type={this.type}
           value={this.value}

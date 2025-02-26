@@ -13,10 +13,18 @@ interface TextInputArgs {
     | 'words'
     | 'characters';
   'auto-complete'?: 'on' | 'off';
+  autocorrect?: 'on' | 'off';
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
-  'input-aria-invalid'?: 'grammar' | 'spelling' | 'true' | 'false';
+  enterkeyhint?:
+    | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
   'input-id'?: string;
   'input-mode':
     | 'decimal'
@@ -27,7 +35,6 @@ interface TextInputArgs {
     | 'tel'
     | 'text'
     | 'url';
-  'input-spellcheck'?: boolean;
   'input-tab-index'?: number;
   label?: string;
   'max-length': number;
@@ -38,6 +45,7 @@ interface TextInputArgs {
   'read-only'?: boolean;
   required?: boolean;
   size?: ModusSize;
+  spellcheck?: boolean;
   type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
   value: string;
 }
@@ -49,9 +57,9 @@ const meta: Meta<TextInputArgs> = {
     bordered: true,
     disabled: false,
     'input-mode': 'text',
-    'input-spellcheck': false,
     label: 'Label',
     size: 'md',
+    spellcheck: false,
     type: 'text',
     value: '',
   },
@@ -64,9 +72,13 @@ const meta: Meta<TextInputArgs> = {
       control: { type: 'select' },
       options: ['on', 'off'],
     },
-    'input-aria-invalid': {
+    autocorrect: {
       control: { type: 'select' },
-      options: ['grammar', 'spelling', 'true', 'false'],
+      options: ['on', 'off'],
+    },
+    enterkeyhint: {
+      control: { type: 'select' },
+      options: ['enter', 'done', 'go', 'next', 'previous', 'search', 'send'],
     },
     'input-mode': {
       control: { type: 'select' },
@@ -108,13 +120,14 @@ export const Default: Story = {
       aria-label="Text input"
       auto-capitalize=${ifDefined(args['auto-capitalize'])}
       auto-complete=${ifDefined(args['auto-complete'])}
+      autocorrect=${ifDefined(args.autocorrect)}
       ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
+      enterkeyhint=${ifDefined(args.enterkeyhint)}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-id=${ifDefined(args['input-id'])}
       input-mode=${args['input-mode']}
-      ?input-spellcheck=${args['input-spellcheck']}
       input-tab-index=${ifDefined(args['input-tab-index'])}
       label=${ifDefined(args.label)}
       max-length=${ifDefined(args['max-length'])}
@@ -125,6 +138,7 @@ export const Default: Story = {
       ?read-only=${args['read-only']}
       ?required=${args.required}
       size=${ifDefined(args.size)}
+      spellcheck=${ifDefined(args.spellcheck)}
       type=${ifDefined(args.type)}
       .value=${args.value}
     ></modus-wc-text-input>
