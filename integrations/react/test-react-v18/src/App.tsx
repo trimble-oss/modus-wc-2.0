@@ -16,7 +16,6 @@ function App() {
 				</div>
 				<div className="grid">
 				<ModusReactExamples.Badge />
-				<ModusReactExamples.Collapse />
 				<ModusReactExamples.Icon />
 				<ModusReactExamples.Tabs />
 			 </div>

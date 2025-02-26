@@ -48,7 +48,7 @@ export default meta;
 
 type Story = StoryObj<ToggleArgs>;
 
-export const Template: Story = {
+export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-toggle

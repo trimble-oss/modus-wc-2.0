@@ -1248,7 +1248,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcAccordion",
           "members": [
             {
@@ -1266,36 +1266,12 @@
           ],
           "attributes": [
             {
-              "name": "bordered",
-              "fieldName": "bordered",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Indicates that the component should have a border."
-            },
-            {
               "name": "custom-class",
               "fieldName": "customClass",
               "type": {
                 "text": "string"
               },
               "description": "Custom CSS class to apply to the inner div."
-            },
-            {
-              "name": "items",
-              "fieldName": "items",
-              "type": {
-                "text": "IModusWcAccordionItem[]"
-              },
-              "description": "Accordion items, used to render collapse components *"
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "DaisySize"
-              },
-              "description": "Sets the size of the accordion component."
             }
           ],
           "tagName": "modus-wc-accordion",
@@ -2107,7 +2083,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable collapse component used for showing and hiding content.\r\n\r\nCan render any HTML content through a <slot> element.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable collapse component used for showing and hiding content.\r\n\r\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.\r\nDo not set\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcCollapse",
           "members": [
             {
@@ -2145,20 +2121,12 @@
               "description": "Indicates that the component should have a border."
             },
             {
-              "name": "collapse-description",
-              "fieldName": "collapseDescription",
+              "name": "collapse-id",
+              "fieldName": "collapseId",
               "type": {
                 "text": "string"
               },
-              "description": "The description of the collapse component."
-            },
-            {
-              "name": "collapse-title",
-              "fieldName": "collapseTitle",
-              "type": {
-                "text": "string"
-              },
-              "description": "The title of the collapse component."
+              "description": "A unique identifier used to set the id attributes of various elements."
             },
             {
               "name": "custom-class",
@@ -2166,7 +2134,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Custom CSS class to apply to the inner div."
+              "description": "Custom CSS class to apply to the outer div."
             },
             {
               "name": "expanded",
@@ -2177,28 +2145,12 @@
               "description": "Controls whether the collapse is expanded or not."
             },
             {
-              "name": "icon",
-              "fieldName": "icon",
+              "name": "options",
+              "fieldName": "options",
               "type": {
-                "text": "string"
+                "text": "IModusWcCollapseOptions"
               },
-              "description": "The icon name, should match the CSS class in the icon font."
-            },
-            {
-              "name": "icon-aria-label",
-              "fieldName": "iconAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "description": "Sets the aria-label attribute of the icon component."
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "type": {
-                "text": "DaisySize"
-              },
-              "description": "Sets the size of the collapse component."
+              "description": "Configuration options for rendering the pre-laid out collapse component.\r\nDo not set this prop if you intend to use the 'header' slot."
             }
           ],
           "tagName": "modus-wc-collapse",
