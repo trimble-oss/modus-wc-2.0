@@ -40,7 +40,7 @@ export class ModusWcTextInput {
   @Prop() autoComplete?: AutocompleteTypes;
 
   /** Controls automatic correction in inputted text. Support by browser varies. */
-  @Prop() autocorrect?: 'on' | 'off';
+  @Prop() autoCorrect?: 'on' | 'off';
 
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
@@ -182,7 +182,7 @@ export class ModusWcTextInput {
           aria-required={this.required}
           autocapitalize={this.autoCapitalize}
           autocomplete={this.autoComplete}
-          autocorrect={this.autocorrect}
+          autocorrect={this.autoCorrect}
           class={this.getClasses()}
           disabled={this.disabled}
           enterkeyhint={this.enterkeyhint}

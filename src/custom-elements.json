@@ -3335,8 +3335,8 @@
               }
             },
             {
-              "name": "autocorrect",
-              "fieldName": "autocorrect",
+              "name": "auto-correct",
+              "fieldName": "autoCorrect",
               "description": "Controls automatic correction in inputted text. Support by browser varies.",
               "type": {
                 "text": "'on' | 'off'"

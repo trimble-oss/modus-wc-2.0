@@ -2,7 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { ModusSize } from '../../types';
+import { AutocompleteTypes, ModusSize } from '../../types';
 
 interface TextInputArgs {
   'auto-capitalize'?:
@@ -12,8 +12,8 @@ interface TextInputArgs {
     | 'sentences'
     | 'words'
     | 'characters';
-  'auto-complete'?: 'on' | 'off';
-  autocorrect?: 'on' | 'off';
+  'auto-complete'?: AutocompleteTypes;
+  'auto-correct'?: 'on' | 'off';
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
@@ -69,10 +69,9 @@ const meta: Meta<TextInputArgs> = {
       options: ['off', 'none', 'on', 'sentences', 'words', 'characters'],
     },
     'auto-complete': {
-      control: { type: 'select' },
-      options: ['on', 'off'],
+      control: { type: 'text' },
     },
-    autocorrect: {
+    'auto-correct': {
       control: { type: 'select' },
       options: ['on', 'off'],
     },
@@ -120,7 +119,7 @@ export const Default: Story = {
       aria-label="Text input"
       auto-capitalize=${ifDefined(args['auto-capitalize'])}
       auto-complete=${ifDefined(args['auto-complete'])}
-      autocorrect=${ifDefined(args.autocorrect)}
+      auto-correct=${ifDefined(args['auto-correct'])}
       ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}

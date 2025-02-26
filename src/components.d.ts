@@ -962,7 +962,7 @@ export namespace Components {
         /**
           * Controls automatic correction in inputted text. Support by browser varies.
          */
-        "autocorrect"?: 'on' | 'off';
+        "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
          */
@@ -3103,7 +3103,7 @@ declare namespace LocalJSX {
         /**
           * Controls automatic correction in inputted text. Support by browser varies.
          */
-        "autocorrect"?: 'on' | 'off';
+        "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
          */
