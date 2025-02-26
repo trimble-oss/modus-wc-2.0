@@ -52,11 +52,9 @@ export const Default: Story = {
 >
   <span slot="header">Modal Title</span>
   <span slot="content"> This is sample modal content. </span>
-  <div slot="footer">
-    <modus-wc-button onclick="${ifDefined(args['modal-id'])}.close()">
-      Close
-    </modus-wc-button>
-  </div>
+  <modus-wc-button slot="footer" onclick="${ifDefined(args['modal-id'])}.close()">
+    Close
+  </modus-wc-button>
 </modus-wc-modal>
     `;
   },
