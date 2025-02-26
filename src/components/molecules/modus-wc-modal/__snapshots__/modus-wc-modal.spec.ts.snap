@@ -5,8 +5,87 @@ exports[`modus-wc-modal renders with default props 1`] = `
   <!---->
   <dialog class="modus-wc-modal">
     <div class="modus-wc-modal-box">
-      <div class="modus-wc-font-bold modus-wc-text-lg"></div>
-      <div class="modus-wc-py-4"></div>
+      <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-circle modus-wc-btn-ghost modus-wc-btn-sm modus-wc-modal-close-icon-btn">
+        ✕
+      </button>
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4"></div>
+      <div class="modus-wc-modal-action"></div>
+    </div>
+    <form class="modus-wc-modal-backdrop" method="dialog">
+      <button>
+        close
+      </button>
+    </form>
+  </dialog>
+</modus-wc-modal>
+`;
+
+exports[`modus-wc-modal should not render backdrop form when backdrop is static 1`] = `
+<modus-wc-modal backdrop="static" modal-id="test7">
+  <!---->
+  <dialog class="modus-wc-modal" id="test7">
+    <div class="modus-wc-modal-box">
+      <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-circle modus-wc-btn-ghost modus-wc-btn-sm modus-wc-modal-close-icon-btn">
+        ✕
+      </button>
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4"></div>
+      <div class="modus-wc-modal-action"></div>
+    </div>
+  </dialog>
+</modus-wc-modal>
+`;
+
+exports[`modus-wc-modal should not render button when show-close is false 1`] = `
+<modus-wc-modal modal-id="test4" show-close="false">
+  <!---->
+  <dialog class="modus-wc-modal" id="test4">
+    <div class="modus-wc-modal-box">
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4"></div>
+      <div class="modus-wc-modal-action"></div>
+    </div>
+    <form class="modus-wc-modal-backdrop" method="dialog">
+      <button>
+        close
+      </button>
+    </form>
+  </dialog>
+</modus-wc-modal>
+`;
+
+exports[`modus-wc-modal should render backdrop form when backdrop is default 1`] = `
+<modus-wc-modal modal-id="test6">
+  <!---->
+  <dialog class="modus-wc-modal" id="test6">
+    <div class="modus-wc-modal-box">
+      <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-circle modus-wc-btn-ghost modus-wc-btn-sm modus-wc-modal-close-icon-btn">
+        ✕
+      </button>
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4"></div>
+      <div class="modus-wc-modal-action"></div>
+    </div>
+    <form class="modus-wc-modal-backdrop" method="dialog">
+      <button>
+        close
+      </button>
+    </form>
+  </dialog>
+</modus-wc-modal>
+`;
+
+exports[`modus-wc-modal should render button when show-close is true 1`] = `
+<modus-wc-modal modal-id="test3" show-close="true">
+  <!---->
+  <dialog class="modus-wc-modal" id="test3">
+    <div class="modus-wc-modal-box">
+      <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-circle modus-wc-btn-ghost modus-wc-btn-sm modus-wc-modal-close-icon-btn">
+        ✕
+      </button>
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4"></div>
       <div class="modus-wc-modal-action"></div>
     </div>
     <form class="modus-wc-modal-backdrop" method="dialog">
@@ -19,8 +98,22 @@ exports[`modus-wc-modal renders with default props 1`] = `
 `;
 
 exports[`modus-wc-modal should render with custom props 1`] = `
-<modus-wc-card
-  custom-class="test-class"
-  outside-click-close="false"
-/>
+<modus-wc-modal custom-class="test-class" modal-id="test2" outside-click-close="false" position="top" show-corner-close-button="false">
+  <!---->
+  <dialog class="modus-wc-modal modus-wc-modal-top test-class" id="test2">
+    <div class="modus-wc-modal-box">
+      <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-circle modus-wc-btn-ghost modus-wc-btn-sm modus-wc-modal-close-icon-btn">
+        ✕
+      </button>
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4"></div>
+      <div class="modus-wc-modal-action"></div>
+    </div>
+    <form class="modus-wc-modal-backdrop" method="dialog">
+      <button>
+        close
+      </button>
+    </form>
+  </dialog>
+</modus-wc-modal>
 `;
