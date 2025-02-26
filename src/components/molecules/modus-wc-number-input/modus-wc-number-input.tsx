@@ -125,16 +125,32 @@ export class ModusWcNumberInput {
     const classList = ['modus-wc-input', 'modus-wc-w-full'];
 
     if (this.currencySymbol) {
-      classList.push('currency-activated');
+      classList.push('modus-wc-join-item');
     }
 
     return this.getClassList(classList);
   }
 
   private getClassesToCurrency(): string {
-    const classList = ['modus-wc-input-currency'];
+    const classList = [
+      'modus-wc-input-currency',
+      'modus-wc-join-item',
+      'modus-wc-flex',
+      'modus-wc-items-center',
+    ];
 
     return this.getClassList(classList);
+  }
+
+  private getClassesToContainer(): string {
+    const classList = ['input-container'];
+
+    if (this.currencySymbol) {
+      classList.push('modus-wc-join');
+      classList.push('modus-wc-flex');
+    }
+
+    return classList.join(' ');
   }
 
   private handleBlur = (event: FocusEvent) => {
@@ -160,7 +176,7 @@ export class ModusWcNumberInput {
             size={this.size}
           />
         )}
-        <div class="modus-wc-input-container">
+        <div class={this.getClassesToContainer()}>
           {this.currencySymbol && (
             <div class={this.getClassesToCurrency()}>{this.currencySymbol}</div>
           )}

@@ -4,18 +4,11 @@
 */
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
-[data-theme='modus-classic-light'] .modus-wc-input-container,
-[data-theme='modus-classic-dark'] .modus-wc-input-container {
-  display: flex;
-  align-items: center;
-
+[data-theme='modus-classic-light'] .input-container,
+[data-theme='modus-classic-dark'] .input-container {
   .modus-wc-input-currency {
-    display: flex;
-    align-items: center;
     background-color: var(--modus-wc-color-base-100);
     border: var(--modus-wc-border-width-xs) solid transparent;
-    border-radius: var(--modus-wc-border-radius-md) 0 0
-      var(--modus-wc-border-radius-md); // Adjust border-radius to only apply to left side
 
     &.modus-wc-input-sm {
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
@@ -23,15 +16,6 @@
   }
 
   .modus-wc-input {
-    &:is(.currency-activated) {
-      border-radius: 0 var(--modus-wc-border-radius-md)
-        var(--modus-wc-border-radius-md) 0; // Adjust border-radius to only apply to right side
-    }
-
-    &:not(.currency-activated) {
-      border-radius: var(--modus-wc-border-radius-md);
-    }
-
     .modus-wc-input-label {
       padding-bottom: var(--modus-wc-spacing-2xs);
     }
@@ -57,10 +41,6 @@
   .modus-wc-input-currency {
     &.modus-wc-input-bordered {
       border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-6);
-
-      &:is(.modus-wc-input-currency) {
-        border-right: none;
-      }
     }
 
     // TODO - add support for xs and xl once added to Modus Figma
