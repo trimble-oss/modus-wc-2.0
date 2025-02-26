@@ -3,10 +3,10 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface ModalArgs {
+  backdrop?: 'default' | 'static';
   'custom-class'?: string;
   'modal-id'?: string;
-  backdrop?: 'static' | 'default';
-  position?: 'center' | 'top' | 'bottom';
+  position?: 'bottom' | 'center' | 'top';
   'show-close'?: boolean;
 }
 
@@ -19,11 +19,11 @@ const meta: Meta<ModalArgs> = {
   argTypes: {
     backdrop: {
       control: { type: 'select' },
-      options: ['static', 'default'],
+      options: ['default', 'static'],
     },
     position: {
       control: { type: 'select' },
-      options: ['top', 'center', 'bottom'],
+      options: ['bottom', 'center', 'top'],
     },
   },
   parameters: {
