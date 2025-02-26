@@ -6,16 +6,16 @@
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
 [data-theme='modus-classic-light'] .modus-wc-input-container,
 [data-theme='modus-classic-dark'] .modus-wc-input-container {
-  align-items: center;
   display: flex;
+  align-items: center;
 
   .modus-wc-input-currency {
+    display: flex;
     align-items: center;
     background-color: var(--modus-wc-color-base-100);
-    border: 1px solid transparent;
+    border: var(--modus-wc-border-width-xs) solid transparent;
     border-radius: var(--modus-wc-border-radius-md) 0 0
       var(--modus-wc-border-radius-md); // Adjust border-radius to only apply to left side
-    display: flex;
 
     &.modus-wc-input-sm {
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
@@ -43,7 +43,7 @@
 
     &:focus {
       border-color: var(--modus-wc-color-highlight-blue);
-      border-width: 2px;
+      border-width: var(--modus-wc-border-width-sm);
       box-shadow: none; // Removes the Tailwind ring effect
       outline: none; // Ensures there's no outline on focus
     }
@@ -56,7 +56,7 @@
   .modus-wc-input,
   .modus-wc-input-currency {
     &.modus-wc-input-bordered {
-      border: 1px solid var(--modus-wc-color-gray-6);
+      border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-6);
 
       &:is(.modus-wc-input-currency) {
         border-right: none;

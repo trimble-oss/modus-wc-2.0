@@ -73,7 +73,7 @@ export default meta;
 
 type Story = StoryObj<NumberInputArgs>;
 
-export const Default: Story = {
+const Template: Story = {
   render: (args) => html`
     <modus-wc-number-input
       aria-label="Number input"
@@ -99,4 +99,11 @@ export const Default: Story = {
       .value=${args.value}
     ></modus-wc-number-input>
   `,
+};
+
+export const Default: Story = { ...Template };
+
+export const CurrencySymbol: Story = {
+  ...Template,
+  args: { 'currency-symbol': '$' },
 };

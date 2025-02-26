@@ -107,21 +107,34 @@ export class ModusWcNumberInput {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  private getClasses(): string {
-    const classList: string[] = [];
+  private getClassList(styleList): string {
+    const classList = [...styleList];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       size: this.size,
     });
 
     // The order CSS classes are added matters to CSS specificity
-    if (this.currencySymbol) classList.push('currency-activated');
-    else classList.push('modus-wc-w-full');
-
     if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
+  }
+
+  private getClassesToInput(): string {
+    const classList = ['modus-wc-input', 'modus-wc-w-full'];
+
+    if (this.currencySymbol) {
+      classList.push('currency-activated');
+    }
+
+    return this.getClassList(classList);
+  }
+
+  private getClassesToCurrency(): string {
+    const classList = ['modus-wc-input-currency'];
+
+    return this.getClassList(classList);
   }
 
   private handleBlur = (event: FocusEvent) => {
@@ -149,15 +162,13 @@ export class ModusWcNumberInput {
         )}
         <div class="modus-wc-input-container">
           {this.currencySymbol && (
-            <div class={`modus-wc-input-currency ${this.getClasses()}`}>
-              {this.currencySymbol}
-            </div>
+            <div class={this.getClassesToCurrency()}>{this.currencySymbol}</div>
           )}
           <input
             aria-placeholder={this.placeholder}
             aria-required={this.required}
             autocomplete={this.autoComplete}
-            class={`modus-wc-input ${this.getClasses()}`}
+            class={this.getClassesToInput()}
             disabled={this.disabled}
             id={this.inputId}
             inputmode={this.inputMode}
