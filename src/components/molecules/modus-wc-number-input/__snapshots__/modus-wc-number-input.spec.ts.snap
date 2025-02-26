@@ -3,18 +3,18 @@
 exports[`modus-wc-number-input should render with custom props 1`] = `
 <modus-wc-number-input auto-complete="on" auto-focus="true" currency-symbol="$" custom-class="test-class" disabled="true" input-aria-invalid="true" input-id="test-id" input-mode="decimal" input-tab-index="1" label="Test label" max="10" min="1" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" step="2" type="range" value="test@example.com">
   <modus-wc-input-label forid="test-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
-  <div class="modus-wc-input-container">
-    <div class="modus-wc-input-bordered modus-wc-input-currency modus-wc-input-lg test-class">
+  <div class="input-container modus-wc-flex modus-wc-join">
+    <div class="modus-wc-flex modus-wc-input-bordered modus-wc-input-currency modus-wc-input-lg modus-wc-items-center modus-wc-join-item test-class">
       $
     </div>
-    <input aria-describedby="description" aria-label="Test number input" aria-placeholder="Test placeholder" aria-required="" autocomplete="on" class="currency-activated modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-w-full test-class" disabled="" id="test-id" inputmode="decimal" max="10" min="1" name="test-name" placeholder="Test placeholder" required="" step="2" tabindex="1" type="range" value="test@example.com">
+    <input aria-describedby="description" aria-label="Test number input" aria-placeholder="Test placeholder" aria-required="" autocomplete="on" class="modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-join-item modus-wc-w-full test-class" disabled="" id="test-id" inputmode="decimal" max="10" min="1" name="test-name" placeholder="Test placeholder" required="" step="2" tabindex="1" type="range" value="test@example.com">
   </div>
 </modus-wc-number-input>
 `;
 
 exports[`modus-wc-number-input should render with default props 1`] = `
 <modus-wc-number-input value="">
-  <div class="modus-wc-input-container">
+  <div class="input-container">
     <input aria-label="Default input" aria-placeholder="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" inputmode="numeric" placeholder="" type="number" value="">
   </div>
 </modus-wc-number-input>
