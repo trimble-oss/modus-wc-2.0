@@ -37,6 +37,12 @@ export class ModusWcModal {
   @Prop() showClose?: boolean = true;
 
   componentWillLoad() {
+    if (!this.modalId) {
+      console.error(
+        "The modal component requires a unique 'modalId' to be passed in as a prop."
+      );
+    }
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
