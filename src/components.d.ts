@@ -631,6 +631,10 @@ export namespace Components {
          */
         "bordered"?: boolean;
         /**
+          * The currency symbol to display.
+         */
+        "currencySymbol"?: string;
+        /**
           * Custom CSS class to apply to the input.
          */
         "customClass"?: string;
@@ -2701,6 +2705,10 @@ declare namespace LocalJSX {
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
+        /**
+          * The currency symbol to display.
+         */
+        "currencySymbol"?: string;
         /**
           * Custom CSS class to apply to the input.
          */
