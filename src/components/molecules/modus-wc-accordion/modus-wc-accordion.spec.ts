@@ -1,31 +1,29 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { IModusWcAccordionItem, ModusWcAccordion } from './modus-wc-accordion';
+import { ModusWcAccordion } from './modus-wc-accordion';
+import {
+  IModusWcCollapseOptions,
+  ModusWcCollapse,
+} from '../modus-wc-collapse/modus-wc-collapse';
 
 describe('modus-wc-accordion', () => {
-  const items: IModusWcAccordionItem[] = [
+  const options: IModusWcCollapseOptions[] = [
     {
-      customClass: 'test-class',
-      description: 'Sports played by a team.',
-      expanded: true,
-      icon: 'people_group',
-      iconAriaLabel: 'Team icon',
-      title: 'Team Sports',
+      description: 'Item one description',
+      icon: 'alert',
+      iconAriaLabel: 'Alert',
+      title: 'Item One',
     },
     {
-      customClass: 'test-class',
-      description: 'Sports played by individuals.',
-      expanded: false,
-      icon: 'person',
-      iconAriaLabel: 'Person icon',
-      title: 'Individual Sports',
+      description: 'Item two description',
+      icon: 'alert',
+      iconAriaLabel: 'Alert',
+      title: 'Item Two',
     },
     {
-      customClass: 'test-class',
-      description: 'Sports played in water.',
-      expanded: false,
-      icon: 'fog',
-      iconAriaLabel: 'Water icon',
-      title: 'Water Sports',
+      description: 'Item three description',
+      icon: 'alert',
+      iconAriaLabel: 'Alert',
+      title: 'Item Three',
     },
   ];
 
@@ -34,58 +32,27 @@ describe('modus-wc-accordion', () => {
       components: [ModusWcAccordion],
       html: '<modus-wc-accordion />',
     });
-
-    const component = page.rootInstance as ModusWcAccordion;
-    component.items = items;
-
-    await page.waitForChanges();
-
     expect(page.root).toMatchSnapshot();
   });
 
   it('should render with custom props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcAccordion],
-      html: '<modus-wc-accordion bordered="false" custom-class="test-class" size="sm"><div slot="item-0">Item 0 Content</div><div slot="item-2">Item 2 Content</div></modus-wc-accordion>',
+      components: [ModusWcAccordion, ModusWcCollapse],
+      html: `<modus-wc-accordion custom-class="test-class" />`,
     });
-
-    const component = page.rootInstance as ModusWcAccordion;
-    component.items = items;
-
-    await page.waitForChanges();
-
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should emit expandedChange event when collapse panel expanded state changes', async () => {
+  it('should render with collapse elements', async () => {
     const page = await newSpecPage({
-      components: [ModusWcAccordion],
-      html: '<modus-wc-accordion></modus-wc-accordion>',
+      components: [ModusWcAccordion, ModusWcCollapse],
+      html: `<modus-wc-accordion custom-class="test-class">
+                <modus-wc-collapse collapse-id="123" options={options[0]} />
+                <modus-wc-collapse collapse-id="123" options={options[1]} />
+                <modus-wc-collapse collapse-id="123" options={options[2]} />
+            </modus-wc-accordion>`,
     });
-
-    const component = page.rootInstance as ModusWcAccordion;
-    component.items = items;
-    await page.waitForChanges();
-
-    const expandedChangeSpy = jest.fn();
-    page.root?.addEventListener('expandedChange', expandedChangeSpy);
-
-    const collapsePanel = page.root?.querySelector('modus-wc-collapse');
-    collapsePanel?.dispatchEvent(
-      new CustomEvent('expandedChange', {
-        detail: { expanded: false }, // Simulating collapse
-      })
-    );
-    await page.waitForChanges();
-
-    expect(expandedChangeSpy).toHaveBeenCalledTimes(1);
-    expect(expandedChangeSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        detail: {
-          expanded: false,
-          index: 0,
-        },
-      })
-    );
+    console.log(options);
+    expect(page.root).toMatchSnapshot();
   });
 });

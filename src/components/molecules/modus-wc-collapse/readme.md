@@ -9,22 +9,20 @@
 
 A customizable collapse component used for showing and hiding content.
 
-Can render any HTML content through a <slot> element.
+The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
+Do not set
 
 Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property              | Attribute              | Description                                                 | Type                                        | Default |
-| --------------------- | ---------------------- | ----------------------------------------------------------- | ------------------------------------------- | ------- |
-| `bordered`            | `bordered`             | Indicates that the component should have a border.          | `boolean \| undefined`                      | `true`  |
-| `collapseDescription` | `collapse-description` | The description of the collapse component.                  | `string \| undefined`                       | `''`    |
-| `collapseTitle`       | `collapse-title`       | The title of the collapse component.                        | `string \| undefined`                       | `''`    |
-| `customClass`         | `custom-class`         | Custom CSS class to apply to the inner div.                 | `string \| undefined`                       | `''`    |
-| `expanded`            | `expanded`             | Controls whether the collapse is expanded or not.           | `boolean \| undefined`                      | `false` |
-| `icon`                | `icon`                 | The icon name, should match the CSS class in the icon font. | `string \| undefined`                       | `''`    |
-| `iconAriaLabel`       | `icon-aria-label`      | Sets the aria-label attribute of the icon component.        | `string \| undefined`                       | `''`    |
-| `size`                | `size`                 | Sets the size of the collapse component.                    | `"lg" \| "md" \| "sm" \| "xs" \| undefined` | `'md'`  |
+| Property      | Attribute      | Description                                                                                                                           | Type                                   | Default     |
+| ------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ----------- |
+| `bordered`    | `bordered`     | Indicates that the component should have a border.                                                                                    | `boolean \| undefined`                 | `true`      |
+| `collapseId`  | `collapse-id`  | A unique identifier used to set the id attributes of various elements.                                                                | `string \| undefined`                  | `undefined` |
+| `customClass` | `custom-class` | Custom CSS class to apply to the outer div.                                                                                           | `string \| undefined`                  | `''`        |
+| `expanded`    | `expanded`     | Controls whether the collapse is expanded or not.                                                                                     | `boolean \| undefined`                 | `false`     |
+| `options`     | --             | Configuration options for rendering the pre-laid out collapse component. Do not set this prop if you intend to use the 'header' slot. | `IModusWcCollapseOptions \| undefined` | `undefined` |
 
 
 ## Events
@@ -36,10 +34,6 @@ Adheres to WCAG 2.2 standards.
 
 ## Dependencies
 
-### Used by
-
- - [modus-wc-accordion](../modus-wc-accordion)
-
 ### Depends on
 
 - [modus-wc-icon](../../atoms/modus-wc-icon)
@@ -48,7 +42,6 @@ Adheres to WCAG 2.2 standards.
 ```mermaid
 graph TD;
   modus-wc-collapse --> modus-wc-icon
-  modus-wc-accordion --> modus-wc-collapse
   style modus-wc-collapse fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

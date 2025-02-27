@@ -72,7 +72,7 @@ export default meta;
 
 type Story = StoryObj<NumberInputArgs>;
 
-export const Template: Story = {
+export const Default: Story = {
   render: (args) => html`
     <modus-wc-number-input
       aria-label="Number input"
