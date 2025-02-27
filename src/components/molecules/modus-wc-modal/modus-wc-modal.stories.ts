@@ -4,20 +4,26 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { generateRandomId } from '../../utils';
 
 interface ModalArgs {
-  backdrop?: 'default' | 'static';
+  backdrop: 'default' | 'static';
   'custom-class'?: string;
-  fullscreen?: boolean;
+  fullscreen: boolean;
   'modal-id'?: string;
-  position?: 'bottom' | 'center' | 'top';
-  'show-close'?: boolean;
-  'show-fullscreen-toggle'?: boolean;
+  position: 'bottom' | 'center' | 'top';
+  'show-close': boolean;
+  'show-fullscreen-toggle': boolean;
 }
 
 const meta: Meta<ModalArgs> = {
   title: 'Components/Modal',
   component: 'modus-wc-modal',
   args: {
+    backdrop: 'default',
+    'custom-class': '',
+    fullscreen: false,
     'modal-id': 'my_modal_1',
+    position: 'center',
+    'show-close': true,
+    'show-fullscreen-toggle': false,
   },
   argTypes: {
     backdrop: {
@@ -49,12 +55,12 @@ export const Default: Story = {
 <modus-wc-modal
   aria-label="Example modal"
   custom-class=${ifDefined(args['custom-class'])}
-  fullscreen=${ifDefined(args.fullscreen)}
+  fullscreen=${args.fullscreen}
   modal-id=${args['modal-id'] + uniqueModalId}
-  backdrop=${ifDefined(args.backdrop)}
-  position=${ifDefined(args.position)}
-  show-close=${ifDefined(args['show-close'])}
-  show-fullscreen-toggle=${ifDefined(args['show-fullscreen-toggle'])}
+  backdrop=${args.backdrop}
+  position=${args.position}
+  show-close=${args['show-close']}
+  show-fullscreen-toggle=${args['show-fullscreen-toggle']}
 >
   <span slot="header">Modal Title</span>
   <span slot="content"> This is sample modal content. </span>
