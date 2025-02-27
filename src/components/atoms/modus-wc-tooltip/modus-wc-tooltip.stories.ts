@@ -40,7 +40,7 @@ const Template: Story = {
         tooltip-id="${ifDefined(args['tooltip-id'])}"
         position=${ifDefined(args.position)}
       >
-        <modus-wc-badge content="Hover"></modus-wc-badge>
+        <modus-wc-badge>Hover</modus-wc-badge>
       </modus-wc-tooltip>
     `;
   },

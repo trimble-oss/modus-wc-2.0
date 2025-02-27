@@ -27,7 +27,9 @@ const defaultColumns: ITableColumn[] = [
       const isActive = value.toLowerCase() === 'active';
       const badge = document.createElement('modus-wc-badge');
       badge.color = isActive ? 'success' : 'danger';
-      badge.content = value;
+      const div = document.createElement('div');
+      div.textContent = value;
+      badge.appendChild(div);
       return badge;
     },
   },

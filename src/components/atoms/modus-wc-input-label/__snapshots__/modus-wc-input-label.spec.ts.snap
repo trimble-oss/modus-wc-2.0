@@ -3,7 +3,7 @@
 exports[`modus-wc-input-label should render with content in the primary slot 1`] = `
 <modus-wc-input-label>
   <!---->
-  <label class="modus-wc-input-label">
+  <label class="modus-wc-input-label modus-wc-input-label-size-md">
     <span>
       Slot content
     </span>
@@ -12,9 +12,9 @@ exports[`modus-wc-input-label should render with content in the primary slot 1`]
 `;
 
 exports[`modus-wc-input-label should render with custom props 1`] = `
-<modus-wc-input-label custom-class="test-class" dir="rtl" for-id="input-id" label-dir="rtl" label-text="Custom label" required="true">
+<modus-wc-input-label custom-class="test-class" for-id="input-id" label-text="Custom label" required="true" size="lg">
   <!---->
-  <label class="modus-wc-input-label test-class" htmlfor="input-id">
+  <label class="modus-wc-input-label modus-wc-input-label-size-lg test-class" htmlfor="input-id">
     Custom label
     <span aria-hidden="true" class="required-indicator">
       *
@@ -26,6 +26,6 @@ exports[`modus-wc-input-label should render with custom props 1`] = `
 exports[`modus-wc-input-label should render with default props 1`] = `
 <modus-wc-input-label>
   <!---->
-  <label class="modus-wc-input-label"></label>
+  <label class="modus-wc-input-label modus-wc-input-label-size-md"></label>
 </modus-wc-input-label>
 `;

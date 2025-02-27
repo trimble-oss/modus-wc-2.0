@@ -5,9 +5,12 @@
   "keywords": [],
   "license": "MIT",
   "author": "Trimble Inc.",
+  "bugs": {
+    "url": "https://github.com/Trimble-Construction/modus-wc-2.0/issues/"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Trimble-Construction/poc-modus-wc-2.0.git"
+    "url": "https://github.com/Trimble-Construction/modus-wc-2.0.git"
   },
   "type": "module",
   "main": "dist/index.cjs.js",
@@ -28,7 +31,7 @@
   "scripts": {
     "build": "wireit",
     "build:ci": "wireit",
-    "clean": "npx rimraf .wireit .stencil .eslintcache .storybook-static dist loader",
+    "clean": "npx rimraf .wireit .stencil .storybook-static dist loader",
     "lint": "wireit",
     "lint:eslint": "wireit",
     "lint:prettier": "wireit",
@@ -72,7 +75,7 @@
     "jest": "^29.7.0",
     "jest-cli": "^29.7.0",
     "marked": "^14.1.2",
-    "prettier": "3.4.2",
+    "prettier": "3.5.1",
     "puppeteer": "^23.5.3",
     "stencil-tailwind-plugin": "^1.8.0",
     "stylelint": "16.14.1",
@@ -115,7 +118,7 @@
       ]
     },
     "format:eslint": {
-      "command": "eslint --color --cache --cache-location .eslintcache --fix ."
+      "command": "eslint --color --fix ."
     },
     "format:prettier": {
       "command": "prettier --write .",
@@ -131,7 +134,7 @@
       ]
     },
     "lint:eslint": {
-      "command": "eslint --color --cache --cache-location .eslintcache ."
+      "command": "eslint --color ."
     },
     "lint:prettier": {
       "command": "prettier --check .",
@@ -235,6 +238,9 @@
         "tailwind.config.js"
       ]
     }
+  },
+  "engines": {
+    "node": ">=18"
   },
   "volta": {
     "node": "18.20.5"

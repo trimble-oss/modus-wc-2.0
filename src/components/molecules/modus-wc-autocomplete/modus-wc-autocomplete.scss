@@ -2,3 +2,72 @@
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
+
+.modus-wc-autocomplete {
+  position: relative;
+
+  .modus-wc-input-label {
+    padding-bottom: var(--modus-wc-spacing-2xs);
+  }
+
+  .modus-wc-input-bordered {
+    border-radius: var(--modus-wc-border-radius-md)
+      var(--modus-wc-border-radius-md) 0 0;
+  }
+
+  .modus-wc-autocomplete-multi-select {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: var(--modus-wc-spacing-xs);
+
+    &.modus-wc-autocomplete-multi-select--bordered {
+      border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-0);
+      border-radius: var(--modus-wc-border-radius-md)
+        var(--modus-wc-border-radius-md) 0 0;
+    }
+
+    /** TODO - chip styling is temporary, remove once chip component is implemented */
+    .chip {
+      display: flex;
+      align-items: center;
+      background-color: var(--modus-wc-color-gray-1);
+      border-radius: var(--modus-wc-border-radius-xl);
+
+      button {
+        i {
+          font-size: 0.75rem;
+        }
+      }
+
+      .label {
+        font-size: var(--modus-wc-font-size-md);
+        padding: 0 var(--modus-wc-spacing-xs);
+      }
+    }
+  }
+
+  .modus-wc-menu {
+    position: absolute;
+    z-index: 99;
+    border-radius: 0 0 var(--modus-wc-border-radius-md)
+      var(--modus-wc-border-radius-md);
+  }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-autocomplete,
+[data-theme='modus-classic-dark'] .modus-wc-autocomplete {
+  .modus-wc-autocomplete-multi-select--bordered {
+    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-6);
+
+    &:focus-within {
+      border-color: var(--modus-wc-color-highlight-blue);
+      border-width: 2px;
+    }
+  }
+
+  ul.modus-wc-menu {
+    box-shadow: 0 0 4px 0 rgba(54, 53, 69, 0.3);
+  }
+}

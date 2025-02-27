@@ -22,7 +22,7 @@ exports[`modus-wc-menu-item should render with custom props 1`] = `
     <button disabled="" type="button">
       <div class="modus-wc-menu-item-content">
         <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-          <i aria-hidden="true" class="modus-icons modus-wc-icon--md modus-wc-menu-item-start-icon" tabindex="-1">
+          <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md modus-wc-menu-item-start-icon" tabindex="-1">
             check
           </i>
         </modus-wc-icon>
@@ -36,7 +36,7 @@ exports[`modus-wc-menu-item should render with custom props 1`] = `
         </div>
         <div class="modus-wc-menu-item-selected-icon">
           <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-            <i aria-hidden="true" class="modus-icons modus-wc-icon--md" tabindex="-1">
+            <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
               check
             </i>
           </modus-wc-icon>

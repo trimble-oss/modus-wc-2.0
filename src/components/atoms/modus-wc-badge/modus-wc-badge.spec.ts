@@ -13,7 +13,7 @@ describe('modus-wc-badge', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcBadge],
-      html: '<modus-wc-badge color="secondary" content="Test" custom-class="test-class" size="lg" variant="text"></modus-wc-badge>',
+      html: '<modus-wc-badge color="secondary" custom-class="test-class" size="lg" variant="text">Test</modus-wc-badge>',
     });
     expect(page.root).toMatchSnapshot();
   });
