@@ -431,10 +431,6 @@ export namespace Components {
          */
         "name"?: string;
         /**
-          * Placeholder text for the date input.
-         */
-        "placeholder"?: string;
-        /**
           * Whether the value is editable.
          */
         "readOnly"?: boolean;
@@ -447,7 +443,7 @@ export namespace Components {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control.
+          * The value of the control (yyyy-mm-dd).
          */
         "value": string;
     }
@@ -1049,6 +1045,10 @@ export namespace Components {
      */
     interface ModusWcTextarea {
         /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
+        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -1061,13 +1061,19 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * The tabindex of the input.
          */
@@ -2496,10 +2502,6 @@ declare namespace LocalJSX {
          */
         "onInputFocus"?: (event: ModusWcDateCustomEvent<FocusEvent>) => void;
         /**
-          * Placeholder text for the date input.
-         */
-        "placeholder"?: string;
-        /**
           * Whether the value is editable.
          */
         "readOnly"?: boolean;
@@ -2512,7 +2514,7 @@ declare namespace LocalJSX {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control.
+          * The value of the control (yyyy-mm-dd).
          */
         "value"?: string;
     }
@@ -3192,6 +3194,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcTextarea {
         /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
+        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -3204,13 +3210,19 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * The tabindex of the input.
          */

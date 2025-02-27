@@ -896,7 +896,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcProgress",
           "members": [
             {
@@ -2390,14 +2390,6 @@
               }
             },
             {
-              "name": "placeholder",
-              "fieldName": "placeholder",
-              "description": "Placeholder text for the date input.",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
               "name": "read-only",
               "fieldName": "readOnly",
               "default": "false",
@@ -2428,7 +2420,7 @@
               "name": "value",
               "fieldName": "value",
               "default": "''",
-              "description": "The value of the control.",
+              "description": "The value of the control (yyyy-mm-dd).",
               "type": {
                 "text": "string"
               }
@@ -3571,6 +3563,14 @@
           ],
           "attributes": [
             {
+              "name": "auto-correct",
+              "fieldName": "autoCorrect",
+              "description": "Controls automatic correction in inputted text. Support by browser varies.",
+              "type": {
+                "text": "'on' | 'off'"
+              }
+            },
+            {
               "name": "bordered",
               "fieldName": "bordered",
               "default": "true",
@@ -3598,19 +3598,19 @@
               }
             },
             {
+              "name": "enterkeyhint",
+              "fieldName": "enterkeyhint",
+              "description": "A hint to the browser for which enter key to display.",
+              "type": {
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
+              }
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
               "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              }
-            },
-            {
-              "name": "input-spellcheck",
-              "fieldName": "inputSpellcheck",
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee.",
-              "type": {
-                "text": "boolean"
               }
             },
             {

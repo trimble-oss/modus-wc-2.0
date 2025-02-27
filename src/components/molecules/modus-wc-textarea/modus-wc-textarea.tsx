@@ -9,7 +9,11 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-textarea.tailwind';
 import { ModusSize } from '../../types';
-import { Attributes, inheritAriaAttributes } from '../../utils';
+import {
+  Attributes,
+  inheritAriaAttributes,
+  inheritAttributes,
+} from '../../utils';
 
 /**
  * A customizable textarea component.
@@ -27,6 +31,9 @@ export class ModusWcTextarea {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** Controls automatic correction in inputted text. Support by browser varies. */
+  @Prop() autoCorrect?: 'on' | 'off';
+
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
@@ -36,14 +43,18 @@ export class ModusWcTextarea {
   /** The disabled state of the textarea. */
   @Prop() disabled?: boolean = false;
 
+  /** A hint to the browser for which enter key to display. */
+  @Prop() enterkeyhint?:
+    | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
+
   /** The ID of the input element. */
   @Prop() inputId?: string;
-
-  /**
-   * Whether the element may be checked for spelling errors.
-   * A hint for the browser, not a guarantee.
-   */
-  @Prop() inputSpellcheck?: boolean;
 
   /** The tabindex of the input. */
   @Prop() inputTabIndex?: number;
@@ -92,7 +103,10 @@ export class ModusWcTextarea {
       this.el.ariaLabel = this.placeholder || 'Text area';
     }
 
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.inheritedAttributes = {
+      ...inheritAriaAttributes(this.el),
+      ...inheritAttributes(this.el, ['spellcheck']),
+    };
   }
 
   private getClasses(): string {
@@ -135,8 +149,10 @@ export class ModusWcTextarea {
         <textarea
           aria-placeholder={this.placeholder}
           aria-required={this.required}
+          autocorrect={this.autoCorrect}
           class={this.getClasses()}
           disabled={this.disabled}
+          enterkeyhint={this.enterkeyhint}
           id={this.inputId}
           maxLength={this.maxLength}
           name={this.name}
@@ -147,7 +163,6 @@ export class ModusWcTextarea {
           readonly={this.readonly}
           required={this.required}
           rows={this.rows}
-          spellcheck={this.inputSpellcheck}
           tabIndex={this.inputTabIndex}
           value={this.value}
           {...this.inheritedAttributes}
