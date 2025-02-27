@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { generateRandomId } from '../../utils';
 
 interface ModalArgs {
   backdrop?: 'default' | 'static';
@@ -37,22 +38,56 @@ type Story = StoryObj<ModalArgs>;
 
 export const Default: Story = {
   render: (args) => {
+    const uniqueModalId = generateRandomId(4);
     // prettier-ignore
     return html`
-<modus-wc-button onclick="${ifDefined(args['modal-id'])}.showModal()">
+<modus-wc-button onclick="${args['modal-id'] + uniqueModalId}.showModal()">
   Open modal
 </modus-wc-button>
 <modus-wc-modal
   aria-label="Example modal"
   custom-class=${ifDefined(args['custom-class'])}
-  modal-id=${ifDefined(args['modal-id'])}
+  modal-id=${args['modal-id'] + uniqueModalId}
   backdrop=${ifDefined(args.backdrop)}
   position=${ifDefined(args.position)}
   show-close=${ifDefined(args['show-close'])}
 >
   <span slot="header">Modal Title</span>
   <span slot="content"> This is sample modal content. </span>
-  <modus-wc-button slot="footer" onclick="${ifDefined(args['modal-id'])}.close()">
+  <modus-wc-button slot="footer" onclick="${args['modal-id'] + uniqueModalId}.close()">
+    Close
+  </modus-wc-button>
+</modus-wc-modal>
+    `;
+  },
+};
+
+export const CustomWidth: Story = {
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<style>
+  .expanded-modal .modus-wc-modal-box {
+    max-width: 64rem;
+    width: 96%;
+  }
+</style>
+<modus-wc-button onclick="my_modal_2.showModal()">
+  Open modal
+</modus-wc-button>
+<modus-wc-modal
+  aria-label="Example modal"
+  custom-class="expanded-modal"
+  modal-id="my_modal_2"
+  backdrop=${ifDefined(args.backdrop)}
+  position=${ifDefined(args.position)}
+  show-close=${ifDefined(args['show-close'])}
+>
+  <span slot="header">Modal Title</span>
+  <div slot="content">
+    <p>Sample expanded modal content.</p>
+  </div>
+  <modus-wc-button slot="footer" onclick="my_modal_2.close()">
     Close
   </modus-wc-button>
 </modus-wc-modal>
