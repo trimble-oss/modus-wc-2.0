@@ -2382,14 +2382,6 @@
               }
             },
             {
-              "name": "placeholder",
-              "fieldName": "placeholder",
-              "description": "Placeholder text for the date input.",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
               "name": "read-only",
               "fieldName": "readOnly",
               "default": "false",
@@ -2420,7 +2412,7 @@
               "name": "value",
               "fieldName": "value",
               "default": "''",
-              "description": "The value of the control.",
+              "description": "The value of the control (yyyy-mm-dd).",
               "type": {
                 "text": "string"
               }
@@ -3301,7 +3293,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input component used to create text inputs with types.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable input component used to create text inputs with types.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTextInput",
           "members": [
             {
@@ -3323,7 +3315,7 @@
               "fieldName": "autoCapitalize",
               "description": "Controls automatic capitalization in inputted text.",
               "type": {
-                "text": "| 'off'\n    | 'none'\n    | 'on'\n    | 'sentences'\n    | 'words'\n    | 'characters'"
+                "text": "| 'off'\r\n    | 'none'\r\n    | 'on'\r\n    | 'sentences'\r\n    | 'words'\r\n    | 'characters'"
               }
             },
             {
@@ -3374,7 +3366,7 @@
               "fieldName": "enterkeyhint",
               "description": "A hint to the browser for which enter key to display.",
               "type": {
-                "text": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'"
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
               }
             },
             {
@@ -3389,9 +3381,9 @@
               "name": "input-mode",
               "fieldName": "inputMode",
               "default": "'text'",
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\nThis allows a browser to display an appropriate virtual keyboard.",
+              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard.",
               "type": {
-                "text": "| 'decimal'\n    | 'email'\n    | 'none'\n    | 'numeric'\n    | 'search'\n    | 'tel'\n    | 'text'\n    | 'url'"
+                "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
               }
             },
             {

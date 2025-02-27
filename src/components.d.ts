@@ -431,10 +431,6 @@ export namespace Components {
          */
         "name"?: string;
         /**
-          * Placeholder text for the date input.
-         */
-        "placeholder"?: string;
-        /**
           * Whether the value is editable.
          */
         "readOnly"?: boolean;
@@ -447,7 +443,7 @@ export namespace Components {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control.
+          * The value of the control (yyyy-mm-dd).
          */
         "value": string;
     }
@@ -2502,10 +2498,6 @@ declare namespace LocalJSX {
          */
         "onInputFocus"?: (event: ModusWcDateCustomEvent<FocusEvent>) => void;
         /**
-          * Placeholder text for the date input.
-         */
-        "placeholder"?: string;
-        /**
           * Whether the value is editable.
          */
         "readOnly"?: boolean;
@@ -2518,7 +2510,7 @@ declare namespace LocalJSX {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control.
+          * The value of the control (yyyy-mm-dd).
          */
         "value"?: string;
     }
