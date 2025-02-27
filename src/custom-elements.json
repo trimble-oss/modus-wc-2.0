@@ -2282,14 +2282,6 @@
               "description": "Name of the form control. Submitted with the form as part of a name/value pair."
             },
             {
-              "name": "placeholder",
-              "fieldName": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "description": "Placeholder text for the date input."
-            },
-            {
               "name": "read-only",
               "fieldName": "readOnly",
               "type": {
@@ -2319,7 +2311,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "The value of the control."
+              "description": "The value of the control (yyyy-mm-dd)."
             }
           ],
           "tagName": "modus-wc-date",
@@ -2497,6 +2489,14 @@
                 "text": "boolean"
               },
               "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "currency-symbol",
+              "fieldName": "currencySymbol",
+              "type": {
+                "text": "string"
+              },
+              "description": "The currency symbol to display."
             },
             {
               "name": "custom-class",
@@ -3280,9 +3280,17 @@
               "name": "auto-complete",
               "fieldName": "autoComplete",
               "type": {
-                "text": "'on' | 'off'"
+                "text": "AutocompleteTypes"
               },
               "description": "Hint for form autofill feature."
+            },
+            {
+              "name": "auto-correct",
+              "fieldName": "autoCorrect",
+              "type": {
+                "text": "'on' | 'off'"
+              },
+              "description": "Controls automatic correction in inputted text. Support by browser varies."
             },
             {
               "name": "bordered",
@@ -3309,6 +3317,14 @@
               "description": "Whether the form control is disabled."
             },
             {
+              "name": "enterkeyhint",
+              "fieldName": "enterkeyhint",
+              "type": {
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
+              },
+              "description": "A hint to the browser for which enter key to display."
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
               "type": {
@@ -3323,14 +3339,6 @@
                 "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
               },
               "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
-            },
-            {
-              "name": "input-spellcheck",
-              "fieldName": "inputSpellcheck",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
             },
             {
               "name": "input-tab-index",
@@ -3416,7 +3424,7 @@
               "name": "type",
               "fieldName": "type",
               "type": {
-                "text": "'email' | 'password' | 'search' | 'tel' | 'text' | 'url'"
+                "text": "TextFieldTypes"
               },
               "description": "Type of form control."
             },
@@ -3502,6 +3510,14 @@
           ],
           "attributes": [
             {
+              "name": "auto-correct",
+              "fieldName": "autoCorrect",
+              "type": {
+                "text": "'on' | 'off'"
+              },
+              "description": "Controls automatic correction in inputted text. Support by browser varies."
+            },
+            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
@@ -3526,20 +3542,20 @@
               "description": "The disabled state of the textarea."
             },
             {
+              "name": "enterkeyhint",
+              "fieldName": "enterkeyhint",
+              "type": {
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
+              },
+              "description": "A hint to the browser for which enter key to display."
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
               "type": {
                 "text": "string"
               },
               "description": "The ID of the input element."
-            },
-            {
-              "name": "input-spellcheck",
-              "fieldName": "inputSpellcheck",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
             },
             {
               "name": "input-tab-index",

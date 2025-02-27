@@ -33,6 +33,9 @@ export class ModusWcNumberInput {
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
+  /** The currency symbol to display. */
+  @Prop() currencySymbol?: string = '';
+
   /** Custom CSS class to apply to the input. */
   @Prop() customClass?: string = '';
 
@@ -104,8 +107,8 @@ export class ModusWcNumberInput {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  private getClasses(): string {
-    const classList = ['modus-wc-input', 'modus-wc-w-full'];
+  private getSharedClasses(styleList): string {
+    const classList = [...styleList];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       size: this.size,
@@ -113,7 +116,38 @@ export class ModusWcNumberInput {
 
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
-    if (this.customClass) classList.push(this.customClass);
+
+    return classList.join(' ');
+  }
+
+  private getInputClasses(): string {
+    const classList = ['modus-wc-input', 'modus-wc-w-full'];
+
+    if (this.currencySymbol) {
+      classList.push('modus-wc-join-item');
+    }
+
+    return this.getSharedClasses(classList);
+  }
+
+  private getCurrencyClasses(): string {
+    const classList = [
+      'modus-wc-input-currency',
+      'modus-wc-join-item',
+      'modus-wc-flex',
+      'modus-wc-items-center',
+    ];
+
+    return this.getSharedClasses(classList);
+  }
+
+  private getWrapperClasses(): string {
+    const classList = ['modus-wc-input-container'];
+
+    if (this.currencySymbol) {
+      classList.push('modus-wc-join');
+      classList.push('modus-wc-flex');
+    }
 
     return classList.join(' ');
   }
@@ -132,7 +166,7 @@ export class ModusWcNumberInput {
 
   render() {
     return (
-      <Host>
+      <Host class={this.customClass}>
         {this.label && (
           <modus-wc-input-label
             forId={this.inputId}
@@ -141,29 +175,34 @@ export class ModusWcNumberInput {
             size={this.size}
           />
         )}
-        <input
-          aria-placeholder={this.placeholder}
-          aria-required={this.required}
-          autocomplete={this.autoComplete}
-          class={this.getClasses()}
-          disabled={this.disabled}
-          id={this.inputId}
-          inputmode={this.inputMode}
-          max={this.max}
-          min={this.min}
-          name={this.name}
-          onBlur={this.handleBlur}
-          onFocus={this.handleFocus}
-          onInput={this.handleInput}
-          placeholder={this.placeholder}
-          readonly={this.readOnly}
-          required={this.required}
-          step={this.step}
-          tabIndex={this.inputTabIndex}
-          type={this.type}
-          value={this.value}
-          {...this.inheritedAttributes}
-        />
+        <div class={this.getWrapperClasses()}>
+          {this.currencySymbol && (
+            <div class={this.getCurrencyClasses()}>{this.currencySymbol}</div>
+          )}
+          <input
+            aria-placeholder={this.placeholder}
+            aria-required={this.required}
+            autocomplete={this.autoComplete}
+            class={this.getInputClasses()}
+            disabled={this.disabled}
+            id={this.inputId}
+            inputmode={this.inputMode}
+            max={this.max}
+            min={this.min}
+            name={this.name}
+            onBlur={this.handleBlur}
+            onFocus={this.handleFocus}
+            onInput={this.handleInput}
+            placeholder={this.placeholder}
+            readonly={this.readOnly}
+            required={this.required}
+            step={this.step}
+            tabIndex={this.inputTabIndex}
+            type={this.type}
+            value={this.value}
+            {...this.inheritedAttributes}
+          />
+        </div>
       </Host>
     );
   }

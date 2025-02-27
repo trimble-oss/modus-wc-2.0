@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
-import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
+import { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 import { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { IModusWcCollapseOptions } from "./components/molecules/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
@@ -17,7 +17,7 @@ import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
-export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
+export { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 export { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { IModusWcCollapseOptions } from "./components/molecules/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
@@ -431,10 +431,6 @@ export namespace Components {
          */
         "name"?: string;
         /**
-          * Placeholder text for the date input.
-         */
-        "placeholder"?: string;
-        /**
           * Whether the value is editable.
          */
         "readOnly"?: boolean;
@@ -447,7 +443,7 @@ export namespace Components {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control.
+          * The value of the control (yyyy-mm-dd).
          */
         "value": string;
     }
@@ -661,6 +657,10 @@ export namespace Components {
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
+        /**
+          * The currency symbol to display.
+         */
+        "currencySymbol"?: string;
         /**
           * Custom CSS class to apply to the input.
          */
@@ -985,7 +985,11 @@ export namespace Components {
         /**
           * Hint for form autofill feature.
          */
-        "autoComplete"?: 'on' | 'off';
+        "autoComplete"?: AutocompleteTypes;
+        /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
          */
@@ -998,6 +1002,16 @@ export namespace Components {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
         /**
           * The ID of the input element.
          */
@@ -1013,10 +1027,6 @@ export namespace Components {
     | 'tel'
     | 'text'
     | 'url';
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
@@ -1060,7 +1070,7 @@ export namespace Components {
         /**
           * Type of form control.
          */
-        "type"?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
+        "type"?: TextFieldTypes;
         /**
           * The value of the control.
          */
@@ -1071,6 +1081,10 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTextarea {
+        /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
          */
@@ -1084,13 +1098,19 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * The tabindex of the input.
          */
@@ -2531,10 +2551,6 @@ declare namespace LocalJSX {
          */
         "onInputFocus"?: (event: ModusWcDateCustomEvent<FocusEvent>) => void;
         /**
-          * Placeholder text for the date input.
-         */
-        "placeholder"?: string;
-        /**
           * Whether the value is editable.
          */
         "readOnly"?: boolean;
@@ -2547,7 +2563,7 @@ declare namespace LocalJSX {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control.
+          * The value of the control (yyyy-mm-dd).
          */
         "value"?: string;
     }
@@ -2765,6 +2781,10 @@ declare namespace LocalJSX {
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
+        /**
+          * The currency symbol to display.
+         */
+        "currencySymbol"?: string;
         /**
           * Custom CSS class to apply to the input.
          */
@@ -3151,7 +3171,11 @@ declare namespace LocalJSX {
         /**
           * Hint for form autofill feature.
          */
-        "autoComplete"?: 'on' | 'off';
+        "autoComplete"?: AutocompleteTypes;
+        /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
          */
@@ -3164,6 +3188,16 @@ declare namespace LocalJSX {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
         /**
           * The ID of the input element.
          */
@@ -3179,10 +3213,6 @@ declare namespace LocalJSX {
     | 'tel'
     | 'text'
     | 'url';
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
@@ -3238,7 +3268,7 @@ declare namespace LocalJSX {
         /**
           * Type of form control.
          */
-        "type"?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
+        "type"?: TextFieldTypes;
         /**
           * The value of the control.
          */
@@ -3249,6 +3279,10 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTextarea {
+        /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
          */
@@ -3262,13 +3296,19 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * The tabindex of the input.
          */
