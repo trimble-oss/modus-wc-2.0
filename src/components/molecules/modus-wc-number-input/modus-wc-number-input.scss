@@ -8,7 +8,9 @@
 [data-theme='modus-classic-dark'] .modus-wc-input-container {
   .modus-wc-input-currency {
     background-color: var(--modus-wc-color-base-100);
+    color: var(--modus-wc-color-trimble-gray);
     border: var(--modus-wc-border-width-xs) solid transparent;
+    white-space: nowrap;
 
     &.modus-wc-input-sm {
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
