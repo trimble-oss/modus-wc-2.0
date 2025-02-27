@@ -62,14 +62,20 @@ export const Default: Story = {
   },
 };
 
-export const CustomWidth: Story = {
+export const CustomWidthAndHeight: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
 <style>
   .expanded-modal .modus-wc-modal-box {
     max-width: 64rem;
+    max-height: 64rem;
     width: 96%;
+    height: 96%;
+  }
+
+  .my-modal-content {
+    height: 41rem;
   }
 </style>
 <modus-wc-button onclick="my_modal_2.showModal()">
@@ -84,7 +90,7 @@ export const CustomWidth: Story = {
   show-close=${ifDefined(args['show-close'])}
 >
   <span slot="header">Modal Title</span>
-  <div slot="content">
+  <div class="my-modal-content" slot="content">
     <p>Sample expanded modal content.</p>
   </div>
   <modus-wc-button slot="footer" onclick="my_modal_2.close()">
