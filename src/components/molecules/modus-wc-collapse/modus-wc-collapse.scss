@@ -4,17 +4,18 @@
 */
 
 .modus-wc-collapse {
+  transition: none !important;
+
   modus-wc-icon {
     height: 24px;
     margin-inline-end: var(--modus-wc-spacing-sm);
   }
-  transition: none !important;
 
-  &.modus-wc-collapse-arrow.modus-wc-collapse-open {
+ // &.modus-wc-collapse-arrow.modus-wc-collapse-open {
     .modus-wc-collapse-content {
       padding: var(--modus-wc-spacing-lg);
     }
-  }
+ // }
 }
 
 .modus-wc-collapse-arrow > .modus-wc-collapse-title::after {
