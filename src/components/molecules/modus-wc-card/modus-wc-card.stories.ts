@@ -21,11 +21,11 @@ const meta: Meta<CardArgs> = {
   },
   argTypes: {
     layout: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['vertical', 'horizontal'],
     },
     padding: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['normal', 'compact'],
     },
   },
@@ -59,14 +59,14 @@ const Template: Story = {
   <span slot="subtitle">Card Subtitle</span>
   <p>This is a sample card content. You can place any content here.</p>
   <div slot="actions" class="modus-wc-justify-end">
-    <modus-wc-button label="Click me"></modus-wc-button>
+    <modus-wc-button aria-label="Click me">Click me</modus-wc-button>
   </div>
 </modus-wc-card>
     `;
   },
 };
 
-export const DefaultCard: Story = {
+export const Default: Story = {
   ...Template,
 };
 
@@ -142,8 +142,8 @@ export const ComplexCard: Story = {
     multiple buttons, and a larger shadow that appears on hover.
   </p>
   <div slot="actions" class="modus-wc-justify-end">
-    <modus-wc-button label="Action 1"></modus-wc-button>
-    <modus-wc-button label="Action 2"></modus-wc-button>
+    <modus-wc-button aria-label="Action 1">Action 1</modus-wc-button>
+    <modus-wc-button aria-label="Action 2">Action 2</modus-wc-button>
   </div>
 </modus-wc-card>
   `,

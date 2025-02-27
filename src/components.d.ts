@@ -5,10 +5,10 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IModusWcAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
-import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 import { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
+import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 import { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
+import { IModusWcCollapseOptions } from "./components/molecules/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 import { ISelectOption } from "./components/molecules/modus-wc-select/modus-wc-select";
 import { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
@@ -16,10 +16,10 @@ import { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs"
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { IModusWcAccordionItem } from "./components/molecules/modus-wc-accordion/modus-wc-accordion";
-export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 export { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
+export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
 export { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
+export { IModusWcCollapseOptions } from "./components/molecules/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
 export { ISelectOption } from "./components/molecules/modus-wc-select/modus-wc-select";
 export { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
@@ -30,25 +30,14 @@ export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc
 export namespace Components {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
+     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcAccordion {
         /**
-          * Indicates that the component should have a border.
-         */
-        "bordered"?: boolean;
-        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
-        /**
-          * Accordion items, used to render collapse components *
-         */
-        "items": IModusWcAccordionItem[];
-        /**
-          * Sets the size of the accordion component.
-         */
-        "size"?: DaisySize;
     }
     /**
      * A customizable alert component used to inform the user about important events.
@@ -374,7 +363,8 @@ export namespace Components {
     }
     /**
      * A customizable collapse component used for showing and hiding content.
-     * Can render any HTML content through a <slot> element.
+     * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
+     * Do not set
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcCollapse {
@@ -383,15 +373,11 @@ export namespace Components {
          */
         "bordered"?: boolean;
         /**
-          * The description of the collapse component.
+          * A unique identifier used to set the id attributes of various elements.
          */
-        "collapseDescription"?: string;
+        "collapseId"?: string;
         /**
-          * The title of the collapse component.
-         */
-        "collapseTitle"?: string;
-        /**
-          * Custom CSS class to apply to the inner div.
+          * Custom CSS class to apply to the outer div.
          */
         "customClass"?: string;
         /**
@@ -399,17 +385,9 @@ export namespace Components {
          */
         "expanded"?: boolean;
         /**
-          * The icon name, should match the CSS class in the icon font.
+          * Configuration options for rendering the pre-laid out collapse component. Do not set this prop if you intend to use the 'header' slot.
          */
-        "icon"?: string;
-        /**
-          * Sets the aria-label attribute of the icon component.
-         */
-        "iconAriaLabel"?: string;
-        /**
-          * Sets the size of the collapse component.
-         */
-        "size"?: DaisySize;
+        "options"?: IModusWcCollapseOptions;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -1414,6 +1392,7 @@ declare global {
     }
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
+     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcAccordionElement extends Components.ModusWcAccordion, HTMLStencilElement {
@@ -1578,7 +1557,8 @@ declare global {
     }
     /**
      * A customizable collapse component used for showing and hiding content.
-     * Can render any HTML content through a <slot> element.
+     * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
+     * Do not set
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcCollapseElement extends Components.ModusWcCollapse, HTMLStencilElement {
@@ -2044,21 +2024,14 @@ declare global {
 declare namespace LocalJSX {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
+     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcAccordion {
         /**
-          * Indicates that the component should have a border.
-         */
-        "bordered"?: boolean;
-        /**
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
-        /**
-          * Accordion items, used to render collapse components *
-         */
-        "items"?: IModusWcAccordionItem[];
         /**
           * When a collapse expanded state is changed, this event outputs the relevant index and state
          */
@@ -2066,10 +2039,6 @@ declare namespace LocalJSX {
     expanded: boolean;
     index: number;
   }>) => void;
-        /**
-          * Sets the size of the accordion component.
-         */
-        "size"?: DaisySize;
     }
     /**
      * A customizable alert component used to inform the user about important events.
@@ -2439,7 +2408,8 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable collapse component used for showing and hiding content.
-     * Can render any HTML content through a <slot> element.
+     * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
+     * Do not set
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcCollapse {
@@ -2448,15 +2418,11 @@ declare namespace LocalJSX {
          */
         "bordered"?: boolean;
         /**
-          * The description of the collapse component.
+          * A unique identifier used to set the id attributes of various elements.
          */
-        "collapseDescription"?: string;
+        "collapseId"?: string;
         /**
-          * The title of the collapse component.
-         */
-        "collapseTitle"?: string;
-        /**
-          * Custom CSS class to apply to the inner div.
+          * Custom CSS class to apply to the outer div.
          */
         "customClass"?: string;
         /**
@@ -2464,21 +2430,13 @@ declare namespace LocalJSX {
          */
         "expanded"?: boolean;
         /**
-          * The icon name, should match the CSS class in the icon font.
-         */
-        "icon"?: string;
-        /**
-          * Sets the aria-label attribute of the icon component.
-         */
-        "iconAriaLabel"?: string;
-        /**
           * Event emitted when the expanded prop is internally changed.
          */
         "onExpandedChange"?: (event: ModusWcCollapseCustomEvent<{ expanded: boolean }>) => void;
         /**
-          * Sets the size of the collapse component.
+          * Configuration options for rendering the pre-laid out collapse component. Do not set this prop if you intend to use the 'header' slot.
          */
-        "size"?: DaisySize;
+        "options"?: IModusWcCollapseOptions;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -3571,6 +3529,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             /**
              * A customizable accordion component used for showing and hiding related groups of content.
+             * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-accordion": LocalJSX.ModusWcAccordion & JSXBase.HTMLAttributes<HTMLModusWcAccordionElement>;
@@ -3623,7 +3582,8 @@ declare module "@stencil/core" {
             "modus-wc-chip": LocalJSX.ModusWcChip & JSXBase.HTMLAttributes<HTMLModusWcChipElement>;
             /**
              * A customizable collapse component used for showing and hiding content.
-             * Can render any HTML content through a <slot> element.
+             * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
+             * Do not set
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-collapse": LocalJSX.ModusWcCollapse & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;

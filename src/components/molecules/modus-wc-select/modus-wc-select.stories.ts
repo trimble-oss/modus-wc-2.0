@@ -59,7 +59,7 @@ export default meta;
 
 type Story = StoryObj<SelectArgs>;
 
-export const Template: Story = {
+export const Default: Story = {
   render: (args) => html`
     <modus-wc-select
       aria-label="Select input"
@@ -79,9 +79,9 @@ export const Template: Story = {
   `,
 };
 
-// prettier-ignore
 export const SelectWithLabel: Story = {
   render: () => {
+    // prettier-ignore
     return html`
 <style>
   .form-control {

@@ -5,7 +5,6 @@ import { DaisySize } from '../../types';
 
 interface AvatarArgs {
   alt: string;
-  'aria-label': string;
   'custom-class'?: string;
   'img-src': string;
   shape: string;
@@ -17,7 +16,6 @@ const meta: Meta<AvatarArgs> = {
   component: 'modus-wc-avatar',
   args: {
     alt: 'Example avatar',
-    'aria-label': 'Example avatar',
     'img-src':
       'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',
     shape: 'circle',
@@ -25,11 +23,11 @@ const meta: Meta<AvatarArgs> = {
   },
   argTypes: {
     shape: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['circle', 'square'],
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
     },
   },
@@ -44,7 +42,7 @@ const Template: Story = {
     return html`
       <modus-wc-avatar
         alt="${args.alt}"
-        aria-label="${args['aria-label']}"
+        aria-label="Avatar"
         custom-class="${ifDefined(args['custom-class'])}"
         img-src="${args['img-src']}"
         shape="${args.shape}"

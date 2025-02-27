@@ -4,7 +4,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { DaisySize } from '../../types';
 
 interface IconArgs {
-  'aria-label': string;
   'custom-class'?: string;
   decorative: boolean;
   name: string;
@@ -15,7 +14,6 @@ const meta: Meta<IconArgs> = {
   title: 'Components/Icon',
   component: 'modus-wc-icon',
   args: {
-    'aria-label': 'Alert icon',
     'custom-class': '',
     decorative: false,
     name: 'alert',
@@ -23,7 +21,7 @@ const meta: Meta<IconArgs> = {
   },
   argTypes: {
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
     },
   },
@@ -37,7 +35,7 @@ const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-icon
-        aria-label="${ifDefined(args['aria-label'])}"
+        aria-label="Alert icon"
         custom-class="${ifDefined(args['custom-class'])}"
         ?decorative="${ifDefined(args.decorative)}"
         name="${args.name}"

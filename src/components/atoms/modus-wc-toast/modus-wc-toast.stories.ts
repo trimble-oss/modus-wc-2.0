@@ -40,8 +40,8 @@ export default meta;
 
 type Story = StoryObj<ToastArgs>;
 
-// prettier-ignore
 const Template: Story = {
+  // prettier-ignore
   render: (args) => html`
 <div style="height: 200px;">
   <modus-wc-toast

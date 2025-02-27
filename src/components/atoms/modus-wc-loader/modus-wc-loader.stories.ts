@@ -5,7 +5,6 @@ import { LoaderColor, LoaderVariant } from './modus-wc-loader';
 import { DaisySize } from '../../types';
 
 interface LoaderArgs {
-  'aria-label': string;
   color: LoaderColor;
   'custom-class'?: string;
   size: DaisySize;
@@ -16,7 +15,6 @@ const meta: Meta<LoaderArgs> = {
   title: 'Components/Loader',
   component: 'modus-wc-loader',
   args: {
-    'aria-label': 'Loading spinner',
     color: 'primary',
     'custom-class': '',
     size: 'md',
@@ -24,7 +22,7 @@ const meta: Meta<LoaderArgs> = {
   },
   argTypes: {
     color: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: [
         'primary',
         'secondary',
@@ -37,11 +35,11 @@ const meta: Meta<LoaderArgs> = {
       ],
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
     },
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['ball', 'bars', 'dots', 'infinity', 'ring', 'spinner'],
     },
   },
@@ -55,7 +53,7 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-loader
-        aria-label="${ifDefined(args['aria-label'])}"
+        aria-label="Loading spinner"
         color="${args.color}"
         custom-class="${ifDefined(args['custom-class'])}"
         size="${args.size}"

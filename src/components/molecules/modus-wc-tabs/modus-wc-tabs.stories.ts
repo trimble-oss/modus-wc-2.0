@@ -6,7 +6,6 @@ import { IModusWcTab } from './modus-wc-tabs';
 import { DaisySize } from '../../types';
 
 interface TabsArgs {
-  'aria-label': string;
   activeTabIndex?: number;
   'custom-class'?: string;
   size?: DaisySize;
@@ -18,7 +17,6 @@ const meta: Meta<TabsArgs> = {
   title: 'Components/Tabs',
   component: 'modus-wc-tabs',
   args: {
-    'aria-label': 'Example Tab Group',
     size: 'md',
     tabs: [
       { label: 'Tab 1' },
@@ -30,11 +28,11 @@ const meta: Meta<TabsArgs> = {
   },
   argTypes: {
     tabStyle: {
-      control: { type: 'radio' },
+      control: { type: 'select' },
       options: ['boxed', 'bordered', 'lifted', 'none'],
     },
     size: {
-      control: { type: 'radio' },
+      control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
     },
   },
@@ -56,7 +54,7 @@ const Template: Story = {
     return html`
 <modus-wc-tabs
   active-tab-index="${ifDefined(args.activeTabIndex)}"
-  aria-label="${args['aria-label']}"
+  aria-label="Tab group"
   tab-style="${ifDefined(args.tabStyle)}"
   .tabs="${args.tabs}"
   size="${ifDefined(args.size)}"
@@ -99,7 +97,7 @@ export const TabsWithPanel: Story = {
     return html`
 <modus-wc-tabs
   active-tab-index="${ifDefined(args.activeTabIndex)}"
-  aria-label="${args['aria-label']}"
+  aria-label="Tab group"
   custom-class="${ifDefined(args['custom-class'])}"
   ?img-src="${args['img-src']}"
   tab-style="${ifDefined(args.tabStyle)}"
