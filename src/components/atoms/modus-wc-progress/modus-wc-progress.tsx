@@ -24,6 +24,9 @@ export class ModusWcProgress {
   /** The indeterminate state of the progress component. */
   @Prop({ reflect: true, mutable: true }) indeterminate: boolean = false;
 
+  /** A text label to render within the progress bar */
+  @Prop() label?: string;
+
   /** The progress component's maximum value. */
   @Prop() max?: number = 100;
 
@@ -65,12 +68,17 @@ export class ModusWcProgress {
         };
 
     return (
-      <Host>
+      <Host class="modus-wc-progress-container">
         <progress
           class={this.getClasses()}
           {...valueAttributes}
           {...this.inheritedAttributes}
         />
+        {this.label && (
+          <span class={`modus-wc-progress-label ${this.customClass}`}>
+            {this.label}
+          </span>
+        )}
       </Host>
     );
   }

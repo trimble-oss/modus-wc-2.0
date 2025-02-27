@@ -28,42 +28,46 @@
             {
               "name": "alt",
               "fieldName": "alt",
+              "description": "The image alt attribute for accessibility.",
               "type": {
                 "text": "string"
-              },
-              "description": "The image alt attribute for accessibility."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
+              }
             },
             {
               "name": "img-src",
               "fieldName": "imgSrc",
+              "default": "''",
+              "description": "The location of the image.",
               "type": {
                 "text": "string"
-              },
-              "description": "The location of the image."
+              }
             },
             {
               "name": "shape",
               "fieldName": "shape",
+              "default": "'circle'",
+              "description": "The shape of the avatar.",
               "type": {
                 "text": "'circle' | 'square'"
-              },
-              "description": "The shape of the avatar."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the avatar.",
               "type": {
                 "text": "DaisySize"
-              },
-              "description": "The size of the avatar."
+              }
             }
           ],
           "tagName": "modus-wc-avatar",
@@ -116,34 +120,38 @@
             {
               "name": "color",
               "fieldName": "color",
+              "default": "'primary'",
+              "description": "The color variant of the badge.",
               "type": {
                 "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
-              },
-              "description": "The color variant of the badge."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the span element.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the span element."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the badge.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the badge."
+              }
             },
             {
               "name": "variant",
               "fieldName": "variant",
+              "default": "'filled'",
+              "description": "The variant of the badge.",
               "type": {
                 "text": "'counter' | 'filled' | 'text'"
-              },
-              "description": "The variant of the badge."
+              }
             }
           ],
           "tagName": "modus-wc-badge",
@@ -196,74 +204,83 @@
             {
               "name": "color",
               "fieldName": "color",
+              "default": "'primary'",
+              "description": "The color variant of the button.",
               "type": {
                 "text": "'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger'"
-              },
-              "description": "The color variant of the button."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the button element.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the button element."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "default": "false",
+              "description": "If true, the button will be disabled.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "If true, the button will be disabled."
+              }
             },
             {
               "name": "full-width",
               "fieldName": "fullWidth",
+              "default": "false",
+              "description": "If true, the button will take the full width of its container.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "If true, the button will take the full width of its container."
+              }
             },
             {
               "name": "pressed",
               "fieldName": "pressed",
+              "default": "false",
+              "description": "If true, the button will be in a pressed state (for toggle buttons).",
               "type": {
                 "text": "boolean"
-              },
-              "description": "If true, the button will be in a pressed state (for toggle buttons)."
+              }
             },
             {
               "name": "shape",
               "fieldName": "shape",
+              "default": "'rectangle'",
+              "description": "The shape of the button.",
               "type": {
                 "text": "'circle' | 'rectangle' | 'square'"
-              },
-              "description": "The shape of the button."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the button.",
               "type": {
                 "text": "DaisySize"
-              },
-              "description": "The size of the button."
+              }
             },
             {
               "name": "type",
               "fieldName": "type",
+              "default": "'button'",
+              "description": "The type of the button.",
               "type": {
                 "text": "'button' | 'submit' | 'reset'"
-              },
-              "description": "The type of the button."
+              }
             },
             {
               "name": "variant",
               "fieldName": "variant",
+              "default": "'filled'",
+              "description": "The variant of the button.",
               "type": {
                 "text": "'borderless' | 'filled' | 'outlined'"
-              },
-              "description": "The variant of the button."
+              }
             }
           ],
           "tagName": "modus-wc-button",
@@ -324,50 +341,56 @@
             {
               "name": "color",
               "fieldName": "color",
+              "default": "'tertiary'",
+              "description": "The color of the divider line.",
               "type": {
                 "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
-              },
-              "description": "The color of the divider line."
+              }
             },
             {
               "name": "content",
               "fieldName": "content",
+              "default": "''",
+              "description": "The content to display in the divider.",
               "type": {
                 "text": "string"
-              },
-              "description": "The content to display in the divider."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the divider element.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the divider element."
+              }
             },
             {
               "name": "orientation",
               "fieldName": "orientation",
+              "default": "'vertical'",
+              "description": "The orientation of the divider. This is in reference to how content will be rendered around the divider.",
               "type": {
                 "text": "Orientation"
-              },
-              "description": "The orientation of the divider. This is in reference to how content will be rendered around the divider."
+              }
             },
             {
               "name": "position",
               "fieldName": "position",
+              "default": "'center'",
+              "description": "The position of the divider.",
               "type": {
                 "text": "'center' | 'end' | 'start'"
-              },
-              "description": "The position of the divider."
+              }
             },
             {
               "name": "responsive",
               "fieldName": "responsive",
+              "default": "true",
+              "description": "Whether the divider is responsive or not.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the divider is responsive or not."
+              }
             }
           ],
           "tagName": "modus-wc-divider",
@@ -420,34 +443,37 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the i element.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the i element."
+              }
             },
             {
               "name": "decorative",
               "fieldName": "decorative",
+              "default": "true",
+              "description": "Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers."
+              }
             },
             {
               "name": "name",
               "fieldName": "name",
+              "description": "The icon name, should match the CSS class in the icon font.",
               "type": {
                 "text": "string"
-              },
-              "description": "The icon name, should match the CSS class in the icon font."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The icon size, can be \"sm\", \"md\", \"lg\" (a custom size can be specified in CSS). This adjusts the font size for the icon.",
               "type": {
                 "text": "DaisySize"
-              },
-              "description": "The icon size, can be \"sm\", \"md\", \"lg\" (a custom size can be specified in CSS). This adjusts the font size for the icon."
+              }
             }
           ],
           "tagName": "modus-wc-icon",
@@ -500,42 +526,45 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Additional classes for custom styling.",
               "type": {
                 "text": "string"
-              },
-              "description": "Additional classes for custom styling."
+              }
             },
             {
               "name": "for-id",
               "fieldName": "forId",
+              "description": "The `for` attribute of the label, matching the `id` of the associated input.",
               "type": {
                 "text": "string"
-              },
-              "description": "The `for` attribute of the label, matching the `id` of the associated input."
+              }
             },
             {
               "name": "label-text",
               "fieldName": "labelText",
+              "description": "The text to display within the label.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text to display within the label."
+              }
             },
             {
               "name": "required",
               "fieldName": "required",
+              "default": "false",
+              "description": "Whether the label indicates a required field.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the label indicates a required field."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the label.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the label."
+              }
             }
           ],
           "tagName": "modus-wc-input-label",
@@ -588,34 +617,38 @@
             {
               "name": "color",
               "fieldName": "color",
+              "default": "'primary'",
+              "description": "The color of the loader.",
               "type": {
                 "text": "LoaderColor"
-              },
-              "description": "The color of the loader."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the loader element.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the loader element."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the loader.",
               "type": {
                 "text": "DaisySize"
-              },
-              "description": "The size of the loader."
+              }
             },
             {
               "name": "variant",
               "fieldName": "variant",
+              "default": "'spinner'",
+              "description": "The variant of the loader.",
               "type": {
                 "text": "LoaderVariant"
-              },
-              "description": "The variant of the loader."
+              }
             }
           ],
           "tagName": "modus-wc-loader",
@@ -675,66 +708,70 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the li element.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the li element."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "description": "The disabled state of the menu item.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The disabled state of the menu item."
+              }
             },
             {
               "name": "label",
               "fieldName": "label",
+              "default": "''",
+              "description": "The text rendered in the menu item.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text rendered in the menu item."
+              }
             },
             {
               "name": "selected",
               "fieldName": "selected",
+              "description": "The selected state of the menu item.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The selected state of the menu item."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the menu item.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the menu item."
+              }
             },
             {
               "name": "start-icon",
               "fieldName": "startIcon",
+              "description": "The modus icon name to render on the start of the menu item.",
               "type": {
                 "text": "string"
-              },
-              "description": "The modus icon name to render on the start of the menu item."
+              }
             },
             {
               "name": "sub-label",
               "fieldName": "subLabel",
+              "description": "The text rendered beneath the label.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text rendered beneath the label."
+              }
             },
             {
               "name": "value",
               "fieldName": "value",
+              "default": "''",
+              "description": "The unique identifying value of the menu item.",
               "type": {
                 "text": "string"
-              },
-              "description": "The unique identifying value of the menu item."
+              }
             }
           ],
           "tagName": "modus-wc-menu-item",
@@ -796,34 +833,37 @@
             {
               "name": "bordered",
               "fieldName": "bordered",
+              "description": "Indicates that the menu should have a border.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Indicates that the menu should have a border."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the ul element.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the ul element."
+              }
             },
             {
               "name": "orientation",
               "fieldName": "orientation",
+              "default": "'vertical'",
+              "description": "The orientation of the menu.",
               "type": {
                 "text": "Orientation"
-              },
-              "description": "The orientation of the menu."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the menu.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the menu."
+              }
             }
           ],
           "tagName": "modus-wc-menu",
@@ -856,7 +896,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcProgress",
           "members": [
             {
@@ -876,34 +916,46 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the progress element.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the progress element."
+              }
             },
             {
               "name": "indeterminate",
               "fieldName": "indeterminate",
+              "default": "false",
+              "description": "The indeterminate state of the progress component.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The indeterminate state of the progress component."
+              }
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "description": "A text label to render within the progress bar",
+              "type": {
+                "text": "string"
+              }
             },
             {
               "name": "max",
               "fieldName": "max",
+              "default": "100",
+              "description": "The progress component's maximum value.",
               "type": {
                 "text": "number"
-              },
-              "description": "The progress component's maximum value."
+              }
             },
             {
               "name": "value",
               "fieldName": "value",
+              "default": "0",
+              "description": "The value of the progress component.",
               "type": {
                 "text": "number"
-              },
-              "description": "The value of the progress component."
+              }
             }
           ],
           "tagName": "modus-wc-progress",
@@ -956,34 +1008,38 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
+              }
             },
             {
               "name": "height",
               "fieldName": "height",
+              "default": "'var(--modus-wc-line-height-md)'",
+              "description": "The height of the skeleton.",
               "type": {
                 "text": "string"
-              },
-              "description": "The height of the skeleton."
+              }
             },
             {
               "name": "shape",
               "fieldName": "shape",
+              "default": "'rectangle'",
+              "description": "The shape of the skeleton.",
               "type": {
                 "text": "'circle' | 'rectangle'"
-              },
-              "description": "The shape of the skeleton."
+              }
             },
             {
               "name": "width",
               "fieldName": "width",
+              "default": "'100%'",
+              "description": "The width of the skeleton.",
               "type": {
                 "text": "string"
-              },
-              "description": "The width of the skeleton."
+              }
             }
           ],
           "tagName": "modus-wc-skeleton",
@@ -1036,18 +1092,20 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Additional classes for custom styling.",
               "type": {
                 "text": "string"
-              },
-              "description": "Additional classes for custom styling."
+              }
             },
             {
               "name": "position",
               "fieldName": "position",
+              "default": "'top-end'",
+              "description": "The position of the toast in the parent container.",
               "type": {
                 "text": "ToastPosition"
-              },
-              "description": "The position of the toast in the parent container."
+              }
             }
           ],
           "tagName": "modus-wc-toast",
@@ -1100,42 +1158,45 @@
             {
               "name": "content",
               "fieldName": "content",
+              "default": "''",
+              "description": "The text content of the tooltip.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text content of the tooltip."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
+              }
             },
             {
               "name": "force-open",
               "fieldName": "forceOpen",
+              "description": "Use this attribute to force the tooltip to remain open.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Use this attribute to force the tooltip to remain open."
+              }
             },
             {
               "name": "position",
               "fieldName": "position",
+              "default": "'auto'",
+              "description": "The position that the tooltip will render in relation to the element.",
               "type": {
                 "text": "'auto' | 'top' | 'right' | 'bottom' | 'left'"
-              },
-              "description": "The position that the tooltip will render in relation to the element."
+              }
             },
             {
               "name": "tooltip-id",
               "fieldName": "tooltipId",
+              "description": "The ID of the tooltip element, useful for setting the \"aria-describedby\" attribute of related elements.",
               "type": {
                 "text": "string"
-              },
-              "description": "The ID of the tooltip element, useful for setting the \"aria-describedby\" attribute of related elements."
+              }
             }
           ],
           "tagName": "modus-wc-tooltip",
@@ -1188,34 +1249,38 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the typography element.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the typography element."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the font.",
               "type": {
                 "text": "DaisySize"
-              },
-              "description": "The size of the font."
+              }
             },
             {
               "name": "variant",
               "fieldName": "variant",
+              "default": "'p'",
+              "description": "The variant of the typography component.",
               "type": {
                 "text": "TypographyVariant"
-              },
-              "description": "The variant of the typography component."
+              }
             },
             {
               "name": "weight",
               "fieldName": "weight",
+              "default": "'normal'",
+              "description": "The weight of the text.",
               "type": {
                 "text": "TypographyWeight"
-              },
-              "description": "The weight of the text."
+              }
             }
           ],
           "tagName": "modus-wc-typography",
@@ -1268,10 +1333,11 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
+              }
             }
           ],
           "tagName": "modus-wc-accordion",
@@ -1333,42 +1399,43 @@
             {
               "name": "alert-description",
               "fieldName": "alertDescription",
+              "description": "The description of the alert. *",
               "type": {
                 "text": "string"
-              },
-              "description": "The description of the alert. *"
+              }
             },
             {
               "name": "alert-title",
               "fieldName": "alertTitle",
+              "description": "The title of the alert. *",
               "type": {
                 "text": "string"
-              },
-              "description": "The title of the alert. *"
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the outer div element.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the outer div element."
+              }
             },
             {
               "name": "icon",
               "fieldName": "icon",
+              "description": "The Modus icon to render. *",
               "type": {
                 "text": "string"
-              },
-              "description": "The Modus icon to render. *"
+              }
             },
             {
               "name": "variant",
               "fieldName": "variant",
+              "description": "The variant of the alert.",
               "type": {
                 "text": "'error' | 'info' | 'success' | 'warning'"
-              },
-              "description": "The variant of the alert."
+              }
             }
           ],
           "tagName": "modus-wc-alert",
@@ -1421,130 +1488,142 @@
             {
               "name": "bordered",
               "fieldName": "bordered",
+              "default": "true",
+              "description": "Indicates that the autocomplete should have a border.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Indicates that the autocomplete should have a border."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to host element.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to host element."
+              }
             },
             {
               "name": "debounce-ms",
               "fieldName": "debounceMs",
+              "default": "300",
+              "description": "The debounce timeout in milliseconds.\r\nSet to 0 to disable debouncing.",
               "type": {
                 "text": "number"
-              },
-              "description": "The debounce timeout in milliseconds.\r\nSet to 0 to disable debouncing."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "default": "false",
+              "description": "Whether the form control is disabled.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the form control is disabled."
+              }
             },
             {
               "name": "input-id",
               "fieldName": "inputId",
+              "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              },
-              "description": "The ID of the input element."
+              }
             },
             {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).",
               "type": {
                 "text": "number"
-              },
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+              }
             },
             {
               "name": "items",
               "fieldName": "items",
+              "default": "[]",
+              "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render.",
               "type": {
                 "text": "IAutocompleteItem[]"
-              },
-              "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render."
+              }
             },
             {
               "name": "label",
               "fieldName": "label",
+              "description": "The text to display within the label.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text to display within the label."
+              }
             },
             {
               "name": "min-chars",
               "fieldName": "minChars",
+              "default": "0",
+              "description": "The minimum number of characters required to render the menu.",
               "type": {
                 "text": "number"
-              },
-              "description": "The minimum number of characters required to render the menu."
+              }
             },
             {
               "name": "multi-select",
               "fieldName": "multiSelect",
+              "default": "false",
+              "description": "Whether the input allows multiple items to be selected.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the input allows multiple items to be selected."
+              }
             },
             {
               "name": "name",
               "fieldName": "name",
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
               "type": {
                 "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+              }
             },
             {
               "name": "placeholder",
               "fieldName": "placeholder",
+              "default": "''",
+              "description": "Text that appears in the form control when it has no value set.",
               "type": {
                 "text": "string"
-              },
-              "description": "Text that appears in the form control when it has no value set."
+              }
             },
             {
               "name": "read-only",
               "fieldName": "readOnly",
+              "default": "false",
+              "description": "Whether the value is editable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the value is editable."
+              }
             },
             {
               "name": "required",
               "fieldName": "required",
+              "default": "false",
+              "description": "A value is required for the form to be submittable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the autocomplete (input and menu).",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the autocomplete (input and menu)."
+              }
             },
             {
               "name": "value",
               "fieldName": "value",
+              "default": "''",
+              "description": "The value of the control.",
               "type": {
                 "text": "string"
-              },
-              "description": "The value of the control."
+              }
             }
           ],
           "tagName": "modus-wc-autocomplete",
@@ -1638,26 +1717,29 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
+              }
             },
             {
               "name": "items",
               "fieldName": "items",
+              "default": "[]",
+              "description": "The breadcrumbs to render.",
               "type": {
                 "text": "IModusWcBreadcrumb[]"
-              },
-              "description": "The breadcrumbs to render."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the breadcrumbs.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the breadcrumbs."
+              }
             }
           ],
           "tagName": "modus-wc-breadcrumbs",
@@ -1710,42 +1792,47 @@
             {
               "name": "background-figure",
               "fieldName": "backgroundFigure",
+              "default": "false",
+              "description": "Makes any \\<figure> in the 'header' slot cover the background",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Makes any \\<figure> in the 'header' slot cover the background"
+              }
             },
             {
               "name": "bordered",
               "fieldName": "bordered",
+              "default": "false",
+              "description": "Adds a hard border to the card",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Adds a hard border to the card"
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply"
+              }
             },
             {
               "name": "layout",
               "fieldName": "layout",
+              "default": "'vertical'",
+              "description": "Determines how the card is laid out",
               "type": {
                 "text": "'vertical' | 'horizontal'"
-              },
-              "description": "Determines how the card is laid out"
+              }
             },
             {
               "name": "padding",
               "fieldName": "padding",
+              "default": "'normal'",
+              "description": "Determines if the interior padding is compact or not",
               "type": {
                 "text": "'normal' | 'compact'"
-              },
-              "description": "Determines if the interior padding is compact or not"
+              }
             }
           ],
           "tagName": "modus-wc-card",
@@ -1798,82 +1885,89 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "default": "false",
+              "description": "The disabled state of the checkbox.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The disabled state of the checkbox."
+              }
             },
             {
               "name": "indeterminate",
               "fieldName": "indeterminate",
+              "default": "false",
+              "description": "The indeterminate state of the checkbox.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The indeterminate state of the checkbox."
+              }
             },
             {
               "name": "input-id",
               "fieldName": "inputId",
+              "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              },
-              "description": "The ID of the input element."
+              }
             },
             {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
+              "description": "The tabindex of the input.",
               "type": {
                 "text": "number"
-              },
-              "description": "The tabindex of the input."
+              }
             },
             {
               "name": "label",
               "fieldName": "label",
+              "description": "The text to display within the label.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text to display within the label."
+              }
             },
             {
               "name": "name",
               "fieldName": "name",
+              "default": "''",
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
               "type": {
                 "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+              }
             },
             {
               "name": "required",
               "fieldName": "required",
+              "default": "false",
+              "description": "A value is required for the form to be submittable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the input.",
               "type": {
                 "text": "DaisySize"
-              },
-              "description": "The size of the input."
+              }
             },
             {
               "name": "value",
               "fieldName": "value",
+              "default": "false",
+              "description": "The value of the checkbox.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The value of the checkbox."
+              }
             }
           ],
           "tagName": "modus-wc-checkbox",
@@ -1976,66 +2070,74 @@
             {
               "name": "active",
               "fieldName": "active",
+              "default": "false",
+              "description": "Active state of chip.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Active state of chip."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "default": "false",
+              "description": "Whether the chip is disabled.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the chip is disabled."
+              }
             },
             {
               "name": "has-error",
               "fieldName": "hasError",
+              "default": "false",
+              "description": "Whether the chip has an error.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the chip has an error."
+              }
             },
             {
               "name": "label",
               "fieldName": "label",
+              "default": "''",
+              "description": "The label to display in the chip.",
               "type": {
                 "text": "string"
-              },
-              "description": "The label to display in the chip."
+              }
             },
             {
               "name": "show-remove",
               "fieldName": "showRemove",
+              "default": "false",
+              "description": "Whether to show the close icon on right side of the chip.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether to show the close icon on right side of the chip."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the chip.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the chip."
+              }
             },
             {
               "name": "variant",
               "fieldName": "variant",
+              "default": "'filled'",
+              "description": "The variant of the chip.",
               "type": {
                 "text": "'filled' | 'outline'"
-              },
-              "description": "The variant of the chip."
+              }
             }
           ],
           "tagName": "modus-wc-chip",
@@ -2115,42 +2217,45 @@
             {
               "name": "bordered",
               "fieldName": "bordered",
+              "default": "true",
+              "description": "Indicates that the component should have a border.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Indicates that the component should have a border."
+              }
             },
             {
               "name": "collapse-id",
               "fieldName": "collapseId",
+              "description": "A unique identifier used to set the id attributes of various elements.",
               "type": {
                 "text": "string"
-              },
-              "description": "A unique identifier used to set the id attributes of various elements."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the outer div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the outer div."
+              }
             },
             {
               "name": "expanded",
               "fieldName": "expanded",
+              "default": "false",
+              "description": "Controls whether the collapse is expanded or not.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Controls whether the collapse is expanded or not."
+              }
             },
             {
               "name": "options",
               "fieldName": "options",
+              "description": "Configuration options for rendering the pre-laid out collapse component.\r\nDo not set this prop if you intend to use the 'header' slot.",
               "type": {
                 "text": "IModusWcCollapseOptions"
-              },
-              "description": "Configuration options for rendering the pre-laid out collapse component.\r\nDo not set this prop if you intend to use the 'header' slot."
+              }
             }
           ],
           "tagName": "modus-wc-collapse",
@@ -2212,114 +2317,121 @@
             {
               "name": "bordered",
               "fieldName": "bordered",
+              "default": "true",
+              "description": "Indicates that the input should have a border.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the input.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the input."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "default": "false",
+              "description": "Whether the form control is disabled.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the form control is disabled."
+              }
             },
             {
               "name": "input-id",
               "fieldName": "inputId",
+              "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              },
-              "description": "The ID of the input element."
+              }
             },
             {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).",
               "type": {
                 "text": "number"
-              },
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+              }
             },
             {
               "name": "label",
               "fieldName": "label",
+              "description": "The text to display within the label.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text to display within the label."
+              }
             },
             {
               "name": "max",
               "fieldName": "max",
+              "description": "Maximum date value.",
               "type": {
                 "text": "string"
-              },
-              "description": "Maximum date value."
+              }
             },
             {
               "name": "min",
               "fieldName": "min",
+              "description": "Minimum date value.",
               "type": {
                 "text": "string"
-              },
-              "description": "Minimum date value."
+              }
             },
             {
               "name": "name",
               "fieldName": "name",
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
               "type": {
                 "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+              }
             },
             {
               "name": "placeholder",
               "fieldName": "placeholder",
+              "description": "Placeholder text for the date input.",
               "type": {
                 "text": "string"
-              },
-              "description": "Placeholder text for the date input."
+              }
             },
             {
               "name": "read-only",
               "fieldName": "readOnly",
+              "default": "false",
+              "description": "Whether the value is editable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the value is editable."
+              }
             },
             {
               "name": "required",
               "fieldName": "required",
+              "default": "false",
+              "description": "A value is required or must be checked for the form to be submittable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "A value is required or must be checked for the form to be submittable."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the input.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the input."
+              }
             },
             {
               "name": "value",
               "fieldName": "value",
+              "default": "''",
+              "description": "The value of the control.",
               "type": {
                 "text": "string"
-              },
-              "description": "The value of the control."
+              }
             }
           ],
           "tagName": "modus-wc-date",
@@ -2397,146 +2509,156 @@
             {
               "name": "auto-complete",
               "fieldName": "autoComplete",
+              "description": "Hint for form autofill feature.",
               "type": {
                 "text": "'on' | 'off'"
-              },
-              "description": "Hint for form autofill feature."
+              }
             },
             {
               "name": "bordered",
               "fieldName": "bordered",
+              "default": "true",
+              "description": "Indicates that the input should have a border.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the input.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the input."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "default": "false",
+              "description": "Whether the form control is disabled.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the form control is disabled."
+              }
             },
             {
               "name": "input-id",
               "fieldName": "inputId",
+              "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              },
-              "description": "The ID of the input element."
+              }
             },
             {
               "name": "input-mode",
               "fieldName": "inputMode",
+              "default": "'numeric'",
+              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard.",
               "type": {
                 "text": "'decimal' | 'none' | 'numeric'"
-              },
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
+              }
             },
             {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).",
               "type": {
                 "text": "number"
-              },
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+              }
             },
             {
               "name": "label",
               "fieldName": "label",
+              "description": "The text to display within the label.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text to display within the label."
+              }
             },
             {
               "name": "max",
               "fieldName": "max",
+              "description": "The input's maximum value.",
               "type": {
                 "text": "number"
-              },
-              "description": "The input's maximum value."
+              }
             },
             {
               "name": "min",
               "fieldName": "min",
+              "description": "The input's minimum value.",
               "type": {
                 "text": "number"
-              },
-              "description": "The input's minimum value."
+              }
             },
             {
               "name": "name",
               "fieldName": "name",
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
               "type": {
                 "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+              }
             },
             {
               "name": "placeholder",
               "fieldName": "placeholder",
+              "default": "''",
+              "description": "Text that appears in the form control when it has no value set.",
               "type": {
                 "text": "string"
-              },
-              "description": "Text that appears in the form control when it has no value set."
+              }
             },
             {
               "name": "read-only",
               "fieldName": "readOnly",
+              "default": "false",
+              "description": "Whether the value is editable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the value is editable."
+              }
             },
             {
               "name": "required",
               "fieldName": "required",
+              "default": "false",
+              "description": "A value is required for the form to be submittable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the input.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the input."
+              }
             },
             {
               "name": "step",
               "fieldName": "step",
+              "description": "The granularity that the value adheres to.",
               "type": {
                 "text": "number"
-              },
-              "description": "The granularity that the value adheres to."
+              }
             },
             {
               "name": "type",
               "fieldName": "type",
+              "default": "'number'",
+              "description": "Type of form control.",
               "type": {
                 "text": "'number' | 'range'"
-              },
-              "description": "Type of form control."
+              }
             },
             {
               "name": "value",
               "fieldName": "value",
+              "default": "''",
+              "description": "The value of the control.",
               "type": {
                 "text": "string"
-              },
-              "description": "The value of the control."
+              }
             }
           ],
           "tagName": "modus-wc-number-input",
@@ -2614,74 +2736,80 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "default": "false",
+              "description": "The disabled state of the radio.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The disabled state of the radio."
+              }
             },
             {
               "name": "input-id",
               "fieldName": "inputId",
+              "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              },
-              "description": "The ID of the input element."
+              }
             },
             {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
+              "description": "The tabindex of the input.",
               "type": {
                 "text": "number"
-              },
-              "description": "The tabindex of the input."
+              }
             },
             {
               "name": "label",
               "fieldName": "label",
+              "description": "The text to display within the label.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text to display within the label."
+              }
             },
             {
               "name": "name",
               "fieldName": "name",
+              "default": "''",
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
               "type": {
                 "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+              }
             },
             {
               "name": "required",
               "fieldName": "required",
+              "default": "false",
+              "description": "A value is required for the form to be submittable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the input.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the input."
+              }
             },
             {
               "name": "value",
               "fieldName": "value",
+              "default": "false",
+              "description": "The value of the radio.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The value of the radio."
+              }
             }
           ],
           "tagName": "modus-wc-radio",
@@ -2759,90 +2887,97 @@
             {
               "name": "bordered",
               "fieldName": "bordered",
+              "default": "true",
+              "description": "Indicates that the input should have a border.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "default": "false",
+              "description": "Whether the form control is disabled.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the form control is disabled."
+              }
             },
             {
               "name": "input-id",
               "fieldName": "inputId",
+              "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              },
-              "description": "The ID of the input element."
+              }
             },
             {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).",
               "type": {
                 "text": "number"
-              },
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+              }
             },
             {
               "name": "label",
               "fieldName": "label",
+              "description": "The text to display within the label.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text to display within the label."
+              }
             },
             {
               "name": "name",
               "fieldName": "name",
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
               "type": {
                 "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+              }
             },
             {
               "name": "options",
               "fieldName": "options",
+              "default": "[]",
+              "description": "The options to display in the select dropdown.",
               "type": {
                 "text": "ISelectOption[]"
-              },
-              "description": "The options to display in the select dropdown."
+              }
             },
             {
               "name": "required",
               "fieldName": "required",
+              "default": "false",
+              "description": "A value is required for the form to be submittable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the input.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the input."
+              }
             },
             {
               "name": "value",
               "fieldName": "value",
+              "default": "''",
+              "description": "The value of the control.",
               "type": {
                 "text": "string"
-              },
-              "description": "The value of the control."
+              }
             }
           ],
           "tagName": "modus-wc-select",
@@ -2920,98 +3055,104 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "default": "false",
+              "description": "The disabled state of the slider.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The disabled state of the slider."
+              }
             },
             {
               "name": "input-id",
               "fieldName": "inputId",
+              "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              },
-              "description": "The ID of the input element."
+              }
             },
             {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
+              "description": "The tabindex of the input.",
               "type": {
                 "text": "number"
-              },
-              "description": "The tabindex of the input."
+              }
             },
             {
               "name": "label",
               "fieldName": "label",
+              "description": "The text to display within the label.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text to display within the label."
+              }
             },
             {
               "name": "max",
               "fieldName": "max",
+              "description": "The maximum slider value.",
               "type": {
                 "text": "number"
-              },
-              "description": "The maximum slider value."
+              }
             },
             {
               "name": "min",
               "fieldName": "min",
+              "description": "The minimum slider value.",
               "type": {
                 "text": "number"
-              },
-              "description": "The minimum slider value."
+              }
             },
             {
               "name": "name",
               "fieldName": "name",
+              "default": "''",
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
               "type": {
                 "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+              }
             },
             {
               "name": "required",
               "fieldName": "required",
+              "default": "false",
+              "description": "A value is required for the form to be submittable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the input.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the input."
+              }
             },
             {
               "name": "step",
               "fieldName": "step",
+              "description": "The increment of the slider.",
               "type": {
                 "text": "number"
-              },
-              "description": "The increment of the slider."
+              }
             },
             {
               "name": "value",
               "fieldName": "value",
+              "default": "0",
+              "description": "The value of the slider.",
               "type": {
                 "text": "number"
-              },
-              "description": "The value of the slider."
+              }
             }
           ],
           "tagName": "modus-wc-slider",
@@ -3089,39 +3230,44 @@
             {
               "name": "active-tab-index",
               "fieldName": "activeTabIndex",
+              "default": "0",
               "description": "The current active tab"
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the tabs.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the tabs."
+              }
             },
             {
               "name": "tab-style",
               "fieldName": "tabStyle",
+              "default": "'bordered'",
+              "description": "Additional styling for the tabs.",
               "type": {
                 "text": "'boxed' | 'bordered' | 'lifted' | 'none'"
-              },
-              "description": "Additional styling for the tabs."
+              }
             },
             {
               "name": "tabs",
               "fieldName": "tabs",
+              "default": "[]",
+              "description": "The tabs to display.",
               "type": {
                 "text": "IModusWcTab[]"
-              },
-              "description": "The tabs to display."
+              }
             }
           ],
           "tagName": "modus-wc-tabs",
@@ -3183,162 +3329,173 @@
             {
               "name": "auto-capitalize",
               "fieldName": "autoCapitalize",
+              "description": "Controls automatic capitalization in inputted text.",
               "type": {
                 "text": "| 'off'\r\n    | 'none'\r\n    | 'on'\r\n    | 'sentences'\r\n    | 'words'\r\n    | 'characters'"
-              },
-              "description": "Controls automatic capitalization in inputted text."
+              }
             },
             {
               "name": "auto-complete",
               "fieldName": "autoComplete",
+              "description": "Hint for form autofill feature.",
               "type": {
                 "text": "'on' | 'off'"
-              },
-              "description": "Hint for form autofill feature."
+              }
             },
             {
               "name": "bordered",
               "fieldName": "bordered",
+              "default": "true",
+              "description": "Indicates that the input should have a border.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the input.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the input."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "default": "false",
+              "description": "Whether the form control is disabled.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the form control is disabled."
+              }
             },
             {
               "name": "input-id",
               "fieldName": "inputId",
+              "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              },
-              "description": "The ID of the input element."
+              }
             },
             {
               "name": "input-mode",
               "fieldName": "inputMode",
+              "default": "'text'",
+              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard.",
               "type": {
                 "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
-              },
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
+              }
             },
             {
               "name": "input-spellcheck",
               "fieldName": "inputSpellcheck",
+              "default": "false",
+              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
+              }
             },
             {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).",
               "type": {
                 "text": "number"
-              },
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+              }
             },
             {
               "name": "label",
               "fieldName": "label",
+              "description": "The text to display within the label.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text to display within the label."
+              }
             },
             {
               "name": "max-length",
               "fieldName": "maxLength",
+              "description": "Maximum length (number of characters) of value.",
               "type": {
                 "text": "number"
-              },
-              "description": "Maximum length (number of characters) of value."
+              }
             },
             {
               "name": "min-length",
               "fieldName": "minLength",
+              "description": "Minimum length (number of characters) of value.",
               "type": {
                 "text": "number"
-              },
-              "description": "Minimum length (number of characters) of value."
+              }
             },
             {
               "name": "name",
               "fieldName": "name",
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
               "type": {
                 "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+              }
             },
             {
               "name": "pattern",
               "fieldName": "pattern",
+              "description": "Pattern the value must match to be valid",
               "type": {
                 "text": "string"
-              },
-              "description": "Pattern the value must match to be valid"
+              }
             },
             {
               "name": "placeholder",
               "fieldName": "placeholder",
+              "default": "''",
+              "description": "Text that appears in the form control when it has no value set.",
               "type": {
                 "text": "string"
-              },
-              "description": "Text that appears in the form control when it has no value set."
+              }
             },
             {
               "name": "read-only",
               "fieldName": "readOnly",
+              "default": "false",
+              "description": "Whether the value is editable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the value is editable."
+              }
             },
             {
               "name": "required",
               "fieldName": "required",
+              "default": "false",
+              "description": "A value is required for the form to be submittable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the input.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the input."
+              }
             },
             {
               "name": "type",
               "fieldName": "type",
+              "default": "'text'",
+              "description": "Type of form control.",
               "type": {
                 "text": "'email' | 'password' | 'search' | 'tel' | 'text' | 'url'"
-              },
-              "description": "Type of form control."
+              }
             },
             {
               "name": "value",
               "fieldName": "value",
+              "default": "''",
+              "description": "The value of the control.",
               "type": {
                 "text": "string"
-              },
-              "description": "The value of the control."
+              }
             }
           ],
           "tagName": "modus-wc-text-input",
@@ -3416,122 +3573,130 @@
             {
               "name": "bordered",
               "fieldName": "bordered",
+              "default": "true",
+              "description": "Indicates that the input should have a border.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the textarea (supports DaisyUI).",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the textarea (supports DaisyUI)."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "default": "false",
+              "description": "The disabled state of the textarea.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The disabled state of the textarea."
+              }
             },
             {
               "name": "input-id",
               "fieldName": "inputId",
+              "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              },
-              "description": "The ID of the input element."
+              }
             },
             {
               "name": "input-spellcheck",
               "fieldName": "inputSpellcheck",
+              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
+              }
             },
             {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
+              "description": "The tabindex of the input.",
               "type": {
                 "text": "number"
-              },
-              "description": "The tabindex of the input."
+              }
             },
             {
               "name": "label",
               "fieldName": "label",
+              "description": "The text to display within the label.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text to display within the label."
+              }
             },
             {
               "name": "max-length",
               "fieldName": "maxLength",
+              "description": "The maximum number of characters allowed in the textarea.",
               "type": {
                 "text": "number"
-              },
-              "description": "The maximum number of characters allowed in the textarea."
+              }
             },
             {
               "name": "name",
               "fieldName": "name",
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
               "type": {
                 "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+              }
             },
             {
               "name": "placeholder",
               "fieldName": "placeholder",
+              "default": "''",
+              "description": "The placeholder text for the textarea.",
               "type": {
                 "text": "string"
-              },
-              "description": "The placeholder text for the textarea."
+              }
             },
             {
               "name": "readonly",
               "fieldName": "readonly",
+              "default": "false",
+              "description": "The readonly state of the textarea.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The readonly state of the textarea."
+              }
             },
             {
               "name": "required",
               "fieldName": "required",
+              "default": "false",
+              "description": "A value is required for the form to be submittable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
+              }
             },
             {
               "name": "rows",
               "fieldName": "rows",
+              "description": "The number of visible text lines for the textarea.",
               "type": {
                 "text": "number"
-              },
-              "description": "The number of visible text lines for the textarea."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the input.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the input."
+              }
             },
             {
               "name": "value",
               "fieldName": "value",
+              "default": "''",
+              "description": "The value of the textarea.",
               "type": {
                 "text": "string"
-              },
-              "description": "The value of the textarea."
+              }
             }
           ],
           "tagName": "modus-wc-textarea",
@@ -3613,10 +3778,11 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the theme switcher element.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the theme switcher element."
+              }
             }
           ],
           "tagName": "modus-wc-theme-switcher",
@@ -3677,146 +3843,155 @@
             {
               "name": "auto-complete",
               "fieldName": "autoComplete",
+              "description": "Hint for form autofill feature.",
               "type": {
                 "text": "'on' | 'off'"
-              },
-              "description": "Hint for form autofill feature."
+              }
             },
             {
               "name": "bordered",
               "fieldName": "bordered",
+              "default": "true",
+              "description": "Indicates that the input should have a border.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Indicates that the input should have a border."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the input.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the input."
+              }
             },
             {
               "name": "datalist-id",
               "fieldName": "datalistId",
+              "description": "ID of a `<datalist>` element that contains pre-defined time options.\r\nThe value must be the ID of a `<datalist>` element in the same document.",
               "type": {
                 "text": "string"
-              },
-              "description": "ID of a `<datalist>` element that contains pre-defined time options.\r\nThe value must be the ID of a `<datalist>` element in the same document."
+              }
             },
             {
               "name": "datalist-options",
               "fieldName": "datalistOptions",
+              "default": "[]",
+              "description": "The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.",
               "type": {
                 "text": "string[]"
-              },
-              "description": "The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "default": "false",
+              "description": "Whether the form control is disabled.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the form control is disabled."
+              }
             },
             {
               "name": "input-id",
               "fieldName": "inputId",
+              "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              },
-              "description": "The ID of the input element."
+              }
             },
             {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).",
               "type": {
                 "text": "number"
-              },
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+              }
             },
             {
               "name": "label",
               "fieldName": "label",
+              "description": "The text to display within the label.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text to display within the label."
+              }
             },
             {
               "name": "max",
               "fieldName": "max",
+              "description": "Maximum value. Format: `HH:mm`, `HH:mm:ss`.",
               "type": {
                 "text": "string"
-              },
-              "description": "Maximum value. Format: `HH:mm`, `HH:mm:ss`."
+              }
             },
             {
               "name": "min",
               "fieldName": "min",
+              "description": "Minimum value. Format: `HH:mm`, `HH:mm:ss.`",
               "type": {
                 "text": "string"
-              },
-              "description": "Minimum value. Format: `HH:mm`, `HH:mm:ss.`"
+              }
             },
             {
               "name": "name",
               "fieldName": "name",
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
               "type": {
                 "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+              }
             },
             {
               "name": "read-only",
               "fieldName": "readOnly",
+              "default": "false",
+              "description": "Whether the value is editable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Whether the value is editable."
+              }
             },
             {
               "name": "required",
               "fieldName": "required",
+              "default": "false",
+              "description": "A value is required for the form to be submittable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
+              }
             },
             {
               "name": "show-seconds",
               "fieldName": "showSeconds",
+              "default": "false",
+              "description": "Displays the time input format as `HH:mm:ss` if `true`.\r\nInternally sets the `step` to 1 second.\r\nIf a `step` value is provided, it will override this attribute.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Displays the time input format as `HH:mm:ss` if `true`.\r\nInternally sets the `step` to 1 second.\r\nIf a `step` value is provided, it will override this attribute."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the input.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the input."
+              }
             },
             {
               "name": "step",
               "fieldName": "step",
+              "description": "Specifies the granularity that the `value` must adhere to.\r\nValue of step given in seconds. Default value is 60 seconds.\r\nOverrides the `seconds` attribute if both are provided.",
               "type": {
                 "text": "number"
-              },
-              "description": "Specifies the granularity that the `value` must adhere to.\r\nValue of step given in seconds. Default value is 60 seconds.\r\nOverrides the `seconds` attribute if both are provided."
+              }
             },
             {
               "name": "value",
               "fieldName": "value",
+              "default": "''",
+              "description": "The value of the time input.\r\nAlways in 24-hour format that includes leading zeros:\r\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\r\nto be selected based on user's locale (or by the user agent).\r\nIf time includes seconds the format is always `HH:mm:ss`.",
               "type": {
                 "text": "string"
-              },
-              "description": "The value of the time input.\r\nAlways in 24-hour format that includes leading zeros:\r\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\r\nto be selected based on user's locale (or by the user agent).\r\nIf time includes seconds the format is always `HH:mm:ss`."
+              }
             }
           ],
           "tagName": "modus-wc-time-input",
@@ -3894,82 +4069,89 @@
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
+              }
             },
             {
               "name": "disabled",
               "fieldName": "disabled",
+              "default": "false",
+              "description": "The disabled state of the toggle.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The disabled state of the toggle."
+              }
             },
             {
               "name": "indeterminate",
               "fieldName": "indeterminate",
+              "default": "false",
+              "description": "The indeterminate state of the toggle.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The indeterminate state of the toggle."
+              }
             },
             {
               "name": "input-id",
               "fieldName": "inputId",
+              "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              },
-              "description": "The ID of the input element."
+              }
             },
             {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
+              "description": "The tabindex of the input.",
               "type": {
                 "text": "number"
-              },
-              "description": "The tabindex of the input."
+              }
             },
             {
               "name": "label",
               "fieldName": "label",
+              "description": "The text to display within the label.",
               "type": {
                 "text": "string"
-              },
-              "description": "The text to display within the label."
+              }
             },
             {
               "name": "name",
               "fieldName": "name",
+              "default": "''",
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
               "type": {
                 "text": "string"
-              },
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+              }
             },
             {
               "name": "required",
               "fieldName": "required",
+              "default": "false",
+              "description": "A value is required for the form to be submittable.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "A value is required for the form to be submittable."
+              }
             },
             {
               "name": "size",
               "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the input.",
               "type": {
                 "text": "ModusSize"
-              },
-              "description": "The size of the input."
+              }
             },
             {
               "name": "value",
               "fieldName": "value",
+              "default": "false",
+              "description": "The value of the toggle.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "The value of the toggle."
+              }
             }
           ],
           "tagName": "modus-wc-toggle",
@@ -4053,42 +4235,45 @@
             {
               "name": "columns",
               "fieldName": "columns",
+              "description": "An array of column definitions.",
               "type": {
                 "text": "ITableColumn[]"
-              },
-              "description": "An array of column definitions."
+              }
             },
             {
               "name": "custom-class",
               "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
-              },
-              "description": "Custom CSS class to apply to the inner div."
+              }
             },
             {
               "name": "data",
               "fieldName": "data",
+              "description": "An array of data objects.",
               "type": {
                 "text": "Record<string, any>[]"
-              },
-              "description": "An array of data objects."
+              }
             },
             {
               "name": "density",
               "fieldName": "density",
+              "default": "'comfortable'",
+              "description": "The density of the table, used to save space or increase readability.",
               "type": {
                 "text": "Density"
-              },
-              "description": "The density of the table, used to save space or increase readability."
+              }
             },
             {
               "name": "zebra",
               "fieldName": "zebra",
+              "default": "false",
+              "description": "Zebra striped tables differentiate rows by styling them in an alternating fashion.",
               "type": {
                 "text": "boolean"
-              },
-              "description": "Zebra striped tables differentiate rows by styling them in an alternating fashion."
+              }
             }
           ],
           "tagName": "modus-wc-table",
