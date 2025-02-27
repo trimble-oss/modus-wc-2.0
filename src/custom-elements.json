@@ -2282,14 +2282,6 @@
               "description": "Name of the form control. Submitted with the form as part of a name/value pair."
             },
             {
-              "name": "placeholder",
-              "fieldName": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "description": "Placeholder text for the date input."
-            },
-            {
               "name": "read-only",
               "fieldName": "readOnly",
               "type": {
@@ -2319,7 +2311,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "The value of the control."
+              "description": "The value of the control (yyyy-mm-dd)."
             }
           ],
           "tagName": "modus-wc-date",

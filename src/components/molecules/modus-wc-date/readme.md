@@ -24,11 +24,10 @@ Adheres to WCAG 2.2 standards.
 | `max`           | `max`             | Maximum date value.                                                                                     | `string \| undefined`               | `undefined` |
 | `min`           | `min`             | Minimum date value.                                                                                     | `string \| undefined`               | `undefined` |
 | `name`          | `name`            | Name of the form control. Submitted with the form as part of a name/value pair.                         | `string \| undefined`               | `undefined` |
-| `placeholder`   | `placeholder`     | Placeholder text for the date input.                                                                    | `string \| undefined`               | `undefined` |
 | `readOnly`      | `read-only`       | Whether the value is editable.                                                                          | `boolean \| undefined`              | `false`     |
 | `required`      | `required`        | A value is required or must be checked for the form to be submittable.                                  | `boolean \| undefined`              | `false`     |
 | `size`          | `size`            | The size of the input.                                                                                  | `"lg" \| "md" \| "sm" \| undefined` | `'md'`      |
-| `value`         | `value`           | The value of the control.                                                                               | `string`                            | `''`        |
+| `value`         | `value`           | The value of the control (yyyy-mm-dd).                                                                  | `string`                            | `''`        |
 
 
 ## Events
