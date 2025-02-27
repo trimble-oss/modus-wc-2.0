@@ -632,6 +632,10 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * Specifies whether the modal should be displayed full-screen
+         */
+        "fullscreen"?: boolean;
+        /**
           * The ID of the inner dialog element
          */
         "modalId": string;
@@ -2755,6 +2759,10 @@ declare namespace LocalJSX {
           * Custom CSS class to apply
          */
         "customClass"?: string;
+        /**
+          * Specifies whether the modal should be displayed full-screen
+         */
+        "fullscreen"?: boolean;
         /**
           * The ID of the inner dialog element
          */

@@ -29,6 +29,9 @@ export class ModusWcModal {
   /** Custom CSS class to apply */
   @Prop() customClass?: string = '';
 
+  /** Specifies whether the modal should be displayed full-screen */
+  @Prop() fullscreen?: boolean = false;
+
   /** The ID of the inner dialog element */
   @Prop() modalId!: string;
 
@@ -75,12 +78,14 @@ export class ModusWcModal {
           id={this.modalId}
           {...this.inheritedAttributes}
         >
-          <div class="modus-wc-modal-box">
+          <div
+            class={`modus-wc-modal-box ${this.fullscreen ? 'modus-wc-modal-fullscreen' : ''}`}
+          >
             {this.showClose && (
               <button
                 aria-label="Close modal"
                 onClick={() => this.closeDialog()}
-                class="modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-modal-close-icon-btn"
+                class=" modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-modal-close-icon-btn"
               >
                 ✕
               </button>

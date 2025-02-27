@@ -6,6 +6,7 @@ import { generateRandomId } from '../../utils';
 interface ModalArgs {
   backdrop?: 'default' | 'static';
   'custom-class'?: string;
+  fullscreen?: boolean;
   'modal-id'?: string;
   position?: 'bottom' | 'center' | 'top';
   'show-close'?: boolean;
@@ -47,6 +48,7 @@ export const Default: Story = {
 <modus-wc-modal
   aria-label="Example modal"
   custom-class=${ifDefined(args['custom-class'])}
+  fullscreen=${ifDefined(args.fullscreen)}
   modal-id=${args['modal-id'] + uniqueModalId}
   backdrop=${ifDefined(args.backdrop)}
   position=${ifDefined(args.position)}
@@ -67,33 +69,27 @@ export const CustomWidthAndHeight: Story = {
     // prettier-ignore
     return html`
 <style>
-  .expanded-modal .modus-wc-modal-box {
-    max-width: 64rem;
-    max-height: 64rem;
-    width: 96%;
-    height: 96%;
-  }
-
-  .my-modal-content {
-    height: 41rem;
+  #modal2 .modus-wc-modal-box {
+    width: 80%;
+    max-width: none;
+    height: 60%;
+    max-height: none;
   }
 </style>
-<modus-wc-button onclick="my_modal_2.showModal()">
+<modus-wc-button onclick="modal2.showModal()">
   Open modal
 </modus-wc-button>
 <modus-wc-modal
   aria-label="Example modal"
   custom-class="expanded-modal"
-  modal-id="my_modal_2"
+  modal-id="modal2"
   backdrop=${ifDefined(args.backdrop)}
   position=${ifDefined(args.position)}
   show-close=${ifDefined(args['show-close'])}
 >
   <span slot="header">Modal Title</span>
-  <div class="my-modal-content" slot="content">
-    <p>Sample expanded modal content.</p>
-  </div>
-  <modus-wc-button slot="footer" onclick="my_modal_2.close()">
+  <p slot="content">Sample expanded modal content.</p>
+  <modus-wc-button slot="footer" onclick="modal2.close()">
     Close
   </modus-wc-button>
 </modus-wc-modal>

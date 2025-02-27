@@ -1,5 +1,8 @@
 .modus-wc-modal {
   .modus-wc-modal-box {
+    display: flex;
+    flex-direction: column;
+
     .modus-wc-btn {
       &.modus-wc-modal-close-icon-btn {
         position: absolute;
@@ -10,6 +13,18 @@
           background-color: transparent;
         }
       }
+    }
+
+    &.modus-wc-modal-fullscreen {
+      width: calc(100dvw);
+      max-width: none;
+
+      height: calc(100dvh);
+      max-height: none;
+    }
+
+    .modus-wc-modal-action {
+      margin-top: auto;
     }
   }
 }

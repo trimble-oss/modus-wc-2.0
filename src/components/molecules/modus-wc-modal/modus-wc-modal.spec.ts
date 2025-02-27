@@ -24,11 +24,12 @@ describe('modus-wc-modal', () => {
     const page = await newSpecPage({
       components: [ModusWcModal],
       html: `<modus-wc-modal
+            backdrop="static"
             custom-class="test-class"
+            fullscreen="true"
             modal-id="test2"
-            outside-click-close="false"
             position="top"
-            show-corner-close-button="false"
+            show-close="false"
             ></modus-wc-modal>`,
     });
     expect(page.root).toMatchSnapshot();
