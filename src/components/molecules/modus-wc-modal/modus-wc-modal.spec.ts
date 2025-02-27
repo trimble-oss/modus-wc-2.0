@@ -30,6 +30,7 @@ describe('modus-wc-modal', () => {
             modal-id="test2"
             position="top"
             show-close="false"
+            show-fullscreen-toggle="true"
             ></modus-wc-modal>`,
     });
     expect(page.root).toMatchSnapshot();
@@ -57,6 +58,36 @@ describe('modus-wc-modal', () => {
       '.modus-wc-modal-close-icon-btn'
     );
     expect(closeButton).toBeNull();
+  });
+
+  it('should render expand icon when show-fullscreen-toggle is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcModal],
+      html: '<modus-wc-modal modal-id="test5" show-fullscreen-toggle="true"></modus-wc-modal>',
+    });
+    expect(page.root).toMatchSnapshot();
+    const expandIcon = page.root!.querySelector(
+      '.modus-wc-modal-expand-icon-btn'
+    );
+    expect(expandIcon).toBeTruthy();
+  });
+
+  it('should render collapse icon when show-fullscreen-toggle is true and fullscreen is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcModal],
+      html: '<modus-wc-modal modal-id="test5" show-fullscreen-toggle="true"></modus-wc-modal>',
+    });
+    expect(page.root).toMatchSnapshot();
+    const expandIcon = page.root!.querySelector(
+      '.modus-wc-modal-expand-icon-btn'
+    );
+    expect(expandIcon).toBeTruthy();
+    (expandIcon as HTMLButtonElement)?.click();
+    await page.waitForChanges();
+    const collapseIcon = page.root!.querySelector(
+      '.modus-wc-modal-expand-icon-btn'
+    );
+    expect(collapseIcon).toBeTruthy();
   });
 
   it('should close dialog when close button is clicked', async () => {

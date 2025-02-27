@@ -10,6 +10,7 @@ interface ModalArgs {
   'modal-id'?: string;
   position?: 'bottom' | 'center' | 'top';
   'show-close'?: boolean;
+  'show-fullscreen-toggle'?: boolean;
 }
 
 const meta: Meta<ModalArgs> = {
@@ -53,6 +54,7 @@ export const Default: Story = {
   backdrop=${ifDefined(args.backdrop)}
   position=${ifDefined(args.position)}
   show-close=${ifDefined(args['show-close'])}
+  show-fullscreen-toggle=${ifDefined(args['show-fullscreen-toggle'])}
 >
   <span slot="header">Modal Title</span>
   <span slot="content"> This is sample modal content. </span>
@@ -88,7 +90,7 @@ export const CustomWidthAndHeight: Story = {
   show-close=${ifDefined(args['show-close'])}
 >
   <span slot="header">Modal Title</span>
-  <p slot="content">Sample expanded modal content.</p>
+  <p slot="content">Sample modal content.</p>
   <modus-wc-button slot="footer" onclick="modal2.close()">
     Close
   </modus-wc-button>

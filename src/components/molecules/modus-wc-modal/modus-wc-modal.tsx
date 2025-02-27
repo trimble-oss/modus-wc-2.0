@@ -1,4 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
+import { CollapseIcon, ExpandIcon } from './modus-wc-modal.icons';
 import { convertPropsToClasses } from './modus-wc-modal.tailwind';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
@@ -41,6 +42,9 @@ export class ModusWcModal {
   /** Specifies whether to show the close icon button at the top right of modal */
   @Prop() showClose?: boolean = true;
 
+  /** Specifies whether to show the fullscreen toggle icon button */
+  @Prop() showFullscreenToggle?: boolean = false;
+
   componentWillLoad() {
     if (!this.modalId) {
       console.error(
@@ -81,15 +85,25 @@ export class ModusWcModal {
           <div
             class={`modus-wc-modal-box ${this.fullscreen ? 'modus-wc-modal-fullscreen' : ''}`}
           >
-            {this.showClose && (
-              <button
-                aria-label="Close modal"
-                onClick={() => this.closeDialog()}
-                class=" modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-modal-close-icon-btn"
-              >
-                ✕
-              </button>
-            )}
+            <div class="modus-wc-modal-top-icon-buttons">
+              {this.showFullscreenToggle && (
+                <button
+                  onClick={() => (this.fullscreen = !this.fullscreen)}
+                  class="modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-modal-expand-icon-btn"
+                >
+                  {this.fullscreen ? <CollapseIcon /> : <ExpandIcon />}
+                </button>
+              )}
+              {this.showClose && (
+                <button
+                  aria-label="Close modal"
+                  onClick={() => this.closeDialog()}
+                  class=" modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-modal-close-icon-btn"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
             <div class="modus-wc-modal-header modus-wc-text-lg modus-wc-font-bold">
               <slot name="header" />
             </div>

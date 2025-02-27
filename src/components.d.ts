@@ -647,6 +647,10 @@ export namespace Components {
           * Specifies whether to show the close icon button at the top right of modal
          */
         "showClose"?: boolean;
+        /**
+          * Specifies whether to show the fullscreen toggle icon button
+         */
+        "showFullscreenToggle"?: boolean;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -2775,6 +2779,10 @@ declare namespace LocalJSX {
           * Specifies whether to show the close icon button at the top right of modal
          */
         "showClose"?: boolean;
+        /**
+          * Specifies whether to show the fullscreen toggle icon button
+         */
+        "showFullscreenToggle"?: boolean;
     }
     /**
      * A customizable input component used to create number inputs with types.

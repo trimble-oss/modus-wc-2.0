@@ -2365,6 +2365,38 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-modal/modus-wc-modal.icons.tsx",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "CollapseIcon"
+        },
+        {
+          "kind": "function",
+          "name": "ExpandIcon"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ExpandIcon",
+          "declaration": {
+            "name": "ExpandIcon",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.icons.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CollapseIcon",
+          "declaration": {
+            "name": "CollapseIcon",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.icons.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-modal/modus-wc-modal.tsx",
       "declarations": [
         {
@@ -2433,6 +2465,14 @@
                 "text": "boolean"
               },
               "description": "Specifies whether to show the close icon button at the top right of modal"
+            },
+            {
+              "name": "show-fullscreen-toggle",
+              "fieldName": "showFullscreenToggle",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Specifies whether to show the fullscreen toggle icon button"
             }
           ],
           "tagName": "modus-wc-modal",
