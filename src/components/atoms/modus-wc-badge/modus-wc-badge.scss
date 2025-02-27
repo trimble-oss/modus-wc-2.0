@@ -63,10 +63,10 @@
 [data-theme='modus-classic-light'] .modus-wc-badge,
 [data-theme='modus-classic-dark'] .modus-wc-badge {
   border: unset;
-  font-weight: 700;
+  font-weight: var(--modus-wc-font-weight-bold);
 
   &:not(.modus-wc-badge-counter) {
-    border-radius: 4px;
+    border-radius: var(--modus-wc-border-radius-md);
   }
 
   &.modus-wc-badge-success:not(.modus-wc-badge-text) {
