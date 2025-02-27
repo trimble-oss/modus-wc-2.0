@@ -7,8 +7,8 @@
       display: flex;
 
       position: absolute;
-      right: 0.5rem;
-      top: 0.5rem;
+      right: var(--modus-wc-spacing-sm);
+      top: var(--modus-wc-spacing-sm);
 
       .modus-wc-btn {
         &:hover {
