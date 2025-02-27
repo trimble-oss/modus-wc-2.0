@@ -3331,6 +3331,14 @@
               "fieldName": "autoComplete",
               "description": "Hint for form autofill feature.",
               "type": {
+                "text": "AutocompleteTypes"
+              }
+            },
+            {
+              "name": "auto-correct",
+              "fieldName": "autoCorrect",
+              "description": "Controls automatic correction in inputted text. Support by browser varies.",
+              "type": {
                 "text": "'on' | 'off'"
               }
             },
@@ -3362,6 +3370,14 @@
               }
             },
             {
+              "name": "enterkeyhint",
+              "fieldName": "enterkeyhint",
+              "description": "A hint to the browser for which enter key to display.",
+              "type": {
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
+              }
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
               "description": "The ID of the input element.",
@@ -3376,15 +3392,6 @@
               "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard.",
               "type": {
                 "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
-              }
-            },
-            {
-              "name": "input-spellcheck",
-              "fieldName": "inputSpellcheck",
-              "default": "false",
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee.",
-              "type": {
-                "text": "boolean"
               }
             },
             {
@@ -3477,7 +3484,7 @@
               "default": "'text'",
               "description": "Type of form control.",
               "type": {
-                "text": "'email' | 'password' | 'search' | 'tel' | 'text' | 'url'"
+                "text": "TextFieldTypes"
               }
             },
             {
