@@ -42,7 +42,6 @@ describe('modus-wc-date', () => {
         max="11/25/2024"
         min="11/20/2024"
         name="test-name"
-        placeholder="Test placeholder"
         readonly="true"
         required="true"
         size="lg"
