@@ -11,11 +11,11 @@
     margin-inline-end: var(--modus-wc-spacing-sm);
   }
 
- // &.modus-wc-collapse-arrow.modus-wc-collapse-open {
+  &.modus-wc-collapse-arrow.modus-wc-collapse-open {
     .modus-wc-collapse-content {
       padding: var(--modus-wc-spacing-lg);
     }
- // }
+  }
 }
 
 .modus-wc-collapse-arrow > .modus-wc-collapse-title::after {
