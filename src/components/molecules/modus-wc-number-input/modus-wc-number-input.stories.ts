@@ -103,7 +103,7 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
-export const CurrencySymbol: Story = {
+export const Currency: Story = {
   ...Template,
   args: { 'currency-symbol': '$' },
 };

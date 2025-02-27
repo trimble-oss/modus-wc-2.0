@@ -107,7 +107,7 @@ export class ModusWcNumberInput {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  private getClassList(styleList): string {
+  private getSharedClasses(styleList): string {
     const classList = [...styleList];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
@@ -116,22 +116,21 @@ export class ModusWcNumberInput {
 
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
-    if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
   }
 
-  private getClassesToInput(): string {
+  private getInputClasses(): string {
     const classList = ['modus-wc-input', 'modus-wc-w-full'];
 
     if (this.currencySymbol) {
       classList.push('modus-wc-join-item');
     }
 
-    return this.getClassList(classList);
+    return this.getSharedClasses(classList);
   }
 
-  private getClassesToCurrency(): string {
+  private getCurrencyClasses(): string {
     const classList = [
       'modus-wc-input-currency',
       'modus-wc-join-item',
@@ -139,11 +138,11 @@ export class ModusWcNumberInput {
       'modus-wc-items-center',
     ];
 
-    return this.getClassList(classList);
+    return this.getSharedClasses(classList);
   }
 
-  private getClassesToContainer(): string {
-    const classList = ['input-container'];
+  private getWrapperClasses(): string {
+    const classList = ['modus-wc-input-container'];
 
     if (this.currencySymbol) {
       classList.push('modus-wc-join');
@@ -167,7 +166,7 @@ export class ModusWcNumberInput {
 
   render() {
     return (
-      <Host>
+      <Host class={this.customClass}>
         {this.label && (
           <modus-wc-input-label
             forId={this.inputId}
@@ -176,15 +175,15 @@ export class ModusWcNumberInput {
             size={this.size}
           />
         )}
-        <div class={this.getClassesToContainer()}>
+        <div class={this.getWrapperClasses()}>
           {this.currencySymbol && (
-            <div class={this.getClassesToCurrency()}>{this.currencySymbol}</div>
+            <div class={this.getCurrencyClasses()}>{this.currencySymbol}</div>
           )}
           <input
             aria-placeholder={this.placeholder}
             aria-required={this.required}
             autocomplete={this.autoComplete}
-            class={this.getClassesToInput()}
+            class={this.getInputClasses()}
             disabled={this.disabled}
             id={this.inputId}
             inputmode={this.inputMode}

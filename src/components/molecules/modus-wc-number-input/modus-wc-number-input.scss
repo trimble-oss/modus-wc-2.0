@@ -4,14 +4,22 @@
 */
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
-[data-theme='modus-classic-light'] .input-container,
-[data-theme='modus-classic-dark'] .input-container {
+[data-theme='modus-classic-light'] .modus-wc-input-container,
+[data-theme='modus-classic-dark'] .modus-wc-input-container {
   .modus-wc-input-currency {
     background-color: var(--modus-wc-color-base-100);
     border: var(--modus-wc-border-width-xs) solid transparent;
 
     &.modus-wc-input-sm {
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
+    }
+
+    &.modus-wc-input-md {
+      padding: var(--modus-wc-spacing-lg);
+    }
+
+    &.modus-wc-input-lg {
+      padding: var(--modus-wc-spacing-xl);
     }
   }
 
@@ -23,6 +31,16 @@
     &.modus-wc-input-sm {
       padding: var(--modus-wc-spacing-md) 0 var(--modus-wc-spacing-md)
         var(--modus-wc-spacing-sm);
+    }
+
+    &.modus-wc-input-md {
+      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-lg)
+        var(--modus-wc-spacing-lg) var(--modus-wc-spacing-md);
+    }
+
+    &.modus-wc-input-lg {
+      padding: var(--modus-wc-spacing-xl) var(--modus-wc-spacing-xl)
+        var(--modus-wc-spacing-xl) var(--modus-wc-spacing-lg);
     }
 
     &:focus {
@@ -52,15 +70,11 @@
     &.modus-wc-input-md {
       font-size: var(--modus-wc-font-size-md);
       height: var(--modus-wc-input-height-md);
-      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-lg)
-        var(--modus-wc-spacing-lg) var(--modus-wc-spacing-md);
     }
 
     &.modus-wc-input-lg {
       font-size: var(--modus-wc-font-size-lg);
       height: var(--modus-wc-input-height-lg);
-      padding: var(--modus-wc-spacing-xl) var(--modus-wc-spacing-xl)
-        var(--modus-wc-spacing-xl) var(--modus-wc-spacing-lg);
     }
   }
 }
