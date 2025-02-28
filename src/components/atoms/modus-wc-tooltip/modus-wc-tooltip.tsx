@@ -46,6 +46,7 @@ export class ModusWcTooltip {
     const propClasses = convertPropsToClasses({
       forceOpen: this.forceOpen,
       position: this.position,
+      disabled: this.disabled,
     });
 
     // The order CSS classes are added matters to CSS specificity
@@ -56,15 +57,6 @@ export class ModusWcTooltip {
   }
 
   render() {
-    if (this.disabled) {
-      // Just render the slotted content, as to not pollute the DOM
-      return (
-        <Host>
-          <slot />
-        </Host>
-      );
-    }
-
     return (
       <Host>
         <div

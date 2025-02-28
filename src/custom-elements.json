@@ -1130,7 +1130,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -1163,6 +1163,15 @@
               "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "default": "false",
+              "description": "Pass this in order to not render the tooltip at all",
+              "type": {
+                "text": "boolean"
               }
             },
             {
@@ -2510,10 +2519,11 @@
             {
               "name": "currency-symbol",
               "fieldName": "currencySymbol",
+              "default": "''",
+              "description": "The currency symbol to display.",
               "type": {
                 "text": "string"
-              },
-              "description": "The currency symbol to display."
+              }
             },
             {
               "name": "custom-class",
@@ -3570,6 +3580,14 @@
           ],
           "attributes": [
             {
+              "name": "auto-correct",
+              "fieldName": "autoCorrect",
+              "description": "Controls automatic correction in inputted text. Support by browser varies.",
+              "type": {
+                "text": "'on' | 'off'"
+              }
+            },
+            {
               "name": "bordered",
               "fieldName": "bordered",
               "default": "true",
@@ -3597,19 +3615,19 @@
               }
             },
             {
+              "name": "enterkeyhint",
+              "fieldName": "enterkeyhint",
+              "description": "A hint to the browser for which enter key to display.",
+              "type": {
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
+              }
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
               "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              }
-            },
-            {
-              "name": "input-spellcheck",
-              "fieldName": "inputSpellcheck",
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee.",
-              "type": {
-                "text": "boolean"
               }
             },
             {

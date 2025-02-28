@@ -1055,6 +1055,10 @@ export namespace Components {
      */
     interface ModusWcTextarea {
         /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
+        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -1067,13 +1071,19 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * The tabindex of the input.
          */
@@ -1281,6 +1291,10 @@ export namespace Components {
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
+        /**
+          * Pass this in order to not render the tooltip at all
+         */
+        "disabled"?: boolean;
         /**
           * Use this attribute to force the tooltip to remain open.
          */
@@ -3204,6 +3218,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcTextarea {
         /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
+        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -3216,13 +3234,19 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * The tabindex of the input.
          */
@@ -3470,6 +3494,10 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
+        /**
+          * Pass this in order to not render the tooltip at all
+         */
+        "disabled"?: boolean;
         /**
           * Use this attribute to force the tooltip to remain open.
          */

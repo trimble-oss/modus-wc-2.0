@@ -5,6 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 interface TooltipArgs {
   content?: string;
   'custom-class'?: string;
+  disabled?: boolean;
   'force-open'?: boolean;
   'tooltip-id'?: string;
   position: 'auto' | 'top' | 'right' | 'bottom' | 'left';
@@ -36,7 +37,8 @@ const Template: Story = {
       <modus-wc-tooltip
         content=${ifDefined(args.content)}
         custom-class="${ifDefined(args['custom-class'])}"
-        ?force-open="${ifDefined(args['force-open'])}"
+        disabled="${ifDefined(args.disabled)}"
+        ?force-open="${args['force-open']}"
         tooltip-id="${ifDefined(args['tooltip-id'])}"
         position=${ifDefined(args.position)}
       >
