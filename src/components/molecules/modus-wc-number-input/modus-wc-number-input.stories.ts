@@ -7,6 +7,7 @@ import { ModusSize } from '../../types';
 interface NumberInputArgs {
   'auto-complete'?: 'on' | 'off';
   bordered?: boolean;
+  'currency-symbol'?: string;
   'custom-class'?: string;
   disabled?: boolean;
   'input-aria-invalid'?: 'true' | 'false';
@@ -72,12 +73,13 @@ export default meta;
 
 type Story = StoryObj<NumberInputArgs>;
 
-export const Default: Story = {
+const Template: Story = {
   render: (args) => html`
     <modus-wc-number-input
       aria-label="Number input"
       auto-complete=${ifDefined(args['auto-complete'])}
       ?bordered=${args.bordered}
+      currency-symbol=${ifDefined(args['currency-symbol'])}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
@@ -97,4 +99,11 @@ export const Default: Story = {
       .value=${args.value}
     ></modus-wc-number-input>
   `,
+};
+
+export const Default: Story = { ...Template };
+
+export const Currency: Story = {
+  ...Template,
+  args: { 'currency-symbol': '$' },
 };
