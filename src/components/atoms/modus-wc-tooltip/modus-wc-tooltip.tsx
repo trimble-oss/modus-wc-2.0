@@ -24,6 +24,9 @@ export class ModusWcTooltip {
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
+  /** Pass this in order to not render the tooltip at all */
+  @Prop() disabled?: boolean = false;
+
   /** Use this attribute to force the tooltip to remain open. */
   @Prop() forceOpen?: boolean;
 
@@ -53,6 +56,15 @@ export class ModusWcTooltip {
   }
 
   render() {
+    if (this.disabled) {
+      // Just render the slotted content, as to not pollute the DOM
+      return (
+        <Host>
+          <slot />
+        </Host>
+      );
+    }
+
     return (
       <Host>
         <div

@@ -17,4 +17,14 @@ describe('modus-wc-tooltip', () => {
     });
     expect(page.root).toMatchSnapshot();
   });
+
+  it('should only render the slot when disabled', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<modus-wc-tooltip disabled><div>Test</div></modus-wc-tooltip>',
+    });
+    expect(page.root?.outerHTML).toEqual(
+      '<modus-wc-tooltip disabled=""><!---->  <div>Test</div></modus-wc-tooltip>'
+    );
+  });
 });
