@@ -755,6 +755,10 @@ export namespace Components {
           * The value of the progress component.
          */
         "value": number;
+        /**
+          * The variant of the progress component.
+         */
+        "variant"?: 'default' | 'radial';
     }
     /**
      * A customizable radio component.
@@ -2899,6 +2903,10 @@ declare namespace LocalJSX {
           * The value of the progress component.
          */
         "value"?: number;
+        /**
+          * The variant of the progress component.
+         */
+        "variant"?: 'default' | 'radial';
     }
     /**
      * A customizable radio component.

@@ -7,6 +7,7 @@ interface ProgressArgs {
   indeterminate: boolean;
   max?: number;
   value: number;
+  variant?: 'default' | 'radial';
 }
 
 const meta: Meta<ProgressArgs> = {
@@ -16,6 +17,13 @@ const meta: Meta<ProgressArgs> = {
     indeterminate: false,
     max: 100,
     value: 70,
+    variant: 'default',
+  },
+  argTypes: {
+    variant: {
+      control: { type: 'select' },
+      options: ['default', 'radial'],
+    },
   },
   parameters: {
     layout: 'padded',
@@ -35,6 +43,7 @@ export const Default: Story = {
         ?indeterminate=${args.indeterminate}
         max=${ifDefined(args.max)}
         value=${args.value}
+        variant=${ifDefined(args.variant)}
       ></modus-wc-progress>
     `;
   },

@@ -30,6 +30,9 @@ export class ModusWcProgress {
   /** The value of the progress component. */
   @Prop({ mutable: true, reflect: true }) value: number = 0;
 
+  /** The variant of the progress component. */
+  @Prop() variant?: 'default' | 'radial' = 'default';
+
   componentWillLoad() {
     if (!this.el.ariaLabel) {
       console.warn(
@@ -41,8 +44,21 @@ export class ModusWcProgress {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  private getClasses(): string {
-    const classList: string[] = ['modus-wc-progress modus-wc-w-full'];
+  private getClasses(variant: 'default' | 'radial'): string {
+    const classList: string[] = [];
+
+    switch (variant) {
+      case 'default':
+        classList.push('modus-wc-progress', 'modus-wc-w-full');
+        break;
+
+      case 'radial':
+        classList.push('modus-wc-radial-progress');
+        if (this.indeterminate) {
+          classList.push('modus-wc-radial-progress--indeterminate');
+        }
+        break;
+    }
 
     // const propClasses = convertPropsToClasses();
 
@@ -66,11 +82,25 @@ export class ModusWcProgress {
 
     return (
       <Host>
-        <progress
-          class={this.getClasses()}
-          {...valueAttributes}
-          {...this.inheritedAttributes}
-        />
+        {this.variant === 'default' ? (
+          <progress
+            class={this.getClasses('default')}
+            {...valueAttributes}
+            {...this.inheritedAttributes}
+          />
+        ) : (
+          <div
+            aria-valuenow={this.value}
+            aria-valuemin={0}
+            aria-valuemax={this.max}
+            class={this.getClasses('radial')}
+            style={{ '--value': `${this.value}` }}
+            role="progressbar"
+            {...this.inheritedAttributes}
+          >
+            <slot />
+          </div>
+        )}
       </Host>
     );
   }

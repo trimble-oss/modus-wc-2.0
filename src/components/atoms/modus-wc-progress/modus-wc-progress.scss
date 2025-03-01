@@ -56,3 +56,24 @@
     --progress-color: var(--modus-wc-color-highlight-blue);
   }
 }
+
+.modus-wc-radial-progress {
+  color: var(--modus-wc-color-trimble-blue);
+
+  &.modus-wc-radial-progress--indeterminate {
+    --value: 30 !important;
+    animation: radial-spin 5s ease-in-out infinite;
+  }
+}
+
+@keyframes radial-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
