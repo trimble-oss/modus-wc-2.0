@@ -1130,7 +1130,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -1169,7 +1169,7 @@
               "name": "disabled",
               "fieldName": "disabled",
               "default": "false",
-              "description": "Pass this in order to not render the tooltip at all",
+              "description": "Disables displaying the tooltip on hover",
               "type": {
                 "text": "boolean"
               }

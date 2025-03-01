@@ -1327,7 +1327,7 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
-          * Pass this in order to not render the tooltip at all
+          * Disables displaying the tooltip on hover
          */
         "disabled"?: boolean;
         /**
@@ -3577,7 +3577,7 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * Pass this in order to not render the tooltip at all
+          * Disables displaying the tooltip on hover
          */
         "disabled"?: boolean;
         /**
