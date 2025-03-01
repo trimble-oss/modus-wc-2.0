@@ -37,7 +37,7 @@ const Template: Story = {
       <modus-wc-tooltip
         content=${ifDefined(args.content)}
         custom-class="${ifDefined(args['custom-class'])}"
-        disabled="${ifDefined(args.disabled)}"
+        ?disabled="${args.disabled}"
         ?force-open="${args['force-open']}"
         tooltip-id="${ifDefined(args['tooltip-id'])}"
         position=${ifDefined(args.position)}
