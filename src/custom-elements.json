@@ -1130,7 +1130,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -2472,6 +2472,148 @@
           "declaration": {
             "name": "ModusWcDate",
             "module": "src/components/molecules/modus-wc-date/modus-wc-date.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-modal/modus-wc-modal.icons.tsx",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "CollapseIcon"
+        },
+        {
+          "kind": "function",
+          "name": "ExpandIcon"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ExpandIcon",
+          "declaration": {
+            "name": "ExpandIcon",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.icons.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CollapseIcon",
+          "declaration": {
+            "name": "CollapseIcon",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.icons.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-modal/modus-wc-modal.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable modal component used to display content in a dialog.\r\n\r\nThe component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcModal",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "backdrop",
+              "fieldName": "backdrop",
+              "default": "'default'",
+              "description": "The modal's backdrop.\r\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.",
+              "type": {
+                "text": "'default' | 'static'"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "fullscreen",
+              "fieldName": "fullscreen",
+              "default": "false",
+              "description": "Specifies whether the modal should be displayed full-screen",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "modal-id",
+              "fieldName": "modalId",
+              "description": "The ID of the inner dialog element",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "position",
+              "fieldName": "position",
+              "default": "'center'",
+              "description": "Specifies the position of the modal",
+              "type": {
+                "text": "'bottom' | 'center' | 'top'"
+              }
+            },
+            {
+              "name": "show-close",
+              "fieldName": "showClose",
+              "default": "true",
+              "description": "Specifies whether to show the close icon button at the top right of modal",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "show-fullscreen-toggle",
+              "fieldName": "showFullscreenToggle",
+              "default": "false",
+              "description": "Specifies whether to show the fullscreen toggle icon button",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "tagName": "modus-wc-modal",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcModal",
+          "declaration": {
+            "name": "ModusWcModal",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-modal",
+          "declaration": {
+            "name": "ModusWcModal",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.tsx"
           }
         }
       ]
