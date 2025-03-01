@@ -44,9 +44,9 @@ export class ModusWcTooltip {
     const classList: string[] = ['modus-wc-tooltip'];
 
     const propClasses = convertPropsToClasses({
+      disabled: this.disabled,
       forceOpen: this.forceOpen,
       position: this.position,
-      disabled: this.disabled,
     });
 
     // The order CSS classes are added matters to CSS specificity

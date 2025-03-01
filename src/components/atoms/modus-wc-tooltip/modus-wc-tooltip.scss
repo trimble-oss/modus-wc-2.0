@@ -13,7 +13,6 @@
   --tooltip-text-color: var(--modus-wc-color-trimble-gray);
 }
 
-/* Disable tooltip functionality when the disabled class is present */
 .modus-wc-tooltip-disabled {
   &:before,
   &:after {
