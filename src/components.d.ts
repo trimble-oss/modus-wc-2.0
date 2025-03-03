@@ -618,6 +618,41 @@ export namespace Components {
         "value": string;
     }
     /**
+     * A customizable modal component used to display content in a dialog.
+     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcModal {
+        /**
+          * The modal's backdrop. Specify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.
+         */
+        "backdrop"?: 'default' | 'static';
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
+        /**
+          * Specifies whether the modal should be displayed full-screen
+         */
+        "fullscreen"?: boolean;
+        /**
+          * The ID of the inner dialog element
+         */
+        "modalId": string;
+        /**
+          * Specifies the position of the modal
+         */
+        "position"?: 'bottom' | 'center' | 'top';
+        /**
+          * Specifies whether to show the close icon button at the top right of modal
+         */
+        "showClose"?: boolean;
+        /**
+          * Specifies whether to show the fullscreen toggle icon button
+         */
+        "showFullscreenToggle"?: boolean;
+    }
+    /**
      * A customizable input component used to create number inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1055,6 +1090,10 @@ export namespace Components {
      */
     interface ModusWcTextarea {
         /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
+        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -1067,13 +1106,19 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * The tabindex of the input.
          */
@@ -1682,6 +1727,17 @@ declare global {
         prototype: HTMLModusWcMenuItemElement;
         new (): HTMLModusWcMenuItemElement;
     };
+    /**
+     * A customizable modal component used to display content in a dialog.
+     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcModalElement extends Components.ModusWcModal, HTMLStencilElement {
+    }
+    var HTMLModusWcModalElement: {
+        prototype: HTMLModusWcModalElement;
+        new (): HTMLModusWcModalElement;
+    };
     interface HTMLModusWcNumberInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
@@ -2012,6 +2068,7 @@ declare global {
         "modus-wc-loader": HTMLModusWcLoaderElement;
         "modus-wc-menu": HTMLModusWcMenuElement;
         "modus-wc-menu-item": HTMLModusWcMenuItemElement;
+        "modus-wc-modal": HTMLModusWcModalElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
@@ -2693,6 +2750,41 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
+     * A customizable modal component used to display content in a dialog.
+     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcModal {
+        /**
+          * The modal's backdrop. Specify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.
+         */
+        "backdrop"?: 'default' | 'static';
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
+        /**
+          * Specifies whether the modal should be displayed full-screen
+         */
+        "fullscreen"?: boolean;
+        /**
+          * The ID of the inner dialog element
+         */
+        "modalId": string;
+        /**
+          * Specifies the position of the modal
+         */
+        "position"?: 'bottom' | 'center' | 'top';
+        /**
+          * Specifies whether to show the close icon button at the top right of modal
+         */
+        "showClose"?: boolean;
+        /**
+          * Specifies whether to show the fullscreen toggle icon button
+         */
+        "showFullscreenToggle"?: boolean;
+    }
+    /**
      * A customizable input component used to create number inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -3204,6 +3296,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcTextarea {
         /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
+        /**
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
@@ -3216,13 +3312,19 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * The tabindex of the input.
          */
@@ -3524,6 +3626,7 @@ declare namespace LocalJSX {
         "modus-wc-loader": ModusWcLoader;
         "modus-wc-menu": ModusWcMenu;
         "modus-wc-menu-item": ModusWcMenuItem;
+        "modus-wc-modal": ModusWcModal;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
@@ -3645,6 +3748,12 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-menu-item": LocalJSX.ModusWcMenuItem & JSXBase.HTMLAttributes<HTMLModusWcMenuItemElement>;
+            /**
+             * A customizable modal component used to display content in a dialog.
+             * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
             /**
              * A customizable input component used to create number inputs with types.
              * Adheres to WCAG 2.2 standards.
