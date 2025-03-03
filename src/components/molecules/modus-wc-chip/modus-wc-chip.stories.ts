@@ -115,7 +115,6 @@ export const Composable: Story = {
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
-  show-remove=${ifDefined(args['show-remove'])}
   size=${args.size}
   variant=${args.variant}
 >
@@ -128,7 +127,7 @@ export const Composable: Story = {
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
-  show-remove=${ifDefined(args['show-remove'])}
+  show-remove="true"
   size=${args.size}
   variant=${args.variant}
 >
@@ -141,7 +140,6 @@ export const Composable: Story = {
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
-  show-remove=${ifDefined(args['show-remove'])}
   size=${args.size}
   variant=${args.variant}
 >
