@@ -1331,6 +1331,10 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * Disables displaying the tooltip on hover
+         */
+        "disabled"?: boolean;
+        /**
           * Use this attribute to force the tooltip to remain open.
          */
         "forceOpen"?: boolean;
@@ -3580,6 +3584,10 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
+        /**
+          * Disables displaying the tooltip on hover
+         */
+        "disabled"?: boolean;
         /**
           * Use this attribute to force the tooltip to remain open.
          */

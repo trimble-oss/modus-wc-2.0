@@ -1174,6 +1174,15 @@
               }
             },
             {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "default": "false",
+              "description": "Disables displaying the tooltip on hover",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "force-open",
               "fieldName": "forceOpen",
               "description": "Use this attribute to force the tooltip to remain open.",
