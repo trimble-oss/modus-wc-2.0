@@ -24,6 +24,9 @@ export class ModusWcTooltip {
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
+  /** Disables displaying the tooltip on hover */
+  @Prop() disabled?: boolean = false;
+
   /** Use this attribute to force the tooltip to remain open. */
   @Prop() forceOpen?: boolean;
 
@@ -41,6 +44,7 @@ export class ModusWcTooltip {
     const classList: string[] = ['modus-wc-tooltip'];
 
     const propClasses = convertPropsToClasses({
+      disabled: this.disabled,
       forceOpen: this.forceOpen,
       position: this.position,
     });
