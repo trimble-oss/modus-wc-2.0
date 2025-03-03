@@ -536,6 +536,10 @@ export namespace Components {
           * The size of the label.
          */
         "size"?: ModusSize;
+        /**
+          * The text rendered beneath the label.
+         */
+        "subLabelText"?: string;
     }
     /**
      * A customizable loader component used to indicate the loading of content.
@@ -2597,6 +2601,10 @@ declare namespace LocalJSX {
           * The size of the label.
          */
         "size"?: ModusSize;
+        /**
+          * The text rendered beneath the label.
+         */
+        "subLabelText"?: string;
     }
     /**
      * A customizable loader component used to indicate the loading of content.

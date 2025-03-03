@@ -9,6 +9,7 @@ interface InputLabelArgs {
   'label-text'?: string;
   required?: boolean;
   size?: ModusSize;
+  'sub-label-text'?: string;
 }
 
 const meta: Meta<InputLabelArgs> = {
@@ -38,6 +39,7 @@ const Template: Story = {
       label-text=${ifDefined(args['label-text'])}
       ?required=${args['required']}
       size=${args.size}
+      sub-label-text=${ifDefined(args['sub-label-text'])}
     ></modus-wc-input-label>
   `,
 };
