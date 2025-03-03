@@ -61,19 +61,33 @@
   color: var(--modus-wc-color-trimble-blue);
 
   &.modus-wc-radial-progress--indeterminate {
-    --value: 30 !important;
-    animation: radial-spin 5s ease-in-out infinite;
+    --value: var(--_value) !important;
+    animation-name: grow;
+    animation-iteration-count: infinite;
+    animation-duration: 5s;
+    animation-timing-function: ease-in-out;
   }
 }
 
-@keyframes radial-spin {
+[data-theme='modus-classic-dark'] .modus-wc-radial-progress,
+[data-theme='modus-modern-dark'] .modus-wc-radial-progress {
+  color: var(--modus-wc-color-highlight-blue);
+}
+
+@property --_value {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes grow {
   0% {
-    transform: rotate(0deg);
+    --_value: 0;
   }
   50% {
-    transform: rotate(360deg);
+    --_value: 100;
   }
   100% {
-    transform: rotate(0deg);
+    --_value: 0;
   }
 }
