@@ -2,7 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { ModusSize } from '../../types';
+import { AutocompleteTypes, ModusSize } from '../../types';
 
 interface TextInputArgs {
   'auto-capitalize'?:
@@ -12,11 +12,19 @@ interface TextInputArgs {
     | 'sentences'
     | 'words'
     | 'characters';
-  'auto-complete'?: 'on' | 'off';
+  'auto-complete'?: AutocompleteTypes;
+  'auto-correct'?: 'on' | 'off';
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
-  'input-aria-invalid'?: 'grammar' | 'spelling' | 'true' | 'false';
+  enterkeyhint?:
+    | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
   'input-id'?: string;
   'input-mode':
     | 'decimal'
@@ -27,7 +35,6 @@ interface TextInputArgs {
     | 'tel'
     | 'text'
     | 'url';
-  'input-spellcheck'?: boolean;
   'input-tab-index'?: number;
   label?: string;
   'max-length': number;
@@ -38,6 +45,7 @@ interface TextInputArgs {
   'read-only'?: boolean;
   required?: boolean;
   size?: ModusSize;
+  spellcheck?: boolean;
   type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
   value: string;
 }
@@ -49,27 +57,26 @@ const meta: Meta<TextInputArgs> = {
     bordered: true,
     disabled: false,
     'input-mode': 'text',
-    'input-spellcheck': false,
     label: 'Label',
     size: 'md',
+    spellcheck: false,
     type: 'text',
     value: '',
   },
   argTypes: {
     'auto-capitalize': {
-      control: { type: 'select' },
       options: ['off', 'none', 'on', 'sentences', 'words', 'characters'],
     },
     'auto-complete': {
-      control: { type: 'select' },
+      control: { type: 'text' },
+    },
+    'auto-correct': {
       options: ['on', 'off'],
     },
-    'input-aria-invalid': {
-      control: { type: 'select' },
-      options: ['grammar', 'spelling', 'true', 'false'],
+    enterkeyhint: {
+      options: ['enter', 'done', 'go', 'next', 'previous', 'search', 'send'],
     },
     'input-mode': {
-      control: { type: 'select' },
       options: [
         'decimal',
         'email',
@@ -82,11 +89,17 @@ const meta: Meta<TextInputArgs> = {
       ],
     },
     size: {
-      control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
+    spellcheck: {
+      description:
+        'Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.',
+      table: {
+        category: 'attributes',
+        defaultValue: { summary: 'false' },
+      },
+    },
     type: {
-      control: { type: 'select' },
       options: ['email', 'password', 'search', 'tel', 'text', 'url'],
     },
   },
@@ -108,13 +121,14 @@ export const Default: Story = {
       aria-label="Text input"
       auto-capitalize=${ifDefined(args['auto-capitalize'])}
       auto-complete=${ifDefined(args['auto-complete'])}
+      auto-correct=${ifDefined(args['auto-correct'])}
       ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
+      enterkeyhint=${ifDefined(args.enterkeyhint)}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-id=${ifDefined(args['input-id'])}
       input-mode=${args['input-mode']}
-      ?input-spellcheck=${args['input-spellcheck']}
       input-tab-index=${ifDefined(args['input-tab-index'])}
       label=${ifDefined(args.label)}
       max-length=${ifDefined(args['max-length'])}
@@ -125,6 +139,7 @@ export const Default: Story = {
       ?read-only=${args['read-only']}
       ?required=${args.required}
       size=${ifDefined(args.size)}
+      spellcheck=${ifDefined(args.spellcheck)}
       type=${ifDefined(args.type)}
       .value=${args.value}
     ></modus-wc-text-input>

@@ -1,0 +1,41 @@
+.modus-wc-modal {
+  .modus-wc-modal-box {
+    display: flex;
+    flex-direction: column;
+
+    .modus-wc-modal-top-icon-buttons {
+      display: flex;
+
+      position: absolute;
+      right: var(--modus-wc-spacing-sm);
+      top: var(--modus-wc-spacing-sm);
+
+      .modus-wc-btn {
+        &:hover {
+          background-color: transparent;
+        }
+      }
+    }
+
+    &.modus-wc-modal-fullscreen {
+      width: 100dvw;
+      max-width: none;
+
+      height: 100dvh;
+      max-height: none;
+    }
+
+    .modus-wc-modal-action {
+      margin-top: auto;
+    }
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-modal-box,
+[data-theme='modus-classic-light'] .modus-wc-modal-box {
+  --rounded-box: var(--modus-wc-border-radius-lg);
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-modal-box {
+  background-color: var(--modus-wc-color-gray-9);
+}

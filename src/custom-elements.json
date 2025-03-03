@@ -2282,14 +2282,6 @@
               "description": "Name of the form control. Submitted with the form as part of a name/value pair."
             },
             {
-              "name": "placeholder",
-              "fieldName": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "description": "Placeholder text for the date input."
-            },
-            {
               "name": "read-only",
               "fieldName": "readOnly",
               "type": {
@@ -2319,7 +2311,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "The value of the control."
+              "description": "The value of the control (yyyy-mm-dd)."
             }
           ],
           "tagName": "modus-wc-date",
@@ -2373,6 +2365,142 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-modal/modus-wc-modal.icons.tsx",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "CollapseIcon"
+        },
+        {
+          "kind": "function",
+          "name": "ExpandIcon"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ExpandIcon",
+          "declaration": {
+            "name": "ExpandIcon",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.icons.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CollapseIcon",
+          "declaration": {
+            "name": "CollapseIcon",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.icons.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/molecules/modus-wc-modal/modus-wc-modal.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable modal component used to display content in a dialog.\n\nThe component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.\n\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcModal",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "backdrop",
+              "fieldName": "backdrop",
+              "type": {
+                "text": "'default' | 'static'"
+              },
+              "description": "The modal's backdrop.\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply"
+            },
+            {
+              "name": "fullscreen",
+              "fieldName": "fullscreen",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Specifies whether the modal should be displayed full-screen"
+            },
+            {
+              "name": "modal-id",
+              "fieldName": "modalId",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the inner dialog element"
+            },
+            {
+              "name": "position",
+              "fieldName": "position",
+              "type": {
+                "text": "'bottom' | 'center' | 'top'"
+              },
+              "description": "Specifies the position of the modal"
+            },
+            {
+              "name": "show-close",
+              "fieldName": "showClose",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Specifies whether to show the close icon button at the top right of modal"
+            },
+            {
+              "name": "show-fullscreen-toggle",
+              "fieldName": "showFullscreenToggle",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Specifies whether to show the fullscreen toggle icon button"
+            }
+          ],
+          "tagName": "modus-wc-modal",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcModal",
+          "declaration": {
+            "name": "ModusWcModal",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-modal",
+          "declaration": {
+            "name": "ModusWcModal",
+            "module": "src/components/molecules/modus-wc-modal/modus-wc-modal.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/molecules/modus-wc-number-input/modus-wc-number-input.tsx",
       "declarations": [
         {
@@ -2409,6 +2537,14 @@
                 "text": "boolean"
               },
               "description": "Indicates that the input should have a border."
+            },
+            {
+              "name": "currency-symbol",
+              "fieldName": "currencySymbol",
+              "type": {
+                "text": "string"
+              },
+              "description": "The currency symbol to display."
             },
             {
               "name": "custom-class",
@@ -3192,9 +3328,17 @@
               "name": "auto-complete",
               "fieldName": "autoComplete",
               "type": {
-                "text": "'on' | 'off'"
+                "text": "AutocompleteTypes"
               },
               "description": "Hint for form autofill feature."
+            },
+            {
+              "name": "auto-correct",
+              "fieldName": "autoCorrect",
+              "type": {
+                "text": "'on' | 'off'"
+              },
+              "description": "Controls automatic correction in inputted text. Support by browser varies."
             },
             {
               "name": "bordered",
@@ -3221,6 +3365,14 @@
               "description": "Whether the form control is disabled."
             },
             {
+              "name": "enterkeyhint",
+              "fieldName": "enterkeyhint",
+              "type": {
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
+              },
+              "description": "A hint to the browser for which enter key to display."
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
               "type": {
@@ -3235,14 +3387,6 @@
                 "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
               },
               "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
-            },
-            {
-              "name": "input-spellcheck",
-              "fieldName": "inputSpellcheck",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
             },
             {
               "name": "input-tab-index",
@@ -3328,7 +3472,7 @@
               "name": "type",
               "fieldName": "type",
               "type": {
-                "text": "'email' | 'password' | 'search' | 'tel' | 'text' | 'url'"
+                "text": "TextFieldTypes"
               },
               "description": "Type of form control."
             },
@@ -3414,6 +3558,14 @@
           ],
           "attributes": [
             {
+              "name": "auto-correct",
+              "fieldName": "autoCorrect",
+              "type": {
+                "text": "'on' | 'off'"
+              },
+              "description": "Controls automatic correction in inputted text. Support by browser varies."
+            },
+            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
@@ -3438,20 +3590,20 @@
               "description": "The disabled state of the textarea."
             },
             {
+              "name": "enterkeyhint",
+              "fieldName": "enterkeyhint",
+              "type": {
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
+              },
+              "description": "A hint to the browser for which enter key to display."
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
               "type": {
                 "text": "string"
               },
               "description": "The ID of the input element."
-            },
-            {
-              "name": "input-spellcheck",
-              "fieldName": "inputSpellcheck",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether the element may be checked for spelling errors.\r\nA hint for the browser, not a guarantee."
             },
             {
               "name": "input-tab-index",

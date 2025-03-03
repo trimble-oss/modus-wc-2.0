@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
-import { DaisySize, Density, ModusSize, Orientation } from "./components/types";
+import { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 import { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { IModusWcCollapseOptions } from "./components/molecules/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
@@ -17,7 +17,7 @@ import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
 export { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
-export { DaisySize, Density, ModusSize, Orientation } from "./components/types";
+export { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 export { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { IModusWcCollapseOptions } from "./components/molecules/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
@@ -431,10 +431,6 @@ export namespace Components {
          */
         "name"?: string;
         /**
-          * Placeholder text for the date input.
-         */
-        "placeholder"?: string;
-        /**
           * Whether the value is editable.
          */
         "readOnly"?: boolean;
@@ -447,7 +443,7 @@ export namespace Components {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control.
+          * The value of the control (yyyy-mm-dd).
          */
         "value": string;
     }
@@ -626,6 +622,41 @@ export namespace Components {
         "value": string;
     }
     /**
+     * A customizable modal component used to display content in a dialog.
+     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcModal {
+        /**
+          * The modal's backdrop. Specify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.
+         */
+        "backdrop"?: 'default' | 'static';
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
+        /**
+          * Specifies whether the modal should be displayed full-screen
+         */
+        "fullscreen"?: boolean;
+        /**
+          * The ID of the inner dialog element
+         */
+        "modalId": string;
+        /**
+          * Specifies the position of the modal
+         */
+        "position"?: 'bottom' | 'center' | 'top';
+        /**
+          * Specifies whether to show the close icon button at the top right of modal
+         */
+        "showClose"?: boolean;
+        /**
+          * Specifies whether to show the fullscreen toggle icon button
+         */
+        "showFullscreenToggle"?: boolean;
+    }
+    /**
      * A customizable input component used to create number inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -638,6 +669,10 @@ export namespace Components {
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
+        /**
+          * The currency symbol to display.
+         */
+        "currencySymbol"?: string;
         /**
           * Custom CSS class to apply to the input.
          */
@@ -962,7 +997,11 @@ export namespace Components {
         /**
           * Hint for form autofill feature.
          */
-        "autoComplete"?: 'on' | 'off';
+        "autoComplete"?: AutocompleteTypes;
+        /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
          */
@@ -975,6 +1014,16 @@ export namespace Components {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
         /**
           * The ID of the input element.
          */
@@ -990,10 +1039,6 @@ export namespace Components {
     | 'tel'
     | 'text'
     | 'url';
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
@@ -1037,7 +1082,7 @@ export namespace Components {
         /**
           * Type of form control.
          */
-        "type"?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
+        "type"?: TextFieldTypes;
         /**
           * The value of the control.
          */
@@ -1048,6 +1093,10 @@ export namespace Components {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTextarea {
+        /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
          */
@@ -1061,13 +1110,19 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * The tabindex of the input.
          */
@@ -1676,6 +1731,17 @@ declare global {
         prototype: HTMLModusWcMenuItemElement;
         new (): HTMLModusWcMenuItemElement;
     };
+    /**
+     * A customizable modal component used to display content in a dialog.
+     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcModalElement extends Components.ModusWcModal, HTMLStencilElement {
+    }
+    var HTMLModusWcModalElement: {
+        prototype: HTMLModusWcModalElement;
+        new (): HTMLModusWcModalElement;
+    };
     interface HTMLModusWcNumberInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
@@ -2006,6 +2072,7 @@ declare global {
         "modus-wc-loader": HTMLModusWcLoaderElement;
         "modus-wc-menu": HTMLModusWcMenuElement;
         "modus-wc-menu-item": HTMLModusWcMenuItemElement;
+        "modus-wc-modal": HTMLModusWcModalElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
@@ -2496,10 +2563,6 @@ declare namespace LocalJSX {
          */
         "onInputFocus"?: (event: ModusWcDateCustomEvent<FocusEvent>) => void;
         /**
-          * Placeholder text for the date input.
-         */
-        "placeholder"?: string;
-        /**
           * Whether the value is editable.
          */
         "readOnly"?: boolean;
@@ -2512,7 +2575,7 @@ declare namespace LocalJSX {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control.
+          * The value of the control (yyyy-mm-dd).
          */
         "value"?: string;
     }
@@ -2695,6 +2758,41 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
+     * A customizable modal component used to display content in a dialog.
+     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcModal {
+        /**
+          * The modal's backdrop. Specify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.
+         */
+        "backdrop"?: 'default' | 'static';
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
+        /**
+          * Specifies whether the modal should be displayed full-screen
+         */
+        "fullscreen"?: boolean;
+        /**
+          * The ID of the inner dialog element
+         */
+        "modalId": string;
+        /**
+          * Specifies the position of the modal
+         */
+        "position"?: 'bottom' | 'center' | 'top';
+        /**
+          * Specifies whether to show the close icon button at the top right of modal
+         */
+        "showClose"?: boolean;
+        /**
+          * Specifies whether to show the fullscreen toggle icon button
+         */
+        "showFullscreenToggle"?: boolean;
+    }
+    /**
      * A customizable input component used to create number inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -2707,6 +2805,10 @@ declare namespace LocalJSX {
           * Indicates that the input should have a border.
          */
         "bordered"?: boolean;
+        /**
+          * The currency symbol to display.
+         */
+        "currencySymbol"?: string;
         /**
           * Custom CSS class to apply to the input.
          */
@@ -3093,7 +3195,11 @@ declare namespace LocalJSX {
         /**
           * Hint for form autofill feature.
          */
-        "autoComplete"?: 'on' | 'off';
+        "autoComplete"?: AutocompleteTypes;
+        /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
          */
@@ -3106,6 +3212,16 @@ declare namespace LocalJSX {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
         /**
           * The ID of the input element.
          */
@@ -3121,10 +3237,6 @@ declare namespace LocalJSX {
     | 'tel'
     | 'text'
     | 'url';
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
@@ -3180,7 +3292,7 @@ declare namespace LocalJSX {
         /**
           * Type of form control.
          */
-        "type"?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
+        "type"?: TextFieldTypes;
         /**
           * The value of the control.
          */
@@ -3191,6 +3303,10 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTextarea {
+        /**
+          * Controls automatic correction in inputted text. Support by browser varies.
+         */
+        "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
          */
@@ -3204,13 +3320,19 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * A hint to the browser for which enter key to display.
+         */
+        "enterkeyhint"?: | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.
-         */
-        "inputSpellcheck"?: boolean;
         /**
           * The tabindex of the input.
          */
@@ -3512,6 +3634,7 @@ declare namespace LocalJSX {
         "modus-wc-loader": ModusWcLoader;
         "modus-wc-menu": ModusWcMenu;
         "modus-wc-menu-item": ModusWcMenuItem;
+        "modus-wc-modal": ModusWcModal;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
@@ -3633,6 +3756,12 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-menu-item": LocalJSX.ModusWcMenuItem & JSXBase.HTMLAttributes<HTMLModusWcMenuItemElement>;
+            /**
+             * A customizable modal component used to display content in a dialog.
+             * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
             /**
              * A customizable input component used to create number inputs with types.
              * Adheres to WCAG 2.2 standards.
