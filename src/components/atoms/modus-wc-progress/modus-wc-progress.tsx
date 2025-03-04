@@ -59,6 +59,11 @@ export class ModusWcProgress {
     return classList.join(' ');
   }
 
+  private getPercentageValue(): number {
+    const safeValue = Math.min(Math.max(0, this.value), this.max!);
+    return (safeValue / this.max!) * 100;
+  }
+
   render() {
     const progressAriaAttributes = this.indeterminate
       ? { 'aria-hidden': 'true' }
@@ -84,7 +89,7 @@ export class ModusWcProgress {
         ) : (
           <div
             class={this.getClasses()}
-            style={{ '--value': `${this.value}` }}
+            style={{ '--value': `${this.getPercentageValue()}` }}
             role="progressbar"
             {...progressAriaAttributes}
             {...this.inheritedAttributes}
