@@ -12,13 +12,16 @@ exports[`modus-wc-input-label should render with content in the primary slot 1`]
 `;
 
 exports[`modus-wc-input-label should render with custom props 1`] = `
-<modus-wc-input-label custom-class="test-class" for-id="input-id" label-text="Custom label" required="true" size="lg">
+<modus-wc-input-label custom-class="test-class" for-id="input-id" label-text="Custom label" required="true" size="lg" sub-label-text="Sublabel text">
   <!---->
   <label class="modus-wc-input-label modus-wc-input-label-size-lg test-class" htmlfor="input-id">
     Custom label
     <span aria-hidden="true" class="required-indicator">
       *
     </span>
+    <div class="modus-wc-input-label-sublabel">
+      Sublabel text
+    </div>
   </label>
 </modus-wc-input-label>
 `;

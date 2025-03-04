@@ -18,7 +18,8 @@ describe('modus-wc-input-label', () => {
               custom-class="test-class"
               label-text="Custom label"
               required="true"
-              size="lg">
+              size="lg"
+              sub-label-text="Sublabel text">
             </modus-wc-input-label>`,
     });
     expect(page.root).toMatchSnapshot();

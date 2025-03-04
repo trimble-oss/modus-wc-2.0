@@ -35,6 +35,9 @@ export class ModusWcInputLabel {
   /** The size of the label. */
   @Prop() size?: ModusSize = 'md';
 
+  /** The text rendered beneath the label. */
+  @Prop() subLabelText?: string;
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -63,6 +66,9 @@ export class ModusWcInputLabel {
               {/* Non-breaking space */}
               {'\u00A0*'}
             </span>
+          )}
+          {this.subLabelText && (
+            <div class="modus-wc-input-label-sublabel">{this.subLabelText}</div>
           )}
           <slot />
         </label>
