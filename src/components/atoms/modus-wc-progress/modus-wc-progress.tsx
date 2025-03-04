@@ -104,6 +104,7 @@ export class ModusWcProgress {
             {...progressAriaAttributes}
             {...this.inheritedAttributes}
           >
+            {this.label}
             <slot />
           </div>
         )}
