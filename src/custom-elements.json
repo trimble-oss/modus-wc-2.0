@@ -856,7 +856,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcProgress",
           "members": [
             {

@@ -11,9 +11,17 @@
   position: absolute;
   display: flex;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: var(--modus-wc-font-size-sm);
   width: 100%;
   top: 0;
+}
+
+.modus-wc-radial-progress-label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--modus-wc-font-size-md);
+  margin: 0 var(--modus-wc-spacing-lg);
 }
 
 [data-theme='modus-classic-light'] .modus-wc-progress,
