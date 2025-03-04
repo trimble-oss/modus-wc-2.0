@@ -856,7 +856,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcProgress",
           "members": [
             {
@@ -888,6 +888,14 @@
                 "text": "boolean"
               },
               "description": "The indeterminate state of the progress component."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "A text label to render within the progress bar"
             },
             {
               "name": "max",

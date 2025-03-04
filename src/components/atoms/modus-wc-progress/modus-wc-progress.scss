@@ -3,6 +3,19 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+.modus-wc-progress-container {
+  position: relative;
+}
+
+.modus-wc-progress-label {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  font-size: 0.75rem;
+  width: 100%;
+  top: 0;
+}
+
 [data-theme='modus-classic-light'] .modus-wc-progress,
 [data-theme='modus-classic-dark'] .modus-wc-progress {
   -webkit-appearance: none;
@@ -23,6 +36,11 @@
   &::-moz-progress-bar {
     border-radius: var(--modus-wc-border-radius-sm);
   }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-progress-label,
+[data-theme='modus-classic-dark'] .modus-wc-progress-label {
+  color: var(--modus-wc-color-white);
 }
 
 [data-theme='modus-classic-light'] .modus-wc-progress {

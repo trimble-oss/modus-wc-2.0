@@ -1,4 +1,4 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import { Component, Element, Fragment, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-progress.tailwind';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
@@ -23,6 +23,9 @@ export class ModusWcProgress {
 
   /** The indeterminate state of the progress component. */
   @Prop({ reflect: true, mutable: true }) indeterminate: boolean = false;
+
+  /** A text label to render within the progress bar */
+  @Prop() label?: string;
 
   /** The progress component's maximum value. */
   @Prop() max?: number = 100;
@@ -78,14 +81,21 @@ export class ModusWcProgress {
       : { max: this.max, value: this.value };
 
     return (
-      <Host>
+      <Host class="modus-wc-progress-container">
         {this.variant === 'default' ? (
-          <progress
-            class={this.getClasses()}
-            {...valueAttributes}
-            {...progressAriaAttributes}
-            {...this.inheritedAttributes}
-          />
+          <Fragment>
+            <progress
+              class={this.getClasses()}
+              {...valueAttributes}
+              {...progressAriaAttributes}
+              {...this.inheritedAttributes}
+            />
+            {this.label && (
+              <span class={`modus-wc-progress-label ${this.customClass}`}>
+                {this.label}
+              </span>
+            )}
+          </Fragment>
         ) : (
           <div
             class={this.getClasses()}
