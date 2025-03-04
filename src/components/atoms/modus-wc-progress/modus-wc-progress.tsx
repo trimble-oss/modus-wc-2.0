@@ -1,6 +1,6 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
+import { convertPropsToClasses } from './modus-wc-progress.tailwind';
 import { Attributes, inheritAriaAttributes } from '../../utils';
-// import { convertPropsToClasses } from './modus-wc-progress.tailwind';
 
 /**
  * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -47,20 +47,13 @@ export class ModusWcProgress {
   private getClasses(): string {
     const classList: string[] = [];
 
-    if (this.variant === 'radial') {
-      classList.push('modus-wc-radial-progress');
-
-      if (this.indeterminate) {
-        classList.push('modus-wc-radial-progress--indeterminate');
-      }
-    } else {
-      classList.push('modus-wc-progress', 'modus-wc-w-full');
-    }
-
-    // const propClasses = convertPropsToClasses();
+    const propClasses = convertPropsToClasses({
+      variant: this.variant,
+      indeterminate: this.indeterminate,
+    });
 
     // The order CSS classes are added matters to CSS specificity
-    // if (propClasses) classList.push(propClasses);
+    if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
