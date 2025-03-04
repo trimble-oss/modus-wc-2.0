@@ -1122,6 +1122,14 @@
               "description": "Custom CSS class to apply to the inner div."
             },
             {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disables displaying the tooltip on hover"
+            },
+            {
               "name": "force-open",
               "fieldName": "forceOpen",
               "type": {
