@@ -752,6 +752,10 @@ export namespace Components {
          */
         "indeterminate": boolean;
         /**
+          * A text label to render within the progress bar
+         */
+        "label"?: string;
+        /**
           * The progress component's maximum value.
          */
         "max"?: number;
@@ -1330,6 +1334,10 @@ export namespace Components {
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
+        /**
+          * Disables displaying the tooltip on hover
+         */
+        "disabled"?: boolean;
         /**
           * Use this attribute to force the tooltip to remain open.
          */
@@ -2900,6 +2908,10 @@ declare namespace LocalJSX {
          */
         "indeterminate"?: boolean;
         /**
+          * A text label to render within the progress bar
+         */
+        "label"?: string;
+        /**
           * The progress component's maximum value.
          */
         "max"?: number;
@@ -3580,6 +3592,10 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
+        /**
+          * Disables displaying the tooltip on hover
+         */
+        "disabled"?: boolean;
         /**
           * Use this attribute to force the tooltip to remain open.
          */
