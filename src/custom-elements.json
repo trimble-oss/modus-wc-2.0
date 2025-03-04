@@ -564,7 +564,16 @@
               "description": "The size of the label.",
               "type": {
                 "text": "ModusSize"
-              }
+              },
+              "description": "The size of the label."
+            },
+            {
+              "name": "sub-label-text",
+              "fieldName": "subLabelText",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text rendered beneath the label."
             }
           ],
           "tagName": "modus-wc-input-label",
