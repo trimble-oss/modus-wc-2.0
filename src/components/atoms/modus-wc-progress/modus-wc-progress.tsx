@@ -60,15 +60,17 @@ export class ModusWcProgress {
   }
 
   render() {
-    const valueAttributes = this.indeterminate
+    const progressAriaAttributes = this.indeterminate
       ? { 'aria-hidden': 'true' }
       : {
-          max: this.max,
-          value: this.value,
           'aria-valuenow': this.value,
           'aria-valuemin': 0,
           'aria-valuemax': this.max,
         };
+
+    const valueAttributes = this.indeterminate
+      ? {}
+      : { max: this.max, value: this.value };
 
     return (
       <Host>
@@ -76,16 +78,15 @@ export class ModusWcProgress {
           <progress
             class={this.getClasses()}
             {...valueAttributes}
+            {...progressAriaAttributes}
             {...this.inheritedAttributes}
           />
         ) : (
           <div
-            aria-valuenow={this.value}
-            aria-valuemin={0}
-            aria-valuemax={this.max}
             class={this.getClasses()}
             style={{ '--value': `${this.value}` }}
             role="progressbar"
+            {...progressAriaAttributes}
             {...this.inheritedAttributes}
           >
             <slot />
