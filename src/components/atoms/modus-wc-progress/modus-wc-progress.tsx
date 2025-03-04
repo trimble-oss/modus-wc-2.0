@@ -5,6 +5,8 @@ import { Attributes, inheritAriaAttributes } from '../../utils';
 /**
  * A customizable progress component used to show the progress of a task or show the passing of time.
  *
+ * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
+ *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({

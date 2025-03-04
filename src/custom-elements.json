@@ -864,7 +864,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\n\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcProgress",
           "members": [
             {

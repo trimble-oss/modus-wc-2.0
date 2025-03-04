@@ -740,6 +740,7 @@ export namespace Components {
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
+     * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcProgress {
@@ -1779,6 +1780,7 @@ declare global {
     };
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
+     * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcProgressElement extends Components.ModusWcProgress, HTMLStencilElement {
@@ -2900,6 +2902,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
+     * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcProgress {
@@ -3793,6 +3796,7 @@ declare module "@stencil/core" {
             "modus-wc-number-input": LocalJSX.ModusWcNumberInput & JSXBase.HTMLAttributes<HTMLModusWcNumberInputElement>;
             /**
              * A customizable progress component used to show the progress of a task or show the passing of time.
+             * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-progress": LocalJSX.ModusWcProgress & JSXBase.HTMLAttributes<HTMLModusWcProgressElement>;
