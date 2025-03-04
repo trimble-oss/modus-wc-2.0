@@ -932,6 +932,14 @@
               }
             },
             {
+              "name": "label",
+              "fieldName": "label",
+              "description": "A text label to render within the progress bar",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "max",
               "fieldName": "max",
               "default": "100",
@@ -1130,7 +1138,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTooltip",
           "members": [
             {

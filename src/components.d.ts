@@ -748,6 +748,10 @@ export namespace Components {
          */
         "indeterminate": boolean;
         /**
+          * A text label to render within the progress bar
+         */
+        "label"?: string;
+        /**
           * The progress component's maximum value.
          */
         "max"?: number;
@@ -2895,6 +2899,10 @@ declare namespace LocalJSX {
           * The indeterminate state of the progress component.
          */
         "indeterminate"?: boolean;
+        /**
+          * A text label to render within the progress bar
+         */
+        "label"?: string;
         /**
           * The progress component's maximum value.
          */

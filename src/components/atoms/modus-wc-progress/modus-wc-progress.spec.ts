@@ -40,4 +40,12 @@ describe('modus-wc-progress', () => {
     });
     expect(page.root).toMatchSnapshot();
   });
+
+  it('should render label', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProgress],
+      html: '<modus-wc-progress aria-label="Custom Progress Bar" label="Loading..."></modus-wc-progress>',
+    });
+    expect(page.root).toMatchSnapshot();
+  });
 });
