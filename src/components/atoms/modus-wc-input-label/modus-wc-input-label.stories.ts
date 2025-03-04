@@ -18,7 +18,7 @@ const meta: Meta<InputLabelArgs> = {
   args: {
     'label-text': 'Label',
     required: false,
-    size: 'lg',
+    size: 'md',
   },
   argTypes: {
     size: {
