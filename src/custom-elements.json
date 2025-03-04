@@ -536,6 +536,14 @@
                 "text": "ModusSize"
               },
               "description": "The size of the label."
+            },
+            {
+              "name": "sub-label-text",
+              "fieldName": "subLabelText",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text rendered beneath the label."
             }
           ],
           "tagName": "modus-wc-input-label",
@@ -2401,7 +2409,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable modal component used to display content in a dialog.\n\nThe component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable modal component used to display content in a dialog.\r\n\r\nThe component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcModal",
           "members": [
             {
@@ -2424,7 +2432,7 @@
               "type": {
                 "text": "'default' | 'static'"
               },
-              "description": "The modal's backdrop.\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content."
+              "description": "The modal's backdrop.\r\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content."
             },
             {
               "name": "custom-class",
