@@ -11,9 +11,17 @@
   position: absolute;
   display: flex;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: var(--modus-wc-font-size-sm);
   width: 100%;
   top: 0;
+}
+
+.modus-wc-radial-progress-label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--modus-wc-font-size-md);
+  margin: 0 var(--modus-wc-spacing-lg);
 }
 
 [data-theme='modus-classic-light'] .modus-wc-progress,
@@ -72,5 +80,40 @@
     background-color: transparent;
 
     --progress-color: var(--modus-wc-color-highlight-blue);
+  }
+}
+
+.modus-wc-radial-progress {
+  color: var(--modus-wc-color-trimble-blue);
+
+  &.modus-wc-radial-progress--indeterminate {
+    --value: var(--_value) !important;
+    animation-name: grow;
+    animation-iteration-count: infinite;
+    animation-duration: 5s;
+    animation-timing-function: ease-in-out;
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-radial-progress,
+[data-theme='modus-modern-dark'] .modus-wc-radial-progress {
+  color: var(--modus-wc-color-highlight-blue);
+}
+
+@property --_value {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes grow {
+  0% {
+    --_value: 0;
+  }
+  50% {
+    --_value: 100;
+  }
+  100% {
+    --_value: 0;
   }
 }

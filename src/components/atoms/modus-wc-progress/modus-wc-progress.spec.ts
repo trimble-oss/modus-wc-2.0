@@ -28,7 +28,7 @@ describe('modus-wc-progress', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcProgress],
-      html: '<modus-wc-progress aria-label="Custom Progress Bar" custom-class="test-class" max="50" value="25"></modus-wc-progress>',
+      html: '<modus-wc-progress aria-label="Custom Progress Bar" indeterminate="true" custom-class="test-class" max="50" value="25" variant="radial"></modus-wc-progress>',
     });
     expect(page.root).toMatchSnapshot();
   });

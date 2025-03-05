@@ -9,17 +9,20 @@
 
 A customizable progress component used to show the progress of a task or show the passing of time.
 
+The radial variant supports slotting in custom HTML to be displayed within the progress circle.
+
 Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property        | Attribute       | Description                                        | Type                  | Default     |
-| --------------- | --------------- | -------------------------------------------------- | --------------------- | ----------- |
-| `customClass`   | `custom-class`  | Custom CSS class to apply to the progress element. | `string \| undefined` | `''`        |
-| `indeterminate` | `indeterminate` | The indeterminate state of the progress component. | `boolean`             | `false`     |
-| `label`         | `label`         | A text label to render within the progress bar     | `string \| undefined` | `undefined` |
-| `max`           | `max`           | The progress component's maximum value.            | `number \| undefined` | `100`       |
-| `value`         | `value`         | The value of the progress component.               | `number`              | `0`         |
+| Property        | Attribute       | Description                                        | Type                                 | Default     |
+| --------------- | --------------- | -------------------------------------------------- | ------------------------------------ | ----------- |
+| `customClass`   | `custom-class`  | Custom CSS class to apply to the progress element. | `string \| undefined`                | `''`        |
+| `indeterminate` | `indeterminate` | The indeterminate state of the progress component. | `boolean`                            | `false`     |
+| `label`         | `label`         | A text label to render within the progress bar     | `string \| undefined`                | `undefined` |
+| `max`           | `max`           | The progress component's maximum value.            | `number \| undefined`                | `100`       |
+| `value`         | `value`         | The value of the progress component.               | `number`                             | `0`         |
+| `variant`       | `variant`       | The variant of the progress component.             | `"default" \| "radial" \| undefined` | `'default'` |
 
 
 ----------------------------------------------
