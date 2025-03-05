@@ -2,21 +2,6 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcRadio } from './modus-wc-radio';
 
 describe('modus-wc-radio', () => {
-  it('should warn if aria-label is not provided', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-    await newSpecPage({
-      components: [ModusWcRadio],
-      html: '<modus-wc-radio></modus-wc-radio>',
-    });
-
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcRadio: aria-label is required for accessibility. Using fallback label.'
-    );
-
-    consoleWarnSpy.mockRestore();
-  });
-
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcRadio],

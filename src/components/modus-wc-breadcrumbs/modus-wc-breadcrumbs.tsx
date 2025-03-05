@@ -49,9 +49,6 @@ export class ModusWcBreadcrumbs {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcBreadcrumbs: aria-label is required for accessibility. Using fallback label.'
-      );
       this.el.ariaLabel = 'Breadcrumbs';
     }
 

@@ -2,21 +2,6 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcDate } from './modus-wc-date';
 
 describe('modus-wc-date', () => {
-  it('should warn if aria-label is not provided', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-    await newSpecPage({
-      components: [ModusWcDate],
-      html: '<modus-wc-date></modus-wc-date>',
-    });
-
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcDate: aria-label is required for accessibility. Using fallback label.'
-    );
-
-    consoleWarnSpy.mockRestore();
-  });
-
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],

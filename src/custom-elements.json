@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable accordion component used for showing and hiding related groups of content.\n\nThe component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcAccordion",
           "members": [
             {
@@ -40,7 +40,7 @@
               "kind": "field",
               "name": "expandedChange",
               "type": {
-                "text": "EventEmitter<{\n    expanded: boolean;\n    index: number;\n  }>"
+                "text": "EventEmitter<{\r\n    expanded: boolean;\r\n    index: number;\r\n  }>"
               },
               "description": "When a collapse expanded state is changed, this event outputs the relevant index and state"
             }
@@ -73,7 +73,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable alert component used to inform the user about important events.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable alert component used to inform the user about important events.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcAlert",
           "members": [
             {
@@ -161,7 +161,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable autocomplete component used to create searchable text inputs.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable autocomplete component used to create searchable text inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcAutocomplete",
           "members": [
             {
@@ -200,7 +200,7 @@
               "type": {
                 "text": "number"
               },
-              "description": "The debounce timeout in milliseconds.\nSet to 0 to disable debouncing."
+              "description": "The debounce timeout in milliseconds.\r\nSet to 0 to disable debouncing."
             },
             {
               "name": "disabled",
@@ -232,7 +232,7 @@
               "type": {
                 "text": "IAutocompleteItem[]"
               },
-              "description": "The items to display in the menu.\nCreating a new array of items will ensure proper component re-render."
+              "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render."
             },
             {
               "name": "label",
@@ -331,7 +331,7 @@
               "type": {
                 "text": "EventEmitter<Event>"
               },
-              "description": "Event emitted when the input value changes.\nThis event is debounced based on the debounceMs prop."
+              "description": "Event emitted when the input value changes.\r\nThis event is debounced based on the debounceMs prop."
             },
             {
               "kind": "field",
@@ -378,7 +378,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable avatar component used to create avatars with different images.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable avatar component used to create avatars with different images.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcAvatar",
           "members": [
             {
@@ -466,7 +466,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\n\nThe component supports a `<slot>` for injecting content within the badge.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\r\n\r\nThe component supports a `<slot>` for injecting content within the badge.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcBadge",
           "members": [
             {
@@ -487,7 +487,7 @@
               "name": "color",
               "fieldName": "color",
               "type": {
-                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger'"
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
               },
               "description": "The color variant of the badge."
             },
@@ -546,7 +546,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable breadcrumbs component used to help users navigate through a website.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable breadcrumbs component used to help users navigate through a website.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcBreadcrumbs",
           "members": [
             {
@@ -626,7 +626,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\n\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcButton",
           "members": [
             {
@@ -754,7 +754,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable card component used to group and display content in a way that is easily readable.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable card component used to group and display content in a way that is easily readable.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcCard",
           "members": [
             {
@@ -842,7 +842,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable checkbox component.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable checkbox component.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcCheckbox",
           "members": [
             {
@@ -1020,7 +1020,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable chip component used to display information in a compact area.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable chip component used to display information in a compact area.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcChip",
           "members": [
             {
@@ -1147,7 +1147,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable collapse component used for showing and hiding content.\n\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.\nDo not set\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable collapse component used for showing and hiding content.\r\n\r\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.\r\nDo not set\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcCollapse",
           "members": [
             {
@@ -1214,7 +1214,7 @@
               "type": {
                 "text": "IModusWcCollapseOptions"
               },
-              "description": "Configuration options for rendering the pre-laid out collapse component.\nDo not set this prop if you intend to use the 'header' slot."
+              "description": "Configuration options for rendering the pre-laid out collapse component.\r\nDo not set this prop if you intend to use the 'header' slot."
             }
           ],
           "tagName": "modus-wc-collapse",
@@ -1256,7 +1256,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable date picker component used to create date inputs.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable date picker component used to create date inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcDate",
           "members": [
             {
@@ -1433,7 +1433,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable divider component used to separate content horizontally or vertically.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable divider component used to separate content horizontally or vertically.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcDivider",
           "members": [
             {
@@ -1454,7 +1454,7 @@
               "name": "color",
               "fieldName": "color",
               "type": {
-                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger'"
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
               },
               "description": "The color of the divider line."
             },
@@ -1529,7 +1529,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable icon component used to render Modus icons.\n\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable icon component used to render Modus icons.\r\n\r\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcIcon",
           "members": [
             {
@@ -1609,7 +1609,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input label component.\n\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable input label component.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcInputLabel",
           "members": [
             {
@@ -1705,7 +1705,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable loader component used to indicate the loading of content.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable loader component used to indicate the loading of content.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcLoader",
           "members": [
             {
@@ -1785,7 +1785,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable menu item component used to display the item portion of a menu.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable menu item component used to display the item portion of a menu.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcMenuItem",
           "members": [
             {
@@ -1913,7 +1913,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\n\nThe component supports a `<slot>` for injecting custom li elements inside the ul.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\r\n\r\nThe component supports a `<slot>` for injecting custom li elements inside the ul.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcMenu",
           "members": [
             {
@@ -2025,7 +2025,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable modal component used to display content in a dialog.\n\nThe component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable modal component used to display content in a dialog.\r\n\r\nThe component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcModal",
           "members": [
             {
@@ -2048,7 +2048,7 @@
               "type": {
                 "text": "'default' | 'static'"
               },
-              "description": "The modal's backdrop.\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content."
+              "description": "The modal's backdrop.\r\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content."
             },
             {
               "name": "custom-class",
@@ -2129,7 +2129,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input component used to create number inputs with types.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable input component used to create number inputs with types.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcNumberInput",
           "members": [
             {
@@ -2200,7 +2200,7 @@
               "type": {
                 "text": "'decimal' | 'none' | 'numeric'"
               },
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\nThis allows a browser to display an appropriate virtual keyboard."
+              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
             },
             {
               "name": "input-tab-index",
@@ -2354,7 +2354,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\n\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\r\n\r\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcProgress",
           "members": [
             {
@@ -2450,7 +2450,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable radio component.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable radio component.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcRadio",
           "members": [
             {
@@ -2595,7 +2595,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable select component used to pick a value from a list of options.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable select component used to pick a value from a list of options.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcSelect",
           "members": [
             {
@@ -2756,7 +2756,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable skeleton component used to create skeletons of various sizes and shapes.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable skeleton component used to create skeletons of various sizes and shapes.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcSkeleton",
           "members": [
             {
@@ -2836,7 +2836,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable slider component.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable slider component.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcSlider",
           "members": [
             {
@@ -3011,7 +3011,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable table component used to show a list of data in a table format.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable table component used to show a list of data in a table format.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTable",
           "members": [
             {
@@ -3075,7 +3075,7 @@
               "kind": "field",
               "name": "rowClick",
               "type": {
-                "text": "EventEmitter<{\n    row: Record<string, any>;\n    index: number;\n  }>"
+                "text": "EventEmitter<{\r\n    row: Record<string, any>;\r\n    index: number;\r\n  }>"
               },
               "description": "Emits when a row is clicked."
             }
@@ -3108,7 +3108,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tabs component used to create groups of tabs.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable tabs component used to create groups of tabs.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTabs",
           "members": [
             {
@@ -3169,7 +3169,7 @@
               "kind": "field",
               "name": "tabChange",
               "type": {
-                "text": "EventEmitter<{\n    previousTab: number;\n    newTab: number;\n  }>"
+                "text": "EventEmitter<{\r\n    previousTab: number;\r\n    newTab: number;\r\n  }>"
               },
               "description": "When a tab is switched to, this event outputs the relevant indices"
             }
@@ -3202,7 +3202,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input component used to create text inputs with types.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable input component used to create text inputs with types.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTextInput",
           "members": [
             {
@@ -3223,7 +3223,7 @@
               "name": "auto-capitalize",
               "fieldName": "autoCapitalize",
               "type": {
-                "text": "| 'off'\n    | 'none'\n    | 'on'\n    | 'sentences'\n    | 'words'\n    | 'characters'"
+                "text": "| 'off'\r\n    | 'none'\r\n    | 'on'\r\n    | 'sentences'\r\n    | 'words'\r\n    | 'characters'"
               },
               "description": "Controls automatic capitalization in inputted text."
             },
@@ -3271,7 +3271,7 @@
               "name": "enterkeyhint",
               "fieldName": "enterkeyhint",
               "type": {
-                "text": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'"
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
               },
               "description": "A hint to the browser for which enter key to display."
             },
@@ -3287,9 +3287,9 @@
               "name": "input-mode",
               "fieldName": "inputMode",
               "type": {
-                "text": "| 'decimal'\n    | 'email'\n    | 'none'\n    | 'numeric'\n    | 'search'\n    | 'tel'\n    | 'text'\n    | 'url'"
+                "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
               },
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\nThis allows a browser to display an appropriate virtual keyboard."
+              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard."
             },
             {
               "name": "input-tab-index",
@@ -3443,7 +3443,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable textarea component.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable textarea component.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTextarea",
           "members": [
             {
@@ -3496,7 +3496,7 @@
               "name": "enterkeyhint",
               "fieldName": "enterkeyhint",
               "type": {
-                "text": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'"
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
               },
               "description": "A hint to the browser for which enter key to display."
             },
@@ -3644,7 +3644,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A theme switcher component used to toggle the application theme and/or mode.\n\nAllows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A theme switcher component used to toggle the application theme and/or mode.\r\n\r\nAllows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcThemeSwitcher",
           "members": [
             {
@@ -3712,7 +3712,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input component used to create time inputs.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable input component used to create time inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTimeInput",
           "members": [
             {
@@ -3759,7 +3759,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "ID of a `<datalist>` element that contains pre-defined time options.\nThe value must be the ID of a `<datalist>` element in the same document."
+              "description": "ID of a `<datalist>` element that contains pre-defined time options.\r\nThe value must be the ID of a `<datalist>` element in the same document."
             },
             {
               "name": "datalist-options",
@@ -3847,7 +3847,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Displays the time input format as `HH:mm:ss` if `true`.\nInternally sets the `step` to 1 second.\nIf a `step` value is provided, it will override this attribute."
+              "description": "Displays the time input format as `HH:mm:ss` if `true`.\r\nInternally sets the `step` to 1 second.\r\nIf a `step` value is provided, it will override this attribute."
             },
             {
               "name": "size",
@@ -3863,7 +3863,7 @@
               "type": {
                 "text": "number"
               },
-              "description": "Specifies the granularity that the `value` must adhere to.\nValue of step given in seconds. Default value is 60 seconds.\nOverrides the `seconds` attribute if both are provided."
+              "description": "Specifies the granularity that the `value` must adhere to.\r\nValue of step given in seconds. Default value is 60 seconds.\r\nOverrides the `seconds` attribute if both are provided."
             },
             {
               "name": "value",
@@ -3871,7 +3871,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "The value of the time input.\nAlways in 24-hour format that includes leading zeros:\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\nto be selected based on user's locale (or by the user agent).\nIf time includes seconds the format is always `HH:mm:ss`."
+              "description": "The value of the time input.\r\nAlways in 24-hour format that includes leading zeros:\r\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\r\nto be selected based on user's locale (or by the user agent).\r\nIf time includes seconds the format is always `HH:mm:ss`."
             }
           ],
           "tagName": "modus-wc-time-input",
@@ -3929,7 +3929,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable toast component used to stack elements, positioned on the corner of a page.\n\nThe component supports a `<slot>` for injecting additional custom content inside the toast.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable toast component used to stack elements, positioned on the corner of a page.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the toast.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcToast",
           "members": [
             {
@@ -3993,7 +3993,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable checkbox component.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable checkbox component.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcToggle",
           "members": [
             {
@@ -4146,7 +4146,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -4242,7 +4242,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable typography component used to render text with different sizes, variants, and weights.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable typography component used to render text with different sizes, variants, and weights.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWCTypography",
           "members": [
             {

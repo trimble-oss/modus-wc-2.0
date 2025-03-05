@@ -2,21 +2,6 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcCheckbox } from './modus-wc-checkbox';
 
 describe('modus-wc-checkbox', () => {
-  it('should warn if aria-label is not provided', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-    await newSpecPage({
-      components: [ModusWcCheckbox],
-      html: '<modus-wc-checkbox></modus-wc-checkbox>',
-    });
-
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcCheckbox: aria-label is required for accessibility. Using fallback label.'
-    );
-
-    consoleWarnSpy.mockRestore();
-  });
-
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcCheckbox],

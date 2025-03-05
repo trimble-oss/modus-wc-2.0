@@ -2,21 +2,6 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcTimeInput } from './modus-wc-time-input';
 
 describe('modus-wc-time-input', () => {
-  it('should warn if aria-label is not provided', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-    await newSpecPage({
-      components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input></modus-wc-time-input>',
-    });
-
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcTimeInput: aria-label is required for accessibility. Using fallback label.'
-    );
-
-    consoleWarnSpy.mockRestore();
-  });
-
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],

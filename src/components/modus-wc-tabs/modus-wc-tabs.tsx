@@ -71,9 +71,6 @@ export class ModusWcTabs {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcTabs: aria-label is required for accessibility. Using fallback label.'
-      );
       this.el.ariaLabel = 'Tab Group';
     }
 

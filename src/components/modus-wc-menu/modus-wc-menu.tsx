@@ -35,11 +35,8 @@ export class ModusWcMenu {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcMenu: aria-label is required for accessibility. Using fallback label.'
-      );
+      this.el.ariaLabel = 'Menu';
     }
-    this.el.ariaLabel = 'Menu';
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

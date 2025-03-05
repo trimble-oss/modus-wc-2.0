@@ -125,9 +125,6 @@ export class ModusWcTextInput {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcTextInput: aria-label is required for accessibility. Using fallback label.'
-      );
       this.el.ariaLabel = this.placeholder || 'Text input';
     }
 

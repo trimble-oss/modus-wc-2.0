@@ -2,21 +2,6 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcIcon } from './modus-wc-icon';
 
 describe('modus-wc-icon', () => {
-  it('should warn when aria-label is not provided', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-    await newSpecPage({
-      components: [ModusWcIcon],
-      html: '<modus-wc-icon decorative="false"></modus-wc-icon>',
-    });
-
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcIcon: aria-label is required for accessibility for non decorative icons. Using fallback label.'
-    );
-
-    consoleWarnSpy.mockRestore();
-  });
-
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcIcon],

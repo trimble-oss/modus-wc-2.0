@@ -79,11 +79,8 @@ export class ModusWcToggle {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcToggle: aria-label is required for accessibility. Using fallback label.'
-      );
+      this.el.ariaLabel = 'Toggle button';
     }
-    this.el.ariaLabel = 'Toggle button';
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
