@@ -1387,6 +1387,10 @@ export interface ModusWcAutocompleteCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcAutocompleteElement;
 }
+export interface ModusWcBreadcrumbsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcBreadcrumbsElement;
+}
 export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcButtonElement;
@@ -1537,11 +1541,22 @@ declare global {
         prototype: HTMLModusWcBadgeElement;
         new (): HTMLModusWcBadgeElement;
     };
+    interface HTMLModusWcBreadcrumbsElementEventMap {
+        "breadcrumbClick": IModusWcBreadcrumb;
+    }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcBreadcrumbsElement extends Components.ModusWcBreadcrumbs, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcBreadcrumbsElementEventMap>(type: K, listener: (this: HTMLModusWcBreadcrumbsElement, ev: ModusWcBreadcrumbsCustomEvent<HTMLModusWcBreadcrumbsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcBreadcrumbsElementEventMap>(type: K, listener: (this: HTMLModusWcBreadcrumbsElement, ev: ModusWcBreadcrumbsCustomEvent<HTMLModusWcBreadcrumbsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcBreadcrumbsElement: {
         prototype: HTMLModusWcBreadcrumbsElement;
@@ -2309,6 +2324,10 @@ declare namespace LocalJSX {
           * The breadcrumbs to render.
          */
         "items"?: IModusWcBreadcrumb[];
+        /**
+          * Event emitted when a breadcrumb is clicked.
+         */
+        "onBreadcrumbClick"?: (event: ModusWcBreadcrumbsCustomEvent<IModusWcBreadcrumb>) => void;
         /**
           * The size of the breadcrumbs.
          */

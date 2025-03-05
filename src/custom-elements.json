@@ -1650,7 +1650,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable breadcrumbs component used to help users navigate through a website.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable breadcrumbs component used to help users navigate through a website.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcBreadcrumbs",
           "members": [
             {
@@ -1693,7 +1693,15 @@
             }
           ],
           "tagName": "modus-wc-breadcrumbs",
-          "events": [],
+          "events": [
+            {
+              "name": "breadcrumbClick",
+              "type": {
+                "text": "EventEmitter<IModusWcBreadcrumb>"
+              },
+              "description": "Event emitted when a breadcrumb is clicked."
+            }
+          ],
           "customElement": true
         }
       ],
