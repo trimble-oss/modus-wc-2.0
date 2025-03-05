@@ -1,4 +1,12 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-breadcrumbs.tailwind';
 import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
@@ -8,7 +16,7 @@ export interface IModusWcBreadcrumb {
   label: string;
 
   /** The URL emitted when the breadcrumb is clicked. */
-  url: string;
+  url?: string;
 }
 
 /**
@@ -35,6 +43,9 @@ export class ModusWcBreadcrumbs {
 
   /** The size of the breadcrumbs. */
   @Prop() size?: ModusSize = 'md';
+
+  /** Event emitted when a breadcrumb is clicked. */
+  @Event() breadcrumbClick!: EventEmitter<IModusWcBreadcrumb>;
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
@@ -65,6 +76,13 @@ export class ModusWcBreadcrumbs {
     return classList.join(' ');
   }
 
+  private handleClick(event: MouseEvent, crumb: IModusWcBreadcrumb) {
+    if (!crumb.url) {
+      event.preventDefault();
+    }
+    this.breadcrumbClick.emit(crumb);
+  }
+
   render() {
     return (
       <Host>
@@ -81,7 +99,12 @@ export class ModusWcBreadcrumbs {
                   {isCurrentPage ? (
                     <span>{item.label}</span>
                   ) : (
-                    <a href={item.url}>{item.label}</a>
+                    <a
+                      href={item.url}
+                      onClick={(event) => this.handleClick(event, item)}
+                    >
+                      {item.label}
+                    </a>
                   )}
                 </li>
               );
