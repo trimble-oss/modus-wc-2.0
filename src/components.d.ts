@@ -5,28 +5,28 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
+import { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
 import { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
-import { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
-import { IModusWcCollapseOptions } from "./components/molecules/modus-wc-collapse/modus-wc-collapse";
-import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
-import { ISelectOption } from "./components/molecules/modus-wc-select/modus-wc-select";
-import { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
-import { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs";
+import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
+import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
+import { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+import { IModusWcTab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
-import { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
-import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
+import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
+import { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
+export { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
 export { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
-export { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
-export { IModusWcCollapseOptions } from "./components/molecules/modus-wc-collapse/modus-wc-collapse";
-export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
-export { ISelectOption } from "./components/molecules/modus-wc-select/modus-wc-select";
-export { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
-export { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs";
+export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
+export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
+export { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+export { IModusWcTab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
-export { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
-export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
+export { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
