@@ -4,9 +4,17 @@
 */
 
 .modus-wc-collapse {
+  transition: none !important;
+
   modus-wc-icon {
     height: 24px;
     margin-inline-end: var(--modus-wc-spacing-sm);
+  }
+
+  &.modus-wc-collapse-arrow.modus-wc-collapse-open {
+    .modus-wc-collapse-content {
+      padding: var(--modus-wc-spacing-lg);
+    }
   }
 }
 
@@ -26,8 +34,32 @@
 
 [data-theme='modus-classic-light'] .modus-wc-collapse {
   background-color: var(--modus-wc-color-white);
+
+  &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-collapse-open {
+    border-left: var(--modus-wc-spacing-xs) solid
+      var(--modus-wc-color-trimble-blue);
+
+    .modus-wc-collapse-title {
+      padding-inline-start: var(--modus-wc-spacing-md);
+      background-color: var(--modus-wc-color-blue-pale);
+    }
+  }
 }
 
 [data-theme='modus-classic-dark'] .modus-wc-collapse {
   background-color: var(--modus-wc-color-trimble-gray);
+
+  &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-collapse-open {
+    border-left: var(--modus-wc-spacing-xs) solid
+      var(--modus-wc-color-highlight-blue);
+
+    .modus-wc-collapse-title {
+      padding-inline-start: var(--modus-wc-spacing-md);
+      background-color: color-mix(
+        in srgb,
+        var(--modus-wc-color-highlight-blue) 30%,
+        transparent
+      );
+    }
+  }
 }

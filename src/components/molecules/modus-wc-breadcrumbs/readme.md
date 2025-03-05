@@ -20,6 +20,13 @@ Adheres to WCAG 2.2 standards.
 | `size`        | `size`         | The size of the breadcrumbs.                | `"lg" \| "md" \| "sm" \| undefined` | `'md'`  |
 
 
+## Events
+
+| Event             | Description                                 | Type                              |
+| ----------------- | ------------------------------------------- | --------------------------------- |
+| `breadcrumbClick` | Event emitted when a breadcrumb is clicked. | `CustomEvent<IModusWcBreadcrumb>` |
+
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

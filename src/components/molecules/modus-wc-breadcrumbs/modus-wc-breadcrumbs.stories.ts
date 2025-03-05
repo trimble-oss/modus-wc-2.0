@@ -1,3 +1,4 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -40,6 +41,12 @@ const meta: Meta<BreadcrumbArgs> = {
       options: ['xs', 'sm', 'md', 'lg'],
     },
   },
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['breadcrumbClick'],
+    },
+  },
 };
 
 export default meta;
@@ -60,3 +67,21 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const UnderlineLinks: Story = {
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<style>
+  .underline-links a {
+    text-decoration: underline;
+  }
+</style>
+<modus-wc-breadcrumbs
+  custom-class="underline-links"
+  .items=${args.items}
+  size=${ifDefined(args.size)}
+></modus-wc-breadcrumbs>
+    `;
+  },
+};
