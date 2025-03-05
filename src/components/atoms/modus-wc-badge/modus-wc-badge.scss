@@ -5,6 +5,14 @@
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
 .modus-wc-badge {
+  &.modus-wc-badge-sm {
+    font-size: var(--modus-wc-font-size-xs);
+  }
+
+  &.modus-wc-badge-md {
+    font-size: var(--modus-wc-font-size-sm);
+  }
+
   // Colors
   &.modus-wc-badge-high-contrast {
     background-color: var(--modus-wc-color-base-content);
@@ -39,7 +47,7 @@
     }
 
     &.modus-wc-badge-success {
-      color: var(--modus-wc-color-success);
+      color: var(--modus-wc-color-green-dark);
     }
 
     &.modus-wc-badge-warning {
@@ -54,56 +62,77 @@
 
 [data-theme='modus-classic-light'] .modus-wc-badge,
 [data-theme='modus-classic-dark'] .modus-wc-badge {
+  border: unset;
+  font-weight: var(--modus-wc-font-weight-bold);
+
+  &:not(.modus-wc-badge-counter) {
+    border-radius: var(--modus-wc-border-radius-md);
+  }
+
+  &.modus-wc-badge-success:not(.modus-wc-badge-text) {
+    background-color: var(--modus-wc-color-green-dark);
+  }
+
   &.modus-wc-badge-sm {
+    border-radius: var(--modus-wc-border-radius-sm);
     font-size: var(--modus-wc-font-size-xs);
+    height: 14px;
     padding: var(--modus-wc-spacing-2xs) var(--modus-wc-spacing-xs);
   }
 
   &.modus-wc-badge-md {
     font-size: var(--modus-wc-font-size-sm);
+    height: 20px;
     padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
   }
 
   &.modus-wc-badge-lg {
     font-size: var(--modus-wc-font-size-md);
+    height: 28px;
     padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
   }
 }
 
 [data-theme='modus-classic-dark'] .modus-wc-badge {
-  border: unset;
-
   // Colors
-  &.modus-wc-badge-primary {
-    background-color: var(--modus-wc-color-highlight-blue);
-    color: var(--modus-wc-color-gray-10);
-  }
+  &:not(.modus-wc-badge-text) {
+    &.modus-wc-badge-primary {
+      background-color: var(--modus-wc-color-highlight-blue);
+      color: var(--modus-wc-color-gray-10);
+    }
 
-  &.modus-wc-badge-secondary {
-    background-color: var(--modus-wc-color-gray-6);
-    color: var(--modus-wc-color-white);
-  }
+    &.modus-wc-badge-success {
+      background-color: var(--modus-wc-color-success);
+    }
 
-  &.modus-wc-badge-neutral {
-    background-color: var(--modus-wc-color-gray-1);
-    color: var(--modus-wc-color-trimble-gray);
-  }
+    &.modus-wc-badge-secondary {
+      background-color: var(--modus-wc-color-gray-6);
+      color: var(--modus-wc-color-white);
+    }
 
-  &.modus-wc-badge-high-contrast {
-    background-color: var(--modus-wc-color-gray-light);
-    color: var(--modus-wc-color-gray-10);
+    &.modus-wc-badge-neutral {
+      background-color: var(--modus-wc-color-gray-1);
+      color: var(--modus-wc-color-trimble-gray);
+    }
+
+    &.modus-wc-badge-high-contrast {
+      background-color: var(--modus-wc-color-gray-light);
+      color: var(--modus-wc-color-gray-10);
+    }
   }
 
   // Types
   &.modus-wc-badge-text {
-    background-color: transparent;
-
     &.modus-wc-badge-primary {
       color: var(--modus-wc-color-highlight-blue);
     }
 
     &.modus-wc-badge-high-contrast {
       color: var(--modus-wc-color-gray-light);
+    }
+
+    &.modus-wc-badge-success {
+      color: var(--modus-wc-color-success);
     }
   }
 }
