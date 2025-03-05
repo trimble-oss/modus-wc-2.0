@@ -19,3 +19,13 @@ exports[`modus-wc-avatar should render with default props 1`] = `
   </div>
 </modus-wc-avatar>
 `;
+
+exports[`modus-wc-avatar should render with no props 1`] = `
+<modus-wc-avatar>
+  <div class="modus-wc-avatar" tabindex="-1">
+    <div class="modus-wc-rounded-full modus-wc-w-16">
+      <img alt="Avatar image" src="">
+    </div>
+  </div>
+</modus-wc-avatar>
+`;

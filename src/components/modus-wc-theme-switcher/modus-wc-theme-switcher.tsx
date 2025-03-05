@@ -43,12 +43,8 @@ export class ModusWcThemeSwitcher {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcThemeSwitcher: aria-label is required for accessibility. Using fallback label.'
-      );
       this.el.ariaLabel = 'Switch between light and dark theme';
     }
-
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

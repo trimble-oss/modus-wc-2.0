@@ -66,11 +66,8 @@ export class ModusWcRadio {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcRadio: aria-label is required for accessibility. Using fallback label.'
-      );
+      this.el.ariaLabel = 'Radio button';
     }
-    this.el.ariaLabel = 'Radio button';
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

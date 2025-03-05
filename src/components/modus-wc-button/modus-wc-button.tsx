@@ -63,9 +63,6 @@ export class ModusWcButton {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcButton: aria-label is required for accessibility. Using fallback label.'
-      );
       this.el.ariaLabel = 'Button';
     }
 

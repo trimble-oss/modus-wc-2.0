@@ -23,21 +23,6 @@ describe('modus-wc-table', () => {
     { name: 'Carole Baskin', email: undefined, status: undefined },
   ];
 
-  it('should warn if aria-label is not provided', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-    await newSpecPage({
-      components: [ModusWcTable],
-      html: '<modus-wc-table></modus-wc-table>',
-    });
-
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcTable: aria-label is required for accessibility. Using fallback label.'
-    );
-
-    consoleWarnSpy.mockRestore();
-  });
-
   it('should warn if columns is not provided', async () => {
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
 
@@ -90,9 +75,9 @@ describe('modus-wc-table', () => {
     const page = await newSpecPage({
       components: [ModusWcTable],
       html: `<modus-wc-table
-        aria-label="Default table" 
+        aria-label="Default table"
         custom-class="test-class"
-        density="compact" 
+        density="compact"
         zebra="true"
       ></modus-wc-table>`,
     });
@@ -162,9 +147,9 @@ describe('modus-wc-table', () => {
     const page = await newSpecPage({
       components: [ModusWcTable],
       html: `<modus-wc-table
-        aria-label="Default table" 
+        aria-label="Default table"
         custom-class="test-class"
-        density="compact" 
+        density="compact"
         zebra="true"
       ></modus-wc-table>`,
     });
