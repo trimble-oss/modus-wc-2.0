@@ -536,6 +536,14 @@
                 "text": "ModusSize"
               },
               "description": "The size of the label."
+            },
+            {
+              "name": "sub-label-text",
+              "fieldName": "subLabelText",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text rendered beneath the label."
             }
           ],
           "tagName": "modus-wc-input-label",
@@ -890,6 +898,14 @@
               "description": "The indeterminate state of the progress component."
             },
             {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "A text label to render within the progress bar"
+            },
+            {
               "name": "max",
               "fieldName": "max",
               "type": {
@@ -1112,6 +1128,14 @@
                 "text": "string"
               },
               "description": "Custom CSS class to apply to the inner div."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disables displaying the tooltip on hover"
             },
             {
               "name": "force-open",
@@ -1618,7 +1642,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable breadcrumbs component used to help users navigate through a website.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable breadcrumbs component used to help users navigate through a website.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcBreadcrumbs",
           "members": [
             {
@@ -1661,7 +1685,15 @@
             }
           ],
           "tagName": "modus-wc-breadcrumbs",
-          "events": [],
+          "events": [
+            {
+              "name": "breadcrumbClick",
+              "type": {
+                "text": "EventEmitter<IModusWcBreadcrumb>"
+              },
+              "description": "Event emitted when a breadcrumb is clicked."
+            }
+          ],
           "customElement": true
         }
       ],
@@ -2401,7 +2433,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable modal component used to display content in a dialog.\n\nThe component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable modal component used to display content in a dialog.\r\n\r\nThe component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcModal",
           "members": [
             {
@@ -2424,7 +2456,7 @@
               "type": {
                 "text": "'default' | 'static'"
               },
-              "description": "The modal's backdrop.\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content."
+              "description": "The modal's backdrop.\r\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content."
             },
             {
               "name": "custom-class",

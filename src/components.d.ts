@@ -532,6 +532,10 @@ export namespace Components {
           * The size of the label.
          */
         "size"?: ModusSize;
+        /**
+          * The text rendered beneath the label.
+         */
+        "subLabelText"?: string;
     }
     /**
      * A customizable loader component used to indicate the loading of content.
@@ -747,6 +751,10 @@ export namespace Components {
           * The indeterminate state of the progress component.
          */
         "indeterminate": boolean;
+        /**
+          * A text label to render within the progress bar
+         */
+        "label"?: string;
         /**
           * The progress component's maximum value.
          */
@@ -1327,6 +1335,10 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * Disables displaying the tooltip on hover
+         */
+        "disabled"?: boolean;
+        /**
           * Use this attribute to force the tooltip to remain open.
          */
         "forceOpen"?: boolean;
@@ -1369,6 +1381,10 @@ export interface ModusWcAccordionCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcAutocompleteCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcAutocompleteElement;
+}
+export interface ModusWcBreadcrumbsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcBreadcrumbsElement;
 }
 export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1520,11 +1536,22 @@ declare global {
         prototype: HTMLModusWcBadgeElement;
         new (): HTMLModusWcBadgeElement;
     };
+    interface HTMLModusWcBreadcrumbsElementEventMap {
+        "breadcrumbClick": IModusWcBreadcrumb;
+    }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcBreadcrumbsElement extends Components.ModusWcBreadcrumbs, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcBreadcrumbsElementEventMap>(type: K, listener: (this: HTMLModusWcBreadcrumbsElement, ev: ModusWcBreadcrumbsCustomEvent<HTMLModusWcBreadcrumbsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcBreadcrumbsElementEventMap>(type: K, listener: (this: HTMLModusWcBreadcrumbsElement, ev: ModusWcBreadcrumbsCustomEvent<HTMLModusWcBreadcrumbsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcBreadcrumbsElement: {
         prototype: HTMLModusWcBreadcrumbsElement;
@@ -2292,6 +2319,10 @@ declare namespace LocalJSX {
          */
         "items"?: IModusWcBreadcrumb[];
         /**
+          * Event emitted when a breadcrumb is clicked.
+         */
+        "onBreadcrumbClick"?: (event: ModusWcBreadcrumbsCustomEvent<IModusWcBreadcrumb>) => void;
+        /**
           * The size of the breadcrumbs.
          */
         "size"?: ModusSize;
@@ -2660,6 +2691,10 @@ declare namespace LocalJSX {
           * The size of the label.
          */
         "size"?: ModusSize;
+        /**
+          * The text rendered beneath the label.
+         */
+        "subLabelText"?: string;
     }
     /**
      * A customizable loader component used to indicate the loading of content.
@@ -2891,6 +2926,10 @@ declare namespace LocalJSX {
           * The indeterminate state of the progress component.
          */
         "indeterminate"?: boolean;
+        /**
+          * A text label to render within the progress bar
+         */
+        "label"?: string;
         /**
           * The progress component's maximum value.
          */
@@ -3572,6 +3611,10 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the inner div.
          */
         "customClass"?: string;
+        /**
+          * Disables displaying the tooltip on hover
+         */
+        "disabled"?: boolean;
         /**
           * Use this attribute to force the tooltip to remain open.
          */

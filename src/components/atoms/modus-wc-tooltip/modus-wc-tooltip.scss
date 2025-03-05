@@ -12,3 +12,12 @@
   --tooltip-color: var(--modus-wc-color-gray-0);
   --tooltip-text-color: var(--modus-wc-color-trimble-gray);
 }
+
+.modus-wc-tooltip-disabled {
+  &:before,
+  &:after {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
