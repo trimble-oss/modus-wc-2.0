@@ -181,7 +181,7 @@ export class ModusWcCollapse {
             aria-controls={contentId}
             aria-expanded={this.expanded}
             aria-labelledby={titleId}
-            class="modus-wc-min-h-4"
+            class="modus-wc-min-h-4 modus-wc-cursor-pointer"
             id={`${baseId}-checkbox`}
             onClick={this.handleClick}
             onKeyDown={this.handleKeyDown}
