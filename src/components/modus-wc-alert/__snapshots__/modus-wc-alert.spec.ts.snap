@@ -110,7 +110,12 @@ exports[`modus-wc-alert should render with default props 1`] = `
         info
       </i>
     </modus-wc-icon>
-    <div></div>
+    <div>
+      <modus-wc-typography>
+        <!---->
+        <h3 class="modus-wc-typography"></h3>
+      </modus-wc-typography>
+    </div>
   </div>
 </modus-wc-alert>
 `;

@@ -37,17 +37,17 @@ export class ModusWcAlert {
   /** Custom CSS class to apply to the outer div element. */
   @Prop() customClass?: string = '';
 
+  /** Time taken to dismiss the toast */
+  @Prop() delay?: number = 15000;
+
+  /** Wether the alert has a dismiss button */
+  @Prop() dismissable?: boolean = false;
+
   /** The Modus icon to render. **/
   @Prop() icon?: string;
 
   /** The variant of the alert. */
   @Prop() variant?: 'error' | 'info' | 'success' | 'warning';
-
-  /** Wether the alert has a dismiss button */
-  @Prop() dismissable?: boolean = false;
-
-  /** Time taken to dismiss the toast */
-  @Prop() delay?: number = 15000;
 
   /** Role taken by the alert. Defaults to 'status' */
   @Prop() role?: 'alert' | 'log' | 'marquee' | 'status' | 'timer' = 'status';

@@ -77,6 +77,14 @@
           "name": "ModusWcAlert",
           "members": [
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "delayChanged",
               "return": {
@@ -98,14 +106,6 @@
               "name": "dismissElement"
             },
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "elementKeyupHandler",
               "return": {
@@ -121,8 +121,7 @@
                   }
                 }
               ]
-            },
-            {
+            },{
               "kind": "method",
               "name": "render"
             }
