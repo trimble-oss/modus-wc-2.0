@@ -2410,12 +2410,20 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Pagination component to navigate through a list of items.",
+          "description": "Pagination component to navigate through pages of content.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcPagination",
           "members": [
             {
               "kind": "method",
               "name": "calculateVisiblePages"
+            },
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
             },
             {
               "kind": "method",
@@ -2441,6 +2449,14 @@
               "description": "Total number of pages"
             },
             {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply"
+            },
+            {
               "name": "page",
               "fieldName": "page",
               "type": {
@@ -2457,12 +2473,12 @@
               "description": "Whether to show first/last page buttons"
             },
             {
-              "name": "visible-page-buttons",
-              "fieldName": "visiblePageButtons",
+              "name": "size",
+              "fieldName": "size",
               "type": {
-                "text": "number"
+                "text": "ModusSize"
               },
-              "description": "The number of page buttons to display"
+              "description": "Size of the pagination buttons"
             }
           ],
           "tagName": "modus-wc-pagination",

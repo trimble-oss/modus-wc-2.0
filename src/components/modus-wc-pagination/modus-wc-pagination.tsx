@@ -1,5 +1,6 @@
 import {
   Component,
+  Element,
   Event,
   EventEmitter,
   h,
@@ -8,6 +9,8 @@ import {
   Watch,
 } from '@stencil/core';
 import * as Icons from './modus-wc-pagination.icons';
+import { ModusSize } from '../types';
+import { Attributes, inheritAriaAttributes } from '../utils';
 
 interface IPageChange {
   newPage: number;
@@ -15,8 +18,9 @@ interface IPageChange {
 }
 
 /**
- * Pagination component to navigate through a list of items.
+ * Pagination component to navigate through pages of content.
  *
+ * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-pagination',
@@ -24,36 +28,36 @@ interface IPageChange {
   shadow: false,
 })
 export class ModusWcPagination {
-  /**
-   * The current page number
-   */
-  @Prop() page: number = 1;
+  private inheritedAttributes: Attributes = {};
+  private readonly maxVisibleButtons: number = 5;
 
-  /**
-   * Total number of pages
-   */
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
+  /** Total number of pages */
   @Prop() count: number = 1;
 
-  /**
-   * Whether to show first/last page buttons
-   */
-  @Prop() showFirstLast: boolean = true; //TODO: remove this as a prop, always show first/last
+  /** Custom CSS class to apply */
+  @Prop() customClass?: string = '';
 
-  /**
-   * Event emitted when page changes
-   */
+  /** The current page number */
+  @Prop() page: number = 1;
+
+  /** Whether to show first/last page buttons */
+  @Prop() showFirstLast: boolean = true;
+
+  /** Size of the pagination buttons */
+  @Prop() size: ModusSize = 'md';
+
+  /** Event emitted when page changes */
   @Event() pageChange!: EventEmitter<IPageChange>;
 
-  /**
-   * Internal state to track visible page numbers
-   */
+  /** Internal state to track visible page numbers */
   @State() visiblePages: number[] = [];
-
-  // Max number of visible page buttons
-  private readonly maxVisibleButtons: number = 5;
 
   componentWillLoad() {
     this.calculateVisiblePages();
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   @Watch('page')
@@ -81,21 +85,32 @@ export class ModusWcPagination {
     this.visiblePages = pages;
   }
 
-  private handlePageClick = (page: number) => {
-    if (page === this.page || page < 1 || page > this.count) {
+  private handlePageClick = (newPage: number) => {
+    if (newPage === this.page || newPage < 1 || newPage > this.count) {
       return;
     }
 
-    this.pageChange.emit({ newPage: page, prevPage: this.page });
-    this.page = page;
+    this.pageChange.emit({ newPage, prevPage: this.page });
+    this.page = newPage;
   };
 
+  private getClasses(): string {
+    const classList = ['modus-wc-join'];
+
+    // const propClasses = convertPropsToClasses({});
+
+    // The order CSS classes are added matters to CSS specificity
+    // if (propClasses) classList.push(propClasses);
+    if (this.customClass) classList.push(this.customClass);
+
+    return classList.join(' ');
+  }
+
   render() {
-    const pageButtonClasses =
-      'modus-wc-join-item modus-wc-btn modus-wc-btn-sm modus-wc-btn modus-wc-btn-circle';
+    const pageButtonClasses = `modus-wc-join-item modus-wc-btn modus-wc-btn-${this.size} modus-wc-btn-square`;
 
     return (
-      <div class="modus-wc-join">
+      <div class={this.getClasses()} {...this.inheritedAttributes}>
         {this.showFirstLast && (
           <button
             class={pageButtonClasses}

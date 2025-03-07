@@ -739,13 +739,18 @@ export namespace Components {
         "value": string;
     }
     /**
-     * Pagination component to navigate through a list of items.
+     * Pagination component to navigate through pages of content.
+     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcPagination {
         /**
           * Total number of pages
          */
         "count": number;
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
         /**
           * The current page number
          */
@@ -755,9 +760,9 @@ export namespace Components {
          */
         "showFirstLast": boolean;
         /**
-          * The number of page buttons to display
+          * Size of the pagination buttons
          */
-        "visiblePageButtons": number;
+        "size": ModusSize;
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -1822,7 +1827,8 @@ declare global {
         "pageChange": IPageChange;
     }
     /**
-     * Pagination component to navigate through a list of items.
+     * Pagination component to navigate through pages of content.
+     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcPaginationElement extends Components.ModusWcPagination, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcPaginationElementEventMap>(type: K, listener: (this: HTMLModusWcPaginationElement, ev: ModusWcPaginationCustomEvent<HTMLModusWcPaginationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2966,13 +2972,18 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
-     * Pagination component to navigate through a list of items.
+     * Pagination component to navigate through pages of content.
+     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcPagination {
         /**
           * Total number of pages
          */
         "count"?: number;
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
         /**
           * Event emitted when page changes
          */
@@ -2986,9 +2997,9 @@ declare namespace LocalJSX {
          */
         "showFirstLast"?: boolean;
         /**
-          * The number of page buttons to display
+          * Size of the pagination buttons
          */
-        "visiblePageButtons"?: number;
+        "size"?: ModusSize;
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -3886,7 +3897,8 @@ declare module "@stencil/core" {
              */
             "modus-wc-number-input": LocalJSX.ModusWcNumberInput & JSXBase.HTMLAttributes<HTMLModusWcNumberInputElement>;
             /**
-             * Pagination component to navigate through a list of items.
+             * Pagination component to navigate through pages of content.
+             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-pagination": LocalJSX.ModusWcPagination & JSXBase.HTMLAttributes<HTMLModusWcPaginationElement>;
             /**
