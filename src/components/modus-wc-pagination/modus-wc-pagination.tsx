@@ -35,11 +35,6 @@ export class ModusWcPagination {
   @Prop() count: number = 1;
 
   /**
-   * The number of page buttons to display
-   */
-  @Prop() visiblePageButtons: number = 5; //TODO: remove this as a prop, track it internally
-
-  /**
    * Whether to show first/last page buttons
    */
   @Prop() showFirstLast: boolean = true; //TODO: remove this as a prop, always show first/last
@@ -54,22 +49,29 @@ export class ModusWcPagination {
    */
   @State() visiblePages: number[] = [];
 
+  // Max number of visible page buttons
+  private readonly maxVisibleButtons: number = 5;
+
   componentWillLoad() {
     this.calculateVisiblePages();
   }
 
   @Watch('page')
   @Watch('count')
-  @Watch('visiblePageButtons')
+  // Creates a sliding "window" of page buttons that tries to keep the current page centered when possible.
   calculateVisiblePages() {
     const pages: number[] = [];
-    const halfVisible = Math.floor(this.visiblePageButtons / 2);
+
+    // Calculates how many page buttons should ideally appear on each side of current page.
+    const halfVisible = Math.floor(this.maxVisibleButtons / 2);
 
     let startPage = Math.max(1, this.page - halfVisible);
-    let endPage = Math.min(this.count, startPage + this.visiblePageButtons - 1);
+    let endPage = Math.min(this.count, startPage + this.maxVisibleButtons - 1);
 
-    if (endPage - startPage + 1 < this.visiblePageButtons) {
-      startPage = Math.max(1, endPage - this.visiblePageButtons + 1);
+    // Handles edge case when near end of the page count.
+    // If we can't fit enough buttons after current page, then shift window left.
+    if (endPage - startPage + 1 < this.maxVisibleButtons) {
+      startPage = Math.max(1, endPage - this.maxVisibleButtons + 1);
     }
 
     for (let i = startPage; i <= endPage; i++) {
