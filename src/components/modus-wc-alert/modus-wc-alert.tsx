@@ -139,13 +139,14 @@ export class ModusWcAlert {
         >
           <modus-wc-icon name={this.getIconName()} />
           <div>
-            {this.alertTitle && (
-              <modus-wc-typography variant="h3" weight="bold">
-                {this.alertTitle}
-              </modus-wc-typography>
-            )}
+            <modus-wc-typography variant="h3" weight="bold">
+              {this.alertTitle}
+            </modus-wc-typography>
             {this.alertDescription && (
               <modus-wc-typography>{this.alertDescription}</modus-wc-typography>
+            )}
+            {!this.alertTitle && !this.alertDescription && (
+              <slot name="alert-data" />
             )}
           </div>
           <slot name="button" />

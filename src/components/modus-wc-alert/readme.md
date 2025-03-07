@@ -36,9 +36,9 @@ Adheres to WCAG 2.2 standards.
 
 ### Depends on
 
-- [modus-wc-icon](../../atoms/modus-wc-icon)
-- [modus-wc-typography](../../atoms/modus-wc-typography)
-- [modus-wc-button](../../atoms/modus-wc-button)
+- [modus-wc-icon](../modus-wc-icon)
+- [modus-wc-typography](../modus-wc-typography)
+- [modus-wc-button](../modus-wc-button)
 
 ### Graph
 ```mermaid
