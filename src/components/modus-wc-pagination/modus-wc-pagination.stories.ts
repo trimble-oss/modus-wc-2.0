@@ -7,7 +7,6 @@ interface PaginationArgs {
   count: number;
   'custom-class'?: string;
   page: number;
-  'show-first-last'?: boolean;
   size?: 'sm' | 'md' | 'lg';
 }
 
@@ -18,7 +17,6 @@ const meta: Meta<PaginationArgs> = {
     count: 5,
     'custom-class': '',
     page: 1,
-    'show-first-last': true,
     size: 'md',
   },
   argTypes: {
@@ -45,7 +43,6 @@ export const Default: Story = {
       count=${args.count}
       custom-class=${ifDefined(args['custom-class'])}
       page=${args.page}
-      ?show-first-last=${args['show-first-last']}
       size=${ifDefined(args.size)}
     ></modus-wc-pagination>
   `,

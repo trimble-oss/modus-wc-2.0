@@ -2465,14 +2465,6 @@
               "description": "The current page number"
             },
             {
-              "name": "show-first-last",
-              "fieldName": "showFirstLast",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Whether to show first/last page buttons"
-            },
-            {
               "name": "size",
               "fieldName": "size",
               "type": {

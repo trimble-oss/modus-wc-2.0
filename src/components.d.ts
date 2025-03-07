@@ -756,10 +756,6 @@ export namespace Components {
          */
         "page": number;
         /**
-          * Whether to show first/last page buttons
-         */
-        "showFirstLast": boolean;
-        /**
           * Size of the pagination buttons
          */
         "size": ModusSize;
@@ -2992,10 +2988,6 @@ declare namespace LocalJSX {
           * The current page number
          */
         "page"?: number;
-        /**
-          * Whether to show first/last page buttons
-         */
-        "showFirstLast"?: boolean;
         /**
           * Size of the pagination buttons
          */

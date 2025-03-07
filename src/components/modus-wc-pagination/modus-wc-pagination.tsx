@@ -43,9 +43,6 @@ export class ModusWcPagination {
   /** The current page number */
   @Prop() page: number = 1;
 
-  /** Whether to show first/last page buttons */
-  @Prop() showFirstLast: boolean = true;
-
   /** Size of the pagination buttons */
   @Prop() size: ModusSize = 'md';
 
@@ -108,14 +105,18 @@ export class ModusWcPagination {
 
   render() {
     const pageButtonClasses = `modus-wc-pagination-btn modus-wc-join-item modus-wc-btn modus-wc-btn-${this.size} modus-wc-btn-square`;
+    const isFirstPage = this.page === 1;
+    const isLastPage = this.page === this.count;
+    const shouldShowFirstLastButtons = this.count > this.maxVisibleButtons;
 
     return (
       <div class={this.getClasses()} {...this.inheritedAttributes}>
-        {this.showFirstLast && (
+        {shouldShowFirstLastButtons && (
           <button
             class={pageButtonClasses}
             onClick={() => this.handlePageClick(1)}
             aria-label="First page"
+            disabled={isFirstPage}
           >
             <Icons.ChevronDoubleLeft />
           </button>
@@ -125,6 +126,7 @@ export class ModusWcPagination {
           class={pageButtonClasses}
           onClick={() => this.handlePageClick(this.page - 1)}
           aria-label="Previous page"
+          disabled={isFirstPage}
         >
           <Icons.ChevronLeft />
         </button>
@@ -144,15 +146,17 @@ export class ModusWcPagination {
           class={pageButtonClasses}
           onClick={() => this.handlePageClick(this.page + 1)}
           aria-label="Next page"
+          disabled={isLastPage}
         >
           <Icons.ChevronRight />
         </button>
 
-        {this.showFirstLast && (
+        {shouldShowFirstLastButtons && (
           <button
             class={pageButtonClasses}
             onClick={() => this.handlePageClick(this.count)}
             aria-label="Last page"
+            disabled={isLastPage}
           >
             <Icons.ChevronDoubleRight />
           </button>
