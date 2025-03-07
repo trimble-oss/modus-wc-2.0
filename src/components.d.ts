@@ -5,28 +5,28 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
+import { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
 import { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
-import { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
-import { IModusWcCollapseOptions } from "./components/molecules/modus-wc-collapse/modus-wc-collapse";
-import { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
-import { ISelectOption } from "./components/molecules/modus-wc-select/modus-wc-select";
-import { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
-import { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs";
+import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
+import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
+import { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+import { IModusWcTab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
-import { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
-import { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
-export { IAutocompleteItem } from "./components/molecules/modus-wc-autocomplete/modus-wc-autocomplete";
+import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
+import { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
+export { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
 export { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
-export { IModusWcBreadcrumb } from "./components/molecules/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
-export { IModusWcCollapseOptions } from "./components/molecules/modus-wc-collapse/modus-wc-collapse";
-export { LoaderColor, LoaderVariant } from "./components/atoms/modus-wc-loader/modus-wc-loader";
-export { ISelectOption } from "./components/molecules/modus-wc-select/modus-wc-select";
-export { ITableColumn } from "./components/organisms/modus-wc-table/modus-wc-table";
-export { IModusWcTab } from "./components/molecules/modus-wc-tabs/modus-wc-tabs";
+export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
+export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
+export { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+export { IModusWcTab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
-export { ToastPosition } from "./components/atoms/modus-wc-toast/modus-wc-toast";
-export { TypographyVariant, TypographyWeight } from "./components/atoms/modus-wc-typography/modus-wc-typography";
+export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
+export { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
@@ -752,6 +752,7 @@ export namespace Components {
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
+     * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcProgress {
@@ -775,6 +776,10 @@ export namespace Components {
           * The value of the progress component.
          */
         "value": number;
+        /**
+          * The variant of the progress component.
+         */
+        "variant"?: 'default' | 'radial';
     }
     /**
      * A customizable radio component.
@@ -1398,6 +1403,10 @@ export interface ModusWcAutocompleteCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcAutocompleteElement;
 }
+export interface ModusWcBreadcrumbsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcBreadcrumbsElement;
+}
 export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcButtonElement;
@@ -1559,11 +1568,22 @@ declare global {
         prototype: HTMLModusWcBadgeElement;
         new (): HTMLModusWcBadgeElement;
     };
+    interface HTMLModusWcBreadcrumbsElementEventMap {
+        "breadcrumbClick": IModusWcBreadcrumb;
+    }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcBreadcrumbsElement extends Components.ModusWcBreadcrumbs, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcBreadcrumbsElementEventMap>(type: K, listener: (this: HTMLModusWcBreadcrumbsElement, ev: ModusWcBreadcrumbsCustomEvent<HTMLModusWcBreadcrumbsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcBreadcrumbsElementEventMap>(type: K, listener: (this: HTMLModusWcBreadcrumbsElement, ev: ModusWcBreadcrumbsCustomEvent<HTMLModusWcBreadcrumbsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcBreadcrumbsElement: {
         prototype: HTMLModusWcBreadcrumbsElement;
@@ -1802,6 +1822,7 @@ declare global {
     };
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
+     * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcProgressElement extends Components.ModusWcProgress, HTMLStencilElement {
@@ -2346,6 +2367,10 @@ declare namespace LocalJSX {
           * The breadcrumbs to render.
          */
         "items"?: IModusWcBreadcrumb[];
+        /**
+          * Event emitted when a breadcrumb is clicked.
+         */
+        "onBreadcrumbClick"?: (event: ModusWcBreadcrumbsCustomEvent<IModusWcBreadcrumb>) => void;
         /**
           * The size of the breadcrumbs.
          */
@@ -2939,6 +2964,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
+     * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcProgress {
@@ -2962,6 +2988,10 @@ declare namespace LocalJSX {
           * The value of the progress component.
          */
         "value"?: number;
+        /**
+          * The variant of the progress component.
+         */
+        "variant"?: 'default' | 'radial';
     }
     /**
      * A customizable radio component.
@@ -3828,6 +3858,7 @@ declare module "@stencil/core" {
             "modus-wc-number-input": LocalJSX.ModusWcNumberInput & JSXBase.HTMLAttributes<HTMLModusWcNumberInputElement>;
             /**
              * A customizable progress component used to show the progress of a task or show the passing of time.
+             * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-progress": LocalJSX.ModusWcProgress & JSXBase.HTMLAttributes<HTMLModusWcProgressElement>;
