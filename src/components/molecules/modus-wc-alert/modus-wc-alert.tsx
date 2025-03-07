@@ -1,4 +1,14 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  h,
+  Host,
+  Prop,
+  Event,
+  EventEmitter,
+  Listen,
+  Watch,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
@@ -32,6 +42,18 @@ export class ModusWcAlert {
 
   /** The variant of the alert. */
   @Prop() variant?: 'error' | 'info' | 'success' | 'warning';
+
+  /** Wether the alert has a dismiss button */
+  @Prop() dismissable?: boolean = false;
+
+  /** Time taken to dismiss the toast */
+  @Prop() delay?: number = 15000;
+
+  /** Role taken by the alert. Defaults to 'status' */
+  @Prop() role?: 'alert' | 'log' | 'marquee' | 'status' | 'timer' = 'status';
+
+  /** An event that fires when the alert is dismissed */
+  @Event() dismissClick!: EventEmitter;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -67,6 +89,46 @@ export class ModusWcAlert {
     }
   }
 
+  private timerId!: NodeJS.Timeout;
+
+  @Watch('delay')
+  delayChanged(newDelay: number): void {
+    clearTimeout(this.timerId);
+    this.timerId = setTimeout(() => {
+      this.dismissElement();
+    }, newDelay);
+  }
+
+  dismissElement() {
+    this.dismissClick.emit();
+    this.el.remove();
+  }
+
+  componentDidLoad(): void {
+    if (this.delay && this.delay > 0) {
+      this.timerId = setTimeout(() => {
+        this.dismissElement();
+      }, this.delay);
+    }
+  }
+
+  disconnectedCallback(): void {
+    clearTimeout(this.timerId);
+  }
+
+  @Listen('keyup')
+  elementKeyupHandler(event: KeyboardEvent): void {
+    switch (event.code) {
+      case 'Escape':
+        if (!this.dismissable) {
+          return;
+        }
+
+        this.dismissElement();
+        break;
+    }
+  }
+
   render() {
     return (
       <Host>
@@ -77,14 +139,28 @@ export class ModusWcAlert {
         >
           <modus-wc-icon name={this.getIconName()} />
           <div>
-            <modus-wc-typography variant="h3" weight="bold">
-              {this.alertTitle}
-            </modus-wc-typography>
+            {this.alertTitle && (
+              <modus-wc-typography variant="h3" weight="bold">
+                {this.alertTitle}
+              </modus-wc-typography>
+            )}
             {this.alertDescription && (
               <modus-wc-typography>{this.alertDescription}</modus-wc-typography>
             )}
           </div>
           <slot name="button" />
+          {this.dismissable && (
+            <modus-wc-button
+              aria-label="notification button"
+              color="secondary"
+              size="sm"
+              slot="button"
+              variant="borderless"
+              onClick={() => this.dismissElement()}
+            >
+              <modus-wc-icon aria-label="notify icon" name="close" decorative />
+            </modus-wc-button>
+          )}
         </div>
       </Host>
     );
