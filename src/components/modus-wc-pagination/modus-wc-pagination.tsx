@@ -95,7 +95,7 @@ export class ModusWcPagination {
   };
 
   private getClasses(): string {
-    const classList = ['modus-wc-join'];
+    const classList = ['modus-wc-pagination', 'modus-wc-join'];
 
     // const propClasses = convertPropsToClasses({});
 
@@ -107,7 +107,7 @@ export class ModusWcPagination {
   }
 
   render() {
-    const pageButtonClasses = `modus-wc-join-item modus-wc-btn modus-wc-btn-${this.size} modus-wc-btn-square`;
+    const pageButtonClasses = `modus-wc-pagination-btn modus-wc-join-item modus-wc-btn modus-wc-btn-${this.size} modus-wc-btn-square`;
 
     return (
       <div class={this.getClasses()} {...this.inheritedAttributes}>

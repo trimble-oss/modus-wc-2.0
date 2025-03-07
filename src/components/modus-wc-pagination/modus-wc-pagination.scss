@@ -1,3 +1,24 @@
-.modus-wc-pagination-start-page-btn {
-  font-size: var(--modus-wc-font-size-lg);
+.modus-wc-pagination {
+  .modus-wc-pagination-btn {
+    &.modus-wc-btn-sm {
+      .modus-wc-pagination-icon {
+        height: var(--modus-wc-font-size-sm);
+        width: var(--modus-wc-font-size-sm);
+      }
+    }
+
+    &.modus-wc-btn-md {
+      .modus-wc-pagination-icon {
+        height: var(--modus-wc-font-size-md);
+        width: var(--modus-wc-font-size-md);
+      }
+    }
+
+    &.modus-wc-btn-lg {
+      .modus-wc-pagination-icon {
+        height: var(--modus-wc-font-size-lg);
+        width: var(--modus-wc-font-size-lg);
+      }
+    }
+  }
 }
