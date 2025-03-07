@@ -739,6 +739,27 @@ export namespace Components {
         "value": string;
     }
     /**
+     * Pagination component to navigate through a list of items.
+     */
+    interface ModusWcPagination {
+        /**
+          * Total number of pages
+         */
+        "count": number;
+        /**
+          * The current page number
+         */
+        "page": number;
+        /**
+          * Whether to show first/last page buttons
+         */
+        "showFirstLast": boolean;
+        /**
+          * The number of page buttons to display
+         */
+        "visiblePageButtons": number;
+    }
+    /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
      * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
      * Adheres to WCAG 2.2 standards.
@@ -1419,6 +1440,10 @@ export interface ModusWcNumberInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcNumberInputElement;
 }
+export interface ModusWcPaginationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcPaginationElement;
+}
 export interface ModusWcRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcRadioElement;
@@ -1793,6 +1818,26 @@ declare global {
         prototype: HTMLModusWcNumberInputElement;
         new (): HTMLModusWcNumberInputElement;
     };
+    interface HTMLModusWcPaginationElementEventMap {
+        "pageChange": IPageChange;
+    }
+    /**
+     * Pagination component to navigate through a list of items.
+     */
+    interface HTMLModusWcPaginationElement extends Components.ModusWcPagination, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcPaginationElementEventMap>(type: K, listener: (this: HTMLModusWcPaginationElement, ev: ModusWcPaginationCustomEvent<HTMLModusWcPaginationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcPaginationElementEventMap>(type: K, listener: (this: HTMLModusWcPaginationElement, ev: ModusWcPaginationCustomEvent<HTMLModusWcPaginationElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcPaginationElement: {
+        prototype: HTMLModusWcPaginationElement;
+        new (): HTMLModusWcPaginationElement;
+    };
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
      * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
@@ -2103,6 +2148,7 @@ declare global {
         "modus-wc-menu-item": HTMLModusWcMenuItemElement;
         "modus-wc-modal": HTMLModusWcModalElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
+        "modus-wc-pagination": HTMLModusWcPaginationElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
         "modus-wc-select": HTMLModusWcSelectElement;
@@ -2920,6 +2966,31 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
+     * Pagination component to navigate through a list of items.
+     */
+    interface ModusWcPagination {
+        /**
+          * Total number of pages
+         */
+        "count"?: number;
+        /**
+          * Event emitted when page changes
+         */
+        "onPageChange"?: (event: ModusWcPaginationCustomEvent<IPageChange>) => void;
+        /**
+          * The current page number
+         */
+        "page"?: number;
+        /**
+          * Whether to show first/last page buttons
+         */
+        "showFirstLast"?: boolean;
+        /**
+          * The number of page buttons to display
+         */
+        "visiblePageButtons"?: number;
+    }
+    /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
      * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
      * Adheres to WCAG 2.2 standards.
@@ -3682,6 +3753,7 @@ declare namespace LocalJSX {
         "modus-wc-menu-item": ModusWcMenuItem;
         "modus-wc-modal": ModusWcModal;
         "modus-wc-number-input": ModusWcNumberInput;
+        "modus-wc-pagination": ModusWcPagination;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
         "modus-wc-select": ModusWcSelect;
@@ -3813,6 +3885,10 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-number-input": LocalJSX.ModusWcNumberInput & JSXBase.HTMLAttributes<HTMLModusWcNumberInputElement>;
+            /**
+             * Pagination component to navigate through a list of items.
+             */
+            "modus-wc-pagination": LocalJSX.ModusWcPagination & JSXBase.HTMLAttributes<HTMLModusWcPaginationElement>;
             /**
              * A customizable progress component used to show the progress of a task or show the passing of time.
              * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
