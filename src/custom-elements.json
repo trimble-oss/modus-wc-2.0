@@ -2428,15 +2428,6 @@
             {
               "kind": "method",
               "name": "render"
-            },
-            {
-              "kind": "field",
-              "name": "visiblePages",
-              "type": {
-                "text": "number[]"
-              },
-              "default": "[]",
-              "description": "Internal state to track visible page numbers"
             }
           ],
           "attributes": [
