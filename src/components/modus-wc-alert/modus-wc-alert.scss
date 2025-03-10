@@ -37,7 +37,7 @@
   &.modus-wc-alert-info {
     background-color: color-mix(
       in srgb,
-      var(--modus-wc-color-highlight-blue) 30%,
+      var(--modus-wc-color-highlight-blue) 50%,
       transparent
     );
     border-color: var(--modus-wc-color-highlight-blue);
@@ -46,7 +46,7 @@
   &.modus-wc-alert-error {
     background-color: color-mix(
       in srgb,
-      var(--modus-wc-color-red-light) 30%,
+      var(--modus-wc-color-red) 50%,
       transparent
     );
     border-color: var(--modus-wc-color-red);
@@ -55,7 +55,7 @@
   &.modus-wc-alert-success {
     background-color: color-mix(
       in srgb,
-      var(--modus-wc-color-green-light) 30%,
+      var(--modus-wc-color-green) 50%,
       transparent
     );
     border-color: var(--modus-wc-color-green);
@@ -64,7 +64,7 @@
   &.modus-wc-alert-warning {
     background-color: color-mix(
       in srgb,
-      var(--modus-wc-color-yellow-light) 30%,
+      var(--modus-wc-color-yellow-dark) 50%,
       transparent
     );
     border-color: var(--modus-wc-color-yellow-dark);
