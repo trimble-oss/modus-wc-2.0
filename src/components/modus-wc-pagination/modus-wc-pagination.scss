@@ -39,8 +39,8 @@
     color: var(--modus-wc-color-trimble-gray);
 
     &.modus-wc-btn-active {
-      background-color: var(--modus-wc-color-blue-pale);
       color: var(--modus-wc-color-blue-light);
+      background-color: var(--modus-wc-color-blue-pale);
     }
 
     &:hover:not(.modus-wc-btn-active) {
@@ -54,8 +54,8 @@
     color: var(--modus-wc-color-gray-2);
 
     &.modus-wc-btn-active {
-      background-color: var(--modus-wc-color-highlight-blue);
       color: var(--modus-wc-color-trimble-gray);
+      background-color: var(--modus-wc-color-highlight-blue);
     }
 
     &:hover:not(.modus-wc-btn-active) {
