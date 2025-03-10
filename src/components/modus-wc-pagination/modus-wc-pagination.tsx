@@ -50,7 +50,7 @@ export class ModusWcPagination {
   @Event() pageChange!: EventEmitter<IPageChange>;
 
   /** Internal state to track visible page numbers */
-  @State() visiblePages: number[] = [];
+  @State() private visiblePages: number[] = [];
 
   componentWillLoad() {
     this.calculateVisiblePages();
