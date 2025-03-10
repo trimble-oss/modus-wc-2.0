@@ -48,16 +48,16 @@ const Template: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-      <modus-wc-alert
-        alert-description=${ifDefined(args['alert-description'])}
-        alert-title=${args['alert-title']}
-        custom-class=${ifDefined(args['custom-class'])}
-        dismissable=${args.dismissable}
-        icon=${ifDefined(args.icon)}
-        role=${args.role}
-        variant=${ifDefined(args.variant)}
-      >
-      </modus-wc-alert>
+<modus-wc-alert
+  alert-description=${ifDefined(args['alert-description'])}
+  alert-title=${args['alert-title']}
+  custom-class=${ifDefined(args['custom-class'])}
+  dismissable=${args.dismissable}
+  icon=${ifDefined(args.icon)}
+  role=${args.role}
+  variant=${ifDefined(args.variant)}
+>
+</modus-wc-alert>
     `;
   },
 };
@@ -68,21 +68,21 @@ export const CustomButton: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-      <modus-wc-alert
-        alert-description=${ifDefined(args['alert-description'])}
-        alert-title=${args['alert-title']}
-        custom-class=${ifDefined(args['custom-class'])}
-        dismissable=${args.dismissable}
-        icon=${ifDefined(args.icon)}
-        role=${args.role}
-        variant=${ifDefined(args.variant)}
-      >
-        <modus-wc-button
-          aria-label="View messages"
-          color="secondary"
-          slot="button"
-        >View Messages</modus-wc-button>
-      </modus-wc-alert>
+<modus-wc-alert
+  alert-description=${ifDefined(args['alert-description'])}
+  alert-title=${args['alert-title']}
+  custom-class=${ifDefined(args['custom-class'])}
+  dismissable=${args.dismissable}
+  icon=${ifDefined(args.icon)}
+  role=${args.role}
+  variant=${ifDefined(args.variant)}
+>
+  <modus-wc-button
+    aria-label="View messages"
+    color="secondary"
+    slot="button"
+  >View Messages</modus-wc-button>
+</modus-wc-alert>
     `;
   },
 };

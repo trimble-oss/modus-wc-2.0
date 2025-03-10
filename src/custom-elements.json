@@ -77,14 +77,6 @@
           "name": "ModusWcAlert",
           "members": [
             {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
               "kind": "method",
               "name": "delayChanged",
               "return": {
@@ -106,6 +98,14 @@
               "name": "dismissElement"
             },
             {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
               "kind": "method",
               "name": "elementKeyupHandler",
               "return": {
@@ -121,7 +121,8 @@
                   }
                 }
               ]
-            },{
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -157,7 +158,7 @@
               "type": {
                 "text": "number"
               },
-              "description": "Time taken to dismiss the toast"
+              "description": "Time taken to dismiss the toast in milliseconds"
             },
             {
               "name": "dismissable",
@@ -165,7 +166,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Wether the alert has a dismiss button"
+              "description": "Whether the alert has a dismiss button"
             },
             {
               "name": "icon",

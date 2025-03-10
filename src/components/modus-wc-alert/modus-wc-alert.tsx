@@ -37,10 +37,10 @@ export class ModusWcAlert {
   /** Custom CSS class to apply to the outer div element. */
   @Prop() customClass?: string = '';
 
-  /** Time taken to dismiss the toast */
+  /** Time taken to dismiss the toast in milliseconds */
   @Prop() delay?: number = 15000;
 
-  /** Wether the alert has a dismiss button */
+  /** Whether the alert has a dismiss button */
   @Prop() dismissable?: boolean = false;
 
   /** The Modus icon to render. **/
@@ -142,10 +142,10 @@ export class ModusWcAlert {
             <modus-wc-typography variant="h3" weight="bold">
               {this.alertTitle}
             </modus-wc-typography>
-            <modus-wc-typography>{this.alertDescription}</modus-wc-typography>
-            {!this.alertTitle && !this.alertDescription && (
-              <slot name="alert-data" />
+            {this.alertDescription && (
+              <modus-wc-typography>{this.alertDescription}</modus-wc-typography>
             )}
+            {!this.alertTitle && !this.alertDescription && <slot />}
           </div>
           <slot name="button" />
           {this.dismissable && (

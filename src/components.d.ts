@@ -57,11 +57,11 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
-          * Time taken to dismiss the toast
+          * Time taken to dismiss the toast in milliseconds
          */
         "delay"?: number;
         /**
-          * Wether the alert has a dismiss button
+          * Whether the alert has a dismiss button
          */
         "dismissable"?: boolean;
         /**
@@ -71,7 +71,7 @@ export namespace Components {
         /**
           * Role taken by the alert. Defaults to 'status'
          */
-        "role"?: 'alert' | 'log' | 'marquee' | 'status' | 'timer';
+        "role": 'alert' | 'log' | 'marquee' | 'status' | 'timer';
         /**
           * The variant of the alert.
          */
@@ -2185,11 +2185,11 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * Time taken to dismiss the toast
+          * Time taken to dismiss the toast in milliseconds
          */
         "delay"?: number;
         /**
-          * Wether the alert has a dismiss button
+          * Whether the alert has a dismiss button
          */
         "dismissable"?: boolean;
         /**
