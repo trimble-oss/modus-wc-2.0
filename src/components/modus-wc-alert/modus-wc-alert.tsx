@@ -47,7 +47,7 @@ export class ModusWcAlert {
   @Prop() icon?: string;
 
   /** The variant of the alert. */
-  @Prop() variant?: 'error' | 'info' | 'success' | 'warning' = 'info';
+  @Prop() variant?: 'error' | 'info' | 'success' | 'warning';
 
   /** Role taken by the alert. Defaults to 'status' */
   @Prop() role: 'alert' | 'log' | 'marquee' | 'status' | 'timer' = 'status';
