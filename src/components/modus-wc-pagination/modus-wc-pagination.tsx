@@ -53,11 +53,6 @@ export class ModusWcPagination {
   /** Internal state to track visible page numbers */
   @State() private visiblePages: number[] = [];
 
-  componentWillLoad() {
-    this.calculateVisiblePages();
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
-  }
-
   @Watch('page')
   @Watch('count')
   // Creates a sliding "window" of page buttons that tries to keep the current page centered when possible.
@@ -83,14 +78,10 @@ export class ModusWcPagination {
     this.visiblePages = pages;
   }
 
-  private handlePageClick = (newPage: number) => {
-    if (newPage === this.page || newPage < 1 || newPage > this.count) {
-      return;
-    }
-
-    this.pageChange.emit({ newPage, prevPage: this.page });
-    this.page = newPage;
-  };
+  componentWillLoad() {
+    this.calculateVisiblePages();
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
 
   private getClasses(): [paginationClasses: string, buttonClasses: string] {
     const buttonClassList = [
@@ -113,6 +104,15 @@ export class ModusWcPagination {
 
     return [paginationClasses, buttonClasses];
   }
+
+  private handlePageClick = (newPage: number) => {
+    if (newPage === this.page || newPage < 1 || newPage > this.count) {
+      return;
+    }
+
+    this.pageChange.emit({ newPage, prevPage: this.page });
+    this.page = newPage;
+  };
 
   render() {
     const [paginationClasses, buttonClasses] = this.getClasses();
