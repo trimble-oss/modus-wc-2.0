@@ -28,7 +28,7 @@ const meta: Meta<AlertArgs> = {
   argTypes: {
     role: {
       control: { type: 'select' },
-      options: ['alert', 'log', 'marquee', 'status', 'timer'],
+      options: ['', 'alert', 'log', 'marquee', 'status', 'timer'],
     },
     variant: {
       control: { type: 'select' },
