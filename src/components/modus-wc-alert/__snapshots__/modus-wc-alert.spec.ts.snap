@@ -16,6 +16,10 @@ exports[`modus-wc-alert should render error variant with alert icon 1`] = `
           Custom title
         </h3>
       </modus-wc-typography>
+      <modus-wc-typography>
+        <!---->
+        <p class="modus-wc-font-normal modus-wc-text-md modus-wc-typography"></p>
+      </modus-wc-typography>
     </div>
   </div>
 </modus-wc-alert>
@@ -36,6 +40,10 @@ exports[`modus-wc-alert should render info variant with info icon 1`] = `
         <h3 class="modus-wc-typography">
           Custom title
         </h3>
+      </modus-wc-typography>
+      <modus-wc-typography>
+        <!---->
+        <p class="modus-wc-font-normal modus-wc-text-md modus-wc-typography"></p>
       </modus-wc-typography>
     </div>
   </div>
@@ -58,6 +66,10 @@ exports[`modus-wc-alert should render success variant with check_circle icon 1`]
           Custom title
         </h3>
       </modus-wc-typography>
+      <modus-wc-typography>
+        <!---->
+        <p class="modus-wc-font-normal modus-wc-text-md modus-wc-typography"></p>
+      </modus-wc-typography>
     </div>
   </div>
 </modus-wc-alert>
@@ -78,6 +90,10 @@ exports[`modus-wc-alert should render warning variant with info icon 1`] = `
         <h3 class="modus-wc-typography">
           Custom title
         </h3>
+      </modus-wc-typography>
+      <modus-wc-typography>
+        <!---->
+        <p class="modus-wc-font-normal modus-wc-text-md modus-wc-typography"></p>
       </modus-wc-typography>
     </div>
   </div>
@@ -104,7 +120,7 @@ exports[`modus-wc-alert should render with custom props 1`] = `
 exports[`modus-wc-alert should render with default props 1`] = `
 <modus-wc-alert alerttitle="Custom title">
   <!---->
-  <div class="modus-wc-alert" role="alert">
+  <div class="modus-wc-alert modus-wc-alert-info" role="alert">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
       <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
         info
@@ -114,6 +130,10 @@ exports[`modus-wc-alert should render with default props 1`] = `
       <modus-wc-typography>
         <!---->
         <h3 class="modus-wc-typography"></h3>
+      </modus-wc-typography>
+      <modus-wc-typography>
+        <!---->
+        <p class="modus-wc-font-normal modus-wc-text-md modus-wc-typography"></p>
       </modus-wc-typography>
     </div>
   </div>
