@@ -1,8 +1,8 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcAlert } from './modus-wc-alert';
+import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 import { ModusWCTypography } from '../modus-wc-typography/modus-wc-typography';
-import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 
 describe('modus-wc-alert', () => {
   afterEach(() => {
@@ -67,8 +67,8 @@ describe('modus-wc-alert', () => {
 
     const component = page.rootInstance as ModusWcAlert;
     jest.useFakeTimers();
-    const setTimeoutSpy = jest.spyOn(global, 'setTimeout');
-    const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout');
+    const setTimeoutSpy = jest.spyOn(globalThis, 'setTimeout');
+    const clearTimeoutSpy = jest.spyOn(globalThis, 'clearTimeout');
 
     component.delayChanged(1000);
     expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 1000);
@@ -110,7 +110,7 @@ describe('modus-wc-alert', () => {
 
     const component = page.rootInstance as ModusWcAlert;
     jest.useFakeTimers();
-    const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout');
+    const clearTimeoutSpy = jest.spyOn(globalThis, 'clearTimeout');
     component.disconnectedCallback();
     expect(clearTimeoutSpy).toHaveBeenCalled();
   });

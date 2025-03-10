@@ -1,12 +1,12 @@
 import {
   Component,
   Element,
-  h,
-  Host,
-  Prop,
   Event,
   EventEmitter,
+  h,
+  Host,
   Listen,
+  Prop,
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
@@ -89,7 +89,7 @@ export class ModusWcAlert {
     }
   }
 
-  private timerId!: NodeJS.Timeout;
+  private timerId!: ReturnType<typeof setTimeout>;
 
   @Watch('delay')
   delayChanged(newDelay: number): void {
@@ -142,9 +142,7 @@ export class ModusWcAlert {
             <modus-wc-typography variant="h3" weight="bold">
               {this.alertTitle}
             </modus-wc-typography>
-            {this.alertDescription && (
-              <modus-wc-typography>{this.alertDescription}</modus-wc-typography>
-            )}
+            <modus-wc-typography>{this.alertDescription}</modus-wc-typography>
             {!this.alertTitle && !this.alertDescription && (
               <slot name="alert-data" />
             )}
