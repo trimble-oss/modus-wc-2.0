@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-pagination should not render first and last page nav buttons when count is less than 5 1`] = `
+<modus-wc-pagination count="5" page="4">
+  <div aria-label="pagination test" class="modus-wc-join modus-wc-pagination">
+    <button aria-label="Previous page" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      <svg class="mi-chevron-left modus-wc-pagination-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.39-.39.38-1.03 0-1.41"></path>
+      </svg>
+    </button>
+    <button aria-label="Page 1" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      1
+    </button>
+    <button aria-label="Page 2" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      2
+    </button>
+    <button aria-label="Page 3" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      3
+    </button>
+    <button aria-current="page" aria-label="Page 4" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      4
+    </button>
+    <button aria-label="Page 5" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      5
+    </button>
+    <button aria-label="Next page" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      <svg class="mi-chevron-right modus-wc-pagination-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01"></path>
+      </svg>
+    </button>
+  </div>
+</modus-wc-pagination>
+`;
+
+exports[`modus-wc-pagination should render first and last page nav buttons when count is greater than 5 1`] = `
+<modus-wc-pagination count="13" page="7">
+  <div aria-label="pagination test" class="modus-wc-join modus-wc-pagination">
+    <button aria-label="First page" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      <svg class="mi-chevron-double-left modus-wc-pagination-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="m14.42 12 3.88-3.88a.996.996 0 1 0-1.41-1.41L12.3 11.3a.996.996 0 0 0 0 1.41l4.59 4.59c.38.38 1.01.38 1.4-.01a.996.996 0 0 0 0-1.41zm-2.71-5.29a.996.996 0 0 0-1.41 0L5.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59c.38.38 1.01.38 1.4-.01s.39-1.02 0-1.41L7.83 12l3.88-3.88a.996.996 0 0 0 0-1.41"></path>
+      </svg>
+    </button>
+    <button aria-label="Previous page" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      <svg class="mi-chevron-left modus-wc-pagination-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.39-.39.38-1.03 0-1.41"></path>
+      </svg>
+    </button>
+    <button aria-label="Page 5" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      5
+    </button>
+    <button aria-label="Page 6" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      6
+    </button>
+    <button aria-current="page" aria-label="Page 7" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      7
+    </button>
+    <button aria-label="Page 8" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      8
+    </button>
+    <button aria-label="Page 9" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      9
+    </button>
+    <button aria-label="Next page" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      <svg class="mi-chevron-right modus-wc-pagination-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01"></path>
+      </svg>
+    </button>
+    <button aria-label="Last page" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      <svg class="mi-chevron-double-right modus-wc-pagination-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.12 6.71c-.39-.39-1.03-.39-1.42 0a.996.996 0 0 0 0 1.41L9.58 12 5.7 15.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41zm11.17 4.58L13.7 6.7c-.38-.38-1.02-.38-1.41 0a.996.996 0 0 0 0 1.41l3.88 3.88-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41Z"></path>
+      </svg>
+    </button>
+  </div>
+</modus-wc-pagination>
+`;
+
+exports[`modus-wc-pagination should render with custom props 1`] = `
+<modus-wc-pagination count="13" custom-class="test-custom-class" page="3" size="lg">
+  <div aria-label="custom pagination" class="modus-wc-join modus-wc-pagination test-custom-class">
+    <button aria-label="First page" class="modus-wc-btn modus-wc-btn-lg modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      <svg class="mi-chevron-double-left modus-wc-pagination-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="m14.42 12 3.88-3.88a.996.996 0 1 0-1.41-1.41L12.3 11.3a.996.996 0 0 0 0 1.41l4.59 4.59c.38.38 1.01.38 1.4-.01a.996.996 0 0 0 0-1.41zm-2.71-5.29a.996.996 0 0 0-1.41 0L5.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59c.38.38 1.01.38 1.4-.01s.39-1.02 0-1.41L7.83 12l3.88-3.88a.996.996 0 0 0 0-1.41"></path>
+      </svg>
+    </button>
+    <button aria-label="Previous page" class="modus-wc-btn modus-wc-btn-lg modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      <svg class="mi-chevron-left modus-wc-pagination-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.39-.39.38-1.03 0-1.41"></path>
+      </svg>
+    </button>
+    <button aria-label="Page 1" class="modus-wc-btn modus-wc-btn-lg modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      1
+    </button>
+    <button aria-label="Page 2" class="modus-wc-btn modus-wc-btn-lg modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      2
+    </button>
+    <button aria-current="page" aria-label="Page 3" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-lg modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      3
+    </button>
+    <button aria-label="Page 4" class="modus-wc-btn modus-wc-btn-lg modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      4
+    </button>
+    <button aria-label="Page 5" class="modus-wc-btn modus-wc-btn-lg modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      5
+    </button>
+    <button aria-label="Next page" class="modus-wc-btn modus-wc-btn-lg modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      <svg class="mi-chevron-right modus-wc-pagination-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01"></path>
+      </svg>
+    </button>
+    <button aria-label="Last page" class="modus-wc-btn modus-wc-btn-lg modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      <svg class="mi-chevron-double-right modus-wc-pagination-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.12 6.71c-.39-.39-1.03-.39-1.42 0a.996.996 0 0 0 0 1.41L9.58 12 5.7 15.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41zm11.17 4.58L13.7 6.7c-.38-.38-1.02-.38-1.41 0a.996.996 0 0 0 0 1.41l3.88 3.88-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41Z"></path>
+      </svg>
+    </button>
+  </div>
+</modus-wc-pagination>
+`;
+
+exports[`modus-wc-pagination should render with default props 1`] = `
+<modus-wc-pagination>
+  <div aria-label="default pagination" class="modus-wc-join modus-wc-pagination">
+    <button aria-label="Previous page" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn" disabled="">
+      <svg class="mi-chevron-left modus-wc-pagination-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.39-.39.38-1.03 0-1.41"></path>
+      </svg>
+    </button>
+    <button aria-current="page" aria-label="Page 1" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn">
+      1
+    </button>
+    <button aria-label="Next page" class="modus-wc-btn modus-wc-btn-md modus-wc-btn-square modus-wc-join-item modus-wc-pagination-btn" disabled="">
+      <svg class="mi-chevron-right modus-wc-pagination-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01"></path>
+      </svg>
+    </button>
+  </div>
+</modus-wc-pagination>
+`;
