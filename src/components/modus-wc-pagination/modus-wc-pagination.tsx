@@ -13,7 +13,7 @@ import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { convertPropsToClasses } from './modus-wc-pagination.tailwind';
 
-interface IPageChange {
+export interface IPageChange {
   newPage: number;
   prevPage: number;
 }
