@@ -748,6 +748,26 @@ export namespace Components {
      */
     interface ModusWcPagination {
         /**
+          * Aria label for the first page button
+         */
+        "ariaLabelFirstPage"?: string;
+        /**
+          * Aria label for the last page button
+         */
+        "ariaLabelLastPage"?: string;
+        /**
+          * Aria label for the next page button
+         */
+        "ariaLabelNextPage"?: string;
+        /**
+          * Aria label for the page number button. Use {0} as placeholder for the page number
+         */
+        "ariaLabelPage"?: string;
+        /**
+          * Aria label for the previous page button
+         */
+        "ariaLabelPreviousPage"?: string;
+        /**
           * Total number of pages
          */
         "count": number;
@@ -3005,6 +3025,26 @@ declare namespace LocalJSX {
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcPagination {
+        /**
+          * Aria label for the first page button
+         */
+        "ariaLabelFirstPage"?: string;
+        /**
+          * Aria label for the last page button
+         */
+        "ariaLabelLastPage"?: string;
+        /**
+          * Aria label for the next page button
+         */
+        "ariaLabelNextPage"?: string;
+        /**
+          * Aria label for the page number button. Use {0} as placeholder for the page number
+         */
+        "ariaLabelPage"?: string;
+        /**
+          * Aria label for the previous page button
+         */
+        "ariaLabelPreviousPage"?: string;
         /**
           * Total number of pages
          */

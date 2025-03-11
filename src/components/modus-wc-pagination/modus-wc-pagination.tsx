@@ -35,6 +35,21 @@ export class ModusWcPagination {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** Aria label for the first page button */
+  @Prop() ariaLabelFirstPage?: string = 'First page';
+
+  /** Aria label for the last page button */
+  @Prop() ariaLabelLastPage?: string = 'Last page';
+
+  /** Aria label for the next page button */
+  @Prop() ariaLabelNextPage?: string = 'Next page';
+
+  /** Aria label for the page number button. Use {0} as placeholder for the page number */
+  @Prop() ariaLabelPage?: string = 'Page {0}';
+
+  /** Aria label for the previous page button */
+  @Prop() ariaLabelPreviousPage?: string = 'Previous page';
+
   /** Total number of pages */
   @Prop() count: number = 1;
 
@@ -124,7 +139,7 @@ export class ModusWcPagination {
       <div class={paginationClasses} {...this.inheritedAttributes}>
         {shouldShowFirstLastButtons && (
           <button
-            aria-label="First page"
+            aria-label={this.ariaLabelFirstPage}
             class={buttonClasses}
             disabled={isFirstPage}
             onClick={() => this.handlePageClick(1)}
@@ -134,7 +149,7 @@ export class ModusWcPagination {
         )}
 
         <button
-          aria-label="Previous page"
+          aria-label={this.ariaLabelPreviousPage}
           class={buttonClasses}
           disabled={isFirstPage}
           onClick={() => this.handlePageClick(this.page - 1)}
@@ -145,7 +160,7 @@ export class ModusWcPagination {
         {this.visiblePages.map((page) => (
           <button
             aria-current={this.page === page ? 'page' : undefined}
-            aria-label={`Page ${page}`}
+            aria-label={this.ariaLabelPage!.replace('{0}', page.toString())}
             class={`${buttonClasses} ${this.page === page ? 'modus-wc-btn-active' : ''}`}
             onClick={() => this.handlePageClick(page)}
           >
@@ -154,7 +169,7 @@ export class ModusWcPagination {
         ))}
 
         <button
-          aria-label="Next page"
+          aria-label={this.ariaLabelNextPage}
           class={buttonClasses}
           disabled={isLastPage}
           onClick={() => this.handlePageClick(this.page + 1)}
@@ -164,7 +179,7 @@ export class ModusWcPagination {
 
         {shouldShowFirstLastButtons && (
           <button
-            aria-label="Last page"
+            aria-label={this.ariaLabelLastPage}
             class={buttonClasses}
             disabled={isLastPage}
             onClick={() => this.handlePageClick(this.count)}
