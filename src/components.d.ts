@@ -59,9 +59,21 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * Time taken to dismiss the toast in milliseconds
+         */
+        "delay"?: number;
+        /**
+          * Whether the alert has a dismiss button
+         */
+        "dismissable"?: boolean;
+        /**
           * The Modus icon to render. *
          */
         "icon"?: string;
+        /**
+          * Role taken by the alert. Defaults to 'status'
+         */
+        "role": 'alert' | 'log' | 'marquee' | 'status' | 'timer';
         /**
           * The variant of the alert.
          */
@@ -1403,6 +1415,10 @@ export interface ModusWcAccordionCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcAccordionElement;
 }
+export interface ModusWcAlertCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcAlertElement;
+}
 export interface ModusWcAutocompleteCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcAutocompleteElement;
@@ -1505,11 +1521,22 @@ declare global {
         prototype: HTMLModusWcAccordionElement;
         new (): HTMLModusWcAccordionElement;
     };
+    interface HTMLModusWcAlertElementEventMap {
+        "dismissClick": any;
+    }
     /**
      * A customizable alert component used to inform the user about important events.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcAlertElement extends Components.ModusWcAlert, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcAlertElementEventMap>(type: K, listener: (this: HTMLModusWcAlertElement, ev: ModusWcAlertCustomEvent<HTMLModusWcAlertElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcAlertElementEventMap>(type: K, listener: (this: HTMLModusWcAlertElement, ev: ModusWcAlertCustomEvent<HTMLModusWcAlertElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcAlertElement: {
         prototype: HTMLModusWcAlertElement;
@@ -2189,9 +2216,25 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
+          * Time taken to dismiss the toast in milliseconds
+         */
+        "delay"?: number;
+        /**
+          * Whether the alert has a dismiss button
+         */
+        "dismissable"?: boolean;
+        /**
           * The Modus icon to render. *
          */
         "icon"?: string;
+        /**
+          * An event that fires when the alert is dismissed
+         */
+        "onDismissClick"?: (event: ModusWcAlertCustomEvent<any>) => void;
+        /**
+          * Role taken by the alert. Defaults to 'status'
+         */
+        "role"?: 'alert' | 'log' | 'marquee' | 'status' | 'timer';
         /**
           * The variant of the alert.
          */
