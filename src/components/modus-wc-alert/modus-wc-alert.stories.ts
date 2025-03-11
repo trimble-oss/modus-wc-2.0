@@ -86,3 +86,21 @@ export const CustomButton: Story = {
     `;
   },
 };
+
+export const WithCustomContent: Story = {
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-alert
+  id="alert-123"
+  custom-class=${ifDefined(args['custom-class'])}
+  dismissable=${args.dismissable}
+  icon=${ifDefined(args.icon)}
+  role=${args.role}
+  variant=${ifDefined(args.variant)}
+>
+  <div slot="content" id="alert-123">New custom message!</div>
+</modus-wc-alert>
+    `;
+  },
+};

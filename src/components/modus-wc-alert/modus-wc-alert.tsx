@@ -145,7 +145,9 @@ export class ModusWcAlert {
             {this.alertDescription && (
               <modus-wc-typography>{this.alertDescription}</modus-wc-typography>
             )}
-            {!this.alertTitle && !this.alertDescription && <slot />}
+            {!this.alertTitle && !this.alertDescription && (
+              <slot name="content" />
+            )}
           </div>
           <slot name="button" />
           {this.dismissable && (
