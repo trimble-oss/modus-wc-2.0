@@ -2469,7 +2469,7 @@
             {
               "name": "pageChange",
               "type": {
-                "text": "EventEmitter<IPageChange>"
+                "text": "EventEmitter<IModusWcPageChange>"
               },
               "description": "Event emitted when page changes"
             }

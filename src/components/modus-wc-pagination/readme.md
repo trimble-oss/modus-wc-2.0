@@ -23,9 +23,9 @@ Adheres to WCAG 2.2 standards.
 
 ## Events
 
-| Event        | Description                     | Type                       |
-| ------------ | ------------------------------- | -------------------------- |
-| `pageChange` | Event emitted when page changes | `CustomEvent<IPageChange>` |
+| Event        | Description                     | Type                              |
+| ------------ | ------------------------------- | --------------------------------- |
+| `pageChange` | Event emitted when page changes | `CustomEvent<IModusWcPageChange>` |
 
 
 ----------------------------------------------

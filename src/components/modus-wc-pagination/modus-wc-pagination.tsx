@@ -13,7 +13,7 @@ import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { convertPropsToClasses } from './modus-wc-pagination.tailwind';
 
-export interface IPageChange {
+export interface IModusWcPageChange {
   newPage: number;
   prevPage: number;
 }
@@ -48,7 +48,7 @@ export class ModusWcPagination {
   @Prop() size: ModusSize = 'md';
 
   /** Event emitted when page changes */
-  @Event() pageChange!: EventEmitter<IPageChange>;
+  @Event() pageChange!: EventEmitter<IModusWcPageChange>;
 
   /** Internal state to track visible page numbers */
   @State() private visiblePages: number[] = [];
