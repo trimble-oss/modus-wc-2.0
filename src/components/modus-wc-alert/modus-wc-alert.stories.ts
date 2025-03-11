@@ -99,7 +99,7 @@ export const WithCustomContent: Story = {
   role=${args.role}
   variant=${ifDefined(args.variant)}
 >
-  <div slot="content" id="alert-123">New custom message!</div>
+  <div slot="content">New custom message!</div>
 </modus-wc-alert>
     `;
   },
