@@ -8,9 +8,9 @@ import {
   State,
   Watch,
 } from '@stencil/core';
-import * as Icons from './modus-wc-pagination.icons';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
+import * as Icons from './modus-wc-pagination.icons';
 import { convertPropsToClasses } from './modus-wc-pagination.tailwind';
 
 export interface IModusWcPageChange {
