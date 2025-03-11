@@ -18,8 +18,18 @@ Adheres to WCAG 2.2 standards.
 | `alertDescription`        | `alert-description` | The description of the alert. *                     | `string \| undefined`                                      | `undefined` |
 | `alertTitle` _(required)_ | `alert-title`       | The title of the alert. *                           | `string`                                                   | `undefined` |
 | `customClass`             | `custom-class`      | Custom CSS class to apply to the outer div element. | `string \| undefined`                                      | `''`        |
+| `delay`                   | `delay`             | Time taken to dismiss the toast in milliseconds     | `number \| undefined`                                      | `15000`     |
+| `dismissable`             | `dismissable`       | Whether the alert has a dismiss button              | `boolean \| undefined`                                     | `false`     |
 | `icon`                    | `icon`              | The Modus icon to render. *                         | `string \| undefined`                                      | `undefined` |
+| `role`                    | `role`              | Role taken by the alert. Defaults to 'status'       | `"alert" \| "log" \| "marquee" \| "status" \| "timer"`     | `'status'`  |
 | `variant`                 | `variant`           | The variant of the alert.                           | `"error" \| "info" \| "success" \| "warning" \| undefined` | `undefined` |
+
+
+## Events
+
+| Event          | Description                                     | Type               |
+| -------------- | ----------------------------------------------- | ------------------ |
+| `dismissClick` | An event that fires when the alert is dismissed | `CustomEvent<any>` |
 
 
 ## Dependencies
@@ -28,12 +38,14 @@ Adheres to WCAG 2.2 standards.
 
 - [modus-wc-icon](../modus-wc-icon)
 - [modus-wc-typography](../modus-wc-typography)
+- [modus-wc-button](../modus-wc-button)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-alert --> modus-wc-icon
   modus-wc-alert --> modus-wc-typography
+  modus-wc-alert --> modus-wc-button
   style modus-wc-alert fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

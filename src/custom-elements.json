@@ -77,12 +77,50 @@
           "name": "ModusWcAlert",
           "members": [
             {
+              "kind": "method",
+              "name": "delayChanged",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newDelay",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "dismissElement"
+            },
+            {
               "kind": "field",
               "name": "el",
               "type": {
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "elementKeyupHandler",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
@@ -115,12 +153,36 @@
               "description": "Custom CSS class to apply to the outer div element."
             },
             {
+              "name": "delay",
+              "fieldName": "delay",
+              "type": {
+                "text": "number"
+              },
+              "description": "Time taken to dismiss the toast in milliseconds"
+            },
+            {
+              "name": "dismissable",
+              "fieldName": "dismissable",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the alert has a dismiss button"
+            },
+            {
               "name": "icon",
               "fieldName": "icon",
               "type": {
                 "text": "string"
               },
               "description": "The Modus icon to render. *"
+            },
+            {
+              "name": "role",
+              "fieldName": "role",
+              "type": {
+                "text": "'alert' | 'log' | 'marquee' | 'status' | 'timer'"
+              },
+              "description": "Role taken by the alert. Defaults to 'status'"
             },
             {
               "name": "variant",
@@ -132,7 +194,15 @@
             }
           ],
           "tagName": "modus-wc-alert",
-          "events": [],
+          "events": [
+            {
+              "name": "dismissClick",
+              "type": {
+                "text": "EventEmitter"
+              },
+              "description": "An event that fires when the alert is dismissed"
+            }
+          ],
           "customElement": true
         }
       ],

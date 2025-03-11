@@ -1,4 +1,14 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Listen,
+  Prop,
+  Watch,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -27,11 +37,23 @@ export class ModusWcAlert {
   /** Custom CSS class to apply to the outer div element. */
   @Prop() customClass?: string = '';
 
+  /** Time taken to dismiss the toast in milliseconds */
+  @Prop() delay?: number = 15000;
+
+  /** Whether the alert has a dismiss button */
+  @Prop() dismissable?: boolean = false;
+
   /** The Modus icon to render. **/
   @Prop() icon?: string;
 
   /** The variant of the alert. */
   @Prop() variant?: 'error' | 'info' | 'success' | 'warning';
+
+  /** Role taken by the alert. Defaults to 'status' */
+  @Prop() role: 'alert' | 'log' | 'marquee' | 'status' | 'timer' = 'status';
+
+  /** An event that fires when the alert is dismissed */
+  @Event() dismissClick!: EventEmitter;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -67,6 +89,46 @@ export class ModusWcAlert {
     }
   }
 
+  private timerId!: ReturnType<typeof setTimeout>;
+
+  @Watch('delay')
+  delayChanged(newDelay: number): void {
+    clearTimeout(this.timerId);
+    this.timerId = setTimeout(() => {
+      this.dismissElement();
+    }, newDelay);
+  }
+
+  dismissElement() {
+    this.dismissClick.emit();
+    this.el.remove();
+  }
+
+  componentDidLoad(): void {
+    if (this.delay && this.delay > 0) {
+      this.timerId = setTimeout(() => {
+        this.dismissElement();
+      }, this.delay);
+    }
+  }
+
+  disconnectedCallback(): void {
+    clearTimeout(this.timerId);
+  }
+
+  @Listen('keyup')
+  elementKeyupHandler(event: KeyboardEvent): void {
+    switch (event.code) {
+      case 'Escape':
+        if (!this.dismissable) {
+          return;
+        }
+
+        this.dismissElement();
+        break;
+    }
+  }
+
   render() {
     return (
       <Host>
@@ -83,8 +145,23 @@ export class ModusWcAlert {
             {this.alertDescription && (
               <modus-wc-typography>{this.alertDescription}</modus-wc-typography>
             )}
+            {!this.alertTitle && !this.alertDescription && (
+              <slot name="content" />
+            )}
           </div>
           <slot name="button" />
+          {this.dismissable && (
+            <modus-wc-button
+              aria-label="notification button"
+              color="secondary"
+              size="sm"
+              slot="button"
+              variant="borderless"
+              onClick={() => this.dismissElement()}
+            >
+              <modus-wc-icon aria-label="notify icon" name="close" decorative />
+            </modus-wc-button>
+          )}
         </div>
       </Host>
     );
