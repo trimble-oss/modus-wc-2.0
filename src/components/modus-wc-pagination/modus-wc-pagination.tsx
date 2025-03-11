@@ -50,7 +50,7 @@ export class ModusWcPagination {
   @Element() el!: HTMLElement;
 
   /** Aria label values for pagination buttons */
-  @Prop() ariaLabelValues?: IModusWcAriaLabelValues = {};
+  @Prop() ariaLabelValues?: IModusWcAriaLabelValues;
 
   /** Total number of pages */
   @Prop() count: number = 1;

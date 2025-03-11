@@ -322,4 +322,87 @@ describe('modus-wc-pagination', () => {
     expect(eventDetail.newPage).toBe(10);
     expect(eventDetail.prevPage).toBe(5);
   });
+
+  it('should apply custom aria label values', async () => {
+    // Create the component
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination aria-label="pagination test" count="10" page="3"></modus-wc-pagination>`,
+    });
+
+    // Get the component instance and set custom aria labels
+    // eslint-disable-next-line no-undef
+    const pagination = page.root as HTMLModusWcPaginationElement;
+
+    pagination.ariaLabelValues = {
+      firstPage: 'Go to first',
+      lastPage: 'Go to last',
+      nextPage: 'Go to next',
+      previousPage: 'Go to previous',
+      page: 'Page number {0}',
+    };
+
+    await page.waitForChanges();
+
+    // Check that custom aria labels are applied
+    const firstPageButton = page.root!.querySelector(
+      'button[aria-label="Go to first"]'
+    );
+    const previousPageButton = page.root!.querySelector(
+      'button[aria-label="Go to previous"]'
+    );
+    const nextPageButton = page.root!.querySelector(
+      'button[aria-label="Go to next"]'
+    );
+    const lastPageButton = page.root!.querySelector(
+      'button[aria-label="Go to last"]'
+    );
+
+    // Find the button with text "3" and check its aria-label
+    const pageButtons = page.root!.querySelectorAll('button');
+    const pageThreeButton = Array.from(pageButtons).find(
+      (button) => button.textContent?.trim() === '3'
+    );
+
+    expect(firstPageButton).not.toBeNull();
+    expect(previousPageButton).not.toBeNull();
+    expect(nextPageButton).not.toBeNull();
+    expect(lastPageButton).not.toBeNull();
+    expect(pageThreeButton!.getAttribute('aria-label')).toBe('Page number 3');
+  });
+
+  it('should use default aria label values when none are provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination aria-label="pagination test" count="10" page="3"></modus-wc-pagination>`,
+    });
+
+    await page.waitForChanges();
+
+    // Check that default aria labels are applied
+    const firstPageButton = page.root!.querySelector(
+      'button[aria-label="First page"]'
+    );
+    const previousPageButton = page.root!.querySelector(
+      'button[aria-label="Previous page"]'
+    );
+    const nextPageButton = page.root!.querySelector(
+      'button[aria-label="Next page"]'
+    );
+    const lastPageButton = page.root!.querySelector(
+      'button[aria-label="Last page"]'
+    );
+
+    // Find the button with text "3" and check its aria-label
+    const pageButtons = page.root!.querySelectorAll('button');
+    const pageThreeButton = Array.from(pageButtons).find(
+      (button) => button.textContent?.trim() === '3'
+    );
+
+    expect(firstPageButton).not.toBeNull();
+    expect(previousPageButton).not.toBeNull();
+    expect(nextPageButton).not.toBeNull();
+    expect(lastPageButton).not.toBeNull();
+    expect(pageThreeButton!.getAttribute('aria-label')).toBe('Page 3');
+  });
 });
