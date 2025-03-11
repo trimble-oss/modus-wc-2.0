@@ -124,50 +124,50 @@ export class ModusWcPagination {
       <div class={paginationClasses} {...this.inheritedAttributes}>
         {shouldShowFirstLastButtons && (
           <button
-            class={buttonClasses}
-            onClick={() => this.handlePageClick(1)}
             aria-label="First page"
+            class={buttonClasses}
             disabled={isFirstPage}
+            onClick={() => this.handlePageClick(1)}
           >
             <Icons.ChevronDoubleLeft />
           </button>
         )}
 
         <button
-          class={buttonClasses}
-          onClick={() => this.handlePageClick(this.page - 1)}
           aria-label="Previous page"
+          class={buttonClasses}
           disabled={isFirstPage}
+          onClick={() => this.handlePageClick(this.page - 1)}
         >
           <Icons.ChevronLeft />
         </button>
 
         {this.visiblePages.map((page) => (
           <button
+            aria-current={this.page === page ? 'page' : undefined}
+            aria-label={`Page ${page}`}
             class={`${buttonClasses} ${this.page === page ? 'modus-wc-btn-active' : ''}`}
             onClick={() => this.handlePageClick(page)}
-            aria-label={`Page ${page}`}
-            aria-current={this.page === page ? 'page' : undefined}
           >
             {page}
           </button>
         ))}
 
         <button
-          class={buttonClasses}
-          onClick={() => this.handlePageClick(this.page + 1)}
           aria-label="Next page"
+          class={buttonClasses}
           disabled={isLastPage}
+          onClick={() => this.handlePageClick(this.page + 1)}
         >
           <Icons.ChevronRight />
         </button>
 
         {shouldShowFirstLastButtons && (
           <button
-            class={buttonClasses}
-            onClick={() => this.handlePageClick(this.count)}
             aria-label="Last page"
+            class={buttonClasses}
             disabled={isLastPage}
+            onClick={() => this.handlePageClick(this.count)}
           >
             <Icons.ChevronDoubleRight />
           </button>
