@@ -98,9 +98,6 @@ export class ModusWcNumberInput {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcNumberInput: aria-label is required for accessibility. Using fallback label.'
-      );
       this.el.ariaLabel = this.placeholder || 'Number input';
     }
 

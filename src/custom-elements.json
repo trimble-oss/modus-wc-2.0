@@ -3149,6 +3149,78 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-stepper/modus-wc-stepper.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Used to show a list of steps in a process.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcStepper",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply to the steps element."
+            },
+            {
+              "name": "orientation",
+              "fieldName": "orientation",
+              "type": {
+                "text": "Orientation"
+              },
+              "description": "The orientation of the steps."
+            },
+            {
+              "name": "steps",
+              "fieldName": "steps",
+              "type": {
+                "text": "IModusWcStepperItem[]"
+              },
+              "description": "The steps to display."
+            }
+          ],
+          "tagName": "modus-wc-stepper",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcStepper",
+          "declaration": {
+            "name": "ModusWcStepper",
+            "module": "src/components/modus-wc-stepper/modus-wc-stepper.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-stepper",
+          "declaration": {
+            "name": "ModusWcStepper",
+            "module": "src/components/modus-wc-stepper/modus-wc-stepper.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-table/modus-wc-table.spec.tsx",
       "declarations": [],
       "exports": []

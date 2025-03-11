@@ -51,9 +51,6 @@ export class ModusWcLoader {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcLoader: aria-label is required for accessibility. Using fallback label.'
-      );
       this.el.ariaLabel = 'Loading';
     }
 

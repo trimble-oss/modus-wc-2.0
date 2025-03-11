@@ -40,9 +40,6 @@ export class ModusWcProgress {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcProgress: aria-label is required for accessibility. Using fallback label.'
-      );
       this.el.ariaLabel = 'Progress';
     }
 

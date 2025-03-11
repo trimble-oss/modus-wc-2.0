@@ -110,9 +110,6 @@ export class ModusWcTimeInput {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcTimeInput: aria-label is required for accessibility. Using fallback label.'
-      );
       this.el.ariaLabel = 'Time input';
     }
 

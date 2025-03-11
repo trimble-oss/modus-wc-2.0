@@ -87,6 +87,14 @@ export class ModusWcCollapse {
     if (checkbox) checkbox.checked = newValue;
   }
 
+  componentWillLoad() {
+    if (!this.collapseId) {
+      this.collapseId = generateRandomId();
+    }
+
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
   private handleClick = () => {
     this.expanded = !this.expanded;
     this.expandedChange.emit({ expanded: this.expanded });
@@ -102,14 +110,6 @@ export class ModusWcCollapse {
       this.handleClick();
     }
   };
-
-  componentWillLoad() {
-    if (!this.collapseId) {
-      this.collapseId = generateRandomId();
-    }
-
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
-  }
 
   private getOuterDivClasses(): string {
     const classList: string[] = ['modus-wc-collapse modus-wc-collapse-arrow'];

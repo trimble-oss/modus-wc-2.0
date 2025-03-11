@@ -77,11 +77,8 @@ export class ModusWcDate {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcDate: aria-label is required for accessibility. Using fallback label.'
-      );
+      this.el.ariaLabel = 'Date input';
     }
-    this.el.ariaLabel = 'Date input';
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

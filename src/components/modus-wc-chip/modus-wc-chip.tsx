@@ -58,6 +58,14 @@ export class ModusWcChip {
   /** Event emitted when the close chip icon button is clicked. */
   @Event() chipRemove!: EventEmitter<MouseEvent | KeyboardEvent>;
 
+  componentWillLoad() {
+    if (!this.el.ariaLabel) {
+      this.el.ariaLabel = this.label || 'Chip';
+    }
+
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
   private handleKeyDown = (event: KeyboardEvent) => {
     if (
       !this.disabled &&
@@ -86,17 +94,6 @@ export class ModusWcChip {
       this.chipRemove.emit(event);
     }
   };
-
-  componentWillLoad() {
-    if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcChip: aria-label is required for accessibility. Using fallback label.'
-      );
-      this.el.ariaLabel = this.label || 'Chip';
-    }
-
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
-  }
 
   private getClasses(): string {
     const classList: string[] = ['modus-wc-chip', 'modus-wc-btn'];

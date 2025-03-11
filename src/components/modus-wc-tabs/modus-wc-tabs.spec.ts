@@ -26,21 +26,6 @@ describe('modus-wc-tabs', () => {
     },
   ];
 
-  it('should warn when aria-label is not provided', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-    await newSpecPage({
-      components: [ModusWcTabs],
-      html: '<modus-wc-tabs></modus-wc-tabs>',
-    });
-
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcTabs: aria-label is required for accessibility. Using fallback label.'
-    );
-
-    consoleWarnSpy.mockRestore();
-  });
-
   it('should render with default props (empty tabs)', async () => {
     const page = await newSpecPage({
       components: [ModusWcTabs],

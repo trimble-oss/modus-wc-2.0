@@ -11,6 +11,7 @@ import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-b
 import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
+import { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 import { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
 import { IModusWcTab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
@@ -22,6 +23,7 @@ export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-b
 export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
+export { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 export { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
 export { IModusWcTab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
@@ -958,6 +960,24 @@ export namespace Components {
           * The value of the slider.
          */
         "value": number;
+    }
+    /**
+     * Used to show a list of steps in a process.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcStepper {
+        /**
+          * Custom CSS class to apply to the steps element.
+         */
+        "customClass"?: string;
+        /**
+          * The orientation of the steps.
+         */
+        "orientation"?: Orientation;
+        /**
+          * The steps to display.
+         */
+        "steps": IModusWcStepperItem[];
     }
     /**
      * A customizable table component used to show a list of data in a table format.
@@ -1930,6 +1950,16 @@ declare global {
         prototype: HTMLModusWcSliderElement;
         new (): HTMLModusWcSliderElement;
     };
+    /**
+     * Used to show a list of steps in a process.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcStepperElement extends Components.ModusWcStepper, HTMLStencilElement {
+    }
+    var HTMLModusWcStepperElement: {
+        prototype: HTMLModusWcStepperElement;
+        new (): HTMLModusWcStepperElement;
+    };
     interface HTMLModusWcTableElementEventMap {
         "rowClick": {
     row: Record<string, any>;
@@ -2156,6 +2186,7 @@ declare global {
         "modus-wc-select": HTMLModusWcSelectElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
+        "modus-wc-stepper": HTMLModusWcStepperElement;
         "modus-wc-table": HTMLModusWcTableElement;
         "modus-wc-tabs": HTMLModusWcTabsElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
@@ -3229,6 +3260,24 @@ declare namespace LocalJSX {
         "value"?: number;
     }
     /**
+     * Used to show a list of steps in a process.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcStepper {
+        /**
+          * Custom CSS class to apply to the steps element.
+         */
+        "customClass"?: string;
+        /**
+          * The orientation of the steps.
+         */
+        "orientation"?: Orientation;
+        /**
+          * The steps to display.
+         */
+        "steps"?: IModusWcStepperItem[];
+    }
+    /**
      * A customizable table component used to show a list of data in a table format.
      * Adheres to WCAG 2.2 standards.
      */
@@ -3762,6 +3811,7 @@ declare namespace LocalJSX {
         "modus-wc-select": ModusWcSelect;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
+        "modus-wc-stepper": ModusWcStepper;
         "modus-wc-table": ModusWcTable;
         "modus-wc-tabs": ModusWcTabs;
         "modus-wc-text-input": ModusWcTextInput;
@@ -3919,6 +3969,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-slider": LocalJSX.ModusWcSlider & JSXBase.HTMLAttributes<HTMLModusWcSliderElement>;
+            /**
+             * Used to show a list of steps in a process.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-stepper": LocalJSX.ModusWcStepper & JSXBase.HTMLAttributes<HTMLModusWcStepperElement>;
             /**
              * A customizable table component used to show a list of data in a table format.
              * Adheres to WCAG 2.2 standards.

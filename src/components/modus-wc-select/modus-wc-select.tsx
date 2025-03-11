@@ -77,9 +77,6 @@ export class ModusWcSelect {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcSelect: aria-label is required for accessibility. Using fallback label.'
-      );
       this.el.ariaLabel = 'Select';
     }
 

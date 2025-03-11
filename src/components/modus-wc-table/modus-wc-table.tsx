@@ -67,9 +67,6 @@ export class ModusWcTable {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      console.warn(
-        'ModusWcTable: aria-label is required for accessibility. Using fallback label.'
-      );
       this.el.ariaLabel = 'Table';
     }
 

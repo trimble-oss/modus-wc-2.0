@@ -2,21 +2,6 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcButton } from './modus-wc-button';
 
 describe('modus-wc-button', () => {
-  it('should warn if aria-label is not provided', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-    await newSpecPage({
-      components: [ModusWcButton],
-      html: '<modus-wc-button></modus-wc-button>',
-    });
-
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcButton: aria-label is required for accessibility. Using fallback label.'
-    );
-
-    consoleWarnSpy.mockRestore();
-  });
-
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
@@ -28,14 +13,14 @@ describe('modus-wc-button', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
-      html: `<modus-wc-button 
-              aria-label="Custom Button" 
-              color="secondary" 
-              custom-class="test-class" 
-              full-width="true" 
-              pressed="true" 
-              size="lg" 
-              variant="outlined" 
+      html: `<modus-wc-button
+              aria-label="Custom Button"
+              color="secondary"
+              custom-class="test-class"
+              full-width="true"
+              pressed="true"
+              size="lg"
+              variant="outlined"
               type="submit">
               Test
             </modus-wc-button>`,

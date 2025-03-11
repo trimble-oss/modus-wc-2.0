@@ -17,26 +17,6 @@ describe('modus-wc-breadcrumbs', () => {
     },
   ];
 
-  it('should warn when aria-label is not provided', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-    const page = await newSpecPage({
-      components: [ModusWcBreadcrumbs],
-      html: '<modus-wc-breadcrumbs></modus-wc-breadcrumbs>',
-    });
-
-    const component = page.rootInstance as ModusWcBreadcrumbs;
-    component.items = items;
-
-    await page.waitForChanges();
-
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcBreadcrumbs: aria-label is required for accessibility. Using fallback label.'
-    );
-
-    consoleWarnSpy.mockRestore();
-  });
-
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcBreadcrumbs],

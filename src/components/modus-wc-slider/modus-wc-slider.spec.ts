@@ -2,21 +2,6 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcSlider } from './modus-wc-slider';
 
 describe('modus-wc-slider', () => {
-  it('should warn if aria-label is not provided', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-    await newSpecPage({
-      components: [ModusWcSlider],
-      html: '<modus-wc-slider></modus-wc-slider>',
-    });
-
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'ModusWcSlider: aria-label is required for accessibility. Using fallback label.'
-    );
-
-    consoleWarnSpy.mockRestore();
-  });
-
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcSlider],
