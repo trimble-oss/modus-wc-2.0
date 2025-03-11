@@ -10,7 +10,7 @@ import { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFiel
 import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
-import { IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
+import { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 import { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
@@ -23,7 +23,7 @@ export { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFiel
 export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
-export { IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
+export { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 export { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
@@ -760,25 +760,9 @@ export namespace Components {
      */
     interface ModusWcPagination {
         /**
-          * Aria label for the first page button
+          * Aria label values for pagination buttons
          */
-        "ariaLabelFirstPage"?: string;
-        /**
-          * Aria label for the last page button
-         */
-        "ariaLabelLastPage"?: string;
-        /**
-          * Aria label for the next page button
-         */
-        "ariaLabelNextPage"?: string;
-        /**
-          * Aria label for the page number button. Use {0} as placeholder for the page number
-         */
-        "ariaLabelPage"?: string;
-        /**
-          * Aria label for the previous page button
-         */
-        "ariaLabelPreviousPage"?: string;
+        "ariaLabelValues"?: IModusWcAriaLabelValues;
         /**
           * Total number of pages
          */
@@ -3069,25 +3053,9 @@ declare namespace LocalJSX {
      */
     interface ModusWcPagination {
         /**
-          * Aria label for the first page button
+          * Aria label values for pagination buttons
          */
-        "ariaLabelFirstPage"?: string;
-        /**
-          * Aria label for the last page button
-         */
-        "ariaLabelLastPage"?: string;
-        /**
-          * Aria label for the next page button
-         */
-        "ariaLabelNextPage"?: string;
-        /**
-          * Aria label for the page number button. Use {0} as placeholder for the page number
-         */
-        "ariaLabelPage"?: string;
-        /**
-          * Aria label for the previous page button
-         */
-        "ariaLabelPreviousPage"?: string;
+        "ariaLabelValues"?: IModusWcAriaLabelValues;
         /**
           * Total number of pages
          */

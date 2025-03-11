@@ -2502,44 +2502,12 @@
           ],
           "attributes": [
             {
-              "name": "aria-label-first-page",
-              "fieldName": "ariaLabelFirstPage",
+              "name": "aria-label-values",
+              "fieldName": "ariaLabelValues",
               "type": {
-                "text": "string"
+                "text": "IModusWcAriaLabelValues"
               },
-              "description": "Aria label for the first page button"
-            },
-            {
-              "name": "aria-label-last-page",
-              "fieldName": "ariaLabelLastPage",
-              "type": {
-                "text": "string"
-              },
-              "description": "Aria label for the last page button"
-            },
-            {
-              "name": "aria-label-next-page",
-              "fieldName": "ariaLabelNextPage",
-              "type": {
-                "text": "string"
-              },
-              "description": "Aria label for the next page button"
-            },
-            {
-              "name": "aria-label-page",
-              "fieldName": "ariaLabelPage",
-              "type": {
-                "text": "string"
-              },
-              "description": "Aria label for the page number button. Use {0} as placeholder for the page number"
-            },
-            {
-              "name": "aria-label-previous-page",
-              "fieldName": "ariaLabelPreviousPage",
-              "type": {
-                "text": "string"
-              },
-              "description": "Aria label for the previous page button"
+              "description": "Aria label values for pagination buttons"
             },
             {
               "name": "count",
