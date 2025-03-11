@@ -24,61 +24,6 @@ describe('modus-wc-pagination', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should emit pageChange event when clicking a page button', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcPagination],
-      html: `<modus-wc-pagination
-        aria-label="pagination test"
-        count="5"
-        page="2"
-      ></modus-wc-pagination>`,
-    });
-
-    // eslint-disable-next-line no-undef
-    const pagination = page.root as HTMLModusWcPaginationElement;
-    const pageChangeSpy = jest.fn();
-    pagination.addEventListener('pageChange', pageChangeSpy);
-
-    const pageButtons = page.root!.querySelectorAll('button');
-    const pageThreeButton = Array.from(pageButtons).find(
-      (button) => button.textContent === '3'
-    );
-
-    pageThreeButton!.click();
-    await page.waitForChanges();
-
-    expect(pageChangeSpy).toHaveBeenCalled();
-    const eventDetail = pageChangeSpy.mock.calls[0][0].detail;
-    expect(eventDetail.newPage).toBe(3);
-    expect(eventDetail.prevPage).toBe(2);
-  });
-
-  it('should not emit pageChange event when clicking the current page button', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcPagination],
-      html: `<modus-wc-pagination
-        aria-label="pagination test"
-        count="5"
-        page="2"
-      ></modus-wc-pagination>`,
-    });
-
-    // eslint-disable-next-line no-undef
-    const pagination = page.root as HTMLModusWcPaginationElement;
-    const pageChangeSpy = jest.fn();
-    pagination.addEventListener('pageChange', pageChangeSpy);
-
-    const pageButtons = page.root!.querySelectorAll('button');
-    const pageTwoButton = Array.from(pageButtons).find(
-      (button) => button.textContent === '2'
-    );
-
-    pageTwoButton!.click();
-    await page.waitForChanges();
-
-    expect(pageChangeSpy).not.toHaveBeenCalled();
-  });
-
   it('should not render first and last page nav buttons when count is less than 5', async () => {
     const page = await newSpecPage({
       components: [ModusWcPagination],
@@ -123,5 +68,258 @@ describe('modus-wc-pagination', () => {
 
     expect(firstPageButton).not.toBeNull();
     expect(lastPageButton).not.toBeNull();
+  });
+
+  it('should disable previous page button when on the first page', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="5"
+        page="1"
+      ></modus-wc-pagination>`,
+    });
+
+    expect(page.root).toMatchSnapshot();
+
+    const previousPageButton = page.root!.querySelector(
+      'button[aria-label="Previous page"]'
+    );
+
+    expect(previousPageButton).toHaveAttribute('disabled');
+  });
+
+  it('should disable next page button when on the last page', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="5"
+        page="5"
+      ></modus-wc-pagination>`,
+    });
+
+    expect(page.root).toMatchSnapshot();
+
+    const nextPageButton = page.root!.querySelector(
+      'button[aria-label="Next page"]'
+    );
+
+    expect(nextPageButton).toHaveAttribute('disabled');
+  });
+
+  it('should disable both first and previous page buttons when on the first page and count greater than 5', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="15"
+        page="1"
+      ></modus-wc-pagination>`,
+    });
+
+    expect(page.root).toMatchSnapshot();
+
+    const firstPageButton = page.root!.querySelector(
+      'button[aria-label="First page"]'
+    );
+    const previousPageButton = page.root!.querySelector(
+      'button[aria-label="Previous page"]'
+    );
+
+    expect(firstPageButton).toHaveAttribute('disabled');
+    expect(previousPageButton).toHaveAttribute('disabled');
+  });
+
+  it('should disable both last and next page buttons when on the last page and count greater than 5', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="15"
+        page="15"
+      ></modus-wc-pagination>`,
+    });
+
+    expect(page.root).toMatchSnapshot();
+
+    const lastPageButton = page.root!.querySelector(
+      'button[aria-label="Last page"]'
+    );
+    const nextPageButton = page.root!.querySelector(
+      'button[aria-label="Next page"]'
+    );
+
+    expect(lastPageButton).toHaveAttribute('disabled');
+    expect(nextPageButton).toHaveAttribute('disabled');
+  });
+
+  it('should emit pageChange event when clicking a page button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="5"
+        page="2"
+      ></modus-wc-pagination>`,
+    });
+
+    // eslint-disable-next-line no-undef
+    const pagination = page.root as HTMLModusWcPaginationElement;
+    const pageChangeSpy = jest.fn();
+    pagination.addEventListener('pageChange', pageChangeSpy);
+
+    const pageButtons = page.root!.querySelectorAll('button');
+    const pageThreeButton = Array.from(pageButtons).find(
+      (button) => button.textContent === '3'
+    );
+
+    pageThreeButton!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await page.waitForChanges();
+
+    expect(pageChangeSpy).toHaveBeenCalled();
+    const eventDetail = pageChangeSpy.mock.calls[0][0].detail;
+    expect(eventDetail.newPage).toBe(3);
+    expect(eventDetail.prevPage).toBe(2);
+  });
+
+  it('should not emit pageChange event when clicking the current page button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="5"
+        page="2"
+      ></modus-wc-pagination>`,
+    });
+
+    // eslint-disable-next-line no-undef
+    const pagination = page.root as HTMLModusWcPaginationElement;
+    const pageChangeSpy = jest.fn();
+    pagination.addEventListener('pageChange', pageChangeSpy);
+
+    const pageButtons = page.root!.querySelectorAll('button');
+    const pageTwoButton = Array.from(pageButtons).find(
+      (button) => button.textContent === '2'
+    );
+
+    pageTwoButton!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await page.waitForChanges();
+
+    expect(pageChangeSpy).not.toHaveBeenCalled();
+  });
+
+  it('should emit pageChange event when clicking the first page button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="10"
+        page="5"
+      ></modus-wc-pagination>`,
+    });
+
+    // eslint-disable-next-line no-undef
+    const pagination = page.root as HTMLModusWcPaginationElement;
+    const pageChangeSpy = jest.fn();
+    pagination.addEventListener('pageChange', pageChangeSpy);
+
+    const firstPageButton = page.root!.querySelector(
+      'button[aria-label="First page"]'
+    );
+
+    firstPageButton!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await page.waitForChanges();
+
+    expect(pageChangeSpy).toHaveBeenCalled();
+    const eventDetail = pageChangeSpy.mock.calls[0][0].detail;
+    expect(eventDetail.newPage).toBe(1);
+    expect(eventDetail.prevPage).toBe(5);
+  });
+
+  it('should emit pageChange event when clicking the previous page button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="10"
+        page="5"
+      ></modus-wc-pagination>`,
+    });
+
+    // eslint-disable-next-line no-undef
+    const pagination = page.root as HTMLModusWcPaginationElement;
+    const pageChangeSpy = jest.fn();
+    pagination.addEventListener('pageChange', pageChangeSpy);
+
+    const previousPageButton = page.root!.querySelector(
+      'button[aria-label="Previous page"]'
+    );
+
+    previousPageButton!.dispatchEvent(
+      new MouseEvent('click', { bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(pageChangeSpy).toHaveBeenCalled();
+    const eventDetail = pageChangeSpy.mock.calls[0][0].detail;
+    expect(eventDetail.newPage).toBe(4);
+    expect(eventDetail.prevPage).toBe(5);
+  });
+
+  it('should emit pageChange event when clicking the next page button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="10"
+        page="5"
+      ></modus-wc-pagination>`,
+    });
+
+    // eslint-disable-next-line no-undef
+    const pagination = page.root as HTMLModusWcPaginationElement;
+    const pageChangeSpy = jest.fn();
+    pagination.addEventListener('pageChange', pageChangeSpy);
+
+    const nextPageButton = page.root!.querySelector(
+      'button[aria-label="Next page"]'
+    );
+
+    nextPageButton!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await page.waitForChanges();
+
+    expect(pageChangeSpy).toHaveBeenCalled();
+    const eventDetail = pageChangeSpy.mock.calls[0][0].detail;
+    expect(eventDetail.newPage).toBe(6);
+    expect(eventDetail.prevPage).toBe(5);
+  });
+
+  it('should emit pageChange event when clicking the last page button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="10"
+        page="5"
+      ></modus-wc-pagination>`,
+    });
+
+    // eslint-disable-next-line no-undef
+    const pagination = page.root as HTMLModusWcPaginationElement;
+    const pageChangeSpy = jest.fn();
+    pagination.addEventListener('pageChange', pageChangeSpy);
+
+    const lastPageButton = page.root!.querySelector(
+      'button[aria-label="Last page"]'
+    );
+
+    lastPageButton!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await page.waitForChanges();
+
+    expect(pageChangeSpy).toHaveBeenCalled();
+    const eventDetail = pageChangeSpy.mock.calls[0][0].detail;
+    expect(eventDetail.newPage).toBe(10);
+    expect(eventDetail.prevPage).toBe(5);
   });
 });
