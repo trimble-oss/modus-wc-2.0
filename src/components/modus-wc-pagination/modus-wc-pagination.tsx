@@ -83,7 +83,7 @@ export class ModusWcPagination {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  private getClasses(): [paginationClasses: string, buttonClasses: string] {
+  private getClasses(): { paginationClasses: string; buttonClasses: string } {
     const buttonClassList = [
       'modus-wc-pagination-btn',
       'modus-wc-join-item',
@@ -102,7 +102,7 @@ export class ModusWcPagination {
     if (propClasses) buttonClassList.push(propClasses);
     const buttonClasses = buttonClassList.join(' ');
 
-    return [paginationClasses, buttonClasses];
+    return { paginationClasses, buttonClasses };
   }
 
   private handlePageClick = (newPage: number) => {
@@ -115,7 +115,7 @@ export class ModusWcPagination {
   };
 
   render() {
-    const [paginationClasses, buttonClasses] = this.getClasses();
+    const { paginationClasses, buttonClasses } = this.getClasses();
     const isFirstPage = this.page === 1;
     const isLastPage = this.page === this.count;
     const shouldShowFirstLastButtons = this.count > this.maxVisibleButtons;
