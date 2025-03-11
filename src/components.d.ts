@@ -10,6 +10,7 @@ import { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFiel
 import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+import { IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 import { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
@@ -22,6 +23,7 @@ export { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFiel
 export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+export { IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 export { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
