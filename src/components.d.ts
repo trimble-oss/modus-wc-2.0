@@ -10,6 +10,7 @@ import { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFiel
 import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+import { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 import { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
@@ -22,6 +23,7 @@ export { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFiel
 export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+export { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 export { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
@@ -753,6 +755,32 @@ export namespace Components {
         "value": string;
     }
     /**
+     * Pagination component to navigate through pages of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcPagination {
+        /**
+          * Aria label values for pagination buttons
+         */
+        "ariaLabelValues"?: IModusWcAriaLabelValues;
+        /**
+          * Total number of pages
+         */
+        "count": number;
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
+        /**
+          * The current page number
+         */
+        "page": number;
+        /**
+          * Size of the pagination buttons
+         */
+        "size": ModusSize;
+    }
+    /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
      * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
      * Adheres to WCAG 2.2 standards.
@@ -1455,6 +1483,10 @@ export interface ModusWcNumberInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcNumberInputElement;
 }
+export interface ModusWcPaginationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcPaginationElement;
+}
 export interface ModusWcRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcRadioElement;
@@ -1840,6 +1872,27 @@ declare global {
         prototype: HTMLModusWcNumberInputElement;
         new (): HTMLModusWcNumberInputElement;
     };
+    interface HTMLModusWcPaginationElementEventMap {
+        "pageChange": IModusWcPageChange;
+    }
+    /**
+     * Pagination component to navigate through pages of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcPaginationElement extends Components.ModusWcPagination, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcPaginationElementEventMap>(type: K, listener: (this: HTMLModusWcPaginationElement, ev: ModusWcPaginationCustomEvent<HTMLModusWcPaginationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcPaginationElementEventMap>(type: K, listener: (this: HTMLModusWcPaginationElement, ev: ModusWcPaginationCustomEvent<HTMLModusWcPaginationElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcPaginationElement: {
+        prototype: HTMLModusWcPaginationElement;
+        new (): HTMLModusWcPaginationElement;
+    };
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
      * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
@@ -2160,6 +2213,7 @@ declare global {
         "modus-wc-menu-item": HTMLModusWcMenuItemElement;
         "modus-wc-modal": HTMLModusWcModalElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
+        "modus-wc-pagination": HTMLModusWcPaginationElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
         "modus-wc-select": HTMLModusWcSelectElement;
@@ -2994,6 +3048,36 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
+     * Pagination component to navigate through pages of content.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcPagination {
+        /**
+          * Aria label values for pagination buttons
+         */
+        "ariaLabelValues"?: IModusWcAriaLabelValues;
+        /**
+          * Total number of pages
+         */
+        "count"?: number;
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
+        /**
+          * Event emitted when page changes
+         */
+        "onPageChange"?: (event: ModusWcPaginationCustomEvent<IModusWcPageChange>) => void;
+        /**
+          * The current page number
+         */
+        "page"?: number;
+        /**
+          * Size of the pagination buttons
+         */
+        "size"?: ModusSize;
+    }
+    /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
      * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
      * Adheres to WCAG 2.2 standards.
@@ -3774,6 +3858,7 @@ declare namespace LocalJSX {
         "modus-wc-menu-item": ModusWcMenuItem;
         "modus-wc-modal": ModusWcModal;
         "modus-wc-number-input": ModusWcNumberInput;
+        "modus-wc-pagination": ModusWcPagination;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
         "modus-wc-select": ModusWcSelect;
@@ -3906,6 +3991,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-number-input": LocalJSX.ModusWcNumberInput & JSXBase.HTMLAttributes<HTMLModusWcNumberInputElement>;
+            /**
+             * Pagination component to navigate through pages of content.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-pagination": LocalJSX.ModusWcPagination & JSXBase.HTMLAttributes<HTMLModusWcPaginationElement>;
             /**
              * A customizable progress component used to show the progress of a task or show the passing of time.
              * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
