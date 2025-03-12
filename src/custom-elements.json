@@ -2420,6 +2420,162 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-pagination/modus-wc-pagination.icons.tsx",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "ChevronDoubleLeft"
+        },
+        {
+          "kind": "function",
+          "name": "ChevronDoubleRight"
+        },
+        {
+          "kind": "function",
+          "name": "ChevronLeft"
+        },
+        {
+          "kind": "function",
+          "name": "ChevronRight"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ChevronDoubleLeft",
+          "declaration": {
+            "name": "ChevronDoubleLeft",
+            "module": "src/components/modus-wc-pagination/modus-wc-pagination.icons.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ChevronDoubleRight",
+          "declaration": {
+            "name": "ChevronDoubleRight",
+            "module": "src/components/modus-wc-pagination/modus-wc-pagination.icons.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ChevronLeft",
+          "declaration": {
+            "name": "ChevronLeft",
+            "module": "src/components/modus-wc-pagination/modus-wc-pagination.icons.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ChevronRight",
+          "declaration": {
+            "name": "ChevronRight",
+            "module": "src/components/modus-wc-pagination/modus-wc-pagination.icons.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-pagination/modus-wc-pagination.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Pagination component to navigate through pages of content.\n\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcPagination",
+          "members": [
+            {
+              "kind": "method",
+              "name": "calculateVisiblePages"
+            },
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aria-label-values",
+              "fieldName": "ariaLabelValues",
+              "type": {
+                "text": "IModusWcAriaLabelValues"
+              },
+              "description": "Aria label values for pagination buttons"
+            },
+            {
+              "name": "count",
+              "fieldName": "count",
+              "type": {
+                "text": "number"
+              },
+              "description": "Total number of pages"
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "type": {
+                "text": "string"
+              },
+              "description": "Custom CSS class to apply"
+            },
+            {
+              "name": "page",
+              "fieldName": "page",
+              "type": {
+                "text": "number"
+              },
+              "description": "The current page number"
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "ModusSize"
+              },
+              "description": "Size of the pagination buttons"
+            }
+          ],
+          "tagName": "modus-wc-pagination",
+          "events": [
+            {
+              "name": "pageChange",
+              "type": {
+                "text": "EventEmitter<IModusWcPageChange>"
+              },
+              "description": "Event emitted when page changes"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcPagination",
+          "declaration": {
+            "name": "ModusWcPagination",
+            "module": "src/components/modus-wc-pagination/modus-wc-pagination.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-pagination",
+          "declaration": {
+            "name": "ModusWcPagination",
+            "module": "src/components/modus-wc-pagination/modus-wc-pagination.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-progress/modus-wc-progress.tsx",
       "declarations": [
         {
@@ -3075,7 +3231,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Used to show a list of steps in a process.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "Used to show a list of steps in a process.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcStepper",
           "members": [
             {
