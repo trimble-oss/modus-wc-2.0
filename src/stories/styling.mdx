@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/blocks';
 import { Canvas, Story } from '@storybook/blocks';
 
-<Meta title="Documentation/Custom Styling" />
+<Meta title="Documentation/Styling" />
 
 # Custom Styling
 
@@ -89,6 +89,16 @@ Our component classes are all prefixed with `modus-wc-` to avoid collisions.
   color: black;
 }
 ```
+
+# CSS Reset (Tailwind Preflight)
+
+Tailwind performs a CSS reset (preflight) that normalizes browser styles to ensure all component styles are applied
+consistently across browsers. This reset is automatically loaded into applications consuming the library. We've
+provided Modus-specific overrides in `styles/tailwind.css` to maintain compatibility with our design system, though
+these overrides aren't exhaustive. If you need additional style adjustments, you can either:
+
+1. Add custom CSS overrides in your application
+2. Create a GitHub issue describing the needed override (contributions welcome)
 
 ---
 
