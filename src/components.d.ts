@@ -854,6 +854,32 @@ export namespace Components {
         "value": boolean;
     }
     /**
+     * A rating component that allows users to rate items.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcRating {
+        /**
+          * Whether to allow half-ratings
+         */
+        "allowHalf": boolean;
+        /**
+          * The number of rating items to display
+         */
+        "count": number;
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
+        /**
+          * The size of the rating component
+         */
+        "size"?: ModusSize;
+        /**
+          * The variant of the rating scale
+         */
+        "variant": 'star' | 'heart' | 'smiley' | 'thumbs';
+    }
+    /**
      * A customizable select component used to pick a value from a list of options.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1927,6 +1953,16 @@ declare global {
         prototype: HTMLModusWcRadioElement;
         new (): HTMLModusWcRadioElement;
     };
+    /**
+     * A rating component that allows users to rate items.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcRatingElement extends Components.ModusWcRating, HTMLStencilElement {
+    }
+    var HTMLModusWcRatingElement: {
+        prototype: HTMLModusWcRatingElement;
+        new (): HTMLModusWcRatingElement;
+    };
     interface HTMLModusWcSelectElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
@@ -2216,6 +2252,7 @@ declare global {
         "modus-wc-pagination": HTMLModusWcPaginationElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
+        "modus-wc-rating": HTMLModusWcRatingElement;
         "modus-wc-select": HTMLModusWcSelectElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
@@ -3163,6 +3200,32 @@ declare namespace LocalJSX {
         "value"?: boolean;
     }
     /**
+     * A rating component that allows users to rate items.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcRating {
+        /**
+          * Whether to allow half-ratings
+         */
+        "allowHalf"?: boolean;
+        /**
+          * The number of rating items to display
+         */
+        "count"?: number;
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
+        /**
+          * The size of the rating component
+         */
+        "size"?: ModusSize;
+        /**
+          * The variant of the rating scale
+         */
+        "variant"?: 'star' | 'heart' | 'smiley' | 'thumbs';
+    }
+    /**
      * A customizable select component used to pick a value from a list of options.
      * Adheres to WCAG 2.2 standards.
      */
@@ -3861,6 +3924,7 @@ declare namespace LocalJSX {
         "modus-wc-pagination": ModusWcPagination;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
+        "modus-wc-rating": ModusWcRating;
         "modus-wc-select": ModusWcSelect;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
@@ -4007,6 +4071,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-radio": LocalJSX.ModusWcRadio & JSXBase.HTMLAttributes<HTMLModusWcRadioElement>;
+            /**
+             * A rating component that allows users to rate items.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-rating": LocalJSX.ModusWcRating & JSXBase.HTMLAttributes<HTMLModusWcRatingElement>;
             /**
              * A customizable select component used to pick a value from a list of options.
              * Adheres to WCAG 2.2 standards.

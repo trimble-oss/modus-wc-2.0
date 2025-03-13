@@ -1,0 +1,50 @@
+import { Meta, StoryObj } from '@storybook/web-components';
+import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+
+interface RatingArgs {
+  'allow-half'?: boolean;
+  count: number;
+  'custom-class'?: string;
+  size?: 'sm' | 'md' | 'lg';
+  variant: 'star' | 'heart' | 'smiley' | 'thumbs';
+}
+
+const meta: Meta<RatingArgs> = {
+  title: 'Components/Rating',
+  component: 'modus-wc-rating',
+  args: {
+    'allow-half': false,
+    count: 5,
+    'custom-class': '',
+    size: 'md',
+    variant: 'star',
+  },
+  argTypes: {
+    size: {
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg'],
+    },
+    variant: {
+      control: { type: 'select' },
+      options: ['star', 'heart', 'smiley', 'thumbs'],
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<RatingArgs>;
+
+export const Default: Story = {
+  render: (args) => html`
+    <modus-wc-rating
+      aria-label="Rating scale component"
+      allow-half=${ifDefined(args['allow-half'])}
+      count=${args.count}
+      custom-class=${ifDefined(args['custom-class'])}
+      size=${ifDefined(args.size)}
+      variant=${args.variant}
+    ></modus-wc-rating>
+  `,
+};
