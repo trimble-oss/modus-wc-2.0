@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 /* Modus overrides for Tailwind CSS reset (preflight) */
+/* IMPORTANT: changes here require a full regression test of all component styles */
 @layer base {
   /* Headings */
   h1 {
