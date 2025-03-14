@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ModusWcRatingVariant } from './modus-wc-rating';
 
 interface RatingArgs {
   'allow-half'?: boolean;
@@ -8,7 +9,7 @@ interface RatingArgs {
   'custom-class'?: string;
   size?: 'sm' | 'md' | 'lg';
   value?: number;
-  variant: 'star' | 'heart' | 'smiley' | 'thumbs';
+  variant: ModusWcRatingVariant;
 }
 
 const meta: Meta<RatingArgs> = {
@@ -29,7 +30,7 @@ const meta: Meta<RatingArgs> = {
     },
     variant: {
       control: { type: 'select' },
-      options: ['star', 'heart', 'smiley', 'thumbs'],
+      options: ['star', 'heart', 'smiley', 'thumb'],
     },
   },
 };

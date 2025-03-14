@@ -1,9 +1,10 @@
 import { ModusSize } from '../types';
+import { ModusWcRatingVariant } from './modus-wc-rating';
 
 export const convertPropsToClasses = (props: {
   allowHalf?: boolean;
   size?: ModusSize;
-  variant?: 'star' | 'heart' | 'smiley' | 'thumbs';
+  variant?: ModusWcRatingVariant;
 }): { ratingPropClasses: string; ratingItemPropClasses: string } => {
   let ratingClasses = '';
   let ratingItemClasses = '';

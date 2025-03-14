@@ -3,6 +3,8 @@ import { ModusSize } from '../types';
 import { Attributes, generateRandomId, inheritAriaAttributes } from '../utils';
 import { convertPropsToClasses } from './modus-wc-rating.tailwind';
 
+export type ModusWcRatingVariant = 'star' | 'heart' | 'smiley' | 'thumb';
+
 /**
  * A rating component that allows users to rate items.
  *
@@ -32,7 +34,7 @@ export class ModusWcRating {
   @Prop() size?: ModusSize = 'md';
 
   /** The variant of the rating scale */
-  @Prop() variant: 'star' | 'heart' | 'smiley' | 'thumbs' = 'star';
+  @Prop() variant: ModusWcRatingVariant = 'star';
 
   @Prop({ mutable: true, reflect: true }) value: number = 0;
 

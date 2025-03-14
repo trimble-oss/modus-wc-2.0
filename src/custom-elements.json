@@ -2881,7 +2881,7 @@
               "name": "variant",
               "fieldName": "variant",
               "type": {
-                "text": "'star' | 'heart' | 'smiley' | 'thumbs'"
+                "text": "ModusWcRatingVariant"
               },
               "description": "The variant of the rating scale"
             }

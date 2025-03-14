@@ -11,6 +11,7 @@ import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-b
 import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
+import { ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 import { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
@@ -24,6 +25,7 @@ export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-b
 export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
+export { ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 export { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
@@ -878,7 +880,7 @@ export namespace Components {
         /**
           * The variant of the rating scale
          */
-        "variant": 'star' | 'heart' | 'smiley' | 'thumbs';
+        "variant": ModusWcRatingVariant;
     }
     /**
      * A customizable select component used to pick a value from a list of options.
@@ -3225,7 +3227,7 @@ declare namespace LocalJSX {
         /**
           * The variant of the rating scale
          */
-        "variant"?: 'star' | 'heart' | 'smiley' | 'thumbs';
+        "variant"?: ModusWcRatingVariant;
     }
     /**
      * A customizable select component used to pick a value from a list of options.
