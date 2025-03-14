@@ -2863,6 +2863,14 @@
               "description": "Custom CSS class to apply"
             },
             {
+              "name": "get-label-text",
+              "fieldName": "getLabelText",
+              "type": {
+                "text": "(index: number) => string"
+              },
+              "description": "Function to provide aria-label text for a given rating-item index"
+            },
+            {
               "name": "size",
               "fieldName": "size",
               "type": {

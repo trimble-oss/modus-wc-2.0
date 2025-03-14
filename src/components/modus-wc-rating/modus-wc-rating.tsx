@@ -42,6 +42,10 @@ export class ModusWcRating {
   /** Custom CSS class to apply */
   @Prop() customClass?: string = '';
 
+  /** Function to provide aria-label text for a given rating-item index */
+  @Prop() getLabelText: (index: number) => string = (index) =>
+    `${index} out of ${this.count} ${this.variant}${this.count > 1 ? 's' : ''}`;
+
   /** The size of the rating component */
   @Prop() size?: ModusSize = 'md';
 
@@ -104,8 +108,13 @@ export class ModusWcRating {
 
     return (
       <Host class="modus-wc-rating-container">
-        <div class={ratingClasses} {...this.inheritedAttributes}>
+        <div
+          class={ratingClasses}
+          role="radiogroup"
+          {...this.inheritedAttributes}
+        >
           <input
+            aria-label={this.getLabelText(0)}
             checked={this.value <= 0}
             class="modus-wc-rating-item modus-wc-rating-hidden"
             name={uniqueRatingGroupName}
@@ -120,6 +129,7 @@ export class ModusWcRating {
 
               return (
                 <input
+                  aria-label={this.getLabelText(ratingValue)}
                   checked={this.value === ratingValue}
                   class={
                     this.allowHalf

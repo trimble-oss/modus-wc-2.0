@@ -8,18 +8,20 @@ interface RatingArgs {
   'allow-half'?: boolean;
   count: number;
   'custom-class'?: string;
+  getLabelText?: (index: number) => string;
   size?: 'sm' | 'md' | 'lg';
   value?: number;
   variant: ModusWcRatingVariant;
 }
 
 const meta: Meta<RatingArgs> = {
-  title: 'Components/Rating',
+  title: 'Components/Forms/Rating',
   component: 'modus-wc-rating',
   args: {
     'allow-half': false,
     count: 5,
     'custom-class': '',
+    getLabelText: (index: number) => `${index} rating`,
     size: 'md',
     value: 0,
     variant: 'star',
@@ -56,6 +58,7 @@ export const Default: Story = {
       size=${ifDefined(args.size)}
       value=${ifDefined(args.value)}
       variant=${args.variant}
+      .getLabelText=${args.getLabelText}
     ></modus-wc-rating>
   `,
 };

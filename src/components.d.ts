@@ -873,6 +873,10 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * Function to provide aria-label text for a given rating-item index
+         */
+        "getLabelText": (index: number) => string;
+        /**
           * The size of the rating component
          */
         "size"?: ModusSize;
@@ -3237,6 +3241,10 @@ declare namespace LocalJSX {
           * Custom CSS class to apply
          */
         "customClass"?: string;
+        /**
+          * Function to provide aria-label text for a given rating-item index
+         */
+        "getLabelText"?: (index: number) => string;
         /**
           * Event emitted when the rating changes
          */
