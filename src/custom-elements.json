@@ -2875,7 +2875,8 @@
               "fieldName": "value",
               "type": {
                 "text": "number"
-              }
+              },
+              "description": "The current value of the rating"
             },
             {
               "name": "variant",
@@ -2887,7 +2888,15 @@
             }
           ],
           "tagName": "modus-wc-rating",
-          "events": [],
+          "events": [
+            {
+              "name": "ratingChange",
+              "type": {
+                "text": "EventEmitter<IModusWcRatingChange>"
+              },
+              "description": "Event emitted when the rating changes"
+            }
+          ],
           "customElement": true
         }
       ],

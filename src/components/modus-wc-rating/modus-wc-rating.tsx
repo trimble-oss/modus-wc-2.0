@@ -1,7 +1,19 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+} from '@stencil/core';
 import { ModusSize } from '../types';
 import { Attributes, generateRandomId, inheritAriaAttributes } from '../utils';
 import { convertPropsToClasses } from './modus-wc-rating.tailwind';
+
+export interface IModusWcRatingChange {
+  newRating: number;
+}
 
 export type ModusWcRatingVariant = 'star' | 'heart' | 'smiley' | 'thumb';
 
@@ -36,7 +48,11 @@ export class ModusWcRating {
   /** The variant of the rating scale */
   @Prop() variant: ModusWcRatingVariant = 'star';
 
+  /** The current value of the rating */
   @Prop({ mutable: true, reflect: true }) value: number = 0;
+
+  /** Event emitted when the rating changes */
+  @Event() ratingChange!: EventEmitter<IModusWcRatingChange>;
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
@@ -72,9 +88,9 @@ export class ModusWcRating {
       : 'modus-wc-mask-half-2';
   }
 
-  private handleClick(newValue: number) {
+  private handleChange(newValue: number) {
     this.value = newValue;
-    // TODO emit event
+    this.ratingChange.emit({ newRating: newValue });
   }
 
   render() {
@@ -88,7 +104,7 @@ export class ModusWcRating {
             checked={this.value === 0}
             class="modus-wc-rating-hidden"
             name={`radio-${uniqueRadioGroupId}`}
-            onClick={() => this.handleClick(0)}
+            onChange={() => this.handleChange(0)}
             type="radio"
             value="0"
           />
@@ -104,7 +120,7 @@ export class ModusWcRating {
                 }
                 key={index}
                 name={`radio-${uniqueRadioGroupId}`}
-                onClick={() => this.handleClick(index + 1)}
+                onChange={() => this.handleChange(index + 1)}
                 type="radio"
                 value={String(index + 1)}
               />

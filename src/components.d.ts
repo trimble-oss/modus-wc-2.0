@@ -11,7 +11,7 @@ import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-b
 import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
-import { ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
+import { IModusWcRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 import { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
@@ -25,7 +25,7 @@ export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-b
 export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
-export { ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
+export { IModusWcRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 export { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
@@ -876,6 +876,9 @@ export namespace Components {
           * The size of the rating component
          */
         "size"?: ModusSize;
+        /**
+          * The current value of the rating
+         */
         "value": number;
         /**
           * The variant of the rating scale
@@ -1520,6 +1523,10 @@ export interface ModusWcRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcRadioElement;
 }
+export interface ModusWcRatingCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcRatingElement;
+}
 export interface ModusWcSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSelectElement;
@@ -1956,11 +1963,22 @@ declare global {
         prototype: HTMLModusWcRadioElement;
         new (): HTMLModusWcRadioElement;
     };
+    interface HTMLModusWcRatingElementEventMap {
+        "ratingChange": IModusWcRatingChange;
+    }
     /**
      * A rating component that allows users to rate items.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcRatingElement extends Components.ModusWcRating, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcRatingElementEventMap>(type: K, listener: (this: HTMLModusWcRatingElement, ev: ModusWcRatingCustomEvent<HTMLModusWcRatingElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcRatingElementEventMap>(type: K, listener: (this: HTMLModusWcRatingElement, ev: ModusWcRatingCustomEvent<HTMLModusWcRatingElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcRatingElement: {
         prototype: HTMLModusWcRatingElement;
@@ -3220,9 +3238,16 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
+          * Event emitted when the rating changes
+         */
+        "onRatingChange"?: (event: ModusWcRatingCustomEvent<IModusWcRatingChange>) => void;
+        /**
           * The size of the rating component
          */
         "size"?: ModusSize;
+        /**
+          * The current value of the rating
+         */
         "value"?: number;
         /**
           * The variant of the rating scale

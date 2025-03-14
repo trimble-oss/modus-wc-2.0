@@ -1,3 +1,4 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -31,6 +32,12 @@ const meta: Meta<RatingArgs> = {
     variant: {
       control: { type: 'select' },
       options: ['star', 'heart', 'smiley', 'thumb'],
+    },
+  },
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['ratingChange'],
     },
   },
 };
