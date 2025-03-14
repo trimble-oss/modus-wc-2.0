@@ -73,8 +73,9 @@ export class ModusWcRating {
 
     // The order CSS classes are added matters to CSS specificity
     if (ratingPropClasses) ratingClassList.push(ratingPropClasses);
-    if (ratingItemPropClasses) ratingItemClassList.push(ratingItemPropClasses);
     if (this.customClass) ratingClassList.push(this.customClass);
+
+    if (ratingItemPropClasses) ratingItemClassList.push(ratingItemPropClasses);
 
     return {
       ratingClasses: ratingClassList.join(' '),
@@ -95,7 +96,7 @@ export class ModusWcRating {
 
   render() {
     const { ratingClasses, ratingItemClasses } = this.getClasses();
-    const uniqueRadioGroupId = generateRandomId(4);
+    const uniqueRatingGroupName = `modus-wc-rating-group-${generateRandomId(4)}`;
 
     return (
       <Host class="modus-wc-rating-container">
@@ -103,7 +104,7 @@ export class ModusWcRating {
           <input
             checked={this.value <= 0}
             class="modus-wc-rating-item modus-wc-rating-hidden"
-            name={`radio-${uniqueRadioGroupId}`}
+            name={uniqueRatingGroupName}
             onChange={() => this.handleChange(0)}
             type="radio"
             value="0"
@@ -119,7 +120,7 @@ export class ModusWcRating {
                     : ratingItemClasses
                 }
                 key={index}
-                name={`radio-${uniqueRadioGroupId}`}
+                name={uniqueRatingGroupName}
                 onChange={() => this.handleChange(index + 1)}
                 type="radio"
                 value={String(index + 1)}
