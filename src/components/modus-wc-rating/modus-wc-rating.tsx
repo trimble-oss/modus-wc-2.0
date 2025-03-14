@@ -101,7 +101,7 @@ export class ModusWcRating {
       <Host>
         <div class={ratingClasses} {...this.inheritedAttributes}>
           <input
-            checked={this.value === 0}
+            checked={this.value <= 0}
             class="modus-wc-rating-hidden"
             name={`radio-${uniqueRadioGroupId}`}
             onChange={() => this.handleChange(0)}
