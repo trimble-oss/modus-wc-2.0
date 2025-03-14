@@ -7,6 +7,7 @@ interface RatingArgs {
   count: number;
   'custom-class'?: string;
   size?: 'sm' | 'md' | 'lg';
+  value?: number;
   variant: 'star' | 'heart' | 'smiley' | 'thumbs';
 }
 
@@ -18,6 +19,7 @@ const meta: Meta<RatingArgs> = {
     count: 5,
     'custom-class': '',
     size: 'md',
+    value: 0,
     variant: 'star',
   },
   argTypes: {
@@ -44,6 +46,7 @@ export const Default: Story = {
       count=${args.count}
       custom-class=${ifDefined(args['custom-class'])}
       size=${ifDefined(args.size)}
+      value=${ifDefined(args.value)}
       variant=${args.variant}
     ></modus-wc-rating>
   `,

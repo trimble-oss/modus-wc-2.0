@@ -2871,6 +2871,13 @@
               "description": "The size of the rating component"
             },
             {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
               "name": "variant",
               "fieldName": "variant",
               "type": {

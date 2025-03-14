@@ -874,6 +874,7 @@ export namespace Components {
           * The size of the rating component
          */
         "size"?: ModusSize;
+        "value": number;
         /**
           * The variant of the rating scale
          */
@@ -3220,6 +3221,7 @@ declare namespace LocalJSX {
           * The size of the rating component
          */
         "size"?: ModusSize;
+        "value"?: number;
         /**
           * The variant of the rating scale
          */

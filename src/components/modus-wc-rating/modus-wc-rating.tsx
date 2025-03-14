@@ -34,6 +34,8 @@ export class ModusWcRating {
   /** The variant of the rating scale */
   @Prop() variant: 'star' | 'heart' | 'smiley' | 'thumbs' = 'star';
 
+  @Prop({ mutable: true, reflect: true }) value: number = 0;
+
   componentWillLoad() {
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Rating scale component';
@@ -62,6 +64,17 @@ export class ModusWcRating {
     };
   }
 
+  private getMaskHalfClasses(index: number): string {
+    return (index + 1) % 2 !== 0
+      ? 'modus-wc-mask-half-1'
+      : 'modus-wc-mask-half-2';
+  }
+
+  private handleClick(newValue: number) {
+    this.value = newValue;
+    // TODO emit event
+  }
+
   render() {
     const { ratingClasses, ratingItemClasses } = this.getClasses();
     const uniqueRadioGroupId = generateRandomId(4);
@@ -69,17 +82,27 @@ export class ModusWcRating {
     return (
       <Host>
         <div class={ratingClasses} {...this.inheritedAttributes}>
+          <input
+            checked={this.value === 0}
+            class="modus-wc-rating-hidden"
+            name={`radio-${uniqueRadioGroupId}`}
+            onClick={() => this.handleClick(0)}
+            type="radio"
+            value="0"
+          />
           {Array.from(
             { length: this.allowHalf ? this.count * 2 : this.count },
             (_, index) => (
               <input
+                checked={this.value === index + 1}
                 class={
                   this.allowHalf
-                    ? `${ratingItemClasses} ${(index + 1) % 2 !== 0 ? 'modus-wc-mask-half-1' : 'modus-wc-mask-half-2'}`
+                    ? `${ratingItemClasses} ${this.getMaskHalfClasses(index)}`
                     : ratingItemClasses
                 }
                 key={index}
                 name={`radio-${uniqueRadioGroupId}`}
+                onClick={() => this.handleClick(index + 1)}
                 type="radio"
                 value={String(index + 1)}
               />
