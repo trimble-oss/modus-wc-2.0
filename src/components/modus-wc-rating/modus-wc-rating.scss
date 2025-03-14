@@ -1,3 +1,18 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+.modus-wc-rating-container {
+  display: flex;
+}
+
 .modus-wc-rating {
-  gap: 0;
+  margin-inline-end: var(--modus-wc-spacing-sm);
+
+  .modus-wc-rating-item {
+    &:not(.modus-wc-mask-half-1) {
+      margin-inline-end: var(--modus-wc-spacing-xs);
+    }
+  }
 }

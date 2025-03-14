@@ -98,11 +98,11 @@ export class ModusWcRating {
     const uniqueRadioGroupId = generateRandomId(4);
 
     return (
-      <Host>
+      <Host class="modus-wc-rating-container">
         <div class={ratingClasses} {...this.inheritedAttributes}>
           <input
             checked={this.value <= 0}
-            class="modus-wc-rating-hidden"
+            class="modus-wc-rating-item modus-wc-rating-hidden"
             name={`radio-${uniqueRadioGroupId}`}
             onChange={() => this.handleChange(0)}
             type="radio"
