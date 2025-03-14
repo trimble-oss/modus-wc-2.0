@@ -89,6 +89,10 @@ export class ModusWcRating {
       : 'modus-wc-mask-half-2';
   }
 
+  private getValueForIndex(index: number): number {
+    return this.allowHalf ? (index + 1) * 0.5 : index + 1;
+  }
+
   private handleChange(newValue: number) {
     this.value = newValue;
     this.ratingChange.emit({ newRating: newValue });
@@ -111,21 +115,25 @@ export class ModusWcRating {
           />
           {Array.from(
             { length: this.allowHalf ? this.count * 2 : this.count },
-            (_, index) => (
-              <input
-                checked={this.value === index + 1}
-                class={
-                  this.allowHalf
-                    ? `${ratingItemClasses} ${this.getMaskHalfClasses(index)}`
-                    : ratingItemClasses
-                }
-                key={index}
-                name={uniqueRatingGroupName}
-                onChange={() => this.handleChange(index + 1)}
-                type="radio"
-                value={String(index + 1)}
-              />
-            )
+            (_, index) => {
+              const ratingValue = this.getValueForIndex(index);
+
+              return (
+                <input
+                  checked={this.value === ratingValue}
+                  class={
+                    this.allowHalf
+                      ? `${ratingItemClasses} ${this.getMaskHalfClasses(index)}`
+                      : ratingItemClasses
+                  }
+                  key={index}
+                  name={uniqueRatingGroupName}
+                  onChange={() => this.handleChange(ratingValue)}
+                  type="radio"
+                  value={String(ratingValue)}
+                />
+              );
+            }
           )}
         </div>
       </Host>
