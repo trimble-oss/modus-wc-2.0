@@ -15,7 +15,7 @@
 [data-theme='modus-classic-light'] .modus-wc-checkbox,
 [data-theme='modus-classic-dark'] .modus-wc-checkbox {
   --chkbg: var(--modus-wc-color-highlight-blue);
-  --fallback-bc: var(--modus-wc-color-highlight-blue);
+  --fallback-bc: var(--modus-wc-color-gray-4);
   --chkfg: var(--modus-wc-color-white);
 
   border-radius: var(--modus-wc-border-radius-sm);
@@ -24,6 +24,10 @@
   &.modus-wc-checkbox-xl {
     height: 4rem;
     width: 4rem;
+  }
+
+  &:checked {
+    --fallback-bc: var(--modus-wc-color-highlight-blue);
   }
 
   &:disabled {
@@ -35,21 +39,7 @@
   }
 
   &:hover {
-    --chkbg: var(--modus-wc-color-highlight-blue);
-    --fallback-bc: var(--modus-wc-color-highlight-blue);
-  }
-}
-
-[data-theme='modus-classic-light'] .modus-wc-checkbox {
-  --chkbg: var(--modus-wc-color-blue-light);
-  --fallback-bc: var(--modus-wc-color-gray-4);
-
-  &:checked {
-    --fallback-bc: var(--modus-wc-color-blue-light);
-  }
-
-  &:hover {
-    --chkbg: var(--modus-wc-color-blue-light);
-    --fallback-bc: var(--modus-wc-color-blue-light);
+    --chkbg: var(--modus-wc-color-trimble-blue);
+    --fallback-bc: var(--modus-wc-color-trimble-blue);
   }
 }
