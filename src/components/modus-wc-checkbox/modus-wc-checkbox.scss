@@ -35,12 +35,21 @@
   }
 
   &:hover {
-    --chkbg: var(--modus-wc-color-trimble-blue);
-    --fallback-bc: var(--modus-wc-color-trimble-blue);
+    --chkbg: var(--modus-wc-color-highlight-blue);
+    --fallback-bc: var(--modus-wc-color-highlight-blue);
   }
 }
 
 [data-theme='modus-classic-light'] .modus-wc-checkbox {
   --chkbg: var(--modus-wc-color-blue-light);
-  --fallback-bc: var(--modus-wc-color-blue-light);
+  --fallback-bc: var(--modus-wc-color-gray-4);
+
+  &:checked {
+    --fallback-bc: var(--modus-wc-color-blue-light);
+  }
+
+  &:hover {
+    --chkbg: var(--modus-wc-color-blue-light);
+    --fallback-bc: var(--modus-wc-color-blue-light);
+  }
 }
