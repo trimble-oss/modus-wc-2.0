@@ -20,3 +20,56 @@
     }
   }
 }
+
+.modus-wc-rating-smiley {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modus-wc-rating-smiley-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+
+  &:hover,
+  &:focus {
+    outline: none;
+    color: #999;
+  }
+
+  &.selected {
+    color: #ff9800;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+
+    // Adjust size based on parent size class
+    .modus-wc-rating-sm & {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .modus-wc-rating-md & {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .modus-wc-rating-lg & {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+}
