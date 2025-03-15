@@ -8,6 +8,7 @@ interface RatingArgs {
   'allow-half'?: boolean;
   count: number;
   'custom-class'?: string;
+  disabled?: boolean;
   getLabelText?: (index: number) => string;
   size?: 'sm' | 'md' | 'lg';
   value?: number;
@@ -21,6 +22,7 @@ const meta: Meta<RatingArgs> = {
     'allow-half': false,
     count: 5,
     'custom-class': '',
+    disabled: false,
     getLabelText: (index: number) => `${index} rating`,
     size: 'md',
     value: 0,
@@ -55,6 +57,7 @@ export const Default: Story = {
       allow-half=${ifDefined(args['allow-half'])}
       count=${args.count}
       custom-class=${ifDefined(args['custom-class'])}
+      disabled=${ifDefined(args.disabled)}
       size=${ifDefined(args.size)}
       value=${ifDefined(args.value)}
       variant=${args.variant}

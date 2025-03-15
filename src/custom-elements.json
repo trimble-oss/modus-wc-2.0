@@ -2863,6 +2863,14 @@
               "description": "Custom CSS class to apply"
             },
             {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the rating component is disabled"
+            },
+            {
               "name": "get-label-text",
               "fieldName": "getLabelText",
               "type": {

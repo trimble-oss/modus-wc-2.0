@@ -42,6 +42,9 @@ export class ModusWcRating {
   /** Custom CSS class to apply */
   @Prop() customClass?: string = '';
 
+  /** Whether the rating component is disabled */
+  @Prop() disabled?: boolean = false;
+
   /** Function to provide aria-label text for a given rating-item index */
   @Prop() getLabelText: (index: number) => string = (index) =>
     `${index} out of ${this.count} ${this.variant}${this.count > 1 ? 's' : ''}`;
@@ -117,6 +120,7 @@ export class ModusWcRating {
             aria-label={this.getLabelText(0)}
             checked={this.value <= 0}
             class="modus-wc-rating-item modus-wc-rating-hidden"
+            disabled={this.disabled}
             name={uniqueRatingGroupName}
             onChange={() => this.handleChange(0)}
             type="radio"
@@ -136,6 +140,7 @@ export class ModusWcRating {
                       ? `${ratingItemClasses} ${this.getMaskHalfClasses(index)}`
                       : ratingItemClasses
                   }
+                  disabled={this.disabled}
                   key={index}
                   name={uniqueRatingGroupName}
                   onChange={() => this.handleChange(ratingValue)}

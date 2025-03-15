@@ -873,6 +873,10 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * Whether the rating component is disabled
+         */
+        "disabled"?: boolean;
+        /**
           * Function to provide aria-label text for a given rating-item index
          */
         "getLabelText": (index: number) => string;
@@ -3241,6 +3245,10 @@ declare namespace LocalJSX {
           * Custom CSS class to apply
          */
         "customClass"?: string;
+        /**
+          * Whether the rating component is disabled
+         */
+        "disabled"?: boolean;
         /**
           * Function to provide aria-label text for a given rating-item index
          */

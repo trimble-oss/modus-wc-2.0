@@ -14,5 +14,9 @@
     &:not(.modus-wc-mask-half-1) {
       margin-inline-end: var(--modus-wc-spacing-xs);
     }
+
+    &:disabled {
+      opacity: 0.3;
+    }
   }
 }
