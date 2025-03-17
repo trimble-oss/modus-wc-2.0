@@ -41,10 +41,9 @@ export const convertPropsToClasses = (props: {
       case 'smiley':
         ratingItemClasses = `${ratingItemClasses} modus-wc-mask-smiley`;
         break;
-      // TODO: implement these variants (modus 1.0)
-      // case 'thumbs':
-      //   ratingItemClasses = `${ratingItemClasses} modus-wc-mask-thumbs`;
-      //   break;
+      case 'thumb':
+        ratingItemClasses = `${ratingItemClasses} modus-wc-mask-thumb`;
+        break;
     }
   }
 

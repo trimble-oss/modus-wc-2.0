@@ -109,7 +109,9 @@ export class ModusWcRating {
     const { ratingClasses, ratingItemClasses } = this.getClasses();
     const uniqueRatingGroupName = `modus-wc-rating-group-${generateRandomId(4)}`;
     // Only works for star and heart variants currently
-    const showHalf = this.allowHalf && this.variant !== 'smiley';
+    const showHalf =
+      this.allowHalf &&
+      !(this.variant === 'smiley' || this.variant === 'thumb');
 
     return (
       <Host class="modus-wc-rating-container">
@@ -142,7 +144,9 @@ export class ModusWcRating {
                       ? `${ratingItemClasses} ${this.getMaskHalfClasses(index)}`
                       : this.variant === 'smiley'
                         ? `${ratingItemClasses} modus-wc-mask-smiley-${ratingValue}`
-                        : ratingItemClasses
+                        : this.variant === 'thumb'
+                          ? `${ratingItemClasses} modus-wc-mask-thumb-${ratingValue}`
+                          : ratingItemClasses
                   }
                   disabled={this.disabled}
                   key={index}
