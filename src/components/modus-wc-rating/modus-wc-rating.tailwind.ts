@@ -11,7 +11,8 @@ export const convertPropsToClasses = (props: {
 
   if (
     Object.prototype.hasOwnProperty.call(props, 'allowHalf') &&
-    !!props.allowHalf
+    !!props.allowHalf &&
+    !(props.variant === 'smiley' || props.variant === 'thumb')
   ) {
     ratingClasses = `${ratingClasses} modus-wc-rating-half`;
   }

@@ -31,11 +31,11 @@
   &[aria-checked='true'],
   &[aria-current='true'],
   &:has(~ *:checked, ~ *[aria-checked='true'], ~ *[aria-current='true']) {
-    opacity: 20%;
+    opacity: 0.2;
   }
 
   &:checked {
-    opacity: 100%;
+    opacity: 1;
   }
 }
 
