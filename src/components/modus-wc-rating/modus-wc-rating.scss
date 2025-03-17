@@ -25,8 +25,39 @@
 // Smiley variant masks
 
 // Override DaisyUI's default style for modus 1.0 variants
-.modus-wc-mask-smiley,
-.modus-wc-mask-thumb {
+[data-theme='modus-classic-light'] .modus-wc-rating-item {
+  &.modus-wc-mask {
+    &.modus-wc-mask-smiley,
+    &.modus-wc-mask-thumb {
+      background-color: var(--modus-wc-color-trimble-gray);
+
+      &:hover,
+      &:checked:not(:disabled) {
+        background-color: var(--modus-wc-color-trimble-blue);
+      }
+    }
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-rating-item {
+  &.modus-wc-mask {
+    &.modus-wc-mask-smiley,
+    &.modus-wc-mask-thumb {
+      background-color: var(--modus-wc-color-gray-4);
+
+      &:hover,
+      &:checked:not(:disabled) {
+        background-color: var(--modus-wc-color-highlight-blue);
+      }
+    }
+  }
+}
+
+// Override DaisyUI's default style for modus 1.0 variants (modern theme)
+[data-theme='modus-modern-light'] .modus-wc-mask-smiley,
+[data-theme='modus-modern-dark'] .modus-wc-mask-smiley,
+[data-theme='modus-modern-light'] .modus-wc-mask-thumb,
+[data-theme='modus-modern-dark'] .modus-wc-mask-thumb {
   &:checked,
   &[aria-checked='true'],
   &[aria-current='true'],
