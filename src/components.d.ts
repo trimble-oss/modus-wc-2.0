@@ -861,7 +861,7 @@ export namespace Components {
      */
     interface ModusWcRating {
         /**
-          * Whether to allow half-ratings
+          * Whether to allow half-ratings. Only applies to star and heart variants.
          */
         "allowHalf": boolean;
         /**
@@ -3234,7 +3234,7 @@ declare namespace LocalJSX {
      */
     interface ModusWcRating {
         /**
-          * Whether to allow half-ratings
+          * Whether to allow half-ratings. Only applies to star and heart variants.
          */
         "allowHalf"?: boolean;
         /**

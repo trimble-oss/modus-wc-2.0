@@ -33,7 +33,7 @@ export class ModusWcRating {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Whether to allow half-ratings */
+  /** Whether to allow half-ratings. Only applies to star and heart variants. */
   @Prop() allowHalf: boolean = false;
 
   /** The number of rating items to display */
@@ -53,7 +53,7 @@ export class ModusWcRating {
   @Prop() size?: ModusSize = 'md';
 
   /** The variant of the rating scale */
-  @Prop() variant: ModusWcRatingVariant = 'star';
+  @Prop() variant: ModusWcRatingVariant = 'smiley';
 
   /** The current value of the rating */
   @Prop({ mutable: true, reflect: true }) value: number = 0;

@@ -2972,7 +2972,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Whether to allow half-ratings"
+              "description": "Whether to allow half-ratings. Only applies to star and heart variants."
             },
             {
               "name": "count",
