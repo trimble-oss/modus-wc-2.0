@@ -30,6 +30,10 @@
     --fallback-bc: var(--modus-wc-color-highlight-blue);
   }
 
+  &:indeterminate {
+    --fallback-bc: var(--modus-wc-color-highlight-blue);
+  }
+
   &:disabled {
     opacity: 0.3;
   }
@@ -41,10 +45,6 @@
   &:hover {
     --chkbg: var(--modus-wc-color-trimble-blue);
     --fallback-bc: var(--modus-wc-color-trimble-blue);
-  }
-
-  &:indeterminate {
-    --fallback-bc: var(--modus-wc-color-highlight-blue);
   }
 }
 
