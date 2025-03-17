@@ -51,7 +51,7 @@
 [data-theme='modus-classic-light'] .modus-wc-checkbox {
   --chkbg: var(--modus-wc-color-blue-light);
 
-  &:is(:checked, :indeterminate) {
+  &:checked {
     --fallback-bc: var(--modus-wc-color-blue-light);
   }
 
