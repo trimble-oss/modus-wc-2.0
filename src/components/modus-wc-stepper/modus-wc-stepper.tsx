@@ -4,6 +4,7 @@ import { Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 export interface IModusWcStepperItem {
+  /** The color theme of the step */
   color?:
     | 'primary'
     | 'secondary'
@@ -13,8 +14,11 @@ export interface IModusWcStepperItem {
     | 'warning'
     | 'error'
     | 'neutral';
+  /** Custom content to display in the step indicator */
   content?: string;
+  /** Custom CSS class to apply to the step */
   customClass?: string;
+  /** Text label for the step */
   label?: string;
 }
 

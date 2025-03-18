@@ -4,10 +4,10 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { ITableColumn } from './modus-wc-table';
+import { IModusWcTableColumn } from './modus-wc-table';
 import { Density } from '../types';
 
-const defaultColumns: ITableColumn[] = [
+const defaultColumns: IModusWcTableColumn[] = [
   {
     id: 'name',
     header: 'Name',
@@ -42,7 +42,7 @@ const defaultData = [
 ];
 
 interface TableArgs {
-  columns: ITableColumn[];
+  columns: IModusWcTableColumn[];
   'custom-class'?: string;
   data: Record<string, any>[];
   density?: Density;
@@ -59,6 +59,23 @@ const meta: Meta<TableArgs> = {
     zebra: false,
   },
   argTypes: {
+    columns: {
+      description: 'Array of column definitions for the table',
+      table: {
+        type: {
+          detail: `
+            Interface: IModusWcTableColumn
+            Properties:
+            - accessor (string): Key to access data from row object
+            - cellRenderer ((value: any, row: any) => string | HTMLElement, optional): Custom cell renderer
+            - className (string, optional): Class names for the column
+            - header (string | HTMLElement): Header content - can be string or HTML
+            - id (string): Unique identifier for the column
+            - width (string, optional): Width style (e.g., '200px', '50%')
+        `,
+        },
+      },
+    },
     density: {
       control: { type: 'select' },
       options: ['comfortable', 'compact'],

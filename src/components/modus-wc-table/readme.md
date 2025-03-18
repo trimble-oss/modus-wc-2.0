@@ -15,7 +15,7 @@ Adheres to WCAG 2.2 standards.
 
 | Property               | Attribute      | Description                                                                        | Type                                      | Default         |
 | ---------------------- | -------------- | ---------------------------------------------------------------------------------- | ----------------------------------------- | --------------- |
-| `columns` _(required)_ | --             | An array of column definitions.                                                    | `ITableColumn[]`                          | `undefined`     |
+| `columns` _(required)_ | --             | An array of column definitions.                                                    | `IModusWcTableColumn[]`                   | `undefined`     |
 | `customClass`          | `custom-class` | Custom CSS class to apply to the inner div.                                        | `string \| undefined`                     | `''`            |
 | `data` _(required)_    | --             | An array of data objects.                                                          | `Record<string, any>[]`                   | `undefined`     |
 | `density`              | `density`      | The density of the table, used to save space or increase readability.              | `"comfortable" \| "compact" \| undefined` | `'comfortable'` |

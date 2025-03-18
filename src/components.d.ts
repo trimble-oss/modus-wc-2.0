@@ -5,28 +5,28 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
+import { IModusWcAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
 import { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
-import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
+import { IModusWcSelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
-import { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+import { IModusWcTableColumn } from "./components/modus-wc-table/modus-wc-table";
 import { IModusWcTab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
-export { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
+export { IModusWcAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
 export { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
-export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
+export { IModusWcSelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
-export { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+export { IModusWcTableColumn } from "./components/modus-wc-table/modus-wc-table";
 export { IModusWcTab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
@@ -113,7 +113,7 @@ export namespace Components {
         /**
           * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
-        "items": IAutocompleteItem[];
+        "items": IModusWcAutocompleteItem[];
         /**
           * The text to display within the label.
          */
@@ -889,7 +889,7 @@ export namespace Components {
         /**
           * The options to display in the select dropdown.
          */
-        "options": ISelectOption[];
+        "options": IModusWcSelectOption[];
         /**
           * A value is required for the form to be submittable.
          */
@@ -1005,7 +1005,7 @@ export namespace Components {
         /**
           * An array of column definitions.
          */
-        "columns": ITableColumn[];
+        "columns": IModusWcTableColumn[];
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -1575,11 +1575,11 @@ declare global {
         new (): HTMLModusWcAlertElement;
     };
     interface HTMLModusWcAutocompleteElementEventMap {
-        "chipRemove": IAutocompleteItem;
+        "chipRemove": IModusWcAutocompleteItem;
         "inputBlur": FocusEvent;
         "inputChange": Event;
         "inputFocus": FocusEvent;
-        "itemSelect": IAutocompleteItem;
+        "itemSelect": IModusWcAutocompleteItem;
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
@@ -2326,7 +2326,7 @@ declare namespace LocalJSX {
         /**
           * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
-        "items"?: IAutocompleteItem[];
+        "items"?: IModusWcAutocompleteItem[];
         /**
           * The text to display within the label.
          */
@@ -2346,7 +2346,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when a selected item chip is removed.
          */
-        "onChipRemove"?: (event: ModusWcAutocompleteCustomEvent<IAutocompleteItem>) => void;
+        "onChipRemove"?: (event: ModusWcAutocompleteCustomEvent<IModusWcAutocompleteItem>) => void;
         /**
           * Event emitted when the input loses focus.
          */
@@ -2362,7 +2362,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when a menu item is selected.
          */
-        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<IAutocompleteItem>) => void;
+        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<IModusWcAutocompleteItem>) => void;
         /**
           * Text that appears in the form control when it has no value set.
          */
@@ -3210,7 +3210,7 @@ declare namespace LocalJSX {
         /**
           * The options to display in the select dropdown.
          */
-        "options"?: ISelectOption[];
+        "options"?: IModusWcSelectOption[];
         /**
           * A value is required for the form to be submittable.
          */
@@ -3338,7 +3338,7 @@ declare namespace LocalJSX {
         /**
           * An array of column definitions.
          */
-        "columns": ITableColumn[];
+        "columns": IModusWcTableColumn[];
         /**
           * Custom CSS class to apply to the inner div.
          */

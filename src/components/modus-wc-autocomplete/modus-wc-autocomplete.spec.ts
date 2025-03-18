@@ -1,6 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
 import {
-  IAutocompleteItem,
+  IModusWcAutocompleteItem,
   ModusWcAutocomplete,
 } from './modus-wc-autocomplete';
 import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
@@ -8,7 +8,7 @@ import { ModusWcMenuItem } from '../modus-wc-menu-item/modus-wc-menu-item';
 import { ModusWcTextInput } from '../modus-wc-text-input/modus-wc-text-input';
 
 describe('modus-wc-autocomplete', () => {
-  const items: IAutocompleteItem[] = [
+  const items: IModusWcAutocompleteItem[] = [
     { label: 'Item 1', value: '1', visibleInMenu: true },
     { label: 'Item 2', value: '2', visibleInMenu: true },
     { label: 'Item 3', value: '3', visibleInMenu: true },
