@@ -147,6 +147,7 @@ export class ModusWcRating {
         >
           <input
             aria-label={this.getAriaLabelText(0)}
+            aria-checked={this.value <= 0 ? 'true' : 'false'}
             checked={this.value <= 0}
             class="modus-wc-rating-item modus-wc-rating-hidden"
             disabled={this.disabled}
@@ -171,6 +172,7 @@ export class ModusWcRating {
               return (
                 <input
                   aria-label={this.getAriaLabelText(ratingValue)}
+                  aria-checked={this.value === ratingValue ? 'true' : 'false'}
                   checked={this.value === ratingValue}
                   class={
                     showHalf
