@@ -12,7 +12,7 @@ import {
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-export interface IAutocompleteItem {
+export interface IModusWcAutocompleteItem {
   /** The display text shown for the autocomplete item */
   label: string;
 
@@ -70,7 +70,7 @@ export class ModusWcAutocomplete {
    * The items to display in the menu.
    * Creating a new array of items will ensure proper component re-render.
    **/
-  @Prop() items: IAutocompleteItem[] = [];
+  @Prop() items: IModusWcAutocompleteItem[] = [];
 
   /** The text to display within the label. */
   @Prop() label?: string;
@@ -100,7 +100,7 @@ export class ModusWcAutocomplete {
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
   /** Event emitted when a selected item chip is removed. */
-  @StencilEvent() chipRemove!: EventEmitter<IAutocompleteItem>;
+  @StencilEvent() chipRemove!: EventEmitter<IModusWcAutocompleteItem>;
 
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
@@ -115,7 +115,7 @@ export class ModusWcAutocomplete {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   /** Event emitted when a menu item is selected. */
-  @StencilEvent() itemSelect!: EventEmitter<IAutocompleteItem>;
+  @StencilEvent() itemSelect!: EventEmitter<IModusWcAutocompleteItem>;
 
   // istanbul ignore next - TODO
   disconnectedCallback() {
@@ -189,14 +189,14 @@ export class ModusWcAutocomplete {
 
   // TODO - add code coverage once autocomplete is updated
   // istanbul ignore next
-  private handleItemSelect = (item: IAutocompleteItem) => {
+  private handleItemSelect = (item: IModusWcAutocompleteItem) => {
     this.menuVisible = false;
     this.itemSelect.emit(item);
   };
 
   // TODO - add code coverage once chip component is implemented
   // istanbul ignore next
-  private handleChipRemove = (item: IAutocompleteItem) => {
+  private handleChipRemove = (item: IModusWcAutocompleteItem) => {
     this.chipRemove.emit(item);
   };
 

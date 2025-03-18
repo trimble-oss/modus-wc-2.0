@@ -2,10 +2,10 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IAutocompleteItem } from './modus-wc-autocomplete';
+import { IModusWcAutocompleteItem } from './modus-wc-autocomplete';
 import { ModusSize } from '../types';
 
-const items: IAutocompleteItem[] = [
+const items: IModusWcAutocompleteItem[] = [
   { label: 'Apple', value: 'apple', visibleInMenu: true },
   { label: 'Banana', value: 'banana', visibleInMenu: true },
   { label: 'Blueberry', value: 'blueberry', visibleInMenu: true },
@@ -25,7 +25,7 @@ interface AutocompleteArgs {
   disabled?: boolean;
   'input-id'?: string;
   'input-tab-index'?: number;
-  items: IAutocompleteItem[];
+  items: IModusWcAutocompleteItem[];
   label?: string;
   'min-chars': number;
   'multi-select'?: boolean;
@@ -101,7 +101,7 @@ const Template: Story = {
       }
     };
 
-    const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
+    const handleItemSelect = (e: CustomEvent<IModusWcAutocompleteItem>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
       );
@@ -206,7 +206,7 @@ export const Default: Story = {
 
 export const MultiSelect: Story = {
   render: (args) => {
-    const handleChipRemove = (e: CustomEvent<IAutocompleteItem>) => {
+    const handleChipRemove = (e: CustomEvent<IModusWcAutocompleteItem>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
       );
@@ -244,7 +244,7 @@ export const MultiSelect: Story = {
       }
     };
 
-    const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
+    const handleItemSelect = (e: CustomEvent<IModusWcAutocompleteItem>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
       );
