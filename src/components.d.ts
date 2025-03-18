@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IModusWcAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
+import { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
 import { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
@@ -18,7 +18,7 @@ import { IModusWcTab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
-export { IModusWcAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
+export { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
 export { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
@@ -113,7 +113,7 @@ export namespace Components {
         /**
           * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
-        "items": IModusWcAutocompleteItem[];
+        "items": IAutocompleteItem[];
         /**
           * The text to display within the label.
          */
@@ -1575,11 +1575,11 @@ declare global {
         new (): HTMLModusWcAlertElement;
     };
     interface HTMLModusWcAutocompleteElementEventMap {
-        "chipRemove": IModusWcAutocompleteItem;
+        "chipRemove": IAutocompleteItem;
         "inputBlur": FocusEvent;
         "inputChange": Event;
         "inputFocus": FocusEvent;
-        "itemSelect": IModusWcAutocompleteItem;
+        "itemSelect": IAutocompleteItem;
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
@@ -2326,7 +2326,7 @@ declare namespace LocalJSX {
         /**
           * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
-        "items"?: IModusWcAutocompleteItem[];
+        "items"?: IAutocompleteItem[];
         /**
           * The text to display within the label.
          */
@@ -2346,7 +2346,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when a selected item chip is removed.
          */
-        "onChipRemove"?: (event: ModusWcAutocompleteCustomEvent<IModusWcAutocompleteItem>) => void;
+        "onChipRemove"?: (event: ModusWcAutocompleteCustomEvent<IAutocompleteItem>) => void;
         /**
           * Event emitted when the input loses focus.
          */
@@ -2362,7 +2362,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when a menu item is selected.
          */
-        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<IModusWcAutocompleteItem>) => void;
+        "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<IAutocompleteItem>) => void;
         /**
           * Text that appears in the form control when it has no value set.
          */

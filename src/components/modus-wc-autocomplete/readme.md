@@ -21,7 +21,7 @@ Adheres to WCAG 2.2 standards.
 | `disabled`      | `disabled`        | Whether the form control is disabled.                                                                   | `boolean \| undefined`              | `false`     |
 | `inputId`       | `input-id`        | The ID of the input element.                                                                            | `string \| undefined`               | `undefined` |
 | `inputTabIndex` | `input-tab-index` | Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). | `number \| undefined`               | `undefined` |
-| `items`         | --                | The items to display in the menu. Creating a new array of items will ensure proper component re-render. | `IModusWcAutocompleteItem[]`        | `[]`        |
+| `items`         | --                | The items to display in the menu. Creating a new array of items will ensure proper component re-render. | `IAutocompleteItem[]`               | `[]`        |
 | `label`         | `label`           | The text to display within the label.                                                                   | `string \| undefined`               | `undefined` |
 | `minChars`      | `min-chars`       | The minimum number of characters required to render the menu.                                           | `number`                            | `0`         |
 | `multiSelect`   | `multi-select`    | Whether the input allows multiple items to be selected.                                                 | `boolean \| undefined`              | `false`     |
@@ -35,13 +35,13 @@ Adheres to WCAG 2.2 standards.
 
 ## Events
 
-| Event         | Description                                                                                       | Type                                    |
-| ------------- | ------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| `chipRemove`  | Event emitted when a selected item chip is removed.                                               | `CustomEvent<IModusWcAutocompleteItem>` |
-| `inputBlur`   | Event emitted when the input loses focus.                                                         | `CustomEvent<FocusEvent>`               |
-| `inputChange` | Event emitted when the input value changes. This event is debounced based on the debounceMs prop. | `CustomEvent<Event>`                    |
-| `inputFocus`  | Event emitted when the input gains focus.                                                         | `CustomEvent<FocusEvent>`               |
-| `itemSelect`  | Event emitted when a menu item is selected.                                                       | `CustomEvent<IModusWcAutocompleteItem>` |
+| Event         | Description                                                                                       | Type                             |
+| ------------- | ------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `chipRemove`  | Event emitted when a selected item chip is removed.                                               | `CustomEvent<IAutocompleteItem>` |
+| `inputBlur`   | Event emitted when the input loses focus.                                                         | `CustomEvent<FocusEvent>`        |
+| `inputChange` | Event emitted when the input value changes. This event is debounced based on the debounceMs prop. | `CustomEvent<Event>`             |
+| `inputFocus`  | Event emitted when the input gains focus.                                                         | `CustomEvent<FocusEvent>`        |
+| `itemSelect`  | Event emitted when a menu item is selected.                                                       | `CustomEvent<IAutocompleteItem>` |
 
 
 ## Dependencies
