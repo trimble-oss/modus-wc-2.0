@@ -46,7 +46,7 @@ export class ModusWcRating {
   @Prop() disabled?: boolean = false;
 
   /** Function to provide aria-label text for a given rating-item index */
-  @Prop() getLabelText: (index: number) => string = (index) =>
+  @Prop() getAriaLabelText: (index: number) => string = (index) =>
     `${index} out of ${this.count} ${this.variant}${this.count > 1 ? 's' : ''}`;
 
   /** The size of the rating component */
@@ -103,6 +103,29 @@ export class ModusWcRating {
       : index + 1;
   }
 
+  /**
+   * Maps the index of the rating item to the corresponding smiley class value
+   * depending on the total number of rating items.
+   */
+  private getSmileyClassValue(index: number): number {
+    switch (this.count) {
+      case 4:
+        // For 4-point scale: use 1, 2, 4, 5 (skip neutral)
+        return [1, 2, 4, 5][index];
+      case 3:
+        // For 3-point scale: use 1, 3, 5 (dissatisfied, neutral, satisfied)
+        return [1, 3, 5][index];
+      case 2:
+      case 1:
+      case 0:
+        // For 2-point scale: use 1, 5 (dissatisfied, satisfied)
+        return [1, 5][index];
+      default:
+        // Default 5-point scale: use values 1-5 directly
+        return index + 1;
+    }
+  }
+
   private handleChange(newValue: number) {
     this.value = newValue;
     this.ratingChange.emit({ newRating: newValue });
@@ -123,7 +146,7 @@ export class ModusWcRating {
           {...this.inheritedAttributes}
         >
           <input
-            aria-label={this.getLabelText(0)}
+            aria-label={this.getAriaLabelText(0)}
             checked={this.value <= 0}
             class="modus-wc-rating-item modus-wc-rating-hidden"
             disabled={this.disabled}
@@ -139,7 +162,7 @@ export class ModusWcRating {
                 : this.variant === 'thumb'
                   ? 2
                   : this.variant === 'smiley'
-                    ? Math.min(5, this.count)
+                    ? Math.max(2, Math.min(5, this.count))
                     : this.count,
             },
             (_, index) => {
@@ -147,13 +170,13 @@ export class ModusWcRating {
 
               return (
                 <input
-                  aria-label={this.getLabelText(ratingValue)}
+                  aria-label={this.getAriaLabelText(ratingValue)}
                   checked={this.value === ratingValue}
                   class={
                     showHalf
                       ? `${ratingItemClasses} ${this.getMaskHalfClasses(index)}`
                       : this.variant === 'smiley'
-                        ? `${ratingItemClasses} modus-wc-mask-smiley-${ratingValue}`
+                        ? `${ratingItemClasses} modus-wc-mask-smiley-${this.getSmileyClassValue(index)}`
                         : this.variant === 'thumb'
                           ? `${ratingItemClasses} modus-wc-mask-thumb-${ratingValue}`
                           : ratingItemClasses

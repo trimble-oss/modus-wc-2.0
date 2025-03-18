@@ -2817,134 +2817,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/modus-wc-rating/modus-wc-rating.icons.tsx",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "SmileyDissatisfied"
-        },
-        {
-          "kind": "function",
-          "name": "SmileyDissatisfiedOutlined"
-        },
-        {
-          "kind": "function",
-          "name": "SmileyNeutral"
-        },
-        {
-          "kind": "function",
-          "name": "SmileyNeutralOutlined"
-        },
-        {
-          "kind": "function",
-          "name": "SmileySatisfied"
-        },
-        {
-          "kind": "function",
-          "name": "SmileySatisfiedOutlined"
-        },
-        {
-          "kind": "function",
-          "name": "SmileySomewhatDissatisfied"
-        },
-        {
-          "kind": "function",
-          "name": "SmileySomewhatDissatisfiedOutlined"
-        },
-        {
-          "kind": "function",
-          "name": "SmileySomewhatSatisfied"
-        },
-        {
-          "kind": "function",
-          "name": "SmileySomewhatSatisfiedOutlined"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SmileyDissatisfied",
-          "declaration": {
-            "name": "SmileyDissatisfied",
-            "module": "src/components/modus-wc-rating/modus-wc-rating.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SmileyDissatisfiedOutlined",
-          "declaration": {
-            "name": "SmileyDissatisfiedOutlined",
-            "module": "src/components/modus-wc-rating/modus-wc-rating.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SmileySomewhatDissatisfied",
-          "declaration": {
-            "name": "SmileySomewhatDissatisfied",
-            "module": "src/components/modus-wc-rating/modus-wc-rating.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SmileySomewhatDissatisfiedOutlined",
-          "declaration": {
-            "name": "SmileySomewhatDissatisfiedOutlined",
-            "module": "src/components/modus-wc-rating/modus-wc-rating.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SmileyNeutral",
-          "declaration": {
-            "name": "SmileyNeutral",
-            "module": "src/components/modus-wc-rating/modus-wc-rating.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SmileyNeutralOutlined",
-          "declaration": {
-            "name": "SmileyNeutralOutlined",
-            "module": "src/components/modus-wc-rating/modus-wc-rating.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SmileySomewhatSatisfied",
-          "declaration": {
-            "name": "SmileySomewhatSatisfied",
-            "module": "src/components/modus-wc-rating/modus-wc-rating.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SmileySomewhatSatisfiedOutlined",
-          "declaration": {
-            "name": "SmileySomewhatSatisfiedOutlined",
-            "module": "src/components/modus-wc-rating/modus-wc-rating.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SmileySatisfied",
-          "declaration": {
-            "name": "SmileySatisfied",
-            "module": "src/components/modus-wc-rating/modus-wc-rating.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SmileySatisfiedOutlined",
-          "declaration": {
-            "name": "SmileySatisfiedOutlined",
-            "module": "src/components/modus-wc-rating/modus-wc-rating.icons.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/modus-wc-rating/modus-wc-rating.tsx",
       "declarations": [
         {
@@ -2999,8 +2871,8 @@
               "description": "Whether the rating component is disabled"
             },
             {
-              "name": "get-label-text",
-              "fieldName": "getLabelText",
+              "name": "get-aria-label-text",
+              "fieldName": "getAriaLabelText",
               "type": {
                 "text": "(index: number) => string"
               },

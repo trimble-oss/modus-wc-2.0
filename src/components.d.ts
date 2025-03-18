@@ -879,7 +879,7 @@ export namespace Components {
         /**
           * Function to provide aria-label text for a given rating-item index
          */
-        "getLabelText": (index: number) => string;
+        "getAriaLabelText": (index: number) => string;
         /**
           * The size of the rating component
          */
@@ -3252,7 +3252,7 @@ declare namespace LocalJSX {
         /**
           * Function to provide aria-label text for a given rating-item index
          */
-        "getLabelText"?: (index: number) => string;
+        "getAriaLabelText"?: (index: number) => string;
         /**
           * Event emitted when the rating changes
          */

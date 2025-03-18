@@ -26,7 +26,7 @@ const meta: Meta<RatingArgs> = {
     getLabelText: (index: number) => `${index} rating`,
     size: 'md',
     value: 0,
-    variant: 'star',
+    variant: 'smiley',
   },
   argTypes: {
     size: {

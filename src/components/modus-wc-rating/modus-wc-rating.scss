@@ -22,16 +22,13 @@
   }
 }
 
-// Smiley variant masks
-
-// Override DaisyUI's default style for modus 1.0 variants
 [data-theme='modus-classic-light'] .modus-wc-rating-item {
   &.modus-wc-mask {
     &.modus-wc-mask-smiley,
     &.modus-wc-mask-thumb {
       background-color: var(--modus-wc-color-trimble-gray);
 
-      &:hover,
+      &:hover:not(:disabled),
       &:checked:not(:disabled) {
         background-color: var(--modus-wc-color-trimble-blue);
       }
@@ -69,6 +66,8 @@
     opacity: 1;
   }
 }
+
+// Smiley variant masks
 
 // Dissatisfied
 .modus-wc-mask-smiley-1 {
