@@ -1679,7 +1679,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input label component.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable input label component.\n\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcInputLabel",
           "members": [
             {

@@ -54,7 +54,7 @@ export class ModusWcInputLabel {
 
   render() {
     return (
-      <Host>
+      <Host class="modus-wc-input-label-host">
         <label
           class={this.getClasses()}
           htmlFor={this.forId}
