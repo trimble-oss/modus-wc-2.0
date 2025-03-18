@@ -11,9 +11,9 @@ import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-b
 import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
-import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
+import { IModusWcSelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
-import { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+import { IModusWcTableColumn } from "./components/modus-wc-table/modus-wc-table";
 import { IModusWcTab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
@@ -24,9 +24,9 @@ export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-b
 export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
-export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
+export { IModusWcSelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
-export { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+export { IModusWcTableColumn } from "./components/modus-wc-table/modus-wc-table";
 export { IModusWcTab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
@@ -889,7 +889,7 @@ export namespace Components {
         /**
           * The options to display in the select dropdown.
          */
-        "options": ISelectOption[];
+        "options": IModusWcSelectOption[];
         /**
           * A value is required for the form to be submittable.
          */
@@ -1005,7 +1005,7 @@ export namespace Components {
         /**
           * An array of column definitions.
          */
-        "columns": ITableColumn[];
+        "columns": IModusWcTableColumn[];
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -3210,7 +3210,7 @@ declare namespace LocalJSX {
         /**
           * The options to display in the select dropdown.
          */
-        "options"?: ISelectOption[];
+        "options"?: IModusWcSelectOption[];
         /**
           * A value is required for the form to be submittable.
          */
@@ -3338,7 +3338,7 @@ declare namespace LocalJSX {
         /**
           * An array of column definitions.
          */
-        "columns": ITableColumn[];
+        "columns": IModusWcTableColumn[];
         /**
           * Custom CSS class to apply to the inner div.
          */

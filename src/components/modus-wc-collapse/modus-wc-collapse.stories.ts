@@ -27,6 +27,24 @@ const meta: Meta<CollapseArgs> = {
     expanded: false,
     options,
   },
+  argTypes: {
+    options: {
+      description: 'Configuration options for the collapse component',
+      table: {
+        type: {
+          detail: `
+            Interface: IModusWcCollapseOptions
+            Properties:
+            - description (string, optional): The description to render in the collapse header
+            - icon (string, optional): The Modus icon name to render in the collapse header
+            - iconAriaLabel (string, optional): The icon's aria-label
+            - size (DaisySize, optional): The size of the collapse header
+            - title (string): The title to render in the collapse header
+          `,
+        },
+      },
+    },
+  },
   decorators: [withActions],
   parameters: {
     actions: {

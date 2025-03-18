@@ -27,6 +27,22 @@ const meta: Meta<TabsArgs> = {
     tabStyle: 'bordered',
   },
   argTypes: {
+    tabs: {
+      description: 'Array of tab objects defining the tabs to display',
+      table: {
+        type: {
+          detail: `
+            Interface: IModusWcTab
+            Properties:
+            - customClass (string, optional): Custom CSS class for the inner button
+            - disabled (boolean, optional): Whether the tab is disabled
+            - icon (string, optional): A Modus Icon name to display
+            - iconPosition ('left' | 'right', optional): The position of the icon
+            - label (string, optional): The content to display in the tab
+          `,
+        },
+      },
+    },
     tabStyle: {
       control: { type: 'select' },
       options: ['boxed', 'bordered', 'lifted', 'none'],
