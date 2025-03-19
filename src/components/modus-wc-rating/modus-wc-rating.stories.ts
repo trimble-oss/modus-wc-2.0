@@ -9,7 +9,7 @@ interface RatingArgs {
   count: number;
   'custom-class'?: string;
   disabled?: boolean;
-  getLabelText?: (index: number) => string;
+  getAriaLabelText?: (index: number) => string;
   size?: 'sm' | 'md' | 'lg';
   value?: number;
   variant: ModusWcRatingVariant;
@@ -23,7 +23,7 @@ const meta: Meta<RatingArgs> = {
     count: 5,
     'custom-class': '',
     disabled: false,
-    getLabelText: (index: number) => `${index} rating`,
+    getAriaLabelText: (index: number) => `${index} rating`,
     size: 'md',
     value: 0,
     variant: 'smiley',
@@ -61,7 +61,34 @@ export const Default: Story = {
       size=${ifDefined(args.size)}
       value=${ifDefined(args.value)}
       variant=${args.variant}
-      .getLabelText=${args.getLabelText}
+      .getAriaLabelText=${args.getAriaLabelText}
     ></modus-wc-rating>
   `,
+};
+
+export const CustomAriaLabels: Story = {
+  render: (args) => {
+    const myAriaLabelText = (index: number) =>
+      `Custom label for rating item ${index}`;
+
+    // prettier-ignore
+    return html`
+<script>
+  const myAriaLabelText = (index) => {
+    return 'Custom label for rating item ' + index.toString();
+  };
+</script>
+<modus-wc-rating
+  aria-label="Rating scale component"
+  allow-half=${ifDefined(args['allow-half'])}
+  count="5"
+  custom-class="custom-rating-component"
+  disabled=${ifDefined(args.disabled)}
+  size=${ifDefined(args.size)}
+  value=${ifDefined(args.value)}
+  variant=${args.variant}
+  .getAriaLabelText=${myAriaLabelText}
+></modus-wc-rating>
+    `;
+  },
 };

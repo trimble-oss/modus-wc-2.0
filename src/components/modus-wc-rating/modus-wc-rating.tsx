@@ -108,22 +108,23 @@ export class ModusWcRating {
    * depending on the total number of rating items.
    */
   private getSmileyClassValue(index: number): number {
-    switch (this.count) {
-      case 4:
-        // For 4-point scale: use 1, 2, 4, 5 (skip neutral)
-        return [1, 2, 4, 5][index];
-      case 3:
-        // For 3-point scale: use 1, 3, 5 (dissatisfied, neutral, satisfied)
-        return [1, 3, 5][index];
-      case 2:
-      case 1:
-      case 0:
-        // For 2-point scale: use 1, 5 (dissatisfied, satisfied)
-        return [1, 5][index];
-      default:
-        // Default 5-point scale: use values 1-5 directly
-        return index + 1;
+    // 4-point scale: use 1, 2, 4, 5 (skip neutral)
+    if (this.count === 4) {
+      return [1, 2, 4, 5][index];
     }
+
+    // 3-point scale: use 1, 3, 5 (dissatisfied, neutral, satisfied)
+    if (this.count === 3) {
+      return [1, 3, 5][index];
+    }
+
+    // 2-point scale or fewer: use 1, 5 (dissatisfied, satisfied)
+    if (this.count <= 2) {
+      return [1, 5][index];
+    }
+
+    // Default
+    return index + 1;
   }
 
   private handleChange(newValue: number) {
