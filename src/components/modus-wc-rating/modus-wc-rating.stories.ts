@@ -81,7 +81,7 @@ export const CustomAriaLabels: Story = {
 <modus-wc-rating
   aria-label="Rating scale component"
   allow-half=${ifDefined(args['allow-half'])}
-  count="5"
+  count=${args.count}
   custom-class="custom-rating-component"
   disabled=${ifDefined(args.disabled)}
   size=${ifDefined(args.size)}
@@ -104,11 +104,11 @@ export const CustomColors: Story = {
 <modus-wc-rating
   aria-label="Rating scale component"
   allow-half=${ifDefined(args['allow-half'])}
-  count="5"
+  count=${args.count}
   custom-class="custom-color-rating-component"
   disabled=${ifDefined(args.disabled)}
   size=${ifDefined(args.size)}
-  value=${ifDefined(args.value)}
+  value="3"
   variant="star"
 ></modus-wc-rating>
   `,
