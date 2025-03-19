@@ -29,6 +29,8 @@ export type ModusWcRatingVariant = 'star' | 'heart' | 'smiley' | 'thumb';
 })
 export class ModusWcRating {
   private inheritedAttributes: Attributes = {};
+  private readonly VARIANTS_WITHOUT_HALF_SUPPORT = ['smiley', 'thumb'] as const;
+  private uniqueRatingGroupName: string;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -61,11 +63,49 @@ export class ModusWcRating {
   /** Event emitted when the rating changes */
   @Event() ratingChange!: EventEmitter<IModusWcRatingChange>;
 
+  constructor() {
+    this.uniqueRatingGroupName = `modus-wc-rating-group-${generateRandomId(4)}`;
+  }
+
   componentWillLoad() {
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Rating scale component';
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  /**
+   * Determines if the current variant supports half ratings
+   */
+  private get supportsHalfRatings(): boolean {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+    return !this.VARIANTS_WITHOUT_HALF_SUPPORT.includes(this.variant as any);
+  }
+
+  /**
+   * Determines if half ratings should be shown
+   */
+  private get showHalf(): boolean {
+    return this.allowHalf && this.supportsHalfRatings;
+  }
+
+  /**
+   * Gets the total number of rating items to render based on variant and settings
+   */
+  private get totalRatingItems(): number {
+    if (this.showHalf) {
+      return this.count * 2;
+    }
+
+    if (this.variant === 'thumb') {
+      return 2;
+    }
+
+    if (this.variant === 'smiley') {
+      return Math.max(2, Math.min(5, this.count));
+    }
+
+    return this.count;
   }
 
   private getClasses(): { ratingClasses: string; ratingItemClasses: string } {
@@ -97,10 +137,7 @@ export class ModusWcRating {
   }
 
   private getValueForIndex(index: number): number {
-    return this.allowHalf &&
-      !(this.variant === 'smiley' || this.variant === 'thumb')
-      ? (index + 1) * 0.5
-      : index + 1;
+    return this.showHalf ? (index + 1) * 0.5 : index + 1;
   }
 
   /**
@@ -127,17 +164,76 @@ export class ModusWcRating {
     return index + 1;
   }
 
+  /**
+   * Get the appropriate CSS class for a rating item based on variant and index
+   */
+  private getRatingItemClass(index: number, baseClasses: string): string {
+    if (this.showHalf) {
+      return `${baseClasses} ${this.getMaskHalfClasses(index)}`;
+    }
+
+    if (this.variant === 'smiley') {
+      return `${baseClasses} modus-wc-mask-smiley-${this.getSmileyClassValue(index)}`;
+    }
+
+    if (this.variant === 'thumb') {
+      return `${baseClasses} modus-wc-mask-thumb-${index + 1}`;
+    }
+
+    return baseClasses;
+  }
+
   private handleChange(newValue: number) {
     this.value = newValue;
     this.ratingChange.emit({ newRating: newValue });
   }
 
+  /**
+   * Render the zero/reset option
+   */
+  private renderZeroOption() {
+    return (
+      <input
+        aria-label={this.getAriaLabelText(0)}
+        aria-checked={this.value <= 0 ? 'true' : 'false'}
+        checked={this.value <= 0}
+        class="modus-wc-rating-hidden"
+        disabled={this.disabled}
+        name={this.uniqueRatingGroupName}
+        onChange={() => this.handleChange(0)}
+        type="radio"
+        value="0"
+      />
+    );
+  }
+
+  /**
+   * Render the rating items
+   */
+  private renderRatingItems(ratingItemClasses: string) {
+    return Array.from({ length: this.totalRatingItems }, (_, index) => {
+      const ratingValue = this.getValueForIndex(index);
+      const itemClass = this.getRatingItemClass(index, ratingItemClasses);
+
+      return (
+        <input
+          aria-label={this.getAriaLabelText(ratingValue)}
+          aria-checked={this.value === ratingValue ? 'true' : 'false'}
+          checked={this.value === ratingValue}
+          class={itemClass}
+          disabled={this.disabled}
+          key={index}
+          name={this.uniqueRatingGroupName}
+          onChange={() => this.handleChange(ratingValue)}
+          type="radio"
+          value={String(ratingValue)}
+        />
+      );
+    });
+  }
+
   render() {
     const { ratingClasses, ratingItemClasses } = this.getClasses();
-    const uniqueRatingGroupName = `modus-wc-rating-group-${generateRandomId(4)}`;
-    const showHalf =
-      this.allowHalf &&
-      !(this.variant === 'smiley' || this.variant === 'thumb');
 
     return (
       <Host class="modus-wc-rating-container">
@@ -146,54 +242,8 @@ export class ModusWcRating {
           role="radiogroup"
           {...this.inheritedAttributes}
         >
-          <input
-            aria-label={this.getAriaLabelText(0)}
-            aria-checked={this.value <= 0 ? 'true' : 'false'}
-            checked={this.value <= 0}
-            class="modus-wc-rating-hidden"
-            disabled={this.disabled}
-            name={uniqueRatingGroupName}
-            onChange={() => this.handleChange(0)}
-            type="radio"
-            value="0"
-          />
-          {Array.from(
-            {
-              length: showHalf
-                ? this.count * 2
-                : this.variant === 'thumb'
-                  ? 2
-                  : this.variant === 'smiley'
-                    ? Math.max(2, Math.min(5, this.count))
-                    : this.count,
-            },
-            (_, index) => {
-              const ratingValue = this.getValueForIndex(index);
-
-              return (
-                <input
-                  aria-label={this.getAriaLabelText(ratingValue)}
-                  aria-checked={this.value === ratingValue ? 'true' : 'false'}
-                  checked={this.value === ratingValue}
-                  class={
-                    showHalf
-                      ? `${ratingItemClasses} ${this.getMaskHalfClasses(index)}`
-                      : this.variant === 'smiley'
-                        ? `${ratingItemClasses} modus-wc-mask-smiley-${this.getSmileyClassValue(index)}`
-                        : this.variant === 'thumb'
-                          ? `${ratingItemClasses} modus-wc-mask-thumb-${ratingValue}`
-                          : ratingItemClasses
-                  }
-                  disabled={this.disabled}
-                  key={index}
-                  name={uniqueRatingGroupName}
-                  onChange={() => this.handleChange(ratingValue)}
-                  type="radio"
-                  value={String(ratingValue)}
-                />
-              );
-            }
-          )}
+          {this.renderZeroOption()}
+          {this.renderRatingItems(ratingItemClasses)}
         </div>
       </Host>
     );

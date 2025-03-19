@@ -18,7 +18,9 @@
     background-color: var(--modus-wc-rating-item-color, currentColor);
   }
 
-  .modus-wc-rating-item:not(.modus-wc-mask-smiley):not(.modus-wc-mask-thumb) {
+  .modus-wc-rating-item:not(.modus-wc-mask-smiley):not(
+      .modus-wc-mask-thumb
+    ):not(:disabled) {
     opacity: 0.2;
 
     &:checked,
@@ -35,8 +37,19 @@
       margin-inline-end: var(--modus-wc-spacing-xs);
     }
 
-    &:disabled {
+    &:disabled:not(.modus-wc-mask-star-2):not(.modus-wc-mask-heart) {
       opacity: 0.3;
+    }
+
+    &:disabled:not(.modus-wc-mask-smiley):not(.modus-wc-mask-thumb) {
+      opacity: 0.1;
+
+      &:checked,
+      &[aria-checked='true'],
+      &[aria-current='true'],
+      &:has(~ *:checked, ~ *[aria-checked='true'], ~ *[aria-current='true']) {
+        opacity: 0.3;
+      }
     }
   }
 }
