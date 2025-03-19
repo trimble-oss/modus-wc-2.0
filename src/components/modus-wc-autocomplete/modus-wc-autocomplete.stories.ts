@@ -52,6 +52,21 @@ const meta: Meta<AutocompleteArgs> = {
     value: '',
   },
   argTypes: {
+    items: {
+      description: 'Array of items for the autocomplete component',
+      table: {
+        type: {
+          detail: `
+            Interface: IAutocompleteItem
+            Properties:
+            - label (string): The display text shown for the autocomplete item
+            - selected (boolean, optional): Whether the item is currently selected
+            - value (string): The unique value identifier for the item
+            - visibleInMenu (boolean): Whether the item should be shown in the dropdown menu
+          `,
+        },
+      },
+    },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],

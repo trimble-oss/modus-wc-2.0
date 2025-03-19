@@ -15,13 +15,10 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 export interface IAutocompleteItem {
   /** The display text shown for the autocomplete item */
   label: string;
-
   /** Whether the item is currently selected */
   selected?: boolean;
-
   /** The unique value identifier for the item */
   value: string;
-
   /** Whether the item should be shown in the dropdown menu */
   visibleInMenu: boolean;
 }

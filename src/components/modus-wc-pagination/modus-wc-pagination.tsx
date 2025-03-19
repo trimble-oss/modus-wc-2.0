@@ -28,7 +28,9 @@ export interface IModusWcAriaLabelValues {
 }
 
 export interface IModusWcPageChange {
+  /** The number of the newly selected page */
   newPage: number;
+  /** The number of the previously selected page */
   prevPage: number;
 }
 

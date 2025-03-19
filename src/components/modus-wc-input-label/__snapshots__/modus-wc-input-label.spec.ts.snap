@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-input-label should render with content in the primary slot 1`] = `
-<modus-wc-input-label>
+<modus-wc-input-label class="modus-wc-input-label-host">
   <!---->
   <label class="modus-wc-input-label modus-wc-input-label-size-md">
     <span>
@@ -12,7 +12,7 @@ exports[`modus-wc-input-label should render with content in the primary slot 1`]
 `;
 
 exports[`modus-wc-input-label should render with custom props 1`] = `
-<modus-wc-input-label custom-class="test-class" for-id="input-id" label-text="Custom label" required="true" size="lg" sub-label-text="Sublabel text">
+<modus-wc-input-label class="modus-wc-input-label-host" custom-class="test-class" for-id="input-id" label-text="Custom label" required="true" size="lg" sub-label-text="Sublabel text">
   <!---->
   <label class="modus-wc-input-label modus-wc-input-label-size-lg test-class" htmlfor="input-id">
     Custom label
@@ -27,7 +27,7 @@ exports[`modus-wc-input-label should render with custom props 1`] = `
 `;
 
 exports[`modus-wc-input-label should render with default props 1`] = `
-<modus-wc-input-label>
+<modus-wc-input-label class="modus-wc-input-label-host">
   <!---->
   <label class="modus-wc-input-label modus-wc-input-label-size-md"></label>
 </modus-wc-input-label>

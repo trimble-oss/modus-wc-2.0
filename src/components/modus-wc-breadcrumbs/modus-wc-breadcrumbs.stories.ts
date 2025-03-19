@@ -34,6 +34,19 @@ const meta: Meta<BreadcrumbArgs> = {
     size: 'md',
   },
   argTypes: {
+    items: {
+      description: 'Array of items for the breadcrumbs component',
+      table: {
+        type: {
+          detail: `
+            Interface: IModusWcBreadcrumb
+            Properties:
+            - label (string): The text to render in the breadcrumb
+            - url (string, optional): The URL emitted when the breadcrumb is clicked
+          `,
+        },
+      },
+    },
     size: {
       control: {
         type: 'select',

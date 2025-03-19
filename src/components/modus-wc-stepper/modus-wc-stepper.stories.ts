@@ -43,6 +43,21 @@ const meta: Meta<StepperArgs> = {
       control: { type: 'select' },
       options: ['horizontal', 'vertical'],
     },
+    steps: {
+      description: 'Array of step objects defining the steps to display',
+      table: {
+        type: {
+          detail: `
+            Interface: IModusWcStepperItem
+            Properties:
+            - color ('primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'error' | 'neutral', optional): The color theme of the step
+            - content (string, optional): Custom content to display in the step indicator
+            - customClass (string, optional): Custom CSS class to apply to the step
+            - label (string, optional): Text label for the step
+          `,
+        },
+      },
+    },
   },
   parameters: {
     layout: 'padded',
