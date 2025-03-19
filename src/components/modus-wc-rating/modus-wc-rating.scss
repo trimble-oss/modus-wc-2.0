@@ -9,8 +9,27 @@
 }
 
 .modus-wc-rating {
+  // Intentionally empty to allow fallbacks while still enabling consumer overrides
+  --modus-wc-rating-item-color: ;
+
   margin-inline-end: var(--modus-wc-spacing-sm);
 
+  .modus-wc-rating-item {
+    background-color: var(--modus-wc-rating-item-color, currentColor);
+  }
+
+  .modus-wc-rating-item:not(.modus-wc-mask-smiley):not(.modus-wc-mask-thumb) {
+    opacity: 0.2;
+
+    &:checked,
+    &[aria-checked='true'],
+    &[aria-current='true'],
+    &:has(~ *:checked, ~ *[aria-checked='true'], ~ *[aria-current='true']) {
+      opacity: 1;
+    }
+  }
+
+  .modus-wc-rating-hidden,
   .modus-wc-rating-item {
     &:not(.modus-wc-mask-half-1) {
       margin-inline-end: var(--modus-wc-spacing-xs);
@@ -26,11 +45,17 @@
   &.modus-wc-mask {
     &.modus-wc-mask-smiley,
     &.modus-wc-mask-thumb {
-      background-color: var(--modus-wc-color-trimble-gray);
+      background-color: var(
+        --modus-wc-rating-item-color,
+        var(--modus-wc-color-trimble-gray)
+      );
 
       &:hover:not(:disabled),
       &:checked:not(:disabled) {
-        background-color: var(--modus-wc-color-trimble-blue);
+        background-color: var(
+          --modus-wc-rating-item-color,
+          var(--modus-wc-color-trimble-blue)
+        );
       }
     }
   }
@@ -40,30 +65,19 @@
   &.modus-wc-mask {
     &.modus-wc-mask-smiley,
     &.modus-wc-mask-thumb {
-      background-color: var(--modus-wc-color-gray-4);
+      background-color: var(
+        --modus-wc-rating-item-color,
+        var(--modus-wc-color-gray-4)
+      );
 
       &:hover,
       &:checked:not(:disabled) {
-        background-color: var(--modus-wc-color-highlight-blue);
+        background-color: var(
+          --modus-wc-rating-item-color,
+          var(--modus-wc-color-highlight-blue)
+        );
       }
     }
-  }
-}
-
-// Override DaisyUI's default style for modus 1.0 variants (modern theme)
-[data-theme='modus-modern-light'] .modus-wc-mask-smiley,
-[data-theme='modus-modern-dark'] .modus-wc-mask-smiley,
-[data-theme='modus-modern-light'] .modus-wc-mask-thumb,
-[data-theme='modus-modern-dark'] .modus-wc-mask-thumb {
-  &:checked,
-  &[aria-checked='true'],
-  &[aria-current='true'],
-  &:has(~ *:checked, ~ *[aria-checked='true'], ~ *[aria-current='true']) {
-    opacity: 0.2;
-  }
-
-  &:checked {
-    opacity: 1;
   }
 }
 

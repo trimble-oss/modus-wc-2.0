@@ -2874,7 +2874,7 @@
               "name": "get-aria-label-text",
               "fieldName": "getAriaLabelText",
               "type": {
-                "text": "(index: number) => string"
+                "text": "(ratingValue: number) => string"
               },
               "description": "Function to provide aria-label text for a given rating-item index"
             },

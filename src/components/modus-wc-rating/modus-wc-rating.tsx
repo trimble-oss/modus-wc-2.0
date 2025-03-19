@@ -46,8 +46,8 @@ export class ModusWcRating {
   @Prop() disabled?: boolean = false;
 
   /** Function to provide aria-label text for a given rating-item index */
-  @Prop() getAriaLabelText: (index: number) => string = (index) =>
-    `${index} out of ${this.count} ${this.variant}${this.count > 1 ? 's' : ''}`;
+  @Prop() getAriaLabelText: (ratingValue: number) => string = (ratingValue) =>
+    `Rating item ${ratingValue}`;
 
   /** The size of the rating component */
   @Prop() size?: ModusSize = 'md';
@@ -150,7 +150,7 @@ export class ModusWcRating {
             aria-label={this.getAriaLabelText(0)}
             aria-checked={this.value <= 0 ? 'true' : 'false'}
             checked={this.value <= 0}
-            class="modus-wc-rating-item modus-wc-rating-hidden"
+            class="modus-wc-rating-hidden"
             disabled={this.disabled}
             name={uniqueRatingGroupName}
             onChange={() => this.handleChange(0)}

@@ -68,7 +68,7 @@ export const Default: Story = {
 
 export const CustomAriaLabels: Story = {
   render: (args) => {
-    const myAriaLabelText = (index: number) =>
+    const ariaLabelText = (index: number) =>
       `Custom label for rating item ${index}`;
 
     // prettier-ignore
@@ -87,8 +87,29 @@ export const CustomAriaLabels: Story = {
   size=${ifDefined(args.size)}
   value=${ifDefined(args.value)}
   variant=${args.variant}
-  .getAriaLabelText=${myAriaLabelText}
+  .getAriaLabelText=${ariaLabelText}
 ></modus-wc-rating>
     `;
   },
+};
+
+export const CustomColors: Story = {
+  // prettier-ignore
+  render: (args) => html`
+<style>
+  .custom-color-rating-component {
+    --modus-wc-rating-item-color: var(--modus-wc-color-yellow-dark);
+  }
+</style>
+<modus-wc-rating
+  aria-label="Rating scale component"
+  allow-half=${ifDefined(args['allow-half'])}
+  count="5"
+  custom-class="custom-color-rating-component"
+  disabled=${ifDefined(args.disabled)}
+  size=${ifDefined(args.size)}
+  value=${ifDefined(args.value)}
+  variant="star"
+></modus-wc-rating>
+  `,
 };
