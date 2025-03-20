@@ -25,16 +25,12 @@ import {
 export interface IModusWcCollapseOptions {
   /** The description to render in the collapse header. */
   description?: string;
-
   /** The Modus icon name to render in the collapse header. */
   icon?: string;
-
   /** The icon's aria-label. */
   iconAriaLabel?: string;
-
   /** The size of the collapse header. */
   size?: DaisySize;
-
   /** The title to render in the collapse header. */
   title: string;
 }

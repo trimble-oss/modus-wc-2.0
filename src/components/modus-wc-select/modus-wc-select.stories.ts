@@ -2,10 +2,10 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { ISelectOption } from './modus-wc-select';
+import { IModusWcSelectOption } from './modus-wc-select';
 import { ModusSize } from '../types';
 
-const options: ISelectOption[] = [
+const options: IModusWcSelectOption[] = [
   { label: 'Option 1', value: '1' },
   { label: 'Option 2', value: '2' },
   { label: 'Option 3', value: '3' },
@@ -20,7 +20,7 @@ interface SelectArgs {
   'input-tab-index'?: number;
   label?: string;
   name?: string;
-  options: ISelectOption[];
+  options: IModusWcSelectOption[];
   required?: boolean;
   size?: ModusSize;
   value: string;
@@ -41,6 +41,20 @@ const meta: Meta<SelectArgs> = {
     'input-aria-invalid': {
       control: { type: 'select' },
       options: ['true', 'false'],
+    },
+    options: {
+      description: 'Array of option objects for the select dropdown',
+      table: {
+        type: {
+          detail: `
+            Interface: IModusWcSelectOption
+            Properties:
+            - disabled (boolean, optional): Whether the option is disabled and cannot be selected
+            - label (string): Display text for the option
+            - value (string): The value of the option
+          `,
+        },
+      },
     },
     size: {
       control: { type: 'select' },

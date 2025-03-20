@@ -13,18 +13,18 @@ import { convertTablePropsToClasses } from './modus-wc-table.tailwind';
 import { Density } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-export interface ITableColumn {
+export interface IModusWcTableColumn {
   /** Key to access data from row object */
   accessor: string;
-  /** Optional custom cell renderer */
+  /** Custom cell renderer */
   cellRenderer?: (value: any, row: any) => string | HTMLElement;
-  /** Optional class names for the column */
+  /** Class names for the column */
   className?: string;
   /** Header content - can be string or HTML */
   header: string | HTMLElement;
   /** Unique identifier for the column */
   id: string;
-  /** Optional width style (e.g., '200px', '50%') */
+  /** Width style (e.g., '200px', '50%') */
   width?: string;
 }
 
@@ -45,7 +45,7 @@ export class ModusWcTable {
   @Element() el!: HTMLElement;
 
   /** An array of column definitions. */
-  @Prop() columns!: ITableColumn[];
+  @Prop() columns!: IModusWcTableColumn[];
 
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
@@ -100,7 +100,7 @@ export class ModusWcTable {
   };
 
   private renderCell(
-    column: ITableColumn,
+    column: IModusWcTableColumn,
     row: Record<string, any>
   ): string | HTMLElement {
     const value = row[column.accessor];

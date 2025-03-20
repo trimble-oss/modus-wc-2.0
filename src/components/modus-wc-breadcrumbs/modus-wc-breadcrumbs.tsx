@@ -14,7 +14,6 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 export interface IModusWcBreadcrumb {
   /** The text to render in the breadcrumb. */
   label: string;
-
   /** The URL emitted when the breadcrumb is clicked. */
   url?: string;
 }

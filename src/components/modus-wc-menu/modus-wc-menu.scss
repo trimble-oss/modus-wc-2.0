@@ -4,6 +4,11 @@
 */
 
 ul.modus-wc-menu {
+  /* Enforce Tailwind CSS reset */
+  list-style: none;
+  margin: 0;
+  padding-inline-start: 0;
+
   border-radius: var(--modus-wc-border-radius-md);
   padding: 0;
 

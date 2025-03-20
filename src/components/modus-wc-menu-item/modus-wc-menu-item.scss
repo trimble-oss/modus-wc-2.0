@@ -50,6 +50,9 @@ li.modus-wc-menu-item {
   }
 
   button {
+    /* Enforce Tailwind CSS reset */
+    width: 100%;
+
     display: flex;
 
     .modus-wc-menu-item-content {
