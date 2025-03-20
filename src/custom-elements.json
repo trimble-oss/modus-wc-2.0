@@ -3037,7 +3037,7 @@
             {
               "name": "ratingChange",
               "type": {
-                "text": "EventEmitter<IModusWcRatingChange>"
+                "text": "EventEmitter<IRatingChange>"
               },
               "description": "Event emitted when the rating changes"
             }

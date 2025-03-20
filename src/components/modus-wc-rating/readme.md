@@ -27,9 +27,9 @@ Adheres to WCAG 2.2 standards.
 
 ## Events
 
-| Event          | Description                           | Type                                |
-| -------------- | ------------------------------------- | ----------------------------------- |
-| `ratingChange` | Event emitted when the rating changes | `CustomEvent<IModusWcRatingChange>` |
+| Event          | Description                           | Type                         |
+| -------------- | ------------------------------------- | ---------------------------- |
+| `ratingChange` | Event emitted when the rating changes | `CustomEvent<IRatingChange>` |
 
 
 ----------------------------------------------

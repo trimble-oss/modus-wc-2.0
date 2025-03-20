@@ -11,7 +11,7 @@ import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-b
 import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
-import { IModusWcRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
+import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 import { IModusWcSelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 import { IModusWcTableColumn } from "./components/modus-wc-table/modus-wc-table";
@@ -25,7 +25,7 @@ export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-b
 export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
-export { IModusWcRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
+export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 export { IModusWcSelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 export { IModusWcTableColumn } from "./components/modus-wc-table/modus-wc-table";
@@ -1972,7 +1972,7 @@ declare global {
         new (): HTMLModusWcRadioElement;
     };
     interface HTMLModusWcRatingElementEventMap {
-        "ratingChange": IModusWcRatingChange;
+        "ratingChange": IRatingChange;
     }
     /**
      * A rating component that allows users to rate items.
@@ -3256,7 +3256,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the rating changes
          */
-        "onRatingChange"?: (event: ModusWcRatingCustomEvent<IModusWcRatingChange>) => void;
+        "onRatingChange"?: (event: ModusWcRatingCustomEvent<IRatingChange>) => void;
         /**
           * The size of the rating component
          */

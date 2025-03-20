@@ -14,7 +14,7 @@ import {
   getIndexedRatingItemClass,
 } from './modus-wc-rating.tailwind';
 
-export interface IModusWcRatingChange {
+export interface IRatingChange {
   newRating: number;
 }
 
@@ -67,13 +67,7 @@ export class ModusWcRating {
   @Prop({ mutable: true, reflect: true }) value: number = 0;
 
   /** Event emitted when the rating changes */
-  @Event({
-    eventName: 'ratingChange',
-    composed: true,
-    cancelable: true,
-    bubbles: true,
-  })
-  ratingChange!: EventEmitter<IModusWcRatingChange>;
+  @Event() ratingChange!: EventEmitter<IRatingChange>;
 
   constructor() {
     this.uniqueRatingGroupName = `modus-wc-rating-group-${generateRandomId(4)}`;
