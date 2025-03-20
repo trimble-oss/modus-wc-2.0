@@ -3,11 +3,11 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-// Defaults
 .modus-wc-rating-container {
   display: flex;
 }
 
+// Defaults
 .modus-wc-rating {
   // Intentionally empty to allow fallbacks while still enabling consumer overrides
   --modus-wc-rating-item-color: ;
@@ -16,18 +16,33 @@
 
   .modus-wc-rating-item {
     background-color: var(--modus-wc-rating-item-color, currentColor);
-  }
 
-  .modus-wc-rating-item:not(.modus-wc-mask-smiley):not(
-      .modus-wc-mask-thumb
-    ):not(:disabled) {
-    opacity: 0.2;
+    &:not(.modus-wc-mask-smiley):not(.modus-wc-mask-thumb):not(:disabled) {
+      opacity: 0.2;
 
-    &:checked,
-    &[aria-checked='true'],
-    &[aria-current='true'],
-    &:has(~ *:checked, ~ *[aria-checked='true'], ~ *[aria-current='true']) {
-      opacity: 1;
+      &:checked,
+      &[aria-checked='true'],
+      &[aria-current='true'],
+      &:has(~ *:checked, ~ *[aria-checked='true'], ~ *[aria-current='true']) {
+        opacity: 1;
+      }
+    }
+
+    &:disabled {
+      &:not(.modus-wc-mask-star-2):not(.modus-wc-mask-heart) {
+        opacity: 0.3;
+      }
+
+      &:not(.modus-wc-mask-smiley):not(.modus-wc-mask-thumb) {
+        opacity: 0.1;
+
+        &:checked,
+        &[aria-checked='true'],
+        &[aria-current='true'],
+        &:has(~ *:checked, ~ *[aria-checked='true'], ~ *[aria-current='true']) {
+          opacity: 0.3;
+        }
+      }
     }
   }
 
@@ -35,21 +50,6 @@
   .modus-wc-rating-item {
     &:not(.modus-wc-mask-half-1) {
       margin-inline-end: var(--modus-wc-spacing-xs);
-    }
-
-    &:disabled:not(.modus-wc-mask-star-2):not(.modus-wc-mask-heart) {
-      opacity: 0.3;
-    }
-
-    &:disabled:not(.modus-wc-mask-smiley):not(.modus-wc-mask-thumb) {
-      opacity: 0.1;
-
-      &:checked,
-      &[aria-checked='true'],
-      &[aria-current='true'],
-      &:has(~ *:checked, ~ *[aria-checked='true'], ~ *[aria-current='true']) {
-        opacity: 0.3;
-      }
     }
   }
 }
