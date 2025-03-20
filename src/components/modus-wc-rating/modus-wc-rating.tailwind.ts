@@ -55,6 +55,31 @@ export const convertPropsToClasses = (props: {
 };
 
 /**
+ * Get the appropriate CSS class for a rating item based on variant and index
+ */
+export const getIndexedRatingItemClass = (
+  index: number,
+  baseClasses: string,
+  showHalf: boolean,
+  variant: ModusWcRatingVariant,
+  count: number
+): string => {
+  if (showHalf) {
+    return `${baseClasses} ${getMaskHalfClasses(index)}`;
+  }
+
+  if (variant === 'smiley') {
+    return `${baseClasses} modus-wc-mask-smiley-${getSmileyClassValue(index, count)}`;
+  }
+
+  if (variant === 'thumb') {
+    return `${baseClasses} modus-wc-mask-thumb-${index + 1}`;
+  }
+
+  return baseClasses;
+};
+
+/**
  * Determines the correct half mask class based on index
  */
 const getMaskHalfClasses = (index: number): string => {
@@ -85,29 +110,4 @@ const getSmileyClassValue = (index: number, count: number): number => {
 
   // Default
   return index + 1;
-};
-
-/**
- * Get the appropriate CSS class for a rating item based on variant and index
- */
-export const getIndexedRatingItemClass = (
-  index: number,
-  baseClasses: string,
-  showHalf: boolean,
-  variant: ModusWcRatingVariant,
-  count: number
-): string => {
-  if (showHalf) {
-    return `${baseClasses} ${getMaskHalfClasses(index)}`;
-  }
-
-  if (variant === 'smiley') {
-    return `${baseClasses} modus-wc-mask-smiley-${getSmileyClassValue(index, count)}`;
-  }
-
-  if (variant === 'thumb') {
-    return `${baseClasses} modus-wc-mask-thumb-${index + 1}`;
-  }
-
-  return baseClasses;
 };
