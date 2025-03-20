@@ -9,7 +9,10 @@ import {
 } from '@stencil/core';
 import { ModusSize } from '../types';
 import { Attributes, generateRandomId, inheritAriaAttributes } from '../utils';
-import { convertPropsToClasses } from './modus-wc-rating.tailwind';
+import {
+  convertPropsToClasses,
+  getIndexedRatingItemClass,
+} from './modus-wc-rating.tailwind';
 
 export interface IModusWcRatingChange {
   newRating: number;
@@ -29,8 +32,11 @@ export type ModusWcRatingVariant = 'star' | 'heart' | 'smiley' | 'thumb';
 })
 export class ModusWcRating {
   private inheritedAttributes: Attributes = {};
-  private readonly VARIANTS_WITHOUT_HALF_SUPPORT = ['smiley', 'thumb'] as const;
   private uniqueRatingGroupName: string;
+  private readonly VARIANTS_WITHOUT_HALF_SUPPORT: ModusWcRatingVariant[] = [
+    'smiley',
+    'thumb',
+  ];
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -74,40 +80,6 @@ export class ModusWcRating {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  /**
-   * Determines if the current variant supports half ratings
-   */
-  private get supportsHalfRatings(): boolean {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
-    return !this.VARIANTS_WITHOUT_HALF_SUPPORT.includes(this.variant as any);
-  }
-
-  /**
-   * Determines if half ratings should be shown
-   */
-  private get showHalf(): boolean {
-    return this.allowHalf && this.supportsHalfRatings;
-  }
-
-  /**
-   * Gets the total number of rating items to render based on variant and settings
-   */
-  private get totalRatingItems(): number {
-    if (this.showHalf) {
-      return this.count * 2;
-    }
-
-    if (this.variant === 'thumb') {
-      return 2;
-    }
-
-    if (this.variant === 'smiley') {
-      return Math.max(2, Math.min(5, this.count));
-    }
-
-    return this.count;
-  }
-
   private getClasses(): { ratingClasses: string; ratingItemClasses: string } {
     const ratingClassList = ['modus-wc-rating'];
     const ratingItemClassList = ['modus-wc-rating-item', 'modus-wc-mask'];
@@ -130,62 +102,67 @@ export class ModusWcRating {
     };
   }
 
-  private getMaskHalfClasses(index: number): string {
-    return (index + 1) % 2 !== 0
-      ? 'modus-wc-mask-half-1'
-      : 'modus-wc-mask-half-2';
-  }
-
-  private getValueForIndex(index: number): number {
-    return this.showHalf ? (index + 1) * 0.5 : index + 1;
-  }
-
   /**
-   * Maps the index of the rating item to the corresponding smiley class value
-   * depending on the total number of rating items.
+   * Gets the total number of rating items to render based on variant and settings
    */
-  private getSmileyClassValue(index: number): number {
-    // 4-point scale: use 1, 2, 4, 5 (skip neutral)
-    if (this.count === 4) {
-      return [1, 2, 4, 5][index];
-    }
-
-    // 3-point scale: use 1, 3, 5 (dissatisfied, neutral, satisfied)
-    if (this.count === 3) {
-      return [1, 3, 5][index];
-    }
-
-    // 2-point scale or fewer: use 1, 5 (dissatisfied, satisfied)
-    if (this.count <= 2) {
-      return [1, 5][index];
-    }
-
-    // Default
-    return index + 1;
-  }
-
-  /**
-   * Get the appropriate CSS class for a rating item based on variant and index
-   */
-  private getRatingItemClass(index: number, baseClasses: string): string {
-    if (this.showHalf) {
-      return `${baseClasses} ${this.getMaskHalfClasses(index)}`;
-    }
-
-    if (this.variant === 'smiley') {
-      return `${baseClasses} modus-wc-mask-smiley-${this.getSmileyClassValue(index)}`;
+  private getTotalRatingItems(): number {
+    if (this.supportsHalfRatings()) {
+      return this.count * 2;
     }
 
     if (this.variant === 'thumb') {
-      return `${baseClasses} modus-wc-mask-thumb-${index + 1}`;
+      return 2;
     }
 
-    return baseClasses;
+    if (this.variant === 'smiley') {
+      return Math.max(2, Math.min(5, this.count));
+    }
+
+    return this.count;
+  }
+
+  private getValueForIndex(index: number): number {
+    return this.supportsHalfRatings() ? (index + 1) * 0.5 : index + 1;
   }
 
   private handleChange(newValue: number) {
     this.value = newValue;
     this.ratingChange.emit({ newRating: newValue });
+  }
+
+  private supportsHalfRatings(): boolean {
+    return (
+      this.allowHalf &&
+      !this.VARIANTS_WITHOUT_HALF_SUPPORT.includes(this.variant)
+    );
+  }
+
+  private renderRatingItems(ratingItemClasses: string) {
+    return Array.from({ length: this.getTotalRatingItems() }, (_, index) => {
+      const ratingValue = this.getValueForIndex(index);
+      const itemClass = getIndexedRatingItemClass(
+        index,
+        ratingItemClasses,
+        this.supportsHalfRatings(),
+        this.variant,
+        this.count
+      );
+
+      return (
+        <input
+          aria-label={this.getAriaLabelText(ratingValue)}
+          aria-checked={this.value === ratingValue ? 'true' : 'false'}
+          checked={this.value === ratingValue}
+          class={itemClass}
+          disabled={this.disabled}
+          key={index}
+          name={this.uniqueRatingGroupName}
+          onChange={() => this.handleChange(ratingValue)}
+          type="radio"
+          value={String(ratingValue)}
+        />
+      );
+    });
   }
 
   /**
@@ -205,31 +182,6 @@ export class ModusWcRating {
         value="0"
       />
     );
-  }
-
-  /**
-   * Render the rating items
-   */
-  private renderRatingItems(ratingItemClasses: string) {
-    return Array.from({ length: this.totalRatingItems }, (_, index) => {
-      const ratingValue = this.getValueForIndex(index);
-      const itemClass = this.getRatingItemClass(index, ratingItemClasses);
-
-      return (
-        <input
-          aria-label={this.getAriaLabelText(ratingValue)}
-          aria-checked={this.value === ratingValue ? 'true' : 'false'}
-          checked={this.value === ratingValue}
-          class={itemClass}
-          disabled={this.disabled}
-          key={index}
-          name={this.uniqueRatingGroupName}
-          onChange={() => this.handleChange(ratingValue)}
-          type="radio"
-          value={String(ratingValue)}
-        />
-      );
-    });
   }
 
   render() {
