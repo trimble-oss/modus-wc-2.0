@@ -2943,7 +2943,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A rating component that allows users to rate items.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A rating component that allows users to rate items.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcRating",
           "members": [
             {

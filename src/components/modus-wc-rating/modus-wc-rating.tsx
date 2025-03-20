@@ -67,7 +67,13 @@ export class ModusWcRating {
   @Prop({ mutable: true, reflect: true }) value: number = 0;
 
   /** Event emitted when the rating changes */
-  @Event() ratingChange!: EventEmitter<IModusWcRatingChange>;
+  @Event({
+    eventName: 'ratingChange',
+    composed: true,
+    cancelable: true,
+    bubbles: true,
+  })
+  ratingChange!: EventEmitter<IModusWcRatingChange>;
 
   constructor() {
     this.uniqueRatingGroupName = `modus-wc-rating-group-${generateRandomId(4)}`;
