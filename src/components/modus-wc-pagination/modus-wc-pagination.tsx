@@ -14,7 +14,7 @@ import * as Icons from './modus-wc-pagination.icons';
 import { convertPropsToClasses } from './modus-wc-pagination.tailwind';
 
 /** Aria label values for pagination buttons */
-export interface IModusWcAriaLabelValues {
+export interface IAriaLabelValues {
   /** Aria label for the first page button */
   firstPage?: string;
   /** Aria label for the last page button */
@@ -27,7 +27,7 @@ export interface IModusWcAriaLabelValues {
   previousPage?: string;
 }
 
-export interface IModusWcPageChange {
+export interface IPageChange {
   /** The number of the newly selected page */
   newPage: number;
   /** The number of the previously selected page */
@@ -52,7 +52,7 @@ export class ModusWcPagination {
   @Element() el!: HTMLElement;
 
   /** Aria label values for pagination buttons */
-  @Prop() ariaLabelValues?: IModusWcAriaLabelValues;
+  @Prop() ariaLabelValues?: IAriaLabelValues;
 
   /** Total number of pages */
   @Prop() count: number = 1;
@@ -67,7 +67,7 @@ export class ModusWcPagination {
   @Prop() size: ModusSize = 'md';
 
   /** Event emitted when page changes */
-  @Event() pageChange!: EventEmitter<IModusWcPageChange>;
+  @Event() pageChange!: EventEmitter<IPageChange>;
 
   /** Internal state to track visible page numbers */
   @State() private visiblePages: number[] = [];

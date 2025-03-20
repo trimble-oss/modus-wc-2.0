@@ -4,10 +4,10 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IModusWcTableColumn } from './modus-wc-table';
+import { ITableColumn } from './modus-wc-table';
 import { Density } from '../types';
 
-const defaultColumns: IModusWcTableColumn[] = [
+const defaultColumns: ITableColumn[] = [
   {
     id: 'name',
     header: 'Name',
@@ -42,7 +42,7 @@ const defaultData = [
 ];
 
 interface TableArgs {
-  columns: IModusWcTableColumn[];
+  columns: ITableColumn[];
   'custom-class'?: string;
   data: Record<string, any>[];
   density?: Density;
@@ -64,7 +64,7 @@ const meta: Meta<TableArgs> = {
       table: {
         type: {
           detail: `
-            Interface: IModusWcTableColumn
+            Interface: ITableColumn
             Properties:
             - accessor (string): Key to access data from row object
             - cellRenderer ((value: any, row: any) => string | HTMLElement, optional): Custom cell renderer

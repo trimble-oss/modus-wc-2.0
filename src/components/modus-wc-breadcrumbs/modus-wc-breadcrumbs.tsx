@@ -11,7 +11,7 @@ import { convertPropsToClasses } from './modus-wc-breadcrumbs.tailwind';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-export interface IModusWcBreadcrumb {
+export interface IBreadcrumb {
   /** The text to render in the breadcrumb. */
   label: string;
   /** The URL emitted when the breadcrumb is clicked. */
@@ -35,7 +35,7 @@ export class ModusWcBreadcrumbs {
   @Element() el!: HTMLElement;
 
   /** The breadcrumbs to render. */
-  @Prop() items: IModusWcBreadcrumb[] = [];
+  @Prop() items: IBreadcrumb[] = [];
 
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
@@ -44,7 +44,7 @@ export class ModusWcBreadcrumbs {
   @Prop() size?: ModusSize = 'md';
 
   /** Event emitted when a breadcrumb is clicked. */
-  @Event() breadcrumbClick!: EventEmitter<IModusWcBreadcrumb>;
+  @Event() breadcrumbClick!: EventEmitter<IBreadcrumb>;
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
@@ -72,7 +72,7 @@ export class ModusWcBreadcrumbs {
     return classList.join(' ');
   }
 
-  private handleClick(event: MouseEvent, crumb: IModusWcBreadcrumb) {
+  private handleClick(event: MouseEvent, crumb: IBreadcrumb) {
     if (!crumb.url) {
       event.preventDefault();
     }

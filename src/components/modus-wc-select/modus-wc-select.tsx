@@ -11,7 +11,7 @@ import { convertPropsToClasses } from './modus-wc-select.tailwind';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-export interface IModusWcSelectOption {
+export interface ISelectOption {
   /** Whether the option is disabled and cannot be selected */
   disabled?: boolean;
   /** Display text for the option */
@@ -58,7 +58,7 @@ export class ModusWcSelect {
   @Prop() name?: string;
 
   /** The options to display in the select dropdown. */
-  @Prop({ mutable: true, reflect: true }) options: IModusWcSelectOption[] = [];
+  @Prop({ mutable: true, reflect: true }) options: ISelectOption[] = [];
 
   /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;

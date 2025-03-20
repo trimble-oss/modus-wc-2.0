@@ -13,7 +13,7 @@ import { convertTablePropsToClasses } from './modus-wc-table.tailwind';
 import { Density } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-export interface IModusWcTableColumn {
+export interface ITableColumn {
   /** Key to access data from row object */
   accessor: string;
   /** Custom cell renderer */
@@ -45,7 +45,7 @@ export class ModusWcTable {
   @Element() el!: HTMLElement;
 
   /** An array of column definitions. */
-  @Prop() columns!: IModusWcTableColumn[];
+  @Prop() columns!: ITableColumn[];
 
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
@@ -100,7 +100,7 @@ export class ModusWcTable {
   };
 
   private renderCell(
-    column: IModusWcTableColumn,
+    column: ITableColumn,
     row: Record<string, any>
   ): string | HTMLElement {
     const value = row[column.accessor];

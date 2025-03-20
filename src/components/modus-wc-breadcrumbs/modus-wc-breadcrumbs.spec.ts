@@ -1,8 +1,8 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { IModusWcBreadcrumb, ModusWcBreadcrumbs } from './modus-wc-breadcrumbs';
+import { IBreadcrumb, ModusWcBreadcrumbs } from './modus-wc-breadcrumbs';
 
 describe('modus-wc-breadcrumbs', () => {
-  const items: IModusWcBreadcrumb[] = [
+  const items: IBreadcrumb[] = [
     {
       label: 'Root',
       url: '#',
@@ -64,8 +64,7 @@ describe('modus-wc-breadcrumbs', () => {
 
     expect(eventSpy).toHaveBeenCalled();
 
-    const customEvent = eventSpy.mock
-      .calls[0][0] as CustomEvent<IModusWcBreadcrumb>;
+    const customEvent = eventSpy.mock.calls[0][0] as CustomEvent<IBreadcrumb>;
 
     expect(customEvent.detail).toEqual(items[0]);
   });
@@ -76,7 +75,7 @@ describe('modus-wc-breadcrumbs', () => {
       html: '<modus-wc-breadcrumbs aria-label="Default breadcrumbs"></modus-wc-breadcrumbs>',
     });
 
-    const itemsWithoutUrl: IModusWcBreadcrumb[] = [
+    const itemsWithoutUrl: IBreadcrumb[] = [
       {
         label: 'Root',
         url: '#',

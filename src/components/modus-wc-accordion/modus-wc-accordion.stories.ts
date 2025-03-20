@@ -2,13 +2,13 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IModusWcCollapseOptions } from '../modus-wc-collapse/modus-wc-collapse';
+import { ICollapseOptions } from '../modus-wc-collapse/modus-wc-collapse';
 
 interface AccordionArgs {
   'custom-class'?: string;
 }
 
-const options: IModusWcCollapseOptions[] = [
+const options: ICollapseOptions[] = [
   {
     description: 'Item one description',
     icon: 'alert',

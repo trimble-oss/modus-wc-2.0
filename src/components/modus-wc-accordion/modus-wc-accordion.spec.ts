@@ -1,12 +1,12 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcAccordion } from './modus-wc-accordion';
 import {
-  IModusWcCollapseOptions,
+  ICollapseOptions,
   ModusWcCollapse,
 } from '../modus-wc-collapse/modus-wc-collapse';
 
 describe('modus-wc-accordion', () => {
-  const options: IModusWcCollapseOptions[] = [
+  const options: ICollapseOptions[] = [
     {
       description: 'Item one description',
       icon: 'alert',

@@ -1,9 +1,9 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { IModusWcCollapseOptions, ModusWcCollapse } from './modus-wc-collapse';
+import { ICollapseOptions, ModusWcCollapse } from './modus-wc-collapse';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 
 describe('modus-wc-collapse', () => {
-  const options: IModusWcCollapseOptions = {
+  const options: ICollapseOptions = {
     title: 'Collapse Title',
     description: 'Collapse description',
     icon: 'alert',

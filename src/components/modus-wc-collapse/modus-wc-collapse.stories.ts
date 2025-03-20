@@ -2,17 +2,17 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IModusWcCollapseOptions } from './modus-wc-collapse';
+import { ICollapseOptions } from './modus-wc-collapse';
 
 interface CollapseArgs {
   bordered?: boolean;
   'custom-class'?: string;
   expanded?: boolean;
   id?: string;
-  options?: IModusWcCollapseOptions;
+  options?: ICollapseOptions;
 }
 
-const options: IModusWcCollapseOptions = {
+const options: ICollapseOptions = {
   title: 'Collapse Title',
   description: 'Collapse description',
   icon: 'alert',
@@ -33,7 +33,7 @@ const meta: Meta<CollapseArgs> = {
       table: {
         type: {
           detail: `
-            Interface: IModusWcCollapseOptions
+            Interface: ICollapseOptions
             Properties:
             - description (string, optional): The description to render in the collapse header
             - icon (string, optional): The Modus icon name to render in the collapse header

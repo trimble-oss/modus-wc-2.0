@@ -2,10 +2,10 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IModusWcBreadcrumb } from './modus-wc-breadcrumbs';
+import { IBreadcrumb } from './modus-wc-breadcrumbs';
 import { DaisySize } from '../types';
 
-const items: IModusWcBreadcrumb[] = [
+const items: IBreadcrumb[] = [
   {
     label: 'Root',
     url: '#',
@@ -22,7 +22,7 @@ const items: IModusWcBreadcrumb[] = [
 
 interface BreadcrumbArgs {
   'custom-class'?: string;
-  items: IModusWcBreadcrumb[];
+  items: IBreadcrumb[];
   size?: DaisySize;
 }
 
@@ -39,7 +39,7 @@ const meta: Meta<BreadcrumbArgs> = {
       table: {
         type: {
           detail: `
-            Interface: IModusWcBreadcrumb
+            Interface: IBreadcrumb
             Properties:
             - label (string): The text to render in the breadcrumb
             - url (string, optional): The URL emitted when the breadcrumb is clicked

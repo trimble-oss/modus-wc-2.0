@@ -2,9 +2,9 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IModusWcAriaLabelValues } from './modus-wc-pagination';
+import { IAriaLabelValues } from './modus-wc-pagination';
 
-const defaultLabelValues: IModusWcAriaLabelValues = {
+const defaultLabelValues: IAriaLabelValues = {
   firstPage: 'First page',
   lastPage: 'Last page',
   nextPage: 'Next page',
@@ -13,7 +13,7 @@ const defaultLabelValues: IModusWcAriaLabelValues = {
 };
 
 interface PaginationArgs {
-  'aria-label-values'?: IModusWcAriaLabelValues;
+  'aria-label-values'?: IAriaLabelValues;
   count: number;
   'custom-class'?: string;
   page: number;
@@ -36,7 +36,7 @@ const meta: Meta<PaginationArgs> = {
       table: {
         type: {
           detail: `
-            Interface: IModusWcAriaLabelValues
+            Interface: IAriaLabelValues
             Properties:
             - firstPage (string, optional): Aria label for the first page button
             - lastPage (string, optional): Aria label for the last page button
@@ -65,7 +65,7 @@ const meta: Meta<PaginationArgs> = {
 The pageChange event emits an object with the following interface:
 
 \`\`\`typescript
-interface IModusWcPageChange {
+interface IPageChange {
   /** The number of the newly selected page */
   newPage: number;
   /** The number of the previously selected page */

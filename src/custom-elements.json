@@ -641,7 +641,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable breadcrumbs component used to help users navigate through a website.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable breadcrumbs component used to help users navigate through a website.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcBreadcrumbs",
           "members": [
             {
@@ -673,7 +673,7 @@
               "default": "[]",
               "description": "The breadcrumbs to render.",
               "type": {
-                "text": "IModusWcBreadcrumb[]"
+                "text": "IBreadcrumb[]"
               }
             },
             {
@@ -691,7 +691,7 @@
             {
               "name": "breadcrumbClick",
               "type": {
-                "text": "EventEmitter<IModusWcBreadcrumb>"
+                "text": "EventEmitter<IBreadcrumb>"
               },
               "description": "Event emitted when a breadcrumb is clicked."
             }
@@ -1274,7 +1274,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable collapse component used for showing and hiding content.\r\n\r\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.\r\nDo not set\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable collapse component used for showing and hiding content.\n\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.\nDo not set\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcCollapse",
           "members": [
             {
@@ -1341,9 +1341,9 @@
             {
               "name": "options",
               "fieldName": "options",
-              "description": "Configuration options for rendering the pre-laid out collapse component.\r\nDo not set this prop if you intend to use the 'header' slot.",
+              "description": "Configuration options for rendering the pre-laid out collapse component.\nDo not set this prop if you intend to use the 'header' slot.",
               "type": {
-                "text": "IModusWcCollapseOptions"
+                "text": "ICollapseOptions"
               }
             }
           ],
@@ -2587,7 +2587,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Pagination component to navigate through pages of content.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "Pagination component to navigate through pages of content.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcPagination",
           "members": [
             {
@@ -2613,7 +2613,7 @@
               "fieldName": "ariaLabelValues",
               "description": "Aria label values for pagination buttons",
               "type": {
-                "text": "IModusWcAriaLabelValues"
+                "text": "IAriaLabelValues"
               }
             },
             {
@@ -2658,7 +2658,7 @@
             {
               "name": "pageChange",
               "type": {
-                "text": "EventEmitter<IModusWcPageChange>"
+                "text": "EventEmitter<IPageChange>"
               },
               "description": "Event emitted when page changes"
             }
@@ -2943,7 +2943,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable select component used to pick a value from a list of options.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable select component used to pick a value from a list of options.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcSelect",
           "members": [
             {
@@ -3025,7 +3025,7 @@
               "default": "[]",
               "description": "The options to display in the select dropdown.",
               "type": {
-                "text": "IModusWcSelectOption[]"
+                "text": "ISelectOption[]"
               }
             },
             {
@@ -3370,7 +3370,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Used to show a list of steps in a process.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "Used to show a list of steps in a process.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcStepper",
           "members": [
             {
@@ -3410,7 +3410,7 @@
               "default": "[]",
               "description": "The steps to display.",
               "type": {
-                "text": "IModusWcStepperItem[]"
+                "text": "IStepperItem[]"
               }
             }
           ],
@@ -3450,7 +3450,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable table component used to show a list of data in a table format.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable table component used to show a list of data in a table format.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTable",
           "members": [
             {
@@ -3472,7 +3472,7 @@
               "fieldName": "columns",
               "description": "An array of column definitions.",
               "type": {
-                "text": "IModusWcTableColumn[]"
+                "text": "ITableColumn[]"
               }
             },
             {
@@ -3517,7 +3517,7 @@
               "kind": "field",
               "name": "rowClick",
               "type": {
-                "text": "EventEmitter<{\r\n    row: Record<string, any>;\r\n    index: number;\r\n  }>"
+                "text": "EventEmitter<{\n    row: Record<string, any>;\n    index: number;\n  }>"
               },
               "description": "Emits when a row is clicked."
             }
@@ -3550,7 +3550,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tabs component used to create groups of tabs.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable tabs component used to create groups of tabs.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTabs",
           "members": [
             {
@@ -3606,7 +3606,7 @@
               "default": "[]",
               "description": "The tabs to display.",
               "type": {
-                "text": "IModusWcTab[]"
+                "text": "ITab[]"
               }
             }
           ],
@@ -3616,7 +3616,7 @@
               "kind": "field",
               "name": "tabChange",
               "type": {
-                "text": "EventEmitter<{\r\n    previousTab: number;\r\n    newTab: number;\r\n  }>"
+                "text": "EventEmitter<{\n    previousTab: number;\n    newTab: number;\n  }>"
               },
               "description": "When a tab is switched to, this event outputs the relevant indices"
             }
