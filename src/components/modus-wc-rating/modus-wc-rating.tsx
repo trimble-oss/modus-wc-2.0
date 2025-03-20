@@ -21,7 +21,7 @@ export interface IRatingChange {
 export type ModusWcRatingVariant = 'heart' | 'smiley' | 'star' | 'thumb';
 
 /**
- * A rating component that allows users to rate items.
+ * A rating component that allows users to choose a rating from predefined options.
  *
  * Adheres to WCAG 2.2 standards.
  */
