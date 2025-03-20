@@ -673,7 +673,7 @@
               "default": "[]",
               "description": "The breadcrumbs to render.",
               "type": {
-                "text": "IModusWcBreadcrumb[]"
+                "text": "IBreadcrumb[]"
               }
             },
             {
@@ -691,7 +691,7 @@
             {
               "name": "breadcrumbClick",
               "type": {
-                "text": "EventEmitter<IModusWcBreadcrumb>"
+                "text": "EventEmitter<IBreadcrumb>"
               },
               "description": "Event emitted when a breadcrumb is clicked."
             }
@@ -1343,7 +1343,7 @@
               "fieldName": "options",
               "description": "Configuration options for rendering the pre-laid out collapse component.\r\nDo not set this prop if you intend to use the 'header' slot.",
               "type": {
-                "text": "IModusWcCollapseOptions"
+                "text": "ICollapseOptions"
               }
             }
           ],
@@ -2613,7 +2613,7 @@
               "fieldName": "ariaLabelValues",
               "description": "Aria label values for pagination buttons",
               "type": {
-                "text": "IModusWcAriaLabelValues"
+                "text": "IAriaLabelValues"
               }
             },
             {
@@ -2658,7 +2658,7 @@
             {
               "name": "pageChange",
               "type": {
-                "text": "EventEmitter<IModusWcPageChange>"
+                "text": "EventEmitter<IPageChange>"
               },
               "description": "Event emitted when page changes"
             }
@@ -2943,7 +2943,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A rating component that allows users to choose a rating from predefined options.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A rating component that allows users to choose a rating from predefined options.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcRating",
           "members": [
             {
@@ -3152,7 +3152,7 @@
               "default": "[]",
               "description": "The options to display in the select dropdown.",
               "type": {
-                "text": "IModusWcSelectOption[]"
+                "text": "ISelectOption[]"
               }
             },
             {
@@ -3537,7 +3537,7 @@
               "default": "[]",
               "description": "The steps to display.",
               "type": {
-                "text": "IModusWcStepperItem[]"
+                "text": "IStepperItem[]"
               }
             }
           ],
@@ -3599,7 +3599,7 @@
               "fieldName": "columns",
               "description": "An array of column definitions.",
               "type": {
-                "text": "IModusWcTableColumn[]"
+                "text": "ITableColumn[]"
               }
             },
             {
@@ -3733,7 +3733,7 @@
               "default": "[]",
               "description": "The tabs to display.",
               "type": {
-                "text": "IModusWcTab[]"
+                "text": "ITab[]"
               }
             }
           ],

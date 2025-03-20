@@ -15,7 +15,7 @@ import {
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-export interface IModusWcTab {
+export interface ITab {
   /** Custom CSS class to apply to the inner button. */
   customClass?: string;
 
@@ -58,7 +58,7 @@ export class ModusWcTabs {
   @Prop() size?: ModusSize = 'md';
 
   /** The tabs to display. */
-  @Prop() tabs: IModusWcTab[] = [];
+  @Prop() tabs: ITab[] = [];
 
   /** Additional styling for the tabs. */
   @Prop() tabStyle?: 'boxed' | 'bordered' | 'lifted' | 'none' = 'bordered';
@@ -81,7 +81,7 @@ export class ModusWcTabs {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  private handleClick(tab: IModusWcTab, index: number) {
+  private handleClick(tab: ITab, index: number) {
     if (tab.disabled) return;
 
     this.tabChange.emit({ previousTab: this.activeTabIndex, newTab: index });
@@ -103,7 +103,7 @@ export class ModusWcTabs {
     return classList.join(' ');
   }
 
-  private getTabClasses(tab: IModusWcTab, index: number): string {
+  private getTabClasses(tab: ITab, index: number): string {
     const classList: string[] = ['modus-wc-tab'];
 
     const propClasses = convertPropsToTabClasses({
@@ -119,7 +119,7 @@ export class ModusWcTabs {
   }
 
   render() {
-    const renderTabContent = (tab: IModusWcTab) =>
+    const renderTabContent = (tab: ITab) =>
       tab.label === undefined ? (
         tab.icon && <modus-wc-icon name={tab.icon} size={this.size} />
       ) : (

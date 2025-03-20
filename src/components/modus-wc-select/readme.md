@@ -22,7 +22,7 @@ Adheres to WCAG 2.2 standards.
 | `inputTabIndex` | `input-tab-index` | Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). | `number \| undefined`               | `undefined` |
 | `label`         | `label`           | The text to display within the label.                                                                   | `string \| undefined`               | `undefined` |
 | `name`          | `name`            | Name of the form control. Submitted with the form as part of a name/value pair.                         | `string \| undefined`               | `undefined` |
-| `options`       | --                | The options to display in the select dropdown.                                                          | `IModusWcSelectOption[]`            | `[]`        |
+| `options`       | --                | The options to display in the select dropdown.                                                          | `ISelectOption[]`                   | `[]`        |
 | `required`      | `required`        | A value is required for the form to be submittable.                                                     | `boolean \| undefined`              | `false`     |
 | `size`          | `size`            | The size of the input.                                                                                  | `"lg" \| "md" \| "sm" \| undefined` | `'md'`      |
 | `value`         | `value`           | The value of the control.                                                                               | `string`                            | `''`        |

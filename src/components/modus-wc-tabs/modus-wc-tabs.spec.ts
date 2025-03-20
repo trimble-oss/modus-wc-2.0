@@ -1,9 +1,9 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcTabs } from './modus-wc-tabs';
-import { IModusWcTab } from './modus-wc-tabs';
+import { ITab } from './modus-wc-tabs';
 
 describe('modus-wc-tabs', () => {
-  const defaultTabs: IModusWcTab[] = [
+  const defaultTabs: ITab[] = [
     {
       label: 'Tab 1',
     },

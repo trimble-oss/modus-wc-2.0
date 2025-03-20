@@ -22,7 +22,7 @@ import {
   KEY,
 } from '../utils';
 
-export interface IModusWcCollapseOptions {
+export interface ICollapseOptions {
   /** The description to render in the collapse header. */
   description?: string;
   /** The Modus icon name to render in the collapse header. */
@@ -70,7 +70,7 @@ export class ModusWcCollapse {
    * Configuration options for rendering the pre-laid out collapse component.
    * Do not set this prop if you intend to use the 'header' slot.
    */
-  @Prop() options?: IModusWcCollapseOptions;
+  @Prop() options?: ICollapseOptions;
 
   /** Event emitted when the expanded prop is internally changed. */
   @StencilEvent() expandedChange!: EventEmitter<{ expanded: boolean }>;

@@ -6,10 +6,10 @@ import { Orientation } from '../types';
 interface StepperArgs {
   'custom-class'?: string;
   orientation: Orientation;
-  steps?: IModusWcStepperItem[];
+  steps?: IStepperItem[];
 }
 
-interface IModusWcStepperItem {
+interface IStepperItem {
   color?:
     | 'primary'
     | 'secondary'
@@ -48,7 +48,7 @@ const meta: Meta<StepperArgs> = {
       table: {
         type: {
           detail: `
-            Interface: IModusWcStepperItem
+            Interface: IStepperItem
             Properties:
             - color ('primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'error' | 'neutral', optional): The color theme of the step
             - content (string, optional): Custom content to display in the step indicator

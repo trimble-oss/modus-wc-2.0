@@ -3,7 +3,7 @@ import { convertPropsToClasses } from './modus-wc-stepper.tailwind';
 import { Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-export interface IModusWcStepperItem {
+export interface IStepperItem {
   /** The color theme of the step */
   color?:
     | 'primary'
@@ -45,7 +45,7 @@ export class ModusWcStepper {
   @Prop() orientation?: Orientation;
 
   /** The steps to display. */
-  @Prop() steps: IModusWcStepperItem[] = [];
+  @Prop() steps: IStepperItem[] = [];
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -65,7 +65,7 @@ export class ModusWcStepper {
     return classList.join(' ');
   }
 
-  private getClassesForStep(step: IModusWcStepperItem): string {
+  private getClassesForStep(step: IStepperItem): string {
     const classList = ['modus-wc-step'];
 
     // The order CSS classes are added matters to CSS specificity

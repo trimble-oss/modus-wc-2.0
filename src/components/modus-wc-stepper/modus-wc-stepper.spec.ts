@@ -1,8 +1,8 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { IModusWcStepperItem, ModusWcStepper } from './modus-wc-stepper';
+import { IStepperItem, ModusWcStepper } from './modus-wc-stepper';
 
 describe('modus-wc-stepper', () => {
-  const defaultSteps: IModusWcStepperItem[] = [
+  const defaultSteps: IStepperItem[] = [
     { label: 'Scale', color: 'primary' },
     { label: 'Belong', color: 'primary', customClass: 'custom-class' },
     { label: 'Grow', color: 'warning' },

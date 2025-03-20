@@ -1,8 +1,8 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { IModusWcTableColumn, ModusWcTable } from './modus-wc-table';
+import { ITableColumn, ModusWcTable } from './modus-wc-table';
 
 describe('modus-wc-table', () => {
-  const defaultColumns: IModusWcTableColumn[] = [
+  const defaultColumns: ITableColumn[] = [
     {
       id: 'name',
       header: 'Name',

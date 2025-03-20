@@ -2,14 +2,14 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IModusWcTab } from './modus-wc-tabs';
+import { ITab } from './modus-wc-tabs';
 import { DaisySize } from '../types';
 
 interface TabsArgs {
   activeTabIndex?: number;
   'custom-class'?: string;
   size?: DaisySize;
-  tabs: IModusWcTab[];
+  tabs: ITab[];
   tabStyle: 'boxed' | 'bordered' | 'lifted' | 'none';
 }
 
@@ -32,7 +32,7 @@ const meta: Meta<TabsArgs> = {
       table: {
         type: {
           detail: `
-            Interface: IModusWcTab
+            Interface: ITab
             Properties:
             - customClass (string, optional): Custom CSS class for the inner button
             - disabled (boolean, optional): Whether the tab is disabled

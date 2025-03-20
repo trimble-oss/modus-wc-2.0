@@ -7,29 +7,29 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
 import { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
-import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
-import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
+import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
-import { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
+import { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
-import { IModusWcSelectOption } from "./components/modus-wc-select/modus-wc-select";
-import { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
-import { IModusWcTableColumn } from "./components/modus-wc-table/modus-wc-table";
-import { IModusWcTab } from "./components/modus-wc-tabs/modus-wc-tabs";
+import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
+import { IStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
+import { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
 export { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
-export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
-export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
+export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
-export { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
+export { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
-export { IModusWcSelectOption } from "./components/modus-wc-select/modus-wc-select";
-export { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
-export { IModusWcTableColumn } from "./components/modus-wc-table/modus-wc-table";
-export { IModusWcTab } from "./components/modus-wc-tabs/modus-wc-tabs";
+export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
+export { IStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
+export { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+export { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 export { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
@@ -220,7 +220,7 @@ export namespace Components {
         /**
           * The breadcrumbs to render.
          */
-        "items": IModusWcBreadcrumb[];
+        "items": IBreadcrumb[];
         /**
           * The size of the breadcrumbs.
          */
@@ -405,7 +405,7 @@ export namespace Components {
         /**
           * Configuration options for rendering the pre-laid out collapse component. Do not set this prop if you intend to use the 'header' slot.
          */
-        "options"?: IModusWcCollapseOptions;
+        "options"?: ICollapseOptions;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -764,7 +764,7 @@ export namespace Components {
         /**
           * Aria label values for pagination buttons
          */
-        "ariaLabelValues"?: IModusWcAriaLabelValues;
+        "ariaLabelValues"?: IAriaLabelValues;
         /**
           * Total number of pages
          */
@@ -929,7 +929,7 @@ export namespace Components {
         /**
           * The options to display in the select dropdown.
          */
-        "options": IModusWcSelectOption[];
+        "options": ISelectOption[];
         /**
           * A value is required for the form to be submittable.
          */
@@ -1035,7 +1035,7 @@ export namespace Components {
         /**
           * The steps to display.
          */
-        "steps": IModusWcStepperItem[];
+        "steps": IStepperItem[];
     }
     /**
      * A customizable table component used to show a list of data in a table format.
@@ -1045,7 +1045,7 @@ export namespace Components {
         /**
           * An array of column definitions.
          */
-        "columns": IModusWcTableColumn[];
+        "columns": ITableColumn[];
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -1087,7 +1087,7 @@ export namespace Components {
         /**
           * The tabs to display.
          */
-        "tabs": IModusWcTab[];
+        "tabs": ITab[];
     }
     /**
      * A customizable input component used to create text inputs with types.
@@ -1665,7 +1665,7 @@ declare global {
         new (): HTMLModusWcBadgeElement;
     };
     interface HTMLModusWcBreadcrumbsElementEventMap {
-        "breadcrumbClick": IModusWcBreadcrumb;
+        "breadcrumbClick": IBreadcrumb;
     }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
@@ -1917,7 +1917,7 @@ declare global {
         new (): HTMLModusWcNumberInputElement;
     };
     interface HTMLModusWcPaginationElementEventMap {
-        "pageChange": IModusWcPageChange;
+        "pageChange": IPageChange;
     }
     /**
      * Pagination component to navigate through pages of content.
@@ -2517,11 +2517,11 @@ declare namespace LocalJSX {
         /**
           * The breadcrumbs to render.
          */
-        "items"?: IModusWcBreadcrumb[];
+        "items"?: IBreadcrumb[];
         /**
           * Event emitted when a breadcrumb is clicked.
          */
-        "onBreadcrumbClick"?: (event: ModusWcBreadcrumbsCustomEvent<IModusWcBreadcrumb>) => void;
+        "onBreadcrumbClick"?: (event: ModusWcBreadcrumbsCustomEvent<IBreadcrumb>) => void;
         /**
           * The size of the breadcrumbs.
          */
@@ -2734,7 +2734,7 @@ declare namespace LocalJSX {
         /**
           * Configuration options for rendering the pre-laid out collapse component. Do not set this prop if you intend to use the 'header' slot.
          */
-        "options"?: IModusWcCollapseOptions;
+        "options"?: ICollapseOptions;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -3121,7 +3121,7 @@ declare namespace LocalJSX {
         /**
           * Aria label values for pagination buttons
          */
-        "ariaLabelValues"?: IModusWcAriaLabelValues;
+        "ariaLabelValues"?: IAriaLabelValues;
         /**
           * Total number of pages
          */
@@ -3133,7 +3133,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when page changes
          */
-        "onPageChange"?: (event: ModusWcPaginationCustomEvent<IModusWcPageChange>) => void;
+        "onPageChange"?: (event: ModusWcPaginationCustomEvent<IPageChange>) => void;
         /**
           * The current page number
          */
@@ -3318,7 +3318,7 @@ declare namespace LocalJSX {
         /**
           * The options to display in the select dropdown.
          */
-        "options"?: IModusWcSelectOption[];
+        "options"?: ISelectOption[];
         /**
           * A value is required for the form to be submittable.
          */
@@ -3436,7 +3436,7 @@ declare namespace LocalJSX {
         /**
           * The steps to display.
          */
-        "steps"?: IModusWcStepperItem[];
+        "steps"?: IStepperItem[];
     }
     /**
      * A customizable table component used to show a list of data in a table format.
@@ -3446,7 +3446,7 @@ declare namespace LocalJSX {
         /**
           * An array of column definitions.
          */
-        "columns": IModusWcTableColumn[];
+        "columns": ITableColumn[];
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -3502,7 +3502,7 @@ declare namespace LocalJSX {
         /**
           * The tabs to display.
          */
-        "tabs"?: IModusWcTab[];
+        "tabs"?: ITab[];
     }
     /**
      * A customizable input component used to create text inputs with types.
