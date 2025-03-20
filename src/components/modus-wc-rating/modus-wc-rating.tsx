@@ -42,7 +42,7 @@ export class ModusWcRating {
   @Element() el!: HTMLElement;
 
   /** Whether to allow half-ratings. Only applies to star and heart variants. */
-  @Prop() allowHalf: boolean = false;
+  @Prop() allowHalf?: boolean = false;
 
   /** The number of rating items to display */
   @Prop() count: number = 5;
@@ -54,7 +54,7 @@ export class ModusWcRating {
   @Prop() disabled?: boolean = false;
 
   /** Function to provide aria-label text for a given rating-item index */
-  @Prop() getAriaLabelText: (ratingValue: number) => string = (ratingValue) =>
+  @Prop() getAriaLabelText?: (ratingValue: number) => string = (ratingValue) =>
     `Rating item ${ratingValue}`;
 
   /** The size of the rating component */
@@ -132,7 +132,7 @@ export class ModusWcRating {
 
   private supportsHalfRatings(): boolean {
     return (
-      this.allowHalf &&
+      this.allowHalf! &&
       !this.VARIANTS_WITHOUT_HALF_SUPPORT.includes(this.variant)
     );
   }
@@ -150,7 +150,7 @@ export class ModusWcRating {
 
       return (
         <input
-          aria-label={this.getAriaLabelText(ratingValue)}
+          aria-label={this.getAriaLabelText!(ratingValue)}
           aria-checked={this.value === ratingValue ? 'true' : 'false'}
           checked={this.value === ratingValue}
           class={itemClass}
@@ -171,7 +171,7 @@ export class ModusWcRating {
   private renderZeroOption() {
     return (
       <input
-        aria-label={this.getAriaLabelText(0)}
+        aria-label={this.getAriaLabelText!(0)}
         aria-checked={this.value <= 0 ? 'true' : 'false'}
         checked={this.value <= 0}
         class="modus-wc-rating-hidden"

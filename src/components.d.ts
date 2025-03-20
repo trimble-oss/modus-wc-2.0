@@ -863,7 +863,7 @@ export namespace Components {
         /**
           * Whether to allow half-ratings. Only applies to star and heart variants.
          */
-        "allowHalf": boolean;
+        "allowHalf"?: boolean;
         /**
           * The number of rating items to display
          */
@@ -879,7 +879,7 @@ export namespace Components {
         /**
           * Function to provide aria-label text for a given rating-item index
          */
-        "getAriaLabelText": (ratingValue: number) => string;
+        "getAriaLabelText"?: (ratingValue: number) => string;
         /**
           * The size of the rating component
          */
