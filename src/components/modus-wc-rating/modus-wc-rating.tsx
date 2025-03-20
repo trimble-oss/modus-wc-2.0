@@ -18,7 +18,7 @@ export interface IModusWcRatingChange {
   newRating: number;
 }
 
-export type ModusWcRatingVariant = 'star' | 'heart' | 'smiley' | 'thumb';
+export type ModusWcRatingVariant = 'heart' | 'smiley' | 'star' | 'thumb';
 
 /**
  * A rating component that allows users to rate items.

@@ -35,7 +35,7 @@ const meta: Meta<RatingArgs> = {
     },
     variant: {
       control: { type: 'select' },
-      options: ['star', 'heart', 'smiley', 'thumb'],
+      options: ['heart', 'smiley', 'star', 'thumb'],
     },
   },
   decorators: [withActions],
