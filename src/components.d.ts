@@ -856,7 +856,7 @@ export namespace Components {
         "value": boolean;
     }
     /**
-     * A rating component that allows users to rate items.
+     * A rating component that allows users to choose a rating from predefined options.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcRating {
@@ -1975,7 +1975,7 @@ declare global {
         "ratingChange": IRatingChange;
     }
     /**
-     * A rating component that allows users to rate items.
+     * A rating component that allows users to choose a rating from predefined options.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcRatingElement extends Components.ModusWcRating, HTMLStencilElement {
@@ -3229,7 +3229,7 @@ declare namespace LocalJSX {
         "value"?: boolean;
     }
     /**
-     * A rating component that allows users to rate items.
+     * A rating component that allows users to choose a rating from predefined options.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcRating {
@@ -4117,7 +4117,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-radio": LocalJSX.ModusWcRadio & JSXBase.HTMLAttributes<HTMLModusWcRadioElement>;
             /**
-             * A rating component that allows users to rate items.
+             * A rating component that allows users to choose a rating from predefined options.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-rating": LocalJSX.ModusWcRating & JSXBase.HTMLAttributes<HTMLModusWcRatingElement>;
