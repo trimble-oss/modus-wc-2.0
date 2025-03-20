@@ -641,7 +641,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable breadcrumbs component used to help users navigate through a website.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable breadcrumbs component used to help users navigate through a website.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcBreadcrumbs",
           "members": [
             {
@@ -1274,7 +1274,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable collapse component used for showing and hiding content.\n\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.\nDo not set\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable collapse component used for showing and hiding content.\r\n\r\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.\r\nDo not set\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcCollapse",
           "members": [
             {
@@ -1341,7 +1341,7 @@
             {
               "name": "options",
               "fieldName": "options",
-              "description": "Configuration options for rendering the pre-laid out collapse component.\nDo not set this prop if you intend to use the 'header' slot.",
+              "description": "Configuration options for rendering the pre-laid out collapse component.\r\nDo not set this prop if you intend to use the 'header' slot.",
               "type": {
                 "text": "ICollapseOptions"
               }
@@ -2587,7 +2587,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Pagination component to navigate through pages of content.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "Pagination component to navigate through pages of content.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcPagination",
           "members": [
             {
@@ -2939,11 +2939,138 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-rating/modus-wc-rating.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A rating component that allows users to choose a rating from predefined options.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcRating",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "allow-half",
+              "fieldName": "allowHalf",
+              "default": "false",
+              "description": "Whether to allow half-ratings. Only applies to star and heart variants.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "count",
+              "fieldName": "count",
+              "default": "5",
+              "description": "The number of rating items to display",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "default": "false",
+              "description": "Whether the rating component is disabled",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "get-aria-label-text",
+              "fieldName": "getAriaLabelText",
+              "description": "Function to provide aria-label text for a given rating-item index",
+              "type": {
+                "text": "(ratingValue: number) => string"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the rating component",
+              "type": {
+                "text": "ModusSize"
+              }
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "default": "0",
+              "description": "The current value of the rating",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "default": "'smiley'",
+              "description": "The variant of the rating scale",
+              "type": {
+                "text": "ModusWcRatingVariant"
+              }
+            }
+          ],
+          "tagName": "modus-wc-rating",
+          "events": [
+            {
+              "name": "ratingChange",
+              "type": {
+                "text": "EventEmitter<IRatingChange>"
+              },
+              "description": "Event emitted when the rating changes"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcRating",
+          "declaration": {
+            "name": "ModusWcRating",
+            "module": "src/components/modus-wc-rating/modus-wc-rating.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-rating",
+          "declaration": {
+            "name": "ModusWcRating",
+            "module": "src/components/modus-wc-rating/modus-wc-rating.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-select/modus-wc-select.tsx",
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable select component used to pick a value from a list of options.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable select component used to pick a value from a list of options.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcSelect",
           "members": [
             {
@@ -3370,7 +3497,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Used to show a list of steps in a process.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "Used to show a list of steps in a process.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcStepper",
           "members": [
             {
@@ -3450,7 +3577,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable table component used to show a list of data in a table format.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable table component used to show a list of data in a table format.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTable",
           "members": [
             {
@@ -3517,7 +3644,7 @@
               "kind": "field",
               "name": "rowClick",
               "type": {
-                "text": "EventEmitter<{\n    row: Record<string, any>;\n    index: number;\n  }>"
+                "text": "EventEmitter<{\r\n    row: Record<string, any>;\r\n    index: number;\r\n  }>"
               },
               "description": "Emits when a row is clicked."
             }
@@ -3550,7 +3677,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tabs component used to create groups of tabs.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable tabs component used to create groups of tabs.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTabs",
           "members": [
             {
@@ -3616,7 +3743,7 @@
               "kind": "field",
               "name": "tabChange",
               "type": {
-                "text": "EventEmitter<{\n    previousTab: number;\n    newTab: number;\n  }>"
+                "text": "EventEmitter<{\r\n    previousTab: number;\r\n    newTab: number;\r\n  }>"
               },
               "description": "When a tab is switched to, this event outputs the relevant indices"
             }
