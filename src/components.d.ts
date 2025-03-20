@@ -11,6 +11,7 @@ import { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-b
 import { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
+import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 import { IModusWcSelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 import { IModusWcTableColumn } from "./components/modus-wc-table/modus-wc-table";
@@ -24,6 +25,7 @@ export { IModusWcBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-b
 export { IModusWcCollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { IModusWcAriaLabelValues, IModusWcPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
+export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 export { IModusWcSelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IModusWcStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 export { IModusWcTableColumn } from "./components/modus-wc-table/modus-wc-table";
@@ -854,6 +856,44 @@ export namespace Components {
         "value": boolean;
     }
     /**
+     * A rating component that allows users to choose a rating from predefined options.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcRating {
+        /**
+          * Whether to allow half-ratings. Only applies to star and heart variants.
+         */
+        "allowHalf"?: boolean;
+        /**
+          * The number of rating items to display
+         */
+        "count": number;
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
+        /**
+          * Whether the rating component is disabled
+         */
+        "disabled"?: boolean;
+        /**
+          * Function to provide aria-label text for a given rating-item index
+         */
+        "getAriaLabelText"?: (ratingValue: number) => string;
+        /**
+          * The size of the rating component
+         */
+        "size"?: ModusSize;
+        /**
+          * The current value of the rating
+         */
+        "value": number;
+        /**
+          * The variant of the rating scale
+         */
+        "variant": ModusWcRatingVariant;
+    }
+    /**
      * A customizable select component used to pick a value from a list of options.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1491,6 +1531,10 @@ export interface ModusWcRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcRadioElement;
 }
+export interface ModusWcRatingCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcRatingElement;
+}
 export interface ModusWcSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSelectElement;
@@ -1927,6 +1971,27 @@ declare global {
         prototype: HTMLModusWcRadioElement;
         new (): HTMLModusWcRadioElement;
     };
+    interface HTMLModusWcRatingElementEventMap {
+        "ratingChange": IRatingChange;
+    }
+    /**
+     * A rating component that allows users to choose a rating from predefined options.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcRatingElement extends Components.ModusWcRating, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcRatingElementEventMap>(type: K, listener: (this: HTMLModusWcRatingElement, ev: ModusWcRatingCustomEvent<HTMLModusWcRatingElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcRatingElementEventMap>(type: K, listener: (this: HTMLModusWcRatingElement, ev: ModusWcRatingCustomEvent<HTMLModusWcRatingElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcRatingElement: {
+        prototype: HTMLModusWcRatingElement;
+        new (): HTMLModusWcRatingElement;
+    };
     interface HTMLModusWcSelectElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
@@ -2216,6 +2281,7 @@ declare global {
         "modus-wc-pagination": HTMLModusWcPaginationElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
+        "modus-wc-rating": HTMLModusWcRatingElement;
         "modus-wc-select": HTMLModusWcSelectElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
@@ -3163,6 +3229,48 @@ declare namespace LocalJSX {
         "value"?: boolean;
     }
     /**
+     * A rating component that allows users to choose a rating from predefined options.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcRating {
+        /**
+          * Whether to allow half-ratings. Only applies to star and heart variants.
+         */
+        "allowHalf"?: boolean;
+        /**
+          * The number of rating items to display
+         */
+        "count"?: number;
+        /**
+          * Custom CSS class to apply
+         */
+        "customClass"?: string;
+        /**
+          * Whether the rating component is disabled
+         */
+        "disabled"?: boolean;
+        /**
+          * Function to provide aria-label text for a given rating-item index
+         */
+        "getAriaLabelText"?: (ratingValue: number) => string;
+        /**
+          * Event emitted when the rating changes
+         */
+        "onRatingChange"?: (event: ModusWcRatingCustomEvent<IRatingChange>) => void;
+        /**
+          * The size of the rating component
+         */
+        "size"?: ModusSize;
+        /**
+          * The current value of the rating
+         */
+        "value"?: number;
+        /**
+          * The variant of the rating scale
+         */
+        "variant"?: ModusWcRatingVariant;
+    }
+    /**
      * A customizable select component used to pick a value from a list of options.
      * Adheres to WCAG 2.2 standards.
      */
@@ -3861,6 +3969,7 @@ declare namespace LocalJSX {
         "modus-wc-pagination": ModusWcPagination;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
+        "modus-wc-rating": ModusWcRating;
         "modus-wc-select": ModusWcSelect;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
@@ -4007,6 +4116,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-radio": LocalJSX.ModusWcRadio & JSXBase.HTMLAttributes<HTMLModusWcRadioElement>;
+            /**
+             * A rating component that allows users to choose a rating from predefined options.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-rating": LocalJSX.ModusWcRating & JSXBase.HTMLAttributes<HTMLModusWcRatingElement>;
             /**
              * A customizable select component used to pick a value from a list of options.
              * Adheres to WCAG 2.2 standards.

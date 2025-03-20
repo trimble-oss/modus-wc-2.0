@@ -2939,6 +2939,133 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-rating/modus-wc-rating.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A rating component that allows users to choose a rating from predefined options.\n\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcRating",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "allow-half",
+              "fieldName": "allowHalf",
+              "default": "false",
+              "description": "Whether to allow half-ratings. Only applies to star and heart variants.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "count",
+              "fieldName": "count",
+              "default": "5",
+              "description": "The number of rating items to display",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "default": "false",
+              "description": "Whether the rating component is disabled",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "get-aria-label-text",
+              "fieldName": "getAriaLabelText",
+              "description": "Function to provide aria-label text for a given rating-item index",
+              "type": {
+                "text": "(ratingValue: number) => string"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the rating component",
+              "type": {
+                "text": "ModusSize"
+              }
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "default": "0",
+              "description": "The current value of the rating",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "default": "'smiley'",
+              "description": "The variant of the rating scale",
+              "type": {
+                "text": "ModusWcRatingVariant"
+              }
+            }
+          ],
+          "tagName": "modus-wc-rating",
+          "events": [
+            {
+              "name": "ratingChange",
+              "type": {
+                "text": "EventEmitter<IRatingChange>"
+              },
+              "description": "Event emitted when the rating changes"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcRating",
+          "declaration": {
+            "name": "ModusWcRating",
+            "module": "src/components/modus-wc-rating/modus-wc-rating.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-rating",
+          "declaration": {
+            "name": "ModusWcRating",
+            "module": "src/components/modus-wc-rating/modus-wc-rating.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-select/modus-wc-select.tsx",
       "declarations": [
         {
