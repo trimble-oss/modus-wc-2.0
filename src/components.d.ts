@@ -1185,6 +1185,14 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
+          * Show the clear icon within the input field.
+         */
+        "showClearIcon"?: boolean;
+        /**
+          * Show the search icon within the input field.
+         */
+        "showSearchIcon"?: boolean;
+        /**
           * The size of the input.
          */
         "size"?: ModusSize;
@@ -3611,6 +3619,14 @@ declare namespace LocalJSX {
           * A value is required for the form to be submittable.
          */
         "required"?: boolean;
+        /**
+          * Show the clear icon within the input field.
+         */
+        "showClearIcon"?: boolean;
+        /**
+          * Show the search icon within the input field.
+         */
+        "showSearchIcon"?: boolean;
         /**
           * The size of the input.
          */

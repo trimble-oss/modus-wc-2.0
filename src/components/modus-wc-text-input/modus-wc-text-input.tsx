@@ -10,6 +10,7 @@ import {
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
 import { AutocompleteTypes, ModusSize, TextFieldTypes } from '../types';
 import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
+import * as Icons from './modus-wc-text-input.icons';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -105,6 +106,12 @@ export class ModusWcTextInput {
   /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
 
+  /** Show the clear icon within the input field. */
+  @Prop() showClearIcon?: boolean = false;
+
+  /** Show the search icon within the input field. */
+  @Prop() showSearchIcon?: boolean = false;
+
   /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
 
@@ -135,9 +142,16 @@ export class ModusWcTextInput {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-input', 'modus-wc-w-full'];
+    const classList = [
+      'modus-wc-input',
+      'modus-wc-w-full',
+      'modus-wc-flex',
+      'modus-wc-items-center',
+      'modus-wc-gap-1',
+    ];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
+      readOnly: this.readOnly,
       size: this.size,
     });
 
@@ -171,32 +185,36 @@ export class ModusWcTextInput {
             size={this.size}
           />
         )}
-        <input
-          aria-placeholder={this.placeholder}
-          aria-required={this.required}
-          autocapitalize={this.autoCapitalize}
-          autocomplete={this.autoComplete}
-          autocorrect={this.autoCorrect}
-          class={this.getClasses()}
-          disabled={this.disabled}
-          enterkeyhint={this.enterkeyhint}
-          id={this.inputId}
-          inputmode={this.inputMode}
-          maxlength={this.maxLength}
-          minlength={this.minLength}
-          name={this.name}
-          onBlur={this.handleBlur}
-          onFocus={this.handleFocus}
-          onInput={this.handleInput}
-          pattern={this.pattern}
-          placeholder={this.placeholder}
-          readonly={this.readOnly}
-          required={this.required}
-          tabIndex={this.inputTabIndex}
-          type={this.type}
-          value={this.value}
-          {...this.inheritedAttributes}
-        />
+        <label class={this.getClasses()}>
+          {this.showSearchIcon && <Icons.SearchIcon />}
+          <input
+            aria-placeholder={this.placeholder}
+            aria-required={this.required}
+            autocapitalize={this.autoCapitalize}
+            autocomplete={this.autoComplete}
+            autocorrect={this.autoCorrect}
+            class="modus-wc-grow modus-wc-w-full modus-wc-text-input-inner"
+            disabled={this.disabled}
+            enterkeyhint={this.enterkeyhint}
+            id={this.inputId}
+            inputmode={this.inputMode}
+            maxlength={this.maxLength}
+            minlength={this.minLength}
+            name={this.name}
+            onBlur={this.handleBlur}
+            onFocus={this.handleFocus}
+            onInput={this.handleInput}
+            pattern={this.pattern}
+            placeholder={this.placeholder}
+            readonly={this.readOnly}
+            required={this.required}
+            tabIndex={this.inputTabIndex}
+            type={this.type}
+            value={this.value}
+            {...this.inheritedAttributes}
+          />
+          {this.showClearIcon && <Icons.ClearIcon />}
+        </label>
       </Host>
     );
   }

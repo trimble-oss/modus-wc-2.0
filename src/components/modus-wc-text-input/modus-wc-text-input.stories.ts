@@ -44,6 +44,8 @@ interface TextInputArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
+  'show-clear-icon'?: boolean;
+  'show-search-icon'?: boolean;
   size?: ModusSize;
   spellcheck?: boolean;
   type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
@@ -138,6 +140,8 @@ export const Default: Story = {
       placeholder=${ifDefined(args.placeholder)}
       ?read-only=${args['read-only']}
       ?required=${args.required}
+      show-clear-icon=${ifDefined(args['show-clear-icon'])}
+      show-search-icon=${ifDefined(args['show-search-icon'])}
       size=${ifDefined(args.size)}
       spellcheck=${ifDefined(args.spellcheck)}
       type=${ifDefined(args.type)}
