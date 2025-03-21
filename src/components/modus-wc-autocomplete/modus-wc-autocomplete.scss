@@ -51,7 +51,7 @@
     position: absolute;
     left: 0;
     top: 100%;
-    margin-top: 10px; // Not exact but works for all 3 sizes
+    margin-top: 0.625rem; // 10px, not exact but works for all 3 sizes
     z-index: 99;
     border-radius: 0 0 var(--modus-wc-border-radius-md)
       var(--modus-wc-border-radius-md);
