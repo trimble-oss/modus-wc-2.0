@@ -145,3 +145,61 @@ export const Default: Story = {
     ></modus-wc-text-input>
   `,
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
+  additional info and examples.
+
+#### Prop Mapping
+
+| 1.0 Prop                     | 2.0 Prop            | Notes                |
+|------------------------------|---------------------|----------------------|
+| aria-label                   | aria-label          |                      |
+| autocapitalize               | auto-capitalize     |                      |
+| autocorrect                  | auto-correct        |                      |
+| autocomplete                 | autocomplete        |                      |
+| auto-focus-input             | autofocus           |                      |
+| clearable                    |                     | Use Search component |
+| disabled                     | disabled            |                      |
+| enter-key-hint               | enterkeyhint        |                      |
+| error-text                   |                     | Not carried over     |
+| helper-text                  |                     | Not carried over     |
+| include-error-icon           |                     | Not carried over     |
+| include-search-icon          |                     | Use Search component |
+| include-password-text-toggle |                     | Not carried over     |
+| inputmode                    | input-mode          |                      |
+| label                        | label               |                      |
+| max-length                   | max-length          |                      |
+| pattern                      | pattern             |                      |
+| placeholder                  | placeholder         |                      |
+| read-only                    | read-only           |                      |
+| required                     | required            |                      |
+| size                         | size                |                      |
+| spellcheck                   | spellcheck          |                      |
+| text-align                   |                     | Not carried over     |
+| type                         | type                |                      |
+| valid-text                   |                     | Not carried over     |
+| value                        | value               |                      |
+
+#### Event Mapping
+
+| 1.0 Event   | 2.0 Event   | Notes            |
+|-------------|-------------|------------------|
+| valueChange | inputChange |                  |
+        `,
+      },
+    },
+    // To hide the actual story rendering and only show docs:
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  // Simple render function or leave it empty
+  render: () => html`<div></div>`,
+};
