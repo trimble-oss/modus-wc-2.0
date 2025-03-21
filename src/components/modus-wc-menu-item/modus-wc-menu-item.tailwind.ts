@@ -1,6 +1,11 @@
 import { ModusSize } from '../types';
 
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  bordered,
+  disabled,
+  selected,
+  size,
+}: {
   bordered?: boolean;
   disabled?: boolean;
   selected?: boolean;
@@ -8,30 +13,21 @@ export const convertPropsToClasses = (props: {
 }): string => {
   let classes = '';
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'bordered') &&
-    !!props.bordered
-  ) {
+  if (bordered) {
     classes = `${classes} modus-wc-menu-item-bordered`;
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'selected') &&
-    !!props.disabled
-  ) {
+  if (disabled) {
     classes = `${classes} modus-wc-menu-item-disabled`;
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'selected') &&
-    !!props.selected
-  ) {
+  if (selected) {
     classes = `${classes} modus-wc-menu-item-selected`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-menu-item-${props.size}`;
+  if (size) {
+    classes = `${classes} modus-wc-menu-item-${size}`;
   }
 
-  return classes;
+  return classes.trim();
 };

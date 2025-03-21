@@ -1,13 +1,12 @@
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  orientation,
+}: {
   orientation?: 'horizontal' | 'vertical';
 }): string => {
   let classes = '';
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'orientation') &&
-    props.orientation
-  ) {
-    switch (props.orientation) {
+  if (orientation) {
+    switch (orientation) {
       case 'horizontal':
         break; // Default
       case 'vertical':
@@ -16,5 +15,5 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  return classes;
+  return classes.trim();
 };

@@ -1,11 +1,15 @@
 import { DaisySize } from '../types';
 
-export const convertPropsToClasses = (props: { size?: DaisySize }): string => {
+export const convertPropsToClasses = ({
+  size,
+}: {
+  size?: DaisySize;
+}): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-text-${props.size}`;
+  if (size) {
+    classes = `${classes} modus-wc-text-${size}`;
   }
 
-  return classes;
+  return classes.trim();
 };
