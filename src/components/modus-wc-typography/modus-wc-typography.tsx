@@ -13,7 +13,7 @@ export type TypographyVariant =
   | 'h6'
   | 'p';
 
-export type TypographyWeight = 'light' | 'normal' | 'bold';
+export type TypographyWeight = 'light' | 'normal' | 'semibold' | 'bold';
 
 /**
  * A customizable typography component used to render text with different sizes, variants, and weights.

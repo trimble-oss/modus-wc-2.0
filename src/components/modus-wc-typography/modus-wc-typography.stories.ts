@@ -35,7 +35,7 @@ const meta: Meta<TypographyArgs> = {
     },
     weight: {
       control: { type: 'select' },
-      options: ['light', 'normal', 'bold'],
+      options: ['light', 'normal', 'semibold', 'bold'],
     },
   },
   decorators: [
