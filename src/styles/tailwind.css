@@ -8,27 +8,27 @@
   /* Headings */
   h1 {
     font-size: var(--modus-wc-font-size-3xl);
-    font-weight: var(--modus-wc-font-normal);
+    font-weight: var(--modus-wc-font-weight-normal);
   }
   h2 {
     font-size: var(--modus-wc-font-size-2xl);
-    font-weight: var(--modus-wc-font-normal);
+    font-weight: var(--modus-wc-font-weight-normal);
   }
   h3 {
     font-size: var(--modus-wc-font-size-xl);
-    font-weight: var(--modus-wc-font-semibold);
+    font-weight: var(--modus-wc-font-weight-semibold);
   }
   h4 {
     font-size: var(--modus-wc-font-size-lg);
-    font-weight: var(--modus-wc-font-semibold);
+    font-weight: var(--modus-wc-font-weight-semibold);
   }
   h5 {
     font-size: var(--modus-wc-font-size-md);
-    font-weight: var(--modus-wc-font-bold);
+    font-weight: var(--modus-wc-font-weight-bold);
   }
   h6 {
     font-size: var(--modus-wc-font-size-sm);
-    font-weight: var(--modus-wc-font-bold);
+    font-weight: var(--modus-wc-font-weight-bold);
   }
 
   /* Links */

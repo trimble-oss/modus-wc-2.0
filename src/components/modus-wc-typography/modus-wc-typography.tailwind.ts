@@ -24,7 +24,7 @@ export const convertPropsToClasses = ({
   }
 
   if (weight) {
-    classes = `${classes} modus-wc-font-${weight}`;
+    classes = `${classes} modus-wc-typography-weight-${weight}`;
   }
 
   return classes.trim();

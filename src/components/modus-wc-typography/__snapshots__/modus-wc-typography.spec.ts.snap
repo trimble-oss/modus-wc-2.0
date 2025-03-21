@@ -12,7 +12,7 @@ exports[`modus-wc-typography should render headings 1`] = `
 exports[`modus-wc-typography should render with custom props 1`] = `
 <modus-wc-typography custom-class="test-class" size="sm" variant="body" weight="bold">
   <!---->
-  <body class="modus-wc-font-bold modus-wc-text-sm modus-wc-typography test-class">
+  <body class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-bold test-class">
     Test content
   </body>
 </modus-wc-typography>
@@ -21,7 +21,7 @@ exports[`modus-wc-typography should render with custom props 1`] = `
 exports[`modus-wc-typography should render with default props 1`] = `
 <modus-wc-typography>
   <!---->
-  <p class="modus-wc-font-normal modus-wc-text-md modus-wc-typography">
+  <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
     Test content
   </p>
 </modus-wc-typography>

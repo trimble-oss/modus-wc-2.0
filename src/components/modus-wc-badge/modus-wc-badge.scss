@@ -63,7 +63,7 @@
 [data-theme='modus-classic-light'] .modus-wc-badge,
 [data-theme='modus-classic-dark'] .modus-wc-badge {
   border: unset;
-  font-weight: var(--modus-wc-font-bold);
+  font-weight: var(--modus-wc-font-weight-bold);
 
   &:not(.modus-wc-badge-counter) {
     border-radius: var(--modus-wc-border-radius-md);

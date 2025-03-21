@@ -67,7 +67,7 @@ describe('modus-wc-typography - convertPropsToClasses', () => {
     (weight) => {
       expect(
         convertPropsToClasses({ weight: weight as TypographyWeight })
-      ).toBe(`modus-wc-font-${weight}`);
+      ).toBe(`modus-wc-typography-weight-${weight}`);
     }
   );
 
@@ -78,6 +78,6 @@ describe('modus-wc-typography - convertPropsToClasses', () => {
         weight: 'semibold',
         variant: 'body',
       })
-    ).toBe('modus-wc-text-md modus-wc-font-semibold');
+    ).toBe('modus-wc-text-md modus-wc-typography-weight-semibold');
   });
 });
