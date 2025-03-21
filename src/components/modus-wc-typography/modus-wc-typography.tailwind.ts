@@ -3,7 +3,11 @@ import { DaisySize } from '../types';
 
 const HEADINGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  size,
+  weight,
+  variant,
+}: {
   size?: DaisySize;
   weight?: TypographyWeight;
   variant?: TypographyVariant;
@@ -11,20 +15,17 @@ export const convertPropsToClasses = (props: {
   let classes = '';
 
   // Heading styles are handled in modus-wc-typography.scss
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'variant') &&
-    HEADINGS.includes(props.variant as string)
-  ) {
+  if (variant && HEADINGS.includes(variant)) {
     return classes;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-text-${props.size}`;
+  if (size) {
+    classes = `${classes} modus-wc-text-${size}`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'weight') && props.weight) {
-    classes = `${classes} modus-wc-font-${props.weight}`;
+  if (weight) {
+    classes = `${classes} modus-wc-font-${weight}`;
   }
 
-  return classes;
+  return classes.trim();
 };

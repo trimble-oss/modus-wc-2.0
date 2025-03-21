@@ -10,6 +10,7 @@ www/
 loader/
 storybook-static/
 .wireit/
+src/styles/output.css
 
 # Stencil
 .stencil/
