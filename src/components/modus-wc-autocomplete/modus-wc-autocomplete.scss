@@ -11,8 +11,7 @@
   }
 
   .modus-wc-input-bordered {
-    border-radius: var(--modus-wc-border-radius-md)
-      var(--modus-wc-border-radius-md) 0 0;
+    border-radius: var(--modus-wc-border-radius-md);
   }
 
   .modus-wc-autocomplete-multi-select {
@@ -50,6 +49,9 @@
 
   .modus-wc-menu {
     position: absolute;
+    left: 0;
+    top: 100%;
+    margin-top: 10px; // Not exact but works for all 3 sizes
     z-index: 99;
     border-radius: 0 0 var(--modus-wc-border-radius-md)
       var(--modus-wc-border-radius-md);
