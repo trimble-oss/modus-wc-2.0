@@ -1,0 +1,61 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+.modus-wc-input-feedback {
+  display: flex;
+  align-items: center;
+  gap: var(--modus-wc-spacing-sm);
+
+  border-radius: 0 0 var(--modus-wc-border-radius-sm)
+    var(--modus-wc-border-radius-sm);
+  padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+
+  // Sizes
+  &.modus-wc-input-feedback--sm {
+    font-size: var(--modus-wc-font-size-xs);
+  }
+  &.modus-wc-input-feedback--md {
+    font-size: var(--modus-wc-font-size-sm);
+  }
+  &.modus-wc-input-feedback--lg {
+    font-size: var(--modus-wc-font-size-md);
+  }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-input-feedback,
+[data-theme='modus-modern-light'] .modus-wc-input-feedback {
+  // Levels
+  &.modus-wc-input-feedback--error {
+    color: var(--modus-wc-color-red);
+  }
+  &.modus-wc-input-feedback--info {
+    color: inherit;
+  }
+  &.modus-wc-input-feedback--success {
+    color: var(--modus-wc-color-green-dark);
+  }
+  &.modus-wc-input-feedback--warning {
+    color: var(--modus-wc-color-yellow-dark);
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-input-feedback,
+[data-theme='modus-modern-dark'] .modus-wc-input-feedback {
+  color: var(--modus-wc-color-white);
+
+  // Levels
+  &.modus-wc-input-feedback--error {
+    background-color: var(--modus-wc-color-red);
+  }
+  &.modus-wc-input-feedback--info {
+    background-color: inherit;
+  }
+  &.modus-wc-input-feedback--success {
+    background-color: var(--modus-wc-color-green-dark);
+  }
+  &.modus-wc-input-feedback--warning {
+    background-color: var(--modus-wc-color-yellow-dark);
+  }
+}
