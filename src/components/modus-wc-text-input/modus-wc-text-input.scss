@@ -3,6 +3,10 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+label.modus-wc-input-label {
+  padding-bottom: var(--modus-wc-spacing-xs);
+}
+
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
 [data-theme='modus-classic-light'] .modus-wc-input,
 [data-theme='modus-classic-dark'] .modus-wc-input {
@@ -40,6 +44,20 @@
 
   &:read-only {
     background-color: var(--modus-wc-color-base-100);
+  }
+
+  // Feedback levels
+  &.modus-wc-input--error {
+    border-color: var(--modus-wc-color-red) !important;
+  }
+  &.modus-wc-input--info {
+    border-color: var(--modus-wc-color-trimble-blue) !important;
+  }
+  &.modus-wc-input--success {
+    border-color: var(--modus-wc-color-green-dark) !important;
+  }
+  &.modus-wc-input--warning {
+    border-color: var(--modus-wc-color-yellow-dark) !important;
   }
 }
 

@@ -26,6 +26,10 @@ Adheres to WCAG 2.2 standards.
 
 ## Dependencies
 
+### Used by
+
+ - [modus-wc-text-input](../modus-wc-text-input)
+
 ### Depends on
 
 - [modus-wc-icon](../modus-wc-icon)
@@ -34,6 +38,7 @@ Adheres to WCAG 2.2 standards.
 ```mermaid
 graph TD;
   modus-wc-input-feedback --> modus-wc-icon
+  modus-wc-text-input --> modus-wc-input-feedback
   style modus-wc-input-feedback fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

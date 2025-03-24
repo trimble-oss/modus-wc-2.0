@@ -3989,6 +3989,14 @@
               }
             },
             {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "Feedback to render below the input.",
+              "type": {
+                "text": "IInputFeedbackProp"
+              }
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
               "description": "The ID of the input element.",
