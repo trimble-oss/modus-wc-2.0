@@ -15,12 +15,27 @@
   // Sizes
   &.modus-wc-input-feedback--sm {
     font-size: var(--modus-wc-font-size-xs);
+
+    .modus-wc-input-feedback-icon {
+      height: var(--modus-wc-font-size-lg);
+      width: var(--modus-wc-font-size-lg);
+    }
   }
   &.modus-wc-input-feedback--md {
     font-size: var(--modus-wc-font-size-sm);
+
+    .modus-wc-input-feedback-icon {
+      height: var(--modus-wc-font-size-xl);
+      width: var(--modus-wc-font-size-xl);
+    }
   }
   &.modus-wc-input-feedback--lg {
     font-size: var(--modus-wc-font-size-md);
+
+    .modus-wc-input-feedback-icon {
+      height: var(--modus-wc-font-size-2xl);
+      width: var(--modus-wc-font-size-2xl);
+    }
   }
 }
 
