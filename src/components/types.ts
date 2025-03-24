@@ -1,6 +1,6 @@
-// These are the supported sizes in DaisyUI
-import { IInputFeedbackLevel } from '../../.wireit/7374656e63696c3a6275696c64/cache/4f06ccd635520cab9ed319ea49a6941b088d389def2942113b568ed1f4695b0e/src/components';
+import { IInputFeedbackLevel } from './modus-wc-input-feedback/modus-wc-input-feedback';
 
+// These are the supported sizes in DaisyUI
 export type DaisySize = 'xs' | 'sm' | 'md' | 'lg';
 
 export type Density = 'comfortable' | 'compact';
