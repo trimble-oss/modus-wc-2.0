@@ -4,6 +4,8 @@
 }
 
 .modus-wc-input-label {
+  font-weight: var(--modus-wc-font-weight-bold);
+
   // Sizes
   &.modus-wc-input-label-size-sm {
     font-size: var(--modus-wc-font-size-sm);

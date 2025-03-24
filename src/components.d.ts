@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
-import { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
+import { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -21,7 +21,7 @@ import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
-export { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
+export { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -1162,6 +1162,10 @@ export namespace Components {
     | 'previous'
     | 'search'
     | 'send';
+        /**
+          * Feedback to render below the input.
+         */
+        "feedback"?: IInputFeedbackProp;
         /**
           * The ID of the input element.
          */
@@ -3616,6 +3620,10 @@ declare namespace LocalJSX {
     | 'previous'
     | 'search'
     | 'send';
+        /**
+          * Feedback to render below the input.
+         */
+        "feedback"?: IInputFeedbackProp;
         /**
           * The ID of the input element.
          */

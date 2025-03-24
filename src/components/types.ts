@@ -1,3 +1,5 @@
+import { IInputFeedbackLevel } from './modus-wc-input-feedback/modus-wc-input-feedback';
+
 // These are the supported sizes in DaisyUI
 export type DaisySize = 'xs' | 'sm' | 'md' | 'lg';
 
@@ -80,3 +82,8 @@ export type TextFieldTypes =
   | 'week'
   | 'month'
   | 'datetime-local';
+
+export interface IInputFeedbackProp {
+  level: IInputFeedbackLevel;
+  message?: string;
+}
