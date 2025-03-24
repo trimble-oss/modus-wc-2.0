@@ -9,6 +9,7 @@ import { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-a
 import { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
@@ -23,6 +24,7 @@ export { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-a
 export { AutocompleteTypes, DaisySize, Density, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
@@ -523,6 +525,33 @@ export namespace Components {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: DaisySize;
+    }
+    /**
+     * A customizable feedback component used to provide additional context related to form input interactions.
+     * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcInputFeedback {
+        /**
+          * Custom CSS class to apply to the outer div element.
+         */
+        "customClass"?: string;
+        /**
+          * The Modus icon to use instead of the pre-defined icons.
+         */
+        "icon"?: string;
+        /**
+          * The level informs which icon and color that will be rendered.
+         */
+        "level": IInputFeedbackLevel;
+        /**
+          * The message.
+         */
+        "message"?: string;
+        /**
+          * The size of the feedback component.
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable input label component.
@@ -1830,6 +1859,17 @@ declare global {
         new (): HTMLModusWcIconElement;
     };
     /**
+     * A customizable feedback component used to provide additional context related to form input interactions.
+     * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcInputFeedbackElement extends Components.ModusWcInputFeedback, HTMLStencilElement {
+    }
+    var HTMLModusWcInputFeedbackElement: {
+        prototype: HTMLModusWcInputFeedbackElement;
+        new (): HTMLModusWcInputFeedbackElement;
+    };
+    /**
      * A customizable input label component.
      * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
      * Adheres to WCAG 2.2 standards.
@@ -2272,6 +2312,7 @@ declare global {
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
+        "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
         "modus-wc-loader": HTMLModusWcLoaderElement;
         "modus-wc-menu": HTMLModusWcMenuElement;
@@ -2864,6 +2905,33 @@ declare namespace LocalJSX {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: DaisySize;
+    }
+    /**
+     * A customizable feedback component used to provide additional context related to form input interactions.
+     * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcInputFeedback {
+        /**
+          * Custom CSS class to apply to the outer div element.
+         */
+        "customClass"?: string;
+        /**
+          * The Modus icon to use instead of the pre-defined icons.
+         */
+        "icon"?: string;
+        /**
+          * The level informs which icon and color that will be rendered.
+         */
+        "level": IInputFeedbackLevel;
+        /**
+          * The message.
+         */
+        "message"?: string;
+        /**
+          * The size of the feedback component.
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable input label component.
@@ -3960,6 +4028,7 @@ declare namespace LocalJSX {
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
+        "modus-wc-input-feedback": ModusWcInputFeedback;
         "modus-wc-input-label": ModusWcInputLabel;
         "modus-wc-loader": ModusWcLoader;
         "modus-wc-menu": ModusWcMenu;
@@ -4067,6 +4136,12 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-icon": LocalJSX.ModusWcIcon & JSXBase.HTMLAttributes<HTMLModusWcIconElement>;
+            /**
+             * A customizable feedback component used to provide additional context related to form input interactions.
+             * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-input-feedback": LocalJSX.ModusWcInputFeedback & JSXBase.HTMLAttributes<HTMLModusWcInputFeedbackElement>;
             /**
              * A customizable input label component.
              * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
