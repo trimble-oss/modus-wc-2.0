@@ -31,7 +31,7 @@
     color: var(--modus-wc-color-red);
   }
   &.modus-wc-input-feedback--info {
-    color: inherit;
+    color: var(--modus-wc-color-trimble-blue);
   }
   &.modus-wc-input-feedback--success {
     color: var(--modus-wc-color-green-dark);
@@ -50,7 +50,7 @@
     background-color: var(--modus-wc-color-red);
   }
   &.modus-wc-input-feedback--info {
-    background-color: inherit;
+    background-color: var(--modus-wc-color-trimble-blue);
   }
   &.modus-wc-input-feedback--success {
     background-color: var(--modus-wc-color-green-dark);
