@@ -123,6 +123,10 @@ export namespace Components {
          */
         "label"?: string;
         /**
+          * Whether the menu should remain open after an item is selected.
+         */
+        "leaveMenuOpen"?: boolean;
+        /**
           * The minimum number of characters required to render the menu.
          */
         "minChars": number;
@@ -2442,6 +2446,10 @@ declare namespace LocalJSX {
           * The text to display within the label.
          */
         "label"?: string;
+        /**
+          * Whether the menu should remain open after an item is selected.
+         */
+        "leaveMenuOpen"?: boolean;
         /**
           * The minimum number of characters required to render the menu.
          */
