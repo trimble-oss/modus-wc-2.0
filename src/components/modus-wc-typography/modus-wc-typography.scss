@@ -44,3 +44,19 @@ h6.modus-wc-typography {
   letter-spacing: 0.45px;
   line-height: 18px;
 }
+
+.modus-wc-typography-weight-light {
+  font-weight: var(--modus-wc-font-weight-light);
+}
+
+.modus-wc-typography-weight-normal {
+  font-weight: var(--modus-wc-font-weight-normal);
+}
+
+.modus-wc-typography-weight-semibold {
+  font-weight: var(--modus-wc-font-weight-semibold);
+}
+
+.modus-wc-typography-weight-bold {
+  font-weight: var(--modus-wc-font-weight-bold);
+}

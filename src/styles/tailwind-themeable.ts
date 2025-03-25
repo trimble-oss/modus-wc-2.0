@@ -28,6 +28,7 @@ const themeable = [
   'modus-wc-font-bold',
   'modus-wc-font-light',
   'modus-wc-font-normal',
+  'modus-wc-font-semibold',
   // Input
   'modus-wc-input-xs',
   'modus-wc-input-sm',

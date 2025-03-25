@@ -30,6 +30,7 @@ Adheres to WCAG 2.2 standards.
  - [modus-wc-alert](../modus-wc-alert)
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-collapse](../modus-wc-collapse)
+ - [modus-wc-input-feedback](../modus-wc-input-feedback)
  - [modus-wc-menu-item](../modus-wc-menu-item)
  - [modus-wc-tabs](../modus-wc-tabs)
 
@@ -39,6 +40,7 @@ graph TD;
   modus-wc-alert --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-icon
   modus-wc-collapse --> modus-wc-icon
+  modus-wc-input-feedback --> modus-wc-icon
   modus-wc-menu-item --> modus-wc-icon
   modus-wc-tabs --> modus-wc-icon
   style modus-wc-icon fill:#f9f,stroke:#333,stroke-width:4px

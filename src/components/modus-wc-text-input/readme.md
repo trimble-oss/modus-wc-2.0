@@ -24,6 +24,7 @@ Adheres to WCAG 2.2 standards.
 | `customClass`       | `custom-class`        | Custom CSS class to apply to the input.                                                                                                                                  | `string \| undefined`                                                                                                                                 | `''`           |
 | `disabled`          | `disabled`            | Whether the form control is disabled.                                                                                                                                    | `boolean \| undefined`                                                                                                                                | `false`        |
 | `enterkeyhint`      | `enterkeyhint`        | A hint to the browser for which enter key to display.                                                                                                                    | `"done" \| "enter" \| "go" \| "next" \| "previous" \| "search" \| "send" \| undefined`                                                                | `undefined`    |
+| `feedback`          | --                    | Feedback to render below the input.                                                                                                                                      | `IInputFeedbackProp \| undefined`                                                                                                                     | `undefined`    |
 | `includeSearchIcon` | `include-search-icon` | Show the search icon within the input field.                                                                                                                             | `boolean \| undefined`                                                                                                                                | `false`        |
 | `inputId`           | `input-id`            | The ID of the input element.                                                                                                                                             | `string \| undefined`                                                                                                                                 | `undefined`    |
 | `inputMode`         | `input-mode`          | Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard. | `"decimal" \| "email" \| "none" \| "numeric" \| "search" \| "tel" \| "text" \| "url"`                                                                 | `'text'`       |
@@ -59,11 +60,14 @@ Adheres to WCAG 2.2 standards.
 ### Depends on
 
 - [modus-wc-input-label](../modus-wc-input-label)
+- [modus-wc-input-feedback](../modus-wc-input-feedback)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-text-input --> modus-wc-input-label
+  modus-wc-text-input --> modus-wc-input-feedback
+  modus-wc-input-feedback --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-text-input
   style modus-wc-text-input fill:#f9f,stroke:#333,stroke-width:4px
 ```

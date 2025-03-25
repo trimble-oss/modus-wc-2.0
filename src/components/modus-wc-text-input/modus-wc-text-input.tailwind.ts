@@ -1,28 +1,32 @@
-import { DaisySize } from '../types';
+import { DaisySize, IInputFeedbackProp } from '../types';
 
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  bordered,
+  feedback,
+  readOnly,
+  size,
+}: {
   bordered?: boolean;
+  feedback?: IInputFeedbackProp;
   readOnly?: boolean;
   size?: DaisySize;
 }): string => {
   let classes = '';
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'bordered') &&
-    !!props.bordered
-  ) {
+  if (bordered) {
     classes = `${classes} modus-wc-input-bordered`;
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'readOnly') &&
-    !!props.readOnly
-  ) {
+  if (readOnly) {
     classes = `${classes} modus-wc-text-input-readonly`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-input-${props.size}`;
+  if (feedback) {
+    classes = `${classes} modus-wc-input--${feedback.level}`;
+  }
+
+  if (size) {
+    classes = `${classes} modus-wc-input-${size}`;
   }
 
   return classes;

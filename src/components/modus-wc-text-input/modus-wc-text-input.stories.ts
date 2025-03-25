@@ -2,7 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { AutocompleteTypes, ModusSize } from '../types';
+import { AutocompleteTypes, IInputFeedbackProp, ModusSize } from '../types';
 
 interface TextInputArgs {
   'auto-capitalize'?:
@@ -27,6 +27,7 @@ interface TextInputArgs {
     | 'previous'
     | 'search'
     | 'send';
+  feedback?: IInputFeedbackProp;
   'input-id'?: string;
   'input-mode':
     | 'decimal'
@@ -78,6 +79,19 @@ const meta: Meta<TextInputArgs> = {
     },
     enterkeyhint: {
       options: ['enter', 'done', 'go', 'next', 'previous', 'search', 'send'],
+    },
+    feedback: {
+      description: 'Feedback prop for input components',
+      table: {
+        type: {
+          detail: `
+            Interface: IInputFeedbackProp
+            Properties:
+            - level ('error' | 'info' | 'success' | 'warning'): The feedback level
+            - message (string, optional): The feedback message
+          `,
+        },
+      },
     },
     'input-mode': {
       options: [
@@ -131,6 +145,7 @@ export const Default: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       enterkeyhint=${ifDefined(args.enterkeyhint)}
+      .feedback=${ifDefined(args.feedback)}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-id=${ifDefined(args['input-id'])}
       input-mode=${args['input-mode']}
@@ -150,4 +165,79 @@ export const Default: Story = {
       .value=${args.value}
     ></modus-wc-text-input>
   `,
+};
+
+const errorFeedback: IInputFeedbackProp = {
+  level: 'error',
+  message: 'Value is required.',
+};
+
+export const WithErrorFeedback: Story = {
+  render: (args) => html`
+    <modus-wc-text-input
+      aria-label="Text input"
+      .feedback=${errorFeedback}
+      label=${ifDefined(args.label)}
+      ?required=${true}
+      .value=${args.value}
+    ></modus-wc-text-input>
+  `,
+};
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
+  additional info and examples.
+
+#### Prop Mapping
+
+| 1.0 Prop                     | 2.0 Prop            | Notes                |
+|------------------------------|---------------------|----------------------|
+| aria-label                   | aria-label          |                      |
+| autocapitalize               | auto-capitalize     |                      |
+| autocorrect                  | auto-correct        |                      |
+| autocomplete                 | autocomplete        |                      |
+| auto-focus-input             | autofocus           |                      |
+| clearable                    |                     | Use Search component |
+| disabled                     | disabled            |                      |
+| enter-key-hint               | enterkeyhint        |                      |
+| error-text                   | feedback.message    | Use feedback level   |
+| helper-text                  |                     | Not carried over     |
+| include-error-icon           |                     | Not carried over     |
+| include-search-icon          |                     | Use Search component |
+| include-password-text-toggle |                     | Not carried over     |
+| inputmode                    | input-mode          |                      |
+| label                        | label               |                      |
+| max-length                   | max-length          |                      |
+| pattern                      | pattern             |                      |
+| placeholder                  | placeholder         |                      |
+| read-only                    | read-only           |                      |
+| required                     | required            |                      |
+| size                         | size                |                      |
+| spellcheck                   | spellcheck          |                      |
+| text-align                   |                     | Not carried over     |
+| type                         | type                |                      |
+| valid-text                   |                     | Not carried over     |
+| value                        | value               |                      |
+
+#### Event Mapping
+
+| 1.0 Event   | 2.0 Event   | Notes            |
+|-------------|-------------|------------------|
+| valueChange | inputChange |                  |
+        `,
+      },
+    },
+    // To hide the actual story rendering and only show docs:
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  // Simple render function or leave it empty
+  render: () => html`<div></div>`,
 };
