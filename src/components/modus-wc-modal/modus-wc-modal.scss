@@ -5,7 +5,6 @@
 
     .modus-wc-modal-top-icon-buttons {
       display: flex;
-
       position: absolute;
       right: var(--modus-wc-spacing-sm);
       top: var(--modus-wc-spacing-sm);
@@ -18,11 +17,10 @@
     }
 
     &.modus-wc-modal-fullscreen {
-      width: 100dvw;
-      max-width: none;
-
       height: 100dvh;
       max-height: none;
+      max-width: none;
+      width: 100dvw;
     }
 
     .modus-wc-modal-action {

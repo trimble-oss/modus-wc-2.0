@@ -50,12 +50,15 @@ label.modus-wc-input-label {
   &.modus-wc-input--error {
     border-color: var(--modus-wc-color-red) !important;
   }
+
   &.modus-wc-input--info {
     border-color: var(--modus-wc-color-trimble-blue) !important;
   }
+
   &.modus-wc-input--success {
     border-color: var(--modus-wc-color-green-dark) !important;
   }
+
   &.modus-wc-input--warning {
     border-color: var(--modus-wc-color-yellow-dark) !important;
   }
