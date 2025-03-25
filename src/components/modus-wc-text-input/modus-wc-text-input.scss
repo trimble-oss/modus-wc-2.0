@@ -78,8 +78,14 @@
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-input:focus-within {
-  border-color: var(--modus-wc-color-highlight-blue);
+[data-theme='modus-classic-dark'] .modus-wc-input {
+  .modus-wc-text-input-icon {
+    color: var(--modus-wc-color-gray-2);
+  }
+
+  &:focus-within {
+    border-color: var(--modus-wc-color-highlight-blue);
+  }
 }
 
 // Icon sizes
