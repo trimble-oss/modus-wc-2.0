@@ -3779,7 +3779,7 @@
           "name": "ClearIcon",
           "parameters": [
             {
-              "name": "{ onClear }"
+              "name": "{\n  ariaLabel,\n  onClear,\n}"
             }
           ]
         },
@@ -3864,6 +3864,15 @@
               }
             },
             {
+              "name": "clear-aria-label",
+              "fieldName": "clearAriaLabel",
+              "default": "'Clear text'",
+              "description": "Aria label for the clear icon button.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "clearable",
               "fieldName": "clearable",
               "default": "false",
@@ -3896,6 +3905,15 @@
               "description": "A hint to the browser for which enter key to display.",
               "type": {
                 "text": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'"
+              }
+            },
+            {
+              "name": "include-search-icon",
+              "fieldName": "includeSearchIcon",
+              "default": "false",
+              "description": "Show the search icon within the input field.",
+              "type": {
+                "text": "boolean"
               }
             },
             {
@@ -3986,15 +4004,6 @@
               "fieldName": "required",
               "default": "false",
               "description": "A value is required for the form to be submittable.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
-              "name": "show-search-icon",
-              "fieldName": "showSearchIcon",
-              "default": "false",
-              "description": "Show the search icon within the input field.",
               "type": {
                 "text": "boolean"
               }

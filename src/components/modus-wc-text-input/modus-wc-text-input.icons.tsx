@@ -3,7 +3,8 @@ import { KEY } from '../utils';
 
 export const SearchIcon: FunctionalComponent = () => (
   <svg
-    class="modus-wc-text-input-icon"
+    aria-hidden="true"
+    class="modus-wc-text-input-icon modus-wc-text-input-icon-search"
     fill="currentColor"
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
@@ -13,10 +14,14 @@ export const SearchIcon: FunctionalComponent = () => (
 );
 
 export type ClearIconProps = {
+  ariaLabel: string;
   onClear: (event: MouseEvent | KeyboardEvent) => void;
 };
 
-export const ClearIcon: FunctionalComponent<ClearIconProps> = ({ onClear }) => {
+export const ClearIcon: FunctionalComponent<ClearIconProps> = ({
+  ariaLabel,
+  onClear,
+}) => {
   const handleKeydown = (event: KeyboardEvent) => {
     if (event.key === KEY.Enter || event.key === KEY.Space) {
       event.preventDefault();
@@ -26,6 +31,7 @@ export const ClearIcon: FunctionalComponent<ClearIconProps> = ({ onClear }) => {
 
   return (
     <svg
+      aria-label={ariaLabel}
       class="modus-wc-text-input-icon modus-wc-text-input-icon-clear"
       fill="currentColor"
       onClick={onClear}

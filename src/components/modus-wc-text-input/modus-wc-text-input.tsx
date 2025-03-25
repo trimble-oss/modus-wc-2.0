@@ -10,7 +10,7 @@ import {
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
 import { AutocompleteTypes, ModusSize, TextFieldTypes } from '../types';
 import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
-import * as Icons from './modus-wc-text-input.icons';
+import { ClearIcon, SearchIcon } from './modus-wc-text-input.icons';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -48,6 +48,9 @@ export class ModusWcTextInput {
 
   /** Show the clear icon within the input field. */
   @Prop() clearable?: boolean = false;
+
+  /** Aria label for the clear icon button. */
+  @Prop() clearAriaLabel?: string = 'Clear text';
 
   /** Custom CSS class to apply to the input. */
   @Prop() customClass?: string = '';
@@ -110,7 +113,7 @@ export class ModusWcTextInput {
   @Prop() required?: boolean = false;
 
   /** Show the search icon within the input field. */
-  @Prop() showSearchIcon?: boolean = false;
+  @Prop() includeSearchIcon?: boolean = false;
 
   /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
@@ -197,7 +200,7 @@ export class ModusWcTextInput {
           />
         )}
         <label class={this.getClasses()}>
-          {this.showSearchIcon && <Icons.SearchIcon />}
+          {this.includeSearchIcon && <SearchIcon />}
           <input
             aria-placeholder={this.placeholder}
             aria-required={this.required}
@@ -225,7 +228,10 @@ export class ModusWcTextInput {
             {...this.inheritedAttributes}
           />
           {this.shouldShowClearIcon() && (
-            <Icons.ClearIcon onClear={this.handleClearText} />
+            <ClearIcon
+              ariaLabel={this.clearAriaLabel!}
+              onClear={this.handleClearText}
+            />
           )}
         </label>
       </Host>

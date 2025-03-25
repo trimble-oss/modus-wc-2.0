@@ -1116,6 +1116,10 @@ export namespace Components {
          */
         "bordered"?: boolean;
         /**
+          * Aria label for the clear icon button.
+         */
+        "clearAriaLabel"?: string;
+        /**
           * Show the clear icon within the input field.
          */
         "clearable"?: boolean;
@@ -1137,6 +1141,10 @@ export namespace Components {
     | 'previous'
     | 'search'
     | 'send';
+        /**
+          * Show the search icon within the input field.
+         */
+        "includeSearchIcon"?: boolean;
         /**
           * The ID of the input element.
          */
@@ -1188,10 +1196,6 @@ export namespace Components {
           * A value is required for the form to be submittable.
          */
         "required"?: boolean;
-        /**
-          * Show the search icon within the input field.
-         */
-        "showSearchIcon"?: boolean;
         /**
           * The size of the input.
          */
@@ -3539,6 +3543,10 @@ declare namespace LocalJSX {
          */
         "bordered"?: boolean;
         /**
+          * Aria label for the clear icon button.
+         */
+        "clearAriaLabel"?: string;
+        /**
           * Show the clear icon within the input field.
          */
         "clearable"?: boolean;
@@ -3560,6 +3568,10 @@ declare namespace LocalJSX {
     | 'previous'
     | 'search'
     | 'send';
+        /**
+          * Show the search icon within the input field.
+         */
+        "includeSearchIcon"?: boolean;
         /**
           * The ID of the input element.
          */
@@ -3623,10 +3635,6 @@ declare namespace LocalJSX {
           * A value is required for the form to be submittable.
          */
         "required"?: boolean;
-        /**
-          * Show the search icon within the input field.
-         */
-        "showSearchIcon"?: boolean;
         /**
           * The size of the input.
          */

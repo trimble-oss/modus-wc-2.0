@@ -16,6 +16,7 @@ interface TextInputArgs {
   'auto-correct'?: 'on' | 'off';
   bordered?: boolean;
   clearable?: boolean;
+  'clear-aria-label'?: string;
   'custom-class'?: string;
   disabled?: boolean;
   enterkeyhint?:
@@ -45,7 +46,7 @@ interface TextInputArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
-  'show-search-icon'?: boolean;
+  'include-search-icon'?: boolean;
   size?: ModusSize;
   spellcheck?: boolean;
   type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
@@ -126,6 +127,7 @@ export const Default: Story = {
       auto-correct=${ifDefined(args['auto-correct'])}
       ?bordered=${args.bordered}
       clearable=${ifDefined(args.clearable)}
+      clear-aria-label=${ifDefined(args['clear-aria-label'])}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       enterkeyhint=${ifDefined(args.enterkeyhint)}
@@ -141,7 +143,7 @@ export const Default: Story = {
       placeholder=${ifDefined(args.placeholder)}
       ?read-only=${args['read-only']}
       ?required=${args.required}
-      show-search-icon=${ifDefined(args['show-search-icon'])}
+      include-search-icon=${ifDefined(args['include-search-icon'])}
       size=${ifDefined(args.size)}
       spellcheck=${ifDefined(args.spellcheck)}
       type=${ifDefined(args.type)}
