@@ -4,8 +4,8 @@
 */
 
 .modus-wc-checkbox-host {
-  display: flex;
   align-items: center;
+  display: flex;
 
   .modus-wc-input-label {
     padding-inline-start: var(--modus-wc-spacing-md);
@@ -45,7 +45,7 @@
 
   &:focus {
     outline-color: color-mix(
-      in srgb,
+      in sRGB,
       var(--modus-wc-color-highlight-blue) 75%,
       transparent
     );

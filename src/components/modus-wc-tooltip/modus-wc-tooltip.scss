@@ -14,8 +14,8 @@
 }
 
 .modus-wc-tooltip-disabled {
-  &:before,
-  &:after {
+  &::before,
+  &::after {
     display: none;
     opacity: 0;
     visibility: hidden;

@@ -4,12 +4,11 @@
 */
 
 .modus-wc-input-feedback {
-  display: flex;
   align-items: center;
-  gap: var(--modus-wc-spacing-sm);
-
   border-radius: 0 0 var(--modus-wc-border-radius-sm)
     var(--modus-wc-border-radius-sm);
+  display: flex;
+  gap: var(--modus-wc-spacing-sm);
   padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
 
   // Sizes
@@ -21,6 +20,7 @@
       width: var(--modus-wc-font-size-lg);
     }
   }
+
   &.modus-wc-input-feedback--md {
     font-size: var(--modus-wc-font-size-sm);
 
@@ -29,6 +29,7 @@
       width: var(--modus-wc-font-size-xl);
     }
   }
+
   &.modus-wc-input-feedback--lg {
     font-size: var(--modus-wc-font-size-md);
 
@@ -45,12 +46,15 @@
   &.modus-wc-input-feedback--error {
     color: var(--modus-wc-color-red);
   }
+
   &.modus-wc-input-feedback--info {
     color: var(--modus-wc-color-trimble-blue);
   }
+
   &.modus-wc-input-feedback--success {
     color: var(--modus-wc-color-green-dark);
   }
+
   &.modus-wc-input-feedback--warning {
     color: var(--modus-wc-color-yellow-dark);
   }
@@ -64,12 +68,15 @@
   &.modus-wc-input-feedback--error {
     background-color: var(--modus-wc-color-red);
   }
+
   &.modus-wc-input-feedback--info {
     background-color: var(--modus-wc-color-trimble-blue);
   }
+
   &.modus-wc-input-feedback--success {
     background-color: var(--modus-wc-color-green-dark);
   }
+
   &.modus-wc-input-feedback--warning {
     background-color: var(--modus-wc-color-yellow-dark);
   }
