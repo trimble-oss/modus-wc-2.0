@@ -1751,6 +1751,142 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-input-feedback/modus-wc-input-feedback.icons.tsx",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "CheckIcon"
+        },
+        {
+          "kind": "function",
+          "name": "InfoIcon"
+        },
+        {
+          "kind": "function",
+          "name": "WarningIcon"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CheckIcon",
+          "declaration": {
+            "name": "CheckIcon",
+            "module": "src/components/modus-wc-input-feedback/modus-wc-input-feedback.icons.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "InfoIcon",
+          "declaration": {
+            "name": "InfoIcon",
+            "module": "src/components/modus-wc-input-feedback/modus-wc-input-feedback.icons.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WarningIcon",
+          "declaration": {
+            "name": "WarningIcon",
+            "module": "src/components/modus-wc-input-feedback/modus-wc-input-feedback.icons.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-input-feedback/modus-wc-input-feedback.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable feedback component used to provide additional context related to form input interactions.\r\n\r\n<b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcInputFeedback",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the outer div element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "icon",
+              "fieldName": "icon",
+              "default": "''",
+              "description": "The Modus icon to use instead of the pre-defined icons.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "level",
+              "fieldName": "level",
+              "description": "The level informs which icon and color that will be rendered.",
+              "type": {
+                "text": "IInputFeedbackLevel"
+              }
+            },
+            {
+              "name": "message",
+              "fieldName": "message",
+              "default": "''",
+              "description": "The message.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the feedback component.",
+              "type": {
+                "text": "ModusSize"
+              }
+            }
+          ],
+          "tagName": "modus-wc-input-feedback",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcInputFeedback",
+          "declaration": {
+            "name": "ModusWcInputFeedback",
+            "module": "src/components/modus-wc-input-feedback/modus-wc-input-feedback.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-input-feedback",
+          "declaration": {
+            "name": "ModusWcInputFeedback",
+            "module": "src/components/modus-wc-input-feedback/modus-wc-input-feedback.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-input-label/modus-wc-input-label.tsx",
       "declarations": [
         {
@@ -3850,6 +3986,14 @@
               "description": "A hint to the browser for which enter key to display.",
               "type": {
                 "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
+              }
+            },
+            {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "Feedback to render below the input.",
+              "type": {
+                "text": "IInputFeedbackProp"
               }
             },
             {

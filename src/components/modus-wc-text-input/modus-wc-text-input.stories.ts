@@ -2,7 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { AutocompleteTypes, ModusSize } from '../types';
+import { AutocompleteTypes, IInputFeedbackProp, ModusSize } from '../types';
 
 interface TextInputArgs {
   'auto-capitalize'?:
@@ -25,6 +25,7 @@ interface TextInputArgs {
     | 'previous'
     | 'search'
     | 'send';
+  feedback?: IInputFeedbackProp;
   'input-id'?: string;
   'input-mode':
     | 'decimal'
@@ -76,6 +77,19 @@ const meta: Meta<TextInputArgs> = {
     enterkeyhint: {
       options: ['enter', 'done', 'go', 'next', 'previous', 'search', 'send'],
     },
+    feedback: {
+      description: 'Feedback prop for input components',
+      table: {
+        type: {
+          detail: `
+            Interface: IInputFeedbackProp
+            Properties:
+            - level ('error' | 'info' | 'success' | 'warning'): The feedback level
+            - message (string, optional): The feedback message
+          `,
+        },
+      },
+    },
     'input-mode': {
       options: [
         'decimal',
@@ -126,6 +140,7 @@ export const Default: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       enterkeyhint=${ifDefined(args.enterkeyhint)}
+      .feedback=${ifDefined(args.feedback)}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-id=${ifDefined(args['input-id'])}
       input-mode=${args['input-mode']}
@@ -141,6 +156,23 @@ export const Default: Story = {
       size=${ifDefined(args.size)}
       spellcheck=${ifDefined(args.spellcheck)}
       type=${ifDefined(args.type)}
+      .value=${args.value}
+    ></modus-wc-text-input>
+  `,
+};
+
+const errorFeedback: IInputFeedbackProp = {
+  level: 'error',
+  message: 'Value is required.',
+};
+
+export const WithErrorFeedback: Story = {
+  render: (args) => html`
+    <modus-wc-text-input
+      aria-label="Text input"
+      .feedback=${errorFeedback}
+      label=${ifDefined(args.label)}
+      ?required=${true}
       .value=${args.value}
     ></modus-wc-text-input>
   `,
@@ -169,7 +201,7 @@ export const Migration: Story = {
 | clearable                    |                     | Use Search component |
 | disabled                     | disabled            |                      |
 | enter-key-hint               | enterkeyhint        |                      |
-| error-text                   |                     | Not carried over     |
+| error-text                   | feedback.message    | Use feedback level   |
 | helper-text                  |                     | Not carried over     |
 | include-error-icon           |                     | Not carried over     |
 | include-search-icon          |                     | Use Search component |
