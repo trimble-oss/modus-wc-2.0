@@ -17,12 +17,12 @@ export const convertPropsToClasses = ({
     classes = `${classes} modus-wc-input-bordered`;
   }
 
-  if (readOnly) {
-    classes = `${classes} modus-wc-text-input-readonly`;
-  }
-
   if (feedback) {
     classes = `${classes} modus-wc-input--${feedback.level}`;
+  }
+
+  if (readOnly) {
+    classes = `${classes} modus-wc-text-input-readonly`;
   }
 
   if (size) {

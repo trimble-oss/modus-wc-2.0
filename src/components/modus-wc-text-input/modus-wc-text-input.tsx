@@ -76,6 +76,9 @@ export class ModusWcTextInput {
   /** Feedback to render below the input. */
   @Prop() feedback?: IInputFeedbackProp;
 
+  /** Show the search icon within the input field. */
+  @Prop() includeSearchIcon?: boolean = false;
+
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
@@ -119,9 +122,6 @@ export class ModusWcTextInput {
 
   /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
-
-  /** Show the search icon within the input field. */
-  @Prop() includeSearchIcon?: boolean = false;
 
   /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
