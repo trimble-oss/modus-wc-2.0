@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-autocomplete should close the menu when clicking outside if leaveMenuOpen is false 1`] = `
+<modus-wc-autocomplete class="modus-wc-autocomplete" value="">
+  <modus-wc-text-input value="">
+    <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" inputmode="text" placeholder="" type="text" value="">
+  </modus-wc-text-input>
+</modus-wc-autocomplete>
+`;
+
 exports[`modus-wc-autocomplete should render multi select with selected items 1`] = `
 <modus-wc-autocomplete class="modus-wc-autocomplete" multi-select="true" value="">
   <div class="modus-wc-autocomplete-multi-select modus-wc-autocomplete-multi-select--bordered">
