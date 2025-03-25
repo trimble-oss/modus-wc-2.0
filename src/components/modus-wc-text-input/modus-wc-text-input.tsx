@@ -46,6 +46,9 @@ export class ModusWcTextInput {
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
+  /** Show the clear icon within the input field. */
+  @Prop() clearable?: boolean = false;
+
   /** Custom CSS class to apply to the input. */
   @Prop() customClass?: string = '';
 
@@ -106,9 +109,6 @@ export class ModusWcTextInput {
   /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
 
-  /** Show the clear icon within the input field. */
-  @Prop() showClearIcon?: boolean = false;
-
   /** Show the search icon within the input field. */
   @Prop() showSearchIcon?: boolean = false;
 
@@ -149,6 +149,7 @@ export class ModusWcTextInput {
       'modus-wc-items-center',
       'modus-wc-gap-1',
     ];
+
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       readOnly: this.readOnly,
@@ -166,13 +167,23 @@ export class ModusWcTextInput {
     this.inputBlur.emit(event);
   };
 
+  private handleClearText = (event: MouseEvent | KeyboardEvent) => {
+    this.value = '';
+    this.inputChange.emit(event as unknown as InputEvent);
+  };
+
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
   };
 
   private handleInput = (event: InputEvent) => {
+    this.value = (event.target as HTMLInputElement).value;
     this.inputChange.emit(event);
   };
+
+  private shouldShowClearIcon(): boolean {
+    return !!this.clearable && !this.disabled && !this.readOnly && !!this.value;
+  }
 
   render() {
     return (
@@ -213,7 +224,9 @@ export class ModusWcTextInput {
             value={this.value}
             {...this.inheritedAttributes}
           />
-          {this.showClearIcon && <Icons.ClearIcon />}
+          {this.shouldShowClearIcon() && (
+            <Icons.ClearIcon onClear={this.handleClearText} />
+          )}
         </label>
       </Host>
     );

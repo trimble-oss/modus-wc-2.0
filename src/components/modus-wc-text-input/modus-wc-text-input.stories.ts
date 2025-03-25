@@ -15,6 +15,7 @@ interface TextInputArgs {
   'auto-complete'?: AutocompleteTypes;
   'auto-correct'?: 'on' | 'off';
   bordered?: boolean;
+  clearable?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
   enterkeyhint?:
@@ -44,7 +45,6 @@ interface TextInputArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
-  'show-clear-icon'?: boolean;
   'show-search-icon'?: boolean;
   size?: ModusSize;
   spellcheck?: boolean;
@@ -125,6 +125,7 @@ export const Default: Story = {
       auto-complete=${ifDefined(args['auto-complete'])}
       auto-correct=${ifDefined(args['auto-correct'])}
       ?bordered=${args.bordered}
+      clearable=${ifDefined(args.clearable)}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       enterkeyhint=${ifDefined(args.enterkeyhint)}
@@ -140,7 +141,6 @@ export const Default: Story = {
       placeholder=${ifDefined(args.placeholder)}
       ?read-only=${args['read-only']}
       ?required=${args.required}
-      show-clear-icon=${ifDefined(args['show-clear-icon'])}
       show-search-icon=${ifDefined(args['show-search-icon'])}
       size=${ifDefined(args.size)}
       spellcheck=${ifDefined(args.spellcheck)}

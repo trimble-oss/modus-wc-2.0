@@ -3776,7 +3776,12 @@
       "declarations": [
         {
           "kind": "function",
-          "name": "ClearIcon"
+          "name": "ClearIcon",
+          "parameters": [
+            {
+              "name": "{ onClear }"
+            }
+          ]
         },
         {
           "kind": "function",
@@ -3854,6 +3859,15 @@
               "fieldName": "bordered",
               "default": "true",
               "description": "Indicates that the input should have a border.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "clearable",
+              "fieldName": "clearable",
+              "default": "false",
+              "description": "Show the clear icon within the input field.",
               "type": {
                 "text": "boolean"
               }
@@ -3972,15 +3986,6 @@
               "fieldName": "required",
               "default": "false",
               "description": "A value is required for the form to be submittable.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
-              "name": "show-clear-icon",
-              "fieldName": "showClearIcon",
-              "default": "false",
-              "description": "Show the clear icon within the input field.",
               "type": {
                 "text": "boolean"
               }

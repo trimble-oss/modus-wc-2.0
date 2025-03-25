@@ -1116,6 +1116,10 @@ export namespace Components {
          */
         "bordered"?: boolean;
         /**
+          * Show the clear icon within the input field.
+         */
+        "clearable"?: boolean;
+        /**
           * Custom CSS class to apply to the input.
          */
         "customClass"?: string;
@@ -1184,10 +1188,6 @@ export namespace Components {
           * A value is required for the form to be submittable.
          */
         "required"?: boolean;
-        /**
-          * Show the clear icon within the input field.
-         */
-        "showClearIcon"?: boolean;
         /**
           * Show the search icon within the input field.
          */
@@ -3539,6 +3539,10 @@ declare namespace LocalJSX {
          */
         "bordered"?: boolean;
         /**
+          * Show the clear icon within the input field.
+         */
+        "clearable"?: boolean;
+        /**
           * Custom CSS class to apply to the input.
          */
         "customClass"?: string;
@@ -3619,10 +3623,6 @@ declare namespace LocalJSX {
           * A value is required for the form to be submittable.
          */
         "required"?: boolean;
-        /**
-          * Show the clear icon within the input field.
-         */
-        "showClearIcon"?: boolean;
         /**
           * Show the search icon within the input field.
          */

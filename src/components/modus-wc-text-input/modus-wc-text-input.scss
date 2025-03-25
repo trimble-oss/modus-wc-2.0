@@ -54,6 +54,20 @@
       border-color: var(--modus-wc-color-blue-light);
     }
   }
+
+  .modus-wc-text-input-icon {
+    color: var(--modus-wc-color-gray-8);
+
+    &.modus-wc-text-input-icon-clear {
+      &:focus {
+        outline: none;
+      }
+
+      &:focus-visible {
+        outline: var(--modus-wc-color-trimble-gray) auto 2px;
+      }
+    }
+  }
 }
 
 [data-theme='modus-classic-dark'] .modus-wc-input:focus-within {
@@ -80,6 +94,12 @@
     .modus-wc-text-input-icon {
       height: var(--modus-wc-line-height-lg);
       width: var(--modus-wc-line-height-lg);
+    }
+  }
+
+  .modus-wc-text-input-icon {
+    &.modus-wc-text-input-icon-clear {
+      cursor: pointer;
     }
   }
 }
