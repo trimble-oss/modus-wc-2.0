@@ -1,13 +1,16 @@
 import { DaisySize } from '../types';
 
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  shape,
+  size,
+}: {
   shape?: string;
   size?: DaisySize;
 }): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'shape') && props.shape) {
-    switch (props.shape) {
+  if (shape) {
+    switch (shape) {
       case 'circle':
         classes = `${classes} modus-wc-rounded-full`;
         break;
@@ -17,8 +20,8 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    switch (props.size) {
+  if (size) {
+    switch (size) {
       case 'xs':
         classes = `${classes} modus-wc-w-8`;
         break;
@@ -34,5 +37,5 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  return classes;
+  return classes.trim();
 };

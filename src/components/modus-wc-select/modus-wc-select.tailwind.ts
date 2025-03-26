@@ -1,21 +1,21 @@
 import { DaisySize } from '../types';
 
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  bordered,
+  size,
+}: {
   bordered?: boolean;
   size?: DaisySize;
 }): string => {
   let classes = '';
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'bordered') &&
-    !!props.bordered
-  ) {
+  if (bordered) {
     classes = `${classes} modus-wc-select-bordered`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-select-${props.size}`;
+  if (size) {
+    classes = `${classes} modus-wc-select-${size}`;
   }
 
-  return classes;
+  return classes.trim();
 };

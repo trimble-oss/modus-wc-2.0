@@ -23,5 +23,5 @@ export const convertPropsToClasses = ({
     classes = `${classes} modus-wc-input-${size}`;
   }
 
-  return classes;
+  return classes.trim();
 };

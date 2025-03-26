@@ -1,13 +1,12 @@
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  position,
+}: {
   position?: 'center' | 'top' | 'bottom';
 }): string => {
   let classes = '';
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'position') &&
-    props.position
-  ) {
-    switch (props.position) {
+  if (position) {
+    switch (position) {
       case 'top':
         classes = `${classes} modus-wc-modal-top`;
         break;
@@ -18,5 +17,6 @@ export const convertPropsToClasses = (props: {
         break; // center is default, no class needed
     }
   }
-  return classes;
+
+  return classes.trim();
 };

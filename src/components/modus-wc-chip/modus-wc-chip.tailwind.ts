@@ -1,6 +1,12 @@
 import { ModusSize } from '../types';
 
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  active,
+  disabled,
+  hasError,
+  size,
+  variant,
+}: {
   active?: boolean;
   disabled?: boolean;
   hasError?: boolean;
@@ -9,35 +15,29 @@ export const convertPropsToClasses = (props: {
 }): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'active') && !!props.active) {
+  if (active) {
     classes = `${classes} modus-wc-chip--active`;
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'disabled') &&
-    !!props.disabled
-  ) {
+  if (disabled) {
     classes = `${classes} modus-wc-chip--disabled`;
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'hasError') &&
-    !!props.hasError
-  ) {
+  if (hasError) {
     classes = `${classes} modus-wc-chip--error`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-btn-${props.size}`;
+  if (size) {
+    classes = `${classes} modus-wc-btn-${size}`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'variant') && props.variant) {
-    switch (props.variant) {
+  if (variant) {
+    switch (variant) {
       case 'outline':
         classes = `${classes} modus-wc-chip--outline`;
         break;
     }
   }
 
-  return classes;
+  return classes.trim();
 };

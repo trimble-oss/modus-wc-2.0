@@ -1,23 +1,22 @@
 import { ToastPosition } from './modus-wc-toast';
 
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  position,
+}: {
   position?: ToastPosition;
 }): string => {
   let classes = '';
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'position') &&
-    props.position
-  ) {
-    switch (props.position) {
+  if (position) {
+    switch (position) {
       case 'top-start':
         classes = `${classes} modus-wc-toast-top modus-wc-toast-start`;
         break;
       case 'top-center':
-        classes = `${classes}  modus-wc-toast-top modus-wc-toast-center`;
+        classes = `${classes} modus-wc-toast-top modus-wc-toast-center`;
         break;
       case 'top-end':
-        classes = `${classes}  modus-wc-toast-top modus-wc-toast-end`;
+        classes = `${classes} modus-wc-toast-top modus-wc-toast-end`;
         break;
       case 'middle-start':
         classes = `${classes} modus-wc-toast-start modus-wc-toast-middle`;
@@ -40,5 +39,5 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  return classes;
+  return classes.trim();
 };
