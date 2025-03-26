@@ -1149,10 +1149,6 @@ export namespace Components {
          */
         "clearAriaLabel"?: string;
         /**
-          * Show the clear icon within the input field.
-         */
-        "clearable"?: boolean;
-        /**
           * Custom CSS class to apply to the input.
          */
         "customClass"?: string;
@@ -1175,9 +1171,13 @@ export namespace Components {
          */
         "feedback"?: IInputFeedbackProp;
         /**
+          * Show the clear icon within the input field.
+         */
+        "includeClear"?: boolean;
+        /**
           * Show the search icon within the input field.
          */
-        "includeSearchIcon"?: boolean;
+        "includeSearch"?: boolean;
         /**
           * The ID of the input element.
          */
@@ -3619,10 +3619,6 @@ declare namespace LocalJSX {
          */
         "clearAriaLabel"?: string;
         /**
-          * Show the clear icon within the input field.
-         */
-        "clearable"?: boolean;
-        /**
           * Custom CSS class to apply to the input.
          */
         "customClass"?: string;
@@ -3645,9 +3641,13 @@ declare namespace LocalJSX {
          */
         "feedback"?: IInputFeedbackProp;
         /**
+          * Show the clear icon within the input field.
+         */
+        "includeClear"?: boolean;
+        /**
           * Show the search icon within the input field.
          */
-        "includeSearchIcon"?: boolean;
+        "includeSearch"?: boolean;
         /**
           * The ID of the input element.
          */

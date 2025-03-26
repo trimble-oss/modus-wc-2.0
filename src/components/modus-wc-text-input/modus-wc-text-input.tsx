@@ -51,9 +51,6 @@ export class ModusWcTextInput {
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
-  /** Show the clear icon within the input field. */
-  @Prop() clearable?: boolean = false;
-
   /** Aria label for the clear icon button. */
   @Prop() clearAriaLabel?: string = 'Clear text';
 
@@ -76,8 +73,11 @@ export class ModusWcTextInput {
   /** Feedback to render below the input. */
   @Prop() feedback?: IInputFeedbackProp;
 
+  /** Show the clear icon within the input field. */
+  @Prop() includeClear?: boolean = false;
+
   /** Show the search icon within the input field. */
-  @Prop() includeSearchIcon?: boolean = false;
+  @Prop() includeSearch?: boolean = false;
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
@@ -193,11 +193,14 @@ export class ModusWcTextInput {
     this.inputChange.emit(event);
   };
 
-  private shouldShowClearIcon(): boolean {
-    return !!this.clearable && !this.disabled && !this.readOnly && !!this.value;
+  private shouldIncludeClear(): boolean {
+    return (
+      !!this.includeClear && !this.disabled && !this.readOnly && !!this.value
+    );
   }
 
   render() {
+    const showClear = this.shouldIncludeClear();
     return (
       <Host>
         {this.label && (
@@ -209,7 +212,7 @@ export class ModusWcTextInput {
           />
         )}
         <label class={this.getClasses()}>
-          {this.includeSearchIcon && <SearchIcon />}
+          {this.includeSearch && <SearchIcon />}
           <input
             aria-placeholder={this.placeholder}
             aria-required={this.required}
@@ -236,11 +239,15 @@ export class ModusWcTextInput {
             value={this.value}
             {...this.inheritedAttributes}
           />
-          {this.shouldShowClearIcon() && (
-            <ClearIcon
-              ariaLabel={this.clearAriaLabel!}
-              onClear={this.handleClearText}
-            />
+          {this.includeClear && (
+            <div
+              class={`modus-wc-clear-icon-container ${showClear ? 'modus-wc-clear-icon-visible' : 'modus-wc-clear-icon-hidden'}`}
+            >
+              <ClearIcon
+                ariaLabel={this.clearAriaLabel!}
+                onClear={this.handleClearText}
+              />
+            </div>
           )}
         </label>
         {this.feedback && (

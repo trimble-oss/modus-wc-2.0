@@ -3915,7 +3915,7 @@
           "name": "ClearIcon",
           "parameters": [
             {
-              "name": "{\n  ariaLabel,\n  onClear,\n}"
+              "name": "{\r\n  ariaLabel,\r\n  onClear,\r\n}"
             }
           ]
         },
@@ -4009,15 +4009,6 @@
               }
             },
             {
-              "name": "clearable",
-              "fieldName": "clearable",
-              "default": "false",
-              "description": "Show the clear icon within the input field.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
               "name": "custom-class",
               "fieldName": "customClass",
               "default": "''",
@@ -4052,8 +4043,17 @@
               }
             },
             {
-              "name": "include-search-icon",
-              "fieldName": "includeSearchIcon",
+              "name": "include-clear",
+              "fieldName": "includeClear",
+              "default": "false",
+              "description": "Show the clear icon within the input field.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "include-search",
+              "fieldName": "includeSearch",
               "default": "false",
               "description": "Show the search icon within the input field.",
               "type": {
