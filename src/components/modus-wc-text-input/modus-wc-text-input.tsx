@@ -73,7 +73,7 @@ export class ModusWcTextInput {
   /** Feedback to render below the input. */
   @Prop() feedback?: IInputFeedbackProp;
 
-  /** Show the clear icon within the input field. */
+  /** Show the clear button within the input field. */
   @Prop() includeClear?: boolean = false;
 
   /** Show the search icon within the input field. */

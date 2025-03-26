@@ -1183,7 +1183,7 @@ export namespace Components {
          */
         "feedback"?: IInputFeedbackProp;
         /**
-          * Show the clear icon within the input field.
+          * Show the clear button within the input field.
          */
         "includeClear"?: boolean;
         /**
@@ -3673,7 +3673,7 @@ declare namespace LocalJSX {
          */
         "feedback"?: IInputFeedbackProp;
         /**
-          * Show the clear icon within the input field.
+          * Show the clear button within the input field.
          */
         "includeClear"?: boolean;
         /**
