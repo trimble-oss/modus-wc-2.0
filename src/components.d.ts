@@ -1157,6 +1157,10 @@ export namespace Components {
          */
         "bordered"?: boolean;
         /**
+          * Aria label for the clear icon button.
+         */
+        "clearAriaLabel"?: string;
+        /**
           * Custom CSS class to apply to the input.
          */
         "customClass"?: string;
@@ -1178,6 +1182,14 @@ export namespace Components {
           * Feedback to render below the input.
          */
         "feedback"?: IInputFeedbackProp;
+        /**
+          * Show the clear button within the input field.
+         */
+        "includeClear"?: boolean;
+        /**
+          * Show the search icon within the input field.
+         */
+        "includeSearch"?: boolean;
         /**
           * The ID of the input element.
          */
@@ -3635,6 +3647,10 @@ declare namespace LocalJSX {
          */
         "bordered"?: boolean;
         /**
+          * Aria label for the clear icon button.
+         */
+        "clearAriaLabel"?: string;
+        /**
           * Custom CSS class to apply to the input.
          */
         "customClass"?: string;
@@ -3656,6 +3672,14 @@ declare namespace LocalJSX {
           * Feedback to render below the input.
          */
         "feedback"?: IInputFeedbackProp;
+        /**
+          * Show the clear button within the input field.
+         */
+        "includeClear"?: boolean;
+        /**
+          * Show the search icon within the input field.
+         */
+        "includeSearch"?: boolean;
         /**
           * The ID of the input element.
          */
