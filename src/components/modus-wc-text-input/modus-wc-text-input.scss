@@ -53,6 +53,14 @@ label.modus-wc-input-label {
     outline: none; // Ensures there's no outline on focus
   }
 
+  .modus-wc-text-input-icon {
+    &.modus-wc-text-input-icon-clear {
+      &:focus:not(:focus-visible) {
+        outline: none;
+      }
+    }
+  }
+
   &.modus-wc-text-input-readonly {
     background-color: var(--modus-wc-color-base-100);
   }
@@ -83,17 +91,6 @@ label.modus-wc-input-label {
 
   .modus-wc-text-input-icon {
     color: var(--modus-wc-color-gray-8);
-
-    // TODO: need to apply to dark theme as well
-    &.modus-wc-text-input-icon-clear {
-      &:focus {
-        outline: none;
-      }
-
-      &:focus-visible {
-        outline: var(--modus-wc-color-trimble-gray) auto 2px;
-      }
-    }
   }
 }
 

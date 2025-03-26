@@ -3915,7 +3915,7 @@
           "name": "ClearIcon",
           "parameters": [
             {
-              "name": "{\r\n  ariaLabel,\r\n  onClear,\r\n}"
+              "name": "{\n  ariaLabel,\n  onClear,\n}"
             }
           ]
         },
