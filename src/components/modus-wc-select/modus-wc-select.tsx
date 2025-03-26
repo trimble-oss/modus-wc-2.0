@@ -8,7 +8,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-select.tailwind';
-import { ModusSize } from '../types';
+import { IInputFeedbackProp, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 export interface ISelectOption {
@@ -44,6 +44,9 @@ export class ModusWcSelect {
 
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
+
+  /** Feedback to render below the input. */
+  @Prop() feedback?: IInputFeedbackProp;
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
@@ -91,6 +94,7 @@ export class ModusWcSelect {
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
+      feedback: this.feedback,
       size: this.size,
     });
 
@@ -146,6 +150,13 @@ export class ModusWcSelect {
             </option>
           ))}
         </select>
+        {this.feedback && (
+          <modus-wc-input-feedback
+            level={this.feedback.level}
+            message={this.feedback.message}
+            size={this.size}
+          />
+        )}
       </Host>
     );
   }

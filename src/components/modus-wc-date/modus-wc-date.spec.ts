@@ -1,5 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcDate } from './modus-wc-date';
+import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
+import { IInputFeedbackProp } from '../types';
 
 describe('modus-wc-date', () => {
   it('renders with default props', async () => {
@@ -33,6 +35,25 @@ describe('modus-wc-date', () => {
         value="Test value"
       ></modus-wc-date>`,
     });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with error feedback', async () => {
+    const feedback: IInputFeedbackProp = {
+      level: 'error',
+      message: 'Test error message',
+    };
+    const page = await newSpecPage({
+      components: [ModusWcDate, ModusWcInputFeedback],
+      html: '<modus-wc-date aria-label="Error input"></modus-wc-date>',
+    });
+
+    // Set feedback attribute
+    const component = page.rootInstance as ModusWcDate;
+    component.feedback = feedback;
+
+    await page.waitForChanges();
+
     expect(page.root).toMatchSnapshot();
   });
 

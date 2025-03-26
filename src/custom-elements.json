@@ -1431,6 +1431,14 @@
               }
             },
             {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "Feedback to render below the input.",
+              "type": {
+                "text": "IInputFeedbackProp"
+              }
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
               "description": "The ID of the input element.",
@@ -2493,6 +2501,14 @@
               }
             },
             {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "Feedback to render below the input.",
+              "type": {
+                "text": "IInputFeedbackProp"
+              }
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
               "description": "The ID of the input element.",
@@ -3248,6 +3264,14 @@
               "description": "Whether the form control is disabled.",
               "type": {
                 "text": "boolean"
+              }
+            },
+            {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "Feedback to render below the input.",
+              "type": {
+                "text": "IInputFeedbackProp"
               }
             },
             {
@@ -4296,6 +4320,14 @@
               }
             },
             {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "Feedback to render below the input.",
+              "type": {
+                "text": "IInputFeedbackProp"
+              }
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
               "description": "The ID of the input element.",
@@ -4580,6 +4612,14 @@
               "description": "Whether the form control is disabled.",
               "type": {
                 "text": "boolean"
+              }
+            },
+            {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "Feedback to render below the input.",
+              "type": {
+                "text": "IInputFeedbackProp"
               }
             },
             {

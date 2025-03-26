@@ -1,11 +1,13 @@
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  size,
+}: {
   size?: 'sm' | 'md' | 'lg';
 }): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-radio-${props.size}`;
+  if (size) {
+    classes = `${classes} modus-wc-radio-${size}`;
   }
 
-  return classes;
+  return classes.trim();
 };

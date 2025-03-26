@@ -2,7 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { ModusSize } from '../types';
+import { IInputFeedbackProp, ModusSize } from '../types';
 
 // const timeOptions = ['08:00', '12:00', '17:00'];
 
@@ -13,6 +13,7 @@ interface TimeInputArgs {
   'datalist-id'?: string;
   'datalist-options'?: string[];
   disabled?: boolean;
+  feedback?: IInputFeedbackProp;
   'input-id'?: string;
   'input-tab-index'?: number;
   label?: string;
@@ -40,6 +41,19 @@ const meta: Meta<TimeInputArgs> = {
       control: { type: 'select' },
       options: ['on', 'off'],
     },
+    feedback: {
+      description: 'Feedback prop for input components',
+      table: {
+        type: {
+          detail: `
+            Interface: IInputFeedbackProp
+            Properties:
+            - level ('error' | 'info' | 'success' | 'warning'): The feedback level
+            - message (string, optional): The feedback message
+          `,
+        },
+      },
+    },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
@@ -66,6 +80,7 @@ export const Template: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       datalist-id=${ifDefined(args['datalist-id'])}
       ?disabled=${args.disabled}
+      .feedback=${ifDefined(args.feedback)}
       input-id=${ifDefined(args['input-id'])}
       input-tab-index=${ifDefined(args['input-tab-index'])}
       label=${ifDefined(args.label)}
@@ -83,7 +98,7 @@ export const Template: Story = {
   `,
 };
 
-export const TimeInputWithSeconds: Story = {
+export const WithSeconds: Story = {
   render: () => {
     return html`
       <modus-wc-time-input
@@ -94,7 +109,7 @@ export const TimeInputWithSeconds: Story = {
   },
 };
 
-export const TimeInputWithDatalist: Story = {
+export const WithDatalist: Story = {
   render: () => {
     // prettier-ignore
     return html`
@@ -111,7 +126,7 @@ export const TimeInputWithDatalist: Story = {
   },
 };
 
-export const TimeInputWithDatalistOptions: Story = {
+export const WithDatalistOptions: Story = {
   render: () => {
     // prettier-ignore
     return html`
@@ -128,4 +143,21 @@ export const TimeInputWithDatalistOptions: Story = {
 ></modus-wc-time-input>
     `;
   },
+};
+
+const errorFeedback: IInputFeedbackProp = {
+  level: 'error',
+  message: 'Value is required.',
+};
+
+export const WithErrorFeedback: Story = {
+  render: (args) => html`
+    <modus-wc-time-input
+      aria-label="Time input"
+      .feedback=${errorFeedback}
+      label=${ifDefined(args.label)}
+      ?required=${true}
+      .value=${args.value}
+    ></modus-wc-time-input>
+  `,
 };

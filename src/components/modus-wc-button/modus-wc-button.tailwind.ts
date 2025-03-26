@@ -1,6 +1,13 @@
 import { DaisySize } from '../types';
 
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  color,
+  disabled,
+  fullWidth,
+  shape,
+  size,
+  variant,
+}: {
   color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   disabled?: boolean;
   fullWidth?: boolean;
@@ -10,8 +17,8 @@ export const convertPropsToClasses = (props: {
 }): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'color') && props.color) {
-    switch (props.color) {
+  if (color) {
+    switch (color) {
       case 'primary':
         classes = `${classes} modus-wc-btn-primary`;
         break;
@@ -30,22 +37,16 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'disabled') &&
-    !!props.disabled
-  ) {
+  if (disabled) {
     classes = `${classes} modus-wc-btn-disabled`;
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'fullWidth') &&
-    !!props.fullWidth
-  ) {
+  if (fullWidth) {
     classes = `${classes} modus-wc-btn-block`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'shape') && props.shape) {
-    switch (props.shape) {
+  if (shape) {
+    switch (shape) {
       case 'circle':
         classes = `${classes} modus-wc-btn-circle`;
         break;
@@ -55,12 +56,12 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-btn-${props.size}`;
+  if (size) {
+    classes = `${classes} modus-wc-btn-${size}`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'variant') && props.variant) {
-    switch (props.variant) {
+  if (variant) {
+    switch (variant) {
       case 'borderless':
         classes = `${classes} modus-wc-btn-borderless`;
         break;
@@ -73,5 +74,5 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  return classes;
+  return classes.trim();
 };

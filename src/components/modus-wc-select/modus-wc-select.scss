@@ -3,6 +3,10 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+.modus-wc-input {
+  @include feedback-levels();
+}
+
 [data-theme='modus-classic-light'] .modus-wc-select,
 [data-theme='modus-classic-dark'] .modus-wc-select {
   border-radius: var(--modus-wc-border-radius-md);
@@ -36,7 +40,7 @@
 
   &:focus {
     border-color: var(--modus-wc-color-blue-light);
-    border-width: 2px;
+    border-width: var(--modus-wc-border-width-sm);
     box-shadow: none; // Removes the Tailwind ring effect
     outline: none; // Ensures there's no outline on focus
   }

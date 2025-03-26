@@ -1,4 +1,9 @@
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  color,
+  orientation,
+  position,
+  responsive,
+}: {
   color?:
     | 'primary'
     | 'secondary'
@@ -13,8 +18,8 @@ export const convertPropsToClasses = (props: {
 }): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'color') && props.color) {
-    switch (props.color) {
+  if (color) {
+    switch (color) {
       case 'primary':
         classes = `${classes} modus-wc-divider-primary`;
         break;
@@ -39,11 +44,8 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'orientation') &&
-    props.orientation
-  ) {
-    switch (props.orientation) {
+  if (orientation) {
+    switch (orientation) {
       case 'horizontal':
         classes = `${classes} modus-wc-divider-horizontal`;
         break;
@@ -53,11 +55,8 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'position') &&
-    props.position
-  ) {
-    switch (props.position) {
+  if (position) {
+    switch (position) {
       case 'end':
         classes = `${classes} modus-wc-divider-start`;
         break;
@@ -67,12 +66,9 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'responsive') &&
-    !!props.responsive
-  ) {
+  if (responsive) {
     classes = `${classes} flex-grow place-items-center`;
   }
 
-  return classes;
+  return classes.trim();
 };
