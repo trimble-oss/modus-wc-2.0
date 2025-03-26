@@ -201,6 +201,7 @@ export class ModusWcTextInput {
 
   render() {
     const showClear = this.shouldIncludeClear();
+
     return (
       <Host>
         {this.label && (
@@ -219,7 +220,7 @@ export class ModusWcTextInput {
             autocapitalize={this.autoCapitalize}
             autocomplete={this.autoComplete}
             autocorrect={this.autoCorrect}
-            class="modus-wc-grow modus-wc-w-full modus-wc-text-input-inner"
+            class="modus-wc-grow"
             disabled={this.disabled}
             enterkeyhint={this.enterkeyhint}
             id={this.inputId}
