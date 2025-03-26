@@ -427,6 +427,10 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * Feedback to render below the input.
+         */
+        "feedback"?: IInputFeedbackProp;
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -729,6 +733,10 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * Feedback to render below the input.
+         */
+        "feedback"?: IInputFeedbackProp;
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -939,6 +947,10 @@ export namespace Components {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * Feedback to render below the input.
+         */
+        "feedback"?: IInputFeedbackProp;
         /**
           * The ID of the input element.
          */
@@ -1262,6 +1274,10 @@ export namespace Components {
     | 'search'
     | 'send';
         /**
+          * Feedback to render below the input.
+         */
+        "feedback"?: IInputFeedbackProp;
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -1349,6 +1365,10 @@ export namespace Components {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * Feedback to render below the input.
+         */
+        "feedback"?: IInputFeedbackProp;
         /**
           * The ID of the input element.
          */
@@ -2799,6 +2819,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Feedback to render below the input.
+         */
+        "feedback"?: IInputFeedbackProp;
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -3117,6 +3141,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Feedback to render below the input.
+         */
+        "feedback"?: IInputFeedbackProp;
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -3359,6 +3387,10 @@ declare namespace LocalJSX {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * Feedback to render below the input.
+         */
+        "feedback"?: IInputFeedbackProp;
         /**
           * The ID of the input element.
          */
@@ -3732,6 +3764,10 @@ declare namespace LocalJSX {
     | 'search'
     | 'send';
         /**
+          * Feedback to render below the input.
+         */
+        "feedback"?: IInputFeedbackProp;
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -3835,6 +3871,10 @@ declare namespace LocalJSX {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * Feedback to render below the input.
+         */
+        "feedback"?: IInputFeedbackProp;
         /**
           * The ID of the input element.
          */

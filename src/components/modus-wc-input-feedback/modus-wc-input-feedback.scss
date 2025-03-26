@@ -10,7 +10,8 @@
 
   border-radius: 0 0 var(--modus-wc-border-radius-sm)
     var(--modus-wc-border-radius-sm);
-  padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+  padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm)
+    var(--modus-wc-spacing-xs) 0;
 
   // Sizes
   &.modus-wc-input-feedback--sm {

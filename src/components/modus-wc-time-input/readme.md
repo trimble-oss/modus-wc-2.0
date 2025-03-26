@@ -21,6 +21,7 @@ Adheres to WCAG 2.2 standards.
 | `datalistId`      | `datalist-id`     | ID of a `<datalist>` element that contains pre-defined time options. The value must be the ID of a `<datalist>` element in the same document.                                                                                                                                | `string \| undefined`               | `undefined` |
 | `datalistOptions` | --                | The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.                                                                                                                                                                          | `string[]`                          | `[]`        |
 | `disabled`        | `disabled`        | Whether the form control is disabled.                                                                                                                                                                                                                                        | `boolean \| undefined`              | `false`     |
+| `feedback`        | --                | Feedback to render below the input.                                                                                                                                                                                                                                          | `IInputFeedbackProp \| undefined`   | `undefined` |
 | `inputId`         | `input-id`        | The ID of the input element.                                                                                                                                                                                                                                                 | `string \| undefined`               | `undefined` |
 | `inputTabIndex`   | `input-tab-index` | Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).                                                                                                                                                                      | `number \| undefined`               | `undefined` |
 | `label`           | `label`           | The text to display within the label.                                                                                                                                                                                                                                        | `string \| undefined`               | `undefined` |
@@ -49,11 +50,14 @@ Adheres to WCAG 2.2 standards.
 ### Depends on
 
 - [modus-wc-input-label](../modus-wc-input-label)
+- [modus-wc-input-feedback](../modus-wc-input-feedback)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-time-input --> modus-wc-input-label
+  modus-wc-time-input --> modus-wc-input-feedback
+  modus-wc-input-feedback --> modus-wc-icon
   style modus-wc-time-input fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

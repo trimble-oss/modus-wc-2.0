@@ -2,7 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DaisySize } from '../types';
+import { IInputFeedbackProp, ModusSize } from '../types';
 
 interface TextAreaArgs {
   'auto-correct': 'on' | 'off';
@@ -17,6 +17,7 @@ interface TextAreaArgs {
     | 'previous'
     | 'search'
     | 'send';
+  feedback?: IInputFeedbackProp;
   'input-aria-invalid'?: 'grammar' | 'spelling' | 'true' | 'false';
   'input-id'?: string;
   'input-tab-index'?: number;
@@ -27,7 +28,7 @@ interface TextAreaArgs {
   readonly?: boolean;
   required?: boolean;
   rows?: number;
-  size?: DaisySize;
+  size?: ModusSize;
   spellcheck?: boolean;
   value: string;
 }
@@ -52,6 +53,19 @@ const meta: Meta<TextAreaArgs> = {
     },
     enterkeyhint: {
       options: ['enter', 'done', 'go', 'next', 'previous', 'search', 'send'],
+    },
+    feedback: {
+      description: 'Feedback prop for input components',
+      table: {
+        type: {
+          detail: `
+            Interface: IInputFeedbackProp
+            Properties:
+            - level ('error' | 'info' | 'success' | 'warning'): The feedback level
+            - message (string, optional): The feedback message
+          `,
+        },
+      },
     },
     'input-aria-invalid': {
       control: {
@@ -94,6 +108,7 @@ export const Default: Story = {
         custom-class=${ifDefined(args['custom-class'])}
         enterkeyhint=${ifDefined(args.enterkeyhint)}
         ?disabled=${args.disabled}
+        .feedback=${ifDefined(args.feedback)}
         input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
@@ -110,4 +125,21 @@ export const Default: Story = {
       ></modus-wc-textarea>
     `;
   },
+};
+
+const errorFeedback: IInputFeedbackProp = {
+  level: 'error',
+  message: 'Value is required.',
+};
+
+export const WithErrorFeedback: Story = {
+  render: (args) => html`
+    <modus-wc-textarea
+      aria-label="Textarea input"
+      .feedback=${errorFeedback}
+      label=${ifDefined(args.label)}
+      ?required=${true}
+      .value=${args.value}
+    ></modus-wc-textarea>
+  `,
 };

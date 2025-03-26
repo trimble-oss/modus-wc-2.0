@@ -1,5 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcNumberInput } from './modus-wc-number-input';
+import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
+import { IInputFeedbackProp } from '../types';
 
 describe('modus-wc-number-input', () => {
   it('should render with default props', async () => {
@@ -38,6 +40,25 @@ describe('modus-wc-number-input', () => {
         value="test@example.com"
       ></modus-wc-number-input>`,
     });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with error feedback', async () => {
+    const feedback: IInputFeedbackProp = {
+      level: 'error',
+      message: 'Test error message',
+    };
+    const page = await newSpecPage({
+      components: [ModusWcNumberInput, ModusWcInputFeedback],
+      html: '<modus-wc-number-input aria-label="Error input"></modus-wc-number-input>',
+    });
+
+    // Set feedback attribute
+    const component = page.rootInstance as ModusWcNumberInput;
+    component.feedback = feedback;
+
+    await page.waitForChanges();
+
     expect(page.root).toMatchSnapshot();
   });
 
