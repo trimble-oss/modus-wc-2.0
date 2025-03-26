@@ -39,14 +39,6 @@ label.modus-wc-input-label {
     padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
   }
 
-  &:has(.modus-wc-text-input-icon-clear) {
-    padding-right: var(--modus-wc-spacing-2xs);
-  }
-
-  &:has(.modus-wc-text-input-icon-search) {
-    padding-left: var(--modus-wc-spacing-xs);
-  }
-
   &:focus-within {
     border-width: 2px;
     box-shadow: none; // Removes the Tailwind ring effect
@@ -135,7 +127,7 @@ label.modus-wc-input-label {
 
   .modus-wc-clear-icon-container {
     display: flex;
-    min-width: var(--modus-wc-font-size-lg);
+    min-width: var(--modus-wc-line-height-md);
     justify-content: center;
     align-items: center;
 
