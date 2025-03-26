@@ -1,5 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcTimeInput } from './modus-wc-time-input';
+import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
+import { IInputFeedbackProp } from '../types';
 
 describe('modus-wc-time-input', () => {
   it('should render with default props', async () => {
@@ -35,6 +37,25 @@ describe('modus-wc-time-input', () => {
                 value="12:00">
               </modus-wc-time-input>`,
     });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with error feedback', async () => {
+    const feedback: IInputFeedbackProp = {
+      level: 'error',
+      message: 'Test error message',
+    };
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcInputFeedback],
+      html: '<modus-wc-time-input aria-label="Error input"></modus-wc-time-input>',
+    });
+
+    // Set feedback attribute
+    const component = page.rootInstance as ModusWcTimeInput;
+    component.feedback = feedback;
+
+    await page.waitForChanges();
+
     expect(page.root).toMatchSnapshot();
   });
 

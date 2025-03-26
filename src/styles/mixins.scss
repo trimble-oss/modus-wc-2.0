@@ -1,0 +1,17 @@
+@mixin feedback-levels {
+  &--error {
+    border-color: var(--modus-wc-color-red) !important;
+  }
+
+  &--info {
+    border-color: var(--modus-wc-color-trimble-blue) !important;
+  }
+
+  &--success {
+    border-color: var(--modus-wc-color-green-dark) !important;
+  }
+
+  &--warning {
+    border-color: var(--modus-wc-color-yellow-dark) !important;
+  }
+}

@@ -19,7 +19,7 @@
   --chkfg: var(--modus-wc-color-white);
 
   border-radius: var(--modus-wc-border-radius-sm);
-  border-width: 2px;
+  border-width: var(--modus-wc-border-width-sm);
 
   &.modus-wc-checkbox-xl {
     height: 4rem;

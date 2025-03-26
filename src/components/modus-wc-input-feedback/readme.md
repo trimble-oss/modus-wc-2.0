@@ -28,7 +28,12 @@ Adheres to WCAG 2.2 standards.
 
 ### Used by
 
+ - [modus-wc-date](../modus-wc-date)
+ - [modus-wc-number-input](../modus-wc-number-input)
+ - [modus-wc-select](../modus-wc-select)
  - [modus-wc-text-input](../modus-wc-text-input)
+ - [modus-wc-textarea](../modus-wc-textarea)
+ - [modus-wc-time-input](../modus-wc-time-input)
 
 ### Depends on
 
@@ -38,7 +43,12 @@ Adheres to WCAG 2.2 standards.
 ```mermaid
 graph TD;
   modus-wc-input-feedback --> modus-wc-icon
+  modus-wc-date --> modus-wc-input-feedback
+  modus-wc-number-input --> modus-wc-input-feedback
+  modus-wc-select --> modus-wc-input-feedback
   modus-wc-text-input --> modus-wc-input-feedback
+  modus-wc-textarea --> modus-wc-input-feedback
+  modus-wc-time-input --> modus-wc-input-feedback
   style modus-wc-input-feedback fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

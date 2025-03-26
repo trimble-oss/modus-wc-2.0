@@ -8,7 +8,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-number-input.tailwind';
-import { ModusSize } from '../types';
+import { IInputFeedbackProp, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -41,6 +41,9 @@ export class ModusWcNumberInput {
 
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
+
+  /** Feedback to render below the input. */
+  @Prop() feedback?: IInputFeedbackProp;
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
@@ -108,6 +111,7 @@ export class ModusWcNumberInput {
     const classList = [...styleList];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
+      feedback: this.feedback,
       size: this.size,
     });
 
@@ -200,6 +204,13 @@ export class ModusWcNumberInput {
             {...this.inheritedAttributes}
           />
         </div>
+        {this.feedback && (
+          <modus-wc-input-feedback
+            level={this.feedback.level}
+            message={this.feedback.message}
+            size={this.size}
+          />
+        )}
       </Host>
     );
   }
