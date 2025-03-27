@@ -4,6 +4,7 @@ export const convertPropsToClasses = (props: {
   bordered?: boolean;
   disabled?: boolean;
   selected?: boolean;
+  focused?: boolean;
   size?: ModusSize;
 }): string => {
   let classes = '';
@@ -27,6 +28,14 @@ export const convertPropsToClasses = (props: {
     !!props.selected
   ) {
     classes = `${classes} modus-wc-menu-item-selected`;
+  }
+
+  if (
+    Object.prototype.hasOwnProperty.call(props, 'focused') &&
+    !!props.focused
+  ) {
+    console.log('focused');
+    classes = `${classes} modus-wc-menu-item-focused`;
   }
 
   if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {

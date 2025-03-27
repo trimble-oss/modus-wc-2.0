@@ -26,25 +26,6 @@
       border-radius: var(--modus-wc-border-radius-md)
         var(--modus-wc-border-radius-md) 0 0;
     }
-
-    /** TODO - chip styling is temporary, remove once chip component is implemented */
-    .chip {
-      display: flex;
-      align-items: center;
-      background-color: var(--modus-wc-color-gray-1);
-      border-radius: var(--modus-wc-border-radius-xl);
-
-      button {
-        i {
-          font-size: 0.75rem;
-        }
-      }
-
-      .label {
-        font-size: var(--modus-wc-font-size-md);
-        padding: 0 var(--modus-wc-spacing-xs);
-      }
-    }
   }
 
   .modus-wc-menu {

@@ -44,6 +44,9 @@ export class ModusWcMenuItem {
   /** The selected state of the menu item. */
   @Prop() selected?: boolean;
 
+  /** The focused state of the menu item. */
+  @Prop() focused?: boolean;
+
   /** The size of the menu item. */
   @Prop() size?: ModusSize = 'md';
 
@@ -67,6 +70,7 @@ export class ModusWcMenuItem {
       bordered: this.bordered,
       disabled: this.disabled,
       selected: this.selected,
+      focused: this.focused,
       size: this.size,
     });
 

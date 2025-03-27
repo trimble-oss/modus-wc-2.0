@@ -160,4 +160,189 @@ describe('modus-wc-autocomplete', () => {
 
     expect(focusSpy).toHaveBeenCalled();
   });
+  it('should not show menu on ArrowDown if minChars not met', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Test" min-chars="3"></modus-wc-autocomplete>',
+    });
+
+    const input = page.root!.querySelector('input');
+
+    // Simulate typing 2 characters (below min)
+    input!.value = 'ab';
+    input?.dispatchEvent(new Event('input'));
+    await page.waitForChanges();
+
+    // Try ArrowDown
+    input?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    await page.waitForChanges();
+
+    const menu = page.root!.querySelector('modus-wc-menu');
+    expect(menu).toBeFalsy();
+  });
+  it('should hide menu on Escape key', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Test" min-chars="0"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    // Open menu using ArrowDown
+    const input = page.root!.querySelector('input');
+    input?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    await page.waitForChanges();
+
+    // Close with Escape
+    input?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    await page.waitForChanges();
+
+    const menu = page.root!.querySelector('modus-wc-menu');
+    expect(menu).toBeFalsy();
+  });
+
+  it('should not open menu on input click', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Test"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    const input = page.root!.querySelector('input');
+    input?.click();
+    await page.waitForChanges();
+
+    const menu = page.root!.querySelector('modus-wc-menu');
+    expect(menu).toBeFalsy();
+  });
+
+  it('should ignore keydown events from non-input elements', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-autocomplete>
+          <div class="test-div"></div>
+        </modus-wc-autocomplete>
+      `,
+    });
+
+    const divElement = page.root!.querySelector('.test-div');
+    const event = new KeyboardEvent('keydown', {
+      key: 'Escape',
+      bubbles: true,
+      composed: true,
+    });
+
+    // Get initial menu state
+    const initialMenu = page.root!.querySelector('modus-wc-menu');
+
+    // Dispatch event on div
+    divElement?.dispatchEvent(event);
+    await page.waitForChanges();
+
+    // Check menu visibility through DOM
+    const finalMenu = page.root!.querySelector('modus-wc-menu');
+    expect(finalMenu).toEqual(initialMenu); // Should remain unchanged
+  });
+
+  it('should not show menu on ArrowDown if minChars not met', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Test" min-chars="3"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    const input = page.root!.querySelector('input');
+    input!.value = 'ab';
+    input?.dispatchEvent(new Event('input'));
+    await page.waitForChanges();
+
+    input?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    await page.waitForChanges();
+
+    const menu = page.root!.querySelector('modus-wc-menu');
+    expect(menu).toBeFalsy();
+  });
+  it('should blur input on Enter key', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: `<modus-wc-autocomplete
+              aria-label="Test"
+              min-chars="0"
+            ></modus-wc-autocomplete>`,
+    });
+
+    // Setup component state
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    // Focus and open menu
+    const input = page.root!.querySelector('input');
+    input?.focus();
+    input?.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowDown',
+        bubbles: true,
+        composed: true,
+      })
+    );
+    await page.waitForChanges();
+
+    // Spy on blur after menu is open
+    const blurSpy = jest.spyOn(input!, 'blur');
+    input?.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+        composed: true,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(blurSpy).toHaveBeenCalled();
+  });
+  it('should hide menu on Escape key', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: '<modus-wc-autocomplete min-chars="0"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    // Open menu first
+    const input = page.root!.querySelector('input');
+    input?.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowDown',
+        bubbles: true,
+        composed: true,
+      })
+    );
+    await page.waitForChanges();
+    expect(page.root!.querySelector('modus-wc-menu')).toBeTruthy();
+
+    const event = new KeyboardEvent('keydown', {
+      key: 'Escape',
+      bubbles: true,
+      composed: true,
+    });
+    const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
+
+    input?.dispatchEvent(event);
+    await page.waitForChanges();
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(page.root!.querySelector('modus-wc-menu')).toBeFalsy();
+  });
 });
