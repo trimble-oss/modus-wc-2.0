@@ -71,7 +71,7 @@ export namespace Components {
         /**
           * Whether the alert has a dismiss button
          */
-        "dismissable"?: boolean;
+        "dismissible"?: boolean;
         /**
           * The Modus icon to render. *
          */
@@ -2419,7 +2419,7 @@ declare namespace LocalJSX {
         /**
           * Whether the alert has a dismiss button
          */
-        "dismissable"?: boolean;
+        "dismissible"?: boolean;
         /**
           * The Modus icon to render. *
          */
