@@ -98,3 +98,58 @@ export const UnderlineLinks: Story = {
     `;
   },
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - The structure of the breadcrumb items has changed from \`Crumb\` interface to \`IBreadcrumb\` interface.
+  - Underlined links are now applied using a custom class rather than a dedicated prop.
+
+#### Prop Mapping
+
+| 1.0 Prop         | 2.0 Prop      | Notes                                                |
+|------------------|---------------|------------------------------------------------------|
+| aria-label        | aria-label    | Now applied to the host element automatically        |
+| crumbs           | items         | Interface changed from \`Crumb\` to \`IBreadcrumb\`  |
+| underline-links   |               | Not carried over. Use custom-class with CSS instead  |
+|                  | size          | New in 2.0, allows sizing of breadcrumbs             |
+|                  | custom-class  | New in 2.0, allows applying custom CSS classes       |
+
+#### Event Mapping
+
+| 1.0 Event   | 2.0 Event       | Notes                                      |
+|-------------|-----------------|--------------------------------------------|
+| crumbClick  | breadcrumbClick | Payload changed from \`Crumb\` to \`IBreadcrumb\` |
+
+#### Interfaces
+
+##### 1.0:
+\`\`\`typescript
+interface Crumb {
+  display: string;
+  id: string;
+}
+\`\`\`
+
+##### 2.0:
+\`\`\`typescript
+interface IBreadcrumb {
+  label: string;
+  url?: string;
+}
+\`\`\`
+
+        `,
+      },
+    },
+    // To hide the actual story rendering and only show docs:
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  // Simple render function or leave it empty
+  render: () => html`<div></div>`,
+};
