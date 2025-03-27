@@ -22,6 +22,12 @@ export interface IAutocompleteItem {
   /** Whether the item should be shown in the dropdown menu */
   visibleInMenu: boolean;
 }
+export interface IAutocompleteNoResults {
+  /** The main label to display when no results are found. */
+  label: string;
+  /** The sub-label or additional text to display below the main label. */
+  subLabel: string;
+}
 
 /**
  * A customizable autocomplete component used to create searchable text inputs.
@@ -80,6 +86,12 @@ export class ModusWcAutocomplete {
 
   /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string;
+
+  /** The content to display when no results are found. */
+  @Prop() noResults?: IAutocompleteNoResults = {
+    label: 'No results found',
+    subLabel: 'Check spelling or try a different keyword',
+  };
 
   /** Text that appears in the form control when it has no value set. */
   @Prop() placeholder?: string = '';
@@ -251,14 +263,30 @@ export class ModusWcAutocomplete {
 
       return (
         <Fragment>
-          {menuItems.map((item) => (
-            <modus-wc-menu-item
-              label={item.label}
-              onItemSelect={() => this.handleItemSelect(item)}
-              selected={item.selected}
-              value={item.value}
-            />
-          ))}
+          {menuItems.length > 0
+            ? menuItems.map((item) => (
+                <modus-wc-menu-item
+                  label={item.label}
+                  onItemSelect={() => this.handleItemSelect(item)}
+                  selected={item.selected}
+                  value={item.value}
+                />
+              ))
+            : this.noResults && (
+                <modus-wc-menu-item>
+                  <div class="modus-wc-autocomplete-no-results">
+                    <div class="modus-wc-autocomplete-no-results-icon-label">
+                      <modus-wc-icon decorative={true} name="search" />
+                      <div class="modus-wc-autocomplete-no-results-label">
+                        {this.noResults.label}
+                      </div>
+                    </div>
+                    <div class="modus-wc-autocomplete-no-results-sub-label">
+                      {this.noResults.subLabel}
+                    </div>
+                  </div>
+                </modus-wc-menu-item>
+              )}
         </Fragment>
       );
     };

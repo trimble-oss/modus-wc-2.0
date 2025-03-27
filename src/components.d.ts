@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
+import { IAutocompleteItem, IAutocompleteNoResults } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
 import { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
@@ -20,7 +20,7 @@ import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
-export { IAutocompleteItem } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
+export { IAutocompleteItem, IAutocompleteNoResults } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
 export { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, TextFieldTypes } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
@@ -134,6 +134,10 @@ export namespace Components {
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
+        /**
+          * The content to display when no results are found.
+         */
+        "noResults"?: IAutocompleteNoResults;
         /**
           * Text that appears in the form control when it has no value set.
          */
@@ -2486,6 +2490,10 @@ declare namespace LocalJSX {
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
+        /**
+          * The content to display when no results are found.
+         */
+        "noResults"?: IAutocompleteNoResults;
         /**
           * Event emitted when a selected item chip is removed.
          */
