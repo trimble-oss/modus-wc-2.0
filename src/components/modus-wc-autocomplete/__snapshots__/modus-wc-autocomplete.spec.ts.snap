@@ -6,7 +6,9 @@ exports[`modus-wc-autocomplete should render multi select with selected items 1`
     <modus-wc-chip aria-label="Remove item button" label="Item 1" show-remove="true" size="sm" variant="filled"></modus-wc-chip>
     <modus-wc-chip aria-label="Remove item button" label="Item 2" show-remove="true" size="sm" variant="filled"></modus-wc-chip>
     <modus-wc-text-input value="">
-      <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-input modus-wc-input-md modus-wc-w-full" inputmode="text" placeholder="" type="text" value="">
+      <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-w-full">
+        <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
+      </label>
     </modus-wc-text-input>
   </div>
 </modus-wc-autocomplete>
@@ -18,7 +20,9 @@ exports[`modus-wc-autocomplete should render multi select without border 1`] = `
     <modus-wc-chip aria-label="Remove item button" label="Item 1" show-remove="true" size="sm" variant="filled"></modus-wc-chip>
     <modus-wc-chip aria-label="Remove item button" label="Item 2" show-remove="true" size="sm" variant="filled"></modus-wc-chip>
     <modus-wc-text-input value="">
-      <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-input modus-wc-input-md modus-wc-w-full" inputmode="text" placeholder="" type="text" value="">
+      <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-w-full">
+        <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
+      </label>
     </modus-wc-text-input>
   </div>
 </modus-wc-autocomplete>
@@ -28,7 +32,9 @@ exports[`modus-wc-autocomplete should render with custom props 1`] = `
 <modus-wc-autocomplete active-item-value="1" bordered="false" class="modus-wc-autocomplete test-class" custom-class="test-class" debounce-ms="500" disabled="true" input-id="test-id" input-tab-index="1" label="Test label" min-chars="2" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" value="Item 1">
   <modus-wc-input-label forid="test-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
   <modus-wc-text-input value="Item 1">
-    <input aria-describedby="description" aria-label="Test autocomplete" aria-placeholder="Test placeholder" aria-required="" class="modus-wc-input modus-wc-input-lg modus-wc-w-full" disabled="" id="test-id" inputmode="text" name="test-name" placeholder="Test placeholder" required="" tabindex="1" type="text" value="Item 1">
+    <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-lg modus-wc-items-center modus-wc-w-full">
+      <input aria-describedby="description" aria-label="Test autocomplete" aria-placeholder="Test placeholder" aria-required="" class="modus-wc-grow" disabled="" id="test-id" inputmode="text" name="test-name" placeholder="Test placeholder" required="" tabindex="1" type="text" value="Item 1">
+    </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
 `;
@@ -36,7 +42,9 @@ exports[`modus-wc-autocomplete should render with custom props 1`] = `
 exports[`modus-wc-autocomplete should render with default props 1`] = `
 <modus-wc-autocomplete class="modus-wc-autocomplete" value="">
   <modus-wc-text-input value="">
-    <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" inputmode="text" placeholder="" type="text" value="">
+    <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-w-full">
+      <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
+    </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
 `;

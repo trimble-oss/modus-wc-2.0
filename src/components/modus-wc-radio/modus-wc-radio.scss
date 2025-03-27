@@ -16,7 +16,7 @@
 [data-theme='modus-classic-dark'] .modus-wc-radio {
   --fallback-bc: var(--modus-wc-color-gray-4);
 
-  border-width: 2px;
+  border-width: var(--modus-wc-border-width-sm);
 
   &.modus-wc-radio-xl {
     height: 4rem;

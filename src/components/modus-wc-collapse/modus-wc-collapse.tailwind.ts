@@ -1,49 +1,50 @@
 import { DaisySize } from '../types';
 
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  bordered,
+  expanded,
+}: {
   bordered?: boolean;
   expanded?: boolean;
 }): string => {
   let classes = '';
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'bordered') &&
-    !!props.bordered
-  ) {
+  if (bordered) {
     classes = `${classes} modus-wc-border`;
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'expanded') &&
-    !!props.expanded
-  ) {
+  if (expanded) {
     classes = `${classes} modus-wc-collapse-open`;
   } else {
     classes = `${classes} modus-wc-collapse-close`;
   }
 
-  return classes;
+  return classes.trim();
 };
 
-export const convertPropsToDescriptionDivClasses = (props: {
+export const convertPropsToDescriptionDivClasses = ({
+  size,
+}: {
   size?: DaisySize;
 }): string => {
   let sizeClass = 'modus-wc-text-base';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    sizeClass = `modus-wc-text-${props.size}`;
+  if (size) {
+    sizeClass = `modus-wc-text-${size}`;
   }
 
   return sizeClass;
 };
 
-export const convertPropsToTitleChildDivClasses = (props: {
+export const convertPropsToTitleChildDivClasses = ({
+  size,
+}: {
   size?: DaisySize;
 }): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    switch (props.size) {
+  if (size) {
+    switch (size) {
       case 'xs':
         classes = 'modus-wc-text-base';
         break;
@@ -58,16 +59,19 @@ export const convertPropsToTitleChildDivClasses = (props: {
         break;
     }
   }
+
   return classes;
 };
 
-export const convertPropsToTitleDivClasses = (props: {
+export const convertPropsToTitleDivClasses = ({
+  size,
+}: {
   size?: DaisySize;
 }): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    switch (props.size) {
+  if (size) {
+    switch (size) {
       case 'xs':
         classes = 'modus-wc-pb-2 modus-wc-pl-2 modus-wc-pt-2';
         break;
@@ -82,5 +86,6 @@ export const convertPropsToTitleDivClasses = (props: {
         break;
     }
   }
+
   return classes;
 };

@@ -15,6 +15,7 @@ import {
   TextFieldTypes,
 } from '../types';
 import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
+import { ClearIcon, SearchIcon } from './modus-wc-text-input.icons';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -50,6 +51,9 @@ export class ModusWcTextInput {
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
+  /** Aria label for the clear icon button. */
+  @Prop() clearAriaLabel?: string = 'Clear text';
+
   /** Custom CSS class to apply to the input. */
   @Prop() customClass?: string = '';
 
@@ -68,6 +72,12 @@ export class ModusWcTextInput {
 
   /** Feedback to render below the input. */
   @Prop() feedback?: IInputFeedbackProp;
+
+  /** Show the clear button within the input field. */
+  @Prop() includeClear?: boolean = false;
+
+  /** Show the search icon within the input field. */
+  @Prop() includeSearch?: boolean = false;
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
@@ -143,10 +153,18 @@ export class ModusWcTextInput {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-input', 'modus-wc-w-full'];
+    const classList = [
+      'modus-wc-input',
+      'modus-wc-w-full',
+      'modus-wc-flex',
+      'modus-wc-items-center',
+      'modus-wc-gap-1',
+    ];
+
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       feedback: this.feedback,
+      readOnly: this.readOnly,
       size: this.size,
     });
 
@@ -161,15 +179,29 @@ export class ModusWcTextInput {
     this.inputBlur.emit(event);
   };
 
+  private handleClearText = (event: MouseEvent | KeyboardEvent) => {
+    this.value = '';
+    this.inputChange.emit(event as unknown as InputEvent);
+  };
+
   private handleFocus = (event: FocusEvent) => {
     this.inputFocus.emit(event);
   };
 
   private handleInput = (event: InputEvent) => {
+    this.value = (event.target as HTMLInputElement).value;
     this.inputChange.emit(event);
   };
 
+  private shouldIncludeClear(): boolean {
+    return (
+      !!this.includeClear && !this.disabled && !this.readOnly && !!this.value
+    );
+  }
+
   render() {
+    const showClear = this.shouldIncludeClear();
+
     return (
       <Host>
         {this.label && (
@@ -180,32 +212,45 @@ export class ModusWcTextInput {
             size={this.size}
           />
         )}
-        <input
-          aria-placeholder={this.placeholder}
-          aria-required={this.required}
-          autocapitalize={this.autoCapitalize}
-          autocomplete={this.autoComplete}
-          autocorrect={this.autoCorrect}
-          class={this.getClasses()}
-          disabled={this.disabled}
-          enterkeyhint={this.enterkeyhint}
-          id={this.inputId}
-          inputmode={this.inputMode}
-          maxlength={this.maxLength}
-          minlength={this.minLength}
-          name={this.name}
-          onBlur={this.handleBlur}
-          onFocus={this.handleFocus}
-          onInput={this.handleInput}
-          pattern={this.pattern}
-          placeholder={this.placeholder}
-          readonly={this.readOnly}
-          required={this.required}
-          tabIndex={this.inputTabIndex}
-          type={this.type}
-          value={this.value}
-          {...this.inheritedAttributes}
-        />
+        <label class={this.getClasses()}>
+          {this.includeSearch && <SearchIcon />}
+          <input
+            aria-placeholder={this.placeholder}
+            aria-required={this.required}
+            autocapitalize={this.autoCapitalize}
+            autocomplete={this.autoComplete}
+            autocorrect={this.autoCorrect}
+            class="modus-wc-grow"
+            disabled={this.disabled}
+            enterkeyhint={this.enterkeyhint}
+            id={this.inputId}
+            inputmode={this.inputMode}
+            maxlength={this.maxLength}
+            minlength={this.minLength}
+            name={this.name}
+            onBlur={this.handleBlur}
+            onFocus={this.handleFocus}
+            onInput={this.handleInput}
+            pattern={this.pattern}
+            placeholder={this.placeholder}
+            readonly={this.readOnly}
+            required={this.required}
+            tabIndex={this.inputTabIndex}
+            type={this.type}
+            value={this.value}
+            {...this.inheritedAttributes}
+          />
+          {this.includeClear && (
+            <div
+              class={`modus-wc-clear-icon-container ${showClear ? 'modus-wc-clear-icon-visible' : 'modus-wc-clear-icon-hidden'}`}
+            >
+              <ClearIcon
+                ariaLabel={this.clearAriaLabel!}
+                onClear={this.handleClearText}
+              />
+            </div>
+          )}
+        </label>
         {this.feedback && (
           <modus-wc-input-feedback
             level={this.feedback.level}

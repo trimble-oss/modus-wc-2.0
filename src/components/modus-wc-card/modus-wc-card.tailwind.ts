@@ -1,4 +1,9 @@
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  bordered,
+  fullImage,
+  layout,
+  padding,
+}: {
   bordered?: boolean;
   fullImage?: boolean;
   layout?: 'vertical' | 'horizontal';
@@ -6,39 +11,21 @@ export const convertPropsToClasses = (props: {
 }): string => {
   let classes = '';
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'bordered') &&
-    !!props.bordered
-  ) {
+  if (bordered) {
     classes = `${classes} modus-wc-card-bordered`;
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'fullImage') &&
-    !!props.fullImage
-  ) {
-    classes = `${classes} modus-wc-image-full`; // no -card
+  if (fullImage) {
+    classes = `${classes} modus-wc-image-full`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'layout') && props.layout) {
-    switch (props.layout) {
-      case 'horizontal':
-        classes = `${classes} modus-wc-card-side`;
-        break;
-      case 'vertical':
-        break; // vertical is default, no class needed
-    }
+  if (layout === 'horizontal') {
+    classes = `${classes} modus-wc-card-side`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'padding') && props.padding) {
-    switch (props.padding) {
-      case 'normal': // normal is default, no class needed
-        break;
-      case 'compact':
-        classes = `${classes} modus-wc-card-compact`;
-        break;
-    }
+  if (padding === 'compact') {
+    classes = `${classes} modus-wc-card-compact`;
   }
 
-  return classes;
+  return classes.trim();
 };

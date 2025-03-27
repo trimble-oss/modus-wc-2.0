@@ -1,7 +1,11 @@
 import { ModusSize } from '../types';
 import { ModusWcRatingVariant } from './modus-wc-rating';
 
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  allowHalf,
+  size,
+  variant,
+}: {
   allowHalf?: boolean;
   size?: ModusSize;
   variant?: ModusWcRatingVariant;
@@ -9,16 +13,12 @@ export const convertPropsToClasses = (props: {
   let ratingClasses = '';
   let ratingItemClasses = '';
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'allowHalf') &&
-    !!props.allowHalf &&
-    !(props.variant === 'smiley' || props.variant === 'thumb')
-  ) {
+  if (allowHalf && !(variant === 'smiley' || variant === 'thumb')) {
     ratingClasses = `${ratingClasses} modus-wc-rating-half`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    switch (props.size) {
+  if (size) {
+    switch (size) {
       case 'sm':
         ratingClasses = `${ratingClasses} modus-wc-rating-sm`;
         break;
@@ -31,8 +31,8 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'variant') && props.variant) {
-    switch (props.variant) {
+  if (variant) {
+    switch (variant) {
       case 'star':
         ratingItemClasses = `${ratingItemClasses} modus-wc-mask-star-2`;
         break;
@@ -49,8 +49,8 @@ export const convertPropsToClasses = (props: {
   }
 
   return {
-    ratingPropClasses: ratingClasses,
-    ratingItemPropClasses: ratingItemClasses,
+    ratingPropClasses: ratingClasses.trim(),
+    ratingItemPropClasses: ratingItemClasses.trim(),
   };
 };
 

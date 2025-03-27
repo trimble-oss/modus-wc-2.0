@@ -46,7 +46,7 @@
 
     &:focus-within {
       border-color: var(--modus-wc-color-highlight-blue);
-      border-width: 2px;
+      border-width: var(--modus-wc-border-width-sm);
     }
   }
 

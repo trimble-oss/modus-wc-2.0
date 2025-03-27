@@ -20,6 +20,7 @@ Adheres to WCAG 2.2 standards.
 | `customClass`   | `custom-class`    | Custom CSS class to apply to the textarea (supports DaisyUI).                   | `string \| undefined`                                                                  | `''`        |
 | `disabled`      | `disabled`        | The disabled state of the textarea.                                             | `boolean \| undefined`                                                                 | `false`     |
 | `enterkeyhint`  | `enterkeyhint`    | A hint to the browser for which enter key to display.                           | `"done" \| "enter" \| "go" \| "next" \| "previous" \| "search" \| "send" \| undefined` | `undefined` |
+| `feedback`      | --                | Feedback to render below the input.                                             | `IInputFeedbackProp \| undefined`                                                      | `undefined` |
 | `inputId`       | `input-id`        | The ID of the input element.                                                    | `string \| undefined`                                                                  | `undefined` |
 | `inputTabIndex` | `input-tab-index` | The tabindex of the input.                                                      | `number \| undefined`                                                                  | `undefined` |
 | `label`         | `label`           | The text to display within the label.                                           | `string \| undefined`                                                                  | `undefined` |
@@ -47,11 +48,14 @@ Adheres to WCAG 2.2 standards.
 ### Depends on
 
 - [modus-wc-input-label](../modus-wc-input-label)
+- [modus-wc-input-feedback](../modus-wc-input-feedback)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-textarea --> modus-wc-input-label
+  modus-wc-textarea --> modus-wc-input-feedback
+  modus-wc-input-feedback --> modus-wc-icon
   style modus-wc-textarea fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
