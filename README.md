@@ -1,6 +1,6 @@
 # Modus Web Components 2.0
 
-This is a web component library built with Stencil JS and SASS for large enterprise applications, using the prefix "modus-wc".
+This is a web component library built with Stencil JS and Sass for large enterprise applications, using the prefix "modus-wc".
 
 ## Getting Started
 
@@ -50,4 +50,4 @@ On PR creation and merge to `main` the "Publish Storybook" action will automatic
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.

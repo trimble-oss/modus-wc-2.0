@@ -1,11 +1,15 @@
 import { ModusSize } from '../types';
 
-export const convertPropsToClasses = (props: { size?: ModusSize }): string => {
+export const convertPropsToClasses = ({
+  size,
+}: {
+  size?: ModusSize;
+}): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-btn-${props.size}`;
+  if (size) {
+    classes = `${classes} modus-wc-btn-${size}`;
   }
 
-  return classes;
+  return classes.trim();
 };

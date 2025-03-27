@@ -1,54 +1,59 @@
 import { Density } from '../types';
 
-export const convertTablePropsToClasses = (props: {
+export const convertTablePropsToClasses = ({
+  density,
+  zebra,
+}: {
   density?: Density;
   zebra?: boolean;
 }): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'density') && props.density) {
-    switch (props.density) {
+  if (density) {
+    switch (density) {
       case 'compact':
         classes = `${classes} modus-wc-table-xs`;
         break;
     }
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'zebra') && !!props.zebra) {
+  if (zebra) {
     classes = `${classes} modus-wc-table-zebra`;
   }
 
-  return classes;
+  return classes.trim();
 };
 
-export const convertRowPropsToClasses = (props: {
+export const convertRowPropsToClasses = ({
+  active,
+  hover,
+}: {
   active?: boolean;
   hover?: boolean;
 }): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'active') && !!props.active) {
+  if (active) {
     classes = `${classes} modus-wc-active`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'hover') && !!props.hover) {
+  if (hover) {
     classes = `${classes} modus-wc-hover`;
   }
 
-  return classes;
+  return classes.trim();
 };
 
-export const convertHeaderCellPropsToClasses = (props: {
+export const convertHeaderCellPropsToClasses = ({
+  sortable,
+}: {
   sortable?: boolean;
 }): string => {
   let classes = '';
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'sortable') &&
-    !!props.sortable
-  ) {
+  if (sortable) {
     classes = `${classes} modus-wc-cursor-pointer`;
   }
 
-  return classes;
+  return classes.trim();
 };

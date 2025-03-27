@@ -8,7 +8,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-textarea.tailwind';
-import { ModusSize } from '../types';
+import { IInputFeedbackProp, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
 
 /**
@@ -48,6 +48,9 @@ export class ModusWcTextarea {
     | 'previous'
     | 'search'
     | 'send';
+
+  /** Feedback to render below the input. */
+  @Prop() feedback?: IInputFeedbackProp;
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
@@ -106,6 +109,7 @@ export class ModusWcTextarea {
     const classList = ['modus-wc-textarea', 'modus-wc-w-full'];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
+      feedback: this.feedback,
       size: this.size,
     });
 
@@ -160,6 +164,13 @@ export class ModusWcTextarea {
           value={this.value}
           {...this.inheritedAttributes}
         />
+        {this.feedback && (
+          <modus-wc-input-feedback
+            level={this.feedback.level}
+            message={this.feedback.message}
+            size={this.size}
+          />
+        )}
       </Host>
     );
   }

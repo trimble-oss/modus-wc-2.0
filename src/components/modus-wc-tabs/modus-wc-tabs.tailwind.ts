@@ -1,16 +1,16 @@
 import { DaisySize } from '../types';
 
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  tabStyle,
+  size,
+}: {
   tabStyle?: 'boxed' | 'bordered' | 'lifted' | 'none';
   size?: DaisySize;
 }): string => {
   let classes = '';
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'tabStyle') &&
-    props.tabStyle
-  ) {
-    switch (props.tabStyle) {
+  if (tabStyle) {
+    switch (tabStyle) {
       case 'boxed':
         classes = `${classes} modus-wc-tabs-boxed`;
         break;
@@ -25,8 +25,8 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    switch (props.size) {
+  if (size) {
+    switch (size) {
       case 'xs':
         classes = `${classes} modus-wc-tabs-xs`;
         break;
@@ -42,25 +42,25 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  return classes;
+  return classes.trim();
 };
 
-export const convertPropsToClassesTab = (props: {
+export const convertPropsToClassesTab = ({
+  active,
+  disabled,
+}: {
   active?: boolean;
   disabled?: boolean;
 }): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'active') && !!props.active) {
+  if (active) {
     classes = `${classes} modus-wc-tab-active`;
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'disabled') &&
-    !!props.disabled
-  ) {
+  if (disabled) {
     classes = `${classes} modus-wc-tab-disabled`;
   }
 
-  return classes;
+  return classes.trim();
 };

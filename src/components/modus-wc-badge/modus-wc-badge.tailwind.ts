@@ -1,6 +1,10 @@
 import { DaisySize } from '../types';
 
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  color,
+  size,
+  variant,
+}: {
   color?:
     | 'primary'
     | 'secondary'
@@ -14,8 +18,8 @@ export const convertPropsToClasses = (props: {
 }): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'color') && props.color) {
-    switch (props.color) {
+  if (color) {
+    switch (color) {
       case 'primary':
         classes = `${classes} modus-wc-badge-primary`;
         break;
@@ -40,12 +44,12 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-badge-${props.size}`;
+  if (size) {
+    classes = `${classes} modus-wc-badge-${size}`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'variant') && props.variant) {
-    switch (props.variant) {
+  if (variant) {
+    switch (variant) {
       case 'counter':
         classes = `${classes} modus-wc-badge-counter`;
         break;
@@ -55,5 +59,5 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  return classes;
+  return classes.trim();
 };
