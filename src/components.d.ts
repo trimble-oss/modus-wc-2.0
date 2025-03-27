@@ -137,7 +137,7 @@ export namespace Components {
         /**
           * The content to display when no results are found.
          */
-        "noResults"?: IAutocompleteNoResults;
+        "noResults": IAutocompleteNoResults;
         /**
           * Text that appears in the form control when it has no value set.
          */

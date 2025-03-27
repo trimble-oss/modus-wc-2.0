@@ -160,4 +160,18 @@ describe('modus-wc-autocomplete', () => {
 
     expect(focusSpy).toHaveBeenCalled();
   });
+
+  it('should display no results ui when no items are available', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="No results test"></modus-wc-autocomplete>',
+    });
+
+    const input = page.root!.querySelector('input');
+    expect(input).not.toBeNull();
+    input!.focus();
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
+  });
 });

@@ -88,7 +88,7 @@ export class ModusWcAutocomplete {
   @Prop() name?: string;
 
   /** The content to display when no results are found. */
-  @Prop() noResults?: IAutocompleteNoResults = {
+  @Prop() noResults: IAutocompleteNoResults = {
     label: 'No results found',
     subLabel: 'Check spelling or try a different keyword',
   };
@@ -209,6 +209,18 @@ export class ModusWcAutocomplete {
     this.chipRemove.emit(item);
   };
 
+  private renderNoResults() {
+    return (
+      <div class="modus-wc-autocomplete-no-results">
+        <div class="icon-label" aria-label="No results found">
+          <modus-wc-icon name="search" decorative />
+          <div class="label">{this.noResults.label}</div>
+        </div>
+        <div class="sub-label">{this.noResults.subLabel}</div>
+      </div>
+    );
+  }
+
   render() {
     const getChips = () => {
       const selectedItems = this.items.filter((item) => item.selected);
@@ -272,21 +284,7 @@ export class ModusWcAutocomplete {
                   value={item.value}
                 />
               ))
-            : this.noResults && (
-                <modus-wc-menu-item>
-                  <div class="modus-wc-autocomplete-no-results">
-                    <div class="modus-wc-autocomplete-no-results-icon-label">
-                      <modus-wc-icon decorative={true} name="search" />
-                      <div class="modus-wc-autocomplete-no-results-label">
-                        {this.noResults.label}
-                      </div>
-                    </div>
-                    <div class="modus-wc-autocomplete-no-results-sub-label">
-                      {this.noResults.subLabel}
-                    </div>
-                  </div>
-                </modus-wc-menu-item>
-              )}
+            : this.renderNoResults()}
         </Fragment>
       );
     };

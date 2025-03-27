@@ -1,5 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-autocomplete should display no results ui when no items are available 1`] = `
+<modus-wc-autocomplete class="modus-wc-autocomplete" value="">
+  <modus-wc-text-input value="">
+    <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-w-full">
+      <input aria-label="No results test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
+    </label>
+  </modus-wc-text-input>
+  <modus-wc-menu aria-label="Autocomplete menu" bordered="" size="md">
+    <div class="modus-wc-autocomplete-no-results">
+      <div aria-label="No results found" class="icon-label">
+        <modus-wc-icon decorative="" name="search"></modus-wc-icon>
+        <div class="label">
+          No results found
+        </div>
+      </div>
+      <div class="sub-label">
+        Check spelling or try a different keyword
+      </div>
+    </div>
+  </modus-wc-menu>
+</modus-wc-autocomplete>
+`;
+
 exports[`modus-wc-autocomplete should render multi select with selected items 1`] = `
 <modus-wc-autocomplete class="modus-wc-autocomplete" multi-select="true" value="">
   <div class="modus-wc-autocomplete-multi-select modus-wc-autocomplete-multi-select--bordered">
