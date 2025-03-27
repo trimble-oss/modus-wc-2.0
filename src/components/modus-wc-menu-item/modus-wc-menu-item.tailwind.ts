@@ -4,6 +4,7 @@ export const convertPropsToClasses = ({
   bordered,
   disabled,
   selected,
+  focused,
   size,
 }: {
   bordered?: boolean;
@@ -25,7 +26,7 @@ export const convertPropsToClasses = ({
   if (selected) {
     classes = `${classes} modus-wc-menu-item-selected`;
   }
-  
+
   if (focused) {
     classes = `${classes} modus-wc-menu-item-focused`;
   }
