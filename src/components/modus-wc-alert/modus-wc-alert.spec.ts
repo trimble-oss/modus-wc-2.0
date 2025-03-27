@@ -118,7 +118,7 @@ describe('modus-wc-alert', () => {
   it('should render dismissible button and handle click event', async () => {
     const page = await newSpecPage({
       components: [ModusWcAlert, ModusWcIcon, ModusWCTypography, ModusWcButton],
-      html: '<modus-wc-alert dismissable></modus-wc-alert>',
+      html: '<modus-wc-alert dismissible></modus-wc-alert>',
     });
 
     const component = page.rootInstance as ModusWcAlert;
@@ -131,7 +131,7 @@ describe('modus-wc-alert', () => {
     expect(dismissElementSpy).toHaveBeenCalled();
   });
 
-  it('should call dismissElement on Escape keyup when dismissable is true', async () => {
+  it('should call dismissElement on Escape keyup when dismissible is true', async () => {
     const page = await newSpecPage({
       components: [ModusWcAlert, ModusWcIcon, ModusWCTypography, ModusWcButton],
       html: '<modus-wc-alert></modus-wc-alert>',
@@ -144,7 +144,7 @@ describe('modus-wc-alert', () => {
     page.root?.dispatchEvent(event);
     expect(dismissElementSpy).not.toHaveBeenCalled();
 
-    component.dismissable = true;
+    component.dismissible = true;
     await page.waitForChanges();
 
     page.root?.dispatchEvent(event);
