@@ -164,8 +164,8 @@
               }
             },
             {
-              "name": "dismissable",
-              "fieldName": "dismissable",
+              "name": "dismissible",
+              "fieldName": "dismissible",
               "default": "false",
               "description": "Whether the alert has a dismiss button",
               "type": {
