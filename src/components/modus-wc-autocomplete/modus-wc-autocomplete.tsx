@@ -275,7 +275,7 @@ export class ModusWcAutocomplete {
 
       return (
         <Fragment>
-          {menuItems.length > 0
+          {menuItems?.length
             ? menuItems.map((item) => (
                 <modus-wc-menu-item
                   label={item.label}
