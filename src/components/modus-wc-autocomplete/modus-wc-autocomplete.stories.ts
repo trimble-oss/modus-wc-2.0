@@ -391,33 +391,34 @@ export const Migration: Story = {
   additional info and examples.
   - To handle updating items in 2.0, simply create a new array of items and bind it to the \`items\` prop. The 1.0 prop
   \`filter-options\` is no longer necessary.
+  - Size values have changed from verbose names (\`small\`, \`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
 
 #### Prop Mapping
 
-| 1.0 Prop                      | 2.0 Prop            | Notes                                     |
-|-------------------------------|---------------------|-------------------------------------------|
-| aria-label                    | aria-label          |                                           |
-| clearable                     |                     | Upcoming feature                          |
-| disabled                      | disabled            |                                           |
-| disable-close-on-select       | leave-menu-open     |                                           |
-| dropdown-max-height           |                     | Not carried over, use CSS instead         |
-| dropdown-z-index              |                     | Not carried over, use CSS instead         |
-| error-text                    | feedback.message    | Use feedback level                        |
-| filter-options                |                     | Rebind options                            |
-| include-search-icon           |                     | Coming soon                               |
-| label                         | label               |                                           |
-| loading                       |                     | Upcoming feature                          |
-| multiple                      | multi-select        |                                           |
-| no-results-found-text         | no-results.label    |                                           |
-| no-results-found-subtext      | no-results.subLabel |                                           |
-| options                       | items               |                                           |
-| placeholder                   | placeholder         |                                           |
-| read-only                     | read-only           |                                           |
-| required                      | required            |                                           |
-| show-no-results-found-message |                     | Not carried over, use \`no-results\` prop |
-| show-options-on-focus         |                     | Not carried over                          |
-| size                          | size                |                                           |
-| value                         | value               |                                           |
+| 1.0 Prop                      | 2.0 Prop            | Notes                                                       |
+|-------------------------------|---------------------|-------------------------------------------------------------|
+| aria-label                    | aria-label          |                                                             |
+| clearable                     |                     | Upcoming feature                                            |
+| disabled                      | disabled            |                                                             |
+| disable-close-on-select       | leave-menu-open     |                                                             |
+| dropdown-max-height           |                     | Not carried over, use CSS instead                           |
+| dropdown-z-index              |                     | Not carried over, use CSS instead                           |
+| error-text                    | feedback.message    | Use feedback level                                          |
+| filter-options                |                     | Rebind options                                              |
+| include-search-icon           |                     | Coming soon                                                 |
+| label                         | label               |                                                             |
+| loading                       |                     | Upcoming feature                                            |
+| multiple                      | multi-select        |                                                             |
+| no-results-found-text         | no-results.label    |                                                             |
+| no-results-found-subtext      | no-results.subLabel |                                                             |
+| options                       | items               |                                                             |
+| placeholder                   | placeholder         |                                                             |
+| read-only                     | read-only           |                                                             |
+| required                      | required            |                                                             |
+| show-no-results-found-message |                     | Not carried over, use \`no-results\` prop                   |
+| show-options-on-focus         |                     | Not carried over                                            |
+| size                          | size                | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
+| value                         | value               |                                                             |
 
 #### Event Mapping
 
