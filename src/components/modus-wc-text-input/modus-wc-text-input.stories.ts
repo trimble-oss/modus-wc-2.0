@@ -199,34 +199,34 @@ export const Migration: Story = {
 
 #### Prop Mapping
 
-| 1.0 Prop                     | 2.0 Prop            | Notes                |
-|------------------------------|---------------------|----------------------|
-| aria-label                   | aria-label          |                      |
-| autocapitalize               | auto-capitalize     |                      |
-| autocorrect                  | auto-correct        |                      |
-| autocomplete                 | autocomplete        |                      |
-| auto-focus-input             | autofocus           |                      |
-| clearable                    | include-clear       |                      |
-| disabled                     | disabled            |                      |
-| enter-key-hint               | enterkeyhint        |                      |
-| error-text                   | feedback.message    | Use feedback level   |
-| helper-text                  |                     | Not carried over     |
-| include-error-icon           |                     | Not carried over     |
-| include-search-icon          | include-search      |                      |
-| include-password-text-toggle |                     | Not carried over     |
-| inputmode                    | input-mode          |                      |
-| label                        | label               |                      |
-| max-length                   | max-length          |                      |
-| pattern                      | pattern             |                      |
-| placeholder                  | placeholder         |                      |
-| read-only                    | read-only           |                      |
-| required                     | required            |                      |
-| size                         | size                |                      |
-| spellcheck                   | spellcheck          |                      |
-| text-align                   |                     | Not carried over     |
-| type                         | type                |                      |
-| valid-text                   |                     | Not carried over     |
-| value                        | value               |                      |
+| 1.0 Prop                     | 2.0 Prop            | Notes                             |
+|------------------------------|---------------------|-----------------------------------|
+| aria-label                   | aria-label          |                                   |
+| autocapitalize               | auto-capitalize     |                                   |
+| autocorrect                  | auto-correct        |                                   |
+| autocomplete                 | autocomplete        |                                   |
+| auto-focus-input             | autofocus           |                                   |
+| clearable                    | include-clear       |                                   |
+| disabled                     | disabled            |                                   |
+| enter-key-hint               | enterkeyhint        |                                   |
+| error-text                   | feedback.message    | Use \`feedback\` level            |
+| helper-text                  |                     | Not carried over                  |
+| include-error-icon           |                     | Not carried over                  |
+| include-search-icon          | include-search      |                                   |
+| include-password-text-toggle |                     | Not carried over                  |
+| inputmode                    | input-mode          |                                   |
+| label                        | label               |                                   |
+| max-length                   | max-length          |                                   |
+| pattern                      | pattern             |                                   |
+| placeholder                  | placeholder         |                                   |
+| read-only                    | read-only           |                                   |
+| required                     | required            |                                   |
+| size                         | size                |                                   |
+| spellcheck                   | spellcheck          |                                   |
+| text-align                   |                     | Not carried over, use CSS instead |
+| type                         | type                |                                   |
+| valid-text                   |                     | Not carried over                  |
+| value                        | value               |                                   |
 
 #### Event Mapping
 
