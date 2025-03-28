@@ -458,3 +458,199 @@ interface IAutocompleteItem {
   // Simple render function or leave it empty
   render: () => html`<div></div>`,
 };
+
+export const CustomMenuItems: Story = {
+  render: (args) => {
+    const handleInputChange = (e) => {
+      if (!e.detail?.target) return;
+
+      const autocomplete = (e.target as HTMLInputElement).closest(
+        'modus-wc-autocomplete'
+      );
+
+      if (autocomplete) {
+        const searchText = (e.detail.target as HTMLInputElement).value;
+
+        // Create a new array, updating the selected values.
+        const allLiItems = autocomplete?.querySelectorAll('li');
+
+        Array.from(allLiItems ?? []).forEach((menuItem) => {
+          const label =
+            menuItem.querySelector('.title')?.textContent?.toLowerCase() || '';
+          if (!label.includes(searchText.toLowerCase())) {
+            menuItem.classList.add('hidden');
+          } else {
+            menuItem.classList.remove('hidden');
+          }
+        });
+      }
+    };
+
+    const handleItemSelect = (e) => {
+      const autocomplete = (e.target as HTMLInputElement).closest(
+        'modus-wc-autocomplete'
+      );
+
+      if (autocomplete) {
+        const searchText = (e.detail.target as HTMLInputElement)?.value;
+
+        autocomplete.value = searchText;
+
+        const allLiItems = autocomplete?.querySelectorAll('li');
+        allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
+        allLiItems?.forEach((liItem) => {
+          if (liItem.contains(e.target as HTMLElement)) {
+            liItem.classList.add('selected');
+            autocomplete.value = liItem.querySelector('.title')
+              ?.textContent as string;
+          }
+        });
+      }
+    };
+
+    // prettier-ignore
+    return html`
+<style>
+  .list-item {
+    display: flex;
+    gap: 1rem;
+    border-bottom: 1px solid #ccc;
+  }
+  li.list-item.hidden {
+    display: none;
+  }
+  li.list-item img {
+    height: 28px;
+    width: 28px;
+  }
+  .item-info .title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  .item-info .description {
+    color: #666;
+    font-size: 0.875rem;
+  }
+  li.list-item.selected {
+    background-color: #dcedf9;
+  }
+  li.list-item .modus-wc-menu-item-selected-icon {
+    display: none;
+  }
+  li.list-item.selected .modus-wc-menu-item-selected-icon {
+    display: block;
+  }
+</style>
+
+<modus-wc-autocomplete
+  aria-label="Custom items autocomplete"
+  ?bordered=${args.bordered}
+  min-chars=${args["min-chars"]}
+  size=${ifDefined(args.size)}
+  @inputChange=${handleInputChange}
+>
+  <div slot="menu-items" id="custom-menu-items">
+    <li class="list-item" @click=${handleItemSelect}>
+      <div class="item-info">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/5166/5166970.png"
+          alt="Project 1"
+        />
+        <div>
+          <div class="title">Project 1</div>
+          <div class="description">Description</div>
+        </div>
+        <div class="modus-wc-menu-item-selected-icon">
+          <modus-wc-icon
+            decorative=${true}
+            name="check"
+            size=${ifDefined(args.size)}
+          />
+        </div>
+      </div>
+    </li>
+
+    <li class="list-item" @click=${handleItemSelect}>
+      <div class="item-info">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/1087/1087927.png"
+          alt="Project 2"
+        />
+        <div>
+          <div class="title">Project 2</div>
+          <div class="description">Description</div>
+        </div>
+        <div class="modus-wc-menu-item-selected-icon">
+          <modus-wc-icon
+            decorative=${true}
+            name="check"
+            size=${ifDefined(args.size)}
+          />
+        </div>
+      </div>
+    </li>
+
+    <li class="list-item" @click=${handleItemSelect}>
+      <div class="item-info">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/1659/1659067.png"
+          alt="Project 3"
+        />
+        <div>
+          <div class="title">Project 3</div>
+          <div class="description">Description</div>
+        </div>
+        <div class="modus-wc-menu-item-selected-icon">
+          <modus-wc-icon
+            decorative=${true}
+            name="check"
+            size=${ifDefined(args.size)}
+          />
+        </div>
+      </div>
+    </li>
+
+    <li class="list-item" @click=${handleItemSelect}>
+      <div class="item-info">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/1420/1420462.png"
+          alt="Project 4"
+        />
+        <div>
+          <div class="title">Project 4</div>
+          <div class="description">Description</div>
+        </div>
+        <div class="modus-wc-menu-item-selected-icon">
+          <modus-wc-icon
+            decorative=${true}
+            name="check"
+            size=${ifDefined(args.size)}
+          />
+        </div>
+      </div>
+    </li>
+
+    <li class="list-item" @click=${handleItemSelect}>
+      <div class="item-info">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/12959/12959935.png"
+          alt="Project 5"
+        />
+        <div>
+          <div class="title">Project 5</div>
+          <div class="description">Description</div>
+        </div>
+        <div class="modus-wc-menu-item-selected-icon">
+          <modus-wc-icon
+            decorative=${true}
+            name="check"
+            size=${ifDefined(args.size)}
+          />
+        </div>
+      </div>
+    </li>
+  </div>
+</modus-wc-autocomplete>
+`;
+  },
+};
