@@ -97,20 +97,18 @@ export const Migration: Story = {
         story: `
 #### Breaking Changes
 
-  - Size values changed from 'small'/'medium'/'large' to 'sm'/'md'/'lg'
-  - The 'dark' color option is now 'high-contrast'
-  - The 'type' prop is now 'variant' and 'default' type is now 'filled'
+  - The \`dark\` color option is now \`high-contrast\`
+  - The \`type\` prop is now \`variant\` and \`default\` type is now \`filled\`
+  - Size values have changed from verbose names (\`small\`, \`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
 
 #### Prop Mapping
 
-| 1.0 Prop   | 2.0 Prop     | Notes                                   |
-|------------|------------- |----------------------------------------|
-| ariaLabel  | aria-label   | Now uses inherited attributes pattern   |
-| color      | color        | 'dark' is now 'high-contrast'           |
-| size       | size         | 'small' → 'sm', 'medium' → 'md', 'large' → 'lg' |
-| type       | variant      | 'default' is now 'filled'               |
-|            | custom-class | New prop for custom CSS classes         |
-
+| 1.0 Prop   | 2.0 Prop   | Notes                                                       |
+|------------|------------|-------------------------------------------------------------|
+| aria-label | aria-label |                                                             |
+| color      | color      | \`dark\` is now \`high-contrast\`                           |
+| size       | size       | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
+| type       | variant    | \`default\` is now \`filled\`                               |
         `,
       },
     },

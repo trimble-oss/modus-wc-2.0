@@ -164,30 +164,25 @@ export const Migration: Story = {
         story: `
 #### Breaking Changes
 
-  - In 1.0 buttons had specific properties for adding icons (icon-only, left-icon, right-icon). In 2.0, icons are added via slots using the modus-wc-icon component.
-  - The button-style property has been renamed to variant with similar options.
-  - Size values have changed from verbose names (small, medium, large) to abbreviations (sm, md, lg).
+  - In 1.0 buttons had specific properties for adding icons (\`icon-only\`, \`left-icon\`, \`right-icon\`). In 2.0, icons are added via slots using the \`modus-wc-icon\` component.
+  - The \`button-style\` property has been renamed to \`variant\` with similar options.
+  - Size values have changed from verbose names (\`small\`, \`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
 
 #### Prop Mapping
 
-| 1.0 Prop         | 2.0 Prop            | Notes                                    |
-|------------------|---------------------|------------------------------------------|
-| aria-disabled    |                     | Not carried over                         |
-| aria-label       | aria-label          | Inherited from HTML attributes           |
-| button-style     | variant             | fill → filled, outline → outlined        |
-| color            | color               | 'dark' and 'special' removed, 'warning' added |
-| disabled         | disabled            |                                          |
-| icon-only        |                     | Not carried over (use slot with icon)    |
-| left-icon        |                     | Not carried over (use slot with icon)    |
-| right-icon       |                     | Not carried over (use slot with icon)    |
-| size             | size                | small → sm, medium → md, large → lg      |
-| show-caret       |                     | Not carried over                         |
-| type             | type                |                                          |
-| critical-action  |                     | Not carried over                         |
-|                  | custom-class        | New in 2.0                               |
-|                  | full-width          | New in 2.0                               |
-|                  | pressed             | New in 2.0                               |
-|                  | shape               | New in 2.0                               |
+| 1.0 Prop        | 2.0 Prop   | Notes                                                       |
+|-----------------|------------|-------------------------------------------------------------|
+| aria-label      | aria-label |                                                             |
+| button-style    | variant    | \`fill\` → \`filled\`, \`outline\` → \`outlined\`           |
+| color           | color      | \`dark\` and \`special\` removed, \`warning\` added         |
+| critical-action |            | Not carried over                                            |
+| disabled        | disabled   |                                                             |
+| icon-only       |            | Not carried over, use \`icon\` slot                         |
+| left-icon       |            | Not carried over, use \`icon\` slot                         |
+| right-icon      |            | Not carried over, use \`icon\` slot                         |
+| show-caret      |            | Not carried over                                            |
+| size            | size       | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
+| type            | type       |                                                             |
 
 #### Event Mapping
 

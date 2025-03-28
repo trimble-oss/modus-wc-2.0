@@ -79,7 +79,7 @@ export const Migration: Story = {
 
   - In 1.0 the accordion was composed of child accordion-item components. In 2.0 accordion children are collapse
   components.
-  - The new accordion supports "header" and "content" slots to provide maximum flexibility.
+  - The new accordion supports \`header\` and \`content\` slots to provide maximum flexibility.
 
 #### Prop Mapping
 

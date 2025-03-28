@@ -106,24 +106,22 @@ export const Migration: Story = {
         story: `
 #### Breaking Changes
 
-  - The structure of the breadcrumb items has changed from \`Crumb\` interface to \`IBreadcrumb\` interface.
+  - The structure of the breadcrumb \`items\` has changed from \`Crumb\` interface to \`IBreadcrumb\` interface.
   - Underlined links are now applied using a custom class rather than a dedicated prop.
 
 #### Prop Mapping
 
-| 1.0 Prop         | 2.0 Prop      | Notes                                                |
-|------------------|---------------|------------------------------------------------------|
-| aria-label        | aria-label    | Now applied to the host element automatically        |
-| crumbs           | items         | Interface changed from \`Crumb\` to \`IBreadcrumb\`  |
-| underline-links   |               | Not carried over. Use custom-class with CSS instead  |
-|                  | size          | New in 2.0, allows sizing of breadcrumbs             |
-|                  | custom-class  | New in 2.0, allows applying custom CSS classes       |
+| 1.0 Prop        | 2.0 Prop      | Notes                                               |
+|-----------------|---------------|-----------------------------------------------------|
+| aria-label      | aria-label    |                                                     |
+| crumbs          | items         | Interface changed from \`Crumb\` to \`IBreadcrumb\` |
+| underline-links |               | Not carried over, use CSS instead                   |
 
 #### Event Mapping
 
-| 1.0 Event   | 2.0 Event       | Notes                                      |
-|-------------|-----------------|--------------------------------------------|
-| crumbClick  | breadcrumbClick | Payload changed from \`Crumb\` to \`IBreadcrumb\` |
+| 1.0 Event  | 2.0 Event       | Notes                                             |
+|------------|-----------------|---------------------------------------------------|
+| crumbClick | breadcrumbClick | Payload changed from \`Crumb\` to \`IBreadcrumb\` |
 
 #### Interfaces
 
@@ -142,7 +140,6 @@ interface IBreadcrumb {
   url?: string;
 }
 \`\`\`
-
         `,
       },
     },

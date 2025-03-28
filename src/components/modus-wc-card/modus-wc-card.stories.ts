@@ -203,18 +203,14 @@ export const Migration: Story = {
 
 #### Prop Mapping
 
-| 1.0 Prop           | 2.0 Prop            | Notes                                |
-|--------------------|---------------------|--------------------------------------|
-| aria-label         | aria-label          | Now inherited through HTML attributes |
-| height             |                     | Not carried over. Use CSS instead    |
-| width              |                     | Not carried over. Use CSS instead    |
-| border-radius      |                     | Not carried over. Use CSS instead    |
-| show-card-border   | bordered            |                                      |
-| show-shadow-on-hover |                   | Not carried over. Use CSS instead    |
-|                    | background-figure   | New in 2.0                           |
-|                    | custom-class        | New in 2.0                           |
-|                    | layout              | New in 2.0                           |
-|                    | padding             | New in 2.0                           |
+| 1.0 Prop             | 2.0 Prop            | Notes                                |
+|----------------------|---------------------|--------------------------------------|
+| aria-label           | aria-label          |                                      |
+| border-radius        |                     | Not carried over, use CSS instead    |
+| height               |                     | Not carried over, use CSS instead    |
+| show-card-border     | bordered            |                                      |
+| show-shadow-on-hover |                     | Not carried over, use CSS instead    |
+| width                |                     | Not carried over, use CSS instead    |
         `,
       },
     },
