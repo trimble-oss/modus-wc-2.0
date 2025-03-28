@@ -82,7 +82,7 @@ export const Migration: Story = {
 #### Prop Mapping
 
 | 1.0 Prop         | 2.0 Prop      | Notes                                   |
-|------------------|-------------  |-----------------------------------------|
+|------------------|---------------|-----------------------------------------|
 | aria-label       | aria-label    |                                         |
 | checked          | value         |                                         |
 | disabled         | disabled      |                                         |
