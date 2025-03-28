@@ -64,17 +64,20 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      line-height: var(--modus-wc-line-height-md);
+
+      i {
+        color: var(--modus-wc-color-gray-6);
+      }
     }
 
     .label {
-      font-size: var(--modus-wc-font-size-lg);
+      font-size: var(--modus-wc-font-size-md);
       font-weight: var(--modus-wc-font-weight-bold);
       margin-left: var(--modus-wc-spacing-xs);
     }
 
     .sub-label {
-      font-size: var(--modus-wc-font-size-md);
+      font-size: var(--modus-wc-font-size-sm);
       color: var(--modus-wc-color-gray-7);
       text-align: center;
     }
