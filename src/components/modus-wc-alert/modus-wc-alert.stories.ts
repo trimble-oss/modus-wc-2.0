@@ -52,7 +52,7 @@ const Template: Story = {
   alert-description=${ifDefined(args['alert-description'])}
   alert-title=${args['alert-title']}
   custom-class=${ifDefined(args['custom-class'])}
-  dismissible=${args.dismissible}
+  dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}
   variant=${ifDefined(args.variant)}
@@ -72,7 +72,7 @@ export const CustomButton: Story = {
   alert-description=${ifDefined(args['alert-description'])}
   alert-title=${args['alert-title']}
   custom-class=${ifDefined(args['custom-class'])}
-  dismissible=${args.dismissible}
+  dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}
   variant=${ifDefined(args.variant)}
@@ -94,7 +94,7 @@ export const WithCustomContent: Story = {
 <modus-wc-alert
   id="alert-123"
   custom-class=${ifDefined(args['custom-class'])}
-  dismissible=${args.dismissible}
+  dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}
   variant=${ifDefined(args.variant)}
@@ -112,26 +112,26 @@ export const Migration: Story = {
         story: `
 #### Breaking Changes
 
-  - The 2.0 component can render a custom HTML title in the "content" slot.
-  - The 1.0 component rendered a button, while the 2.0 component can render a custom HTML button in the "button" slot.
+  - The 2.0 component can render a custom HTML title in the \`content\` slot.
+  - The 1.0 component rendered a button, while the 2.0 component can render a custom HTML button in the \`button\` slot.
 
 #### Prop Mapping
 
-| 1.0 Prop          | 2.0 Prop    | Notes                             |
-|-------------------|-------------|-----------------------------------|
-| aria-label        | aria-label  |                                   |
-| button-aria-label |             | Not carried over, use button slot |
-| button-text       |             | Not carried over, use button slot |
-| dismissible       | dismissible |                                   |
-| message           | alert-title |                                   |
-| type              | variant     |                                   |
+| 1.0 Prop          | 2.0 Prop    | Notes                                 |
+|-------------------|-------------|---------------------------------------|
+| aria-label        | aria-label  |                                       |
+| button-aria-label |             | Not carried over, use \`button\` slot |
+| button-text       |             | Not carried over, use \`button\` slot |
+| dismissible       | dismissible |                                       |
+| message           | alert-title |                                       |
+| type              | variant     |                                       |
 
 #### Event Mapping
 
-| 1.0 Event    | 2.0 Event    | Notes                             |
-|--------------|--------------|-----------------------------------|
-| actionClick  |              | Not carried over, use button slot |
-| dismissClick | dismissClick |                                   |
+| 1.0 Event    | 2.0 Event    | Notes                                 |
+|--------------|--------------|---------------------------------------|
+| actionClick  |              | Not carried over, use \`button\` slot |
+| dismissClick | dismissClick |                                       |
         `,
       },
     },
