@@ -99,3 +99,11 @@
     box-shadow: 0 0 4px 0 rgba(54, 53, 69, 0.3);
   }
 }
+
+[data-theme='modus-classic-dark'] .modus-wc-autocomplete {
+  .modus-wc-autocomplete-no-results {
+    .sub-label {
+      color: var(--modus-wc-color-white);
+    }
+  }
+}
