@@ -226,7 +226,7 @@ export const Migration: Story = {
 | spellcheck                   | spellcheck          |                                                             |
 | text-align                   |                     | Not carried over, use CSS instead                           |
 | type                         | type                |                                                             |
-| valid-text                   |                     | Not carried over                                            |
+| valid-text                   | feedback.message    | Use \`feedback\` level                                      |
 | value                        | value               |                                                             |
 
 #### Event Mapping
