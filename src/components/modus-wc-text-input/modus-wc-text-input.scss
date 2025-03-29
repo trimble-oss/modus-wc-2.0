@@ -4,7 +4,7 @@
 */
 
 .modus-wc-input {
-  @include feedback-levels();
+  @include feedback-levels;
 }
 
 label.modus-wc-input-label {
@@ -116,14 +116,14 @@ label.modus-wc-input-label {
   }
 
   .modus-wc-clear-icon-container {
-    display: flex;
-    min-width: var(--modus-wc-line-height-md);
-    justify-content: center;
     align-items: center;
+    display: flex;
+    justify-content: center;
+    min-width: var(--modus-wc-line-height-md);
 
     &.modus-wc-clear-icon-hidden {
-      visibility: hidden;
       pointer-events: none;
+      visibility: hidden;
     }
 
     &.modus-wc-clear-icon-visible {
