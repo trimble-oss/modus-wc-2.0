@@ -41,7 +41,7 @@ export class ModusWcAlert {
   @Prop() delay?: number = 15000;
 
   /** Whether the alert has a dismiss button */
-  @Prop() dismissable?: boolean = false;
+  @Prop() dismissible?: boolean = false;
 
   /** The Modus icon to render. **/
   @Prop() icon?: string;
@@ -120,7 +120,7 @@ export class ModusWcAlert {
   elementKeyupHandler(event: KeyboardEvent): void {
     switch (event.code) {
       case 'Escape':
-        if (!this.dismissable) {
+        if (!this.dismissible) {
           return;
         }
 
@@ -150,7 +150,7 @@ export class ModusWcAlert {
             )}
           </div>
           <slot name="button" />
-          {this.dismissable && (
+          {this.dismissible && (
             <modus-wc-button
               aria-label="notification button"
               color="secondary"

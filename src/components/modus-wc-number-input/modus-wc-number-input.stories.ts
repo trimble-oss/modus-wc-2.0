@@ -2,7 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { ModusSize } from '../types';
+import { IInputFeedbackProp, ModusSize } from '../types';
 
 interface NumberInputArgs {
   'auto-complete'?: 'on' | 'off';
@@ -10,6 +10,7 @@ interface NumberInputArgs {
   'currency-symbol'?: string;
   'custom-class'?: string;
   disabled?: boolean;
+  feedback?: IInputFeedbackProp;
   'input-aria-invalid'?: 'true' | 'false';
   'input-id'?: string;
   'input-mode': 'decimal' | 'none' | 'numeric';
@@ -43,6 +44,19 @@ const meta: Meta<NumberInputArgs> = {
     'auto-complete': {
       control: { type: 'select' },
       options: ['on', 'off'],
+    },
+    feedback: {
+      description: 'Feedback prop for input components',
+      table: {
+        type: {
+          detail: `
+            Interface: IInputFeedbackProp
+            Properties:
+            - level ('error' | 'info' | 'success' | 'warning'): The feedback level
+            - message (string, optional): The feedback message
+          `,
+        },
+      },
     },
     'input-aria-invalid': {
       control: { type: 'select' },
@@ -82,6 +96,7 @@ const Template: Story = {
       currency-symbol=${ifDefined(args['currency-symbol'])}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
+      .feedback=${ifDefined(args.feedback)}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-id=${ifDefined(args['input-id'])}
       input-mode=${args['input-mode']}
@@ -103,7 +118,17 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
+const errorFeedback: IInputFeedbackProp = {
+  level: 'error',
+  message: 'Value is required.',
+};
+
 export const Currency: Story = {
   ...Template,
   args: { 'currency-symbol': '$' },
+};
+
+export const WithErrorFeedback: Story = {
+  ...Template,
+  args: { feedback: errorFeedback, required: true },
 };

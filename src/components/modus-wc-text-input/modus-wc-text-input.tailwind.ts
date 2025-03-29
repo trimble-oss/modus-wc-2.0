@@ -3,10 +3,12 @@ import { DaisySize, IInputFeedbackProp } from '../types';
 export const convertPropsToClasses = ({
   bordered,
   feedback,
+  readOnly,
   size,
 }: {
   bordered?: boolean;
   feedback?: IInputFeedbackProp;
+  readOnly?: boolean;
   size?: DaisySize;
 }): string => {
   let classes = '';
@@ -19,9 +21,13 @@ export const convertPropsToClasses = ({
     classes = `${classes} modus-wc-input--${feedback.level}`;
   }
 
+  if (readOnly) {
+    classes = `${classes} modus-wc-text-input-readonly`;
+  }
+
   if (size) {
     classes = `${classes} modus-wc-input-${size}`;
   }
 
-  return classes;
+  return classes.trim();
 };

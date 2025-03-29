@@ -15,6 +15,7 @@ interface TextInputArgs {
   'auto-complete'?: AutocompleteTypes;
   'auto-correct'?: 'on' | 'off';
   bordered?: boolean;
+  'clear-aria-label'?: string;
   'custom-class'?: string;
   disabled?: boolean;
   enterkeyhint?:
@@ -26,6 +27,8 @@ interface TextInputArgs {
     | 'search'
     | 'send';
   feedback?: IInputFeedbackProp;
+  'include-clear'?: boolean;
+  'include-search'?: boolean;
   'input-id'?: string;
   'input-mode':
     | 'decimal'
@@ -57,6 +60,8 @@ const meta: Meta<TextInputArgs> = {
   args: {
     bordered: true,
     disabled: false,
+    'include-clear': false,
+    'include-search': false,
     'input-mode': 'text',
     label: 'Label',
     size: 'md',
@@ -137,10 +142,13 @@ export const Default: Story = {
       auto-complete=${ifDefined(args['auto-complete'])}
       auto-correct=${ifDefined(args['auto-correct'])}
       ?bordered=${args.bordered}
+      clear-aria-label=${ifDefined(args['clear-aria-label'])}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       enterkeyhint=${ifDefined(args.enterkeyhint)}
-      .feedback=${ifDefined(args.feedback)}
+      .feedback=${args.feedback}
+      include-clear=${ifDefined(args['include-clear'])}
+      include-search=${ifDefined(args['include-search'])}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-id=${ifDefined(args['input-id'])}
       input-mode=${args['input-mode']}
@@ -188,37 +196,38 @@ export const Migration: Story = {
   - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
   input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
   additional info and examples.
+  - Size values have changed from verbose names (\`small\`, \`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
 
 #### Prop Mapping
 
-| 1.0 Prop                     | 2.0 Prop            | Notes                |
-|------------------------------|---------------------|----------------------|
-| aria-label                   | aria-label          |                      |
-| autocapitalize               | auto-capitalize     |                      |
-| autocorrect                  | auto-correct        |                      |
-| autocomplete                 | autocomplete        |                      |
-| auto-focus-input             | autofocus           |                      |
-| clearable                    |                     | Use Search component |
-| disabled                     | disabled            |                      |
-| enter-key-hint               | enterkeyhint        |                      |
-| error-text                   | feedback.message    | Use feedback level   |
-| helper-text                  |                     | Not carried over     |
-| include-error-icon           |                     | Not carried over     |
-| include-search-icon          |                     | Use Search component |
-| include-password-text-toggle |                     | Not carried over     |
-| inputmode                    | input-mode          |                      |
-| label                        | label               |                      |
-| max-length                   | max-length          |                      |
-| pattern                      | pattern             |                      |
-| placeholder                  | placeholder         |                      |
-| read-only                    | read-only           |                      |
-| required                     | required            |                      |
-| size                         | size                |                      |
-| spellcheck                   | spellcheck          |                      |
-| text-align                   |                     | Not carried over     |
-| type                         | type                |                      |
-| valid-text                   |                     | Not carried over     |
-| value                        | value               |                      |
+| 1.0 Prop                     | 2.0 Prop            | Notes                                                       |
+|------------------------------|---------------------|-------------------------------------------------------------|
+| aria-label                   | aria-label          |                                                             |
+| autocapitalize               | auto-capitalize     |                                                             |
+| autocorrect                  | auto-correct        |                                                             |
+| autocomplete                 | autocomplete        |                                                             |
+| auto-focus-input             | autofocus           |                                                             |
+| clearable                    | include-clear       |                                                             |
+| disabled                     | disabled            |                                                             |
+| enter-key-hint               | enterkeyhint        |                                                             |
+| error-text                   | feedback.message    | Use \`feedback\` level                                      |
+| helper-text                  |                     | Not carried over                                            |
+| include-error-icon           |                     | Not carried over                                            |
+| include-search-icon          | include-search      |                                                             |
+| include-password-text-toggle |                     | Not carried over                                            |
+| inputmode                    | input-mode          |                                                             |
+| label                        | label               |                                                             |
+| max-length                   | max-length          |                                                             |
+| pattern                      | pattern             |                                                             |
+| placeholder                  | placeholder         |                                                             |
+| read-only                    | read-only           |                                                             |
+| required                     | required            |                                                             |
+| size                         | size                | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
+| spellcheck                   | spellcheck          |                                                             |
+| text-align                   |                     | Not carried over, use CSS instead                           |
+| type                         | type                |                                                             |
+| valid-text                   | feedback.message    | Use \`feedback\` level                                      |
+| value                        | value               |                                                             |
 
 #### Event Mapping
 

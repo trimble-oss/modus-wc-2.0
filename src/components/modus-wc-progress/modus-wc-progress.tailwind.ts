@@ -1,11 +1,14 @@
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  variant,
+  indeterminate,
+}: {
   variant?: 'default' | 'radial';
   indeterminate?: boolean;
 }): string => {
   let classes = '';
 
-  if (Object.prototype.hasOwnProperty.call(props, 'variant') && props.variant) {
-    switch (props.variant) {
+  if (variant) {
+    switch (variant) {
       case 'default':
         classes = `${classes} modus-wc-progress modus-wc-w-full`;
         break;
@@ -15,14 +18,9 @@ export const convertPropsToClasses = (props: {
     }
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'indeterminate') &&
-    !!props.indeterminate
-  ) {
-    if (props.variant === 'radial') {
-      classes = `${classes} modus-wc-radial-progress--indeterminate`;
-    }
+  if (indeterminate && variant === 'radial') {
+    classes = `${classes} modus-wc-radial-progress--indeterminate`;
   }
 
-  return classes;
+  return classes.trim();
 };

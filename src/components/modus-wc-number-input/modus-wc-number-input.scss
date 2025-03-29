@@ -3,6 +3,10 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+.modus-wc-input {
+  @include feedback-levels();
+}
+
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
 [data-theme='modus-classic-light'] .modus-wc-input-container,
 [data-theme='modus-classic-dark'] .modus-wc-input-container {
@@ -59,10 +63,6 @@
 
   .modus-wc-input,
   .modus-wc-input-currency {
-    &.modus-wc-input-bordered {
-      border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-6);
-    }
-
     // TODO - add support for xs and xl once added to Modus Figma
     &.modus-wc-input-sm {
       font-size: var(--modus-wc-font-size-sm);

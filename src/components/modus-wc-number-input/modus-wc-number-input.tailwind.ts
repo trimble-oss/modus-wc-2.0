@@ -1,19 +1,27 @@
-export const convertPropsToClasses = (props: {
+import { IInputFeedbackProp } from '../types';
+
+export const convertPropsToClasses = ({
+  bordered,
+  feedback,
+  size,
+}: {
   bordered?: boolean;
+  feedback?: IInputFeedbackProp;
   size?: string;
 }): string => {
   let classes = '';
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'bordered') &&
-    !!props.bordered
-  ) {
+  if (bordered) {
     classes = `${classes} modus-wc-input-bordered`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-input-${props.size}`;
+  if (feedback) {
+    classes = `${classes} modus-wc-input--${feedback.level}`;
   }
 
-  return classes;
+  if (size) {
+    classes = `${classes} modus-wc-input-${size}`;
+  }
+
+  return classes.trim();
 };

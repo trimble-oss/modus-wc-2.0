@@ -1,21 +1,27 @@
-import { DaisySize } from '../types';
+import { IInputFeedbackProp, ModusSize } from '../types';
 
-export const convertPropsToClasses = (props: {
+export const convertPropsToClasses = ({
+  bordered,
+  feedback,
+  size,
+}: {
   bordered?: boolean;
-  size?: DaisySize;
+  feedback?: IInputFeedbackProp;
+  size?: ModusSize;
 }): string => {
   let classes = '';
 
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'bordered') &&
-    !!props.bordered
-  ) {
+  if (bordered) {
     classes = `${classes} modus-wc-textarea-bordered`;
   }
 
-  if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-textarea-${props.size}`;
+  if (feedback) {
+    classes = `${classes} modus-wc-input--${feedback.level}`;
   }
 
-  return classes;
+  if (size) {
+    classes = `${classes} modus-wc-textarea-${size}`;
+  }
+
+  return classes.trim();
 };

@@ -2,12 +2,13 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { ModusSize } from '../types';
+import { IInputFeedbackProp, ModusSize } from '../types';
 
 interface DateArgs {
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
+  feedback?: IInputFeedbackProp;
   'input-id'?: string;
   'input-tab-index'?: number;
   label?: string;
@@ -35,6 +36,19 @@ const meta: Meta<DateArgs> = {
     value: '',
   },
   argTypes: {
+    feedback: {
+      description: 'Feedback prop for input components',
+      table: {
+        type: {
+          detail: `
+            Interface: IInputFeedbackProp
+            Properties:
+            - level ('error' | 'info' | 'success' | 'warning'): The feedback level
+            - message (string, optional): The feedback message
+          `,
+        },
+      },
+    },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
@@ -60,6 +74,7 @@ export const Default: Story = {
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
+        .feedback=${ifDefined(args.feedback)}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         label=${ifDefined(args.label)}
@@ -74,4 +89,21 @@ export const Default: Story = {
       ></modus-wc-date>
     `;
   },
+};
+
+const errorFeedback: IInputFeedbackProp = {
+  level: 'error',
+  message: 'Value is required.',
+};
+
+export const WithErrorFeedback: Story = {
+  render: (args) => html`
+    <modus-wc-date
+      aria-label="Date input"
+      .feedback=${errorFeedback}
+      label=${ifDefined(args.label)}
+      ?required=${true}
+      .value=${args.value}
+    ></modus-wc-date>
+  `,
 };

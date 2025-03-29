@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ISelectOption } from './modus-wc-select';
-import { ModusSize } from '../types';
+import { IInputFeedbackProp, ModusSize } from '../types';
 
 const options: ISelectOption[] = [
   { label: 'Option 1', value: '1' },
@@ -15,6 +15,7 @@ interface SelectArgs {
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
+  feedback?: IInputFeedbackProp;
   'input-aria-invalid'?: 'true' | 'false';
   'input-id'?: string;
   'input-tab-index'?: number;
@@ -38,6 +39,19 @@ const meta: Meta<SelectArgs> = {
     value: '',
   },
   argTypes: {
+    feedback: {
+      description: 'Feedback prop for input components',
+      table: {
+        type: {
+          detail: `
+            Interface: IInputFeedbackProp
+            Properties:
+            - level ('error' | 'info' | 'success' | 'warning'): The feedback level
+            - message (string, optional): The feedback message
+          `,
+        },
+      },
+    },
     'input-aria-invalid': {
       control: { type: 'select' },
       options: ['true', 'false'],
@@ -80,6 +94,7 @@ export const Default: Story = {
       ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
+      .feedback=${ifDefined(args.feedback)}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-id=${ifDefined(args['input-id'])}
       input-tab-index=${ifDefined(args['input-tab-index'])}
@@ -93,33 +108,20 @@ export const Default: Story = {
   `,
 };
 
-export const SelectWithLabel: Story = {
-  render: () => {
-    // prettier-ignore
-    return html`
-<style>
-  .form-control {
-    display: flex;
-    align-items: center;
-  }
-  .modus-wc-input-label {
-    padding-inline-end: 8px;
-  }
-</style>
-<form action="" method="get">
-  <div class="form-control">
-    <modus-wc-input-label
-      for-id="select-input"
-      label-text="Example select"
-    ></modus-wc-input-label>
+const errorFeedback: IInputFeedbackProp = {
+  level: 'error',
+  message: 'Value is required.',
+};
+
+export const WithErrorFeedback: Story = {
+  render: (args) => html`
     <modus-wc-select
-      aria-label="Example select"
-      input-id="select-input"
-      name="example-select-input"
-      .options=${options}
+      aria-label="Select input"
+      .feedback=${errorFeedback}
+      label=${ifDefined(args.label)}
+      .options=${[]}
+      ?required=${true}
+      .value=${args.value}
     ></modus-wc-select>
-  </div>
-</form>
-    `;
-  },
+  `,
 };
