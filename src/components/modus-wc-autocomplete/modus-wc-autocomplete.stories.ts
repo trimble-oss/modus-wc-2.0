@@ -49,6 +49,7 @@ const items: IAutocompleteItem[] = [
 ];
 
 interface AutocompleteArgs {
+  visibleItems: IAutocompleteItem[];
   bordered?: boolean;
   'custom-class'?: string;
   'debounce-ms'?: number;
@@ -56,6 +57,7 @@ interface AutocompleteArgs {
   'input-id'?: string;
   'input-tab-index'?: number;
   items: IAutocompleteItem[];
+  initialNavigation?: boolean;
   label?: string;
   'min-chars': number;
   'multi-select'?: boolean;
@@ -74,6 +76,7 @@ const meta: Meta<AutocompleteArgs> = {
     bordered: true,
     'debounce-ms': 300,
     disabled: false,
+    initialNavigation: true,
     items: items,
     label: 'Label',
     'min-chars': 0,
@@ -138,13 +141,19 @@ const Template: Story = {
         // If no item is focused, try to focus the last selected item
         currentIndex = args.items.findIndex((item) => item.selected);
       }
+      const input = e.target as HTMLInputElement;
+      if (!input.value) {
+        args.items = args.items.map((item) => ({
+          ...item,
+          selected: false,
+        }));
+      }
 
       // Reset focus for all items
       args.items = args.items.map((item) => ({
         ...item,
         focused: false,
       }));
-
       if (
         currentIndex === -1 &&
         (e.key === 'ArrowDown' || e.key === 'ArrowUp')
@@ -199,6 +208,12 @@ const Template: Story = {
         return;
       }
 
+      // Skip focusing on the first press
+      if (args.initialNavigation) {
+        args.initialNavigation = false;
+        return;
+      }
+
       args.items[currentIndex].focused = true;
       autocomplete.items = [...args.items];
     };
@@ -223,11 +238,17 @@ const Template: Story = {
         }));
 
         // Ensuring that a new array is created when updating items is critical to component re-render.
-        autocomplete.items = [...updatedItems];
+        args.items = updatedItems.filter((item) => item.visibleInMenu);
+        autocomplete.items = [...args.items];
         autocomplete.value = input.value;
       }
     };
-
+    const handleBlur = () => {
+      args.initialNavigation = true;
+      args.items.forEach((item) => {
+        item.focused = false;
+      });
+    };
     const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
@@ -284,6 +305,7 @@ const Template: Story = {
         value=${args.value}
         @inputChange=${handleInputChange}
         @itemSelect=${handleItemSelect}
+        @inputBlur=${handleBlur}
         @keydown=${handleKeyDown}
       ></modus-wc-autocomplete>
     `;
@@ -325,16 +347,27 @@ export const MultiSelect: Story = {
 
         const updatedItems = args.items.map((item) => ({
           ...item,
-          visibleInMenu: item.label.toLowerCase().includes(searchText),
+          visibleInMenu:
+            (searchText
+              ? item.label
+                ? item.label.toLowerCase().includes(searchText)
+                : false
+              : true) || item.selected === true,
           focused: false,
         }));
 
+        args.items = updatedItems.filter((item) => item.visibleInMenu);
         // Ensuring that a new array is created when updating items is critical to component re-render.
-        autocomplete.items = [...updatedItems];
+        autocomplete.items = [...args.items];
         autocomplete.value = input.value;
       }
     };
-
+    const handleBlur = () => {
+      args.initialNavigation = true;
+      args.items.forEach((item) => {
+        item.focused = false;
+      });
+    };
     const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
@@ -370,7 +403,7 @@ export const MultiSelect: Story = {
 
       if (!autocomplete) return;
       const input = e.target as HTMLInputElement;
-      // Check if Backspace is pressed and the input is empty
+
       if (e.key === 'Backspace' && !input.value) {
         // Find the last selected chip by its index
         const lastSelectedIndex = args.items.reduce(
@@ -458,6 +491,11 @@ export const MultiSelect: Story = {
         }
         return;
       }
+      // Skip focusing on the first press
+      if (args.initialNavigation) {
+        args.initialNavigation = false;
+        return;
+      }
 
       args.items[currentIndex].focused = true; // Set new focus
       autocomplete.items = [...args.items];
@@ -492,6 +530,7 @@ export const MultiSelect: Story = {
         @chipRemove=${handleChipRemove}
         @inputChange=${handleInputChange}
         @itemSelect=${handleItemSelect}
+        @inputBlur=${handleBlur}
         @keydown=${handleKeyDown}
       ></modus-wc-autocomplete>
     `;
