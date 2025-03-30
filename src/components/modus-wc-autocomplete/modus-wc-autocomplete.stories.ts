@@ -361,7 +361,6 @@ export const MultiSelect: Story = {
   ?disabled=${args.disabled}
   input-id=${ifDefined(args['input-id'])}
   input-tab-index=${ifDefined(args['input-tab-index'])}
-  .items=${args.items}
   label=${ifDefined(args.label)}
   min-chars=${args['min-chars']}
   ?multi-select=${true}
