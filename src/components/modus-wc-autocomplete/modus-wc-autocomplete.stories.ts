@@ -497,3 +497,84 @@ export const MultiSelect: Story = {
     `;
   },
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
+  additional info and examples.
+  - To handle updating items in 2.0, simply create a new array of items and bind it to the \`items\` prop. The 1.0 prop
+  \`filter-options\` is no longer necessary.
+  - Size values have changed from verbose names (\`small\`, \`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+
+#### Prop Mapping
+
+| 1.0 Prop                      | 2.0 Prop            | Notes                                                       |
+|-------------------------------|---------------------|-------------------------------------------------------------|
+| aria-label                    | aria-label          |                                                             |
+| clearable                     |                     | Upcoming feature                                            |
+| disabled                      | disabled            |                                                             |
+| disable-close-on-select       | leave-menu-open     |                                                             |
+| dropdown-max-height           |                     | Not carried over, use CSS instead                           |
+| dropdown-z-index              |                     | Not carried over, use CSS instead                           |
+| error-text                    | feedback.message    | Use feedback level                                          |
+| filter-options                |                     | Rebind options                                              |
+| include-search-icon           |                     | Coming soon                                                 |
+| label                         | label               |                                                             |
+| loading                       |                     | Upcoming feature                                            |
+| multiple                      | multi-select        |                                                             |
+| no-results-found-text         | no-results.label    |                                                             |
+| no-results-found-subtext      | no-results.subLabel |                                                             |
+| options                       | items               |                                                             |
+| placeholder                   | placeholder         |                                                             |
+| read-only                     | read-only           |                                                             |
+| required                      | required            |                                                             |
+| show-no-results-found-message |                     | Not carried over, use \`no-results\` prop                   |
+| show-options-on-focus         |                     | Not carried over                                            |
+| size                          | size                | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
+| value                         | value               |                                                             |
+
+#### Event Mapping
+
+| 1.0 Event   | 2.0 Event   | Notes            |
+|-------------|-------------|------------------|
+| optionSelected ||
+| selectionsChanged ||
+| valueChange | inputChange |                  |
+
+#### Interfaces
+
+##### 1.0
+
+\`\`\`typescript
+interface ModusAutocompleteOption {
+  id: string;
+  value: string;
+}
+\`\`\`
+
+##### 2.0
+
+\`\`\`typescript
+interface IAutocompleteItem {
+  label: string;
+  selected?: boolean;
+  value: string;
+  visibleInMenu: boolean;
+}
+\`\`\`
+        `,
+      },
+    },
+    // To hide the actual story rendering and only show docs:
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  // Simple render function or leave it empty
+  render: () => html`<div></div>`,
+};
