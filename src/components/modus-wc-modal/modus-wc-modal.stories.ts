@@ -112,11 +112,11 @@ export const Migration: Story = {
         story: `
 #### Breaking Changes
 
+  - Modal identification is now required via the \`modal-id\` prop.
   - 2.0 requires the use of slots for a fully customizable \`header\`, \`content\`, and \`footer\`.
   Primary and secondary buttons as well as \`header-text\` are no longer built-in.
   - In 1.0, modals had built-in open/close state management with methods. 2.0 uses the native HTML dialog
   element with \`modal-id\` to target the dialog with native \`showModal()\` and \`close()\` methods.
-  - Modal identification is now required via the \`modal-id\` prop.
 
 #### Prop Mapping
 
