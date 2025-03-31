@@ -185,8 +185,8 @@ export const Migration: Story = {
 
 | 1.0 Event   | 2.0 Event   | Notes |
 |-------------|-------------|-------|
-| chip-click  | chip-click  |       |
-| close-click | chip-remove |       |
+| chipClick  | chipClick  |       |
+| closeClick | chipRemove |       |
         `,
       },
     },
