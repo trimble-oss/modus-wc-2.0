@@ -288,7 +288,7 @@ export class ModusWcAutocomplete {
             aria-label="Autocomplete menu"
             bordered={this.bordered}
             size={this.size}
-            style={{ display: this.menuVisible ? 'block' : 'none' }}
+            class={this.menuVisible ? 'menu-visible' : 'menu-hidden'}
           >
             {getMenuItems()}
             <slot name="menu-items"></slot>

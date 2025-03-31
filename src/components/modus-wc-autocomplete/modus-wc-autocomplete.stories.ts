@@ -361,6 +361,7 @@ export const MultiSelect: Story = {
   ?disabled=${args.disabled}
   input-id=${ifDefined(args['input-id'])}
   input-tab-index=${ifDefined(args['input-tab-index'])}
+  .items=${args.items}
   label=${ifDefined(args.label)}
   min-chars=${args['min-chars']}
   ?multi-select=${true}
@@ -549,7 +550,6 @@ export const CustomMenuItems: Story = {
   ?disabled=${args.disabled}
   input-id=${ifDefined(args['input-id'])}
   input-tab-index=${ifDefined(args['input-tab-index'])}
-  .items=${args.items}
   label=${ifDefined(args.label)}
   min-chars=${args['min-chars']}
   ?multi-select=${false}
@@ -559,9 +559,6 @@ export const CustomMenuItems: Story = {
   ?required=${args.required}
   size=${ifDefined(args.size)}
   value=${args.value}
-  ?bordered=${args.bordered}
-  min-chars=${args["min-chars"]}
-  size=${ifDefined(args.size)}
   @inputChange=${handleInputChange}
 >
   <div slot="menu-items" id="custom-menu-items">
