@@ -49,7 +49,6 @@ const items: IAutocompleteItem[] = [
 ];
 
 interface AutocompleteArgs {
-  visibleItems: IAutocompleteItem[];
   bordered?: boolean;
   'custom-class'?: string;
   'debounce-ms'?: number;
@@ -76,7 +75,6 @@ const meta: Meta<AutocompleteArgs> = {
     bordered: true,
     'debounce-ms': 300,
     disabled: false,
-    initialNavigation: true,
     items: items,
     label: 'Label',
     'min-chars': 0,
