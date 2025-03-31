@@ -37,7 +37,7 @@ const Template: Story = {
       <modus-wc-icon
         aria-label="Alert icon"
         custom-class="${ifDefined(args['custom-class'])}"
-        ?decorative="${ifDefined(args.decorative)}"
+        ?decorative="${args.decorative}"
         name="${args.name}"
         size="${args.size}"
       >
@@ -65,4 +65,39 @@ export const CustomColor: Story = {
       </modus-wc-icon>
     `;
   },
+};
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - Requires <b>Modus Icons</b> to be installed in the host application see [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs).
+  - The \`color\` property has been removed in favor of using CSS for styling.
+  - The \`iconClick\` event has been removed. Use the \`click\` event on the host element instead.
+  - In 1.0 the \`size\` prop accepted any numeric string (e.g., \`'16'\`, \`'24'\`, \`'32'\`) to set the icon's
+  width and height. 2.0 uses preset sizes: \`sm\`, \`md\`, \`lg\`.
+
+#### Prop Mapping
+
+| 1.0 Prop | 2.0 Prop | Notes                                                |
+|----------|----------|------------------------------------------------------|
+| color    |          | Not carried over, use CSS instead                    |
+| name     | name     |                                                      |
+| size     | size     | Numeric values changed to \`sm\`, \`md\`, \`lg\`     |
+
+#### Event Mapping
+
+| 1.0 Event | 2.0 Event | Notes                                                         |
+|-----------|-----------|---------------------------------------------------------------|
+| iconClick |           | Not carried over, use \`click\` event on host element instead |
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
 };
