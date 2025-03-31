@@ -49,6 +49,7 @@ const items: IAutocompleteItem[] = [
 ];
 
 interface AutocompleteArgs {
+  visibleItems: IAutocompleteItem[];
   bordered?: boolean;
   'custom-class'?: string;
   'debounce-ms'?: number;
@@ -316,6 +317,8 @@ export const Default: Story = {
 
 export const MultiSelect: Story = {
   render: (args) => {
+    const allItems: IAutocompleteItem[] = [...items];
+
     const handleChipRemove = (e: CustomEvent<IAutocompleteItem>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
@@ -343,14 +346,15 @@ export const MultiSelect: Story = {
         const input = e.detail.target as HTMLInputElement;
         const searchText = input.value.toLowerCase();
 
-        const updatedItems = args.items.map((item) => ({
+        const updatedItems = allItems.map((item) => ({
           ...item,
-          visibleInMenu:
+          visibleInMenu: !!(
             (searchText
               ? item.label
                 ? item.label.toLowerCase().includes(searchText)
                 : false
-              : true) || item.selected === true,
+              : true) || item.selected
+          ),
           focused: false,
         }));
 
@@ -374,15 +378,13 @@ export const MultiSelect: Story = {
       if (autocomplete) {
         // Reset autocomplete 'value' and update the value of 'visibleInMenu' for all items.
         autocomplete.value = '';
-        autocomplete.items = args.items.map((item) => ({
+        autocomplete.items = allItems.map((item) => ({
           ...item,
           visibleInMenu: true,
           focused: false,
         }));
 
-        const fruit = args.items.find(
-          (fruit) => fruit.value === e.detail.value
-        );
+        const fruit = allItems.find((fruit) => fruit.value === e.detail.value);
         if (fruit) {
           fruit.selected = true;
         }
@@ -402,26 +404,19 @@ export const MultiSelect: Story = {
       if (!autocomplete) return;
       const input = e.target as HTMLInputElement;
 
+      if (args.initialNavigation === undefined) {
+        args.initialNavigation = true;
+      }
+
       if (e.key === 'Backspace' && !input.value) {
         // Find the last selected chip by its index
-        const lastSelectedIndex = args.items.reduce(
+        const lastSelectedIndex = allItems.reduce(
           (acc, item, index) => (item.selected ? index : acc),
           -1
         );
         if (lastSelectedIndex !== -1) {
-          // Create a custom event with the chip details.
-          const chipRemoveEvent = new CustomEvent<IAutocompleteItem>(
-            'chipRemove',
-            {
-              detail: args.items[lastSelectedIndex],
-              bubbles: true,
-              composed: true,
-            }
-          );
-          // Fire the chipRemove event, which will trigger handleChipRemove.
-          (e.target as HTMLElement).dispatchEvent(chipRemoveEvent);
-          // Update autocomplete items if needed.
-          autocomplete.items = [...args.items];
+          allItems[lastSelectedIndex].selected = false;
+          autocomplete.items = [...allItems];
         }
         return;
       }
@@ -485,7 +480,15 @@ export const MultiSelect: Story = {
           args.items[currentIndex].selected =
             !args.items[currentIndex].selected;
 
-          autocomplete.items = [...args.items]; // Update component
+          const selectedItems = args.items.filter((item) => item.selected);
+          // compare the selected items with allItems and set the selected items to allItems
+          allItems.forEach((item) => {
+            item.selected = selectedItems.some(
+              (selectedItem) => selectedItem.value === item.value
+            );
+          });
+          autocomplete.items = [...allItems]; // Update component
+          autocomplete.value = '';
         }
         return;
       }
