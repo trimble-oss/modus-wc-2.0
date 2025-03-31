@@ -53,6 +53,7 @@ const meta: Meta<AutocompleteArgs> = {
     'min-chars': 0,
     'multi-select': false,
     'no-results': {
+      ariaLabel: 'No results found',
       label: 'No results found',
       subLabel: 'Check spelling or try a different keyword',
     },

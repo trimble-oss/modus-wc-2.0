@@ -68,12 +68,12 @@
       i {
         color: var(--modus-wc-color-gray-6);
       }
-    }
 
-    .label {
-      font-size: var(--modus-wc-font-size-md);
-      font-weight: var(--modus-wc-font-weight-bold);
-      margin-left: var(--modus-wc-spacing-xs);
+      .label {
+        font-size: var(--modus-wc-font-size-md);
+        font-weight: var(--modus-wc-font-weight-bold);
+        margin-inline-start: var(--modus-wc-spacing-xs);
+      }
     }
 
     .sub-label {
