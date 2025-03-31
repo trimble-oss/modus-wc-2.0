@@ -75,6 +75,9 @@ export const Migration: Story = {
         story: `
 #### Breaking Changes
 
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
+  additional info and examples.
   - The \`checked\` prop is now \`value\` in 2.0.
   - The \`checkboxClick\` event is now \`inputChange\` in 2.0.
   - Size values have changed from verbose names (\`small\`, \`medium\`) to abbreviations (\`xs\`, \`sm\`, \`md\`, \`lg\`).
