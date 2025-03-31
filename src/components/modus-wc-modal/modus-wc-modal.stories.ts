@@ -137,12 +137,12 @@ export const Migration: Story = {
 
 #### Event Mapping
 
-| 1.0 Event            | 2.0 Event | Notes                                             |
-|----------------------|-----------|---------------------------------------------------|
-| closed               |           | Not carried over, use dialog close event instead  |
-| opened               |           | Not carried over, use dialog events instead       |
-| primaryButtonClick   |           | Not carried over, handle with custom buttons      |
-| secondaryButtonClick |           | Not carried over, handle with custom buttons      |
+| 1.0 Event            | 2.0 Event | Notes                                                                             |
+|----------------------|-----------|-----------------------------------------------------------------------------------|
+| closed               |           | Not carried over, use dialog \`close()\` event instead                            |
+| opened               |           | Not carried over, use dialog \`showModal()\` event instead                        |
+| primaryButtonClick   |           | Not carried over, handle with events on custom buttons in \`footer\` slot instead |
+| secondaryButtonClick |           | Not carried over, handle with events on custom buttons in \`footer\` slot instead |
         `,
       },
     },
