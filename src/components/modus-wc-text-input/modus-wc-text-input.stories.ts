@@ -196,37 +196,38 @@ export const Migration: Story = {
   - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
   input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
   additional info and examples.
+  - Size values have changed from verbose names (\`small\`, \`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
 
 #### Prop Mapping
 
-| 1.0 Prop                     | 2.0 Prop            | Notes                |
-|------------------------------|---------------------|----------------------|
-| aria-label                   | aria-label          |                      |
-| autocapitalize               | auto-capitalize     |                      |
-| autocorrect                  | auto-correct        |                      |
-| autocomplete                 | autocomplete        |                      |
-| auto-focus-input             | autofocus           |                      |
-| clearable                    | include-clear       |                      |
-| disabled                     | disabled            |                      |
-| enter-key-hint               | enterkeyhint        |                      |
-| error-text                   | feedback.message    | Use feedback level   |
-| helper-text                  |                     | Not carried over     |
-| include-error-icon           |                     | Not carried over     |
-| include-search-icon          | include-search      |                      |
-| include-password-text-toggle |                     | Not carried over     |
-| inputmode                    | input-mode          |                      |
-| label                        | label               |                      |
-| max-length                   | max-length          |                      |
-| pattern                      | pattern             |                      |
-| placeholder                  | placeholder         |                      |
-| read-only                    | read-only           |                      |
-| required                     | required            |                      |
-| size                         | size                |                      |
-| spellcheck                   | spellcheck          |                      |
-| text-align                   |                     | Not carried over     |
-| type                         | type                |                      |
-| valid-text                   |                     | Not carried over     |
-| value                        | value               |                      |
+| 1.0 Prop                     | 2.0 Prop            | Notes                                                       |
+|------------------------------|---------------------|-------------------------------------------------------------|
+| aria-label                   | aria-label          |                                                             |
+| autocapitalize               | auto-capitalize     |                                                             |
+| autocorrect                  | auto-correct        |                                                             |
+| autocomplete                 | autocomplete        |                                                             |
+| auto-focus-input             | autofocus           |                                                             |
+| clearable                    | include-clear       |                                                             |
+| disabled                     | disabled            |                                                             |
+| enter-key-hint               | enterkeyhint        |                                                             |
+| error-text                   | feedback.message    | Use \`feedback\` level                                      |
+| helper-text                  |                     | Not carried over                                            |
+| include-error-icon           |                     | Not carried over                                            |
+| include-search-icon          | include-search      |                                                             |
+| include-password-text-toggle |                     | Not carried over                                            |
+| inputmode                    | input-mode          |                                                             |
+| label                        | label               |                                                             |
+| max-length                   | max-length          |                                                             |
+| pattern                      | pattern             |                                                             |
+| placeholder                  | placeholder         |                                                             |
+| read-only                    | read-only           |                                                             |
+| required                     | required            |                                                             |
+| size                         | size                | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
+| spellcheck                   | spellcheck          |                                                             |
+| text-align                   |                     | Not carried over, use CSS instead                           |
+| type                         | type                |                                                             |
+| valid-text                   | feedback.message    | Use \`feedback\` level                                      |
+| value                        | value               |                                                             |
 
 #### Event Mapping
 
