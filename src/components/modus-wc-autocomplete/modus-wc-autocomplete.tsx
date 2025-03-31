@@ -217,8 +217,8 @@ export class ModusWcAutocomplete {
     } = this.noResults || {};
 
     return (
-      <div class="modus-wc-autocomplete-no-results" aria-label={ariaLabel}>
-        <div class="icon-label">
+      <div class="modus-wc-autocomplete-no-results">
+        <div class="icon-label" aria-label={ariaLabel}>
           <modus-wc-icon name="search" decorative />
           <div class="label">{label}</div>
         </div>
