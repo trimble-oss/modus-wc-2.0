@@ -78,7 +78,7 @@ export const Migration: Story = {
   - The \`color\` property has been removed in favor of using CSS for styling.
   - The \`iconClick\` event has been removed. Use the \`click\` event on the host element instead.
   - In 1.0 the \`size\` prop accepted any numeric string (e.g., \`'16'\`, \`'24'\`, \`'32'\`) to set the icon's
-  width and height. 2.0 uses preset sizes: \`sm\`, \`md\`, \`lg\`.
+  width and height. 2.0 uses preset sizes: \`sm\`, \`md\`, \`lg\`, and can use CSS for custom sizes.
 
 #### Prop Mapping
 
@@ -86,7 +86,7 @@ export const Migration: Story = {
 |----------|----------|------------------------------------------------------|
 | color    |          | Not carried over, use CSS instead                    |
 | name     | name     |                                                      |
-| size     | size     | Numeric values changed to \`sm\`, \`md\`, \`lg\`     |
+| size     | size     | Numeric values changed to \`sm\`, \`md\`, \`lg\`, use CSS for custom sizes |
 
 #### Event Mapping
 
