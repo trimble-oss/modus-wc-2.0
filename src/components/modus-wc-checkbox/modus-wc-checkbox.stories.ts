@@ -67,3 +67,43 @@ export const Default: Story = {
     `;
   },
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
+  additional info and examples.
+  - The \`checked\` prop is now \`value\` in 2.0.
+  - The \`checkboxClick\` event is now \`inputChange\` in 2.0.
+  - Size values have changed from verbose names (\`small\`, \`medium\`) to abbreviations (\`xs\`, \`sm\`, \`md\`, \`lg\`).
+
+#### Prop Mapping
+
+| 1.0 Prop         | 2.0 Prop      | Notes                                   |
+|------------------|---------------|-----------------------------------------|
+| aria-label       | aria-label    |                                         |
+| checked          | value         |                                         |
+| disabled         | disabled      |                                         |
+| indeterminate    | indeterminate |                                         |
+| label            | label         |                                         |
+| size             | size          | \`small\` → \`sm\`, \`medium\` → \`md\` |
+| stop-propagation |               | Not carried over                        |
+
+#### Event Mapping
+
+| 1.0 Event     | 2.0 Event   | Notes                                                 |
+|---------------|-------------|-------------------------------------------------------|
+| checkboxClick | inputChange | Event now emits \`InputEvent\` instead of \`boolean\` |
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
+};
