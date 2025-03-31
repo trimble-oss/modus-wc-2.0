@@ -89,3 +89,33 @@ export const WithIcon: Story = {
     `;
   },
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - The \`dark\` color option is now \`high-contrast\`
+  - The \`type\` prop is now \`variant\` and \`default\` type is now \`filled\`
+  - Size values have changed from verbose names (\`small\`, \`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+
+#### Prop Mapping
+
+| 1.0 Prop   | 2.0 Prop   | Notes                                                       |
+|------------|------------|-------------------------------------------------------------|
+| aria-label | aria-label |                                                             |
+| color      | color      | \`dark\` is now \`high-contrast\`                           |
+| size       | size       | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
+| type       | variant    | \`default\` is now \`filled\`                               |
+        `,
+      },
+    },
+    // To hide the actual story rendering and only show docs:
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  // Simple render function or leave it empty
+  render: () => html`<div></div>`,
+};
