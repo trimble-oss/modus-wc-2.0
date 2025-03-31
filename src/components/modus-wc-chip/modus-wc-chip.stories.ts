@@ -159,7 +159,7 @@ export const Migration: Story = {
 #### Breaking Changes
 
   - \`chip-style\` prop has been renamed to \`variant\` and values changed from \`solid\` to \`filled\`.
-  - \`close-click\` event has been renamed to \`chip-remove\`.
+  - \`closeClick\` event has been renamed to \`chipRemove\`.
   - \`show-close\` prop has been renamed to \`show-remove\`.
   - Size values have changed from verbose names (\`medium\`, \`small\`) to abbreviations (\`md\`, \`sm\`).
 
