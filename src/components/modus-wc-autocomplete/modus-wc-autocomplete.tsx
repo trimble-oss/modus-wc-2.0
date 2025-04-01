@@ -144,6 +144,17 @@ export class ModusWcAutocomplete {
     return classList.join(' ');
   }
 
+  private getMultiSelectClasses(): string {
+    return [
+      'modus-wc-autocomplete-multi-select',
+      this.bordered && 'modus-wc-autocomplete-multi-select--bordered',
+      this.disabled && 'modus-wc-autocomplete-multi-select--disabled',
+      this.readOnly && 'modus-wc-autocomplete-multi-select--readonly',
+    ]
+      .filter(Boolean)
+      .join(' ');
+  }
+
   private handleBlur = (event: CustomEvent<FocusEvent>) => {
     // Hide menu after a short delay to allow for item selection
     // istanbul ignore next - TODO
@@ -202,6 +213,9 @@ export class ModusWcAutocomplete {
   // TODO - add code coverage once chip component is implemented
   // istanbul ignore next
   private handleChipRemove = (item: IAutocompleteItem) => {
+    if (this.disabled || this.readOnly) {
+      return; // Do nothing if the component is disabled
+    }
     this.chipRemove.emit(item);
   };
 
@@ -226,6 +240,7 @@ export class ModusWcAutocomplete {
                 aria-label="Remove item button"
                 color="secondary"
                 onClick={() => this.handleChipRemove(item)}
+                disabled={this.disabled}
                 shape="circle"
                 size="xs"
               >
@@ -288,9 +303,7 @@ export class ModusWcAutocomplete {
           />
         )}
         {this.multiSelect ? (
-          <div
-            class={`modus-wc-autocomplete-multi-select ${this.bordered ? 'modus-wc-autocomplete-multi-select--bordered' : ''}`}
-          >
+          <div class={this.getMultiSelectClasses()}>
             {getChips()}
             {getInput()}
           </div>

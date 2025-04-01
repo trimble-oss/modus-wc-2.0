@@ -73,3 +73,19 @@
     box-shadow: 0 0 4px 0 rgba(54, 53, 69, 0.3);
   }
 }
+
+[data-theme='modus-classic-light'] .modus-wc-autocomplete {
+  .modus-wc-input-disabled,
+  .modus-wc-autocomplete-multi-select--disabled {
+    background-color: var(--modus-wc-color-gray-0);
+    border: none;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .modus-wc-text-input-readonly,
+  .modus-wc-autocomplete-multi-select--readonly {
+    background-color: var(--modus-wc-color-gray-0);
+    border: none;
+  }
+}
