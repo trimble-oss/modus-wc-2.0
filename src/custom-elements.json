@@ -323,6 +323,15 @@
               }
             },
             {
+              "name": "leave-menu-open",
+              "fieldName": "leaveMenuOpen",
+              "default": "false",
+              "description": "Whether the menu should remain open after an item is selected.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "min-chars",
               "fieldName": "minChars",
               "default": "0",
