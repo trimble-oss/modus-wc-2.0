@@ -151,7 +151,6 @@ export class ModusWcAutocomplete {
 
   private handleBlur = (event: CustomEvent<FocusEvent>) => {
     // if enter key is pressed, return
-    console.log(event);
     // Hide menu after a short delay to allow for item selection
     // istanbul ignore next - TODO
     setTimeout(() => {

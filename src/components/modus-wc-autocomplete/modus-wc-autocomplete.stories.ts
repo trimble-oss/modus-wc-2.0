@@ -172,6 +172,9 @@ const Template: Story = {
             }
           }
         } else {
+          if (currentIndex === -1) {
+            return;
+          }
           // ArrowUp: find last non-disabled item
           for (let i = args.items.length - 1; i >= 0; i--) {
             if (!args.items[i].disabled) {
@@ -324,7 +327,10 @@ export const Default: Story = {
 
 export const MultiSelect: Story = {
   render: (args) => {
-    let allItems: IAutocompleteItem[] = [...items];
+    // Initialize args.items if empty
+    if (!args.items || args.items.length === 0) {
+      args.items = [...items];
+    }
 
     const handleChipRemove = (e: CustomEvent<IAutocompleteItem>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
@@ -332,20 +338,10 @@ export const MultiSelect: Story = {
       );
 
       if (autocomplete) {
-        const foundItem = args.items.find(
-          (item) => item.value === e.detail.value
+        args.items = args.items.map((item) =>
+          item.value === e.detail.value ? { ...item, selected: false } : item
         );
-        if (foundItem) {
-          foundItem.selected = false;
-          const selectedItems = args.items.filter((item) => item.selected);
-          // compare the selected items with allItems and set the selected items to allItems
-          allItems.forEach((item) => {
-            item.selected = selectedItems.some(
-              (selectedItem) => selectedItem.value === item.value
-            );
-          });
-          autocomplete.items = [...allItems]; // Update component
-        }
+        autocomplete.items = [...args.items];
       }
     };
 
@@ -360,55 +356,37 @@ export const MultiSelect: Story = {
         const input = e.detail.target as HTMLInputElement;
         const searchText = input.value.toLowerCase();
 
-        const updatedItems = allItems.map((item) => ({
+        const updatedItems = args.items.map((item) => ({
           ...item,
-          visibleInMenu: !!(
-            (searchText
-              ? item.label
-                ? item.label.toLowerCase().includes(searchText)
-                : false
-              : true) || item.selected
-          ),
+          visibleInMenu: item.label.toLowerCase().includes(searchText),
           focused: false,
         }));
 
-        args.items = updatedItems.filter((item) => item.visibleInMenu);
-        // Ensuring that a new array is created when updating items is critical to component re-render.
+        args.items = updatedItems;
         autocomplete.items = [...args.items];
         autocomplete.value = input.value;
       }
     };
-    let inputBlur = false;
+
     const handleBlur = () => {
       args.initialNavigation = true;
-      args.items.forEach((item) => {
-        item.focused = false;
-      });
-      args.items = [...allItems];
-      inputBlur = true;
+      args.items = args.items.map((item) => ({ ...item, focused: false }));
     };
+
     const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
       );
 
       if (autocomplete) {
-        // Reset autocomplete 'value' and update the value of 'visibleInMenu' for all items.
+        args.items = args.items.map((item) =>
+          item.value === e.detail.value ? { ...item, selected: true } : item
+        );
+        autocomplete.items = [...args.items];
         autocomplete.value = '';
-        autocomplete.items = allItems.map((item) => ({
-          ...item,
-          visibleInMenu: true,
-          focused: false,
-        }));
-
-        const fruit = allItems.find((fruit) => fruit.value === e.detail.value);
-        if (fruit) {
-          fruit.selected = true;
-        }
       }
     };
 
-    // Attach the same external focus handler for multi-select.
     const handleKeyDown = (e: KeyboardEvent) => {
       if (['ArrowDown', 'ArrowUp', 'Enter'].includes(e.key)) {
         e.preventDefault();
@@ -419,109 +397,76 @@ export const MultiSelect: Story = {
       );
 
       if (!autocomplete) return;
-      const input = e.target as HTMLInputElement;
 
-      if (args.initialNavigation === undefined) {
-        args.initialNavigation = true;
+      const visibleItems = args.items.filter(
+        (item) => item.visibleInMenu && !item.disabled
+      );
+
+      let currentVisibleIndex = visibleItems.findIndex((item) => item.focused);
+
+      switch (e.key) {
+        case 'ArrowDown':
+          currentVisibleIndex = Math.min(
+            currentVisibleIndex + 1,
+            visibleItems.length - 1
+          );
+          break;
+        case 'ArrowUp':
+          currentVisibleIndex = Math.max(currentVisibleIndex - 1, -1);
+          break;
+        case 'Enter':
+          if (currentVisibleIndex > -1) {
+            const selectedValue = visibleItems[currentVisibleIndex].value;
+            args.items = args.items.map((item) =>
+              item.value === selectedValue
+                ? { ...item, selected: !item.selected }
+                : item
+            );
+            autocomplete.items = [...args.items];
+            autocomplete.value = '';
+          }
+          return;
+        case 'Backspace':
+          // Only handle backspace when input is empty
+          if ((e.target as HTMLInputElement).value === '') {
+            // Find the last selected item
+            const selectedItems = args.items.filter((item) => item.selected);
+            if (selectedItems.length > 0) {
+              const lastSelected = selectedItems[selectedItems.length - 1];
+              args.items = args.items.map((item) =>
+                item.value === lastSelected.value
+                  ? { ...item, selected: false }
+                  : item
+              );
+              autocomplete.items = [...args.items];
+            }
+          }
+          return;
+        default:
+          return;
       }
 
-      if (e.key === 'Backspace' && !input.value) {
-        // Find the last selected chip by its index
-        const lastSelectedIndex = allItems.reduce(
-          (acc, item, index) => (item.selected ? index : acc),
-          -1
-        );
-        if (lastSelectedIndex !== -1) {
-          allItems[lastSelectedIndex].selected = false;
-          autocomplete.items = [...allItems];
-        }
-        return;
-      }
-
-      let currentIndex = args.items.findIndex((item) => item.focused);
-
-      if (inputBlur) {
-        currentIndex = -1;
-        inputBlur = false;
-      }
-      // Reset focus for all items
+      // Update focus states
       args.items = args.items.map((item) => ({
         ...item,
         focused: false,
       }));
 
       if (
-        currentIndex === -1 &&
-        (e.key === 'ArrowDown' || e.key === 'ArrowUp')
+        currentVisibleIndex > -1 &&
+        currentVisibleIndex < visibleItems.length
       ) {
-        if (e.key === 'ArrowDown') {
-          // Find first non-disabled item
-          for (let i = 0; i < args.items.length; i++) {
-            if (!args.items[i].disabled) {
-              currentIndex = i;
-              break;
-            }
-          }
-        } else {
-          // ArrowUp: find last non-disabled item
-          for (let i = args.items.length - 1; i >= 0; i--) {
-            if (!args.items[i].disabled) {
-              currentIndex = i;
-              break;
-            }
-          }
-        }
-      } else if (
-        e.key === 'ArrowDown' &&
-        currentIndex < args.items.length - 1
-      ) {
-        let newIndex = currentIndex + 1;
-        // Skip disabled items
-        while (newIndex < args.items.length && args.items[newIndex].disabled) {
-          newIndex++;
-        }
-        if (newIndex < args.items.length) {
-          currentIndex = newIndex;
-        }
-      } else if (e.key === 'ArrowUp' && currentIndex > 0) {
-        let newIndex = currentIndex - 1;
-        // Skip disabled items
-        while (newIndex >= 0 && args.items[newIndex].disabled) {
-          newIndex--;
-        }
-        if (newIndex >= 0) {
-          currentIndex = newIndex;
-        }
-      } else if (e.key === 'Enter') {
-        if (currentIndex !== -1) {
-          args.items[currentIndex].selected =
-            !args.items[currentIndex].selected;
-          const selectedItems = args.items.filter((item) => item.selected);
-          // compare the selected items with allItems and set the selected items to allItems
-          allItems.forEach((item) => {
-            item.selected = selectedItems.some(
-              (selectedItem) => selectedItem.value === item.value
-            );
-          });
-          autocomplete.items = [...allItems]; // Update component
-          autocomplete.value = '';
-        }
-        return;
-      }
-      // Skip focusing on the first press
-      if (args.initialNavigation) {
-        args.initialNavigation = false;
-        return;
+        const focusedItemId = visibleItems[currentVisibleIndex].value;
+        args.items = args.items.map((item) =>
+          item.value === focusedItemId ? { ...item, focused: true } : item
+        );
       }
 
-      args.items[currentIndex].focused = true; // Set new focus
       autocomplete.items = [...args.items];
     };
 
-    // prettier-ignore
     return html`
       <style>
-        /* Only for Storybook */
         div#story--components-forms-autocomplete--multi-select-inner {
           height: 400px;
         }
