@@ -104,3 +104,50 @@ export const CustomWidthAndHeight: Story = {
     `;
   },
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - Modal identification is now required via the \`modal-id\` prop.
+  - 2.0 requires the use of slots for a fully customizable \`header\`, \`content\`, and \`footer\`.
+  Primary and secondary buttons as well as \`header-text\` are no longer built-in.
+  - In 1.0, modals had built-in open/close state management with methods. 2.0 uses the native HTML dialog
+  element with \`modal-id\` to target the dialog with native \`showModal()\` and \`close()\` methods.
+
+#### Prop Mapping
+
+| 1.0 Prop                     | 2.0 Prop                | Notes                                         |
+|------------------------------|-------------------------|-----------------------------------------------|
+| aria-label                   | aria-label              |                                               |
+| backdrop                     | backdrop                |                                               |
+| fullscreen                   | fullscreen              |                                               |
+| header-text                  |                         | Not carried over, use \`header\` slot instead |
+| primary-button-aria-label    |                         | Not carried over, use \`footer\` slot instead |
+| primary-button-disabled      |                         | Not carried over, use \`footer\` slot instead |
+| primary-button-text          |                         | Not carried over, use \`footer\` slot instead |
+| secondary-button-aria-label  |                         | Not carried over, use \`footer\` slot instead |
+| secondary-button-disabled    |                         | Not carried over, use \`footer\` slot instead |
+| secondary-button-text        |                         | Not carried over, use \`footer\` slot instead |
+| show-fullscreen-toggle       | show-fullscreen-toggle  |                                               |
+| z-index                      |                         | Not carried over, use CSS instead             |
+
+#### Event Mapping
+
+| 1.0 Event            | 2.0 Event | Notes                                                                             |
+|----------------------|-----------|-----------------------------------------------------------------------------------|
+| closed               |           | Not carried over, use dialog \`close()\` event instead                            |
+| opened               |           | Not carried over, use dialog \`showModal()\` event instead                        |
+| primaryButtonClick   |           | Not carried over, handle with events on custom buttons in \`footer\` slot instead |
+| secondaryButtonClick |           | Not carried over, handle with events on custom buttons in \`footer\` slot instead |
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
+};

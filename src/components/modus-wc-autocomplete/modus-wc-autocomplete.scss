@@ -15,9 +15,9 @@
   }
 
   .modus-wc-autocomplete-multi-select {
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     gap: 0.5rem;
     padding: var(--modus-wc-spacing-xs);
 
@@ -29,10 +29,10 @@
 
     /** TODO - chip styling is temporary, remove once chip component is implemented */
     .chip {
-      display: flex;
       align-items: center;
       background-color: var(--modus-wc-color-gray-1);
       border-radius: var(--modus-wc-border-radius-xl);
+      display: flex;
 
       button {
         i {
@@ -48,13 +48,13 @@
   }
 
   .modus-wc-menu {
-    position: absolute;
-    left: 0;
-    top: 100%;
-    margin-top: 0.625rem; // 10px, not exact but works for all 3 sizes
-    z-index: 99;
     border-radius: 0 0 var(--modus-wc-border-radius-md)
       var(--modus-wc-border-radius-md);
+    left: 0;
+    margin-top: 0.625rem; // 10px, not exact but works for all 3 sizes
+    position: absolute;
+    top: 100%;
+    z-index: 99;
   }
 
   .menu-hidden {

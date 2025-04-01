@@ -150,3 +150,48 @@ export const Composable: Story = {
     `;
   },
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - \`chip-style\` prop has been renamed to \`variant\` and values changed from \`solid\` to \`filled\`.
+  - \`closeClick\` event has been renamed to \`chipRemove\`.
+  - \`show-close\` prop has been renamed to \`show-remove\`.
+  - Size values have changed from verbose names (\`medium\`, \`small\`) to abbreviations (\`md\`, \`sm\`).
+
+#### Prop Mapping
+
+| 1.0 Prop       | 2.0 Prop    | Notes                                             |
+|----------------|-------------|---------------------------------------------------|
+| active         | active      |                                                   |
+| advanced-chip  |             | Not carried over                                  |
+| aria-label     | aria-label  |                                                   |
+| chip-id        |             | Not carried over                                  |
+| chip-style     | variant     | \`solid\` → \`filled\`, \`outline\` → \`outline\` |
+| disabled       | disabled    |                                                   |
+| has-error      | has-error   |                                                   |
+| image-url      |             | Not carried over, use slot instead                |
+| max-width      |             | Not carried over, use CSS instead                 |
+| show-checkmark |             | Not carried over, use slot instead                |
+| show-close     | show-remove |                                                   |
+| size           | size        | \`medium\` → \`md\`, \`small\` → \`sm\`           |
+| value          | label       |                                                   |
+
+#### Event Mapping
+
+| 1.0 Event   | 2.0 Event   | Notes |
+|-------------|-------------|-------|
+| chipClick  | chipClick  |       |
+| closeClick | chipRemove |       |
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
+};

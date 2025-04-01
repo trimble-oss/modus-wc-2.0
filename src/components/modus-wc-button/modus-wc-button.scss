@@ -6,6 +6,7 @@
 [data-theme='modus-classic-light'] .modus-wc-btn,
 [data-theme='modus-classic-dark'] .modus-wc-btn {
   --rounded-btn: var(--modus-wc-border-radius-md);
+
   border: none;
   outline: none;
 
@@ -55,9 +56,9 @@
   }
 
   &.modus-wc-btn-outline {
+    background-color: transparent;
     border: var(--modus-wc-border-width-xs) solid
       var(--modus-wc-color-trimble-gray);
-    background-color: transparent;
   }
 }
 
@@ -94,8 +95,8 @@
   &.modus-wc-btn-filled {
     // Colors
     &.modus-wc-btn-primary {
-      color: var(--modus-wc-color-white);
       background-color: var(--modus-wc-color-trimble-blue);
+      color: var(--modus-wc-color-white);
 
       &:hover {
         background-color: var(--modus-wc-color-blue-light);
@@ -107,8 +108,8 @@
     }
 
     &.modus-wc-btn-secondary {
-      color: var(--modus-wc-color-white);
       background-color: var(--modus-wc-color-gray-6);
+      color: var(--modus-wc-color-white);
 
       &:hover {
         background-color: var(--modus-wc-color-gray-5);
@@ -121,8 +122,8 @@
 
     // tertiary
     &.modus-wc-btn-neutral {
-      color: var(--modus-wc-color-trimble-gray);
       background-color: var(--modus-wc-color-gray-1);
+      color: var(--modus-wc-color-trimble-gray);
 
       &:hover {
         background-color: var(--modus-wc-color-gray-0);
@@ -134,8 +135,8 @@
     }
 
     &.modus-wc-btn-warning {
-      color: var(--modus-wc-color-trimble-gray);
       background-color: var(--modus-wc-color-yellow);
+      color: var(--modus-wc-color-trimble-gray);
 
       &:hover {
         background-color: var(--modus-wc-color-yellow-light);
@@ -147,8 +148,8 @@
     }
 
     &.modus-wc-btn-error {
-      color: var(--modus-wc-color-white);
       background-color: var(--modus-wc-color-red);
+      color: var(--modus-wc-color-white);
 
       &:hover {
         background-color: var(--modus-wc-color-red-light);
@@ -163,78 +164,78 @@
   &.modus-wc-btn-outline {
     // Colors
     &.modus-wc-btn-primary {
-      color: var(--modus-wc-color-trimble-blue);
       border-color: var(--modus-wc-color-trimble-blue);
+      color: var(--modus-wc-color-trimble-blue);
 
       &:hover {
-        color: var(--modus-wc-color-blue-light);
         border-color: var(--modus-wc-color-blue-light);
+        color: var(--modus-wc-color-blue-light);
       }
 
       &:active {
-        color: var(--modus-wc-color-blue-dark);
         border-color: var(--modus-wc-color-blue-dark);
+        color: var(--modus-wc-color-blue-dark);
       }
     }
 
     &.modus-wc-btn-secondary {
-      color: var(--modus-wc-color-gray-6);
       border-color: var(--modus-wc-color-gray-6);
+      color: var(--modus-wc-color-gray-6);
 
       &:hover {
-        color: var(--modus-wc-color-gray-5);
         border-color: var(--modus-wc-color-gray-5);
+        color: var(--modus-wc-color-gray-5);
       }
 
       &:active {
-        color: var(--modus-wc-color-gray-7);
         border-color: var(--modus-wc-color-gray-7);
+        color: var(--modus-wc-color-gray-7);
       }
     }
 
     // tertiary
     &.modus-wc-btn-neutral {
-      color: var(--modus-wc-color-gray-1);
       border-color: var(--modus-wc-color-gray-1);
+      color: var(--modus-wc-color-gray-1);
 
       &:hover {
-        color: var(--modus-wc-color-gray-0);
         border-color: var(--modus-wc-color-gray-0);
+        color: var(--modus-wc-color-gray-0);
       }
 
       &:active {
-        color: var(--modus-wc-color-gray-2);
         border-color: var(--modus-wc-color-gray-2);
+        color: var(--modus-wc-color-gray-2);
       }
     }
 
     &.modus-wc-btn-warning {
-      color: var(--modus-wc-color-yellow);
       border-color: var(--modus-wc-color-yellow);
+      color: var(--modus-wc-color-yellow);
 
       &:hover {
-        color: var(--modus-wc-color-yellow-light);
         border-color: var(--modus-wc-color-yellow-light);
+        color: var(--modus-wc-color-yellow-light);
       }
 
       &:active {
-        color: var(--modus-wc-color-yellow-dark);
         border-color: var(--modus-wc-color-yellow-dark);
+        color: var(--modus-wc-color-yellow-dark);
       }
     }
 
     &.modus-wc-btn-error {
-      color: var(--modus-wc-color-red);
       border-color: var(--modus-wc-color-red);
+      color: var(--modus-wc-color-red);
 
       &:hover {
-        color: var(--modus-wc-color-red-light);
         border-color: var(--modus-wc-color-red-light);
+        color: var(--modus-wc-color-red-light);
       }
 
       &:active {
-        color: var(--modus-wc-color-red-dark);
         border-color: var(--modus-wc-color-red-dark);
+        color: var(--modus-wc-color-red-dark);
       }
     }
   }
@@ -273,8 +274,8 @@
   &.modus-wc-btn-filled {
     // Colors
     &.modus-wc-btn-primary {
-      color: var(--modus-wc-color-gray-10);
       background-color: var(--modus-wc-color-highlight-blue);
+      color: var(--modus-wc-color-gray-10);
 
       &:hover {
         background-color: var(--modus-wc-color-blue-light);
@@ -286,8 +287,8 @@
     }
 
     &.modus-wc-btn-secondary {
-      color: var(--modus-wc-color-white);
       background-color: var(--modus-wc-color-gray-6);
+      color: var(--modus-wc-color-white);
 
       &:hover {
         background-color: var(--modus-wc-color-gray-5);
@@ -300,8 +301,8 @@
 
     // tertiary
     &.modus-wc-btn-neutral {
-      color: var(--modus-wc-color-trimble-gray);
       background-color: var(--modus-wc-color-gray-1);
+      color: var(--modus-wc-color-trimble-gray);
 
       &:hover {
         background-color: var(--modus-wc-color-gray-0);
@@ -313,8 +314,8 @@
     }
 
     &.modus-wc-btn-warning {
-      color: var(--modus-wc-color-trimble-gray);
       background-color: var(--modus-wc-color-yellow);
+      color: var(--modus-wc-color-trimble-gray);
 
       &:hover {
         background-color: var(--modus-wc-color-yellow-light);
@@ -326,8 +327,8 @@
     }
 
     &.modus-wc-btn-error {
-      color: var(--modus-wc-color-white);
       background-color: var(--modus-wc-color-red);
+      color: var(--modus-wc-color-white);
 
       &:hover {
         background-color: var(--modus-wc-color-red-light);
@@ -342,78 +343,78 @@
   &.modus-wc-btn-outline {
     // Colors
     &.modus-wc-btn-primary {
-      color: var(--modus-wc-color-highlight-blue);
       border-color: var(--modus-wc-color-highlight-blue);
+      color: var(--modus-wc-color-highlight-blue);
 
       &:hover {
-        color: var(--modus-wc-color-blue-light);
         border-color: var(--modus-wc-color-blue-light);
+        color: var(--modus-wc-color-blue-light);
       }
 
       &:active {
-        color: var(--modus-wc-color-blue-dark);
         border-color: var(--modus-wc-color-blue-dark);
+        color: var(--modus-wc-color-blue-dark);
       }
     }
 
     &.modus-wc-btn-secondary {
-      color: var(--modus-wc-color-gray-6);
       border-color: var(--modus-wc-color-gray-6);
+      color: var(--modus-wc-color-gray-6);
 
       &:hover {
-        color: var(--modus-wc-color-gray-5);
         border-color: var(--modus-wc-color-gray-5);
+        color: var(--modus-wc-color-gray-5);
       }
 
       &:active {
-        color: var(--modus-wc-color-gray-7);
         border-color: var(--modus-wc-color-gray-7);
+        color: var(--modus-wc-color-gray-7);
       }
     }
 
     // tertiary
     &.modus-wc-btn-neutral {
-      color: var(--modus-wc-color-gray-1);
       border-color: var(--modus-wc-color-gray-1);
+      color: var(--modus-wc-color-gray-1);
 
       &:hover {
-        color: var(--modus-wc-color-gray-0);
         border-color: var(--modus-wc-color-gray-0);
+        color: var(--modus-wc-color-gray-0);
       }
 
       &:active {
-        color: var(--modus-wc-color-gray-2);
         border-color: var(--modus-wc-color-gray-4);
+        color: var(--modus-wc-color-gray-2);
       }
     }
 
     &.modus-wc-btn-warning {
-      color: var(--modus-wc-color-yellow);
       border-color: var(--modus-wc-color-yellow);
+      color: var(--modus-wc-color-yellow);
 
       &:hover {
-        color: var(--modus-wc-color-yellow-light);
         border-color: var(--modus-wc-color-yellow-light);
+        color: var(--modus-wc-color-yellow-light);
       }
 
       &:active {
-        color: var(--modus-wc-color-yellow-dark);
         border-color: var(--modus-wc-color-yellow-dark);
+        color: var(--modus-wc-color-yellow-dark);
       }
     }
 
     &.modus-wc-btn-error {
-      color: var(--modus-wc-color-red);
       border-color: var(--modus-wc-color-red);
+      color: var(--modus-wc-color-red);
 
       &:hover {
-        color: var(--modus-wc-color-red-light);
         border-color: var(--modus-wc-color-red-light);
+        color: var(--modus-wc-color-red-light);
       }
 
       &:active {
-        color: var(--modus-wc-color-red-dark);
         border-color: var(--modus-wc-color-red-dark);
+        color: var(--modus-wc-color-red-dark);
       }
     }
   }
