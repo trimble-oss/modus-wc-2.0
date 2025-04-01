@@ -7,8 +7,8 @@ li.modus-wc-menu-item {
   border-radius: var(--modus-wc-border-radius-sm);
 
   &.modus-wc-menu-item-bordered {
-    border-top: 1px solid var(--modus-wc-color-gray-0);
     border-bottom: 1px solid var(--modus-wc-color-gray-0);
+    border-top: 1px solid var(--modus-wc-color-gray-0);
   }
 
   &.modus-wc-menu-item-disabled {
@@ -50,10 +50,10 @@ li.modus-wc-menu-item {
   }
 
   button {
+    display: flex;
+
     /* Enforce Tailwind CSS reset */
     width: 100%;
-
-    display: flex;
 
     .modus-wc-menu-item-content {
       display: flex;

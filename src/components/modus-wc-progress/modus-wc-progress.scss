@@ -8,25 +8,24 @@
 }
 
 .modus-wc-progress-label {
-  position: absolute;
   display: flex;
-  justify-content: center;
   font-size: var(--modus-wc-font-size-sm);
-  width: 100%;
+  justify-content: center;
+  position: absolute;
   top: 0;
+  width: 100%;
 }
 
 .modus-wc-radial-progress-label {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   font-size: var(--modus-wc-font-size-md);
   margin: 0 var(--modus-wc-spacing-lg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 [data-theme='modus-classic-light'] .modus-wc-progress,
 [data-theme='modus-classic-dark'] .modus-wc-progress {
-  -webkit-appearance: none;
   appearance: none;
   background-color: transparent;
   border: 1px solid var(--modus-wc-color-gray-6);
@@ -88,9 +87,10 @@
 
   &.modus-wc-radial-progress--indeterminate {
     --value: var(--_value) !important;
-    animation-name: grow;
-    animation-iteration-count: infinite;
+
     animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-name: grow;
     animation-timing-function: ease-in-out;
   }
 }
@@ -101,18 +101,20 @@
 }
 
 @property --_value {
-  syntax: '<number>';
   inherits: true;
   initial-value: 0;
+  syntax: '<number>';
 }
 
 @keyframes grow {
   0% {
     --_value: 0;
   }
+
   50% {
     --_value: 100;
   }
+
   100% {
     --_value: 0;
   }
