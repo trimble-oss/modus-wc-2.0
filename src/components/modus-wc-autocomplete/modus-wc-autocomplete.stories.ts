@@ -371,6 +371,7 @@ export const MultiSelect: Story = {
     const handleBlur = () => {
       args.initialNavigation = true;
       args.items = args.items.map((item) => ({ ...item, focused: false }));
+      console.log('blur', args.items, args.initialNavigation);
     };
 
     const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
@@ -388,78 +389,109 @@ export const MultiSelect: Story = {
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (['ArrowDown', 'ArrowUp', 'Enter'].includes(e.key)) {
-        e.preventDefault();
-      }
-
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
       );
 
       if (!autocomplete) return;
 
+      // Initialize initialNavigation if undefined
+      if (args.initialNavigation === undefined) {
+        args.initialNavigation = true;
+      }
+
+      // Prevent default for navigation keys
+      if (['ArrowDown', 'ArrowUp', 'Enter', 'Backspace'].includes(e.key)) {
+        e.preventDefault();
+      }
+
       const visibleItems = args.items.filter(
         (item) => item.visibleInMenu && !item.disabled
       );
 
-      let currentVisibleIndex = visibleItems.findIndex((item) => item.focused);
+      // Reset initial navigation when input value changes
+      if ((e.target as HTMLInputElement).value !== autocomplete.value) {
+        args.initialNavigation = true;
+      }
 
       switch (e.key) {
         case 'ArrowDown':
-          currentVisibleIndex = Math.min(
-            currentVisibleIndex + 1,
-            visibleItems.length - 1
-          );
-          break;
-        case 'ArrowUp':
-          currentVisibleIndex = Math.max(currentVisibleIndex - 1, -1);
-          break;
-        case 'Enter':
-          if (currentVisibleIndex > -1) {
-            const selectedValue = visibleItems[currentVisibleIndex].value;
-            args.items = args.items.map((item) =>
-              item.value === selectedValue
-                ? { ...item, selected: !item.selected }
-                : item
+          if (args.initialNavigation) {
+            // On first arrow press, skip selection
+            args.initialNavigation = false;
+            return;
+          } else {
+            // Normal navigation
+            const currentFocusedIndex = visibleItems.findIndex(
+              (item) => item.focused
             );
-            autocomplete.items = [...args.items];
-            autocomplete.value = '';
+            const nextIndex =
+              currentFocusedIndex < 0
+                ? 0
+                : Math.min(currentFocusedIndex + 1, visibleItems.length - 1);
+
+            args.items = args.items.map((item) => ({
+              ...item,
+              focused: visibleItems[nextIndex]?.value === item.value,
+            }));
           }
-          return;
+          break;
+
+        case 'ArrowUp':
+          if (args.initialNavigation) {
+            // On first arrow press, skip selection
+            args.initialNavigation = false;
+            return;
+          } else {
+            // Normal navigation
+            const currentFocusedIndex = visibleItems.findIndex(
+              (item) => item.focused
+            );
+            const prevIndex =
+              currentFocusedIndex < 0
+                ? visibleItems.length - 1
+                : Math.max(currentFocusedIndex - 1, 0);
+
+            args.items = args.items.map((item) => ({
+              ...item,
+              focused: visibleItems[prevIndex]?.value === item.value,
+            }));
+          }
+          break;
+
+        case 'Enter': {
+          const focusedItem = visibleItems.find((item) => item.focused);
+          if (focusedItem) {
+            args.items = args.items.map((item) => ({
+              ...item,
+              selected:
+                item.value === focusedItem.value
+                  ? !item.selected
+                  : item.selected,
+              focused: false,
+            }));
+            autocomplete.value = '';
+            args.initialNavigation = true; // Reset for next interaction
+          }
+          break;
+        }
+
         case 'Backspace':
-          // Only handle backspace when input is empty
           if ((e.target as HTMLInputElement).value === '') {
-            // Find the last selected item
             const selectedItems = args.items.filter((item) => item.selected);
             if (selectedItems.length > 0) {
               const lastSelected = selectedItems[selectedItems.length - 1];
-              args.items = args.items.map((item) =>
-                item.value === lastSelected.value
-                  ? { ...item, selected: false }
-                  : item
-              );
-              autocomplete.items = [...args.items];
+              args.items = args.items.map((item) => ({
+                ...item,
+                selected:
+                  item.value === lastSelected.value ? false : item.selected,
+              }));
             }
           }
-          return;
+          break;
+
         default:
           return;
-      }
-
-      // Update focus states
-      args.items = args.items.map((item) => ({
-        ...item,
-        focused: false,
-      }));
-
-      if (
-        currentVisibleIndex > -1 &&
-        currentVisibleIndex < visibleItems.length
-      ) {
-        const focusedItemId = visibleItems[currentVisibleIndex].value;
-        args.items = args.items.map((item) =>
-          item.value === focusedItemId ? { ...item, focused: true } : item
-        );
       }
 
       autocomplete.items = [...args.items];
