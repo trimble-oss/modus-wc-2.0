@@ -2,11 +2,20 @@
 
 exports[`modus-wc-autocomplete should close the menu when clicking outside if leaveMenuOpen is false 1`] = `
 <modus-wc-autocomplete class="modus-wc-autocomplete" value="">
+  <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-w-full">
       <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <modus-wc-menu class="menu-hidden">
+    <!---->
+    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
+      <modus-wc-menu-item label="Item 1" selected="" value="1"></modus-wc-menu-item>
+      <modus-wc-menu-item label="Item 2" selected="" value="2"></modus-wc-menu-item>
+      <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
+    </ul>
+  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
