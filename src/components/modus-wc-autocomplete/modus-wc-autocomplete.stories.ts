@@ -135,6 +135,10 @@ const Template: Story = {
       );
       if (!autocomplete) return;
 
+      if (args.initialNavigation === undefined) {
+        args.initialNavigation = true;
+      }
+
       let currentIndex = args.items.findIndex((item) => item.focused);
       if (currentIndex === -1) {
         // If no item is focused, try to focus the last selected item
@@ -317,7 +321,7 @@ export const Default: Story = {
 
 export const MultiSelect: Story = {
   render: (args) => {
-    const allItems: IAutocompleteItem[] = [...items];
+    let allItems: IAutocompleteItem[] = [...items];
 
     const handleChipRemove = (e: CustomEvent<IAutocompleteItem>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
@@ -330,7 +334,14 @@ export const MultiSelect: Story = {
         );
         if (foundItem) {
           foundItem.selected = false;
-          autocomplete.items = [...args.items];
+          const selectedItems = args.items.filter((item) => item.selected);
+          // compare the selected items with allItems and set the selected items to allItems
+          allItems.forEach((item) => {
+            item.selected = selectedItems.some(
+              (selectedItem) => selectedItem.value === item.value
+            );
+          });
+          autocomplete.items = [...allItems]; // Update component
         }
       }
     };
@@ -364,11 +375,14 @@ export const MultiSelect: Story = {
         autocomplete.value = input.value;
       }
     };
+    let inputBlur = false;
     const handleBlur = () => {
       args.initialNavigation = true;
       args.items.forEach((item) => {
         item.focused = false;
       });
+      args.items = [...allItems];
+      inputBlur = true;
     };
     const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
@@ -422,11 +436,11 @@ export const MultiSelect: Story = {
       }
 
       let currentIndex = args.items.findIndex((item) => item.focused);
-      if (currentIndex === -1) {
-        // If no item is focused, try to focus the last selected item
-        currentIndex = args.items.findIndex((item) => item.selected);
-      }
 
+      if (inputBlur) {
+        currentIndex = -1;
+        inputBlur = false;
+      }
       // Reset focus for all items
       args.items = args.items.map((item) => ({
         ...item,
@@ -479,7 +493,6 @@ export const MultiSelect: Story = {
         if (currentIndex !== -1) {
           args.items[currentIndex].selected =
             !args.items[currentIndex].selected;
-
           const selectedItems = args.items.filter((item) => item.selected);
           // compare the selected items with allItems and set the selected items to allItems
           allItems.forEach((item) => {
