@@ -186,12 +186,10 @@ describe('modus-wc-autocomplete', () => {
 
     const input = page.root!.querySelector('input');
     input?.focus();
-
     await page.waitForChanges();
 
     document.body.click();
     await page.waitForChanges();
-
     expect(page.root).toMatchSnapshot();
   });
 });
