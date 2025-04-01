@@ -72,6 +72,9 @@ export class ModusWcAutocomplete {
   /** The text to display within the label. */
   @Prop() label?: string;
 
+  /** Whether the menu should remain open after an item is selected. */
+  @Prop() leaveMenuOpen?: boolean = false;
+
   /** The minimum number of characters required to render the menu. */
   @Prop() minChars: number = 0;
 
@@ -120,6 +123,7 @@ export class ModusWcAutocomplete {
     if (this.debounceTimer) {
       window.clearTimeout(this.debounceTimer);
     }
+    document.removeEventListener('click', this.handleOutsideClick);
   }
 
   componentWillLoad() {
@@ -128,6 +132,7 @@ export class ModusWcAutocomplete {
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    document.addEventListener('click', this.handleOutsideClick);
   }
 
   private getClasses(): string {
@@ -143,7 +148,10 @@ export class ModusWcAutocomplete {
     // Hide menu after a short delay to allow for item selection
     // istanbul ignore next - TODO
     setTimeout(() => {
-      this.menuVisible = false;
+      const relatedTarget = event.detail.relatedTarget as HTMLElement;
+      if (!relatedTarget || !this.el.contains(relatedTarget)) {
+        this.menuVisible = false;
+      }
     }, 200);
 
     this.inputBlur.emit(event.detail);
@@ -187,7 +195,7 @@ export class ModusWcAutocomplete {
   // TODO - add code coverage once autocomplete is updated
   // istanbul ignore next
   private handleItemSelect = (item: IAutocompleteItem) => {
-    this.menuVisible = false;
+    this.menuVisible = !!this.leaveMenuOpen;
     this.itemSelect.emit(item);
   };
 
@@ -195,6 +203,12 @@ export class ModusWcAutocomplete {
   // istanbul ignore next
   private handleChipRemove = (item: IAutocompleteItem) => {
     this.chipRemove.emit(item);
+  };
+
+  private handleOutsideClick = (event: MouseEvent) => {
+    if (!this.el.contains(event.target as Node)) {
+      this.menuVisible = false; // Close menu if click is outside
+    }
   };
 
   render() {
