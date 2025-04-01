@@ -180,4 +180,32 @@ describe('modus-wc-autocomplete', () => {
 
     expect(page.root).toMatchSnapshot();
   });
+
+  it('should apply disabled class when disabled is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Disabled test" disabled="true" multi-select="true"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    const multiSelectClasses = component['getMultiSelectClasses']();
+
+    expect(multiSelectClasses).toContain(
+      'modus-wc-autocomplete-multi-select--disabled'
+    );
+  });
+
+  it('should apply read-only class when read-only is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Read-only test" read-only="true" multi-select="true"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    const multiSelectClasses = component['getMultiSelectClasses']();
+
+    expect(multiSelectClasses).toContain(
+      'modus-wc-autocomplete-multi-select--readonly'
+    );
+  });
 });
