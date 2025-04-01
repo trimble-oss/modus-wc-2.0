@@ -4,8 +4,8 @@
 */
 
 .modus-wc-toggle-host {
-  display: flex;
   align-items: center;
+  display: flex;
 
   .modus-wc-input-label {
     padding-inline-start: var(--modus-wc-spacing-md);
@@ -46,6 +46,7 @@
 
     &:hover:checked {
       background-color: var(--modus-wc-color-white);
+
       --fallback-b1: var(--modus-wc-color-trimble-blue);
     }
 
@@ -63,6 +64,7 @@
 [data-theme='modus-classic-dark'] .modus-wc-toggle {
   &:checked {
     --fallback-b1: var(--modus-wc-color-highlight-blue);
+
     color: var(--modus-wc-color-highlight-blue);
   }
 
@@ -75,6 +77,7 @@
 
     &:hover:checked {
       background-color: var(--modus-wc-color-white);
+
       --fallback-b1: var(--modus-wc-color-blue-light);
     }
   }
