@@ -64,3 +64,39 @@ export const Default: Story = {
     `;
   },
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation](/docs/documentation-form-inputs--docs) for
+  additional info and examples.
+  - Size values have changed from verbose names (\`small\`, \`medium\`) to abbreviations (\`xs\`, \`sm\`, \`md\`, \`lg\`).
+
+#### Prop Mapping
+
+| 1.0 Prop            | 2.0 Prop    | Notes                                                |
+|---------------------|-------------|----------------------------------------------------- |
+| checked             | value       |                                                      |
+| disabled            | disabled    |                                                      |
+| handle-button-click |             | Not carried over                                     |
+| handle-keydown      |             | Not carried over                                     |
+| id                  | input-id    |                                                      |
+| label               | label       |                                                      |
+| name                | name        |                                                      |
+| ref                 |             | Not carried over                                     |
+| size                | size        | \`small\` → \`sm\`, \`medium\` → \`md\`              |
+        `,
+      },
+    },
+    // To hide the actual story rendering and only show docs:
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  // Simple render function or leave it empty
+  render: () => html`<div></div>`,
+};
