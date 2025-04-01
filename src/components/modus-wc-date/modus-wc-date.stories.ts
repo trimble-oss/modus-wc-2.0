@@ -74,7 +74,7 @@ export const Default: Story = {
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
-        .feedback=${ifDefined(args.feedback)}
+        .feedback=${args.feedback}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         label=${ifDefined(args.label)}
@@ -106,4 +106,60 @@ export const WithErrorFeedback: Story = {
       .value=${args.value}
     ></modus-wc-date>
   `,
+};
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
+  additional info and examples.
+  - Format handling is no longer supported. The component now uses the standard HTML date input format (ISO 8601 \`yyyy-mm-dd\`).
+  - Size values have changed from verbose names (\`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+
+#### Prop Mapping
+
+| 1.0 Prop           | 2.0 Prop         | Notes                                   |
+|--------------------|------------------|-----------------------------------------|
+| allow-chars-regex  |                  | Not carried over                        |
+| alt-formats        |                  | Not carried over                        |
+| aria-label         | aria-label       |                                         |
+| auto-focus-input   |                  | Not carried over                        |
+| disabled           | disabled         |                                         |
+| disable-validation |                  | Not carried over                        |
+| error-text         | feedback.message | Use \`feedback\` level                  |
+| filler-date        |                  | Not carried over                        |
+| format             |                  | Not carried over                        |
+| helper-text        |                  | Not carried over                        |
+| label              | label            |                                         |
+| max                | max              |                                         |
+| min                | min              |                                         |
+| placeholder        |                  | Not carried over                        |
+| read-only          | read-only        |                                         |
+| required           | required         |                                         |
+| show-calendar-icon |                  | Not carried over                        |
+| size               | size             | \`medium\` → \`md\`, \`large\` → \`lg\` |
+| type               |                  | Not carried over                        |
+| valid-text         | feedback.message | Use \`feedback\` level                  |
+| value              | value            |                                         |
+
+#### Event Mapping
+
+| 1.0 Event           | 2.0 Event   | Notes            |
+|---------------------|-------------|------------------|
+| calendarIconClicked |             | Not carried over |
+| dateInputBlur       | inputBlur   |                  |
+| valueChange         | inputChange |                  |
+| valueError          |             | Not carried over |
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
 };

@@ -67,7 +67,7 @@ const Template: Story = {
   custom-class=${ifDefined(args['custom-class'])}
   ?expanded=${args.expanded}
   id=${ifDefined(args.id)}
-  .options=${ifDefined(args.options)}
+  .options=${args.options}
 >
   <div slot="content">Collapse content</div>
 </modus-wc-collapse>
@@ -92,4 +92,44 @@ export const WithCustomContent = {
 </modus-wc-collapse>
     `;
   },
+};
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - The 1.0 accordion-item component maps to the 2.0 collapse component. See the [Accordion component](?path=/docs/components-accordion--docs).
+  - Size values have changed from \`condensed\`, \`standard\` in 1.0 to abbreviations (\`xs\`, \`sm\`, \`md\`, \`lg\`) in 2.0.
+
+#### Prop Mapping
+
+##### accordion-item (1.0) → collapse (2.0)
+
+| 1.0 Prop           | 2.0 Prop            | Notes            |
+|--------------------|---------------------|------------------|
+| aria-label         | aria-label          |                  |
+| disabled           |                     | Not carried over |
+| expand-button-type |                     | Not carried over |
+| expanded           | expanded            |                  |
+| header-text        | options.title       |                  |
+| icon               | options.icon        |                  |
+| size               | options.size        |                  |
+| supporting-label   | options.description |                  |
+
+#### Event Mapping
+
+| 1.0 Event | 2.0 Event      | Notes            |
+|-----------|----------------|------------------|
+| closed    | expandedChange |                  |
+| opened    | expandedChange |                  |
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
 };
