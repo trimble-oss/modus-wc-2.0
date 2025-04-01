@@ -27,6 +27,7 @@ interface AutocompleteArgs {
   'input-tab-index'?: number;
   items: IAutocompleteItem[];
   label?: string;
+  'leave-menu-open'?: boolean;
   'min-chars': number;
   'multi-select'?: boolean;
   name?: string;
@@ -46,6 +47,7 @@ const meta: Meta<AutocompleteArgs> = {
     disabled: false,
     items: items,
     label: 'Label',
+    'leave-menu-open': false,
     'min-chars': 0,
     'multi-select': false,
     size: 'md',
@@ -200,6 +202,7 @@ const Template: Story = {
   input-tab-index=${ifDefined(args['input-tab-index'])}
   .items=${args.items}
   label=${ifDefined(args.label)}
+  ?leave-menu-open=${args['leave-menu-open']}
   min-chars=${args['min-chars']}
   ?multi-select=${false}
   name=${ifDefined(args.name)}
@@ -363,6 +366,7 @@ export const MultiSelect: Story = {
   input-tab-index=${ifDefined(args['input-tab-index'])}
   .items=${args.items}
   label=${ifDefined(args.label)}
+  ?leave-menu-open=${args['leave-menu-open']}
   min-chars=${args['min-chars']}
   ?multi-select=${true}
   name=${ifDefined(args.name)}
