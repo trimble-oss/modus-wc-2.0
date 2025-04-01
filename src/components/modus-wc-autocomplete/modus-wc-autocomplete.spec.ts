@@ -174,4 +174,24 @@ describe('modus-wc-autocomplete', () => {
 
     expect(page.root).toMatchSnapshot();
   });
+
+  it('should close the menu when clicking outside if leaveMenuOpen is false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Default autocomplete"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    const input = page.root!.querySelector('input');
+    input?.focus();
+
+    await page.waitForChanges();
+
+    document.body.click();
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
+  });
 });

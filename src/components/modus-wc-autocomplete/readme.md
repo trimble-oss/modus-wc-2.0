@@ -23,6 +23,7 @@ Adheres to WCAG 2.2 standards.
 | `inputTabIndex` | `input-tab-index` | Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). | `number \| undefined`                 | `undefined` |
 | `items`         | --                | The items to display in the menu. Creating a new array of items will ensure proper component re-render. | `IAutocompleteItem[]`                 | `[]`        |
 | `label`         | `label`           | The text to display within the label.                                                                   | `string \| undefined`                 | `undefined` |
+| `leaveMenuOpen` | `leave-menu-open` | Whether the menu should remain open after an item is selected.                                          | `boolean \| undefined`                | `false`     |
 | `minChars`      | `min-chars`       | The minimum number of characters required to render the menu.                                           | `number`                              | `0`         |
 | `multiSelect`   | `multi-select`    | Whether the input allows multiple items to be selected.                                                 | `boolean \| undefined`                | `false`     |
 | `name`          | `name`            | Name of the form control. Submitted with the form as part of a name/value pair.                         | `string \| undefined`                 | `undefined` |

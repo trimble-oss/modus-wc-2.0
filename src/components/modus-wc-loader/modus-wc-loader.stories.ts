@@ -133,3 +133,33 @@ export const Ring: Story = {
     `;
   },
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - Component name change from \`modus-spinner\` to \`modus-wc-loader\`.
+  - **Color value changes**: \`dark\` and \`tertiary\` values from 1.0 have been removed.
+  1.0 value \`danger\` has been renamed to \`error\` in 2.0. Values \`accent\`, \`info\`, and \`neutral\` are new options in 2.0.
+  - In 1.0 \`size\` used direct CSS size value strings (e.g., \`'12rem'\`). In 2.0 \`size\` is now defined by predefined values (\`xs\`, \`sm\`, \`md\`, \`lg\`), and CSS can be used for custom sizes.
+  - Added new \`variant\` prop to specify the loader type in 2.0.
+
+#### Prop Mapping
+
+| 1.0 Prop | 2.0 Prop | Notes                                                                                                  |
+|----------|----------|--------------------------------------------------------------------------------------------------------|
+| color    | color    | \`dark\` and \`tertiary\` from version 1.0 have been removed, \`danger\` has been renamed to \`error\` |
+| size     | size     | Now uses predefined sizes (\`xs\`, \`sm\`, \`md\`, \`lg\`), use CSS for custom sizes.                  |
+        `,
+      },
+    },
+    // To hide the actual story rendering and only show docs:
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  // Simple render function or leave it empty
+  render: () => html`<div></div>`,
+};
