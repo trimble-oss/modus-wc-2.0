@@ -160,6 +160,7 @@ describe('modus-wc-autocomplete', () => {
 
     expect(focusSpy).toHaveBeenCalled();
   });
+
   it('should not show menu on ArrowDown if minChars not met', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
@@ -180,15 +181,15 @@ describe('modus-wc-autocomplete', () => {
     const menu = page.root!.querySelector('modus-wc-menu');
     expect(menu).toBeFalsy();
   });
+
   it('should hide menu on Escape key', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
       html: '<modus-wc-autocomplete aria-label="Test" min-chars="0"></modus-wc-autocomplete>',
     });
-
     const component = page.rootInstance as ModusWcAutocomplete;
     component.items = items;
-
+      
     // Open menu using ArrowDown
     const input = page.root!.querySelector('input');
     input?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
@@ -344,5 +345,25 @@ describe('modus-wc-autocomplete', () => {
 
     expect(preventDefaultSpy).toHaveBeenCalled();
     expect(page.root!.querySelector('modus-wc-menu')).toBeFalsy();
+  });
+  
+  it('should close the menu when clicking outside if leaveMenuOpen is false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Default autocomplete"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    const input = page.root!.querySelector('input');
+    input?.focus();
+
+    await page.waitForChanges();
+
+    document.body.click();
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
   });
 });
