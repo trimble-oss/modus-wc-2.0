@@ -365,13 +365,25 @@ export const MultiSelect: Story = {
         args.items = updatedItems;
         autocomplete.items = [...args.items];
         autocomplete.value = input.value;
+        if (autocomplete.value) {
+          args.initialNavigation = false;
+        }
       }
     };
 
-    const handleBlur = () => {
+    const handleBlur = (e: CustomEvent<IAutocompleteItem>) => {
+      const autocomplete = (e.target as HTMLInputElement).closest(
+        'modus-wc-autocomplete'
+      );
       args.initialNavigation = true;
-      args.items = args.items.map((item) => ({ ...item, focused: false }));
-      console.log('blur', args.items, args.initialNavigation);
+      args.items = args.items.map((item) => ({
+        ...item,
+        focused: false,
+        visibleInMenu: true,
+      }));
+      if (autocomplete) {
+        autocomplete.items = [...args.items];
+      }
     };
 
     const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
@@ -401,20 +413,25 @@ export const MultiSelect: Story = {
       }
 
       // Prevent default for navigation keys
-      if (['ArrowDown', 'ArrowUp', 'Enter', 'Backspace'].includes(e.key)) {
+      if (['ArrowDown', 'ArrowUp', 'Enter'].includes(e.key)) {
         e.preventDefault();
       }
 
       const visibleItems = args.items.filter(
         (item) => item.visibleInMenu && !item.disabled
       );
-
       // Reset initial navigation when input value changes
       if ((e.target as HTMLInputElement).value !== autocomplete.value) {
         args.initialNavigation = true;
       }
 
       switch (e.key) {
+        case 'Escape':
+          args.items = args.items.map((item) => ({ ...item, focused: false }));
+          args.initialNavigation = true;
+          autocomplete.items = [...args.items];
+          return;
+
         case 'ArrowDown':
           if (args.initialNavigation) {
             // On first arrow press, skip selection
