@@ -67,7 +67,7 @@ export class ModusWcAutocomplete {
    * The items to display in the menu.
    * Creating a new array of items will ensure proper component re-render.
    **/
-  @Prop() items: IAutocompleteItem[] = [];
+  @Prop() items?: IAutocompleteItem[] = [];
 
   /** The text to display within the label. */
   @Prop() label?: string;
@@ -213,7 +213,7 @@ export class ModusWcAutocomplete {
 
   render() {
     const getChips = () => {
-      const selectedItems = this.items.filter((item) => item.selected);
+      const selectedItems = this.items?.filter((item) => item.selected);
 
       // TODO - use chip component
       // TODO - add code coverage once chip component is implemented
@@ -261,11 +261,11 @@ export class ModusWcAutocomplete {
     // TODO - add code coverage once autocomplete is updated
     // istanbul ignore next
     const getMenuItems = () => {
-      const menuItems = this.items.filter((item) => item.visibleInMenu);
+      const menuItems = this.items?.filter((item) => item.visibleInMenu);
 
       return (
         <Fragment>
-          {menuItems.map((item) => (
+          {menuItems?.map((item) => (
             <modus-wc-menu-item
               label={item.label}
               onItemSelect={() => this.handleItemSelect(item)}
@@ -301,8 +301,8 @@ export class ModusWcAutocomplete {
           <modus-wc-menu
             aria-label="Autocomplete menu"
             bordered={this.bordered}
-            size={this.size}
             class={this.menuVisible ? 'menu-visible' : 'menu-hidden'}
+            size={this.size}
           >
             {getMenuItems()}
             <slot name="menu-items"></slot>

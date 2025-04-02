@@ -70,19 +70,39 @@ describe('modus-wc-autocomplete', () => {
       html: '<modus-wc-autocomplete aria-label="Default autocomplete" multi-select="true"></modus-wc-autocomplete>',
     });
 
-    // Set items attribute
     const component = page.rootInstance as ModusWcAutocomplete;
-    items[0].selected = true;
-    items[1].selected = true;
-    component.items = items;
 
-    // Focus input so the menu is visible
+    // Test with mixed selected/unselected items
+    const testItems = [
+      { label: 'Item 1', value: '1', selected: true, visibleInMenu: true },
+      { label: 'Item 2', value: '2', selected: true, visibleInMenu: true },
+      { label: 'Item 3', value: '3', selected: false, visibleInMenu: true },
+    ];
+
+    component.items = testItems;
+
+    // Focus input to trigger render
     const input = page.root!.querySelector('input');
     input?.focus();
-
     await page.waitForChanges();
 
-    expect(page.root).toMatchSnapshot();
+    // Explicitly test the chip rendering
+    const chips = page.root!.querySelectorAll('.chip');
+    expect(chips.length).toBe(2); // Should render 2 chips for 2 selected items
+    expect(chips[0].textContent).toContain('Item 1');
+    expect(chips[1].textContent).toContain('Item 2');
+
+    // Test with undefined items
+    component.items = undefined;
+    await page.waitForChanges();
+    const chipsAfterUndefined = page.root!.querySelectorAll('.chip');
+    expect(chipsAfterUndefined.length).toBe(0);
+
+    // Test with empty array
+    component.items = [];
+    await page.waitForChanges();
+    const chipsAfterEmpty = page.root!.querySelectorAll('.chip');
+    expect(chipsAfterEmpty.length).toBe(0);
   });
 
   it('should render multi select without border', async () => {

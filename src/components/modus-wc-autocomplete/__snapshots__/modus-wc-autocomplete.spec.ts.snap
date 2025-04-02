@@ -11,45 +11,8 @@ exports[`modus-wc-autocomplete should close the menu when clicking outside if le
   <modus-wc-menu class="menu-hidden">
     <!---->
     <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
-      <modus-wc-menu-item label="Item 1" selected="" value="1"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 2" selected="" value="2"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
-    </ul>
-  </modus-wc-menu>
-</modus-wc-autocomplete>
-`;
-
-exports[`modus-wc-autocomplete should render multi select with selected items 1`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" multi-select="true" value="">
-  <!---->
-  <div class="modus-wc-autocomplete-multi-select modus-wc-autocomplete-multi-select--bordered">
-    <div class="chip">
-      <modus-wc-button aria-label="Remove item button" color="secondary" shape="circle" size="xs">
-        <modus-wc-icon decorative="" name="close"></modus-wc-icon>
-      </modus-wc-button>
-      <div class="label">
-        Item 1
-      </div>
-    </div>
-    <div class="chip">
-      <modus-wc-button aria-label="Remove item button" color="secondary" shape="circle" size="xs">
-        <modus-wc-icon decorative="" name="close"></modus-wc-icon>
-      </modus-wc-button>
-      <div class="label">
-        Item 2
-      </div>
-    </div>
-    <modus-wc-text-input value="">
-      <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-w-full">
-        <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
-      </label>
-    </modus-wc-text-input>
-  </div>
-  <modus-wc-menu class="menu-visible">
-    <!---->
-    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
-      <modus-wc-menu-item label="Item 1" selected="" value="1"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 2" selected="" value="2"></modus-wc-menu-item>
+      <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+      <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
       <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
     </ul>
   </modus-wc-menu>
@@ -60,22 +23,6 @@ exports[`modus-wc-autocomplete should render multi select without border 1`] = `
 <modus-wc-autocomplete bordered="false" class="modus-wc-autocomplete" multi-select="true" value="">
   <!---->
   <div class="modus-wc-autocomplete-multi-select">
-    <div class="chip">
-      <modus-wc-button aria-label="Remove item button" color="secondary" shape="circle" size="xs">
-        <modus-wc-icon decorative="" name="close"></modus-wc-icon>
-      </modus-wc-button>
-      <div class="label">
-        Item 1
-      </div>
-    </div>
-    <div class="chip">
-      <modus-wc-button aria-label="Remove item button" color="secondary" shape="circle" size="xs">
-        <modus-wc-icon decorative="" name="close"></modus-wc-icon>
-      </modus-wc-button>
-      <div class="label">
-        Item 2
-      </div>
-    </div>
     <modus-wc-text-input value="">
       <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-w-full">
         <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
@@ -85,8 +32,8 @@ exports[`modus-wc-autocomplete should render multi select without border 1`] = `
   <modus-wc-menu class="menu-visible">
     <!---->
     <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-md modus-wc-w-full" role="menu">
-      <modus-wc-menu-item label="Item 1" selected="" value="1"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 2" selected="" value="2"></modus-wc-menu-item>
+      <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+      <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
       <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
     </ul>
   </modus-wc-menu>
