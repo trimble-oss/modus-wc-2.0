@@ -25,7 +25,7 @@ interface AutocompleteArgs {
   disabled?: boolean;
   'input-id'?: string;
   'input-tab-index'?: number;
-  items?: IAutocompleteItem[];
+  items: IAutocompleteItem[];
   label?: string;
   'leave-menu-open'?: boolean;
   'min-chars': number;
@@ -200,7 +200,7 @@ const Template: Story = {
   ?disabled=${args.disabled}
   input-id=${ifDefined(args['input-id'])}
   input-tab-index=${ifDefined(args['input-tab-index'])}
-  ?items=${args.items}
+  .items=${args.items}
   label=${ifDefined(args.label)}
   ?leave-menu-open=${args['leave-menu-open']}
   min-chars=${args['min-chars']}
@@ -364,7 +364,7 @@ export const MultiSelect: Story = {
   ?disabled=${args.disabled}
   input-id=${ifDefined(args['input-id'])}
   input-tab-index=${ifDefined(args['input-tab-index'])}
-  ?items=${args.items}
+  .items=${args.items}
   label=${ifDefined(args.label)}
   ?leave-menu-open=${args['leave-menu-open']}
   min-chars=${args['min-chars']}
@@ -479,6 +479,7 @@ export const CustomMenuItems: Story = {
   input-id=${ifDefined(args['input-id'])}
   input-tab-index=${ifDefined(args['input-tab-index'])}
   label=${ifDefined(args.label)}
+  ?leave-menu-open=${args['leave-menu-open']}
   min-chars=${args['min-chars']}
   ?multi-select=${false}
   name=${ifDefined(args.name)}

@@ -200,4 +200,22 @@ describe('modus-wc-autocomplete', () => {
 
     expect(page.root).toMatchSnapshot();
   });
+  it('should always apply "menu-visible" class when leaveMenuOpen is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Test autocomplete" leave-menu-open="true"></modus-wc-autocomplete>`,
+    });
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    // Focus the input to trigger the menu open logic.
+    const input = page.root!.querySelector('input');
+    input?.focus();
+    await page.waitForChanges();
+
+    // Because leaveMenuOpen is true, the menu should always have the 'menu-visible' class.
+    const menu = page.root!.querySelector('modus-wc-menu');
+    expect(menu).not.toBeNull();
+    expect(menu?.className).toContain('menu-visible');
+  });
 });

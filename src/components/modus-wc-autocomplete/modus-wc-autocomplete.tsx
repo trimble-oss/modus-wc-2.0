@@ -301,7 +301,13 @@ export class ModusWcAutocomplete {
           <modus-wc-menu
             aria-label="Autocomplete menu"
             bordered={this.bordered}
-            class={this.menuVisible ? 'menu-visible' : 'menu-hidden'}
+            class={
+              this.leaveMenuOpen
+                ? 'menu-visible'
+                : this.menuVisible
+                  ? 'menu-visible'
+                  : 'menu-hidden'
+            }
             size={this.size}
           >
             {getMenuItems()}
