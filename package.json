@@ -84,7 +84,7 @@
     "stylelint-order": "6.0.4",
     "tailwindcss": "^3.4.14",
     "ts-loader": "^9.5.1",
-    "typescript": "^5.6.2",
+    "typescript": "^5.8.2",
     "wireit": "^0.14.9"
   },
   "optionalDependencies": {
