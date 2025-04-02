@@ -2,8 +2,17 @@ version: 2
 updates:
   - package-ecosystem: npm
     directory: '/'
+    groups:
+      all-dependencies:
+        patterns:
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
     schedule:
       interval: monthly
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     versioning-strategy: increase
 
   - package-ecosystem: github-actions
