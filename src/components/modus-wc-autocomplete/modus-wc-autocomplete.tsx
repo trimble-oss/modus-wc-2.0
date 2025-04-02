@@ -23,6 +23,15 @@ export interface IAutocompleteItem {
   visibleInMenu: boolean;
 }
 
+export interface IAutocompleteNoResults {
+  /** The aria-label to provide accessibility information for the no results section. */
+  ariaLabel?: string;
+  /** The main label to display when no results are found. */
+  label: string;
+  /** The sub-label or additional text to display below the main label. */
+  subLabel: string;
+}
+
 /**
  * A customizable autocomplete component used to create searchable text inputs.
  *
@@ -83,6 +92,9 @@ export class ModusWcAutocomplete {
 
   /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string;
+
+  /** The content to display when no results are found. */
+  @Prop() noResults?: IAutocompleteNoResults;
 
   /** Text that appears in the form control when it has no value set. */
   @Prop() placeholder?: string = '';
@@ -205,6 +217,24 @@ export class ModusWcAutocomplete {
     this.chipRemove.emit(item);
   };
 
+  private renderNoResults() {
+    const {
+      ariaLabel = 'No results found',
+      label = 'No results found',
+      subLabel = 'Check spelling or try a different keyword',
+    } = this.noResults || {};
+
+    return (
+      <div class="modus-wc-autocomplete-no-results">
+        <div class="icon-label" aria-label={ariaLabel}>
+          <modus-wc-icon name="search" decorative />
+          <div class="label">{label}</div>
+        </div>
+        <div class="sub-label">{subLabel}</div>
+      </div>
+    );
+  }
+
   private handleOutsideClick = (event: MouseEvent) => {
     if (!this.el.contains(event.target as Node)) {
       this.menuVisible = false; // Close menu if click is outside
@@ -265,14 +295,16 @@ export class ModusWcAutocomplete {
 
       return (
         <Fragment>
-          {menuItems.map((item) => (
-            <modus-wc-menu-item
-              label={item.label}
-              onItemSelect={() => this.handleItemSelect(item)}
-              selected={item.selected}
-              value={item.value}
-            />
-          ))}
+          {menuItems?.length
+            ? menuItems.map((item) => (
+                <modus-wc-menu-item
+                  label={item.label}
+                  onItemSelect={() => this.handleItemSelect(item)}
+                  selected={item.selected}
+                  value={item.value}
+                />
+              ))
+            : this.renderNoResults()}
         </Fragment>
       );
     };
