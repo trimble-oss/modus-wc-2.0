@@ -136,3 +136,64 @@ export const TabsWithPanel: Story = {
     `;
   },
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 2.0 tabs use the \`ITab\` interface, see details of interface changes below.
+  - Size values have changed from verbose names (\`small\`, \`medium\`) to abbreviations (\`xs\`, \`sm\`, \`md\`, \`lg\`).
+  - The \`tabChange\` event now emits an object with both previous and new tab indices, rather than just the tab ID.
+
+#### Prop Mapping
+
+| 1.0 Prop     | 2.0 Prop           | Notes                                                          |
+|--------------|--------------------|----------------------------------------------------------------|
+| aria-label   | aria-label         |                                                                |
+| full-width   |                    | Not carried over, use CSS instead                              |
+| size         | size               | \`small\` → \`sm\`, \`medium\` → \`md\`                        |
+| tabs         | tabs               | Tab object structure has changed. See Interface changes below. |
+
+#### Event Mapping
+
+| 1.0 Event   | 2.0 Event | Notes                                                 |
+|-------------|-----------|-------------------------------------------------------|
+| tabChange   | tabChange | Now emits \`{ previousTab: number; newTab: number }\` |
+
+#### Interfaces
+
+##### 1.0
+
+\`\`\`typescript
+export interface Tab {
+  active?: boolean;
+  iconOnly?: string;
+  id: string;
+  label?: string;
+  leftIcon?: string;
+  rightIcon?: string;
+}
+\`\`\`
+
+##### 2.0
+
+\`\`\`typescript
+export interface ITab {
+  customClass?: string;
+  disabled?: boolean;
+  icon?: string;
+  iconPosition?: 'left' | 'right';
+  label?: string;
+}
+\`\`\`
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
+};
