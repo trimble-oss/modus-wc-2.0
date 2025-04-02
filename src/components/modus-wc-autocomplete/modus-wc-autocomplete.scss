@@ -97,11 +97,7 @@
 
 [data-theme='modus-classic-light'] .modus-wc-autocomplete {
   .modus-wc-autocomplete-multi-select--disabled,
-  .modus-wc-input-disabled {
-    background-color: var(--modus-wc-color-gray-0);
-    border: none;
-  }
-
+  .modus-wc-input-disabled,
   .modus-wc-autocomplete-multi-select--readonly,
   .modus-wc-text-input-readonly {
     background-color: var(--modus-wc-color-gray-0);

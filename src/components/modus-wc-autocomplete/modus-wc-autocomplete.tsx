@@ -206,6 +206,11 @@ export class ModusWcAutocomplete {
   // TODO - add code coverage once autocomplete is updated
   // istanbul ignore next
   private handleItemSelect = (item: IAutocompleteItem) => {
+    if (this.disabled || this.readOnly) {
+      this.menuVisible = false; // Force close if disabled or read-only
+      return;
+    }
+
     this.menuVisible = !!this.leaveMenuOpen;
     this.itemSelect.emit(item);
   };
