@@ -141,7 +141,6 @@ export const Migration: Story = {
         story: `
 #### Breaking Changes
 
-  - Component name change from \`modus-spinner\` to \`modus-wc-loader\`.
   - **Color value changes**: \`dark\` and \`tertiary\` values from 1.0 have been removed.
   1.0 value \`danger\` has been renamed to \`error\` in 2.0. Values \`accent\`, \`info\`, and \`neutral\` are new options in 2.0.
   - In 1.0 \`size\` used direct CSS size value strings (e.g., \`'12rem'\`). In 2.0 \`size\` is now defined by predefined values (\`xs\`, \`sm\`, \`md\`, \`lg\`), and CSS can be used for custom sizes.
