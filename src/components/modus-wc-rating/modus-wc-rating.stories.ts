@@ -121,7 +121,6 @@ export const Migration: Story = {
         story: `
 #### Breaking Changes
 
-  - Component name has changed from \`modus-sentiment-scale\` to \`modus-wc-rating\`.
   - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
   input model. See the Form Inputs [documentation](/docs/documentation-form-inputs--docs) for
   additional info and examples.
