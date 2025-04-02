@@ -358,6 +358,14 @@
               }
             },
             {
+              "name": "no-results",
+              "fieldName": "noResults",
+              "description": "The content to display when no results are found.",
+              "type": {
+                "text": "IAutocompleteNoResults"
+              }
+            },
+            {
               "name": "placeholder",
               "fieldName": "placeholder",
               "default": "''",
