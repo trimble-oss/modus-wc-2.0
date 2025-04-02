@@ -18,7 +18,7 @@ Ensure that all changes intended for the release are merged into the branch you 
 ### 2. Trigger the Publish Workflow
 
 1. Go to the `Actions` tab of the GitHub repository.
-2. Select the pinned [Publish & Release](https://github.com/Trimble-Construction/poc-modus-wc-2.0/actions/workflows/publish.yml) workflow at the top.
+2. Select the pinned [Publish & Release](https://github.com/Trimble-Construction/modus-wc-2.0/actions/workflows/publish.yml) workflow at the top.
 3. Click on the `Run workflow` button to the right.
 4. Provide the new version number as input and start the workflow.
 
@@ -26,10 +26,10 @@ Ensure that all changes intended for the release are merged into the branch you 
 
 After the workflow completes, verify that the following have been successfully published:
 
-- The `@trimble-cms/modus-wc` package to the NPM registry.
-- The `@trimble-cms/modus-wc-react` package to the NPM registry.
-- The `@trimble-cms/modus-wc-angular` package to the NPM registry.
-- The [GitHub releases](https://github.com/Trimble-Construction/poc-modus-wc-2.0/releases) for all three packages.
+- The `@trimble-cms/modus-wc` package to the npm registry.
+- The `@trimble-cms/modus-wc-react` package to the npm registry.
+- The `@trimble-cms/modus-wc-angular` package to the npm registry.
+- The [GitHub releases](https://github.com/Trimble-Construction/modus-wc-2.0/releases) for all three packages.
 
 That's it! :octocat:
 
@@ -51,13 +51,13 @@ The `Publish & Release` workflow will handle the following steps:
 
 - Update the version in `package.json`.
 - Build the `@trimble-cms/modus-wc` package.
-- Publish the `@trimble-cms/modus-wc` package to the NPM registry.
+- Publish the `@trimble-cms/modus-wc` package to the npm registry.
 - Trigger the `Publish & Release - Angular` workflow to publish the React package.
   - Update the version in `integrations/angular/ng<version#>/package.json`.
   - Build the `@trimble-cms/modus-wc-angular` package.
-  - Publish the `@trimble-cms/modus-wc-angular` package to the NPM registry.
+  - Publish the `@trimble-cms/modus-wc-angular` package to the npm registry.
 - Trigger the `Publish & Release - React` workflow to publish the React package.
   - Update the version in `integrations/react/package.json`.
   - Build the `@trimble-cms/modus-wc-react` package.
-  - Publish the `@trimble-cms/modus-wc-react` package to the NPM registry.
+  - Publish the `@trimble-cms/modus-wc-react` package to the npm registry.
 - Create GitHub releases for all three packages.
