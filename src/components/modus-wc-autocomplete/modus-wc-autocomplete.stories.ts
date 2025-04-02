@@ -127,102 +127,88 @@ type Story = StoryObj<AutocompleteArgs>;
 
 const Template: Story = {
   render: (args) => {
-    // External keydown handler to update focus state on the items array
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (['ArrowDown', 'ArrowUp', 'Enter'].includes(e.key)) {
-        e.preventDefault();
-      }
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
       );
       if (!autocomplete) return;
 
+      // Initialize initialNavigation if undefined
       if (args.initialNavigation === undefined) {
         args.initialNavigation = true;
       }
 
-      let currentIndex = args.items.findIndex((item) => item.focused);
-      if (currentIndex === -1) {
-        // If no item is focused, try to focus the last selected item
-        currentIndex = args.items.findIndex((item) => item.selected);
-      }
-      const input = e.target as HTMLInputElement;
-      if (!input.value) {
-        args.items = args.items.map((item) => ({
-          ...item,
-          selected: false,
-        }));
+      // Prevent default for navigation keys
+      if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
+        e.preventDefault();
       }
 
-      // Reset focus for all items
-      args.items = args.items.map((item) => ({
-        ...item,
-        focused: false,
-      }));
-      if (
-        currentIndex === -1 &&
-        (e.key === 'ArrowDown' || e.key === 'ArrowUp')
-      ) {
-        if (e.key === 'ArrowDown') {
-          // Find first non-disabled item
-          for (let i = 0; i < args.items.length; i++) {
-            if (!args.items[i].disabled) {
-              currentIndex = i;
-              break;
-            }
-          }
-        } else {
-          if (currentIndex === -1) {
-            return;
-          }
-          // ArrowUp: find last non-disabled item
-          for (let i = args.items.length - 1; i >= 0; i--) {
-            if (!args.items[i].disabled) {
-              currentIndex = i;
-              break;
-            }
-          }
-        }
-      } else if (
-        e.key === 'ArrowDown' &&
-        currentIndex < args.items.length - 1
-      ) {
-        let newIndex = currentIndex + 1;
-        // Skip disabled items
-        while (newIndex < args.items.length && args.items[newIndex].disabled) {
-          newIndex++;
-        }
-        if (newIndex < args.items.length) {
-          currentIndex = newIndex;
-        }
-      } else if (e.key === 'ArrowUp' && currentIndex > 0) {
-        let newIndex = currentIndex - 1;
-        // Skip disabled items
-        while (newIndex >= 0 && args.items[newIndex].disabled) {
-          newIndex--;
-        }
-        if (newIndex >= 0) {
-          currentIndex = newIndex;
-        }
-      } else if (e.key === 'Enter') {
-        if (currentIndex !== -1) {
-          args.items = args.items.map((item, index) => ({
+      const visibleItems = args.items.filter(
+        (item) => item.visibleInMenu && !item.disabled
+      );
+
+      switch (e.key) {
+        case 'Escape':
+          args.items = args.items.map((item) => ({
             ...item,
-            selected: index === currentIndex, // Mark selected item
+            focused: false,
           }));
+          args.initialNavigation = true;
           autocomplete.items = [...args.items];
-          autocomplete.value = args.items[currentIndex].label;
+          return;
+
+        case 'ArrowDown':
+          if (args.initialNavigation) {
+            args.initialNavigation = false;
+            return;
+          } else {
+            const currentIndex = visibleItems.findIndex((item) => item.focused);
+            const nextIndex =
+              currentIndex < 0
+                ? 0
+                : Math.min(currentIndex + 1, visibleItems.length - 1);
+            args.items = args.items.map((item) => ({
+              ...item,
+              focused: visibleItems[nextIndex]?.value === item.value,
+            }));
+          }
+          break;
+
+        case 'ArrowUp':
+          if (args.initialNavigation) {
+            args.initialNavigation = false;
+            return;
+          } else {
+            const currentIndex = visibleItems.findIndex((item) => item.focused);
+            const prevIndex =
+              currentIndex < 0
+                ? visibleItems.length - 1
+                : Math.max(currentIndex - 1, 0);
+            args.items = args.items.map((item) => ({
+              ...item,
+              focused: visibleItems[prevIndex]?.value === item.value,
+            }));
+          }
+          break;
+
+        case 'Enter': {
+          const focusedItem = visibleItems.find((item) => item.focused);
+          if (focusedItem) {
+            args.items = args.items.map((item) => ({
+              ...item,
+              selected: item.value === focusedItem.value,
+              focused: false,
+            }));
+            autocomplete.value = focusedItem.label;
+            args.initialNavigation = true;
+          }
+          break;
         }
-        return;
+
+        default:
+          return;
       }
 
-      // Skip focusing on the first press
-      if (args.initialNavigation) {
-        args.initialNavigation = false;
-        return;
-      }
-
-      args.items[currentIndex].focused = true;
       autocomplete.items = [...args.items];
     };
 
@@ -237,59 +223,53 @@ const Template: Story = {
         const input = e.detail.target as HTMLInputElement;
         const searchText = input.value.toLowerCase();
 
-        // Create a new array, updating the values of 'selected' and 'visibleInMenu'.
-        const updatedItems = items.map((item) => ({
+        args.items = args.items.map((item) => ({
           ...item,
-          selected: searchText ? item.selected : false,
           visibleInMenu: item.label.toLowerCase().includes(searchText),
           focused: false,
+          selected: searchText ? item.selected : false,
         }));
 
-        // Ensuring that a new array is created when updating items is critical to component re-render.
-        args.items = updatedItems.filter((item) => item.visibleInMenu);
         autocomplete.items = [...args.items];
         autocomplete.value = input.value;
       }
     };
-    const handleBlur = () => {
+
+    const handleBlur = (e: CustomEvent<IAutocompleteItem>) => {
+      const autocomplete = (e.target as HTMLInputElement).closest(
+        'modus-wc-autocomplete'
+      );
       args.initialNavigation = true;
-      args.items.forEach((item) => {
-        item.focused = false;
-      });
+      args.items = args.items.map((item) => ({
+        ...item,
+        focused: false,
+        visibleInMenu: true,
+      }));
+      if (autocomplete) {
+        autocomplete.items = [...args.items];
+      }
     };
+
     const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
       );
 
       if (autocomplete) {
-        const label = e.detail.label;
-        if (label) {
-          autocomplete.value = label;
-        }
-
-        // Clear the previous selection.
-        args.items.forEach((item) => {
-          item.selected = false;
-          item.focused = false;
-        });
-
-        // Mark the selected menu item as selected.
-        const foundItem = args.items.find(
-          (item) => item.value === e.detail.value
-        );
-        if (foundItem) {
-          foundItem.selected = true;
-          autocomplete.items = [...args.items];
-        }
+        args.items = args.items.map((item) => ({
+          ...item,
+          selected: item.value === e.detail.value,
+          focused: false,
+          visibleInMenu: true,
+        }));
+        autocomplete.items = [...args.items];
+        autocomplete.value = e.detail.label;
       }
     };
 
-    // prettier-ignore
     return html`
       <style>
-        /* Only for Storybook */
-        div[id^="story--components-forms-autocomplete--default"] {
+        div[id^='story--components-forms-autocomplete--default'] {
           height: 400px;
         }
       </style>
