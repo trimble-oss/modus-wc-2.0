@@ -208,4 +208,35 @@ describe('modus-wc-autocomplete', () => {
       'modus-wc-autocomplete-multi-select--readonly'
     );
   });
+
+  it('should handle leaveMenuOpen behavior correctly', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Leave menu open test" leave-menu-open="true"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    const input = page.root!.querySelector('input');
+    input?.focus();
+    await page.waitForChanges();
+
+    // Verify menu remains open when clicking outside
+    document.body.click();
+    await page.waitForChanges();
+    expect(page.root).toMatchSnapshot();
+
+    // Verify menu closes when disabled is true
+    component.disabled = true;
+    await page.waitForChanges();
+    expect(page.root).toMatchSnapshot();
+
+    // Reset disabled and verify menu behavior with readOnly
+    component.disabled = false;
+    component.readOnly = true;
+    input?.dispatchEvent(new FocusEvent('focus'));
+    await page.waitForChanges();
+    expect(page.root).toMatchSnapshot();
+  });
 });

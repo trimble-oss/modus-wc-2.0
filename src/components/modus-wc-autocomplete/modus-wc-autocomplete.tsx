@@ -8,6 +8,7 @@ import {
   Prop,
   State,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
@@ -117,6 +118,14 @@ export class ModusWcAutocomplete {
   /** Event emitted when a menu item is selected. */
   @StencilEvent() itemSelect!: EventEmitter<IAutocompleteItem>;
 
+  @Watch('disabled')
+  @Watch('readOnly')
+  handleMenuVisibilityChange() {
+    if (this.disabled || this.readOnly) {
+      this.menuVisible = false; // Close the menu immediately
+    }
+  }
+
   // istanbul ignore next - TODO
   disconnectedCallback() {
     // Clean up any existing debounce timer when component is destroyed
@@ -206,11 +215,7 @@ export class ModusWcAutocomplete {
   // TODO - add code coverage once autocomplete is updated
   // istanbul ignore next
   private handleItemSelect = (item: IAutocompleteItem) => {
-    if (this.disabled || this.readOnly) {
-      this.menuVisible = false; // Force close if disabled or read-only
-      return;
-    }
-
+    if (this.disabled || this.readOnly) return;
     this.menuVisible = !!this.leaveMenuOpen;
     this.itemSelect.emit(item);
   };
