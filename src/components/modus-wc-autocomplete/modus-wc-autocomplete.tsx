@@ -280,7 +280,7 @@ export class ModusWcAutocomplete {
                 aria-label="Remove item button"
                 color="secondary"
                 onClick={() => this.handleChipRemove(item)}
-                disabled={this.disabled}
+                disabled={this.disabled || this.readOnly}
                 shape="circle"
                 size="xs"
               >
