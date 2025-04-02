@@ -56,6 +56,32 @@
     top: 100%;
     z-index: 99;
   }
+
+  .modus-wc-autocomplete-no-results {
+    padding: var(--modus-wc-spacing-md);
+
+    .icon-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        color: var(--modus-wc-color-gray-6);
+      }
+
+      .label {
+        font-size: var(--modus-wc-font-size-md);
+        font-weight: var(--modus-wc-font-weight-bold);
+        margin-inline-start: var(--modus-wc-spacing-xs);
+      }
+    }
+
+    .sub-label {
+      font-size: var(--modus-wc-font-size-sm);
+      color: var(--modus-wc-color-gray-7);
+      text-align: center;
+    }
+  }
 }
 
 [data-theme='modus-classic-light'] .modus-wc-autocomplete,
@@ -71,5 +97,13 @@
 
   ul.modus-wc-menu {
     box-shadow: 0 0 4px 0 rgba(54, 53, 69, 0.3);
+  }
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-autocomplete {
+  .modus-wc-autocomplete-no-results {
+    .sub-label {
+      color: var(--modus-wc-color-white);
+    }
   }
 }
