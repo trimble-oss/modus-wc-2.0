@@ -96,6 +96,9 @@ export class ModusWcAutocomplete {
   /** The size of the autocomplete (input and menu). */
   @Prop() size?: ModusSize = 'md';
 
+  /** A spinner that appears when set to true */
+  @Prop() showSpinner?: boolean = false;
+
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
@@ -261,6 +264,16 @@ export class ModusWcAutocomplete {
     // TODO - add code coverage once autocomplete is updated
     // istanbul ignore next
     const getMenuItems = () => {
+      if (this.showSpinner) {
+        return (
+          <li>
+            <modus-wc-loader
+              variant="spinner"
+              size={this.size}
+            ></modus-wc-loader>
+          </li>
+        );
+      }
       const menuItems = this.items.filter((item) => item.visibleInMenu);
 
       return (
