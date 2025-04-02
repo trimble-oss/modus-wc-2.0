@@ -90,6 +90,12 @@ export const Migration: Story = {
 | name                | name        |                                                      |
 | ref                 |             | Not carried over                                     |
 | size                | size        | \`small\` → \`sm\`, \`medium\` → \`md\`              |
+
+#### Event Mapping
+
+| 1.0 Event   | 2.0 Event   | Notes                                               |
+|-------------|-------------|-----------------------------------------------------|
+| buttonClick | inputChange | Now emits an \`InputEvent\` instead of a \`string\` |
         `,
       },
     },
