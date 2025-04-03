@@ -57,12 +57,28 @@
   &.modus-wc-btn-borderless {
     background-color: transparent;
     box-shadow: none;
+
+    &:active {
+      background-color: transparent;
+    }
+
+    &:hover {
+      background-color: transparent;
+    }
   }
 
   &.modus-wc-btn-outline {
     background-color: transparent;
     border: var(--modus-wc-border-width-xs) solid
       var(--modus-wc-color-trimble-gray);
+
+    &:active {
+      background-color: transparent;
+    }
+
+    &:hover {
+      background-color: transparent;
+    }
   }
 }
 
@@ -139,6 +155,7 @@
     }
 
     &.modus-wc-btn-warning {
+      border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-red);
       background-color: var(--modus-wc-color-yellow);
       color: var(--modus-wc-color-trimble-gray);
 
@@ -318,6 +335,7 @@
     }
 
     &.modus-wc-btn-warning {
+      border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-red);
       background-color: var(--modus-wc-color-yellow);
       color: var(--modus-wc-color-trimble-gray);
 

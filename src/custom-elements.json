@@ -1067,7 +1067,7 @@
               "default": "'md'",
               "description": "The size of the input.",
               "type": {
-                "text": "DaisySize"
+                "text": "ModusSize"
               }
             },
             {
