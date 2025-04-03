@@ -236,7 +236,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable autocomplete component used to create searchable text inputs.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable autocomplete component used to create searchable text inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcAutocomplete",
           "members": [
             {
@@ -279,7 +279,7 @@
               "name": "debounce-ms",
               "fieldName": "debounceMs",
               "default": "300",
-              "description": "The debounce timeout in milliseconds.\nSet to 0 to disable debouncing.",
+              "description": "The debounce timeout in milliseconds.\r\nSet to 0 to disable debouncing.",
               "type": {
                 "text": "number"
               }
@@ -313,7 +313,7 @@
               "name": "items",
               "fieldName": "items",
               "default": "[]",
-              "description": "The items to display in the menu.\nCreating a new array of items will ensure proper component re-render.",
+              "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render.",
               "type": {
                 "text": "IAutocompleteItem[]"
               }
@@ -439,7 +439,7 @@
               "type": {
                 "text": "EventEmitter<Event>"
               },
-              "description": "Event emitted when the input value changes.\nThis event is debounced based on the debounceMs prop."
+              "description": "Event emitted when the input value changes.\r\nThis event is debounced based on the debounceMs prop."
             },
             {
               "kind": "field",

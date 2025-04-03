@@ -93,3 +93,44 @@ export const Default: Story = {
     ></modus-wc-pagination>
   `,
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 1.0 the pagination component incorporated ellipses to indicate page skips. In 2.0, the component
+  has been simplified to only show at most 5 page buttons relative to current page with previous/next
+  and first/last navigation buttons.
+  - In 1.0 the \`active-page\` prop was used, while 2.0 uses \`page\` instead.
+  - The \`pageChange\` event in 1.0 emitted just the page number value. In 2.0, it emits an object
+  with \`newPage\` and \`prevPage\` properties.
+  - Size values have changed from verbose names (\`small\`, \`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+
+#### Prop Mapping
+
+| 1.0 Prop              | 2.0 Prop           | Notes                                                       |
+|-----------------------|--------------------|-------------------------------------------------------------|
+| active-page           | page               |                                                             |
+| aria-label            | aria-label         |                                                             |
+| max-page              | count              |                                                             |
+| min-page              |                    | Not carried over, minimum page is always 1                  |
+| next-page-button-text |                    | Not carried over                                            |
+| prev-page-button-text |                    | Not carried over                                            |
+| size                  | size               | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
+
+#### Event Mapping
+
+| 1.0 Event   | 2.0 Event   | Notes                                                   |
+|-------------|-------------|---------------------------------------------------------|
+| pageChange  | pageChange  | Now emits an object with \`newPage\` and \`prevPage\`   |
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
+};
