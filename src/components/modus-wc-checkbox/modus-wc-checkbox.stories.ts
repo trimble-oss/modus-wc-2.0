@@ -2,7 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DaisySize } from '../types';
+import { ModusSize } from '../types';
 
 interface CheckboxArgs {
   'custom-class'?: string;
@@ -13,7 +13,7 @@ interface CheckboxArgs {
   label?: string;
   name?: string;
   required?: boolean;
-  size?: DaisySize;
+  size?: ModusSize;
   value: boolean;
 }
 
@@ -33,7 +33,7 @@ const meta: Meta<CheckboxArgs> = {
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['sm', 'md', 'lg'],
     },
   },
   decorators: [withActions],
