@@ -345,7 +345,7 @@ describe('modus-wc-autocomplete', () => {
 
     expect(preventDefaultSpy).toHaveBeenCalled();
     expect(page.root!.querySelector('modus-wc-menu')).toBeFalsy();
- });
+  });
 
   it('should display no results ui when no items are available', async () => {
     const page = await newSpecPage({
@@ -359,7 +359,6 @@ describe('modus-wc-autocomplete', () => {
     await page.waitForChanges();
 
     expect(page.root).toMatchSnapshot();
-
   });
 
   it('should close the menu when clicking outside if leaveMenuOpen is false', async () => {

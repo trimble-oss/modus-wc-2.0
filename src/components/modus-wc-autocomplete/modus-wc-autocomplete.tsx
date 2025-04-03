@@ -345,18 +345,18 @@ export class ModusWcAutocomplete {
 
       return (
         <Fragment>
-        {menuItems?.length
-          ? menuItems.map((item) => (
-              <modus-wc-menu-item
-                label={item.label}
-                onItemSelect={() => this.handleItemSelect(item)}
-                selected={item.selected}
-                disabled={item.disabled}
-                focused={item.focused}
-                value={item.value}
-              />
-            ))
-          : this.renderNoResults()}
+          {menuItems?.length
+            ? menuItems.map((item) => (
+                <modus-wc-menu-item
+                  label={item.label}
+                  onItemSelect={() => this.handleItemSelect(item)}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  focused={item.focused}
+                  value={item.value}
+                />
+              ))
+            : this.renderNoResults()}
         </Fragment>
       );
     };

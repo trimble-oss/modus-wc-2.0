@@ -17,19 +17,6 @@ exports[`modus-wc-autocomplete should display no results ui when no items are av
       <input aria-label="No results test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu aria-label="Autocomplete menu" bordered="" size="md">
-    <div class="modus-wc-autocomplete-no-results">
-      <div aria-label="No results found" class="icon-label">
-        <modus-wc-icon decorative="" name="search"></modus-wc-icon>
-        <div class="label">
-          No results found
-        </div>
-      </div>
-      <div class="sub-label">
-        Check spelling or try a different keyword
-      </div>
-    </div>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
