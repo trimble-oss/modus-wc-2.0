@@ -45,6 +45,7 @@
 
     &:hover:not(.modus-wc-btn-active) {
       background-color: var(--modus-wc-color-base-300);
+      border-color: transparent;
     }
   }
 }

@@ -24,6 +24,8 @@
 }
 
 [data-theme='modus-classic-light'] .modus-wc-card {
+  background-color: var(--modus-wc-color-white);
+  color: var(--modus-wc-color-trimble-gray);
   .modus-wc-card-title {
     --fallback-bc: var(--modus-wc-color-trimble-gray);
   }
@@ -35,6 +37,7 @@
 
 [data-theme='modus-classic-dark'] .modus-wc-card {
   background-color: var(--modus-wc-color-gray-9);
+  color: var(--modus-wc-color-trimble-white);
 
   .modus-wc-card-title {
     --fallback-bc: var(--modus-wc-color-white);

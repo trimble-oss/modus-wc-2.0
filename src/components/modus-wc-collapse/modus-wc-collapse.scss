@@ -9,6 +9,7 @@
   border-color: transparent;
   box-sizing: border-box;
   color: var(--modus-wc-color-base-content);
+  font-weight: var(--modus-wc--font-weight-semibold);
 
   modus-wc-icon {
     height: 24px;
@@ -34,6 +35,11 @@
 modus-wc-accordion .modus-wc-collapse {
   margin-bottom: 12px;
   background-color: var(--modus-wc-color-base-100);
+  .modus-wc-collapse-title {
+    min-height: unset;
+    width: auto;
+    font-weight: var(--modus-wc-font-weight-semibold);
+  }
 }
 
 [data-theme='modus-classic-light'] .modus-wc-collapse,
@@ -43,6 +49,7 @@ modus-wc-accordion .modus-wc-collapse {
   .modus-wc-collapse-title {
     min-height: unset;
     width: auto;
+    font-weight: var(--modus-wc-font-weight-normal);
   }
 }
 
@@ -56,6 +63,7 @@ modus-wc-accordion .modus-wc-collapse {
     .modus-wc-collapse-title {
       background-color: var(--modus-wc-color-blue-pale);
       padding-inline-start: var(--modus-wc-spacing-md);
+      font-weight: var(--modus-wc-font-weight-normal);
     }
   }
 }

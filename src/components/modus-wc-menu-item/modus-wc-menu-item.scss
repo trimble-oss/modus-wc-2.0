@@ -4,31 +4,30 @@
 */
 
 li.modus-wc-menu-item {
-  border-radius: var(--modus-wc-border-radius-sm);
-
   .modus-wc-menu-item-selected-icon {
     display: none;
   }
-  --tglbg button {
-    border-radius: 0;
-
+  button {
     &:where(
         .modus-wc-menu
           li:not(.modus-wc-menu-title, .modus-wc-disabled)
           > :not(ul, details, .modus-wc-menu-title)
       ):not(summary, .modus-wc-active, .modus-wc-btn):focus {
       color: var(--modus-wc-color-primary-content);
+      border-radius: inherit;
     }
   }
 
   &.modus-wc-menu-item-bordered {
     border-bottom: 1px solid var(--modus-wc-color-base-100);
     border-top: 1px solid var(--modus-wc-color-base-100);
+    border-radius: 0;
   }
 
   &.modus-wc-menu-item-selected {
     background-color: var(--modus-wc-color-primary);
     color: var(--modus-wc-color-primary-content);
+    border-radius: inherit;
   }
   &.modus-wc-menu-item-disabled {
     color: var(--modus-wc-color-gray-2);
