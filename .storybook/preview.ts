@@ -51,7 +51,11 @@ const preview: Preview = {
         const aTitle = a.title.toLowerCase();
         const bTitle = b.title.toLowerCase();
 
-        // Make Documentation section appear first
+        // Make "Documentation/Getting Started" appear first (what page we go to on load)
+        if (aTitle === 'documentation/getting started') return -1;
+        if (bTitle === 'documentation/getting started') return 1;
+
+        // Then make Documentation section appear next
         if (
           aTitle.startsWith('documentation') &&
           !bTitle.startsWith('documentation')

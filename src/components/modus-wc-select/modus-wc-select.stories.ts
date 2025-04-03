@@ -94,7 +94,7 @@ export const Default: Story = {
       ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
-      .feedback=${ifDefined(args.feedback)}
+      .feedback=${args.feedback}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-id=${ifDefined(args['input-id'])}
       input-tab-index=${ifDefined(args['input-tab-index'])}
@@ -124,4 +124,49 @@ export const WithErrorFeedback: Story = {
       .value=${args.value}
     ></modus-wc-select>
   `,
+};
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation](/docs/documentation-form-inputs--docs) for
+  additional info and examples.
+  - The options format has changed to use a standardized \`ISelectOption\` object array.
+  - Size values have changed from verbose names (\`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+
+#### Prop Mapping
+
+| 1.0 Prop              | 2.0 Prop            | Notes                                                |
+|-----------------------|---------------------|------------------------------------------------------|
+| aria-label            | aria-label          |                                                      |
+| disabled              | disabled            |                                                      |
+| error-text            | feedback.message    | Use \`feedback\` level                               |
+| helper-text           |                     | Not carried over                                     |
+| label                 | label               |                                                      |
+| options               | options             | Format changed to require array of \`ISelectOption\` objects |
+| options-display-prop  |                     | Not carried over                                     |
+| placeholder           |                     | Not carried over                                     |
+| required              | required            |                                                      |
+| size                  | size                | \`medium\` → \`md\`, \`large\` → \`lg\`              |
+| valid-text            | feedback.message    | Use \`feedback\` level                               |
+| value                 | value               |                                                      |
+
+#### Event Mapping
+
+| 1.0 Event    | 2.0 Event   | Notes            |
+|--------------|-------------|------------------|
+| valueChange  | inputChange |                  |
+| inputBlur    | inputBlur   |                  |
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
 };

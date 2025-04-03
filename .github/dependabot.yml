@@ -2,6 +2,13 @@ version: 2
 updates:
   - package-ecosystem: npm
     directory: '/'
+    groups:
+      all-dependencies:
+        patterns:
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
     schedule:
       interval: monthly
     versioning-strategy: increase

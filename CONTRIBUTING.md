@@ -8,13 +8,11 @@
 - [Getting Started](#getting-started)
 - [Submitting Issues](#submitting-issues)
 - [Technologies](#technologies)
-- [Running Locally](#running-locally)
 - [Developing a Component](#developing-a-component)
 - [Style Guide](#style-guide)
 - [Testing](#testing)
 - [Making Changes and Submitting a PR](#making-changes-and-submitting-a-pr)
 - [Changelog](#changelog)
-- [Releasing Framework Outputs](#releasing-framework-outputs)
 
 ## Dependencies
 
@@ -95,7 +93,7 @@ Refer to our [responsive design](./docs/responsive-design.md) doc on how to crea
 
 We use JSDoc comments for each component to auto-generate documentation for Storybook. Ensure that you add appropriate JSDoc comments to your component's properties, methods, and events. Documentation is generated upon running `npm run build` or `npm start`.
 
-**Important tips for success:**
+### Important tips for success
 
 - Follow the patterns of existing components (directory structure, file naming, code organization, etc.)
 - Do not use inline styling!
