@@ -345,7 +345,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * The value of the checkbox.
          */
@@ -2745,7 +2745,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: DaisySize;
+        "size"?: ModusSize;
         /**
           * The value of the checkbox.
          */
