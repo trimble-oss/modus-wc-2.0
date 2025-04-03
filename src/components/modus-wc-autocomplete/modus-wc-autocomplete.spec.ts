@@ -161,6 +161,20 @@ describe('modus-wc-autocomplete', () => {
     expect(focusSpy).toHaveBeenCalled();
   });
 
+  it('should display no results ui when no items are available', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="No results test"></modus-wc-autocomplete>',
+    });
+
+    const input = page.root!.querySelector('input');
+    expect(input).not.toBeNull();
+    input!.focus();
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
+  });
+
   it('should close the menu when clicking outside if leaveMenuOpen is false', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
@@ -172,12 +186,69 @@ describe('modus-wc-autocomplete', () => {
 
     const input = page.root!.querySelector('input');
     input?.focus();
-
     await page.waitForChanges();
 
     document.body.click();
     await page.waitForChanges();
+    expect(page.root).toMatchSnapshot();
+  });
 
+  it('should apply disabled class when disabled is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Disabled test" disabled="true" multi-select="true"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    const multiSelectClasses = component['getMultiSelectClasses']();
+
+    expect(multiSelectClasses).toContain(
+      'modus-wc-autocomplete-multi-select--disabled'
+    );
+  });
+
+  it('should apply read-only class when read-only is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Read-only test" read-only="true" multi-select="true"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    const multiSelectClasses = component['getMultiSelectClasses']();
+
+    expect(multiSelectClasses).toContain(
+      'modus-wc-autocomplete-multi-select--readonly'
+    );
+  });
+
+  it('should handle leaveMenuOpen behavior correctly', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Leave menu open test" leave-menu-open="true"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    const input = page.root!.querySelector('input');
+    input?.focus();
+    await page.waitForChanges();
+
+    // Verify menu remains open when clicking outside
+    document.body.click();
+    await page.waitForChanges();
+    expect(page.root).toMatchSnapshot();
+
+    // Verify menu closes when disabled is true
+    component.disabled = true;
+    await page.waitForChanges();
+    expect(page.root).toMatchSnapshot();
+
+    // Reset disabled and verify menu behavior with readOnly
+    component.disabled = false;
+    component.readOnly = true;
+    input?.dispatchEvent(new FocusEvent('focus'));
+    await page.waitForChanges();
     expect(page.root).toMatchSnapshot();
   });
 });

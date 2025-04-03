@@ -21,9 +21,20 @@
   border-radius: var(--modus-wc-border-radius-sm);
   border-width: var(--modus-wc-border-width-sm);
 
-  &.modus-wc-checkbox-xl {
-    height: 4rem;
-    width: 4rem;
+  // Sizes
+  &.modus-wc-checkbox-sm {
+    height: 0.75rem;
+    width: 0.75rem;
+  }
+
+  &.modus-wc-checkbox-md {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  &.modus-wc-checkbox-lg {
+    height: 1.25rem;
+    width: 1.25rem;
   }
 
   &:checked {
@@ -41,6 +52,11 @@
 
   &:disabled {
     opacity: 0.3;
+
+    &:not(:checked) {
+      background-color: unset;
+      border: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-gray-4);
+    }
   }
 
   &:focus {

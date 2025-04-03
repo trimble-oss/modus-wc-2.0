@@ -216,3 +216,36 @@ export const RadialWithCustomSizeAndThickness: Story = {
     layout: 'centered',
   },
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - Colors and sizes are now handled through CSS instead of direct props.
+  - The \`mode\` prop has been replaced with an \`indeterminate\` boolean prop.
+
+#### Prop Mapping
+
+| 1.0 Prop          | 2.0 Prop      | Notes                                                |
+|-------------------|---------------|------------------------------------------------------|
+| aria-label        | aria-label    |                                                      |
+| background-color  |               | Not carried over, use CSS instead                    |
+| color             |               | Not carried over, use CSS instead                    |
+| max-value         | max           |                                                      |
+| min-value         |               | Not carried over                                     |
+| mode              | indeterminate | 1.0: \`determinate\`/\`indeterminate\`, 2.0: boolean |
+| size              |               | Not carried over, use CSS instead                    |
+| text              | label         |                                                      |
+| text-color        |               | Not carried over, use CSS instead                    |
+| value             | value         |                                                      |
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
+};
