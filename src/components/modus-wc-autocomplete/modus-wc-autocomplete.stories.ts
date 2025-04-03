@@ -38,8 +38,8 @@ interface AutocompleteArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
-  size?: ModusSize;
   'show-spinner'?: boolean;
+  size?: ModusSize;
   value: string;
 }
 
