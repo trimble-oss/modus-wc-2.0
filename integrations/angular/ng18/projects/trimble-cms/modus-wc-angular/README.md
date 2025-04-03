@@ -47,13 +47,13 @@ To rebuild the Modus Angular Components you need to perform the following steps:
 
 #### Using npm link
 
-- If you want to reference a local build of `modus-wc` you can run `npm link` from the `poc-modus-wc-2.0` root 
-directory and then `npm link @trimble-cms/modus-wc` from the `ng18` directory. 
+- If you want to reference a local build of `modus-wc` you can run `npm link` from the `modus-wc-2.0` root
+directory and then `npm link @trimble-cms/modus-wc` from the `ng18` directory.
 
 #### Using npm pack
 
-- You can also run `npm pack` from the `poc-modus-wc-2.0` root 
-directory and then `npm install path/to/modus-wc-tarball.tgz` from `ng18` directory. 
+- You can also run `npm pack` from the `modus-wc-2.0` root
+directory and then `npm install path/to/modus-wc-tarball.tgz` from `ng18` directory.
 
 ## Debugging Locally
 
@@ -63,5 +63,5 @@ To use the Modus Angular components locally for debugging and other purposes:
 - From `./ng18` project directory run `npm pack ./dist/trimble-cms/modus-wc-angular`
   - This will generate a tarball of the library: `trimble-cms-modus-wc-angular-0.0.1-ng18.tgz`
 
-You can now test the build locally with any Angular project by running `npm install path/to/trimble-cms-modus-wc-angular-0.0.1-ng18.tgz` 
+You can now test the build locally with any Angular project by running `npm install path/to/trimble-cms-modus-wc-angular-0.0.1-ng18.tgz`
 and following the [installation steps](#installation).

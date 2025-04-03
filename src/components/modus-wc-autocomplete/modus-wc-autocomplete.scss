@@ -98,6 +98,37 @@
   ul.modus-wc-menu {
     box-shadow: 0 0 4px 0 rgba(54, 53, 69, 0.3);
   }
+
+  .modus-wc-input-disabled,
+  .modus-wc-text-input-readonly {
+    background-color: var(--modus-wc-color-gray-10);
+  }
+
+  .modus-wc-autocomplete-multi-select--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    user-select: none;
+
+    .modus-wc-input-disabled {
+      border: none;
+    }
+  }
+
+  .modus-wc-autocomplete-multi-select--readonly {
+    .modus-wc-text-input-readonly {
+      border: none;
+    }
+  }
+}
+
+[data-theme='modus-classic-light'] .modus-wc-autocomplete {
+  .modus-wc-autocomplete-multi-select--disabled,
+  .modus-wc-input-disabled,
+  .modus-wc-autocomplete-multi-select--readonly,
+  .modus-wc-text-input-readonly {
+    background-color: var(--modus-wc-color-gray-0);
+    border: none;
+  }
 }
 
 [data-theme='modus-classic-dark'] .modus-wc-autocomplete {

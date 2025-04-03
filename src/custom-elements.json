@@ -249,6 +249,10 @@
             },
             {
               "kind": "method",
+              "name": "handleMenuVisibilityChange"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
