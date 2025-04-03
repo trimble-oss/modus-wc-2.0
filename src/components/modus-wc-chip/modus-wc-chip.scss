@@ -8,22 +8,21 @@
   &.modus-wc-btn {
     $modus-wc-chip-active-filled-bg: color-mix(
       in sRGB,
-      var(--modus-wc-color-blue-light) 30%,
+      var(--modus-wc-color-primary) 50%,
       transparent
     );
 
-    background-color: var(--modus-wc-color-gray-1);
+    background-color: var(--modus-wc-color-base-100);
     border-color: transparent;
     box-sizing: border-box;
-    color: var(--modus-wc-color-gray-9);
+    color: var(--modus-wc-color-base-content);
+    --rounded-btn: #{var(--modus-wc-border-radius-chip)};
 
     // Sizes
     &.modus-wc-btn-sm {
-      --rounded-btn: #{var(--modus-wc-border-radius-xl)};
-
       height: var(--modus-wc-spacing-xl);
       min-height: var(--modus-wc-spacing-xl);
-      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-md);
+      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
 
       .modus-wc-avatar {
         height: var(--modus-wc-spacing-lg);
@@ -37,11 +36,9 @@
     }
 
     &.modus-wc-btn-md {
-      --rounded-btn: #{var(--modus-wc-border-radius-2xl)};
-
       height: var(--modus-wc-spacing-2xl);
       min-height: var(--modus-wc-spacing-2xl);
-      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
+      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-sm);
 
       .modus-wc-avatar {
         height: var(--modus-wc-spacing-lg);
@@ -55,11 +52,9 @@
     }
 
     &.modus-wc-btn-lg {
-      --rounded-btn: #{var(--modus-wc-border-radius-3xl)};
-
       height: var(--modus-wc-spacing-3xl);
       min-height: var(--modus-wc-spacing-3xl);
-      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-md);
 
       .modus-wc-avatar {
         height: var(--modus-wc-spacing-xl);
@@ -74,17 +69,17 @@
 
     // States
     &.modus-wc-chip--active {
-      background-color: $modus-wc-chip-active-filled-bg;
+      background-color: var(--modus-wc-color-primary);
       border-color: transparent;
-      color: var(--modus-wc-color-trimble-gray);
+      color: var(--modus-wc-color-base-content);
 
       &.modus-wc-chip--outline {
-        background-color: var(--modus-wc-color-blue-pale);
-        border-color: var(--modus-wc-color-blue-light);
-        color: var(--modus-wc-color-blue-light);
+        background-color: var(--modus-wc-color-primary);
+        border-color: var(--modus-wc-color-primary);
+        color: var(--modus-wc-color-primary);
 
         .modus-wc-chip-label {
-          color: var(--modus-wc-color-gray-9);
+          color: var(--modus-wc-color-base-content);
         }
       }
     }
@@ -102,33 +97,34 @@
 
     &.modus-wc-chip--outline {
       background-color: transparent;
-      border-color: var(--modus-wc-color-gray-4);
+      border-color: var(--modus-wc-color-base-200);
     }
 
     &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {
-      background-color: var(--modus-wc-color-gray-0);
+      background-color: var(--modus-wc-color-base-100);
       border-color: transparent;
-      color: var(--modus-wc-color-gray-9);
+      color: var(--modus-wc-color-base-content);
 
       &.modus-wc-chip--outline {
-        background-color: var(--modus-wc-color-gray-0);
-        border-color: var(--modus-wc-color-gray-4);
-        color: var(--modus-wc-color-gray-7);
+        background-color: var(--modus-wc-color-base-100);
+        border-color: var(--modus-wc-color-base-200);
+        color: var(--modus-wc-color-base-content);
       }
     }
 
     &:active:not(.modus-wc-chip--error):not(.modus-wc-chip--active) {
-      background-color: $modus-wc-chip-active-filled-bg;
+      background-color: var(--modus-wc-color-primary);
       border-color: transparent;
-      color: var(--modus-wc-color-trimble-gray);
+      color: var(--modus-wc-color-primary-content);
 
       &.modus-wc-chip--outline {
-        background-color: var(--modus-wc-color-blue-pale);
-        border-color: var(--modus-wc-color-blue-light);
-        color: var(--modus-wc-color-blue-light);
+        background-color: var(--modus-wc-color-base-100);
+        background-color: transparent;
+        border-color: var(--modus-wc-color-primary);
+        color: var(--modus-wc-color-primary);
 
         .modus-wc-chip-label {
-          color: var(--modus-wc-color-gray-9);
+          color: var(--modus-wc-color-primary);
         }
       }
     }
@@ -152,7 +148,7 @@
 }
 
 // Dark Theme Styles
-[data-theme='modus-modern-dark'] .modus-wc-chip,
+
 [data-theme='modus-classic-dark'] .modus-wc-chip {
   &.modus-wc-btn {
     $modus-wc-chip-outline-hover-bg: color-mix(

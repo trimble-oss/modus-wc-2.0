@@ -140,7 +140,7 @@ export class ModusWcCollapse {
   // istanbul ignore next
   private getTitleChildDivClasses(): string {
     const classList: string[] = [
-      'modus-wc-inline-flex modus-wc-items-center modus-wc-font-medium',
+      'modus-wc-inline-flex modus-wc-items-center modus-wc-font-semibold',
     ];
 
     const titleFontSize = convertPropsToTitleChildDivClasses({

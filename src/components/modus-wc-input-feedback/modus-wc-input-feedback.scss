@@ -4,6 +4,8 @@
 */
 
 .modus-wc-input-feedback {
+  margin-top: var(--modus-wc-spacing-sm);
+  font-weight: var(--modus-wc-font-weight-semibold);
   align-items: center;
   border-radius: 0 0 var(--modus-wc-border-radius-sm)
     var(--modus-wc-border-radius-sm);
@@ -38,30 +40,58 @@
       width: var(--modus-wc-font-size-2xl);
     }
   }
+
+  // Status
+  &.modus-wc-input-feedback {
+    background-color: var(--modus-wc-color-base-100);
+    padding: var(--modus-wc-spacing-sm);
+    border-radius: var(--modus-wc-border-radius-lg);
+  }
+  &.modus-wc-input-feedback--error {
+    color: var(--modus-wc-color-error);
+    // background-color: var(--modus-wc-color-red-pale);
+  }
+
+  &.modus-wc-input-feedback--info {
+    color: var(--modus-wc-color-info);
+    // background-color: var(--modus-wc-color-blue-pale);
+  }
+
+  &.modus-wc-input-feedback--success {
+    color: var(--modus-wc-color-success);
+    // background-color: var(--modus-wc-color-green-pale);
+  }
+
+  &.modus-wc-input-feedback--warning {
+    color: var(--modus-wc-color-warning);
+    // background-color: var(--modus-wc-color-yellow-pale);
+  }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-input-feedback,
-[data-theme='modus-modern-light'] .modus-wc-input-feedback {
+[data-theme='modus-classic-light'] .modus-wc-input-feedback {
   // Levels
   &.modus-wc-input-feedback--error {
+    background-color: transparent;
     color: var(--modus-wc-color-red);
   }
 
   &.modus-wc-input-feedback--info {
+    background-color: transparent;
     color: var(--modus-wc-color-trimble-blue);
   }
 
   &.modus-wc-input-feedback--success {
+    background-color: transparent;
     color: var(--modus-wc-color-green-dark);
   }
 
   &.modus-wc-input-feedback--warning {
+    background-color: transparent;
     color: var(--modus-wc-color-yellow-dark);
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-input-feedback,
-[data-theme='modus-modern-dark'] .modus-wc-input-feedback {
+[data-theme='modus-classic-dark'] .modus-wc-input-feedback {
   color: var(--modus-wc-color-white);
 
   // Levels
@@ -79,5 +109,6 @@
 
   &.modus-wc-input-feedback--warning {
     background-color: var(--modus-wc-color-yellow-dark);
+    color: var(--modus-wc-color-black);
   }
 }

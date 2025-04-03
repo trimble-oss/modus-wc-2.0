@@ -246,5 +246,8 @@
   "volta": {
     "node": "18.20.5"
   },
-  "customElements": "src/custom-elements.json"
+  "customElements": "src/custom-elements.json",
+  "dependencies": {
+    "@esbuild/darwin-arm64": "^0.25.2"
+  }
 }

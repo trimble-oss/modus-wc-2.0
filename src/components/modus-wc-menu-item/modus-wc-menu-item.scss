@@ -6,11 +6,30 @@
 li.modus-wc-menu-item {
   border-radius: var(--modus-wc-border-radius-sm);
 
-  &.modus-wc-menu-item-bordered {
-    border-bottom: 1px solid var(--modus-wc-color-gray-0);
-    border-top: 1px solid var(--modus-wc-color-gray-0);
+  .modus-wc-menu-item-selected-icon {
+    display: none;
+  }
+  --tglbg button {
+    border-radius: 0;
+
+    &:where(
+        .modus-wc-menu
+          li:not(.modus-wc-menu-title, .modus-wc-disabled)
+          > :not(ul, details, .modus-wc-menu-title)
+      ):not(summary, .modus-wc-active, .modus-wc-btn):focus {
+      color: var(--modus-wc-color-primary-content);
+    }
   }
 
+  &.modus-wc-menu-item-bordered {
+    border-bottom: 1px solid var(--modus-wc-color-base-100);
+    border-top: 1px solid var(--modus-wc-color-base-100);
+  }
+
+  &.modus-wc-menu-item-selected {
+    background-color: var(--modus-wc-color-primary);
+    color: var(--modus-wc-color-primary-content);
+  }
   &.modus-wc-menu-item-disabled {
     color: var(--modus-wc-color-gray-2);
 
@@ -78,6 +97,22 @@ li.modus-wc-menu-item {
   }
 }
 
+li.modus-wc-menu-item
+  button:where(
+    .modus-wc-menu
+      li:not(
+        .modus-wc-menu-title,
+        .modus-wc-disabled .modus-wc-menu-item-selected
+      )
+      > :not(ul, details, .modus-wc-menu-title)
+  ):not(summary, .modus-wc-active, .modus-wc-btn):focus {
+  color: var(--modus-wc-color-primary);
+}
+
+li.modus-wc-menu-item.modus-wc-menu-item-selected > button:focus {
+  color: var(--modus-wc-color-base-content);
+}
+
 [data-theme='modus-classic-light'] li.modus-wc-menu-item {
   &.modus-wc-menu-item-disabled {
     color: var(--modus-wc-color-gray-2);
@@ -90,6 +125,15 @@ li.modus-wc-menu-item {
   &:hover {
     --fallback-b1: var(--modus-wc-color-gray-0);
   }
+  &.modus-wc-menu-item-bordered {
+    border-bottom: 1px solid var(--modus-wc-color-gray-9);
+    border-top: 1px solid var(--modus-wc-color-gray-9);
+  }
+
+  &.modus-wc-menu-item-selected {
+    background-color: var(--modus-wc-color-primary);
+    color: var(--modus-wc-color-primary-content);
+  }
 }
 
 [data-theme='modus-classic-dark'] li.modus-wc-menu-item {
@@ -99,6 +143,8 @@ li.modus-wc-menu-item {
 
   &.modus-wc-menu-item-selected {
     background-color: #019aeb4d;
+    background-color: var(--modus-wc-color-primary);
+    color: var(--modus-wc-color-white);
   }
 
   &:hover {

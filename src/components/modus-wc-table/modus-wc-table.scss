@@ -2,3 +2,31 @@
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
+
+.modus-wc-table {
+  // background-color: var(--modus-wc-color-base-100);
+}
+
+.modus-wc-overflow-x-auto {
+  border-radius: var(--modus-wc-border-radius-table);
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--modus-wc-color-base-100);
+}
+
+.modus-wc-table-zebra {
+  // background-color: var(--modus-wc-color-base-100);
+}
+
+.modus-wc-table-zebra tbody tr:nth-child(2n) {
+  background-color: var(--modus-wc-color-base-100);
+}
+
+.modus-wc-table :where(thead, tfoot) {
+  background-color: var(--modus-wc-color-base-100);
+}
+
+.modus-wc-table
+  :where(thead tr, tbody tr:not(:last-child), tbody tr:first-child:last-child) {
+  border-bottom-color: var(--modus-wc-color-base-100);
+}

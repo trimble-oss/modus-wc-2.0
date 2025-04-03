@@ -5,7 +5,14 @@
 
 // Defaults
 .modus-wc-pagination {
+  color: var(--modus-wc-color-base-content);
+  background-color: var(--modus-wc-color-base-100);
+
   .modus-wc-pagination-btn {
+    background-color: var(--modus-wc-color-base-100);
+    border-color: transparent;
+    color: var(--modus-wc-color-base-content);
+
     &.modus-wc-btn-sm {
       .modus-wc-pagination-icon {
         height: var(--modus-wc-line-height-sm);
@@ -25,6 +32,19 @@
         height: var(--modus-wc-line-height-lg);
         width: var(--modus-wc-line-height-lg);
       }
+    }
+  }
+  .modus-wc-pagination-btn:not(:disabled) {
+    color: var(--modus-wc-color-base-content);
+    background-color: var(--modus-wc-color-base-100);
+
+    &.modus-wc-btn-active {
+      background-color: var(--modus-wc-color-primary);
+      color: var(--modus-wc-color-primary-content);
+    }
+
+    &:hover:not(.modus-wc-btn-active) {
+      background-color: var(--modus-wc-color-base-300);
     }
   }
 }

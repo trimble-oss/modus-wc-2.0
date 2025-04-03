@@ -23,6 +23,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.modus-wc-progress {
+  color: var(--modus-wc-color-primary);
+}
 
 [data-theme='modus-classic-light'] .modus-wc-progress,
 [data-theme='modus-classic-dark'] .modus-wc-progress {
@@ -83,8 +86,6 @@
 }
 
 .modus-wc-radial-progress {
-  color: var(--modus-wc-color-trimble-blue);
-
   &.modus-wc-radial-progress--indeterminate {
     --value: var(--_value) !important;
 
@@ -95,8 +96,11 @@
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-radial-progress,
-[data-theme='modus-modern-dark'] .modus-wc-radial-progress {
+[data-theme='modus-classic-light'] .modus-wc-radial-progress {
+  color: var(--modus-wc-color-primary);
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-radial-progress {
   color: var(--modus-wc-color-highlight-blue);
 }
 

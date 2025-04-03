@@ -2,6 +2,12 @@
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
+
+.modus-wc-card {
+  background-color: var(--modus-wc-color-base-100);
+  color: var(--modus-wc-color-base-content);
+}
+
 [data-theme='modus-classic-light'] .modus-wc-card,
 [data-theme='modus-classic-dark'] .modus-wc-card {
   --rounded-box: 0.5rem;

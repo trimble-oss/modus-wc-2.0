@@ -5,6 +5,7 @@
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
 .modus-wc-badge {
+  font-weight: var(--modus-wc-font-weight-semibold);
   &.modus-wc-badge-sm {
     font-size: var(--modus-wc-font-size-xs);
   }
@@ -15,7 +16,7 @@
 
   // Colors
   &.modus-wc-badge-high-contrast {
-    background-color: var(--modus-wc-color-base-content);
+    background-color: var(--modus-wc-color-black);
     border-color: var(--modus-wc-color-base-content);
     color: var(--modus-wc-color-white);
   }

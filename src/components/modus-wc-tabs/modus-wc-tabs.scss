@@ -37,6 +37,59 @@
   }
 }
 
+.modus-wc-tab {
+  --tab-color: var(--modus-wc-color-base-content);
+
+  &:not(.modus-wc-tab-active):not(.modus-wc-tab-disabled):hover {
+    background-color: var(--modus-wc-color-base-100);
+  }
+
+  &:not(.modus-wc-tab-disabled):active {
+    --tab-color: var(--modus-wc-color-white);
+
+    // Unfortunately needed, otherwise browsers sometimes don't apply.
+    background-color: var(--modus-wc-color-primary) !important;
+  }
+
+  &.modus-wc-tab-active {
+    --tab-color: var(--modus-wc-color-primary);
+    --tab-bg: var(--modus-wc-color-base-100);
+    border-color: var(--modus-wc-color-primary);
+  }
+}
+
+.modus-wc-tabs-lifted {
+  .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
+      .modus-wc-tab-disabled
+    ):not([disabled]),
+  .modus-wc-tab:is(input:checked) {
+    --tab-border: 1px;
+    border-color: var(--modus-wc-color-base-200);
+    --tab-bg: inherit !important;
+  }
+}
+
+.modus-wc-tabs-bordered {
+  .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
+      .modus-wc-tab-disabled
+    ):not([disabled]),
+  .modus-wc-tab:is(input:checked) {
+    --tab-border: 4px;
+    border-color: var(--modus-wc-color-primary);
+  }
+}
+
+.modus-wc-tabs-boxed,
+.modus-wc-tabs-boxed .modus-wc-tab {
+  background-color: var(--modus-wc-color-base-100);
+  border-radius: var(--modus-wc-border-radius-tab);
+}
+.modus-wc-tabs-boxed > .modus-wc-tab {
+  &:not(.modus-wc-tab-active):not(.modus-wc-tab-disabled):hover {
+    background-color: var(--modus-wc-color-base-200);
+  }
+}
+
 [data-theme='modus-classic-light'] .modus-wc-tab {
   --tab-color: var(--modus-wc-color-trimble-gray);
   --tab-bg: var(--modus-wc-color-white);
