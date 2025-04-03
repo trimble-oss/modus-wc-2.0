@@ -11,8 +11,6 @@ updates:
           - 'patch'
     schedule:
       interval: monthly
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     versioning-strategy: increase
 
   - package-ecosystem: github-actions
