@@ -235,19 +235,13 @@ const Template: Story = {
       }
     };
 
-    const handleBlur = (e: CustomEvent<IAutocompleteItem>) => {
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
+    const handleBlur = () => {
       args.initialNavigation = true;
       args.items = args.items.map((item) => ({
         ...item,
         focused: false,
         visibleInMenu: true,
       }));
-      if (autocomplete) {
-        autocomplete.items = [...args.items];
-      }
     };
 
     const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
@@ -256,14 +250,20 @@ const Template: Story = {
       );
 
       if (autocomplete) {
-        args.items = args.items.map((item) => ({
-          ...item,
-          selected: item.value === e.detail.value,
-          focused: false,
-          visibleInMenu: true,
-        }));
-        autocomplete.items = [...args.items];
-        autocomplete.value = e.detail.label;
+        const label = e.detail.label;
+        if (label) {
+          autocomplete.value = label;
+        }
+
+        // Clear the previous selection.
+        items.forEach((item) => (item.selected = false));
+
+        // Mark the user selected menu item as selected and create a new array to update items.
+        const foundItem = items.find((item) => item.value === e.detail.value);
+        if (foundItem) {
+          foundItem.selected = true;
+          autocomplete.items = [...items];
+        }
       }
     };
 
@@ -351,19 +351,13 @@ export const MultiSelect: Story = {
       }
     };
 
-    const handleBlur = (e: CustomEvent<IAutocompleteItem>) => {
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
+    const handleBlur = () => {
       args.initialNavigation = true;
       args.items = args.items.map((item) => ({
         ...item,
         focused: false,
         visibleInMenu: true,
       }));
-      if (autocomplete) {
-        autocomplete.items = [...args.items];
-      }
     };
 
     const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
