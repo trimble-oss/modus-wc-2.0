@@ -2,7 +2,10 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IAutocompleteItem } from './modus-wc-autocomplete';
+import {
+  IAutocompleteItem,
+  IAutocompleteNoResults,
+} from './modus-wc-autocomplete';
 import { ModusSize } from '../types';
 
 const items: IAutocompleteItem[] = [
@@ -31,6 +34,7 @@ interface AutocompleteArgs {
   'min-chars': number;
   'multi-select'?: boolean;
   name?: string;
+  'no-results': IAutocompleteNoResults;
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
@@ -50,6 +54,11 @@ const meta: Meta<AutocompleteArgs> = {
     'leave-menu-open': false,
     'min-chars': 0,
     'multi-select': false,
+    'no-results': {
+      ariaLabel: 'No results found',
+      label: 'No results found',
+      subLabel: 'Check spelling or try a different keyword',
+    },
     size: 'md',
     value: '',
   },
@@ -205,6 +214,7 @@ const Template: Story = {
   ?leave-menu-open=${args['leave-menu-open']}
   min-chars=${args['min-chars']}
   ?multi-select=${false}
+  .noResults=${args['no-results']}
   name=${ifDefined(args.name)}
   placeholder=${ifDefined(args.placeholder)}
   ?read-only=${args['read-only']}
@@ -370,6 +380,7 @@ export const MultiSelect: Story = {
   min-chars=${args['min-chars']}
   ?multi-select=${true}
   name=${ifDefined(args.name)}
+  .noResults=${args['no-results']}
   placeholder=${ifDefined(args.placeholder)}
   ?read-only=${args['read-only']}
   ?required=${args.required}
