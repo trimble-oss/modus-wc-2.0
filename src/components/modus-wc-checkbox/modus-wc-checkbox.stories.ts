@@ -80,7 +80,7 @@ export const Migration: Story = {
   additional info and examples.
   - The \`checked\` prop is now \`value\` in 2.0.
   - The \`checkboxClick\` event is now \`inputChange\` in 2.0.
-  - Size values have changed from verbose names (\`small\`, \`medium\`) to abbreviations (\`xs\`, \`sm\`, \`md\`, \`lg\`).
+  - Size values have changed from verbose names (\`small\`, \`medium\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
 
 #### Prop Mapping
 
