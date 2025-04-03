@@ -469,7 +469,54 @@ export const CustomMenuItems: Story = {
     display: block;
   }
 </style>
+<script>
+    const handleInputChange = (e) => {
+      if (!e.detail?.target) return;
 
+      const autocomplete = (e.target as HTMLInputElement).closest(
+        'modus-wc-autocomplete'
+      );
+
+      if (autocomplete) {
+        const searchText = (e.detail.target as HTMLInputElement).value;
+
+        // Create a new array, updating the selected values.
+        const allLiItems = autocomplete?.querySelectorAll('li');
+
+        Array.from(allLiItems ?? []).forEach((menuItem) => {
+          const label =
+            menuItem.querySelector('.title')?.textContent?.toLowerCase() || '';
+          if (!label.includes(searchText.toLowerCase())) {
+            menuItem.classList.add('hidden');
+          } else {
+            menuItem.classList.remove('hidden');
+          }
+        });
+      }
+    };
+
+    const handleItemSelect = (e) => {
+      const autocomplete = (e.target as HTMLInputElement).closest(
+        'modus-wc-autocomplete'
+      );
+
+      if (autocomplete) {
+        const searchText = (e.detail.target as HTMLInputElement)?.value;
+
+        autocomplete.value = searchText;
+
+        const allLiItems = autocomplete?.querySelectorAll('li');
+        allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
+        allLiItems?.forEach((liItem) => {
+          if (liItem.contains(e.target as HTMLElement)) {
+            liItem.classList.add('selected');
+            autocomplete.value = liItem.querySelector('.title')
+              ?.textContent as string;
+          }
+        });
+      }
+    };
+</script>
 <modus-wc-autocomplete
   aria-label="Custom items autocomplete"
   ?bordered=${args.bordered}
