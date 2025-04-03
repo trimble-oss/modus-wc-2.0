@@ -329,6 +329,7 @@ export class ModusWcAutocomplete {
           </li>
         );
       }
+
       const menuItems = this.items.filter((item) => item.visibleInMenu);
 
       return (

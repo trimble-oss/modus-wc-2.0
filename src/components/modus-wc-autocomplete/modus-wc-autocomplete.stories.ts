@@ -39,7 +39,7 @@ interface AutocompleteArgs {
   'read-only'?: boolean;
   required?: boolean;
   size?: ModusSize;
-  showSpinner?: boolean;
+  'show-spinner'?: boolean;
   value: string;
 }
 
@@ -55,7 +55,7 @@ const meta: Meta<AutocompleteArgs> = {
     'leave-menu-open': false,
     'min-chars': 0,
     'multi-select': false,
-    showSpinner: false,
+    'show-spinner': false,
     'no-results': {
       ariaLabel: 'No results found',
       label: 'No results found',
@@ -221,6 +221,7 @@ const Template: Story = {
   placeholder=${ifDefined(args.placeholder)}
   ?read-only=${args['read-only']}
   ?required=${args.required}
+  ?show-spinner=${args['show-spinner']}
   size=${ifDefined(args.size)}
   value=${args.value}
   @inputChange=${handleInputChange}
@@ -410,10 +411,10 @@ export const WithSpinner: Story = {
         const searchText = input.value.toLowerCase();
         // show the spinner for 2 seconds
         setTimeout(() => {
-          autocomplete.showSpinner = false;
+          args['show-spinner'] = false;
         }, 2000);
 
-        autocomplete.showSpinner = true;
+        args['show-spinner'] = true;
         // Create a new array, updating the values of 'selected' and 'visibleInMenu'.
         const updatedItems = items.map((item) => ({
           ...item,
@@ -513,7 +514,7 @@ export const WithSpinner: Story = {
   label=${ifDefined(args.label)}
   ?leave-menu-open=${args['leave-menu-open']}
   min-chars=${args['min-chars']}
-  show-spinner=${args.showSpinner}
+  ?show-spinner=${args['show-spinner']}
   ?multi-select=${false}
   name=${ifDefined(args.name)}
   placeholder=${ifDefined(args.placeholder)}
