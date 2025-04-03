@@ -63,20 +63,44 @@
 
   .modus-wc-input,
   .modus-wc-input-currency {
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
     // TODO - add support for xs and xl once added to Modus Figma
     &.modus-wc-input-sm {
       font-size: var(--modus-wc-font-size-sm);
       height: var(--modus-wc-input-height-sm);
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        font-size: var(--modus-wc-font-size-sm);
+        height: var(--modus-wc-input-height-sm);
+      }
     }
 
     &.modus-wc-input-md {
       font-size: var(--modus-wc-font-size-md);
       height: var(--modus-wc-input-height-md);
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        font-size: var(--modus-wc-font-size-md);
+        height: var(--modus-wc-input-height-md);
+      }
     }
 
     &.modus-wc-input-lg {
       font-size: var(--modus-wc-font-size-lg);
       height: var(--modus-wc-input-height-lg);
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        font-size: var(--modus-wc-font-size-lg);
+        height: 3rem;
+      }
     }
   }
 }

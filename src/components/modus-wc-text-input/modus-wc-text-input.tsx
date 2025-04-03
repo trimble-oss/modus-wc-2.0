@@ -163,6 +163,7 @@ export class ModusWcTextInput {
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
+      disabled: this.disabled,
       feedback: this.feedback,
       readOnly: this.readOnly,
       size: this.size,

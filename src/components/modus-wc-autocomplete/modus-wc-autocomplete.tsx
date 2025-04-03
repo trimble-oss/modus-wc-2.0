@@ -8,6 +8,7 @@ import {
   Prop,
   State,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
@@ -21,6 +22,15 @@ export interface IAutocompleteItem {
   value: string;
   /** Whether the item should be shown in the dropdown menu */
   visibleInMenu: boolean;
+}
+
+export interface IAutocompleteNoResults {
+  /** The aria-label to provide accessibility information for the no results section. */
+  ariaLabel?: string;
+  /** The main label to display when no results are found. */
+  label: string;
+  /** The sub-label or additional text to display below the main label. */
+  subLabel: string;
 }
 
 /**
@@ -84,6 +94,9 @@ export class ModusWcAutocomplete {
   /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string;
 
+  /** The content to display when no results are found. */
+  @Prop() noResults?: IAutocompleteNoResults;
+
   /** Text that appears in the form control when it has no value set. */
   @Prop() placeholder?: string = '';
 
@@ -120,6 +133,14 @@ export class ModusWcAutocomplete {
   /** Event emitted when a menu item is selected. */
   @StencilEvent() itemSelect!: EventEmitter<IAutocompleteItem>;
 
+  @Watch('disabled')
+  @Watch('readOnly')
+  handleMenuVisibilityChange() {
+    if (this.disabled || this.readOnly) {
+      this.menuVisible = false; // Close the menu immediately
+    }
+  }
+
   // istanbul ignore next - TODO
   disconnectedCallback() {
     // Clean up any existing debounce timer when component is destroyed
@@ -145,6 +166,17 @@ export class ModusWcAutocomplete {
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
+  }
+
+  private getMultiSelectClasses(): string {
+    return [
+      'modus-wc-autocomplete-multi-select',
+      this.bordered && 'modus-wc-autocomplete-multi-select--bordered',
+      this.disabled && 'modus-wc-autocomplete-multi-select--disabled',
+      this.readOnly && 'modus-wc-autocomplete-multi-select--readonly',
+    ]
+      .filter(Boolean)
+      .join(' ');
   }
 
   private handleBlur = (event: CustomEvent<FocusEvent>) => {
@@ -198,6 +230,7 @@ export class ModusWcAutocomplete {
   // TODO - add code coverage once autocomplete is updated
   // istanbul ignore next
   private handleItemSelect = (item: IAutocompleteItem) => {
+    if (this.disabled || this.readOnly) return;
     this.menuVisible = !!this.leaveMenuOpen;
     this.itemSelect.emit(item);
   };
@@ -205,8 +238,29 @@ export class ModusWcAutocomplete {
   // TODO - add code coverage once chip component is implemented
   // istanbul ignore next
   private handleChipRemove = (item: IAutocompleteItem) => {
+    if (this.disabled || this.readOnly) {
+      return; // Do nothing if the component is disabled
+    }
     this.chipRemove.emit(item);
   };
+
+  private renderNoResults() {
+    const {
+      ariaLabel = 'No results found',
+      label = 'No results found',
+      subLabel = 'Check spelling or try a different keyword',
+    } = this.noResults || {};
+
+    return (
+      <div class="modus-wc-autocomplete-no-results">
+        <div class="icon-label" aria-label={ariaLabel}>
+          <modus-wc-icon name="search" decorative />
+          <div class="label">{label}</div>
+        </div>
+        <div class="sub-label">{subLabel}</div>
+      </div>
+    );
+  }
 
   private handleOutsideClick = (event: MouseEvent) => {
     if (!this.el.contains(event.target as Node)) {
@@ -229,6 +283,7 @@ export class ModusWcAutocomplete {
                 aria-label="Remove item button"
                 color="secondary"
                 onClick={() => this.handleChipRemove(item)}
+                disabled={this.disabled || this.readOnly}
                 shape="circle"
                 size="xs"
               >
@@ -278,14 +333,16 @@ export class ModusWcAutocomplete {
 
       return (
         <Fragment>
-          {menuItems.map((item) => (
-            <modus-wc-menu-item
-              label={item.label}
-              onItemSelect={() => this.handleItemSelect(item)}
-              selected={item.selected}
-              value={item.value}
-            />
-          ))}
+          {menuItems?.length
+            ? menuItems.map((item) => (
+                <modus-wc-menu-item
+                  label={item.label}
+                  onItemSelect={() => this.handleItemSelect(item)}
+                  selected={item.selected}
+                  value={item.value}
+                />
+              ))
+            : this.renderNoResults()}
         </Fragment>
       );
     };
@@ -301,9 +358,7 @@ export class ModusWcAutocomplete {
           />
         )}
         {this.multiSelect ? (
-          <div
-            class={`modus-wc-autocomplete-multi-select ${this.bordered ? 'modus-wc-autocomplete-multi-select--bordered' : ''}`}
-          >
+          <div class={this.getMultiSelectClasses()}>
             {getChips()}
             {getInput()}
           </div>

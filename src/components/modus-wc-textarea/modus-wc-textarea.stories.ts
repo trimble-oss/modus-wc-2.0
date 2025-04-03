@@ -108,7 +108,7 @@ export const Default: Story = {
         custom-class=${ifDefined(args['custom-class'])}
         enterkeyhint=${ifDefined(args.enterkeyhint)}
         ?disabled=${args.disabled}
-        .feedback=${ifDefined(args.feedback)}
+        .feedback=${args.feedback}
         input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
@@ -142,4 +142,55 @@ export const WithErrorFeedback: Story = {
       .value=${args.value}
     ></modus-wc-textarea>
   `,
+};
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation](/docs/documentation-form-inputs--docs) for
+  additional info and examples.
+  - Size values have changed from verbose names (\`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+
+#### Prop Mapping
+
+| 1.0 Prop                     | 2.0 Prop            | Notes                                                       |
+|------------------------------|---------------------|-------------------------------------------------------------|
+| aria-label                   | aria-label          |                                                             |
+| autocorrect                  | auto-correct        |                                                             |
+| auto-focus-input             |                     | Not carried over                                            |
+| clearable                    |                     | Not carried over                                            |
+| disabled                     | disabled            |                                                             |
+| enterkeyhint                 | enterkeyhint        |                                                             |
+| error-text                   | feedback.message    | Use \`feedback\` level                                      |
+| helper-text                  |                     | Not carried over                                            |
+| label                        | label               |                                                             |
+| max-length                   | max-length          |                                                             |
+| min-length                   |                     | Not carried over                                            |
+| placeholder                  | placeholder         |                                                             |
+| read-only                    | readonly            |                                                             |
+| rows                         | rows                |                                                             |
+| required                     | required            |                                                             |
+| size                         | size                | \`medium\` → \`md\`, \`large\` → \`lg\`                     |
+| spellcheck                   | spellcheck          |                                                             |
+| text-align                   |                     | Not carried over, use CSS instead                           |
+| valid-text                   | feedback.message    | Use \`feedback\` level                                      |
+| value                        | value               |                                                             |
+
+#### Event Mapping
+
+| 1.0 Event   | 2.0 Event   | Notes            |
+|-------------|-------------|------------------|
+| valueChange | inputChange |                  |
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
 };
