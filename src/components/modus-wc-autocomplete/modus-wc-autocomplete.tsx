@@ -235,6 +235,16 @@ export class ModusWcAutocomplete {
         }
         break;
 
+      case 'Backspace':
+        if (this.multiSelect && input.value.length === 0) {
+          const selectedItems = this.items.filter((item) => item.selected);
+          const lastSelectedItem = selectedItems[selectedItems.length - 1];
+          if (lastSelectedItem) {
+            this.chipRemove.emit(lastSelectedItem);
+          }
+        }
+        break;
+
       case 'Escape':
         event.preventDefault();
         this.menuVisible = false;
@@ -242,7 +252,19 @@ export class ModusWcAutocomplete {
 
       case 'Enter':
         event.preventDefault();
-        if (this.menuVisible) {
+        if (this.multiSelect) {
+          const selectedItems = this.items.filter((item) => item.selected);
+          const lastSelectedItem = selectedItems[selectedItems.length - 1];
+          if (lastSelectedItem) {
+            this.itemSelect.emit(lastSelectedItem);
+          }
+        } else {
+          const selectedItem = this.items.find((item) => item.selected);
+          if (selectedItem) {
+            this.itemSelect.emit(selectedItem);
+          }
+        }
+        if (this.menuVisible && !this.leaveMenuOpen) {
           input.blur();
         }
         break;
