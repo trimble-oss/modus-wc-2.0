@@ -12,7 +12,7 @@ export default {
   ],
   daisyui: {
     base: true,
-    darkTheme: 'modus-classic-dark',
+    darkTheme: 'modus-modern-dark',
     logs: false,
     styled: true,
     themeRoot: ':root',
@@ -27,6 +27,20 @@ export default {
   plugins: [typography, daisyui],
   prefix: 'modus-wc-',
   theme: {
-    extend: {},
+    screens: { sm: '480px', md: '768px', lg: '976px', xl: '1440px' },
+    colors: { 'trimble-blue': '#0063a3' },
+    fontFamily: { sans: ['Open Sans', 'sans-serif'] },
+    borderRadius: {
+      none: '0',
+      sm: '0.125rem',
+      DEFAULT: '0.25rem',
+      md: '0.375rem',
+      lg: '0.5rem',
+      full: '9999px',
+    },
+    extend: {
+      spacing: { '128': '32rem', '144': '36rem' },
+      borderRadius: { card: '1rem' },
+    },
   },
 } satisfies Config;
