@@ -283,7 +283,7 @@ const Template: Story = {
         }
       </style>
       <script>
-                const handleKeyDown = (e: KeyboardEvent) => {
+          const handleKeyDown = (e: KeyboardEvent) => {
           const autocomplete = (e.target as HTMLInputElement).closest(
             'modus-wc-autocomplete'
           );
@@ -631,7 +631,7 @@ export const MultiSelect: Story = {
         }
       </style>
       <script>
-              // Initialize args.items if empty
+        // Initialize args.items if empty
         if (!args.items || args.items.length === 0) {
           args.items = [...items];
         }
@@ -790,20 +790,6 @@ export const MultiSelect: Story = {
               }
               break;
             }
-
-            case 'Backspace':
-              if ((e.target as HTMLInputElement).value === '') {
-                const selectedItems = args.items.filter((item) => item.selected);
-                if (selectedItems.length > 0) {
-                  const lastSelected = selectedItems[selectedItems.length - 1];
-                  args.items = args.items.map((item) => ({
-                    ...item,
-                    selected:
-                      item.value === lastSelected.value ? false : item.selected,
-                  }));
-                }
-              }
-              break;
 
             default:
               return;
