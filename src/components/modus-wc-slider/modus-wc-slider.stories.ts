@@ -70,3 +70,40 @@ export const Default: Story = {
     `;
   },
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation](/docs/documentation-form-inputs--docs) for additional info and examples.
+  - Property names have changed: \`max-value\` → \`max\`, \`min-value\` → \`min\`.
+
+#### Prop Mapping
+
+| 1.0 Prop    | 2.0 Prop     | Notes |
+|-------------|--------------|-------|
+| aria-label  | aria-label   |       |
+| disabled    | disabled     |       |
+| label       | label        |       |
+| max-value   | max          |       |
+| min-value   | min          |       |
+| value       | value        |       |
+
+#### Event Mapping
+
+| 1.0 Event   | 2.0 Event   | Notes            |
+|-------------|-------------|------------------|
+| valueChange |             | Not carried over |
+| valueInput  | inputChange |                  |
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
+};
