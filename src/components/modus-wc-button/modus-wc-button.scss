@@ -151,6 +151,7 @@
     }
 
     &.modus-wc-btn-warning {
+      border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-red);
       background-color: var(--modus-wc-color-yellow);
       color: var(--modus-wc-color-trimble-gray);
 
@@ -330,6 +331,7 @@
     }
 
     &.modus-wc-btn-warning {
+      border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-red);
       background-color: var(--modus-wc-color-yellow);
       color: var(--modus-wc-color-trimble-gray);
 
