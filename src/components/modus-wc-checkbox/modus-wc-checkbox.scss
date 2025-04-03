@@ -41,6 +41,11 @@
 
   &:disabled {
     opacity: 0.3;
+
+    &:not(:checked) {
+      background-color: unset;
+      border: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-gray-4);
+    }
   }
 
   &:focus {
