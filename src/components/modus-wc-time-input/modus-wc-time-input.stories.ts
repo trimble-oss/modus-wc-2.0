@@ -80,7 +80,7 @@ export const Template: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       datalist-id=${ifDefined(args['datalist-id'])}
       ?disabled=${args.disabled}
-      .feedback=${ifDefined(args.feedback)}
+      .feedback=${args.feedback}
       input-id=${ifDefined(args['input-id'])}
       input-tab-index=${ifDefined(args['input-tab-index'])}
       label=${ifDefined(args.label)}
@@ -160,4 +160,56 @@ export const WithErrorFeedback: Story = {
       .value=${args.value}
     ></modus-wc-time-input>
   `,
+};
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation](/docs/documentation-form-inputs--docs) for
+  additional info and examples.
+  - Size values have changed from verbose names (\`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+
+#### Prop Mapping
+
+| 1.0 Prop                | 2.0 Prop            | Notes                                   |
+|-------------------------|---------------------|-----------------------------------------|
+| allowed-chars-regex     |                     | Not carried over                        |
+| ampm                    |                     | Not carried over                        |
+| aria-label              | aria-label          |                                         |
+| auto-focus-input        | autofocus           |                                         |
+| auto-format             |                     | Not carried over                        |
+| disable-validation      |                     | Not carried over                        |
+| disabled                | disabled            |                                         |
+| error-text              | feedback.message    | Use \`feedback\` level                  |
+| helper-text             |                     | Not carried over                        |
+| label                   | label               |                                         |
+| max                     | max                 |                                         |
+| min                     | min                 |                                         |
+| placeholder             |                     | Not carried over                        |
+| read-only               | read-only           |                                         |
+| required                | required            |                                         |
+| size                    | size                | \`medium\` → \`md\`, \`large\` → \`lg\` |
+| valid-text              | feedback.message    | Use \`feedback\` level                  |
+| value                   | value               |                                         |
+
+#### Event Mapping
+
+| 1.0 Event      | 2.0 Event   | Notes                                                |
+|----------------|-------------|------------------------------------------------------|
+| timeInputBlur  | inputBlur   |                                                      |
+| valueChange    | inputChange |                                                      |
+        `,
+      },
+    },
+    // To hide the actual story rendering and only show docs:
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  // Simple render function or leave it empty
+  render: () => html`<div></div>`,
 };
