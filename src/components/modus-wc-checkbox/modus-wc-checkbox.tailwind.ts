@@ -1,9 +1,9 @@
-import { DaisySize } from '../types';
+import { ModusSize } from '../types';
 
 export const convertPropsToClasses = ({
   size,
 }: {
-  size?: DaisySize;
+  size?: ModusSize;
 }): string => {
   let classes = '';
 
