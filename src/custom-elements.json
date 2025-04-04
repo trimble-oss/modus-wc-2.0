@@ -578,7 +578,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\r\n\r\nThe component supports a `<slot>` for injecting content within the badge.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\n\nThe component supports a `<slot>` for injecting content within the badge.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcBadge",
           "members": [
             {
@@ -601,7 +601,7 @@
               "default": "'primary'",
               "description": "The color variant of the badge.",
               "type": {
-                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
+                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger'"
               }
             },
             {
@@ -5016,6 +5016,63 @@
           "declaration": {
             "name": "ModusWcToggle",
             "module": "src/components/modus-wc-toggle/modus-wc-toggle.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-toolbar/modus-wc-toolbar.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable toolbar component used to organize content across the entire page.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcToolbar",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the outer div.",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-toolbar",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcToolbar",
+          "declaration": {
+            "name": "ModusWcToolbar",
+            "module": "src/components/modus-wc-toolbar/modus-wc-toolbar.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-toolbar",
+          "declaration": {
+            "name": "ModusWcToolbar",
+            "module": "src/components/modus-wc-toolbar/modus-wc-toolbar.tsx"
           }
         }
       ]
