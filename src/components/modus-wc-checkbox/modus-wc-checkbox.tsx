@@ -8,8 +8,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-checkbox.tailwind';
-import { DAISY_TO_MODUS_LABEL_SIZE } from '../constants';
-import { DaisySize } from '../types';
+import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -53,7 +52,7 @@ export class ModusWcCheckbox {
   @Prop() required?: boolean = false;
 
   /** The size of the input. */
-  @Prop() size?: DaisySize = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /** The value of the checkbox. */
   @Prop({ mutable: true, reflect: true }) value: boolean = false;
@@ -110,8 +109,6 @@ export class ModusWcCheckbox {
   };
 
   render() {
-    const labelSize = this.size && DAISY_TO_MODUS_LABEL_SIZE[this.size];
-
     return (
       <Host class="modus-wc-checkbox-host">
         <input
@@ -135,7 +132,7 @@ export class ModusWcCheckbox {
             forId={this.inputId}
             labelText={this.label}
             required={this.required}
-            size={labelSize}
+            size={this.size}
           />
         )}
       </Host>
