@@ -387,6 +387,7 @@ export const MultiSelect: Story = {
   placeholder=${ifDefined(args.placeholder)}
   ?read-only=${args['read-only']}
   ?required=${args.required}
+  ?show-spinner=${args['show-spinner']}
   size=${ifDefined(args.size)}
   value=${args.value}
   @chipRemove=${handleChipRemove}
