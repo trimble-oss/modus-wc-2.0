@@ -316,11 +316,15 @@ export class ModusWcAutocomplete {
     // TODO - add code coverage once autocomplete is updated
     // istanbul ignore next
     const getMenuItems = () => {
-      const menuItems = this.items?.filter((item) => item.visibleInMenu);
+      const menuItems = this.items?.filter((item) => item.visibleInMenu) || [];
+      const noResults =
+        this.noResults?.label ||
+        this.noResults?.subLabel ||
+        this.noResults?.ariaLabel;
 
       return (
         <Fragment>
-          {menuItems?.length
+          {menuItems?.length > 0 || !noResults
             ? menuItems.map((item) => (
                 <modus-wc-menu-item
                   label={item.label}

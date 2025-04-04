@@ -408,16 +408,41 @@ export const CustomMenuItems: Story = {
 
         // Create a new array, updating the selected values.
         const allLiItems = autocomplete?.querySelectorAll('li');
-
+        if (searchText === '') {
+          allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
+        }
+        let itemCount = 0;
         Array.from(allLiItems ?? []).forEach((menuItem) => {
           const label =
             menuItem.querySelector('.title')?.textContent?.toLowerCase() || '';
           if (!label.includes(searchText.toLowerCase())) {
             menuItem.classList.add('hidden');
+            itemCount++;
+            if (itemCount === allLiItems?.length) {
+              autocomplete.noResults = args['no-results'];
+            }
           } else {
             menuItem.classList.remove('hidden');
+            autocomplete.noResults = {
+              ariaLabel: '',
+              label: '',
+              subLabel: '',
+            };
           }
         });
+      }
+    };
+    const handleFocus = (e) => {
+      const autocomplete = (e.target as HTMLInputElement).closest(
+        'modus-wc-autocomplete'
+      );
+
+      if (autocomplete) {
+        autocomplete.noResults = {
+          ariaLabel: '',
+          label: '',
+          subLabel: '',
+        };
       }
     };
 
@@ -541,11 +566,13 @@ export const CustomMenuItems: Story = {
   min-chars=${args['min-chars']}
   ?multi-select=${false}
   name=${ifDefined(args.name)}
+  .noResults=${args['no-results']}
   placeholder=${ifDefined(args.placeholder)}
   ?read-only=${args['read-only']}
   ?required=${args.required}
   size=${ifDefined(args.size)}
   value=${args.value}
+  @inputFocus=${handleFocus}
   @inputChange=${handleInputChange}
 >
   <div slot="menu-items" id="custom-menu-items">

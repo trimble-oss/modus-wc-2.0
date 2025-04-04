@@ -289,4 +289,76 @@ describe('modus-wc-autocomplete', () => {
     expect(menu).not.toBeNull();
     expect(menu?.className).toContain('menu-visible');
   });
+  it('should render default no results values when noResults is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete],
+      html: `<modus-wc-autocomplete aria-label="Test autocomplete"></modus-wc-autocomplete>`,
+    });
+    const component = page.rootInstance as ModusWcAutocomplete;
+
+    // Ensure noResults is undefined.
+    component.noResults = undefined;
+
+    // Directly call the private method.
+    const renderedNoResults = component['renderNoResults']();
+
+    // Use snapshot testing to cover the output.
+    expect(renderedNoResults).toMatchSnapshot();
+  });
+
+  it('should render custom no results values when noResults prop is set', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Test autocomplete" leave-menu-open="true"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = [];
+    component.noResults = {
+      ariaLabel: 'No matches',
+      label: 'Nothing here',
+      subLabel: 'Try something else',
+    };
+    component['menuVisible'] = true;
+    await page.waitForChanges();
+
+    const label = page.root?.querySelector('.label');
+    const subLabel = page.root?.querySelector('.sub-label');
+    const iconLabelDiv = page.root?.querySelector('.icon-label');
+
+    expect(label?.textContent).toBe('Nothing here');
+    expect(subLabel?.textContent).toBe('Try something else');
+    expect(iconLabelDiv?.getAttribute('aria-label')).toBe('No matches');
+  });
+
+  it('should cover renderNoResults with custom noResults values', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Test autocomplete" leave-menu-open="true"></modus-wc-autocomplete>`,
+    });
+    const component = page.rootInstance as ModusWcAutocomplete;
+    // No items available.
+    component.items = [];
+    // Provide a truthy noResults object.
+    component.noResults = {
+      ariaLabel: 'No matches',
+      label: 'Nothing here',
+      subLabel: 'Try something else',
+    };
+    // Force the menu to be visible.
+    component['menuVisible'] = true;
+    await page.waitForChanges();
+
+    const noResultsElement = page.root?.querySelector(
+      '.modus-wc-autocomplete-no-results'
+    );
+    expect(noResultsElement).toBeTruthy();
+    const labelEl = noResultsElement?.querySelector('.label');
+    const subLabelEl = noResultsElement?.querySelector('.sub-label');
+    const iconLabelEl = noResultsElement?.querySelector('.icon-label');
+
+    expect(labelEl?.textContent).toBe('Nothing here');
+    expect(subLabelEl?.textContent).toBe('Try something else');
+    expect(iconLabelEl?.getAttribute('aria-label')).toBe('No matches');
+  });
 });
