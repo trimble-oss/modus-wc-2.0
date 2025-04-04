@@ -1500,6 +1500,16 @@ export namespace Components {
         "value": boolean;
     }
     /**
+     * A customizable toolbar component used to organize content across the entire page.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcToolbar {
+        /**
+          * Custom CSS class to apply to the outer div.
+         */
+        "customClass"?: string;
+    }
+    /**
      * A customizable tooltip component used to create tooltips with different content.
      * Adheres to WCAG 2.2 standards.
      */
@@ -2322,6 +2332,16 @@ declare global {
         new (): HTMLModusWcToggleElement;
     };
     /**
+     * A customizable toolbar component used to organize content across the entire page.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcToolbarElement extends Components.ModusWcToolbar, HTMLStencilElement {
+    }
+    var HTMLModusWcToolbarElement: {
+        prototype: HTMLModusWcToolbarElement;
+        new (): HTMLModusWcToolbarElement;
+    };
+    /**
      * A customizable tooltip component used to create tooltips with different content.
      * Adheres to WCAG 2.2 standards.
      */
@@ -2380,6 +2400,7 @@ declare global {
         "modus-wc-time-input": HTMLModusWcTimeInputElement;
         "modus-wc-toast": HTMLModusWcToastElement;
         "modus-wc-toggle": HTMLModusWcToggleElement;
+        "modus-wc-toolbar": HTMLModusWcToolbarElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
     }
@@ -4050,6 +4071,16 @@ declare namespace LocalJSX {
         "value"?: boolean;
     }
     /**
+     * A customizable toolbar component used to organize content across the entire page.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcToolbar {
+        /**
+          * Custom CSS class to apply to the outer div.
+         */
+        "customClass"?: string;
+    }
+    /**
      * A customizable tooltip component used to create tooltips with different content.
      * Adheres to WCAG 2.2 standards.
      */
@@ -4140,6 +4171,7 @@ declare namespace LocalJSX {
         "modus-wc-time-input": ModusWcTimeInput;
         "modus-wc-toast": ModusWcToast;
         "modus-wc-toggle": ModusWcToggle;
+        "modus-wc-toolbar": ModusWcToolbar;
         "modus-wc-tooltip": ModusWcTooltip;
         "modus-wc-typography": ModusWcTypography;
     }
@@ -4347,6 +4379,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-toggle": LocalJSX.ModusWcToggle & JSXBase.HTMLAttributes<HTMLModusWcToggleElement>;
+            /**
+             * A customizable toolbar component used to organize content across the entire page.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-toolbar": LocalJSX.ModusWcToolbar & JSXBase.HTMLAttributes<HTMLModusWcToolbarElement>;
             /**
              * A customizable tooltip component used to create tooltips with different content.
              * Adheres to WCAG 2.2 standards.
