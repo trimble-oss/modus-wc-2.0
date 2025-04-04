@@ -1,0 +1,76 @@
+name: Feature request
+description: Suggest new or updated features to include in Modus Web Components.
+title: 'Suggest a new feature'
+labels: [untriaged]
+type: Feature
+body:
+  - type: checkboxes
+    attributes:
+      label: Prerequisites
+      description: Take a couple minutes to help our maintainers work faster.
+      options:
+        - label: I have [searched](https://github.com/Trimble-Construction/modus-wc-2.0/issues?q=is%3Aissue) for duplicate or closed feature requests
+          required: true
+        - label: I have read the [Modus style guidelines](https://modus.trimble.com/components/web/introduction/)
+          required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Provide detailed information for what we should add, including relevant links to prior art, screenshots, or live demos whenever possible.
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation and context
+      description: Tell us why this change is needed or helpful, and what is the use case.
+  - type: dropdown
+    id: package
+    attributes:
+      label: What is the issue regarding?
+      multiple: true
+      options:
+        - '@trimble-oss/modus-wc'
+        - '@trimble-oss/modus-wc-angular'
+        - '@trimble-oss/modus-wc-react'
+        - Modus Web Components Website (Storybook)
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      multiple: true
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: input
+    id: product
+    attributes:
+      label: What product/project are you using Modus Components for?
+    validations:
+      required: true
+  - type: input
+    id: team
+    attributes:
+      label: What is your team/division name?
+    validations:
+      required: true
+  - type: dropdown
+    id: contribution
+    attributes:
+      label: Are you willing to contribute?
+      multiple: false
+      options:
+        - 'Yes'
+        - 'No'
+        - 'Maybe'
+  - type: input
+    id: inProduction
+    attributes:
+      label: Are you using Modus Web Components in production?
+      placeholder: 'If yes, please feel free to share the app URL (optional).'
