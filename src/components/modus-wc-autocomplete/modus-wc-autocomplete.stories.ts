@@ -437,6 +437,7 @@ const Template: Story = {
         min-chars=${args['min-chars']}
         ?multi-select=${false}
         name=${ifDefined(args.name)}
+        .noResults=${args['no-results']}
         placeholder=${ifDefined(args.placeholder)}
         ?read-only=${args['read-only']}
         ?required=${args.required}
