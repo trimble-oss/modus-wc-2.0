@@ -37,7 +37,7 @@
     outline: none; // Ensures there's no outline on focus
   }
 
-  &:read-only {
+  &.modus-wc-date-readonly {
     background-color: var(--modus-wc-color-base-100);
   }
 }

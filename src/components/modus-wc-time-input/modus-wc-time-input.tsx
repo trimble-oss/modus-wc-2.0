@@ -130,6 +130,7 @@ export class ModusWcTimeInput {
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       feedback: this.feedback,
+      readOnly: this.readOnly,
       size: this.size,
     });
 

@@ -1407,7 +1407,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable date picker component used to create date inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable date picker component used to create date inputs.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcDate",
           "members": [
             {
@@ -4566,7 +4566,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input component used to create time inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable input component used to create time inputs.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTimeInput",
           "members": [
             {
@@ -4612,7 +4612,7 @@
             {
               "name": "datalist-id",
               "fieldName": "datalistId",
-              "description": "ID of a `<datalist>` element that contains pre-defined time options.\r\nThe value must be the ID of a `<datalist>` element in the same document.",
+              "description": "ID of a `<datalist>` element that contains pre-defined time options.\nThe value must be the ID of a `<datalist>` element in the same document.",
               "type": {
                 "text": "string"
               }
@@ -4713,7 +4713,7 @@
               "name": "show-seconds",
               "fieldName": "showSeconds",
               "default": "false",
-              "description": "Displays the time input format as `HH:mm:ss` if `true`.\r\nInternally sets the `step` to 1 second.\r\nIf a `step` value is provided, it will override this attribute.",
+              "description": "Displays the time input format as `HH:mm:ss` if `true`.\nInternally sets the `step` to 1 second.\nIf a `step` value is provided, it will override this attribute.",
               "type": {
                 "text": "boolean"
               }
@@ -4730,7 +4730,7 @@
             {
               "name": "step",
               "fieldName": "step",
-              "description": "Specifies the granularity that the `value` must adhere to.\r\nValue of step given in seconds. Default value is 60 seconds.\r\nOverrides the `seconds` attribute if both are provided.",
+              "description": "Specifies the granularity that the `value` must adhere to.\nValue of step given in seconds. Default value is 60 seconds.\nOverrides the `seconds` attribute if both are provided.",
               "type": {
                 "text": "number"
               }
@@ -4739,7 +4739,7 @@
               "name": "value",
               "fieldName": "value",
               "default": "''",
-              "description": "The value of the time input.\r\nAlways in 24-hour format that includes leading zeros:\r\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\r\nto be selected based on user's locale (or by the user agent).\r\nIf time includes seconds the format is always `HH:mm:ss`.",
+              "description": "The value of the time input.\nAlways in 24-hour format that includes leading zeros:\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\nto be selected based on user's locale (or by the user agent).\nIf time includes seconds the format is always `HH:mm:ss`.",
               "type": {
                 "text": "string"
               }
