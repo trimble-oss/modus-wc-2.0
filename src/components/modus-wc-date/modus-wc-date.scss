@@ -1,5 +1,5 @@
 .modus-wc-input {
-  @include feedback-levels();
+  @include feedback-levels;
 }
 
 [data-theme='modus-classic-light'] .modus-wc-input,
