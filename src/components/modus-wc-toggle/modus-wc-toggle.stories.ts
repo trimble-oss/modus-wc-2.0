@@ -67,3 +67,39 @@ export const Default: Story = {
     `;
   },
 };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs documentation for additional info and examples.
+  - \`checked\` prop has been renamed to \`value\` to maintain consistency across form components.
+  - Size values have changed from verbose names (\`small\`, \`medium\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+
+#### Prop Mapping
+
+| 1.0 Prop         | 2.0 Prop            | Notes                                                       |
+|------------------|---------------------|-------------------------------------------------------------|
+| aria-label       | aria-label          |                                                             |
+| checked          | value               |                                                             |
+| disabled         | disabled            |                                                             |
+| label            | label               |                                                             |
+| size             | size                | \`small\` → \`sm\`, \`medium\` → \`md\`                     |
+
+#### Event Mapping
+
+| 1.0 Event      | 2.0 Event      | Notes                                                 |
+|----------------|----------------|-------------------------------------------------------|
+| switchClick    | inputChange    |                                                       |
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
+};
