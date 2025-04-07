@@ -28,8 +28,10 @@ exports[`modus-wc-collapse should render with custom header and content 1`] = `
   <!---->
   <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close">
     <input aria-controls="123-content" aria-labelledby="123-title" class="modus-wc-cursor-pointer modus-wc-min-h-4" id="123-checkbox" type="checkbox">
-    <div slot="header">
-      Test Header
+    <div class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4" id="123-title">
+      <div slot="header">
+        Test Header
+      </div>
     </div>
     <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content">
       <div slot="content">
@@ -68,6 +70,7 @@ exports[`modus-wc-collapse should render with default props 1`] = `
   <!---->
   <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close">
     <input aria-controls="123-content" aria-labelledby="123-title" class="modus-wc-cursor-pointer modus-wc-min-h-4" id="123-checkbox" type="checkbox">
+    <div class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4" id="123-title"></div>
     <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content"></div>
   </div>
 </modus-wc-collapse>
