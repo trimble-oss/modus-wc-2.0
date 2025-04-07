@@ -125,11 +125,16 @@ export class ModusWcTimeInput {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-input', 'modus-wc-w-full'];
+    const classList = [
+      'modus-wc-time-input',
+      'modus-wc-input',
+      'modus-wc-w-full',
+    ];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       feedback: this.feedback,
+      readOnly: this.readOnly,
       size: this.size,
     });
 

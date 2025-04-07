@@ -3,19 +3,19 @@
 exports[`modus-wc-time-input should render with custom props 1`] = `
 <modus-wc-time-input auto-complete="on" bordered="" custom-class="custom" datalist-id="time-options" disabled="" input-id="time-input" input-tab-index="1" label="Test label" max="23:59" min="00:00" name="time" read-only="" required="" show-seconds="" size="lg" step="30" value="12:00">
   <modus-wc-input-label forid="time-input" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
-  <input aria-describedby="desc" aria-label="Time input" aria-required="" autocomplete="on" class="custom modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-w-full" disabled="" id="time-input" list="time-options" max="23:59" min="00:00" name="time" readonly="" required="" step="1" tabindex="1" type="time" value="12:00">
+  <input aria-describedby="desc" aria-label="Time input" aria-required="" autocomplete="on" class="custom modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-time-input modus-wc-time-input--readonly modus-wc-w-full" disabled="" id="time-input" list="time-options" max="23:59" min="00:00" name="time" readonly="" required="" step="1" tabindex="1" type="time" value="12:00">
 </modus-wc-time-input>
 `;
 
 exports[`modus-wc-time-input should render with default props 1`] = `
 <modus-wc-time-input datalist-id="test-list" value="">
-  <input aria-label="Default input" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" list="test-list" step="60" type="time" value="">
+  <input aria-label="Default input" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-time-input modus-wc-w-full" list="test-list" step="60" type="time" value="">
 </modus-wc-time-input>
 `;
 
 exports[`modus-wc-time-input should render with error feedback 1`] = `
 <modus-wc-time-input value="">
-  <input aria-label="Error input" class="modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" list="modus-wc-datalist-test-random-id" step="60" type="time" value="">
+  <input aria-label="Error input" class="modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-time-input modus-wc-w-full" list="modus-wc-datalist-test-random-id" step="60" type="time" value="">
   <modus-wc-input-feedback>
     <div class="modus-wc-input-feedback modus-wc-input-feedback--error modus-wc-input-feedback--md">
       <svg class="mi-outline mi-warning modus-wc-input-feedback-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
