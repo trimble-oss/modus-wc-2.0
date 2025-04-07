@@ -1,13 +1,15 @@
-import { IInputFeedbackProp, ModusSize } from '../types';
+import { DaisySize, IInputFeedbackProp } from '../types';
 
 export const convertPropsToClasses = ({
   bordered,
   feedback,
+  readOnly,
   size,
 }: {
   bordered?: boolean;
   feedback?: IInputFeedbackProp;
-  size?: ModusSize;
+  readOnly?: boolean;
+  size?: DaisySize;
 }): string => {
   let classes = '';
 
@@ -17,6 +19,10 @@ export const convertPropsToClasses = ({
 
   if (feedback) {
     classes = `${classes} modus-wc-input--${feedback.level}`;
+  }
+
+  if (readOnly) {
+    classes = `${classes} modus-wc-time-input--readonly`;
   }
 
   if (size) {
