@@ -185,44 +185,42 @@
       color: var(--modus-wc-color-trimble-blue);
 
       &:hover {
+        background-color: var(--modus-wc-color-blue-pale);
         border-color: var(--modus-wc-color-blue-light);
         color: var(--modus-wc-color-blue-light);
       }
 
       &:active {
+        background-color: rgba(0, 99, 163, 0.18);
         border-color: var(--modus-wc-color-blue-dark);
         color: var(--modus-wc-color-blue-dark);
       }
     }
 
     &.modus-wc-btn-secondary {
-      border-color: var(--modus-wc-color-gray-6);
-      color: var(--modus-wc-color-gray-6);
+      border-color: var(--modus-wc-color-trimble-gray);
+      color: var(--modus-wc-color-trimble-gray);
 
       &:hover {
-        border-color: var(--modus-wc-color-gray-5);
-        color: var(--modus-wc-color-gray-5);
+        background-color: var(--modus-wc-color-gray-0);
       }
 
       &:active {
-        border-color: var(--modus-wc-color-gray-7);
-        color: var(--modus-wc-color-gray-7);
+        background-color: var(--modus-wc-color-gray-1);
       }
     }
 
     // tertiary
     &.modus-wc-btn-neutral {
-      border-color: var(--modus-wc-color-gray-1);
-      color: var(--modus-wc-color-gray-1);
+      border-color: var(--modus-wc-color-trimble-gray);
+      color: var(--modus-wc-color-trimble-gray);
 
       &:hover {
-        border-color: var(--modus-wc-color-gray-0);
-        color: var(--modus-wc-color-gray-0);
+        background-color: var(--modus-wc-color-gray-1);
       }
 
       &:active {
-        border-color: var(--modus-wc-color-gray-2);
-        color: var(--modus-wc-color-gray-2);
+        background-color: var(--modus-wc-color-gray-2);
       }
     }
 
@@ -365,44 +363,38 @@
       color: var(--modus-wc-color-highlight-blue);
 
       &:hover {
-        border-color: var(--modus-wc-color-blue-light);
-        color: var(--modus-wc-color-blue-light);
+        background-color: rgba(1, 154, 235, 0.12);
       }
 
       &:active {
-        border-color: var(--modus-wc-color-blue-dark);
-        color: var(--modus-wc-color-blue-dark);
+        background-color: rgba(1, 154, 235, 0.30);
       }
     }
 
     &.modus-wc-btn-secondary {
-      border-color: var(--modus-wc-color-gray-6);
-      color: var(--modus-wc-color-gray-6);
+      border-color: var(--modus-wc-color-gray-1);
+      color: var(--modus-wc-color-gray-1);
 
       &:hover {
-        border-color: var(--modus-wc-color-gray-5);
-        color: var(--modus-wc-color-gray-5);
+        background-color: rgba(203, 205, 214, 0.12);
       }
 
       &:active {
-        border-color: var(--modus-wc-color-gray-7);
-        color: var(--modus-wc-color-gray-7);
+        background-color: rgba(203, 205, 214, 0.30);
       }
     }
 
     // tertiary
     &.modus-wc-btn-neutral {
-      border-color: var(--modus-wc-color-gray-1);
-      color: var(--modus-wc-color-gray-1);
+      border-color: var(--modus-wc-color-gray-2);
+      color: var(--modus-wc-color-gray-2);
 
       &:hover {
-        border-color: var(--modus-wc-color-gray-0);
-        color: var(--modus-wc-color-gray-0);
+        background-color: rgba(203, 205, 214, 0.12);
       }
 
       &:active {
-        border-color: var(--modus-wc-color-gray-4);
-        color: var(--modus-wc-color-gray-2);
+        background-color: rgba(203, 205, 214, 0.30);
       }
     }
 
