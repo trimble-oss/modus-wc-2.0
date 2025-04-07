@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-toolbar should render with custom props and slots 1`] = `
+<modus-wc-toolbar custom-class="test-class">
+  <!---->
+  <div class="modus-wc-navbar test-class">
+    <div class="modus-wc-navbar-start">
+      <div slot="start">
+        Start
+      </div>
+    </div>
+    <div class="modus-wc-navbar-center">
+      <div slot="center">
+        Center
+      </div>
+    </div>
+    <div class="modus-wc-navbar-end">
+      <div slot="end">
+        End
+      </div>
+    </div>
+  </div>
+</modus-wc-toolbar>
+`;
+
+exports[`modus-wc-toolbar should render with no props 1`] = `
+<modus-wc-toolbar>
+  <!---->
+  <div class="modus-wc-navbar">
+    <div class="modus-wc-navbar-start"></div>
+    <div class="modus-wc-navbar-center"></div>
+    <div class="modus-wc-navbar-end"></div>
+  </div>
+</modus-wc-toolbar>
+`;

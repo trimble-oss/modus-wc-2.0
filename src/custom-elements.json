@@ -5022,6 +5022,63 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-toolbar/modus-wc-toolbar.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable toolbar component used to organize content across the entire page.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcToolbar",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the outer div.",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-toolbar",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcToolbar",
+          "declaration": {
+            "name": "ModusWcToolbar",
+            "module": "src/components/modus-wc-toolbar/modus-wc-toolbar.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-toolbar",
+          "declaration": {
+            "name": "ModusWcToolbar",
+            "module": "src/components/modus-wc-toolbar/modus-wc-toolbar.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-tooltip/modus-wc-tooltip.tsx",
       "declarations": [
         {
