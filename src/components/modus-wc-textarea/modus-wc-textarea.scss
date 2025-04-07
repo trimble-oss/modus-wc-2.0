@@ -4,7 +4,7 @@
 */
 
 .modus-wc-input {
-  @include feedback-levels();
+  @include feedback-levels;
 }
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)

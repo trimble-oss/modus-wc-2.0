@@ -4,7 +4,7 @@
 */
 
 .modus-wc-input {
-  @include feedback-levels();
+  @include feedback-levels;
 }
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
@@ -67,8 +67,8 @@
   .modus-wc-input-currency {
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
-      margin-top: auto;
       margin-bottom: auto;
+      margin-top: auto;
     }
 
     // TODO - add support for xs and xl once added to Modus Figma
