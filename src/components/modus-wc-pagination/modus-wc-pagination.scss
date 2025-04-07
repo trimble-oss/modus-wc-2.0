@@ -11,7 +11,6 @@
   .modus-wc-pagination-btn {
     background-color: var(--modus-wc-color-base-100);
     border-color: transparent;
-    color: var(--modus-wc-color-base-content);
 
     &.modus-wc-btn-sm {
       .modus-wc-pagination-icon {
@@ -52,6 +51,7 @@
 
 [data-theme='modus-classic-dark'] .modus-wc-pagination,
 [data-theme='modus-classic-light'] .modus-wc-pagination {
+  background-color: transparent;
   .modus-wc-pagination-btn {
     background-color: transparent;
     border: none;

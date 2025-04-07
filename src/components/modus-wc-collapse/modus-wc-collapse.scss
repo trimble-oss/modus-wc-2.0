@@ -44,7 +44,9 @@ modus-wc-accordion .modus-wc-collapse {
 
 [data-theme='modus-classic-light'] .modus-wc-collapse,
 [data-theme='modus-classic-dark'] .modus-wc-collapse {
-  border-radius: var(--modus-wc-border-radius-md);
+  margin-bottom: 0;
+  border-radius: 0;
+  margin-bottom: -1px;
 
   .modus-wc-collapse-title {
     min-height: unset;

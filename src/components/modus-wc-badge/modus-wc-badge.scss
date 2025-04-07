@@ -66,6 +66,11 @@
   border: unset;
   font-weight: var(--modus-wc-font-weight-bold);
 
+  &.modus-wc-badge-secondary {
+    background-color: var(--modus-wc-color-gray-6);
+    color: var(--modus-wc-color-white);
+  }
+
   &:not(.modus-wc-badge-counter) {
     border-radius: var(--modus-wc-border-radius-md);
   }

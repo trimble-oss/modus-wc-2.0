@@ -58,6 +58,10 @@
   --rounded-box: var(--modus-wc-border-radius-lg);
 }
 
+[data-theme='modus-classic-light'] .modus-wc-modal-box {
+  background-color: var(--modus-wc-color-white);
+}
+
 [data-theme='modus-classic-dark'] .modus-wc-modal-box {
   background-color: var(--modus-wc-color-gray-9);
 }
