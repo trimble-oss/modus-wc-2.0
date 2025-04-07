@@ -7,13 +7,8 @@
 [data-theme='modus-classic-dark'] .modus-wc-range {
   --rounded-box: 200px;
   --range-shdw: var(--modus-wc-color-trimble-blue);
-  border-radius: 100px;
 
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-2xs);
-  }
-
-  &.modus-wc-range-xl {
-    height: 2rem;
   }
 }
