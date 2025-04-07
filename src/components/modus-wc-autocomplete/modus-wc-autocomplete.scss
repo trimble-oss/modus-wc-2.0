@@ -10,6 +10,11 @@
     padding-bottom: var(--modus-wc-spacing-2xs);
   }
 
+  modus-wc-loader {
+    justify-content: center;
+    display: flex;
+  }
+
   .modus-wc-input-bordered {
     border-radius: var(--modus-wc-border-radius-md);
   }
