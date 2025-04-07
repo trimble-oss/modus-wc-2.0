@@ -5026,7 +5026,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable toolbar component used to organize content across the entire page.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable toolbar component used to organize content across the entire page.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcToolbar",
           "members": [
             {
