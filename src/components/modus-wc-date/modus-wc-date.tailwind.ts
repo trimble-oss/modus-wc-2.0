@@ -22,7 +22,7 @@ export const convertPropsToClasses = ({
   }
 
   if (readOnly) {
-    classes = `${classes} modus-wc-date--readonly`;
+    classes = `${classes} modus-wc-date-input--readonly`;
   }
 
   if (size) {
