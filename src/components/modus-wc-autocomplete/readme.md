@@ -31,6 +31,7 @@ Adheres to WCAG 2.2 standards.
 | `placeholder`   | `placeholder`     | Text that appears in the form control when it has no value set.                                         | `string \| undefined`                 | `''`        |
 | `readOnly`      | `read-only`       | Whether the value is editable.                                                                          | `boolean \| undefined`                | `false`     |
 | `required`      | `required`        | A value is required for the form to be submittable.                                                     | `boolean \| undefined`                | `false`     |
+| `showSpinner`   | `show-spinner`    | A spinner that appears when set to true                                                                 | `boolean \| undefined`                | `false`     |
 | `size`          | `size`            | The size of the autocomplete (input and menu).                                                          | `"lg" \| "md" \| "sm" \| undefined`   | `'md'`      |
 | `value`         | `value`           | The value of the control.                                                                               | `string`                              | `''`        |
 
@@ -53,6 +54,7 @@ Adheres to WCAG 2.2 standards.
 - [modus-wc-icon](../modus-wc-icon)
 - [modus-wc-button](../modus-wc-button)
 - [modus-wc-text-input](../modus-wc-text-input)
+- [modus-wc-loader](../modus-wc-loader)
 - [modus-wc-menu-item](../modus-wc-menu-item)
 - [modus-wc-input-label](../modus-wc-input-label)
 - [modus-wc-menu](../modus-wc-menu)
@@ -63,6 +65,7 @@ graph TD;
   modus-wc-autocomplete --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-button
   modus-wc-autocomplete --> modus-wc-text-input
+  modus-wc-autocomplete --> modus-wc-loader
   modus-wc-autocomplete --> modus-wc-menu-item
   modus-wc-autocomplete --> modus-wc-input-label
   modus-wc-autocomplete --> modus-wc-menu
