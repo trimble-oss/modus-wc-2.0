@@ -635,104 +635,106 @@ export const MultiSelect: Story = {
         }
       </style>
       <script>
-        // Initialize args.items if empty
-        if (!args.items || args.items.length === 0) {
-          args.items = [...items];
-        }
+              // Initialize args.items if empty
+              if (!args.items || args.items.length === 0) {
+                args.items = [...items];
+              }
 
-        const handleChipRemove = (e: CustomEvent<IAutocompleteItem>) => {
-          const autocomplete = (e.target as HTMLInputElement).closest(
-            'modus-wc-autocomplete'
-          );
+              const handleChipRemove = (e: CustomEvent<IAutocompleteItem>) => {
+                const autocomplete = (e.target as HTMLInputElement).closest(
+                  'modus-wc-autocomplete'
+                );
+
+                if (autocomplete) {
+                  args.items = args.items.map((item) =>
+                    item.value === e.detail.value ? { ...item, selected: false } : item
+                  );
+                  autocomplete.items = [...args.items];
+                }
+              };
+
+              const handleInputChange = (e: CustomEvent<Event>) => {
+                if (!e.detail?.target) return;
+
+                const autocomplete = (e.target as HTMLInputElement).closest(
+                  'modus-wc-autocomplete'
+                );
+
+                if (autocomplete) {
+                  const input = e.detail.target as HTMLInputElement;
+                  const searchText = input.value.toLowerCase();
+
+                  const updatedItems = args.items.map((item) => ({
+                    ...item,
+                    visibleInMenu: item.label.toLowerCase().includes(searchText),
+                    focused: false,
+                  }));
+
+                  args.items = updatedItems;
+                  autocomplete.items = [...args.items];
+                  autocomplete.value = input.value;
+                  if (autocomplete.value) {
+                    args.initialNavigation = false;
+                  }
+                }
+              };
+
+              const handleBlur = () => {
+                args.initialNavigation = true;
+                args.items = args.items.map((item) => ({
+                  ...item,
+                  focused: false,
+                  visibleInMenu: true,
+                }));
+              };
+
+              const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
+                const autocomplete = (e.target as HTMLInputElement).closest(
+                  'modus-wc-autocomplete'
+                );
 
           if (autocomplete) {
-            args.items = args.items.map((item) =>
-              item.value === e.detail.value ? { ...item, selected: false } : item
-            );
-            autocomplete.items = [...args.items];
-          }
-        };
-
-        const handleInputChange = (e: CustomEvent<Event>) => {
-          if (!e.detail?.target) return;
-
-          const autocomplete = (e.target as HTMLInputElement).closest(
-            'modus-wc-autocomplete'
-          );
-
-          if (autocomplete) {
-            const input = e.detail.target as HTMLInputElement;
-            const searchText = input.value.toLowerCase();
-
-            const updatedItems = args.items.map((item) => ({
+            // Reset autocomplete 'value' and update the value of 'visibleInMenu' for all items.
+            autocomplete.value = '';
+            autocomplete.items = items.map((item) => ({
               ...item,
-              visibleInMenu: item.label.toLowerCase().includes(searchText),
-              focused: false,
+              visibleInMenu: true,
             }));
 
-            args.items = updatedItems;
-            autocomplete.items = [...args.items];
-            autocomplete.value = input.value;
-            if (autocomplete.value) {
-              args.initialNavigation = false;
+            // Mark the user selected item as selected.
+            const fruit = items.find((fruit) => fruit.value === e.detail.value);
+            if (fruit) {
+              fruit.selected = true;
             }
           }
         };
-
-        const handleBlur = () => {
-          args.initialNavigation = true;
-          args.items = args.items.map((item) => ({
-            ...item,
-            focused: false,
-            visibleInMenu: true,
-          }));
-        };
-
-        const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
-          const autocomplete = (e.target as HTMLInputElement).closest(
-            'modus-wc-autocomplete'
-          );
-
-    if (autocomplete) {
-      // Reset autocomplete 'value' and update the value of 'visibleInMenu' for all items.
-      autocomplete.value = '';
-      autocomplete.items = items.map((item) => ({
-        ...item,
-        visibleInMenu: true,
-      }));
-
-      // Mark the user selected item as selected.
-      const fruit = items.find((fruit) => fruit.value === e.detail.value);
-      if (fruit) {
-        fruit.selected = true;
-      }
-    }
-  };
-</script>
-<modus-wc-autocomplete
-  aria-label="Fruit autocomplete"
-  ?bordered=${args.bordered}
-  custom-class=${ifDefined(args['custom-class'])}
-  debounce-ms=${ifDefined(args['debounce-ms'])}
-  ?disabled=${args.disabled}
-  input-id=${ifDefined(args['input-id'])}
-  input-tab-index=${ifDefined(args['input-tab-index'])}
-  .items=${args.items}
-  label=${ifDefined(args.label)}
-  ?leave-menu-open=${args['leave-menu-open']}
-  min-chars=${args['min-chars']}
-  ?multi-select=${true}
-  name=${ifDefined(args.name)}
-  .noResults=${args['no-results']}
-  placeholder=${ifDefined(args.placeholder)}
-  ?read-only=${args['read-only']}
-  ?required=${args.required}
-  size=${ifDefined(args.size)}
-  value=${args.value}
-  @chipRemove=${handleChipRemove}
-  @inputChange=${handleInputChange}
-  @itemSelect=${handleItemSelect}
-></modus-wc-autocomplete>
+      </script>
+      <modus-wc-autocomplete
+        aria-label="Fruit autocomplete"
+        ?bordered=${args.bordered}
+        custom-class=${ifDefined(args['custom-class'])}
+        debounce-ms=${ifDefined(args['debounce-ms'])}
+        ?disabled=${args.disabled}
+        input-id=${ifDefined(args['input-id'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
+        .items=${args.items}
+        label=${ifDefined(args.label)}
+        ?leave-menu-open=${args['leave-menu-open']}
+        min-chars=${args['min-chars']}
+        ?multi-select=${true}
+        name=${ifDefined(args.name)}
+        .noResults=${args['no-results']}
+        placeholder=${ifDefined(args.placeholder)}
+        ?read-only=${args['read-only']}
+        ?required=${args.required}
+        size=${ifDefined(args.size)}
+        value=${args.value}
+        @chipRemove=${handleChipRemove}
+        @inputChange=${handleInputChange}
+        @itemSelect=${handleItemSelect}
+        @inputBlur=${handleBlur}
+        @keydown=${handleKeyDown}
+      ></modus-wc-autocomplete>
     `;
   },
 };

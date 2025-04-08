@@ -12,7 +12,7 @@ import {
   Watch,
 } from '@stencil/core';
 import { ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 
 export interface IAutocompleteItem {
   /** Whether the item is disabled */
@@ -231,14 +231,14 @@ export class ModusWcAutocomplete {
     const input = event.target;
 
     switch (event.key) {
-      case 'ArrowDown':
+      case KEY.ArrowDown:
         event.preventDefault();
         if (input.value.length >= this.minChars) {
           this.menuVisible = true;
         }
         break;
 
-      case 'Backspace':
+      case KEY.Backspace:
         if (this.multiSelect && input.value.length === 0) {
           const selectedItems = this.items.filter((item) => item.selected);
           const lastSelectedItem = selectedItems[selectedItems.length - 1];
@@ -248,12 +248,12 @@ export class ModusWcAutocomplete {
         }
         break;
 
-      case 'Escape':
+      case KEY.Escape:
         event.preventDefault();
         this.menuVisible = false;
         break;
 
-      case 'Enter':
+      case KEY.Enter:
         event.preventDefault();
         if (this.multiSelect) {
           const selectedItems = this.items.filter((item) => item.selected);
