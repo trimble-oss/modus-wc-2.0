@@ -3,7 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-ul.modus-wc-menu {
+modus-wc-menu .modus-wc-menu {
   border-radius: var(--modus-wc-border-radius-md);
 
   /* Enforce Tailwind CSS reset */
@@ -17,10 +17,10 @@ ul.modus-wc-menu {
   }
 }
 
-[data-theme='modus-classic-light'] ul.modus-wc-menu {
+[data-theme='modus-classic-light'] modus-wc-menu .modus-wc-menu {
   border-color: var(--modus-wc-color-gray-0);
 }
 
-[data-theme='modus-classic-dark'] ul.modus-wc-menu {
+[data-theme='modus-classic-dark'] modus-wc-menu .modus-wc-menu {
   border-color: var(--modus-wc-color-gray-8);
 }

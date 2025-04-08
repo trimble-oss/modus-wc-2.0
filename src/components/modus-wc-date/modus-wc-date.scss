@@ -2,8 +2,8 @@
   @include feedback-levels;
 }
 
-[data-theme='modus-classic-light'] .modus-wc-date-input,
-[data-theme='modus-classic-dark'] .modus-wc-date-input {
+[data-theme='modus-classic-light'] modus-wc-date .modus-wc-date-input,
+[data-theme='modus-classic-dark'] modus-wc-date .modus-wc-date-input {
   &.modus-wc-input {
     border-radius: var(--modus-wc-border-radius-md);
 
@@ -44,7 +44,7 @@
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-date-input {
+[data-theme='modus-classic-light'] modus-wc-date .modus-wc-date-input {
   &.modus-wc-input {
     &.modus-wc-input-bordered:not(:disabled):not(:focus) {
       border-color: var(--modus-wc-color-gray-6);
@@ -52,7 +52,7 @@
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-date-input {
+[data-theme='modus-classic-dark'] modus-wc-date .modus-wc-date-input {
   color-scheme: dark; // needed to ensure the calendar icon button is visible in dark mode
 
   &.modus-wc-input:focus {

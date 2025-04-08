@@ -8,8 +8,8 @@
 }
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
-[data-theme='modus-classic-light'] .modus-wc-textarea,
-[data-theme='modus-classic-dark'] .modus-wc-textarea {
+[data-theme='modus-classic-light'] modus-wc-textarea .modus-wc-textarea,
+[data-theme='modus-classic-dark'] modus-wc-textarea .modus-wc-textarea {
   border-radius: var(--modus-wc-border-radius-md);
 
   .modus-wc-input-label {
@@ -46,12 +46,12 @@
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-textarea {
+[data-theme='modus-classic-light'] modus-wc-textarea .modus-wc-textarea {
   &.modus-wc-textarea-bordered:not(:disabled):not(:focus) {
     border-color: var(--modus-wc-color-gray-6);
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-textarea:focus {
+[data-theme='modus-classic-dark'] modus-wc-textarea .modus-wc-textarea:focus {
   border-color: var(--modus-wc-color-highlight-blue);
 }
