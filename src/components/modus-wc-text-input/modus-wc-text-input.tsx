@@ -154,6 +154,7 @@ export class ModusWcTextInput {
 
   private getClasses(): string {
     const classList = [
+      'modus-wc-text-input',
       'modus-wc-input',
       'modus-wc-w-full',
       'modus-wc-flex',

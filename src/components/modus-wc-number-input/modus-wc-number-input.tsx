@@ -112,6 +112,7 @@ export class ModusWcNumberInput {
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       feedback: this.feedback,
+      readOnly: this.readOnly,
       size: this.size,
     });
 
@@ -122,7 +123,11 @@ export class ModusWcNumberInput {
   }
 
   private getInputClasses(): string {
-    const classList = ['modus-wc-input', 'modus-wc-w-full'];
+    const classList = [
+      'modus-wc-number-input',
+      'modus-wc-input',
+      'modus-wc-w-full',
+    ];
 
     if (this.currencySymbol) {
       classList.push('modus-wc-join-item');
@@ -143,7 +148,7 @@ export class ModusWcNumberInput {
   }
 
   private getWrapperClasses(): string {
-    const classList = ['modus-wc-input-container'];
+    const classList = ['modus-wc-number-input-container'];
 
     if (this.currencySymbol) {
       classList.push('modus-wc-join');

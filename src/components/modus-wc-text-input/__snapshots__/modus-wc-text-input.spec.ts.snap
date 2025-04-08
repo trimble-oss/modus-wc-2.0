@@ -3,7 +3,7 @@
 exports[`modus-wc-text-input should render with custom props 1`] = `
 <modus-wc-text-input auto-capitalize="words" auto-complete="on" auto-focus="true" clear-aria-label="Clear input" custom-class="test-class" disabled="true" include-clear="true" include-search="true" input-aria-invalid="grammar" input-id="test-id" input-mode="numeric" input-spellcheck="true" input-tab-index="1" label="Test label" max-length="50" min-length="5" name="test-name" pattern="[A-Za-z]{3}" placeholder="Test placeholder" readonly="true" required="true" size="lg" type="email" value="test@example.com">
   <modus-wc-input-label forid="test-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
-  <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-disabled modus-wc-input-lg modus-wc-items-center modus-wc-w-full test-class">
+  <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-disabled modus-wc-input-lg modus-wc-items-center modus-wc-text-input modus-wc-w-full test-class">
     <svg aria-hidden="true" class="modus-wc-text-input-icon modus-wc-text-input-icon-search" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
     </svg>
@@ -19,7 +19,7 @@ exports[`modus-wc-text-input should render with custom props 1`] = `
 
 exports[`modus-wc-text-input should render with default props 1`] = `
 <modus-wc-text-input value="">
-  <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-w-full">
+  <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
     <input aria-label="Default input" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
   </label>
 </modus-wc-text-input>
@@ -27,7 +27,7 @@ exports[`modus-wc-text-input should render with default props 1`] = `
 
 exports[`modus-wc-text-input should render with error feedback 1`] = `
 <modus-wc-text-input value="">
-  <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-w-full">
+  <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
     <input aria-label="Error input" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
   </label>
   <modus-wc-input-feedback>
