@@ -4,12 +4,12 @@
 */
 
 .modus-wc-input {
-  @include feedback-levels();
+  @include feedback-levels;
 }
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
-[data-theme='modus-classic-light'] .modus-wc-input-container,
-[data-theme='modus-classic-dark'] .modus-wc-input-container {
+[data-theme='modus-classic-light'] .modus-wc-number-input-container,
+[data-theme='modus-classic-dark'] .modus-wc-number-input-container {
   .modus-wc-input-currency {
     background-color: var(--modus-wc-color-base-100);
     border: var(--modus-wc-border-width-xs) solid transparent;
@@ -29,44 +29,46 @@
     }
   }
 
-  .modus-wc-input {
-    .modus-wc-input-label {
-      padding-bottom: var(--modus-wc-spacing-2xs);
-    }
+  .modus-wc-number-input {
+    &.modus-wc-input {
+      .modus-wc-input-label {
+        padding-bottom: var(--modus-wc-spacing-2xs);
+      }
 
-    &.modus-wc-input-sm {
-      padding: var(--modus-wc-spacing-md) 0 var(--modus-wc-spacing-md)
-        var(--modus-wc-spacing-sm);
-    }
+      &.modus-wc-input-sm {
+        padding: var(--modus-wc-spacing-md) 0 var(--modus-wc-spacing-md)
+          var(--modus-wc-spacing-sm);
+      }
 
-    &.modus-wc-input-md {
-      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-lg)
-        var(--modus-wc-spacing-lg) var(--modus-wc-spacing-md);
-    }
+      &.modus-wc-input-md {
+        padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-lg)
+          var(--modus-wc-spacing-lg) var(--modus-wc-spacing-md);
+      }
 
-    &.modus-wc-input-lg {
-      padding: var(--modus-wc-spacing-xl) var(--modus-wc-spacing-xl)
-        var(--modus-wc-spacing-xl) var(--modus-wc-spacing-lg);
-    }
+      &.modus-wc-input-lg {
+        padding: var(--modus-wc-spacing-xl) var(--modus-wc-spacing-xl)
+          var(--modus-wc-spacing-xl) var(--modus-wc-spacing-lg);
+      }
 
-    &:focus {
-      border-color: var(--modus-wc-color-highlight-blue);
-      border-width: var(--modus-wc-border-width-sm);
-      box-shadow: none; // Removes the Tailwind ring effect
-      outline: none; // Ensures there's no outline on focus
-    }
+      &:focus {
+        border-color: var(--modus-wc-color-highlight-blue);
+        border-width: var(--modus-wc-border-width-sm);
+        box-shadow: none; // Removes the Tailwind ring effect
+        outline: none; // Ensures there's no outline on focus
+      }
 
-    &:read-only {
-      background-color: var(--modus-wc-color-base-100);
+      &.modus-wc-number-input--readonly {
+        background-color: var(--modus-wc-color-base-100);
+      }
     }
   }
 
-  .modus-wc-input,
+  .modus-wc-number-input,
   .modus-wc-input-currency {
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
-      margin-top: auto;
       margin-bottom: auto;
+      margin-top: auto;
     }
 
     // TODO - add support for xs and xl once added to Modus Figma

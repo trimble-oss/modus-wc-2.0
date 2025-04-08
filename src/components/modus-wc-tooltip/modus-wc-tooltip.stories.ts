@@ -49,3 +49,30 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+  - In 1.0 tooltip positioning was handled by Popper.js. In 2.0, positioning is handled using CSS.
+  - The \`text\` prop has been renamed to \`content\`.
+
+#### Prop Mapping
+
+| 1.0 Prop    | 2.0 Prop    | Notes                                    |
+|-------------|-------------|------------------------------------------|
+| aria-label  | aria-label  |                                          |
+| disabled    | disabled    |                                          |
+| position    | position    | Added \`auto\` option as default value   |
+| text        | content     |                                          |
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
+};
