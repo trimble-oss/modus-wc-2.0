@@ -21,6 +21,19 @@ Adheres to WCAG 2.2 standards.
 | `variant`     | `variant`      | The variant of the loader.                       | `"ball" \| "bars" \| "dots" \| "infinity" \| "ring" \| "spinner"`                                  | `'spinner'` |
 
 
+## Dependencies
+
+### Used by
+
+ - [modus-wc-autocomplete](../modus-wc-autocomplete)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-autocomplete --> modus-wc-loader
+  style modus-wc-loader fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
