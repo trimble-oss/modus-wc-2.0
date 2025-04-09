@@ -17,19 +17,6 @@ exports[`modus-wc-autocomplete should display no results ui when no items are av
       <input aria-label="No results test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu aria-label="Autocomplete menu" bordered="" size="md">
-    <div class="modus-wc-autocomplete-no-results">
-      <div aria-label="No results found" class="icon-label">
-        <modus-wc-icon decorative="" name="search"></modus-wc-icon>
-        <div class="label">
-          No results found
-        </div>
-      </div>
-      <div class="sub-label">
-        Check spelling or try a different keyword
-      </div>
-    </div>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
@@ -66,72 +53,28 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 3`
 exports[`modus-wc-autocomplete should render multi select with selected items 1`] = `
 <modus-wc-autocomplete class="modus-wc-autocomplete" multi-select="true" value="">
   <div class="modus-wc-autocomplete-multi-select modus-wc-autocomplete-multi-select--bordered">
-    <div class="chip">
-      <modus-wc-button aria-label="Remove item button" color="secondary" shape="circle" size="xs">
-        <modus-wc-icon decorative="" name="close"></modus-wc-icon>
-      </modus-wc-button>
-      <div class="label">
-        Item 1
-      </div>
-    </div>
-    <div class="chip">
-      <modus-wc-button aria-label="Remove item button" color="secondary" shape="circle" size="xs">
-        <modus-wc-icon decorative="" name="close"></modus-wc-icon>
-      </modus-wc-button>
-      <div class="label">
-        Item 2
-      </div>
-    </div>
+    <modus-wc-chip aria-label="Remove item button" label="Item 1" show-remove="true" size="sm" variant="filled"></modus-wc-chip>
+    <modus-wc-chip aria-label="Remove item button" label="Item 2" show-remove="true" size="sm" variant="filled"></modus-wc-chip>
     <modus-wc-text-input value="">
       <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
         <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
       </label>
     </modus-wc-text-input>
   </div>
-  <modus-wc-menu>
-    <!---->
-    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
-      <modus-wc-menu-item label="Item 1" selected="" value="1"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 2" selected="" value="2"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
-    </ul>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
 exports[`modus-wc-autocomplete should render multi select without border 1`] = `
 <modus-wc-autocomplete bordered="false" class="modus-wc-autocomplete" multi-select="true" value="">
   <div class="modus-wc-autocomplete-multi-select">
-    <div class="chip">
-      <modus-wc-button aria-label="Remove item button" color="secondary" shape="circle" size="xs">
-        <modus-wc-icon decorative="" name="close"></modus-wc-icon>
-      </modus-wc-button>
-      <div class="label">
-        Item 1
-      </div>
-    </div>
-    <div class="chip">
-      <modus-wc-button aria-label="Remove item button" color="secondary" shape="circle" size="xs">
-        <modus-wc-icon decorative="" name="close"></modus-wc-icon>
-      </modus-wc-button>
-      <div class="label">
-        Item 2
-      </div>
-    </div>
+    <modus-wc-chip aria-label="Remove item button" label="Item 1" show-remove="true" size="sm" variant="filled"></modus-wc-chip>
+    <modus-wc-chip aria-label="Remove item button" label="Item 2" show-remove="true" size="sm" variant="filled"></modus-wc-chip>
     <modus-wc-text-input value="">
       <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
         <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
       </label>
     </modus-wc-text-input>
   </div>
-  <modus-wc-menu>
-    <!---->
-    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-md modus-wc-w-full" role="menu">
-      <modus-wc-menu-item label="Item 1" selected="" value="1"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 2" selected="" value="2"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
-    </ul>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
@@ -143,50 +86,6 @@ exports[`modus-wc-autocomplete should render with custom props 1`] = `
       <input aria-describedby="description" aria-label="Test autocomplete" aria-placeholder="Test placeholder" aria-required="" class="modus-wc-grow" disabled="" id="test-id" inputmode="text" name="test-name" placeholder="Test placeholder" required="" tabindex="1" type="text" value="Item 1">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu>
-    <!---->
-    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-lg modus-wc-w-full" role="menu">
-      <modus-wc-menu-item>
-        <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
-          <button type="button">
-            <div class="modus-wc-menu-item-content">
-              <div class="modus-wc-menu-item-labels">
-                <div>
-                  Item 1
-                </div>
-              </div>
-            </div>
-          </button>
-        </li>
-      </modus-wc-menu-item>
-      <modus-wc-menu-item>
-        <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
-          <button type="button">
-            <div class="modus-wc-menu-item-content">
-              <div class="modus-wc-menu-item-labels">
-                <div>
-                  Item 2
-                </div>
-              </div>
-            </div>
-          </button>
-        </li>
-      </modus-wc-menu-item>
-      <modus-wc-menu-item>
-        <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
-          <button type="button">
-            <div class="modus-wc-menu-item-content">
-              <div class="modus-wc-menu-item-labels">
-                <div>
-                  Item 3
-                </div>
-              </div>
-            </div>
-          </button>
-        </li>
-      </modus-wc-menu-item>
-    </ul>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 

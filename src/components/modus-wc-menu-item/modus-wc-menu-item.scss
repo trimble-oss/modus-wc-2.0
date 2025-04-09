@@ -6,6 +6,10 @@
 modus-wc-menu-item .modus-wc-menu-item {
   border-radius: var(--modus-wc-border-radius-sm);
 
+  &.modus-wc-menu-item-focused {
+    background-color: var(--modus-wc-color-gray-0);
+  }
+
   &.modus-wc-menu-item-bordered {
     border-bottom: 1px solid var(--modus-wc-color-gray-0);
     border-top: 1px solid var(--modus-wc-color-gray-0);
@@ -88,7 +92,11 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 
   &:hover {
-    --fallback-b1: var(--modus-wc-color-gray-0);
+    background-color: var(--modus-wc-color-gray-0);
+  }
+
+  &.modus-wc-menu-item-focused {
+    background-color: var(--modus-wc-color-gray-0);
   }
 }
 
@@ -102,6 +110,10 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 
   &:hover {
-    --fallback-b1: var(--modus-wc-color-gray-8);
+    background-color: var(--modus-wc-color-gray-8);
+  }
+
+  &.modus-wc-menu-item-focused {
+    background-color: var(--modus-wc-color-gray-8);
   }
 }

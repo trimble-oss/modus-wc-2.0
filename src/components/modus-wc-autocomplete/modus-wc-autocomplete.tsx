@@ -5,15 +5,20 @@ import {
   Fragment,
   h,
   Host,
+  Listen,
   Prop,
   State,
   Event as StencilEvent,
   Watch,
 } from '@stencil/core';
 import { ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 
 export interface IAutocompleteItem {
+  /** Whether the item is disabled */
+  disabled?: boolean;
+  /** Whether the item is currently focused */
+  focused?: boolean;
   /** The display text shown for the autocomplete item */
   label: string;
   /** Whether the item is currently selected */
@@ -180,6 +185,7 @@ export class ModusWcAutocomplete {
   }
 
   private handleBlur = (event: CustomEvent<FocusEvent>) => {
+    // if enter key is pressed, return
     // Hide menu after a short delay to allow for item selection
     // istanbul ignore next - TODO
     setTimeout(() => {
@@ -218,12 +224,57 @@ export class ModusWcAutocomplete {
     }, this.debounceMs);
   };
 
+  @Listen('keydown')
+  handleKeyDown(event: KeyboardEvent) {
+    if (!(event.target instanceof HTMLInputElement)) return;
+
+    const input = event.target;
+
+    switch (event.key) {
+      case KEY.ArrowDown:
+        event.preventDefault();
+        if (input.value.length >= this.minChars) {
+          this.menuVisible = true;
+        }
+        break;
+
+      case KEY.Backspace:
+        if (this.multiSelect && input.value.length === 0) {
+          const selectedItems = this.items.filter((item) => item.selected);
+          const lastSelectedItem = selectedItems[selectedItems.length - 1];
+          if (lastSelectedItem) {
+            this.chipRemove.emit(lastSelectedItem);
+          }
+        }
+        break;
+
+      case KEY.Escape:
+        event.preventDefault();
+        this.menuVisible = false;
+        break;
+
+      case KEY.Enter:
+        event.preventDefault();
+        if (this.multiSelect) {
+          const selectedItems = this.items.filter((item) => item.selected);
+          const lastSelectedItem = selectedItems[selectedItems.length - 1];
+          if (lastSelectedItem) {
+            this.itemSelect.emit(lastSelectedItem);
+          }
+        } else {
+          const selectedItem = this.items.find((item) => item.selected);
+          if (selectedItem) {
+            this.itemSelect.emit(selectedItem);
+          }
+        }
+        if (this.menuVisible && !this.leaveMenuOpen) {
+          input.blur();
+        }
+        break;
+    }
+  }
+
   private handleFocus = (event: CustomEvent<FocusEvent>) => {
-    const value = (event.detail.target as HTMLInputElement).value;
-
-    // Show menu on focus if we meet minimum character threshold
-    this.menuVisible = !this.readOnly && value.length >= this.minChars;
-
     this.inputFocus.emit(event.detail);
   };
 
@@ -278,19 +329,15 @@ export class ModusWcAutocomplete {
       return (
         <Fragment>
           {selectedItems?.map((item) => (
-            <div class="chip">
-              <modus-wc-button
-                aria-label="Remove item button"
-                color="secondary"
-                onClick={() => this.handleChipRemove(item)}
-                disabled={this.disabled || this.readOnly}
-                shape="circle"
-                size="xs"
-              >
-                <modus-wc-icon decorative={true} name="close" />
-              </modus-wc-button>
-              <div class="label">{item.label}</div>
-            </div>
+            <modus-wc-chip
+              aria-label="Remove item button"
+              label={item.label}
+              show-remove="true"
+              size="sm"
+              disabled={this.disabled || this.readOnly}
+              onChipRemove={() => this.handleChipRemove(item)}
+              variant="filled"
+            ></modus-wc-chip>
           ))}
         </Fragment>
       );
@@ -340,6 +387,8 @@ export class ModusWcAutocomplete {
                   label={item.label}
                   onItemSelect={() => this.handleItemSelect(item)}
                   selected={item.selected}
+                  disabled={item.disabled}
+                  focused={item.focused}
                   value={item.value}
                 />
               ))
