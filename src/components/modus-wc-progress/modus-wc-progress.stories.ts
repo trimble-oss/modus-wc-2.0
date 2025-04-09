@@ -62,10 +62,10 @@ export const SizeVariations: Story = {
     // prettier-ignore
     return html`
 <style>
-  .modus-wc-progress-container .size-small {
+  modus-wc-progress.modus-wc-progress-container .size-small {
     height: 0.5rem;
   }
-  .modus-wc-progress-container .size-compact {
+  modus-wc-progress.modus-wc-progress-container .size-compact {
     height: 0.25rem;
   }
 </style>
@@ -102,7 +102,7 @@ export const LabelTextColor: Story = {
     // prettier-ignore
     return html`
 <style>
-  .modus-wc-progress-label.custom-label-color {
+  modus-wc-progress .modus-wc-progress-label.custom-label-color {
     color: #f00;
   }
 </style>
@@ -120,10 +120,10 @@ export const CustomBarColor: Story = {
     // prettier-ignore
     return html`
 <style>
-  .modus-wc-progress.custom-bar-color::-webkit-progress-value {
+  modus-wc-progress .modus-wc-progress.custom-bar-color::-webkit-progress-value {
     background-color: #f48;
   }
-  .modus-wc-progress.custom-bar-color::-moz-progress-bar {
+  modus-wc-progress .modus-wc-progress.custom-bar-color::-moz-progress-bar {
     background-color: #f48;
   }
 </style>
@@ -140,7 +140,7 @@ export const CustomBackgroundColor: Story = {
     // prettier-ignore
     return html`
 <style>
-  .modus-wc-progress.custom-bg-color {
+  modus-wc-progress .modus-wc-progress.custom-bg-color {
     background-color: #f00;
   }
 </style>

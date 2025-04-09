@@ -3,7 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-li.modus-wc-menu-item {
+modus-wc-menu-item .modus-wc-menu-item {
   border-radius: var(--modus-wc-border-radius-sm);
 
   &.modus-wc-menu-item-bordered {
@@ -78,7 +78,7 @@ li.modus-wc-menu-item {
   }
 }
 
-[data-theme='modus-classic-light'] li.modus-wc-menu-item {
+[data-theme='modus-classic-light'] modus-wc-menu-item .modus-wc-menu-item {
   &.modus-wc-menu-item-disabled {
     color: var(--modus-wc-color-gray-2);
   }
@@ -92,7 +92,7 @@ li.modus-wc-menu-item {
   }
 }
 
-[data-theme='modus-classic-dark'] li.modus-wc-menu-item {
+[data-theme='modus-classic-dark'] modus-wc-menu-item .modus-wc-menu-item {
   &.modus-wc-menu-item-disabled {
     color: var(--modus-wc-color-gray-6);
   }

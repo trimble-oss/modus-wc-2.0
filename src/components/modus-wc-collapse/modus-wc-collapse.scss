@@ -3,7 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-collapse {
+modus-wc-collapse .modus-wc-collapse {
   transition: none !important;
 
   modus-wc-icon {
@@ -22,8 +22,8 @@
   top: 50%;
 }
 
-[data-theme='modus-classic-light'] .modus-wc-collapse,
-[data-theme='modus-classic-dark'] .modus-wc-collapse {
+[data-theme='modus-classic-light'] modus-wc-collapse .modus-wc-collapse,
+[data-theme='modus-classic-dark'] modus-wc-collapse .modus-wc-collapse {
   border-radius: var(--modus-wc-border-radius-md);
 
   .modus-wc-collapse-title {
@@ -32,7 +32,7 @@
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-collapse {
+[data-theme='modus-classic-light'] modus-wc-collapse .modus-wc-collapse {
   background-color: var(--modus-wc-color-white);
 
   &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-collapse-open {
@@ -46,7 +46,7 @@
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-collapse {
+[data-theme='modus-classic-dark'] modus-wc-collapse .modus-wc-collapse {
   background-color: var(--modus-wc-color-trimble-gray);
 
   &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-collapse-open {

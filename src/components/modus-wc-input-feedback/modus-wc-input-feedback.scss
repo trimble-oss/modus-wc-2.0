@@ -3,7 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-input-feedback {
+modus-wc-input-feedback .modus-wc-input-feedback {
   align-items: center;
   border-radius: 0 0 var(--modus-wc-border-radius-sm)
     var(--modus-wc-border-radius-sm);
@@ -40,8 +40,12 @@
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-input-feedback,
-[data-theme='modus-modern-light'] .modus-wc-input-feedback {
+[data-theme='modus-classic-light']
+  modus-wc-input-feedback
+  .modus-wc-input-feedback,
+[data-theme='modus-modern-light']
+  modus-wc-input-feedback
+  .modus-wc-input-feedback {
   // Levels
   &.modus-wc-input-feedback--error {
     color: var(--modus-wc-color-red);
@@ -60,8 +64,12 @@
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-input-feedback,
-[data-theme='modus-modern-dark'] .modus-wc-input-feedback {
+[data-theme='modus-classic-dark']
+  modus-wc-input-feedback
+  .modus-wc-input-feedback,
+[data-theme='modus-modern-dark']
+  modus-wc-input-feedback
+  .modus-wc-input-feedback {
   color: var(--modus-wc-color-white);
 
   // Levels
