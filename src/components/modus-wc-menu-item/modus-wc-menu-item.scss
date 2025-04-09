@@ -107,7 +107,9 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 }
 
-modus-wc-menu-item .modus-wc-menu-item.modus-wc-menu-item-selected > button:focus {
+modus-wc-menu-item
+  .modus-wc-menu-item.modus-wc-menu-item-selected
+  > button:focus {
   color: var(--modus-wc-color-base-content);
 }
 
