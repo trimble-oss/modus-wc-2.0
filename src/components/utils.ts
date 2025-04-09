@@ -130,4 +130,7 @@ export const KEY: { [key: string]: string } = {
   Enter: 'Enter',
   Space: ' ',
   Escape: 'Escape',
+  Backspace: 'Backspace',
+  ArrowDown: 'ArrowDown',
+  ArrowUp: 'ArrowUp',
 };

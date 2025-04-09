@@ -7,28 +7,34 @@ modus-wc-menu-item .modus-wc-menu-item {
   .modus-wc-menu-item-selected-icon {
     display: none;
   }
+
   button {
     &:where(
         .modus-wc-menu
           li:not(.modus-wc-menu-title, .modus-wc-disabled)
           > :not(ul, details, .modus-wc-menu-title)
       ):not(summary, .modus-wc-active, .modus-wc-btn):focus {
-      color: var(--modus-wc-color-primary-content);
       border-radius: inherit;
+      color: var(--modus-wc-color-primary-content);
     }
+  }
+
+  &.modus-wc-menu-item-focused {
+    background-color: var(--modus-wc-color-gray-0);
   }
 
   &.modus-wc-menu-item-bordered {
     border-bottom: 1px solid var(--modus-wc-color-base-100);
-    border-top: 1px solid var(--modus-wc-color-base-100);
     border-radius: 0;
+    border-top: 1px solid var(--modus-wc-color-base-100);
   }
 
   &.modus-wc-menu-item-selected {
     background-color: var(--modus-wc-color-primary);
-    color: var(--modus-wc-color-primary-content);
     border-radius: inherit;
+    color: var(--modus-wc-color-primary-content);
   }
+
   &.modus-wc-menu-item-disabled {
     color: var(--modus-wc-color-gray-2);
 
@@ -122,8 +128,13 @@ li.modus-wc-menu-item.modus-wc-menu-item-selected > button:focus {
   }
 
   &:hover {
-    --fallback-b1: var(--modus-wc-color-gray-0);
+    background-color: var(--modus-wc-color-gray-0);
   }
+
+  &.modus-wc-menu-item-focused {
+    background-color: var(--modus-wc-color-gray-0);
+  }
+
   &.modus-wc-menu-item-bordered {
     border-bottom: 1px solid var(--modus-wc-color-gray-9);
     border-top: 1px solid var(--modus-wc-color-gray-9);
@@ -147,6 +158,10 @@ li.modus-wc-menu-item.modus-wc-menu-item-selected > button:focus {
   }
 
   &:hover {
-    --fallback-b1: var(--modus-wc-color-gray-8);
+    background-color: var(--modus-wc-color-gray-8);
+  }
+
+  &.modus-wc-menu-item-focused {
+    background-color: var(--modus-wc-color-gray-8);
   }
 }
