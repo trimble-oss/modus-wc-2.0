@@ -3,19 +3,19 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-breadcrumbs {
+modus-wc-breadcrumbs .modus-wc-breadcrumbs {
   ol {
     list-style: none;
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-breadcrumbs {
+[data-theme='modus-classic-light'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
   a {
     color: var(--modus-wc-color-blue-light);
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-breadcrumbs {
+[data-theme='modus-classic-dark'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
   a {
     color: var(--modus-wc-color-highlight-blue);
   }

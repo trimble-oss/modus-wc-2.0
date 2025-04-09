@@ -3,7 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-checkbox-host {
+modus-wc-checkbox.modus-wc-checkbox-host {
   align-items: center;
   display: flex;
 
@@ -12,8 +12,8 @@
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-checkbox,
-[data-theme='modus-classic-dark'] .modus-wc-checkbox {
+[data-theme='modus-classic-light'] modus-wc-checkbox .modus-wc-checkbox,
+[data-theme='modus-classic-dark'] modus-wc-checkbox .modus-wc-checkbox {
   --chkbg: var(--modus-wc-color-highlight-blue);
   --fallback-bc: var(--modus-wc-color-gray-4);
   --chkfg: var(--modus-wc-color-white);
@@ -72,7 +72,7 @@
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-checkbox {
+[data-theme='modus-classic-light'] modus-wc-checkbox .modus-wc-checkbox {
   --chkbg: var(--modus-wc-color-blue-light);
 
   &:checked {

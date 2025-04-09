@@ -155,6 +155,10 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
+          * A spinner that appears when set to true
+         */
+        "showSpinner"?: boolean;
+        /**
           * The size of the autocomplete (input and menu).
          */
         "size"?: ModusSize;
@@ -2555,6 +2559,10 @@ declare namespace LocalJSX {
           * A value is required for the form to be submittable.
          */
         "required"?: boolean;
+        /**
+          * A spinner that appears when set to true
+         */
+        "showSpinner"?: boolean;
         /**
           * The size of the autocomplete (input and menu).
          */
