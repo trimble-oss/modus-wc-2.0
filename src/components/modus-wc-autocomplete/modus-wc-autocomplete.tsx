@@ -95,7 +95,11 @@ export class ModusWcAutocomplete {
   @Prop() name?: string;
 
   /** The content to display when no results are found. */
-  @Prop() noResults?: IAutocompleteNoResults;
+  @Prop() noResults?: IAutocompleteNoResults = {
+    ariaLabel: 'No results found',
+    label: 'No results found',
+    subLabel: 'Check spelling or try a different keyword',
+  };
 
   /** Text that appears in the form control when it has no value set. */
   @Prop() placeholder?: string = '';
@@ -245,19 +249,13 @@ export class ModusWcAutocomplete {
   };
 
   private renderNoResults() {
-    const {
-      ariaLabel = 'No results found',
-      label = 'No results found',
-      subLabel = 'Check spelling or try a different keyword',
-    } = this.noResults || {};
-
     return (
       <div class="modus-wc-autocomplete-no-results">
-        <div class="icon-label" aria-label={ariaLabel}>
+        <div class="icon-label" aria-label={this.noResults?.ariaLabel}>
           <modus-wc-icon name="search" decorative />
-          <div class="label">{label}</div>
+          <div class="label">{this.noResults?.label}</div>
         </div>
-        <div class="sub-label">{subLabel}</div>
+        <div class="sub-label">{this.noResults?.subLabel}</div>
       </div>
     );
   }

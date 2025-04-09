@@ -27,7 +27,19 @@ exports[`modus-wc-autocomplete should display no results ui when no items are av
       <input aria-label="No results test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu aria-label="Autocomplete menu" bordered="" class="menu-visible" size="md"></modus-wc-menu>
+  <modus-wc-menu aria-label="Autocomplete menu" bordered="" class="menu-visible" size="md">
+    <div class="modus-wc-autocomplete-no-results">
+      <div aria-label="No results found" class="icon-label">
+        <modus-wc-icon decorative="" name="search"></modus-wc-icon>
+        <div class="label">
+          No results found
+        </div>
+      </div>
+      <div class="sub-label">
+        Check spelling or try a different keyword
+      </div>
+    </div>
+  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
@@ -96,7 +108,7 @@ exports[`modus-wc-autocomplete should render default no results values when noRe
   "$children$": [
     {
       "$attrs$": {
-        "aria-label": "No results found",
+        "aria-label": undefined,
         "class": "icon-label",
       },
       "$children$": [
@@ -117,18 +129,7 @@ exports[`modus-wc-autocomplete should render default no results values when noRe
           "$attrs$": {
             "class": "label",
           },
-          "$children$": [
-            {
-              "$attrs$": null,
-              "$children$": null,
-              "$elm$": null,
-              "$flags$": 0,
-              "$key$": null,
-              "$name$": null,
-              "$tag$": null,
-              "$text$": "No results found",
-            },
-          ],
+          "$children$": null,
           "$elm$": null,
           "$flags$": 0,
           "$key$": null,
@@ -148,18 +149,7 @@ exports[`modus-wc-autocomplete should render default no results values when noRe
       "$attrs$": {
         "class": "sub-label",
       },
-      "$children$": [
-        {
-          "$attrs$": null,
-          "$children$": null,
-          "$elm$": null,
-          "$flags$": 0,
-          "$key$": null,
-          "$name$": null,
-          "$tag$": null,
-          "$text$": "Check spelling or try a different keyword",
-        },
-      ],
+      "$children$": null,
       "$elm$": null,
       "$flags$": 0,
       "$key$": null,
@@ -265,6 +255,17 @@ exports[`modus-wc-autocomplete should render with default props 1`] = `
   <modus-wc-menu class="menu-hidden">
     <!---->
     <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
+      <div class="modus-wc-autocomplete-no-results">
+        <div aria-label="No results found" class="icon-label">
+          <modus-wc-icon decorative="" name="search"></modus-wc-icon>
+          <div class="label">
+            No results found
+          </div>
+        </div>
+        <div class="sub-label">
+          Check spelling or try a different keyword
+        </div>
+      </div>
     </ul>
   </modus-wc-menu>
 </modus-wc-autocomplete>
