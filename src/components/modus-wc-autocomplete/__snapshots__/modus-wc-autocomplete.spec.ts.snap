@@ -39,7 +39,7 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 1`
       <input aria-label="Leave menu open test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-visible">
+  <modus-wc-menu class="menu-hidden">
     <!---->
     <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
       <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
@@ -58,7 +58,7 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 2`
       <input aria-label="Leave menu open test" aria-placeholder="" class="modus-wc-grow" disabled="" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-visible">
+  <modus-wc-menu class="menu-hidden">
     <!---->
     <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
       <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
@@ -77,7 +77,7 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 3`
       <input aria-label="Leave menu open test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" readonly="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-visible">
+  <modus-wc-menu class="menu-hidden">
     <!---->
     <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
       <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
