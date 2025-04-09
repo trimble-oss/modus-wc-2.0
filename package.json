@@ -50,7 +50,7 @@
     "@stencil/core": "^4.22.0",
     "@stencil/react-output-target": "^0.7.4",
     "@stencil/sass": "^3.0.12",
-    "@stencil/store": "^2.0.16",
+    "@stencil/store": "^2.1.2",
     "@storybook/addon-a11y": "^8.4.2",
     "@storybook/addon-essentials": "^8.4.2",
     "@storybook/addon-links": "^8.4.2",
