@@ -4,8 +4,8 @@
 */
 
 .modus-wc-alert {
-  // border-left-width: var(--modus-wc-border-width-xl);
-  // border-radius: var(--modus-wc-border-radius-lg);
+  border-left-width: var(--modus-wc-border-width-xl);
+  border-radius: var(--modus-wc-border-radius-lg);
 
   &.modus-wc-alert-info {
     background-color: color-mix(

@@ -4,13 +4,13 @@
 */
 
 .modus-wc-input-feedback {
-  margin-top: var(--modus-wc-spacing-sm);
-  font-weight: var(--modus-wc-font-weight-semibold);
   align-items: center;
   border-radius: 0 0 var(--modus-wc-border-radius-sm)
     var(--modus-wc-border-radius-sm);
   display: flex;
+  font-weight: var(--modus-wc-font-weight-semibold);
   gap: var(--modus-wc-spacing-sm);
+  margin-top: var(--modus-wc-spacing-sm);
   padding: var(--modus-wc-spacing-xs) 0;
 
   // Sizes
@@ -44,27 +44,24 @@
   // Status
   &.modus-wc-input-feedback {
     background-color: var(--modus-wc-color-base-100);
-    padding: var(--modus-wc-spacing-sm);
     border-radius: var(--modus-wc-border-radius-lg);
+    padding: var(--modus-wc-spacing-sm);
   }
+
   &.modus-wc-input-feedback--error {
     color: var(--modus-wc-color-error);
-    // background-color: var(--modus-wc-color-red-pale);
   }
 
   &.modus-wc-input-feedback--info {
     color: var(--modus-wc-color-info);
-    // background-color: var(--modus-wc-color-blue-pale);
   }
 
   &.modus-wc-input-feedback--success {
     color: var(--modus-wc-color-success);
-    // background-color: var(--modus-wc-color-green-pale);
   }
 
   &.modus-wc-input-feedback--warning {
     color: var(--modus-wc-color-warning);
-    // background-color: var(--modus-wc-color-yellow-pale);
   }
 }
 
