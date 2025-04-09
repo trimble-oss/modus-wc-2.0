@@ -8,8 +8,12 @@
 }
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
-[data-theme='modus-classic-light'] .modus-wc-number-input-container,
-[data-theme='modus-classic-dark'] .modus-wc-number-input-container {
+[data-theme='modus-classic-light']
+  modus-wc-number-input
+  .modus-wc-number-input-container,
+[data-theme='modus-classic-dark']
+  modus-wc-number-input
+  .modus-wc-number-input-container {
   .modus-wc-input-currency {
     background-color: var(--modus-wc-color-base-100);
     border: var(--modus-wc-border-width-xs) solid transparent;

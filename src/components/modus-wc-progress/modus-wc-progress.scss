@@ -3,29 +3,42 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-progress-container {
+modus-wc-progress.modus-wc-progress-container {
   position: relative;
+
+  .modus-wc-progress-label {
+    display: flex;
+    font-size: var(--modus-wc-font-size-sm);
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  .modus-wc-radial-progress-label {
+    font-size: var(--modus-wc-font-size-md);
+    margin: 0 var(--modus-wc-spacing-lg);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .modus-wc-radial-progress {
+    color: var(--modus-wc-color-trimble-blue);
+
+    &.modus-wc-radial-progress--indeterminate {
+      --value: var(--_value) !important;
+
+      animation-duration: 5s;
+      animation-iteration-count: infinite;
+      animation-name: grow;
+      animation-timing-function: ease-in-out;
+    }
+  }
 }
 
-.modus-wc-progress-label {
-  display: flex;
-  font-size: var(--modus-wc-font-size-sm);
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
-
-.modus-wc-radial-progress-label {
-  font-size: var(--modus-wc-font-size-md);
-  margin: 0 var(--modus-wc-spacing-lg);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-[data-theme='modus-classic-light'] .modus-wc-progress,
-[data-theme='modus-classic-dark'] .modus-wc-progress {
+[data-theme='modus-classic-light'] modus-wc-progress .modus-wc-progress,
+[data-theme='modus-classic-dark'] modus-wc-progress .modus-wc-progress {
   appearance: none;
   background-color: transparent;
   border: 1px solid var(--modus-wc-color-gray-6);
@@ -43,14 +56,18 @@
   &::-moz-progress-bar {
     border-radius: var(--modus-wc-border-radius-sm);
   }
+
+  .modus-wc-progress-label {
+    color: var(--modus-wc-color-white);
+  }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-progress-label,
-[data-theme='modus-classic-dark'] .modus-wc-progress-label {
-  color: var(--modus-wc-color-white);
-}
+//[data-theme='modus-classic-light'] .modus-wc-progress-label,
+//[data-theme='modus-classic-dark'] .modus-wc-progress-label {
+//  color: var(--modus-wc-color-white);
+//}
 
-[data-theme='modus-classic-light'] .modus-wc-progress {
+[data-theme='modus-classic-light'] modus-wc-progress .modus-wc-progress {
   &::-webkit-progress-value {
     background-color: var(--modus-wc-color-trimble-blue);
   }
@@ -66,7 +83,7 @@
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-progress {
+[data-theme='modus-classic-dark'] modus-wc-progress .modus-wc-progress {
   &::-webkit-progress-value {
     background-color: var(--modus-wc-color-highlight-blue);
   }
@@ -82,21 +99,8 @@
   }
 }
 
-.modus-wc-radial-progress {
-  color: var(--modus-wc-color-trimble-blue);
-
-  &.modus-wc-radial-progress--indeterminate {
-    --value: var(--_value) !important;
-
-    animation-duration: 5s;
-    animation-iteration-count: infinite;
-    animation-name: grow;
-    animation-timing-function: ease-in-out;
-  }
-}
-
-[data-theme='modus-classic-dark'] .modus-wc-radial-progress,
-[data-theme='modus-modern-dark'] .modus-wc-radial-progress {
+[data-theme='modus-classic-dark'] modus-wc-progress .modus-wc-radial-progress,
+[data-theme='modus-modern-dark'] modus-wc-progress .modus-wc-radial-progress {
   color: var(--modus-wc-color-highlight-blue);
 }
 
