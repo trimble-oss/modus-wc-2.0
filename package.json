@@ -88,8 +88,7 @@
     "wireit": "^0.14.9"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.9.5",
-    "@esbuild/darwin-arm64": "^0.25.2"
+    "@rollup/rollup-linux-x64-gnu": "4.9.5"
   },
   "wireit": {
     "build": {
