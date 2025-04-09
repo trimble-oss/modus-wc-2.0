@@ -7,8 +7,8 @@
   @include feedback-levels;
 }
 
-[data-theme='modus-classic-light'] .modus-wc-select,
-[data-theme='modus-classic-dark'] .modus-wc-select {
+[data-theme='modus-classic-light'] modus-wc-select .modus-wc-select,
+[data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select {
   border-radius: var(--modus-wc-border-radius-md);
 
   .modus-wc-input-label {
@@ -46,12 +46,12 @@
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-select {
+[data-theme='modus-classic-light'] modus-wc-select .modus-wc-select {
   &.modus-wc-select-bordered:not(:disabled):not(:focus) {
     border-color: var(--modus-wc-color-gray-6);
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-select:focus {
+[data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select:focus {
   border-color: var(--modus-wc-color-highlight-blue);
 }

@@ -23,8 +23,7 @@ modus-wc-chip .modus-wc-chip {
 
       height: var(--modus-wc-spacing-xl);
       min-height: var(--modus-wc-spacing-xl);
-      // Using important due to the button's high specificity
-      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-md) !important;
+      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-md);
 
       .modus-wc-avatar {
         height: var(--modus-wc-spacing-lg);
@@ -42,8 +41,7 @@ modus-wc-chip .modus-wc-chip {
 
       height: var(--modus-wc-spacing-2xl);
       min-height: var(--modus-wc-spacing-2xl);
-      // Using important due to the button's high specificity
-      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md) !important;
+      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
 
       .modus-wc-avatar {
         height: var(--modus-wc-spacing-lg);
@@ -61,8 +59,7 @@ modus-wc-chip .modus-wc-chip {
 
       height: var(--modus-wc-spacing-3xl);
       min-height: var(--modus-wc-spacing-3xl);
-      // Using important due to the button's high specificity
-      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg) !important;
+      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
 
       .modus-wc-avatar {
         height: var(--modus-wc-spacing-xl);
@@ -105,7 +102,7 @@ modus-wc-chip .modus-wc-chip {
 
     &.modus-wc-chip--outline {
       background-color: transparent;
-      border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-4);
+      border-color: var(--modus-wc-color-gray-4);
     }
 
     &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {

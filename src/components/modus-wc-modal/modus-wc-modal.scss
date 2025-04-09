@@ -1,4 +1,4 @@
-.modus-wc-modal {
+modus-wc-modal .modus-wc-modal {
   .modus-wc-modal-box {
     display: flex;
     flex-direction: column;
@@ -29,11 +29,11 @@
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-modal-box,
-[data-theme='modus-classic-light'] .modus-wc-modal-box {
+[data-theme='modus-classic-dark'] modus-wc-modal .modus-wc-modal-box,
+[data-theme='modus-classic-light'] modus-wc-modal .modus-wc-modal-box {
   --rounded-box: var(--modus-wc-border-radius-lg);
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-modal-box {
+[data-theme='modus-classic-dark'] modus-wc-modal .modus-wc-modal-box {
   background-color: var(--modus-wc-color-gray-9);
 }

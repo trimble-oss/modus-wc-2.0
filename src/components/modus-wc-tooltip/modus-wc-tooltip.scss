@@ -3,21 +3,23 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-[data-theme='modus-classic-light'] .modus-wc-tooltip {
+[data-theme='modus-classic-light'] modus-wc-tooltip .modus-wc-tooltip {
   --tooltip-color: var(--modus-wc-color-gray-7);
   --tooltip-text-color: var(--modus-wc-color-white);
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-tooltip {
+[data-theme='modus-classic-dark'] modus-wc-tooltip .modus-wc-tooltip {
   --tooltip-color: var(--modus-wc-color-gray-0);
   --tooltip-text-color: var(--modus-wc-color-trimble-gray);
 }
 
-.modus-wc-tooltip-disabled {
-  &::before,
-  &::after {
-    display: none;
-    opacity: 0;
-    visibility: hidden;
+modus-wc-tooltip {
+  .modus-wc-tooltip-disabled {
+    &::before,
+    &::after {
+      display: none;
+      opacity: 0;
+      visibility: hidden;
+    }
   }
 }

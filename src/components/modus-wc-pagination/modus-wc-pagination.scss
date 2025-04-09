@@ -4,7 +4,7 @@
 */
 
 // Defaults
-.modus-wc-pagination {
+modus-wc-pagination .modus-wc-pagination {
   .modus-wc-pagination-btn {
     &.modus-wc-btn-sm {
       .modus-wc-pagination-icon {
@@ -29,8 +29,8 @@
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-pagination,
-[data-theme='modus-classic-light'] .modus-wc-pagination {
+[data-theme='modus-classic-dark'] modus-wc-pagination .modus-wc-pagination,
+[data-theme='modus-classic-light'] modus-wc-pagination .modus-wc-pagination {
   .modus-wc-pagination-btn {
     background-color: transparent;
     border: none;
@@ -61,7 +61,7 @@
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-pagination {
+[data-theme='modus-classic-light'] modus-wc-pagination .modus-wc-pagination {
   .modus-wc-pagination-btn:not(:disabled) {
     color: var(--modus-wc-color-trimble-gray);
 
@@ -76,7 +76,7 @@
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-pagination {
+[data-theme='modus-classic-dark'] modus-wc-pagination .modus-wc-pagination {
   .modus-wc-pagination-btn:not(:disabled) {
     color: var(--modus-wc-color-gray-2);
 
