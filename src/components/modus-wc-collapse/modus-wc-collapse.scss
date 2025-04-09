@@ -22,15 +22,25 @@ modus-wc-collapse .modus-wc-collapse {
     margin-inline-end: var(--modus-wc-spacing-sm);
   }
 
+  &.modus-wc-border {
+    background: var(--modus-wc-color-base-page);
+    border: 1px solid var(--modus-wc-color-base-200);
+    border-radius: var(--modus-wc-border-radius-box);
+  }
+
   &.modus-wc-collapse-arrow.modus-wc-collapse-open {
     .modus-wc-collapse-content {
       padding: var(--modus-wc-spacing-lg);
+    }
+
+    .modus-wc-collapse-title {
+      background-color: var(--modus-wc-color-base-200);
     }
   }
 
   &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-collapse-open {
     .modus-wc-collapse-title {
-      background-color: var(--modus-wc-color-base-200);
+      background-color: var(--modus-wc-color-base-100);
     }
   }
 }

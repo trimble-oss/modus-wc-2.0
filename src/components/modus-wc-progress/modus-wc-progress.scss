@@ -66,11 +66,6 @@ modus-wc-progress.modus-wc-progress-container {
   }
 }
 
-//[data-theme='modus-classic-light'] .modus-wc-progress-label,
-//[data-theme='modus-classic-dark'] .modus-wc-progress-label {
-//  color: var(--modus-wc-color-white);
-//}
-
 [data-theme='modus-classic-light'] modus-wc-progress .modus-wc-progress {
   &::-webkit-progress-value {
     background-color: var(--modus-wc-color-trimble-blue);

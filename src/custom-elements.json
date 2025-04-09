@@ -249,6 +249,18 @@
             },
             {
               "kind": "method",
+              "name": "handleKeyDown",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "handleMenuVisibilityChange"
             },
             {
@@ -2149,6 +2161,14 @@
               "name": "disabled",
               "fieldName": "disabled",
               "description": "The disabled state of the menu item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "focused",
+              "fieldName": "focused",
+              "description": "The focused state of the menu item.",
               "type": {
                 "text": "boolean"
               }

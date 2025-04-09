@@ -37,8 +37,11 @@ body {
   background-color: var(--modus-wc-color-base-page);
 }
 
-div.modus-wc-border {
-  border: 1px solid var(--modus-wc-color-base-200);
+.modus-wc-border {
+  border-color: var(--modus-wc-color-base-200);
+  border-radius: 1px;
+  border-style: solid;
+
 }
 
 modus-wc-text-input,
