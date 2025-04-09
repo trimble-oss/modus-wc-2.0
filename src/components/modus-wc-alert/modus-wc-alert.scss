@@ -48,8 +48,8 @@
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-alert,
-[data-theme='modus-classic-dark'] .modus-wc-alert {
+[data-theme='modus-classic-light'] modus-wc-alert .modus-wc-alert,
+[data-theme='modus-classic-dark'] modus-wc-alert .modus-wc-alert {
   border-left-width: 12px;
   border-radius: var(--modus-wc-border-radius-md);
 }

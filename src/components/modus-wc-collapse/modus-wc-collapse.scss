@@ -42,8 +42,8 @@ modus-wc-accordion .modus-wc-collapse {
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-collapse,
-[data-theme='modus-classic-dark'] .modus-wc-collapse {
+[data-theme='modus-classic-light'] modus-wc-collapse .modus-wc-collapse,
+[data-theme='modus-classic-dark'] modus-wc-collapse .modus-wc-collapse {
   margin-bottom: 0;
   border-radius: 0;
   margin-bottom: -1px;
@@ -70,7 +70,7 @@ modus-wc-accordion .modus-wc-collapse {
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-collapse {
+[data-theme='modus-classic-dark'] modus-wc-collapse .modus-wc-collapse {
   &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-collapse-open {
     border-left: var(--modus-wc-spacing-xs) solid
       var(--modus-wc-color-highlight-blue);

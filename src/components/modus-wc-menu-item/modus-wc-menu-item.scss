@@ -3,7 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-li.modus-wc-menu-item {
+modus-wc-menu-item .modus-wc-menu-item {
   .modus-wc-menu-item-selected-icon {
     display: none;
   }
@@ -112,7 +112,7 @@ li.modus-wc-menu-item.modus-wc-menu-item-selected > button:focus {
   color: var(--modus-wc-color-base-content);
 }
 
-[data-theme='modus-classic-light'] li.modus-wc-menu-item {
+[data-theme='modus-classic-light'] modus-wc-menu-item .modus-wc-menu-item {
   &.modus-wc-menu-item-disabled {
     color: var(--modus-wc-color-gray-2);
   }

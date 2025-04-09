@@ -8,8 +8,8 @@
   color: var(--modus-wc-color-base-content);
 }
 
-[data-theme='modus-classic-light'] .modus-wc-card,
-[data-theme='modus-classic-dark'] .modus-wc-card {
+[data-theme='modus-classic-light'] modus-wc-card .modus-wc-card,
+[data-theme='modus-classic-dark'] modus-wc-card .modus-wc-card {
   --rounded-box: 0.5rem;
 
   box-shadow: 0 0 2px 0 rgba(54, 53, 69, 0.3);
@@ -23,7 +23,7 @@
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-card {
+[data-theme='modus-classic-light'] modus-wc-card .modus-wc-card {
   background-color: var(--modus-wc-color-white);
   color: var(--modus-wc-color-trimble-gray);
   .modus-wc-card-title {
