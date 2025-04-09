@@ -15,16 +15,17 @@ modus-wc-progress.modus-wc-progress-container {
     width: 100%;
   }
 
-.modus-wc-radial-progress-label {
-  font-size: var(--modus-wc-font-size-md);
-  margin: 0 var(--modus-wc-spacing-lg);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.modus-wc-progress {
-  color: var(--modus-wc-color-primary);
-}
+  .modus-wc-radial-progress-label {
+    font-size: var(--modus-wc-font-size-md);
+    margin: 0 var(--modus-wc-spacing-lg);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .modus-wc-progress {
+    color: var(--modus-wc-color-primary);
+  }
 
   .modus-wc-radial-progress {
     color: var(--modus-wc-color-trimble-blue);

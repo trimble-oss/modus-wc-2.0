@@ -56,7 +56,7 @@ export class ModusWcCollapse {
   @Element() el!: HTMLElement;
 
   /** Indicates that the component should have a border. */
-  @Prop() bordered?: boolean = true;
+  @Prop() bordered?: boolean = false;
 
   /** Custom CSS class to apply to the outer div. */
   @Prop() customClass?: string = '';

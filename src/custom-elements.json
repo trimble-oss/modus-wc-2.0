@@ -1336,7 +1336,7 @@
             {
               "name": "bordered",
               "fieldName": "bordered",
-              "default": "true",
+              "default": "false",
               "description": "Indicates that the component should have a border.",
               "type": {
                 "text": "boolean"

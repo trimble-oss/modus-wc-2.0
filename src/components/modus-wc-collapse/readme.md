@@ -18,7 +18,7 @@ Adheres to WCAG 2.2 standards.
 
 | Property      | Attribute      | Description                                                                                                                           | Type                            | Default     |
 | ------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ----------- |
-| `bordered`    | `bordered`     | Indicates that the component should have a border.                                                                                    | `boolean \| undefined`          | `true`      |
+| `bordered`    | `bordered`     | Indicates that the component should have a border.                                                                                    | `boolean \| undefined`          | `false`     |
 | `collapseId`  | `collapse-id`  | A unique identifier used to set the id attributes of various elements.                                                                | `string \| undefined`           | `undefined` |
 | `customClass` | `custom-class` | Custom CSS class to apply to the outer div.                                                                                           | `string \| undefined`           | `''`        |
 | `expanded`    | `expanded`     | Controls whether the collapse is expanded or not.                                                                                     | `boolean \| undefined`          | `false`     |
