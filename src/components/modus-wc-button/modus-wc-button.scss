@@ -3,12 +3,12 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-btn .modus-wc-btn {
+modus-wc-button.modus-wc-btn {
   --fallback-sc: var(--modus-wc-color-neutral);
 }
 
-[data-theme='modus-classic-light'] modus-wc-btn .modus-wc-btn,
-[data-theme='modus-classic-dark'] modus-wc-btn .modus-wc-btn {
+[data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn,
+[data-theme='modus-classic-dark'] modus-wc-button .modus-wc-btn {
   --rounded-btn: var(--modus-wc-border-radius-md);
 
   border: none;
