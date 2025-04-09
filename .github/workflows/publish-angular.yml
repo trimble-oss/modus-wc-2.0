@@ -44,7 +44,7 @@ jobs:
             integrations/angular/ng${{ matrix.angular-version }}/package-lock.json
             integrations/angular/ng${{ matrix.angular-version }}/projects/trimble-cms/modus-wc-angular/package-lock.json
 
-      - uses: google/wireit@setup-github-actions-caching/v2
+      # - uses: google/wireit@setup-github-actions-caching/v2
 
       - name: Install Web Component dependencies
         run: npm ci

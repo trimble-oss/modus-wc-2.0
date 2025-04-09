@@ -1,9 +1,9 @@
-.modus-wc-input-label-host {
+modus-wc-input-label.modus-wc-input-label-host {
   align-items: center;
   display: flex;
 }
 
-.modus-wc-input-label {
+modus-wc-input-label .modus-wc-input-label {
   font-weight: var(--modus-wc-font-weight-bold);
 
   // Sizes
@@ -36,10 +36,10 @@
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-input-label {
+[data-theme='modus-classic-light'] modus-wc-input-label .modus-wc-input-label {
   color: var(--modus-wc-color-gray-8);
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-input-label {
+[data-theme='modus-classic-dark'] modus-wc-input-label .modus-wc-input-label {
   color: var(--modus-wc-color-gray-2);
 }

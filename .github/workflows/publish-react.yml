@@ -40,7 +40,7 @@ jobs:
           node-version: ${{ vars.NODE_VERSION }}
           cache: 'npm'
 
-      - uses: google/wireit@setup-github-actions-caching/v2
+      # - uses: google/wireit@setup-github-actions-caching/v2
 
       - name: Install Web Component dependencies
         run: npm ci
