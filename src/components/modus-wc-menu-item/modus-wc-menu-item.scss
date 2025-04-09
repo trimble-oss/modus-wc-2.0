@@ -43,6 +43,17 @@ modus-wc-menu-item .modus-wc-menu-item {
       border-radius: inherit;
       color: var(--modus-wc-color-primary-content);
     }
+
+    &:where(
+        .modus-wc-menu
+          li:not(
+            .modus-wc-menu-title,
+            .modus-wc-disabled .modus-wc-menu-item-selected
+          )
+          > :not(ul, details, .modus-wc-menu-title)
+      ):not(summary, .modus-wc-active, .modus-wc-btn):focus {
+      color: var(--modus-wc-color-primary);
+    }
   }
 
   &.modus-wc-menu-item-bordered {
@@ -96,19 +107,7 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 }
 
-li.modus-wc-menu-item
-  button:where(
-    .modus-wc-menu
-      li:not(
-        .modus-wc-menu-title,
-        .modus-wc-disabled .modus-wc-menu-item-selected
-      )
-      > :not(ul, details, .modus-wc-menu-title)
-  ):not(summary, .modus-wc-active, .modus-wc-btn):focus {
-  color: var(--modus-wc-color-primary);
-}
-
-li.modus-wc-menu-item.modus-wc-menu-item-selected > button:focus {
+modus-wc-menu-item .modus-wc-menu-item.modus-wc-menu-item-selected > button:focus {
   color: var(--modus-wc-color-base-content);
 }
 
