@@ -10,19 +10,19 @@ exports[`modus-wc-accordion should render with collapse elements 1`] = `
         <!---->
         <modus-wc-collapse collapse-id="123" hidden="" options="{options[2]}">
           <!---->
-          <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close">
+          <div class="modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close">
             <input aria-controls="123-content" aria-labelledby="123-title" class="modus-wc-cursor-pointer modus-wc-min-h-4" id="123-checkbox" type="checkbox">
             <div class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4" id="123-title"></div>
             <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content"></div>
           </div>
         </modus-wc-collapse>
-        <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close">
+        <div class="modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close">
           <input aria-controls="123-content" aria-labelledby="123-title" class="modus-wc-cursor-pointer modus-wc-min-h-4" id="123-checkbox" type="checkbox">
           <div class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4" id="123-title"></div>
           <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content"></div>
         </div>
       </modus-wc-collapse>
-      <div class="modus-wc-border modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close">
+      <div class="modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close">
         <input aria-controls="123-content" aria-labelledby="123-title" class="modus-wc-cursor-pointer modus-wc-min-h-4" id="123-checkbox" type="checkbox">
         <div class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4" id="123-title"></div>
         <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content"></div>
