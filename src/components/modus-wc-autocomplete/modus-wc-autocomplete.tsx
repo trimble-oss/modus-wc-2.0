@@ -370,23 +370,15 @@ export class ModusWcAutocomplete {
         ) : (
           <Fragment>{getInput()}</Fragment>
         )}
-        {
-          <modus-wc-menu
-            aria-label="Autocomplete menu"
-            bordered={this.bordered}
-            class={
-              this.leaveMenuOpen
-                ? 'menu-visible'
-                : this.menuVisible
-                  ? 'menu-visible'
-                  : 'menu-hidden'
-            }
-            size={this.size}
-          >
-            {getMenuItems()}
-            <slot name="menu-items"></slot>
-          </modus-wc-menu>
-        }
+        <modus-wc-menu
+          aria-label="Autocomplete menu"
+          bordered={this.bordered}
+          class={this.menuVisible ? 'menu-visible' : ' menu-hidden'}
+          size={this.size}
+        >
+          {getMenuItems()}
+          <slot name="menu-items"></slot>
+        </modus-wc-menu>
       </Host>
     );
   }
