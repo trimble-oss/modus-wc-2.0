@@ -33,6 +33,19 @@ Adheres to WCAG 2.2 standards.
 | `chipRemove` | Event emitted when the close chip icon button is clicked.         | `CustomEvent<KeyboardEvent \| MouseEvent>` |
 
 
+## Dependencies
+
+### Used by
+
+ - [modus-wc-autocomplete](../modus-wc-autocomplete)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-autocomplete --> modus-wc-chip
+  style modus-wc-chip fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

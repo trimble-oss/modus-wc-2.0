@@ -9,6 +9,32 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 
   button {
+    display: flex;
+
+    /* Enforce Tailwind CSS reset */
+    width: 100%;
+
+    .modus-wc-menu-item-content {
+      display: flex;
+      width: 100%;
+
+      .modus-wc-menu-item-start-icon {
+        padding-inline-end: var(--modus-wc-spacing-lg);
+      }
+
+      .modus-wc-menu-item-labels {
+        padding-inline-end: var(--modus-wc-spacing-md);
+      }
+
+      .modus-wc-menu-item-sublabel {
+        font-size: var(--modus-wc-font-size-sm);
+      }
+
+      .modus-wc-menu-item-selected-icon {
+        margin-left: auto;
+      }
+    }
+
     &:where(
         .modus-wc-menu
           li:not(.modus-wc-menu-title, .modus-wc-disabled)
@@ -17,10 +43,6 @@ modus-wc-menu-item .modus-wc-menu-item {
       border-radius: inherit;
       color: var(--modus-wc-color-primary-content);
     }
-  }
-
-  &.modus-wc-menu-item-focused {
-    background-color: var(--modus-wc-color-gray-0);
   }
 
   &.modus-wc-menu-item-bordered {
@@ -72,34 +94,6 @@ modus-wc-menu-item .modus-wc-menu-item {
       }
     }
   }
-
-  button {
-    display: flex;
-
-    /* Enforce Tailwind CSS reset */
-    width: 100%;
-
-    .modus-wc-menu-item-content {
-      display: flex;
-      width: 100%;
-
-      .modus-wc-menu-item-start-icon {
-        padding-inline-end: var(--modus-wc-spacing-lg);
-      }
-
-      .modus-wc-menu-item-labels {
-        padding-inline-end: var(--modus-wc-spacing-md);
-      }
-
-      .modus-wc-menu-item-sublabel {
-        font-size: var(--modus-wc-font-size-sm);
-      }
-
-      .modus-wc-menu-item-selected-icon {
-        margin-left: auto;
-      }
-    }
-  }
 }
 
 li.modus-wc-menu-item
@@ -125,6 +119,7 @@ li.modus-wc-menu-item.modus-wc-menu-item-selected > button:focus {
 
   &.modus-wc-menu-item-selected {
     background-color: var(--modus-wc-color-blue-pale);
+    color: var(--modus-wc-color-gray-10);
   }
 
   &:hover {
@@ -138,11 +133,6 @@ li.modus-wc-menu-item.modus-wc-menu-item-selected > button:focus {
   &.modus-wc-menu-item-bordered {
     border-bottom: 1px solid var(--modus-wc-color-gray-9);
     border-top: 1px solid var(--modus-wc-color-gray-9);
-  }
-
-  &.modus-wc-menu-item-selected {
-    background-color: var(--modus-wc-color-blue-pale);
-    color: var(--modus-wc-color-gray-10);
   }
 }
 
