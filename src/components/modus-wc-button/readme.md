@@ -38,13 +38,11 @@ Adheres to WCAG 2.2 standards.
 ### Used by
 
  - [modus-wc-alert](../modus-wc-alert)
- - [modus-wc-autocomplete](../modus-wc-autocomplete)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-alert --> modus-wc-button
-  modus-wc-autocomplete --> modus-wc-button
   style modus-wc-button fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -18,6 +18,7 @@ Adheres to WCAG 2.2 standards.
 | `bordered`    | `bordered`     |                                                              | `boolean \| undefined`              | `undefined` |
 | `customClass` | `custom-class` | Custom CSS class to apply to the li element.                 | `string \| undefined`               | `''`        |
 | `disabled`    | `disabled`     | The disabled state of the menu item.                         | `boolean \| undefined`              | `undefined` |
+| `focused`     | `focused`      | The focused state of the menu item.                          | `boolean \| undefined`              | `undefined` |
 | `label`       | `label`        | The text rendered in the menu item.                          | `string`                            | `''`        |
 | `selected`    | `selected`     | The selected state of the menu item.                         | `boolean \| undefined`              | `undefined` |
 | `size`        | `size`         | The size of the menu item.                                   | `"lg" \| "md" \| "sm" \| undefined` | `'md'`      |

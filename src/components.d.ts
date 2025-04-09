@@ -660,6 +660,10 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * The focused state of the menu item.
+         */
+        "focused"?: boolean;
+        /**
           * The text rendered in the menu item.
          */
         "label": string;
@@ -3108,6 +3112,10 @@ declare namespace LocalJSX {
           * The disabled state of the menu item.
          */
         "disabled"?: boolean;
+        /**
+          * The focused state of the menu item.
+         */
+        "focused"?: boolean;
         /**
           * The text rendered in the menu item.
          */
