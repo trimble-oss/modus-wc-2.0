@@ -2,6 +2,7 @@ import {
   Component,
   Element,
   EventEmitter,
+  Fragment,
   h,
   Host,
   Prop,
@@ -181,28 +182,30 @@ export class ModusWcCollapse {
             onKeyDown={this.handleKeyDown}
             type="checkbox"
           />
-          {this.options ? (
-            <div class={this.getTitleDivClasses()} id={titleId}>
-              <div class={this.getTitleChildDivClasses()}>
-                {this.options.icon && (
-                  <modus-wc-icon
-                    aria-label={this.options.iconAriaLabel}
-                    decorative={true}
-                    name={this.options.icon}
-                    size={this.options.size}
-                  ></modus-wc-icon>
-                )}
-                {this.options.title}
-              </div>
-              {this.options.description && (
-                <div class={this.getDescriptionDivClasses()}>
-                  {this.options.description}
+          <div class={this.getTitleDivClasses()} id={titleId}>
+            {this.options ? (
+              <Fragment>
+                <div class={this.getTitleChildDivClasses()}>
+                  {this.options.icon && (
+                    <modus-wc-icon
+                      aria-label={this.options.iconAriaLabel}
+                      decorative={true}
+                      name={this.options.icon}
+                      size={this.options.size}
+                    ></modus-wc-icon>
+                  )}
+                  {this.options.title}
                 </div>
-              )}
-            </div>
-          ) : (
-            <slot name="header" />
-          )}
+                {this.options.description && (
+                  <div class={this.getDescriptionDivClasses()}>
+                    {this.options.description}
+                  </div>
+                )}
+              </Fragment>
+            ) : (
+              <slot name="header" />
+            )}
+          </div>
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
           <div
             aria-labelledby={titleId}

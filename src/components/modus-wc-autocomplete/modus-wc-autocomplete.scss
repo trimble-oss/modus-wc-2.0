@@ -3,11 +3,16 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-autocomplete {
+modus-wc-autocomplete.modus-wc-autocomplete {
   position: relative;
 
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-2xs);
+  }
+
+  modus-wc-loader {
+    justify-content: center;
+    display: flex;
   }
 
   .modus-wc-input-bordered {
@@ -61,8 +66,8 @@
     padding: var(--modus-wc-spacing-md);
 
     .icon-label {
-      display: flex;
       align-items: center;
+      display: flex;
       justify-content: center;
 
       i {
@@ -77,15 +82,15 @@
     }
 
     .sub-label {
-      font-size: var(--modus-wc-font-size-sm);
       color: var(--modus-wc-color-gray-7);
+      font-size: var(--modus-wc-font-size-sm);
       text-align: center;
     }
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-autocomplete,
-[data-theme='modus-classic-dark'] .modus-wc-autocomplete {
+[data-theme='modus-classic-light'] modus-wc-autocomplete.modus-wc-autocomplete,
+[data-theme='modus-classic-dark'] modus-wc-autocomplete.modus-wc-autocomplete {
   .modus-wc-autocomplete-multi-select--bordered {
     border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-6);
 
@@ -121,7 +126,7 @@
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-autocomplete {
+[data-theme='modus-classic-light'] modus-wc-autocomplete.modus-wc-autocomplete {
   .modus-wc-autocomplete-multi-select--disabled,
   .modus-wc-input-disabled,
   .modus-wc-autocomplete-multi-select--readonly,
@@ -131,7 +136,7 @@
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-autocomplete {
+[data-theme='modus-classic-dark'] modus-wc-autocomplete.modus-wc-autocomplete {
   .modus-wc-autocomplete-no-results {
     .sub-label {
       color: var(--modus-wc-color-white);

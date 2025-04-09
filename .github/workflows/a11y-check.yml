@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: ${{ vars.NODE_VERSION }}
 
-      - uses: google/wireit@setup-github-actions-caching/v2
+      # - uses: google/wireit@setup-github-actions-caching/v2
 
       - name: Install dependencies
         run: npm ci
@@ -39,10 +39,10 @@ jobs:
             try {
               const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
               const page = await browser.newPage();
-              
+
               const componentsDir = './dist/components';
               const files = fs.readdirSync(componentsDir);
-              
+
               let hasViolations = false;
 
               // Configure axe-core to disable specific rules
@@ -65,12 +65,12 @@ jobs:
                   const filePath = 'file://' + path.resolve(componentsDir, file);
                   console.log(\`Checking file: \${file}\`);
                   await page.goto(filePath);
-                  
+
                   await page.evaluate(axeCore.source);
                   const results = await page.evaluate((config) => {
                     return axe.run(document, config);
                   }, axeConfig);
-                  
+
                   if (results.violations.length > 0) {
                     console.error(\`Accessibility violations found in \${file}:\`);
                     console.error(JSON.stringify(results.violations, null, 2));

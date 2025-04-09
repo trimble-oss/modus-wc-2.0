@@ -54,7 +54,7 @@
   border-radius: var(--modus-wc-border-radius-md);
 }
 
-[data-theme='modus-classic-light'] .modus-wc-alert {
+[data-theme='modus-classic-light'] modus-wc-alert .modus-wc-alert {
   color: var(--modus-wc-color-trimble-gray);
 
   &.modus-wc-alert-info {
@@ -78,7 +78,7 @@
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-alert {
+[data-theme='modus-classic-dark'] modus-wc-alert .modus-wc-alert {
   &.modus-wc-alert-info {
     background-color: color-mix(
       in sRGB,

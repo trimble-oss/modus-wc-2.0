@@ -3,12 +3,14 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-tab modus-wc-icon + span,
-.modus-wc-tab span + modus-wc-icon {
-  padding-inline-start: var(--modus-wc-spacing-xs);
+modus-wc-tabs {
+  .modus-wc-tab modus-wc-icon + span,
+  .modus-wc-tab span + modus-wc-icon {
+    padding-inline-start: var(--modus-wc-spacing-xs);
+  }
 }
 
-.modus-wc-tab {
+modus-wc-tabs .modus-wc-tab {
   align-items: center;
   border-top-left-radius: var(--modus-wc-border-radius-md);
   border-top-right-radius: var(--modus-wc-border-radius-md);
@@ -63,7 +65,7 @@
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-tab {
+[data-theme='modus-classic-light'] modus-wc-tabs .modus-wc-tab {
   --tab-color: var(--modus-wc-color-trimble-gray);
   --tab-bg: var(--modus-wc-color-white);
   --fallback-bc: var(--modus-wc-color-gray-2);
@@ -91,7 +93,7 @@
   }
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-tab {
+[data-theme='modus-classic-dark'] modus-wc-tabs .modus-wc-tab {
   --tab-color: var(--modus-wc-color-white);
   --tab-bg: var(--modus-wc-color-gray-8);
   --fallback-bc: var(--modus-wc-color-gray-8);

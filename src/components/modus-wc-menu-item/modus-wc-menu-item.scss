@@ -135,7 +135,7 @@ li.modus-wc-menu-item.modus-wc-menu-item-selected > button:focus {
   }
 }
 
-[data-theme='modus-classic-dark'] li.modus-wc-menu-item {
+[data-theme='modus-classic-dark'] modus-wc-menu-item .modus-wc-menu-item {
   &.modus-wc-menu-item-disabled {
     color: var(--modus-wc-color-gray-6);
   }

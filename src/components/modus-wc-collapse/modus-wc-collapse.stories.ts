@@ -68,17 +68,33 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
-export const WithCustomContent = {
+export const WithCustomClickableHeader = {
   render: (args) => {
+    const handleButtonClick = () => {
+      window.alert('Button was clicked!');
+    };
+
     // prettier-ignore
     return html`
+<style>
+  .clickable-div {
+    position: relative;
+    width: fit-content;
+    z-index: 99;
+  }
+</style>
 <modus-wc-collapse
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
   ?expanded=${args.expanded}
   id="123"
 >
-  <div slot="header" class="modus-wc-collapse-title" id="123">Custom header</div>
+  <div slot="header" class="modus-wc-collapse-title" id="123">
+    <div class="clickable-div">
+      <modus-wc-button @buttonClick=${handleButtonClick}>Alert 1</modus-wc-button>
+      <modus-wc-button @buttonClick=${handleButtonClick}>Alert 2</modus-wc-button>
+    </div>
+  </div>
   <div slot="content">Collapse content</div>
 </modus-wc-collapse>
     `;
