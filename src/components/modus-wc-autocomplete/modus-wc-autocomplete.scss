@@ -62,6 +62,14 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     z-index: 99;
   }
 
+  .menu-hidden {
+    display: none;
+  }
+
+  .menu-visible {
+    display: block;
+  }
+
   .modus-wc-autocomplete-no-results {
     padding: var(--modus-wc-spacing-md);
 

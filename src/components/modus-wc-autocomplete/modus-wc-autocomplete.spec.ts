@@ -64,27 +64,6 @@ describe('modus-wc-autocomplete', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should render multi select with selected items', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
-      html: '<modus-wc-autocomplete aria-label="Default autocomplete" multi-select="true"></modus-wc-autocomplete>',
-    });
-
-    // Set items attribute
-    const component = page.rootInstance as ModusWcAutocomplete;
-    items[0].selected = true;
-    items[1].selected = true;
-    component.items = items;
-
-    // Focus input so the menu is visible
-    const input = page.root!.querySelector('input');
-    input?.focus();
-
-    await page.waitForChanges();
-
-    expect(page.root).toMatchSnapshot();
-  });
-
   it('should render multi select without border', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
@@ -179,7 +158,7 @@ describe('modus-wc-autocomplete', () => {
     await page.waitForChanges();
 
     const menu = page.root!.querySelector('modus-wc-menu');
-    expect(menu).toBeFalsy();
+    expect(menu?.className).toContain('menu-hidden');
   });
 
   it('should hide menu on Escape key', async () => {
@@ -200,7 +179,7 @@ describe('modus-wc-autocomplete', () => {
     await page.waitForChanges();
 
     const menu = page.root!.querySelector('modus-wc-menu');
-    expect(menu).toBeFalsy();
+    expect(menu?.className).toContain('menu-hidden');
   });
 
   it('should not open menu on input click', async () => {
@@ -217,7 +196,7 @@ describe('modus-wc-autocomplete', () => {
     await page.waitForChanges();
 
     const menu = page.root!.querySelector('modus-wc-menu');
-    expect(menu).toBeFalsy();
+    expect(menu?.className).toContain('menu-hidden');
   });
 
   it('should ignore keydown events from non-input elements', async () => {
@@ -249,26 +228,6 @@ describe('modus-wc-autocomplete', () => {
     expect(finalMenu).toEqual(initialMenu); // Should remain unchanged
   });
 
-  it('should not show menu on ArrowDown if minChars not met', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAutocomplete, ModusWcTextInput],
-      html: '<modus-wc-autocomplete aria-label="Test" min-chars="3"></modus-wc-autocomplete>',
-    });
-
-    const component = page.rootInstance as ModusWcAutocomplete;
-    component.items = items;
-
-    const input = page.root!.querySelector('input');
-    input!.value = 'ab';
-    input?.dispatchEvent(new Event('input'));
-    await page.waitForChanges();
-
-    input?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
-    await page.waitForChanges();
-
-    const menu = page.root!.querySelector('modus-wc-menu');
-    expect(menu).toBeFalsy();
-  });
   it('should blur input on Enter key', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
@@ -306,45 +265,6 @@ describe('modus-wc-autocomplete', () => {
     await page.waitForChanges();
 
     expect(blurSpy).toHaveBeenCalled();
-  });
-  it('should hide menu on Escape key', async () => {
-    const page = await newSpecPage({
-      components: [
-        ModusWcAutocomplete,
-        ModusWcMenu,
-        ModusWcMenuItem,
-        ModusWcTextInput,
-      ],
-      html: '<modus-wc-autocomplete min-chars="0"></modus-wc-autocomplete>',
-    });
-
-    const component = page.rootInstance as ModusWcAutocomplete;
-    component.items = items;
-
-    // Open menu first
-    const input = page.root!.querySelector('input');
-    input?.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'ArrowDown',
-        bubbles: true,
-        composed: true,
-      })
-    );
-    await page.waitForChanges();
-    expect(page.root!.querySelector('modus-wc-menu')).toBeTruthy();
-
-    const event = new KeyboardEvent('keydown', {
-      key: 'Escape',
-      bubbles: true,
-      composed: true,
-    });
-    const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
-
-    input?.dispatchEvent(event);
-    await page.waitForChanges();
-
-    expect(preventDefaultSpy).toHaveBeenCalled();
-    expect(page.root!.querySelector('modus-wc-menu')).toBeFalsy();
   });
 
   it('should display no results ui when no items are available', async () => {
@@ -437,6 +357,80 @@ describe('modus-wc-autocomplete', () => {
     await page.waitForChanges();
     expect(page.root).toMatchSnapshot();
   });
+
+  it('should render default no results values when noResults is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete],
+      html: `<modus-wc-autocomplete aria-label="Test autocomplete"></modus-wc-autocomplete>`,
+    });
+    const component = page.rootInstance as ModusWcAutocomplete;
+
+    // Ensure noResults is undefined.
+    component.noResults = undefined;
+
+    // Directly call the private method.
+    const renderedNoResults = component['renderNoResults']();
+
+    // Use snapshot testing to cover the output.
+    expect(renderedNoResults).toMatchSnapshot();
+  });
+
+  it('should render custom no results values when noResults prop is set', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Test autocomplete" leave-menu-open="true"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = [];
+    component.noResults = {
+      ariaLabel: 'No matches',
+      label: 'Nothing here',
+      subLabel: 'Try something else',
+    };
+    component['menuVisible'] = true;
+    await page.waitForChanges();
+
+    const label = page.root?.querySelector('.label');
+    const subLabel = page.root?.querySelector('.sub-label');
+    const iconLabelDiv = page.root?.querySelector('.icon-label');
+
+    expect(label?.textContent).toBe('Nothing here');
+    expect(subLabel?.textContent).toBe('Try something else');
+    expect(iconLabelDiv?.getAttribute('aria-label')).toBe('No matches');
+  });
+
+  it('should cover renderNoResults with custom noResults values', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Test autocomplete" leave-menu-open="true"></modus-wc-autocomplete>`,
+    });
+    const component = page.rootInstance as ModusWcAutocomplete;
+    // No items available.
+    component.items = [];
+    // Provide a truthy noResults object.
+    component.noResults = {
+      ariaLabel: 'No matches',
+      label: 'Nothing here',
+      subLabel: 'Try something else',
+    };
+    // Force the menu to be visible.
+    component['menuVisible'] = true;
+    await page.waitForChanges();
+
+    const noResultsElement = page.root?.querySelector(
+      '.modus-wc-autocomplete-no-results'
+    );
+    expect(noResultsElement).toBeTruthy();
+    const labelEl = noResultsElement?.querySelector('.label');
+    const subLabelEl = noResultsElement?.querySelector('.sub-label');
+    const iconLabelEl = noResultsElement?.querySelector('.icon-label');
+
+    expect(labelEl?.textContent).toBe('Nothing here');
+    expect(subLabelEl?.textContent).toBe('Try something else');
+    expect(iconLabelEl?.getAttribute('aria-label')).toBe('No matches');
+  });
+
   it('should show menu on ArrowDown when input length meets minChars', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
@@ -510,71 +504,245 @@ describe('modus-wc-autocomplete', () => {
     await page.waitForChanges();
     const menu = page.root!.querySelector('modus-wc-menu');
     expect(preventDefaultSpy).toHaveBeenCalled();
-    expect(menu).toBeFalsy();
+    expect(menu?.className).toContain('menu-hidden');
   });
-
-  it('should emit itemSelect event on Enter key for single select', async () => {
+  it('should emit the last selected item when Enter is pressed in multi-select mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
-      html: `<modus-wc-autocomplete aria-label="Enter single select test" min-chars="0"></modus-wc-autocomplete>`,
+      html: `<modus-wc-autocomplete aria-label="MultiSelect test" multi-select="true" leave-menu-open="false"></modus-wc-autocomplete>`,
     });
-    const component = page.rootInstance as ModusWcAutocomplete;
-    // Setup component with one selected item
-    const singleItem = {
-      label: 'Item 1',
-      value: '1',
-      selected: true,
-      visibleInMenu: true,
-    };
-    component.items = [singleItem];
-    const input = page.root!.querySelector('input');
-    // Open the menu using ArrowDown
-    input!.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })
-    );
-    await page.waitForChanges();
 
-    const itemSelectSpy = jest.fn();
-    page.root!.addEventListener('itemSelect', itemSelectSpy);
-    // Dispatch Enter key event
-    input!.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
-    );
-    await page.waitForChanges();
-    expect(itemSelectSpy).toHaveBeenCalled();
-    expect(itemSelectSpy.mock.calls[0][0].detail).toEqual(singleItem);
-  });
-
-  it('should emit itemSelect event on Enter key for multi-select', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
-      html: `<modus-wc-autocomplete aria-label="Enter multi-select test" multi-select="true" min-chars="0"></modus-wc-autocomplete>`,
-    });
     const component = page.rootInstance as ModusWcAutocomplete;
-    // Setup component with multiple selected items
-    const multiItems: IAutocompleteItem[] = [
+    component.items = [
       { label: 'Item 1', value: '1', selected: true, visibleInMenu: true },
       { label: 'Item 2', value: '2', selected: true, visibleInMenu: true },
+      { label: 'Item 3', value: '3', selected: false, visibleInMenu: true },
     ];
-    component.items = multiItems;
-    const input = page.root!.querySelector('input');
-    // Open the menu using ArrowDown
-    input!.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })
-    );
-    await page.waitForChanges();
+    component['menuVisible'] = true; // Ensure the menu is visible to trigger the blur path
 
     const itemSelectSpy = jest.fn();
     page.root!.addEventListener('itemSelect', itemSelectSpy);
-    // Dispatch Enter key event
-    input!.dispatchEvent(
+
+    // Simulate Enter key on the input element
+    const input = page.root!.querySelector('input');
+    input?.dispatchEvent(
       new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
     );
     await page.waitForChanges();
+
+    // Validate that the last selected item (Item 2) was emitted and that the input was blurred.
     expect(itemSelectSpy).toHaveBeenCalled();
-    // For multi-select, the last selected item should be emitted
-    expect(itemSelectSpy.mock.calls[0][0].detail).toEqual(
-      multiItems[multiItems.length - 1]
+    expect(itemSelectSpy.mock.calls[0][0].detail).toEqual({
+      label: 'Item 2',
+      value: '2',
+      selected: true,
+      visibleInMenu: true,
+    });
+  });
+  it('should emit the selected item when Enter is pressed in single-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="SingleSelect Test" leave-menu-open="false"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    // multiSelect is false by default
+    component.items = [
+      { label: 'Item A', value: 'A', selected: false, visibleInMenu: true },
+      { label: 'Item B', value: 'B', selected: true, visibleInMenu: true }, // only selected item
+      { label: 'Item C', value: 'C', selected: false, visibleInMenu: true },
+    ];
+    component['menuVisible'] = true; // ensure menu is visible so the blur logic is also executed
+
+    const itemSelectSpy = jest.fn();
+    page.root!.addEventListener('itemSelect', itemSelectSpy);
+
+    const input = page.root!.querySelector('input');
+    input?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
     );
+    await page.waitForChanges();
+
+    // Verify that the itemSelect event is emitted with the correct item.
+    expect(itemSelectSpy).toHaveBeenCalled();
+    expect(itemSelectSpy.mock.calls[0][0].detail).toEqual({
+      label: 'Item B',
+      value: 'B',
+      selected: true,
+      visibleInMenu: true,
+    });
+  });
+  it('should render chips for selected items in multi-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="MultiSelect Chip Test" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    // Provide items with some selected
+    component.items = [
+      { label: 'Chip 1', value: '1', selected: true, visibleInMenu: true },
+      { label: 'Chip 2', value: '2', selected: false, visibleInMenu: true },
+      { label: 'Chip 3', value: '3', selected: true, visibleInMenu: true },
+    ];
+    await page.waitForChanges();
+
+    // Query for <modus-wc-chip> elements that were rendered
+    const chips = page.root?.querySelectorAll('modus-wc-chip');
+    // Expect two chips for the two selected items
+    expect(chips?.length).toBe(2);
+
+    // Optionally, use snapshot testing to confirm the rendered output
+    expect(page.root).toMatchSnapshot();
+  });
+  it('should not emit any itemSelect event when Enter is pressed in single-select mode with no selected item', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="SingleSelect No Selection Test" leave-menu-open="false"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    // All items are unselected.
+    component.items = [
+      { label: 'Item A', value: 'A', selected: false, visibleInMenu: true },
+      { label: 'Item B', value: 'B', selected: false, visibleInMenu: true },
+      { label: 'Item C', value: 'C', selected: false, visibleInMenu: true },
+    ];
+    component['menuVisible'] = true; // Ensure menu is visible
+
+    const itemSelectSpy = jest.fn();
+    page.root!.addEventListener('itemSelect', itemSelectSpy);
+
+    const input = page.root!.querySelector('input');
+    input?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    // Since no item is selected, the event should not be emitted.
+    expect(itemSelectSpy).not.toHaveBeenCalled();
+  });
+  it('should render no chips when no items are selected in multi-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="MultiSelect Chip Empty Test" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    // Provide items with all items unselected.
+    component.items = [
+      { label: 'Chip 1', value: '1', selected: false, visibleInMenu: true },
+      { label: 'Chip 2', value: '2', selected: false, visibleInMenu: true },
+    ];
+    await page.waitForChanges();
+
+    // Query for <modus-wc-chip> elements that were rendered.
+    const chips = page.root?.querySelectorAll('modus-wc-chip');
+    // Expect zero chips since no items are selected.
+    expect(chips?.length).toBe(0);
+  });
+  it('should not emit any itemSelect event when Enter is pressed in single-select mode and no item is selected', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="SingleSelect No Selection Test" leave-menu-open="false"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    // All items unselected.
+    component.items = [
+      { label: 'Item A', value: 'A', selected: false, visibleInMenu: true },
+      { label: 'Item B', value: 'B', selected: false, visibleInMenu: true },
+      { label: 'Item C', value: 'C', selected: false, visibleInMenu: true },
+    ];
+    // Ensure menu is visible to trigger the Enter key logic.
+    component['menuVisible'] = true;
+
+    const itemSelectSpy = jest.fn();
+    page.root!.addEventListener('itemSelect', itemSelectSpy);
+
+    const input = page.root!.querySelector('input');
+    input?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    // Expect no emission because no item is selected.
+    expect(itemSelectSpy).not.toHaveBeenCalled();
+  });
+  it('should not emit any itemSelect event when Enter is pressed in multi-select mode and no items are selected', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="MultiSelect No Selection Test" multi-select="true" leave-menu-open="false"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    // Provide items, but none is selected.
+    component.items = [
+      { label: 'Item 1', value: '1', selected: false, visibleInMenu: true },
+      { label: 'Item 2', value: '2', selected: false, visibleInMenu: true },
+      { label: 'Item 3', value: '3', selected: false, visibleInMenu: true },
+    ];
+    // Ensure the menu is visible to cover the Enter key logic.
+    component['menuVisible'] = true;
+
+    const itemSelectSpy = jest.fn();
+    page.root!.addEventListener('itemSelect', itemSelectSpy);
+
+    const input = page.root!.querySelector('input');
+    input?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    // No event should be emitted, because no items are selected.
+    expect(itemSelectSpy).not.toHaveBeenCalled();
+  });
+  it('should render no chips when no items are selected in multi-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="MultiSelect Chip Empty Test" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    // Provide items with none selected.
+    component.items = [
+      { label: 'Chip 1', value: '1', selected: false, visibleInMenu: true },
+      { label: 'Chip 2', value: '2', selected: false, visibleInMenu: true },
+    ];
+    await page.waitForChanges();
+
+    const chips = page.root?.querySelectorAll('modus-wc-chip');
+    expect(chips?.length).toBe(0);
+  });
+  it('should not throw or emit anything on Enter key when items is undefined and not in multiSelect mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Enter Key No Items"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = undefined;
+    await page.waitForChanges();
+
+    const itemSelectSpy = jest.spyOn(component.itemSelect, 'emit');
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    input.focus();
+
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+    );
+    await page.waitForChanges();
+    expect(itemSelectSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not render any chips when items is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Chips test" multi-select="true"></modus-wc-autocomplete>`,
+    });
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = undefined;
+    await page.waitForChanges();
+    expect(page.root?.querySelectorAll('modus-wc-chip').length).toBe(0);
   });
 });

@@ -82,7 +82,7 @@ export class ModusWcAutocomplete {
    * The items to display in the menu.
    * Creating a new array of items will ensure proper component re-render.
    **/
-  @Prop() items: IAutocompleteItem[] = [];
+  @Prop() items?: IAutocompleteItem[] = [];
 
   /** The text to display within the label. */
   @Prop() label?: string;
@@ -100,7 +100,11 @@ export class ModusWcAutocomplete {
   @Prop() name?: string;
 
   /** The content to display when no results are found. */
-  @Prop() noResults?: IAutocompleteNoResults;
+  @Prop() noResults?: IAutocompleteNoResults = {
+    ariaLabel: 'No results found',
+    label: 'No results found',
+    subLabel: 'Check spelling or try a different keyword',
+  };
 
   /** Text that appears in the form control when it has no value set. */
   @Prop() placeholder?: string = '';
@@ -240,7 +244,10 @@ export class ModusWcAutocomplete {
 
       case KEY.Backspace:
         if (this.multiSelect && input.value.length === 0) {
-          const selectedItems = this.items.filter((item) => item.selected);
+          let selectedItems: IAutocompleteItem[] = [];
+          if (this.items) {
+            selectedItems = this.items.filter((item) => item.selected);
+          }
           const lastSelectedItem = selectedItems[selectedItems.length - 1];
           if (lastSelectedItem) {
             this.chipRemove.emit(lastSelectedItem);
@@ -256,13 +263,16 @@ export class ModusWcAutocomplete {
       case KEY.Enter:
         event.preventDefault();
         if (this.multiSelect) {
-          const selectedItems = this.items.filter((item) => item.selected);
+          let selectedItems: IAutocompleteItem[] = [];
+          if (this.items) {
+            selectedItems = this.items.filter((item) => item.selected);
+          }
           const lastSelectedItem = selectedItems[selectedItems.length - 1];
           if (lastSelectedItem) {
             this.itemSelect.emit(lastSelectedItem);
           }
         } else {
-          const selectedItem = this.items.find((item) => item.selected);
+          const selectedItem = this.items?.find((item) => item.selected);
           if (selectedItem) {
             this.itemSelect.emit(selectedItem);
           }
@@ -296,19 +306,13 @@ export class ModusWcAutocomplete {
   };
 
   private renderNoResults() {
-    const {
-      ariaLabel = 'No results found',
-      label = 'No results found',
-      subLabel = 'Check spelling or try a different keyword',
-    } = this.noResults || {};
-
     return (
       <div class="modus-wc-autocomplete-no-results">
-        <div class="icon-label" aria-label={ariaLabel}>
+        <div class="icon-label" aria-label={this.noResults?.ariaLabel}>
           <modus-wc-icon name="search" decorative />
-          <div class="label">{label}</div>
+          <div class="label">{this.noResults?.label}</div>
         </div>
-        <div class="sub-label">{subLabel}</div>
+        <div class="sub-label">{this.noResults?.subLabel}</div>
       </div>
     );
   }
@@ -321,7 +325,7 @@ export class ModusWcAutocomplete {
 
   render() {
     const getChips = () => {
-      const selectedItems = this.items.filter((item) => item.selected);
+      const selectedItems = this.items?.filter((item) => item.selected);
 
       // TODO - use chip component
       // TODO - add code coverage once chip component is implemented
@@ -377,11 +381,15 @@ export class ModusWcAutocomplete {
         );
       }
 
-      const menuItems = this.items.filter((item) => item.visibleInMenu);
+      const menuItems = this.items?.filter((item) => item.visibleInMenu) || [];
+      const noResults =
+        this.noResults?.label ||
+        this.noResults?.subLabel ||
+        this.noResults?.ariaLabel;
 
       return (
         <Fragment>
-          {menuItems?.length
+          {menuItems?.length > 0 || !noResults
             ? menuItems.map((item) => (
                 <modus-wc-menu-item
                   label={item.label}
@@ -415,15 +423,15 @@ export class ModusWcAutocomplete {
         ) : (
           <Fragment>{getInput()}</Fragment>
         )}
-        {this.menuVisible && (
-          <modus-wc-menu
-            aria-label="Autocomplete menu"
-            bordered={this.bordered}
-            size={this.size}
-          >
-            {getMenuItems()}
-          </modus-wc-menu>
-        )}
+        <modus-wc-menu
+          aria-label="Autocomplete menu"
+          bordered={this.bordered}
+          class={this.menuVisible ? 'menu-visible' : ' menu-hidden'}
+          size={this.size}
+        >
+          {getMenuItems()}
+          <slot name="menu-items"></slot>
+        </modus-wc-menu>
       </Host>
     );
   }
