@@ -9,7 +9,7 @@ body:
       label: Prerequisites
       description: Take a couple minutes to help our maintainers work faster.
       options:
-        - label: I have [searched](https://github.com/Trimble-Construction/modus-wc-2.0/issues?q=is%3Aissue) for duplicate or closed feature requests
+        - label: I have [searched](https://github.com/trimble-oss/modus-wc-2.0/issues?q=is%3Aissue) for duplicate or closed feature requests
           required: true
         - label: I have read the [Modus style guidelines](https://modus.trimble.com/components/web/introduction/)
           required: true
