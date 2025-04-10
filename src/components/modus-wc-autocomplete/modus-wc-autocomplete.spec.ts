@@ -714,4 +714,35 @@ describe('modus-wc-autocomplete', () => {
     const chips = page.root?.querySelectorAll('modus-wc-chip');
     expect(chips?.length).toBe(0);
   });
+  it('should not throw or emit anything on Enter key when items is undefined and not in multiSelect mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Enter Key No Items"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = undefined;
+    await page.waitForChanges();
+
+    const itemSelectSpy = jest.spyOn(component.itemSelect, 'emit');
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    input.focus();
+
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+    );
+    await page.waitForChanges();
+    expect(itemSelectSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not render any chips when items is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Chips test" multi-select="true"></modus-wc-autocomplete>`,
+    });
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = undefined;
+    await page.waitForChanges();
+    expect(page.root?.querySelectorAll('modus-wc-chip').length).toBe(0);
+  });
 });
