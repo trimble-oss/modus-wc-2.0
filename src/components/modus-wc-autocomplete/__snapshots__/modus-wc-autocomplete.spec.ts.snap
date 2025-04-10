@@ -27,7 +27,7 @@ exports[`modus-wc-autocomplete should display no results ui when no items are av
       <input aria-label="No results test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu aria-label="Autocomplete menu" bordered="" class="menu-visible" size="md">
+  <modus-wc-menu aria-label="Autocomplete menu" bordered="" class="menu-hidden" size="md">
     <div class="modus-wc-autocomplete-no-results">
       <div aria-label="No results found" class="icon-label">
         <modus-wc-icon decorative="" name="search"></modus-wc-icon>
@@ -177,7 +177,7 @@ exports[`modus-wc-autocomplete should render multi select without border 1`] = `
       </label>
     </modus-wc-text-input>
   </div>
-  <modus-wc-menu class="menu-visible">
+  <modus-wc-menu class="menu-hidden">
     <!---->
     <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-md modus-wc-w-full" role="menu">
       <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
@@ -197,7 +197,7 @@ exports[`modus-wc-autocomplete should render with custom props 1`] = `
       <input aria-describedby="description" aria-label="Test autocomplete" aria-placeholder="Test placeholder" aria-required="" class="modus-wc-grow" disabled="" id="test-id" inputmode="text" name="test-name" placeholder="Test placeholder" required="" tabindex="1" type="text" value="Item 1">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-visible">
+  <modus-wc-menu class="menu-hidden">
     <!---->
     <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-lg modus-wc-w-full" role="menu">
       <modus-wc-menu-item>
