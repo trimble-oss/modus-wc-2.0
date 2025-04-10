@@ -35,7 +35,6 @@ const Template: Story = {
   render: (args) => {
     return html`
       <modus-wc-icon
-        aria-label="Alert icon"
         custom-class="${ifDefined(args['custom-class'])}"
         ?decorative="${args.decorative}"
         name="${args.name}"
@@ -56,12 +55,7 @@ export const CustomColor: Story = {
           color: red;
         }
       </style>
-      <modus-wc-icon
-        aria-label="Red alert icon"
-        custom-class="red-icon"
-        name="alert"
-        size="${args.size}"
-      >
+      <modus-wc-icon custom-class="red-icon" name="alert" size="${args.size}">
       </modus-wc-icon>
     `;
   },

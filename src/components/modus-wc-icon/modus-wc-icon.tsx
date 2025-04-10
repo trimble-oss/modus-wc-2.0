@@ -58,10 +58,8 @@ export class ModusWcIcon {
       <Host class="modus-wc-flex modus-wc-items-center">
         <i
           aria-hidden={ariaHidden}
-          aria-label={this.decorative ? null : this.el.ariaLabel}
           class={this.getClasses()}
           role={role}
-          tabindex={-1}
           {...this.inheritedAttributes}
         >
           {this.name}
