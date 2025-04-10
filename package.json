@@ -3,14 +3,15 @@
   "version": "0.0.1",
   "description": "Modus Web Components using Stencil",
   "keywords": [],
+  "homepage": "https://github.com/trimble-oss/modus-wc-2.0#readme",
   "license": "MIT",
   "author": "Trimble Inc.",
   "bugs": {
-    "url": "https://github.com/Trimble-Construction/modus-wc-2.0/issues/"
+    "url": "https://github.com/trimble-oss/modus-wc-2.0/issues/"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Trimble-Construction/modus-wc-2.0.git"
+    "url": "https://github.com/trimble-oss/modus-wc-2.0.git"
   },
   "type": "module",
   "main": "dist/index.cjs.js",
