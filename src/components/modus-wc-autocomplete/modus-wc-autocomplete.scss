@@ -11,8 +11,8 @@ modus-wc-autocomplete.modus-wc-autocomplete {
   }
 
   modus-wc-loader {
-    justify-content: center;
     display: flex;
+    justify-content: center;
   }
 
   .modus-wc-input-bordered {
@@ -31,6 +31,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
       border-radius: var(--modus-wc-border-radius-md)
         var(--modus-wc-border-radius-md) 0 0;
     }
+
     /** TODO - chip styling is temporary, remove once chip component is implemented */
     .chip {
       align-items: center;
