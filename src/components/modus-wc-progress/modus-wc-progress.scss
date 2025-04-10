@@ -27,6 +27,7 @@ modus-wc-progress.modus-wc-progress-container {
     color: var(--modus-wc-color-trimble-blue);
 
     &.modus-wc-radial-progress--indeterminate {
+      /* stylelint-disable-next-line custom-property-pattern */
       --value: var(--_value) !important;
 
       animation-duration: 5s;
@@ -62,10 +63,10 @@ modus-wc-progress.modus-wc-progress-container {
   }
 }
 
-//[data-theme='modus-classic-light'] .modus-wc-progress-label,
-//[data-theme='modus-classic-dark'] .modus-wc-progress-label {
+// [data-theme='modus-classic-light'] .modus-wc-progress-label,
+// [data-theme='modus-classic-dark'] .modus-wc-progress-label {
 //  color: var(--modus-wc-color-white);
-//}
+// }
 
 [data-theme='modus-classic-light'] modus-wc-progress .modus-wc-progress {
   &::-webkit-progress-value {
@@ -104,6 +105,7 @@ modus-wc-progress.modus-wc-progress-container {
   color: var(--modus-wc-color-highlight-blue);
 }
 
+/* stylelint-disable-next-line custom-property-pattern */
 @property --_value {
   inherits: true;
   initial-value: 0;
@@ -112,14 +114,17 @@ modus-wc-progress.modus-wc-progress-container {
 
 @keyframes grow {
   0% {
+    /* stylelint-disable-next-line custom-property-pattern */
     --_value: 0;
   }
 
   50% {
+    /* stylelint-disable-next-line custom-property-pattern */
     --_value: 100;
   }
 
   100% {
+    /* stylelint-disable-next-line custom-property-pattern */
     --_value: 0;
   }
 }
