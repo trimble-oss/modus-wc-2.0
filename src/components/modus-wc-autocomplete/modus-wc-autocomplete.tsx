@@ -244,8 +244,10 @@ export class ModusWcAutocomplete {
 
       case KEY.Backspace:
         if (this.multiSelect && input.value.length === 0) {
-          const selectedItems =
-            this.items?.filter((item) => item.selected) || [];
+          let selectedItems: IAutocompleteItem[] = [];
+          if (this.items) {
+            selectedItems = this.items.filter((item) => item.selected);
+          }
           const lastSelectedItem = selectedItems[selectedItems.length - 1];
           if (lastSelectedItem) {
             this.chipRemove.emit(lastSelectedItem);
@@ -261,8 +263,10 @@ export class ModusWcAutocomplete {
       case KEY.Enter:
         event.preventDefault();
         if (this.multiSelect) {
-          const selectedItems =
-            this.items?.filter((item) => item.selected) || [];
+          let selectedItems: IAutocompleteItem[] = [];
+          if (this.items) {
+            selectedItems = this.items.filter((item) => item.selected);
+          }
           const lastSelectedItem = selectedItems[selectedItems.length - 1];
           if (lastSelectedItem) {
             this.itemSelect.emit(lastSelectedItem);

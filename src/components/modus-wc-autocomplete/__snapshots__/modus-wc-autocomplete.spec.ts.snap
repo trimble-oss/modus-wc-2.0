@@ -100,6 +100,26 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 3`
 </modus-wc-autocomplete>
 `;
 
+exports[`modus-wc-autocomplete should render chips for selected items in multi-select mode 1`] = `
+<modus-wc-autocomplete class="modus-wc-autocomplete" multi-select="true" value="">
+  <!---->
+  <div class="modus-wc-autocomplete-multi-select modus-wc-autocomplete-multi-select--bordered">
+    <modus-wc-chip aria-label="Remove item button" label="Chip 1" show-remove="true" size="sm" variant="filled"></modus-wc-chip>
+    <modus-wc-chip aria-label="Remove item button" label="Chip 3" show-remove="true" size="sm" variant="filled"></modus-wc-chip>
+    <modus-wc-text-input value="">
+      <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
+        <input aria-label="MultiSelect Chip Test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
+      </label>
+    </modus-wc-text-input>
+  </div>
+  <modus-wc-menu aria-label="Autocomplete menu" bordered="" class="menu-hidden" size="md">
+    <modus-wc-menu-item label="Chip 1" selected="" value="1"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Chip 2" value="2"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Chip 3" selected="" value="3"></modus-wc-menu-item>
+  </modus-wc-menu>
+</modus-wc-autocomplete>
+`;
+
 exports[`modus-wc-autocomplete should render default no results values when noResults is undefined 1`] = `
 {
   "$attrs$": {
