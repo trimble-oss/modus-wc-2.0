@@ -68,6 +68,10 @@ modus-wc-input-feedback .modus-wc-input-feedback {
 [data-theme='modus-classic-light']
   modus-wc-input-feedback
   .modus-wc-input-feedback {
+  border-radius: 0;
+  margin-top: 0;
+  padding: var(--modus-wc-spacing-xs) 0;
+
   // Levels
   &.modus-wc-input-feedback--error {
     background-color: transparent;
@@ -93,7 +97,10 @@ modus-wc-input-feedback .modus-wc-input-feedback {
 [data-theme='modus-classic-dark']
   modus-wc-input-feedback
   .modus-wc-input-feedback {
+  border-radius: 0;
   color: var(--modus-wc-color-white);
+  margin-top: 0;
+  padding: var(--modus-wc-spacing-xs) 0;
 
   // Levels
   &.modus-wc-input-feedback--error {
