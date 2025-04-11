@@ -12,7 +12,29 @@ modus-wc-radio.modus-wc-radio-host {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-radio .modus-wc-radio,
+[data-theme='modus-classic-light'] modus-wc-radio .modus-wc-radio {
+  --fallback-bc: var(--modus-wc-color-gray-4);
+
+  border-width: var(--modus-wc-border-width-sm);
+
+  &.modus-wc-radio-xl {
+    height: 4rem;
+    width: 4rem;
+  }
+
+  &:checked {
+    --fallback-bc: var(--modus-wc-color-trimble-blue);
+  }
+
+  &:focus {
+    outline-color: var(--modus-wc-color-trimble-blue);
+  }
+
+  &:hover {
+    --fallback-bc: var(--modus-wc-color-trimble-blue);
+  }
+}
+
 [data-theme='modus-classic-dark'] modus-wc-radio .modus-wc-radio {
   --fallback-bc: var(--modus-wc-color-gray-4);
 

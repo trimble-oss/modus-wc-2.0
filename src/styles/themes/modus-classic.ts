@@ -1,12 +1,13 @@
 import { common } from './common';
 
-const commonOverrides = {
-  ...common,
-};
+const commonOverrides = { ...common };
 
 export const modusClassic = {
   light: {
     ...commonOverrides,
+
+    '--rounded-box': '0.5rem',
+    '--rounded-btn': '0.25rem',
 
     // Primary Colors (Primary Palette)
     primary: '#0063A3', // Trimble Blue
@@ -46,6 +47,9 @@ export const modusClassic = {
   },
   dark: {
     ...commonOverrides,
+
+    '--rounded-box': '0.5rem',
+    '--rounded-btn': '0.25rem',
 
     // Primary Colors (Primary Palette)
     primary: '#0063A3', // Trimble Blue

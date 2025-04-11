@@ -3,6 +3,51 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+modus-wc-alert .modus-wc-alert {
+  border-left-width: var(--modus-wc-border-width-xl);
+  border-radius: var(--modus-wc-border-radius-lg);
+
+  &.modus-wc-alert-info {
+    background-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-primary) 15%,
+      transparent
+    );
+    border-color: var(--modus-wc-color-highlight-blue);
+    color: var(--modus-wc-color-base-content);
+  }
+
+  &.modus-wc-alert-error {
+    background-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-error) 20%,
+      transparent
+    );
+    border-color: var(--modus-wc-color-error);
+    color: var(--modus-wc-error-content);
+  }
+
+  &.modus-wc-alert-success {
+    background-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-success) 20%,
+      transparent
+    );
+    border-color: var(--modus-wc-color-success);
+    color: var(--modus-wc-success-content);
+  }
+
+  &.modus-wc-alert-warning {
+    background-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-warning) 20%,
+      transparent
+    );
+    border-color: var(--modus-wc-color-warning);
+    color: var(--modus-wc-color-base-content);
+  }
+}
+
 [data-theme='modus-classic-light'] modus-wc-alert .modus-wc-alert,
 [data-theme='modus-classic-dark'] modus-wc-alert .modus-wc-alert {
   border-left-width: 12px;
@@ -50,6 +95,7 @@
       transparent
     );
     border-color: var(--modus-wc-color-red);
+    color: var(--modus-wc-error-content);
   }
 
   &.modus-wc-alert-success {
@@ -59,6 +105,7 @@
       transparent
     );
     border-color: var(--modus-wc-color-green);
+    color: var(--modus-wc-success-content);
   }
 
   &.modus-wc-alert-warning {
