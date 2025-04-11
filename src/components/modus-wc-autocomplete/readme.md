@@ -51,7 +51,6 @@ Adheres to WCAG 2.2 standards.
 
 ### Depends on
 
-- [modus-wc-icon](../modus-wc-icon)
 - [modus-wc-chip](../modus-wc-chip)
 - [modus-wc-text-input](../modus-wc-text-input)
 - [modus-wc-loader](../modus-wc-loader)
@@ -62,7 +61,6 @@ Adheres to WCAG 2.2 standards.
 ### Graph
 ```mermaid
 graph TD;
-  modus-wc-autocomplete --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-chip
   modus-wc-autocomplete --> modus-wc-text-input
   modus-wc-autocomplete --> modus-wc-loader

@@ -7,8 +7,8 @@ import {
   Host,
   Prop,
 } from '@stencil/core';
-import { SolidCancelIcon } from './modus-wc-chip.icons';
 import { convertPropsToClasses } from './modus-wc-chip.tailwind';
+import { CancelCircleSolidIcon } from '../../icons/cancel-circle-solid.icon';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 
@@ -130,7 +130,10 @@ export class ModusWcChip {
           <slot />
           {this.label && <span class="modus-wc-chip-label">{this.label}</span>}
           {this.showRemove && (
-            <SolidCancelIcon onClick={this.handleChipRemove} />
+            <CancelCircleSolidIcon
+              className="modus-wc-chip-remove-icon"
+              onClick={this.handleChipRemove}
+            />
           )}
         </button>
       </Host>
