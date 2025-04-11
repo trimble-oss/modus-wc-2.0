@@ -24,6 +24,7 @@ modus-wc-number-input .modus-wc-number-input-container {
   modus-wc-number-input
   .modus-wc-number-input-container {
   .modus-wc-input-currency {
+    background-color: var(--modus-wc-color-gray-2);
     border: var(--modus-wc-border-width-xs) solid transparent;
     color: var(--modus-wc-color-trimble-gray);
     white-space: nowrap;
@@ -119,13 +120,5 @@ modus-wc-number-input .modus-wc-number-input-container {
         height: 3rem;
       }
     }
-  }
-}
-
-[data-theme='modus-classic-dark']
-  modus-wc-number-input
-  .modus-wc-number-input-container {
-  .modus-wc-input-currency {
-    color: var(--modus-wc-color-trimble-gray-2);
   }
 }
