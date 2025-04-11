@@ -10,9 +10,9 @@ body:
       label: Prerequisites
       description: Take a couple minutes to help our maintainers work faster.
       options:
-        - label: I have [searched](https://github.com/Trimble-Construction/modus-wc-2.0/issues?q=is%3Aissue) for duplicate or closed issues
+        - label: I have [searched](https://github.com/trimble-oss/modus-wc-2.0/issues?q=is%3Aissue) for duplicate or closed issues
           required: true
-        - label: I have read the [contributing guidelines](https://github.com/Trimble-Construction/modus-wc-2.0/blob/main/CONTRIBUTING.md)
+        - label: I have read the [contributing guidelines](https://github.com/trimble-oss/modus-wc-2.0/blob/main/CONTRIBUTING.md)
           required: true
   - type: textarea
     id: what-happened

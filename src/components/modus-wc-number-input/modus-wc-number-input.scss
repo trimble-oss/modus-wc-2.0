@@ -21,15 +21,15 @@
     white-space: nowrap;
 
     &.modus-wc-input-sm {
-      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
+      padding: 0 var(--modus-wc-spacing-xs);
     }
 
     &.modus-wc-input-md {
-      padding: var(--modus-wc-spacing-lg);
+      padding: 0 var(--modus-wc-spacing-sm);
     }
 
     &.modus-wc-input-lg {
-      padding: var(--modus-wc-spacing-xl);
+      padding: 0 var(--modus-wc-spacing-md);
     }
   }
 
@@ -40,18 +40,18 @@
       }
 
       &.modus-wc-input-sm {
-        padding: var(--modus-wc-spacing-md) 0 var(--modus-wc-spacing-md)
-          var(--modus-wc-spacing-sm);
+        padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-xs);
+        padding-inline-end: 0; // Align spinner buttons
       }
 
       &.modus-wc-input-md {
-        padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-lg)
-          var(--modus-wc-spacing-lg) var(--modus-wc-spacing-md);
+        padding: var(--modus-wc-spacing-sm);
+        padding-inline-end: var(--modus-wc-spacing-lg); // Align spinner buttons
       }
 
       &.modus-wc-input-lg {
-        padding: var(--modus-wc-spacing-xl) var(--modus-wc-spacing-xl)
-          var(--modus-wc-spacing-xl) var(--modus-wc-spacing-lg);
+        padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
+        padding-inline-end: var(--modus-wc-spacing-xl); // Align spinner buttons
       }
 
       &:focus {
@@ -79,6 +79,7 @@
     &.modus-wc-input-sm {
       font-size: var(--modus-wc-font-size-sm);
       height: var(--modus-wc-input-height-sm);
+      line-height: var(--modus-wc-line-height-sm);
 
       &::-webkit-inner-spin-button,
       &::-webkit-outer-spin-button {
@@ -90,6 +91,7 @@
     &.modus-wc-input-md {
       font-size: var(--modus-wc-font-size-md);
       height: var(--modus-wc-input-height-md);
+      line-height: var(--modus-wc-line-height-md);
 
       &::-webkit-inner-spin-button,
       &::-webkit-outer-spin-button {
@@ -101,6 +103,7 @@
     &.modus-wc-input-lg {
       font-size: var(--modus-wc-font-size-lg);
       height: var(--modus-wc-input-height-lg);
+      line-height: var(--modus-wc-line-height-xl);
 
       &::-webkit-inner-spin-button,
       &::-webkit-outer-spin-button {
