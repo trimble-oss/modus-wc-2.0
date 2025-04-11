@@ -51,7 +51,7 @@ modus-wc-collapse .modus-wc-collapse {
 
 [data-theme='modus-classic-light'] modus-wc-collapse .modus-wc-collapse,
 [data-theme='modus-classic-dark'] modus-wc-collapse .modus-wc-collapse {
-  border-radius: 0;
+  border-radius: var(--modus-wc-border-radius-md);
   margin-bottom: 0;
   margin-bottom: -1px;
 
