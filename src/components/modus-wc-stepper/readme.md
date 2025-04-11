@@ -17,7 +17,7 @@ Adheres to WCAG 2.2 standards.
 | ------------- | -------------- | ----------------------------------------------- | ----------------------------------------- | ----------- |
 | `customClass` | `custom-class` | Custom CSS class to apply to the steps element. | `string \| undefined`                     | `''`        |
 | `orientation` | `orientation`  | The orientation of the steps.                   | `"horizontal" \| "vertical" \| undefined` | `undefined` |
-| `steps`       | --             | The steps to display.                           | `IStepperItem[]`                          | `[]`        |
+| `steps`       | `steps`        | The steps to display.                           | `IStepperItem[]`                          | `[]`        |
 
 
 ----------------------------------------------
