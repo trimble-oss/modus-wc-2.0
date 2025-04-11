@@ -117,7 +117,7 @@ export namespace Components {
         /**
           * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
          */
-        "items": IAutocompleteItem[];
+        "items"?: IAutocompleteItem[];
         /**
           * The text to display within the label.
          */
