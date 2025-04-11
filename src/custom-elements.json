@@ -376,6 +376,7 @@
             {
               "name": "no-results",
               "fieldName": "noResults",
+              "default": "{ ariaLabel: 'No results found', label: 'No results found', subLabel: 'Check spelling or try a different keyword', }",
               "description": "The content to display when no results are found.",
               "type": {
                 "text": "IAutocompleteNoResults"
