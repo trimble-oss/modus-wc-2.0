@@ -10,8 +10,11 @@ import {
 } from '@stencil/core';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
-import * as Icons from './modus-wc-pagination.icons';
 import { convertPropsToClasses } from './modus-wc-pagination.tailwind';
+import { ChevronDoubleLeftSolidIcon } from '../../icons/chevron-double-left-solid.icon';
+import { ChevronDoubleRightSolidIcon } from '../../icons/chevron-double-right-solid.icon';
+import { ChevronLeftSolidIcon } from '../../icons/chevron-left-solid.icon';
+import { ChevronRightSolidIcon } from '../../icons/chevron-right-solid.icon';
 
 /** Aria label values for pagination buttons */
 export interface IAriaLabelValues {
@@ -157,7 +160,7 @@ export class ModusWcPagination {
             disabled={isFirstPage}
             onClick={() => this.handlePageClick(1)}
           >
-            <Icons.ChevronDoubleLeft />
+            <ChevronDoubleLeftSolidIcon className="modus-wc-pagination-icon" />
           </button>
         )}
 
@@ -167,7 +170,7 @@ export class ModusWcPagination {
           disabled={isFirstPage}
           onClick={() => this.handlePageClick(this.page - 1)}
         >
-          <Icons.ChevronLeft />
+          <ChevronLeftSolidIcon className="modus-wc-pagination-icon" />
         </button>
 
         {this.visiblePages.map((page) => (
@@ -187,7 +190,7 @@ export class ModusWcPagination {
           disabled={isLastPage}
           onClick={() => this.handlePageClick(this.page + 1)}
         >
-          <Icons.ChevronRight />
+          <ChevronRightSolidIcon className="modus-wc-pagination-icon" />
         </button>
 
         {shouldShowFirstLastButtons && (
@@ -197,7 +200,7 @@ export class ModusWcPagination {
             disabled={isLastPage}
             onClick={() => this.handlePageClick(this.count)}
           >
-            <Icons.ChevronDoubleRight />
+            <ChevronDoubleRightSolidIcon className="modus-wc-pagination-icon" />
           </button>
         )}
       </div>

@@ -78,8 +78,10 @@ modus-wc-autocomplete.modus-wc-autocomplete {
       display: flex;
       justify-content: center;
 
-      i {
+      .modus-wc-autocomplete-search-icon {
         color: var(--modus-wc-color-gray-6);
+        height: 1.5rem;
+        width: 1.5rem;
       }
 
       .label {

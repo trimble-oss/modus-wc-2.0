@@ -30,7 +30,9 @@ exports[`modus-wc-autocomplete should display no results ui when no items are av
   <modus-wc-menu aria-label="Autocomplete menu" bordered="" class="menu-hidden" size="md">
     <div class="modus-wc-autocomplete-no-results">
       <div aria-label="No results found" class="icon-label">
-        <modus-wc-icon decorative="" name="search"></modus-wc-icon>
+        <svg aria-hidden="true" class="modus-wc-autocomplete-search-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
+        </svg>
         <div class="label">
           No results found
         </div>
@@ -134,15 +136,31 @@ exports[`modus-wc-autocomplete should render default no results values when noRe
       "$children$": [
         {
           "$attrs$": {
-            "decorative": true,
-            "name": "search",
+            "aria-hidden": "true",
+            "class": "modus-wc-autocomplete-search-icon",
+            "fill": "currentColor",
+            "viewBox": "0 0 24 24",
+            "xmlns": "http://www.w3.org/2000/svg",
           },
-          "$children$": null,
+          "$children$": [
+            {
+              "$attrs$": {
+                "d": "m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08",
+              },
+              "$children$": null,
+              "$elm$": null,
+              "$flags$": 0,
+              "$key$": null,
+              "$name$": null,
+              "$tag$": "path",
+              "$text$": null,
+            },
+          ],
           "$elm$": null,
           "$flags$": 0,
           "$key$": null,
-          "$name$": "search",
-          "$tag$": "modus-wc-icon",
+          "$name$": null,
+          "$tag$": "svg",
           "$text$": null,
         },
         {
@@ -277,7 +295,9 @@ exports[`modus-wc-autocomplete should render with default props 1`] = `
     <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
       <div class="modus-wc-autocomplete-no-results">
         <div aria-label="No results found" class="icon-label">
-          <modus-wc-icon decorative="" name="search"></modus-wc-icon>
+          <svg aria-hidden="true" class="modus-wc-autocomplete-search-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
+          </svg>
           <div class="label">
             No results found
           </div>

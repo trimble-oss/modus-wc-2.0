@@ -1,6 +1,7 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { CollapseIcon, ExpandIcon } from './modus-wc-modal.icons';
 import { convertPropsToClasses } from './modus-wc-modal.tailwind';
+import { CollapseSolidIcon } from '../../icons/collapse-solid.icon';
+import { ExpandSolidIcon } from '../../icons/expand-solid.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -91,7 +92,11 @@ export class ModusWcModal {
                   onClick={() => (this.fullscreen = !this.fullscreen)}
                   class="modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-modal-expand-icon-btn"
                 >
-                  {this.fullscreen ? <CollapseIcon /> : <ExpandIcon />}
+                  {this.fullscreen ? (
+                    <CollapseSolidIcon />
+                  ) : (
+                    <ExpandSolidIcon />
+                  )}
                 </button>
               )}
               {this.showClose && (

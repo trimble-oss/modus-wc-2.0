@@ -11,6 +11,7 @@ import {
   Event as StencilEvent,
   Watch,
 } from '@stencil/core';
+import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 
@@ -309,7 +310,7 @@ export class ModusWcAutocomplete {
     return (
       <div class="modus-wc-autocomplete-no-results">
         <div class="icon-label" aria-label={this.noResults?.ariaLabel}>
-          <modus-wc-icon name="search" decorative />
+          <SearchSolidIcon className="modus-wc-autocomplete-search-icon" />
           <div class="label">{this.noResults?.label}</div>
         </div>
         <div class="sub-label">{this.noResults?.subLabel}</div>
