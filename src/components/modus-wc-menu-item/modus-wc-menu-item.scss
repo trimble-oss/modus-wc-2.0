@@ -4,10 +4,6 @@
 */
 
 modus-wc-menu-item .modus-wc-menu-item {
-  .modus-wc-menu-item-selected-icon {
-    display: none;
-  }
-
   button {
     display: flex;
 
@@ -57,9 +53,11 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 
   &.modus-wc-menu-item-bordered {
-    border-bottom: 1px solid var(--modus-wc-color-base-100);
+    border-bottom: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-base-100);
     border-radius: 0;
-    border-top: 1px solid var(--modus-wc-color-base-100);
+    border-top: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-base-100);
   }
 
   &.modus-wc-menu-item-selected {
@@ -132,8 +130,10 @@ modus-wc-menu-item
   }
 
   &.modus-wc-menu-item-bordered {
-    border-bottom: 1px solid var(--modus-wc-color-gray-9);
-    border-top: 1px solid var(--modus-wc-color-gray-9);
+    border-bottom: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-gray-9);
+    border-top: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-gray-9);
   }
 }
 

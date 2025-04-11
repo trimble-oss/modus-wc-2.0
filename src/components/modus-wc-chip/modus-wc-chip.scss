@@ -10,6 +10,7 @@ modus-wc-chip .modus-wc-chip {
     border-color: transparent;
     box-sizing: border-box;
     color: var(--modus-wc-color-base-content);
+
     --rounded-btn: #{var(--modus-wc-border-radius-chip)};
 
     // Sizes
@@ -141,8 +142,8 @@ modus-wc-chip .modus-wc-chip {
   }
 }
 
-[data-theme='modus-classic-light'] .modus-wc-chip,
-[data-theme='modus-classic-dark'] .modus-wc-chip {
+[data-theme='modus-classic-light'] modus-wc-chip .modus-wc-chip,
+[data-theme='modus-classic-dark'] modus-wc-chip .modus-wc-chip {
   &.modus-wc-btn {
     $modus-wc-chip-active-filled-bg: color-mix(
       in sRGB,
@@ -155,14 +156,16 @@ modus-wc-chip .modus-wc-chip {
     box-sizing: border-box;
     color: var(--modus-wc-color-base-content);
     font-size: var(--modus-wc-font-size-md);
+
     --rounded-btn: #{var(--modus-wc-border-radius-xl)};
 
     // Sizes
     &.modus-wc-btn-sm {
+      font-size: var(--modus-wc-font-size-md);
       height: var(--modus-wc-spacing-xl);
       min-height: var(--modus-wc-spacing-xl);
       padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
-      font-size: var(--modus-wc-font-size-md);
+
       .modus-wc-avatar {
         height: var(--modus-wc-spacing-lg);
         width: var(--modus-wc-spacing-lg);
@@ -175,11 +178,12 @@ modus-wc-chip .modus-wc-chip {
     }
 
     &.modus-wc-btn-md {
+      font-size: var(--modus-wc-font-size-md);
       height: var(--modus-wc-spacing-2xl);
       min-height: var(--modus-wc-spacing-2xl);
       padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
+
       --rounded-btn: #{var(--modus-wc-border-radius-2xl)};
-      font-size: var(--modus-wc-font-size-md);
 
       .modus-wc-avatar {
         height: var(--modus-wc-spacing-lg);
@@ -193,11 +197,12 @@ modus-wc-chip .modus-wc-chip {
     }
 
     &.modus-wc-btn-lg {
+      font-size: var(--modus-wc-font-size-xl);
       height: var(--modus-wc-spacing-3xl);
       min-height: var(--modus-wc-spacing-3xl);
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+
       --rounded-btn: #{var(--modus-wc-border-radius-3xl)};
-      font-size: var(--modus-wc-font-size-xl);
 
       .modus-wc-avatar {
         height: var(--modus-wc-spacing-xl);
@@ -291,8 +296,7 @@ modus-wc-chip .modus-wc-chip {
 }
 
 // Dark Theme Styles
-
-[data-theme='modus-classic-dark'] .modus-wc-chip {
+[data-theme='modus-classic-dark'] modus-wc-chip .modus-wc-chip {
   &.modus-wc-btn {
     $modus-wc-chip-outline-hover-bg: color-mix(
       in sRGB,

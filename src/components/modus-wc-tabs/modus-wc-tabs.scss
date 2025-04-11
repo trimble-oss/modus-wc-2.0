@@ -16,6 +16,7 @@ modus-wc-tabs .modus-wc-tab {
   border-top-right-radius: var(--modus-wc-border-radius-md);
   display: inline-flex;
   font-weight: var(--modus-wc-font-weight-bold);
+
   // --tab-bg: var(--modus-wc-color-base-100);
 
   --tab-border: 0px; // ! This is rendered as 1px due to a calc(+1)
@@ -38,10 +39,12 @@ modus-wc-tabs .modus-wc-tab {
       line-height: var(--modus-wc-line-height-xl);
     }
   }
+
   &:not(.modus-wc-tab-active):not(.modus-wc-tab-disabled):hover {
     background-color: var(--modus-wc-color-base-100);
   }
 }
+
 .modus-wc-tabs-lifted
   > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
     .modus-wc-tab-disabled
@@ -54,8 +57,8 @@ modus-wc-tabs .modus-wc-tab {
   .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
       .modus-wc-tab-disabled
     ):not([disabled]) {
-    border-bottom-width: 4px;
     border-bottom-color: var(--modus-wc-color-primary);
+    border-bottom-width: var(--modus-wc-border-width-lg);
   }
 }
 
@@ -76,10 +79,14 @@ modus-wc-tabs .modus-wc-tab {
 
   &:not(.modus-wc-tab-disabled):active {
     --tab-color: var(--modus-wc-color-gray-10);
-    --tab-border: 1px; // ! This is rendered as 1px due to a calc(+1)
+    --tab-border: var(
+      --modus-wc-border-width-xs
+    ); // ! This is rendered as 1px due to a calc(+1)
+
     --tab-bg: var(--modus-wc-color-white);
+
     // Unfortunately needed, otherwise browsers sometimes don't apply.
-    // background-color: var(--modus-wc-color-trimble-blue) !important;
+    background-color: var(--modus-wc-color-trimble-blue) !important;
   }
 
   &.modus-wc-tab-active {
@@ -113,7 +120,7 @@ modus-wc-tabs .modus-wc-tab {
     --tab-bg: var(--modus-wc-color-blue-light);
 
     // rgba(var(--modus-wc-color-highlight-blue), 0.3) applied on a background of --modus-wc-color-neutral
-    border-bottom-width: 1px;
+    border-bottom-width: var(--modus-wc-border-width-xs);
 
     --fallback-p: var(--modus-wc-color-blue-light);
     --fallback-bc: var(--modus-wc-color-highlight-blue);

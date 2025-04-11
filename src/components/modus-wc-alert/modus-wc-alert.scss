@@ -3,7 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-alert {
+modus-wc-alert .modus-wc-alert {
   border-left-width: var(--modus-wc-border-width-xl);
   border-radius: var(--modus-wc-border-radius-lg);
 

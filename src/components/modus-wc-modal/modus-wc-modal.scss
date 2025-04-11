@@ -1,7 +1,7 @@
 modus-wc-modal .modus-wc-modal {
-  background-color: var(--modus-wc-color-base-200);
   box-sizing: border-box;
   color: var(--modus-wc-color-base-content);
+
   --rounded-box: var(--modus-wc-border-radius-box);
 
   .modus-wc-modal-box {
@@ -22,11 +22,11 @@ modus-wc-modal .modus-wc-modal {
     }
 
     &.modus-wc-modal-fullscreen {
-      height: 100dvh;
+      border-radius: 0;
+      height: 100vh;
       max-height: none;
       max-width: none;
       width: 100dvw;
-      border-radius: 0 !important;
     }
 
     .modus-wc-modal-action {
@@ -36,20 +36,22 @@ modus-wc-modal .modus-wc-modal {
 }
 
 .modus-wc-modal-header > span {
-  // background: var(--modus-wc-color-base-200);
-  padding: var(--modus-wc-spacing-lg);
   border-radius: var(--modus-wc-border-radius-btn);
   display: block;
+
+  // background: var(--modus-wc-color-base-200);
+  padding: var(--modus-wc-spacing-lg);
 }
 
 .modus-wc-modal-content {
   height: 100%;
+
   span {
     background: var(--modus-wc-color-base-200);
-    padding: var(--modus-wc-spacing-lg);
     border-radius: var(--modus-wc-border-radius-btn);
     display: block;
     height: 100%;
+    padding: var(--modus-wc-spacing-lg);
   }
 }
 
@@ -70,20 +72,21 @@ modus-wc-modal .modus-wc-modal {
 [data-theme='modus-classic-light'] .modus-wc-modal-header {
   span {
     background: transparent;
-    padding: 0;
     border-radius: 0;
     display: block;
+    padding: 0;
   }
 }
 
 [data-theme='modus-classic-dark'] .modus-wc-modal-content,
 [data-theme='modus-classic-light'] .modus-wc-modal-content {
   height: 100%;
+
   span {
     background: transparent;
-    padding: 0;
     border-radius: 0;
     display: block;
     height: 100%;
+    padding: 0;
   }
 }

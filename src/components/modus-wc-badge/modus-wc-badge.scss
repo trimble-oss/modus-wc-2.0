@@ -6,6 +6,7 @@
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
 modus-wc-badge .modus-wc-badge {
   font-weight: var(--modus-wc-font-weight-semibold);
+
   &.modus-wc-badge-sm {
     font-size: var(--modus-wc-font-size-xs);
   }

@@ -8,7 +8,7 @@ modus-wc-collapse .modus-wc-collapse {
   border-color: transparent;
   box-sizing: border-box;
   color: var(--modus-wc-color-base-content);
-  margin-bottom: 12px;
+  margin-bottom: var(--modus-wc-spacing-md);
   transition: none !important;
 
   .modus-wc-collapse-title {
@@ -24,7 +24,7 @@ modus-wc-collapse .modus-wc-collapse {
 
   &.modus-wc-border {
     background: var(--modus-wc-color-base-page);
-    border: 1px solid var(--modus-wc-color-base-200);
+    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
     border-radius: var(--modus-wc-border-radius-box);
   }
 
