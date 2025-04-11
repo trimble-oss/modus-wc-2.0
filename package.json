@@ -96,8 +96,7 @@
     "build": {
       "dependencies": [
         "stencil:build",
-        "storybook:build",
-        "lint"
+        "storybook:build"
       ]
     },
     "build:cem-json": {
@@ -202,7 +201,8 @@
       "command": "storybook build",
       "clean": false,
       "dependencies": [
-        "stencil:build"
+        "stencil:build",
+        "lint"
       ],
       "files": [
         "src/",
