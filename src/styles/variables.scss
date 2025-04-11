@@ -55,7 +55,7 @@
   --modus-wc-in-field-avoidance: #df4eb2;
   --modus-wc-in-field-black: #000;
 
-  // Borders
+  // Border width
   --modus-wc-border-width-xs: 1px;
   --modus-wc-border-width-sm: 2px;
   --modus-wc-border-width-md: 3px;
@@ -63,6 +63,8 @@
   --modus-wc-border-width-xl: 8px;
   --modus-wc-border-width-2xl: 12px;
   --modus-wc-border-width-3xl: 24px;
+
+  // Border radius
   --modus-wc-border-radius-sm: 2px;
   --modus-wc-border-radius-md: 4px;
   --modus-wc-border-radius-lg: 8px;
@@ -123,7 +125,6 @@
   --modus-wc-border-radius-alert: var(--modus-wc-border-radius-md);
 
   // Dynamic Base Colors
-
   --modus-wc-color-base-page: light-dark(
     var(--modus-wc-color-white),
     var(--modus-wc-color-black)
