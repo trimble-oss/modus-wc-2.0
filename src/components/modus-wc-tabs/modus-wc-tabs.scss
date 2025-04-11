@@ -17,8 +17,6 @@ modus-wc-tabs .modus-wc-tab {
   display: inline-flex;
   font-weight: var(--modus-wc-font-weight-bold);
 
-  // --tab-bg: var(--modus-wc-color-base-100);
-
   --tab-border: 0px; // ! This is rendered as 1px due to a calc(+1)
 
   // For centering purposes
