@@ -16,7 +16,7 @@ Adheres to WCAG 2.2 standards.
 | Property      | Attribute      | Description                                 | Type                                | Default |
 | ------------- | -------------- | ------------------------------------------- | ----------------------------------- | ------- |
 | `customClass` | `custom-class` | Custom CSS class to apply to the inner div. | `string \| undefined`               | `''`    |
-| `items`       | --             | The breadcrumbs to render.                  | `IBreadcrumb[]`                     | `[]`    |
+| `items`       | `items`        | The breadcrumbs to render.                  | `IBreadcrumb[]`                     | `[]`    |
 | `size`        | `size`         | The size of the breadcrumbs.                | `"lg" \| "md" \| "sm" \| undefined` | `'md'`  |
 
 

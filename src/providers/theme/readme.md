@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property       | Attribute | Description | Type                                                                              | Default     |
-| -------------- | --------- | ----------- | --------------------------------------------------------------------------------- | ----------- |
-| `initialTheme` | --        |             | `undefined \| { mode?: ThemeMode \| undefined; theme?: ThemeName \| undefined; }` | `undefined` |
+| Property       | Attribute       | Description | Type                                                                              | Default     |
+| -------------- | --------------- | ----------- | --------------------------------------------------------------------------------- | ----------- |
+| `initialTheme` | `initial-theme` |             | `undefined \| { mode?: ThemeMode \| undefined; theme?: ThemeName \| undefined; }` | `undefined` |
 
 
 ----------------------------------------------
