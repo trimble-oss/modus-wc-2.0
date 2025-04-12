@@ -60,6 +60,7 @@
     "@storybook/blocks": "^8.6.12",
     "@storybook/test": "^8.6.12",
     "@storybook/web-components": "^8.6.12",
+    "@storybook/web-components-vite": "^8.6.12",
     "@tailwindcss/typography": "^0.5.15",
     "@types/jest": "^29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.13.0",
