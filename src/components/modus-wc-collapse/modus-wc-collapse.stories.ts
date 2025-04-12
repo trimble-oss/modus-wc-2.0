@@ -22,11 +22,7 @@ const options: ICollapseOptions = {
 const meta: Meta<CollapseArgs> = {
   title: 'Components/Collapse',
   component: 'modus-wc-collapse',
-  args: {
-    bordered: true,
-    expanded: false,
-    options,
-  },
+  args: { bordered: false, expanded: false, options },
   argTypes: {
     options: {
       description: 'Configuration options for the collapse component',
@@ -46,12 +42,7 @@ const meta: Meta<CollapseArgs> = {
     },
   },
   decorators: [withActions],
-  parameters: {
-    actions: {
-      handles: ['expandedChange'],
-    },
-    layout: 'padded',
-  },
+  parameters: { actions: { handles: ['expandedChange'] }, layout: 'padded' },
 };
 
 export default meta;

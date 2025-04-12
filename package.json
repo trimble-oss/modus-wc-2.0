@@ -61,7 +61,6 @@
     "@storybook/test": "^8.6.12",
     "@storybook/web-components": "^8.6.12",
     "@tailwindcss/typography": "^0.5.15",
-    "@trimble-construction/custom-elements-manifest-analyzer": "^0.0.3",
     "@types/jest": "^29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.13.0",
     "@typescript-eslint/parser": "^8.13.0",
@@ -89,14 +88,14 @@
     "wireit": "^0.14.9"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.9.5"
+    "@rollup/rollup-linux-x64-gnu": "4.9.5",
+    "@trimble-oss/custom-elements-manifest-analyzer": "^0.0.4"
   },
   "wireit": {
     "build": {
       "dependencies": [
         "stencil:build",
-        "storybook:build",
-        "lint"
+        "storybook:build"
       ]
     },
     "build:cem-json": {
@@ -201,7 +200,8 @@
       "command": "storybook build",
       "clean": false,
       "dependencies": [
-        "stencil:build"
+        "stencil:build",
+        "lint"
       ],
       "files": [
         "src/",

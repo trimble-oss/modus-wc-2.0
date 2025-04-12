@@ -10,6 +10,7 @@ import {
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
+import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -159,7 +160,7 @@ export class ModusWcAlert {
               variant="borderless"
               onClick={() => this.dismissElement()}
             >
-              <modus-wc-icon aria-label="notify icon" name="close" decorative />
+              <CloseSolidIcon className="modus-wc-alert-close-icon" />
             </modus-wc-button>
           )}
         </div>

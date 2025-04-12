@@ -1,12 +1,10 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { Attributes, inheritAriaAttributes } from '../utils';
-import {
-  CheckIcon,
-  InfoIcon,
-  WarningIcon,
-} from './modus-wc-input-feedback.icons';
 import { ModusSize } from '../types';
+import { Attributes, inheritAriaAttributes } from '../utils';
 import { convertPropsToClasses } from './modus-wc-input-feedback.tailwind';
+import { CheckCircleSolidIcon } from '../../icons/check-circle-solid.icon';
+import { InfoSolidIcon } from '../../icons/info-solid.icon';
+import { WarningSolidIcon } from '../../icons/warning-solid.icon';
 
 export type IInputFeedbackLevel = 'error' | 'info' | 'success' | 'warning';
 
@@ -64,13 +62,15 @@ export class ModusWcInputFeedback {
   private getPresetIcon() {
     switch (this.level) {
       case 'error':
-        return <WarningIcon />;
+        return <WarningSolidIcon className="modus-wc-input-feedback-icon" />;
       case 'info':
-        return <InfoIcon />;
+        return <InfoSolidIcon className="modus-wc-input-feedback-icon" />;
       case 'success':
-        return <CheckIcon />;
+        return (
+          <CheckCircleSolidIcon className="modus-wc-input-feedback-icon" />
+        );
       case 'warning':
-        return <WarningIcon />;
+        return <WarningSolidIcon className="modus-wc-input-feedback-icon" />;
     }
   }
 

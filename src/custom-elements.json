@@ -376,6 +376,7 @@
             {
               "name": "no-results",
               "fieldName": "noResults",
+              "default": "{ ariaLabel: 'No results found', label: 'No results found', subLabel: 'Check spelling or try a different keyword', }",
               "description": "The content to display when no results are found.",
               "type": {
                 "text": "IAutocompleteNoResults"
@@ -1152,31 +1153,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/modus-wc-chip/modus-wc-chip.icons.tsx",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "SolidCancelIcon",
-          "parameters": [
-            {
-              "name": "{\r\n  onClick,\r\n}"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SolidCancelIcon",
-          "declaration": {
-            "name": "SolidCancelIcon",
-            "module": "src/components/modus-wc-chip/modus-wc-chip.icons.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/modus-wc-chip/modus-wc-chip.tsx",
       "declarations": [
         {
@@ -1348,7 +1324,7 @@
             {
               "name": "bordered",
               "fieldName": "bordered",
-              "default": "true",
+              "default": "false",
               "description": "Indicates that the component should have a border.",
               "type": {
                 "text": "boolean"
@@ -1795,50 +1771,6 @@
           "declaration": {
             "name": "ModusWcIcon",
             "module": "src/components/modus-wc-icon/modus-wc-icon.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/modus-wc-input-feedback/modus-wc-input-feedback.icons.tsx",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "CheckIcon"
-        },
-        {
-          "kind": "function",
-          "name": "InfoIcon"
-        },
-        {
-          "kind": "function",
-          "name": "WarningIcon"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "CheckIcon",
-          "declaration": {
-            "name": "CheckIcon",
-            "module": "src/components/modus-wc-input-feedback/modus-wc-input-feedback.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "InfoIcon",
-          "declaration": {
-            "name": "InfoIcon",
-            "module": "src/components/modus-wc-input-feedback/modus-wc-input-feedback.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "WarningIcon",
-          "declaration": {
-            "name": "WarningIcon",
-            "module": "src/components/modus-wc-input-feedback/modus-wc-input-feedback.icons.tsx"
           }
         }
       ]
@@ -2343,38 +2275,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/modus-wc-modal/modus-wc-modal.icons.tsx",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "CollapseIcon"
-        },
-        {
-          "kind": "function",
-          "name": "ExpandIcon"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ExpandIcon",
-          "declaration": {
-            "name": "ExpandIcon",
-            "module": "src/components/modus-wc-modal/modus-wc-modal.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "CollapseIcon",
-          "declaration": {
-            "name": "CollapseIcon",
-            "module": "src/components/modus-wc-modal/modus-wc-modal.icons.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/modus-wc-modal/modus-wc-modal.tsx",
       "declarations": [
         {
@@ -2723,62 +2623,6 @@
           "declaration": {
             "name": "ModusWcNumberInput",
             "module": "src/components/modus-wc-number-input/modus-wc-number-input.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/modus-wc-pagination/modus-wc-pagination.icons.tsx",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "ChevronDoubleLeft"
-        },
-        {
-          "kind": "function",
-          "name": "ChevronDoubleRight"
-        },
-        {
-          "kind": "function",
-          "name": "ChevronLeft"
-        },
-        {
-          "kind": "function",
-          "name": "ChevronRight"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ChevronDoubleLeft",
-          "declaration": {
-            "name": "ChevronDoubleLeft",
-            "module": "src/components/modus-wc-pagination/modus-wc-pagination.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "ChevronDoubleRight",
-          "declaration": {
-            "name": "ChevronDoubleRight",
-            "module": "src/components/modus-wc-pagination/modus-wc-pagination.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "ChevronLeft",
-          "declaration": {
-            "name": "ChevronLeft",
-            "module": "src/components/modus-wc-pagination/modus-wc-pagination.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "ChevronRight",
-          "declaration": {
-            "name": "ChevronRight",
-            "module": "src/components/modus-wc-pagination/modus-wc-pagination.icons.tsx"
           }
         }
       ]
@@ -3976,43 +3820,6 @@
           "declaration": {
             "name": "ModusWcTabs",
             "module": "src/components/modus-wc-tabs/modus-wc-tabs.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/modus-wc-text-input/modus-wc-text-input.icons.tsx",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "ClearIcon",
-          "parameters": [
-            {
-              "name": "{\r\n  ariaLabel,\r\n  onClear,\r\n}"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "SearchIcon"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SearchIcon",
-          "declaration": {
-            "name": "SearchIcon",
-            "module": "src/components/modus-wc-text-input/modus-wc-text-input.icons.tsx"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "ClearIcon",
-          "declaration": {
-            "name": "ClearIcon",
-            "module": "src/components/modus-wc-text-input/modus-wc-text-input.icons.tsx"
           }
         }
       ]

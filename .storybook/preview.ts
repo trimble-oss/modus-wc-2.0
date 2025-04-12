@@ -16,15 +16,8 @@ const preview: Preview = {
   parameters: {
     a11y: a11yConfig,
     // To handle Tailwind dark mode if needed
-    backgrounds: {
-      disable: true,
-    },
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/i,
-      },
-    },
+    backgrounds: { disable: true },
+    controls: { matchers: { color: /(background|color)$/i, date: /Date$/i } },
     docs: {
       // Sets the background color of the autodocs page to match the theme.
       // This needs to be updated if any additional dark themes are added.
@@ -40,9 +33,7 @@ const preview: Preview = {
         const newProps = { ...props, theme };
         return createElement(DocsContainer, newProps);
       },
-      controls: {
-        sort: 'requiredFirst',
-      },
+      controls: { sort: 'requiredFirst' },
     },
     layout: 'centered',
     options: {
@@ -82,12 +73,12 @@ const preview: Preview = {
   decorators: [
     withThemeByDataAttribute({
       themes: {
-        'modus-classic-light': 'modus-classic-light',
-        'modus-classic-dark': 'modus-classic-dark',
         'modus-modern-light': 'modus-modern-light',
         'modus-modern-dark': 'modus-modern-dark',
+        'modus-classic-light': 'modus-classic-light',
+        'modus-classic-dark': 'modus-classic-dark',
       },
-      defaultTheme: 'modus-classic-light',
+      defaultTheme: 'modus-modern-light',
       attributeName: 'data-theme',
     }),
   ],

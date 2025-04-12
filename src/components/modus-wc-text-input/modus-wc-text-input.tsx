@@ -8,6 +8,8 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
+import { CloseSolidIcon } from '../../icons/close-solid.icon';
+import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import {
   AutocompleteTypes,
   IInputFeedbackProp,
@@ -15,7 +17,6 @@ import {
   TextFieldTypes,
 } from '../types';
 import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
-import { ClearIcon, SearchIcon } from './modus-wc-text-input.icons';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -215,7 +216,9 @@ export class ModusWcTextInput {
           />
         )}
         <label class={this.getClasses()}>
-          {this.includeSearch && <SearchIcon />}
+          {this.includeSearch && (
+            <SearchSolidIcon className="modus-wc-text-input-icon modus-wc-text-input-icon-search" />
+          )}
           <input
             aria-placeholder={this.placeholder}
             aria-required={this.required}
@@ -246,8 +249,9 @@ export class ModusWcTextInput {
             <div
               class={`modus-wc-clear-icon-container ${showClear ? 'modus-wc-clear-icon-visible' : 'modus-wc-clear-icon-hidden'}`}
             >
-              <ClearIcon
-                ariaLabel={this.clearAriaLabel!}
+              <CloseSolidIcon
+                ariaLabel={this.clearAriaLabel}
+                className="modus-wc-text-input-icon modus-wc-text-input-icon-clear"
                 onClear={this.handleClearText}
               />
             </div>

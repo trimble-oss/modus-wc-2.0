@@ -1,8 +1,6 @@
 import { common } from './common';
 
-const commonOverrides = {
-  ...common,
-};
+const commonOverrides = { ...common };
 
 export const modusModern = {
   light: {
@@ -14,7 +12,7 @@ export const modusModern = {
     'primary-content': '#FFFFFF', // White
 
     // Secondary Colors (Yellow Progression)
-    secondary: '#6A6E79', // Neutral Gray 6
+    secondary: '#252a2e', // Neutral Gray 10
     'secondary-focus': '#464B52', // Neutral Gray 8
     'secondary-content': '#FFFFFF', // Trimble Gray
 
@@ -48,14 +46,14 @@ export const modusModern = {
     ...commonOverrides,
 
     // Primary Colors (Primary Palette)
-    primary: '#0063A3', // Trimble Blue
+    primary: '#019aeb', // Trimble Blue
     'primary-focus': '#004F83', // Trimble Blue Dark
-    'primary-content': '#FFFFFF', // White
+    'primary-content': '#000000', // White
 
-    // Secondary Colors (Yellow Progression)
-    secondary: '#FBAD26', // Yellow
+    // Secondary Colors (Gray Progression)
+    secondary: '#f1f1f6', // Neutral Gray Light
     'secondary-focus': '#E49325', // Yellow Dark
-    'secondary-content': '#252A2E', // Trimble Gray
+    'secondary-content': '#000', // Trimble Black
 
     // Tertiary/Accent Colors (Neutral Progression)
     accent: '#6A6E79', // Gray 6
@@ -74,13 +72,13 @@ export const modusModern = {
     'base-content': '#FFFFFF', // White
 
     // State/Feedback Colors
-    info: '#0063A3', // Trimble Blue
+    info: '#217CBB', // Trimble Blue
     'info-content': '#FFFFFF', // White
-    success: '#1E8A44', // Green
-    'success-content': '#FFFFFF', // White
-    warning: '#FBAD26', // Yellow
+    success: '#4EA646', // Green
+    'success-content': '#000', // Black
+    warning: '#FEC157', // Yellow
     'warning-content': '#252A2E', // Trimble Gray
-    error: '#DA212C', // Red
-    'error-content': '#FFFFFF', // White
+    error: '#E86363', // Red
+    'error-content': '#000', // Black
   },
 };

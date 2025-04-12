@@ -74,7 +74,7 @@ export const config: Config = {
   },
   taskQueue: 'async',
   testing: {
-    browserHeadless: 'new',
+    browserHeadless: 'shell',
     modulePathIgnorePatterns: ['.wireit'],
     collectCoverageFrom: [
       'src/components/**/modus-wc-*.tsx',

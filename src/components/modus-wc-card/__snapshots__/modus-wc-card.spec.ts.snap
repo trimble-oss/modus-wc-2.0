@@ -3,7 +3,7 @@
 exports[`modus-wc-card renders with default props 1`] = `
 <modus-wc-card>
   <!---->
-  <article class="modus-wc-card" tabindex="-1">
+  <article class="modus-wc-card modus-wc-rounded-card" tabindex="-1">
     <div class="modus-wc-card-body">
       <div class="modus-wc-card-title"></div>
       <div class="modus-wc-card-subtitle"></div>
@@ -16,7 +16,7 @@ exports[`modus-wc-card renders with default props 1`] = `
 exports[`modus-wc-card should render with a hard border 1`] = `
 <modus-wc-card bordered="">
   <!---->
-  <article class="modus-wc-card modus-wc-card-bordered" tabindex="-1">
+  <article class="modus-wc-card modus-wc-card-bordered modus-wc-rounded-card" tabindex="-1">
     <div class="modus-wc-card-body">
       <div class="modus-wc-card-title"></div>
       <div class="modus-wc-card-subtitle"></div>
@@ -29,7 +29,7 @@ exports[`modus-wc-card should render with a hard border 1`] = `
 exports[`modus-wc-card should render with compact padding 1`] = `
 <modus-wc-card padding="compact">
   <!---->
-  <article class="modus-wc-card modus-wc-card-compact" tabindex="-1">
+  <article class="modus-wc-card modus-wc-card-compact modus-wc-rounded-card" tabindex="-1">
     <div class="modus-wc-card-body">
       <div class="modus-wc-card-title"></div>
       <div class="modus-wc-card-subtitle"></div>
@@ -42,7 +42,7 @@ exports[`modus-wc-card should render with compact padding 1`] = `
 exports[`modus-wc-card should render with custom props 1`] = `
 <modus-wc-card custom-class="test-class" padding="compact">
   <!---->
-  <article aria-hidden="false" class="modus-wc-card modus-wc-card-compact test-class" tabindex="-1">
+  <article aria-hidden="false" class="modus-wc-card modus-wc-card-compact modus-wc-rounded-card test-class" tabindex="-1">
     <div class="modus-wc-card-body">
       <div class="modus-wc-card-title"></div>
       <div class="modus-wc-card-subtitle"></div>
@@ -55,7 +55,7 @@ exports[`modus-wc-card should render with custom props 1`] = `
 exports[`modus-wc-card should render with horizontal layout 1`] = `
 <modus-wc-card layout="horizontal">
   <!---->
-  <article class="modus-wc-card modus-wc-card-side" tabindex="-1">
+  <article class="modus-wc-card modus-wc-card-side modus-wc-rounded-card" tabindex="-1">
     <div class="modus-wc-card-body">
       <div class="modus-wc-card-title"></div>
       <div class="modus-wc-card-subtitle"></div>

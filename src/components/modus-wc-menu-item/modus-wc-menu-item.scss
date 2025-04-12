@@ -4,15 +4,66 @@
 */
 
 modus-wc-menu-item .modus-wc-menu-item {
-  border-radius: var(--modus-wc-border-radius-sm);
+  button {
+    display: flex;
 
-  &.modus-wc-menu-item-focused {
-    background-color: var(--modus-wc-color-gray-0);
+    /* Enforce Tailwind CSS reset */
+    width: 100%;
+
+    .modus-wc-menu-item-content {
+      display: flex;
+      width: 100%;
+
+      .modus-wc-menu-item-start-icon {
+        padding-inline-end: var(--modus-wc-spacing-lg);
+      }
+
+      .modus-wc-menu-item-labels {
+        padding-inline-end: var(--modus-wc-spacing-md);
+      }
+
+      .modus-wc-menu-item-sublabel {
+        font-size: var(--modus-wc-font-size-sm);
+      }
+
+      .modus-wc-menu-item-selected-icon {
+        margin-left: auto;
+      }
+    }
+
+    &:where(
+        .modus-wc-menu
+          li:not(.modus-wc-menu-title, .modus-wc-disabled)
+          > :not(ul, details, .modus-wc-menu-title)
+      ):not(summary, .modus-wc-active, .modus-wc-btn):focus {
+      border-radius: inherit;
+      color: var(--modus-wc-color-primary-content);
+    }
+
+    &:where(
+        .modus-wc-menu
+          li:not(
+            .modus-wc-menu-title,
+            .modus-wc-disabled .modus-wc-menu-item-selected
+          )
+          > :not(ul, details, .modus-wc-menu-title)
+      ):not(summary, .modus-wc-active, .modus-wc-btn):focus {
+      color: var(--modus-wc-color-primary);
+    }
   }
 
   &.modus-wc-menu-item-bordered {
-    border-bottom: 1px solid var(--modus-wc-color-gray-0);
-    border-top: 1px solid var(--modus-wc-color-gray-0);
+    border-bottom: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-base-100);
+    border-radius: 0;
+    border-top: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-base-100);
+  }
+
+  &.modus-wc-menu-item-selected {
+    background-color: var(--modus-wc-color-primary);
+    border-radius: inherit;
+    color: var(--modus-wc-color-primary-content);
   }
 
   &.modus-wc-menu-item-disabled {
@@ -52,34 +103,12 @@ modus-wc-menu-item .modus-wc-menu-item {
       }
     }
   }
+}
 
-  button {
-    display: flex;
-
-    /* Enforce Tailwind CSS reset */
-    width: 100%;
-
-    .modus-wc-menu-item-content {
-      display: flex;
-      width: 100%;
-
-      .modus-wc-menu-item-start-icon {
-        padding-inline-end: var(--modus-wc-spacing-lg);
-      }
-
-      .modus-wc-menu-item-labels {
-        padding-inline-end: var(--modus-wc-spacing-md);
-      }
-
-      .modus-wc-menu-item-sublabel {
-        font-size: var(--modus-wc-font-size-sm);
-      }
-
-      .modus-wc-menu-item-selected-icon {
-        margin-left: auto;
-      }
-    }
-  }
+modus-wc-menu-item
+  .modus-wc-menu-item.modus-wc-menu-item-selected
+  > button:focus {
+  color: var(--modus-wc-color-base-content);
 }
 
 [data-theme='modus-classic-light'] modus-wc-menu-item .modus-wc-menu-item {
@@ -89,6 +118,7 @@ modus-wc-menu-item .modus-wc-menu-item {
 
   &.modus-wc-menu-item-selected {
     background-color: var(--modus-wc-color-blue-pale);
+    color: var(--modus-wc-color-gray-10);
   }
 
   &:hover {
@@ -97,6 +127,13 @@ modus-wc-menu-item .modus-wc-menu-item {
 
   &.modus-wc-menu-item-focused {
     background-color: var(--modus-wc-color-gray-0);
+  }
+
+  &.modus-wc-menu-item-bordered {
+    border-bottom: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-gray-9);
+    border-top: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-gray-9);
   }
 }
 
@@ -107,6 +144,8 @@ modus-wc-menu-item .modus-wc-menu-item {
 
   &.modus-wc-menu-item-selected {
     background-color: #019aeb4d;
+    background-color: var(--modus-wc-color-primary);
+    color: var(--modus-wc-color-white);
   }
 
   &:hover {
