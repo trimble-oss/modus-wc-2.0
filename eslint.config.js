@@ -78,6 +78,7 @@ export default [
       'integrations/**',
       'loader/**',
       'node_modules/**',
+      'src/components.d.ts',
       'storybook-static/**',
       'www/**',
     ],
