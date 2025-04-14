@@ -1,0 +1,29 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trimble Modus Web Components</title>
+
+  <script type="module" src="/dist/modus-wc/modus-wc.esm.js"></script>
+  <script nomodule src="/dist/modus-wc/modus-wc.js"></script>
+
+  <link rel="stylesheet" href="/dist/modus-wc/modus-wc.css" />
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-solid/fonts/modus-icons.css">
+  <!--Manually load Modus font-family-->
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+  <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" />
+</head>
+
+<body data-mwc-theme="light">
+  <main>
+    <!-- Test components -->
+    <modus-wc-alert alert-description="You have 3 new messages." alert-title="New mesdsdssage!" dismissible="false"
+      role="status" variant="info">
+    </modus-wc-alert>
+  </main>
+</body>
+
+</html>

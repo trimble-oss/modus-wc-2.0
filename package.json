@@ -34,6 +34,7 @@
     "lint:prettier": "wireit",
     "format": "wireit",
     "start": "wireit",
+    "local": "stencil build --dev --watch --serve",
     "test": "stencil test --spec",
     "test:coverage": "stencil test --spec --coverage",
     "test:update-snapshot": "stencil test --spec --update-snapshot",
