@@ -724,6 +724,16 @@ export namespace Components {
         "showFullscreenToggle"?: boolean;
     }
     /**
+     * A customizable navbar component used for top level navigation of all Trimble applications.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcNavbar {
+        /**
+          * Custom CSS class to apply to the host element.
+         */
+        "customClass"?: string;
+    }
+    /**
      * A customizable input component used to create number inputs with types.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1995,6 +2005,16 @@ declare global {
         prototype: HTMLModusWcModalElement;
         new (): HTMLModusWcModalElement;
     };
+    /**
+     * A customizable navbar component used for top level navigation of all Trimble applications.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcNavbarElement extends Components.ModusWcNavbar, HTMLStencilElement {
+    }
+    var HTMLModusWcNavbarElement: {
+        prototype: HTMLModusWcNavbarElement;
+        new (): HTMLModusWcNavbarElement;
+    };
     interface HTMLModusWcNumberInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
@@ -2390,6 +2410,7 @@ declare global {
         "modus-wc-menu": HTMLModusWcMenuElement;
         "modus-wc-menu-item": HTMLModusWcMenuItemElement;
         "modus-wc-modal": HTMLModusWcModalElement;
+        "modus-wc-navbar": HTMLModusWcNavbarElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-pagination": HTMLModusWcPaginationElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
@@ -3179,6 +3200,16 @@ declare namespace LocalJSX {
           * Specifies whether to show the fullscreen toggle icon button
          */
         "showFullscreenToggle"?: boolean;
+    }
+    /**
+     * A customizable navbar component used for top level navigation of all Trimble applications.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcNavbar {
+        /**
+          * Custom CSS class to apply to the host element.
+         */
+        "customClass"?: string;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -4169,6 +4200,7 @@ declare namespace LocalJSX {
         "modus-wc-menu": ModusWcMenu;
         "modus-wc-menu-item": ModusWcMenuItem;
         "modus-wc-modal": ModusWcModal;
+        "modus-wc-navbar": ModusWcNavbar;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-pagination": ModusWcPagination;
         "modus-wc-progress": ModusWcProgress;
@@ -4306,6 +4338,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
+            /**
+             * A customizable navbar component used for top level navigation of all Trimble applications.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-navbar": LocalJSX.ModusWcNavbar & JSXBase.HTMLAttributes<HTMLModusWcNavbarElement>;
             /**
              * A customizable input component used to create number inputs with types.
              * Adheres to WCAG 2.2 standards.
