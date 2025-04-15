@@ -1,0 +1,155 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+modus-wc-autocomplete.modus-wc-autocomplete {
+  position: relative;
+
+  .modus-wc-input-label {
+    padding-bottom: var(--modus-wc-spacing-2xs);
+  }
+
+  modus-wc-loader {
+    display: flex;
+    justify-content: center;
+  }
+
+  .modus-wc-input-bordered {
+    border-radius: var(--modus-wc-border-radius-md);
+  }
+
+  .modus-wc-autocomplete-multi-select {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: var(--modus-wc-spacing-xs);
+
+    &.modus-wc-autocomplete-multi-select--bordered {
+      border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-0);
+      border-radius: var(--modus-wc-border-radius-md)
+        var(--modus-wc-border-radius-md) 0 0;
+    }
+
+    /** TODO - chip styling is temporary, remove once chip component is implemented */
+    .chip {
+      align-items: center;
+      background-color: var(--modus-wc-color-gray-1);
+      border-radius: var(--modus-wc-border-radius-xl);
+      display: flex;
+
+      button {
+        i {
+          font-size: 0.75rem;
+        }
+      }
+
+      .label {
+        font-size: var(--modus-wc-font-size-md);
+        padding: 0 var(--modus-wc-spacing-xs);
+      }
+    }
+  }
+
+  .modus-wc-menu {
+    border-radius: 0 0 var(--modus-wc-border-radius-md)
+      var(--modus-wc-border-radius-md);
+    left: 0;
+    margin-top: 0.625rem; // 10px, not exact but works for all 3 sizes
+    position: absolute;
+    top: 100%;
+    z-index: 99;
+  }
+
+  .menu-hidden {
+    display: none;
+  }
+
+  .menu-visible {
+    display: block;
+  }
+
+  .modus-wc-autocomplete-no-results {
+    padding: var(--modus-wc-spacing-md);
+
+    .icon-label {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+
+      .modus-wc-autocomplete-search-icon {
+        color: var(--modus-wc-color-gray-6);
+        height: 1.5rem;
+        width: 1.5rem;
+      }
+
+      .label {
+        font-size: var(--modus-wc-font-size-md);
+        font-weight: var(--modus-wc-font-weight-bold);
+        margin-inline-start: var(--modus-wc-spacing-xs);
+      }
+    }
+
+    .sub-label {
+      color: var(--modus-wc-color-gray-7);
+      font-size: var(--modus-wc-font-size-sm);
+      text-align: center;
+    }
+  }
+}
+
+[data-theme='modus-classic-light'] modus-wc-autocomplete.modus-wc-autocomplete,
+[data-theme='modus-classic-dark'] modus-wc-autocomplete.modus-wc-autocomplete {
+  .modus-wc-autocomplete-multi-select--bordered {
+    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-6);
+
+    &:focus-within {
+      border-color: var(--modus-wc-color-highlight-blue);
+      border-width: var(--modus-wc-border-width-sm);
+    }
+  }
+
+  ul.modus-wc-menu {
+    box-shadow: 0 0 4px 0 rgba(54, 53, 69, 0.3);
+  }
+
+  .modus-wc-input-disabled,
+  .modus-wc-text-input-readonly {
+    background-color: var(--modus-wc-color-gray-10);
+  }
+
+  .modus-wc-autocomplete-multi-select--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    user-select: none;
+
+    .modus-wc-input-disabled {
+      border: none;
+    }
+  }
+
+  .modus-wc-autocomplete-multi-select--readonly {
+    .modus-wc-text-input-readonly {
+      border: none;
+    }
+  }
+}
+
+[data-theme='modus-classic-light'] modus-wc-autocomplete.modus-wc-autocomplete {
+  .modus-wc-autocomplete-multi-select--disabled,
+  .modus-wc-input-disabled,
+  .modus-wc-autocomplete-multi-select--readonly,
+  .modus-wc-text-input-readonly {
+    background-color: var(--modus-wc-color-gray-0);
+    border: none;
+  }
+}
+
+[data-theme='modus-classic-dark'] modus-wc-autocomplete.modus-wc-autocomplete {
+  .modus-wc-autocomplete-no-results {
+    .sub-label {
+      color: var(--modus-wc-color-white);
+    }
+  }
+}

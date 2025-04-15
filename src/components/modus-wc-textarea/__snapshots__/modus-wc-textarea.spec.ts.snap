@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-textarea renders with default props 1`] = `
+<modus-wc-textarea value=""><textarea aria-label="Default textarea" aria-placeholder="" class="modus-wc-textarea modus-wc-textarea-bordered modus-wc-textarea-md modus-wc-w-full" placeholder="" value=""></textarea>
+</modus-wc-textarea>
+`;
+
+exports[`modus-wc-textarea should render with custom props 1`] = `
+<modus-wc-textarea bordered="false" custom-class="test-class" disabled="true" input-aria-invalid="grammar" input-id="custom-id" input-spellcheck="true" input-tab-index="1" label="Test label" max-length="100" name="test-name" placeholder="Test placeholder" readonly="true" required="true" rows="5" size="lg" value="Test value">
+  <modus-wc-input-label forid="custom-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label><textarea aria-describedby="description" aria-label="Test textarea" aria-placeholder="Test placeholder" aria-required="" class="modus-wc-textarea modus-wc-textarea-lg modus-wc-w-full test-class" disabled="" id="custom-id" maxlength="100" name="test-name" placeholder="Test placeholder" readonly="" required="" rows="5" tabindex="1" value="Test value"></textarea>
+</modus-wc-textarea>
+`;
+
+exports[`modus-wc-textarea should render with error feedback 1`] = `
+<modus-wc-textarea value=""><textarea aria-label="Error input" aria-placeholder="" class="modus-wc-input--error modus-wc-textarea modus-wc-textarea-bordered modus-wc-textarea-md modus-wc-w-full" placeholder="" value=""></textarea>
+  <modus-wc-input-feedback>
+    <div class="modus-wc-input-feedback modus-wc-input-feedback--error modus-wc-input-feedback--md">
+      <svg class="mi-outline mi-warning modus-wc-input-feedback-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 15.12c-.67 0-1.21.54-1.21 1.19s.54 1.21 1.21 1.21 1.21-.54 1.21-1.21-.54-1.19-1.21-1.19m0-1.61c.36 0 .62-.26.66-.7l.39-5.04s.01-.1.01-.14c0-.63-.45-1.15-1.06-1.15s-1.06.51-1.06 1.15v.14l.4 5.04c.04.44.28.7.66.7M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8"></path>
+      </svg>
+      <span>
+        Test error message
+      </span>
+    </div>
+  </modus-wc-input-feedback>
+</modus-wc-textarea>
+`;

@@ -1,0 +1,12 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+[data-theme='modus-classic-light'] modus-wc-accordion .modus-wc-collapse {
+  border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-2);
+}
+
+[data-theme='modus-classic-dark'] modus-wc-accordion .modus-wc-collapse {
+  border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-8);
+}

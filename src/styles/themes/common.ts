@@ -11,10 +11,10 @@ export const common = {
   // Button Component
   '--border-btn': '1px',
   '--btn-focus-scale': '0.95',
-  '--rounded-btn': '0.25rem',
+  '--rounded-btn': '0.5rem',
 
   // Card Component
-  // '--rounded-box': '0.25rem',
+  '--rounded-box': '1rem',
 
   // Tab Component
   // '--circle-pos': '',

@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-rating should render heart variant correctly 1`] = `
+<modus-wc-rating class="modus-wc-rating-container" value="0" variant="heart">
+  <div aria-label="heart rating" class="modus-wc-rating modus-wc-rating-md" role="radiogroup">
+    <input aria-checked="true" aria-label="Rating item 0" checked="" class="modus-wc-rating-hidden" name="modus-wc-rating-group-test-random-id" type="radio" value="0">
+    <input aria-checked="false" aria-label="Rating item 1" class="modus-wc-mask modus-wc-mask-heart modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="1">
+    <input aria-checked="false" aria-label="Rating item 2" class="modus-wc-mask modus-wc-mask-heart modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="2">
+    <input aria-checked="false" aria-label="Rating item 3" class="modus-wc-mask modus-wc-mask-heart modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="3">
+    <input aria-checked="false" aria-label="Rating item 4" class="modus-wc-mask modus-wc-mask-heart modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="4">
+    <input aria-checked="false" aria-label="Rating item 5" class="modus-wc-mask modus-wc-mask-heart modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="5">
+  </div>
+</modus-wc-rating>
+`;
+
+exports[`modus-wc-rating should render smiley variant correctly 1`] = `
+<modus-wc-rating class="modus-wc-rating-container" value="0" variant="smiley">
+  <div aria-label="smiley rating" class="modus-wc-rating modus-wc-rating-md" role="radiogroup">
+    <input aria-checked="true" aria-label="Rating item 0" checked="" class="modus-wc-rating-hidden" name="modus-wc-rating-group-test-random-id" type="radio" value="0">
+    <input aria-checked="false" aria-label="Rating item 1" class="modus-wc-mask modus-wc-mask-smiley modus-wc-mask-smiley-1 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="1">
+    <input aria-checked="false" aria-label="Rating item 2" class="modus-wc-mask modus-wc-mask-smiley modus-wc-mask-smiley-2 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="2">
+    <input aria-checked="false" aria-label="Rating item 3" class="modus-wc-mask modus-wc-mask-smiley modus-wc-mask-smiley-3 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="3">
+    <input aria-checked="false" aria-label="Rating item 4" class="modus-wc-mask modus-wc-mask-smiley modus-wc-mask-smiley-4 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="4">
+    <input aria-checked="false" aria-label="Rating item 5" class="modus-wc-mask modus-wc-mask-smiley modus-wc-mask-smiley-5 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="5">
+  </div>
+</modus-wc-rating>
+`;
+
+exports[`modus-wc-rating should render star variant correctly 1`] = `
+<modus-wc-rating class="modus-wc-rating-container" value="0" variant="star">
+  <div aria-label="star rating" class="modus-wc-rating modus-wc-rating-md" role="radiogroup">
+    <input aria-checked="true" aria-label="Rating item 0" checked="" class="modus-wc-rating-hidden" name="modus-wc-rating-group-test-random-id" type="radio" value="0">
+    <input aria-checked="false" aria-label="Rating item 1" class="modus-wc-mask modus-wc-mask-star-2 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="1">
+    <input aria-checked="false" aria-label="Rating item 2" class="modus-wc-mask modus-wc-mask-star-2 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="2">
+    <input aria-checked="false" aria-label="Rating item 3" class="modus-wc-mask modus-wc-mask-star-2 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="3">
+    <input aria-checked="false" aria-label="Rating item 4" class="modus-wc-mask modus-wc-mask-star-2 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="4">
+    <input aria-checked="false" aria-label="Rating item 5" class="modus-wc-mask modus-wc-mask-star-2 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="5">
+  </div>
+</modus-wc-rating>
+`;
+
+exports[`modus-wc-rating should render thumb variant correctly 1`] = `
+<modus-wc-rating class="modus-wc-rating-container" value="0" variant="thumb">
+  <div aria-label="thumb rating" class="modus-wc-rating modus-wc-rating-md" role="radiogroup">
+    <input aria-checked="true" aria-label="Rating item 0" checked="" class="modus-wc-rating-hidden" name="modus-wc-rating-group-test-random-id" type="radio" value="0">
+    <input aria-checked="false" aria-label="Rating item 1" class="modus-wc-mask modus-wc-mask-thumb modus-wc-mask-thumb-1 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="1">
+    <input aria-checked="false" aria-label="Rating item 2" class="modus-wc-mask modus-wc-mask-thumb modus-wc-mask-thumb-2 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="2">
+  </div>
+</modus-wc-rating>
+`;
+
+exports[`modus-wc-rating should render with custom props 1`] = `
+<modus-wc-rating allow-half="true" class="modus-wc-rating-container" count="7" custom-class="test-custom-class" disabled="true" size="lg" value="3.5" variant="heart">
+  <div aria-label="custom rating" class="modus-wc-rating modus-wc-rating-half modus-wc-rating-lg test-custom-class" role="radiogroup">
+    <input aria-checked="false" aria-label="Rating item 0" class="modus-wc-rating-hidden" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="0">
+    <input aria-checked="false" aria-label="Rating item 0.5" class="modus-wc-mask modus-wc-mask-half-1 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="0.5">
+    <input aria-checked="false" aria-label="Rating item 1" class="modus-wc-mask modus-wc-mask-half-2 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="1">
+    <input aria-checked="false" aria-label="Rating item 1.5" class="modus-wc-mask modus-wc-mask-half-1 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="1.5">
+    <input aria-checked="false" aria-label="Rating item 2" class="modus-wc-mask modus-wc-mask-half-2 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="2">
+    <input aria-checked="false" aria-label="Rating item 2.5" class="modus-wc-mask modus-wc-mask-half-1 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="2.5">
+    <input aria-checked="false" aria-label="Rating item 3" class="modus-wc-mask modus-wc-mask-half-2 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="3">
+    <input aria-checked="true" aria-label="Rating item 3.5" checked="" class="modus-wc-mask modus-wc-mask-half-1 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="3.5">
+    <input aria-checked="false" aria-label="Rating item 4" class="modus-wc-mask modus-wc-mask-half-2 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="4">
+    <input aria-checked="false" aria-label="Rating item 4.5" class="modus-wc-mask modus-wc-mask-half-1 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="4.5">
+    <input aria-checked="false" aria-label="Rating item 5" class="modus-wc-mask modus-wc-mask-half-2 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="5">
+    <input aria-checked="false" aria-label="Rating item 5.5" class="modus-wc-mask modus-wc-mask-half-1 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="5.5">
+    <input aria-checked="false" aria-label="Rating item 6" class="modus-wc-mask modus-wc-mask-half-2 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="6">
+    <input aria-checked="false" aria-label="Rating item 6.5" class="modus-wc-mask modus-wc-mask-half-1 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="6.5">
+    <input aria-checked="false" aria-label="Rating item 7" class="modus-wc-mask modus-wc-mask-half-2 modus-wc-mask-heart modus-wc-rating-item" disabled="" name="modus-wc-rating-group-test-random-id" type="radio" value="7">
+  </div>
+</modus-wc-rating>
+`;
+
+exports[`modus-wc-rating should render with default props 1`] = `
+<modus-wc-rating class="modus-wc-rating-container" value="0">
+  <div aria-label="default rating" class="modus-wc-rating modus-wc-rating-md" role="radiogroup">
+    <input aria-checked="true" aria-label="Rating item 0" checked="" class="modus-wc-rating-hidden" name="modus-wc-rating-group-test-random-id" type="radio" value="0">
+    <input aria-checked="false" aria-label="Rating item 1" class="modus-wc-mask modus-wc-mask-smiley modus-wc-mask-smiley-1 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="1">
+    <input aria-checked="false" aria-label="Rating item 2" class="modus-wc-mask modus-wc-mask-smiley modus-wc-mask-smiley-2 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="2">
+    <input aria-checked="false" aria-label="Rating item 3" class="modus-wc-mask modus-wc-mask-smiley modus-wc-mask-smiley-3 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="3">
+    <input aria-checked="false" aria-label="Rating item 4" class="modus-wc-mask modus-wc-mask-smiley modus-wc-mask-smiley-4 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="4">
+    <input aria-checked="false" aria-label="Rating item 5" class="modus-wc-mask modus-wc-mask-smiley modus-wc-mask-smiley-5 modus-wc-rating-item" name="modus-wc-rating-group-test-random-id" type="radio" value="5">
+  </div>
+</modus-wc-rating>
+`;

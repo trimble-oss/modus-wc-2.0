@@ -1,0 +1,104 @@
+name: Report a bug
+description: Tell us about a bug or issue you may have identified in Modus Web Components.
+title: 'Provide a general summary of the issue'
+labels: [untriaged]
+type: Bug
+body:
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: Take a couple minutes to help our maintainers work faster.
+      options:
+        - label: I have [searched](https://github.com/trimble-oss/modus-wc-2.0/issues?q=is%3Aissue) for duplicate or closed issues
+          required: true
+        - label: I have read the [contributing guidelines](https://github.com/trimble-oss/modus-wc-2.0/blob/main/CONTRIBUTING.md)
+          required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Describe the issue
+      description: Provide a summary of the issue and what you expected to happen, including specific steps to reproduce.
+    validations:
+      required: true
+  - type: textarea
+    id: reduced-test-case
+    attributes:
+      label: Reduced test cases
+      description: Include links [reduced test case](https://css-tricks.com/reduced-test-cases/) links or suggested fixes using a online code editor.
+  - type: dropdown
+    id: os
+    attributes:
+      label: What operating system(s) are you seeing the problem on?
+      multiple: true
+      options:
+        - Windows
+        - macOS
+        - Android
+        - iOS
+        - Linux
+  - type: dropdown
+    id: browser
+    attributes:
+      label: What browser(s) are you seeing the problem on?
+      multiple: true
+      options:
+        - Chrome
+        - Safari
+        - Firefox
+        - Microsoft Edge
+        - Other
+  - type: dropdown
+    id: package
+    attributes:
+      label: What is the issue regarding?
+      multiple: true
+      options:
+        - '@trimble-oss/modus-wc'
+        - '@trimble-oss/modus-wc-angular'
+        - '@trimble-oss/modus-wc-react'
+        - Modus Web Components Website (Storybook)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: What version of npm package are you using?
+      placeholder: 'e.g., v1.2.3'
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      multiple: true
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: input
+    id: product
+    attributes:
+      label: What product/project are you using Modus Web Components for?
+    validations:
+      required: true
+  - type: input
+    id: team
+    attributes:
+      label: What is your team/division name?
+    validations:
+      required: true
+  - type: dropdown
+    id: contribution
+    attributes:
+      label: Are you willing to contribute?
+      multiple: false
+      options:
+        - 'Yes'
+        - 'No'
+        - 'Maybe'
+  - type: input
+    id: inProduction
+    attributes:
+      label: Are you using Modus Web Components in production?
+      placeholder: 'If yes, please feel free to share the app URL (optional).'

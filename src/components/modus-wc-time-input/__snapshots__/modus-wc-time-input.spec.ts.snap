@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-time-input should render with custom props 1`] = `
+<modus-wc-time-input auto-complete="on" bordered="" custom-class="custom" datalist-id="time-options" disabled="" input-id="time-input" input-tab-index="1" label="Test label" max="23:59" min="00:00" name="time" read-only="" required="" show-seconds="" size="lg" step="30" value="12:00">
+  <modus-wc-input-label forid="time-input" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
+  <input aria-describedby="desc" aria-label="Time input" aria-required="" autocomplete="on" class="custom modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-time-input modus-wc-time-input--readonly modus-wc-w-full" disabled="" id="time-input" list="time-options" max="23:59" min="00:00" name="time" readonly="" required="" step="1" tabindex="1" type="time" value="12:00">
+</modus-wc-time-input>
+`;
+
+exports[`modus-wc-time-input should render with default props 1`] = `
+<modus-wc-time-input datalist-id="test-list" value="">
+  <input aria-label="Default input" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-time-input modus-wc-w-full" list="test-list" step="60" type="time" value="">
+</modus-wc-time-input>
+`;
+
+exports[`modus-wc-time-input should render with error feedback 1`] = `
+<modus-wc-time-input value="">
+  <input aria-label="Error input" class="modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-time-input modus-wc-w-full" list="modus-wc-datalist-test-random-id" step="60" type="time" value="">
+  <modus-wc-input-feedback>
+    <div class="modus-wc-input-feedback modus-wc-input-feedback--error modus-wc-input-feedback--md">
+      <svg class="mi-outline mi-warning modus-wc-input-feedback-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 15.12c-.67 0-1.21.54-1.21 1.19s.54 1.21 1.21 1.21 1.21-.54 1.21-1.21-.54-1.19-1.21-1.19m0-1.61c.36 0 .62-.26.66-.7l.39-5.04s.01-.1.01-.14c0-.63-.45-1.15-1.06-1.15s-1.06.51-1.06 1.15v.14l.4 5.04c.04.44.28.7.66.7M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8"></path>
+      </svg>
+      <span>
+        Test error message
+      </span>
+    </div>
+  </modus-wc-input-feedback>
+</modus-wc-time-input>
+`;

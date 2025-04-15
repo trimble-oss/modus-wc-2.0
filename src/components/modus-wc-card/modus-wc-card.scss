@@ -1,0 +1,50 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+modus-wc-card .modus-wc-card {
+  background-color: var(--modus-wc-color-base-100);
+  color: var(--modus-wc-color-base-content);
+}
+
+[data-theme='modus-classic-light'] modus-wc-card .modus-wc-card,
+[data-theme='modus-classic-dark'] modus-wc-card .modus-wc-card {
+  --rounded-box: 0.5rem;
+
+  box-shadow: 0 0 2px 0 rgba(54, 53, 69, 0.3);
+
+  &:hover {
+    box-shadow: 0 0 8px 0 rgba(54, 53, 69, 0.3);
+  }
+
+  .modus-wc-card-subtitle {
+    font-weight: var(--modus-wc-font-weight-bold);
+  }
+}
+
+[data-theme='modus-classic-light'] modus-wc-card .modus-wc-card {
+  background-color: var(--modus-wc-color-white);
+  color: var(--modus-wc-color-trimble-gray);
+
+  .modus-wc-card-title {
+    --fallback-bc: var(--modus-wc-color-trimble-gray);
+  }
+
+  .modus-wc-card-subtitle {
+    color: var(--modus-wc-color-gray-8);
+  }
+}
+
+[data-theme='modus-classic-dark'] modus-wc-card .modus-wc-card {
+  background-color: var(--modus-wc-color-gray-9);
+  color: var(--modus-wc-color-trimble-white);
+
+  .modus-wc-card-title {
+    --fallback-bc: var(--modus-wc-color-white);
+  }
+
+  .modus-wc-card-subtitle {
+    color: var(--modus-wc-color-gray-1);
+  }
+}

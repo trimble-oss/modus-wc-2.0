@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-menu renders with default props 1`] = `
+<modus-wc-menu>
+  <!---->
+  <ul aria-label="Default menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-md modus-wc-w-full" role="menu"></ul>
+</modus-wc-menu>
+`;
+
+exports[`modus-wc-menu should render with custom props 1`] = `
+<modus-wc-menu bordered="true" custom-class="test-class" orientation="horizontal" size="lg">
+  <!---->
+  <ul aria-label="Test menu" aria-orientation="horizontal" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-horizontal modus-wc-menu-lg modus-wc-w-full test-class" role="menubar"></ul>
+</modus-wc-menu>
+`;

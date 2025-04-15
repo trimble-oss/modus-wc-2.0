@@ -8,13 +8,11 @@
 - [Getting Started](#getting-started)
 - [Submitting Issues](#submitting-issues)
 - [Technologies](#technologies)
-- [Running Locally](#running-locally)
 - [Developing a Component](#developing-a-component)
 - [Style Guide](#style-guide)
 - [Testing](#testing)
 - [Making Changes and Submitting a PR](#making-changes-and-submitting-a-pr)
 - [Changelog](#changelog)
-- [Releasing Framework Outputs](#releasing-framework-outputs)
 
 ## Dependencies
 
@@ -95,7 +93,7 @@ Refer to our [responsive design](./docs/responsive-design.md) doc on how to crea
 
 We use JSDoc comments for each component to auto-generate documentation for Storybook. Ensure that you add appropriate JSDoc comments to your component's properties, methods, and events. Documentation is generated upon running `npm run build` or `npm start`.
 
-**Important tips for success:**
+### Important tips for success
 
 - Follow the patterns of existing components (directory structure, file naming, code organization, etc.)
 - Do not use inline styling!
@@ -130,8 +128,8 @@ For more information about Jest snapshot testing, check out the docs [here](http
 2. Branch from your fork using the naming convention `issue-{#}/{description}`. For example, `issue-123/my-bug-fix`.
 3. Make your changes. Be sure to update or add relevant tests!
 4. Run `npm run lint`, `npm run build`, and `npm run test:coverage`. If all is well, continue.
-5. If there is any change to the library's API, update the Storybook documentation under `./storybook/stories` or the component specific story.
-   - To run the Storybook site, `cd` into the root directory and run `npm start`. The library build will need to be up to date. The changes to the site will be deployed upon the PR merge to `main`.
+5. If there is any change to the library's API, update the Storybook documentation in the component's `*.stories.tsx` story file.
+   - To run the Storybook site, run `npm start`. The library build will need to be up to date. The changes to the site will be deployed upon the PR merge to `main`.
 6. Once all of your changes have been made, squash your commits down to a singular commit with a relevant message.
    - If you prefer to do this with a GUI, GitHub Desktop has a [great squashing feature](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/managing-commits/squashing-commits).
 7. Submit your PR with your branch as the `head`, and the `@trimble-oss/modus-web-components` `main` branch as the `base`.

@@ -10,7 +10,7 @@ www/
 loader/
 storybook-static/
 .wireit/
-.eslintcache
+src/styles/output.css
 
 # Stencil
 .stencil/
@@ -21,7 +21,9 @@ coverage/
 
 # IDE and editor files
 .idea/
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 
 # Logs
 *.log

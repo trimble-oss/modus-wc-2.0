@@ -3,11 +3,15 @@
   "version": "0.0.1",
   "description": "Modus Web Components using Stencil",
   "keywords": [],
+  "homepage": "https://github.com/trimble-oss/modus-wc-2.0#readme",
   "license": "MIT",
   "author": "Trimble Inc.",
+  "bugs": {
+    "url": "https://github.com/trimble-oss/modus-wc-2.0/issues/"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Trimble-Construction/poc-modus-wc-2.0.git"
+    "url": "https://github.com/trimble-oss/modus-wc-2.0.git"
   },
   "type": "module",
   "main": "dist/index.cjs.js",
@@ -28,11 +32,14 @@
   "scripts": {
     "build": "wireit",
     "build:ci": "wireit",
-    "clean": "npx rimraf .wireit .stencil .eslintcache .storybook-static dist loader",
+    "clean": "npx rimraf .wireit .stencil .storybook-static dist loader",
     "lint": "wireit",
     "lint:eslint": "wireit",
     "lint:prettier": "wireit",
+    "lint:stylelint": "stylelint \"src/**/*.scss\"",
+    "lint:stylelint-fix": "stylelint \"src/**/*.scss\" --fix",
     "format": "wireit",
+    "prettier": "prettier --write \"src/**/*.*\"",
     "start": "wireit",
     "local": "stencil build --dev --watch --serve",
     "test": "stencil test --spec",
@@ -41,13 +48,12 @@
     "test:watch": "stencil test --spec --watchAll"
   },
   "devDependencies": {
-    "@custom-elements-manifest/analyzer": "^0.10.3",
     "@eslint/js": "^9.11.1",
     "@stencil/angular-output-target": "^0.9.1",
     "@stencil/core": "^4.22.0",
     "@stencil/react-output-target": "^0.7.4",
     "@stencil/sass": "^3.0.12",
-    "@stencil/store": "^2.0.16",
+    "@stencil/store": "^2.1.2",
     "@storybook/addon-a11y": "^8.4.2",
     "@storybook/addon-essentials": "^8.4.2",
     "@storybook/addon-links": "^8.4.2",
@@ -71,24 +77,27 @@
     "globals": "^15.10.0",
     "jest": "^29.7.0",
     "jest-cli": "^29.7.0",
-    "marked": "^14.1.2",
-    "prettier": "^3.3.3",
+    "marked": "^15.0.8",
+    "prettier": "3.5.3",
     "puppeteer": "^23.5.3",
     "stencil-tailwind-plugin": "^1.8.0",
+    "stylelint": "16.18.0",
+    "stylelint-config-standard-scss": "14.0.0",
+    "stylelint-order": "6.0.4",
     "tailwindcss": "^3.4.14",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.2",
     "wireit": "^0.14.9"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.9.5"
+    "@rollup/rollup-linux-x64-gnu": "4.9.5",
+    "@trimble-oss/custom-elements-manifest-analyzer": "^0.0.4"
   },
   "wireit": {
     "build": {
       "dependencies": [
         "stencil:build",
-        "storybook:build",
-        "lint"
+        "storybook:build"
       ]
     },
     "build:cem-json": {
@@ -112,7 +121,7 @@
       ]
     },
     "format:eslint": {
-      "command": "eslint --color --cache --cache-location .eslintcache --fix ."
+      "command": "eslint --color --fix ."
     },
     "format:prettier": {
       "command": "prettier --write .",
@@ -128,7 +137,7 @@
       ]
     },
     "lint:eslint": {
-      "command": "eslint --color --cache --cache-location .eslintcache ."
+      "command": "eslint --color ."
     },
     "lint:prettier": {
       "command": "prettier --check .",
@@ -193,7 +202,8 @@
       "command": "storybook build",
       "clean": false,
       "dependencies": [
-        "stencil:build"
+        "stencil:build",
+        "lint"
       ],
       "files": [
         "src/",
@@ -232,5 +242,12 @@
         "tailwind.config.js"
       ]
     }
-  }
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "volta": {
+    "node": "18.20.5"
+  },
+  "customElements": "src/custom-elements.json"
 }

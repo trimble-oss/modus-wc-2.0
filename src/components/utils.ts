@@ -1,9 +1,16 @@
+import { Build } from '@stencil/core';
+
 /*
  * Generates a random string of the specified length.
  * @param length { number } - The length of the random string to generate.
  * @returns { string } - A random string of the specified length.
  */
 export function generateRandomId(length: number = 8): string {
+  // Prevent instancing random ids in testing environments
+  if (Build.isTesting) {
+    return 'test-random-id';
+  }
+
   return Math.random()
     .toString(36)
     .substring(2, 2 + length);
@@ -117,4 +124,13 @@ export const inheritAriaAttributes = (
     );
   }
   return inheritAttributes(el, attributesToInherit);
+};
+
+export const KEY: { [key: string]: string } = {
+  Enter: 'Enter',
+  Space: ' ',
+  Escape: 'Escape',
+  Backspace: 'Backspace',
+  ArrowDown: 'ArrowDown',
+  ArrowUp: 'ArrowUp',
 };

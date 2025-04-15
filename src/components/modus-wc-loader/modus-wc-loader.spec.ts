@@ -1,0 +1,20 @@
+import { newSpecPage } from '@stencil/core/testing';
+import { ModusWcLoader } from './modus-wc-loader';
+
+describe('modus-wc-loader', () => {
+  it('should render with default props', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLoader],
+      html: '<modus-wc-loader aria-label="Loading loader"></modus-wc-loader>',
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with custom props', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLoader],
+      html: '<modus-wc-loader aria-label="Loading loader" color="secondary" custom-class="test-class" size="lg" variant="dots"></modus-wc-loader>',
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+});

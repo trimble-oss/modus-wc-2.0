@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-input-feedback should render with a custom modus icon 1`] = `
+<modus-wc-input-feedback icon="alert">
+  <div class="modus-wc-input-feedback modus-wc-input-feedback--md">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+        alert
+      </i>
+    </modus-wc-icon>
+    <span></span>
+  </div>
+</modus-wc-input-feedback>
+`;
+
+exports[`modus-wc-input-feedback should render with custom class 1`] = `
+<modus-wc-input-feedback custom-class="test-class" level="info">
+  <div class="modus-wc-input-feedback modus-wc-input-feedback--info modus-wc-input-feedback--md test-class">
+    <svg class="mi-info mi-outline modus-wc-input-feedback-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 9.03c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10m0-18c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8m0 13c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1v4c0 .55.45 1 1 1"></path>
+    </svg>
+    <span></span>
+  </div>
+</modus-wc-input-feedback>
+`;
+
+exports[`modus-wc-input-feedback should render with default props 1`] = `
+<modus-wc-input-feedback level="info">
+  <div class="modus-wc-input-feedback modus-wc-input-feedback--info modus-wc-input-feedback--md">
+    <svg class="mi-info mi-outline modus-wc-input-feedback-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 9.03c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10m0-18c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8m0 13c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1v4c0 .55.45 1 1 1"></path>
+    </svg>
+    <span></span>
+  </div>
+</modus-wc-input-feedback>
+`;
+
+exports[`modus-wc-input-feedback should render with error level 1`] = `
+<modus-wc-input-feedback level="error" message="An error has occurred.">
+  <div class="modus-wc-input-feedback modus-wc-input-feedback--error modus-wc-input-feedback--md">
+    <svg class="mi-outline mi-warning modus-wc-input-feedback-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 15.12c-.67 0-1.21.54-1.21 1.19s.54 1.21 1.21 1.21 1.21-.54 1.21-1.21-.54-1.19-1.21-1.19m0-1.61c.36 0 .62-.26.66-.7l.39-5.04s.01-.1.01-.14c0-.63-.45-1.15-1.06-1.15s-1.06.51-1.06 1.15v.14l.4 5.04c.04.44.28.7.66.7M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8"></path>
+    </svg>
+    <span>
+      An error has occurred.
+    </span>
+  </div>
+</modus-wc-input-feedback>
+`;
+
+exports[`modus-wc-input-feedback should render with success level 1`] = `
+<modus-wc-input-feedback level="success" message="Success has occurred.">
+  <div class="modus-wc-input-feedback modus-wc-input-feedback--md modus-wc-input-feedback--success">
+    <svg class="mi-check-circle mi-outline modus-wc-input-feedback-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m5.04-11.28V8.7c-.4-.39-1.03-.39-1.42 0L10.33 14l-2.6-2.62a.996.996 0 0 0-1.41 0 .984.984 0 0 0-.01 1.4l.01.01 3.3 3.34a1 1 0 0 0 1.42.01l6-6.01a.996.996 0 0 0 0-1.41"></path>
+    </svg>
+    <span>
+      Success has occurred.
+    </span>
+  </div>
+</modus-wc-input-feedback>
+`;
+
+exports[`modus-wc-input-feedback should render with warning level 1`] = `
+<modus-wc-input-feedback level="warning" message="A warning has occurred.">
+  <div class="modus-wc-input-feedback modus-wc-input-feedback--md modus-wc-input-feedback--warning">
+    <svg class="mi-outline mi-warning modus-wc-input-feedback-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 15.12c-.67 0-1.21.54-1.21 1.19s.54 1.21 1.21 1.21 1.21-.54 1.21-1.21-.54-1.19-1.21-1.19m0-1.61c.36 0 .62-.26.66-.7l.39-5.04s.01-.1.01-.14c0-.63-.45-1.15-1.06-1.15s-1.06.51-1.06 1.15v.14l.4 5.04c.04.44.28.7.66.7M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8"></path>
+    </svg>
+    <span>
+      A warning has occurred.
+    </span>
+  </div>
+</modus-wc-input-feedback>
+`;

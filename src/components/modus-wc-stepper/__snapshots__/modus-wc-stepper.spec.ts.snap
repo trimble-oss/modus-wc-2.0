@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-stepper should render with custom props 1`] = `
+<modus-wc-stepper custom-class="custom-class" orientation="vertical">
+  <div class="custom-class modus-wc-steps modus-wc-steps-vertical">
+    <li class="modus-wc-step modus-wc-step-primary">
+      Scale
+    </li>
+    <li class="custom-class modus-wc-step modus-wc-step-primary">
+      Belong
+    </li>
+    <li class="modus-wc-step modus-wc-step-warning">
+      Grow
+    </li>
+    <li class="modus-wc-step" data-content="🚀">
+      Innovate
+    </li>
+  </div>
+</modus-wc-stepper>
+`;
+
+exports[`modus-wc-stepper should render with default props 1`] = `
+<modus-wc-stepper>
+  <div class="modus-wc-steps">
+    <li class="modus-wc-step modus-wc-step-primary">
+      Scale
+    </li>
+    <li class="custom-class modus-wc-step modus-wc-step-primary">
+      Belong
+    </li>
+    <li class="modus-wc-step modus-wc-step-warning">
+      Grow
+    </li>
+    <li class="modus-wc-step" data-content="🚀">
+      Innovate
+    </li>
+  </div>
+</modus-wc-stepper>
+`;

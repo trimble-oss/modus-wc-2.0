@@ -1,0 +1,64 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+[data-theme='modus-modern-dark'] {
+  .modus-wc-toggle {
+    --tglbg: var(--modus-wc-color-gray-9);
+
+    border-color: var(--modus-wc-color-black);
+  }
+
+  .modus-wc-stroke-base-100 {
+    stroke: var(--modus-wc-color-white);
+  }
+
+  .modus-wc-fill-base-100 {
+    fill: var(--modus-wc-color-gray-9);
+  }
+
+  .modus-wc-bg-base-content {
+    background-color: var(--modus-wc-color-black);
+  }
+}
+
+[data-theme='modus-modern-light'] {
+  .modus-wc-toggle {
+    --tglbg: var(--modus-wc-color-gray-0);
+
+    border-color: var(--modus-wc-white);
+  }
+
+  .modus-wc-stroke-base-100 {
+    stroke: var(--modus-wc-color-black);
+  }
+
+  .modus-wc-fill-base-100 {
+    fill: var(--modus-wc-color-gray-0);
+  }
+
+  .modus-wc-bg-base-content {
+    background-color: var(--modus-wc-color-white);
+  }
+}
+
+.modus-wc-toggle {
+  &.modus-wc-stroke-base-100 {
+    stroke: var(--modus-wc-color-base-300);
+  }
+
+  &.modus-wc-fill-base-100 {
+    fill: var(--modus-wc-color-base-300);
+  }
+}
+
+.modus-wc-toggle:checked {
+  &.modus-wc-stroke-base-100 {
+    stroke: var(--modus-wc-color-base-100);
+  }
+
+  &.modus-wc-fill-base-100 {
+    fill: var(--modus-wc-color-base-100);
+  }
+}
