@@ -18,6 +18,14 @@ Adheres to WCAG 2.2 standards.
 | `customClass` | `custom-class` | Custom CSS class to apply to the host element. | `string \| undefined` | `''`    |
 
 
+## Events
+
+| Event              | Description                                                               | Type                                       |
+| ------------------ | ------------------------------------------------------------------------- | ------------------------------------------ |
+| `helpClick`        | Event emitted when the help button is clicked or activated via keyboard.  | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+| `trimbleLogoClick` | Event emitted when the Trimble logo is clicked or activated via keyboard. | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+
+
 ## Dependencies
 
 ### Depends on
