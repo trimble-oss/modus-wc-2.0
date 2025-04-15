@@ -1,5 +1,5 @@
 # Global reviewers - these users will be requested for review on all changes
-* @Trimble-Construction/prism-codeowners-ui
+* @trimble-oss/prism-codeowners-ui
 
 # Component-specific ownership
 /src/components/ @gabriel-piltzer-trimble @Kai-Richardson @stuart-rimel

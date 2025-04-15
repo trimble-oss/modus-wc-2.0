@@ -137,7 +137,7 @@ For more information about Jest snapshot testing, check out the docs [here](http
 
 ## Changelog
 
-The release notes can be viewed on the [GitHub Releases](https://github.com/Trimble-Construction/modus-wc-2.0/releases) page.
+The release notes can be viewed on the [GitHub Releases](https://github.com/trimble-oss/modus-wc-2.0/releases) page.
 
 ### Semantic Versioning
 
