@@ -1620,6 +1620,10 @@ export interface ModusWcMenuItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcMenuItemElement;
 }
+export interface ModusWcNavbarCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcNavbarElement;
+}
 export interface ModusWcNumberInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcNumberInputElement;
@@ -2005,11 +2009,23 @@ declare global {
         prototype: HTMLModusWcModalElement;
         new (): HTMLModusWcModalElement;
     };
+    interface HTMLModusWcNavbarElementEventMap {
+        "helpClick": MouseEvent | KeyboardEvent;
+        "trimbleLogoClick": MouseEvent | KeyboardEvent;
+    }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcNavbarElement extends Components.ModusWcNavbar, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcNavbarElementEventMap>(type: K, listener: (this: HTMLModusWcNavbarElement, ev: ModusWcNavbarCustomEvent<HTMLModusWcNavbarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcNavbarElementEventMap>(type: K, listener: (this: HTMLModusWcNavbarElement, ev: ModusWcNavbarCustomEvent<HTMLModusWcNavbarElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcNavbarElement: {
         prototype: HTMLModusWcNavbarElement;
@@ -3210,6 +3226,14 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the host element.
          */
         "customClass"?: string;
+        /**
+          * Event emitted when the help button is clicked or activated via keyboard.
+         */
+        "onHelpClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the Trimble logo is clicked or activated via keyboard.
+         */
+        "onTrimbleLogoClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
     }
     /**
      * A customizable input component used to create number inputs with types.

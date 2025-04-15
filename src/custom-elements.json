@@ -2390,8 +2390,16 @@
         {
           "kind": "class",
           "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcToolbar",
+          "name": "ModusWcNavbar",
           "members": [
+            {
+              "kind": "field",
+              "name": "appsOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
             {
               "kind": "field",
               "name": "el",
@@ -2399,6 +2407,22 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "field",
+              "name": "menuOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "notificationsOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
             },
             {
               "kind": "method",
@@ -2424,9 +2448,9 @@
       "exports": [
         {
           "kind": "js",
-          "name": "ModusWcToolbar",
+          "name": "ModusWcNavbar",
           "declaration": {
-            "name": "ModusWcToolbar",
+            "name": "ModusWcNavbar",
             "module": "src/components/modus-wc-navbar/modus-wc-navbar.tsx"
           }
         },
@@ -2434,7 +2458,7 @@
           "kind": "custom-element-definition",
           "name": "modus-wc-navbar",
           "declaration": {
-            "name": "ModusWcToolbar",
+            "name": "ModusWcNavbar",
             "module": "src/components/modus-wc-navbar/modus-wc-navbar.tsx"
           }
         }

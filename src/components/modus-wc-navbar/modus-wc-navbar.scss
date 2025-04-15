@@ -7,15 +7,34 @@ modus-wc-navbar .modus-wc-navbar {
     color: var(--modus-wc-color-black);
   }
 
-  [slot='start'] {
-    display: flex;
+  // Common dropdown styles
+  %dropdown-menu {
+    position: absolute;
+    top: 38px;
 
-    modus-wc-button {
-      padding-inline-end: 8px;
+    &.hidden {
+      display: none;
     }
 
-    .logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
-      padding: 0 16px;
+    &.visible {
+      display: block;
+    }
+  }
+
+  [slot='start'] {
+    display: flex;
+    position: relative;
+
+    modus-wc-button {
+      padding-inline-end: var(--modus-wc-spacing-sm);
+    }
+
+    .menu {
+      @extend %dropdown-menu;
+    }
+
+    .trimble-logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+      padding: 0 var(--modus-wc-spacing-lg);
 
       svg {
         height: 24px;
@@ -25,24 +44,37 @@ modus-wc-navbar .modus-wc-navbar {
 
   [slot='center'] {
     display: flex;
+    position: relative;
   }
 
   [slot='end'] {
     display: flex;
+    position: relative;
 
     modus-wc-button {
-      padding-inline-start: 8px;
+      padding-inline-start: var(--modus-wc-spacing-sm);
+    }
+
+    .notifications {
+      @extend %dropdown-menu;
+
+      right: 64px;
+    }
+
+    .apps {
+      @extend %dropdown-menu;
     }
   }
 }
 
 [data-theme='modus-classic-dark'] modus-wc-navbar .modus-wc-navbar,
 [data-theme='modus-modern-dark'] modus-wc-navbar .modus-wc-navbar {
-  &:not(.logo) .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+  &:not(.trimble-logo)
+    .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
     color: var(--modus-wc-color-white);
   }
 
-  .logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary path {
+  .trimble-logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary path {
     fill: var(--modus-wc-color-white);
   }
 }
