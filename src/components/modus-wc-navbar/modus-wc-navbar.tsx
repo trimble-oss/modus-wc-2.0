@@ -1,3 +1,6 @@
+// TODO - add coverage
+// istanbul ignore file
+
 import {
   Component,
   Element,
@@ -16,6 +19,21 @@ import { NotificationsSolidIcon } from '../../icons/notifications-solid.icon';
 import { TrimbleLogoFullIcon } from '../../icons/trimble-logo-full.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
+export interface IUserCard {
+  /** The alt value to set on the avatar. */
+  avatarAlt?: string;
+  /** The avatar image source value. */
+  avatarSrc?: string;
+  /** The email address of the user. */
+  email: string;
+  /** Text override for the Access MyTrimble button, allows for translation. */
+  myTrimbleButton?: string;
+  /** The name of the user */
+  name: string;
+  /** Text override for the Sign out button, allows for translation. */
+  signOutButton?: string;
+}
+
 /**
  * A customizable navbar component used for top level navigation of all Trimble applications.
  *
@@ -31,6 +49,7 @@ export class ModusWcNavbar {
   private menuRef?: HTMLDivElement;
   private notificationsRef?: HTMLDivElement;
   private appsRef?: HTMLDivElement;
+  private userRef?: HTMLDivElement;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -38,8 +57,17 @@ export class ModusWcNavbar {
   /** Custom CSS class to apply to the host element. */
   @Prop() customClass?: string = '';
 
+  /** User information used to render the user card. */
+  @Prop() user!: IUserCard;
+
   /** Event emitted when the help button is clicked or activated via keyboard. */
   @StencilEvent() helpClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
+  /** Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard. */
+  @StencilEvent() myTrimbleClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
+  /** Event emitted when the user profile sign out button is clicked or activated via keyboard. */
+  @StencilEvent() signOutClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the Trimble logo is clicked or activated via keyboard. */
   @StencilEvent() trimbleLogoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
@@ -47,13 +75,12 @@ export class ModusWcNavbar {
   @State() menuOpen: boolean = false;
   @State() notificationsOpen: boolean = false;
   @State() appsOpen: boolean = false;
+  @State() userOpen: boolean = false;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  // TODO - add coverage
-  // istanbul ignore next
   @Listen('click', { target: 'document' })
   handleClickOutside(event: MouseEvent) {
     const target = event.target as HTMLElement;
@@ -99,6 +126,20 @@ export class ModusWcNavbar {
         this.appsOpen = false;
       }
     }
+
+    if (this.userOpen) {
+      const userButton = this.el.querySelector(
+        'modus-wc-button:has([class*="user-button"])'
+      );
+      if (
+        this.userRef &&
+        !this.userRef.contains(target) &&
+        userButton !== target &&
+        !userButton?.contains(target)
+      ) {
+        this.userOpen = false;
+      }
+    }
   }
 
   private getClasses(): string {
@@ -110,42 +151,56 @@ export class ModusWcNavbar {
     return classList.join(' ');
   }
 
-  // TODO - add coverage
-  // istanbul ignore next
+  private getUserInitials(): string {
+    if (!this.user?.name) return '';
+
+    return this.user.name
+      .split(' ')
+      .map((part) => part.charAt(0))
+      .join('')
+      .toUpperCase();
+  }
+
   private handleHelpClick = (
     event: CustomEvent<MouseEvent | KeyboardEvent>
   ) => {
     this.helpClick.emit(event.detail);
   };
 
-  // TODO - add coverage
-  // istanbul ignore next
+  private handleMyTrimbleClick = (
+    event: CustomEvent<MouseEvent | KeyboardEvent>
+  ) => {
+    this.myTrimbleClick.emit(event.detail);
+  };
+
+  private handleSignOutClick = (
+    event: CustomEvent<MouseEvent | KeyboardEvent>
+  ) => {
+    this.signOutClick.emit(event.detail);
+  };
+
   private handleTrimbleLogoClick = (
     event: CustomEvent<MouseEvent | KeyboardEvent>
   ) => {
     this.trimbleLogoClick.emit(event.detail);
   };
 
-  // TODO - add coverage
-  // istanbul ignore next
   private toggleMenu = () => {
     this.menuOpen = !this.menuOpen;
   };
 
-  // TODO - add coverage
-  // istanbul ignore next
   private toggleNotifications = () => {
     this.notificationsOpen = !this.notificationsOpen;
   };
 
-  // TODO - add coverage
-  // istanbul ignore next
   private toggleApps = () => {
     this.appsOpen = !this.appsOpen;
   };
 
-  // TODO - add coverage
-  // istanbul ignore next
+  private toggleUser = () => {
+    this.userOpen = !this.userOpen;
+  };
+
   render() {
     return (
       <Host class={this.getClasses()} {...this.inheritedAttributes}>
@@ -222,6 +277,60 @@ export class ModusWcNavbar {
               ref={(el) => (this.appsRef = el)}
             >
               <slot name="apps" />
+            </div>
+
+            <modus-wc-button
+              customClass="user-button"
+              onButtonClick={this.toggleUser}
+              shape="circle"
+              size="xs"
+              variant="borderless"
+            >
+              {this.user?.avatarSrc ? (
+                <modus-wc-avatar
+                  alt={this.user.avatarAlt || 'User avatar'}
+                  imgSrc={this.user.avatarSrc}
+                  size="xs"
+                />
+              ) : (
+                this.getUserInitials()
+              )}
+            </modus-wc-button>
+            <div
+              class={`user ${this.userOpen ? 'visible' : 'hidden'}`}
+              ref={(el) => (this.userRef = el)}
+            >
+              <modus-wc-card>
+                <div slot="header">
+                  {this.user?.avatarSrc ? (
+                    <modus-wc-avatar
+                      alt={this.user.avatarAlt || 'User avatar'}
+                      imgSrc={this.user.avatarSrc}
+                    />
+                  ) : (
+                    <div class="initials">{this.getUserInitials()}</div>
+                  )}
+                </div>
+                <div slot="title">{this.user?.name}</div>
+                <div>{this.user?.email}</div>
+                <div slot="actions">
+                  <modus-wc-button
+                    customClass="my-trimble"
+                    onButtonClick={this.handleMyTrimbleClick}
+                  >
+                    {this.user?.myTrimbleButton || 'Access MyTrimble'}
+                  </modus-wc-button>
+                </div>
+                <div slot="footer">
+                  <modus-wc-button
+                    customClass="sign-out"
+                    onButtonClick={this.handleSignOutClick}
+                    variant="borderless"
+                  >
+                    {this.user?.signOutButton || 'Sign out'}
+                  </modus-wc-button>
+                </div>
+              </modus-wc-card>
             </div>
           </div>
         </modus-wc-toolbar>
