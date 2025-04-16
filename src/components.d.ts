@@ -11,6 +11,7 @@ import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+import { IUserCard } from "./components/modus-wc-navbar/modus-wc-navbar";
 import { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
@@ -26,6 +27,7 @@ export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+export { IUserCard } from "./components/modus-wc-navbar/modus-wc-navbar";
 export { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
@@ -732,6 +734,10 @@ export namespace Components {
           * Custom CSS class to apply to the host element.
          */
         "customClass"?: string;
+        /**
+          * User information used to render the user card.
+         */
+        "user": IUserCard;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -2011,6 +2017,8 @@ declare global {
     };
     interface HTMLModusWcNavbarElementEventMap {
         "helpClick": MouseEvent | KeyboardEvent;
+        "myTrimbleClick": MouseEvent | KeyboardEvent;
+        "signOutClick": MouseEvent | KeyboardEvent;
         "trimbleLogoClick": MouseEvent | KeyboardEvent;
     }
     /**
@@ -3231,9 +3239,21 @@ declare namespace LocalJSX {
          */
         "onHelpClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard.
+         */
+        "onMyTrimbleClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the user profile sign out button is clicked or activated via keyboard.
+         */
+        "onSignOutClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
           * Event emitted when the Trimble logo is clicked or activated via keyboard.
          */
         "onTrimbleLogoClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * User information used to render the user card.
+         */
+        "user": IUserCard;
     }
     /**
      * A customizable input component used to create number inputs with types.

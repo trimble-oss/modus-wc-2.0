@@ -22,6 +22,19 @@ Adheres to WCAG 2.2 standards.
 | `size`             | `size`         | The size of the avatar.                     | `"lg" \| "md" \| "sm" \| "xs" \| undefined` | `'md'`      |
 
 
+## Dependencies
+
+### Used by
+
+ - [modus-wc-navbar](../modus-wc-navbar)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-navbar --> modus-wc-avatar
+  style modus-wc-avatar fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

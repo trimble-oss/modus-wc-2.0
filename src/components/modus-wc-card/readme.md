@@ -22,6 +22,19 @@ Adheres to WCAG 2.2 standards.
 | `padding`          | `padding`           | Determines if the interior padding is compact or not          | `"compact" \| "normal" \| undefined`      | `'normal'`   |
 
 
+## Dependencies
+
+### Used by
+
+ - [modus-wc-navbar](../modus-wc-navbar)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-navbar --> modus-wc-card
+  style modus-wc-card fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

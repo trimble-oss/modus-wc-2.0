@@ -2409,6 +2409,18 @@
               "description": "Reference to the host element"
             },
             {
+              "kind": "method",
+              "name": "handleClickOutside",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "MouseEvent"
+                  }
+                }
+              ]
+            },
+            {
               "kind": "field",
               "name": "menuOpen",
               "type": {
@@ -2427,6 +2439,14 @@
             {
               "kind": "method",
               "name": "render"
+            },
+            {
+              "kind": "field",
+              "name": "userOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
             }
           ],
           "attributes": [
@@ -2438,10 +2458,51 @@
               "type": {
                 "text": "string"
               }
+            },
+            {
+              "name": "user",
+              "fieldName": "user",
+              "description": "User information used to render the user card.",
+              "type": {
+                "text": "IUserCard"
+              }
             }
           ],
           "tagName": "modus-wc-navbar",
-          "events": [],
+          "events": [
+            {
+              "kind": "field",
+              "name": "helpClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the help button is clicked or activated via keyboard."
+            },
+            {
+              "kind": "field",
+              "name": "myTrimbleClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard."
+            },
+            {
+              "kind": "field",
+              "name": "signOutClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the user profile sign out button is clicked or activated via keyboard."
+            },
+            {
+              "kind": "field",
+              "name": "trimbleLogoClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the Trimble logo is clicked or activated via keyboard."
+            }
+          ],
           "customElement": true
         }
       ],
