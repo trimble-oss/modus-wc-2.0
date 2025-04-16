@@ -71,7 +71,7 @@ modus-wc-navbar .modus-wc-navbar {
     .apps {
       @extend %dropdown-menu;
 
-      right: 32px;
+      right: var(--modus-wc-spacing-2xl);
     }
 
     // User slot
