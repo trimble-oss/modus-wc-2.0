@@ -5,7 +5,7 @@
   "compilerOptions": {
     "paths": {
       "@trimble-oss/moduswebcomponents-angular": [
-        "./dist/trimble-cms/modus-wc-angular"
+        "./dist/trimble-oss/moduswebcomponents-angular"
       ]
     },
     "outDir": "./dist/out-tsc",

@@ -47,7 +47,7 @@ Append `ng<target-version>` to the version field in the `package.json`:
 
 ### Step 5: Update Peer Dependencies
 
-Add `@trimble-oss/moduswebcomponents` as a peer dependency in the `package.json` file of your library located at `ng18/projects/trimble-cms/modus-wc-angular/package.json`:
+Add `@trimble-oss/moduswebcomponents` as a peer dependency in the `package.json` file of your library located at `ng18/projects/trimble-oss/moduswebcomponents-angular/package.json`:
 
 ```json
 {
@@ -79,9 +79,9 @@ angularOutputTarget({
   componentCorePackage: '@trimble-oss/moduswebcomponents',
   outputType: 'component',
   directivesProxyFile:
-    './integrations/angular/ng18/projects/trimble-cms/modus-wc-angular/src/lib/stencil-generated/components.ts',
+    './integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
   directivesArrayFile:
-    './integrations/angular/ng18/projects/trimble-cms/modus-wc-angular/src/lib/stencil-generated/index.ts',
+    './integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/index.ts',
   valueAccessorConfigs: angularValueAccessorBindings,
 });
 ```
@@ -94,7 +94,7 @@ Run the following command from the root directory to build the Stencil component
 npm run stencil:build
 ```
 
-You should now be able to see the stencil generated angular component wrappers under `projects/trimble-cms/modus-wc-angular/src/lib/stencil-generated`
+You should now be able to see the stencil generated angular component wrappers under `projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated`
 
 ### Step 9: Add the following npmrc to your angular workspace
 
@@ -111,7 +111,7 @@ registry=https://registry.npmjs.org/
 
 ### Step 10: Create Angular Module
 
-Create a new module at `projects/trimble-cms/modus-wc-angular/src/lib/modus-wc-angular.module.ts` to import and export the generated component wrappers:
+Create a new module at `projects/trimble-oss/moduswebcomponents-angular/src/lib/modus-wc-angular.module.ts` to import and export the generated component wrappers:
 
 ```ts
 import { APP_INITIALIZER, NgModule } from '@angular/core';
@@ -155,7 +155,7 @@ Ensure `modus-wc` dependency is installed in the `ng18/` angular workspace:
 npm install @trimble-oss/moduswebcomponents
 ```
 
-You may need to edit the build script in the angular workspace (`ng18/`) to specifically target the `projects/trimble-cms/modus-wc-angular` component library.
+You may need to edit the build script in the angular workspace (`ng18/`) to specifically target the `projects/trimble-oss/moduswebcomponents-angular` component library.
 
 For example:
 
@@ -175,5 +175,5 @@ npm run build
 You can package the angular component library for local testing by running the following command:
 
 ```bash
-npm pack ./dist/trimble-cms/modus-wc-angular
+npm pack ./dist/trimble-oss/moduswebcomponents-angular
 ```

@@ -60,7 +60,7 @@ directory and then `npm install path/to/modus-wc-tarball.tgz` from `ng18` direct
 To use the Modus Angular components locally for debugging and other purposes:
 
 - From `./ng18` project directory run `npm run build`
-- From `./ng18` project directory run `npm pack ./dist/trimble-cms/modus-wc-angular`
+- From `./ng18` project directory run `npm pack ./dist/trimble-oss/moduswebcomponents-angular`
   - This will generate a tarball of the library: `trimble-cms-modus-wc-angular-0.0.1-ng18.tgz`
 
 You can now test the build locally with any Angular project by running `npm install path/to/trimble-cms-modus-wc-angular-0.0.1-ng18.tgz`

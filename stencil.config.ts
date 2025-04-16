@@ -40,18 +40,18 @@ export const config: Config = {
       componentCorePackage: '@trimble-oss/moduswebcomponents',
       outputType: 'component',
       directivesProxyFile:
-        './integrations/angular/ng17/projects/trimble-cms/modus-wc-angular/src/lib/stencil-generated/components.ts',
+        './integrations/angular/ng17/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
       directivesArrayFile:
-        './integrations/angular/ng17/projects/trimble-cms/modus-wc-angular/src/lib/stencil-generated/index.ts',
+        './integrations/angular/ng17/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/index.ts',
       valueAccessorConfigs: angularValueAccessorBindings,
     }),
     angularOutputTarget({
       componentCorePackage: '@trimble-oss/moduswebcomponents',
       outputType: 'component',
       directivesProxyFile:
-        './integrations/angular/ng18/projects/trimble-cms/modus-wc-angular/src/lib/stencil-generated/components.ts',
+        './integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
       directivesArrayFile:
-        './integrations/angular/ng18/projects/trimble-cms/modus-wc-angular/src/lib/stencil-generated/index.ts',
+        './integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/index.ts',
       valueAccessorConfigs: angularValueAccessorBindings,
     }),
     reactOutputTarget({

@@ -42,7 +42,7 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             integrations/angular/ng${{ matrix.angular-version }}/package-lock.json
-            integrations/angular/ng${{ matrix.angular-version }}/projects/trimble-cms/modus-wc-angular/package-lock.json
+            integrations/angular/ng${{ matrix.angular-version }}/projects/trimble-oss/moduswebcomponents-angular/package-lock.json
 
       # - uses: google/wireit@setup-github-actions-caching/v2
 
@@ -59,14 +59,14 @@ jobs:
           jq --arg version "${{ github.event.inputs.version }}" \
           '.dependencies["@trimble-oss/moduswebcomponents"] = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json && npm i && \
-          cd projects/trimble-cms/modus-wc-angular && \
+          cd projects/trimble-oss/moduswebcomponents-angular && \
           jq --arg version "${{ github.event.inputs.version }}" \
           '.peerDependencies["@trimble-oss/moduswebcomponents"] = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
 
       - name: Update package.json version
         run: |
-          cd projects/trimble-cms/modus-wc-angular && \
+          cd projects/trimble-oss/moduswebcomponents-angular && \
           jq --arg version "${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}" \
           '.version = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
@@ -75,7 +75,7 @@ jobs:
         run: npm run build
 
       - name: Package distribution
-        run: npm pack ./dist/trimble-cms/modus-wc-angular
+        run: npm pack ./dist/trimble-oss/moduswebcomponents-angular
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

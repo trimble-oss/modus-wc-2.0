@@ -5,21 +5,21 @@
   "projects": {
     "@trimble-oss/moduswebcomponents-angular": {
       "projectType": "library",
-      "root": "projects/trimble-cms/modus-wc-angular",
-      "sourceRoot": "projects/trimble-cms/modus-wc-angular/src",
+      "root": "projects/trimble-oss/moduswebcomponents-angular",
+      "sourceRoot": "projects/trimble-oss/moduswebcomponents-angular/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/trimble-cms/modus-wc-angular/ng-package.json"
+            "project": "projects/trimble-oss/moduswebcomponents-angular/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/trimble-cms/modus-wc-angular/tsconfig.lib.prod.json"
+              "tsConfig": "projects/trimble-oss/moduswebcomponents-angular/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/trimble-cms/modus-wc-angular/tsconfig.lib.json"
+              "tsConfig": "projects/trimble-oss/moduswebcomponents-angular/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -27,7 +27,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "tsConfig": "projects/trimble-cms/modus-wc-angular/tsconfig.spec.json",
+            "tsConfig": "projects/trimble-oss/moduswebcomponents-angular/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
               "zone.js/testing"
