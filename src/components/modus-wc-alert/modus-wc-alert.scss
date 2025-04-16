@@ -65,21 +65,37 @@ modus-wc-alert .modus-wc-alert {
   &.modus-wc-alert-info {
     background-color: var(--modus-wc-color-blue-pale);
     border-color: var(--modus-wc-color-trimble-blue);
+
+    .modus-wc-alert-icon {
+      color: var(--modus-wc-color-trimble-blue);
+    }
   }
 
   &.modus-wc-alert-error {
     background-color: var(--modus-wc-color-red-pale);
     border-color: var(--modus-wc-color-red);
+
+    .modus-wc-alert-icon {
+      color: var(--modus-wc-color-red);
+    }
   }
 
   &.modus-wc-alert-success {
     background-color: var(--modus-wc-color-green-pale);
     border-color: var(--modus-wc-color-green);
+
+    .modus-wc-alert-icon {
+      color: var(--modus-wc-color-green);
+    }
   }
 
   &.modus-wc-alert-warning {
     background-color: var(--modus-wc-color-yellow-pale);
     border-color: var(--modus-wc-color-yellow-dark);
+
+    .modus-wc-alert-icon {
+      color: var(--modus-wc-color-yellow-dark);
+    }
   }
 }
 

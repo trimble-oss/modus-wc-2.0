@@ -138,7 +138,10 @@ export class ModusWcAlert {
           role="alert"
           {...this.inheritedAttributes}
         >
-          <modus-wc-icon name={this.getIconName()} />
+          <modus-wc-icon
+            custom-class="modus-wc-alert-icon"
+            name={this.getIconName()}
+          />
           <div>
             <modus-wc-typography variant="h3" weight="bold">
               {this.alertTitle}

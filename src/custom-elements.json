@@ -192,6 +192,7 @@
             {
               "name": "variant",
               "fieldName": "variant",
+              "default": "'info'",
               "description": "The variant of the alert.",
               "type": {
                 "text": "'error' | 'info' | 'success' | 'warning'"
