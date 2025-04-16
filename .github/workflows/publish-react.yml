@@ -59,7 +59,7 @@ jobs:
       - name: Update to use new WebComponent version
         run: |
           jq --arg version "${{ github.event.inputs.version }}" \
-          '.dependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
+          '.dependencies["@trimble-oss/moduswebcomponents"] = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json && npm i
 
       - name: Update package.json version

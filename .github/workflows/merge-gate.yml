@@ -51,12 +51,13 @@ jobs:
             exit 1
           fi
 
-  build-angular-integration:
-    uses: ./.github/workflows/build-angular.yml
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  # TODO: publish first package to trimble-oss before building integrations
+  # build-angular-integration:
+  #   uses: ./.github/workflows/build-angular.yml
+  #   secrets:
+  #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  build-react-integration:
-    uses: ./.github/workflows/build-react.yml
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  # build-react-integration:
+  #   uses: ./.github/workflows/build-react.yml
+  #   secrets:
+  #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

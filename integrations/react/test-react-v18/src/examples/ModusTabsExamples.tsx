@@ -1,4 +1,4 @@
-import { ModusWcTabs as ModusTabs } from "@trimble-cms/modus-wc-react";
+import { ModusWcTabs as ModusTabs } from "@trimble-oss/moduswebcomponents-react";
 
 export default function ModusTabsExamples() {
 	type TabType = React.ComponentProps<typeof ModusTabs>['tabs'];

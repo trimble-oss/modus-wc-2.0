@@ -28,14 +28,14 @@ Ensure that you specify the target version of Angular for the `modus-wc-angular`
 </b>
 
 ```bash
-npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-angular@<latest-version>-ng<target-version>
+npm install @trimble-oss/moduswebcomponents @trimble-oss/moduswebcomponents-angular@<latest-version>-ng<target-version>
 ```
 
 ### 2. Import Modus Angular Web Components library into your Angular app's module:
 
 ```ts
 // app.module.ts
-import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-angular';
+import { ModusAngularComponentsModule } from '@trimble-oss/moduswebcomponents-angular';
 
 @NgModule({
   ...
@@ -67,7 +67,7 @@ Ensure that you specify the target version of Angular for the `modus-wc-angular`
 </b>
 
 ```bash
-npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-angular@<latest-version>-ng<target-version>
+npm install @trimble-oss/moduswebcomponents @trimble-oss/moduswebcomponents-angular@<latest-version>-ng<target-version>
 ```
 
 ### 2. Import your component library into your component.
@@ -77,7 +77,7 @@ You must distribute your components through a primary `NgModule` to use your com
 ```ts
 // app.component.ts
 import { Component } from '@angular/core';
-import { ModusAngularComponentsModule } from '@trimble-cms/modus-wc-angular';
+import { ModusAngularComponentsModule } from '@trimble-oss/moduswebcomponents-angular';
 
 @Component({
   selector: 'app-root',

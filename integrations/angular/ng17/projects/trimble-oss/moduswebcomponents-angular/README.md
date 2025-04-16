@@ -7,12 +7,12 @@ The components in this library were programmatically generated using the [Stenci
 ## Installation
 
 - Install the Modus Angular Components Library and its Modus Web Component peer dependency
-  `npm install @trimble-cms/modus-wc @trimble-cms/modus-wc-angular`
+  `npm install @trimble-oss/moduswebcomponents @trimble-oss/moduswebcomponents-angular`
 
 - Add the following snippet to your `main.ts` (or any main module)
 
   ```typescript
-  import { defineCustomElements } from '@trimble-cms/modus-wc/loader';
+  import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
 
   defineCustomElements();
   ```
@@ -48,7 +48,7 @@ To rebuild the Modus Angular Components you need to perform the following steps:
 #### Using npm link
 
 - If you want to reference a local build of `modus-wc` you can run `npm link` from the `modus-wc-2.0` root
-directory and then `npm link @trimble-cms/modus-wc` from the `ng17` directory.
+directory and then `npm link @trimble-oss/moduswebcomponents` from the `ng17` directory.
 
 #### Using npm pack
 
@@ -60,7 +60,7 @@ directory and then `npm install path/to/modus-wc-tarball.tgz` from `ng17` direct
 To use the Modus Angular components locally for debugging and other purposes:
 
 - From `./ng17` project directory run `npm run build`
-- From `./ng17` project directory run `npm pack ./dist/trimble-cms/modus-wc-angular`
+- From `./ng17` project directory run `npm pack ./dist/trimble-oss/moduswebcomponents-angular`
   - This will generate a tarball of the library: `trimble-cms-modus-wc-angular-0.0.1-ng17.tgz`
 
 You can now test the build locally with any Angular project by running `npm install path/to/trimble-cms-modus-wc-angular-0.0.1-ng17.tgz`

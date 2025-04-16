@@ -12,7 +12,7 @@ import { Meta } from '@storybook/blocks';
 </b>
 
 ```bash
-npm install @trimble-cms/modus-wc
+npm install @trimble-oss/moduswebcomponents
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ Available themes are:
 ### 2. Register custom elements:
 
 ```javascript
-import { defineCustomElements } from '@trimble-cms/modus-wc/loader';
+import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
 
 // Call during the initial loading of your application
 const Root = () => {
@@ -53,7 +53,7 @@ const Root = () => {
 Types are a crucial part of our component library, providing robust type safety and enhanced developer experience through comprehensive TypeScript definitions for all components.
 
 ```javascript
-import { ISelectOption, ModusWcSelectCustomEvent } from '@trimble-cms/modus-wc';
+import { ISelectOption, ModusWcSelectCustomEvent } from '@trimble-oss/moduswebcomponents';
 
 const options: ISelectOption[] = [
   {
