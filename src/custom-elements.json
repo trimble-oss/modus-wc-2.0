@@ -74,7 +74,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable alert component used to inform the user about important events.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable alert component used to inform the user about important events.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcAlert",
           "members": [
             {
