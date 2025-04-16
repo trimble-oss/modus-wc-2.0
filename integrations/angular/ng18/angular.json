@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "@trimble-cms/modus-wc-angular": {
+    "@trimble-oss/moduswebcomponents-angular": {
       "projectType": "library",
       "root": "projects/trimble-cms/modus-wc-angular",
       "sourceRoot": "projects/trimble-cms/modus-wc-angular/src",

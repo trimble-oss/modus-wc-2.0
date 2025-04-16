@@ -1,6 +1,6 @@
 {
-  "name": "@trimble-cms/modus-wc",
-  "version": "0.0.1",
+  "name": "@trimble-oss/moduswebcomponents",
+  "version": "0.0.0-alpha.1",
   "description": "Modus Web Components using Stencil",
   "keywords": [],
   "homepage": "https://github.com/trimble-oss/modus-wc-2.0#readme",

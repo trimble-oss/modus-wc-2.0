@@ -37,7 +37,7 @@ export const config: Config = {
       type: 'docs-readme',
     },
     angularOutputTarget({
-      componentCorePackage: '@trimble-cms/modus-wc',
+      componentCorePackage: '@trimble-oss/moduswebcomponents',
       outputType: 'component',
       directivesProxyFile:
         './integrations/angular/ng17/projects/trimble-cms/modus-wc-angular/src/lib/stencil-generated/components.ts',
@@ -46,7 +46,7 @@ export const config: Config = {
       valueAccessorConfigs: angularValueAccessorBindings,
     }),
     angularOutputTarget({
-      componentCorePackage: '@trimble-cms/modus-wc',
+      componentCorePackage: '@trimble-oss/moduswebcomponents',
       outputType: 'component',
       directivesProxyFile:
         './integrations/angular/ng18/projects/trimble-cms/modus-wc-angular/src/lib/stencil-generated/components.ts',

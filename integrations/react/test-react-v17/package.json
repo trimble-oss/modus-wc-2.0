@@ -14,7 +14,7 @@
 		"preview": "npm run build && vite preview --open"
 	},
 	"dependencies": {
-		"@trimble-cms/modus-wc-react": "file:../v17",
+		"@trimble-oss/moduswebcomponents-react": "file:../v17",
 		"react": "^17.0",
 		"react-dom": "^17.0"
 	},

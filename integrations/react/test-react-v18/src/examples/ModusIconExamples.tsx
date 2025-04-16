@@ -1,4 +1,4 @@
-import { ModusWcIcon as ModusIcon } from "@trimble-cms/modus-wc-react";
+import { ModusWcIcon as ModusIcon } from "@trimble-oss/moduswebcomponents-react";
 
 export default function ModusBadgeExamples() {
 	return (

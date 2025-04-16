@@ -1,4 +1,4 @@
-import { ModusWcBadge as ModusBadge } from "@trimble-cms/modus-wc-react";
+import { ModusWcBadge as ModusBadge } from "@trimble-oss/moduswebcomponents-react";
 
 export default function ModusBadgeExamples() {
 	return (

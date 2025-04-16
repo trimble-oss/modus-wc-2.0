@@ -26,7 +26,7 @@ Ensure that all changes intended for the release are merged into the branch you 
 
 After the workflow completes, verify that the following have been successfully published:
 
-- The `@trimble-cms/modus-wc` package to the npm registry.
+- The `@trimble-oss/moduswebcomponents` package to the npm registry.
 - The `@trimble-cms/modus-wc-react` package to the npm registry.
 - The `@trimble-cms/modus-wc-angular` package to the npm registry.
 - The [GitHub releases](https://github.com/trimble-oss/modus-wc-2.0/releases) for all three packages.
@@ -50,8 +50,8 @@ graph LR
 The `Publish & Release` workflow will handle the following steps:
 
 - Update the version in `package.json`.
-- Build the `@trimble-cms/modus-wc` package.
-- Publish the `@trimble-cms/modus-wc` package to the npm registry.
+- Build the `@trimble-oss/moduswebcomponents` package.
+- Publish the `@trimble-oss/moduswebcomponents` package to the npm registry.
 - Trigger the `Publish & Release - Angular` workflow to publish the React package.
   - Update the version in `integrations/angular/ng<version#>/package.json`.
   - Build the `@trimble-cms/modus-wc-angular` package.
