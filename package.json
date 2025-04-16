@@ -68,8 +68,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
-    "@stencil/angular-output-target": "^0.9.1",
-    "@stencil/core": "^4.22.0",
+    "@stencil/angular-output-target": "^0.10.2",
+    "@stencil/core": "^4.29.3",
     "@stencil/react-output-target": "^0.7.4",
     "@stencil/sass": "^3.0.12",
     "@stencil/store": "^2.1.2",
@@ -83,8 +83,8 @@
     "@storybook/web-components-vite": "^8.6.12",
     "@tailwindcss/typography": "^0.5.15",
     "@types/jest": "^29.5.13",
-    "@typescript-eslint/eslint-plugin": "^8.13.0",
-    "@typescript-eslint/parser": "^8.13.0",
+    "@typescript-eslint/eslint-plugin": "^8.30.1",
+    "@typescript-eslint/parser": "^8.30.1",
     "concurrently": "^9.0.1",
     "daisyui": "^4.12.13",
     "eslint": "^9.11.1",
@@ -109,7 +109,7 @@
     "wireit": "^0.14.9"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.9.5",
+    "@rollup/rollup-linux-x64-gnu": "4.40.0",
     "@trimble-oss/custom-elements-manifest-analyzer": "^0.0.4"
   },
   "wireit": {
