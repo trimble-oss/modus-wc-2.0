@@ -83,8 +83,19 @@ jobs:
           name: angular-${{ matrix.angular-version }}-distribution-v${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           path: '**/*.tgz'
 
+      - name: Set npm Registry Auth Token
+        run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+
       - name: Publish distribution
         run: npm publish *.tgz
+
+      - name: Set GitHub Registry Auth Token
+        run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish npm Package to GitHub Registry
+        run: npm publish --access public --ignore-scripts --@trimble-oss:registry='https://npm.pkg.github.com'
+        # TODO: remove once we configure this repo's permissions
+        continue-on-error: true
 
   release-angular:
     needs: build-and-publish-angular
