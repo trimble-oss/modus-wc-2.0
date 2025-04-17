@@ -5,6 +5,7 @@ import {
   Component,
   Element,
   EventEmitter,
+  Fragment,
   h,
   Host,
   Listen,
@@ -18,6 +19,19 @@ import { MenuSolidIcon } from '../../icons/menu-solid.icon';
 import { NotificationsSolidIcon } from '../../icons/notifications-solid.icon';
 import { TrimbleLogoFullIcon } from '../../icons/trimble-logo-full.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
+
+export interface INavbarVisibility {
+  /** Controls visibility of the apps button. */
+  apps?: boolean;
+  /** Controls visibility of the help button. */
+  help?: boolean;
+  /** Controls visibility of the main menu button. */
+  mainMenu?: boolean;
+  /** Controls visibility of the notifications button. */
+  notifications?: boolean;
+  /** Controls visibility of the user button. */
+  user?: boolean;
+}
 
 export interface IUserCard {
   /** The alt value to set on the avatar. */
@@ -59,6 +73,9 @@ export class ModusWcNavbar {
 
   /** User information used to render the user card. */
   @Prop() user!: IUserCard;
+
+  /** The visibility of individual navbar buttons. */
+  @Prop() visibility?: INavbarVisibility;
 
   /** Event emitted when the help button is clicked or activated via keyboard. */
   @StencilEvent() helpClick!: EventEmitter<MouseEvent | KeyboardEvent>;
@@ -206,20 +223,24 @@ export class ModusWcNavbar {
       <Host class={this.getClasses()} {...this.inheritedAttributes}>
         <modus-wc-toolbar>
           <div slot="start">
-            <modus-wc-button
-              onButtonClick={this.toggleMenu}
-              shape="square"
-              size="xs"
-              variant="borderless"
-            >
-              <MenuSolidIcon />
-            </modus-wc-button>
-            <div
-              class={`menu ${this.menuOpen ? 'visible' : 'hidden'}`}
-              ref={(el) => (this.menuRef = el)}
-            >
-              <slot name="menu" />
-            </div>
+            {this.visibility?.mainMenu && (
+              <Fragment>
+                <modus-wc-button
+                  onButtonClick={this.toggleMenu}
+                  shape="square"
+                  size="xs"
+                  variant="borderless"
+                >
+                  <MenuSolidIcon />
+                </modus-wc-button>
+                <div
+                  class={`main-menu ${this.menuOpen ? 'visible' : 'hidden'}`}
+                  ref={(el) => (this.menuRef = el)}
+                >
+                  <slot name="main-menu" />
+                </div>
+              </Fragment>
+            )}
 
             <modus-wc-button
               customClass="trimble-logo"
@@ -240,98 +261,112 @@ export class ModusWcNavbar {
           <div slot="end">
             <slot name="end" />
 
-            <modus-wc-button
-              onButtonClick={this.toggleNotifications}
-              shape="square"
-              size="xs"
-              variant="borderless"
-            >
-              <NotificationsSolidIcon />
-            </modus-wc-button>
-            <div
-              class={`notifications ${this.notificationsOpen ? 'visible' : 'hidden'}`}
-              ref={(el) => (this.notificationsRef = el)}
-            >
-              <slot name="notifications" />
-            </div>
-
-            <modus-wc-button
-              onButtonClick={this.handleHelpClick}
-              shape="square"
-              size="xs"
-              variant="borderless"
-            >
-              <HelpSolidIcon />
-            </modus-wc-button>
-
-            <modus-wc-button
-              onButtonClick={this.toggleApps}
-              shape="square"
-              size="xs"
-              variant="borderless"
-            >
-              <AppsSolidIcon />
-            </modus-wc-button>
-            <div
-              class={`apps ${this.appsOpen ? 'visible' : 'hidden'}`}
-              ref={(el) => (this.appsRef = el)}
-            >
-              <slot name="apps" />
-            </div>
-
-            <modus-wc-button
-              customClass="user-button"
-              onButtonClick={this.toggleUser}
-              shape="circle"
-              size="xs"
-              variant="borderless"
-            >
-              {this.user?.avatarSrc ? (
-                <modus-wc-avatar
-                  alt={this.user.avatarAlt || 'User avatar'}
-                  imgSrc={this.user.avatarSrc}
+            {this.visibility?.notifications && (
+              <Fragment>
+                <modus-wc-button
+                  onButtonClick={this.toggleNotifications}
+                  shape="square"
                   size="xs"
-                />
-              ) : (
-                this.getUserInitials()
-              )}
-            </modus-wc-button>
-            <div
-              class={`user ${this.userOpen ? 'visible' : 'hidden'}`}
-              ref={(el) => (this.userRef = el)}
-            >
-              <modus-wc-card>
-                <div slot="header">
+                  variant="borderless"
+                >
+                  <NotificationsSolidIcon />
+                </modus-wc-button>
+                <div
+                  class={`notifications ${this.notificationsOpen ? 'visible' : 'hidden'}`}
+                  ref={(el) => (this.notificationsRef = el)}
+                >
+                  <slot name="notifications" />
+                </div>
+              </Fragment>
+            )}
+
+            {this.visibility?.help && (
+              <modus-wc-button
+                onButtonClick={this.handleHelpClick}
+                shape="square"
+                size="xs"
+                variant="borderless"
+              >
+                <HelpSolidIcon />
+              </modus-wc-button>
+            )}
+
+            {this.visibility?.apps && (
+              <Fragment>
+                <modus-wc-button
+                  onButtonClick={this.toggleApps}
+                  shape="square"
+                  size="xs"
+                  variant="borderless"
+                >
+                  <AppsSolidIcon />
+                </modus-wc-button>
+                <div
+                  class={`apps ${this.appsOpen ? 'visible' : 'hidden'}`}
+                  ref={(el) => (this.appsRef = el)}
+                >
+                  <slot name="apps" />
+                </div>
+              </Fragment>
+            )}
+
+            {this.visibility?.user && (
+              <Fragment>
+                <modus-wc-button
+                  customClass="user-button"
+                  onButtonClick={this.toggleUser}
+                  shape="circle"
+                  size="xs"
+                  variant="borderless"
+                >
                   {this.user?.avatarSrc ? (
                     <modus-wc-avatar
                       alt={this.user.avatarAlt || 'User avatar'}
                       imgSrc={this.user.avatarSrc}
+                      size="xs"
                     />
                   ) : (
-                    <div class="initials">{this.getUserInitials()}</div>
+                    this.getUserInitials()
                   )}
+                </modus-wc-button>
+                <div
+                  class={`user ${this.userOpen ? 'visible' : 'hidden'}`}
+                  ref={(el) => (this.userRef = el)}
+                >
+                  <modus-wc-card>
+                    <div slot="header">
+                      {this.user?.avatarSrc ? (
+                        <modus-wc-avatar
+                          alt={this.user.avatarAlt || 'User avatar'}
+                          imgSrc={this.user.avatarSrc}
+                        />
+                      ) : (
+                        <div class="initials">{this.getUserInitials()}</div>
+                      )}
+                    </div>
+                    <div slot="title">{this.user?.name}</div>
+                    <div>{this.user?.email}</div>
+                    <div slot="actions">
+                      <modus-wc-button
+                        customClass="my-trimble"
+                        onButtonClick={this.handleMyTrimbleClick}
+                      >
+                        {this.user?.myTrimbleButton || 'Access MyTrimble'}
+                      </modus-wc-button>
+                    </div>
+                    <div slot="footer">
+                      <modus-wc-button
+                        customClass="sign-out"
+                        onButtonClick={this.handleSignOutClick}
+                        variant="borderless"
+                      >
+                        {this.user?.signOutButton || 'Sign out'}
+                      </modus-wc-button>
+                    </div>
+                  </modus-wc-card>
                 </div>
-                <div slot="title">{this.user?.name}</div>
-                <div>{this.user?.email}</div>
-                <div slot="actions">
-                  <modus-wc-button
-                    customClass="my-trimble"
-                    onButtonClick={this.handleMyTrimbleClick}
-                  >
-                    {this.user?.myTrimbleButton || 'Access MyTrimble'}
-                  </modus-wc-button>
-                </div>
-                <div slot="footer">
-                  <modus-wc-button
-                    customClass="sign-out"
-                    onButtonClick={this.handleSignOutClick}
-                    variant="borderless"
-                  >
-                    {this.user?.signOutButton || 'Sign out'}
-                  </modus-wc-button>
-                </div>
-              </modus-wc-card>
-            </div>
+              </Fragment>
+            )}
           </div>
         </modus-wc-toolbar>
       </Host>

@@ -13,10 +13,11 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property            | Attribute      | Description                                    | Type                  | Default     |
-| ------------------- | -------------- | ---------------------------------------------- | --------------------- | ----------- |
-| `customClass`       | `custom-class` | Custom CSS class to apply to the host element. | `string \| undefined` | `''`        |
-| `user` _(required)_ | `user`         | User information used to render the user card. | `IUserCard`           | `undefined` |
+| Property            | Attribute      | Description                                    | Type                             | Default     |
+| ------------------- | -------------- | ---------------------------------------------- | -------------------------------- | ----------- |
+| `customClass`       | `custom-class` | Custom CSS class to apply to the host element. | `string \| undefined`            | `''`        |
+| `user` _(required)_ | `user`         | User information used to render the user card. | `IUserCard`                      | `undefined` |
+| `visibility`        | `visibility`   | The visibility of individual navbar buttons.   | `INavbarVisibility \| undefined` | `undefined` |
 
 
 ## Events
