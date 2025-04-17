@@ -731,6 +731,10 @@ export namespace Components {
      */
     interface ModusWcNavbar {
         /**
+          * Applies condensed layout and styling.
+         */
+        "condensed"?: boolean;
+        /**
           * Custom CSS class to apply to the host element.
          */
         "customClass"?: string;
@@ -2020,8 +2024,10 @@ declare global {
         new (): HTMLModusWcModalElement;
     };
     interface HTMLModusWcNavbarElementEventMap {
+        "appsClick": MouseEvent | KeyboardEvent;
         "helpClick": MouseEvent | KeyboardEvent;
         "myTrimbleClick": MouseEvent | KeyboardEvent;
+        "notificationsClick": MouseEvent | KeyboardEvent;
         "signOutClick": MouseEvent | KeyboardEvent;
         "trimbleLogoClick": MouseEvent | KeyboardEvent;
     }
@@ -3235,9 +3241,17 @@ declare namespace LocalJSX {
      */
     interface ModusWcNavbar {
         /**
+          * Applies condensed layout and styling.
+         */
+        "condensed"?: boolean;
+        /**
           * Custom CSS class to apply to the host element.
          */
         "customClass"?: string;
+        /**
+          * Event emitted when the apps button is clicked or activated via keyboard.
+         */
+        "onAppsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
           * Event emitted when the help button is clicked or activated via keyboard.
          */
@@ -3246,6 +3260,10 @@ declare namespace LocalJSX {
           * Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard.
          */
         "onMyTrimbleClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the notifications button is clicked or activated via keyboard.
+         */
+        "onNotificationsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
           * Event emitted when the user profile sign out button is clicked or activated via keyboard.
          */

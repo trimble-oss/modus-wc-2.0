@@ -11,7 +11,8 @@ modus-wc-navbar .modus-wc-navbar {
   // Common dropdown styles
   %dropdown-menu {
     position: absolute;
-    top: 38px;
+    top: 45px;
+    z-index: 99;
 
     &.hidden {
       display: none;
@@ -58,6 +59,13 @@ modus-wc-navbar .modus-wc-navbar {
 
     modus-wc-button {
       padding-inline-start: var(--modus-wc-spacing-sm);
+    }
+
+    // Condensed menu
+    modus-wc-menu {
+      @extend %dropdown-menu;
+
+      right: var(--modus-wc-spacing-2xl);
     }
 
     // Notifications slot
