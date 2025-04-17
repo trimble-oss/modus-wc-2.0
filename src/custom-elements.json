@@ -2466,6 +2466,14 @@
               "type": {
                 "text": "IUserCard"
               }
+            },
+            {
+              "name": "visibility",
+              "fieldName": "visibility",
+              "description": "The visibility of individual navbar buttons.",
+              "type": {
+                "text": "INavbarVisibility"
+              }
             }
           ],
           "tagName": "modus-wc-navbar",
