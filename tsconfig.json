@@ -25,6 +25,7 @@
     "noImplicitAny": false,
     "skipLibCheck": true,
     "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
     "types": ["jest", "marked"]
   },
   "include": ["src", "./*.ts"],
