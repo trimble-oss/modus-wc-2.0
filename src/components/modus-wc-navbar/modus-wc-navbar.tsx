@@ -18,6 +18,7 @@ import { HelpSolidIcon } from '../../icons/help-solid.icon';
 import { MenuSolidIcon } from '../../icons/menu-solid.icon';
 import { MoreVerticalSolidIcon } from '../../icons/more-vertical-solid.icon';
 import { NotificationsSolidIcon } from '../../icons/notifications-solid.icon';
+import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import { TrimbleLogoFullIcon } from '../../icons/trimble-logo-full.icon';
 import { TrimbleLogoGlobeIcon } from '../../icons/trimble-logo-globe.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
@@ -31,6 +32,10 @@ export interface INavbarVisibility {
   mainMenu?: boolean;
   /** Controls visibility of the notifications button. */
   notifications?: boolean;
+  /** Controls visibility of the search button. */
+  search?: boolean;
+  /** Controls visibility of the search input. */
+  searchInput?: boolean;
   /** Controls visibility of the user button. */
   user?: boolean;
 }
@@ -61,10 +66,11 @@ export interface IUserCard {
   shadow: false,
 })
 export class ModusWcNavbar {
+  private appsRef?: HTMLDivElement;
   private inheritedAttributes: Attributes = {};
   private menuRef?: HTMLDivElement;
   private notificationsRef?: HTMLDivElement;
-  private appsRef?: HTMLDivElement;
+  private searchDebounceTimer: number | null = null;
   private userRef?: HTMLDivElement;
 
   /** Reference to the host element */
@@ -76,11 +82,22 @@ export class ModusWcNavbar {
   /** Custom CSS class to apply to the host element. */
   @Prop() customClass?: string = '';
 
+  /** Debounce time in milliseconds for search input changes. Default is 300ms. */
+  @Prop() searchDebounceMs?: number = 300;
+
   /** User information used to render the user card. */
   @Prop() user!: IUserCard;
 
   /** The visibility of individual navbar buttons. */
-  @Prop() visibility?: INavbarVisibility;
+  @Prop() visibility?: INavbarVisibility = {
+    apps: true,
+    help: true,
+    mainMenu: true,
+    notifications: true,
+    search: true,
+    searchInput: true,
+    user: true,
+  };
 
   /** Event emitted when the apps button is clicked or activated via keyboard. */
   @StencilEvent() appsClick!: EventEmitter<MouseEvent | KeyboardEvent>;
@@ -94,6 +111,12 @@ export class ModusWcNavbar {
   /** Event emitted when the notifications button is clicked or activated via keyboard. */
   @StencilEvent() notificationsClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
+  /** Event emitted when the search input value is changed. */
+  @StencilEvent() searchChange!: EventEmitter<{ value: string }>;
+
+  /** Event emitted when the search button is clicked or activated via keyboard. */
+  @StencilEvent() searchClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
   /** Event emitted when the user profile sign out button is clicked or activated via keyboard. */
   @StencilEvent() signOutClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
@@ -104,6 +127,8 @@ export class ModusWcNavbar {
   @State() private condensedMenuOpen: boolean = false;
   @State() private mainMenuOpen: boolean = false;
   @State() private notificationsOpen: boolean = false;
+  @State() private searchOpen: boolean = false;
+  @State() private searchValue: string = '';
   @State() private userOpen: boolean = false;
 
   componentWillLoad() {
@@ -113,6 +138,20 @@ export class ModusWcNavbar {
   @Listen('click', { target: 'document' })
   handleClickOutside(event: MouseEvent) {
     const target = event.target as HTMLElement;
+
+    if (this.appsOpen) {
+      const appsButton = this.el.querySelector(
+        'modus-wc-button:has(svg[class*="apps"])'
+      );
+      if (
+        this.appsRef &&
+        !this.appsRef.contains(target) &&
+        appsButton !== target &&
+        !appsButton?.contains(target)
+      ) {
+        this.appsOpen = false;
+      }
+    }
 
     if (this.mainMenuOpen) {
       const menuButton = this.el.querySelector(
@@ -139,20 +178,6 @@ export class ModusWcNavbar {
         !notificationsButton?.contains(target)
       ) {
         this.notificationsOpen = false;
-      }
-    }
-
-    if (this.appsOpen) {
-      const appsButton = this.el.querySelector(
-        'modus-wc-button:has(svg[class*="apps"])'
-      );
-      if (
-        this.appsRef &&
-        !this.appsRef.contains(target) &&
-        appsButton !== target &&
-        !appsButton?.contains(target)
-      ) {
-        this.appsOpen = false;
       }
     }
 
@@ -220,6 +245,29 @@ export class ModusWcNavbar {
     this.notificationsClick.emit(event?.detail);
   };
 
+  private handleSearchChange = (event: CustomEvent<InputEvent>) => {
+    // Update the search value immediately for UI responsiveness
+    this.searchValue = (event.target as HTMLInputElement).value;
+
+    // Clear any existing timer
+    if (this.searchDebounceTimer !== null) {
+      window.clearTimeout(this.searchDebounceTimer);
+    }
+
+    // Set a new timer
+    this.searchDebounceTimer = window.setTimeout(() => {
+      this.searchChange.emit({ value: this.searchValue });
+      this.searchDebounceTimer = null;
+    }, this.searchDebounceMs);
+  };
+
+  private handleSearchClick = (
+    event?: CustomEvent<MouseEvent | KeyboardEvent>
+  ) => {
+    this.toggleSearch();
+    this.searchClick.emit(event?.detail);
+  };
+
   private handleSignOutClick = (
     event: CustomEvent<MouseEvent | KeyboardEvent>
   ) => {
@@ -253,6 +301,14 @@ export class ModusWcNavbar {
       this.toggleCondensedMenu();
     } else {
       this.notificationsOpen = !this.notificationsOpen;
+    }
+  };
+
+  private toggleSearch = () => {
+    if (this.condensed) {
+      this.toggleCondensedMenu();
+    } else {
+      this.searchOpen = !this.searchOpen;
     }
   };
 
@@ -319,23 +375,58 @@ export class ModusWcNavbar {
                 </modus-wc-button>
                 {this.condensedMenuOpen && (
                   <modus-wc-menu bordered>
-                    <modus-wc-menu-item
-                      label="Notifications"
-                      onItemSelect={() => this.handleNotificationsClick()}
-                      value="notifications"
-                    />
-                    <modus-wc-menu-item
-                      label="Help"
-                      onItemSelect={() => this.handleHelpClick()}
-                      value="help"
-                    />
-                    <modus-wc-menu-item
-                      label="Apps"
-                      onItemSelect={() => this.handleAppsClick()}
-                      value="apps"
-                    />
+                    {this.visibility?.search && (
+                      <modus-wc-menu-item
+                        label="Search"
+                        onItemSelect={() => this.handleSearchClick()}
+                        value="search"
+                      />
+                    )}
+                    {this.visibility?.notifications && (
+                      <modus-wc-menu-item
+                        label="Notifications"
+                        onItemSelect={() => this.handleNotificationsClick()}
+                        value="notifications"
+                      />
+                    )}
+                    {this.visibility?.help && (
+                      <modus-wc-menu-item
+                        label="Help"
+                        onItemSelect={() => this.handleHelpClick()}
+                        value="help"
+                      />
+                    )}
+                    {this.visibility?.apps && (
+                      <modus-wc-menu-item
+                        label="Apps"
+                        onItemSelect={() => this.handleAppsClick()}
+                        value="apps"
+                      />
+                    )}
                   </modus-wc-menu>
                 )}
+              </Fragment>
+            )}
+
+            {this.visibility?.search && !this.condensed && (
+              <Fragment>
+                {this.visibility?.searchInput && this.searchOpen && (
+                  <modus-wc-text-input
+                    includeClear={true}
+                    includeSearch={true}
+                    onInputChange={this.handleSearchChange}
+                    placeholder="Search"
+                    value={this.searchValue}
+                  />
+                )}
+                <modus-wc-button
+                  onButtonClick={this.handleSearchClick}
+                  shape="square"
+                  size="xs"
+                  variant="borderless"
+                >
+                  <SearchSolidIcon />
+                </modus-wc-button>
               </Fragment>
             )}
 

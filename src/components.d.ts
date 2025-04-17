@@ -739,6 +739,10 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * Debounce time in milliseconds for search input changes. Default is 300ms.
+         */
+        "searchDebounceMs"?: number;
+        /**
           * User information used to render the user card.
          */
         "user": IUserCard;
@@ -2028,6 +2032,8 @@ declare global {
         "helpClick": MouseEvent | KeyboardEvent;
         "myTrimbleClick": MouseEvent | KeyboardEvent;
         "notificationsClick": MouseEvent | KeyboardEvent;
+        "searchChange": { value: string };
+        "searchClick": MouseEvent | KeyboardEvent;
         "signOutClick": MouseEvent | KeyboardEvent;
         "trimbleLogoClick": MouseEvent | KeyboardEvent;
     }
@@ -3265,6 +3271,14 @@ declare namespace LocalJSX {
          */
         "onNotificationsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * Event emitted when the search input value is changed.
+         */
+        "onSearchChange"?: (event: ModusWcNavbarCustomEvent<{ value: string }>) => void;
+        /**
+          * Event emitted when the search button is clicked or activated via keyboard.
+         */
+        "onSearchClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
           * Event emitted when the user profile sign out button is clicked or activated via keyboard.
          */
         "onSignOutClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
@@ -3272,6 +3286,10 @@ declare namespace LocalJSX {
           * Event emitted when the Trimble logo is clicked or activated via keyboard.
          */
         "onTrimbleLogoClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Debounce time in milliseconds for search input changes. Default is 300ms.
+         */
+        "searchDebounceMs"?: number;
         /**
           * User information used to render the user card.
          */
