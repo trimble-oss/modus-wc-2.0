@@ -23,9 +23,14 @@ modus-wc-navbar .modus-wc-navbar {
     }
   }
 
-  [slot='start'] {
+  %flex-align-center {
+    align-items: center;
     display: flex;
     position: relative;
+  }
+
+  [slot='start'] {
+    @extend %flex-align-center;
 
     modus-wc-button {
       padding-inline-end: var(--modus-wc-spacing-sm);
@@ -49,13 +54,11 @@ modus-wc-navbar .modus-wc-navbar {
   }
 
   [slot='center'] {
-    display: flex;
-    position: relative;
+    @extend %flex-align-center;
   }
 
   [slot='end'] {
-    display: flex;
-    position: relative;
+    @extend %flex-align-center;
 
     modus-wc-button {
       padding-inline-start: var(--modus-wc-spacing-sm);

@@ -16,12 +16,15 @@ const visibility: INavbarVisibility = {
   help: true,
   mainMenu: true,
   notifications: true,
+  search: true,
+  searchInput: true,
   user: true,
 };
 
 interface NavbarArgs {
   condensed?: boolean;
   'custom-class'?: string;
+  'search-debounce-ms'?: number;
   user: IUserCard;
   visibility?: INavbarVisibility;
 }
@@ -31,6 +34,7 @@ const meta: Meta<NavbarArgs> = {
   component: 'modus-wc-navbar',
   args: {
     condensed: false,
+    'search-debounce-ms': 300,
     user,
     visibility,
   },
@@ -63,6 +67,8 @@ const meta: Meta<NavbarArgs> = {
             - help (boolean, optional): Controls visibility of the help button
             - mainMenu (boolean, optional): Controls visibility of the main menu button
             - notifications (boolean, optional): Controls visibility of the notifications button
+            - search (boolean, optional): Controls visibility of the search button
+            - searchInput (boolean, optional): Controls visibility of the search input
             - user (boolean, optional): Controls visibility of the user button
           `,
         },
@@ -77,6 +83,8 @@ const meta: Meta<NavbarArgs> = {
         'helpClick',
         'myTrimbleClick',
         'notificationsClick',
+        'searchChange',
+        'searchClick',
         'signOutClick',
         'trimbleLogoClick',
       ],
@@ -101,6 +109,7 @@ const Template: Story = {
 <modus-wc-navbar
   ?condensed=${ifDefined(args.condensed)}
   custom-class=${ifDefined(args['custom-class'])}
+  search-debounce-ms=${ifDefined(args['search-debounce-ms'])}
   .user=${args.user}
   .visibility=${args.visibility}
 >

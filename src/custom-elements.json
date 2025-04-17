@@ -2437,6 +2437,15 @@
               }
             },
             {
+              "name": "search-debounce-ms",
+              "fieldName": "searchDebounceMs",
+              "default": "300",
+              "description": "Debounce time in milliseconds for search input changes. Default is 300ms.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
               "name": "user",
               "fieldName": "user",
               "description": "User information used to render the user card.",
@@ -2486,6 +2495,22 @@
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
               },
               "description": "Event emitted when the notifications button is clicked or activated via keyboard."
+            },
+            {
+              "kind": "field",
+              "name": "searchChange",
+              "type": {
+                "text": "EventEmitter<{ value: string }>"
+              },
+              "description": "Event emitted when the search input value is changed."
+            },
+            {
+              "kind": "field",
+              "name": "searchClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the search button is clicked or activated via keyboard."
             },
             {
               "kind": "field",
