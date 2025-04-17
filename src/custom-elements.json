@@ -2394,22 +2394,6 @@
           "members": [
             {
               "kind": "field",
-              "name": "appsOpen",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
-            },
-            {
-              "kind": "field",
-              "name": "condensedMenuOpen",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
-            },
-            {
-              "kind": "field",
               "name": "el",
               "type": {
                 "text": "HTMLElement"
@@ -2429,32 +2413,8 @@
               ]
             },
             {
-              "kind": "field",
-              "name": "mainMenuOpen",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
-            },
-            {
-              "kind": "field",
-              "name": "notificationsOpen",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
-            },
-            {
               "kind": "method",
               "name": "render"
-            },
-            {
-              "kind": "field",
-              "name": "userOpen",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
             }
           ],
           "attributes": [

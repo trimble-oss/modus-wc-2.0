@@ -100,11 +100,11 @@ export class ModusWcNavbar {
   /** Event emitted when the Trimble logo is clicked or activated via keyboard. */
   @StencilEvent() trimbleLogoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
-  @State() appsOpen: boolean = false;
-  @State() condensedMenuOpen: boolean = false;
-  @State() mainMenuOpen: boolean = false;
-  @State() notificationsOpen: boolean = false;
-  @State() userOpen: boolean = false;
+  @State() private appsOpen: boolean = false;
+  @State() private condensedMenuOpen: boolean = false;
+  @State() private mainMenuOpen: boolean = false;
+  @State() private notificationsOpen: boolean = false;
+  @State() private userOpen: boolean = false;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
