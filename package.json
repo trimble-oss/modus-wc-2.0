@@ -9,6 +9,9 @@
   "homepage": "https://github.com/trimble-oss/modus-wc-2.0#readme",
   "license": "MIT",
   "author": "Trimble Inc.",
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/trimble-oss/modus-wc-2.0/issues/"
   },
