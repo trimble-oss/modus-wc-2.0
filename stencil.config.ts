@@ -21,6 +21,7 @@ setPluginConfigurationDefaults(tailwindOpts);
 
 export const config: Config = {
   namespace: 'modus-wc',
+  buildDist: true,
   sourceMap: false,
   outputTargets: [
     {
