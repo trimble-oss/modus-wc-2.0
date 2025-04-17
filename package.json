@@ -9,6 +9,20 @@
   "homepage": "https://github.com/trimble-oss/modus-wc-2.0#readme",
   "license": "MIT",
   "author": "Trimble Inc.",
+  "contributors": [
+    {
+      "name": "gabriel-piltzer-trimble",
+      "url": "https://github.com/gabriel-piltzer-trimble"
+    },
+    {
+      "name": "stuart-rimel",
+      "url": "https://github.com/stuart-rimel"
+    },
+    {
+      "name": "Kai-Richardson",
+      "url": "https://github.com/Kai-Richardson"
+    }
+  ],
   "publishConfig": {
     "access": "public"
   },
