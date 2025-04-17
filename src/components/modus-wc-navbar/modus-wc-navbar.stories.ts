@@ -20,6 +20,7 @@ const visibility: INavbarVisibility = {
 };
 
 interface NavbarArgs {
+  condensed?: boolean;
   'custom-class'?: string;
   user: IUserCard;
   visibility?: INavbarVisibility;
@@ -29,6 +30,7 @@ const meta: Meta<NavbarArgs> = {
   title: 'Components/Navbar',
   component: 'modus-wc-navbar',
   args: {
+    condensed: false,
     user,
     visibility,
   },
@@ -71,8 +73,10 @@ const meta: Meta<NavbarArgs> = {
   parameters: {
     actions: {
       handles: [
+        'appsClick',
         'helpClick',
         'myTrimbleClick',
+        'notificationsClick',
         'signOutClick',
         'trimbleLogoClick',
       ],
@@ -95,6 +99,7 @@ const Template: Story = {
   }
 </style>
 <modus-wc-navbar
+  ?condensed=${ifDefined(args.condensed)}
   custom-class=${ifDefined(args['custom-class'])}
   .user=${args.user}
   .visibility=${args.visibility}

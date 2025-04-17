@@ -16,8 +16,10 @@ import {
 import { AppsSolidIcon } from '../../icons/apps-solid.icon';
 import { HelpSolidIcon } from '../../icons/help-solid.icon';
 import { MenuSolidIcon } from '../../icons/menu-solid.icon';
+import { MoreVerticalSolidIcon } from '../../icons/more-vertical-solid.icon';
 import { NotificationsSolidIcon } from '../../icons/notifications-solid.icon';
 import { TrimbleLogoFullIcon } from '../../icons/trimble-logo-full.icon';
+import { TrimbleLogoGlobeIcon } from '../../icons/trimble-logo-globe.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 export interface INavbarVisibility {
@@ -68,6 +70,9 @@ export class ModusWcNavbar {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** Applies condensed layout and styling. */
+  @Prop() condensed?: boolean = false;
+
   /** Custom CSS class to apply to the host element. */
   @Prop() customClass?: string = '';
 
@@ -77,11 +82,17 @@ export class ModusWcNavbar {
   /** The visibility of individual navbar buttons. */
   @Prop() visibility?: INavbarVisibility;
 
+  /** Event emitted when the apps button is clicked or activated via keyboard. */
+  @StencilEvent() appsClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
   /** Event emitted when the help button is clicked or activated via keyboard. */
   @StencilEvent() helpClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard. */
   @StencilEvent() myTrimbleClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
+  /** Event emitted when the notifications button is clicked or activated via keyboard. */
+  @StencilEvent() notificationsClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the user profile sign out button is clicked or activated via keyboard. */
   @StencilEvent() signOutClick!: EventEmitter<MouseEvent | KeyboardEvent>;
@@ -89,9 +100,10 @@ export class ModusWcNavbar {
   /** Event emitted when the Trimble logo is clicked or activated via keyboard. */
   @StencilEvent() trimbleLogoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
-  @State() menuOpen: boolean = false;
-  @State() notificationsOpen: boolean = false;
   @State() appsOpen: boolean = false;
+  @State() condensedMenuOpen: boolean = false;
+  @State() mainMenuOpen: boolean = false;
+  @State() notificationsOpen: boolean = false;
   @State() userOpen: boolean = false;
 
   componentWillLoad() {
@@ -102,7 +114,7 @@ export class ModusWcNavbar {
   handleClickOutside(event: MouseEvent) {
     const target = event.target as HTMLElement;
 
-    if (this.menuOpen) {
+    if (this.mainMenuOpen) {
       const menuButton = this.el.querySelector(
         'modus-wc-button:has(svg[class*="menu"])'
       );
@@ -112,7 +124,7 @@ export class ModusWcNavbar {
         menuButton !== target &&
         !menuButton?.contains(target)
       ) {
-        this.menuOpen = false;
+        this.mainMenuOpen = false;
       }
     }
 
@@ -178,16 +190,34 @@ export class ModusWcNavbar {
       .toUpperCase();
   }
 
-  private handleHelpClick = (
-    event: CustomEvent<MouseEvent | KeyboardEvent>
+  private handleAppsClick = (
+    event?: CustomEvent<MouseEvent | KeyboardEvent>
   ) => {
-    this.helpClick.emit(event.detail);
+    this.toggleApps();
+    this.appsClick.emit(event?.detail);
+  };
+
+  private handleHelpClick = (
+    event?: CustomEvent<MouseEvent | KeyboardEvent>
+  ) => {
+    if (this.condensed) {
+      this.toggleCondensedMenu();
+    }
+
+    this.helpClick.emit(event?.detail);
   };
 
   private handleMyTrimbleClick = (
     event: CustomEvent<MouseEvent | KeyboardEvent>
   ) => {
     this.myTrimbleClick.emit(event.detail);
+  };
+
+  private handleNotificationsClick = (
+    event?: CustomEvent<MouseEvent | KeyboardEvent>
+  ) => {
+    this.toggleNotifications();
+    this.notificationsClick.emit(event?.detail);
   };
 
   private handleSignOutClick = (
@@ -202,16 +232,28 @@ export class ModusWcNavbar {
     this.trimbleLogoClick.emit(event.detail);
   };
 
-  private toggleMenu = () => {
-    this.menuOpen = !this.menuOpen;
+  private toggleApps = () => {
+    if (this.condensed) {
+      this.toggleCondensedMenu();
+    } else {
+      this.appsOpen = !this.appsOpen;
+    }
+  };
+
+  private toggleCondensedMenu = () => {
+    this.condensedMenuOpen = !this.condensedMenuOpen;
+  };
+
+  private toggleMainMenu = () => {
+    this.mainMenuOpen = !this.mainMenuOpen;
   };
 
   private toggleNotifications = () => {
-    this.notificationsOpen = !this.notificationsOpen;
-  };
-
-  private toggleApps = () => {
-    this.appsOpen = !this.appsOpen;
+    if (this.condensed) {
+      this.toggleCondensedMenu();
+    } else {
+      this.notificationsOpen = !this.notificationsOpen;
+    }
   };
 
   private toggleUser = () => {
@@ -226,7 +268,7 @@ export class ModusWcNavbar {
             {this.visibility?.mainMenu && (
               <Fragment>
                 <modus-wc-button
-                  onButtonClick={this.toggleMenu}
+                  onButtonClick={this.toggleMainMenu}
                   shape="square"
                   size="xs"
                   variant="borderless"
@@ -234,7 +276,7 @@ export class ModusWcNavbar {
                   <MenuSolidIcon />
                 </modus-wc-button>
                 <div
-                  class={`main-menu ${this.menuOpen ? 'visible' : 'hidden'}`}
+                  class={`main-menu ${this.mainMenuOpen ? 'visible' : 'hidden'}`}
                   ref={(el) => (this.menuRef = el)}
                 >
                   <slot name="main-menu" />
@@ -248,7 +290,11 @@ export class ModusWcNavbar {
               size="xs"
               variant="borderless"
             >
-              <TrimbleLogoFullIcon />
+              {this.condensed ? (
+                <TrimbleLogoGlobeIcon />
+              ) : (
+                <TrimbleLogoFullIcon />
+              )}
             </modus-wc-button>
 
             <slot name="start" />
@@ -261,10 +307,42 @@ export class ModusWcNavbar {
           <div slot="end">
             <slot name="end" />
 
-            {this.visibility?.notifications && (
+            {this.condensed && (
               <Fragment>
                 <modus-wc-button
-                  onButtonClick={this.toggleNotifications}
+                  onButtonClick={this.toggleCondensedMenu}
+                  shape="square"
+                  size="xs"
+                  variant="borderless"
+                >
+                  <MoreVerticalSolidIcon />
+                </modus-wc-button>
+                {this.condensedMenuOpen && (
+                  <modus-wc-menu bordered>
+                    <modus-wc-menu-item
+                      label="Notifications"
+                      onItemSelect={() => this.handleNotificationsClick()}
+                      value="notifications"
+                    />
+                    <modus-wc-menu-item
+                      label="Help"
+                      onItemSelect={() => this.handleHelpClick()}
+                      value="help"
+                    />
+                    <modus-wc-menu-item
+                      label="Apps"
+                      onItemSelect={() => this.handleAppsClick()}
+                      value="apps"
+                    />
+                  </modus-wc-menu>
+                )}
+              </Fragment>
+            )}
+
+            {this.visibility?.notifications && !this.condensed && (
+              <Fragment>
+                <modus-wc-button
+                  onButtonClick={this.handleNotificationsClick}
                   shape="square"
                   size="xs"
                   variant="borderless"
@@ -280,7 +358,7 @@ export class ModusWcNavbar {
               </Fragment>
             )}
 
-            {this.visibility?.help && (
+            {this.visibility?.help && !this.condensed && (
               <modus-wc-button
                 onButtonClick={this.handleHelpClick}
                 shape="square"
@@ -291,10 +369,10 @@ export class ModusWcNavbar {
               </modus-wc-button>
             )}
 
-            {this.visibility?.apps && (
+            {this.visibility?.apps && !this.condensed && (
               <Fragment>
                 <modus-wc-button
-                  onButtonClick={this.toggleApps}
+                  onButtonClick={this.handleAppsClick}
                   shape="square"
                   size="xs"
                   variant="borderless"
