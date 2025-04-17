@@ -68,6 +68,8 @@ jobs:
 
       - name: Publish npm Package to GitHub Registry
         run: npm publish --access public --ignore-scripts --@trimble-oss:registry='https://npm.pkg.github.com'
+        # TODO: remove once we configure this repo's permissions
+        continue-on-error: true
 
   trigger-angular-publish:
     needs: build-and-publish-wc
