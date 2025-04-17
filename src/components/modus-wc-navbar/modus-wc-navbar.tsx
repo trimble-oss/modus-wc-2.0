@@ -67,6 +67,7 @@ export interface IUserCard {
 })
 export class ModusWcNavbar {
   private appsRef?: HTMLDivElement;
+  private condensedMenuRef?: HTMLElement;
   private inheritedAttributes: Attributes = {};
   private menuRef?: HTMLDivElement;
   private notificationsRef?: HTMLDivElement;
@@ -150,6 +151,20 @@ export class ModusWcNavbar {
         !appsButton?.contains(target)
       ) {
         this.appsOpen = false;
+      }
+    }
+
+    if (this.condensedMenuOpen) {
+      const condenseMenuButton = this.el.querySelector(
+        'modus-wc-button:has(svg[class*="more-vertical"])'
+      );
+      if (
+        this.condensedMenuRef &&
+        !this.condensedMenuRef.contains(target) &&
+        condenseMenuButton !== target &&
+        !condenseMenuButton?.contains(target)
+      ) {
+        this.condensedMenuOpen = false;
       }
     }
 
@@ -374,7 +389,11 @@ export class ModusWcNavbar {
                   <MoreVerticalSolidIcon />
                 </modus-wc-button>
                 {this.condensedMenuOpen && (
-                  <modus-wc-menu bordered>
+                  <modus-wc-menu
+                    bordered
+                    customClass="condense-menu"
+                    ref={(el) => (this.condensedMenuRef = el)}
+                  >
                     {this.visibility?.search && (
                       <modus-wc-menu-item
                         label="Search"

@@ -2456,6 +2456,7 @@
             {
               "name": "visibility",
               "fieldName": "visibility",
+              "default": "{ apps: true, help: true, mainMenu: true, notifications: true, search: true, searchInput: true, user: true, }",
               "description": "The visibility of individual navbar buttons.",
               "type": {
                 "text": "INavbarVisibility"
