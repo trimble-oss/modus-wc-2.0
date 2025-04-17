@@ -50,6 +50,16 @@ jobs:
       - name: Set npm Registry Auth Token
         run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
 
+      - name: Pack the package
+        run: npm pack
+        id: npm_pack
+
+      - name: Upload tarball as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-tarball
+          path: '*.tgz'
+
       - name: Publish npm Package Publicly
         run: npm publish
 
@@ -94,7 +104,7 @@ jobs:
 
       - name: Find the asset
         id: find-asset
-        run: echo "asset_path=$(find . -name 'trimble-cms-modus-wc-*.tgz')" >> $GITHUB_OUTPUT
+        run: echo "asset_path=$(find . -name 'trimble-oss-moduswebcomponents-*.tgz')" >> $GITHUB_OUTPUT
 
       - name: Rename the asset to package.tgz
         run: mv ${{ steps.find-asset.outputs.asset_path }} package.tgz
@@ -103,7 +113,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: modus-wc-${{ github.event.inputs.version }}
+          tag_name: moduswebcomponents-${{ github.event.inputs.version }}
           name: Modus Web Components ${{ github.event.inputs.version }}
           files: |
             package.tgz

@@ -107,7 +107,7 @@ jobs:
       - name: Find the release asset
         id: find-asset
         run: |
-          asset_path=$(find . -name 'trimble-cms-modus-wc-react*.tgz')
+          asset_path=$(find . -name 'trimble-oss-moduswebcomponents-react*.tgz')
           full_asset_path="${{ github.workspace }}/integrations/react/v${{ matrix.react-version }}/${asset_path}"
           echo "asset_path=$full_asset_path" >> $GITHUB_OUTPUT
 
@@ -118,7 +118,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: modus-wc-react-${{ github.event.inputs.version }}-react${{ matrix.react-version }}
+          tag_name: moduswebcomponents-react-${{ github.event.inputs.version }}-react${{ matrix.react-version }}
           name: Modus Web Components React ${{ github.event.inputs.version }} (React ${{ matrix.react-version }})
           files: |
             **/package-react${{ matrix.react-version }}.tgz
