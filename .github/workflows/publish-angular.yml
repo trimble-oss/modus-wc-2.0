@@ -20,6 +20,7 @@ jobs:
   build-and-publish-angular:
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 1
       matrix:
         angular-version: [17, 18]
 
