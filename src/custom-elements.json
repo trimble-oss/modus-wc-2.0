@@ -2394,14 +2394,6 @@
           "members": [
             {
               "kind": "field",
-              "name": "appsOpen",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
-            },
-            {
-              "kind": "field",
               "name": "el",
               "type": {
                 "text": "HTMLElement"
@@ -2421,35 +2413,20 @@
               ]
             },
             {
-              "kind": "field",
-              "name": "menuOpen",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
-            },
-            {
-              "kind": "field",
-              "name": "notificationsOpen",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
-            },
-            {
               "kind": "method",
               "name": "render"
-            },
-            {
-              "kind": "field",
-              "name": "userOpen",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false"
             }
           ],
           "attributes": [
+            {
+              "name": "condensed",
+              "fieldName": "condensed",
+              "default": "false",
+              "description": "Applies condensed layout and styling.",
+              "type": {
+                "text": "boolean"
+              }
+            },
             {
               "name": "custom-class",
               "fieldName": "customClass",
@@ -2460,16 +2437,41 @@
               }
             },
             {
+              "name": "search-debounce-ms",
+              "fieldName": "searchDebounceMs",
+              "default": "300",
+              "description": "Debounce time in milliseconds for search input changes. Default is 300ms.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
               "name": "user",
               "fieldName": "user",
               "description": "User information used to render the user card.",
               "type": {
                 "text": "IUserCard"
               }
+            },
+            {
+              "name": "visibility",
+              "fieldName": "visibility",
+              "description": "The visibility of individual navbar buttons.",
+              "type": {
+                "text": "INavbarVisibility"
+              }
             }
           ],
           "tagName": "modus-wc-navbar",
           "events": [
+            {
+              "kind": "field",
+              "name": "appsClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the apps button is clicked or activated via keyboard."
+            },
             {
               "kind": "field",
               "name": "helpClick",
@@ -2485,6 +2487,30 @@
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
               },
               "description": "Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard."
+            },
+            {
+              "kind": "field",
+              "name": "notificationsClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the notifications button is clicked or activated via keyboard."
+            },
+            {
+              "kind": "field",
+              "name": "searchChange",
+              "type": {
+                "text": "EventEmitter<{ value: string }>"
+              },
+              "description": "Event emitted when the search input value is changed."
+            },
+            {
+              "kind": "field",
+              "name": "searchClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the search button is clicked or activated via keyboard."
             },
             {
               "kind": "field",

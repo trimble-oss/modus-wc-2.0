@@ -11,7 +11,7 @@ import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
-import { IUserCard } from "./components/modus-wc-navbar/modus-wc-navbar";
+import { INavbarVisibility, IUserCard } from "./components/modus-wc-navbar/modus-wc-navbar";
 import { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
@@ -27,7 +27,7 @@ export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
-export { IUserCard } from "./components/modus-wc-navbar/modus-wc-navbar";
+export { INavbarVisibility, IUserCard } from "./components/modus-wc-navbar/modus-wc-navbar";
 export { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
@@ -731,13 +731,25 @@ export namespace Components {
      */
     interface ModusWcNavbar {
         /**
+          * Applies condensed layout and styling.
+         */
+        "condensed"?: boolean;
+        /**
           * Custom CSS class to apply to the host element.
          */
         "customClass"?: string;
         /**
+          * Debounce time in milliseconds for search input changes. Default is 300ms.
+         */
+        "searchDebounceMs"?: number;
+        /**
           * User information used to render the user card.
          */
         "user": IUserCard;
+        /**
+          * The visibility of individual navbar buttons.
+         */
+        "visibility"?: INavbarVisibility;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -2016,8 +2028,12 @@ declare global {
         new (): HTMLModusWcModalElement;
     };
     interface HTMLModusWcNavbarElementEventMap {
+        "appsClick": MouseEvent | KeyboardEvent;
         "helpClick": MouseEvent | KeyboardEvent;
         "myTrimbleClick": MouseEvent | KeyboardEvent;
+        "notificationsClick": MouseEvent | KeyboardEvent;
+        "searchChange": { value: string };
+        "searchClick": MouseEvent | KeyboardEvent;
         "signOutClick": MouseEvent | KeyboardEvent;
         "trimbleLogoClick": MouseEvent | KeyboardEvent;
     }
@@ -3231,9 +3247,17 @@ declare namespace LocalJSX {
      */
     interface ModusWcNavbar {
         /**
+          * Applies condensed layout and styling.
+         */
+        "condensed"?: boolean;
+        /**
           * Custom CSS class to apply to the host element.
          */
         "customClass"?: string;
+        /**
+          * Event emitted when the apps button is clicked or activated via keyboard.
+         */
+        "onAppsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
           * Event emitted when the help button is clicked or activated via keyboard.
          */
@@ -3243,6 +3267,18 @@ declare namespace LocalJSX {
          */
         "onMyTrimbleClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * Event emitted when the notifications button is clicked or activated via keyboard.
+         */
+        "onNotificationsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the search input value is changed.
+         */
+        "onSearchChange"?: (event: ModusWcNavbarCustomEvent<{ value: string }>) => void;
+        /**
+          * Event emitted when the search button is clicked or activated via keyboard.
+         */
+        "onSearchClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
           * Event emitted when the user profile sign out button is clicked or activated via keyboard.
          */
         "onSignOutClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
@@ -3251,9 +3287,17 @@ declare namespace LocalJSX {
          */
         "onTrimbleLogoClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * Debounce time in milliseconds for search input changes. Default is 300ms.
+         */
+        "searchDebounceMs"?: number;
+        /**
           * User information used to render the user card.
          */
         "user": IUserCard;
+        /**
+          * The visibility of individual navbar buttons.
+         */
+        "visibility"?: INavbarVisibility;
     }
     /**
      * A customizable input component used to create number inputs with types.

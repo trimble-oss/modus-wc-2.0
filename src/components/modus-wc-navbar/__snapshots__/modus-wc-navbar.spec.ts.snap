@@ -16,7 +16,7 @@ exports[`modus-wc-navbar should render with custom props and slots 1`] = `
               </svg>
             </button>
           </modus-wc-button>
-          <div class="hidden menu"></div>
+          <div class="hidden main-menu"></div>
           <modus-wc-button>
             <!---->
             <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-xs trimble-logo" tabindex="0" type="button">
@@ -63,6 +63,14 @@ exports[`modus-wc-navbar should render with custom props and slots 1`] = `
           <div slot="end">
             End
           </div>
+          <modus-wc-button>
+            <!---->
+            <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-square modus-wc-btn-xs" tabindex="0" type="button">
+              <svg aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
+              </svg>
+            </button>
+          </modus-wc-button>
           <modus-wc-button>
             <!---->
             <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-square modus-wc-btn-xs" tabindex="0" type="button">
@@ -142,7 +150,7 @@ exports[`modus-wc-navbar should render with no props 1`] = `
               </svg>
             </button>
           </modus-wc-button>
-          <div class="hidden menu"></div>
+          <div class="hidden main-menu"></div>
           <modus-wc-button>
             <!---->
             <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-xs trimble-logo" tabindex="0" type="button">
@@ -179,6 +187,14 @@ exports[`modus-wc-navbar should render with no props 1`] = `
       </div>
       <div class="modus-wc-navbar-end">
         <div slot="end">
+          <modus-wc-button>
+            <!---->
+            <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-square modus-wc-btn-xs" tabindex="0" type="button">
+              <svg aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
+              </svg>
+            </button>
+          </modus-wc-button>
           <modus-wc-button>
             <!---->
             <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-square modus-wc-btn-xs" tabindex="0" type="button">

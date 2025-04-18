@@ -2,7 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IUserCard } from './modus-wc-navbar';
+import { INavbarVisibility, IUserCard } from './modus-wc-navbar';
 
 const user: IUserCard = {
   avatarAlt: 'Sonic',
@@ -11,16 +11,32 @@ const user: IUserCard = {
   name: 'Sonic the Hedgehog',
 };
 
+const visibility: INavbarVisibility = {
+  apps: true,
+  help: true,
+  mainMenu: true,
+  notifications: true,
+  search: true,
+  searchInput: true,
+  user: true,
+};
+
 interface NavbarArgs {
+  condensed?: boolean;
   'custom-class'?: string;
+  'search-debounce-ms'?: number;
   user: IUserCard;
+  visibility?: INavbarVisibility;
 }
 
 const meta: Meta<NavbarArgs> = {
   title: 'Components/Navbar',
   component: 'modus-wc-navbar',
   args: {
+    condensed: false,
+    'search-debounce-ms': 300,
     user,
+    visibility,
   },
   argTypes: {
     user: {
@@ -40,13 +56,35 @@ const meta: Meta<NavbarArgs> = {
         },
       },
     },
+    visibility: {
+      description: 'Controls visibility of individual navbar buttons',
+      table: {
+        type: {
+          detail: `
+            Interface: INavbarVisibility
+            Properties:
+            - apps (boolean, optional): Controls visibility of the apps button
+            - help (boolean, optional): Controls visibility of the help button
+            - mainMenu (boolean, optional): Controls visibility of the main menu button
+            - notifications (boolean, optional): Controls visibility of the notifications button
+            - search (boolean, optional): Controls visibility of the search button
+            - searchInput (boolean, optional): Controls visibility of the search input
+            - user (boolean, optional): Controls visibility of the user button
+          `,
+        },
+      },
+    },
   },
   decorators: [withActions],
   parameters: {
     actions: {
       handles: [
+        'appsClick',
         'helpClick',
         'myTrimbleClick',
+        'notificationsClick',
+        'searchChange',
+        'searchClick',
         'signOutClick',
         'trimbleLogoClick',
       ],
@@ -69,10 +107,13 @@ const Template: Story = {
   }
 </style>
 <modus-wc-navbar
+  ?condensed=${ifDefined(args.condensed)}
   custom-class=${ifDefined(args['custom-class'])}
+  search-debounce-ms=${ifDefined(args['search-debounce-ms'])}
   .user=${args.user}
+  .visibility=${args.visibility}
 >
-  <div slot="menu">Menu contents</div>
+  <div slot="main-menu">Main menu contents</div>
   <div slot="notifications">Notification contents</div>
   <div slot="apps">App drawer contents</div>
 </modus-wc-navbar>

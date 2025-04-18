@@ -11,7 +11,8 @@ modus-wc-navbar .modus-wc-navbar {
   // Common dropdown styles
   %dropdown-menu {
     position: absolute;
-    top: 38px;
+    top: 45px;
+    z-index: 99;
 
     &.hidden {
       display: none;
@@ -22,16 +23,21 @@ modus-wc-navbar .modus-wc-navbar {
     }
   }
 
-  [slot='start'] {
+  %flex-align-center {
+    align-items: center;
     display: flex;
     position: relative;
+  }
+
+  [slot='start'] {
+    @extend %flex-align-center;
 
     modus-wc-button {
       padding-inline-end: var(--modus-wc-spacing-sm);
     }
 
     // Menu slot
-    .menu {
+    .main-menu {
       @extend %dropdown-menu;
 
       left: 0;
@@ -48,16 +54,21 @@ modus-wc-navbar .modus-wc-navbar {
   }
 
   [slot='center'] {
-    display: flex;
-    position: relative;
+    @extend %flex-align-center;
   }
 
   [slot='end'] {
-    display: flex;
-    position: relative;
+    @extend %flex-align-center;
 
     modus-wc-button {
       padding-inline-start: var(--modus-wc-spacing-sm);
+    }
+
+    // Condensed menu
+    modus-wc-menu {
+      @extend %dropdown-menu;
+
+      right: var(--modus-wc-spacing-2xl);
     }
 
     // Notifications slot
