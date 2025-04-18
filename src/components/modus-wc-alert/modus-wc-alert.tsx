@@ -3,6 +3,7 @@ import {
   Element,
   Event,
   EventEmitter,
+  FunctionalComponent,
   h,
   Host,
   Listen,
@@ -77,27 +78,14 @@ export class ModusWcAlert {
     return classList.join(' ');
   }
 
-  private getIconName(): string {
-    if (this.icon) return this.icon;
+  private getLeadingIcon(): FunctionalComponent {
+    if (this.icon) {
+      return (
+        <modus-wc-icon custom-class="modus-wc-alert-icon" name={this.icon} />
+      );
+    }
 
     switch (this.variant) {
-      case 'error':
-        return 'error';
-      case 'info':
-        return 'info';
-      case 'success':
-        return 'success';
-      case 'warning':
-        return 'warning';
-      default:
-        return 'info';
-    }
-  }
-
-  private getLeadingIcon() {
-    const iconName = this.getIconName();
-
-    switch (iconName) {
       case 'error':
         return <AlertSolidIcon className="modus-wc-alert-icon" />;
       case 'info':
@@ -107,12 +95,7 @@ export class ModusWcAlert {
       case 'warning':
         return <WarningSolidIcon className="modus-wc-alert-icon" />;
       default:
-        return (
-          <modus-wc-icon
-            custom-class="modus-wc-alert-icon"
-            name={this.getIconName()}
-          />
-        );
+        return <InfoSolidIcon className="modus-wc-alert-icon" />;
     }
   }
 
