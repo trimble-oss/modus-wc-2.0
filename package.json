@@ -1,20 +1,37 @@
 {
   "name": "@trimble-oss/moduswebcomponents",
   "version": "0.0.0-alpha.1",
-  "description": "Modus Web Components 2.0 using Stencil",
+  "description": "Modus Web Components is a modern, accessible UI library built with Stencil JS that provides reusable web components following Trimble's Modus design system. This updated version focuses on improved flexibility, enhanced theming options, comprehensive customization capabilities, and WCAG 2.2 compliance. The library offers a collection of enterprise-ready components that can be used in any web framework or vanilla JavaScript application. Separate SPA framework integrations are published for Angular and React.",
   "keywords": [
     "trimble",
     "modus"
   ],
-  "homepage": "https://github.com/trimble-oss/modus-wc-2.0#readme",
+  "homepage": "https://trimble-oss.github.io/modus-wc-2.0/main",
   "license": "MIT",
   "author": "Trimble Inc.",
+  "contributors": [
+    {
+      "name": "gabriel-piltzer-trimble",
+      "url": "https://github.com/gabriel-piltzer-trimble"
+    },
+    {
+      "name": "stuart-rimel",
+      "url": "https://github.com/stuart-rimel"
+    },
+    {
+      "name": "Kai-Richardson",
+      "url": "https://github.com/Kai-Richardson"
+    }
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/trimble-oss/modus-wc-2.0/issues/"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/trimble-oss/modus-wc-2.0.git"
+    "url": "git+https://github.com/trimble-oss/modus-wc-2.0.git"
   },
   "type": "module",
   "main": "dist/index.cjs.js",

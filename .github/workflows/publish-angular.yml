@@ -20,6 +20,8 @@ jobs:
   build-and-publish-angular:
     runs-on: ubuntu-latest
     strategy:
+      # prevents race conditions
+      max-parallel: 1
       matrix:
         angular-version: [17, 18]
 
@@ -83,8 +85,19 @@ jobs:
           name: angular-${{ matrix.angular-version }}-distribution-v${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           path: '**/*.tgz'
 
+      - name: Set npm Registry Auth Token
+        run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+
       - name: Publish distribution
         run: npm publish *.tgz
+
+      - name: Set GitHub Registry Auth Token
+        run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish npm Package to GitHub Registry
+        run: npm publish --access public --ignore-scripts --@trimble-oss:registry='https://npm.pkg.github.com'
+        # TODO: remove once we configure this repo's permissions
+        continue-on-error: true
 
   release-angular:
     needs: build-and-publish-angular
@@ -110,7 +123,7 @@ jobs:
       - name: Find the release asset
         id: find-asset
         run: |
-          asset_path=$(find . -name 'trimble-cms-modus-wc-angular*.tgz')
+          asset_path=$(find . -name 'trimble-oss-moduswebcomponents-angular*.tgz')
           full_asset_path="${{ github.workspace }}/integrations/angular/ng${{ matrix.angular-version }}/${asset_path}"
           echo "asset_path=$full_asset_path" >> $GITHUB_OUTPUT
 
@@ -122,7 +135,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: modus-wc-angular-${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
+          tag_name: moduswebcomponents-angular-${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           name: Modus Web Components Angular ${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           files: |
             **/package-ng${{ matrix.angular-version }}.tgz
