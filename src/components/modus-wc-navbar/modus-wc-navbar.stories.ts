@@ -2,9 +2,20 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { INavbarVisibility, IUserCard } from './modus-wc-navbar';
+import {
+  INavbarTextOverrides,
+  INavbarUserCard,
+  INavbarVisibility,
+} from './modus-wc-navbar';
 
-const user: IUserCard = {
+const textOverrides: INavbarTextOverrides = {
+  apps: 'Apps',
+  help: 'Help',
+  notifications: 'Notifications',
+  search: 'Search',
+};
+
+const user: INavbarUserCard = {
   avatarAlt: 'Sonic',
   avatarSrc: 'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
   email: 'sonic@trimble.com',
@@ -25,7 +36,8 @@ interface NavbarArgs {
   condensed?: boolean;
   'custom-class'?: string;
   'search-debounce-ms'?: number;
-  user: IUserCard;
+  'text-overrides'?: INavbarTextOverrides;
+  user: INavbarUserCard;
   visibility?: INavbarVisibility;
 }
 
@@ -35,10 +47,29 @@ const meta: Meta<NavbarArgs> = {
   args: {
     condensed: false,
     'search-debounce-ms': 300,
+    'text-overrides': textOverrides,
     user,
     visibility,
   },
   argTypes: {
+    'text-overrides': {
+      description: 'Text replacements for navbar menu items',
+      table: {
+        type: {
+          detail: `
+            Interface: INavbarTextOverrides
+            Properties:
+            - apps (string, optional): Replaces the text for "Apps" in the condensed menu
+            - help (string, optional): Replaces the text for "Help" in the condensed menu
+            - notifications (string, optional): Replaces the text for "Notifications" in the condensed menu
+            - search (string, optional): Replaces the text for "Search" in the condensed menu
+          `,
+        },
+      },
+      control: {
+        type: 'object',
+      },
+    },
     user: {
       description: 'User profile card information',
       table: {
@@ -103,13 +134,14 @@ const Template: Story = {
     return html`
 <style>
   div[id^='story--components-navbar--default'] {
-    height: 360px;
+    height: 365px;
   }
 </style>
 <modus-wc-navbar
   ?condensed=${ifDefined(args.condensed)}
   custom-class=${ifDefined(args['custom-class'])}
   search-debounce-ms=${ifDefined(args['search-debounce-ms'])}
+  .textOverrides=${ifDefined(args['text-overrides'])}
   .user=${args.user}
   .visibility=${args.visibility}
 >

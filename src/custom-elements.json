@@ -2446,17 +2446,26 @@
               }
             },
             {
+              "name": "text-overrides",
+              "fieldName": "textOverrides",
+              "description": "Text replacements for the navbar.",
+              "type": {
+                "text": "INavbarTextOverrides"
+              }
+            },
+            {
               "name": "user",
               "fieldName": "user",
               "description": "User information used to render the user card.",
               "type": {
-                "text": "IUserCard"
+                "text": "INavbarUserCard"
               }
             },
             {
               "name": "visibility",
               "fieldName": "visibility",
-              "description": "The visibility of individual navbar buttons.",
+              "default": "{ apps: false, help: false, mainMenu: false, notifications: false, search: false, searchInput: false, user: true, }",
+              "description": "The visibility of individual navbar buttons. Default is user profile visible, others hidden.",
               "type": {
                 "text": "INavbarVisibility"
               }

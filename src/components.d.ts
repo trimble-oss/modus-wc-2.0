@@ -11,7 +11,7 @@ import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
-import { INavbarVisibility, IUserCard } from "./components/modus-wc-navbar/modus-wc-navbar";
+import { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 import { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
@@ -27,7 +27,7 @@ export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
-export { INavbarVisibility, IUserCard } from "./components/modus-wc-navbar/modus-wc-navbar";
+export { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 export { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
@@ -743,11 +743,15 @@ export namespace Components {
          */
         "searchDebounceMs"?: number;
         /**
+          * Text replacements for the navbar.
+         */
+        "textOverrides"?: INavbarTextOverrides;
+        /**
           * User information used to render the user card.
          */
-        "user": IUserCard;
+        "user": INavbarUserCard;
         /**
-          * The visibility of individual navbar buttons.
+          * The visibility of individual navbar buttons. Default is user profile visible, others hidden.
          */
         "visibility"?: INavbarVisibility;
     }
@@ -3291,11 +3295,15 @@ declare namespace LocalJSX {
          */
         "searchDebounceMs"?: number;
         /**
+          * Text replacements for the navbar.
+         */
+        "textOverrides"?: INavbarTextOverrides;
+        /**
           * User information used to render the user card.
          */
-        "user": IUserCard;
+        "user": INavbarUserCard;
         /**
-          * The visibility of individual navbar buttons.
+          * The visibility of individual navbar buttons. Default is user profile visible, others hidden.
          */
         "visibility"?: INavbarVisibility;
     }
