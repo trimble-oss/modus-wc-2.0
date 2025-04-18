@@ -8,9 +8,9 @@ This is a React wrapper library for Modus Web Components 2.0 and the components 
 
 Install the Modus React Components Library using npm:
 ```bash
-npm install @trimble-cms/modus-wc-react@<latest-version>-react<target-version>
+npm install @trimble-oss/moduswebcomponents-react@<latest-version>-react<target-version>
 # e.g.,
-npm install @trimble-cms/modus-wc-react@1.0.0-react17
+npm install @trimble-oss/moduswebcomponents-react@1.0.0-react17
 ```
 
 ## Example Usage

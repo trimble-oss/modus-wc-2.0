@@ -4,8 +4,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "@trimble-cms/modus-wc-angular": [
-        "./dist/trimble-cms/modus-wc-angular"
+      "@trimble-oss/moduswebcomponents-angular": [
+        "./dist/trimble-oss/moduswebcomponents-angular"
       ]
     },
     "outDir": "./dist/out-tsc",

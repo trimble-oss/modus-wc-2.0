@@ -1,6 +1,6 @@
 {
   "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../../dist/trimble-cms/modus-wc-angular",
+  "dest": "../../../dist/trimble-oss/moduswebcomponents-angular",
   "lib": {
     "entryFile": "src/public-api.ts"
   }

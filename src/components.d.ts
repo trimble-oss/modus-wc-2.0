@@ -11,6 +11,7 @@ import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+import { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 import { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
@@ -26,6 +27,7 @@ export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+export { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 export { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
@@ -722,6 +724,36 @@ export namespace Components {
           * Specifies whether to show the fullscreen toggle icon button
          */
         "showFullscreenToggle"?: boolean;
+    }
+    /**
+     * A customizable navbar component used for top level navigation of all Trimble applications.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcNavbar {
+        /**
+          * Applies condensed layout and styling.
+         */
+        "condensed"?: boolean;
+        /**
+          * Custom CSS class to apply to the host element.
+         */
+        "customClass"?: string;
+        /**
+          * Debounce time in milliseconds for search input changes. Default is 300ms.
+         */
+        "searchDebounceMs"?: number;
+        /**
+          * Text replacements for the navbar.
+         */
+        "textOverrides"?: INavbarTextOverrides;
+        /**
+          * User information used to render the user card.
+         */
+        "user": INavbarUserCard;
+        /**
+          * The visibility of individual navbar buttons. Default is user profile visible, others hidden.
+         */
+        "visibility"?: INavbarVisibility;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -1610,6 +1642,10 @@ export interface ModusWcMenuItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcMenuItemElement;
 }
+export interface ModusWcNavbarCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcNavbarElement;
+}
 export interface ModusWcNumberInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcNumberInputElement;
@@ -1994,6 +2030,34 @@ declare global {
     var HTMLModusWcModalElement: {
         prototype: HTMLModusWcModalElement;
         new (): HTMLModusWcModalElement;
+    };
+    interface HTMLModusWcNavbarElementEventMap {
+        "appsClick": MouseEvent | KeyboardEvent;
+        "helpClick": MouseEvent | KeyboardEvent;
+        "myTrimbleClick": MouseEvent | KeyboardEvent;
+        "notificationsClick": MouseEvent | KeyboardEvent;
+        "searchChange": { value: string };
+        "searchClick": MouseEvent | KeyboardEvent;
+        "signOutClick": MouseEvent | KeyboardEvent;
+        "trimbleLogoClick": MouseEvent | KeyboardEvent;
+    }
+    /**
+     * A customizable navbar component used for top level navigation of all Trimble applications.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcNavbarElement extends Components.ModusWcNavbar, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcNavbarElementEventMap>(type: K, listener: (this: HTMLModusWcNavbarElement, ev: ModusWcNavbarCustomEvent<HTMLModusWcNavbarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcNavbarElementEventMap>(type: K, listener: (this: HTMLModusWcNavbarElement, ev: ModusWcNavbarCustomEvent<HTMLModusWcNavbarElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcNavbarElement: {
+        prototype: HTMLModusWcNavbarElement;
+        new (): HTMLModusWcNavbarElement;
     };
     interface HTMLModusWcNumberInputElementEventMap {
         "inputBlur": FocusEvent;
@@ -2390,6 +2454,7 @@ declare global {
         "modus-wc-menu": HTMLModusWcMenuElement;
         "modus-wc-menu-item": HTMLModusWcMenuItemElement;
         "modus-wc-modal": HTMLModusWcModalElement;
+        "modus-wc-navbar": HTMLModusWcNavbarElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-pagination": HTMLModusWcPaginationElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
@@ -3179,6 +3244,68 @@ declare namespace LocalJSX {
           * Specifies whether to show the fullscreen toggle icon button
          */
         "showFullscreenToggle"?: boolean;
+    }
+    /**
+     * A customizable navbar component used for top level navigation of all Trimble applications.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcNavbar {
+        /**
+          * Applies condensed layout and styling.
+         */
+        "condensed"?: boolean;
+        /**
+          * Custom CSS class to apply to the host element.
+         */
+        "customClass"?: string;
+        /**
+          * Event emitted when the apps button is clicked or activated via keyboard.
+         */
+        "onAppsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the help button is clicked or activated via keyboard.
+         */
+        "onHelpClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard.
+         */
+        "onMyTrimbleClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the notifications button is clicked or activated via keyboard.
+         */
+        "onNotificationsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the search input value is changed.
+         */
+        "onSearchChange"?: (event: ModusWcNavbarCustomEvent<{ value: string }>) => void;
+        /**
+          * Event emitted when the search button is clicked or activated via keyboard.
+         */
+        "onSearchClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the user profile sign out button is clicked or activated via keyboard.
+         */
+        "onSignOutClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the Trimble logo is clicked or activated via keyboard.
+         */
+        "onTrimbleLogoClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Debounce time in milliseconds for search input changes. Default is 300ms.
+         */
+        "searchDebounceMs"?: number;
+        /**
+          * Text replacements for the navbar.
+         */
+        "textOverrides"?: INavbarTextOverrides;
+        /**
+          * User information used to render the user card.
+         */
+        "user": INavbarUserCard;
+        /**
+          * The visibility of individual navbar buttons. Default is user profile visible, others hidden.
+         */
+        "visibility"?: INavbarVisibility;
     }
     /**
      * A customizable input component used to create number inputs with types.
@@ -4169,6 +4296,7 @@ declare namespace LocalJSX {
         "modus-wc-menu": ModusWcMenu;
         "modus-wc-menu-item": ModusWcMenuItem;
         "modus-wc-modal": ModusWcModal;
+        "modus-wc-navbar": ModusWcNavbar;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-pagination": ModusWcPagination;
         "modus-wc-progress": ModusWcProgress;
@@ -4306,6 +4434,11 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
+            /**
+             * A customizable navbar component used for top level navigation of all Trimble applications.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-navbar": LocalJSX.ModusWcNavbar & JSXBase.HTMLAttributes<HTMLModusWcNavbarElement>;
             /**
              * A customizable input component used to create number inputs with types.
              * Adheres to WCAG 2.2 standards.

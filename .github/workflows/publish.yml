@@ -30,8 +30,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ vars.NODE_VERSION }}
           cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
 
       # - uses: google/wireit@setup-github-actions-caching/v2
 
@@ -47,13 +47,8 @@ jobs:
       - name: Build web components
         run: npm run build:ci
 
-      - name: Configure npm registry
-        run: npm config set registry https://artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/
-
-      - name: Authenticate to Artifactory
-        run: echo "//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${ARTIFACTORY_TOKEN}" >> .npmrc
-        env:
-          ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Set npm Registry Auth Token
+        run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
 
       - name: Pack the package
         run: npm pack
@@ -65,8 +60,16 @@ jobs:
           name: npm-tarball
           path: '*.tgz'
 
-      - name: Publish
+      - name: Publish npm Package Publicly
         run: npm publish
+
+      - name: Set GitHub Registry Auth Token
+        run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish npm Package to GitHub Registry
+        run: npm publish --access public --ignore-scripts --@trimble-oss:registry='https://npm.pkg.github.com'
+        # TODO: remove once we configure this repo's permissions
+        continue-on-error: true
 
   trigger-angular-publish:
     needs: build-and-publish-wc
@@ -103,7 +106,7 @@ jobs:
 
       - name: Find the asset
         id: find-asset
-        run: echo "asset_path=$(find . -name 'trimble-cms-modus-wc-*.tgz')" >> $GITHUB_OUTPUT
+        run: echo "asset_path=$(find . -name 'trimble-oss-moduswebcomponents-*.tgz')" >> $GITHUB_OUTPUT
 
       - name: Rename the asset to package.tgz
         run: mv ${{ steps.find-asset.outputs.asset_path }} package.tgz
@@ -112,7 +115,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: modus-wc-${{ github.event.inputs.version }}
+          tag_name: moduswebcomponents-${{ github.event.inputs.version }}
           name: Modus Web Components ${{ github.event.inputs.version }}
           files: |
             package.tgz

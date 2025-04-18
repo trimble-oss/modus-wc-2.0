@@ -1,5 +1,5 @@
 {
-  "name": "@trimble-cms/modus-wc-angular",
+  "name": "@trimble-oss/moduswebcomponents-angular",
   "version": "0.0.1-ng18",
   "description": "Trimble Modus Angular Component Library",
   "license": "MIT",
@@ -7,10 +7,13 @@
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",
-    "@trimble-cms/modus-wc": "0.0.13"
+    "@trimble-oss/moduswebcomponents": "0.0.0-alpha.1"
   },
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
 }
