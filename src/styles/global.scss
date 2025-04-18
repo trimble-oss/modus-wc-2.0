@@ -1,5 +1,6 @@
-@import 'mixins';
-@import 'variables';
+@use 'variables';
+@forward 'mixins';
+@forward 'variables';
 
 @supports (color: oklch(0% 0 0)) {
   :root {
