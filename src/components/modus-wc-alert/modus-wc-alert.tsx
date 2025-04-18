@@ -10,7 +10,11 @@ import {
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
+import { AlertSolidIcon } from '../../icons/alert-solid.icon';
+import { CheckCircleSolidIcon } from '../../icons/check-circle-solid.icon';
 import { CloseSolidIcon } from '../../icons/close-solid.icon';
+import { InfoSolidIcon } from '../../icons/info-solid.icon';
+import { WarningSolidIcon } from '../../icons/warning-solid.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -78,15 +82,37 @@ export class ModusWcAlert {
 
     switch (this.variant) {
       case 'error':
-        return 'alert';
+        return 'error';
       case 'info':
         return 'info';
       case 'success':
-        return 'check_circle';
+        return 'success';
       case 'warning':
-        return 'info';
+        return 'warning';
       default:
         return 'info';
+    }
+  }
+
+  private getLeadingIcon() {
+    const iconName = this.getIconName();
+
+    switch (iconName) {
+      case 'error':
+        return <AlertSolidIcon className="modus-wc-alert-icon" />;
+      case 'info':
+        return <InfoSolidIcon className="modus-wc-alert-icon" />;
+      case 'success':
+        return <CheckCircleSolidIcon className="modus-wc-alert-icon" />;
+      case 'warning':
+        return <WarningSolidIcon className="modus-wc-alert-icon" />;
+      default:
+        return (
+          <modus-wc-icon
+            custom-class="modus-wc-alert-icon"
+            name={this.getIconName()}
+          />
+        );
     }
   }
 
@@ -138,10 +164,7 @@ export class ModusWcAlert {
           role="alert"
           {...this.inheritedAttributes}
         >
-          <modus-wc-icon
-            custom-class="modus-wc-alert-icon"
-            name={this.getIconName()}
-          />
+          {this.getLeadingIcon()}
           <div>
             <modus-wc-typography variant="h3" weight="bold">
               {this.alertTitle}
