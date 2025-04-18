@@ -23,6 +23,17 @@ import { TrimbleLogoFullIcon } from '../../icons/trimble-logo-full.icon';
 import { TrimbleLogoGlobeIcon } from '../../icons/trimble-logo-globe.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
+export interface INavbarTextOverrides {
+  /** Replaces the text for "Apps" in the condensed menu. */
+  apps?: string;
+  /** Replaces the text for "Help" in the condensed menu. */
+  help?: string;
+  /** Replaces the text for "Notifications" in the condensed menu. */
+  notifications?: string;
+  /** Replaces the text for "Search" in the condensed menu. */
+  search?: string;
+}
+
 export interface INavbarVisibility {
   /** Controls visibility of the apps button. */
   apps?: boolean;
@@ -40,7 +51,7 @@ export interface INavbarVisibility {
   user?: boolean;
 }
 
-export interface IUserCard {
+export interface INavbarUserCard {
   /** The alt value to set on the avatar. */
   avatarAlt?: string;
   /** The avatar image source value. */
@@ -86,17 +97,20 @@ export class ModusWcNavbar {
   /** Debounce time in milliseconds for search input changes. Default is 300ms. */
   @Prop() searchDebounceMs?: number = 300;
 
-  /** User information used to render the user card. */
-  @Prop() user!: IUserCard;
+  /** Text replacements for the navbar. */
+  @Prop() textOverrides?: INavbarTextOverrides;
 
-  /** The visibility of individual navbar buttons. */
+  /** User information used to render the user card. */
+  @Prop() user!: INavbarUserCard;
+
+  /** The visibility of individual navbar buttons. Default is user profile visible, others hidden. */
   @Prop() visibility?: INavbarVisibility = {
-    apps: true,
-    help: true,
-    mainMenu: true,
-    notifications: true,
-    search: true,
-    searchInput: true,
+    apps: false,
+    help: false,
+    mainMenu: false,
+    notifications: false,
+    search: false,
+    searchInput: false,
     user: true,
   };
 
@@ -332,6 +346,12 @@ export class ModusWcNavbar {
   };
 
   render() {
+    const condensedHasItems =
+      this.visibility?.apps ||
+      this.visibility?.help ||
+      this.visibility?.notifications ||
+      this.visibility?.search;
+
     return (
       <Host class={this.getClasses()} {...this.inheritedAttributes}>
         <modus-wc-toolbar>
@@ -378,7 +398,7 @@ export class ModusWcNavbar {
           <div slot="end">
             <slot name="end" />
 
-            {this.condensed && (
+            {this.condensed && condensedHasItems && (
               <Fragment>
                 <modus-wc-button
                   onButtonClick={this.toggleCondensedMenu}
@@ -396,28 +416,30 @@ export class ModusWcNavbar {
                   >
                     {this.visibility?.search && (
                       <modus-wc-menu-item
-                        label="Search"
+                        label={this.textOverrides?.search || 'Search'}
                         onItemSelect={() => this.handleSearchClick()}
                         value="search"
                       />
                     )}
                     {this.visibility?.notifications && (
                       <modus-wc-menu-item
-                        label="Notifications"
+                        label={
+                          this.textOverrides?.notifications || 'Notifications'
+                        }
                         onItemSelect={() => this.handleNotificationsClick()}
                         value="notifications"
                       />
                     )}
                     {this.visibility?.help && (
                       <modus-wc-menu-item
-                        label="Help"
+                        label={this.textOverrides?.help || 'Help'}
                         onItemSelect={() => this.handleHelpClick()}
                         value="help"
                       />
                     )}
                     {this.visibility?.apps && (
                       <modus-wc-menu-item
-                        label="Apps"
+                        label={this.textOverrides?.apps || 'Apps'}
                         onItemSelect={() => this.handleAppsClick()}
                         value="apps"
                       />
@@ -434,7 +456,7 @@ export class ModusWcNavbar {
                     includeClear={true}
                     includeSearch={true}
                     onInputChange={this.handleSearchChange}
-                    placeholder="Search"
+                    placeholder={this.textOverrides?.search || 'Search'}
                     value={this.searchValue}
                   />
                 )}

@@ -69,6 +69,7 @@ modus-wc-navbar .modus-wc-navbar {
       @extend %dropdown-menu;
 
       right: var(--modus-wc-spacing-2xl);
+      z-index: 99;
     }
 
     // Notifications slot
