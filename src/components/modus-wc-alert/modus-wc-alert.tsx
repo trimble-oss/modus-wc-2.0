@@ -88,12 +88,11 @@ export class ModusWcAlert {
     switch (this.variant) {
       case 'error':
         return <AlertSolidIcon className="modus-wc-alert-icon" />;
-      case 'info':
-        return <InfoSolidIcon className="modus-wc-alert-icon" />;
       case 'success':
         return <CheckCircleSolidIcon className="modus-wc-alert-icon" />;
       case 'warning':
         return <WarningSolidIcon className="modus-wc-alert-icon" />;
+      case 'info':
       default:
         return <InfoSolidIcon className="modus-wc-alert-icon" />;
     }
