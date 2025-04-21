@@ -2,9 +2,9 @@ import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { convertPropsToClasses } from './modus-wc-input-feedback.tailwind';
-import { CheckCircleSolidIcon } from '../../icons/check-circle-solid.icon';
-import { InfoSolidIcon } from '../../icons/info-solid.icon';
-import { WarningSolidIcon } from '../../icons/warning-solid.icon';
+import { CheckCircleOutlineIcon } from '../../icons/check-circle-outline.icon';
+import { InfoOutlineIcon } from '../../icons/info-outline.icon';
+import { WarningOutlineIcon } from '../../icons/warning-outline.icon';
 
 export type IInputFeedbackLevel = 'error' | 'info' | 'success' | 'warning';
 
@@ -62,15 +62,15 @@ export class ModusWcInputFeedback {
   private getPresetIcon() {
     switch (this.level) {
       case 'error':
-        return <WarningSolidIcon className="modus-wc-input-feedback-icon" />;
+        return <WarningOutlineIcon className="modus-wc-input-feedback-icon" />;
       case 'info':
-        return <InfoSolidIcon className="modus-wc-input-feedback-icon" />;
+        return <InfoOutlineIcon className="modus-wc-input-feedback-icon" />;
       case 'success':
         return (
-          <CheckCircleSolidIcon className="modus-wc-input-feedback-icon" />
+          <CheckCircleOutlineIcon className="modus-wc-input-feedback-icon" />
         );
       case 'warning':
-        return <WarningSolidIcon className="modus-wc-input-feedback-icon" />;
+        return <WarningOutlineIcon className="modus-wc-input-feedback-icon" />;
     }
   }
 

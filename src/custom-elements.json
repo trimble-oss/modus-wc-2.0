@@ -74,7 +74,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable alert component used to inform the user about important events.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable alert component used to inform the user about important events.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcAlert",
           "members": [
             {
@@ -192,6 +192,7 @@
             {
               "name": "variant",
               "fieldName": "variant",
+              "default": "'info'",
               "description": "The variant of the alert.",
               "type": {
                 "text": "'error' | 'info' | 'success' | 'warning'"
@@ -1781,7 +1782,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable feedback component used to provide additional context related to form input interactions.\r\n\r\n<b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable feedback component used to provide additional context related to form input interactions.\n\n<b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcInputFeedback",
           "members": [
             {
