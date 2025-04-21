@@ -11,9 +11,7 @@ exports[`modus-wc-progress should render label 1`] = `
 <modus-wc-progress class="modus-wc-progress-container" label="Loading..." value="0">
   <!---->
   <progress aria-label="Custom Progress Bar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="modus-wc-progress modus-wc-w-full" max="100" value="0"></progress>
-  <span class="modus-wc-progress-label">
-    Loading...
-  </span>
+  <modus-wc-input-label labeltext="Loading..."></modus-wc-input-label>
 </modus-wc-progress>
 `;
 
