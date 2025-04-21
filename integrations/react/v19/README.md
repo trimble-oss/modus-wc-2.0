@@ -2,7 +2,7 @@
 
 ## About
 
-This is a React wrapper library for Modus Web Components 2.0 and the components were programmatically generated using the [Stencil](https://stenciljs.com/docs/react) for React [v18.3](https://github.com/facebook/react/blob/main/CHANGELOG.md#1831-april-26-2024).
+This is a React wrapper library for Modus Web Components 2.0 and the components were programmatically generated using the [Stencil](https://stenciljs.com/docs/react) for React [v19.1](https://github.com/facebook/react/blob/main/CHANGELOG.md#1910-march-28-2025).
 
 ## Installation
 
@@ -10,7 +10,7 @@ Install the Modus React Components Library using npm:
 ```bash
 npm install @trimble-oss/moduswebcomponents-react@<latest-version>-react<target-version>
 # e.g.,
-npm install @trimble-oss/moduswebcomponents-react@1.0.0-react18
+npm install @trimble-oss/moduswebcomponents-react@1.0.0-react19
 ```
 
 ## Example Usage
