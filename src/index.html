@@ -1,6 +1,5 @@
 <!doctype html>
 <html dir="ltr" lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,9 +19,25 @@
 <body data-mwc-theme="light">
   <main>
     <!-- Test components -->
-    <modus-wc-alert alert-description="You have 3 new messages." alert-title="New mesdsdssage!" dismissible="false"
-      role="status" variant="info">
-    </modus-wc-alert>
+  <div><modus-wc-checkbox aria-label="Checkbox" custom-class="" label="Labelw" name="" size="md"></modus-wc-checkbox>
+  </div>
+
+  <div style="padding: 20px;">
+    <modus-wc-accordion>
+      <modus-wc-collapse>
+        <div slot="content">Collapse content</div>
+      </modus-wc-collapse>
+      <modus-wc-collapse>
+        <div slot="content">Collapse content</div>
+      </modus-wc-collapse>
+      <modus-wc-collapse>
+        <div slot="content">Collapse content</div>
+      </modus-wc-collapse>
+    </modus-wc-accordion>
+  </div>
+
+
+  <modus-wc-date aria-label="Date input" bordered="" custom-class="" label="Date Picker" size="md"></modus-wc-date>
   </main>
 </body>
 
