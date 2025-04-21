@@ -267,13 +267,16 @@ const Template: Story = {
         }
 
         // Clear the previous selection.
-        items.forEach((item) => (item.selected = false));
+        args.items.forEach((item) => (item.selected = false));
 
         // Mark the user selected menu item as selected and create a new array to update items.
-        const foundItem = items.find((item) => item.value === e.detail.value);
+        const foundItem = args.items.find(
+          (item) => item.value === e.detail.value
+        );
+
         if (foundItem) {
           foundItem.selected = true;
-          autocomplete.items = [...items];
+          autocomplete.items = [...args.items];
         }
       }
     };
@@ -414,13 +417,13 @@ const Template: Story = {
             }
 
             // Clear the previous selection.
-            items.forEach((item) => (item.selected = false));
+            args.items.forEach((item) => (item.selected = false));
 
             // Mark the user selected menu item as selected and create a new array to update items.
-            const foundItem = items.find((item) => item.value === e.detail.value);
+            const foundItem = args.items.find((item) => item.value === e.detail.value);
             if (foundItem) {
               foundItem.selected = true;
-              autocomplete.items = [...items];
+              autocomplete.items = [...args.items];
             }
           }
         };
