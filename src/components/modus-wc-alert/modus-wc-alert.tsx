@@ -148,11 +148,9 @@ export class ModusWcAlert {
         >
           {this.getLeadingIcon()}
           <div>
-            <modus-wc-typography variant="h3" weight="bold">
-              {this.alertTitle}
-            </modus-wc-typography>
+            <div class="title">{this.alertTitle}</div>
             {this.alertDescription && (
-              <modus-wc-typography>{this.alertDescription}</modus-wc-typography>
+              <div class="description">{this.alertDescription}</div>
             )}
             {!this.alertTitle && !this.alertDescription && (
               <slot name="content" />
