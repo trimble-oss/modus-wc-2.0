@@ -3,6 +3,7 @@ import {
   Element,
   Event,
   EventEmitter,
+  FunctionalComponent,
   h,
   Host,
   Listen,
@@ -10,7 +11,11 @@ import {
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
+import { AlertSolidIcon } from '../../icons/alert-solid.icon';
+import { CheckCircleSolidIcon } from '../../icons/check-circle-solid.icon';
 import { CloseSolidIcon } from '../../icons/close-solid.icon';
+import { InfoSolidIcon } from '../../icons/info-solid.icon';
+import { WarningSolidIcon } from '../../icons/warning-solid.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -48,7 +53,7 @@ export class ModusWcAlert {
   @Prop() icon?: string;
 
   /** The variant of the alert. */
-  @Prop() variant?: 'error' | 'info' | 'success' | 'warning';
+  @Prop() variant?: 'error' | 'info' | 'success' | 'warning' = 'info';
 
   /** Role taken by the alert. Defaults to 'status' */
   @Prop() role: 'alert' | 'log' | 'marquee' | 'status' | 'timer' = 'status';
@@ -73,20 +78,23 @@ export class ModusWcAlert {
     return classList.join(' ');
   }
 
-  private getIconName(): string {
-    if (this.icon) return this.icon;
+  private getLeadingIcon(): FunctionalComponent {
+    if (this.icon) {
+      return (
+        <modus-wc-icon custom-class="modus-wc-alert-icon" name={this.icon} />
+      );
+    }
 
     switch (this.variant) {
       case 'error':
-        return 'alert';
-      case 'info':
-        return 'info';
+        return <AlertSolidIcon className="modus-wc-alert-icon" />;
       case 'success':
-        return 'check_circle';
+        return <CheckCircleSolidIcon className="modus-wc-alert-icon" />;
       case 'warning':
-        return 'info';
+        return <WarningSolidIcon className="modus-wc-alert-icon" />;
+      case 'info':
       default:
-        return 'info';
+        return <InfoSolidIcon className="modus-wc-alert-icon" />;
     }
   }
 
@@ -138,7 +146,7 @@ export class ModusWcAlert {
           role="alert"
           {...this.inheritedAttributes}
         >
-          <modus-wc-icon name={this.getIconName()} />
+          {this.getLeadingIcon()}
           <div>
             <modus-wc-typography variant="h3" weight="bold">
               {this.alertTitle}
