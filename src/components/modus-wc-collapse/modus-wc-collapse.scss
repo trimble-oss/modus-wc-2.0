@@ -14,6 +14,8 @@ modus-wc-collapse .modus-wc-collapse {
   .modus-wc-collapse-title {
     font-weight: var(--modus-wc-font-weight-semibold);
     min-height: unset;
+    padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-3xl)
+      var(--modus-wc-spacing-lg) var(--modus-wc-spacing-lg);
     width: auto;
   }
 
@@ -46,7 +48,7 @@ modus-wc-collapse .modus-wc-collapse {
 }
 
 .modus-wc-collapse-arrow > .modus-wc-collapse-title::after {
-  top: 50%;
+  top: 50% !important;
 }
 
 [data-theme='modus-classic-light'] modus-wc-collapse .modus-wc-collapse,
