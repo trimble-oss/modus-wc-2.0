@@ -37,14 +37,12 @@ Adheres to WCAG 2.2 standards.
 ### Depends on
 
 - [modus-wc-icon](../modus-wc-icon)
-- [modus-wc-typography](../modus-wc-typography)
 - [modus-wc-button](../modus-wc-button)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-alert --> modus-wc-icon
-  modus-wc-alert --> modus-wc-typography
   modus-wc-alert --> modus-wc-button
   style modus-wc-alert fill:#f9f,stroke:#333,stroke-width:4px
 ```
