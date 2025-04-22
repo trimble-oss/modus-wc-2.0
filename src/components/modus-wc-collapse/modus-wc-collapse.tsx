@@ -153,7 +153,7 @@ export class ModusWcCollapse {
 
   // istanbul ignore next
   private getDescriptionDivClasses(): string {
-    const classList: string[] = ['modus-wc-font-light'];
+    const classList: string[] = ['description modus-wc-font-light'];
 
     const descriptionFontSize = convertPropsToDescriptionDivClasses({
       size: this.options?.size,
