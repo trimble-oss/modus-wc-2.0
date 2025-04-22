@@ -33,7 +33,6 @@ Adheres to WCAG 2.2 standards.
  - [modus-wc-checkbox](../modus-wc-checkbox)
  - [modus-wc-date](../modus-wc-date)
  - [modus-wc-number-input](../modus-wc-number-input)
- - [modus-wc-progress](../modus-wc-progress)
  - [modus-wc-radio](../modus-wc-radio)
  - [modus-wc-select](../modus-wc-select)
  - [modus-wc-slider](../modus-wc-slider)
@@ -49,7 +48,6 @@ graph TD;
   modus-wc-checkbox --> modus-wc-input-label
   modus-wc-date --> modus-wc-input-label
   modus-wc-number-input --> modus-wc-input-label
-  modus-wc-progress --> modus-wc-input-label
   modus-wc-radio --> modus-wc-input-label
   modus-wc-select --> modus-wc-input-label
   modus-wc-slider --> modus-wc-input-label

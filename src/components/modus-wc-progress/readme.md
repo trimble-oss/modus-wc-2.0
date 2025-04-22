@@ -25,19 +25,6 @@ Adheres to WCAG 2.2 standards.
 | `variant`       | `variant`       | The variant of the progress component.             | `"default" \| "radial" \| undefined` | `'default'` |
 
 
-## Dependencies
-
-### Depends on
-
-- [modus-wc-input-label](../modus-wc-input-label)
-
-### Graph
-```mermaid
-graph TD;
-  modus-wc-progress --> modus-wc-input-label
-  style modus-wc-progress fill:#f9f,stroke:#333,stroke-width:4px
-```
-
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
