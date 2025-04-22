@@ -7,8 +7,10 @@
   @include feedback-levels;
 }
 
-label.modus-wc-input-label {
-  padding-bottom: var(--modus-wc-spacing-sm);
+modus-wc-text-input {
+  .modus-wc-input-label {
+    padding-bottom: var(--modus-wc-spacing-sm);
+  }
 }
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
@@ -16,10 +18,6 @@ label.modus-wc-input-label {
 [data-theme='modus-classic-dark'] modus-wc-text-input .modus-wc-text-input {
   &.modus-wc-input {
     border-radius: var(--modus-wc-border-radius-md);
-
-    .modus-wc-input-label {
-      padding-bottom: var(--modus-wc-spacing-sm);
-    }
 
     // TODO - add support for xs and xl once added to Modus Figma
 
