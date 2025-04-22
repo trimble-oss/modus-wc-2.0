@@ -7,16 +7,52 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
   ol {
     list-style: none;
   }
+
+  // Sizes
+  &.modus-wc-text-xs {
+    font-size: var(--modus-wc-font-size-xs);
+  }
+
+  &.modus-wc-text-sm {
+    font-size: var(--modus-wc-font-size-sm);
+  }
+
+  &.modus-wc-text-md {
+    font-size: var(--modus-wc-font-size-md);
+  }
+
+  &.modus-wc-text-lg {
+    font-size: var(--modus-wc-font-size-lg);
+  }
+}
+
+[data-theme='modus-classic-light'] modus-wc-breadcrumbs .modus-wc-breadcrumbs,
+[data-theme='modus-classic-dark'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
   a {
     color: var(--modus-wc-color-blue-light);
+
+    &:active {
+      color: var(--modus-wc-color-black);
+    }
   }
 }
 
 [data-theme='modus-classic-dark'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
   a {
     color: var(--modus-wc-color-highlight-blue);
+
+    &:active {
+      color: var(--modus-wc-color-white);
+    }
   }
 }
