@@ -80,6 +80,31 @@ modus-wc-button .modus-wc-btn {
       background-color: transparent;
     }
   }
+
+  // Accessible box shadows
+  &.modus-wc-btn-filled,
+  &.modus-wc-btn-outline {
+    &.modus-wc-btn-primary:focus-visible {
+      box-shadow: 0 0 0 0.25rem rgba(38, 122, 177, 0.5);
+    }
+
+    &.modus-wc-btn-secondary:focus-visible {
+      box-shadow: 0 0 0 0.25rem rgba(98, 102, 108, 0.5);
+    }
+
+    // tertiary
+    &.modus-wc-btn-neutral:focus-visible {
+      box-shadow: 0 0 0 0.25rem rgba(98, 102, 108, 0.5);
+    }
+
+    &.modus-wc-btn-warning:focus-visible {
+      box-shadow: 0 0 0 0.25rem rgba(194, 125, 31, 0.5);
+    }
+
+    &.modus-wc-btn-error:focus-visible {
+      box-shadow: 0 0 0 0.25rem rgba(224, 66, 76, 0.5);
+    }
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn {
@@ -89,6 +114,10 @@ modus-wc-button .modus-wc-btn {
 
   // Variants
   &.modus-wc-btn-borderless {
+    &:focus-visible {
+      border: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-black);
+    }
+
     // Colors
     &.modus-wc-btn-primary {
       color: var(--modus-wc-color-trimble-blue);
@@ -267,6 +296,10 @@ modus-wc-button .modus-wc-btn {
 
   // Variants
   &.modus-wc-btn-borderless {
+    &:focus-visible {
+      border: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-white);
+    }
+
     // Colors
     &.modus-wc-btn-primary {
       color: var(--modus-wc-color-highlight-blue);
