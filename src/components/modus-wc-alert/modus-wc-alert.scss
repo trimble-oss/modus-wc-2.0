@@ -7,6 +7,15 @@ modus-wc-alert .modus-wc-alert {
   border-left-width: var(--modus-wc-border-width-xl);
   border-radius: var(--modus-wc-border-radius-lg);
 
+  .title {
+    font-size: var(--modus-wc-font-size-md);
+    font-weight: var(--modus-wc-font-weight-bold);
+  }
+
+  .description {
+    font-size: var(--modus-wc-font-size-md);
+  }
+
   &.modus-wc-alert-info {
     background-color: color-mix(
       in sRGB,
@@ -58,6 +67,9 @@ modus-wc-alert .modus-wc-alert {
 [data-theme='modus-classic-dark'] modus-wc-alert .modus-wc-alert {
   border-left-width: 12px;
   border-radius: var(--modus-wc-border-radius-md);
+  gap: var(--modus-wc-spacing-sm);
+  padding-bottom: var(--modus-wc-spacing-sm);
+  padding-top: var(--modus-wc-spacing-sm);
 }
 
 [data-theme='modus-classic-light'] modus-wc-alert .modus-wc-alert {
