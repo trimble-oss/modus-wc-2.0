@@ -7,14 +7,16 @@
   @include feedback-levels;
 }
 
+modus-wc-time-input {
+  .modus-wc-input-label {
+    padding-bottom: var(--modus-wc-spacing-sm);
+  }
+}
+
 [data-theme='modus-classic-light'] modus-wc-time-input .modus-wc-time-input,
 [data-theme='modus-classic-dark'] modus-wc-time-input .modus-wc-time-input {
   &.modus-wc-input {
     border-radius: var(--modus-wc-border-radius-md);
-
-    .modus-wc-input-label {
-      padding-bottom: var(--modus-wc-spacing-sm);
-    }
 
     &.modus-wc-input-sm {
       font-size: var(--modus-wc-font-size-sm);

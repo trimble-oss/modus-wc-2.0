@@ -8,6 +8,7 @@ modus-wc-toggle.modus-wc-toggle-host {
   display: flex;
 
   .modus-wc-input-label {
+    font-weight: var(--modus-wc-font-weight-normal);
     padding-inline-start: var(--modus-wc-spacing-md);
   }
 }

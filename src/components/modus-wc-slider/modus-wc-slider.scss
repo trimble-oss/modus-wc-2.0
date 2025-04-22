@@ -3,12 +3,14 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+modus-wc-slider {
+  .modus-wc-input-label {
+    padding-bottom: var(--modus-wc-spacing-sm);
+  }
+}
+
 [data-theme='modus-classic-light'] modus-wc-slider .modus-wc-range,
 [data-theme='modus-classic-dark'] modus-wc-slider .modus-wc-range {
   --rounded-box: 200px;
   --range-shdw: var(--modus-wc-color-trimble-blue);
-
-  .modus-wc-input-label {
-    padding-bottom: var(--modus-wc-spacing-sm);
-  }
 }
