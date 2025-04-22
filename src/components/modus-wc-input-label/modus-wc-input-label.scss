@@ -8,6 +8,14 @@ modus-wc-input-label .modus-wc-input-label {
 
   // Sizes
   &.modus-wc-input-label-size-sm {
+    font-size: var(--modus-wc-font-size-xs);
+
+    .modus-wc-input-label-sublabel {
+      font-size: var(--modus-wc-font-size-2xs);
+    }
+  }
+
+  &.modus-wc-input-label-size-md {
     font-size: var(--modus-wc-font-size-sm);
 
     .modus-wc-input-label-sublabel {
@@ -15,19 +23,11 @@ modus-wc-input-label .modus-wc-input-label {
     }
   }
 
-  &.modus-wc-input-label-size-md {
+  &.modus-wc-input-label-size-lg {
     font-size: var(--modus-wc-font-size-md);
 
     .modus-wc-input-label-sublabel {
       font-size: var(--modus-wc-font-size-sm);
-    }
-  }
-
-  &.modus-wc-input-label-size-lg {
-    font-size: var(--modus-wc-font-size-lg);
-
-    .modus-wc-input-label-sublabel {
-      font-size: var(--modus-wc-font-size-md);
     }
   }
 
