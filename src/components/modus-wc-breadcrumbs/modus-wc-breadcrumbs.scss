@@ -42,8 +42,12 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
     color: var(--modus-wc-color-blue-light);
 
     &:active {
-      color: var(--modus-wc-color-black);
+      color: var(--modus-wc-color-trimble-gray);
     }
+  }
+
+  span {
+    color: var(--modus-wc-color-trimble-gray);
   }
 }
 
@@ -54,5 +58,9 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
     &:active {
       color: var(--modus-wc-color-white);
     }
+  }
+
+  span {
+    color: var(--modus-wc-color-white);
   }
 }
