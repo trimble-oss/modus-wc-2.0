@@ -1,5 +1,5 @@
 /*
- * Public API Surface of modus-wc-angular
+ * Public API Surface of moduswebcomponents-angular
  */
 
 export * from './lib/modus-wc-angular.module';
