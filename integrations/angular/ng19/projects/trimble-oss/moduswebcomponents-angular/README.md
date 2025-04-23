@@ -1,6 +1,6 @@
 # Modus Angular Components: moduswebcomponents-angular
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.0.
+This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 19.0.0.
 
 The components in this library were programmatically generated using the [StencilJS](https://stenciljs.com/) [Angular Framework Integration](https://stenciljs.com/docs/angular).
 
@@ -8,12 +8,6 @@ The components in this library were programmatically generated using the [Stenci
 
 - Install the Modus Angular Components Library and its Modus Web Component peer dependency
   `npm install @trimble-oss/moduswebcomponents @trimble-oss/moduswebcomponents-angular`
-
-- You will need to import our styling in your main JavaScript or CSS file:
-
-  ```js
-  import "@trimble-oss/moduswebcomponents/dist/modus-wc-styles.css";
-  ```
 
 - Add the following snippet to your `main.ts` (or any main module)
 
@@ -46,7 +40,7 @@ The components in this library were programmatically generated using the [Stenci
 
 To rebuild the Modus Angular Components you need to perform the following steps:
 
-- From the `./integrations/angular/ng17` project directory run
+- From the `./integrations/angular/ng19` project directory run
   `npm install` then `npm run build`
 
 ### Referencing a local build of modus-wc
@@ -54,20 +48,20 @@ To rebuild the Modus Angular Components you need to perform the following steps:
 #### Using npm link
 
 - If you want to reference a local build of `modus-wc` you can run `npm link` from the `modus-wc-2.0` root
-directory and then `npm link @trimble-oss/moduswebcomponents` from the `ng17` directory.
+directory and then `npm link @trimble-oss/moduswebcomponents` from the `ng19` directory.
 
 #### Using npm pack
 
 - You can also run `npm pack` from the `modus-wc-2.0` root
-directory and then `npm install path/to/modus-wc-tarball.tgz` from `ng17` directory.
+directory and then `npm install path/to/modus-wc-tarball.tgz` from `ng19` directory.
 
 ## Debugging Locally
 
 To use the Modus Angular components locally for debugging and other purposes:
 
-- From `./ng17` project directory run `npm run build`
-- From `./ng17` project directory run `npm pack ./dist/trimble-oss/moduswebcomponents-angular`
-  - This will generate a tarball of the library: `trimble-cms-modus-wc-angular-0.0.1-ng17.tgz`
+- From `./ng19` project directory run `npm run build`
+- From `./ng19` project directory run `npm pack ./dist/trimble-oss/moduswebcomponents-angular`
+  - This will generate a tarball of the library: `trimble-cms-modus-wc-angular-0.0.1-ng19.tgz`
 
-You can now test the build locally with any Angular project by running `npm install path/to/trimble-cms-modus-wc-angular-0.0.1-ng17.tgz`
+You can now test the build locally with any Angular project by running `npm install path/to/trimble-cms-modus-wc-angular-0.0.1-ng19.tgz`
 and following the [installation steps](#installation).
