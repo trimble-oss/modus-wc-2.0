@@ -25,11 +25,26 @@ modus-wc-toggle.modus-wc-toggle-host {
   // Set default colors
   --fallback-b1: var(--modus-wc-color-gray-4);
 
-  &.modus-wc-toggle-xl {
-    --handleoffset: 2.5rem;
+  // Sizes
+  &.modus-wc-toggle-sm {
+    --handleoffset: 1rem;
 
-    height: 2.5rem;
-    width: 5rem;
+    height: 1rem;
+    width: 2rem;
+  }
+
+  &.modus-wc-toggle-md {
+    --handleoffset: 1.25rem;
+
+    height: 1.25rem;
+    width: 2.5rem;
+  }
+
+  &.modus-wc-toggle-lg {
+    --handleoffset: 1.5rem;
+
+    height: 1.5rem;
+    width: 3rem;
   }
 
   &:checked {
