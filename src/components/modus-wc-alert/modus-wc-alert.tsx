@@ -164,7 +164,7 @@ export class ModusWcAlert {
               size="sm"
               slot="button"
               variant="borderless"
-              onClick={() => this.dismissElement()}
+              onButtonClick={() => this.dismissElement()}
             >
               <CloseSolidIcon className="modus-wc-alert-close-icon" />
             </modus-wc-button>
