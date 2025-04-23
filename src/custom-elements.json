@@ -79,23 +79,6 @@
           "members": [
             {
               "kind": "method",
-              "name": "delayChanged",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "newDelay",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
               "name": "dismissElement"
             },
             {
@@ -152,15 +135,6 @@
               "description": "Custom CSS class to apply to the outer div element.",
               "type": {
                 "text": "string"
-              }
-            },
-            {
-              "name": "delay",
-              "fieldName": "delay",
-              "default": "15000",
-              "description": "Time taken to dismiss the toast in milliseconds",
-              "type": {
-                "text": "number"
               }
             },
             {
@@ -4814,9 +4788,30 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable toast component used to stack elements, positioned on the corner of a page.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the toast.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable toast component used to stack elements, positioned on the corner of a page.\n\nThe component supports a `<slot>` for injecting additional custom content inside the toast.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcToast",
           "members": [
+            {
+              "kind": "method",
+              "name": "delayChanged",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newDelay",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "dismissElement"
+            },
             {
               "kind": "field",
               "name": "el",
@@ -4838,6 +4833,14 @@
               "description": "Additional classes for custom styling.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "delay",
+              "fieldName": "delay",
+              "description": "Time taken to dismiss the toast in milliseconds",
+              "type": {
+                "text": "number"
               }
             },
             {
