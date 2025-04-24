@@ -14,10 +14,9 @@ modus-wc-modal .modus-wc-modal {
       right: var(--modus-wc-spacing-sm);
       top: var(--modus-wc-spacing-sm);
 
-      .modus-wc-btn {
-        &:hover {
-          background-color: transparent;
-        }
+      svg {
+        height: 24px;
+        width: 24px;
       }
     }
 
@@ -62,10 +61,18 @@ modus-wc-modal .modus-wc-modal {
 
 [data-theme='modus-classic-light'] .modus-wc-modal-box {
   background-color: var(--modus-wc-color-white);
+
+  .modus-wc-modal-top-icon-buttons svg {
+    fill: var(--modus-wc-color-trimble-gray);
+  }
 }
 
 [data-theme='modus-classic-dark'] modus-wc-modal .modus-wc-modal-box {
   background-color: var(--modus-wc-color-gray-9);
+
+  .modus-wc-modal-top-icon-buttons svg {
+    fill: var(--modus-wc-color-white);
+  }
 }
 
 [data-theme='modus-classic-dark'] .modus-wc-modal-header,

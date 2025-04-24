@@ -26,6 +26,19 @@ Adheres to WCAG 2.2 standards.
 | `showFullscreenToggle` | `show-fullscreen-toggle` | Specifies whether to show the fullscreen toggle icon button                                                                | `boolean \| undefined`                       | `false`     |
 
 
+## Dependencies
+
+### Depends on
+
+- [modus-wc-button](../modus-wc-button)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-modal --> modus-wc-button
+  style modus-wc-modal fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
