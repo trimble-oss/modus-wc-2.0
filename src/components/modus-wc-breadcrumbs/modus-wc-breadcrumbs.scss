@@ -1,3 +1,6 @@
+// TODO: remove this once stylelint is updated or configured to allow selector patterns with escaped colons
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
@@ -9,19 +12,19 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
   }
 
   // Sizes
-  &.modus-wc-text-xs {
+  &.modus\:text-xs {
     font-size: var(--modus-wc-font-size-xs);
   }
 
-  &.modus-wc-text-sm {
+  &.modus\:text-sm {
     font-size: var(--modus-wc-font-size-sm);
   }
 
-  &.modus-wc-text-md {
+  &.modus\:text-base {
     font-size: var(--modus-wc-font-size-md);
   }
 
-  &.modus-wc-text-lg {
+  &.modus\:text-lg {
     font-size: var(--modus-wc-font-size-lg);
   }
 }

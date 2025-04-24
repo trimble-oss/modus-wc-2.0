@@ -12,10 +12,10 @@ export const convertPropsToClasses = ({
   if (shape) {
     switch (shape) {
       case 'circle':
-        classes = `${classes} modus-wc-rounded-full`;
+        classes = `${classes} modus:rounded-full`;
         break;
       case 'square':
-        classes = `${classes} modus-wc-rounded-lg`;
+        classes = `${classes} modus:rounded-lg`;
         break;
     }
   }
@@ -23,16 +23,16 @@ export const convertPropsToClasses = ({
   if (size) {
     switch (size) {
       case 'xs':
-        classes = `${classes} modus-wc-w-8`;
+        classes = `${classes} modus:w-8`;
         break;
       case 'sm':
-        classes = `${classes} modus-wc-w-12`;
+        classes = `${classes} modus:w-12`;
         break;
       case 'md':
-        classes = `${classes} modus-wc-w-16`;
+        classes = `${classes} modus:w-16`;
         break;
       case 'lg':
-        classes = `${classes} modus-wc-w-20`;
+        classes = `${classes} modus:w-20`;
         break;
     }
   }

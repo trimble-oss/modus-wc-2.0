@@ -8,7 +8,11 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (size) {
-    classes = `${classes} modus-wc-text-${size}`;
+    if (size === 'md') {
+      classes = `${classes} modus:text-base`;
+    } else {
+      classes = `${classes} modus:text-${size}`;
+    }
   }
 
   return classes.trim();

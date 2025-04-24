@@ -109,10 +109,10 @@ export class ModusWcModal {
                 </button>
               )}
             </div>
-            <div class="modus-wc-modal-header modus-wc-text-lg modus-wc-font-bold">
+            <div class="modus-wc-modal-header modus:text-lg modus:font-bold">
               <slot name="header" />
             </div>
-            <div class="modus-wc-modal-content modus-wc-py-4">
+            <div class="modus-wc-modal-content modus:py-4">
               <slot name="content" />
             </div>
             <div class="modus-wc-modal-action">

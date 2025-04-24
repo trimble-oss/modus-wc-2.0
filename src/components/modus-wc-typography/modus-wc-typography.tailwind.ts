@@ -20,7 +20,11 @@ export const convertPropsToClasses = ({
   }
 
   if (size) {
-    classes = `${classes} modus-wc-text-${size}`;
+    if (size === 'md') {
+      classes = `${classes} modus:text-base`;
+    } else {
+      classes = `${classes} modus:text-${size}`;
+    }
   }
 
   if (weight) {

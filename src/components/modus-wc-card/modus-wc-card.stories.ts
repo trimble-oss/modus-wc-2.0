@@ -58,7 +58,7 @@ const Template: Story = {
   <span slot="title">Card Title</span>
   <span slot="subtitle">Card Subtitle</span>
   <p>This is a sample card content. You can place any content here.</p>
-  <div slot="actions" class="modus-wc-justify-end">
+  <div slot="actions" class="modus:justify-end">
     <modus-wc-button aria-label="Click me">Click me</modus-wc-button>
   </div>
 </modus-wc-card>
@@ -141,7 +141,7 @@ export const ComplexCard: Story = {
     This is a more of a traditional Card, featuring a header image, content,
     multiple buttons, and a larger shadow that appears on hover.
   </p>
-  <div slot="actions" class="modus-wc-justify-end">
+  <div slot="actions" class="modus:justify-end">
     <modus-wc-button aria-label="Action 1">Action 1</modus-wc-button>
     <modus-wc-button aria-label="Action 2">Action 2</modus-wc-button>
   </div>

@@ -115,7 +115,7 @@ export class ModusWcTable {
   render() {
     return (
       <Host>
-        <div class="modus-wc-overflow-x-auto" {...this.inheritedAttributes}>
+        <div class="modus:overflow-x-auto" {...this.inheritedAttributes}>
           <table class={this.getClasses()}>
             <thead>
               <tr>

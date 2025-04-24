@@ -1,3 +1,6 @@
+// TODO: remove this once stylelint is updated or configured to allow selector patterns with escaped colons
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
@@ -10,15 +13,15 @@
     border-color: var(--modus-wc-color-black);
   }
 
-  .modus-wc-stroke-base-100 {
+  .modus\:stroke-base-100 {
     stroke: var(--modus-wc-color-white);
   }
 
-  .modus-wc-fill-base-100 {
+  .modus\:fill-base-100 {
     fill: var(--modus-wc-color-gray-9);
   }
 
-  .modus-wc-bg-base-content {
+  .modus\:bg-base-content {
     background-color: var(--modus-wc-color-black);
   }
 }
@@ -30,35 +33,35 @@
     border-color: var(--modus-wc-white);
   }
 
-  .modus-wc-stroke-base-100 {
+  .modus\:stroke-base-100 {
     stroke: var(--modus-wc-color-black);
   }
 
-  .modus-wc-fill-base-100 {
+  .modus\:fill-base-100 {
     fill: var(--modus-wc-color-gray-0);
   }
 
-  .modus-wc-bg-base-content {
+  .modus\:bg-base-content {
     background-color: var(--modus-wc-color-white);
   }
 }
 
 .modus-wc-toggle {
-  &.modus-wc-stroke-base-100 {
+  &.modus\:stroke-base-100 {
     stroke: var(--modus-wc-color-base-300);
   }
 
-  &.modus-wc-fill-base-100 {
+  &.modus\:fill-base-100 {
     fill: var(--modus-wc-color-base-300);
   }
 }
 
 .modus-wc-toggle:checked {
-  &.modus-wc-stroke-base-100 {
+  &.modus\:stroke-base-100 {
     stroke: var(--modus-wc-color-base-100);
   }
 
-  &.modus-wc-fill-base-100 {
+  &.modus\:fill-base-100 {
     fill: var(--modus-wc-color-base-100);
   }
 }

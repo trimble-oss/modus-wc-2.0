@@ -27,7 +27,7 @@ export const convertPropsToDescriptionDivClasses = ({
 }: {
   size?: DaisySize;
 }): string => {
-  let sizeClass = 'modus-wc-text-base';
+  let sizeClass = 'modus:text-base';
 
   if (size) {
     sizeClass = `modus-wc-text-${size}`;
@@ -46,16 +46,16 @@ export const convertPropsToTitleChildDivClasses = ({
   if (size) {
     switch (size) {
       case 'xs':
-        classes = 'modus-wc-text-base';
+        classes = 'modus:text-base';
         break;
       case 'sm':
-        classes = 'modus-wc-text-lg';
+        classes = 'modus:text-lg';
         break;
       case 'md':
-        classes = 'modus-wc-text-xl';
+        classes = 'modus:text-xl';
         break;
       case 'lg':
-        classes = 'modus-wc-text-2xl';
+        classes = 'modus:text-2xl';
         break;
     }
   }
@@ -73,16 +73,16 @@ export const convertPropsToTitleDivClasses = ({
   if (size) {
     switch (size) {
       case 'xs':
-        classes = 'modus-wc-pb-2 modus-wc-pl-2 modus-wc-pt-2';
+        classes = 'modus:pb-2 modus:pl-2 modus:pt-2';
         break;
       case 'sm':
-        classes = 'modus-wc-pb-3 modus-wc-pl-3 modus-wc-pt-3';
+        classes = 'modus:pb-3 modus:pl-3 modus:pt-3';
         break;
       case 'md':
-        classes = 'modus-wc-pb-4 modus-wc-pl-4 modus-wc-pt-4';
+        classes = 'modus:pb-4 modus:pl-4 modus:pt-4';
         break;
       case 'lg':
-        classes = 'modus-wc-pb-5 modus-wc-pl-5 modus-wc-pt-5';
+        classes = 'modus:pb-5 modus:pl-5 modus:pt-5';
         break;
     }
   }

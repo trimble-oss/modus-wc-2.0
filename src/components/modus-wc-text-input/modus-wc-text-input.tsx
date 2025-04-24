@@ -157,10 +157,10 @@ export class ModusWcTextInput {
     const classList = [
       'modus-wc-text-input',
       'modus-wc-input',
-      'modus-wc-w-full',
-      'modus-wc-flex',
-      'modus-wc-items-center',
-      'modus-wc-gap-1',
+      'modus:w-full',
+      'modus:flex',
+      'modus:items-center',
+      'modus:gap-1',
     ];
 
     const propClasses = convertPropsToClasses({
@@ -225,7 +225,7 @@ export class ModusWcTextInput {
             autocapitalize={this.autoCapitalize}
             autocomplete={this.autoComplete}
             autocorrect={this.autoCorrect}
-            class="modus-wc-grow"
+            class="modus:grow"
             disabled={this.disabled}
             enterkeyhint={this.enterkeyhint}
             id={this.inputId}

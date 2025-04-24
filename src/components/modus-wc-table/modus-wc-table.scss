@@ -1,3 +1,6 @@
+// TODO: remove this once stylelint is updated or configured to allow selector patterns with escaped colons
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
@@ -21,14 +24,14 @@ modus-wc-table .modus-wc-table {
   }
 }
 
-modus-wc-table .modus-wc-overflow-x-auto {
+modus-wc-table .modus\:overflow-x-auto {
   border: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-base-100);
   border-radius: var(--modus-wc-border-radius-table);
 }
 
 [data-theme='modus-classic-light'] modus-wc-table,
 [data-theme='modus-classic-dark'] modus-wc-table {
-  .modus-wc-overflow-x-auto {
+  .modus\:overflow-x-auto {
     border: none;
     border-radius: inherit;
   }

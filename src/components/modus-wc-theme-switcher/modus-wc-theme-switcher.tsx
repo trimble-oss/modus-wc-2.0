@@ -60,7 +60,7 @@ export class ModusWcThemeSwitcher {
 
   private getClasses(): string {
     const classList = [
-      'modus-wc-inline-grid modus-wc-cursor-pointer modus-wc-justify-center modus-wc-place-items-center',
+      'modus:inline-grid modus:cursor-pointer modus:justify-center modus:place-items-center',
     ];
 
     if (this.customClass) classList.push(this.customClass);
@@ -82,14 +82,14 @@ export class ModusWcThemeSwitcher {
         <input
           aria-checked={this.isDarkMode}
           checked={this.isDarkMode}
-          class="modus-wc-toggle modus-wc-theme-controller modus-wc-bg-base-content modus-wc-col-span-2 modus-wc-col-start-1 modus-wc-row-start-1"
+          class="modus-wc-toggle modus-wc-theme-controller modus:bg-base-content modus:col-span-2 modus:col-start-1 modus:row-start-1"
           onChange={(event) => this.handleModeToggle(event)}
           type="checkbox"
           value="default"
         />
         <svg
           aria-hidden="true"
-          class="modus-wc-stroke-base-100 modus-wc-fill-base-100 modus-wc-col-start-1 modus-wc-row-start-1"
+          class="modus:stroke-base-100 modus:fill-base-100 modus:col-start-1 modus:row-start-1"
           fill="none"
           height="14"
           role="presentation"
@@ -106,7 +106,7 @@ export class ModusWcThemeSwitcher {
         </svg>
         <svg
           aria-hidden="true"
-          class="modus-wc-stroke-base-100 modus-wc-fill-base-100 modus-wc-col-start-2 modus-wc-row-start-1"
+          class="modus:stroke-base-100 modus:fill-base-100 modus:col-start-2 modus:row-start-1"
           fill="none"
           height="14"
           role="presentation"

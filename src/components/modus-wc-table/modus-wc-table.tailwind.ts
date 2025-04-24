@@ -52,7 +52,7 @@ export const convertHeaderCellPropsToClasses = ({
   let classes = '';
 
   if (sortable) {
-    classes = `${classes} modus-wc-cursor-pointer`;
+    classes = `${classes} modus:cursor-pointer`;
   }
 
   return classes.trim();

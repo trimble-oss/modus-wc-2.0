@@ -57,7 +57,7 @@ describe('modus-wc-typography - convertPropsToClasses', () => {
     'returns correct size class (%s)',
     (size) => {
       expect(convertPropsToClasses({ size: size as DaisySize })).toBe(
-        `modus-wc-text-${size}`
+        `modus:text-${size}`
       );
     }
   );
@@ -78,6 +78,6 @@ describe('modus-wc-typography - convertPropsToClasses', () => {
         weight: 'semibold',
         variant: 'body',
       })
-    ).toBe('modus-wc-text-md modus-wc-typography-weight-semibold');
+    ).toBe('modus:text-base modus-wc-typography-weight-semibold');
   });
 });

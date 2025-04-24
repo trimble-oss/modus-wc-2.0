@@ -7,13 +7,14 @@ import tailwind, {
   setPluginConfigurationDefaults,
   tailwindGlobal,
 } from 'stencil-tailwind-plugin';
-import tailwindConfig from './tailwind.config';
+// TODO: verify if all these configs are carried over / needed from migration
+// import tailwindConfig from './tailwind.config';
 
 const tailwindOpts = {
   debug: true,
   minify: false,
   stripComments: true,
-  tailwindConf: tailwindConfig,
+  // tailwindConf: tailwindConfig,
   tailwindCssPath: './src/styles/tailwind.css',
 };
 

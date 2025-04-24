@@ -126,7 +126,7 @@ export class ModusWcCollapse {
   // istanbul ignore next
   private getTitleDivClasses(): string {
     const classList: string[] = [
-      'modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4',
+      'modus-wc-collapse-title modus:inline-flex modus:items-center modus:justify-between modus:min-h-4',
     ];
 
     const paddingClass = convertPropsToTitleDivClasses({
@@ -140,7 +140,7 @@ export class ModusWcCollapse {
 
   // istanbul ignore next
   private getTitleChildDivClasses(): string {
-    const classList: string[] = ['modus-wc-inline-flex modus-wc-items-center'];
+    const classList: string[] = ['modus:inline-flex modus:items-center'];
 
     const titleFontSize = convertPropsToTitleChildDivClasses({
       size: this.options?.size,
@@ -153,7 +153,7 @@ export class ModusWcCollapse {
 
   // istanbul ignore next
   private getDescriptionDivClasses(): string {
-    const classList: string[] = ['description modus-wc-font-light'];
+    const classList: string[] = ['description modus:font-light'];
 
     const descriptionFontSize = convertPropsToDescriptionDivClasses({
       size: this.options?.size,
@@ -176,7 +176,7 @@ export class ModusWcCollapse {
             aria-controls={contentId}
             aria-expanded={this.expanded}
             aria-labelledby={titleId}
-            class="modus-wc-min-h-4 modus-wc-cursor-pointer"
+            class="modus:min-h-4 modus:cursor-pointer"
             id={`${baseId}-checkbox`}
             onClick={this.handleClick}
             onKeyDown={this.handleKeyDown}
@@ -209,7 +209,7 @@ export class ModusWcCollapse {
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
           <div
             aria-labelledby={titleId}
-            class="modus-wc-collapse-content modus-wc-cursor-default"
+            class="modus-wc-collapse-content modus:cursor-default"
             id={contentId}
             onClick={this.handleContentClick}
           >
