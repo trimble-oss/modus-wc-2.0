@@ -1,5 +1,6 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-modal.tailwind';
+import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { CollapseSolidIcon } from '../../icons/collapse-solid.icon';
 import { ExpandSolidIcon } from '../../icons/expand-solid.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
@@ -88,25 +89,30 @@ export class ModusWcModal {
           >
             <div class="modus-wc-modal-top-icon-buttons">
               {this.showFullscreenToggle && (
-                <button
-                  onClick={() => (this.fullscreen = !this.fullscreen)}
-                  class="modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-modal-expand-icon-btn"
+                <modus-wc-button
+                  aria-label="Fullscreen toggle"
+                  onButtonClick={() => (this.fullscreen = !this.fullscreen)}
+                  shape="square"
+                  size="sm"
+                  variant="borderless"
                 >
                   {this.fullscreen ? (
                     <CollapseSolidIcon />
                   ) : (
                     <ExpandSolidIcon />
                   )}
-                </button>
+                </modus-wc-button>
               )}
               {this.showClose && (
-                <button
+                <modus-wc-button
                   aria-label="Close modal"
-                  onClick={() => this.closeDialog()}
-                  class=" modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-modal-close-icon-btn"
+                  onButtonClick={() => this.closeDialog()}
+                  shape="square"
+                  size="sm"
+                  variant="borderless"
                 >
-                  ✕
-                </button>
+                  <CloseSolidIcon />
+                </modus-wc-button>
               )}
             </div>
             <div class="modus-wc-modal-header modus-wc-text-lg modus-wc-font-bold">

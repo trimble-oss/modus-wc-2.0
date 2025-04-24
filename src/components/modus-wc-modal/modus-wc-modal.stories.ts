@@ -46,17 +46,29 @@ type Story = StoryObj<ModalArgs>;
 
 export const Default: Story = {
   render: (args) => {
-    const uniqueModalId = generateRandomId(4);
+    const modalId = `${args['modal-id']}${generateRandomId(4)}}`;
+
+    const handleModalVisibility = (action: 'show' | 'hide') => {
+      const modal = document.getElementById(modalId) as HTMLDialogElement;
+      if (modal) {
+        if (action === 'show') {
+          modal.showModal();
+        } else {
+          modal.close();
+        }
+      }
+    };
+
     // prettier-ignore
     return html`
-<modus-wc-button onclick="${args['modal-id'] + uniqueModalId}.showModal()">
+<modus-wc-button @buttonClick=${() => handleModalVisibility('show')}>
   Open modal
 </modus-wc-button>
 <modus-wc-modal
   aria-label="Example modal"
   custom-class=${ifDefined(args['custom-class'])}
   fullscreen=${args.fullscreen}
-  modal-id=${args['modal-id'] + uniqueModalId}
+  modal-id=${modalId}
   backdrop=${args.backdrop}
   position=${args.position}
   show-close=${args['show-close']}
@@ -64,7 +76,7 @@ export const Default: Story = {
 >
   <span slot="header">Modal Title</span>
   <span slot="content"> This is sample modal content. </span>
-  <modus-wc-button slot="footer" onclick="${args['modal-id'] + uniqueModalId}.close()">
+  <modus-wc-button slot="footer" @buttonClick=${() => handleModalVisibility('hide')}>
     Close
   </modus-wc-button>
 </modus-wc-modal>
@@ -74,30 +86,43 @@ export const Default: Story = {
 
 export const CustomWidthAndHeight: Story = {
   render: (args) => {
+    const modalId = `${args['modal-id']}${generateRandomId(4)}}`;
+
+    const handleModalVisibility = (action: 'show' | 'hide') => {
+      const modal = document.getElementById(modalId) as HTMLDialogElement;
+      if (modal) {
+        if (action === 'show') {
+          modal.showModal();
+        } else {
+          modal.close();
+        }
+      }
+    };
+
     // prettier-ignore
     return html`
 <style>
-  #modal2 .modus-wc-modal-box {
+  .expanded-modal .modus-wc-modal-box {
     width: 80%;
     max-width: none;
     height: 60%;
     max-height: none;
   }
 </style>
-<modus-wc-button onclick="modal2.showModal()">
+<modus-wc-button @buttonClick=${() => handleModalVisibility('show')}>
   Open modal
 </modus-wc-button>
 <modus-wc-modal
   aria-label="Example modal"
   custom-class="expanded-modal"
-  modal-id="modal2"
+  modal-id=${modalId}
   backdrop=${ifDefined(args.backdrop)}
   position=${ifDefined(args.position)}
   show-close=${ifDefined(args['show-close'])}
 >
   <span slot="header">Modal Title</span>
   <p slot="content">Sample modal content.</p>
-  <modus-wc-button slot="footer" onclick="modal2.close()">
+  <modus-wc-button slot="footer" @buttonClick=${() => handleModalVisibility('hide')}>
     Close
   </modus-wc-button>
 </modus-wc-modal>
