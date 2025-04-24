@@ -89,11 +89,7 @@ export class ModusWcProgress {
               {...progressAriaAttributes}
               {...this.inheritedAttributes}
             />
-            {this.label && (
-              <span class={`modus-wc-progress-label ${this.customClass}`}>
-                {this.label}
-              </span>
-            )}
+            {this.label && <modus-wc-input-label labelText={this.label} />}
           </Fragment>
         ) : (
           <div

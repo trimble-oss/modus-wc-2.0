@@ -10,7 +10,7 @@ exports[`modus-wc-collapse should render in expanded state 1`] = `
         <modus-wc-icon aria-label="Alert" decorative="" name="alert"></modus-wc-icon>
         Collapse Title
       </div>
-      <div class="modus-wc-font-light modus-wc-text-base">
+      <div class="description modus-wc-font-light modus-wc-text-base">
         Collapse description
       </div>
     </div>
@@ -56,7 +56,7 @@ exports[`modus-wc-collapse should render with custom props 1`] = `
         </modus-wc-icon>
         Collapse Title
       </div>
-      <div class="modus-wc-font-light modus-wc-text-base">
+      <div class="description modus-wc-font-light modus-wc-text-base">
         Collapse description
       </div>
     </div>

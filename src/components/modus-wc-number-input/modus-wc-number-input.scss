@@ -7,12 +7,18 @@ modus-wc-input .modus-wc-input {
   @include feedback-levels;
 }
 
-modus-wc-number-input .modus-wc-number-input-container {
-  .modus-wc-input-currency {
-    background-color: var(--modus-wc-color-base-100);
-    border: var(--modus-wc-border-width-xs) solid transparent;
-    color: var(--modus-wc-color-base-content);
-    white-space: nowrap;
+modus-wc-number-input {
+  .modus-wc-input-label {
+    padding-bottom: var(--modus-wc-spacing-sm);
+  }
+
+  .modus-wc-number-input-container {
+    .modus-wc-input-currency {
+      background-color: var(--modus-wc-color-base-100);
+      border: var(--modus-wc-border-width-xs) solid transparent;
+      color: var(--modus-wc-color-base-content);
+      white-space: nowrap;
+    }
   }
 }
 
@@ -44,10 +50,6 @@ modus-wc-number-input .modus-wc-number-input-container {
 
   .modus-wc-number-input {
     &.modus-wc-input {
-      .modus-wc-input-label {
-        padding-bottom: var(--modus-wc-spacing-2xs);
-      }
-
       &.modus-wc-input-sm {
         padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-xs);
         padding-inline-end: 0; // Align spinner buttons
