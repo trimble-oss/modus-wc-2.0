@@ -10,8 +10,6 @@ export const CollapseSolidIcon: FunctionalComponent<Props> = ({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
       fill="currentColor"
       class={`mi-solid mi-collapse ${className || ''}`}
       viewBox="0 0 24 24"
