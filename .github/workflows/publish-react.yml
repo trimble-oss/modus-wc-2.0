@@ -23,7 +23,7 @@ jobs:
       # prevents race conditions
       max-parallel: 1
       matrix:
-        react-version: [17, 18]
+        react-version: [17, 18, 19]
 
     defaults:
       run:
@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        react-version: [17, 18]
+        react-version: [17, 18, 19]
 
     defaults:
       run:
