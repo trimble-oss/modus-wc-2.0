@@ -1,5 +1,4 @@
 import typography from '@tailwindcss/typography';
-import daisyui from 'daisyui';
 import type { Config } from 'tailwindcss';
 import { modusClassic } from './src/styles/themes/modus-classic';
 import { modusModern } from './src/styles/themes/modus-modern';
@@ -10,21 +9,7 @@ export default {
     './src/styles/tailwind-themeable.ts',
     './src/styles/themes/*.ts',
   ],
-  daisyui: {
-    base: true,
-    darkTheme: 'modus-modern-dark',
-    logs: false,
-    styled: true,
-    themeRoot: ':root',
-    utils: true,
-    themes: [
-      { 'modus-classic-light': modusClassic.light },
-      { 'modus-classic-dark': modusClassic.dark },
-      { 'modus-modern-light': modusModern.light },
-      { 'modus-modern-dark': modusModern.dark },
-    ],
-  },
-  plugins: [typography, daisyui],
+  plugins: [typography],
   prefix: 'modus-wc-',
   theme: {
     extend: {},
