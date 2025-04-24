@@ -8,7 +8,7 @@ interface AccordionArgs {
   'custom-class'?: string;
 }
 
-const options: ICollapseOptions[] = [
+const collapseOptions: ICollapseOptions[] = [
   {
     description: 'Item one description',
     icon: 'alert',
@@ -51,15 +51,37 @@ const Template: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
+<script>
+  const collapseOptions = [
+    {
+      description: 'Item one description',
+      icon: 'alert',
+      iconAriaLabel: 'Alert',
+      title: 'Item One',
+    },
+    {
+      description: 'Item two description',
+      icon: 'alert',
+      iconAriaLabel: 'Alert',
+      title: 'Item Two',
+    },
+    {
+      description: 'Item three description',
+      icon: 'alert',
+      iconAriaLabel: 'Alert',
+      title: 'Item Three',
+    },
+  ];
+</script>
 <div style="padding: 20px;">
   <modus-wc-accordion custom-class=${ifDefined(args['custom-class'])}>
-    <modus-wc-collapse .options=${options[0]}>
+    <modus-wc-collapse .options=${collapseOptions[0]}>
       <div slot="content">Collapse content</div>
     </modus-wc-collapse>
-    <modus-wc-collapse .options=${options[1]}>
+    <modus-wc-collapse .options=${collapseOptions[1]}>
       <div slot="content">Collapse content</div>
     </modus-wc-collapse>
-    <modus-wc-collapse .options=${options[2]}>
+    <modus-wc-collapse .options=${collapseOptions[2]}>
       <div slot="content">Collapse content</div>
     </modus-wc-collapse>
   </modus-wc-accordion>

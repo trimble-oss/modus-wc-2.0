@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcAccordion",
           "members": [
             {
