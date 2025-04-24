@@ -3,6 +3,23 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+[data-theme='modus-classic-light'] modus-wc-accordion,
+[data-theme='modus-classic-dark'] modus-wc-accordion {
+  modus-wc-collapse:first-child .modus-wc-collapse {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  modus-wc-collapse:not(:first-child):not(:last-child) .modus-wc-collapse {
+    border-radius: 0;
+  }
+
+  modus-wc-collapse:last-child .modus-wc-collapse {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
 [data-theme='modus-classic-light'] modus-wc-accordion .modus-wc-collapse {
   border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-2);
 }
