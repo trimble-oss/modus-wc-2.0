@@ -4,12 +4,14 @@ import { KEY } from '../components/utils';
 type Props = {
   ariaLabel?: string;
   className?: string;
+  decorative?: boolean;
   onClear?: (event: MouseEvent | KeyboardEvent) => void;
 };
 
 export const CloseSolidIcon: FunctionalComponent<Props> = ({
   ariaLabel,
   className,
+  decorative = true,
   onClear,
 }) => {
   const handleKeydown = (event: KeyboardEvent) => {
@@ -21,13 +23,14 @@ export const CloseSolidIcon: FunctionalComponent<Props> = ({
 
   return (
     <svg
+      aria-hidden={decorative ? 'true' : undefined}
       aria-label={ariaLabel || undefined}
       class={className || ''}
       fill="currentColor"
       onClick={onClear || undefined}
       onKeyDown={handleKeydown}
-      role="button"
-      tabindex={0}
+      role={decorative ? undefined : 'button'}
+      tabindex={decorative ? -1 : 0}
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >

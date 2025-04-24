@@ -5,6 +5,7 @@ import { ToastPosition } from './modus-wc-toast';
 
 interface ToastArgs {
   'custom-class'?: string;
+  delay?: number;
   position?: ToastPosition;
 }
 
@@ -46,6 +47,7 @@ const Template: Story = {
 <div style="height: 200px;">
   <modus-wc-toast
     custom-class=${ifDefined(args['custom-class'])}
+    delay=${ifDefined(args.delay)}
     position=${ifDefined(args.position)}
   >
     <modus-wc-alert alert-title="Message sent successfully!" variant="success"></modus-wc-alert>
