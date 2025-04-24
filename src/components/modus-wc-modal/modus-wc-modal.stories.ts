@@ -102,7 +102,7 @@ export const CustomWidthAndHeight: Story = {
     // prettier-ignore
     return html`
 <style>
-  #modal2 .modus-wc-modal-box {
+  .expanded-modal .modus-wc-modal-box {
     width: 80%;
     max-width: none;
     height: 60%;
