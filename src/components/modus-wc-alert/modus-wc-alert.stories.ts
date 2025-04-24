@@ -6,7 +6,6 @@ interface AlertArgs {
   'alert-description'?: string;
   'alert-title': string;
   'custom-class'?: string;
-  delay: number;
   dismissible?: boolean;
   dismissClick?: () => void;
   icon?: string;
@@ -21,7 +20,6 @@ const meta: Meta<AlertArgs> = {
     'alert-description': 'You have 3 new messages.',
     'alert-title': 'New message!',
     dismissible: false,
-    delay: 15000,
     role: 'status',
     variant: 'info',
   },

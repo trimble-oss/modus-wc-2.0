@@ -18,6 +18,7 @@ Adheres to WCAG 2.2 standards.
 | Property      | Attribute      | Description                                        | Type                                                                                                                                                              | Default     |
 | ------------- | -------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `customClass` | `custom-class` | Additional classes for custom styling.             | `string \| undefined`                                                                                                                                             | `''`        |
+| `delay`       | `delay`        | Time taken to dismiss the toast in milliseconds    | `number \| undefined`                                                                                                                                             | `undefined` |
 | `position`    | `position`     | The position of the toast in the parent container. | `"bottom-center" \| "bottom-end" \| "bottom-start" \| "middle-center" \| "middle-end" \| "middle-start" \| "top-center" \| "top-end" \| "top-start" \| undefined` | `'top-end'` |
 
 
