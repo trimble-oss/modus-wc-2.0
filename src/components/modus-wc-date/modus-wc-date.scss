@@ -2,14 +2,16 @@
   @include feedback-levels;
 }
 
+modus-wc-date {
+  .modus-wc-input-label {
+    padding-bottom: var(--modus-wc-spacing-sm);
+  }
+}
+
 [data-theme='modus-classic-light'] modus-wc-date .modus-wc-date-input,
 [data-theme='modus-classic-dark'] modus-wc-date .modus-wc-date-input {
   &.modus-wc-input {
     border-radius: var(--modus-wc-border-radius-md);
-
-    .modus-wc-input-label {
-      padding-bottom: var(--modus-wc-spacing-2xs);
-    }
 
     // TODO - add support for xs and xl once added to Modus Figma
 
