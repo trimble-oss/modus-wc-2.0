@@ -2364,7 +2364,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nThe component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus.\r\nIt also supports a 'start', 'center', and 'end' <slot> for injecting additional custom HTML.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcNavbar",
           "members": [
             {
@@ -2394,10 +2394,28 @@
           ],
           "attributes": [
             {
+              "name": "apps-menu-open",
+              "fieldName": "appsMenuOpen",
+              "default": "false",
+              "description": "The state of the apps menu visibility.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "condensed",
               "fieldName": "condensed",
               "default": "false",
               "description": "Applies condensed layout and styling.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "condensed-menu-open",
+              "fieldName": "condensedMenuOpen",
+              "default": "false",
+              "description": "The state of the condensed menu visibility.",
               "type": {
                 "text": "boolean"
               }
@@ -2412,12 +2430,39 @@
               }
             },
             {
+              "name": "main-menu-open",
+              "fieldName": "mainMenuOpen",
+              "default": "false",
+              "description": "The state of the main menu visibility.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "notifications-menu-open",
+              "fieldName": "notificationsMenuOpen",
+              "default": "false",
+              "description": "The state of the notifications menu visibility.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "search-debounce-ms",
               "fieldName": "searchDebounceMs",
               "default": "300",
               "description": "Debounce time in milliseconds for search input changes. Default is 300ms.",
               "type": {
                 "text": "number"
+              }
+            },
+            {
+              "name": "search-input-open",
+              "fieldName": "searchInputOpen",
+              "default": "false",
+              "description": "The state of the search input visibility.",
+              "type": {
+                "text": "boolean"
               }
             },
             {
@@ -2434,6 +2479,15 @@
               "description": "User information used to render the user card.",
               "type": {
                 "text": "INavbarUserCard"
+              }
+            },
+            {
+              "name": "user-menu-open",
+              "fieldName": "userMenuOpen",
+              "default": "false",
+              "description": "The state of the user menu visibility.",
+              "type": {
+                "text": "boolean"
               }
             },
             {

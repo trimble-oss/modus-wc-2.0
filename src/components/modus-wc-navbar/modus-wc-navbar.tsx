@@ -69,6 +69,9 @@ export interface INavbarUserCard {
 /**
  * A customizable navbar component used for top level navigation of all Trimble applications.
  *
+ * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus.
+ * It also supports a 'start', 'center', and 'end' <slot> for injecting additional custom HTML.
+ *
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
@@ -88,20 +91,38 @@ export class ModusWcNavbar {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** The state of the apps menu visibility. */
+  @Prop({ mutable: true }) appsMenuOpen?: boolean = false;
+
   /** Applies condensed layout and styling. */
   @Prop() condensed?: boolean = false;
+
+  /** The state of the condensed menu visibility. */
+  @Prop({ mutable: true }) condensedMenuOpen?: boolean = false;
 
   /** Custom CSS class to apply to the host element. */
   @Prop() customClass?: string = '';
 
+  /** The state of the main menu visibility. */
+  @Prop({ mutable: true }) mainMenuOpen?: boolean = false;
+
+  /** The state of the notifications menu visibility. */
+  @Prop({ mutable: true }) notificationsMenuOpen?: boolean = false;
+
   /** Debounce time in milliseconds for search input changes. Default is 300ms. */
   @Prop() searchDebounceMs?: number = 300;
+
+  /** The state of the search input visibility. */
+  @Prop({ mutable: true }) searchInputOpen?: boolean = false;
 
   /** Text replacements for the navbar. */
   @Prop() textOverrides?: INavbarTextOverrides;
 
   /** User information used to render the user card. */
   @Prop() user!: INavbarUserCard;
+
+  /** The state of the user menu visibility. */
+  @Prop({ mutable: true }) userMenuOpen?: boolean = false;
 
   /** The visibility of individual navbar buttons. Default is user profile visible, others hidden. */
   @Prop() visibility?: INavbarVisibility = {
@@ -138,13 +159,7 @@ export class ModusWcNavbar {
   /** Event emitted when the Trimble logo is clicked or activated via keyboard. */
   @StencilEvent() trimbleLogoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
-  @State() private appsOpen: boolean = false;
-  @State() private condensedMenuOpen: boolean = false;
-  @State() private mainMenuOpen: boolean = false;
-  @State() private notificationsOpen: boolean = false;
-  @State() private searchOpen: boolean = false;
   @State() private searchValue: string = '';
-  @State() private userOpen: boolean = false;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -154,7 +169,7 @@ export class ModusWcNavbar {
   handleClickOutside(event: MouseEvent) {
     const target = event.target as HTMLElement;
 
-    if (this.appsOpen) {
+    if (this.appsMenuOpen) {
       const appsButton = this.el.querySelector(
         'modus-wc-button:has(svg[class*="apps"])'
       );
@@ -164,7 +179,7 @@ export class ModusWcNavbar {
         appsButton !== target &&
         !appsButton?.contains(target)
       ) {
-        this.appsOpen = false;
+        this.appsMenuOpen = false;
       }
     }
 
@@ -196,7 +211,7 @@ export class ModusWcNavbar {
       }
     }
 
-    if (this.notificationsOpen) {
+    if (this.notificationsMenuOpen) {
       const notificationsButton = this.el.querySelector(
         'modus-wc-button:has(svg[class*="notifications"])'
       );
@@ -206,11 +221,11 @@ export class ModusWcNavbar {
         notificationsButton !== target &&
         !notificationsButton?.contains(target)
       ) {
-        this.notificationsOpen = false;
+        this.notificationsMenuOpen = false;
       }
     }
 
-    if (this.userOpen) {
+    if (this.userMenuOpen) {
       const userButton = this.el.querySelector(
         'modus-wc-button:has([class*="user-button"])'
       );
@@ -220,7 +235,7 @@ export class ModusWcNavbar {
         userButton !== target &&
         !userButton?.contains(target)
       ) {
-        this.userOpen = false;
+        this.userMenuOpen = false;
       }
     }
   }
@@ -313,7 +328,7 @@ export class ModusWcNavbar {
     if (this.condensed) {
       this.toggleCondensedMenu();
     } else {
-      this.appsOpen = !this.appsOpen;
+      this.appsMenuOpen = !this.appsMenuOpen;
     }
   };
 
@@ -329,7 +344,7 @@ export class ModusWcNavbar {
     if (this.condensed) {
       this.toggleCondensedMenu();
     } else {
-      this.notificationsOpen = !this.notificationsOpen;
+      this.notificationsMenuOpen = !this.notificationsMenuOpen;
     }
   };
 
@@ -337,12 +352,12 @@ export class ModusWcNavbar {
     if (this.condensed) {
       this.toggleCondensedMenu();
     } else {
-      this.searchOpen = !this.searchOpen;
+      this.searchInputOpen = !this.searchInputOpen;
     }
   };
 
   private toggleUser = () => {
-    this.userOpen = !this.userOpen;
+    this.userMenuOpen = !this.userMenuOpen;
   };
 
   render() {
@@ -451,7 +466,7 @@ export class ModusWcNavbar {
 
             {this.visibility?.search && !this.condensed && (
               <Fragment>
-                {this.visibility?.searchInput && this.searchOpen && (
+                {this.visibility?.searchInput && this.searchInputOpen && (
                   <modus-wc-text-input
                     includeClear={true}
                     includeSearch={true}
@@ -482,7 +497,7 @@ export class ModusWcNavbar {
                   <NotificationsSolidIcon />
                 </modus-wc-button>
                 <div
-                  class={`notifications ${this.notificationsOpen ? 'visible' : 'hidden'}`}
+                  class={`notifications ${this.notificationsMenuOpen ? 'visible' : 'hidden'}`}
                   ref={(el) => (this.notificationsRef = el)}
                 >
                   <slot name="notifications" />
@@ -512,7 +527,7 @@ export class ModusWcNavbar {
                   <AppsSolidIcon />
                 </modus-wc-button>
                 <div
-                  class={`apps ${this.appsOpen ? 'visible' : 'hidden'}`}
+                  class={`apps ${this.appsMenuOpen ? 'visible' : 'hidden'}`}
                   ref={(el) => (this.appsRef = el)}
                 >
                   <slot name="apps" />
@@ -540,7 +555,7 @@ export class ModusWcNavbar {
                   )}
                 </modus-wc-button>
                 <div
-                  class={`user ${this.userOpen ? 'visible' : 'hidden'}`}
+                  class={`user ${this.userMenuOpen ? 'visible' : 'hidden'}`}
                   ref={(el) => (this.userRef = el)}
                 >
                   <modus-wc-card>

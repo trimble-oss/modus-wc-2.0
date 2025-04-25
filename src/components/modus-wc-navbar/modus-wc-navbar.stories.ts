@@ -33,11 +33,17 @@ const visibility: INavbarVisibility = {
 };
 
 interface NavbarArgs {
+  'apps-menu-open'?: boolean;
   condensed?: boolean;
+  'condensed-menu-open'?: boolean;
   'custom-class'?: string;
+  'main-menu-open'?: boolean;
+  'notifications-menu-open'?: boolean;
   'search-debounce-ms'?: number;
+  'search-input-open'?: boolean;
   'text-overrides'?: INavbarTextOverrides;
   user: INavbarUserCard;
+  'user-menu-open'?: boolean;
   visibility?: INavbarVisibility;
 }
 
@@ -144,11 +150,17 @@ const Template: Story = {
   }
 </style>
 <modus-wc-navbar
-  ?condensed=${ifDefined(args.condensed)}
+  ?apps-menu-open=${args['apps-menu-open']}
+  ?condensed=${args.condensed}
+  ?condensed-menu-open=${args['condensed-menu-open']}
   custom-class=${ifDefined(args['custom-class'])}
+  ?main-menu-open=${args['main-menu-open']}
+  ?notifications-menu-open=${args['notifications-menu-open']}
   search-debounce-ms=${ifDefined(args['search-debounce-ms'])}
+  ?search-input-open=${args['search-input-open']}
   .textOverrides=${ifDefined(args['text-overrides'])}
   .user=${args.user}
+  ?user-menu-open=${args['user-menu-open']}
   .visibility=${args.visibility}
 >
   <div slot="main-menu">Main menu contents</div>
