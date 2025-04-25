@@ -1,11 +1,15 @@
 modus-wc-navbar .modus-wc-navbar {
+  height: 56px;
+  min-height: 0;
+  padding: 0 var(--modus-wc-spacing-md);
+
   // Common button styles
   modus-wc-button {
     display: inline-flex;
   }
 
   .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
-    color: var(--modus-wc-color-black);
+    color: var(--modus-wc-color-trimble-gray);
   }
 
   // Common dropdown styles
@@ -40,7 +44,9 @@ modus-wc-navbar .modus-wc-navbar {
     .main-menu {
       @extend %dropdown-menu;
 
-      left: 0;
+      height: calc(100dvh - 56px); // 56px is the navbar height
+      left: calc(-1 * var(--modus-wc-spacing-md));
+      min-width: 256px;
     }
 
     // Trimble logo button
@@ -125,8 +131,8 @@ modus-wc-navbar .modus-wc-navbar {
       color: var(--modus-wc-color-white);
 
       .modus-wc-avatar {
-        height: 24px;
-        width: 24px;
+        height: 32px;
+        width: 32px;
       }
     }
   }
