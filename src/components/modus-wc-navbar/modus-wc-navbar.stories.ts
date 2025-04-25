@@ -15,7 +15,7 @@ const textOverrides: INavbarTextOverrides = {
   search: 'Search',
 };
 
-const user: INavbarUserCard = {
+const userCard: INavbarUserCard = {
   avatarAlt: 'Sonic',
   avatarSrc: 'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
   email: 'sonic@trimble.com',
@@ -42,7 +42,7 @@ interface NavbarArgs {
   'search-debounce-ms'?: number;
   'search-input-open'?: boolean;
   'text-overrides'?: INavbarTextOverrides;
-  user: INavbarUserCard;
+  'user-card': INavbarUserCard;
   'user-menu-open'?: boolean;
   visibility?: INavbarVisibility;
 }
@@ -54,7 +54,7 @@ const meta: Meta<NavbarArgs> = {
     condensed: false,
     'search-debounce-ms': 300,
     'text-overrides': textOverrides,
-    user,
+    'user-card': userCard,
     visibility,
   },
   argTypes: {
@@ -76,7 +76,7 @@ const meta: Meta<NavbarArgs> = {
         type: 'object',
       },
     },
-    user: {
+    'user-card': {
       description: 'User profile card information',
       table: {
         type: {
@@ -117,13 +117,19 @@ const meta: Meta<NavbarArgs> = {
     actions: {
       handles: [
         'appsClick',
+        'appsMenuOpenChange',
+        'condensedMenuOpenChange',
         'helpClick',
+        'mainMenuOpenChange',
         'myTrimbleClick',
+        'notificationsMenuOpenChange',
         'notificationsClick',
         'searchChange',
         'searchClick',
+        'searchInputOpenChange',
         'signOutClick',
         'trimbleLogoClick',
+        'userMenuOpenChange',
       ],
     },
     layout: 'padded',
@@ -159,7 +165,7 @@ const Template: Story = {
   search-debounce-ms=${ifDefined(args['search-debounce-ms'])}
   ?search-input-open=${args['search-input-open']}
   .textOverrides=${ifDefined(args['text-overrides'])}
-  .user=${args.user}
+  .userCard=${args['user-card']}
   ?user-menu-open=${args['user-menu-open']}
   .visibility=${args.visibility}
 >

@@ -2397,7 +2397,7 @@
               "name": "apps-menu-open",
               "fieldName": "appsMenuOpen",
               "default": "false",
-              "description": "The state of the apps menu visibility.",
+              "description": "The open state of the apps menu.",
               "type": {
                 "text": "boolean"
               }
@@ -2415,7 +2415,7 @@
               "name": "condensed-menu-open",
               "fieldName": "condensedMenuOpen",
               "default": "false",
-              "description": "The state of the condensed menu visibility.",
+              "description": "The open state of the condensed menu.",
               "type": {
                 "text": "boolean"
               }
@@ -2433,7 +2433,7 @@
               "name": "main-menu-open",
               "fieldName": "mainMenuOpen",
               "default": "false",
-              "description": "The state of the main menu visibility.",
+              "description": "The open state of the main menu.",
               "type": {
                 "text": "boolean"
               }
@@ -2442,7 +2442,7 @@
               "name": "notifications-menu-open",
               "fieldName": "notificationsMenuOpen",
               "default": "false",
-              "description": "The state of the notifications menu visibility.",
+              "description": "The open state of the notifications menu.",
               "type": {
                 "text": "boolean"
               }
@@ -2460,7 +2460,7 @@
               "name": "search-input-open",
               "fieldName": "searchInputOpen",
               "default": "false",
-              "description": "The state of the search input visibility.",
+              "description": "The open state of the search input.",
               "type": {
                 "text": "boolean"
               }
@@ -2474,8 +2474,8 @@
               }
             },
             {
-              "name": "user",
-              "fieldName": "user",
+              "name": "user-card",
+              "fieldName": "userCard",
               "description": "User information used to render the user card.",
               "type": {
                 "text": "INavbarUserCard"
@@ -2485,7 +2485,7 @@
               "name": "user-menu-open",
               "fieldName": "userMenuOpen",
               "default": "false",
-              "description": "The state of the user menu visibility.",
+              "description": "The open state of the user menu.",
               "type": {
                 "text": "boolean"
               }
@@ -2512,11 +2512,35 @@
             },
             {
               "kind": "field",
+              "name": "appsMenuOpenChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the apps menu open state changes."
+            },
+            {
+              "kind": "field",
+              "name": "condensedMenuOpenChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the condensed menu open state changes."
+            },
+            {
+              "kind": "field",
               "name": "helpClick",
               "type": {
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
               },
               "description": "Event emitted when the help button is clicked or activated via keyboard."
+            },
+            {
+              "kind": "field",
+              "name": "mainMenuOpenChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the main menu open state changes."
             },
             {
               "kind": "field",
@@ -2536,6 +2560,14 @@
             },
             {
               "kind": "field",
+              "name": "notificationsMenuOpenChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the notifications menu open state changes."
+            },
+            {
+              "kind": "field",
               "name": "searchChange",
               "type": {
                 "text": "EventEmitter<{ value: string }>"
@@ -2552,6 +2584,14 @@
             },
             {
               "kind": "field",
+              "name": "searchInputOpenChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the search input open state changes."
+            },
+            {
+              "kind": "field",
               "name": "signOutClick",
               "type": {
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
@@ -2565,6 +2605,14 @@
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
               },
               "description": "Event emitted when the Trimble logo is clicked or activated via keyboard."
+            },
+            {
+              "kind": "field",
+              "name": "userMenuOpenChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the user menu open state changes."
             }
           ],
           "customElement": true

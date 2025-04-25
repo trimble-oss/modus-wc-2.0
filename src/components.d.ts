@@ -729,7 +729,7 @@ export namespace Components {
      */
     interface ModusWcNavbar {
         /**
-          * The state of the apps menu visibility.
+          * The open state of the apps menu.
          */
         "appsMenuOpen"?: boolean;
         /**
@@ -737,7 +737,7 @@ export namespace Components {
          */
         "condensed"?: boolean;
         /**
-          * The state of the condensed menu visibility.
+          * The open state of the condensed menu.
          */
         "condensedMenuOpen"?: boolean;
         /**
@@ -745,11 +745,11 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
-          * The state of the main menu visibility.
+          * The open state of the main menu.
          */
         "mainMenuOpen"?: boolean;
         /**
-          * The state of the notifications menu visibility.
+          * The open state of the notifications menu.
          */
         "notificationsMenuOpen"?: boolean;
         /**
@@ -757,7 +757,7 @@ export namespace Components {
          */
         "searchDebounceMs"?: number;
         /**
-          * The state of the search input visibility.
+          * The open state of the search input.
          */
         "searchInputOpen"?: boolean;
         /**
@@ -767,9 +767,9 @@ export namespace Components {
         /**
           * User information used to render the user card.
          */
-        "user": INavbarUserCard;
+        "userCard": INavbarUserCard;
         /**
-          * The state of the user menu visibility.
+          * The open state of the user menu.
          */
         "userMenuOpen"?: boolean;
         /**
@@ -2059,13 +2059,19 @@ declare global {
     };
     interface HTMLModusWcNavbarElementEventMap {
         "appsClick": MouseEvent | KeyboardEvent;
+        "appsMenuOpenChange": boolean;
+        "condensedMenuOpenChange": boolean;
         "helpClick": MouseEvent | KeyboardEvent;
+        "mainMenuOpenChange": boolean;
         "myTrimbleClick": MouseEvent | KeyboardEvent;
         "notificationsClick": MouseEvent | KeyboardEvent;
+        "notificationsMenuOpenChange": boolean;
         "searchChange": { value: string };
         "searchClick": MouseEvent | KeyboardEvent;
+        "searchInputOpenChange": boolean;
         "signOutClick": MouseEvent | KeyboardEvent;
         "trimbleLogoClick": MouseEvent | KeyboardEvent;
+        "userMenuOpenChange": boolean;
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
@@ -3277,7 +3283,7 @@ declare namespace LocalJSX {
      */
     interface ModusWcNavbar {
         /**
-          * The state of the apps menu visibility.
+          * The open state of the apps menu.
          */
         "appsMenuOpen"?: boolean;
         /**
@@ -3285,7 +3291,7 @@ declare namespace LocalJSX {
          */
         "condensed"?: boolean;
         /**
-          * The state of the condensed menu visibility.
+          * The open state of the condensed menu.
          */
         "condensedMenuOpen"?: boolean;
         /**
@@ -3293,11 +3299,11 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * The state of the main menu visibility.
+          * The open state of the main menu.
          */
         "mainMenuOpen"?: boolean;
         /**
-          * The state of the notifications menu visibility.
+          * The open state of the notifications menu.
          */
         "notificationsMenuOpen"?: boolean;
         /**
@@ -3305,9 +3311,21 @@ declare namespace LocalJSX {
          */
         "onAppsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * Event emitted when the apps menu open state changes.
+         */
+        "onAppsMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
+          * Event emitted when the condensed menu open state changes.
+         */
+        "onCondensedMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
           * Event emitted when the help button is clicked or activated via keyboard.
          */
         "onHelpClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the main menu open state changes.
+         */
+        "onMainMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
         /**
           * Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard.
          */
@@ -3317,6 +3335,10 @@ declare namespace LocalJSX {
          */
         "onNotificationsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * Event emitted when the notifications menu open state changes.
+         */
+        "onNotificationsMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
           * Event emitted when the search input value is changed.
          */
         "onSearchChange"?: (event: ModusWcNavbarCustomEvent<{ value: string }>) => void;
@@ -3324,6 +3346,10 @@ declare namespace LocalJSX {
           * Event emitted when the search button is clicked or activated via keyboard.
          */
         "onSearchClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the search input open state changes.
+         */
+        "onSearchInputOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
         /**
           * Event emitted when the user profile sign out button is clicked or activated via keyboard.
          */
@@ -3333,11 +3359,15 @@ declare namespace LocalJSX {
          */
         "onTrimbleLogoClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * Event emitted when the user menu open state changes.
+         */
+        "onUserMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
           * Debounce time in milliseconds for search input changes. Default is 300ms.
          */
         "searchDebounceMs"?: number;
         /**
-          * The state of the search input visibility.
+          * The open state of the search input.
          */
         "searchInputOpen"?: boolean;
         /**
@@ -3347,9 +3377,9 @@ declare namespace LocalJSX {
         /**
           * User information used to render the user card.
          */
-        "user": INavbarUserCard;
+        "userCard": INavbarUserCard;
         /**
-          * The state of the user menu visibility.
+          * The open state of the user menu.
          */
         "userMenuOpen"?: boolean;
         /**

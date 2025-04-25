@@ -91,37 +91,37 @@ export class ModusWcNavbar {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** The state of the apps menu visibility. */
+  /** The open state of the apps menu. */
   @Prop({ mutable: true }) appsMenuOpen?: boolean = false;
 
   /** Applies condensed layout and styling. */
   @Prop() condensed?: boolean = false;
 
-  /** The state of the condensed menu visibility. */
+  /** The open state of the condensed menu. */
   @Prop({ mutable: true }) condensedMenuOpen?: boolean = false;
 
   /** Custom CSS class to apply to the host element. */
   @Prop() customClass?: string = '';
 
-  /** The state of the main menu visibility. */
+  /** The open state of the main menu. */
   @Prop({ mutable: true }) mainMenuOpen?: boolean = false;
 
-  /** The state of the notifications menu visibility. */
+  /** The open state of the notifications menu. */
   @Prop({ mutable: true }) notificationsMenuOpen?: boolean = false;
 
   /** Debounce time in milliseconds for search input changes. Default is 300ms. */
   @Prop() searchDebounceMs?: number = 300;
 
-  /** The state of the search input visibility. */
+  /** The open state of the search input. */
   @Prop({ mutable: true }) searchInputOpen?: boolean = false;
 
   /** Text replacements for the navbar. */
   @Prop() textOverrides?: INavbarTextOverrides;
 
   /** User information used to render the user card. */
-  @Prop() user!: INavbarUserCard;
+  @Prop() userCard!: INavbarUserCard;
 
-  /** The state of the user menu visibility. */
+  /** The open state of the user menu. */
   @Prop({ mutable: true }) userMenuOpen?: boolean = false;
 
   /** The visibility of individual navbar buttons. Default is user profile visible, others hidden. */
@@ -138,8 +138,17 @@ export class ModusWcNavbar {
   /** Event emitted when the apps button is clicked or activated via keyboard. */
   @StencilEvent() appsClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
+  /** Event emitted when the apps menu open state changes. */
+  @StencilEvent() appsMenuOpenChange!: EventEmitter<boolean>;
+
+  /** Event emitted when the condensed menu open state changes. */
+  @StencilEvent() condensedMenuOpenChange!: EventEmitter<boolean>;
+
   /** Event emitted when the help button is clicked or activated via keyboard. */
   @StencilEvent() helpClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
+  /** Event emitted when the main menu open state changes. */
+  @StencilEvent() mainMenuOpenChange!: EventEmitter<boolean>;
 
   /** Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard. */
   @StencilEvent() myTrimbleClick!: EventEmitter<MouseEvent | KeyboardEvent>;
@@ -147,17 +156,26 @@ export class ModusWcNavbar {
   /** Event emitted when the notifications button is clicked or activated via keyboard. */
   @StencilEvent() notificationsClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
+  /** Event emitted when the notifications menu open state changes. */
+  @StencilEvent() notificationsMenuOpenChange!: EventEmitter<boolean>;
+
   /** Event emitted when the search input value is changed. */
   @StencilEvent() searchChange!: EventEmitter<{ value: string }>;
 
   /** Event emitted when the search button is clicked or activated via keyboard. */
   @StencilEvent() searchClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
+  /** Event emitted when the search input open state changes. */
+  @StencilEvent() searchInputOpenChange!: EventEmitter<boolean>;
+
   /** Event emitted when the user profile sign out button is clicked or activated via keyboard. */
   @StencilEvent() signOutClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the Trimble logo is clicked or activated via keyboard. */
   @StencilEvent() trimbleLogoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
+  /** Event emitted when the user menu open state changes. */
+  @StencilEvent() userMenuOpenChange!: EventEmitter<boolean>;
 
   @State() private searchValue: string = '';
 
@@ -180,6 +198,7 @@ export class ModusWcNavbar {
         !appsButton?.contains(target)
       ) {
         this.appsMenuOpen = false;
+        this.appsMenuOpenChange.emit(false);
       }
     }
 
@@ -194,6 +213,7 @@ export class ModusWcNavbar {
         !condenseMenuButton?.contains(target)
       ) {
         this.condensedMenuOpen = false;
+        this.condensedMenuOpenChange.emit(false);
       }
     }
 
@@ -208,6 +228,7 @@ export class ModusWcNavbar {
         !menuButton?.contains(target)
       ) {
         this.mainMenuOpen = false;
+        this.mainMenuOpenChange.emit(false);
       }
     }
 
@@ -222,6 +243,7 @@ export class ModusWcNavbar {
         !notificationsButton?.contains(target)
       ) {
         this.notificationsMenuOpen = false;
+        this.notificationsMenuOpenChange.emit(false);
       }
     }
 
@@ -236,6 +258,7 @@ export class ModusWcNavbar {
         !userButton?.contains(target)
       ) {
         this.userMenuOpen = false;
+        this.userMenuOpenChange.emit(false);
       }
     }
   }
@@ -250,9 +273,9 @@ export class ModusWcNavbar {
   }
 
   private getUserInitials(): string {
-    if (!this.user?.name) return '';
+    if (!this.userCard?.name) return '';
 
-    return this.user.name
+    return this.userCard.name
       .split(' ')
       .map((part) => part.charAt(0))
       .join('')
@@ -329,15 +352,18 @@ export class ModusWcNavbar {
       this.toggleCondensedMenu();
     } else {
       this.appsMenuOpen = !this.appsMenuOpen;
+      this.appsMenuOpenChange.emit(this.appsMenuOpen);
     }
   };
 
   private toggleCondensedMenu = () => {
     this.condensedMenuOpen = !this.condensedMenuOpen;
+    this.condensedMenuOpenChange.emit(this.condensedMenuOpen);
   };
 
   private toggleMainMenu = () => {
     this.mainMenuOpen = !this.mainMenuOpen;
+    this.mainMenuOpenChange.emit(this.mainMenuOpen);
   };
 
   private toggleNotifications = () => {
@@ -345,6 +371,7 @@ export class ModusWcNavbar {
       this.toggleCondensedMenu();
     } else {
       this.notificationsMenuOpen = !this.notificationsMenuOpen;
+      this.notificationsMenuOpenChange.emit(this.notificationsMenuOpen);
     }
   };
 
@@ -353,11 +380,13 @@ export class ModusWcNavbar {
       this.toggleCondensedMenu();
     } else {
       this.searchInputOpen = !this.searchInputOpen;
+      this.searchInputOpenChange.emit(this.searchInputOpen);
     }
   };
 
   private toggleUser = () => {
     this.userMenuOpen = !this.userMenuOpen;
+    this.userMenuOpenChange.emit(this.userMenuOpen);
   };
 
   render() {
@@ -544,10 +573,10 @@ export class ModusWcNavbar {
                   size="sm"
                   variant="borderless"
                 >
-                  {this.user?.avatarSrc ? (
+                  {this.userCard?.avatarSrc ? (
                     <modus-wc-avatar
-                      alt={this.user.avatarAlt || 'User avatar'}
-                      imgSrc={this.user.avatarSrc}
+                      alt={this.userCard.avatarAlt || 'User avatar'}
+                      imgSrc={this.userCard.avatarSrc}
                       size="xs"
                     />
                   ) : (
@@ -560,23 +589,23 @@ export class ModusWcNavbar {
                 >
                   <modus-wc-card>
                     <div slot="header">
-                      {this.user?.avatarSrc ? (
+                      {this.userCard?.avatarSrc ? (
                         <modus-wc-avatar
-                          alt={this.user.avatarAlt || 'User avatar'}
-                          imgSrc={this.user.avatarSrc}
+                          alt={this.userCard.avatarAlt || 'User avatar'}
+                          imgSrc={this.userCard.avatarSrc}
                         />
                       ) : (
                         <div class="initials">{this.getUserInitials()}</div>
                       )}
                     </div>
-                    <div slot="title">{this.user?.name}</div>
-                    <div>{this.user?.email}</div>
+                    <div slot="title">{this.userCard?.name}</div>
+                    <div>{this.userCard?.email}</div>
                     <div slot="actions">
                       <modus-wc-button
                         customClass="my-trimble"
                         onButtonClick={this.handleMyTrimbleClick}
                       >
-                        {this.user?.myTrimbleButton || 'Access MyTrimble'}
+                        {this.userCard?.myTrimbleButton || 'Access MyTrimble'}
                       </modus-wc-button>
                     </div>
                     <div slot="footer">
@@ -585,7 +614,7 @@ export class ModusWcNavbar {
                         onButtonClick={this.handleSignOutClick}
                         variant="borderless"
                       >
-                        {this.user?.signOutButton || 'Sign out'}
+                        {this.userCard?.signOutButton || 'Sign out'}
                       </modus-wc-button>
                     </div>
                   </modus-wc-card>
