@@ -16,7 +16,7 @@ jobs:
       contents: write
       pull-requests: write
     runs-on: ubuntu-latest
-    if: github.repository == 'trimble-oss/modus-web-components'
+    if: github.repository == 'trimble-oss/modus-wc-2.0'
 
     steps:
       - uses: release-drafter/release-drafter@v6
