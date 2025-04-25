@@ -723,8 +723,8 @@ export namespace Components {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus.
-     * It also supports a 'start', 'center', and 'end' <slot> for injecting additional custom HTML.
+     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcNavbar {
@@ -2075,8 +2075,8 @@ declare global {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus.
-     * It also supports a 'start', 'center', and 'end' <slot> for injecting additional custom HTML.
+     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcNavbarElement extends Components.ModusWcNavbar, HTMLStencilElement {
@@ -3277,8 +3277,8 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus.
-     * It also supports a 'start', 'center', and 'end' <slot> for injecting additional custom HTML.
+     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcNavbar {
@@ -4520,8 +4520,8 @@ declare module "@stencil/core" {
             "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
             /**
              * A customizable navbar component used for top level navigation of all Trimble applications.
-             * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus.
-             * It also supports a 'start', 'center', and 'end' <slot> for injecting additional custom HTML.
+             * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+             * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-navbar": LocalJSX.ModusWcNavbar & JSXBase.HTMLAttributes<HTMLModusWcNavbarElement>;

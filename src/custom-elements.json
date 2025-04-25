@@ -2364,7 +2364,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nThe component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus.\r\nIt also supports a 'start', 'center', and 'end' <slot> for injecting additional custom HTML.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nThe component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.\r\nIt also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcNavbar",
           "members": [
             {
