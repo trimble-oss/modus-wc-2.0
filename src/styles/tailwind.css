@@ -1,6 +1,6 @@
-@import 'tailwindcss' prefix(modus);
-
+@import 'tailwindcss' prefix(modus) source('../');
 @plugin '@tailwindcss/typography';
+@plugin 'daisyui';
 
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
