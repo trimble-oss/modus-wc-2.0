@@ -40,7 +40,7 @@ export { TypographyVariant, TypographyWeight } from "./components/modus-wc-typog
 export namespace Components {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
-     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
+     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcAccordion {
@@ -66,10 +66,6 @@ export namespace Components {
           * Custom CSS class to apply to the outer div element.
          */
         "customClass"?: string;
-        /**
-          * Time taken to dismiss the toast in milliseconds
-         */
-        "delay"?: number;
         /**
           * Whether the alert has a dismiss button
          */
@@ -1489,6 +1485,10 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * Time taken to dismiss the toast in milliseconds
+         */
+        "delay"?: number;
+        /**
           * The position of the toast in the parent container.
          */
         "position"?: ToastPosition;
@@ -1707,7 +1707,7 @@ declare global {
     }
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
-     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
+     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcAccordionElement extends Components.ModusWcAccordion, HTMLStencilElement {
@@ -2481,7 +2481,7 @@ declare global {
 declare namespace LocalJSX {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
-     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
+     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcAccordion {
@@ -2514,10 +2514,6 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the outer div element.
          */
         "customClass"?: string;
-        /**
-          * Time taken to dismiss the toast in milliseconds
-         */
-        "delay"?: number;
         /**
           * Whether the alert has a dismiss button
          */
@@ -4151,6 +4147,10 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
+          * Time taken to dismiss the toast in milliseconds
+         */
+        "delay"?: number;
+        /**
           * The position of the toast in the parent container.
          */
         "position"?: ToastPosition;
@@ -4326,7 +4326,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             /**
              * A customizable accordion component used for showing and hiding related groups of content.
-             * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
+             * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-accordion": LocalJSX.ModusWcAccordion & JSXBase.HTMLAttributes<HTMLModusWcAccordionElement>;

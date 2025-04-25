@@ -1,4 +1,4 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop, Watch } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-toast.tailwind';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -34,6 +34,9 @@ export class ModusWcToast {
   /** Additional classes for custom styling. */
   @Prop() customClass?: string = '';
 
+  /** Time taken to dismiss the toast in milliseconds */
+  @Prop() delay?: number;
+
   /** The position of the toast in the parent container. */
   @Prop() position?: ToastPosition = 'top-end';
 
@@ -53,6 +56,32 @@ export class ModusWcToast {
 
     return classList.join(' ');
   };
+
+  private timerId!: ReturnType<typeof setTimeout>;
+
+  @Watch('delay')
+  delayChanged(newDelay: number): void {
+    clearTimeout(this.timerId);
+    this.timerId = setTimeout(() => {
+      this.dismissElement();
+    }, newDelay);
+  }
+
+  dismissElement() {
+    this.el.remove();
+  }
+
+  componentDidLoad(): void {
+    if (this.delay && this.delay > 0) {
+      this.timerId = setTimeout(() => {
+        this.dismissElement();
+      }, this.delay);
+    }
+  }
+
+  disconnectedCallback(): void {
+    clearTimeout(this.timerId);
+  }
 
   render() {
     return (

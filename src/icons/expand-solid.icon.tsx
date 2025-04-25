@@ -8,8 +8,6 @@ export const ExpandSolidIcon: FunctionalComponent<Props> = ({ className }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
       fill="currentColor"
       class={`mi-solid mi-expand ${className || ''}`}
       viewBox="0 0 24 24"

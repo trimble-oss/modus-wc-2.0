@@ -8,7 +8,6 @@ import {
   Host,
   Listen,
   Prop,
-  Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
 import { AlertSolidIcon } from '../../icons/alert-solid.icon';
@@ -42,9 +41,6 @@ export class ModusWcAlert {
 
   /** Custom CSS class to apply to the outer div element. */
   @Prop() customClass?: string = '';
-
-  /** Time taken to dismiss the toast in milliseconds */
-  @Prop() delay?: number = 15000;
 
   /** Whether the alert has a dismiss button */
   @Prop() dismissible?: boolean = false;
@@ -98,31 +94,9 @@ export class ModusWcAlert {
     }
   }
 
-  private timerId!: ReturnType<typeof setTimeout>;
-
-  @Watch('delay')
-  delayChanged(newDelay: number): void {
-    clearTimeout(this.timerId);
-    this.timerId = setTimeout(() => {
-      this.dismissElement();
-    }, newDelay);
-  }
-
   dismissElement() {
     this.dismissClick.emit();
     this.el.remove();
-  }
-
-  componentDidLoad(): void {
-    if (this.delay && this.delay > 0) {
-      this.timerId = setTimeout(() => {
-        this.dismissElement();
-      }, this.delay);
-    }
-  }
-
-  disconnectedCallback(): void {
-    clearTimeout(this.timerId);
   }
 
   @Listen('keyup')
@@ -164,7 +138,7 @@ export class ModusWcAlert {
               size="sm"
               slot="button"
               variant="borderless"
-              onClick={() => this.dismissElement()}
+              onButtonClick={() => this.dismissElement()}
             >
               <CloseSolidIcon className="modus-wc-alert-close-icon" />
             </modus-wc-button>

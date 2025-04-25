@@ -9,7 +9,7 @@
 
 A customizable accordion component used for showing and hiding related groups of content.
 
-The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
+The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
 
 Adheres to WCAG 2.2 standards.
 

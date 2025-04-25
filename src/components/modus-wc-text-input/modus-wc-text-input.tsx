@@ -252,6 +252,7 @@ export class ModusWcTextInput {
               <CloseSolidIcon
                 ariaLabel={this.clearAriaLabel}
                 className="modus-wc-text-input-icon modus-wc-text-input-icon-clear"
+                decorative={false}
                 onClear={this.handleClearText}
               />
             </div>

@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcAccordion",
           "members": [
             {
@@ -79,23 +79,6 @@
           "members": [
             {
               "kind": "method",
-              "name": "delayChanged",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "newDelay",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
               "name": "dismissElement"
             },
             {
@@ -152,15 +135,6 @@
               "description": "Custom CSS class to apply to the outer div element.",
               "type": {
                 "text": "string"
-              }
-            },
-            {
-              "name": "delay",
-              "fieldName": "delay",
-              "default": "15000",
-              "description": "Time taken to dismiss the toast in milliseconds",
-              "type": {
-                "text": "number"
               }
             },
             {
@@ -4818,6 +4792,27 @@
           "name": "ModusWcToast",
           "members": [
             {
+              "kind": "method",
+              "name": "delayChanged",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newDelay",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "dismissElement"
+            },
+            {
               "kind": "field",
               "name": "el",
               "type": {
@@ -4838,6 +4833,14 @@
               "description": "Additional classes for custom styling.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "delay",
+              "fieldName": "delay",
+              "description": "Time taken to dismiss the toast in milliseconds",
+              "type": {
+                "text": "number"
               }
             },
             {
