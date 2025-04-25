@@ -361,7 +361,7 @@ export class ModusWcNavbar {
                 <modus-wc-button
                   onButtonClick={this.toggleMainMenu}
                   shape="square"
-                  size="xs"
+                  size="sm"
                   variant="borderless"
                 >
                   <MenuSolidIcon />
@@ -378,7 +378,7 @@ export class ModusWcNavbar {
             <modus-wc-button
               customClass="trimble-logo"
               onButtonClick={this.handleTrimbleLogoClick}
-              size="xs"
+              size="sm"
               variant="borderless"
             >
               {this.condensed ? (
@@ -403,7 +403,7 @@ export class ModusWcNavbar {
                 <modus-wc-button
                   onButtonClick={this.toggleCondensedMenu}
                   shape="square"
-                  size="xs"
+                  size="sm"
                   variant="borderless"
                 >
                   <MoreVerticalSolidIcon />
@@ -463,7 +463,7 @@ export class ModusWcNavbar {
                 <modus-wc-button
                   onButtonClick={this.handleSearchClick}
                   shape="square"
-                  size="xs"
+                  size="sm"
                   variant="borderless"
                 >
                   <SearchSolidIcon />
@@ -476,7 +476,7 @@ export class ModusWcNavbar {
                 <modus-wc-button
                   onButtonClick={this.handleNotificationsClick}
                   shape="square"
-                  size="xs"
+                  size="sm"
                   variant="borderless"
                 >
                   <NotificationsSolidIcon />
@@ -494,7 +494,7 @@ export class ModusWcNavbar {
               <modus-wc-button
                 onButtonClick={this.handleHelpClick}
                 shape="square"
-                size="xs"
+                size="sm"
                 variant="borderless"
               >
                 <HelpSolidIcon />
@@ -506,7 +506,7 @@ export class ModusWcNavbar {
                 <modus-wc-button
                   onButtonClick={this.handleAppsClick}
                   shape="square"
-                  size="xs"
+                  size="sm"
                   variant="borderless"
                 >
                   <AppsSolidIcon />
@@ -526,7 +526,7 @@ export class ModusWcNavbar {
                   customClass="user-button"
                   onButtonClick={this.toggleUser}
                   shape="circle"
-                  size="xs"
+                  size="sm"
                   variant="borderless"
                 >
                   {this.user?.avatarSrc ? (
