@@ -1,68 +1,70 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-input {
+.modus\:input {
   @include feedback-levels;
 }
 
 modus-wc-text-input {
-  .modus-wc-input-label {
+  .modus\:input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
   }
 
   // Icon sizes
-  .modus-wc-text-input {
-    &.modus-wc-input {
-      &.modus-wc-input-sm {
-        .modus-wc-text-input-icon {
+  .modus\:text-input {
+    &.modus\:input {
+      &.modus\:input-sm {
+        .modus\:text-input-icon {
           height: var(--modus-wc-line-height-sm);
           width: var(--modus-wc-line-height-sm);
         }
       }
 
-      &.modus-wc-input-md {
-        .modus-wc-text-input-icon {
+      &.modus\:input-md {
+        .modus\:text-input-icon {
           height: var(--modus-wc-line-height-md);
           width: var(--modus-wc-line-height-md);
         }
       }
 
-      &.modus-wc-input-lg {
-        .modus-wc-text-input-icon {
+      &.modus\:input-lg {
+        .modus\:text-input-icon {
           height: var(--modus-wc-line-height-lg);
           width: var(--modus-wc-line-height-lg);
         }
       }
 
-      .modus-wc-text-input-icon {
-        &.modus-wc-text-input-icon-clear {
+      .modus\:text-input-icon {
+        &.modus\:text-input-icon-clear {
           cursor: pointer;
         }
       }
 
-      .modus-wc-clear-icon-container {
+      .modus\:clear-icon-container {
         align-items: center;
         display: flex;
         justify-content: center;
         min-width: var(--modus-wc-line-height-md);
 
-        &.modus-wc-clear-icon-hidden {
+        &.modus\:clear-icon-hidden {
           pointer-events: none;
           visibility: hidden;
         }
 
-        &.modus-wc-clear-icon-visible {
+        &.modus\:clear-icon-visible {
           visibility: visible;
         }
       }
 
-      &.modus-wc-input-sm .modus-wc-clear-icon-container {
+      &.modus\:input-sm .modus\:clear-icon-container {
         min-width: var(--modus-wc-line-height-sm);
       }
 
-      &.modus-wc-input-lg .modus-wc-clear-icon-container {
+      &.modus\:input-lg .modus\:clear-icon-container {
         min-width: var(--modus-wc-line-height-lg);
       }
     }
@@ -70,28 +72,28 @@ modus-wc-text-input {
 }
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
-[data-theme='modus-classic-light'] modus-wc-text-input .modus-wc-text-input,
-[data-theme='modus-classic-dark'] modus-wc-text-input .modus-wc-text-input {
-  &.modus-wc-input {
+[data-theme='modus-classic-light'] modus-wc-text-input .modus\:text-input,
+[data-theme='modus-classic-dark'] modus-wc-text-input .modus\:text-input {
+  &.modus\:input {
     border-radius: var(--modus-wc-border-radius-md);
 
     // TODO - add support for xs and xl once added to Modus Figma
 
-    &.modus-wc-input-sm {
+    &.modus\:input-sm {
       font-size: var(--modus-wc-font-size-sm);
       height: var(--modus-wc-input-height-sm);
       line-height: var(--modus-wc-line-height-sm);
       padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-xs);
     }
 
-    &.modus-wc-input-md {
+    &.modus\:input-md {
       font-size: var(--modus-wc-font-size-md);
       height: var(--modus-wc-input-height-md);
       line-height: var(--modus-wc-line-height-md);
       padding: var(--modus-wc-spacing-sm);
     }
 
-    &.modus-wc-input-lg {
+    &.modus\:input-lg {
       font-size: var(--modus-wc-font-size-lg);
       height: var(--modus-wc-input-height-lg);
       line-height: var(--modus-wc-line-height-xl);
@@ -104,23 +106,23 @@ modus-wc-text-input {
       outline: none; // Ensures there's no outline on focus
     }
 
-    .modus-wc-text-input-icon {
-      &.modus-wc-text-input-icon-clear {
+    .modus\:text-input-icon {
+      &.modus\:text-input-icon-clear {
         &:focus:not(:focus-visible) {
           outline: none;
         }
       }
     }
 
-    &.modus-wc-text-input--readonly {
+    &.modus\:text-input--readonly {
       background-color: var(--modus-wc-color-base-100);
     }
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-text-input .modus-wc-text-input {
-  &.modus-wc-input {
-    &.modus-wc-input-bordered:not(:disabled) {
+[data-theme='modus-classic-light'] modus-wc-text-input .modus\:text-input {
+  &.modus\:input {
+    &.modus\:input-bordered:not(:disabled) {
       border-color: var(--modus-wc-color-accent);
 
       &:focus-within {
@@ -128,15 +130,15 @@ modus-wc-text-input {
       }
     }
 
-    .modus-wc-text-input-icon {
+    .modus\:text-input-icon {
       color: var(--modus-wc-color-gray-8);
     }
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-text-input .modus-wc-text-input {
-  &.modus-wc-input {
-    .modus-wc-text-input-icon {
+[data-theme='modus-classic-dark'] modus-wc-text-input .modus\:text-input {
+  &.modus\:input {
+    .modus\:text-input-icon {
       color: var(--modus-wc-color-gray-2);
     }
 

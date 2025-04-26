@@ -35,7 +35,7 @@ export class ModusWcSkeleton {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-skeleton'];
+    const classList = ['modus:skeleton'];
 
     const propClasses = convertPropsToClasses({
       shape: this.shape,

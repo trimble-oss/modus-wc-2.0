@@ -82,7 +82,7 @@ export class ModusWcThemeSwitcher {
         <input
           aria-checked={this.isDarkMode}
           checked={this.isDarkMode}
-          class="modus-wc-toggle modus-wc-theme-controller modus:bg-base-content modus:col-span-2 modus:col-start-1 modus:row-start-1"
+          class="modus:toggle modus:theme-controller modus:bg-base-content modus:col-span-2 modus:col-start-1 modus:row-start-1"
           onChange={(event) => this.handleModeToggle(event)}
           type="checkbox"
           value="default"

@@ -56,6 +56,8 @@ const Template: Story = {
   variant=${ifDefined(args.variant)}
 >
 </modus-wc-alert>
+<!-- TODO: used to test what is daisy/tailwind, delete after -->
+<button class="modus:flex-grow"></button>
     `;
   },
 };

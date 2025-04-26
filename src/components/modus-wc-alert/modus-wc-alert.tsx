@@ -62,7 +62,7 @@ export class ModusWcAlert {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-alert'];
+    const classList = ['modus:alert'];
     const propClasses = convertPropsToClasses({
       variant: this.variant,
     });
@@ -76,21 +76,19 @@ export class ModusWcAlert {
 
   private getLeadingIcon(): FunctionalComponent {
     if (this.icon) {
-      return (
-        <modus-wc-icon custom-class="modus-wc-alert-icon" name={this.icon} />
-      );
+      return <modus-wc-icon custom-class="modus:alert-icon" name={this.icon} />;
     }
 
     switch (this.variant) {
       case 'error':
-        return <AlertSolidIcon className="modus-wc-alert-icon" />;
+        return <AlertSolidIcon className="modus:alert-icon" />;
       case 'success':
-        return <CheckCircleSolidIcon className="modus-wc-alert-icon" />;
+        return <CheckCircleSolidIcon className="modus:alert-icon" />;
       case 'warning':
-        return <WarningSolidIcon className="modus-wc-alert-icon" />;
+        return <WarningSolidIcon className="modus:alert-icon" />;
       case 'info':
       default:
-        return <InfoSolidIcon className="modus-wc-alert-icon" />;
+        return <InfoSolidIcon className="modus:alert-icon" />;
     }
   }
 
@@ -140,7 +138,7 @@ export class ModusWcAlert {
               variant="borderless"
               onButtonClick={() => this.dismissElement()}
             >
-              <CloseSolidIcon className="modus-wc-alert-close-icon" />
+              <CloseSolidIcon className="modus:alert-close-icon" />
             </modus-wc-button>
           )}
         </div>

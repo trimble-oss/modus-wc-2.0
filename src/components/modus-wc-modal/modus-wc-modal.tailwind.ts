@@ -8,10 +8,10 @@ export const convertPropsToClasses = ({
   if (position) {
     switch (position) {
       case 'top':
-        classes = `${classes} modus-wc-modal-top`;
+        classes = `${classes} modus:modal-top`;
         break;
       case 'bottom':
-        classes = `${classes} modus-wc-modal-bottom`;
+        classes = `${classes} modus:modal-bottom`;
         break;
       case 'center':
         break; // center is default, no class needed

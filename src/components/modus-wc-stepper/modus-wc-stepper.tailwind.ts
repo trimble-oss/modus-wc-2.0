@@ -10,7 +10,7 @@ export const convertPropsToClasses = ({
       case 'horizontal':
         break; // Default
       case 'vertical':
-        classes = `${classes} modus-wc-steps-vertical`;
+        classes = `${classes} modus:steps-vertical`;
         break;
     }
   }

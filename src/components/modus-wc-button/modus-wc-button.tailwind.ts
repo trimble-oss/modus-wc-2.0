@@ -20,56 +20,56 @@ export const convertPropsToClasses = ({
   if (color) {
     switch (color) {
       case 'primary':
-        classes = `${classes} modus-wc-btn-primary`;
+        classes = `${classes} modus:btn-primary`;
         break;
       case 'secondary':
-        classes = `${classes} modus-wc-btn-secondary`;
+        classes = `${classes} modus:btn-secondary`;
         break;
       case 'tertiary':
-        classes = `${classes} modus-wc-btn-neutral`;
+        classes = `${classes} modus:btn-neutral`;
         break;
       case 'warning':
-        classes = `${classes} modus-wc-btn-warning`;
+        classes = `${classes} modus:btn-warning`;
         break;
       case 'danger':
-        classes = `${classes} modus-wc-btn-error`;
+        classes = `${classes} modus:btn-error`;
         break;
     }
   }
 
   if (disabled) {
-    classes = `${classes} modus-wc-btn-disabled`;
+    classes = `${classes} modus:btn-disabled`;
   }
 
   if (fullWidth) {
-    classes = `${classes} modus-wc-btn-block`;
+    classes = `${classes} modus:btn-block`;
   }
 
   if (shape) {
     switch (shape) {
       case 'circle':
-        classes = `${classes} modus-wc-btn-circle`;
+        classes = `${classes} modus:btn-circle`;
         break;
       case 'square':
-        classes = `${classes} modus-wc-btn-square`;
+        classes = `${classes} modus:btn-square`;
         break;
     }
   }
 
   if (size) {
-    classes = `${classes} modus-wc-btn-${size}`;
+    classes = `${classes} modus:btn-${size}`;
   }
 
   if (variant) {
     switch (variant) {
       case 'borderless':
-        classes = `${classes} modus-wc-btn-borderless`;
+        classes = `${classes} modus:btn-borderless`;
         break;
       case 'filled':
-        classes = `${classes} modus-wc-btn-filled`;
+        classes = `${classes} modus:btn-filled`;
         break;
       case 'outlined':
-        classes = `${classes} modus-wc-btn-outline`;
+        classes = `${classes} modus:btn-outline`;
         break;
     }
   }

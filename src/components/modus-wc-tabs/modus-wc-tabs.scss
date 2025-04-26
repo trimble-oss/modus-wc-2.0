@@ -1,16 +1,18 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
 modus-wc-tabs {
-  .modus-wc-tab modus-wc-icon + span,
-  .modus-wc-tab span + modus-wc-icon {
+  .modus\:tab modus-wc-icon + span,
+  .modus\:tab span + modus-wc-icon {
     padding-inline-start: var(--modus-wc-spacing-xs);
   }
 }
 
-modus-wc-tabs .modus-wc-tab {
+modus-wc-tabs .modus\:tab {
   align-items: center;
   border-top-left-radius: var(--modus-wc-border-radius-md);
   border-top-right-radius: var(--modus-wc-border-radius-md);
@@ -21,61 +23,61 @@ modus-wc-tabs .modus-wc-tab {
 
   // For centering purposes
   modus-wc-icon {
-    .modus-wc-icon--xs {
+    .modus\:icon--xs {
       line-height: calc(var(--modus-wc-line-height-sm) + 0.25rem);
     }
 
-    .modus-wc-icon--sm {
+    .modus\:icon--sm {
       line-height: var(--modus-wc-line-height-md);
     }
 
-    .modus-wc-icon--md {
+    .modus\:icon--md {
       line-height: var(--modus-wc-line-height-lg);
     }
 
-    .modus-wc-icon--lg {
+    .modus\:icon--lg {
       line-height: var(--modus-wc-line-height-xl);
     }
   }
 
-  &:not(.modus-wc-tab-active):not(.modus-wc-tab-disabled):hover {
+  &:not(.modus\:tab-active):not(.modus\:tab-disabled):hover {
     background-color: var(--modus-wc-color-base-100);
   }
 }
 
-.modus-wc-tabs-lifted
-  > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-    .modus-wc-tab-disabled
+.modus\:tabs-lifted
+  > .modus\:tab:is(.modus\:tab-active, [aria-selected='true']):not(
+    .modus\:tab-disabled
   ):not([disabled]),
-.modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
+.modus\:tabs-lifted > .modus\:tab:is(input:checked) {
   color: var(--modus-wc-color-primary);
 }
 
-.modus-wc-tabs-bordered {
-  .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-      .modus-wc-tab-disabled
+.modus\:tabs-bordered {
+  .modus\:tab:is(.modus\:tab-active, [aria-selected='true']):not(
+      .modus\:tab-disabled
     ):not([disabled]) {
     border-bottom-color: var(--modus-wc-color-primary);
     border-bottom-width: var(--modus-wc-border-width-lg);
   }
 }
 
-.modus-wc-tab .modus-wc-tab-active {
-  .modus-wc-tab:is(input:checked) {
+.modus\:tab .modus\:tab-active {
+  .modus\:tab:is(input:checked) {
     color: var(--modus-wc-color-primary);
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-tabs .modus-wc-tab {
+[data-theme='modus-classic-light'] modus-wc-tabs .modus\:tab {
   --tab-color: var(--modus-wc-color-trimble-gray);
   --tab-bg: var(--modus-wc-color-white);
   --fallback-bc: var(--modus-wc-color-gray-2);
 
-  &:not(.modus-wc-tab-active):not(.modus-wc-tab-disabled):hover {
+  &:not(.modus\:tab-active):not(.modus\:tab-disabled):hover {
     background-color: var(--modus-wc-color-blue-pale);
   }
 
-  &:not(.modus-wc-tab-disabled):active {
+  &:not(.modus\:tab-disabled):active {
     --tab-color: var(--modus-wc-color-gray-10);
     --tab-border: var(
       --modus-wc-border-width-xs
@@ -87,7 +89,7 @@ modus-wc-tabs .modus-wc-tab {
     background-color: var(--modus-wc-color-trimble-blue) !important;
   }
 
-  &.modus-wc-tab-active {
+  &.modus\:tab-active {
     --tab-color: var(--modus-wc-color-gray-10);
     --tab-bg: var(--modus-wc-color-blue-light);
 
@@ -98,22 +100,22 @@ modus-wc-tabs .modus-wc-tab {
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-tabs .modus-wc-tab {
+[data-theme='modus-classic-dark'] modus-wc-tabs .modus\:tab {
   --tab-color: var(--modus-wc-color-white);
   --tab-bg: var(--modus-wc-color-gray-8);
   --fallback-bc: var(--modus-wc-color-gray-8);
 
-  &:not(.modus-wc-tab-active):not(.modus-wc-tab-disabled):hover {
+  &:not(.modus\:tab-active):not(.modus\:tab-disabled):hover {
     background-color: var(--modus-wc-color-blue-pale);
     color: var(--modus-wc-color-gray-10);
   }
 
-  &:not(.modus-wc-tab-disabled):active {
+  &:not(.modus\:tab-disabled):active {
     // Unfortunately needed, otherwise browsers sometimes don't apply.
     background-color: var(--modus-wc-color-highlight-blue) !important;
   }
 
-  &.modus-wc-tab-active {
+  &.modus\:tab-active {
     --tab-color: var(--modus-wc-color-white);
     --tab-bg: var(--modus-wc-color-blue-light);
 
@@ -124,7 +126,7 @@ modus-wc-tabs .modus-wc-tab {
     --fallback-bc: var(--modus-wc-color-highlight-blue);
   }
 
-  &.modus-wc-tab-disabled {
+  &.modus\:tab-disabled {
     --tab-color: var(--modus-wc-color-gray-2);
 
     background-color: var(--modus-wc-color-gray-9);

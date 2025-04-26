@@ -48,7 +48,7 @@ export class ModusWCTypography {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-typography'];
+    const classList = ['modus:typography'];
 
     const propClasses = convertPropsToClasses({
       size: this.size,

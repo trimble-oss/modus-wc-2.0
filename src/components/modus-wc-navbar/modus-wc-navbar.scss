@@ -1,10 +1,12 @@
-modus-wc-navbar .modus-wc-navbar {
+/* stylelint-disable selector-class-pattern */
+
+modus-wc-navbar .modus\:navbar {
   // Common button styles
   modus-wc-button {
     display: inline-flex;
   }
 
-  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+  .modus\:btn.modus\:btn-borderless.modus\:btn-primary {
     color: var(--modus-wc-color-black);
   }
 
@@ -44,7 +46,7 @@ modus-wc-navbar .modus-wc-navbar {
     }
 
     // Trimble logo button
-    .trimble-logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+    .trimble-logo.modus\:btn.modus\:btn-borderless.modus\:btn-primary {
       padding: 0 var(--modus-wc-spacing-lg);
 
       svg {
@@ -92,7 +94,7 @@ modus-wc-navbar .modus-wc-navbar {
 
       right: 0;
 
-      modus-wc-card article.modus-wc-card {
+      modus-wc-card article.modus\:card {
         align-items: center;
         padding: var(--modus-wc-spacing-xl);
         width: max-content;
@@ -105,7 +107,7 @@ modus-wc-navbar .modus-wc-navbar {
           padding: var(--modus-wc-spacing-sm);
         }
 
-        .modus-wc-card-body {
+        .modus\:card-body {
           align-items: center;
         }
 
@@ -113,18 +115,18 @@ modus-wc-navbar .modus-wc-navbar {
           padding: 0;
         }
 
-        .sign-out.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+        .sign-out.modus\:btn.modus\:btn-borderless.modus\:btn-primary {
           color: var(--modus-wc-color-trimble-blue);
         }
       }
     }
 
     // User button
-    .user-button.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+    .user-button.modus\:btn.modus\:btn-borderless.modus\:btn-primary {
       background-color: var(--modus-wc-color-black);
       color: var(--modus-wc-color-white);
 
-      .modus-wc-avatar {
+      .modus\:avatar {
         height: 24px;
         width: 24px;
       }
@@ -132,24 +134,23 @@ modus-wc-navbar .modus-wc-navbar {
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-navbar .modus-wc-navbar,
-[data-theme='modus-modern-dark'] modus-wc-navbar .modus-wc-navbar {
+[data-theme='modus-classic-dark'] modus-wc-navbar .modus\:navbar,
+[data-theme='modus-modern-dark'] modus-wc-navbar .modus\:navbar {
   // Common button styles
-  &:not(.trimble-logo)
-    .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+  &:not(.trimble-logo) .modus\:btn.modus\:btn-borderless.modus\:btn-primary {
     color: var(--modus-wc-color-white);
   }
 
   // Trimble logo button
-  .trimble-logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary path {
+  .trimble-logo.modus\:btn.modus\:btn-borderless.modus\:btn-primary path {
     fill: var(--modus-wc-color-white);
   }
 
   // Sign out button
   .user
     modus-wc-card
-    article.modus-wc-card
-    .sign-out.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+    article.modus\:card
+    .sign-out.modus\:btn.modus\:btn-borderless.modus\:btn-primary {
     color: var(--modus-wc-color-white);
   }
 }

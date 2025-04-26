@@ -170,7 +170,7 @@ export class ModusWcAutocomplete {
   }
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-autocomplete'];
+    const classList: string[] = ['modus:autocomplete'];
 
     // The order CSS classes are added matters to CSS specificity
     if (this.customClass) classList.push(this.customClass);
@@ -180,10 +180,10 @@ export class ModusWcAutocomplete {
 
   private getMultiSelectClasses(): string {
     return [
-      'modus-wc-autocomplete-multi-select',
-      this.bordered && 'modus-wc-autocomplete-multi-select--bordered',
-      this.disabled && 'modus-wc-autocomplete-multi-select--disabled',
-      this.readOnly && 'modus-wc-autocomplete-multi-select--readonly',
+      'modus:autocomplete-multi-select',
+      this.bordered && 'modus:autocomplete-multi-select--bordered',
+      this.disabled && 'modus:autocomplete-multi-select--disabled',
+      this.readOnly && 'modus:autocomplete-multi-select--readonly',
     ]
       .filter(Boolean)
       .join(' ');
@@ -308,9 +308,9 @@ export class ModusWcAutocomplete {
 
   private renderNoResults() {
     return (
-      <div class="modus-wc-autocomplete-no-results">
+      <div class="modus:autocomplete-no-results">
         <div class="icon-label" aria-label={this.noResults?.ariaLabel}>
-          <SearchSolidIcon className="modus-wc-autocomplete-search-icon" />
+          <SearchSolidIcon className="modus:autocomplete-search-icon" />
           <div class="label">{this.noResults?.label}</div>
         </div>
         <div class="sub-label">{this.noResults?.subLabel}</div>

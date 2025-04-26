@@ -21,40 +21,40 @@ export const convertPropsToClasses = ({
   if (color) {
     switch (color) {
       case 'primary':
-        classes = `${classes} modus-wc-badge-primary`;
+        classes = `${classes} modus:badge-primary`;
         break;
       case 'secondary':
-        classes = `${classes} modus-wc-badge-secondary`;
+        classes = `${classes} modus:badge-secondary`;
         break;
       case 'tertiary':
-        classes = `${classes} modus-wc-badge-neutral`;
+        classes = `${classes} modus:badge-neutral`;
         break;
       case 'high-contrast':
-        classes = `${classes} modus-wc-badge-high-contrast`;
+        classes = `${classes} modus:badge-high-contrast`;
         break;
       case 'success':
-        classes = `${classes} modus-wc-badge-success`;
+        classes = `${classes} modus:badge-success`;
         break;
       case 'warning':
-        classes = `${classes} modus-wc-badge-warning`;
+        classes = `${classes} modus:badge-warning`;
         break;
       case 'danger':
-        classes = `${classes} modus-wc-badge-error`;
+        classes = `${classes} modus:badge-error`;
         break;
     }
   }
 
   if (size) {
-    classes = `${classes} modus-wc-badge-${size}`;
+    classes = `${classes} modus:badge-${size}`;
   }
 
   if (variant) {
     switch (variant) {
       case 'counter':
-        classes = `${classes} modus-wc-badge-counter`;
+        classes = `${classes} modus:badge-counter`;
         break;
       case 'text':
-        classes = `${classes} modus-wc-badge-text`;
+        classes = `${classes} modus:badge-text`;
         break;
     }
   }

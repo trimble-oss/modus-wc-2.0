@@ -64,7 +64,7 @@ export class ModusWcMenuItem {
   }
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-menu-item'];
+    const classList: string[] = ['modus:menu-item'];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
@@ -114,23 +114,23 @@ export class ModusWcMenuItem {
             onClick={this.handleItemSelect}
             type="button"
           >
-            <div class="modus-wc-menu-item-content">
+            <div class="modus:menu-item-content">
               {this.startIcon && (
                 <modus-wc-icon
-                  customClass="modus-wc-menu-item-start-icon"
+                  customClass="modus:menu-item-start-icon"
                   decorative={true}
                   name={this.startIcon}
                   size={this.getIconSize()}
                 />
               )}
-              <div class="modus-wc-menu-item-labels">
+              <div class="modus:menu-item-labels">
                 <div>{this.label}</div>
                 {this.subLabel && (
-                  <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
+                  <div class="modus:menu-item-sublabel">{this.subLabel}</div>
                 )}
               </div>
               {this.selected && (
-                <div class="modus-wc-menu-item-selected-icon">
+                <div class="modus:menu-item-selected-icon">
                   <modus-wc-icon
                     decorative={true}
                     name="check"

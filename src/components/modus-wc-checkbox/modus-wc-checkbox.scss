@@ -1,20 +1,22 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-checkbox.modus-wc-checkbox-host {
+modus-wc-checkbox.modus\:checkbox-host {
   align-items: center;
   display: flex;
 
-  .modus-wc-input-label {
+  .modus\:input-label {
     font-weight: var(--modus-wc-font-weight-normal);
     padding-inline-start: var(--modus-wc-spacing-md);
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-checkbox .modus-wc-checkbox,
-[data-theme='modus-classic-dark'] modus-wc-checkbox .modus-wc-checkbox {
+[data-theme='modus-classic-light'] modus-wc-checkbox .modus\:checkbox,
+[data-theme='modus-classic-dark'] modus-wc-checkbox .modus\:checkbox {
   --chkbg: var(--modus-wc-color-highlight-blue);
   --fallback-bc: var(--modus-wc-color-gray-4);
   --chkfg: var(--modus-wc-color-white);
@@ -23,17 +25,17 @@ modus-wc-checkbox.modus-wc-checkbox-host {
   border-width: var(--modus-wc-border-width-sm);
 
   // Sizes
-  &.modus-wc-checkbox-sm {
+  &.modus\:checkbox-sm {
     height: 0.75rem;
     width: 0.75rem;
   }
 
-  &.modus-wc-checkbox-md {
+  &.modus\:checkbox-md {
     height: 1rem;
     width: 1rem;
   }
 
-  &.modus-wc-checkbox-lg {
+  &.modus\:checkbox-lg {
     height: 1.25rem;
     width: 1.25rem;
   }
@@ -73,7 +75,7 @@ modus-wc-checkbox.modus-wc-checkbox-host {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-checkbox .modus-wc-checkbox {
+[data-theme='modus-classic-light'] modus-wc-checkbox .modus\:checkbox {
   --chkbg: var(--modus-wc-color-blue-light);
 
   &:checked {

@@ -80,7 +80,7 @@ export class ModusWcProgress {
       : { max: this.max, value: this.value };
 
     return (
-      <Host class="modus-wc-progress-container">
+      <Host class="modus:progress-container">
         {this.variant === 'default' ? (
           <Fragment>
             <progress
@@ -99,7 +99,7 @@ export class ModusWcProgress {
             {...progressAriaAttributes}
             {...this.inheritedAttributes}
           >
-            <span class="modus-wc-radial-progress-label">{this.label}</span>
+            <span class="modus:radial-progress-label">{this.label}</span>
             <slot />
           </div>
         )}

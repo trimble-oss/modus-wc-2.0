@@ -46,7 +46,7 @@ export class ModusWcInputFeedback {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-input-feedback'];
+    const classList = ['modus:input-feedback'];
     const propClasses = convertPropsToClasses({
       level: this.level,
       size: this.size,
@@ -62,15 +62,13 @@ export class ModusWcInputFeedback {
   private getPresetIcon() {
     switch (this.level) {
       case 'error':
-        return <WarningOutlineIcon className="modus-wc-input-feedback-icon" />;
+        return <WarningOutlineIcon className="modus:input-feedback-icon" />;
       case 'info':
-        return <InfoOutlineIcon className="modus-wc-input-feedback-icon" />;
+        return <InfoOutlineIcon className="modus:input-feedback-icon" />;
       case 'success':
-        return (
-          <CheckCircleOutlineIcon className="modus-wc-input-feedback-icon" />
-        );
+        return <CheckCircleOutlineIcon className="modus:input-feedback-icon" />;
       case 'warning':
-        return <WarningOutlineIcon className="modus-wc-input-feedback-icon" />;
+        return <WarningOutlineIcon className="modus:input-feedback-icon" />;
     }
   }
 

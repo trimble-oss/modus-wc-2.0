@@ -1,9 +1,11 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-collapse .modus-wc-collapse {
+modus-wc-collapse .modus\:collapse {
   background-color: var(--modus-wc-color-base-100);
   border-color: transparent;
   box-sizing: border-box;
@@ -11,7 +13,7 @@ modus-wc-collapse .modus-wc-collapse {
   margin-bottom: var(--modus-wc-spacing-md);
   transition: none !important;
 
-  .modus-wc-collapse-title {
+  .modus\:collapse-title {
     font-size: var(--modus-wc-font-size-md);
     font-weight: var(--modus-wc-font-weight-semibold);
     min-height: unset;
@@ -29,47 +31,47 @@ modus-wc-collapse .modus-wc-collapse {
     margin-inline-end: var(--modus-wc-spacing-sm);
   }
 
-  &.modus-wc-border {
+  &.modus\:border {
     background: var(--modus-wc-color-base-page);
     border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
     border-radius: var(--modus-wc-border-radius-box);
   }
 
-  &.modus-wc-collapse-arrow.modus-wc-collapse-open {
-    .modus-wc-collapse-content {
+  &.modus\:collapse-arrow.modus\:collapse-open {
+    .modus\:collapse-content {
       padding: var(--modus-wc-spacing-lg);
     }
 
-    .modus-wc-collapse-title {
+    .modus\:collapse-title {
       background-color: var(--modus-wc-color-base-200);
     }
   }
 
-  &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-collapse-open {
-    .modus-wc-collapse-title {
+  &.modus\:collapse-arrow.modus\:border.modus\:collapse-open {
+    .modus\:collapse-title {
       background-color: var(--modus-wc-color-base-100);
     }
   }
 }
 
-.modus-wc-collapse-arrow > .modus-wc-collapse-title::after {
+.modus\:collapse-arrow > .modus\:collapse-title::after {
   top: 50% !important;
 }
 
-[data-theme='modus-classic-light'] modus-wc-collapse .modus-wc-collapse,
-[data-theme='modus-classic-dark'] modus-wc-collapse .modus-wc-collapse {
+[data-theme='modus-classic-light'] modus-wc-collapse .modus\:collapse,
+[data-theme='modus-classic-dark'] modus-wc-collapse .modus\:collapse {
   border-radius: var(--modus-wc-border-radius-md);
   margin-bottom: 0;
   margin-bottom: -1px;
 
-  .modus-wc-collapse-title {
+  .modus\:collapse-title {
     font-weight: var(--modus-wc-font-weight-normal);
     min-height: unset;
     width: auto;
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-collapse .modus-wc-collapse {
+[data-theme='modus-classic-light'] modus-wc-collapse .modus\:collapse {
   background-color: var(--modus-wc-color-white);
   color: inherit;
 
@@ -77,11 +79,11 @@ modus-wc-collapse .modus-wc-collapse {
     color: var(--modus-wc-color-gray-6);
   }
 
-  &.modus-wc-collapse-arrow.modus-wc-collapse-open {
+  &.modus\:collapse-arrow.modus\:collapse-open {
     border-left: var(--modus-wc-spacing-xs) solid
       var(--modus-wc-color-trimble-blue);
 
-    .modus-wc-collapse-title {
+    .modus\:collapse-title {
       background-color: var(--modus-wc-color-blue-pale);
       font-weight: var(--modus-wc-font-weight-normal);
       padding-inline-start: var(--modus-wc-spacing-md);
@@ -89,18 +91,18 @@ modus-wc-collapse .modus-wc-collapse {
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-collapse .modus-wc-collapse {
+[data-theme='modus-classic-dark'] modus-wc-collapse .modus\:collapse {
   color: inherit;
 
   .description {
     color: var(--modus-wc-color-gray-light);
   }
 
-  &.modus-wc-collapse-arrow.modus-wc-collapse-open {
+  &.modus\:collapse-arrow.modus\:collapse-open {
     border-left: var(--modus-wc-spacing-xs) solid
       var(--modus-wc-color-highlight-blue);
 
-    .modus-wc-collapse-title {
+    .modus\:collapse-title {
       background-color: color-mix(
         in sRGB,
         var(--modus-wc-color-highlight-blue) 30%,

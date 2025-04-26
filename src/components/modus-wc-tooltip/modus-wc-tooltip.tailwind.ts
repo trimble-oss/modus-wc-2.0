@@ -9,14 +9,14 @@ export const convertPropsToClasses = (props: {
     Object.prototype.hasOwnProperty.call(props, 'disabled') &&
     !!props.disabled
   ) {
-    classes = `${classes} modus-wc-tooltip-disabled`;
+    classes = `${classes} modus:tooltip-disabled`;
   }
 
   if (
     Object.prototype.hasOwnProperty.call(props, 'forceOpen') &&
     !!props.forceOpen
   ) {
-    classes = `${classes} modus-wc-tooltip-open`;
+    classes = `${classes} modus:tooltip-open`;
   }
 
   if (
@@ -24,7 +24,7 @@ export const convertPropsToClasses = (props: {
     props.position &&
     props.position !== 'auto'
   ) {
-    classes = `${classes} modus-wc-tooltip-${props.position}`;
+    classes = `${classes} modus:tooltip-${props.position}`;
   }
 
   return classes;

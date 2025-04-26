@@ -1,11 +1,13 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
 // Default Styles
-modus-wc-chip .modus-wc-chip {
-  &.modus-wc-btn {
+modus-wc-chip .modus\:chip {
+  &.modus\:btn {
     background-color: var(--modus-wc-color-base-100);
     border-color: transparent;
     box-sizing: border-box;
@@ -14,111 +16,111 @@ modus-wc-chip .modus-wc-chip {
     --rounded-btn: #{var(--modus-wc-border-radius-chip)};
 
     // Sizes
-    &.modus-wc-btn-sm {
+    &.modus\:btn-sm {
       height: var(--modus-wc-spacing-xl);
       min-height: var(--modus-wc-spacing-xl);
       padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
 
-      .modus-wc-avatar {
+      .modus\:avatar {
         height: var(--modus-wc-spacing-lg);
         width: var(--modus-wc-spacing-lg);
       }
 
-      .modus-wc-chip-remove-icon {
+      .modus\:chip-remove-icon {
         height: var(--modus-wc-spacing-lg);
         width: var(--modus-wc-spacing-lg);
       }
     }
 
-    &.modus-wc-btn-md {
+    &.modus\:btn-md {
       height: var(--modus-wc-spacing-2xl);
       min-height: var(--modus-wc-spacing-2xl);
       padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-sm);
 
-      .modus-wc-avatar {
+      .modus\:avatar {
         height: var(--modus-wc-spacing-lg);
         width: var(--modus-wc-spacing-lg);
       }
 
-      .modus-wc-chip-remove-icon {
+      .modus\:chip-remove-icon {
         height: var(--modus-wc-spacing-lg);
         width: var(--modus-wc-spacing-lg);
       }
     }
 
-    &.modus-wc-btn-lg {
+    &.modus\:btn-lg {
       height: var(--modus-wc-spacing-3xl);
       min-height: var(--modus-wc-spacing-3xl);
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-md);
 
-      .modus-wc-avatar {
+      .modus\:avatar {
         height: var(--modus-wc-spacing-xl);
         width: var(--modus-wc-spacing-xl);
       }
 
-      .modus-wc-chip-remove-icon {
+      .modus\:chip-remove-icon {
         height: var(--modus-wc-spacing-xl);
         width: var(--modus-wc-spacing-xl);
       }
     }
 
     // States
-    &.modus-wc-chip--active {
+    &.modus\:chip--active {
       background-color: var(--modus-wc-color-primary);
       border-color: transparent;
       color: var(--modus-wc-color-base-content);
 
-      &.modus-wc-chip--outline {
+      &.modus\:chip--outline {
         background-color: var(--modus-wc-color-primary);
         border-color: var(--modus-wc-color-primary);
         color: var(--modus-wc-color-primary);
 
-        .modus-wc-chip-label {
+        .modus\:chip-label {
           color: var(--modus-wc-color-base-content);
         }
       }
     }
 
-    &.modus-wc-chip--error {
+    &.modus\:chip--error {
       background-color: var(--modus-wc-color-red-pale);
       border-color: transparent;
       color: var(--modus-wc-color-red-dark);
 
-      &.modus-wc-chip--outline {
+      &.modus\:chip--outline {
         background-color: var(--modus-wc-color-red-pale);
         border-color: var(--modus-wc-color-red-dark);
       }
     }
 
-    &.modus-wc-chip--outline {
+    &.modus\:chip--outline {
       background-color: transparent;
       border-color: var(--modus-wc-color-base-200);
     }
 
-    &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {
+    &:hover:not(.modus\:chip--active):not(.modus\:chip--error) {
       background-color: var(--modus-wc-color-base-100);
       border-color: transparent;
       color: var(--modus-wc-color-base-content);
 
-      &.modus-wc-chip--outline {
+      &.modus\:chip--outline {
         background-color: var(--modus-wc-color-base-100);
         border-color: var(--modus-wc-color-base-200);
         color: var(--modus-wc-color-base-content);
       }
     }
 
-    &:active:not(.modus-wc-chip--error):not(.modus-wc-chip--active) {
+    &:active:not(.modus\:chip--error):not(.modus\:chip--active) {
       background-color: var(--modus-wc-color-primary);
       border-color: transparent;
       color: var(--modus-wc-color-primary-content);
 
-      &.modus-wc-chip--outline {
+      &.modus\:chip--outline {
         background-color: var(--modus-wc-color-base-100);
         background-color: transparent;
         border-color: var(--modus-wc-color-primary);
         color: var(--modus-wc-color-primary);
 
-        .modus-wc-chip-label {
+        .modus\:chip-label {
           color: var(--modus-wc-color-primary);
         }
       }
@@ -129,22 +131,22 @@ modus-wc-chip .modus-wc-chip {
     }
   }
 
-  &.modus-wc-chip--disabled {
+  &.modus\:chip--disabled {
     opacity: 0.3;
 
-    .modus-wc-avatar {
+    .modus\:avatar {
       filter: grayscale(100%);
     }
   }
 
-  .modus-wc-avatar {
+  .modus\:avatar {
     display: flex;
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-chip .modus-wc-chip,
-[data-theme='modus-classic-dark'] modus-wc-chip .modus-wc-chip {
-  &.modus-wc-btn {
+[data-theme='modus-classic-light'] modus-wc-chip .modus\:chip,
+[data-theme='modus-classic-dark'] modus-wc-chip .modus\:chip {
+  &.modus\:btn {
     $modus-wc-chip-active-filled-bg: color-mix(
       in sRGB,
       var(--modus-wc-color-highlight-blue) 15%,
@@ -160,24 +162,24 @@ modus-wc-chip .modus-wc-chip {
     --rounded-btn: #{var(--modus-wc-border-radius-xl)};
 
     // Sizes
-    &.modus-wc-btn-sm {
+    &.modus\:btn-sm {
       font-size: var(--modus-wc-font-size-md);
       height: var(--modus-wc-spacing-xl);
       min-height: var(--modus-wc-spacing-xl);
       padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
 
-      .modus-wc-avatar {
+      .modus\:avatar {
         height: var(--modus-wc-spacing-lg);
         width: var(--modus-wc-spacing-lg);
       }
 
-      .modus-wc-chip-remove-icon {
+      .modus\:chip-remove-icon {
         height: var(--modus-wc-spacing-lg);
         width: var(--modus-wc-spacing-lg);
       }
     }
 
-    &.modus-wc-btn-md {
+    &.modus\:btn-md {
       font-size: var(--modus-wc-font-size-md);
       height: var(--modus-wc-spacing-2xl);
       min-height: var(--modus-wc-spacing-2xl);
@@ -185,18 +187,18 @@ modus-wc-chip .modus-wc-chip {
 
       --rounded-btn: #{var(--modus-wc-border-radius-2xl)};
 
-      .modus-wc-avatar {
+      .modus\:avatar {
         height: var(--modus-wc-spacing-lg);
         width: var(--modus-wc-spacing-lg);
       }
 
-      .modus-wc-chip-remove-icon {
+      .modus\:chip-remove-icon {
         height: var(--modus-wc-spacing-lg);
         width: var(--modus-wc-spacing-lg);
       }
     }
 
-    &.modus-wc-btn-lg {
+    &.modus\:btn-lg {
       font-size: var(--modus-wc-font-size-xl);
       height: var(--modus-wc-spacing-3xl);
       min-height: var(--modus-wc-spacing-3xl);
@@ -204,74 +206,74 @@ modus-wc-chip .modus-wc-chip {
 
       --rounded-btn: #{var(--modus-wc-border-radius-3xl)};
 
-      .modus-wc-avatar {
+      .modus\:avatar {
         height: var(--modus-wc-spacing-xl);
         width: var(--modus-wc-spacing-xl);
       }
 
-      .modus-wc-chip-remove-icon {
+      .modus\:chip-remove-icon {
         height: var(--modus-wc-spacing-xl);
         width: var(--modus-wc-spacing-xl);
       }
     }
 
     // States
-    &.modus-wc-chip--active {
+    &.modus\:chip--active {
       background-color: $modus-wc-chip-active-filled-bg;
       border-color: transparent;
       color: var(--modus-wc-color-base-content);
 
-      &.modus-wc-chip--outline {
+      &.modus\:chip--outline {
         background-color: var(--modus-wc-color-primary);
         border-color: var(--modus-wc-color-primary);
         color: var(--modus-wc-color-primary);
 
-        .modus-wc-chip-label {
+        .modus\:chip-label {
           color: var(--modus-wc-color-base-content);
         }
       }
     }
 
-    &.modus-wc-chip--error {
+    &.modus\:chip--error {
       background-color: var(--modus-wc-color-red-pale);
       border-color: transparent;
       color: var(--modus-wc-color-red-dark);
 
-      &.modus-wc-chip--outline {
+      &.modus\:chip--outline {
         background-color: var(--modus-wc-color-red-pale);
         border-color: var(--modus-wc-color-red-dark);
       }
     }
 
-    &.modus-wc-chip--outline {
+    &.modus\:chip--outline {
       background-color: transparent;
       border-color: var(--modus-wc-color-base-200);
     }
 
-    &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {
+    &:hover:not(.modus\:chip--active):not(.modus\:chip--error) {
       background-color: var(--modus-wc-color-base-100);
       border-color: transparent;
       color: var(--modus-wc-color-base-content);
 
-      &.modus-wc-chip--outline {
+      &.modus\:chip--outline {
         background-color: var(--modus-wc-color-base-100);
         border-color: var(--modus-wc-color-base-200);
         color: var(--modus-wc-color-base-content);
       }
     }
 
-    &:active:not(.modus-wc-chip--error):not(.modus-wc-chip--active) {
+    &:active:not(.modus\:chip--error):not(.modus\:chip--active) {
       background-color: $modus-wc-chip-active-filled-bg;
       border-color: transparent;
       color: var(--modus-wc-color-gray-10);
 
-      &.modus-wc-chip--outline {
+      &.modus\:chip--outline {
         background-color: var(--modus-wc-color-base-100);
         background-color: transparent;
         background-color: $modus-wc-chip-active-filled-bg;
         background-color: $modus-wc-chip-active-filled-bg;
 
-        .modus-wc-chip-label {
+        .modus\:chip-label {
           color: var(--modus-wc-color-primary);
         }
       }
@@ -282,22 +284,22 @@ modus-wc-chip .modus-wc-chip {
     }
   }
 
-  &.modus-wc-chip--disabled {
+  &.modus\:chip--disabled {
     opacity: 0.3;
 
-    .modus-wc-avatar {
+    .modus\:avatar {
       filter: grayscale(100%);
     }
   }
 
-  .modus-wc-avatar {
+  .modus\:avatar {
     display: flex;
   }
 }
 
 // Dark Theme Styles
-[data-theme='modus-classic-dark'] modus-wc-chip .modus-wc-chip {
-  &.modus-wc-btn {
+[data-theme='modus-classic-dark'] modus-wc-chip .modus\:chip {
+  &.modus\:btn {
     $modus-wc-chip-outline-hover-bg: color-mix(
       in sRGB,
       var(--modus-wc-color-gray-1) 12%,
@@ -313,70 +315,70 @@ modus-wc-chip .modus-wc-chip {
     border-color: var(--modus-wc-color-gray-1);
     color: var(--modus-wc-color-gray-9);
 
-    &.modus-wc-chip--active {
+    &.modus\:chip--active {
       background-color: var(--modus-wc-color-highlight-blue);
       border-color: transparent;
       color: var(--modus-wc-color-gray-10);
 
-      &.modus-wc-chip--outline {
+      &.modus\:chip--outline {
         background-color: $modus-wc-chip-outline-active-bg;
         border-color: var(--modus-wc-color-highlight-blue);
         color: var(--modus-wc-color-gray-1);
 
-        .modus-wc-chip-label {
+        .modus\:chip-label {
           color: var(--modus-wc-color-gray-1);
         }
       }
     }
 
-    &.modus-wc-chip--error {
+    &.modus\:chip--error {
       background-color: var(--modus-wc-color-red-pale);
       border-color: transparent;
       color: var(--modus-wc-color-red-dark);
 
-      &.modus-wc-chip--outline {
+      &.modus\:chip--outline {
         background-color: var(--modus-wc-color-red-pale);
         border-color: var(--modus-wc-color-red-dark);
         color: var(--modus-wc-color-red-dark);
       }
     }
 
-    &.modus-wc-chip--outline {
+    &.modus\:chip--outline {
       background-color: transparent;
       border-color: var(--modus-wc-color-gray-1);
       color: var(--modus-wc-color-gray-1);
     }
 
-    &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {
+    &:hover:not(.modus\:chip--active):not(.modus\:chip--error) {
       background-color: var(--modus-wc-color-gray-0);
       border-color: transparent;
       color: var(--modus-wc-color-gray-9);
 
-      &.modus-wc-chip--outline {
+      &.modus\:chip--outline {
         background-color: $modus-wc-chip-outline-hover-bg;
         border-color: var(--modus-wc-color-gray-5);
         color: var(--modus-wc-color-gray-1);
       }
     }
 
-    &:active:not(.modus-wc-chip--error):not(.modus-wc-chip--active) {
+    &:active:not(.modus\:chip--error):not(.modus\:chip--active) {
       background-color: var(--modus-wc-color-highlight-blue);
       border-color: transparent;
       color: var(--modus-wc-color-gray-10);
 
-      &.modus-wc-chip--outline {
+      &.modus\:chip--outline {
         background-color: $modus-wc-chip-outline-active-bg;
         border-color: var(--modus-wc-color-highlight-blue);
         color: var(--modus-wc-color-gray-1);
 
-        .modus-wc-chip-label {
+        .modus\:chip-label {
           color: var(--modus-wc-color-gray-1);
         }
       }
     }
   }
 
-  &.modus-wc-chip--disabled {
+  &.modus\:chip--disabled {
     opacity: 0.6;
   }
 }

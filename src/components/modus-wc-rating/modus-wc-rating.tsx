@@ -70,7 +70,7 @@ export class ModusWcRating {
   @Event() ratingChange!: EventEmitter<IRatingChange>;
 
   constructor() {
-    this.uniqueRatingGroupName = `modus-wc-rating-group-${generateRandomId(4)}`;
+    this.uniqueRatingGroupName = `modus:rating-group-${generateRandomId(4)}`;
   }
 
   componentWillLoad() {
@@ -81,8 +81,8 @@ export class ModusWcRating {
   }
 
   private getClasses(): { ratingClasses: string; ratingItemClasses: string } {
-    const ratingClassList = ['modus-wc-rating'];
-    const ratingItemClassList = ['modus-wc-rating-item', 'modus-wc-mask'];
+    const ratingClassList = ['modus:rating'];
+    const ratingItemClassList = ['modus:rating-item', 'modus:mask'];
 
     const { ratingPropClasses, ratingItemPropClasses } = convertPropsToClasses({
       allowHalf: this.allowHalf,
@@ -174,7 +174,7 @@ export class ModusWcRating {
         aria-label={this.getAriaLabelText!(0)}
         aria-checked={this.value <= 0 ? 'true' : 'false'}
         checked={this.value <= 0}
-        class="modus-wc-rating-hidden"
+        class="modus:rating-hidden"
         disabled={this.disabled}
         name={this.uniqueRatingGroupName}
         onChange={() => this.handleChange(0)}
@@ -188,7 +188,7 @@ export class ModusWcRating {
     const { ratingClasses, ratingItemClasses } = this.getClasses();
 
     return (
-      <Host class="modus-wc-rating-container">
+      <Host class="modus:rating-container">
         <div
           class={ratingClasses}
           role="radiogroup"

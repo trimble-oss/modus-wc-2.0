@@ -1,81 +1,83 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
 // Defaults
-modus-wc-pagination .modus-wc-pagination {
+modus-wc-pagination .modus\:pagination {
   background-color: var(--modus-wc-color-base-100);
   color: var(--modus-wc-color-base-content);
 
-  .modus-wc-pagination-btn {
+  .modus\:pagination-btn {
     background-color: var(--modus-wc-color-base-100);
     border-color: transparent;
 
-    &.modus-wc-btn-sm {
-      .modus-wc-pagination-icon {
+    &.modus\:btn-sm {
+      .modus\:pagination-icon {
         height: var(--modus-wc-line-height-sm);
         width: var(--modus-wc-line-height-sm);
       }
     }
 
-    &.modus-wc-btn-md {
-      .modus-wc-pagination-icon {
+    &.modus\:btn-md {
+      .modus\:pagination-icon {
         height: var(--modus-wc-ling-height-md);
         width: var(--modus-wc-line-height-md);
       }
     }
 
-    &.modus-wc-btn-lg {
-      .modus-wc-pagination-icon {
+    &.modus\:btn-lg {
+      .modus\:pagination-icon {
         height: var(--modus-wc-line-height-lg);
         width: var(--modus-wc-line-height-lg);
       }
     }
   }
 
-  .modus-wc-pagination-btn:not(:disabled) {
+  .modus\:pagination-btn:not(:disabled) {
     background-color: var(--modus-wc-color-base-100);
     color: var(--modus-wc-color-base-content);
 
-    &.modus-wc-btn-active {
+    &.modus\:btn-active {
       background-color: var(--modus-wc-color-primary);
       color: var(--modus-wc-color-primary-content);
     }
 
-    &:hover:not(.modus-wc-btn-active) {
+    &:hover:not(.modus\:btn-active) {
       background-color: var(--modus-wc-color-base-300);
       border-color: transparent;
     }
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-pagination .modus-wc-pagination,
-[data-theme='modus-classic-light'] modus-wc-pagination .modus-wc-pagination {
+[data-theme='modus-classic-dark'] modus-wc-pagination .modus\:pagination,
+[data-theme='modus-classic-light'] modus-wc-pagination .modus\:pagination {
   background-color: transparent;
 
-  .modus-wc-pagination-btn {
+  .modus\:pagination-btn {
     background-color: transparent;
     border: none;
     border-radius: var(--modus-wc-border-radius-md) !important;
     box-shadow: none;
 
     // Sizes
-    &.modus-wc-btn-sm {
+    &.modus\:btn-sm {
       height: var(--modus-wc-line-height-md);
       max-height: var(--modus-wc-line-height-md);
       min-height: var(--modus-wc-line-height-md);
       width: var(--modus-wc-line-height-md);
     }
 
-    &.modus-wc-btn-md {
+    &.modus\:btn-md {
       height: var(--modus-wc-line-height-lg);
       max-height: var(--modus-wc-line-height-lg);
       min-height: var(--modus-wc-line-height-lg);
       width: var(--modus-wc-line-height-lg);
     }
 
-    &.modus-wc-btn-lg {
+    &.modus\:btn-lg {
       height: var(--modus-wc-line-height-xl);
       max-height: var(--modus-wc-line-height-xl);
       min-height: var(--modus-wc-line-height-xl);
@@ -84,31 +86,31 @@ modus-wc-pagination .modus-wc-pagination {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-pagination .modus-wc-pagination {
-  .modus-wc-pagination-btn:not(:disabled) {
+[data-theme='modus-classic-light'] modus-wc-pagination .modus\:pagination {
+  .modus\:pagination-btn:not(:disabled) {
     color: var(--modus-wc-color-trimble-gray);
 
-    &.modus-wc-btn-active {
+    &.modus\:btn-active {
       background-color: var(--modus-wc-color-blue-pale);
       color: var(--modus-wc-color-blue-light);
     }
 
-    &:hover:not(.modus-wc-btn-active) {
+    &:hover:not(.modus\:btn-active) {
       background-color: var(--modus-wc-color-gray-0);
     }
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-pagination .modus-wc-pagination {
-  .modus-wc-pagination-btn:not(:disabled) {
+[data-theme='modus-classic-dark'] modus-wc-pagination .modus\:pagination {
+  .modus\:pagination-btn:not(:disabled) {
     color: var(--modus-wc-color-gray-2);
 
-    &.modus-wc-btn-active {
+    &.modus\:btn-active {
       background-color: var(--modus-wc-color-highlight-blue);
       color: var(--modus-wc-color-trimble-gray);
     }
 
-    &:hover:not(.modus-wc-btn-active) {
+    &:hover:not(.modus\:btn-active) {
       background-color: var(--modus-wc-color-gray-8);
     }
   }

@@ -85,7 +85,7 @@ export class ModusWcCheckbox {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-checkbox'];
+    const classList = ['modus:checkbox'];
 
     const propClasses = convertPropsToClasses({ size: this.size });
 
@@ -110,7 +110,7 @@ export class ModusWcCheckbox {
 
   render() {
     return (
-      <Host class="modus-wc-checkbox-host">
+      <Host class="modus:checkbox-host">
         <input
           aria-checked={this.indeterminate ? 'mixed' : this.value}
           aria-disabled={this.disabled}

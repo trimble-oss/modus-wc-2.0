@@ -1,39 +1,41 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-input {
+.modus\:input {
   @include feedback-levels;
 }
 
 modus-wc-select {
-  .modus-wc-input-label {
+  .modus\:input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-select .modus-wc-select,
-[data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select {
+[data-theme='modus-classic-light'] modus-wc-select .modus\:select,
+[data-theme='modus-classic-dark'] modus-wc-select .modus\:select {
   border-radius: var(--modus-wc-border-radius-md);
 
   // TODO - add support for xs and xl once added to Modus Figma
 
-  &.modus-wc-select-sm {
+  &.modus\:select-sm {
     font-size: var(--modus-wc-font-size-sm);
     height: var(--modus-wc-input-height-sm);
     line-height: var(--modus-wc-input-height-sm);
     min-height: var(--modus-wc-input-height-sm);
   }
 
-  &.modus-wc-select-md {
+  &.modus\:select-md {
     font-size: var(--modus-wc-font-size-md);
     height: var(--modus-wc-input-height-md);
     line-height: var(--modus-wc-input-height-md);
     min-height: var(--modus-wc-input-height-md);
   }
 
-  &.modus-wc-select-lg {
+  &.modus\:select-lg {
     font-size: var(--modus-wc-font-size-lg);
     height: var(--modus-wc-input-height-lg);
     line-height: var(--modus-wc-font-size-lg);
@@ -48,12 +50,12 @@ modus-wc-select {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-select .modus-wc-select {
-  &.modus-wc-select-bordered:not(:disabled):not(:focus) {
+[data-theme='modus-classic-light'] modus-wc-select .modus\:select {
+  &.modus\:select-bordered:not(:disabled):not(:focus) {
     border-color: var(--modus-wc-color-gray-6);
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select:focus {
+[data-theme='modus-classic-dark'] modus-wc-select .modus\:select:focus {
   border-color: var(--modus-wc-color-highlight-blue);
 }

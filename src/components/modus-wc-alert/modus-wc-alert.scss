@@ -1,9 +1,11 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-alert .modus-wc-alert {
+modus-wc-alert .modus\:alert {
   border-left-width: var(--modus-wc-border-width-xl);
   border-radius: var(--modus-wc-border-radius-lg);
 
@@ -16,7 +18,7 @@ modus-wc-alert .modus-wc-alert {
     font-size: var(--modus-wc-font-size-md);
   }
 
-  &.modus-wc-alert-info {
+  &.modus\:alert-info {
     background-color: color-mix(
       in sRGB,
       var(--modus-wc-color-primary) 15%,
@@ -26,7 +28,7 @@ modus-wc-alert .modus-wc-alert {
     color: var(--modus-wc-color-base-content);
   }
 
-  &.modus-wc-alert-error {
+  &.modus\:alert-error {
     background-color: color-mix(
       in sRGB,
       var(--modus-wc-color-error) 20%,
@@ -36,7 +38,7 @@ modus-wc-alert .modus-wc-alert {
     color: var(--modus-wc-error-content);
   }
 
-  &.modus-wc-alert-success {
+  &.modus\:alert-success {
     background-color: color-mix(
       in sRGB,
       var(--modus-wc-color-success) 20%,
@@ -46,7 +48,7 @@ modus-wc-alert .modus-wc-alert {
     color: var(--modus-wc-success-content);
   }
 
-  &.modus-wc-alert-warning {
+  &.modus\:alert-warning {
     background-color: color-mix(
       in sRGB,
       var(--modus-wc-color-warning) 20%,
@@ -56,15 +58,15 @@ modus-wc-alert .modus-wc-alert {
     color: var(--modus-wc-color-base-content);
   }
 
-  .modus-wc-alert-close-icon,
-  .modus-wc-alert-icon {
+  .modus\:alert-close-icon,
+  .modus\:alert-icon {
     height: 1.5rem;
     width: 1.5rem;
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-alert .modus-wc-alert,
-[data-theme='modus-classic-dark'] modus-wc-alert .modus-wc-alert {
+[data-theme='modus-classic-light'] modus-wc-alert .modus\:alert,
+[data-theme='modus-classic-dark'] modus-wc-alert .modus\:alert {
   border-left-width: 12px;
   border-radius: var(--modus-wc-border-radius-md);
   gap: var(--modus-wc-spacing-sm);
@@ -72,48 +74,48 @@ modus-wc-alert .modus-wc-alert {
   padding-top: var(--modus-wc-spacing-sm);
 }
 
-[data-theme='modus-classic-light'] modus-wc-alert .modus-wc-alert {
+[data-theme='modus-classic-light'] modus-wc-alert .modus\:alert {
   color: var(--modus-wc-color-trimble-gray);
 
-  &.modus-wc-alert-info {
+  &.modus\:alert-info {
     background-color: var(--modus-wc-color-blue-pale);
     border-color: var(--modus-wc-color-trimble-blue);
 
-    .modus-wc-alert-icon {
+    .modus\:alert-icon {
       color: var(--modus-wc-color-trimble-blue);
     }
   }
 
-  &.modus-wc-alert-error {
+  &.modus\:alert-error {
     background-color: var(--modus-wc-color-red-pale);
     border-color: var(--modus-wc-color-red);
 
-    .modus-wc-alert-icon {
+    .modus\:alert-icon {
       color: var(--modus-wc-color-red);
     }
   }
 
-  &.modus-wc-alert-success {
+  &.modus\:alert-success {
     background-color: var(--modus-wc-color-green-pale);
     border-color: var(--modus-wc-color-green);
 
-    .modus-wc-alert-icon {
+    .modus\:alert-icon {
       color: var(--modus-wc-color-green);
     }
   }
 
-  &.modus-wc-alert-warning {
+  &.modus\:alert-warning {
     background-color: var(--modus-wc-color-yellow-pale);
     border-color: var(--modus-wc-color-yellow-dark);
 
-    .modus-wc-alert-icon {
+    .modus\:alert-icon {
       color: var(--modus-wc-color-yellow-dark);
     }
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-alert .modus-wc-alert {
-  &.modus-wc-alert-info {
+[data-theme='modus-classic-dark'] modus-wc-alert .modus\:alert {
+  &.modus\:alert-info {
     background-color: color-mix(
       in sRGB,
       var(--modus-wc-color-highlight-blue) 50%,
@@ -122,7 +124,7 @@ modus-wc-alert .modus-wc-alert {
     border-color: var(--modus-wc-color-highlight-blue);
   }
 
-  &.modus-wc-alert-error {
+  &.modus\:alert-error {
     background-color: color-mix(
       in sRGB,
       var(--modus-wc-color-red) 50%,
@@ -132,7 +134,7 @@ modus-wc-alert .modus-wc-alert {
     color: var(--modus-wc-error-content);
   }
 
-  &.modus-wc-alert-success {
+  &.modus\:alert-success {
     background-color: color-mix(
       in sRGB,
       var(--modus-wc-color-green) 50%,
@@ -142,7 +144,7 @@ modus-wc-alert .modus-wc-alert {
     color: var(--modus-wc-success-content);
   }
 
-  &.modus-wc-alert-warning {
+  &.modus\:alert-warning {
     background-color: color-mix(
       in sRGB,
       var(--modus-wc-color-yellow-dark) 50%,

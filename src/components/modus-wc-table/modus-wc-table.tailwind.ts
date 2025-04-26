@@ -12,13 +12,13 @@ export const convertTablePropsToClasses = ({
   if (density) {
     switch (density) {
       case 'compact':
-        classes = `${classes} modus-wc-table-xs`;
+        classes = `${classes} modus:table-xs`;
         break;
     }
   }
 
   if (zebra) {
-    classes = `${classes} modus-wc-table-zebra`;
+    classes = `${classes} modus:table-zebra`;
   }
 
   return classes.trim();
@@ -34,11 +34,11 @@ export const convertRowPropsToClasses = ({
   let classes = '';
 
   if (active) {
-    classes = `${classes} modus-wc-active`;
+    classes = `${classes} modus:active`;
   }
 
   if (hover) {
-    classes = `${classes} modus-wc-hover`;
+    classes = `${classes} modus:hover`;
   }
 
   return classes.trim();

@@ -109,7 +109,7 @@ export class ModusWcCollapse {
   };
 
   private getOuterDivClasses(): string {
-    const classList: string[] = ['modus-wc-collapse modus-wc-collapse-arrow'];
+    const classList: string[] = ['modus:collapse modus:collapse-arrow'];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
@@ -126,7 +126,7 @@ export class ModusWcCollapse {
   // istanbul ignore next
   private getTitleDivClasses(): string {
     const classList: string[] = [
-      'modus-wc-collapse-title modus:inline-flex modus:items-center modus:justify-between modus:min-h-4',
+      'modus:collapse-title modus:inline-flex modus:items-center modus:justify-between modus:min-h-4',
     ];
 
     const paddingClass = convertPropsToTitleDivClasses({
@@ -209,7 +209,7 @@ export class ModusWcCollapse {
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
           <div
             aria-labelledby={titleId}
-            class="modus-wc-collapse-content modus:cursor-default"
+            class="modus:collapse-content modus:cursor-default"
             id={contentId}
             onClick={this.handleContentClick}
           >

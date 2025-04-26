@@ -1,9 +1,11 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-menu .modus-wc-menu {
+modus-wc-menu .modus\:menu {
   border-radius: var(--modus-wc-border-radius-md);
 
   /* Enforce Tailwind CSS reset */
@@ -12,17 +14,17 @@ modus-wc-menu .modus-wc-menu {
   padding: 0;
   padding-inline-start: 0;
 
-  &.modus-wc-menu--bordered {
+  &.modus\:menu--bordered {
     border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-0);
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-menu .modus-wc-menu {
+[data-theme='modus-classic-light'] modus-wc-menu .modus\:menu {
   background-color: var(--modus-wc-color-white);
   border-color: var(--modus-wc-color-gray-0);
 }
 
-[data-theme='modus-classic-dark'] modus-wc-menu .modus-wc-menu {
+[data-theme='modus-classic-dark'] modus-wc-menu .modus\:menu {
   background-color: var(--modus-wc-color-black);
   border-color: var(--modus-wc-color-gray-8);
 }

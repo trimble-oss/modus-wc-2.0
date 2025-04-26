@@ -16,25 +16,25 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (active) {
-    classes = `${classes} modus-wc-chip--active`;
+    classes = `${classes} modus:chip--active`;
   }
 
   if (disabled) {
-    classes = `${classes} modus-wc-chip--disabled`;
+    classes = `${classes} modus:chip--disabled`;
   }
 
   if (hasError) {
-    classes = `${classes} modus-wc-chip--error`;
+    classes = `${classes} modus:chip--error`;
   }
 
   if (size) {
-    classes = `${classes} modus-wc-btn-${size}`;
+    classes = `${classes} modus:btn-${size}`;
   }
 
   if (variant) {
     switch (variant) {
       case 'outline':
-        classes = `${classes} modus-wc-chip--outline`;
+        classes = `${classes} modus:chip--outline`;
         break;
     }
   }

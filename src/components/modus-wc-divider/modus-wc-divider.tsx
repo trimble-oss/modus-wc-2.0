@@ -53,7 +53,7 @@ export class ModusWcDivider {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-divider'];
+    const classList = ['modus:divider'];
 
     const propClasses = convertPropsToClasses({
       color: this.color,

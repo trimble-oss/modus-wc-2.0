@@ -155,8 +155,8 @@ export class ModusWcTextInput {
 
   private getClasses(): string {
     const classList = [
-      'modus-wc-text-input',
-      'modus-wc-input',
+      'modus:text-input',
+      'modus:input',
       'modus:w-full',
       'modus:flex',
       'modus:items-center',
@@ -217,7 +217,7 @@ export class ModusWcTextInput {
         )}
         <label class={this.getClasses()}>
           {this.includeSearch && (
-            <SearchSolidIcon className="modus-wc-text-input-icon modus-wc-text-input-icon-search" />
+            <SearchSolidIcon className="modus:text-input-icon modus:text-input-icon-search" />
           )}
           <input
             aria-placeholder={this.placeholder}
@@ -247,11 +247,11 @@ export class ModusWcTextInput {
           />
           {this.includeClear && (
             <div
-              class={`modus-wc-clear-icon-container ${showClear ? 'modus-wc-clear-icon-visible' : 'modus-wc-clear-icon-hidden'}`}
+              class={`modus:clear-icon-container ${showClear ? 'modus:clear-icon-visible' : 'modus:clear-icon-hidden'}`}
             >
               <CloseSolidIcon
                 ariaLabel={this.clearAriaLabel}
-                className="modus-wc-text-input-icon modus-wc-text-input-icon-clear"
+                className="modus:text-input-icon modus:text-input-icon-clear"
                 decorative={false}
                 onClear={this.handleClearText}
               />

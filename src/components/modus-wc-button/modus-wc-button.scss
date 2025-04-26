@@ -1,60 +1,62 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-button .modus-wc-btn {
+modus-wc-button .modus\:btn {
   --fallback-sc: var(--modus-wc-color-neutral);
 }
 
-[data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn,
-[data-theme='modus-classic-dark'] modus-wc-button .modus-wc-btn {
+[data-theme='modus-classic-light'] modus-wc-button .modus\:btn,
+[data-theme='modus-classic-dark'] modus-wc-button .modus\:btn {
   --rounded-btn: var(--modus-wc-border-radius-md);
 
   border: none;
   outline: none;
 
   // Allow Daisy to style circle and square shapes
-  &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+  &:not(.modus\:btn-circle):not(.modus\:btn-square) {
     height: fit-content;
     min-height: fit-content;
   }
 
   // Sizes
-  &.modus-wc-btn-xs {
+  &.modus\:btn-xs {
     font-size: var(--modus-wc-font-size-xs);
 
-    &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+    &:not(.modus\:btn-circle):not(.modus\:btn-square) {
       padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
     }
   }
 
-  &.modus-wc-btn-sm {
+  &.modus\:btn-sm {
     font-size: var(--modus-wc-font-size-sm);
 
-    &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+    &:not(.modus\:btn-circle):not(.modus\:btn-square) {
       padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
     }
   }
 
-  &.modus-wc-btn-md {
+  &.modus\:btn-md {
     font-size: var(--modus-wc-font-size-md);
 
-    &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+    &:not(.modus\:btn-circle):not(.modus\:btn-square) {
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
     }
   }
 
-  &.modus-wc-btn-lg {
+  &.modus\:btn-lg {
     font-size: var(--modus-wc-font-size-lg);
 
-    &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+    &:not(.modus\:btn-circle):not(.modus\:btn-square) {
       padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
     }
   }
 
   // Variants
-  &.modus-wc-btn-borderless {
+  &.modus\:btn-borderless {
     background-color: transparent;
     box-shadow: none;
 
@@ -67,7 +69,7 @@ modus-wc-button .modus-wc-btn {
     }
   }
 
-  &.modus-wc-btn-outline {
+  &.modus\:btn-outline {
     background-color: transparent;
     border: var(--modus-wc-border-width-xs) solid
       var(--modus-wc-color-trimble-gray);
@@ -82,68 +84,68 @@ modus-wc-button .modus-wc-btn {
   }
 
   // Accessible box shadows
-  &.modus-wc-btn-filled,
-  &.modus-wc-btn-outline {
-    &.modus-wc-btn-primary:focus-visible {
+  &.modus\:btn-filled,
+  &.modus\:btn-outline {
+    &.modus\:btn-primary:focus-visible {
       box-shadow: 0 0 0 0.25rem rgba(38, 122, 177, 0.5);
     }
 
-    &.modus-wc-btn-secondary:focus-visible {
+    &.modus\:btn-secondary:focus-visible {
       box-shadow: 0 0 0 0.25rem rgba(98, 102, 108, 0.5);
     }
 
     // tertiary
-    &.modus-wc-btn-neutral:focus-visible {
+    &.modus\:btn-neutral:focus-visible {
       box-shadow: 0 0 0 0.25rem rgba(98, 102, 108, 0.5);
     }
 
-    &.modus-wc-btn-warning:focus-visible {
+    &.modus\:btn-warning:focus-visible {
       box-shadow: 0 0 0 0.25rem rgba(194, 125, 31, 0.5);
     }
 
-    &.modus-wc-btn-error:focus-visible {
+    &.modus\:btn-error:focus-visible {
       box-shadow: 0 0 0 0.25rem rgba(224, 66, 76, 0.5);
     }
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn {
-  &.modus-wc-btn-disabled {
+[data-theme='modus-classic-light'] modus-wc-button .modus\:btn {
+  &.modus\:btn-disabled {
     opacity: 0.3;
   }
 
   // Variants
-  &.modus-wc-btn-borderless {
+  &.modus\:btn-borderless {
     &:focus-visible {
       border: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-black);
     }
 
     // Colors
-    &.modus-wc-btn-primary {
+    &.modus\:btn-primary {
       color: var(--modus-wc-color-trimble-blue);
     }
 
-    &.modus-wc-btn-secondary {
+    &.modus\:btn-secondary {
       color: var(--modus-wc-color-gray-6);
     }
 
     // tertiary
-    &.modus-wc-btn-neutral {
+    &.modus\:btn-neutral {
       color: var(--modus-wc-color-gray-1);
     }
 
-    &.modus-wc-btn-warning {
+    &.modus\:btn-warning {
       color: var(--modus-wc-color-yellow);
     }
 
-    &.modus-wc-btn-error {
+    &.modus\:btn-error {
       color: var(--modus-wc-color-red);
     }
   }
 
-  &.modus-wc-btn-filled {
+  &.modus\:btn-filled {
     // Colors
-    &.modus-wc-btn-primary {
+    &.modus\:btn-primary {
       background-color: var(--modus-wc-color-trimble-blue);
       color: var(--modus-wc-color-white);
 
@@ -156,7 +158,7 @@ modus-wc-button .modus-wc-btn {
       }
     }
 
-    &.modus-wc-btn-secondary {
+    &.modus\:btn-secondary {
       background-color: var(--modus-wc-color-gray-6);
       color: var(--modus-wc-color-white);
 
@@ -170,7 +172,7 @@ modus-wc-button .modus-wc-btn {
     }
 
     // tertiary
-    &.modus-wc-btn-neutral {
+    &.modus\:btn-neutral {
       background-color: var(--modus-wc-color-gray-1);
       color: var(--modus-wc-color-trimble-gray);
 
@@ -183,7 +185,7 @@ modus-wc-button .modus-wc-btn {
       }
     }
 
-    &.modus-wc-btn-warning {
+    &.modus\:btn-warning {
       background-color: var(--modus-wc-color-yellow);
       border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-red);
       color: var(--modus-wc-color-trimble-gray);
@@ -197,7 +199,7 @@ modus-wc-button .modus-wc-btn {
       }
     }
 
-    &.modus-wc-btn-error {
+    &.modus\:btn-error {
       background-color: var(--modus-wc-color-red);
       color: var(--modus-wc-color-white);
 
@@ -211,9 +213,9 @@ modus-wc-button .modus-wc-btn {
     }
   }
 
-  &.modus-wc-btn-outline {
+  &.modus\:btn-outline {
     // Colors
-    &.modus-wc-btn-primary {
+    &.modus\:btn-primary {
       border-color: var(--modus-wc-color-trimble-blue);
       color: var(--modus-wc-color-trimble-blue);
 
@@ -230,7 +232,7 @@ modus-wc-button .modus-wc-btn {
       }
     }
 
-    &.modus-wc-btn-secondary {
+    &.modus\:btn-secondary {
       border-color: var(--modus-wc-color-trimble-gray);
       color: var(--modus-wc-color-trimble-gray);
 
@@ -244,7 +246,7 @@ modus-wc-button .modus-wc-btn {
     }
 
     // tertiary
-    &.modus-wc-btn-neutral {
+    &.modus\:btn-neutral {
       border-color: var(--modus-wc-color-trimble-gray);
       color: var(--modus-wc-color-trimble-gray);
 
@@ -257,7 +259,7 @@ modus-wc-button .modus-wc-btn {
       }
     }
 
-    &.modus-wc-btn-warning {
+    &.modus\:btn-warning {
       border-color: var(--modus-wc-color-yellow);
       color: var(--modus-wc-color-yellow);
 
@@ -272,7 +274,7 @@ modus-wc-button .modus-wc-btn {
       }
     }
 
-    &.modus-wc-btn-error {
+    &.modus\:btn-error {
       border-color: var(--modus-wc-color-red);
       color: var(--modus-wc-color-red);
 
@@ -289,43 +291,43 @@ modus-wc-button .modus-wc-btn {
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-button .modus-wc-btn {
-  &.modus-wc-btn-disabled {
+[data-theme='modus-classic-dark'] modus-wc-button .modus\:btn {
+  &.modus\:btn-disabled {
     opacity: 0.4;
   }
 
   // Variants
-  &.modus-wc-btn-borderless {
+  &.modus\:btn-borderless {
     &:focus-visible {
       border: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-white);
     }
 
     // Colors
-    &.modus-wc-btn-primary {
+    &.modus\:btn-primary {
       color: var(--modus-wc-color-highlight-blue);
     }
 
-    &.modus-wc-btn-secondary {
+    &.modus\:btn-secondary {
       color: var(--modus-wc-color-gray-6);
     }
 
     // tertiary
-    &.modus-wc-btn-neutral {
+    &.modus\:btn-neutral {
       color: var(--modus-wc-color-gray-1);
     }
 
-    &.modus-wc-btn-warning {
+    &.modus\:btn-warning {
       color: var(--modus-wc-color-yellow);
     }
 
-    &.modus-wc-btn-error {
+    &.modus\:btn-error {
       color: var(--modus-wc-color-red);
     }
   }
 
-  &.modus-wc-btn-filled {
+  &.modus\:btn-filled {
     // Colors
-    &.modus-wc-btn-primary {
+    &.modus\:btn-primary {
       background-color: var(--modus-wc-color-highlight-blue);
       color: var(--modus-wc-color-gray-10);
 
@@ -338,7 +340,7 @@ modus-wc-button .modus-wc-btn {
       }
     }
 
-    &.modus-wc-btn-secondary {
+    &.modus\:btn-secondary {
       background-color: var(--modus-wc-color-gray-6);
       color: var(--modus-wc-color-white);
 
@@ -352,7 +354,7 @@ modus-wc-button .modus-wc-btn {
     }
 
     // tertiary
-    &.modus-wc-btn-neutral {
+    &.modus\:btn-neutral {
       background-color: var(--modus-wc-color-gray-1);
       color: var(--modus-wc-color-trimble-gray);
 
@@ -365,7 +367,7 @@ modus-wc-button .modus-wc-btn {
       }
     }
 
-    &.modus-wc-btn-warning {
+    &.modus\:btn-warning {
       background-color: var(--modus-wc-color-yellow);
       border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-red);
       color: var(--modus-wc-color-trimble-gray);
@@ -379,7 +381,7 @@ modus-wc-button .modus-wc-btn {
       }
     }
 
-    &.modus-wc-btn-error {
+    &.modus\:btn-error {
       background-color: var(--modus-wc-color-red);
       color: var(--modus-wc-color-white);
 
@@ -393,9 +395,9 @@ modus-wc-button .modus-wc-btn {
     }
   }
 
-  &.modus-wc-btn-outline {
+  &.modus\:btn-outline {
     // Colors
-    &.modus-wc-btn-primary {
+    &.modus\:btn-primary {
       border-color: var(--modus-wc-color-highlight-blue);
       color: var(--modus-wc-color-highlight-blue);
 
@@ -408,7 +410,7 @@ modus-wc-button .modus-wc-btn {
       }
     }
 
-    &.modus-wc-btn-secondary {
+    &.modus\:btn-secondary {
       border-color: var(--modus-wc-color-gray-1);
       color: var(--modus-wc-color-gray-1);
 
@@ -422,7 +424,7 @@ modus-wc-button .modus-wc-btn {
     }
 
     // tertiary
-    &.modus-wc-btn-neutral {
+    &.modus\:btn-neutral {
       border-color: var(--modus-wc-color-gray-2);
       color: var(--modus-wc-color-gray-2);
 
@@ -435,7 +437,7 @@ modus-wc-button .modus-wc-btn {
       }
     }
 
-    &.modus-wc-btn-warning {
+    &.modus\:btn-warning {
       border-color: var(--modus-wc-color-yellow);
       color: var(--modus-wc-color-yellow);
 
@@ -450,7 +452,7 @@ modus-wc-button .modus-wc-btn {
       }
     }
 
-    &.modus-wc-btn-error {
+    &.modus\:btn-error {
       border-color: var(--modus-wc-color-red);
       color: var(--modus-wc-color-red);
 

@@ -1,144 +1,146 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
-modus-wc-badge .modus-wc-badge {
+modus-wc-badge .modus\:badge {
   font-weight: var(--modus-wc-font-weight-semibold);
 
-  &.modus-wc-badge-sm {
+  &.modus\:badge-sm {
     font-size: var(--modus-wc-font-size-xs);
   }
 
-  &.modus-wc-badge-md {
+  &.modus\:badge-md {
     font-size: var(--modus-wc-font-size-sm);
   }
 
   // Colors
-  &.modus-wc-badge-high-contrast {
+  &.modus\:badge-high-contrast {
     background-color: var(--modus-wc-color-black);
     border-color: var(--modus-wc-color-base-content);
     color: var(--modus-wc-color-white);
   }
 
   // Types
-  &.modus-wc-badge-counter {
+  &.modus\:badge-counter {
     border-radius: 1rem;
   }
 
-  &.modus-wc-badge-text {
+  &.modus\:badge-text {
     background-color: transparent;
     border: none;
 
     // Colors
-    &.modus-wc-badge-primary {
+    &.modus\:badge-primary {
       color: var(--modus-wc-color-trimble-blue);
     }
 
-    &.modus-wc-badge-secondary {
+    &.modus\:badge-secondary {
       color: var(--modus-wc-color-gray-6);
     }
 
-    &.modus-wc-badge-neutral {
+    &.modus\:badge-neutral {
       color: var(--modus-wc-color-gray-1);
     }
 
-    &.modus-wc-badge-high-contrast {
+    &.modus\:badge-high-contrast {
       color: var(--modus-wc-color-base-content);
     }
 
-    &.modus-wc-badge-success {
+    &.modus\:badge-success {
       color: var(--modus-wc-color-green-dark);
     }
 
-    &.modus-wc-badge-warning {
+    &.modus\:badge-warning {
       color: var(--modus-wc-color-warning);
     }
 
-    &.modus-wc-badge-error {
+    &.modus\:badge-error {
       color: var(--modus-wc-color-error);
     }
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-badge .modus-wc-badge,
-[data-theme='modus-classic-dark'] modus-wc-badge .modus-wc-badge {
+[data-theme='modus-classic-light'] modus-wc-badge .modus\:badge,
+[data-theme='modus-classic-dark'] modus-wc-badge .modus\:badge {
   border: unset;
   font-weight: var(--modus-wc-font-weight-bold);
 
-  &.modus-wc-badge-secondary {
+  &.modus\:badge-secondary {
     background-color: var(--modus-wc-color-gray-6);
     color: var(--modus-wc-color-white);
   }
 
-  &:not(.modus-wc-badge-counter) {
+  &:not(.modus\:badge-counter) {
     border-radius: var(--modus-wc-border-radius-md);
   }
 
-  &.modus-wc-badge-success:not(.modus-wc-badge-text) {
+  &.modus\:badge-success:not(.modus\:badge-text) {
     background-color: var(--modus-wc-color-green-dark);
   }
 
-  &.modus-wc-badge-sm {
+  &.modus\:badge-sm {
     border-radius: var(--modus-wc-border-radius-sm);
     font-size: var(--modus-wc-font-size-xs);
     height: 14px;
     padding: var(--modus-wc-spacing-2xs) var(--modus-wc-spacing-xs);
   }
 
-  &.modus-wc-badge-md {
+  &.modus\:badge-md {
     font-size: var(--modus-wc-font-size-sm);
     height: 20px;
     padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
   }
 
-  &.modus-wc-badge-lg {
+  &.modus\:badge-lg {
     font-size: var(--modus-wc-font-size-md);
     height: 28px;
     padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-badge .modus-wc-badge {
+[data-theme='modus-classic-dark'] modus-wc-badge .modus\:badge {
   // Colors
-  &:not(.modus-wc-badge-text) {
-    &.modus-wc-badge-primary {
+  &:not(.modus\:badge-text) {
+    &.modus\:badge-primary {
       background-color: var(--modus-wc-color-highlight-blue);
       color: var(--modus-wc-color-gray-10);
     }
 
-    &.modus-wc-badge-success {
+    &.modus\:badge-success {
       background-color: var(--modus-wc-color-success);
     }
 
-    &.modus-wc-badge-secondary {
+    &.modus\:badge-secondary {
       background-color: var(--modus-wc-color-gray-6);
       color: var(--modus-wc-color-white);
     }
 
-    &.modus-wc-badge-neutral {
+    &.modus\:badge-neutral {
       background-color: var(--modus-wc-color-gray-1);
       color: var(--modus-wc-color-trimble-gray);
     }
 
-    &.modus-wc-badge-high-contrast {
+    &.modus\:badge-high-contrast {
       background-color: var(--modus-wc-color-gray-light);
       color: var(--modus-wc-color-gray-10);
     }
   }
 
   // Types
-  &.modus-wc-badge-text {
-    &.modus-wc-badge-primary {
+  &.modus\:badge-text {
+    &.modus\:badge-primary {
       color: var(--modus-wc-color-highlight-blue);
     }
 
-    &.modus-wc-badge-high-contrast {
+    &.modus\:badge-high-contrast {
       color: var(--modus-wc-color-gray-light);
     }
 
-    &.modus-wc-badge-success {
+    &.modus\:badge-success {
       color: var(--modus-wc-color-success);
     }
   }

@@ -25,7 +25,7 @@ export class ModusWcToolbar {
   }
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-navbar'];
+    const classList: string[] = ['modus:navbar'];
 
     // The order CSS classes are added matters to CSS specificity
     if (this.customClass) classList.push(this.customClass);
@@ -37,13 +37,13 @@ export class ModusWcToolbar {
     return (
       <Host>
         <div class={this.getClasses()} {...this.inheritedAttributes}>
-          <div class="modus-wc-navbar-start">
+          <div class="modus:navbar-start">
             <slot name="start" />
           </div>
-          <div class="modus-wc-navbar-center">
+          <div class="modus:navbar-center">
             <slot name="center" />
           </div>
-          <div class="modus-wc-navbar-end">
+          <div class="modus:navbar-end">
             <slot name="end" />
           </div>
         </div>

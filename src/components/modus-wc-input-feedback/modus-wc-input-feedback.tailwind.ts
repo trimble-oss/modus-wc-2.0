@@ -11,11 +11,11 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (level) {
-    classes = `${classes} modus-wc-input-feedback--${level}`;
+    classes = `${classes} modus:input-feedback--${level}`;
   }
 
   if (size) {
-    classes = `${classes} modus-wc-input-feedback--${size}`;
+    classes = `${classes} modus:input-feedback--${size}`;
   }
 
   return classes.trim();

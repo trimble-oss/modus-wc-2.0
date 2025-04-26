@@ -1,22 +1,24 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
-.modus-wc-tooltip {
+.modus\:tooltip {
   --tooltip-color: var(--modus-wc-color-neutral-content);
   --tooltip-text-color: var(--modus-wc-color-neutral);
 
   font-weight: var(--modus-wc-font-weight-regular);
 }
 
-[data-theme='modus-classic-light'] modus-wc-tooltip .modus-wc-tooltip {
+[data-theme='modus-classic-light'] modus-wc-tooltip .modus\:tooltip {
   --tooltip-color: var(--modus-wc-color-gray-7);
   --tooltip-text-color: var(--modus-wc-color-white);
 
   font-weight: var(--modus-wc-font-weight-regular);
 }
 
-[data-theme='modus-classic-dark'] modus-wc-tooltip .modus-wc-tooltip {
+[data-theme='modus-classic-dark'] modus-wc-tooltip .modus\:tooltip {
   --tooltip-color: var(--modus-wc-color-gray-0);
   --tooltip-text-color: var(--modus-wc-color-trimble-gray);
 
@@ -24,7 +26,7 @@
 }
 
 modus-wc-tooltip {
-  .modus-wc-tooltip-disabled {
+  .modus\:tooltip-disabled {
     &::before,
     &::after {
       display: none;

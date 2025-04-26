@@ -85,7 +85,7 @@ export class ModusWcToggle {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-toggle'];
+    const classList = ['modus:toggle'];
 
     const propClasses = convertPropsToClasses({ size: this.size });
 
@@ -112,7 +112,7 @@ export class ModusWcToggle {
     const labelSize = this.size && DAISY_TO_MODUS_LABEL_SIZE[this.size];
 
     return (
-      <Host class="modus-wc-toggle-host">
+      <Host class="modus:toggle-host">
         <input
           aria-checked={this.indeterminate ? 'mixed' : this.value}
           aria-disabled={this.disabled}

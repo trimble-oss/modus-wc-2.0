@@ -1,13 +1,15 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-autocomplete.modus-wc-autocomplete {
+modus-wc-autocomplete.modus\:autocomplete {
   display: inline-block;
   position: relative;
 
-  .modus-wc-input-label {
+  .modus\:input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
   }
 
@@ -16,18 +18,18 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     justify-content: center;
   }
 
-  .modus-wc-input-bordered {
+  .modus\:input-bordered {
     border-radius: var(--modus-wc-border-radius-md);
   }
 
-  .modus-wc-autocomplete-multi-select {
+  .modus\:autocomplete-multi-select {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     padding: var(--modus-wc-spacing-xs);
 
-    &.modus-wc-autocomplete-multi-select--bordered {
+    &.modus\:autocomplete-multi-select--bordered {
       border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-0);
       border-radius: var(--modus-wc-border-radius-md)
         var(--modus-wc-border-radius-md) 0 0;
@@ -53,7 +55,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     }
   }
 
-  .modus-wc-menu {
+  .modus\:menu {
     border-radius: 0 0 var(--modus-wc-border-radius-md)
       var(--modus-wc-border-radius-md);
     left: 0;
@@ -71,7 +73,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     display: block;
   }
 
-  .modus-wc-autocomplete-no-results {
+  .modus\:autocomplete-no-results {
     padding: var(--modus-wc-spacing-md);
 
     .icon-label {
@@ -79,7 +81,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
       display: flex;
       justify-content: center;
 
-      .modus-wc-autocomplete-search-icon {
+      .modus\:autocomplete-search-icon {
         color: var(--modus-wc-color-gray-6);
         height: 1.5rem;
         width: 1.5rem;
@@ -100,9 +102,9 @@ modus-wc-autocomplete.modus-wc-autocomplete {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-autocomplete.modus-wc-autocomplete,
-[data-theme='modus-classic-dark'] modus-wc-autocomplete.modus-wc-autocomplete {
-  .modus-wc-autocomplete-multi-select--bordered {
+[data-theme='modus-classic-light'] modus-wc-autocomplete.modus\:autocomplete,
+[data-theme='modus-classic-dark'] modus-wc-autocomplete.modus\:autocomplete {
+  .modus\:autocomplete-multi-select--bordered {
     border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-6);
 
     &:focus-within {
@@ -111,66 +113,66 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     }
   }
 
-  ul.modus-wc-menu {
+  ul.modus\:menu {
     box-shadow: 0 0 4px 0 rgba(54, 53, 69, 0.3);
   }
 
-  .modus-wc-input-disabled,
-  .modus-wc-text-input-readonly {
+  .modus\:input-disabled,
+  .modus\:text-input-readonly {
     background-color: var(--modus-wc-color-gray-10);
   }
 
-  .modus-wc-autocomplete-multi-select--disabled {
+  .modus\:autocomplete-multi-select--disabled {
     cursor: not-allowed;
     opacity: 0.6;
     user-select: none;
 
-    .modus-wc-input-disabled {
+    .modus\:input-disabled {
       border: none;
     }
   }
 
-  .modus-wc-autocomplete-multi-select--readonly {
-    .modus-wc-text-input-readonly {
+  .modus\:autocomplete-multi-select--readonly {
+    .modus\:text-input-readonly {
       border: none;
     }
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-autocomplete.modus-wc-autocomplete {
-  .modus-wc-autocomplete-multi-select--disabled,
-  .modus-wc-input-disabled,
-  .modus-wc-autocomplete-multi-select--readonly,
-  .modus-wc-text-input-readonly {
+[data-theme='modus-classic-light'] modus-wc-autocomplete.modus\:autocomplete {
+  .modus\:autocomplete-multi-select--disabled,
+  .modus\:input-disabled,
+  .modus\:autocomplete-multi-select--readonly,
+  .modus\:text-input-readonly {
     background-color: var(--modus-wc-color-gray-0);
     border: none;
   }
 
-  .modus-wc-menu {
+  .modus\:menu {
     background-color: var(--modus-wc-color-white);
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-autocomplete.modus-wc-autocomplete {
-  .modus-wc-autocomplete-no-results {
+[data-theme='modus-classic-dark'] modus-wc-autocomplete.modus\:autocomplete {
+  .modus\:autocomplete-no-results {
     .sub-label {
       color: var(--modus-wc-color-white);
     }
   }
 
-  .modus-wc-menu {
+  .modus\:menu {
     background-color: var(--modus-wc-color-gray-10);
   }
 }
 
-[data-theme='modus-modern-light'] modus-wc-autocomplete.modus-wc-autocomplete {
-  .modus-wc-menu {
+[data-theme='modus-modern-light'] modus-wc-autocomplete.modus\:autocomplete {
+  .modus\:menu {
     background-color: var(--modus-wc-color-white);
   }
 }
 
-[data-theme='modus-modern-dark'] modus-wc-autocomplete.modus-wc-autocomplete {
-  .modus-wc-menu {
+[data-theme='modus-modern-dark'] modus-wc-autocomplete.modus\:autocomplete {
+  .modus\:menu {
     background-color: var(--modus-wc-color-gray-10);
   }
 }

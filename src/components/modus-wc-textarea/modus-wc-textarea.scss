@@ -1,37 +1,39 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-input {
+.modus\:input {
   @include feedback-levels;
 }
 
 modus-wc-textarea {
-  .modus-wc-input-label {
+  .modus\:input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
   }
 }
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
-[data-theme='modus-classic-light'] modus-wc-textarea .modus-wc-textarea,
-[data-theme='modus-classic-dark'] modus-wc-textarea .modus-wc-textarea {
+[data-theme='modus-classic-light'] modus-wc-textarea .modus\:textarea,
+[data-theme='modus-classic-dark'] modus-wc-textarea .modus\:textarea {
   border-radius: var(--modus-wc-border-radius-md);
 
   // TODO - add support for xs and xl once added to Modus Figma
 
-  &.modus-wc-textarea-sm {
+  &.modus\:textarea-sm {
     font-size: var(--modus-wc-font-size-sm);
     padding: var(--modus-wc-spacing-sm);
   }
 
-  &.modus-wc-textarea-md {
+  &.modus\:textarea-md {
     font-size: var(--modus-wc-font-size-md);
     padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-sm)
       var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
   }
 
-  &.modus-wc-textarea-lg {
+  &.modus\:textarea-lg {
     font-size: var(--modus-wc-font-size-lg);
     padding: var(--modus-wc-spacing-md);
   }
@@ -48,12 +50,12 @@ modus-wc-textarea {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-textarea .modus-wc-textarea {
-  &.modus-wc-textarea-bordered:not(:disabled):not(:focus) {
+[data-theme='modus-classic-light'] modus-wc-textarea .modus\:textarea {
+  &.modus\:textarea-bordered:not(:disabled):not(:focus) {
     border-color: var(--modus-wc-color-gray-6);
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-textarea .modus-wc-textarea:focus {
+[data-theme='modus-classic-dark'] modus-wc-textarea .modus\:textarea:focus {
   border-color: var(--modus-wc-color-highlight-blue);
 }

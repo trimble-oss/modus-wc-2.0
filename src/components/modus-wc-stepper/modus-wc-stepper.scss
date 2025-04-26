@@ -1,8 +1,10 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-stepper .modus-wc-steps .modus-wc-step {
+modus-wc-stepper .modus\:steps .modus\:step {
   --fallback-b3: var(--modus-wc-color-base-200);
 }

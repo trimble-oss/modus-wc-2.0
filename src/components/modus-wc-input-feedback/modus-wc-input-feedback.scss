@@ -1,9 +1,11 @@
+/* stylelint-disable selector-class-pattern */
+
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-input-feedback .modus-wc-input-feedback {
+modus-wc-input-feedback .modus\:input-feedback {
   align-items: center;
   border-radius: 0 0 var(--modus-wc-border-radius-sm)
     var(--modus-wc-border-radius-sm);
@@ -14,81 +16,81 @@ modus-wc-input-feedback .modus-wc-input-feedback {
   padding: var(--modus-wc-spacing-xs) 0;
 
   // Sizes
-  &.modus-wc-input-feedback--sm {
+  &.modus\:input-feedback--sm {
     font-size: var(--modus-wc-font-size-xs);
 
-    .modus-wc-input-feedback-icon {
+    .modus\:input-feedback-icon {
       height: var(--modus-wc-font-size-lg);
       width: var(--modus-wc-font-size-lg);
     }
   }
 
-  &.modus-wc-input-feedback--md {
+  &.modus\:input-feedback--md {
     font-size: var(--modus-wc-font-size-sm);
 
-    .modus-wc-input-feedback-icon {
+    .modus\:input-feedback-icon {
       height: var(--modus-wc-font-size-xl);
       width: var(--modus-wc-font-size-xl);
     }
   }
 
-  &.modus-wc-input-feedback--lg {
+  &.modus\:input-feedback--lg {
     font-size: var(--modus-wc-font-size-md);
 
-    .modus-wc-input-feedback-icon {
+    .modus\:input-feedback-icon {
       height: var(--modus-wc-font-size-2xl);
       width: var(--modus-wc-font-size-2xl);
     }
   }
 
   // Status
-  &.modus-wc-input-feedback {
+  &.modus\:input-feedback {
     background-color: var(--modus-wc-color-base-100);
     border-radius: var(--modus-wc-border-radius-lg);
     padding: var(--modus-wc-spacing-sm);
   }
 
-  &.modus-wc-input-feedback--error {
+  &.modus\:input-feedback--error {
     color: var(--modus-wc-color-error);
   }
 
-  &.modus-wc-input-feedback--info {
+  &.modus\:input-feedback--info {
     color: var(--modus-wc-color-info);
   }
 
-  &.modus-wc-input-feedback--success {
+  &.modus\:input-feedback--success {
     color: var(--modus-wc-color-success);
   }
 
-  &.modus-wc-input-feedback--warning {
+  &.modus\:input-feedback--warning {
     color: var(--modus-wc-color-warning);
   }
 }
 
 [data-theme='modus-classic-light']
   modus-wc-input-feedback
-  .modus-wc-input-feedback {
+  .modus\:input-feedback {
   border-radius: 0;
   margin-top: 0;
   padding: var(--modus-wc-spacing-xs) 0;
 
   // Levels
-  &.modus-wc-input-feedback--error {
+  &.modus\:input-feedback--error {
     background-color: transparent;
     color: var(--modus-wc-color-red);
   }
 
-  &.modus-wc-input-feedback--info {
+  &.modus\:input-feedback--info {
     background-color: transparent;
     color: var(--modus-wc-color-trimble-blue);
   }
 
-  &.modus-wc-input-feedback--success {
+  &.modus\:input-feedback--success {
     background-color: transparent;
     color: var(--modus-wc-color-green-dark);
   }
 
-  &.modus-wc-input-feedback--warning {
+  &.modus\:input-feedback--warning {
     background-color: transparent;
     color: var(--modus-wc-color-yellow-dark);
   }
@@ -96,26 +98,26 @@ modus-wc-input-feedback .modus-wc-input-feedback {
 
 [data-theme='modus-classic-dark']
   modus-wc-input-feedback
-  .modus-wc-input-feedback {
+  .modus\:input-feedback {
   border-radius: 0;
   color: var(--modus-wc-color-white);
   margin-top: 0;
   padding: var(--modus-wc-spacing-xs) 0;
 
   // Levels
-  &.modus-wc-input-feedback--error {
+  &.modus\:input-feedback--error {
     background-color: var(--modus-wc-color-red);
   }
 
-  &.modus-wc-input-feedback--info {
+  &.modus\:input-feedback--info {
     background-color: var(--modus-wc-color-trimble-blue);
   }
 
-  &.modus-wc-input-feedback--success {
+  &.modus\:input-feedback--success {
     background-color: var(--modus-wc-color-green-dark);
   }
 
-  &.modus-wc-input-feedback--warning {
+  &.modus\:input-feedback--warning {
     background-color: var(--modus-wc-color-yellow-dark);
     color: var(--modus-wc-color-black);
   }

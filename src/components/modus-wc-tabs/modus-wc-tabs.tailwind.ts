@@ -12,13 +12,13 @@ export const convertPropsToClasses = ({
   if (tabStyle) {
     switch (tabStyle) {
       case 'boxed':
-        classes = `${classes} modus-wc-tabs-boxed`;
+        classes = `${classes} modus:tabs-boxed`;
         break;
       case 'bordered':
-        classes = `${classes} modus-wc-tabs-bordered`;
+        classes = `${classes} modus:tabs-bordered`;
         break;
       case 'lifted':
-        classes = `${classes} modus-wc-tabs-lifted`;
+        classes = `${classes} modus:tabs-lifted`;
         break;
       case 'none':
         break;
@@ -28,16 +28,16 @@ export const convertPropsToClasses = ({
   if (size) {
     switch (size) {
       case 'xs':
-        classes = `${classes} modus-wc-tabs-xs`;
+        classes = `${classes} modus:tabs-xs`;
         break;
       case 'sm':
-        classes = `${classes} modus-wc-tabs-sm`;
+        classes = `${classes} modus:tabs-sm`;
         break;
       case 'md':
-        classes = `${classes} modus-wc-tabs-md`;
+        classes = `${classes} modus:tabs-md`;
         break;
       case 'lg':
-        classes = `${classes} modus-wc-tabs-lg`;
+        classes = `${classes} modus:tabs-lg`;
         break;
     }
   }
@@ -55,11 +55,11 @@ export const convertPropsToClassesTab = ({
   let classes = '';
 
   if (active) {
-    classes = `${classes} modus-wc-tab-active`;
+    classes = `${classes} modus:tab-active`;
   }
 
   if (disabled) {
-    classes = `${classes} modus-wc-tab-disabled`;
+    classes = `${classes} modus:tab-disabled`;
   }
 
   return classes.trim();

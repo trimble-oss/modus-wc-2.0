@@ -89,7 +89,7 @@ export class ModusWcTabs {
   }
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-tabs'];
+    const classList: string[] = ['modus:tabs'];
 
     const propClasses = convertPropsToClasses({
       tabStyle: this.tabStyle,
@@ -104,7 +104,7 @@ export class ModusWcTabs {
   }
 
   private getTabClasses(tab: ITab, index: number): string {
-    const classList: string[] = ['modus-wc-tab'];
+    const classList: string[] = ['modus:tab'];
 
     const propClasses = convertPropsToTabClasses({
       active: index === this.activeTabIndex,
@@ -156,13 +156,11 @@ export class ModusWcTabs {
         >
           {tabs}
         </div>
-        <div class="modus-wc-tab-panel" role="tabpanel" tabIndex={0}>
+        <div class="modus:tab-panel" role="tabpanel" tabIndex={0}>
           {this.tabs.map((_, index) => (
             <div
               class={
-                this.activeTabIndex === index
-                  ? 'modus-wc-tab-active'
-                  : undefined
+                this.activeTabIndex === index ? 'modus:tab-active' : undefined
               }
               hidden={this.activeTabIndex !== index}
             >

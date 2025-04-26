@@ -10,13 +10,13 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (bordered) {
-    classes = `${classes} modus-wc-border`;
+    classes = `${classes} modus:border`;
   }
 
   if (expanded) {
-    classes = `${classes} modus-wc-collapse-open`;
+    classes = `${classes} modus:collapse-open`;
   } else {
-    classes = `${classes} modus-wc-collapse-close`;
+    classes = `${classes} modus:collapse-close`;
   }
 
   return classes.trim();
@@ -30,7 +30,7 @@ export const convertPropsToDescriptionDivClasses = ({
   let sizeClass = 'modus:text-base';
 
   if (size) {
-    sizeClass = `modus-wc-text-${size}`;
+    sizeClass = `modus:text-${size}`;
   }
 
   return sizeClass;

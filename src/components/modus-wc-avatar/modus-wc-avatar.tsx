@@ -63,11 +63,7 @@ export class ModusWcAvatar {
   render() {
     return (
       <Host>
-        <div
-          class="modus-wc-avatar"
-          tabindex={-1}
-          {...this.inheritedAttributes}
-        >
+        <div class="modus:avatar" tabindex={-1} {...this.inheritedAttributes}>
           <div class={this.getClasses()}>
             <img src={this.imgSrc} alt={this.alt} />
           </div>

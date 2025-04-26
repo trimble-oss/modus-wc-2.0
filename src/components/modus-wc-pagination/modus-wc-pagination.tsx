@@ -107,13 +107,13 @@ export class ModusWcPagination {
 
   private getClasses(): { paginationClasses: string; buttonClasses: string } {
     const buttonClassList = [
-      'modus-wc-pagination-btn',
-      'modus-wc-join-item',
-      'modus-wc-btn',
-      'modus-wc-btn-square',
+      'modus:pagination-btn',
+      'modus:join-item',
+      'modus:btn',
+      'modus:btn-square',
     ];
 
-    const paginationClassList = ['modus-wc-pagination', 'modus-wc-join'];
+    const paginationClassList = ['modus:pagination', 'modus:join'];
 
     // The order CSS classes are added matters to CSS specificity
     if (this.customClass) paginationClassList.push(this.customClass);
@@ -160,7 +160,7 @@ export class ModusWcPagination {
             disabled={isFirstPage}
             onClick={() => this.handlePageClick(1)}
           >
-            <ChevronDoubleLeftSolidIcon className="modus-wc-pagination-icon" />
+            <ChevronDoubleLeftSolidIcon className="modus:pagination-icon" />
           </button>
         )}
 
@@ -170,14 +170,14 @@ export class ModusWcPagination {
           disabled={isFirstPage}
           onClick={() => this.handlePageClick(this.page - 1)}
         >
-          <ChevronLeftSolidIcon className="modus-wc-pagination-icon" />
+          <ChevronLeftSolidIcon className="modus:pagination-icon" />
         </button>
 
         {this.visiblePages.map((page) => (
           <button
             aria-current={this.page === page ? 'page' : undefined}
             aria-label={ariaLabels.page.replace('{0}', page.toString())}
-            class={`${buttonClasses} ${this.page === page ? 'modus-wc-btn-active' : ''}`}
+            class={`${buttonClasses} ${this.page === page ? 'modus:btn-active' : ''}`}
             onClick={() => this.handlePageClick(page)}
           >
             {page}
@@ -190,7 +190,7 @@ export class ModusWcPagination {
           disabled={isLastPage}
           onClick={() => this.handlePageClick(this.page + 1)}
         >
-          <ChevronRightSolidIcon className="modus-wc-pagination-icon" />
+          <ChevronRightSolidIcon className="modus:pagination-icon" />
         </button>
 
         {shouldShowFirstLastButtons && (
@@ -200,7 +200,7 @@ export class ModusWcPagination {
             disabled={isLastPage}
             onClick={() => this.handlePageClick(this.count)}
           >
-            <ChevronDoubleRightSolidIcon className="modus-wc-pagination-icon" />
+            <ChevronDoubleRightSolidIcon className="modus:pagination-icon" />
           </button>
         )}
       </div>

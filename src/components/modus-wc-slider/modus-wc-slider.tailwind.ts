@@ -8,7 +8,7 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (size) {
-    classes = `${classes} modus-wc-range-${size}`;
+    classes = `${classes} modus:range-${size}`;
   }
 
   return classes.trim();

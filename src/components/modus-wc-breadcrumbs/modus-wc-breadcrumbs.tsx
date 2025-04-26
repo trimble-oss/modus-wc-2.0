@@ -59,7 +59,7 @@ export class ModusWcBreadcrumbs {
   }
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-breadcrumbs'];
+    const classList: string[] = ['modus:breadcrumbs'];
 
     const propClasses = convertPropsToClasses({
       size: this.size,

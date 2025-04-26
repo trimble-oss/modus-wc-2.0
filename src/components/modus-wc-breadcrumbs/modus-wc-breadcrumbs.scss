@@ -6,7 +6,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-breadcrumbs .modus-wc-breadcrumbs {
+modus-wc-breadcrumbs .modus\:breadcrumbs {
   ol {
     list-style: none;
   }
@@ -29,8 +29,8 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-breadcrumbs .modus-wc-breadcrumbs,
-[data-theme='modus-classic-dark'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
+[data-theme='modus-classic-light'] modus-wc-breadcrumbs .modus\:breadcrumbs,
+[data-theme='modus-classic-dark'] modus-wc-breadcrumbs .modus\:breadcrumbs {
   a {
     text-decoration: none;
 
@@ -40,7 +40,7 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
+[data-theme='modus-classic-light'] modus-wc-breadcrumbs .modus\:breadcrumbs {
   a {
     color: var(--modus-wc-color-blue-light);
 
@@ -54,7 +54,7 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
+[data-theme='modus-classic-dark'] modus-wc-breadcrumbs .modus\:breadcrumbs {
   a {
     color: var(--modus-wc-color-highlight-blue);
 

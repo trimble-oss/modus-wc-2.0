@@ -96,7 +96,7 @@ export class ModusWcChip {
   };
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-chip', 'modus-wc-btn'];
+    const classList: string[] = ['modus:chip', 'modus:btn'];
 
     const propClasses = convertPropsToClasses({
       active: this.active,
@@ -128,10 +128,10 @@ export class ModusWcChip {
           {...this.inheritedAttributes}
         >
           <slot />
-          {this.label && <span class="modus-wc-chip-label">{this.label}</span>}
+          {this.label && <span class="modus:chip-label">{this.label}</span>}
           {this.showRemove && (
             <CancelCircleSolidIcon
-              className="modus-wc-chip-remove-icon"
+              className="modus:chip-remove-icon"
               onClick={this.handleChipRemove}
             />
           )}

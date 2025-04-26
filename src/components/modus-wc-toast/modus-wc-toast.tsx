@@ -45,7 +45,7 @@ export class ModusWcToast {
   }
 
   private getClasses = (): string => {
-    const classList = ['modus-wc-toast'];
+    const classList = ['modus:toast'];
     const propClasses = convertPropsToClasses({
       position: this.position,
     });

@@ -38,7 +38,7 @@ export class ModusWcCard {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-card modus-wc-rounded-card'];
+    const classList = ['modus:card modus:rounded-card'];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
@@ -63,15 +63,15 @@ export class ModusWcCard {
           {...this.inheritedAttributes}
         >
           <slot name="header" />
-          <div class="modus-wc-card-body">
-            <div class="modus-wc-card-title">
+          <div class="modus:card-body">
+            <div class="modus:card-title">
               <slot name="title" />
             </div>
-            <div class="modus-wc-card-subtitle">
+            <div class="modus:card-subtitle">
               <slot name="subtitle" />
             </div>
             <slot /> {/* Default body slot */}
-            <div class="modus-wc-card-actions">
+            <div class="modus:card-actions">
               <slot name="actions" />
             </div>
           </div>

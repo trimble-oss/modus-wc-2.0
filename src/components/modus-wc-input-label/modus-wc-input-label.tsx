@@ -43,10 +43,10 @@ export class ModusWcInputLabel {
   }
 
   private getClasses = (): string => {
-    const classList = ['modus-wc-input-label'];
+    const classList = ['modus:input-label'];
 
     // The order CSS classes are added matters to CSS specificity
-    if (this.size) classList.push(`modus-wc-input-label-size-${this.size}`);
+    if (this.size) classList.push(`modus:input-label-size-${this.size}`);
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
@@ -54,7 +54,7 @@ export class ModusWcInputLabel {
 
   render() {
     return (
-      <Host class="modus-wc-input-label-host">
+      <Host class="modus:input-label-host">
         <label
           class={this.getClasses()}
           htmlFor={this.forId}
@@ -68,7 +68,7 @@ export class ModusWcInputLabel {
             </span>
           )}
           {this.subLabelText && (
-            <div class="modus-wc-input-label-sublabel">{this.subLabelText}</div>
+            <div class="modus:input-label-sublabel">{this.subLabelText}</div>
           )}
           <slot />
         </label>

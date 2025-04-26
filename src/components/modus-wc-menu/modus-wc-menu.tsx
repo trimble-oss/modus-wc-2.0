@@ -41,7 +41,7 @@ export class ModusWcMenu {
   }
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-menu modus:w-full'];
+    const classList: string[] = ['modus:menu modus:w-full'];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,

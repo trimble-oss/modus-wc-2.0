@@ -1,21 +1,23 @@
+/* stylelint-disable selector-class-pattern */
+
 modus-wc-icon .modus-icons {
-  &.modus-wc-icon--xs {
+  &.modus\:icon--xs {
     font-size: 1rem;
   }
 
-  &.modus-wc-icon--sm {
+  &.modus\:icon--sm {
     font-size: 1.25rem;
   }
 
-  &.modus-wc-icon--md {
+  &.modus\:icon--md {
     font-size: 1.5rem;
   }
 
-  &.modus-wc-icon--lg {
+  &.modus\:icon--lg {
     font-size: 2rem;
   }
 
-  &.modus-wc-icon--xl {
+  &.modus\:icon--xl {
     font-size: 4rem;
   }
 }

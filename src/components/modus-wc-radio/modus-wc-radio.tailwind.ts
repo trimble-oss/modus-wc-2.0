@@ -6,7 +6,7 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (size) {
-    classes = `${classes} modus-wc-radio-${size}`;
+    classes = `${classes} modus:radio-${size}`;
   }
 
   return classes.trim();

@@ -16,23 +16,23 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (bordered) {
-    classes = `${classes} modus-wc-menu-item-bordered`;
+    classes = `${classes} modus:menu-item-bordered`;
   }
 
   if (disabled) {
-    classes = `${classes} modus-wc-menu-item-disabled`;
+    classes = `${classes} modus:menu-item-disabled`;
   }
 
   if (selected) {
-    classes = `${classes} modus-wc-menu-item-selected`;
+    classes = `${classes} modus:menu-item-selected`;
   }
 
   if (focused) {
-    classes = `${classes} modus-wc-menu-item-focused`;
+    classes = `${classes} modus:menu-item-focused`;
   }
 
   if (size) {
-    classes = `${classes} modus-wc-menu-item-${size}`;
+    classes = `${classes} modus:menu-item-${size}`;
   }
 
   return classes.trim();

@@ -62,7 +62,7 @@ export class ModusWcModal {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-modal'];
+    const classList = ['modus:modal'];
 
     const propClasses = convertPropsToClasses({
       position: this.position,
@@ -84,13 +84,13 @@ export class ModusWcModal {
           {...this.inheritedAttributes}
         >
           <div
-            class={`modus-wc-modal-box ${this.fullscreen ? 'modus-wc-modal-fullscreen' : ''}`}
+            class={`modus:modal-box ${this.fullscreen ? 'modus:modal-fullscreen' : ''}`}
           >
-            <div class="modus-wc-modal-top-icon-buttons">
+            <div class="modus:modal-top-icon-buttons">
               {this.showFullscreenToggle && (
                 <button
                   onClick={() => (this.fullscreen = !this.fullscreen)}
-                  class="modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-modal-expand-icon-btn"
+                  class="modus:btn modus:btn-sm modus:btn-circle modus:btn-ghost modus:modal-expand-icon-btn"
                 >
                   {this.fullscreen ? (
                     <CollapseSolidIcon />
@@ -103,24 +103,24 @@ export class ModusWcModal {
                 <button
                   aria-label="Close modal"
                   onClick={() => this.closeDialog()}
-                  class=" modus-wc-btn modus-wc-btn-sm modus-wc-btn-circle modus-wc-btn-ghost modus-wc-modal-close-icon-btn"
+                  class=" modus:btn modus:btn-sm modus:btn-circle modus:btn-ghost modus:modal-close-icon-btn"
                 >
                   ✕
                 </button>
               )}
             </div>
-            <div class="modus-wc-modal-header modus:text-lg modus:font-bold">
+            <div class="modus:modal-header modus:text-lg modus:font-bold">
               <slot name="header" />
             </div>
-            <div class="modus-wc-modal-content modus:py-4">
+            <div class="modus:modal-content modus:py-4">
               <slot name="content" />
             </div>
-            <div class="modus-wc-modal-action">
+            <div class="modus:modal-action">
               <slot name="footer" />
             </div>
           </div>
           {this.backdrop === 'default' && (
-            <form method="dialog" class="modus-wc-modal-backdrop">
+            <form method="dialog" class="modus:modal-backdrop">
               <button>close</button>
             </form>
           )}

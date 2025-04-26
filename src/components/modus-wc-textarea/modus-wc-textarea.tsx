@@ -106,7 +106,7 @@ export class ModusWcTextarea {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-textarea', 'modus:w-full'];
+    const classList = ['modus:textarea', 'modus:w-full'];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       feedback: this.feedback,

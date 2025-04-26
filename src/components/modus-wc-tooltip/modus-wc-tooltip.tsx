@@ -41,7 +41,7 @@ export class ModusWcTooltip {
   }
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-tooltip'];
+    const classList: string[] = ['modus:tooltip'];
 
     const propClasses = convertPropsToClasses({
       disabled: this.disabled,

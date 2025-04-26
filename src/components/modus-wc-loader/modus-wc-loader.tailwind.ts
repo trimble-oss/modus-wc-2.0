@@ -13,15 +13,15 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (color) {
-    classes = `${classes} modus-wc-text-${color}`;
+    classes = `${classes} modus:text-${color}`;
   }
 
   if (size) {
-    classes = `${classes} modus-wc-loader-${size}`;
+    classes = `${classes} modus:der-${size}`;
   }
 
   if (variant) {
-    classes = `${classes} modus-wc-loader-${variant}`;
+    classes = `${classes} modus:loader-${variant}`;
   }
 
   return classes.trim();

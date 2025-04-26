@@ -16,23 +16,23 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (bordered) {
-    classes = `${classes} modus-wc-input-bordered`;
+    classes = `${classes} modus:input-bordered`;
   }
 
   if (disabled) {
-    classes = `${classes} modus-wc-input-disabled`;
+    classes = `${classes} modus:input-disabled`;
   }
 
   if (feedback) {
-    classes = `${classes} modus-wc-input--${feedback.level}`;
+    classes = `${classes} modus:input--${feedback.level}`;
   }
 
   if (readOnly) {
-    classes = `${classes} modus-wc-text-input--readonly`;
+    classes = `${classes} modus:text-input--readonly`;
   }
 
   if (size) {
-    classes = `${classes} modus-wc-input-${size}`;
+    classes = `${classes} modus:input-${size}`;
   }
 
   return classes.trim();

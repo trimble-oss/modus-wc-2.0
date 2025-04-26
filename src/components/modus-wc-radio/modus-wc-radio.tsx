@@ -72,7 +72,7 @@ export class ModusWcRadio {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-radio'];
+    const classList = ['modus:radio'];
 
     const propClasses = convertPropsToClasses({ size: this.size });
 
@@ -99,7 +99,7 @@ export class ModusWcRadio {
     const labelSize = this.size && DAISY_TO_MODUS_LABEL_SIZE[this.size];
 
     return (
-      <Host class="modus-wc-radio-host">
+      <Host class="modus:radio-host">
         <input
           aria-checked={this.value}
           aria-disabled={this.disabled}

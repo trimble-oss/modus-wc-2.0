@@ -7,7 +7,7 @@
 */
 
 [data-theme='modus-modern-dark'] {
-  .modus-wc-toggle {
+  .modus\:toggle {
     --tglbg: var(--modus-wc-color-gray-9);
 
     border-color: var(--modus-wc-color-black);
@@ -27,7 +27,7 @@
 }
 
 [data-theme='modus-modern-light'] {
-  .modus-wc-toggle {
+  .modus\:toggle {
     --tglbg: var(--modus-wc-color-gray-0);
 
     border-color: var(--modus-wc-white);
@@ -46,7 +46,7 @@
   }
 }
 
-.modus-wc-toggle {
+.modus\:toggle {
   &.modus\:stroke-base-100 {
     stroke: var(--modus-wc-color-base-300);
   }
@@ -56,7 +56,7 @@
   }
 }
 
-.modus-wc-toggle:checked {
+.modus\:toggle:checked {
   &.modus\:stroke-base-100 {
     stroke: var(--modus-wc-color-base-100);
   }

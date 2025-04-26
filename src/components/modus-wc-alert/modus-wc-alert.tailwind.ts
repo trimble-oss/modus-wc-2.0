@@ -6,7 +6,7 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (variant) {
-    classes = `${classes} modus-wc-alert-${variant}`;
+    classes = `${classes} modus:alert-${variant}`;
   }
 
   return classes.trim();

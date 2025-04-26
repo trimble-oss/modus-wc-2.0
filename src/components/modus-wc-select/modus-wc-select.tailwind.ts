@@ -12,15 +12,15 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (bordered) {
-    classes = `${classes} modus-wc-select-bordered`;
+    classes = `${classes} modus:select-bordered`;
   }
 
   if (feedback) {
-    classes = `${classes} modus-wc-input--${feedback.level}`;
+    classes = `${classes} modus:input--${feedback.level}`;
   }
 
   if (size) {
-    classes = `${classes} modus-wc-select-${size}`;
+    classes = `${classes} modus:select-${size}`;
   }
 
   return classes.trim();

@@ -12,15 +12,15 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (bordered) {
-    classes = `${classes} modus-wc-menu--bordered`;
+    classes = `${classes} modus:menu--bordered`;
   }
 
   if (orientation === 'horizontal') {
-    classes = `${classes} modus-wc-menu-horizontal`;
+    classes = `${classes} modus:menu-horizontal`;
   }
 
   if (size) {
-    classes = `${classes} modus-wc-menu-${size}`;
+    classes = `${classes} modus:menu-${size}`;
   }
 
   return classes.trim();
