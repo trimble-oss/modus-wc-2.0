@@ -723,21 +723,43 @@ export namespace Components {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
+     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcNavbar {
+        /**
+          * The open state of the apps menu.
+         */
+        "appsMenuOpen"?: boolean;
         /**
           * Applies condensed layout and styling.
          */
         "condensed"?: boolean;
         /**
+          * The open state of the condensed menu.
+         */
+        "condensedMenuOpen"?: boolean;
+        /**
           * Custom CSS class to apply to the host element.
          */
         "customClass"?: string;
         /**
+          * The open state of the main menu.
+         */
+        "mainMenuOpen"?: boolean;
+        /**
+          * The open state of the notifications menu.
+         */
+        "notificationsMenuOpen"?: boolean;
+        /**
           * Debounce time in milliseconds for search input changes. Default is 300ms.
          */
         "searchDebounceMs"?: number;
+        /**
+          * The open state of the search input.
+         */
+        "searchInputOpen"?: boolean;
         /**
           * Text replacements for the navbar.
          */
@@ -745,7 +767,11 @@ export namespace Components {
         /**
           * User information used to render the user card.
          */
-        "user": INavbarUserCard;
+        "userCard": INavbarUserCard;
+        /**
+          * The open state of the user menu.
+         */
+        "userMenuOpen"?: boolean;
         /**
           * The visibility of individual navbar buttons. Default is user profile visible, others hidden.
          */
@@ -2033,16 +2059,24 @@ declare global {
     };
     interface HTMLModusWcNavbarElementEventMap {
         "appsClick": MouseEvent | KeyboardEvent;
+        "appsMenuOpenChange": boolean;
+        "condensedMenuOpenChange": boolean;
         "helpClick": MouseEvent | KeyboardEvent;
+        "mainMenuOpenChange": boolean;
         "myTrimbleClick": MouseEvent | KeyboardEvent;
         "notificationsClick": MouseEvent | KeyboardEvent;
+        "notificationsMenuOpenChange": boolean;
         "searchChange": { value: string };
         "searchClick": MouseEvent | KeyboardEvent;
+        "searchInputOpenChange": boolean;
         "signOutClick": MouseEvent | KeyboardEvent;
         "trimbleLogoClick": MouseEvent | KeyboardEvent;
+        "userMenuOpenChange": boolean;
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
+     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcNavbarElement extends Components.ModusWcNavbar, HTMLStencilElement {
@@ -3243,25 +3277,55 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
+     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcNavbar {
+        /**
+          * The open state of the apps menu.
+         */
+        "appsMenuOpen"?: boolean;
         /**
           * Applies condensed layout and styling.
          */
         "condensed"?: boolean;
         /**
+          * The open state of the condensed menu.
+         */
+        "condensedMenuOpen"?: boolean;
+        /**
           * Custom CSS class to apply to the host element.
          */
         "customClass"?: string;
+        /**
+          * The open state of the main menu.
+         */
+        "mainMenuOpen"?: boolean;
+        /**
+          * The open state of the notifications menu.
+         */
+        "notificationsMenuOpen"?: boolean;
         /**
           * Event emitted when the apps button is clicked or activated via keyboard.
          */
         "onAppsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * Event emitted when the apps menu open state changes.
+         */
+        "onAppsMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
+          * Event emitted when the condensed menu open state changes.
+         */
+        "onCondensedMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
           * Event emitted when the help button is clicked or activated via keyboard.
          */
         "onHelpClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the main menu open state changes.
+         */
+        "onMainMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
         /**
           * Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard.
          */
@@ -3271,6 +3335,10 @@ declare namespace LocalJSX {
          */
         "onNotificationsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * Event emitted when the notifications menu open state changes.
+         */
+        "onNotificationsMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
           * Event emitted when the search input value is changed.
          */
         "onSearchChange"?: (event: ModusWcNavbarCustomEvent<{ value: string }>) => void;
@@ -3278,6 +3346,10 @@ declare namespace LocalJSX {
           * Event emitted when the search button is clicked or activated via keyboard.
          */
         "onSearchClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the search input open state changes.
+         */
+        "onSearchInputOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
         /**
           * Event emitted when the user profile sign out button is clicked or activated via keyboard.
          */
@@ -3287,9 +3359,17 @@ declare namespace LocalJSX {
          */
         "onTrimbleLogoClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * Event emitted when the user menu open state changes.
+         */
+        "onUserMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
           * Debounce time in milliseconds for search input changes. Default is 300ms.
          */
         "searchDebounceMs"?: number;
+        /**
+          * The open state of the search input.
+         */
+        "searchInputOpen"?: boolean;
         /**
           * Text replacements for the navbar.
          */
@@ -3297,7 +3377,11 @@ declare namespace LocalJSX {
         /**
           * User information used to render the user card.
          */
-        "user": INavbarUserCard;
+        "userCard": INavbarUserCard;
+        /**
+          * The open state of the user menu.
+         */
+        "userMenuOpen"?: boolean;
         /**
           * The visibility of individual navbar buttons. Default is user profile visible, others hidden.
          */
@@ -4436,6 +4520,8 @@ declare module "@stencil/core" {
             "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
             /**
              * A customizable navbar component used for top level navigation of all Trimble applications.
+             * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+             * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-navbar": LocalJSX.ModusWcNavbar & JSXBase.HTMLAttributes<HTMLModusWcNavbarElement>;
