@@ -69,7 +69,11 @@ export const config: Config = {
   ],
   plugins: [
     sass({
-      injectGlobalPaths: ['src/styles/global.scss', 'src/styles/output.css'],
+      injectGlobalPaths: [
+        'src/styles/global.scss',
+        'src/styles/mixins.scss',
+        'src/styles/output.css',
+      ],
     }),
     tailwindGlobal(),
     tailwind(),
