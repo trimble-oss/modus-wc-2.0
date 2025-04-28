@@ -136,7 +136,8 @@
     "format": {
       "dependencies": [
         "format:prettier",
-        "format:eslint"
+        "format:eslint",
+        "format:stylelint"
       ]
     },
     "format:eslint": {
@@ -148,6 +149,9 @@
         "*.{ts,tsx,js,jsx,css,scss,json,md,mdx,html}",
         "!src/components.d.ts"
       ]
+    },
+    "format:stylelint": {
+      "command": "stylelint \"src/**/*.scss\" --fix"
     },
     "lint": {
       "dependencies": [
