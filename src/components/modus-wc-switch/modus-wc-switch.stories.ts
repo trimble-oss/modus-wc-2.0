@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ModusSize } from '../types';
 
-interface ToggleArgs {
+interface SwitchArgs {
   'custom-class'?: string;
   disabled?: boolean;
   indeterminate?: boolean;
@@ -17,9 +17,9 @@ interface ToggleArgs {
   value: boolean;
 }
 
-const meta: Meta<ToggleArgs> = {
-  title: 'Components/Forms/Toggle',
-  component: 'modus-wc-toggle',
+const meta: Meta<SwitchArgs> = {
+  title: 'Components/Forms/Switch',
+  component: 'modus-wc-switch',
   args: {
     'custom-class': '',
     disabled: false,
@@ -46,12 +46,12 @@ const meta: Meta<ToggleArgs> = {
 
 export default meta;
 
-type Story = StoryObj<ToggleArgs>;
+type Story = StoryObj<SwitchArgs>;
 
 export const Default: Story = {
   render: (args) => {
     return html`
-      <modus-wc-toggle
+      <modus-wc-switch
         aria-label="Toggle"
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
@@ -63,7 +63,7 @@ export const Default: Story = {
         ?required=${args.required}
         size=${ifDefined(args.size)}
         .value=${args.value}
-      ></modus-wc-toggle>
+      ></modus-wc-switch>
     `;
   },
 };

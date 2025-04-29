@@ -4,6 +4,7 @@
 */
 
 modus-wc-alert .modus-wc-alert {
+  align-content: center;
   border-left-width: var(--modus-wc-border-width-xl);
   border-radius: var(--modus-wc-border-radius-lg);
 
@@ -68,6 +69,7 @@ modus-wc-alert .modus-wc-alert {
   border-left-width: 12px;
   border-radius: var(--modus-wc-border-radius-md);
   gap: var(--modus-wc-spacing-sm);
+  min-height: 56px;
   padding-bottom: var(--modus-wc-spacing-sm);
   padding-top: var(--modus-wc-spacing-sm);
 }
