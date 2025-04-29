@@ -33,7 +33,8 @@ export const config: Config = {
       // Required for the React integration
       type: 'dist-custom-elements',
       externalRuntime: false,
-      // minify: true,
+      minify: true,
+      isPrimaryPackageOutputTarget: true,
     },
     {
       type: 'docs-readme',
@@ -60,17 +61,12 @@ export const config: Config = {
       outDir: './integrations/react/stencil-generated',
     }),
   ],
-  // globalScript: './styleLoader.processed.js',
-  // globalStyle: 'src/styles/output.css',
   plugins: [
     sass({
-      injectGlobalPaths: [
-        'src/styles/global.scss',
-        // 'src/styles/output.css',
-        // 'src/styles/mixins.scss',
-      ],
+      // **Absolutely do not** add any CSS code here, only include Sass variables/mixins/etc.
+      // This gets injected into the inline styles for every component, for every generated target.
+      injectGlobalPaths: ['src/styles/mixins.scss'],
     }),
-    // tailwindGlobal(),
     tailwind(),
   ],
   devServer: {

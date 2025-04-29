@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const currentDir = path.dirname(require.main.filename);
+const distDir = path.join(currentDir, '../dist');
 
 // Read the CSS file
 const cssContent = fs.readFileSync(
@@ -9,23 +10,35 @@ const cssContent = fs.readFileSync(
   'utf8'
 );
 
-// Read the template
-let scriptContent = fs.readFileSync(
-  path.join(currentDir, '../dist/components/modus-wc-style-loader.js'),
-  'utf8'
-);
-
-// Replace the placeholder with actual CSS content
 // Escape any special characters in the CSS to avoid breaking the JS
 const escapedCss = cssContent
   .replace(/\\/g, '\\\\')
   .replace(/`/g, '\\`')
   .replace(/\$/g, '\\$');
 
-scriptContent = scriptContent.replace('/* CSS_PLACEHOLDER */', escapedCss);
+/**
+ * Recursively processes files in a directory
+ * @param {string} dir - Directory to process
+ */
+function processDirectory(dir) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
 
-// Inject the CSS into the script
-fs.writeFileSync(
-  path.join(currentDir, '../dist/components/modus-wc-style-loader.js'),
-  scriptContent
-);
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      // Recursively process subdirectories
+      processDirectory(fullPath);
+    } else if (entry.isFile() && entry.name.endsWith('.js')) {
+      let content = fs.readFileSync(fullPath, 'utf8');
+
+      if (content.includes('/* CSS_PLACEHOLDER */')) {
+        content = content.replace(/\/\* CSS_PLACEHOLDER \*\//g, escapedCss);
+        fs.writeFileSync(fullPath, content);
+      }
+    }
+  }
+}
+
+// Start processing from the dist directory
+processDirectory(distDir);

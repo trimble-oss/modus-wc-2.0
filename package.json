@@ -262,7 +262,9 @@
       "command": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --minify",
       "files": [
         "src/**/*.scss",
+        "src/styles/global.css",
         "src/styles/tailwind.css",
+        "src/styles/variables.css",
         "tailwind.config.js"
       ],
       "output": [
@@ -288,7 +290,9 @@
       "service": true,
       "files": [
         "src/**/*.scss",
+        "src/styles/global.css",
         "src/styles/tailwind.css",
+        "src/styles/variables.css",
         "tailwind.config.js"
       ]
     }
