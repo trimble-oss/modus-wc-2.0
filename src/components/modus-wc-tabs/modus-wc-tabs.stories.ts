@@ -10,7 +10,7 @@ interface TabsArgs {
   'custom-class'?: string;
   size?: DaisySize;
   tabs: ITab[];
-  tabStyle: 'boxed' | 'bordered' | 'lifted' | 'none';
+  'tab-style': 'boxed' | 'bordered' | 'lifted' | 'none';
 }
 
 const meta: Meta<TabsArgs> = {
@@ -24,7 +24,7 @@ const meta: Meta<TabsArgs> = {
       { label: 'Tab 3', disabled: true },
       { icon: 'home' },
     ],
-    tabStyle: 'bordered',
+    'tab-style': 'bordered',
   },
   argTypes: {
     tabs: {
@@ -43,7 +43,7 @@ const meta: Meta<TabsArgs> = {
         },
       },
     },
-    tabStyle: {
+    'tab-style': {
       control: { type: 'select' },
       options: ['boxed', 'bordered', 'lifted', 'none'],
     },
@@ -71,7 +71,7 @@ const Template: Story = {
 <modus-wc-tabs
   active-tab-index="${ifDefined(args.activeTabIndex)}"
   aria-label="Tab group"
-  tab-style="${ifDefined(args.tabStyle)}"
+  tab-style="${ifDefined(args['tab-style'])}"
   .tabs="${args.tabs}"
   size="${ifDefined(args.size)}"
 >
@@ -116,7 +116,7 @@ export const TabsWithPanel: Story = {
   aria-label="Tab group"
   custom-class="${ifDefined(args['custom-class'])}"
   ?img-src="${args['img-src']}"
-  tab-style="${ifDefined(args.tabStyle)}"
+  tab-style="${ifDefined(args['tab-style'])}"
   .tabs="${args.tabs}"
   size="${ifDefined(args.size)}"
 >
