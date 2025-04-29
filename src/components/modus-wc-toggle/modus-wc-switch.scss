@@ -3,7 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-toggle.modus-wc-toggle-host {
+modus-wc-switch.modus-wc-switch-host {
   align-items: center;
   display: flex;
 
@@ -13,8 +13,8 @@ modus-wc-toggle.modus-wc-toggle-host {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-toggle .modus-wc-toggle,
-[data-theme='modus-classic-dark'] modus-wc-toggle .modus-wc-toggle {
+[data-theme='modus-classic-light'] modus-wc-switch .modus-wc-toggle,
+[data-theme='modus-classic-dark'] modus-wc-switch .modus-wc-toggle {
   --rounded-badge: 32px;
 
   background-color: var(--modus-wc-color-white);
@@ -77,7 +77,7 @@ modus-wc-toggle.modus-wc-toggle-host {
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-toggle .modus-wc-toggle {
+[data-theme='modus-classic-dark'] modus-wc-switch .modus-wc-toggle {
   &:checked {
     --fallback-b1: var(--modus-wc-color-highlight-blue);
 

@@ -4981,12 +4981,12 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/modus-wc-toggle/modus-wc-toggle.tsx",
+      "path": "src/components/modus-wc-toggle/modus-wc-switch.tsx",
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable checkbox component.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcToggle",
+          "description": "A customizable checkbox component.\n\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcSwitch",
           "members": [
             {
               "kind": "field",
@@ -5015,7 +5015,7 @@
               "name": "disabled",
               "fieldName": "disabled",
               "default": "false",
-              "description": "The disabled state of the toggle.",
+              "description": "The disabled state of the switch.",
               "type": {
                 "text": "boolean"
               }
@@ -5024,7 +5024,7 @@
               "name": "indeterminate",
               "fieldName": "indeterminate",
               "default": "false",
-              "description": "The indeterminate state of the toggle.",
+              "description": "The indeterminate state of the switch.",
               "type": {
                 "text": "boolean"
               }
@@ -5084,13 +5084,13 @@
               "name": "value",
               "fieldName": "value",
               "default": "false",
-              "description": "The value of the toggle.",
+              "description": "The value of the switch.",
               "type": {
                 "text": "boolean"
               }
             }
           ],
-          "tagName": "modus-wc-toggle",
+          "tagName": "modus-wc-switch",
           "events": [
             {
               "kind": "field",
@@ -5123,18 +5123,18 @@
       "exports": [
         {
           "kind": "js",
-          "name": "ModusWcToggle",
+          "name": "ModusWcSwitch",
           "declaration": {
-            "name": "ModusWcToggle",
-            "module": "src/components/modus-wc-toggle/modus-wc-toggle.tsx"
+            "name": "ModusWcSwitch",
+            "module": "src/components/modus-wc-toggle/modus-wc-switch.tsx"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "modus-wc-toggle",
+          "name": "modus-wc-switch",
           "declaration": {
-            "name": "ModusWcToggle",
-            "module": "src/components/modus-wc-toggle/modus-wc-toggle.tsx"
+            "name": "ModusWcSwitch",
+            "module": "src/components/modus-wc-toggle/modus-wc-switch.tsx"
           }
         }
       ]
