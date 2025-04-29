@@ -6,7 +6,7 @@ import { modusModern } from './src/styles/themes/modus-modern';
 
 export default {
   content: [
-    './src/components/**/*.{ts,tsx}',
+    './src/components/**/*.{ts,tsx,scss}',
     './src/styles/tailwind-themeable.ts',
     './src/styles/themes/*.ts',
   ],

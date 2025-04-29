@@ -5,13 +5,14 @@ import { sass } from '@stencil/sass';
 import angularValueAccessorBindings from './angular-value-accessor-bindings';
 import tailwind, {
   setPluginConfigurationDefaults,
-  tailwindGlobal,
+  // tailwindGlobal,
 } from 'stencil-tailwind-plugin';
 import tailwindConfig from './tailwind.config';
 
 const tailwindOpts = {
-  debug: true,
+  // enableDebug: true,
   minify: false,
+  // optimise: true,
   stripComments: true,
   tailwindConf: tailwindConfig,
   tailwindCssPath: './src/styles/tailwind.css',
@@ -32,6 +33,7 @@ export const config: Config = {
       // Required for the React integration
       type: 'dist-custom-elements',
       externalRuntime: false,
+      // minify: true,
     },
     {
       type: 'docs-readme',
@@ -58,17 +60,22 @@ export const config: Config = {
       outDir: './integrations/react/stencil-generated',
     }),
   ],
+  // globalScript: './styleLoader.processed.js',
+  // globalStyle: 'src/styles/output.css',
   plugins: [
     sass({
-      injectGlobalPaths: ['src/styles/global.scss', 'src/styles/output.css'],
+      injectGlobalPaths: [
+        'src/styles/global.scss',
+        // 'src/styles/output.css',
+        // 'src/styles/mixins.scss',
+      ],
     }),
-    tailwindGlobal(),
+    // tailwindGlobal(),
     tailwind(),
   ],
   devServer: {
     reloadStrategy: 'hmr',
   },
-  buildEs5: 'prod',
   extras: {
     enableImportInjection: true,
   },

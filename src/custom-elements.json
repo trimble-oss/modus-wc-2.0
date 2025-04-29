@@ -3798,6 +3798,39 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-style-loader/modus-wc-style-loader.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModusWcStyleLoader",
+          "members": [],
+          "tagName": "modus-wc-style-loader",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcStyleLoader",
+          "declaration": {
+            "name": "ModusWcStyleLoader",
+            "module": "src/components/modus-wc-style-loader/modus-wc-style-loader.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-style-loader",
+          "declaration": {
+            "name": "ModusWcStyleLoader",
+            "module": "src/components/modus-wc-style-loader/modus-wc-style-loader.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-table/modus-wc-table.spec.tsx",
       "declarations": [],
       "exports": []
