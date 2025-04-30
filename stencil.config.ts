@@ -5,14 +5,12 @@ import { sass } from '@stencil/sass';
 import angularValueAccessorBindings from './angular-value-accessor-bindings';
 import tailwind, {
   setPluginConfigurationDefaults,
-  // tailwindGlobal,
 } from 'stencil-tailwind-plugin';
 import tailwindConfig from './tailwind.config';
 
 const tailwindOpts = {
   // enableDebug: true,
   minify: false,
-  // optimise: true,
   stripComments: true,
   tailwindConf: tailwindConfig,
   tailwindCssPath: './src/styles/tailwind.css',
@@ -37,9 +35,7 @@ export const config: Config = {
       // > This gives build tools the best chance to deduplicate code, remove dead code, and so on.
       // minify: true,
       isPrimaryPackageOutputTarget: true,
-      copy: [
-        { src: './styles/output.css', dest: 'dist/modus-wc-styles.css' },
-      ]
+      copy: [{ src: './styles/output.css', dest: 'dist/modus-wc-styles.css' }],
     },
     {
       type: 'docs-readme',
@@ -66,11 +62,6 @@ export const config: Config = {
       outDir: './integrations/react/stencil-generated',
     }),
   ],
-  /*
-    TODO: TAILWIND ISN'T GETTING INJECTED ON STENCIL WATCH
-    ALSO TAILWIND WATCH NO LONGER WORKS BECAUSE ITS NOT DIRECTLY BEING USED
-    WE NEED TO HOOK IN SOMEHOW TO THE STENCIL WATCH COMMAND AND THE TAILWIND WATCH COMMAND
-  */
   plugins: [
     sass({
       // **Absolutely do not** add any CSS code here, only include Sass variables/mixins/etc.

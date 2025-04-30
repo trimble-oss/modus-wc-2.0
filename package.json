@@ -149,7 +149,14 @@
       ]
     },
     "format:stylelint": {
-      "command": "stylelint \"src/**/*.scss\" --fix"
+      "command": "stylelint \"src/**/*.scss\" --fix",
+      "clean": false,
+      "files": [
+        "src/**/*.scss"
+      ],
+      "output": [
+        "src/**/*.scss"
+      ]
     },
     "lint": {
       "dependencies": [

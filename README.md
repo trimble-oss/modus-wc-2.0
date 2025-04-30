@@ -20,7 +20,7 @@ npm install @trimble-oss/moduswebcomponents
 Import our styling in your main JavaScript or CSS file:
 
 ```javascript
-import "@trimble-oss/moduswebcomponents/dist/modus-wc-styles.css";
+import '@trimble-oss/moduswebcomponents/dist/modus-wc-styles.css';
 ```
 
 ## Basic Usage
