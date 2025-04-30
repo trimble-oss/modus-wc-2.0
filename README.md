@@ -11,10 +11,16 @@ A lightweight, flexible web component library built for enterprise applications.
 
 ## Installation
 
-### NPM
+### Setup
 
 ```bash
 npm install @trimble-oss/moduswebcomponents
+```
+
+Import our styling in your main JavaScript or CSS file:
+
+```javascript
+import "@trimble-oss/moduswebcomponents/dist/modus-wc-styles.css";
 ```
 
 ## Basic Usage

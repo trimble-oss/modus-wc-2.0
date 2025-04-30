@@ -13,9 +13,15 @@ npm install @trimble-oss/moduswebcomponents-react@<latest-version>-react<target-
 npm install @trimble-oss/moduswebcomponents-react@1.0.0-react18
 ```
 
+Import our styling in your main JavaScript or CSS file:
+
+```javascript
+import "@trimble-oss/moduswebcomponents/dist/modus-wc-styles.css";
+```
+
 ## Example Usage
 
-No extra setup is required to use the Modus React Components. You can use the components as you would any other React component.
+You can use the components as you would any other React component.
 
 - Use a Modus Button in your `App.tsx`
 
