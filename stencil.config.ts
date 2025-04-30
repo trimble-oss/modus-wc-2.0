@@ -33,8 +33,13 @@ export const config: Config = {
       // Required for the React integration
       type: 'dist-custom-elements',
       externalRuntime: false,
-      minify: true,
+      // > We recommend publishing components as unoptimized JavaScript modules and performing build-time optimizations at the application level.
+      // > This gives build tools the best chance to deduplicate code, remove dead code, and so on.
+      // minify: true,
       isPrimaryPackageOutputTarget: true,
+      copy: [
+        { src: './styles/output.css', dest: 'dist/modus-wc-styles.css' },
+      ]
     },
     {
       type: 'docs-readme',
@@ -61,6 +66,11 @@ export const config: Config = {
       outDir: './integrations/react/stencil-generated',
     }),
   ],
+  /*
+    TODO: TAILWIND ISN'T GETTING INJECTED ON STENCIL WATCH
+    ALSO TAILWIND WATCH NO LONGER WORKS BECAUSE ITS NOT DIRECTLY BEING USED
+    WE NEED TO HOOK IN SOMEHOW TO THE STENCIL WATCH COMMAND AND THE TAILWIND WATCH COMMAND
+  */
   plugins: [
     sass({
       // **Absolutely do not** add any CSS code here, only include Sass variables/mixins/etc.

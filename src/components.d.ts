@@ -1126,8 +1126,6 @@ export namespace Components {
          */
         "steps": IStepperItem[];
     }
-    interface ModusWcStyleLoader {
-    }
     /**
      * A customizable table component used to show a list of data in a table format.
      * Adheres to WCAG 2.2 standards.
@@ -2226,12 +2224,6 @@ declare global {
         prototype: HTMLModusWcStepperElement;
         new (): HTMLModusWcStepperElement;
     };
-    interface HTMLModusWcStyleLoaderElement extends Components.ModusWcStyleLoader, HTMLStencilElement {
-    }
-    var HTMLModusWcStyleLoaderElement: {
-        prototype: HTMLModusWcStyleLoaderElement;
-        new (): HTMLModusWcStyleLoaderElement;
-    };
     interface HTMLModusWcTableElementEventMap {
         "rowClick": {
     row: Record<string, any>;
@@ -2472,7 +2464,6 @@ declare global {
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
         "modus-wc-stepper": HTMLModusWcStepperElement;
-        "modus-wc-style-loader": HTMLModusWcStyleLoaderElement;
         "modus-wc-table": HTMLModusWcTableElement;
         "modus-wc-tabs": HTMLModusWcTabsElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
@@ -3743,8 +3734,6 @@ declare namespace LocalJSX {
          */
         "steps"?: IStepperItem[];
     }
-    interface ModusWcStyleLoader {
-    }
     /**
      * A customizable table component used to show a list of data in a table format.
      * Adheres to WCAG 2.2 standards.
@@ -4317,7 +4306,6 @@ declare namespace LocalJSX {
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
         "modus-wc-stepper": ModusWcStepper;
-        "modus-wc-style-loader": ModusWcStyleLoader;
         "modus-wc-table": ModusWcTable;
         "modus-wc-tabs": ModusWcTabs;
         "modus-wc-text-input": ModusWcTextInput;
@@ -4497,7 +4485,6 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-stepper": LocalJSX.ModusWcStepper & JSXBase.HTMLAttributes<HTMLModusWcStepperElement>;
-            "modus-wc-style-loader": LocalJSX.ModusWcStyleLoader & JSXBase.HTMLAttributes<HTMLModusWcStyleLoaderElement>;
             /**
              * A customizable table component used to show a list of data in a table format.
              * Adheres to WCAG 2.2 standards.

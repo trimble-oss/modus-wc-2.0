@@ -1,15 +1,14 @@
 import {
-  ModusWcStyleLoader,
 	ModusWcThemeProvider,
 	ModusWcThemeSwitcher,
 } from "@trimble-oss/moduswebcomponents-react";
+import "@trimble-oss/moduswebcomponents/dist/modus-wc-styles.css";
 import * as ModusReactExamples from "./examples";
 import "./App.css";
 
 function App() {
 	return (
 		<>
-      <ModusWcStyleLoader />
 			<ModusWcThemeProvider initialTheme={{ theme: "modus-modern" }}>
 				<h1>Modus WC React Examples</h1>
 				<div className="theme-toggle-switch">

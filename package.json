@@ -36,15 +36,14 @@
   "type": "module",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
-  "es2015": "dist/esm/index.js",
   "es2017": "dist/esm/index.js",
   "esnext": "dist/esm/index.js",
-  "jsnext:main": "dist/esm/index.js",
-  "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/modus-wc/modus-wc.esm.js",
   "jsdelivr": "dist/modus-wc/modus-wc.js",
+  "types": "dist/types/components.d.ts",
+  "modus-wc-styles.css": "dist/modus-wc-styles.css",
   "files": [
     "dist/",
     "loader/"
@@ -105,7 +104,7 @@
     "tailwindcss": "^3.4.14",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.2",
-    "wireit": "^0.14.9"
+    "wireit": "^0.14.12"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.9.5",
@@ -115,7 +114,6 @@
     "build": {
       "dependencies": [
         "stencil:build",
-        "tailwind:inject",
         "storybook:build"
       ]
     },
@@ -130,8 +128,7 @@
     },
     "build:ci": {
       "dependencies": [
-        "stencil:build",
-        "tailwind:inject"
+        "stencil:build"
       ]
     },
     "format": {
@@ -238,7 +235,6 @@
       "clean": false,
       "dependencies": [
         "stencil:build",
-        "tailwind:inject",
         "lint"
       ],
       "files": [
@@ -269,20 +265,6 @@
       ],
       "output": [
         "src/styles/output.css"
-      ]
-    },
-    "tailwind:inject": {
-      "command": "node .github/inline-css.cjs",
-      "dependencies": [
-        "stencil:build"
-      ],
-      "files": [
-        ".github/inline-css.cjs",
-        "src/styles/output.css",
-        "src/styleLoader.js"
-      ],
-      "output": [
-        "dist/styleLoader.processed.js"
       ]
     },
     "tailwind:watch": {

@@ -14,7 +14,7 @@
 		"preview": "npm run build && vite preview --open"
 	},
 	"dependencies": {
-		"@trimble-oss/moduswebcomponents-react": "file:../v18",
+		"@trimble-oss/moduswebcomponents-react": "file:../v18/trimble-oss-moduswebcomponents-react-0.0.1-react18.tgz",
 		"react": "^18.3",
 		"react-dom": "^18.3"
 	},
@@ -30,5 +30,5 @@
 		"typescript": "~5.6.3",
 		"typescript-eslint": "^8.15",
 		"vite": "^5.4"
-	  }
+	}
 }
