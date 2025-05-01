@@ -36,6 +36,11 @@ jobs:
       - name: Build Storybook
         run: npm run build
 
+      # We need to copy the CSS so it can be served by Storybook.
+      - name: Copy CSS file
+        run: |
+          cp src/styles/output.css .storybook/public/output.css
+
       - name: Deploy preview
         if: github.event_name == 'pull_request'
         uses: rossjrw/pr-preview-action@v1
