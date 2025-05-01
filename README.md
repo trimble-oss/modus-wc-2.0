@@ -1,5 +1,9 @@
 # Modus Web Components
 
+[![LICENSE](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/trimble-oss/moduswebcomponents/main/LICENSE)
+[![npm Version](https://img.shields.io/npm/v/@trimble-oss/moduswebcomponents)](https://www.npmjs.com/package/@trimble-oss/moduswebcomponents)
+[![npm Downloads](https://img.shields.io/npm/dt/@trimble-oss/moduswebcomponents.svg)](https://www.npmjs.com/package/@trimble-oss/moduswebcomponents)
+
 A lightweight, flexible web component library built for enterprise applications. Create consistent, accessible, and beautiful user interfaces using framework-agnostic web components.
 
 ## Features
@@ -11,7 +15,7 @@ A lightweight, flexible web component library built for enterprise applications.
 
 ## Installation
 
-### NPM
+### npm
 
 ```bash
 npm install @trimble-oss/moduswebcomponents
