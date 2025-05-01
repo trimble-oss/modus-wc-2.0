@@ -32,7 +32,7 @@ jobs:
       - name: Build Stencil components
         run: npm run build:ci
 
-      - name: Pack modus-wc
+      - name: Pack modus-webcomponents
         id: npm_pack
         run: |
           modus_wc_tarball=$(npm pack --pack-destination integrations/react/v${{ matrix.react-version }} | tail -n 1)
@@ -44,7 +44,7 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Install current modus-wc implementation for react integration
+      - name: Install current modus-webcomponents implementation for react integration
         run: npm install ./${{ steps.npm_pack.outputs.modus_wc_tarball }}
         working-directory: integrations/react/v${{ matrix.react-version }}
 
@@ -53,8 +53,18 @@ jobs:
         run: npm run build
         working-directory: integrations/react/v${{ matrix.react-version }}
 
+      - name: Pack modus-webcomponents-react
+        id: npm_pack_react
+        run: |
+          modus_wc_react_tarball=$(npm pack --pack-destination integrations/react/test-react-v${{ matrix.react-version }} | tail -n 1)
+          echo "modus_wc_react_tarball=${modus_wc_react_tarball}" >> $GITHUB_OUTPUT
+
       - name: Install Dependencies for Test React App
         run: npm ci
+        working-directory: integrations/react/test-react-v${{ matrix.react-version }}
+
+      - name: Install current modus-webcomponents-react implementation for react integration
+        run: npm install ./${{ steps.npm_pack_react.outputs.modus_wc_react_tarball }}
         working-directory: integrations/react/test-react-v${{ matrix.react-version }}
 
       - name: Build Test React App
