@@ -124,9 +124,6 @@ jobs:
         working-directory: integrations/react/v${{ matrix.react-version }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
@@ -135,10 +132,7 @@ jobs:
 
       - name: Find the release asset
         id: find-asset
-        run: |
-          asset_path=$(find . -name 'trimble-oss-moduswebcomponents-react*.tgz')
-          full_asset_path="${{ github.workspace }}/integrations/react/v${{ matrix.react-version }}/${asset_path}"
-          echo "asset_path=$full_asset_path" >> $GITHUB_OUTPUT
+        run: echo "asset_path=$(find . -name '*.tgz')" >> $GITHUB_OUTPUT
 
       - name: Rename release asset
         run: mv ${{ steps.find-asset.outputs.asset_path }} package-react${{ matrix.react-version }}.tgz
