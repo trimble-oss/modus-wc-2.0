@@ -2364,7 +2364,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nThe component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.\r\nIt also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcNavbar",
           "members": [
             {
@@ -2394,10 +2394,28 @@
           ],
           "attributes": [
             {
+              "name": "apps-menu-open",
+              "fieldName": "appsMenuOpen",
+              "default": "false",
+              "description": "The open state of the apps menu.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "condensed",
               "fieldName": "condensed",
               "default": "false",
               "description": "Applies condensed layout and styling.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "condensed-menu-open",
+              "fieldName": "condensedMenuOpen",
+              "default": "false",
+              "description": "The open state of the condensed menu.",
               "type": {
                 "text": "boolean"
               }
@@ -2412,12 +2430,39 @@
               }
             },
             {
+              "name": "main-menu-open",
+              "fieldName": "mainMenuOpen",
+              "default": "false",
+              "description": "The open state of the main menu.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "notifications-menu-open",
+              "fieldName": "notificationsMenuOpen",
+              "default": "false",
+              "description": "The open state of the notifications menu.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "search-debounce-ms",
               "fieldName": "searchDebounceMs",
               "default": "300",
               "description": "Debounce time in milliseconds for search input changes. Default is 300ms.",
               "type": {
                 "text": "number"
+              }
+            },
+            {
+              "name": "search-input-open",
+              "fieldName": "searchInputOpen",
+              "default": "false",
+              "description": "The open state of the search input.",
+              "type": {
+                "text": "boolean"
               }
             },
             {
@@ -2429,11 +2474,20 @@
               }
             },
             {
-              "name": "user",
-              "fieldName": "user",
+              "name": "user-card",
+              "fieldName": "userCard",
               "description": "User information used to render the user card.",
               "type": {
                 "text": "INavbarUserCard"
+              }
+            },
+            {
+              "name": "user-menu-open",
+              "fieldName": "userMenuOpen",
+              "default": "false",
+              "description": "The open state of the user menu.",
+              "type": {
+                "text": "boolean"
               }
             },
             {
@@ -2458,11 +2512,35 @@
             },
             {
               "kind": "field",
+              "name": "appsMenuOpenChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the apps menu open state changes."
+            },
+            {
+              "kind": "field",
+              "name": "condensedMenuOpenChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the condensed menu open state changes."
+            },
+            {
+              "kind": "field",
               "name": "helpClick",
               "type": {
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
               },
               "description": "Event emitted when the help button is clicked or activated via keyboard."
+            },
+            {
+              "kind": "field",
+              "name": "mainMenuOpenChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the main menu open state changes."
             },
             {
               "kind": "field",
@@ -2482,6 +2560,14 @@
             },
             {
               "kind": "field",
+              "name": "notificationsMenuOpenChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the notifications menu open state changes."
+            },
+            {
+              "kind": "field",
               "name": "searchChange",
               "type": {
                 "text": "EventEmitter<{ value: string }>"
@@ -2498,6 +2584,14 @@
             },
             {
               "kind": "field",
+              "name": "searchInputOpenChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the search input open state changes."
+            },
+            {
+              "kind": "field",
               "name": "signOutClick",
               "type": {
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
@@ -2511,6 +2605,14 @@
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
               },
               "description": "Event emitted when the Trimble logo is clicked or activated via keyboard."
+            },
+            {
+              "kind": "field",
+              "name": "userMenuOpenChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the user menu open state changes."
             }
           ],
           "customElement": true
@@ -3773,6 +3875,166 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-switch/modus-wc-switch.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable checkbox component.\n\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcSwitch",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "default": "false",
+              "description": "The disabled state of the switch.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "indeterminate",
+              "fieldName": "indeterminate",
+              "default": "false",
+              "description": "The indeterminate state of the switch.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "description": "The ID of the input element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "description": "The tabindex of the input.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "description": "The text to display within the label.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "default": "''",
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "default": "false",
+              "description": "A value is required for the form to be submittable.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the input.",
+              "type": {
+                "text": "ModusSize"
+              }
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "default": "false",
+              "description": "The value of the switch.",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "tagName": "modus-wc-switch",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcSwitch",
+          "declaration": {
+            "name": "ModusWcSwitch",
+            "module": "src/components/modus-wc-switch/modus-wc-switch.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-switch",
+          "declaration": {
+            "name": "ModusWcSwitch",
+            "module": "src/components/modus-wc-switch/modus-wc-switch.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-table/modus-wc-table.spec.tsx",
       "declarations": [],
       "exports": []
@@ -4873,166 +5135,6 @@
           "declaration": {
             "name": "ModusWcToast",
             "module": "src/components/modus-wc-toast/modus-wc-toast.tsx"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/modus-wc-toggle/modus-wc-toggle.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A customizable checkbox component.\r\n\r\nAdheres to WCAG 2.2 standards.",
-          "name": "ModusWcToggle",
-          "members": [
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
-              },
-              "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "custom-class",
-              "fieldName": "customClass",
-              "default": "''",
-              "description": "Custom CSS class to apply to the inner div.",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled",
-              "default": "false",
-              "description": "The disabled state of the toggle.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
-              "name": "indeterminate",
-              "fieldName": "indeterminate",
-              "default": "false",
-              "description": "The indeterminate state of the toggle.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
-              "name": "input-id",
-              "fieldName": "inputId",
-              "description": "The ID of the input element.",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "name": "input-tab-index",
-              "fieldName": "inputTabIndex",
-              "description": "The tabindex of the input.",
-              "type": {
-                "text": "number"
-              }
-            },
-            {
-              "name": "label",
-              "fieldName": "label",
-              "description": "The text to display within the label.",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "name": "name",
-              "fieldName": "name",
-              "default": "''",
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "name": "required",
-              "fieldName": "required",
-              "default": "false",
-              "description": "A value is required for the form to be submittable.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "default": "'md'",
-              "description": "The size of the input.",
-              "type": {
-                "text": "ModusSize"
-              }
-            },
-            {
-              "name": "value",
-              "fieldName": "value",
-              "default": "false",
-              "description": "The value of the toggle.",
-              "type": {
-                "text": "boolean"
-              }
-            }
-          ],
-          "tagName": "modus-wc-toggle",
-          "events": [
-            {
-              "kind": "field",
-              "name": "inputBlur",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input loses focus."
-            },
-            {
-              "kind": "field",
-              "name": "inputChange",
-              "type": {
-                "text": "EventEmitter<InputEvent>"
-              },
-              "description": "Emitted when the input value changes."
-            },
-            {
-              "kind": "field",
-              "name": "inputFocus",
-              "type": {
-                "text": "EventEmitter<FocusEvent>"
-              },
-              "description": "Emitted when the input gains focus."
-            }
-          ],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcToggle",
-          "declaration": {
-            "name": "ModusWcToggle",
-            "module": "src/components/modus-wc-toggle/modus-wc-toggle.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-wc-toggle",
-          "declaration": {
-            "name": "ModusWcToggle",
-            "module": "src/components/modus-wc-toggle/modus-wc-toggle.tsx"
           }
         }
       ]

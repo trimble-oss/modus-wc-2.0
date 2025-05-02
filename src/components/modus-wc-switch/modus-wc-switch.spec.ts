@@ -1,19 +1,19 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcToggle } from './modus-wc-toggle';
+import { ModusWcSwitch } from './modus-wc-switch';
 
-describe('modus-wc-toggle', () => {
+describe('modus-wc-switch', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcToggle],
-      html: '<modus-wc-toggle aria-label="Default toggle"></modus-wc-toggle>',
+      components: [ModusWcSwitch],
+      html: '<modus-wc-switch aria-label="Default toggle"></modus-wc-switch>',
     });
     expect(page.root).toMatchSnapshot();
   });
 
   it('should render with custom props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcToggle],
-      html: `<modus-wc-toggle
+      components: [ModusWcSwitch],
+      html: `<modus-wc-switch
         aria-describedby="active"
         aria-label="Test toggle"
         aria-labelledby="toggle-label"
@@ -26,26 +26,26 @@ describe('modus-wc-toggle', () => {
         required="true"
         size="lg"
         value="Test value"
-      ></modus-wc-toggle>`,
+      ></modus-wc-switch>`,
     });
     expect(page.root).toMatchSnapshot();
   });
 
   it('should render indeterminate state', async () => {
     const page = await newSpecPage({
-      components: [ModusWcToggle],
-      html: `<modus-wc-toggle
+      components: [ModusWcSwitch],
+      html: `<modus-wc-switch
         aria-label="Test toggle"
         indeterminate="true"
-      ></modus-wc-toggle>`,
+      ></modus-wc-switch>`,
     });
     expect(page.root).toMatchSnapshot();
   });
 
   it('should emit blur event', async () => {
     const page = await newSpecPage({
-      components: [ModusWcToggle],
-      html: '<modus-wc-toggle aria-label="Blur test"></modus-wc-toggle>',
+      components: [ModusWcSwitch],
+      html: '<modus-wc-switch aria-label="Blur test"></modus-wc-switch>',
     });
     const checkbox = page.root!.querySelector('input[type="checkbox"]');
     expect(checkbox).not.toBeNull();
@@ -60,8 +60,8 @@ describe('modus-wc-toggle', () => {
 
   it('should emit change event', async () => {
     const page = await newSpecPage({
-      components: [ModusWcToggle],
-      html: '<modus-wc-toggle aria-label="Change test"></modus-wc-toggle>',
+      components: [ModusWcSwitch],
+      html: '<modus-wc-switch aria-label="Change test"></modus-wc-switch>',
     });
     const checkbox = page.root!.querySelector(
       'input[type="checkbox"]'
@@ -84,8 +84,8 @@ describe('modus-wc-toggle', () => {
 
   it('should emit focus event', async () => {
     const page = await newSpecPage({
-      components: [ModusWcToggle],
-      html: '<modus-wc-toggle aria-label="Focus test"></modus-wc-toggle>',
+      components: [ModusWcSwitch],
+      html: '<modus-wc-switch aria-label="Focus test"></modus-wc-switch>',
     });
     const checkbox = page.root!.querySelector('input[type="checkbox"]');
     expect(checkbox).not.toBeNull();

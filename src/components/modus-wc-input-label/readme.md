@@ -37,10 +37,10 @@ Adheres to WCAG 2.2 standards.
  - [modus-wc-radio](../modus-wc-radio)
  - [modus-wc-select](../modus-wc-select)
  - [modus-wc-slider](../modus-wc-slider)
+ - [modus-wc-switch](../modus-wc-switch)
  - [modus-wc-text-input](../modus-wc-text-input)
  - [modus-wc-textarea](../modus-wc-textarea)
  - [modus-wc-time-input](../modus-wc-time-input)
- - [modus-wc-toggle](../modus-wc-toggle)
 
 ### Graph
 ```mermaid
@@ -53,10 +53,10 @@ graph TD;
   modus-wc-radio --> modus-wc-input-label
   modus-wc-select --> modus-wc-input-label
   modus-wc-slider --> modus-wc-input-label
+  modus-wc-switch --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-input-label
   modus-wc-textarea --> modus-wc-input-label
   modus-wc-time-input --> modus-wc-input-label
-  modus-wc-toggle --> modus-wc-input-label
   style modus-wc-input-label fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
