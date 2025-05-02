@@ -25,6 +25,7 @@ export const config: Config = {
   outputTargets: [
     {
       // Required for the Angular integration
+      // Could potentially switch https://stenciljs.com/docs/angular#do-i-have-to-use-the-dist-output-target
       type: 'dist',
       esmLoaderPath: '../dist/loader',
     },
@@ -49,6 +50,7 @@ export const config: Config = {
     },
     angularOutputTarget({
       componentCorePackage: '@trimble-oss/moduswebcomponents',
+      customElementsDir: 'components',
       outputType: 'component',
       directivesProxyFile:
         './integrations/angular/ng17/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
@@ -58,6 +60,7 @@ export const config: Config = {
     }),
     angularOutputTarget({
       componentCorePackage: '@trimble-oss/moduswebcomponents',
+      customElementsDir: 'components',
       outputType: 'component',
       directivesProxyFile:
         './integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
@@ -67,6 +70,7 @@ export const config: Config = {
     }),
     angularOutputTarget({
       componentCorePackage: '@trimble-oss/moduswebcomponents',
+      customElementsDir: 'components',
       outputType: 'component',
       directivesProxyFile:
         './integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
@@ -75,6 +79,7 @@ export const config: Config = {
       valueAccessorConfigs: angularValueAccessorBindings,
     }),
     reactOutputTarget({
+      customElementsDir: 'components',
       outDir: './integrations/react/stencil-generated',
     }),
   ],

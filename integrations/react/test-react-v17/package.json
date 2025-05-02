@@ -15,6 +15,7 @@
 	},
 	"dependencies": {
 		"@trimble-oss/moduswebcomponents-react": "file:../v17",
+    "@trimble-oss/moduswebcomponents": "file:../../../dist",
 		"react": "^17.0",
 		"react-dom": "^17.0"
 	},
