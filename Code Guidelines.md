@@ -32,16 +32,24 @@ modus-wc-2.0/
 │   ├── providers/
 │   │   ├── theme/
 │   │   │   ├── theme-provider.tsx
+│   │   │   ├── theme.store.ts
 │   │   │   ├── theme.types.ts
 │   ├── styles/
+│   │   ├──global.scss
+│   │   ├──mixins.scss
+│   │   ├──tailwind-themable.css
+│   │   ├──tailwind.css
+│   │   ├──variables.scss
 │   │   ├── themes/
 │   │   │   ├── common.ts
 │   │   │   ├── modus-classic.ts
 │   │   │   ├── modus-modern.ts
 │   ├── stories/
-│   │   ├── custom-styling.mdx
+│   │   ├── form-inputs.mdx
 │   │   ├── getting-started.mdx
 │   │   ├── modus-icon-usage.mdx
+│   │   ├──styling.mdx
+│   │   ├──testing.mdx
 │   │   ├── frameworks/
 │   │   │   ├── angular.mdx
 │   │   │   ├── react.mdx
