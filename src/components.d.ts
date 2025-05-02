@@ -723,21 +723,43 @@ export namespace Components {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
+     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcNavbar {
+        /**
+          * The open state of the apps menu.
+         */
+        "appsMenuOpen"?: boolean;
         /**
           * Applies condensed layout and styling.
          */
         "condensed"?: boolean;
         /**
+          * The open state of the condensed menu.
+         */
+        "condensedMenuOpen"?: boolean;
+        /**
           * Custom CSS class to apply to the host element.
          */
         "customClass"?: string;
         /**
+          * The open state of the main menu.
+         */
+        "mainMenuOpen"?: boolean;
+        /**
+          * The open state of the notifications menu.
+         */
+        "notificationsMenuOpen"?: boolean;
+        /**
           * Debounce time in milliseconds for search input changes. Default is 300ms.
          */
         "searchDebounceMs"?: number;
+        /**
+          * The open state of the search input.
+         */
+        "searchInputOpen"?: boolean;
         /**
           * Text replacements for the navbar.
          */
@@ -745,7 +767,11 @@ export namespace Components {
         /**
           * User information used to render the user card.
          */
-        "user": INavbarUserCard;
+        "userCard": INavbarUserCard;
+        /**
+          * The open state of the user menu.
+         */
+        "userMenuOpen"?: boolean;
         /**
           * The visibility of individual navbar buttons. Default is user profile visible, others hidden.
          */
@@ -1123,6 +1149,52 @@ export namespace Components {
         "steps": IStepperItem[];
     }
     /**
+     * A customizable checkbox component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcSwitch {
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the switch.
+         */
+        "disabled"?: boolean;
+        /**
+          * The indeterminate state of the switch.
+         */
+        "indeterminate": boolean;
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * The tabindex of the input.
+         */
+        "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: ModusSize;
+        /**
+          * The value of the switch.
+         */
+        "value": boolean;
+    }
+    /**
      * A customizable table component used to show a list of data in a table format.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1494,52 +1566,6 @@ export namespace Components {
         "position"?: ToastPosition;
     }
     /**
-     * A customizable checkbox component.
-     * Adheres to WCAG 2.2 standards.
-     */
-    interface ModusWcToggle {
-        /**
-          * Custom CSS class to apply to the inner div.
-         */
-        "customClass"?: string;
-        /**
-          * The disabled state of the toggle.
-         */
-        "disabled"?: boolean;
-        /**
-          * The indeterminate state of the toggle.
-         */
-        "indeterminate": boolean;
-        /**
-          * The ID of the input element.
-         */
-        "inputId"?: string;
-        /**
-          * The tabindex of the input.
-         */
-        "inputTabIndex"?: number;
-        /**
-          * The text to display within the label.
-         */
-        "label"?: string;
-        /**
-          * Name of the form control. Submitted with the form as part of a name/value pair.
-         */
-        "name"?: string;
-        /**
-          * A value is required for the form to be submittable.
-         */
-        "required"?: boolean;
-        /**
-          * The size of the input.
-         */
-        "size"?: ModusSize;
-        /**
-          * The value of the toggle.
-         */
-        "value": boolean;
-    }
-    /**
      * A customizable toolbar component used to organize content across the entire page.
      * Adheres to WCAG 2.2 standards.
      */
@@ -1670,6 +1696,10 @@ export interface ModusWcSliderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSliderElement;
 }
+export interface ModusWcSwitchCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcSwitchElement;
+}
 export interface ModusWcTableCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTableElement;
@@ -1693,10 +1723,6 @@ export interface ModusWcThemeSwitcherCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcTimeInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTimeInputElement;
-}
-export interface ModusWcToggleCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLModusWcToggleElement;
 }
 declare global {
     interface HTMLModusWcAccordionElementEventMap {
@@ -2033,16 +2059,24 @@ declare global {
     };
     interface HTMLModusWcNavbarElementEventMap {
         "appsClick": MouseEvent | KeyboardEvent;
+        "appsMenuOpenChange": boolean;
+        "condensedMenuOpenChange": boolean;
         "helpClick": MouseEvent | KeyboardEvent;
+        "mainMenuOpenChange": boolean;
         "myTrimbleClick": MouseEvent | KeyboardEvent;
         "notificationsClick": MouseEvent | KeyboardEvent;
+        "notificationsMenuOpenChange": boolean;
         "searchChange": { value: string };
         "searchClick": MouseEvent | KeyboardEvent;
+        "searchInputOpenChange": boolean;
         "signOutClick": MouseEvent | KeyboardEvent;
         "trimbleLogoClick": MouseEvent | KeyboardEvent;
+        "userMenuOpenChange": boolean;
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
+     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
      * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcNavbarElement extends Components.ModusWcNavbar, HTMLStencilElement {
@@ -2224,6 +2258,29 @@ declare global {
         prototype: HTMLModusWcStepperElement;
         new (): HTMLModusWcStepperElement;
     };
+    interface HTMLModusWcSwitchElementEventMap {
+        "inputBlur": FocusEvent;
+        "inputChange": InputEvent;
+        "inputFocus": FocusEvent;
+    }
+    /**
+     * A customizable checkbox component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcSwitchElement extends Components.ModusWcSwitch, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcSwitchElementEventMap>(type: K, listener: (this: HTMLModusWcSwitchElement, ev: ModusWcSwitchCustomEvent<HTMLModusWcSwitchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcSwitchElementEventMap>(type: K, listener: (this: HTMLModusWcSwitchElement, ev: ModusWcSwitchCustomEvent<HTMLModusWcSwitchElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcSwitchElement: {
+        prototype: HTMLModusWcSwitchElement;
+        new (): HTMLModusWcSwitchElement;
+    };
     interface HTMLModusWcTableElementEventMap {
         "rowClick": {
     row: Record<string, any>;
@@ -2380,29 +2437,6 @@ declare global {
         prototype: HTMLModusWcToastElement;
         new (): HTMLModusWcToastElement;
     };
-    interface HTMLModusWcToggleElementEventMap {
-        "inputBlur": FocusEvent;
-        "inputChange": InputEvent;
-        "inputFocus": FocusEvent;
-    }
-    /**
-     * A customizable checkbox component.
-     * Adheres to WCAG 2.2 standards.
-     */
-    interface HTMLModusWcToggleElement extends Components.ModusWcToggle, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLModusWcToggleElementEventMap>(type: K, listener: (this: HTMLModusWcToggleElement, ev: ModusWcToggleCustomEvent<HTMLModusWcToggleElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLModusWcToggleElementEventMap>(type: K, listener: (this: HTMLModusWcToggleElement, ev: ModusWcToggleCustomEvent<HTMLModusWcToggleElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLModusWcToggleElement: {
-        prototype: HTMLModusWcToggleElement;
-        new (): HTMLModusWcToggleElement;
-    };
     /**
      * A customizable toolbar component used to organize content across the entire page.
      * Adheres to WCAG 2.2 standards.
@@ -2464,6 +2498,7 @@ declare global {
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
         "modus-wc-stepper": HTMLModusWcStepperElement;
+        "modus-wc-switch": HTMLModusWcSwitchElement;
         "modus-wc-table": HTMLModusWcTableElement;
         "modus-wc-tabs": HTMLModusWcTabsElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
@@ -2472,7 +2507,6 @@ declare global {
         "modus-wc-theme-switcher": HTMLModusWcThemeSwitcherElement;
         "modus-wc-time-input": HTMLModusWcTimeInputElement;
         "modus-wc-toast": HTMLModusWcToastElement;
-        "modus-wc-toggle": HTMLModusWcToggleElement;
         "modus-wc-toolbar": HTMLModusWcToolbarElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
@@ -3243,25 +3277,55 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
+     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
      * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcNavbar {
+        /**
+          * The open state of the apps menu.
+         */
+        "appsMenuOpen"?: boolean;
         /**
           * Applies condensed layout and styling.
          */
         "condensed"?: boolean;
         /**
+          * The open state of the condensed menu.
+         */
+        "condensedMenuOpen"?: boolean;
+        /**
           * Custom CSS class to apply to the host element.
          */
         "customClass"?: string;
+        /**
+          * The open state of the main menu.
+         */
+        "mainMenuOpen"?: boolean;
+        /**
+          * The open state of the notifications menu.
+         */
+        "notificationsMenuOpen"?: boolean;
         /**
           * Event emitted when the apps button is clicked or activated via keyboard.
          */
         "onAppsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * Event emitted when the apps menu open state changes.
+         */
+        "onAppsMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
+          * Event emitted when the condensed menu open state changes.
+         */
+        "onCondensedMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
           * Event emitted when the help button is clicked or activated via keyboard.
          */
         "onHelpClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the main menu open state changes.
+         */
+        "onMainMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
         /**
           * Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard.
          */
@@ -3271,6 +3335,10 @@ declare namespace LocalJSX {
          */
         "onNotificationsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * Event emitted when the notifications menu open state changes.
+         */
+        "onNotificationsMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
           * Event emitted when the search input value is changed.
          */
         "onSearchChange"?: (event: ModusWcNavbarCustomEvent<{ value: string }>) => void;
@@ -3278,6 +3346,10 @@ declare namespace LocalJSX {
           * Event emitted when the search button is clicked or activated via keyboard.
          */
         "onSearchClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the search input open state changes.
+         */
+        "onSearchInputOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
         /**
           * Event emitted when the user profile sign out button is clicked or activated via keyboard.
          */
@@ -3287,9 +3359,17 @@ declare namespace LocalJSX {
          */
         "onTrimbleLogoClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * Event emitted when the user menu open state changes.
+         */
+        "onUserMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
           * Debounce time in milliseconds for search input changes. Default is 300ms.
          */
         "searchDebounceMs"?: number;
+        /**
+          * The open state of the search input.
+         */
+        "searchInputOpen"?: boolean;
         /**
           * Text replacements for the navbar.
          */
@@ -3297,7 +3377,11 @@ declare namespace LocalJSX {
         /**
           * User information used to render the user card.
          */
-        "user": INavbarUserCard;
+        "userCard": INavbarUserCard;
+        /**
+          * The open state of the user menu.
+         */
+        "userMenuOpen"?: boolean;
         /**
           * The visibility of individual navbar buttons. Default is user profile visible, others hidden.
          */
@@ -3731,6 +3815,64 @@ declare namespace LocalJSX {
         "steps"?: IStepperItem[];
     }
     /**
+     * A customizable checkbox component.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface ModusWcSwitch {
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the switch.
+         */
+        "disabled"?: boolean;
+        /**
+          * The indeterminate state of the switch.
+         */
+        "indeterminate"?: boolean;
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * The tabindex of the input.
+         */
+        "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Emitted when the input loses focus.
+         */
+        "onInputBlur"?: (event: ModusWcSwitchCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the input value changes.
+         */
+        "onInputChange"?: (event: ModusWcSwitchCustomEvent<InputEvent>) => void;
+        /**
+          * Emitted when the input gains focus.
+         */
+        "onInputFocus"?: (event: ModusWcSwitchCustomEvent<FocusEvent>) => void;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: ModusSize;
+        /**
+          * The value of the switch.
+         */
+        "value"?: boolean;
+    }
+    /**
      * A customizable table component used to show a list of data in a table format.
      * Adheres to WCAG 2.2 standards.
      */
@@ -4156,64 +4298,6 @@ declare namespace LocalJSX {
         "position"?: ToastPosition;
     }
     /**
-     * A customizable checkbox component.
-     * Adheres to WCAG 2.2 standards.
-     */
-    interface ModusWcToggle {
-        /**
-          * Custom CSS class to apply to the inner div.
-         */
-        "customClass"?: string;
-        /**
-          * The disabled state of the toggle.
-         */
-        "disabled"?: boolean;
-        /**
-          * The indeterminate state of the toggle.
-         */
-        "indeterminate"?: boolean;
-        /**
-          * The ID of the input element.
-         */
-        "inputId"?: string;
-        /**
-          * The tabindex of the input.
-         */
-        "inputTabIndex"?: number;
-        /**
-          * The text to display within the label.
-         */
-        "label"?: string;
-        /**
-          * Name of the form control. Submitted with the form as part of a name/value pair.
-         */
-        "name"?: string;
-        /**
-          * Emitted when the input loses focus.
-         */
-        "onInputBlur"?: (event: ModusWcToggleCustomEvent<FocusEvent>) => void;
-        /**
-          * Emitted when the input value changes.
-         */
-        "onInputChange"?: (event: ModusWcToggleCustomEvent<InputEvent>) => void;
-        /**
-          * Emitted when the input gains focus.
-         */
-        "onInputFocus"?: (event: ModusWcToggleCustomEvent<FocusEvent>) => void;
-        /**
-          * A value is required for the form to be submittable.
-         */
-        "required"?: boolean;
-        /**
-          * The size of the input.
-         */
-        "size"?: ModusSize;
-        /**
-          * The value of the toggle.
-         */
-        "value"?: boolean;
-    }
-    /**
      * A customizable toolbar component used to organize content across the entire page.
      * Adheres to WCAG 2.2 standards.
      */
@@ -4306,6 +4390,7 @@ declare namespace LocalJSX {
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
         "modus-wc-stepper": ModusWcStepper;
+        "modus-wc-switch": ModusWcSwitch;
         "modus-wc-table": ModusWcTable;
         "modus-wc-tabs": ModusWcTabs;
         "modus-wc-text-input": ModusWcTextInput;
@@ -4314,7 +4399,6 @@ declare namespace LocalJSX {
         "modus-wc-theme-switcher": ModusWcThemeSwitcher;
         "modus-wc-time-input": ModusWcTimeInput;
         "modus-wc-toast": ModusWcToast;
-        "modus-wc-toggle": ModusWcToggle;
         "modus-wc-toolbar": ModusWcToolbar;
         "modus-wc-tooltip": ModusWcTooltip;
         "modus-wc-typography": ModusWcTypography;
@@ -4436,6 +4520,8 @@ declare module "@stencil/core" {
             "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
             /**
              * A customizable navbar component used for top level navigation of all Trimble applications.
+             * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+             * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-navbar": LocalJSX.ModusWcNavbar & JSXBase.HTMLAttributes<HTMLModusWcNavbarElement>;
@@ -4486,6 +4572,11 @@ declare module "@stencil/core" {
              */
             "modus-wc-stepper": LocalJSX.ModusWcStepper & JSXBase.HTMLAttributes<HTMLModusWcStepperElement>;
             /**
+             * A customizable checkbox component.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-switch": LocalJSX.ModusWcSwitch & JSXBase.HTMLAttributes<HTMLModusWcSwitchElement>;
+            /**
              * A customizable table component used to show a list of data in a table format.
              * Adheres to WCAG 2.2 standards.
              */
@@ -4523,11 +4614,6 @@ declare module "@stencil/core" {
              * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-toast": LocalJSX.ModusWcToast & JSXBase.HTMLAttributes<HTMLModusWcToastElement>;
-            /**
-             * A customizable checkbox component.
-             * Adheres to WCAG 2.2 standards.
-             */
-            "modus-wc-toggle": LocalJSX.ModusWcToggle & JSXBase.HTMLAttributes<HTMLModusWcToggleElement>;
             /**
              * A customizable toolbar component used to organize content across the entire page.
              * Adheres to WCAG 2.2 standards.

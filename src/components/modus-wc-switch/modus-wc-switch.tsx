@@ -7,7 +7,7 @@ import {
   Prop,
   Event as StencilEvent,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-toggle.tailwind';
+import { convertPropsToClasses } from './modus-wc-switch.tailwind';
 import { DAISY_TO_MODUS_LABEL_SIZE } from '../constants';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
@@ -18,11 +18,11 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  * Adheres to WCAG 2.2 standards.
  */
 @Component({
-  tag: 'modus-wc-toggle',
-  styleUrl: 'modus-wc-toggle.scss',
+  tag: 'modus-wc-switch',
+  styleUrl: 'modus-wc-switch.scss',
   shadow: false,
 })
-export class ModusWcToggle {
+export class ModusWcSwitch {
   private inheritedAttributes: Attributes = {};
 
   /** Reference to the host element */
@@ -31,10 +31,10 @@ export class ModusWcToggle {
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
-  /** The disabled state of the toggle. */
+  /** The disabled state of the switch. */
   @Prop() disabled?: boolean = false;
 
-  /** The indeterminate state of the toggle. */
+  /** The indeterminate state of the switch. */
   @Prop({ reflect: true, mutable: true }) indeterminate: boolean = false;
 
   /** The ID of the input element. */
@@ -55,7 +55,7 @@ export class ModusWcToggle {
   /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
 
-  /** The value of the toggle. */
+  /** The value of the switch. */
   @Prop({ mutable: true, reflect: true }) value: boolean = false;
 
   /** Emitted when the input loses focus. */
@@ -79,7 +79,7 @@ export class ModusWcToggle {
 
   componentWillLoad() {
     if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Toggle button';
+      this.el.ariaLabel = 'Switch button';
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -112,7 +112,7 @@ export class ModusWcToggle {
     const labelSize = this.size && DAISY_TO_MODUS_LABEL_SIZE[this.size];
 
     return (
-      <Host class="modus-wc-toggle-host">
+      <Host class="modus-wc-switch-host">
         <input
           aria-checked={this.indeterminate ? 'mixed' : this.value}
           aria-disabled={this.disabled}
