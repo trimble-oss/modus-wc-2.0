@@ -62,7 +62,6 @@ The `Publish & Release` workflow will handle the following steps:
   - Publish the `@trimble-oss/moduswebcomponents-react` package to the npm registry.
 - Create GitHub releases for all three packages.
 
-
 ## Notes
 
 For reference, we publish from inside of the `dist` folder in order to publish [flatly](https://davidwells.io/blog/publishing-flat-npm-packages-for-easier-import-paths-smaller-consumer-bundle-sizes).
