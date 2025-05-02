@@ -36,15 +36,14 @@
   "type": "module",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
-  "es2015": "dist/esm/index.js",
   "es2017": "dist/esm/index.js",
   "esnext": "dist/esm/index.js",
-  "jsnext:main": "dist/esm/index.js",
-  "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/modus-wc/modus-wc.esm.js",
   "jsdelivr": "dist/modus-wc/modus-wc.js",
+  "types": "dist/types/components.d.ts",
+  "modus-wc-styles.css": "dist/modus-wc-styles.css",
   "files": [
     "dist/",
     "loader/"
@@ -56,8 +55,7 @@
     "lint": "wireit",
     "lint:eslint": "wireit",
     "lint:prettier": "wireit",
-    "lint:stylelint": "stylelint \"src/**/*.scss\"",
-    "lint:stylelint-fix": "stylelint \"src/**/*.scss\" --fix",
+    "lint:stylelint": "wireit",
     "format": "wireit",
     "prettier": "prettier --write \"src/**/*.*\"",
     "start": "wireit",
@@ -106,7 +104,7 @@
     "tailwindcss": "^3.4.14",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.2",
-    "wireit": "^0.14.9"
+    "wireit": "^0.14.12"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.9.5",
@@ -136,7 +134,8 @@
     "format": {
       "dependencies": [
         "format:prettier",
-        "format:eslint"
+        "format:eslint",
+        "format:stylelint"
       ]
     },
     "format:eslint": {
@@ -149,10 +148,21 @@
         "!src/components.d.ts"
       ]
     },
+    "format:stylelint": {
+      "command": "stylelint \"src/**/*.scss\" --fix",
+      "clean": false,
+      "files": [
+        "src/**/*.scss"
+      ],
+      "output": [
+        "src/**/*.scss"
+      ]
+    },
     "lint": {
       "dependencies": [
         "lint:eslint",
-        "lint:prettier"
+        "lint:prettier",
+        "lint:stylelint"
       ]
     },
     "lint:eslint": {
@@ -168,6 +178,16 @@
       "output": [
         "*.{ts,tsx,js,jsx,css,scss,json,md,mdx,html}",
         "!src/components.d.ts"
+      ]
+    },
+    "lint:stylelint": {
+      "command": "stylelint \"src/**/*.scss\"",
+      "clean": false,
+      "files": [
+        "src/**/*.scss"
+      ],
+      "output": [
+        "src/**/*.scss"
       ]
     },
     "start": {
@@ -246,7 +266,9 @@
       "command": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --minify",
       "files": [
         "src/**/*.scss",
+        "src/styles/global.css",
         "src/styles/tailwind.css",
+        "src/styles/variables.css",
         "tailwind.config.js"
       ],
       "output": [
@@ -258,7 +280,9 @@
       "service": true,
       "files": [
         "src/**/*.scss",
+        "src/styles/global.css",
         "src/styles/tailwind.css",
+        "src/styles/variables.css",
         "tailwind.config.js"
       ]
     }

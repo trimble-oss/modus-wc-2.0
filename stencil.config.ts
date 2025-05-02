@@ -5,12 +5,11 @@ import { sass } from '@stencil/sass';
 import angularValueAccessorBindings from './angular-value-accessor-bindings';
 import tailwind, {
   setPluginConfigurationDefaults,
-  tailwindGlobal,
 } from 'stencil-tailwind-plugin';
 import tailwindConfig from './tailwind.config';
 
 const tailwindOpts = {
-  debug: true,
+  // enableDebug: true,
   minify: false,
   stripComments: true,
   tailwindConf: tailwindConfig,
@@ -32,6 +31,11 @@ export const config: Config = {
       // Required for the React integration
       type: 'dist-custom-elements',
       externalRuntime: false,
+      // > We recommend publishing components as unoptimized JavaScript modules and performing build-time optimizations at the application level.
+      // > This gives build tools the best chance to deduplicate code, remove dead code, and so on.
+      // minify: true,
+      isPrimaryPackageOutputTarget: true,
+      copy: [{ src: './styles/output.css', dest: 'dist/modus-wc-styles.css' }],
     },
     {
       type: 'docs-readme',
@@ -69,15 +73,15 @@ export const config: Config = {
   ],
   plugins: [
     sass({
-      injectGlobalPaths: ['src/styles/global.scss', 'src/styles/output.css'],
+      // **Absolutely do not** add any CSS code here, only include Sass variables/mixins/etc.
+      // This gets injected into the inline styles for every component, for every generated target.
+      injectGlobalPaths: ['src/styles/mixins.scss'],
     }),
-    tailwindGlobal(),
     tailwind(),
   ],
   devServer: {
     reloadStrategy: 'hmr',
   },
-  buildEs5: 'prod',
   extras: {
     enableImportInjection: true,
   },

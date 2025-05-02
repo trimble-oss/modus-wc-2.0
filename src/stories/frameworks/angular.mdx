@@ -31,7 +31,15 @@ Ensure that you specify the target version of Angular for the `modus-wc-angular`
 npm install @trimble-oss/moduswebcomponents @trimble-oss/moduswebcomponents-angular@<latest-version>-ng<target-version>
 ```
 
-### 2. Import Modus Angular Web Components library into your Angular app's module:
+### 2. Set up the styling:
+
+You will need to import our styling in your main JavaScript or CSS file:
+
+```js
+import '@trimble-oss/moduswebcomponents/dist/modus-wc-styles.css';
+```
+
+### 3. Import Modus Angular Web Components library into your Angular app's module:
 
 ```ts
 // app.module.ts
@@ -45,7 +53,7 @@ import { ModusAngularComponentsModule } from '@trimble-oss/moduswebcomponents-an
 export class AppModule {}
 ```
 
-### 3. Use Modus Angular Web Components while leveraging Angular template binding syntax:
+### 4. Use Modus Angular Web Components while leveraging Angular template binding syntax:
 
 ```ts
 // app.component.html
@@ -70,7 +78,15 @@ Ensure that you specify the target version of Angular for the `modus-wc-angular`
 npm install @trimble-oss/moduswebcomponents @trimble-oss/moduswebcomponents-angular@<latest-version>-ng<target-version>
 ```
 
-### 2. Import your component library into your component.
+### 2. Set up the styling:
+
+You will need to import our styling in your main JavaScript or CSS file:
+
+```js
+import '@trimble-oss/moduswebcomponents/dist/modus-wc-styles.css';
+```
+
+### 3. Import your component library into your component.
 
 You must distribute your components through a primary `NgModule` to use your components in a standalone component.
 
@@ -88,7 +104,7 @@ import { ModusAngularComponentsModule } from '@trimble-oss/moduswebcomponents-an
 export class AppComponent {}
 ```
 
-### 3. Use Modus Angular Web Components while leveraging Angular template binding syntax:
+### 4. Use Modus Angular Web Components while leveraging Angular template binding syntax:
 
 ```ts
 // app.component.html

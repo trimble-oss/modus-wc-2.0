@@ -17,7 +17,15 @@ npm install @trimble-oss/moduswebcomponents
 
 ## Usage
 
-### 1. Set the theme:
+### 1. Set up the styling:
+
+You will need to import our styling in your main JavaScript or CSS file:
+
+```js
+import '@trimble-oss/moduswebcomponents/dist/modus-wc-styles.css';
+```
+
+### 2. Set the theme:
 
 The theme can be set manually or by using the `ThemeSwitcher` component. See the "Use a Theme" section of [Styling](/docs/documentation-styling--docs) for guidance.
 
@@ -28,7 +36,7 @@ Available themes are:
 - `modus-modern-light` (default)
 - `modus-modern-dark`
 
-### 2. Register custom elements:
+### 3. Register custom elements:
 
 ```javascript
 import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
@@ -41,7 +49,7 @@ const Root = () => {
 };
 ```
 
-### 3. Use the components:
+### 4. Use the components:
 
 ```javascript
 // Use in HTML
@@ -74,8 +82,6 @@ const handleEvent = (e: ModusWcSelectCustomEvent<ISelectOption>) => {}
 - ### [Angular](?path=/docs/documentation-frameworks-angular--docs)
 
 - ### [React](?path=/docs/documentation-frameworks-react--docs)
-
-- ### [Vue]()
 
 ---
 
