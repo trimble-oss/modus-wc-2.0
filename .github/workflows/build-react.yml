@@ -56,6 +56,7 @@ jobs:
 
       - name: Pack modus-webcomponents-react
         id: npm_pack_react
+        working-directory: integrations/react/v${{ matrix.react-version }}
         run: |
           modus_wc_react_tarball=$(npm pack --pack-destination integrations/react/test-react-v${{ matrix.react-version }} | tail -n 1)
           echo "modus_wc_react_tarball=${modus_wc_react_tarball}" >> $GITHUB_OUTPUT
