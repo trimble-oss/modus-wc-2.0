@@ -22,36 +22,12 @@
 modus-wc-2.0/
 ├── src/
 │   ├── components/
-│   │   ├── atoms/
 │   │   │   ├── modus-wc-avatar/
 │   │   │   │   ├── modus-wc-avatar.tsx
 │   │   │   │   ├── modus-wc-avatar.scss
 │   │   │   │   ├── modus-wc-avatar.spec.ts
 │   │   │   │   ├── modus-wc-avatar.stories.ts
 │   │   │   │   ├── modus-wc-avatar.tailwind.ts
-│   │   │   │   ├── readme.md
-│   │   │   ├── modus-wc-button/
-│   │   │   │   ├── modus-wc-button.tsx
-│   │   │   │   ├── modus-wc-button.scss
-│   │   │   │   ├── modus-wc-button.spec.ts
-│   │   │   │   ├── modus-wc-button.stories.ts
-│   │   │   │   ├── modus-wc-button.tailwind.ts
-│   │   │   │   ├── readme.md
-│   │   ├── molecules/
-│   │   │   ├── modus-wc-accordion/
-│   │   │   │   ├── modus-wc-accordion.tsx
-│   │   │   │   ├── modus-wc-accordion.scss
-│   │   │   │   ├── modus-wc-accordion.spec.ts
-│   │   │   │   ├── modus-wc-accordion.stories.ts
-│   │   │   │   ├── modus-wc-accordion.tailwind.ts
-│   │   │   │   ├── readme.md
-│   │   ├── organisms/
-│   │   │   ├── modus-wc-table/
-│   │   │   │   ├── modus-wc-table.tsx
-│   │   │   │   ├── modus-wc-table.css
-│   │   │   │   ├── modus-wc-table.spec.ts
-│   │   │   │   ├── modus-wc-table.stories.ts
-│   │   │   │   ├── modus-wc-table.tailwind.ts
 │   │   │   │   ├── readme.md
 │   ├── providers/
 │   │   ├── theme/
@@ -85,15 +61,13 @@ modus-wc-2.0/
 
    - Each component should be self-contained with its own HTML, CSS, and JS/TS files.
    - Use meaningful and descriptive names for components and their files.
-   - Organize components in a hierarchical folder structure that reflects their relationships and dependencies.
 
 2. **File Naming Conventions**:
 
    - Use kebab-case for file names (e.g., `modus-wc-text-input.ts`).
    - Ensure file names are descriptive of their content and purpose.
 
-3. **Component Registration**:
-   - Register custom elements using the `customElements.define` method.
+3. **Component Naming Conventions**:
    - Ensure the tag name follows the pattern `modus-wc-*` for consistency.
 
 #### Coding Standards
@@ -102,13 +76,15 @@ modus-wc-2.0/
 
    - Prefer TypeScript over JavaScript for type safety and better tooling support.
    - Define types and interfaces for component properties and events.
+   - Add component type on naming interfaces but full names are not needed to be included. (e.g., `ISelectOption` (not as `IModusWcSelectOption`))
 
 2. **Property Definitions**:
 
    - Use the `@Prop` decorator to define component properties.
    - Provide default values for properties where applicable.
    - Use appropriate types for properties (e.g., `string`, `boolean`, `number`).
-   - Use `!` for defining important in props. (e.g., `@Prop() alt!: string`)
+   - Use `!` for defining required props. (e.g., `@Prop() alt!: string`)
+   - Use `?` for defining required props. (e.g., `@Prop() alt?: string`)
 
 3. **Event Emission**:
 
@@ -118,10 +94,9 @@ modus-wc-2.0/
 
 4. **CSS Styling**:
 
-   - Use scoped CSS to avoid conflicts with other components.
    - Use CSS variables for styling (eg. `--modus-wc-color-green-dark`). If a CSS value is being repeated, consider creating a new CSS variable or set of them(eg. `--modus-wc-font-size-xs`).
-   - Follow a consistent naming convention for CSS classes (e.g., `modus-wc-text-input__label`).
-   - Use DaisyUI classes whenever possible via tailwind typescripts (e.g, `modus-wc-avatar.tailwind.ts`).
+   - Follow a consistent naming convention for CSS classes (e.g., `modus-wc-text-input-label`).
+   - Dynamically added DaisyUI and Tailwind classes are added in their own files (e.g, `modus-wc-avatar.tailwind.ts`)
    - Use `&:hover {}` in the theme block instead of `:hover` pseudo-class where applicable.
    - Use `margin-inline-start` and `margin-inline-end` instead of `margin-left` and `margin-right` for better compatibility with bidirectional (LTR/RTL) layouts.
 
@@ -134,7 +109,7 @@ modus-wc-2.0/
 6. **Error Handling**:
 
    - Implement proper error handling in components and functions. Use try-catch blocks where necessary and provide meaningful error messages.
-   - Ensure that errors are logged appropriately for debugging purposes.
+   - Ensure that errors are logged appropriately for debugging purposes (but avoid frivolous logging).
 
 7. **Accesibility**
 
@@ -150,13 +125,14 @@ modus-wc-2.0/
 1. **Commit Messages**:
 
    - Write clear and concise commit messages.
-   - Use the imperative mood in commit messages (e.g., "Add {new-feature}", "Fix {bug}").
+   - Use the semantic mood in commit messages (e.g., "feature: Add {new-feature}" and "Fix {bug}").
    - Do not commit unused imports.
 
 2. **Pull Requests**:
 
    - Provide a clear description of the changes and the rationale behind them for each and every PR.
    - Clarify in detail on the review comments promptly and update the pull request accordingly with the fix.
+   - Fill all the items in the PR template on creating PRs
 
 3. **Code Reviews**:
 
@@ -211,14 +187,12 @@ modus-wc-2.0/
    - Aim for 100% code coverage, but prioritize meaningful tests over coverage percentage.
    - Update test cases to cover the code changes for each component.
 
-4. **End-to-End Testing**:
-
-   - Write end-to-end tests for critical user flows to ensure the respective component or feature works as expected.
-
-5. **Continuous Integration**:
+4. **Continuous Integration**:
    - Ensure continuous integration (CI) pipelines which run tests and checks on each commit and pull request to be succesful.
 
 #### Documentation and Comments
+
+- NOTE: The storybook creates its information using the auto documentation feature; in order to produce accurate information, inline comments must be provided.
 
 1. **Component Documentation**:
 
@@ -237,7 +211,7 @@ modus-wc-2.0/
 
 3. **README Files**:
 
-   - Each component should have a `readme.md` file that provides an overview of the component, its properties, events, and usage examples.
+   - Each component should have an auto-generated `readme.md` file that provides an overview of the component, its properties, events, and usage examples.
    - Ensure the documentation is clear and concise, making it easy for developers to understand how to use the component.
 
 4. **API Documentation**:
@@ -252,45 +226,7 @@ modus-wc-2.0/
 
 ### Example Code Snippet
 
-````typescript
-import { Component, Prop, Event, EventEmitter, h } from '@stencil/core';
-
-@Component({
-  tag: 'modus-wc-text-input',
-  styleUrl: 'modus-wc-text-input.css',
-  shadow: true,
-})
-export class ModusWcTextInput {
-  @Prop() label: string;
-  @Prop() placeholder: string;
-  @Prop() value: string;
-  @Prop() disabled: boolean = false;
-
-  @Event() inputChange: EventEmitter<string>;
-
-```typescript
-  handleInputChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.inputChange.emit(input.value);
-  }
-
-  render() {
-    return (
-      <div class="modus-wc-text-input">
-        {this.label && <label class="modus-wc-text-input__label">{this.label}</label>}
-        <input
-          class="modus-wc-text-input__input"
-          type="text"
-          placeholder={this.placeholder}
-          value={this.value}
-          disabled={this.disabled}
-          onInput={(event) => this.handleInputChange(event)}
-        />
-      </div>
-    );
-  }
-}
-````
+[ModusWcButton](https://github.com/trimble-oss/modus-wc-2.0/blob/main/src/components/modus-wc-button/modus-wc-button.tsx)
 
 ## Contribution Guidelines
 
