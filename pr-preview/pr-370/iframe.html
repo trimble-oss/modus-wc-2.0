@@ -516,6 +516,15 @@
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1.16.0/dist/modus-outlined/fonts/modus-icons.css"
 />
+<script>
+  // Determine if we're running locally or deployed
+  const isLocal = window.location.hostname.includes('localhost');
+  const cssPath = isLocal ? '../src/styles/output.css' : 'public/output.css';
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = cssPath;
+  document.head.appendChild(link);
+</script>
 <style>
   @font-face {
     font-family: 'Nunito Sans';
@@ -589,7 +598,7 @@
   }
 </style>
 
-    <script type="module" crossorigin src="./assets/iframe-Disr90FX.js"></script>
+    <script type="module" crossorigin src="./assets/iframe-DUhLts_W.js"></script>
   </head>
 
   <body>
