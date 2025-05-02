@@ -119,10 +119,6 @@ jobs:
       matrix:
         react-version: [17, 18, 19]
 
-    defaults:
-      run:
-        working-directory: integrations/react/v${{ matrix.react-version }}
-
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
