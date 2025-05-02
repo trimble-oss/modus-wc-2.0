@@ -12,7 +12,7 @@ The components in this library were programmatically generated using the [Stenci
 - You will need to import our styling in your main JavaScript or CSS file:
 
   ```js
-  import "@trimble-oss/moduswebcomponents/dist/modus-wc-styles.css";
+  import "@trimble-oss/moduswebcomponents/modus-wc-styles.css";
   ```
 
 - Add the following snippet to your `main.ts` (or any main module)

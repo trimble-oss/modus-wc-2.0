@@ -34,24 +34,19 @@
     "url": "git+https://github.com/trimble-oss/modus-wc-2.0.git"
   },
   "type": "module",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.js",
-  "es2017": "dist/esm/index.js",
-  "esnext": "dist/esm/index.js",
-  "collection": "dist/collection/collection-manifest.json",
-  "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/modus-wc/modus-wc.esm.js",
-  "jsdelivr": "dist/modus-wc/modus-wc.js",
-  "types": "dist/types/components.d.ts",
-  "modus-wc-styles.css": "dist/modus-wc-styles.css",
-  "files": [
-    "dist/",
-    "loader/"
-  ],
+  "main": "index.cjs.js",
+  "module": "index.js",
+  "es2017": "esm/index.js",
+  "esnext": "esm/index.js",
+  "collection": "collection/collection-manifest.json",
+  "collection:main": "collection/index.js",
+  "unpkg": "modus-wc/modus-wc.esm.js",
+  "jsdelivr": "modus-wc/modus-wc.js",
+  "types": "types/components.d.ts",
   "scripts": {
     "build": "wireit",
     "build:ci": "wireit",
-    "clean": "npx rimraf .wireit .stencil .storybook-static dist loader",
+    "clean": "npx rimraf .wireit .stencil .storybook-static dist",
     "lint": "wireit",
     "lint:eslint": "wireit",
     "lint:prettier": "wireit",
@@ -212,7 +207,6 @@
       "output": [
         "src/components.d.ts",
         "dist/**",
-        "loader/**",
         "integrations/react/stencil-generated/**",
         "integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
         "integrations/angular/ng17/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
@@ -249,7 +243,6 @@
         "src/",
         ".storybook",
         "dist/",
-        "loader/",
         "stencil.config.ts"
       ],
       "output": [

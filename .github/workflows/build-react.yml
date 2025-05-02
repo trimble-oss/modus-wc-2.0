@@ -34,8 +34,9 @@ jobs:
 
       - name: Pack modus-webcomponents
         id: npm_pack
+        working-directory: dist
         run: |
-          modus_wc_tarball=$(npm pack --pack-destination integrations/react/v${{ matrix.react-version }} | tail -n 1)
+          modus_wc_tarball=$(npm pack --pack-destination ../integrations/react/v${{ matrix.react-version }} | tail -n 1)
           echo "modus_wc_tarball=${modus_wc_tarball}" >> $GITHUB_OUTPUT
 
       - name: Install dependencies for react build
@@ -55,9 +56,13 @@ jobs:
 
       - name: Pack modus-webcomponents-react
         id: npm_pack_react
+        working-directory: integrations/react/v${{ matrix.react-version }}/dist
         run: |
-          modus_wc_react_tarball=$(npm pack --pack-destination integrations/react/test-react-v${{ matrix.react-version }} | tail -n 1)
+          modus_wc_react_tarball=$(npm pack --pack-destination ../../test-react-v${{ matrix.react-version }} | tail -n 1)
           echo "modus_wc_react_tarball=${modus_wc_react_tarball}" >> $GITHUB_OUTPUT
+
+      - name: Copy modus-webcomponents tarball to test app directory (relative resolution)
+        run: cp integrations/react/v${{ matrix.react-version }}/${{ steps.npm_pack.outputs.modus_wc_tarball }} integrations/react/test-react-v${{ matrix.react-version }}/
 
       - name: Install Dependencies for Test React App
         run: npm ci

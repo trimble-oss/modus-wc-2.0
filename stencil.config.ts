@@ -21,11 +21,13 @@ setPluginConfigurationDefaults(tailwindOpts);
 export const config: Config = {
   namespace: 'modus-wc',
   sourceMap: false,
+  validatePrimaryPackageOutputTarget: true,
   outputTargets: [
     {
       // Required for the Angular integration
+      // Could potentially switch https://stenciljs.com/docs/angular#do-i-have-to-use-the-dist-output-target
       type: 'dist',
-      esmLoaderPath: '../loader',
+      esmLoaderPath: '../dist/loader',
     },
     {
       // Required for the React integration
@@ -35,13 +37,20 @@ export const config: Config = {
       // > This gives build tools the best chance to deduplicate code, remove dead code, and so on.
       // minify: true,
       isPrimaryPackageOutputTarget: true,
-      copy: [{ src: './styles/output.css', dest: 'dist/modus-wc-styles.css' }],
+      copy: [
+        // This is scoped to /src
+        { src: './styles/output.css', dest: 'dist/modus-wc-styles.css' },
+        { src: '../README.md', dest: 'dist/README.md' },
+        { src: '../LICENSE', dest: 'dist/LICENSE' },
+        { src: '../package.json', dest: 'dist/package.json' },
+      ],
     },
     {
       type: 'docs-readme',
     },
     angularOutputTarget({
       componentCorePackage: '@trimble-oss/moduswebcomponents',
+      customElementsDir: 'components',
       outputType: 'component',
       directivesProxyFile:
         './integrations/angular/ng17/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
@@ -51,6 +60,7 @@ export const config: Config = {
     }),
     angularOutputTarget({
       componentCorePackage: '@trimble-oss/moduswebcomponents',
+      customElementsDir: 'components',
       outputType: 'component',
       directivesProxyFile:
         './integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
@@ -60,6 +70,7 @@ export const config: Config = {
     }),
     angularOutputTarget({
       componentCorePackage: '@trimble-oss/moduswebcomponents',
+      customElementsDir: 'components',
       outputType: 'component',
       directivesProxyFile:
         './integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
@@ -68,6 +79,7 @@ export const config: Config = {
       valueAccessorConfigs: angularValueAccessorBindings,
     }),
     reactOutputTarget({
+      customElementsDir: 'components',
       outDir: './integrations/react/stencil-generated',
     }),
   ],

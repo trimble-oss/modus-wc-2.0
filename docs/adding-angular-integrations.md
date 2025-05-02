@@ -158,7 +158,7 @@ npm install @trimble-oss/moduswebcomponents
 You will need to import our styling in your main JavaScript or CSS file:
 
 ```js
-import '@trimble-oss/moduswebcomponents/dist/modus-wc-styles.css';
+import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
 ```
 
 You may need to edit the build script in the angular workspace (`ng18/`) to specifically target the `projects/trimble-oss/moduswebcomponents-angular` component library.

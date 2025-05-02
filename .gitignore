@@ -7,10 +7,11 @@ node_modules/
 # Build output
 dist/
 www/
-loader/
 storybook-static/
 .wireit/
 src/styles/output.css
+# built npm packages
+*.tgz
 
 # Stencil
 .stencil/
@@ -27,3 +28,4 @@ coverage/
 
 # Logs
 *.log
+
