@@ -21,9 +21,6 @@
   "main": "index.js",
   "module": "index.js",
   "types": "types/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "prebuild": "npm run symlink",
     "build": "npm run clean && npm run tsc && npm run copy-css && npm run copy-meta",
