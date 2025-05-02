@@ -16,7 +16,7 @@ npm install @trimble-oss/moduswebcomponents-react@1.0.0-react18
 Import our styling in your main JavaScript or CSS file:
 
 ```javascript
-import "@trimble-oss/moduswebcomponents/dist/modus-wc-styles.css";
+import "@trimble-oss/moduswebcomponents/modus-wc-styles.css";
 ```
 
 ## Example Usage

@@ -7,7 +7,6 @@ node_modules/
 # Build output
 dist/
 www/
-loader/
 storybook-static/
 .wireit/
 src/styles/output.css
