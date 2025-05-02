@@ -61,3 +61,14 @@ The `Publish & Release` workflow will handle the following steps:
   - Build the `@trimble-oss/moduswebcomponents-react` package.
   - Publish the `@trimble-oss/moduswebcomponents-react` package to the npm registry.
 - Create GitHub releases for all three packages.
+
+
+## Notes
+
+For reference, we publish from inside of the `dist` folder in order to publish [flatly](https://davidwells.io/blog/publishing-flat-npm-packages-for-easier-import-paths-smaller-consumer-bundle-sizes).
+
+This means if you're using tools like `npm pack` or `npm publish`, you'll need to that from inside `dist` as well.
+
+This lets us make imports like `import "@trimble-oss/moduswebcomponents/dist/modus-wc-styles.css";` not contain the `dist/` in the import path.
+
+We set the customElementsDir on the output targets to `components` to achieve this.
