@@ -50,9 +50,8 @@ jobs:
       - name: Set npm Registry Auth Token
         run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
 
-      - run: cd dist
-
       - name: Pack the package
+        working-directory: dist
         run: npm pack
         id: npm_pack
 
@@ -60,15 +59,18 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: npm-tarball
-          path: '*.tgz'
+          path: 'dist/*.tgz'
 
       - name: Publish npm Package Publicly
+        working-directory: dist
         run: npm publish
 
       - name: Set GitHub Registry Auth Token
+        working-directory: dist
         run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish npm Package to GitHub Registry
+        working-directory: dist
         run: npm publish --access public --ignore-scripts --@trimble-oss:registry='https://npm.pkg.github.com'
         # TODO: remove once we configure this repo's permissions
         continue-on-error: true

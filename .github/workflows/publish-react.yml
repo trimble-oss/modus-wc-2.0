@@ -84,27 +84,30 @@ jobs:
       - name: Build distribution
         run: npm run build
 
-      - run: cd dist
-
       - name: Package distribution
+        working-directory: integrations/react/v${{ matrix.react-version }}/dist
         run: npm pack
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: react-${{ matrix.react-version }}-distribution-v${{ github.event.inputs.version }}-react${{ matrix.react-version }}
-          path: '**/*.tgz'
+          path: 'integrations/react/v${{ matrix.react-version }}/dist/*.tgz'
 
       - name: Set npm Registry Auth Token
+        working-directory: integrations/react/v${{ matrix.react-version }}/dist
         run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
 
       - name: Publish distribution
+        working-directory: integrations/react/v${{ matrix.react-version }}/dist
         run: npm publish
 
       - name: Set GitHub Registry Auth Token
+        working-directory: integrations/react/v${{ matrix.react-version }}/dist
         run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish npm Package to GitHub Registry
+        working-directory: integrations/react/v${{ matrix.react-version }}/dist
         run: npm publish --access public --ignore-scripts --@trimble-oss:registry='https://npm.pkg.github.com'
         # TODO: remove once we configure this repo's permissions
         continue-on-error: true
