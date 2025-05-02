@@ -14,8 +14,7 @@
     "preview": "npm run build && vite preview --open"
   },
   "dependencies": {
-    "@trimble-oss/moduswebcomponents-react": "file:../v19",
-    "@trimble-oss/moduswebcomponents": "file:../../../dist",
+    "@trimble-oss/moduswebcomponents-react": "file:../v19/dist",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

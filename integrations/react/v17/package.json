@@ -9,6 +9,7 @@
     "@trimble-oss/moduswebcomponents": "0.0.0-alpha.1"
   },
   "devDependencies": {
+    "copyfiles": "^2.4.1",
     "rimraf": "^6.0.1",
     "symlink-dir": "^6.0.3",
     "typescript": "^5.6.3"
@@ -17,18 +18,20 @@
     "react": "^17.0",
     "react-dom": "^17.0"
   },
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/types/index.d.ts",
+  "main": "index.js",
+  "module": "index.js",
+  "types": "types/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
     "prebuild": "npm run symlink",
-    "build": "npm run clean && npm run tsc",
+    "build": "npm run clean && npm run tsc && npm run copy-css && npm run copy-meta",
     "clean": "rimraf dist",
     "tsc": "tsc -p . --outDir ./dist",
-    "symlink": "symlink-dir ../stencil-generated/ src/stencil-generated/"
+    "symlink": "symlink-dir ../stencil-generated/ src/stencil-generated/",
+    "copy-css": "copyfiles -f node_modules/@trimble-oss/moduswebcomponents/modus-wc-styles.css dist",
+    "copy-meta": "copyfiles -f README.md package.json dist"
   },
   "sideEffects": false,
   "publishConfig": {

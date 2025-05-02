@@ -10,6 +10,8 @@ www/
 storybook-static/
 .wireit/
 src/styles/output.css
+# built npm packages
+*.tgz
 
 # Stencil
 .stencil/
@@ -26,3 +28,4 @@ coverage/
 
 # Logs
 *.log
+
