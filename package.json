@@ -202,7 +202,8 @@
         "src/custom-elements.json",
         "!src/components.d.ts",
         "stencil.config.ts",
-        "tsconfig.json"
+        "tsconfig.json",
+        "package.json"
       ],
       "output": [
         "src/components.d.ts",
@@ -229,7 +230,8 @@
         "src/custom-elements.json",
         "!src/components.d.ts",
         "stencil.config.ts",
-        "tsconfig.json"
+        "tsconfig.json",
+        "package.json"
       ]
     },
     "storybook:build": {
