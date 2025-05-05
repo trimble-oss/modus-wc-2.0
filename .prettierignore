@@ -1,5 +1,4 @@
 dist
-loader
 integrations
 src/**/*.d.ts
 src/custom-elements.json

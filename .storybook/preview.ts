@@ -4,7 +4,7 @@ import { themes } from '@storybook/theming';
 import type { Preview } from '@storybook/web-components';
 import { setCustomElementsManifest } from '@storybook/web-components';
 import { createElement } from 'react';
-import { defineCustomElements } from '../loader';
+import { defineCustomElements } from '../dist/loader';
 import customElements from '../src/custom-elements.json';
 import a11yConfig from './a11yConfig';
 

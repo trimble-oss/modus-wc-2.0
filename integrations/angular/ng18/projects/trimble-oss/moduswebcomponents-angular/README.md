@@ -9,6 +9,12 @@ The components in this library were programmatically generated using the [Stenci
 - Install the Modus Angular Components Library and its Modus Web Component peer dependency
   `npm install @trimble-oss/moduswebcomponents @trimble-oss/moduswebcomponents-angular`
 
+- You will need to import our styling in your main JavaScript or CSS file:
+
+  ```js
+  import "@trimble-oss/moduswebcomponents/modus-wc-styles.css";
+  ```
+
 - Add the following snippet to your `main.ts` (or any main module)
 
   ```typescript
