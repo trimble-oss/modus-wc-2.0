@@ -66,6 +66,12 @@ export class ModusWcPagination {
   /** The current page number */
   @Prop() page: number = 1;
 
+  /** Text for the previous button */
+  @Prop() prevButtonText?: string;
+
+  /** Text for the next button */
+  @Prop() nextButtonText?: string;
+
   /** Size of the pagination buttons */
   @Prop() size: ModusSize = 'md';
 
@@ -166,11 +172,15 @@ export class ModusWcPagination {
 
         <button
           aria-label={ariaLabels.previousPage}
-          class={buttonClasses}
+          class={`${buttonClasses} ${this.prevButtonText ? 'modus-wc-pagination-button-text' : ''}`}
           disabled={isFirstPage}
           onClick={() => this.handlePageClick(this.page - 1)}
         >
-          <ChevronLeftSolidIcon className="modus-wc-pagination-icon" />
+          {this.prevButtonText ? (
+            <span>{this.prevButtonText}</span>
+          ) : (
+            <ChevronLeftSolidIcon className="modus-wc-pagination-icon" />
+          )}
         </button>
 
         {this.visiblePages.map((page) => (
@@ -186,11 +196,15 @@ export class ModusWcPagination {
 
         <button
           aria-label={ariaLabels.nextPage}
-          class={buttonClasses}
+          class={`${buttonClasses} ${this.nextButtonText ? 'modus-wc-pagination-button-text' : ''}`}
           disabled={isLastPage}
           onClick={() => this.handlePageClick(this.page + 1)}
         >
-          <ChevronRightSolidIcon className="modus-wc-pagination-icon" />
+          {this.nextButtonText ? (
+            <span>{this.nextButtonText}</span>
+          ) : (
+            <ChevronRightSolidIcon className="modus-wc-pagination-icon" />
+          )}
         </button>
 
         {shouldShowFirstLastButtons && (

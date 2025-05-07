@@ -881,9 +881,17 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * Text for the next button
+         */
+        "nextButtonText"?: string;
+        /**
           * The current page number
          */
         "page": number;
+        /**
+          * Text for the previous button
+         */
+        "prevButtonText"?: string;
         /**
           * Size of the pagination buttons
          */
@@ -3503,6 +3511,10 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
+          * Text for the next button
+         */
+        "nextButtonText"?: string;
+        /**
           * Event emitted when page changes
          */
         "onPageChange"?: (event: ModusWcPaginationCustomEvent<IPageChange>) => void;
@@ -3510,6 +3522,10 @@ declare namespace LocalJSX {
           * The current page number
          */
         "page"?: number;
+        /**
+          * Text for the previous button
+         */
+        "prevButtonText"?: string;
         /**
           * Size of the pagination buttons
          */

@@ -18,6 +18,8 @@ interface PaginationArgs {
   'custom-class'?: string;
   page: number;
   size?: 'sm' | 'md' | 'lg';
+  'prev-button-text'?: string;
+  'next-button-text'?: string;
 }
 
 const meta: Meta<PaginationArgs> = {
@@ -29,6 +31,8 @@ const meta: Meta<PaginationArgs> = {
     'custom-class': '',
     page: 1,
     size: 'md',
+    'prev-button-text': '',
+    'next-button-text': '',
   },
   argTypes: {
     'aria-label-values': {
@@ -90,6 +94,8 @@ export const Default: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       page=${args.page}
       size=${ifDefined(args.size)}
+      prev-button-text="${ifDefined(args['prev-button-text'])}"
+      next-button-text="${ifDefined(args['next-button-text'])}"
     ></modus-wc-pagination>
   `,
 };
@@ -117,8 +123,6 @@ export const Migration: Story = {
 | aria-label            | aria-label         |                                                             |
 | max-page              | count              |                                                             |
 | min-page              |                    | Not carried over, minimum page is always 1                  |
-| next-page-button-text |                    | Not carried over                                            |
-| prev-page-button-text |                    | Not carried over                                            |
 | size                  | size               | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
 
 #### Event Mapping

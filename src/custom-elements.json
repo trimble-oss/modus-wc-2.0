@@ -2887,7 +2887,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Pagination component to navigate through pages of content.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "Pagination component to navigate through pages of content.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcPagination",
           "members": [
             {
@@ -2935,12 +2935,28 @@
               }
             },
             {
+              "name": "next-button-text",
+              "fieldName": "nextButtonText",
+              "description": "Text for the next button",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "page",
               "fieldName": "page",
               "default": "1",
               "description": "The current page number",
               "type": {
                 "text": "number"
+              }
+            },
+            {
+              "name": "prev-button-text",
+              "fieldName": "prevButtonText",
+              "description": "Text for the previous button",
+              "type": {
+                "text": "string"
               }
             },
             {
