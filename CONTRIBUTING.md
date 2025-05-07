@@ -1,5 +1,6 @@
 # Contributing
 
+- Adhere to the Guidelines [CODE-GUIDE.md](https://github.com/trimble-oss/modus-wc-2.0/blob/main/CODE-GUIDE.md) while contributing.
 ---
 
 ## Table of Contents
