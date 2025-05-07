@@ -123,6 +123,8 @@ export const Migration: Story = {
 | aria-label            | aria-label         |                                                             |
 | max-page              | count              |                                                             |
 | min-page              |                    | Not carried over, minimum page is always 1                  |
+| next-page-button-text | next-button-text   |                                                             |
+| prev-page-button-text | prev-button-text   |                                                             |
 | size                  | size               | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
 
 #### Event Mapping

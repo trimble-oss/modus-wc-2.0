@@ -63,14 +63,14 @@ export class ModusWcPagination {
   /** Custom CSS class to apply */
   @Prop() customClass?: string = '';
 
+  /** The next page button text. If not set, an icon control will be used. */
+  @Prop() nextButtonText?: string;
+
   /** The current page number */
   @Prop() page: number = 1;
 
-  /** Text for the previous button */
+  /** The previous page button text. If not set, an icon control will be used. */
   @Prop() prevButtonText?: string;
-
-  /** Text for the next button */
-  @Prop() nextButtonText?: string;
 
   /** Size of the pagination buttons */
   @Prop() size: ModusSize = 'md';

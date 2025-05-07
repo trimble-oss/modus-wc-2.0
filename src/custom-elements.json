@@ -2937,7 +2937,7 @@
             {
               "name": "next-button-text",
               "fieldName": "nextButtonText",
-              "description": "Text for the next button",
+              "description": "The next page button text. If not set, an icon control will be used.",
               "type": {
                 "text": "string"
               }
@@ -2954,7 +2954,7 @@
             {
               "name": "prev-button-text",
               "fieldName": "prevButtonText",
-              "description": "Text for the previous button",
+              "description": "The previous page button text. If not set, an icon control will be used.",
               "type": {
                 "text": "string"
               }

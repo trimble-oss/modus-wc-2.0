@@ -881,7 +881,7 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
-          * Text for the next button
+          * The next page button text. If not set, an icon control will be used.
          */
         "nextButtonText"?: string;
         /**
@@ -889,7 +889,7 @@ export namespace Components {
          */
         "page": number;
         /**
-          * Text for the previous button
+          * The previous page button text. If not set, an icon control will be used.
          */
         "prevButtonText"?: string;
         /**
@@ -3511,7 +3511,7 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * Text for the next button
+          * The next page button text. If not set, an icon control will be used.
          */
         "nextButtonText"?: string;
         /**
@@ -3523,7 +3523,7 @@ declare namespace LocalJSX {
          */
         "page"?: number;
         /**
-          * Text for the previous button
+          * The previous page button text. If not set, an icon control will be used.
          */
         "prevButtonText"?: string;
         /**

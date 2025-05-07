@@ -35,7 +35,7 @@ modus-wc-pagination .modus-wc-pagination {
   }
 
   .modus-wc-pagination-button-text {
-    padding: 0 var(--modus-wc-spacing-xs) !important;
+    padding: calc(var(--modus-wc-spacing-sm) - 2px) !important;
     width: auto !important;
   }
 

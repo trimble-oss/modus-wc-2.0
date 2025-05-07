@@ -13,15 +13,15 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property          | Attribute           | Description                              | Type                            | Default     |
-| ----------------- | ------------------- | ---------------------------------------- | ------------------------------- | ----------- |
-| `ariaLabelValues` | `aria-label-values` | Aria label values for pagination buttons | `IAriaLabelValues \| undefined` | `undefined` |
-| `count`           | `count`             | Total number of pages                    | `number`                        | `1`         |
-| `customClass`     | `custom-class`      | Custom CSS class to apply                | `string \| undefined`           | `''`        |
-| `nextButtonText`  | `next-button-text`  | Text for the next button                 | `string \| undefined`           | `undefined` |
-| `page`            | `page`              | The current page number                  | `number`                        | `1`         |
-| `prevButtonText`  | `prev-button-text`  | Text for the previous button             | `string \| undefined`           | `undefined` |
-| `size`            | `size`              | Size of the pagination buttons           | `"lg" \| "md" \| "sm"`          | `'md'`      |
+| Property          | Attribute           | Description                                                              | Type                            | Default     |
+| ----------------- | ------------------- | ------------------------------------------------------------------------ | ------------------------------- | ----------- |
+| `ariaLabelValues` | `aria-label-values` | Aria label values for pagination buttons                                 | `IAriaLabelValues \| undefined` | `undefined` |
+| `count`           | `count`             | Total number of pages                                                    | `number`                        | `1`         |
+| `customClass`     | `custom-class`      | Custom CSS class to apply                                                | `string \| undefined`           | `''`        |
+| `nextButtonText`  | `next-button-text`  | The next page button text. If not set, an icon control will be used.     | `string \| undefined`           | `undefined` |
+| `page`            | `page`              | The current page number                                                  | `number`                        | `1`         |
+| `prevButtonText`  | `prev-button-text`  | The previous page button text. If not set, an icon control will be used. | `string \| undefined`           | `undefined` |
+| `size`            | `size`              | Size of the pagination buttons                                           | `"lg" \| "md" \| "sm"`          | `'md'`      |
 
 
 ## Events
