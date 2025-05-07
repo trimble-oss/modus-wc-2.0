@@ -1,111 +1,413 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
-import { html } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { html } from 'lit-html';
 import { ITableColumn } from './modus-wc-table';
 import { Density } from '../types';
 
-const defaultColumns: ITableColumn[] = [
-  {
-    id: 'name',
-    header: 'Name',
-    accessor: 'name',
-    width: '200px',
-  },
-  {
-    id: 'email',
-    header: 'Email',
-    accessor: 'email',
-  },
-  {
-    id: 'status',
-    header: 'Status',
-    accessor: 'status',
-    cellRenderer: (value) => {
-      const isActive = value.toLowerCase() === 'active';
-      const badge = document.createElement('modus-wc-badge');
-      badge.color = isActive ? 'success' : 'danger';
-      const div = document.createElement('div');
-      div.textContent = value;
-      badge.appendChild(div);
-      return badge;
-    },
-  },
-];
+// Placeholder for readme import - this will be properly generated
+// at build time by Stencil
+const readme = {
+  toString: () => 'Modus Table Component Documentation',
+};
 
-const defaultData = [
-  { name: 'John Smith', email: 'john.smith@example.com', status: 'Active' },
-  { name: 'Jane Doe', email: 'jane.doe@example.com', status: 'Inactive' },
-  { name: 'Bob Johnson', email: 'bob.johnson@example.com', status: 'Active' },
-];
-
-interface TableArgs {
-  columns: ITableColumn[];
-  'custom-class'?: string;
-  data: Record<string, any>[];
+interface TableStoryArgs {
+  columns?: ITableColumn[];
+  data?: Record<string, any>[];
   density?: Density;
   zebra?: boolean;
+  hover?: boolean;
+  sortable?: boolean;
+  paginated?: boolean;
+  pageSize?: number;
+  showPageSizeSelector?: boolean;
+  customClass?: string;
 }
 
-const meta: Meta<TableArgs> = {
+const meta: Meta<TableStoryArgs> = {
   title: 'Components/Table',
   component: 'modus-wc-table',
-  args: {
-    columns: defaultColumns,
-    data: defaultData,
-    density: 'comfortable',
-    zebra: false,
-  },
-  argTypes: {
-    columns: {
-      description: 'Array of column definitions for the table',
-      table: {
-        type: {
-          detail: `
-            Interface: ITableColumn
-            Properties:
-            - accessor (string): Key to access data from row object
-            - cellRenderer ((value: any, row: any) => string | HTMLElement, optional): Custom cell renderer
-            - className (string, optional): Class names for the column
-            - header (string | HTMLElement): Header content - can be string or HTML
-            - id (string): Unique identifier for the column
-            - width (string, optional): Width style (e.g., '200px', '50%')
-        `,
-        },
+  parameters: {
+    docs: {
+      description: {
+        component: readme.toString(),
       },
     },
-    density: {
-      control: { type: 'select' },
-      options: ['comfortable', 'compact'],
-    },
   },
-  decorators: [withActions],
-  parameters: {
-    actions: {
-      handles: ['rowClick'],
+  argTypes: {
+    columns: { control: 'object' },
+    data: { control: 'object' },
+    density: {
+      control: {
+        type: 'select',
+        options: ['condensed', 'comfortable', 'spacious'],
+      },
     },
+    zebra: { control: 'boolean' },
+    hover: { control: 'boolean' },
+    sortable: { control: 'boolean' },
+    paginated: { control: 'boolean' },
+    pageSize: { control: 'number' },
+    showPageSizeSelector: { control: 'boolean' },
+    customClass: { control: 'text' },
   },
 };
 
 export default meta;
+type Story = StoryObj<TableStoryArgs>;
 
-type Story = StoryObj<TableArgs>;
+// Create basic demo data
+const createDemoData = (numRows = 5): Record<string, any>[] => {
+  const data: Record<string, any>[] = [];
+  for (let i = 1; i <= numRows; i++) {
+    data.push({
+      id: i.toString(),
+      firstName: `First ${i}`,
+      lastName: `Last ${i}`,
+      email: `user${i}@example.com`,
+      status: i % 3 === 0 ? 'Active' : i % 3 === 1 ? 'Inactive' : 'Pending',
+      dateJoined: new Date(2022, 0, i).toLocaleDateString(),
+    });
+  }
+  return data;
+};
 
-const Template: Story = {
+const createDemoColumns = (): ITableColumn[] => {
+  return [
+    {
+      id: 'id',
+      header: 'ID',
+      accessor: 'id',
+      width: '80px',
+      sortable: false,
+    },
+    {
+      id: 'firstName',
+      header: 'First Name',
+      accessor: 'firstName',
+      sortable: false,
+    },
+    {
+      id: 'lastName',
+      header: 'Last Name',
+      accessor: 'lastName',
+      sortable: false,
+    },
+    {
+      id: 'email',
+      header: 'Email',
+      accessor: 'email',
+      sortable: false,
+    },
+    {
+      id: 'status',
+      header: 'Status',
+      accessor: 'status',
+      sortable: false,
+      cellRenderer: (value) => {
+        const statusColors = {
+          Active: 'green',
+          Inactive: 'gray',
+          Pending: 'blue',
+        };
+        const color = statusColors[value] || 'black';
+        const span = document.createElement('span');
+        span.textContent = value;
+        span.style.color = color;
+        span.style.fontWeight = 'bold';
+        return span;
+      },
+    },
+    {
+      id: 'dateJoined',
+      header: 'Date Joined',
+      accessor: 'dateJoined',
+      sortable: false,
+    },
+  ];
+};
+
+// Create sortable columns for demo
+const createSortableColumns = (): ITableColumn[] => {
+  return [
+    {
+      id: 'id',
+      header: 'ID',
+      accessor: 'id',
+      width: '80px',
+      sortable: true,
+    },
+    {
+      id: 'firstName',
+      header: 'First Name',
+      accessor: 'firstName',
+      sortable: true,
+    },
+    {
+      id: 'lastName',
+      header: 'Last Name',
+      accessor: 'lastName',
+      sortable: true,
+    },
+    {
+      id: 'email',
+      header: 'Email',
+      accessor: 'email',
+      sortable: true,
+    },
+    {
+      id: 'status',
+      header: 'Status',
+      accessor: 'status',
+      sortable: true,
+      cellRenderer: (value) => {
+        const statusColors = {
+          Active: 'green',
+          Inactive: 'gray',
+          Pending: 'blue',
+        };
+        const color = statusColors[value] || 'black';
+        const span = document.createElement('span');
+        span.textContent = value;
+        span.style.color = color;
+        span.style.fontWeight = 'bold';
+        return span;
+      },
+    },
+    {
+      id: 'dateJoined',
+      header: 'Date Joined',
+      accessor: 'dateJoined',
+      sortable: true,
+    },
+  ];
+};
+
+export const Default: Story = {
   render: (args) => {
+    const columns = args.columns || createDemoColumns();
+    const data = args.data || createDemoData();
     return html`
-      <modus-wc-table
-        aria-label="User data"
-        .columns=${args.columns}
-        custom-class=${ifDefined(args['custom-class'])}
-        .data=${args.data}
-        density=${ifDefined(args.density)}
-        ?zebra=${args.zebra}
-      />
+      <div style="padding: 1rem">
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          .density=${args.density}
+          .zebra=${args.zebra}
+          .hover=${args.hover}
+          .sortable=${args.sortable}
+          .customClass=${args.customClass}
+          @rowClick=${(e) => console.log('Row clicked:', e.detail)}
+          @sortChange=${(e) => console.log('Sort changed:', e.detail)}
+        ></modus-wc-table>
+      </div>
+    `;
+  },
+  args: {
+    density: 'comfortable',
+    zebra: false,
+    hover: true,
+    sortable: false,
+    customClass: '',
+  },
+};
+
+export const WithHover: Story = {
+  render: (args) => {
+    const columns = args.columns || createDemoColumns();
+    const data = args.data || createDemoData(15);
+    return html`
+      <div style="padding: 1rem">
+        <p>Hover over rows to see the hover effect.</p>
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          .density=${args.density}
+          .zebra=${args.zebra}
+          .hover=${args.hover}
+          @rowClick=${(e) => console.log('Row clicked:', e.detail)}
+        ></modus-wc-table>
+      </div>
+    `;
+  },
+  args: {
+    density: 'comfortable',
+    zebra: false,
+    hover: true,
+  },
+};
+
+export const WithoutHover: Story = {
+  render: (args) => {
+    const columns = args.columns || createDemoColumns();
+    const data = args.data || createDemoData(15);
+    return html`
+      <div style="padding: 1rem">
+        <p>Hover effect is disabled for this table.</p>
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          .density=${args.density}
+          .zebra=${args.zebra}
+          .hover=${args.hover}
+          @rowClick=${(e) => console.log('Row clicked:', e.detail)}
+        ></modus-wc-table>
+      </div>
+    `;
+  },
+  args: {
+    density: 'comfortable',
+    zebra: false,
+    hover: false,
+  },
+};
+
+export const WithSorting: Story = {
+  render: (args) => {
+    const columns = args.columns || createSortableColumns();
+    const data = args.data || createDemoData(15);
+    return html`
+      <div style="padding: 1rem">
+        <p>
+          Click on column headers to sort. Click again to toggle between
+          ascending and descending order.
+        </p>
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          .density=${args.density}
+          .zebra=${args.zebra}
+          .hover=${args.hover}
+          .sortable=${args.sortable}
+          @rowClick=${(e) => console.log('Row clicked:', e.detail)}
+          @sortChange=${(e) => console.log('Sort changed:', e.detail)}
+        ></modus-wc-table>
+      </div>
+    `;
+  },
+  args: {
+    density: 'comfortable',
+    zebra: false,
+    hover: true,
+    sortable: true,
+  },
+};
+
+export const ZebraStriped: Story = {
+  render: (args) => {
+    const columns = args.columns || createDemoColumns();
+    const data = args.data || createDemoData();
+    return html`
+      <div style="padding: 1rem">
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          .zebra=${true}
+          .hover=${args.hover}
+          .sortable=${args.sortable}
+          .density=${args.density}
+          @rowClick=${(e) => console.log('Row clicked:', e.detail)}
+          @sortChange=${(e) => console.log('Sort changed:', e.detail)}
+        ></modus-wc-table>
+      </div>
+    `;
+  },
+  args: {
+    density: 'comfortable',
+    hover: true,
+    sortable: false,
+  },
+};
+
+export const WithPagination: Story = {
+  render: (args) => {
+    const columns = args.columns || createDemoColumns();
+    const data = args.data || createDemoData(100); // Create 100 rows for pagination demo
+    return html`
+      <div style="padding: 1rem">
+        <p>Table with pagination using modus-wc-pagination component.</p>
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          .density=${args.density}
+          .zebra=${args.zebra}
+          .hover=${args.hover}
+          .sortable=${args.sortable}
+          .paginated=${args.paginated}
+          .pageSize=${args.pageSize}
+          .showPageSizeSelector=${args.showPageSizeSelector}
+          @rowClick=${(e) => console.log('Row clicked:', e.detail)}
+          @sortChange=${(e) => console.log('Sort changed:', e.detail)}
+          @paginationChange=${(e) =>
+            console.log('Pagination changed:', e.detail)}
+        ></modus-wc-table>
+      </div>
+    `;
+  },
+  args: {
+    density: 'comfortable',
+    zebra: true,
+    hover: true,
+    sortable: false,
+    paginated: true,
+    pageSize: 5,
+    showPageSizeSelector: true,
+  },
+};
+
+export const DensityVariants: Story = {
+  render: () => {
+    const columns = createDemoColumns();
+    const data = createDemoData(5);
+    return html`
+      <div style="padding: 1rem">
+        <h3>Condensed</h3>
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          .density=${'condensed'}
+        ></modus-wc-table>
+
+        <h3 style="margin-top: 2rem">Comfortable (Default)</h3>
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          .density=${'comfortable'}
+        ></modus-wc-table>
+
+        <h3 style="margin-top: 2rem">Spacious</h3>
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          .density=${'spacious'}
+        ></modus-wc-table>
+      </div>
     `;
   },
 };
 
-export const Default: Story = { ...Template };
+export const WithHoverEffect: Story = {
+  render: (args) => {
+    const columns = args.columns || createDemoColumns();
+    const data = args.data || createDemoData(10);
+    return html`
+      <div style="padding: 1rem">
+        <p>Hover over rows to see the highlight effect.</p>
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          .density=${args.density}
+          .zebra=${args.zebra}
+          .hover=${true}
+          .sortable=${args.sortable}
+          @rowClick=${(e) => console.log('Row clicked:', e.detail)}
+        ></modus-wc-table>
+      </div>
+    `;
+  },
+  args: {
+    density: 'comfortable',
+    zebra: false,
+    sortable: true,
+  },
+};

@@ -175,4 +175,121 @@ describe('modus-wc-table', () => {
       row: defaultData[0],
     });
   });
+
+  it('renders with default props', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  // it('renders with data and columns', async () => {
+  //   const columns = [
+  //     { id: 'name', accessor: 'name', header: 'Name' },
+  //     { id: 'age', accessor: 'age', header: 'Age' },
+  //   ];
+  //   const data = [
+  //     { name: 'John Doe', age: 30 },
+  //     { name: 'Jane Smith', age: 25 },
+  //   ];
+
+  //   const page = await newSpecPage({
+  //     components: [ModusWcTable],
+  //     html: `<modus-wc-table></modus-wc-table>`,
+  //   });
+
+  //   page.rootInstance.columns = columns;
+  //   page.rootInstance.data = data;
+  //   await page.waitForChanges();
+
+  //   expect(page.root).toMatchSnapshot();
+  //   const rows = page.root.querySelectorAll('tbody tr');
+  //   expect(rows.length).toBe(2);
+  // });
+
+  // it('handles row click events', async () => {
+  //   const columns = [{ id: 'name', accessor: 'name', header: 'Name' }];
+  //   const data = [{ name: 'John Doe' }, { name: 'Jane Smith' }];
+
+  //   const page = await newSpecPage({
+  //     components: [ModusWcTable],
+  //     html: `<modus-wc-table></modus-wc-table>`,
+  //   });
+
+  //   const rowClickSpy = jest.fn();
+  //   page.rootInstance.rowClick = {
+  //     emit: rowClickSpy,
+  //   };
+  //   page.rootInstance.columns = columns;
+  //   page.rootInstance.data = data;
+  //   await page.waitForChanges();
+
+  //   const firstRow = page.root.querySelector('tbody tr');
+  //   firstRow.click();
+
+  //   expect(rowClickSpy).toHaveBeenCalledWith({
+  //     row: data[0],
+  //     index: 0,
+  //   });
+  // });
+
+  // it('sorts data when clicking sortable column header', async () => {
+  //   const columns = [
+  //     { id: 'name', accessor: 'name', header: 'Name', sortable: true },
+  //     { id: 'age', accessor: 'age', header: 'Age', sortable: true },
+  //   ];
+  //   const data = [
+  //     { name: 'John Doe', age: 30 },
+  //     { name: 'Alice Smith', age: 25 },
+  //     { name: 'Bob Johnson', age: 35 },
+  //   ];
+
+  //   const page = await newSpecPage({
+  //     components: [ModusWcTable],
+  //     html: `<modus-wc-table></modus-wc-table>`,
+  //   });
+
+  //   const sortChangeSpy = jest.fn();
+  //   page.rootInstance.sortChange = {
+  //     emit: sortChangeSpy,
+  //   };
+  //   page.rootInstance.columns = columns;
+  //   page.rootInstance.data = data;
+  //   page.rootInstance.sortable = true;
+  //   await page.waitForChanges();
+
+  //   // Get the name column header
+  //   const nameHeader = page.root.querySelector('th');
+
+  //   // First click - ascending sort
+  //   nameHeader.click();
+  //   await page.waitForChanges();
+
+  //   // Check that sort was applied correctly (alphabetical order)
+  //   const firstSortedRows = page.root.querySelectorAll('tbody tr');
+  //   expect(firstSortedRows[0].textContent).toContain('Alice');
+  //   expect(firstSortedRows[1].textContent).toContain('Bob');
+  //   expect(firstSortedRows[2].textContent).toContain('John');
+
+  //   // Check that sortChange event was emitted
+  //   expect(sortChangeSpy).toHaveBeenCalledWith([{ id: 'name', desc: false }]);
+
+  //   // Second click - descending sort
+  //   nameHeader.click();
+  //   await page.waitForChanges();
+
+  //   // Check descending sort
+  //   const secondSortedRows = page.root.querySelectorAll('tbody tr');
+  //   expect(secondSortedRows[0].textContent).toContain('John');
+  //   expect(secondSortedRows[1].textContent).toContain('Bob');
+  //   expect(secondSortedRows[2].textContent).toContain('Alice');
+
+  //   // Third click - no sort
+  //   nameHeader.click();
+  //   await page.waitForChanges();
+
+  //   // Check that sort was cleared
+  //   expect(sortChangeSpy).toHaveBeenCalledWith([]);
+  // });
 });
