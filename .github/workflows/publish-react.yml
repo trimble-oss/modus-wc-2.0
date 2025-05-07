@@ -94,6 +94,8 @@ jobs:
           name: react-${{ matrix.react-version }}-distribution-v${{ github.event.inputs.version }}-react${{ matrix.react-version }}
           path: 'integrations/react/v${{ matrix.react-version }}/dist/*.tgz'
 
+      - run: rm integrations/react/v${{ matrix.react-version }}/dist/*.tgz
+
       - name: Set npm Registry Auth Token
         working-directory: integrations/react/v${{ matrix.react-version }}/dist
         run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
