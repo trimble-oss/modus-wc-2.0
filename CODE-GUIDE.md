@@ -94,7 +94,7 @@ modus-wc-2.0/
    - Provide default values for properties where applicable.
    - Use appropriate types for properties (e.g., `string`, `boolean`, `number`).
    - Use `!` for defining required props. (e.g., `@Prop() alt!: string`)
-   - Use `?` for defining required props. (e.g., `@Prop() alt?: string`)
+   - Use `?` for defining optional props. (e.g., `@Prop() alt?: string`)
 
 3. **Event Emission**:
 

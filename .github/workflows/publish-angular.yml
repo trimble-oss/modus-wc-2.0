@@ -52,19 +52,30 @@ jobs:
         run: npm ci
         working-directory: .
 
-      - name: Build Web Components
+      - name: Build Base Web Components
         run: npm run build:ci
         working-directory: .
+
+      - name: Pack Base Web Components
+        working-directory: ./dist
+        run: |
+          TARBALL=$(npm pack)
+          echo "TARBALL=${TARBALL}" >> $GITHUB_ENV
 
       - name: Update to use new WebComponent version
         run: |
           jq --arg version "${{ github.event.inputs.version }}" \
           '.dependencies["@trimble-oss/moduswebcomponents"] = $version' package.json > package.json.tmp && \
-          mv package.json.tmp package.json && npm i && \
+          mv package.json.tmp package.json && \
           cd projects/trimble-oss/moduswebcomponents-angular && \
           jq --arg version "${{ github.event.inputs.version }}" \
           '.peerDependencies["@trimble-oss/moduswebcomponents"] = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
+
+      - run: npm i
+
+      - name: Install local WebComponent dependency (for build)
+        run: npm install file:../../../dist/${TARBALL} --no-save
 
       - name: Update package.json version
         run: |

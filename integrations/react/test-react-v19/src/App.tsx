@@ -2,6 +2,7 @@ import {
 	ModusWcThemeProvider,
 	ModusWcThemeSwitcher,
 } from "@trimble-oss/moduswebcomponents-react";
+import "@trimble-oss/moduswebcomponents-react/modus-wc-styles.css";
 import * as ModusReactExamples from "./examples";
 import "./App.css";
 
