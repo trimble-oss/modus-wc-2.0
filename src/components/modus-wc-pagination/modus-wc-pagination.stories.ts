@@ -16,10 +16,10 @@ interface PaginationArgs {
   'aria-label-values'?: IAriaLabelValues;
   count: number;
   'custom-class'?: string;
-  page: number;
-  size?: 'sm' | 'md' | 'lg';
-  'prev-button-text'?: string;
   'next-button-text'?: string;
+  page: number;
+  'prev-button-text'?: string;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 const meta: Meta<PaginationArgs> = {
@@ -31,8 +31,6 @@ const meta: Meta<PaginationArgs> = {
     'custom-class': '',
     page: 1,
     size: 'md',
-    'prev-button-text': '',
-    'next-button-text': '',
   },
   argTypes: {
     'aria-label-values': {
@@ -92,10 +90,10 @@ export const Default: Story = {
       .ariaLabelValues=${args['aria-label-values']}
       count=${args.count}
       custom-class=${ifDefined(args['custom-class'])}
-      page=${args.page}
-      size=${ifDefined(args.size)}
-      prev-button-text="${ifDefined(args['prev-button-text'])}"
       next-button-text="${ifDefined(args['next-button-text'])}"
+      page=${args.page}
+      prev-button-text="${ifDefined(args['prev-button-text'])}"
+      size=${ifDefined(args.size)}
     ></modus-wc-pagination>
   `,
 };

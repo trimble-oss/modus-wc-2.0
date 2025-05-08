@@ -171,7 +171,7 @@ export class ModusWcPagination {
         )}
 
         <button
-          aria-label={ariaLabels.previousPage}
+          aria-label={this.prevButtonText ? undefined : ariaLabels.previousPage}
           class={`${buttonClasses} ${this.prevButtonText ? 'modus-wc-pagination-button-text' : ''}`}
           disabled={isFirstPage}
           onClick={() => this.handlePageClick(this.page - 1)}
@@ -195,7 +195,7 @@ export class ModusWcPagination {
         ))}
 
         <button
-          aria-label={ariaLabels.nextPage}
+          aria-label={this.nextButtonText ? undefined : ariaLabels.nextPage}
           class={`${buttonClasses} ${this.nextButtonText ? 'modus-wc-pagination-button-text' : ''}`}
           disabled={isLastPage}
           onClick={() => this.handlePageClick(this.page + 1)}
