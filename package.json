@@ -288,5 +288,8 @@
   "volta": {
     "node": "18.20.5"
   },
-  "customElements": "src/custom-elements.json"
+  "customElements": "src/custom-elements.json",
+  "dependencies": {
+    "@tanstack/table-core": "^8.21.3"
+  }
 }

@@ -5,29 +5,47 @@
 <!-- Auto Generated Below -->
 
 
-## Overview
-
-A customizable table component used to show a list of data in a table format.
-
-Adheres to WCAG 2.2 standards.
-
 ## Properties
 
-| Property               | Attribute      | Description                                                                        | Type                                      | Default         |
-| ---------------------- | -------------- | ---------------------------------------------------------------------------------- | ----------------------------------------- | --------------- |
-| `columns` _(required)_ | `columns`      | An array of column definitions.                                                    | `ITableColumn[]`                          | `undefined`     |
-| `customClass`          | `custom-class` | Custom CSS class to apply to the inner div.                                        | `string \| undefined`                     | `''`            |
-| `data` _(required)_    | `data`         | An array of data objects.                                                          | `Record<string, any>[]`                   | `undefined`     |
-| `density`              | `density`      | The density of the table, used to save space or increase readability.              | `"comfortable" \| "compact" \| undefined` | `'comfortable'` |
-| `zebra`                | `zebra`        | Zebra striped tables differentiate rows by styling them in an alternating fashion. | `boolean \| undefined`                    | `false`         |
+| Property               | Attribute                 | Description | Type                                      | Default                |
+| ---------------------- | ------------------------- | ----------- | ----------------------------------------- | ---------------------- |
+| `columns` _(required)_ | `columns`                 |             | `ITableColumn[]`                          | `undefined`            |
+| `currentPage`          | `current-page`            |             | `number`                                  | `1`                    |
+| `customClass`          | `custom-class`            |             | `string \| undefined`                     | `''`                   |
+| `data` _(required)_    | `data`                    |             | `Record<string, unknown>[]`               | `undefined`            |
+| `density`              | `density`                 |             | `"comfortable" \| "compact" \| undefined` | `'comfortable'`        |
+| `hover`                | `hover`                   |             | `boolean \| undefined`                    | `true`                 |
+| `pageSize`             | `page-size`               |             | `number`                                  | `10`                   |
+| `pageSizeOptions`      | `page-size-options`       |             | `number[]`                                | `[5, 10, 25, 50, 100]` |
+| `paginated`            | `paginated`               |             | `boolean \| undefined`                    | `false`                |
+| `showPageSizeSelector` | `show-page-size-selector` |             | `boolean \| undefined`                    | `true`                 |
+| `sortable`             | `sortable`                |             | `boolean \| undefined`                    | `true`                 |
+| `zebra`                | `zebra`                   |             | `boolean \| undefined`                    | `false`                |
 
 
 ## Events
 
-| Event      | Description                  | Type                                                        |
-| ---------- | ---------------------------- | ----------------------------------------------------------- |
-| `rowClick` | Emits when a row is clicked. | `CustomEvent<{ row: Record<string, any>; index: number; }>` |
+| Event              | Description | Type                                                            |
+| ------------------ | ----------- | --------------------------------------------------------------- |
+| `paginationChange` |             | `CustomEvent<IPaginationChangeEventDetail>`                     |
+| `rowClick`         |             | `CustomEvent<{ row: Record<string, unknown>; index: number; }>` |
+| `sortChange`       |             | `CustomEvent<ColumnSort[]>`                                     |
 
+
+## Dependencies
+
+### Depends on
+
+- [modus-wc-icon](../modus-wc-icon)
+- [modus-wc-pagination](../modus-wc-pagination)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-table --> modus-wc-icon
+  modus-wc-table --> modus-wc-pagination
+  style modus-wc-table fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

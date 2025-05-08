@@ -40,7 +40,7 @@ const meta: Meta<TableStoryArgs> = {
     density: {
       control: {
         type: 'select',
-        options: ['condensed', 'comfortable', 'spacious'],
+        options: ['condensed', 'comfortable'],
       },
     },
     zebra: { control: 'boolean' },
@@ -110,9 +110,9 @@ const createDemoColumns = (): ITableColumn[] => {
           Inactive: 'gray',
           Pending: 'blue',
         };
-        const color = statusColors[value] || 'black';
+        const color = statusColors[value as string] || 'black';
         const span = document.createElement('span');
-        span.textContent = value;
+        span.textContent = value as string;
         span.style.color = color;
         span.style.fontWeight = 'bold';
         return span;
@@ -166,9 +166,9 @@ const createSortableColumns = (): ITableColumn[] => {
           Inactive: 'gray',
           Pending: 'blue',
         };
-        const color = statusColors[value] || 'black';
+        const color = statusColors[value as string] || 'black';
         const span = document.createElement('span');
-        span.textContent = value;
+        span.textContent = value as string;
         span.style.color = color;
         span.style.fontWeight = 'bold';
         return span;
@@ -373,13 +373,6 @@ export const DensityVariants: Story = {
           .columns=${columns}
           .data=${data}
           .density=${'comfortable'}
-        ></modus-wc-table>
-
-        <h3 style="margin-top: 2rem">Spacious</h3>
-        <modus-wc-table
-          .columns=${columns}
-          .data=${data}
-          .density=${'spacious'}
         ></modus-wc-table>
       </div>
     `;

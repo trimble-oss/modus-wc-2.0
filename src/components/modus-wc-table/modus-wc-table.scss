@@ -3,7 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-@import '../../styles/mixins';
+@use '../../styles/mixins';
 
 :host {
   display: block;
@@ -202,7 +202,8 @@ modus-wc-table .modus-wc-overflow-x-auto {
   display: flex;
 }
 
-.page-size-selector {
+.page-size-selector,
+.modus-wc-table-page-size-selector {
   align-items: center;
   color: var(--modus-wc-color-gray-dark);
   display: flex;
@@ -215,7 +216,7 @@ modus-wc-table .modus-wc-overflow-x-auto {
     border-radius: 0.25rem;
     color: var(--modus-wc-color-gray-dark);
     font-size: 0.875rem;
-    height: 2.25rem;
+    height: 2rem;
     min-width: 4rem;
     padding: 0 0.5rem;
 
