@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import {
   Component,
   Element,
@@ -11,16 +9,26 @@ import {
   Event as StencilEvent,
   Watch,
 } from '@stencil/core';
-import { SortingState } from '@tanstack/table-core';
+import {
+  ColumnDef,
+  PaginationState,
+  SortingState,
+  Updater,
+} from '@tanstack/table-core';
 import { convertTablePropsToClasses } from './modus-wc-table.tailwind';
 import { Density, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
+import {
+  createModusTable,
+  Table,
+  transformColumns,
+} from './modus-wc-table.core';
 
 export interface ITableColumn {
   /** Key to access data from row object */
   accessor: string;
   /** Custom cell renderer */
-  cellRenderer?: (value: any, row: any) => string | HTMLElement;
+  cellRenderer?: (value: unknown, row: unknown) => string | HTMLElement;
   /** Class names for the column */
   className?: string;
   /** Header content - can be string or HTML */
@@ -38,11 +46,6 @@ export interface IPaginationChangeEventDetail {
   pageSize: number;
 }
 
-/**
- * A customizable table component used to show a list of data in a table format.
- *
- * Adheres to WCAG 2.2 standards.
- */
 @Component({
   tag: 'modus-wc-table',
   styleUrl: 'modus-wc-table.scss',
@@ -50,80 +53,84 @@ export interface IPaginationChangeEventDetail {
 })
 export class ModusWcTable {
   private inheritedAttributes: Attributes = {};
+  private table: Table<Record<string, unknown>> | null = null;
+  private tanStackColumns: ColumnDef<Record<string, unknown>, unknown>[] = [];
 
-  /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** An array of column definitions. */
   @Prop() columns!: ITableColumn[];
-
-  /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
-
-  /** An array of data objects. */
-  @Prop() data!: Record<string, any>[];
-
-  /** The density of the table, used to save space or increase readability. */
+  @Prop() data!: Record<string, unknown>[];
   @Prop() density?: Density = 'comfortable';
-
-  /** Zebra striped tables differentiate rows by styling them in an alternating fashion. */
   @Prop() zebra?: boolean = false;
-
-  /**
-   * Enable hover effect on table rows. When enabled, rows will change background color when hovered.
-   * This provides visual feedback to users when interacting with the table.
-   */
   @Prop() hover?: boolean = true;
-
-  /** Enable sorting. Enabled by default. */
   @Prop() sortable?: boolean = true;
-
-  /** Enable pagination. Disabled by default. */
   @Prop() paginated?: boolean = false;
-
-  /** Current page (1-based). Default is 1. */
   @Prop() currentPage: number = 1;
-
-  /** Number of rows per page. Default is 10. */
   @Prop() pageSize: number = 10;
-
-  /** Available page size options. */
   @Prop() pageSizeOptions: number[] = [5, 10, 25, 50, 100];
-
-  /** Show the page size selector. */
   @Prop() showPageSizeSelector?: boolean = true;
 
-  /** Current sorting state */
   @State() sorting: SortingState = [];
+  @State() internalPagination: PaginationState = {
+    pageIndex: 0,
+    pageSize: 10,
+  };
 
-  /** Internal current page state (1-based) */
-  @State() internalCurrentPage = 1;
-
-  /** Internal page size state */
-  @State() internalPageSize = 10;
-
-  /** Emits when a row is clicked. */
   @StencilEvent() rowClick!: EventEmitter<{
-    row: Record<string, any>;
+    row: Record<string, unknown>;
     index: number;
   }>;
 
-  /** Emits when sorting changes. */
   @StencilEvent() sortChange!: EventEmitter<SortingState>;
 
-  /** Emits when page or page size changes. */
   @StencilEvent() paginationChange!: EventEmitter<IPaginationChangeEventDetail>;
 
   @Watch('currentPage')
   handleCurrentPageChange(newValue: number) {
-    this.internalCurrentPage = newValue;
+    if (!this.table) return;
+
+    if (this.internalPagination.pageIndex !== newValue - 1) {
+      this.internalPagination = {
+        ...this.internalPagination,
+        pageIndex: newValue - 1,
+      };
+
+      // This will trigger onPaginationChange callback
+      this.table.setPagination(this.internalPagination);
+    }
   }
 
   @Watch('pageSize')
   handlePageSizeChange(newValue: number) {
-    this.internalPageSize = newValue;
-    // Reset to first page when page size changes
-    this.internalCurrentPage = 1;
+    if (!this.table) return;
+
+    if (this.internalPagination.pageSize !== newValue) {
+      this.internalPagination = {
+        ...this.internalPagination,
+        pageSize: newValue,
+        pageIndex: 0,
+      };
+
+      // This will trigger onPaginationChange callback
+      this.table.setPagination(this.internalPagination);
+    }
+  }
+
+  @Watch('data')
+  handleDataChange() {
+    this.initializeTable();
+  }
+
+  @Watch('columns')
+  handleColumnsChange() {
+    this.initializeTable();
+  }
+
+  @Watch('sortable')
+  @Watch('paginated')
+  handleConfigChange() {
+    this.initializeTable();
   }
 
   componentWillLoad() {
@@ -139,9 +146,94 @@ export class ModusWcTable {
       console.error('ModusWcTable: data is required.');
     }
 
-    this.internalCurrentPage = this.currentPage;
-    this.internalPageSize = this.pageSize;
+    this.internalPagination = {
+      pageIndex: this.currentPage - 1,
+      pageSize: this.pageSize,
+    };
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.initializeTable();
+  }
+
+  // Handle sorting changes from TanStack
+  private handleSortingChange = (updater: Updater<SortingState>) => {
+    // Get the new sorting state
+    const newSorting =
+      typeof updater === 'function' ? updater(this.sorting) : updater;
+
+    // Update the component state - this should trigger a re-render
+    this.sorting = [...newSorting]; // Create a new array to ensure Stencil detects the change
+
+    if (this.table) {
+      // Tell TanStack the new sorting so it can recompute row model
+      this.table.setOptions((prev) => ({
+        ...prev,
+        state: { ...prev.state, sorting: newSorting },
+      }));
+      const sortedRows = this.table.getSortedRowModel().rows;
+    }
+
+    // Emit event
+    this.sortChange.emit(newSorting);
+
+    // Update the component state to ensure UI updates
+    this.sorting = [...newSorting];
+  };
+
+  // Handle pagination changes from TanStack
+  private handlePaginationChange = (updater: Updater<PaginationState>) => {
+    // Get the new pagination state
+    const newPagination =
+      typeof updater === 'function'
+        ? updater(this.internalPagination)
+        : updater;
+
+    // Update the component state
+    this.internalPagination = newPagination;
+
+    // Force a row model recalculation for immediate display
+    if (this.table) {
+      this.table.setOptions((prev) => ({
+        ...prev,
+        state: { ...prev.state, pagination: newPagination },
+      }));
+    }
+
+    // Emit event
+    this.paginationChange.emit({
+      currentPage: newPagination.pageIndex + 1,
+      pageSize: newPagination.pageSize,
+    });
+
+    this.internalPagination = newPagination;
+  };
+
+  private initializeTable() {
+    if (!this.columns || !this.data) return;
+
+    // First, make a copy of the data to avoid any reference issues
+    const dataForTable = [...this.data];
+
+    // Transform columns to TanStack format, ensuring sorting is properly configured
+    this.tanStackColumns = transformColumns(this.columns, this.sortable);
+
+    // Create the table with callbacks to handle state changes
+    this.table = createModusTable({
+      data: dataForTable, // Use the copied data
+      columns: this.tanStackColumns,
+      pagination: this.internalPagination,
+      enableSorting: this.sortable,
+      manualPagination: !this.paginated,
+      manualSorting: false, // Let TanStack handle sorting internally
+      onSortingChange: this.handleSortingChange,
+      onPaginationChange: this.handlePaginationChange,
+    });
+
+    // If we already have a sorting state, apply it immediately
+    if (this.sorting.length > 0 && this.table) {
+      console.log('Applying initial sort:', this.sorting);
+      this.table.setSorting([...this.sorting]);
+    }
   }
 
   private getClasses(): string {
@@ -153,134 +245,92 @@ export class ModusWcTable {
       hover: this.hover,
     });
 
-    // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
   }
 
-  private handleRowClick = (row: Record<string, any>, index: number) => {
+  private handleRowClick = (row: Record<string, unknown>, index: number) => {
     this.rowClick.emit({ row, index });
   };
 
   private handleHeaderClick = (columnId: string) => {
-    // Find the column
     const column = this.columns.find((col) => col.id === columnId);
+    if (!column?.sortable || !this.sortable || !this.table) return;
 
-    // Only handle sorting if the column is sortable
-    if (!column?.sortable || !this.sortable) return;
+    console.log('Header clicked:', columnId);
 
+    // Get the current sorting state from the component
+    const currentColumnSort = this.sorting.find((sort) => sort.id === columnId);
+
+    // Determine the new sorting state
     let newSorting: SortingState = [];
-
-    // Check if this column is already being sorted
-    const currentSortingInfo = this.sorting.find((s) => s.id === columnId);
-
-    if (!currentSortingInfo) {
-      // Add this column as ascending sort
+    if (!currentColumnSort) {
+      // Not sorted yet, sort ascending
       newSorting = [{ id: columnId, desc: false }];
-    } else if (!currentSortingInfo.desc) {
-      // Toggle to descending sort
+    } else if (!currentColumnSort.desc) {
+      // Currently ascending, change to descending
       newSorting = [{ id: columnId, desc: true }];
     }
-    // If it's already descending, clear the sort (newSorting remains empty)
+    // If already descending, clear sorting (empty array)
 
-    this.sorting = newSorting;
-    this.sortChange.emit(newSorting);
+    try {
+      // Update TanStack table with the new sorting state
+      this.table.setSorting(newSorting);
+
+      // Recalculate row model to apply sorting immediately
+      this.table.getRowModel();
+
+      // Update the component state to ensure UI updates
+      this.sorting = [...newSorting];
+
+      // Emit the event
+      this.sortChange.emit(newSorting);
+    } catch (error) {
+      console.error('Error applying sorting:', error);
+    }
   };
-
-  private getSortedData(): Record<string, any>[] {
-    if (!this.data || !this.data.length) return [];
-    if (this.sorting.length === 0) return this.data;
-
-    const sortInfo = this.sorting[0];
-    const { id, desc } = sortInfo;
-    const direction = desc ? -1 : 1;
-
-    // Find the corresponding column to get the accessor
-    const column = this.columns.find((col) => col.id === id);
-    if (!column) return this.data;
-
-    const accessor = column.accessor;
-
-    return [...this.data].sort((a, b) => {
-      const valueA = a[accessor];
-      const valueB = b[accessor];
-
-      // Handle string comparison
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        return valueA.localeCompare(valueB) * direction;
-      }
-
-      // Handle number comparison
-      if (typeof valueA === 'number' && typeof valueB === 'number') {
-        return (valueA - valueB) * direction;
-      }
-
-      // Handle date comparison
-      if (valueA instanceof Date && valueB instanceof Date) {
-        return (valueA.getTime() - valueB.getTime()) * direction;
-      }
-
-      // Handle mixed types or nullish values
-      if (valueA == null) return 1;
-      if (valueB == null) return -1;
-
-      // Default string comparison for other cases
-      return String(valueA).localeCompare(String(valueB)) * direction;
-    });
-  }
-
-  private getPaginatedData(): Record<string, any>[] {
-    if (!this.paginated) return this.getSortedData();
-    if (!this.data || !this.data.length) return [];
-
-    const sortedData = this.getSortedData();
-    const startIndex = (this.internalCurrentPage - 1) * this.internalPageSize;
-    const endIndex = startIndex + this.internalPageSize;
-
-    return sortedData.slice(startIndex, endIndex);
-  }
 
   private getTotalPages(): number {
     if (!this.data || !this.data.length) return 1;
-    return Math.ceil(this.data.length / this.internalPageSize);
+    return Math.ceil(this.data.length / this.internalPagination.pageSize);
   }
 
   private handlePageChange(newPage: number): void {
     const totalPages = this.getTotalPages();
-    if (newPage < 1 || newPage > totalPages) return;
+    if (newPage < 1 || newPage > totalPages || !this.table) return;
 
-    this.internalCurrentPage = newPage;
-    this.paginationChange.emit({
-      currentPage: this.internalCurrentPage,
-      pageSize: this.internalPageSize,
+    const newPageIndex = newPage - 1;
+
+    // Setting pagination will trigger the onPaginationChange callback
+    this.table.setPagination({
+      ...this.internalPagination,
+      pageIndex: newPageIndex,
     });
   }
 
   private handlePageSizeOptionChange(event: Event): void {
+    if (!this.table) return;
+
     const select = event.target as HTMLSelectElement;
     const newPageSize = parseInt(select.value, 10);
 
-    this.internalPageSize = newPageSize;
-    this.internalCurrentPage = 1; // Reset to first page
-
-    this.paginationChange.emit({
-      currentPage: this.internalCurrentPage,
-      pageSize: this.internalPageSize,
+    // Setting pagination will trigger the onPaginationChange callback
+    this.table.setPagination({
+      pageSize: newPageSize,
+      pageIndex: 0,
     });
   }
 
   private renderCell(
     column: ITableColumn,
-    row: Record<string, any>
+    row: Record<string, unknown>
   ): string | HTMLElement {
     const value = row[column.accessor];
-
     if (column.cellRenderer) {
       return column.cellRenderer(value, row);
     }
-
     return value?.toString() ?? '';
   }
 
@@ -297,7 +347,7 @@ export class ModusWcTable {
           {this.pageSizeOptions?.map((size) => (
             <option
               value={size.toString()}
-              selected={size === this.internalPageSize}
+              selected={size === this.internalPagination.pageSize}
             >
               {size}
             </option>
@@ -312,11 +362,12 @@ export class ModusWcTable {
     if (!this.data || !this.data.length) return null;
 
     const startItem = Math.min(
-      (this.internalCurrentPage - 1) * this.internalPageSize + 1,
+      this.internalPagination.pageIndex * this.internalPagination.pageSize + 1,
       this.data.length
     );
     const endItem = Math.min(
-      this.internalCurrentPage * this.internalPageSize,
+      (this.internalPagination.pageIndex + 1) *
+        this.internalPagination.pageSize,
       this.data.length
     );
 
@@ -328,14 +379,20 @@ export class ModusWcTable {
   }
 
   render() {
-    // Get paginated data
-    const paginatedData = this.getPaginatedData() || [];
-    const totalPages = this.getTotalPages();
+    // Derive rows straight from TanStack's row model so that any sorting/pagination
+    // is reflected automatically
+    const rows = this.table
+      ? this.paginated
+        ? this.table.getPaginationRowModel().rows
+        : this.table.getRowModel().rows
+      : [];
 
-    // Determine pagination size based on table density
+    const displayData = rows.map((r) => r.original);
+
+    const totalPages = this.getTotalPages();
     let paginationSize: ModusSize = 'md';
-    if (this.density === 'condensed') paginationSize = 'sm';
-    if (this.density === 'spacious') paginationSize = 'lg';
+    if (this.density === 'compact') paginationSize = 'sm';
+    if (this.density === 'comfortable') paginationSize = 'lg';
 
     return (
       <Host>
@@ -344,90 +401,91 @@ export class ModusWcTable {
             <table class={this.getClasses()}>
               <thead>
                 <tr>
-                  {this.columns?.map((column) => (
-                    <th
-                      class={{
-                        [column.className || '']: !!column.className,
-                        sortable: Boolean(column.sortable && this.sortable),
-                        sorted: this.sorting.some((s) => s.id === column.id),
-                        asc: this.sorting.some(
-                          (s) => s.id === column.id && !s.desc
-                        ),
-                        desc: this.sorting.some(
-                          (s) => s.id === column.id && s.desc
-                        ),
-                      }}
-                      style={{ width: column.width }}
-                      onClick={() => this.handleHeaderClick(column.id)}
-                      role={
-                        column.sortable && this.sortable ? 'button' : undefined
-                      }
-                      tabIndex={
-                        column.sortable && this.sortable ? 0 : undefined
-                      }
-                      aria-sort={
-                        this.sorting.some((s) => s.id === column.id && !s.desc)
-                          ? 'ascending'
-                          : this.sorting.some(
-                                (s) => s.id === column.id && s.desc
-                              )
-                            ? 'descending'
+                  {this.columns?.map((column) => {
+                    const tanCol = this.table?.getColumn(column.id);
+                    const sortStatus = tanCol?.getIsSorted(); // 'asc' | 'desc' | false
+                    const isAsc = sortStatus === 'asc';
+                    const isDesc = sortStatus === 'desc';
+
+                    return (
+                      <th
+                        class={{
+                          [column.className || '']: !!column.className,
+                          sortable: Boolean(column.sortable && this.sortable),
+                          sorted: !!sortStatus,
+                          asc: !!isAsc,
+                          desc: !!isDesc,
+                        }}
+                        style={{ width: column.width }}
+                        onClick={() => this.handleHeaderClick(column.id)}
+                        role={
+                          column.sortable && this.sortable
+                            ? 'button'
                             : undefined
-                      }
-                    >
-                      {column.header}
-                      {column.sortable && this.sortable && (
-                        <span class="sort-icon" aria-hidden="true">
-                          {this.sorting.some(
-                            (s) => s.id === column.id && !s.desc
-                          ) ? (
-                            <modus-wc-icon name="sort_alpha_down" size="xs" />
-                          ) : this.sorting.some(
-                              (s) => s.id === column.id && s.desc
-                            ) ? (
-                            <modus-wc-icon name="sort_alpha_up" size="xs" />
-                          ) : (
-                            <modus-wc-icon
-                              name="sort_alpha_down"
-                              size="xs"
-                              style={{ opacity: '0.5' }}
-                            />
-                          )}
-                        </span>
-                      )}
-                    </th>
-                  ))}
+                        }
+                        tabIndex={
+                          column.sortable && this.sortable ? 0 : undefined
+                        }
+                        aria-sort={
+                          isAsc
+                            ? 'ascending'
+                            : isDesc
+                              ? 'descending'
+                              : undefined
+                        }
+                      >
+                        {column.header}
+                        {column.sortable && this.sortable && (
+                          <span class="sort-icon" aria-hidden="true">
+                            {isAsc ? (
+                              <modus-wc-icon name="sort_alpha_down" size="xs" />
+                            ) : isDesc ? (
+                              <modus-wc-icon name="sort_alpha_up" size="xs" />
+                            ) : (
+                              <modus-wc-icon
+                                name="sort_alpha_down"
+                                size="xs"
+                                style={{ opacity: '0.5' }}
+                              />
+                            )}
+                          </span>
+                        )}
+                      </th>
+                    );
+                  })}
                 </tr>
               </thead>
               <tbody>
-                {paginatedData.length > 0 ? (
-                  paginatedData.map((row, index) => (
-                    <tr onClick={() => this.handleRowClick(row, index)}>
-                      {this.columns?.map((column) => {
-                        const cellContent = this.renderCell(column, row);
+                {displayData.length > 0 ? (
+                  rows.map((rowObj, index) => {
+                    const row = rowObj.original;
+                    return (
+                      <tr
+                        key={rowObj.id ?? `row-${index}`}
+                        onClick={() => this.handleRowClick(row, index)}
+                      >
+                        {this.columns?.map((column) => {
+                          const cellContent = this.renderCell(column, row);
 
-                        return (
-                          <td
-                            class={column.className}
-                            ref={(el) => {
-                              // istanbul ignore next - TODO
-                              if (el && cellContent instanceof HTMLElement) {
-                                el.innerHTML = ''; // Clear existing content
-                                el.appendChild(cellContent);
-                              }
-                            }}
-                          >
-                            {
-                              // istanbul ignore next
-                              !(cellContent instanceof HTMLElement)
+                          return (
+                            <td
+                              class={column.className}
+                              ref={(el) => {
+                                if (el && cellContent instanceof HTMLElement) {
+                                  el.innerHTML = '';
+                                  el.appendChild(cellContent);
+                                }
+                              }}
+                            >
+                              {!(cellContent instanceof HTMLElement)
                                 ? cellContent
-                                : ''
-                            }
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))
+                                : ''}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })
                 ) : (
                   <tr>
                     <td
@@ -449,7 +507,7 @@ export class ModusWcTable {
               <div class="pagination-controls">
                 <modus-wc-pagination
                   count={totalPages}
-                  page={this.internalCurrentPage}
+                  page={this.internalPagination.pageIndex + 1}
                   size={paginationSize}
                   onPageChange={(e) => this.handlePageChange(e.detail.newPage)}
                 ></modus-wc-pagination>
