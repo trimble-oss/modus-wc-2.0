@@ -419,9 +419,10 @@ describe('modus-wc-pagination', () => {
     pagination.prevButtonText = 'Go Back';
     await page.waitForChanges();
 
-    // Check that the custom text is applied to the previous button
-    const previousPageButton = page.root!.querySelector(
-      'button[aria-label="Previous page"]'
+    // Find all buttons and locate the one with the matching text
+    const buttons = page.root!.querySelectorAll('button');
+    const previousPageButton = Array.from(buttons).find(
+      (btn) => btn.textContent?.trim() === 'Go Back'
     );
 
     expect(previousPageButton).not.toBeNull();
@@ -441,9 +442,10 @@ describe('modus-wc-pagination', () => {
     pagination.nextButtonText = 'Go Forward';
     await page.waitForChanges();
 
-    // Check that the custom text is applied to the next button
-    const nextPageButton = page.root!.querySelector(
-      'button[aria-label="Next page"]'
+    // Find all buttons and locate the one with the matching text
+    const buttons = page.root!.querySelectorAll('button');
+    const nextPageButton = Array.from(buttons).find(
+      (btn) => btn.textContent?.trim() === 'Go Forward'
     );
 
     expect(nextPageButton).not.toBeNull();
