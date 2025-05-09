@@ -231,3 +231,18 @@ modus-wc-table .modus-wc-overflow-x-auto {
 tr.selected {
   background-color: var(--modus-wc-color-primary-light, #e6f4ff);
 }
+
+/* === Editing cell overrides === */
+.modus-wc-table td.editing {
+  padding-bottom: 0.25rem;
+
+  /* Reduce vertical padding so editors like autocomplete do not push the row taller */
+  padding-top: 0.25rem;
+}
+
+/* Ensure any editor injected into the cell stretches to the full cell width but
+   does not add extra margins that could affect the row height. */
+.modus-wc-table td.editing > * {
+  margin: 0; /* strip default margins (e.g., Host blocks) */
+  width: 100%;
+}

@@ -3,6 +3,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit-html';
 import { ITableColumn } from './modus-wc-table';
+import { IAutocompleteItem } from '../modus-wc-autocomplete/modus-wc-autocomplete';
 import { Density } from '../types';
 
 // Placeholder for readme import - this will be properly generated
@@ -489,6 +490,267 @@ export const MultiSelect: Story = {
           paginated=${false}
           @rowSelectionChange=${(e: CustomEvent) =>
             console.log('Selected rows (multi):', e.detail)}
+        ></modus-wc-table>
+      </div>
+    `;
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Editable rows demo
+// ---------------------------------------------------------------------------
+
+export const EditableRows: Story = {
+  render: () => {
+    const columns: ITableColumn[] = [
+      {
+        id: 'id',
+        header: 'ID',
+        accessor: 'id',
+        width: '60px',
+      },
+      {
+        id: 'firstName',
+        header: 'First Name',
+        accessor: 'firstName',
+        editor: 'text',
+      },
+      {
+        id: 'age',
+        header: 'Age',
+        accessor: 'age',
+        editor: 'number',
+        editorProps: { min: 0 },
+      },
+    ];
+
+    const data = [
+      { id: '1', firstName: 'Alice', age: 28 },
+      { id: '2', firstName: 'Bob', age: 34 },
+      { id: '3', firstName: 'Charlie', age: 22 },
+    ];
+
+    return html`
+      <div style="padding:1rem">
+        <p>
+          Double-click a cell (First Name or Age) to edit. Blur or press Enter
+          to commit.
+        </p>
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          editable=${true}
+          selectable="none"
+          @cellEditCommit=${(e: CustomEvent) =>
+            console.log('Cell committed', e.detail)}
+        ></modus-wc-table>
+      </div>
+    `;
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Custom editor demo – uses modus-wc-autocomplete inside a cell
+// ---------------------------------------------------------------------------
+
+export const CustomEditors: Story = {
+  render: () => {
+    const columns: ITableColumn[] = [
+      {
+        id: 'id',
+        header: 'ID',
+        accessor: 'id',
+        width: '60px',
+      },
+      {
+        id: 'name',
+        header: 'Name',
+        accessor: 'name',
+        editor: 'text',
+      },
+      {
+        id: 'country',
+        header: 'Country',
+        accessor: 'country',
+        editorTemplate: `
+          <modus-wc-autocomplete
+            placeholder="Select country"
+            value="\${value}"
+            debounce-ms="300"
+            min-chars="0"
+            size="md"
+            style="width: 120px"
+          ></modus-wc-autocomplete>
+        `,
+        editorSetup: (el, _row, commit) => {
+          const autocomplete = el as HTMLElement & {
+            items: any[];
+            value: string;
+          };
+
+          let args: {
+            items: IAutocompleteItem[];
+            initialNavigation: boolean;
+          } = {
+            items: [
+              { label: 'USA', value: 'USA', visibleInMenu: true },
+              { label: 'Canada', value: 'Canada', visibleInMenu: true },
+              { label: 'Mexico', value: 'Mexico', visibleInMenu: true },
+              { label: 'Japan', value: 'Japan', visibleInMenu: true },
+              { label: 'Germany', value: 'Germany', visibleInMenu: true },
+            ],
+            initialNavigation: true,
+          };
+
+          autocomplete.items = [...args.items];
+
+          // ---------- helpers ----------
+          const refresh = () => {
+            autocomplete.items = [...args.items];
+          };
+
+          // ---------- event handlers ----------
+          const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
+            const autocomplete = (e.target as HTMLInputElement).closest(
+              'modus-wc-autocomplete'
+            );
+
+            if (autocomplete) {
+              const label = e.detail.label;
+              if (label) {
+                autocomplete.value = label;
+              }
+
+              // Clear the previous selection.
+              args.items.forEach((item) => (item.selected = false));
+
+              // Mark the user selected menu item as selected and create a new array to update items.
+              const foundItem = args.items.find(
+                (item) => item.value === e.detail.value
+              );
+              if (foundItem) {
+                foundItem.selected = true;
+                autocomplete.items = [...args.items];
+              }
+            }
+          };
+          const handleKeyDown = (e: KeyboardEvent) => {
+            if (!['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key))
+              return;
+
+            e.preventDefault();
+
+            const visible = args.items.filter((i) => i.visibleInMenu);
+            switch (e.key) {
+              case 'Escape':
+                args.items.forEach(
+                  (i) => ((i.focused = false), (i.visibleInMenu = true))
+                );
+                args.initialNavigation = true;
+                refresh();
+                return;
+              case 'ArrowDown':
+                if (args.initialNavigation) {
+                  args.initialNavigation = false;
+                  return;
+                }
+                moveFocus(1);
+                break;
+              case 'ArrowUp':
+                if (args.initialNavigation) {
+                  args.initialNavigation = false;
+                  return;
+                }
+                moveFocus(-1);
+                break;
+              case 'Enter': {
+                const current = visible.find((i) => i.focused);
+                if (current) {
+                  args.items = args.items.map((item) => ({
+                    ...item,
+                    selected: item.value === current.value,
+                    focused: false,
+                  }));
+                  autocomplete.value = current.label;
+                  args.initialNavigation = true;
+                  commit(current.value);
+                }
+                break;
+              }
+            }
+            refresh();
+          };
+
+          const moveFocus = (dir: number) => {
+            const visible = args.items.filter((i) => i.visibleInMenu);
+            const idx = visible.findIndex((i) => i.focused);
+            const next =
+              idx < 0
+                ? dir > 0
+                  ? 0
+                  : visible.length - 1
+                : (idx + dir + visible.length) % visible.length;
+            args.items.forEach((i) => (i.focused = i === visible[next]));
+          };
+
+          const handleInputChange = (e: CustomEvent<Event>) => {
+            const input = e.detail?.target as HTMLInputElement;
+            if (!input) return;
+            const search = input.value.toLowerCase();
+            args.items.forEach((i) => {
+              i.visibleInMenu = i.label.toLowerCase().includes(search);
+              i.focused = false;
+            });
+            refresh();
+          };
+
+          // --------- commit on blur (close editor) ---------
+          const handleBlur = () => {
+            console.log('handleBlur', autocomplete.value);
+            commit(autocomplete.value);
+            autocomplete.removeEventListener('blur', handleBlur, true);
+          };
+
+          // wire events
+          // when click outside of the table, the editor should close
+
+          (autocomplete as any).addEventListener('blur', handleBlur, true);
+          (autocomplete as any).addEventListener('keydown', handleKeyDown);
+          (autocomplete as any).addEventListener(
+            'itemSelect',
+            handleItemSelect
+          );
+          (autocomplete as any).addEventListener(
+            'inputChange',
+            handleInputChange
+          );
+          (autocomplete as any).addEventListener('valueChange', (e: Event) => {
+            commit((e as CustomEvent).detail.value);
+          });
+
+          // focus editor
+          autocomplete.querySelector('input')?.focus();
+        },
+        width: '150px',
+      },
+    ];
+
+    const data = [
+      { id: '1', name: 'Alice', country: 'USA' },
+      { id: '2', name: 'Bob', country: 'Canada' },
+    ];
+
+    return html`
+      <div style="padding:1rem">
+        <p>Double-click the Country cell to open an autocomplete editor.</p>
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          editable=${true}
+          density="comfortable"
+          selectable="none"
+          @cellEditCommit=${(e: CustomEvent) =>
+            console.log('Cell commit', e.detail)}
         ></modus-wc-table>
       </div>
     `;

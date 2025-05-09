@@ -4050,6 +4050,14 @@
           "members": [
             {
               "kind": "field",
+              "name": "activeEditor",
+              "type": {
+                "text": "{ rowIndex: number; colId: string } | null | undefined"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
               "name": "el",
               "type": {
                 "text": "HTMLElement"
@@ -4172,6 +4180,15 @@
               }
             },
             {
+              "name": "editable",
+              "fieldName": "editable",
+              "default": "false",
+              "description": "Enable cell editing. Either a boolean (all rows) or a predicate per row.",
+              "type": {
+                "text": "boolean | ((row: Record<string, unknown>) => boolean)"
+              }
+            },
+            {
               "name": "hover",
               "fieldName": "hover",
               "default": "true",
@@ -4245,6 +4262,20 @@
           ],
           "tagName": "modus-wc-table",
           "events": [
+            {
+              "kind": "field",
+              "name": "cellEditCommit",
+              "type": {
+                "text": "EventEmitter<{\n    rowIndex: number;\n    colId: string;\n    newValue: unknown;\n    updatedRow: Record<string, unknown>;\n  }>"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "cellEditStart",
+              "type": {
+                "text": "EventEmitter<{\n    rowIndex: number;\n    colId: string;\n  }>"
+              }
+            },
             {
               "kind": "field",
               "name": "paginationChange",

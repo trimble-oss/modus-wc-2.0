@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-base-to-string */
 import {
   Component,
   Element,
@@ -40,6 +41,32 @@ export interface ITableColumn {
   width?: string;
   /** Whether the column is sortable */
   sortable?: boolean;
+  /** Built-in editor type to render when the cell is in edit mode. */
+  editor?: 'text' | 'number' | 'autocomplete' | 'date' | 'custom';
+  /** Extra props specific to the editor component. */
+  editorProps?: Record<string, unknown>;
+  /** Custom renderer invoked when editor === 'custom'. Must call onCommit with the new value. */
+  customEditorRenderer?: (
+    value: unknown,
+    onCommit: (val: unknown) => void,
+    row: Record<string, unknown>
+  ) => HTMLElement | string;
+
+  /**
+   * Alternative to built-in editors: raw HTML string. `${value}` placeholder will
+   * be replaced with the current cell value.
+   */
+  editorTemplate?: string;
+
+  /**
+   * Runs once after the editor element is added to the DOM. Gives full control
+   * for wiring events, populating data, etc.
+   */
+  editorSetup?: (
+    el: HTMLElement,
+    row: Record<string, unknown>,
+    commit: (newVal: unknown) => void
+  ) => void;
 }
 
 export interface IPaginationChangeEventDetail {
@@ -74,6 +101,25 @@ export class ModusWcTable {
 
   @Prop() selectable?: 'none' | 'single' | 'multi' = 'none';
   @Prop() selectedRowIds?: string[];
+
+  /** Enable cell editing. Either a boolean (all rows) or a predicate per row. */
+  @Prop() editable?: boolean | ((row: Record<string, unknown>) => boolean) =
+    false;
+
+  // Currently editing cell coordinates
+  @State() activeEditor?: { rowIndex: number; colId: string } | null = null;
+
+  // Events for external listeners
+  @StencilEvent() cellEditStart!: EventEmitter<{
+    rowIndex: number;
+    colId: string;
+  }>;
+  @StencilEvent() cellEditCommit!: EventEmitter<{
+    rowIndex: number;
+    colId: string;
+    newValue: unknown;
+    updatedRow: Record<string, unknown>;
+  }>;
 
   @State() sorting: SortingState = [];
   @State() internalPagination: PaginationState = {
@@ -454,6 +500,37 @@ export class ModusWcTable {
     );
   }
 
+  /* ---------- Editing helpers ---------- */
+
+  private isRowEditable(row: Record<string, unknown>): boolean {
+    if (typeof this.editable === 'function') return this.editable(row);
+    return Boolean(this.editable);
+  }
+
+  private enterEdit(rowIndex: number, colId: string): void {
+    const row = this.data[rowIndex];
+    if (!this.isRowEditable(row)) return;
+
+    this.activeEditor = { rowIndex, colId };
+    this.cellEditStart.emit({ rowIndex, colId });
+  }
+
+  private commitEdit(rowIndex: number, colId: string, newValue: unknown): void {
+    // Update data array immutably
+    const newData = [...this.data];
+    const updatedRow = { ...newData[rowIndex], [colId]: newValue };
+    newData[rowIndex] = updatedRow;
+    this.data = newData;
+
+    // Push into TanStack so internal model stays in sync
+    this.table?.setOptions((prev) => ({ ...prev, data: newData }));
+
+    this.cellEditCommit.emit({ rowIndex, colId, newValue, updatedRow });
+
+    // Simply clear editor state – Stencil will re-render cell normally
+    this.activeEditor = null;
+  }
+
   render() {
     // Derive rows straight from TanStack's row model so that any sorting/pagination
     // is reflected automatically
@@ -602,22 +679,99 @@ export class ModusWcTable {
                         )}
 
                         {this.columns?.map((column) => {
-                          const cellContent = this.renderCell(column, row);
+                          const editing =
+                            this.activeEditor?.rowIndex === index &&
+                            this.activeEditor.colId === column.id;
+
+                          const cellDisplay = this.renderCell(column, row);
+
+                          const handleCommit = (newVal: unknown) =>
+                            this.commitEdit(index, column.id, newVal);
+
+                          let cellNode: HTMLElement | string;
+
+                          if (editing) {
+                            if (column.editorTemplate) {
+                              const htmlStr = column.editorTemplate.replace(
+                                /\$\{value\}/g,
+                                String(row[column.accessor] ?? '')
+                              );
+                              const wrapper = document.createElement('div');
+                              wrapper.innerHTML = htmlStr;
+                              cellNode =
+                                wrapper.firstElementChild as HTMLElement;
+
+                              // allow users to wire events / data
+                              column.editorSetup?.(cellNode, row, handleCommit);
+                            } else if (column.customEditorRenderer) {
+                              cellNode = column.customEditorRenderer(
+                                row[column.accessor],
+                                handleCommit,
+                                row
+                              );
+                            } else {
+                              cellNode = cellDisplay;
+                            }
+                          } else {
+                            cellNode = cellDisplay;
+                          }
 
                           return (
                             <td
-                              class={column.className}
+                              class={{
+                                [column.className || '']: !!column.className,
+                                editing,
+                              }}
+                              data-col={column.id}
+                              onDblClick={() =>
+                                this.enterEdit(index, column.id)
+                              }
                               ref={(el) => {
-                                if (el && cellContent instanceof HTMLElement) {
-                                  el.innerHTML = '';
-                                  el.appendChild(cellContent);
+                                if (!el) return;
+
+                                // Always refresh the cell's content so leftover editor markup is cleared
+                                el.innerHTML = '';
+
+                                if (cellNode instanceof HTMLElement) {
+                                  el.appendChild(cellNode);
+                                } else {
+                                  el.textContent = String(cellNode);
+                                }
+
+                                // If we are currently in edit mode, wire setup & blur handling
+                                if (
+                                  editing &&
+                                  cellNode instanceof HTMLElement
+                                ) {
+                                  if (
+                                    column.editorTemplate &&
+                                    column.editorSetup
+                                  ) {
+                                    // run setup again in case of template editors
+                                    column.editorSetup(
+                                      cellNode,
+                                      row,
+                                      handleCommit
+                                    );
+                                  }
+
+                                  const blurHandler = (event: FocusEvent) => {
+                                    const relatedTarget =
+                                      event.relatedTarget as Node | null;
+                                    if (!el.contains(relatedTarget)) {
+                                      this.activeEditor = null; // triggers rerender, ref will rewrite content
+                                      el.removeEventListener(
+                                        'focusout',
+                                        blurHandler
+                                      );
+                                    }
+                                  };
+                                  el.addEventListener('focusout', blurHandler, {
+                                    capture: true,
+                                  });
                                 }
                               }}
-                            >
-                              {!(cellContent instanceof HTMLElement)
-                                ? cellContent
-                                : ''}
-                            </td>
+                            ></td>
                           );
                         })}
                       </tr>
