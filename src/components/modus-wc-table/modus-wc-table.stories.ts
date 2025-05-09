@@ -22,6 +22,8 @@ interface TableStoryArgs {
   pageSize?: number;
   showPageSizeSelector?: boolean;
   customClass?: string;
+  selectable?: 'none' | 'single' | 'multi';
+  selectedRowIds?: string[];
 }
 
 const meta: Meta<TableStoryArgs> = {
@@ -50,6 +52,13 @@ const meta: Meta<TableStoryArgs> = {
     pageSize: { control: 'number' },
     showPageSizeSelector: { control: 'boolean' },
     customClass: { control: 'text' },
+    selectable: {
+      control: {
+        type: 'select',
+        options: ['none', 'single', 'multi'],
+      },
+    },
+    selectedRowIds: { control: 'object' },
   },
 };
 
@@ -197,8 +206,12 @@ export const Default: Story = {
           .hover=${args.hover}
           .sortable=${args.sortable}
           .customClass=${args.customClass}
+          .selectable=${args.selectable}
+          .selectedRowIds=${args.selectedRowIds}
           @rowClick=${(e) => console.log('Row clicked:', e.detail)}
           @sortChange=${(e) => console.log('Sort changed:', e.detail)}
+          @rowSelectionChange=${(e) =>
+            console.log('Selection changed:', e.detail)}
         ></modus-wc-table>
       </div>
     `;
@@ -209,6 +222,8 @@ export const Default: Story = {
     hover: true,
     sortable: false,
     customClass: '',
+    selectable: 'none',
+    selectedRowIds: [],
   },
 };
 
@@ -225,7 +240,11 @@ export const WithHover: Story = {
           .density=${args.density}
           .zebra=${args.zebra}
           .hover=${args.hover}
+          .selectable=${args.selectable}
+          .selectedRowIds=${args.selectedRowIds}
           @rowClick=${(e) => console.log('Row clicked:', e.detail)}
+          @rowSelectionChange=${(e) =>
+            console.log('Selection changed:', e.detail)}
         ></modus-wc-table>
       </div>
     `;
@@ -234,6 +253,8 @@ export const WithHover: Story = {
     density: 'comfortable',
     zebra: false,
     hover: true,
+    selectable: 'none',
+    selectedRowIds: [],
   },
 };
 
@@ -250,7 +271,11 @@ export const WithoutHover: Story = {
           .density=${args.density}
           .zebra=${args.zebra}
           .hover=${args.hover}
+          .selectable=${args.selectable}
+          .selectedRowIds=${args.selectedRowIds}
           @rowClick=${(e) => console.log('Row clicked:', e.detail)}
+          @rowSelectionChange=${(e) =>
+            console.log('Selection changed:', e.detail)}
         ></modus-wc-table>
       </div>
     `;
@@ -259,6 +284,8 @@ export const WithoutHover: Story = {
     density: 'comfortable',
     zebra: false,
     hover: false,
+    selectable: 'none',
+    selectedRowIds: [],
   },
 };
 
@@ -279,8 +306,12 @@ export const WithSorting: Story = {
           .zebra=${args.zebra}
           .hover=${args.hover}
           .sortable=${args.sortable}
+          .selectable=${args.selectable}
+          .selectedRowIds=${args.selectedRowIds}
           @rowClick=${(e) => console.log('Row clicked:', e.detail)}
           @sortChange=${(e) => console.log('Sort changed:', e.detail)}
+          @rowSelectionChange=${(e) =>
+            console.log('Selection changed:', e.detail)}
         ></modus-wc-table>
       </div>
     `;
@@ -290,6 +321,8 @@ export const WithSorting: Story = {
     zebra: false,
     hover: true,
     sortable: true,
+    selectable: 'none',
+    selectedRowIds: [],
   },
 };
 
@@ -306,8 +339,12 @@ export const ZebraStriped: Story = {
           .hover=${args.hover}
           .sortable=${args.sortable}
           .density=${args.density}
+          .selectable=${args.selectable}
+          .selectedRowIds=${args.selectedRowIds}
           @rowClick=${(e) => console.log('Row clicked:', e.detail)}
           @sortChange=${(e) => console.log('Sort changed:', e.detail)}
+          @rowSelectionChange=${(e) =>
+            console.log('Selection changed:', e.detail)}
         ></modus-wc-table>
       </div>
     `;
@@ -316,6 +353,8 @@ export const ZebraStriped: Story = {
     density: 'comfortable',
     hover: true,
     sortable: false,
+    selectable: 'none',
+    selectedRowIds: [],
   },
 };
 
@@ -336,10 +375,14 @@ export const WithPagination: Story = {
           .paginated=${args.paginated}
           .pageSize=${args.pageSize}
           .showPageSizeSelector=${args.showPageSizeSelector}
+          .selectable=${args.selectable}
+          .selectedRowIds=${args.selectedRowIds}
           @rowClick=${(e) => console.log('Row clicked:', e.detail)}
           @sortChange=${(e) => console.log('Sort changed:', e.detail)}
           @paginationChange=${(e) =>
             console.log('Pagination changed:', e.detail)}
+          @rowSelectionChange=${(e) =>
+            console.log('Selection changed:', e.detail)}
         ></modus-wc-table>
       </div>
     `;
@@ -352,6 +395,8 @@ export const WithPagination: Story = {
     paginated: true,
     pageSize: 5,
     showPageSizeSelector: true,
+    selectable: 'none',
+    selectedRowIds: [],
   },
 };
 
@@ -393,7 +438,11 @@ export const WithHoverEffect: Story = {
           .zebra=${args.zebra}
           .hover=${true}
           .sortable=${args.sortable}
+          .selectable=${args.selectable}
+          .selectedRowIds=${args.selectedRowIds}
           @rowClick=${(e) => console.log('Row clicked:', e.detail)}
+          @rowSelectionChange=${(e) =>
+            console.log('Selection changed:', e.detail)}
         ></modus-wc-table>
       </div>
     `;
@@ -402,5 +451,46 @@ export const WithHoverEffect: Story = {
     density: 'comfortable',
     zebra: false,
     sortable: true,
+    selectable: 'none',
+    selectedRowIds: [],
+  },
+};
+
+export const SingleSelect: Story = {
+  render: () => {
+    const columns = createDemoColumns();
+    const data = createDemoData(8);
+    return html`
+      <div style="padding:1rem">
+        <p>Select a single row using radio-style selection.</p>
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          selectable="single"
+          @rowSelectionChange=${(e: CustomEvent) =>
+            console.log('Selected rows (single):', e.detail)}
+        ></modus-wc-table>
+      </div>
+    `;
+  },
+};
+
+export const MultiSelect: Story = {
+  render: () => {
+    const columns = createDemoColumns();
+    const data = createDemoData(10);
+    return html`
+      <div style="padding:1rem">
+        <p>Select multiple rows using checkboxes, including select-all.</p>
+        <modus-wc-table
+          .columns=${columns}
+          .data=${data}
+          selectable="multi"
+          paginated=${false}
+          @rowSelectionChange=${(e: CustomEvent) =>
+            console.log('Selected rows (multi):', e.detail)}
+        ></modus-wc-table>
+      </div>
+    `;
   },
 };

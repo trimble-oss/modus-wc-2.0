@@ -5,6 +5,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   PaginationState,
+  RowSelectionState,
   SortingState,
   Table as TanStackTable,
   Updater,
@@ -33,6 +34,10 @@ export function createModusTable<
   enableSorting?: boolean;
   manualSorting?: boolean;
   manualPagination?: boolean;
+  enableRowSelection?: boolean;
+  rowSelection?: RowSelectionState;
+  onRowSelectionChange?: (updater: Updater<RowSelectionState>) => void;
+  getRowId?: (originalRow: TData, index: number, parent?: unknown) => string;
   onSortingChange?: (updater: Updater<SortingState>) => void;
   onPaginationChange?: (updater: Updater<PaginationState>) => void;
 }): Table<TData> {
@@ -45,17 +50,25 @@ export function createModusTable<
     enableSorting = true,
     manualSorting = false,
     manualPagination = false,
+    enableRowSelection = false,
+    rowSelection,
+    onRowSelectionChange,
+    getRowId,
     onSortingChange,
     onPaginationChange,
   } = options;
   const state: Partial<{
     pagination: PaginationState;
     sorting: SortingState;
+    rowSelection: RowSelectionState;
   }> = {
     pagination,
   };
   if (sorting !== undefined) {
     state.sorting = sorting;
+  }
+  if (rowSelection !== undefined) {
+    state.rowSelection = rowSelection;
   }
 
   // Create the table with all options
@@ -66,9 +79,12 @@ export function createModusTable<
     enableSorting,
     manualSorting,
     manualPagination,
+    enableRowSelection,
     state,
     onSortingChange,
     onPaginationChange,
+    onRowSelectionChange,
+    getRowId,
     getCoreRowModel: getCoreRowModel(),
     // Always include getSortedRowModel even for empty sorting state
     getSortedRowModel: getSortedRowModel(),

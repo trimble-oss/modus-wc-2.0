@@ -29,6 +29,19 @@ Adheres to WCAG 2.2 standards.
 | `pageChange` | Event emitted when page changes | `CustomEvent<IPageChange>` |
 
 
+## Dependencies
+
+### Used by
+
+ - [modus-wc-table](../modus-wc-table)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-table --> modus-wc-pagination
+  style modus-wc-pagination fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

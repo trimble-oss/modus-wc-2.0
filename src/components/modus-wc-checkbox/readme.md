@@ -38,6 +38,10 @@ Adheres to WCAG 2.2 standards.
 
 ## Dependencies
 
+### Used by
+
+ - [modus-wc-table](../modus-wc-table)
+
 ### Depends on
 
 - [modus-wc-input-label](../modus-wc-input-label)
@@ -46,6 +50,7 @@ Adheres to WCAG 2.2 standards.
 ```mermaid
 graph TD;
   modus-wc-checkbox --> modus-wc-input-label
+  modus-wc-table --> modus-wc-checkbox
   style modus-wc-checkbox fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -227,3 +227,7 @@ modus-wc-table .modus-wc-overflow-x-auto {
     }
   }
 }
+
+tr.selected {
+  background-color: var(--modus-wc-color-primary-light, #e6f4ff);
+}

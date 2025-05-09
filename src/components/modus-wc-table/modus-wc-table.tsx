@@ -12,6 +12,7 @@ import {
 import {
   ColumnDef,
   PaginationState,
+  RowSelectionState,
   SortingState,
   Updater,
 } from '@tanstack/table-core';
@@ -71,11 +72,16 @@ export class ModusWcTable {
   @Prop() pageSizeOptions: number[] = [5, 10, 25, 50, 100];
   @Prop() showPageSizeSelector?: boolean = true;
 
+  @Prop() selectable?: 'none' | 'single' | 'multi' = 'none';
+  @Prop() selectedRowIds?: string[];
+
   @State() sorting: SortingState = [];
   @State() internalPagination: PaginationState = {
     pageIndex: 0,
     pageSize: 10,
   };
+
+  @State() internalRowSelection: RowSelectionState = {};
 
   @StencilEvent() rowClick!: EventEmitter<{
     row: Record<string, unknown>;
@@ -85,6 +91,11 @@ export class ModusWcTable {
   @StencilEvent() sortChange!: EventEmitter<SortingState>;
 
   @StencilEvent() paginationChange!: EventEmitter<IPaginationChangeEventDetail>;
+
+  @StencilEvent() rowSelectionChange!: EventEmitter<{
+    selectedRows: Record<string, unknown>[];
+    selectedRowIds: string[];
+  }>;
 
   @Watch('currentPage')
   handleCurrentPageChange(newValue: number) {
@@ -133,6 +144,17 @@ export class ModusWcTable {
     this.initializeTable();
   }
 
+  @Watch('selectedRowIds')
+  handleSelectedRowIdsChange(newIds: string[] | undefined) {
+    if (!this.table) return;
+    if (Array.isArray(newIds)) {
+      const selection: RowSelectionState = {};
+      newIds.forEach((id) => (selection[id] = true));
+      this.internalRowSelection = selection;
+      this.table.setRowSelection(selection);
+    }
+  }
+
   componentWillLoad() {
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Table';
@@ -170,7 +192,8 @@ export class ModusWcTable {
         ...prev,
         state: { ...prev.state, sorting: newSorting },
       }));
-      const sortedRows = this.table.getSortedRowModel().rows;
+      // Trigger row-model recomputation
+      void this.table.getSortedRowModel().rows;
     }
 
     // Emit event
@@ -208,30 +231,70 @@ export class ModusWcTable {
     this.internalPagination = newPagination;
   };
 
+  // NEW: handle row-selection changes coming from TanStack
+  private handleRowSelectionChange = (updater: Updater<RowSelectionState>) => {
+    const newSelection =
+      typeof updater === 'function'
+        ? updater(this.internalRowSelection)
+        : updater;
+
+    // If uncontrolled, update internal state (do NOT call setRowSelection again – would recurse)
+    if (!this.selectedRowIds) {
+      this.internalRowSelection = { ...newSelection };
+    }
+
+    const selectedRowIds = Object.keys(newSelection).filter(
+      (id) => newSelection[id]
+    );
+
+    const selectedRows: Record<string, unknown>[] = [];
+    if (this.table) {
+      selectedRowIds.forEach((id) => {
+        const row = this.table!.getRow(id);
+        if (row) selectedRows.push(row.original);
+      });
+    }
+
+    if (this.table) {
+      this.table.setOptions((prev) => ({
+        ...prev,
+        state: { ...prev.state, rowSelection: newSelection },
+      }));
+    }
+
+    this.rowSelectionChange.emit({ selectedRows, selectedRowIds });
+  };
+
   private initializeTable() {
     if (!this.columns || !this.data) return;
 
     // First, make a copy of the data to avoid any reference issues
     const dataForTable = [...this.data];
 
-    // Transform columns to TanStack format, ensuring sorting is properly configured
+    // Transform columns (selection column rendered manually in DOM)
     this.tanStackColumns = transformColumns(this.columns, this.sortable);
 
     // Create the table with callbacks to handle state changes
     this.table = createModusTable({
       data: dataForTable, // Use the copied data
       columns: this.tanStackColumns,
+      rowSelection: this.internalRowSelection,
+      enableRowSelection: this.selectable !== 'none',
       pagination: this.internalPagination,
       enableSorting: this.sortable,
       manualPagination: !this.paginated,
       manualSorting: false, // Let TanStack handle sorting internally
       onSortingChange: this.handleSortingChange,
       onPaginationChange: this.handlePaginationChange,
+      onRowSelectionChange: this.handleRowSelectionChange,
+      getRowId: (orig: Record<string, unknown>, idx) =>
+        orig && orig['id'] !== undefined && orig['id'] !== null
+          ? String(orig['id'] as string | number)
+          : String(idx),
     });
 
     // If we already have a sorting state, apply it immediately
     if (this.sorting.length > 0 && this.table) {
-      console.log('Applying initial sort:', this.sorting);
       this.table.setSorting([...this.sorting]);
     }
   }
@@ -252,14 +315,27 @@ export class ModusWcTable {
   }
 
   private handleRowClick = (row: Record<string, unknown>, index: number) => {
+    // Toggle selection via row click if enabled
+    if (this.selectable !== 'none' && this.table) {
+      const rowsModel = this.paginated
+        ? this.table.getPaginationRowModel().rows
+        : this.table.getRowModel().rows;
+      const targetRow = rowsModel[index];
+      if (targetRow) {
+        if (this.selectable === 'single') {
+          this.table?.setRowSelection({ [String(targetRow.id)]: true });
+        } else {
+          targetRow.toggleSelected();
+        }
+      }
+    }
+
     this.rowClick.emit({ row, index });
   };
 
   private handleHeaderClick = (columnId: string) => {
     const column = this.columns.find((col) => col.id === columnId);
     if (!column?.sortable || !this.sortable || !this.table) return;
-
-    console.log('Header clicked:', columnId);
 
     // Get the current sorting state from the component
     const currentColumnSort = this.sorting.find((sort) => sort.id === columnId);
@@ -280,7 +356,7 @@ export class ModusWcTable {
       this.table.setSorting(newSorting);
 
       // Recalculate row model to apply sorting immediately
-      this.table.getRowModel();
+      void this.table.getSortedRowModel().rows;
 
       // Update the component state to ensure UI updates
       this.sorting = [...newSorting];
@@ -401,6 +477,25 @@ export class ModusWcTable {
             <table class={this.getClasses()}>
               <thead>
                 <tr>
+                  {this.selectable !== 'none' && (
+                    <th class="selection-column" style={{ width: '48px' }}>
+                      {this.selectable === 'multi' && this.table && (
+                        <modus-wc-checkbox
+                          aria-label="Select all rows"
+                          size="sm"
+                          value={this.table.getIsAllRowsSelected()}
+                          indeterminate={
+                            this.table.getIsSomeRowsSelected() &&
+                            !this.table.getIsAllRowsSelected()
+                          }
+                          onInputChange={() =>
+                            this.table?.toggleAllRowsSelected()
+                          }
+                        ></modus-wc-checkbox>
+                      )}
+                    </th>
+                  )}
+
                   {this.columns?.map((column) => {
                     const tanCol = this.table?.getColumn(column.id);
                     const sortStatus = tanCol?.getIsSorted(); // 'asc' | 'desc' | false
@@ -462,8 +557,50 @@ export class ModusWcTable {
                     return (
                       <tr
                         key={rowObj.id ?? `row-${index}`}
+                        class={{
+                          selected:
+                            !!this.internalRowSelection[String(rowObj.id)] ||
+                            rowObj.getIsSelected?.(),
+                        }}
                         onClick={() => this.handleRowClick(row, index)}
                       >
+                        {this.selectable !== 'none' && (
+                          <td
+                            class="selection-column"
+                            style={{ width: '48px' }}
+                          >
+                            <modus-wc-checkbox
+                              aria-label="Select row"
+                              size="sm"
+                              value={rowObj.getIsSelected?.() ?? false}
+                              onInputChange={() => {
+                                if (this.selectable === 'single') {
+                                  this.table?.setRowSelection({
+                                    [String(rowObj.id)]: true,
+                                  });
+                                } else {
+                                  // Multi-select: toggle via TanStack then mirror into reactive state so
+                                  // row highlight updates synchronously.
+                                  rowObj.toggleSelected?.();
+
+                                  const idStr = String(rowObj.id);
+                                  const isSelected =
+                                    !!this.internalRowSelection[idStr];
+                                  const newMap: RowSelectionState = {
+                                    ...this.internalRowSelection,
+                                  };
+                                  if (isSelected) {
+                                    delete newMap[idStr];
+                                  } else {
+                                    newMap[idStr] = true;
+                                  }
+                                  this.internalRowSelection = newMap;
+                                }
+                              }}
+                            ></modus-wc-checkbox>
+                          </td>
+                        )}
+
                         {this.columns?.map((column) => {
                           const cellContent = this.renderCell(column, row);
 
@@ -489,7 +626,10 @@ export class ModusWcTable {
                 ) : (
                   <tr>
                     <td
-                      colSpan={this.columns?.length || 1}
+                      colSpan={
+                        (this.columns?.length || 1) +
+                        (this.selectable !== 'none' ? 1 : 0)
+                      }
                       class="no-data-message"
                     >
                       No data available
