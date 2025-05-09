@@ -22,9 +22,7 @@ export type LoaderColor =
   | 'error';
 
 /**
- * A customizable loader component used to indicate the loading of content.
- *
- * Adheres to WCAG 2.2 standards.
+ * A customizable loader component used to indicate the loading of content
  */
 @Component({
   tag: 'modus-wc-loader',

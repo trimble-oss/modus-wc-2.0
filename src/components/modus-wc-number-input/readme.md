@@ -7,9 +7,7 @@
 
 ## Overview
 
-A customizable input component used to create number inputs with types.
-
-Adheres to WCAG 2.2 standards.
+A customizable input component used to create number inputs with types
 
 ## Properties
 

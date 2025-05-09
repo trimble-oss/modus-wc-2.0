@@ -12,9 +12,7 @@ import { DaisySize, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable menu item component used to display the item portion of a menu.
- *
- * Adheres to WCAG 2.2 standards.
+ * A customizable menu item component used to display the item portion of a menu
  */
 @Component({
   tag: 'modus-wc-menu-item',

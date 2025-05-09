@@ -7,9 +7,7 @@
 
 ## Overview
 
-A customizable checkbox component.
-
-Adheres to WCAG 2.2 standards.
+A customizable checkbox component
 
 ## Properties
 
