@@ -55,11 +55,11 @@ export namespace Components {
      */
     interface ModusWcAlert {
         /**
-          * The description of the alert. *
+          * The description of the alert.
          */
         "alertDescription"?: string;
         /**
-          * The title of the alert. *
+          * The title of the alert.
          */
         "alertTitle": string;
         /**
@@ -71,7 +71,7 @@ export namespace Components {
          */
         "dismissible"?: boolean;
         /**
-          * The Modus icon to render. *
+          * The Modus icon to render.
          */
         "icon"?: string;
         /**
@@ -2537,11 +2537,11 @@ declare namespace LocalJSX {
      */
     interface ModusWcAlert {
         /**
-          * The description of the alert. *
+          * The description of the alert.
          */
         "alertDescription"?: string;
         /**
-          * The title of the alert. *
+          * The title of the alert.
          */
         "alertTitle": string;
         /**
@@ -2553,7 +2553,7 @@ declare namespace LocalJSX {
          */
         "dismissible"?: boolean;
         /**
-          * The Modus icon to render. *
+          * The Modus icon to render.
          */
         "icon"?: string;
         /**

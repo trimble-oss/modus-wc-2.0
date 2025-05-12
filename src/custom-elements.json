@@ -115,7 +115,7 @@
             {
               "name": "alert-description",
               "fieldName": "alertDescription",
-              "description": "The description of the alert. *",
+              "description": "The description of the alert.",
               "type": {
                 "text": "string"
               }
@@ -123,7 +123,7 @@
             {
               "name": "alert-title",
               "fieldName": "alertTitle",
-              "description": "The title of the alert. *",
+              "description": "The title of the alert.",
               "type": {
                 "text": "string"
               }
@@ -149,7 +149,7 @@
             {
               "name": "icon",
               "fieldName": "icon",
-              "description": "The Modus icon to render. *",
+              "description": "The Modus icon to render.",
               "type": {
                 "text": "string"
               }
