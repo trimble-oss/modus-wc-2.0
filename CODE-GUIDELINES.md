@@ -11,7 +11,7 @@
 ### Component Organization
 
 - Each component should have its own directory.
-- Directory should contain:
+- The directory should contain:
   - Component file (e.g., `modus-wc-select.tsx`).
   - Styles file (e.g., `modus-wc-select.scss`).
   - Test file (e.g., `modus-wc-select.spec.ts`).
@@ -78,7 +78,7 @@ modus-wc-2.0/
    - Follow a consistent naming convention for CSS classes (e.g., `modus-wc-text-input-label`).
    - Dynamically added DaisyUI and Tailwind classes are added in their own files (e.g, `modus-wc-avatar.tailwind.ts`)
    - Use `&:hover {}` in the theme block instead of `:hover` pseudo-class where applicable.
-   - Use `margin-inline-start` and `margin-inline-end` instead of `margin-left` and `margin-right` for better compatibility with bidirectional (LTR/RTL) layouts.
+   - Use `margin-inline-start` and `margin-inline-end` instead of `margin-left` and `margin-right` for improved compatibility with bidirectional (LTR/RTL) layouts.
 
 5. **Consistent Code Style**:
 
@@ -105,7 +105,7 @@ modus-wc-2.0/
 1. **Commit Messages**:
 
    - Write clear and concise commit messages.
-   - Use the semantic mood in commit messages (e.g., "feature: Add {new-feature}" and "Fix {bug}").
+   - Use semantic commit messages to maintain consistency and clarity. (e.g., "feature: Add {new-feature}" and "Fix {bug}").
    - Do not commit unused imports.
 
 2. **Pull Requests**:
@@ -122,14 +122,14 @@ modus-wc-2.0/
 4. **Collaboration Tools**:
 
    - Use collaboration tools like GitHub Issues and Project Boards to track tasks, bugs, and feature requests.
-   - Ensure that all team members are aware of the current status of the project and any ongoing work.
+   - Ensure that all team members are aware of the current project status and any ongoing work.
 
 #### Testing and Quality Assurance
 
 1. **Unit Testing**:
 
    - Write unit tests for all components and functions.
-   - We are using jest testing framework consistently throughout the project ensure tests cover various scenarios, including edge cases.
+   - We are using the Jest testing framework throughout the project to ensure tests cover various scenarios, including edge cases.
 
      - Example test case: We are covering the test case `should render with default props` from `ModusWcAvatar` component
 
@@ -182,7 +182,7 @@ modus-wc-2.0/
    - Add `ifDefined` for optional values, but not for Boolean values.
    - If a property has multiple values, use `select` to control it in stories.
    - Do not add a description for a property or state.
-   - Provide migration docs if applicable after each Pull requests
+   - Provide migration docs if applicable after each Pull request.
 
 2. **Inline Comments**:
 
@@ -222,6 +222,4 @@ modus-wc-2.0/
 
    - Create branches using the following format
      - IssueNo-IssueTitle (e.g, 109-collapse-fix-animation)
-     - ComponentName-issue-description {feature/bug}
-
-2. **End-to-End Testing**: - Use a consistent testing framework - playwright to be explored and followed for `.e2e` tests.
+     - ComponentName-IssueDescription {feature/bug} (e.g, Table-add-summaryRow)
