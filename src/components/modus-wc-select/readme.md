@@ -40,6 +40,10 @@ Adheres to WCAG 2.2 standards.
 
 ## Dependencies
 
+### Used by
+
+ - [modus-wc-table](../modus-wc-table)
+
 ### Depends on
 
 - [modus-wc-input-label](../modus-wc-input-label)
@@ -51,6 +55,7 @@ graph TD;
   modus-wc-select --> modus-wc-input-label
   modus-wc-select --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon
+  modus-wc-table --> modus-wc-select
   style modus-wc-select fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

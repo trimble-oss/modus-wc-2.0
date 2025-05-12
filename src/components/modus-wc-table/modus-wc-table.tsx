@@ -84,36 +84,62 @@ export class ModusWcTable {
   private table: Table<Record<string, unknown>> | null = null;
   private tanStackColumns: ColumnDef<Record<string, unknown>, unknown>[] = [];
 
+  /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** An array of column definitions. */
   @Prop() columns!: ITableColumn[];
+
+  /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
+
+  /** An array of data objects. */
   @Prop() data!: Record<string, unknown>[];
+
+  /** The density of the table, used to save space or increase readability. */
   @Prop() density?: Density = 'comfortable';
+
+  /** Zebra striped tables differentiate rows by styling them in an alternating fashion. */
   @Prop() zebra?: boolean = false;
+
+  /** Enable hover effect on table rows. */
   @Prop() hover?: boolean = true;
+
+  /** Enable sorting functionality for sortable columns. */
   @Prop() sortable?: boolean = true;
+
+  /** Enable pagination for the table. */
   @Prop() paginated?: boolean = false;
+
+  /** The current page number in pagination (1-based index). */
   @Prop() currentPage: number = 1;
-  @Prop() pageSize: number = 10;
-  @Prop() pageSizeOptions: number[] = [5, 10, 25, 50, 100];
+
+  /** Available options for the number of rows per page. */
+  @Prop() pageSizeOptions: number[] = [5, 10, 15];
+
+  /** Show/hide the page size selector in pagination. */
   @Prop() showPageSizeSelector?: boolean = true;
 
+  /** Row selection mode: 'none' for no selection, 'single' for single row, 'multi' for multiple rows. */
   @Prop() selectable?: 'none' | 'single' | 'multi' = 'none';
+
+  /** Array of selected row IDs. Used for controlled selection state. */
   @Prop() selectedRowIds?: string[];
 
   /** Enable cell editing. Either a boolean (all rows) or a predicate per row. */
   @Prop() editable?: boolean | ((row: Record<string, unknown>) => boolean) =
     false;
 
-  // Currently editing cell coordinates
+  /** Currently editing cell coordinates */
   @State() activeEditor?: { rowIndex: number; colId: string } | null = null;
 
-  // Events for external listeners
+  /** Emits when cell editing starts. */
   @StencilEvent() cellEditStart!: EventEmitter<{
     rowIndex: number;
     colId: string;
   }>;
+
+  /** Emits when cell editing is committed with the new value. */
   @StencilEvent() cellEditCommit!: EventEmitter<{
     rowIndex: number;
     colId: string;
@@ -121,23 +147,31 @@ export class ModusWcTable {
     updatedRow: Record<string, unknown>;
   }>;
 
+  /** Internal state for column sorting. */
   @State() sorting: SortingState = [];
+
+  /** Internal state for pagination. */
   @State() internalPagination: PaginationState = {
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 5,
   };
 
+  /** Internal state for row selection. */
   @State() internalRowSelection: RowSelectionState = {};
 
+  /** Emits when a row is clicked. */
   @StencilEvent() rowClick!: EventEmitter<{
     row: Record<string, unknown>;
     index: number;
   }>;
 
+  /** Emits when sorting changes with the new sorting state. */
   @StencilEvent() sortChange!: EventEmitter<SortingState>;
 
+  /** Emits when pagination changes with the new pagination state. */
   @StencilEvent() paginationChange!: EventEmitter<IPaginationChangeEventDetail>;
 
+  /** Emits when row selection changes with the selected rows and their IDs. */
   @StencilEvent() rowSelectionChange!: EventEmitter<{
     selectedRows: Record<string, unknown>[];
     selectedRowIds: string[];
@@ -151,22 +185,6 @@ export class ModusWcTable {
       this.internalPagination = {
         ...this.internalPagination,
         pageIndex: newValue - 1,
-      };
-
-      // This will trigger onPaginationChange callback
-      this.table.setPagination(this.internalPagination);
-    }
-  }
-
-  @Watch('pageSize')
-  handlePageSizeChange(newValue: number) {
-    if (!this.table) return;
-
-    if (this.internalPagination.pageSize !== newValue) {
-      this.internalPagination = {
-        ...this.internalPagination,
-        pageSize: newValue,
-        pageIndex: 0,
       };
 
       // This will trigger onPaginationChange callback
@@ -216,7 +234,7 @@ export class ModusWcTable {
 
     this.internalPagination = {
       pageIndex: this.currentPage - 1,
-      pageSize: this.pageSize,
+      pageSize: this.pageSizeOptions[0],
     };
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -435,7 +453,8 @@ export class ModusWcTable {
   private handlePageSizeOptionChange(event: Event): void {
     if (!this.table) return;
 
-    const select = event.target as HTMLSelectElement;
+    const select = (event as CustomEvent).detail
+      .srcElement as HTMLSelectElement;
     const newPageSize = parseInt(select.value, 10);
 
     // Setting pagination will trigger the onPaginationChange callback
@@ -456,26 +475,36 @@ export class ModusWcTable {
     return value?.toString() ?? '';
   }
 
+  private getPaginationSize(): ModusSize {
+    switch (this.density) {
+      case 'compact':
+        return 'sm';
+      case 'relaxed':
+        return 'lg';
+      default:
+        return 'md';
+    }
+  }
+
   private renderPageSizeSelector() {
     if (!this.showPageSizeSelector) return null;
 
+    const paginationSize = this.getPaginationSize();
+
+    const options = this.pageSizeOptions?.map((size) => ({
+      value: size.toString(),
+      label: size.toString(),
+    }));
     return (
       <div class="page-size-selector">
         <span>Show</span>
-        <select
+        <modus-wc-select
           aria-label="Select page size"
-          onChange={(e) => this.handlePageSizeOptionChange(e)}
-        >
-          {this.pageSizeOptions?.map((size) => (
-            <option
-              value={size.toString()}
-              selected={size === this.internalPagination.pageSize}
-            >
-              {size}
-            </option>
-          ))}
-        </select>
-        <span>entries</span>
+          bordered
+          size={paginationSize}
+          onInputChange={(e) => this.handlePageSizeOptionChange(e)}
+          options={options}
+        ></modus-wc-select>
       </div>
     );
   }
@@ -543,9 +572,6 @@ export class ModusWcTable {
     const displayData = rows.map((r) => r.original);
 
     const totalPages = this.getTotalPages();
-    let paginationSize: ModusSize = 'md';
-    if (this.density === 'compact') paginationSize = 'sm';
-    if (this.density === 'comfortable') paginationSize = 'lg';
 
     return (
       <Host>
@@ -796,18 +822,17 @@ export class ModusWcTable {
 
           {this.paginated && this.data?.length > 0 && (
             <div class="pagination-container">
+              {this.renderPageSizeSelector()}
               {this.renderPaginationInfo()}
 
               <div class="pagination-controls">
                 <modus-wc-pagination
                   count={totalPages}
                   page={this.internalPagination.pageIndex + 1}
-                  size={paginationSize}
+                  size={this.getPaginationSize()}
                   onPageChange={(e) => this.handlePageChange(e.detail.newPage)}
                 ></modus-wc-pagination>
               </div>
-
-              {this.renderPageSizeSelector()}
             </div>
           )}
         </div>
