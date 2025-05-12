@@ -96,6 +96,8 @@ jobs:
           name: angular-${{ matrix.angular-version }}-distribution-v${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           path: '**/*.tgz'
 
+      - run: rm -f $(find . -name '*.tgz')
+
       - name: Set npm Registry Auth Token
         run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
 
