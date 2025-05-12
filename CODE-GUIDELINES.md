@@ -112,7 +112,7 @@ modus-wc-2.0/
 
    - Provide a clear description of the changes and the rationale behind them for each and every PR.
    - Clarify in detail on the review comments promptly and update the pull request accordingly with the fix.
-    - Fill in all the items in the PR template when creating PRs.
+   - Fill in all the items in the PR template when creating PRs.
 
 3. **Code Reviews**:
 
