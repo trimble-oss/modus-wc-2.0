@@ -91,7 +91,7 @@ modus-wc-2.0/
    - Implement proper error handling in components and functions. Use try-catch blocks where necessary and provide meaningful error messages.
    - Ensure that errors are logged appropriately for debugging purposes (but avoid frivolous logging).
 
-7. **Accesibility**
+7. **Accessibility**
 
    - Ensure all components are accessible and follow WCAG 2.2 standards.
    - Components should be fully operable via keyboard alone.
@@ -168,7 +168,7 @@ modus-wc-2.0/
    - Update test cases to cover the code changes for each component.
 
 4. **Continuous Integration**:
-   - Ensure continuous integration (CI) pipelines which run tests and checks on each commit and pull request to be succesful.
+   - Ensure continuous integration (CI) pipelines which run tests and checks on each commit and pull request to be successful.
 
 #### Documentation and Comments
 
@@ -216,9 +216,7 @@ modus-wc-2.0/
 - Write tests for your changes.
 - Submit a pull request with a clear description of your changes.
 
-# Need Discussion
-
-1. **Branching Strategy**:
+**Branching Strategy**:
 
    - Create branches using the following format
      - IssueNo-IssueTitle (e.g, 109-collapse-fix-animation)
