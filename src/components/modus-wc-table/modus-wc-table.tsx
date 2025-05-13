@@ -193,19 +193,43 @@ export class ModusWcTable {
   }
 
   @Watch('data')
-  handleDataChange() {
-    this.initializeTable();
+  handleDataChange(newData: Record<string, unknown>[]) {
+    if (this.table) {
+      this.table.setOptions((prev) => ({ ...prev, data: [...newData] }));
+    }
   }
 
   @Watch('columns')
-  handleColumnsChange() {
-    this.initializeTable();
+  handleColumnsChange(newColumns: ITableColumn[]) {
+    if (this.table) {
+      this.tanStackColumns = transformColumns(newColumns, this.sortable);
+      this.table.setOptions((prev) => ({
+        ...prev,
+        columns: this.tanStackColumns,
+      }));
+    }
   }
 
   @Watch('sortable')
+  handleSortableChange(newSortable: boolean) {
+    if (this.table) {
+      this.table.setOptions((prev) => ({
+        ...prev,
+        enableSorting: newSortable,
+        columns: transformColumns(this.columns, newSortable),
+        state: { ...prev.state, sorting: [] },
+      }));
+    }
+  }
+
   @Watch('paginated')
-  handleConfigChange() {
-    this.initializeTable();
+  handlePaginatedChange(newPaginated: boolean) {
+    if (this.table) {
+      this.table.setOptions((prev) => ({
+        ...prev,
+        manualPagination: !newPaginated,
+      }));
+    }
   }
 
   @Watch('selectedRowIds')
