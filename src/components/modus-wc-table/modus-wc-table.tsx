@@ -566,7 +566,29 @@ export class ModusWcTable {
     return Boolean(this.editable);
   }
 
+  /**
+   * Validate that the row index and column ID are valid
+   * @param rowIndex The row index to validate
+   * @param colId The column ID to validate
+   * @returns true if both row index and column ID are valid
+   */
+  private validateRowAndColumn(rowIndex: number, colId: string): boolean {
+    // Check valid row index
+    if (rowIndex < 0 || rowIndex >= (this.data?.length || 0)) {
+      return false;
+    }
+
+    // Check valid column ID
+    const columnExists = this.columns?.some((col) => col.id === colId) || false;
+    return columnExists;
+  }
+
   private enterEdit(rowIndex: number, colId: string): void {
+    // Validate row and column first
+    if (!this.validateRowAndColumn(rowIndex, colId)) {
+      return;
+    }
+
     const row = this.data[rowIndex];
     if (!this.isRowEditable(row)) return;
 
@@ -575,6 +597,11 @@ export class ModusWcTable {
   }
 
   private commitEdit(rowIndex: number, colId: string, newValue: unknown): void {
+    // Validate row and column first
+    if (!this.validateRowAndColumn(rowIndex, colId)) {
+      return;
+    }
+
     // Update data array immutably
     const newData = [...this.data];
     const updatedRow = { ...newData[rowIndex], [colId]: newValue };
