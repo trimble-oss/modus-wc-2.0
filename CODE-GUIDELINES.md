@@ -20,7 +20,7 @@
 
 ### Folder Structure
 
-```
+```txt
 modus-wc-2.0/
 ├── src/
 │   ├── components/
@@ -133,7 +133,7 @@ modus-wc-2.0/
 
      - Example test case: We are covering the test case `should render with default props` from `ModusWcAvatar` component
 
-     ```
+     ```ts
      it('should render with default props', async () => {
         const page = await newSpecPage({
            components: [ModusWcAvatar],
@@ -145,7 +145,7 @@ modus-wc-2.0/
 
      The test case is compared with a snapshot which is present in the snapshot folder for each component.
 
-     ```
+     ```ts
      exports[`modus-wc-avatar should render with default props 1`] = `
      <modus-wc-avatar alt="Default avatar">
      <div aria-label="Default avatar" class="modus-wc-avatar" tabindex="-1">
