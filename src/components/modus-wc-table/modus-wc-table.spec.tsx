@@ -1097,8 +1097,16 @@ describe('modus-wc-table', () => {
     // Mock the method before setting properties to capture calls properly
     const component = page.rootInstance as ModusWcTable;
 
+    // Type-safe approach to spying on private methods
+    type PrivateMethods = {
+      initializeTable: () => void;
+    };
+
     // Create a manual spy on initializeTable before setting properties
-    const initializeTableSpy = jest.spyOn(component, 'initializeTable' as any);
+    const initializeTableSpy = jest.spyOn(
+      component as unknown as PrivateMethods,
+      'initializeTable'
+    );
     component.sortable = false;
     component.columns = columns;
     component.data = data;
@@ -1149,7 +1157,10 @@ describe('modus-wc-table', () => {
     component['table'] = null;
 
     // Spy again on initializeTable (since previous spy might be saturated with calls)
-    const secondInitSpy = jest.spyOn(component, 'initializeTable' as any);
+    const secondInitSpy = jest.spyOn(
+      component as unknown as PrivateMethods,
+      'initializeTable'
+    );
 
     // Call the column handler which should call initializeTable when table is null
     component['handleColumnsChange'](newColumns);
@@ -1210,8 +1221,16 @@ describe('modus-wc-table', () => {
     const originalTable = component['table'];
     component['table'] = null;
 
+    // Type-safe approach to spying on private methods
+    type PrivateMethods = {
+      initializeTable: () => void;
+    };
+
     // Mock initializeTable
-    const initTableSpy = jest.spyOn(component, 'initializeTable' as any);
+    const initTableSpy = jest.spyOn(
+      component as unknown as PrivateMethods,
+      'initializeTable'
+    );
 
     // Call handleColumnsChange when table is null
     component['handleColumnsChange'](newColumns);
@@ -1260,5 +1279,134 @@ describe('modus-wc-table', () => {
 
     // Verify setOptions was called
     expect(setOptionsSpy).toHaveBeenCalled();
+  });
+
+  it('should properly render header cells with sortable settings and icons', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Header Test" sortable="true"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+
+    // Create columns with different sortable settings and class names
+    const columns = [
+      {
+        id: 'name',
+        header: 'Name',
+        accessor: 'name',
+        sortable: true,
+        className: 'name-col',
+      },
+      { id: 'email', header: 'Email', accessor: 'email' },
+      { id: 'status', header: 'Status', accessor: 'status', sortable: true },
+    ];
+
+    const data = [
+      { id: 1, name: 'John', email: 'john@example.com', status: 'Active' },
+      { id: 2, name: 'Alice', email: 'alice@example.com', status: 'Inactive' },
+    ];
+
+    component.columns = columns;
+    component.data = data;
+
+    await page.waitForChanges();
+
+    // Verify headers are rendered
+    const headers = page.root?.querySelectorAll('th');
+    expect(headers?.length).toBe(3); // 3 columns
+
+    // Check for class names and attributes on sortable column
+    const nameHeader = page.root?.querySelector('.name-col') as HTMLElement;
+    expect(nameHeader).not.toBeNull();
+    expect(nameHeader?.classList.contains('sortable')).toBe(true);
+    expect(nameHeader?.getAttribute('role')).toBe('button');
+    expect(nameHeader?.getAttribute('tabindex')).toBe('0');
+
+    // Check that sort icon is rendered for sortable columns
+    const sortIcon = nameHeader?.querySelector('.sort-icon modus-wc-icon');
+    expect(sortIcon).not.toBeNull();
+
+    // Click on header to sort - properly cast to HTMLElement for click method
+    nameHeader?.click();
+    await page.waitForChanges();
+
+    // Check for classes and aria-sort attribute after sorting
+    expect(nameHeader?.classList.contains('sorted')).toBe(true);
+    expect(nameHeader?.classList.contains('asc')).toBe(true);
+    expect(nameHeader?.getAttribute('aria-sort')).toBe('ascending');
+
+    // Check updated sort icon
+    const updatedSortIcon = nameHeader?.querySelector(
+      '.sort-icon modus-wc-icon'
+    );
+    expect(updatedSortIcon?.getAttribute('name')).toBe('sort_alpha_down');
+
+    // Click again to sort descending
+    nameHeader?.click();
+    await page.waitForChanges();
+
+    expect(nameHeader?.classList.contains('desc')).toBe(true);
+    expect(nameHeader?.getAttribute('aria-sort')).toBe('descending');
+
+    // Verify non-sortable column doesn't have sort attributes
+    const emailHeader = page.root?.querySelector('th:nth-child(2)');
+    expect(emailHeader?.classList.contains('sortable')).toBe(false);
+    expect(emailHeader?.getAttribute('role')).toBeNull();
+  });
+
+  it('should properly type spies on private methods without using any', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Test Table"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+
+    // Type-safe approach to spying on private methods
+    type PrivateMethods = {
+      initializeTable: () => void;
+    };
+
+    // Use type assertion to create properly typed spies
+    const initializeTableSpy = jest.spyOn(
+      component as unknown as PrivateMethods,
+      'initializeTable'
+    );
+
+    // Set properties that should trigger initialization
+    component.columns = [
+      { id: 'name', header: 'Name', accessor: 'name' },
+      { id: 'email', header: 'Email', accessor: 'email' },
+    ];
+
+    component.data = [{ id: 1, name: 'Test', email: 'test@example.com' }];
+
+    await page.waitForChanges();
+
+    // Verify the method was called
+    expect(initializeTableSpy).toHaveBeenCalled();
+
+    // Now fix the other cases by using the same approach
+    // Reset original spy
+    initializeTableSpy.mockRestore();
+
+    // Test the no-table case for handlers
+    component['table'] = null;
+
+    // Create new typed spy
+    const secondInitSpy = jest.spyOn(
+      component as unknown as PrivateMethods,
+      'initializeTable'
+    );
+
+    // Call handlers that should initialize table when table is null
+    component['handleColumnsChange']([
+      { id: 'name', header: 'Updated Name', accessor: 'name' },
+      { id: 'email', header: 'Updated Email', accessor: 'email' },
+    ]);
+
+    // Verify initialization was called
+    expect(secondInitSpy).toHaveBeenCalled();
   });
 });
