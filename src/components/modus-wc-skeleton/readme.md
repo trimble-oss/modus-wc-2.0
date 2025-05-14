@@ -7,9 +7,7 @@
 
 ## Overview
 
-A customizable skeleton component used to create skeletons of various sizes and shapes.
-
-Adheres to WCAG 2.2 standards.
+A customizable skeleton component used to create skeletons of various sizes and shapes
 
 ## Properties
 

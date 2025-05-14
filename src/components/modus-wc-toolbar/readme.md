@@ -9,8 +9,6 @@
 
 A customizable toolbar component used to organize content across the entire page.
 
-Adheres to WCAG 2.2 standards.
-
 ## Properties
 
 | Property      | Attribute      | Description                                 | Type                  | Default |

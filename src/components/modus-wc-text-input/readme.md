@@ -9,8 +9,6 @@
 
 A customizable input component used to create text inputs with types.
 
-Adheres to WCAG 2.2 standards.
-
 ## Properties
 
 | Property         | Attribute          | Description                                                                                                                                                              | Type                                                                                                                                                  | Default        |

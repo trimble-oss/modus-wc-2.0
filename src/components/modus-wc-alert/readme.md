@@ -7,9 +7,7 @@
 
 ## Overview
 
-A customizable alert component used to inform the user about important events.
-
-Adheres to WCAG 2.2 standards.
+A customizable alert component used to inform the user about important events
 
 ## Properties
 

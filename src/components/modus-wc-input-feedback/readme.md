@@ -11,8 +11,6 @@ A customizable feedback component used to provide additional context related to 
 
 <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
 
-Adheres to WCAG 2.2 standards.
-
 ## Properties
 
 | Property             | Attribute      | Description                                                   | Type                                          | Default     |
@@ -28,7 +26,6 @@ Adheres to WCAG 2.2 standards.
 
 ### Used by
 
- - [modus-wc-date](../modus-wc-date)
  - [modus-wc-number-input](../modus-wc-number-input)
  - [modus-wc-select](../modus-wc-select)
  - [modus-wc-text-input](../modus-wc-text-input)
@@ -43,7 +40,6 @@ Adheres to WCAG 2.2 standards.
 ```mermaid
 graph TD;
   modus-wc-input-feedback --> modus-wc-icon
-  modus-wc-date --> modus-wc-input-feedback
   modus-wc-number-input --> modus-wc-input-feedback
   modus-wc-select --> modus-wc-input-feedback
   modus-wc-text-input --> modus-wc-input-feedback
