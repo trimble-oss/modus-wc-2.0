@@ -1074,4 +1074,191 @@ describe('modus-wc-table', () => {
     // Total pages should be 1 with empty data
     expect(component['getTotalPages']()).toBe(1);
   });
+
+  it('should trigger column and sortable watchers correctly', async () => {
+    // For properties like arrays and objects, we need to serialize to string
+    // and parse it in the component
+    const columns = [
+      { id: 'name', header: 'Name', accessor: 'name', sortable: true },
+      { id: 'email', header: 'Email', accessor: 'email' },
+    ];
+
+    const data = [
+      { id: 1, name: 'John', email: 'john@example.com' },
+      { id: 2, name: 'Alice', email: 'alice@example.com' },
+    ];
+
+    // Create component first, then set properties
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Test table"></modus-wc-table>`,
+    });
+
+    // Mock the method before setting properties to capture calls properly
+    const component = page.rootInstance as ModusWcTable;
+
+    // Create a manual spy on initializeTable before setting properties
+    const initializeTableSpy = jest.spyOn(component, 'initializeTable' as any);
+    component.sortable = false;
+    component.columns = columns;
+    component.data = data;
+
+    await page.waitForChanges();
+
+    // Verify initializeTable was called for either data or columns being set
+    expect(initializeTableSpy).toHaveBeenCalled();
+
+    // Make sure the table was initialized
+    const tableBefore = component['table'];
+    expect(tableBefore).not.toBeNull();
+
+    // Create spy for table.setOptions method - use non-null assertion since we verified it's not null
+    const setOptionsSpy = jest.spyOn(tableBefore!, 'setOptions');
+
+    // Create new columns to test the watcher
+    const newColumns = [
+      { id: 'name', header: 'New Name', accessor: 'name', sortable: true },
+      { id: 'email', header: 'New Email', accessor: 'email' },
+      { id: 'phone', header: 'Phone', accessor: 'phone' },
+    ];
+
+    // Call the watcher method directly to test it
+    component['handleColumnsChange'](newColumns);
+    await page.waitForChanges();
+
+    // Verify setOptions was called with updated columns
+    expect(setOptionsSpy).toHaveBeenCalled();
+
+    // Now test the sortable watcher
+    // Reset the spy to clear previous calls
+    setOptionsSpy.mockClear();
+
+    // Call the handler directly to test the functionality
+    component['handleSortableChange'](true);
+    await page.waitForChanges();
+
+    // Verify setOptions was called with the sortable flag
+    expect(setOptionsSpy).toHaveBeenCalled();
+    // We can't directly test the exact parameters since they're a callback function
+    // instead, check that it was called after the function execution
+
+    // Test the initialization path (table doesn't exist)
+    const originalTable = component['table'];
+
+    // Temporarily set table to null
+    component['table'] = null;
+
+    // Spy again on initializeTable (since previous spy might be saturated with calls)
+    const secondInitSpy = jest.spyOn(component, 'initializeTable' as any);
+
+    // Call the column handler which should call initializeTable when table is null
+    component['handleColumnsChange'](newColumns);
+
+    // Verify initializeTable was called
+    expect(secondInitSpy).toHaveBeenCalled();
+
+    // Restore table reference
+    component['table'] = originalTable;
+  });
+
+  it('should update table options when columns change', async () => {
+    // Setup initial component
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Test Table"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+
+    // Initial data
+    const columns = [
+      { id: 'name', header: 'Name', accessor: 'name', sortable: true },
+      { id: 'email', header: 'Email', accessor: 'email' },
+    ];
+
+    const data = [
+      { id: 1, name: 'John', email: 'john@example.com' },
+      { id: 2, name: 'Alice', email: 'alice@example.com' },
+    ];
+
+    // Setup the component to initialize the table
+    component.columns = columns;
+    component.data = data;
+
+    await page.waitForChanges();
+
+    // Verify table is initialized
+    expect(component['table']).not.toBeNull();
+
+    // Setup spy for setOptions
+    const setOptionsSpy = jest.spyOn(component['table']!, 'setOptions');
+
+    // New columns to trigger update
+    const newColumns = [
+      { id: 'name', header: 'Name Updated', accessor: 'name', sortable: true },
+      { id: 'email', header: 'Email Updated', accessor: 'email' },
+      { id: 'phone', header: 'Phone', accessor: 'phone' },
+    ];
+
+    // Explicitly call the handler to test it
+    component['handleColumnsChange'](newColumns);
+
+    // Verify setOptions was called
+    expect(setOptionsSpy).toHaveBeenCalled();
+
+    // Reset the table to test the initialization path
+    const originalTable = component['table'];
+    component['table'] = null;
+
+    // Mock initializeTable
+    const initTableSpy = jest.spyOn(component, 'initializeTable' as any);
+
+    // Call handleColumnsChange when table is null
+    component['handleColumnsChange'](newColumns);
+
+    // Verify initializeTable is called when table is null
+    expect(initTableSpy).toHaveBeenCalled();
+
+    // Restore table
+    component['table'] = originalTable;
+  });
+
+  it('should update table options when sortable changes', async () => {
+    // Setup initial component
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Test Table"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+
+    // Initial data
+    const columns = [
+      { id: 'name', header: 'Name', accessor: 'name', sortable: true },
+      { id: 'email', header: 'Email', accessor: 'email' },
+    ];
+
+    const data = [
+      { id: 1, name: 'John', email: 'john@example.com' },
+      { id: 2, name: 'Alice', email: 'alice@example.com' },
+    ];
+
+    component.sortable = false;
+    component.columns = columns;
+    component.data = data;
+
+    await page.waitForChanges();
+
+    // Verify table is initialized
+    expect(component['table']).not.toBeNull();
+
+    // Setup spy for setOptions
+    const setOptionsSpy = jest.spyOn(component['table']!, 'setOptions');
+
+    // Explicitly call the handler to test it
+    component['handleSortableChange'](true);
+
+    // Verify setOptions was called
+    expect(setOptionsSpy).toHaveBeenCalled();
+  });
 });
