@@ -102,6 +102,8 @@ jobs:
       - name: Publish distribution
         run: npm publish *.tgz
 
+      - run: rm -f $(find . -name '*.tgz')
+
       - name: Set GitHub Registry Auth Token
         run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
 

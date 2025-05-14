@@ -13,8 +13,6 @@ import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
 
 /**
  * A customizable textarea component.
- *
- * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-textarea',

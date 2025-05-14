@@ -61,6 +61,8 @@ jobs:
           name: npm-tarball
           path: 'dist/*.tgz'
 
+      - run: rm dist/*.tgz
+
       - name: Publish npm Package Publicly
         working-directory: dist
         run: npm publish

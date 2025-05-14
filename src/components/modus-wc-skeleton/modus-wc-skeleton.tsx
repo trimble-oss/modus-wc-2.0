@@ -3,9 +3,7 @@ import { convertPropsToClasses } from './modus-wc-skeleton.tailwind';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable skeleton component used to create skeletons of various sizes and shapes.
- *
- * Adheres to WCAG 2.2 standards.
+ * A customizable skeleton component used to create skeletons of various sizes and shapes
  */
 @Component({
   tag: 'modus-wc-skeleton',

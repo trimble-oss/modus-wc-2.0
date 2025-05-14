@@ -7,9 +7,7 @@
 
 ## Overview
 
-A customizable menu item component used to display the item portion of a menu.
-
-Adheres to WCAG 2.2 standards.
+A customizable menu item component used to display the item portion of a menu
 
 ## Properties
 
