@@ -196,6 +196,9 @@ export class ModusWcTable {
   handleDataChange(newData: Record<string, unknown>[]) {
     if (this.table) {
       this.table.setOptions((prev) => ({ ...prev, data: [...newData] }));
+    } else if (newData && this.columns) {
+      // If table doesn't exist yet but we have both data and columns, initialize
+      this.initializeTable();
     }
   }
 
@@ -207,6 +210,9 @@ export class ModusWcTable {
         ...prev,
         columns: this.tanStackColumns,
       }));
+    } else if (newColumns && this.data) {
+      // If table doesn't exist yet but we have both columns and data, initialize
+      this.initializeTable();
     }
   }
 
