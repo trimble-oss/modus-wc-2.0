@@ -5,8 +5,6 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * A customizable avatar component used to create avatars with different images.
- *
- * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-avatar',

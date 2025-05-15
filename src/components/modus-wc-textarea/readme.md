@@ -9,8 +9,6 @@
 
 A customizable textarea component.
 
-Adheres to WCAG 2.2 standards.
-
 ## Properties
 
 | Property        | Attribute         | Description                                                                     | Type                                                                                   | Default     |

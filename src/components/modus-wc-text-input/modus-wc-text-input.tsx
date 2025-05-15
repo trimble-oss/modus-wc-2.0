@@ -20,8 +20,6 @@ import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
 
 /**
  * A customizable input component used to create text inputs with types.
- *
- * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-text-input',

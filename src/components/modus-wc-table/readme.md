@@ -9,8 +9,6 @@
 
 A customizable table component used to show a list of data in a table format.
 
-Adheres to WCAG 2.2 standards.
-
 ## Properties
 
 | Property               | Attribute      | Description                                                                        | Type                                      | Default         |
