@@ -2695,7 +2695,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Pagination component to navigate through pages of content.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "Pagination component to navigate through pages of content.",
           "name": "ModusWcPagination",
           "members": [
             {
