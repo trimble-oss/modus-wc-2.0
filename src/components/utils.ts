@@ -1,5 +1,14 @@
 import { Build } from '@stencil/core';
 
+/**
+ * Checks if the app is in light mode by checking the html element's data-theme attribute.
+ * @returns { boolean } - Whether the app is in light mode or not.
+ */
+export const isLightMode = (): boolean => {
+  const theme = document.documentElement.getAttribute('data-theme');
+  return !theme || theme.includes('light');
+};
+
 /*
  * Generates a random string of the specified length.
  * @param length { number } - The length of the random string to generate.
