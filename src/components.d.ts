@@ -471,8 +471,7 @@ export namespace Components {
         "value": string;
     }
     /**
-     * A customizable divider component used to separate content horizontally or vertically.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable divider component used to separate content horizontally or vertically
      */
     interface ModusWcDivider {
         /**
@@ -1629,6 +1628,10 @@ export interface ModusWcCollapseCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcCollapseElement;
 }
+export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcDateElement;
+}
 export interface ModusWcMenuItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcMenuItemElement;
@@ -1892,6 +1895,29 @@ declare global {
         prototype: HTMLModusWcCollapseElement;
         new (): HTMLModusWcCollapseElement;
     };
+    interface HTMLModusWcDateElementEventMap {
+        "inputBlur": FocusEvent;
+        "inputChange": InputEvent;
+        "inputFocus": FocusEvent;
+    }
+    /**
+     * A customizable date picker component used to create date inputs.
+     * Adheres to WCAG 2.2 standards.
+     */
+    interface HTMLModusWcDateElement extends Components.ModusWcDate, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcDateElementEventMap>(type: K, listener: (this: HTMLModusWcDateElement, ev: ModusWcDateCustomEvent<HTMLModusWcDateElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcDateElementEventMap>(type: K, listener: (this: HTMLModusWcDateElement, ev: ModusWcDateCustomEvent<HTMLModusWcDateElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcDateElement: {
+        prototype: HTMLModusWcDateElement;
+        new (): HTMLModusWcDateElement;
+    };
     /**
      * A customizable divider component used to separate content horizontally or vertically
      */
@@ -1981,6 +2007,7 @@ declare global {
         new (): HTMLModusWcModalElement;
     };
     interface HTMLModusWcNavbarElementEventMap {
+        "aiClick": MouseEvent | KeyboardEvent;
         "appsClick": MouseEvent | KeyboardEvent;
         "appsMenuOpenChange": boolean;
         "condensedMenuOpenChange": boolean;
@@ -2381,6 +2408,7 @@ declare global {
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
         "modus-wc-chip": HTMLModusWcChipElement;
         "modus-wc-collapse": HTMLModusWcCollapseElement;
+        "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
@@ -2922,8 +2950,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
-     * A customizable divider component used to separate content horizontally or vertically.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable divider component used to separate content horizontally or vertically
      */
     interface ModusWcDivider {
         /**
@@ -3188,6 +3215,10 @@ declare namespace LocalJSX {
           * The open state of the notifications menu.
          */
         "notificationsMenuOpen"?: boolean;
+        /**
+          * Event emitted when the AI button is clicked or activated via keyboard.
+         */
+        "onAiClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
           * Event emitted when the apps button is clicked or activated via keyboard.
          */
@@ -4241,6 +4272,7 @@ declare namespace LocalJSX {
         "modus-wc-checkbox": ModusWcCheckbox;
         "modus-wc-chip": ModusWcChip;
         "modus-wc-collapse": ModusWcCollapse;
+        "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-feedback": ModusWcInputFeedback;
@@ -4326,6 +4358,11 @@ declare module "@stencil/core" {
              * Do not set
              */
             "modus-wc-collapse": LocalJSX.ModusWcCollapse & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;
+            /**
+             * A customizable date picker component used to create date inputs.
+             * Adheres to WCAG 2.2 standards.
+             */
+            "modus-wc-date": LocalJSX.ModusWcDate & JSXBase.HTMLAttributes<HTMLModusWcDateElement>;
             /**
              * A customizable divider component used to separate content horizontally or vertically
              */

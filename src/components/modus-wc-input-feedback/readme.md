@@ -26,6 +26,7 @@ A customizable feedback component used to provide additional context related to 
 
 ### Used by
 
+ - [modus-wc-date](../modus-wc-date)
  - [modus-wc-number-input](../modus-wc-number-input)
  - [modus-wc-select](../modus-wc-select)
  - [modus-wc-text-input](../modus-wc-text-input)
@@ -40,6 +41,7 @@ A customizable feedback component used to provide additional context related to 
 ```mermaid
 graph TD;
   modus-wc-input-feedback --> modus-wc-icon
+  modus-wc-date --> modus-wc-input-feedback
   modus-wc-number-input --> modus-wc-input-feedback
   modus-wc-select --> modus-wc-input-feedback
   modus-wc-text-input --> modus-wc-input-feedback

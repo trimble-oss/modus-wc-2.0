@@ -23,6 +23,7 @@ const userCard: INavbarUserCard = {
 };
 
 const visibility: INavbarVisibility = {
+  ai: true,
   apps: true,
   help: true,
   mainMenu: true,
@@ -100,6 +101,7 @@ const meta: Meta<NavbarArgs> = {
           detail: `
             Interface: INavbarVisibility
             Properties:
+            - ai (boolean, optional): Controls visibility of the AI button
             - apps (boolean, optional): Controls visibility of the apps button
             - help (boolean, optional): Controls visibility of the help button
             - mainMenu (boolean, optional): Controls visibility of the main menu button
@@ -116,6 +118,7 @@ const meta: Meta<NavbarArgs> = {
   parameters: {
     actions: {
       handles: [
+        'aiClick',
         'appsClick',
         'appsMenuOpenChange',
         'condensedMenuOpenChange',

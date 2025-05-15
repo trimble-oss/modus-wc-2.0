@@ -70,7 +70,8 @@ modus-wc-navbar .modus-wc-navbar {
   [slot='end'] {
     @extend %flex-align-center;
 
-    modus-wc-button {
+    modus-wc-button,
+    modus-wc-text-input {
       padding-inline-start: var(--modus-wc-spacing-sm);
     }
 
