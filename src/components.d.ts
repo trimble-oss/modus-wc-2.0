@@ -860,9 +860,17 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * The next page button text. If not set, an icon control will be used.
+         */
+        "nextButtonText"?: string;
+        /**
           * The current page number
          */
         "page": number;
+        /**
+          * The previous page button text. If not set, an icon control will be used.
+         */
+        "prevButtonText"?: string;
         /**
           * Size of the pagination buttons
          */
@@ -3375,6 +3383,10 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
+          * The next page button text. If not set, an icon control will be used.
+         */
+        "nextButtonText"?: string;
+        /**
           * Event emitted when page changes
          */
         "onPageChange"?: (event: ModusWcPaginationCustomEvent<IPageChange>) => void;
@@ -3382,6 +3394,10 @@ declare namespace LocalJSX {
           * The current page number
          */
         "page"?: number;
+        /**
+          * The previous page button text. If not set, an icon control will be used.
+         */
+        "prevButtonText"?: string;
         /**
           * Size of the pagination buttons
          */

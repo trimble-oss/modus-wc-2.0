@@ -2743,12 +2743,28 @@
               }
             },
             {
+              "name": "next-button-text",
+              "fieldName": "nextButtonText",
+              "description": "The next page button text. If not set, an icon control will be used.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "page",
               "fieldName": "page",
               "default": "1",
               "description": "The current page number",
               "type": {
                 "text": "number"
+              }
+            },
+            {
+              "name": "prev-button-text",
+              "fieldName": "prevButtonText",
+              "description": "The previous page button text. If not set, an icon control will be used.",
+              "type": {
+                "text": "string"
               }
             },
             {
