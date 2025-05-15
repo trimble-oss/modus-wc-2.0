@@ -455,6 +455,7 @@ export class ModusWcNavbar {
             {this.visibility?.ai && (
               <Fragment>
                 <modus-wc-button
+                  customClass="ai"
                   onButtonClick={this.handleAiClick}
                   shape="square"
                   size="sm"

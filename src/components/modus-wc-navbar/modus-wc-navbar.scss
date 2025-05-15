@@ -75,6 +75,10 @@ modus-wc-navbar .modus-wc-navbar {
       padding-inline-start: var(--modus-wc-spacing-sm);
     }
 
+    button.ai svg {
+      padding: 3px 0 3px 3px;
+    }
+
     // Condensed menu
     modus-wc-menu {
       @extend %dropdown-menu;
