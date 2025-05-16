@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable accordion component used for showing and hiding related groups of content.\n\nThe component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
+          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
           "name": "ModusWcAccordion",
           "members": [
             {
@@ -41,7 +41,7 @@
               "kind": "field",
               "name": "expandedChange",
               "type": {
-                "text": "EventEmitter<{\n    expanded: boolean;\n    index: number;\n  }>"
+                "text": "EventEmitter<{\r\n    expanded: boolean;\r\n    index: number;\r\n  }>"
               },
               "description": "When a collapse expanded state is changed, this event outputs the relevant index and state"
             }
@@ -266,7 +266,7 @@
               "name": "debounce-ms",
               "fieldName": "debounceMs",
               "default": "300",
-              "description": "The debounce timeout in milliseconds.\nSet to 0 to disable debouncing.",
+              "description": "The debounce timeout in milliseconds.\r\nSet to 0 to disable debouncing.",
               "type": {
                 "text": "number"
               }
@@ -300,7 +300,7 @@
               "name": "items",
               "fieldName": "items",
               "default": "[]",
-              "description": "The items to display in the menu.\nCreating a new array of items will ensure proper component re-render.",
+              "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render.",
               "type": {
                 "text": "IAutocompleteItem[]"
               }
@@ -436,7 +436,7 @@
               "type": {
                 "text": "EventEmitter<Event>"
               },
-              "description": "Event emitted when the input value changes.\nThis event is debounced based on the debounceMs prop."
+              "description": "Event emitted when the input value changes.\r\nThis event is debounced based on the debounceMs prop."
             },
             {
               "kind": "field",
@@ -575,7 +575,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\n\nThe component supports a `<slot>` for injecting content within the badge.",
+          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\r\n\r\nThe component supports a `<slot>` for injecting content within the badge.",
           "name": "ModusWcBadge",
           "members": [
             {
@@ -598,7 +598,7 @@
               "default": "'primary'",
               "description": "The color variant of the badge.",
               "type": {
-                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger'"
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
               }
             },
             {
@@ -742,7 +742,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\n\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button",
+          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button",
           "name": "ModusWcButton",
           "members": [
             {
@@ -1267,7 +1267,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable collapse component used for showing and hiding content.\n\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.\nDo not set",
+          "description": "A customizable collapse component used for showing and hiding content.\r\n\r\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.\r\nDo not set",
           "name": "ModusWcCollapse",
           "members": [
             {
@@ -1334,7 +1334,7 @@
             {
               "name": "options",
               "fieldName": "options",
-              "description": "Configuration options for rendering the pre-laid out collapse component.\nDo not set this prop if you intend to use the 'header' slot.",
+              "description": "Configuration options for rendering the pre-laid out collapse component.\r\nDo not set this prop if you intend to use the 'header' slot.",
               "type": {
                 "text": "ICollapseOptions"
               }
@@ -1375,6 +1375,198 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-date/modus-wc-date.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable date picker component used to create date inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "name": "ModusWcDate",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "default": "true",
+              "description": "Indicates that the input should have a border.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the input.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "default": "false",
+              "description": "Whether the form control is disabled.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "Feedback to render below the input.",
+              "type": {
+                "text": "IInputFeedbackProp"
+              }
+            },
+            {
+              "name": "input-id",
+              "fieldName": "inputId",
+              "description": "The ID of the input element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "input-tab-index",
+              "fieldName": "inputTabIndex",
+              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "description": "The text to display within the label.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "max",
+              "fieldName": "max",
+              "description": "Maximum date value.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "min",
+              "fieldName": "min",
+              "description": "Minimum date value.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "read-only",
+              "fieldName": "readOnly",
+              "default": "false",
+              "description": "Whether the value is editable.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "default": "false",
+              "description": "A value is required or must be checked for the form to be submittable.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the input.",
+              "type": {
+                "text": "ModusSize"
+              }
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "default": "''",
+              "description": "The value of the control (yyyy-mm-dd).",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-date",
+          "events": [
+            {
+              "kind": "field",
+              "name": "inputBlur",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "inputChange",
+              "type": {
+                "text": "EventEmitter<InputEvent>"
+              },
+              "description": "Event emitted when the input value changes."
+            },
+            {
+              "kind": "field",
+              "name": "inputFocus",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the input gains focus."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcDate",
+          "declaration": {
+            "name": "ModusWcDate",
+            "module": "src/components/modus-wc-date/modus-wc-date.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-date",
+          "declaration": {
+            "name": "ModusWcDate",
+            "module": "src/components/modus-wc-date/modus-wc-date.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-divider/modus-wc-divider.tsx",
       "declarations": [
         {
@@ -1402,7 +1594,7 @@
               "default": "'tertiary'",
               "description": "The color of the divider line.",
               "type": {
-                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger'"
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
               }
             },
             {
@@ -1481,7 +1673,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable icon component used to render Modus icons.\n\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
+          "description": "A customizable icon component used to render Modus icons.\r\n\r\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
           "name": "ModusWcIcon",
           "members": [
             {
@@ -1564,7 +1756,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable feedback component used to provide additional context related to form input interactions.\n\n<b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
+          "description": "A customizable feedback component used to provide additional context related to form input interactions.\r\n\r\n<b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
           "name": "ModusWcInputFeedback",
           "members": [
             {
@@ -1656,7 +1848,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input label component.\n\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text",
+          "description": "A customizable input label component.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text",
           "name": "ModusWcInputLabel",
           "members": [
             {
@@ -1979,7 +2171,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\n\nThe component supports a `<slot>` for injecting custom li elements inside the ul",
+          "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\r\n\r\nThe component supports a `<slot>` for injecting custom li elements inside the ul",
           "name": "ModusWcMenu",
           "members": [
             {
@@ -2062,7 +2254,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable modal component used to display content in a dialog.\n\nThe component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML",
+          "description": "A customizable modal component used to display content in a dialog.\r\n\r\nThe component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML",
           "name": "ModusWcModal",
           "members": [
             {
@@ -2083,7 +2275,7 @@
               "name": "backdrop",
               "fieldName": "backdrop",
               "default": "'default'",
-              "description": "The modal's backdrop.\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.",
+              "description": "The modal's backdrop.\r\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.",
               "type": {
                 "text": "'default' | 'static'"
               }
@@ -2172,7 +2364,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\n\nThe component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.\nIt also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML",
+          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nThe component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.\r\nIt also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML",
           "name": "ModusWcNavbar",
           "members": [
             {
@@ -2301,7 +2493,7 @@
             {
               "name": "visibility",
               "fieldName": "visibility",
-              "default": "{ apps: false, help: false, mainMenu: false, notifications: false, search: false, searchInput: false, user: true, }",
+              "default": "{ ai: false, apps: false, help: false, mainMenu: false, notifications: false, search: false, searchInput: false, user: true, }",
               "description": "The visibility of individual navbar buttons. Default is user profile visible, others hidden.",
               "type": {
                 "text": "INavbarVisibility"
@@ -2310,6 +2502,14 @@
           ],
           "tagName": "modus-wc-navbar",
           "events": [
+            {
+              "kind": "field",
+              "name": "aiClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the AI button is clicked or activated via keyboard."
+            },
             {
               "kind": "field",
               "name": "appsClick",
@@ -2532,7 +2732,7 @@
               "name": "input-mode",
               "fieldName": "inputMode",
               "default": "'numeric'",
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\nThis allows a browser to display an appropriate virtual keyboard.",
+              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard.",
               "type": {
                 "text": "'decimal' | 'none' | 'numeric'"
               }
@@ -2743,12 +2943,28 @@
               }
             },
             {
+              "name": "next-button-text",
+              "fieldName": "nextButtonText",
+              "description": "The next page button text. If not set, an icon control will be used.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "page",
               "fieldName": "page",
               "default": "1",
               "description": "The current page number",
               "type": {
                 "text": "number"
+              }
+            },
+            {
+              "name": "prev-button-text",
+              "fieldName": "prevButtonText",
+              "description": "The previous page button text. If not set, an icon control will be used.",
+              "type": {
+                "text": "string"
               }
             },
             {
@@ -2799,7 +3015,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\n\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle",
+          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\r\n\r\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle",
           "name": "ModusWcProgress",
           "members": [
             {
@@ -3920,7 +4136,7 @@
               "kind": "field",
               "name": "rowClick",
               "type": {
-                "text": "EventEmitter<{\n    row: Record<string, any>;\n    index: number;\n  }>"
+                "text": "EventEmitter<{\r\n    row: Record<string, any>;\r\n    index: number;\r\n  }>"
               },
               "description": "Emits when a row is clicked."
             }
@@ -4019,7 +4235,7 @@
               "kind": "field",
               "name": "tabChange",
               "type": {
-                "text": "EventEmitter<{\n    previousTab: number;\n    newTab: number;\n  }>"
+                "text": "EventEmitter<{\r\n    previousTab: number;\r\n    newTab: number;\r\n  }>"
               },
               "description": "When a tab is switched to, this event outputs the relevant indices"
             }
@@ -4074,7 +4290,7 @@
               "fieldName": "autoCapitalize",
               "description": "Controls automatic capitalization in inputted text.",
               "type": {
-                "text": "| 'off'\n    | 'none'\n    | 'on'\n    | 'sentences'\n    | 'words'\n    | 'characters'"
+                "text": "| 'off'\r\n    | 'none'\r\n    | 'on'\r\n    | 'sentences'\r\n    | 'words'\r\n    | 'characters'"
               }
             },
             {
@@ -4134,7 +4350,7 @@
               "fieldName": "enterkeyhint",
               "description": "A hint to the browser for which enter key to display.",
               "type": {
-                "text": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'"
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
               }
             },
             {
@@ -4175,9 +4391,9 @@
               "name": "input-mode",
               "fieldName": "inputMode",
               "default": "'text'",
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\nThis allows a browser to display an appropriate virtual keyboard.",
+              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\r\nThis allows a browser to display an appropriate virtual keyboard.",
               "type": {
-                "text": "| 'decimal'\n    | 'email'\n    | 'none'\n    | 'numeric'\n    | 'search'\n    | 'tel'\n    | 'text'\n    | 'url'"
+                "text": "| 'decimal'\r\n    | 'email'\r\n    | 'none'\r\n    | 'numeric'\r\n    | 'search'\r\n    | 'tel'\r\n    | 'text'\r\n    | 'url'"
               }
             },
             {
@@ -4395,7 +4611,7 @@
               "fieldName": "enterkeyhint",
               "description": "A hint to the browser for which enter key to display.",
               "type": {
-                "text": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'"
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
               }
             },
             {
@@ -4555,7 +4771,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A theme switcher component used to toggle the application theme and/or mode.\n\nAllows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).",
+          "description": "A theme switcher component used to toggle the application theme and/or mode.\r\n\r\nAllows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).",
           "name": "ModusWcThemeSwitcher",
           "members": [
             {
@@ -4670,7 +4886,7 @@
             {
               "name": "datalist-id",
               "fieldName": "datalistId",
-              "description": "ID of a `<datalist>` element that contains pre-defined time options.\nThe value must be the ID of a `<datalist>` element in the same document.",
+              "description": "ID of a `<datalist>` element that contains pre-defined time options.\r\nThe value must be the ID of a `<datalist>` element in the same document.",
               "type": {
                 "text": "string"
               }
@@ -4771,7 +4987,7 @@
               "name": "show-seconds",
               "fieldName": "showSeconds",
               "default": "false",
-              "description": "Displays the time input format as `HH:mm:ss` if `true`.\nInternally sets the `step` to 1 second.\nIf a `step` value is provided, it will override this attribute.",
+              "description": "Displays the time input format as `HH:mm:ss` if `true`.\r\nInternally sets the `step` to 1 second.\r\nIf a `step` value is provided, it will override this attribute.",
               "type": {
                 "text": "boolean"
               }
@@ -4788,7 +5004,7 @@
             {
               "name": "step",
               "fieldName": "step",
-              "description": "Specifies the granularity that the `value` must adhere to.\nValue of step given in seconds. Default value is 60 seconds.\nOverrides the `seconds` attribute if both are provided.",
+              "description": "Specifies the granularity that the `value` must adhere to.\r\nValue of step given in seconds. Default value is 60 seconds.\r\nOverrides the `seconds` attribute if both are provided.",
               "type": {
                 "text": "number"
               }
@@ -4797,7 +5013,7 @@
               "name": "value",
               "fieldName": "value",
               "default": "''",
-              "description": "The value of the time input.\nAlways in 24-hour format that includes leading zeros:\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\nto be selected based on user's locale (or by the user agent).\nIf time includes seconds the format is always `HH:mm:ss`.",
+              "description": "The value of the time input.\r\nAlways in 24-hour format that includes leading zeros:\r\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\r\nto be selected based on user's locale (or by the user agent).\r\nIf time includes seconds the format is always `HH:mm:ss`.",
               "type": {
                 "text": "string"
               }
@@ -4858,7 +5074,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable toast component used to stack elements, positioned on the corner of a page.\n\nThe component supports a `<slot>` for injecting additional custom content inside the toast.",
+          "description": "A customizable toast component used to stack elements, positioned on the corner of a page.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the toast.",
           "name": "ModusWcToast",
           "members": [
             {
