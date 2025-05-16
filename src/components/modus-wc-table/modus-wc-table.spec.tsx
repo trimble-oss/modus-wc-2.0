@@ -3770,4 +3770,119 @@ describe('modus-wc-table', () => {
       pageIndex: 0,
     });
   });
+
+  it('should enter edit mode when a cell is double-clicked', async () => {
+    // Create component with editing enabled
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Editable table" editable="true"></modus-wc-table>`,
+    });
+
+    // Initialize component with data and columns
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [
+      {
+        id: 'name',
+        header: 'Name',
+        accessor: 'name',
+        editor: 'text',
+      },
+    ];
+    component.data = [{ name: 'Test 1' }, { name: 'Test 2' }];
+
+    // Mock the table object with necessary methods
+    component['table'] = {
+      getState: jest.fn().mockReturnValue({
+        pagination: { pageIndex: 0, pageSize: 10 },
+      }),
+      getColumn: jest.fn().mockReturnValue({
+        getIsSorted: jest.fn().mockReturnValue(false),
+      }),
+      getRowModel: jest.fn().mockReturnValue({
+        rows: component.data.map((item, index) => ({
+          id: String(index),
+          original: item,
+          getIsSelected: jest.fn().mockReturnValue(false),
+        })),
+      }),
+    } as any;
+
+    await page.waitForChanges();
+
+    // Spy on the enterEdit method
+    const enterEditSpy = jest.spyOn(component as any, 'enterEdit');
+
+    // Get the first cell in the table
+    const cell = page.root?.querySelector('td');
+    expect(cell).not.toBeNull();
+
+    // Create a double-click event
+    const dblClickEvent = new MouseEvent('dblclick', {
+      bubbles: true,
+      cancelable: true,
+    });
+
+    // Dispatch the event on the cell
+    cell?.dispatchEvent(dblClickEvent);
+    await page.waitForChanges();
+
+    // Verify enterEdit was called with correct parameters
+    // The first cell is for the first column of the first row (index 0)
+    expect(enterEditSpy).toHaveBeenCalledWith(0, 'name');
+  });
+
+  it('should toggle all rows when header checkbox is clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Selectable table" selectable="multi"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [{ id: 'name', header: 'Name', accessor: 'name' }];
+    component.data = [{ name: 'Test 1' }, { name: 'Test 2' }];
+
+    component['table'] = {
+      toggleAllRowsSelected: jest.fn(),
+      getIsAllRowsSelected: jest.fn().mockReturnValue(false),
+      getIsSomeRowsSelected: jest.fn().mockReturnValue(false),
+      getColumn: jest.fn().mockReturnValue({
+        getIsSorted: jest.fn().mockReturnValue(false),
+      }),
+      getRowModel: jest.fn().mockReturnValue({
+        rows: component.data.map((item, index) => ({
+          id: String(index),
+          original: item,
+          getIsSelected: jest.fn().mockReturnValue(false),
+        })),
+      }),
+      getPaginationRowModel: jest.fn().mockReturnValue({
+        rows: component.data.map((item, index) => ({
+          id: String(index),
+          original: item,
+          getIsSelected: jest.fn().mockReturnValue(false),
+        })),
+      }),
+      setOptions: jest.fn(),
+      getState: jest.fn().mockReturnValue({
+        pagination: { pageIndex: 0, pageSize: 10 },
+      }),
+    } as any;
+
+    await page.waitForChanges();
+
+    // Find the header checkbox and simulate a change event
+    const headerCheckbox = page.root.querySelector(
+      'thead th modus-wc-checkbox'
+    );
+    expect(headerCheckbox).not.toBeNull();
+
+    // Create and dispatch an input change event
+    const inputChangeEvent = new CustomEvent('inputChange', {
+      bubbles: true,
+    });
+    headerCheckbox.dispatchEvent(inputChangeEvent);
+
+    // Verify toggleAllRowsSelected was called
+    expect(component['table'].toggleAllRowsSelected).toHaveBeenCalled();
+  });
 });
