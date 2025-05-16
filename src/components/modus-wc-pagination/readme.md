@@ -7,9 +7,7 @@
 
 ## Overview
 
-Pagination component to navigate through pages of content.
-
-Adheres to WCAG 2.2 standards.
+Pagination component to navigate through pages of content
 
 ## Properties
 

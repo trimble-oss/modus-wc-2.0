@@ -11,8 +11,6 @@ A customizable badge component used to create badges with different sizes, types
 
 The component supports a `<slot>` for injecting content within the badge.
 
-Adheres to WCAG 2.2 standards.
-
 ## Properties
 
 | Property      | Attribute      | Description                                    | Type                                                                                              | Default     |

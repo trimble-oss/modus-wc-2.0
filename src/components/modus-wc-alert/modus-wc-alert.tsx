@@ -18,9 +18,7 @@ import { WarningSolidIcon } from '../../icons/warning-solid.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable alert component used to inform the user about important events.
- *
- * Adheres to WCAG 2.2 standards.
+ * A customizable alert component used to inform the user about important events
  */
 @Component({
   tag: 'modus-wc-alert',
