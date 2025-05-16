@@ -7,9 +7,7 @@
 
 ## Overview
 
-A customizable chip component used to display information in a compact area.
-
-Adheres to WCAG 2.2 standards.
+A customizable chip component used to display information in a compact area
 
 ## Properties
 

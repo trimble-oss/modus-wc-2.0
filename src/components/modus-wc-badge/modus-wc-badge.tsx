@@ -9,8 +9,6 @@ const ALERT_COLORS = ['success', 'warning', 'danger'];
  * A customizable badge component used to create badges with different sizes, types, and colors.
  *
  * The component supports a `<slot>` for injecting content within the badge.
- *
- * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-badge',

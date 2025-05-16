@@ -4,8 +4,6 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * A customizable tooltip component used to create tooltips with different content.
- *
- * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-tooltip',
