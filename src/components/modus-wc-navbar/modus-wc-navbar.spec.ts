@@ -4,6 +4,26 @@ import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcToolbar } from '../modus-wc-toolbar/modus-wc-toolbar';
 
 describe('modus-wc-navbar', () => {
+  beforeAll(() => {
+    // Create a mock implementation of MutationObserver
+    // eslint-disable-next-line no-undef
+    global.MutationObserver = class {
+      observe = jest.fn();
+      disconnect = jest.fn();
+      takeRecords = jest.fn();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      constructor(_callback) {}
+    };
+  });
+
+  afterAll(() => {
+    // Remove the mock
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    // eslint-disable-next-line no-undef
+    delete global.MutationObserver;
+  });
+
   it('should render with no props', async () => {
     const page = await newSpecPage({
       components: [ModusWcNavbar, ModusWcToolbar, ModusWcButton],

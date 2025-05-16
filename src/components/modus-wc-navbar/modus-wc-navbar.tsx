@@ -183,10 +183,32 @@ export class ModusWcNavbar {
   /** Event emitted when the user menu open state changes. */
   @StencilEvent() userMenuOpenChange!: EventEmitter<boolean>;
 
+  @State() private isLight: boolean = true;
   @State() private searchValue: string = '';
+
+  private themeObserver: MutationObserver | null = null;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+
+    this.isLight = isLightMode();
+
+    // Watch for theme attribute changes
+    this.themeObserver = new MutationObserver(() => {
+      this.isLight = isLightMode();
+    });
+
+    // Observe the html element for data-theme attribute changes
+    this.themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.themeObserver) {
+      this.themeObserver.disconnect();
+    }
   }
 
   @Listen('click', { target: 'document' })
@@ -461,7 +483,7 @@ export class ModusWcNavbar {
                   size="sm"
                   variant="borderless"
                 >
-                  {isLightMode() ? <AiLightIcon /> : <AiDarkIcon />}
+                  {this.isLight ? <AiLightIcon /> : <AiDarkIcon />}
                 </modus-wc-button>
               </Fragment>
             )}

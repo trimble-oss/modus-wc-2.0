@@ -1,4 +1,5 @@
 modus-wc-navbar .modus-wc-navbar {
+  background-color: var(--modus-wc-color-white);
   height: 56px;
   min-height: 0;
   padding: 0 var(--modus-wc-spacing-md);
@@ -149,6 +150,8 @@ modus-wc-navbar .modus-wc-navbar {
 
 [data-theme='modus-classic-dark'] modus-wc-navbar .modus-wc-navbar,
 [data-theme='modus-modern-dark'] modus-wc-navbar .modus-wc-navbar {
+  background-color: var(--modus-wc-color-gray-10);
+
   // Common button styles
   &:not(.trimble-logo)
     .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
