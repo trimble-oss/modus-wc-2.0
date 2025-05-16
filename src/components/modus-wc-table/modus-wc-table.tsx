@@ -464,7 +464,9 @@ export class ModusWcTable {
 
   private getTotalPages(): number {
     if (!this.data || !this.data.length) return 1;
-    return Math.ceil(this.data.length / this.internalPagination.pageSize);
+    return this.internalPagination.pageSize <= 0
+      ? 1
+      : Math.ceil(this.data.length / this.internalPagination.pageSize);
   }
 
   private handlePageChange(newPage: number): void {
