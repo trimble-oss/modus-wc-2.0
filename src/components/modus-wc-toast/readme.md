@@ -11,6 +11,8 @@ A customizable toast component used to stack elements, positioned on the corner 
 
 The component supports a `<slot>` for injecting additional custom content inside the toast.
 
+Adheres to WCAG 2.2 standards.
+
 ## Properties
 
 | Property      | Attribute      | Description                                        | Type                                                                                                                                                              | Default     |

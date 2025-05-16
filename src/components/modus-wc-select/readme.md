@@ -7,7 +7,9 @@
 
 ## Overview
 
-A customizable select component used to pick a value from a list of options
+A customizable select component used to pick a value from a list of options.
+
+Adheres to WCAG 2.2 standards.
 
 ## Properties
 

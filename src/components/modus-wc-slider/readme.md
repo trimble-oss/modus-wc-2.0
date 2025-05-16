@@ -7,7 +7,9 @@
 
 ## Overview
 
-A customizable slider component
+A customizable slider component.
+
+Adheres to WCAG 2.2 standards.
 
 ## Properties
 

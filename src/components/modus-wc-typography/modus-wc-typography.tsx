@@ -17,6 +17,8 @@ export type TypographyWeight = 'light' | 'normal' | 'semibold' | 'bold';
 
 /**
  * A customizable typography component used to render text with different sizes, variants, and weights.
+ *
+ * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-typography',

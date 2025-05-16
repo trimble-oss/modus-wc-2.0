@@ -9,6 +9,8 @@
 
 A customizable breadcrumbs component used to help users navigate through a website.
 
+Adheres to WCAG 2.2 standards.
+
 ## Properties
 
 | Property      | Attribute      | Description                                 | Type                                | Default |

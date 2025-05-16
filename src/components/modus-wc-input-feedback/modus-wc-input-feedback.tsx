@@ -12,7 +12,8 @@ export type IInputFeedbackLevel = 'error' | 'info' | 'success' | 'warning';
  * A customizable feedback component used to provide additional context related to form input interactions.
  *
  * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
-
+ *
+ * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-input-feedback',

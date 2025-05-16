@@ -12,6 +12,8 @@ A customizable collapse component used for showing and hiding content.
 The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
 Do not set
 
+Adheres to WCAG 2.2 standards.
+
 ## Properties
 
 | Property      | Attribute      | Description                                                                                                                           | Type                            | Default     |

@@ -3,6 +3,8 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * A customizable toolbar component used to organize content across the entire page.
+ *
+ * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-toolbar',

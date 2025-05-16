@@ -9,6 +9,8 @@
 
 A customizable tooltip component used to create tooltips with different content.
 
+Adheres to WCAG 2.2 standards.
+
 ## Properties
 
 | Property      | Attribute      | Description                                                                                             | Type                                                            | Default     |

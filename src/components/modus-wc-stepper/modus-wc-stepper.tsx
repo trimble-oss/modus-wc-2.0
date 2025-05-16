@@ -24,6 +24,8 @@ export interface IStepperItem {
 
 /**
  * Used to show a list of steps in a process.
+ *
+ * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-stepper',

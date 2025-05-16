@@ -9,6 +9,8 @@
 
 A customizable avatar component used to create avatars with different images.
 
+Adheres to WCAG 2.2 standards.
+
 ## Properties
 
 | Property           | Attribute      | Description                                 | Type                                        | Default     |

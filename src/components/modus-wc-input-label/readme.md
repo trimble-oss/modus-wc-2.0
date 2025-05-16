@@ -9,7 +9,9 @@
 
 A customizable input label component.
 
-The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text
+The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
+
+Adheres to WCAG 2.2 standards.
 
 ## Properties
 
@@ -29,6 +31,7 @@ The component supports a `<slot>` for injecting additional custom content inside
 
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-checkbox](../modus-wc-checkbox)
+ - [modus-wc-date](../modus-wc-date)
  - [modus-wc-number-input](../modus-wc-number-input)
  - [modus-wc-progress](../modus-wc-progress)
  - [modus-wc-radio](../modus-wc-radio)
@@ -44,6 +47,7 @@ The component supports a `<slot>` for injecting additional custom content inside
 graph TD;
   modus-wc-autocomplete --> modus-wc-input-label
   modus-wc-checkbox --> modus-wc-input-label
+  modus-wc-date --> modus-wc-input-label
   modus-wc-number-input --> modus-wc-input-label
   modus-wc-progress --> modus-wc-input-label
   modus-wc-radio --> modus-wc-input-label

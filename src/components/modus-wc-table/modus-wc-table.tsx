@@ -30,6 +30,8 @@ export interface ITableColumn {
 
 /**
  * A customizable table component used to show a list of data in a table format.
+ *
+ * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-table',

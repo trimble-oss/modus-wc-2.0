@@ -9,6 +9,8 @@
 
 A customizable tabs component used to create groups of tabs.
 
+Adheres to WCAG 2.2 standards.
+
 ## Properties
 
 | Property         | Attribute          | Description                                 | Type                                                       | Default      |

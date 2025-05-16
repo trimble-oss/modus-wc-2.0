@@ -9,6 +9,8 @@
 
 A customizable autocomplete component used to create searchable text inputs.
 
+Adheres to WCAG 2.2 standards.
+
 ## Properties
 
 | Property        | Attribute         | Description                                                                                             | Type                                  | Default                                                                                                                              |

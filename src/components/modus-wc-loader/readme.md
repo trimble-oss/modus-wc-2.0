@@ -7,7 +7,9 @@
 
 ## Overview
 
-A customizable loader component used to indicate the loading of content
+A customizable loader component used to indicate the loading of content.
+
+Adheres to WCAG 2.2 standards.
 
 ## Properties
 

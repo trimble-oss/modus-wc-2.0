@@ -12,7 +12,9 @@ import { IInputFeedbackProp, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable input component used to create number inputs with types
+ * A customizable input component used to create number inputs with types.
+ *
+ * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-number-input',

@@ -7,7 +7,9 @@
 
 ## Overview
 
-A customizable radio component
+A customizable radio component.
+
+Adheres to WCAG 2.2 standards.
 
 ## Properties
 

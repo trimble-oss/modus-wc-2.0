@@ -9,6 +9,8 @@
 
 A customizable typography component used to render text with different sizes, variants, and weights.
 
+Adheres to WCAG 2.2 standards.
+
 ## Properties
 
 | Property      | Attribute      | Description                                          | Type                                                            | Default    |

@@ -5,7 +5,9 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 /**
  * A customizable input label component.
  *
- * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text
+ * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
+ *
+ * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-input-label',

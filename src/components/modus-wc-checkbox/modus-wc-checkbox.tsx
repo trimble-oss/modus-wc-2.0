@@ -12,7 +12,9 @@ import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable checkbox component
+ * A customizable checkbox component.
+ *
+ * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-checkbox',

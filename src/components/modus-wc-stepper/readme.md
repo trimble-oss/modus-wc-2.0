@@ -9,6 +9,8 @@
 
 Used to show a list of steps in a process.
 
+Adheres to WCAG 2.2 standards.
+
 ## Properties
 
 | Property      | Attribute      | Description                                     | Type                                      | Default     |

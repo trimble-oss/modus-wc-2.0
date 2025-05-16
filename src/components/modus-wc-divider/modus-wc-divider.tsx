@@ -4,7 +4,9 @@ import { Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable divider component used to separate content horizontally or vertically
+ * A customizable divider component used to separate content horizontally or vertically.
+ *
+ * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-divider',

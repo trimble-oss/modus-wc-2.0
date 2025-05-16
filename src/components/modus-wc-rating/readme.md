@@ -7,7 +7,9 @@
 
 ## Overview
 
-A rating component that allows users to choose a rating from predefined options
+A rating component that allows users to choose a rating from predefined options.
+
+Adheres to WCAG 2.2 standards.
 
 ## Properties
 

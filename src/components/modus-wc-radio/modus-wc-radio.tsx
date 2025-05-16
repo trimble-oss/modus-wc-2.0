@@ -13,7 +13,9 @@ import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable radio component
+ * A customizable radio component.
+ *
+ * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-radio',

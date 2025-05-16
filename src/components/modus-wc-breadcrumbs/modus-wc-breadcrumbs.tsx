@@ -20,6 +20,8 @@ export interface IBreadcrumb {
 
 /**
  * A customizable breadcrumbs component used to help users navigate through a website.
+ *
+ * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-breadcrumbs',
