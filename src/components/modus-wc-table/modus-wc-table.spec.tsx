@@ -4601,4 +4601,53 @@ describe('modus-wc-table', () => {
     // Clean up DOM elements
     document.body.removeChild(mockCell);
   });
+
+  it('should trigger handleHeaderClick when clicking a sortable column header', async () => {
+    const sortableColumns = [
+      {
+        id: 'name',
+        header: 'Name',
+        accessor: 'name',
+        sortable: true,
+      },
+      {
+        id: 'email',
+        header: 'Email',
+        accessor: 'email',
+        sortable: false,
+      },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Default table" sortable="true"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = sortableColumns;
+    component.data = defaultData;
+
+    // Spy on the handleHeaderClick method
+    const handleHeaderClickSpy = jest.spyOn(
+      component as any,
+      'handleHeaderClick'
+    );
+
+    await page.waitForChanges();
+
+    // Get the first sortable header (Name column)
+    const sortableHeader = page.root?.querySelector('th.sortable');
+    expect(sortableHeader).not.toBeNull();
+
+    // Trigger the click event directly on the header element
+    sortableHeader.click();
+    await page.waitForChanges();
+
+    // Verify the handler was called with the correct column id
+    expect(handleHeaderClickSpy).toHaveBeenCalledWith('name');
+
+    // Verify sorting state was updated
+    expect(component['sorting'].length).toBe(1);
+    expect(component['sorting'][0].id).toBe('name');
+  });
 });
