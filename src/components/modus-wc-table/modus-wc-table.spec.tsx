@@ -366,7 +366,7 @@ describe('modus-wc-table', () => {
         editorTemplate: '<input value="${value}" id="status-editor" />',
         editorSetup: (
           el: HTMLElement,
-          row: Record<string, unknown>,
+          _row: Record<string, unknown>,
           commit: (val: unknown) => void
         ) => {
           el.addEventListener('change', (e: Event) => {
@@ -663,7 +663,7 @@ describe('modus-wc-table', () => {
         id: 'email',
         header: 'Email',
         accessor: 'email',
-        editorSetup: (el, row, commit) => {
+        editorSetup: (_el, row, commit) => {
           // This would normally set up event handlers
           commit(row.email);
         },
@@ -719,7 +719,7 @@ describe('modus-wc-table', () => {
         accessor: 'status',
         editorTemplate:
           '<input type="text" value="${value}" class="status-editor" />',
-        editorSetup: (el, row, commit) => {
+        editorSetup: (el, _row, commit) => {
           const input = el.querySelector('input');
           if (input) {
             input.addEventListener('change', () => commit(input.value));
@@ -973,7 +973,7 @@ describe('modus-wc-table', () => {
     // Assert
     expect(component.internalRowSelection).toEqual({ '3': true });
   });
-  it('should handle checkbox selection in single and multi modes', async () => {
+  it('should handle checkbox selection in single and multi modes', () => {
     const component = new ModusWcTable();
 
     const mockRow = { id: 'row-1', toggleSelected: jest.fn() };
@@ -992,7 +992,7 @@ describe('modus-wc-table', () => {
     expect(mockRow.toggleSelected).toHaveBeenCalled();
     expect(component.internalRowSelection).toEqual({ 'row-1': true });
   });
-  it('should unselect a row when already selected in multi-select mode', async () => {
+  it('should unselect a row when already selected in multi-select mode', () => {
     const component = new ModusWcTable();
     const mockRow = { id: 'row-1', toggleSelected: jest.fn() };
 
@@ -1192,7 +1192,7 @@ describe('modus-wc-table', () => {
         accessor: 'status',
         editorTemplate:
           '<input type="text" value="${value}" class="template-editor" />',
-        editorSetup: (el, row, commit) => {
+        editorSetup: (el, _row, commit) => {
           const input = el.querySelector('input');
           if (input) {
             input.addEventListener('change', () => commit(input.value));
@@ -1473,7 +1473,7 @@ describe('modus-wc-table', () => {
         accessor: 'status',
         editorTemplate:
           '<input type="text" value="${value}" id="template-editor" />',
-        editorSetup: (el, row, commit) => {
+        editorSetup: (el, _row, commit) => {
           const input = el.querySelector('input');
           if (input) {
             input.addEventListener('change', () => commit(input.value));
@@ -1751,7 +1751,7 @@ describe('modus-wc-table', () => {
         accessor: 'template',
         editorTemplate:
           '<input type="text" value="${value}" class="template-editor" />',
-        editorSetup: (el, row, commit) => {
+        editorSetup: (el, _row, commit) => {
           const input = el.querySelector('input');
           if (input) {
             // Set up event handler
@@ -2205,7 +2205,7 @@ describe('modus-wc-table', () => {
         accessor: 'status',
         editorTemplate:
           '<input type="text" value="${value}" class="template-editor" />',
-        editorSetup: (el, row, commit) => {
+        editorSetup: (el, _row, commit) => {
           const input = el.querySelector('input');
           if (input) {
             input.addEventListener('change', () => commit(input.value));
@@ -2250,7 +2250,7 @@ describe('modus-wc-table', () => {
     expect(component.data[0].name).toBe('New Name');
   });
 
-  it('should directly test private methods to cover remaining uncovered lines', async () => {
+  it('should directly test private methods to cover remaining uncovered lines', () => {
     // Use a special approach to test private methods without triggering render
 
     // Create a test instance without rendering
@@ -2421,9 +2421,6 @@ describe('modus-wc-table', () => {
 
     // Skip rendering by mocking the render method
     component['render'] = jest.fn().mockReturnValue(null);
-
-    // Create test-safe pagination methods to test directly
-    let pageIndex = 0;
 
     // Test the pagination logic directly
     const handlePageChange = (newPage: number, totalPages = 10): number => {
@@ -2791,7 +2788,7 @@ describe('modus-wc-table', () => {
           accessor: 'email',
           editorTemplate:
             '<input type="text" value="${value}" class="email-editor" />',
-          editorSetup: (el, row, commit) => {
+          editorSetup: (el, _row, commit) => {
             const input = el.querySelector('input');
             if (input) {
               input.addEventListener('change', () => commit(input.value));
@@ -3150,84 +3147,6 @@ describe('modus-wc-table', () => {
     expect(component['validateRowAndColumn'](0, 'id')).toBe(false);
   });
 
-  it('should directly test uncovered methods with spies', async () => {
-    // Create a component with newSpecPage to have proper initialization
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: '<modus-wc-table></modus-wc-table>',
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-
-    // Mock internal methods to avoid issues with immutable properties
-    // For renderCell (lines 739-759)
-    const renderCellSpy = jest.spyOn(component as any, 'renderCell');
-
-    const column = {
-      id: 'name',
-      accessor: 'name',
-      header: 'Name',
-      cellRenderer: (value) => `Custom: ${value}`,
-    };
-
-    const row = { name: 'Test Name' };
-
-    // Call renderCell directly
-    renderCellSpy.mockImplementation((col, r) => {
-      if (col.cellRenderer) {
-        return col.cellRenderer(r[col.accessor], r);
-      }
-      return r[col.accessor] || '';
-    });
-
-    // Invoke the method
-    const result = component['renderCell'](column, row);
-    expect(renderCellSpy).toHaveBeenCalled();
-
-    // For validateRowAndColumn (line 792)
-    const validateRowAndColumnSpy = jest.spyOn(
-      component as any,
-      'validateRowAndColumn'
-    );
-    validateRowAndColumnSpy.mockImplementation((rowIndex, colId) => {
-      return (
-        rowIndex >= 0 && rowIndex < 5 && ['id', 'name', 'email'].includes(colId)
-      );
-    });
-
-    // Test with valid parameters
-    expect(component['validateRowAndColumn'](0, 'id')).toBe(true);
-
-    // Test with invalid parameters
-    expect(component['validateRowAndColumn'](-1, 'id')).toBe(false);
-    expect(component['validateRowAndColumn'](0, 'nonexistent')).toBe(false);
-    expect(validateRowAndColumnSpy).toHaveBeenCalled();
-
-    // For getTotalPages (line 774)
-    const getTotalPagesSpy = jest.spyOn(component as any, 'getTotalPages');
-    getTotalPagesSpy.mockImplementation(() => {
-      // Simulate the method's logic
-      return 3; // A mock result
-    });
-
-    // Invoke the method
-    const pages = component['getTotalPages']();
-    expect(getTotalPagesSpy).toHaveBeenCalled();
-    expect(pages).toBe(3);
-
-    // For getPaginationSize (line 512)
-    const getPaginationSizeSpy = jest.spyOn(
-      component as any,
-      'getPaginationSize'
-    );
-    getPaginationSizeSpy.mockImplementation(() => 'md');
-
-    // Invoke the method
-    const size = component['getPaginationSize']();
-    expect(getPaginationSizeSpy).toHaveBeenCalled();
-    expect(size).toBe('md');
-  });
-
   it('should test page size selector and editor functionality', async () => {
     const page = await newSpecPage({
       components: [ModusWcTable],
@@ -3323,7 +3242,7 @@ describe('modus-wc-table', () => {
         accessor: 'template',
         editorTemplate:
           '<input type="text" value="${value}" class="template-editor" />',
-        editorSetup: (el, row, commit) => {
+        editorSetup: (el, _row, commit) => {
           const input = el.querySelector('input');
           if (input) {
             input.addEventListener('change', () => commit(input.value));
@@ -3998,8 +3917,6 @@ describe('modus-wc-table', () => {
       component.data[0]
     );
 
-    // Get the rendered element and the commit handler
-    const rendererArgs = customRenderer.mock.calls[0];
     const renderedElement = customRenderer.mock.results[0].value;
 
     // Verify the rendered element
@@ -4475,28 +4392,28 @@ describe('modus-wc-table', () => {
         srcElement: { value: '10' },
       },
     };
-    component['handlePageSizeOptionChange'](validEvent as any);
+    component['handlePageSizeOptionChange'](validEvent as unknown as Event);
 
     // Verify setPagination was called with correct values
-    expect(component['table'].setPagination).toHaveBeenCalledWith({
+    expect(component['table']!.setPagination).toHaveBeenCalledWith({
       pageIndex: 0,
       pageSize: 10,
     });
 
     // Test with invalid input
-    (component['table'].setPagination as jest.Mock).mockClear();
+    (component['table']!.setPagination as jest.Mock).mockClear();
     const invalidEvent = {
       detail: {
         srcElement: { value: 'not-a-number' },
       },
     };
-    component['handlePageSizeOptionChange'](invalidEvent as any);
+    component['handlePageSizeOptionChange'](invalidEvent as unknown as Event);
 
     // Should still call setPagination, but with NaN
-    expect(component['table'].setPagination).toHaveBeenCalled();
-    const callArgs = (component['table'].setPagination as jest.Mock).mock
+    expect(component['table']!.setPagination).toHaveBeenCalled();
+    const callArgs = (component['table']!.setPagination as jest.Mock).mock
       .calls[0][0];
     expect(callArgs.pageIndex).toBe(0);
-    expect(isNaN(callArgs.pageSize)).toBe(true);
+    expect(Number.isNaN(callArgs.pageSize)).toBe(true);
   });
 });
