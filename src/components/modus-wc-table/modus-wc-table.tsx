@@ -176,11 +176,6 @@ export class ModusWcTable {
     selectedRows: Record<string, unknown>[];
     selectedRowIds: string[];
   }>;
-  pageSizeComp: {
-    setPagination: jest.Mock<any, any, any>;
-    setOptions: jest.Mock<any, any, any>;
-  };
-
   @Watch('currentPage')
   handleCurrentPageChange(newValue: number) {
     if (!this.table) return;
@@ -622,17 +617,17 @@ export class ModusWcTable {
     // Simply clear editor state – Stencil will re-render cell normally
     this.activeEditor = null;
   }
-  private handleRowCheckboxClick(rowObj: any): void {
+  private handleRowCheckboxClick(rowObj: unknown): void {
     if (this.selectable === 'single') {
       this.table?.setRowSelection({
-        [String(rowObj.id)]: true,
+        [String((rowObj as { id: unknown }).id)]: true,
       });
     } else {
       // Multi-select: toggle via TanStack then mirror into reactive state so
       // row highlight updates synchronously.
-      rowObj.toggleSelected?.();
+      (rowObj as { toggleSelected?: () => void }).toggleSelected?.();
 
-      const idStr = String(rowObj.id);
+      const idStr = String((rowObj as { id: unknown }).id);
       const isSelected = !!this.internalRowSelection[idStr];
       const newMap: RowSelectionState = {
         ...this.internalRowSelection,

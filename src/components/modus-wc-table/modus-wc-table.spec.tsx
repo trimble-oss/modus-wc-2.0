@@ -4986,4 +4986,43 @@ describe('modus-wc-table', () => {
     cellNode.dispatchEvent(blurEvent);
     expect(component['activeEditor']).toBeNull();
   });
+  it('should call handlePageChange when pagination emits page change event', async () => {
+    const columns: ITableColumn[] = [
+      { id: 'name', accessor: 'name', header: 'Name' },
+    ];
+    const data = Array.from({ length: 20 }, (_, i) => ({
+      id: i.toString(),
+      name: `User ${i + 1}`,
+    }));
+
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table paginated="true" current-page="1"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = columns;
+    component.data = data;
+    await page.waitForChanges();
+
+    // Spy on the handler
+    const pageChangeSpy = jest.spyOn(component as any, 'handlePageChange');
+
+    // Find the pagination element and fire event
+    const pagination = page.root.querySelector('modus-wc-pagination');
+    expect(pagination).toBeTruthy();
+
+    // Fire the custom event
+    pagination?.dispatchEvent(
+      new CustomEvent('pageChange', {
+        detail: { newPage: 2 },
+        bubbles: true,
+      })
+    );
+
+    await page.waitForChanges();
+
+    // Assert the handler was called
+    expect(pageChangeSpy).toHaveBeenCalledWith(2);
+  });
 });
