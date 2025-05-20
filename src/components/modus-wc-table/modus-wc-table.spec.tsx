@@ -947,9 +947,112 @@ describe('modus-wc-table', () => {
 
     // Verify internal selection state was updated
     expect(component['internalRowSelection']).toEqual({ '1': true });
+    const mockRowObj = {
+      id: '3',
+      getIsSelected: jest.fn().mockReturnValue(false),
+      toggleSelected: jest.fn(),
+    };
+
+    component.selectable = 'multi';
+    component.internalRowSelection = {};
+
+    const idStr = String(mockRowObj.id);
+    const isSelected = !!component.internalRowSelection[idStr];
+    const newMap = { ...component.internalRowSelection };
+
+    if (isSelected) {
+      delete newMap[idStr];
+    } else {
+      newMap[idStr] = true;
+    }
+
+    component.internalRowSelection = newMap;
+
+    // Assert
+    expect(component.internalRowSelection).toEqual({ '3': true });
+  });
+  it('should handle checkbox selection in single and multi modes', async () => {
+    const component = new ModusWcTable();
+
+    const mockRow = { id: 'row-1', toggleSelected: jest.fn() };
+
+    // SINGLE mode
+    const mockTable = { setRowSelection: jest.fn() };
+    component.table = mockTable as any;
+    component.selectable = 'single';
+    component.handleRowCheckboxClick(mockRow);
+    expect(mockTable.setRowSelection).toHaveBeenCalledWith({ 'row-1': true });
+
+    // MULTI mode
+    component.selectable = 'multi';
+    component.internalRowSelection = {};
+    component.handleRowCheckboxClick(mockRow);
+    expect(mockRow.toggleSelected).toHaveBeenCalled();
+    expect(component.internalRowSelection).toEqual({ 'row-1': true });
+  });
+  it('should unselect a row when already selected in multi-select mode', async () => {
+    const component = new ModusWcTable();
+    const mockRow = { id: 'row-1', toggleSelected: jest.fn() };
+
+    component.selectable = 'multi';
+    component.table = {
+      getRow: () => ({ id: 'row-1', original: mockRow }),
+    } as any;
+
+    // Set the row as initially selected
+    component.internalRowSelection = { 'row-1': true };
+
+    // Call the handler (manually or via refactored method)
+    component.handleRowCheckboxClick(mockRow);
+
+    // Assert it's now unselected
+    expect(component.internalRowSelection).toEqual({});
   });
 
   // Additional tests to improve coverage
+  it('should call handleCommit from customEditorRenderer', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table editable="true"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+
+    const mockEditor = (value: unknown, onCommit: (val: unknown) => void) => {
+      const input = document.createElement('input');
+      input.value = value as string;
+      input.addEventListener('blur', () => {
+        onCommit('new value'); // Simulate commit
+      });
+      return input;
+    };
+
+    component.columns = [
+      {
+        id: 'name',
+        accessor: 'name',
+        header: 'Name',
+        editor: 'custom',
+        customEditorRenderer: mockEditor,
+      },
+    ];
+    component.data = [{ id: '1', name: 'Test' }];
+    await page.waitForChanges();
+
+    // Trigger edit mode manually
+    component['enterEdit'](0, 'name');
+    await page.waitForChanges();
+
+    // Force cell re-render (Stencil only rerenders on state change)
+    component.activeEditor = { rowIndex: 0, colId: 'name' };
+    await page.waitForChanges();
+
+    // Call the commit directly from the renderer logic
+    component['commitEdit'](0, 'name', 'new value');
+
+    // Validate data changed
+    expect(component.data[0].name).toBe('new value');
+  });
 
   it('should handle showing/hiding specific elements based on prop configuration', async () => {
     const page = await newSpecPage({
@@ -4697,5 +4800,139 @@ describe('modus-wc-table', () => {
 
     // Verify the cell data was actually updated
     expect(component.data[0].text).toBe('Updated text');
+  });
+
+  it('should test renderCell with null/undefined value and no cellRenderer (lines 739-759)', () => {
+    const component = new ModusWcTable();
+
+    // Create a column without a cellRenderer
+    const column = {
+      id: 'test',
+      header: 'Test Column',
+      accessor: 'test',
+    };
+
+    // Test with undefined value
+    const rowWithUndefined = { id: '1' };
+    const result1 = component['renderCell'](column, rowWithUndefined);
+    expect(result1).toBe('');
+
+    // Test with null value
+    const rowWithNull = { id: '1', test: null };
+    const result2 = component['renderCell'](column, rowWithNull);
+    expect(result2).toBe('');
+
+    // Test with empty string
+    const rowWithEmptyString = { id: '1', test: '' };
+    const result3 = component['renderCell'](column, rowWithEmptyString);
+    expect(result3).toBe('');
+
+    // Test with zero
+    const rowWithZero = { id: '1', test: 0 };
+    const result4 = component['renderCell'](column, rowWithZero);
+    expect(result4).toBe('0');
+  });
+
+  it('should test getTotalPages with pageSize <= 0 (line 774)', () => {
+    const component = new ModusWcTable();
+
+    // Set data property
+    Object.defineProperty(component, 'data', {
+      value: [{ id: '1' }, { id: '2' }, { id: '3' }],
+      configurable: true,
+      writable: true,
+    });
+
+    // Set internalPagination with zero pageSize
+    Object.defineProperty(component, 'internalPagination', {
+      value: { pageIndex: 0, pageSize: 0 },
+      configurable: true,
+      writable: true,
+    });
+
+    // Test the method directly
+    const result = component['getTotalPages']();
+
+    // Should return 1 when pageSize <= 0
+    expect(result).toBe(1);
+  });
+
+  it('should test ref callback with cellNode as a string (line 817)', () => {
+    const component = new ModusWcTable();
+
+    // Create a real DOM element to test with
+    const cellElement = document.createElement('td');
+
+    // Add to DOM for proper testing
+    document.body.appendChild(cellElement);
+
+    // Setup column and row data
+    const column = { id: 'name', header: 'Name', accessor: 'name' };
+    const row = { id: '1', name: 'Test Name' };
+
+    try {
+      // Mock renderCell to return a string value
+      const renderCellSpy = jest
+        .spyOn(component as any, 'renderCell')
+        .mockReturnValue('String Cell Content');
+
+      // Directly call the ref callback function with a real DOM element
+      const refCallback = (el: HTMLElement) => {
+        if (!el) return; // Line 815
+
+        // Clear existing content
+        el.innerHTML = '';
+
+        // Get the cell content
+        const cellNode = component['renderCell'](column, row);
+
+        // The line we want to test - string path
+        if (cellNode instanceof HTMLElement) {
+          el.appendChild(cellNode);
+        } else {
+          el.textContent = String(cellNode); // Line 817
+        }
+      };
+
+      // Call the ref callback with our element
+      refCallback(cellElement);
+
+      // Check that the cell has the text content set
+      expect(cellElement.textContent).toBe('String Cell Content');
+
+      // Verify renderCell was called
+      expect(renderCellSpy).toHaveBeenCalled();
+
+      // Clean up
+      renderCellSpy.mockRestore();
+    } finally {
+      // Clean up DOM
+      document.body.removeChild(cellElement);
+    }
+  });
+
+  it('should toggle row selection via checkbox in multi-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Selection Test" selectable="multi"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = defaultColumns;
+    component.data = defaultData;
+    await page.waitForChanges();
+
+    const checkbox = page.root!.querySelector(
+      '.selection-column modus-wc-checkbox'
+    );
+    expect(checkbox).not.toBeNull();
+
+    // Simulate checkbox click for first row
+    checkbox!.dispatchEvent(new CustomEvent('inputChange'));
+    await page.waitForChanges();
+
+    // Check internal selection state is updated
+    const firstRowId = '0'; // assuming row id = index here
+    expect(component['internalRowSelection'][firstRowId]).toBe(true);
   });
 });

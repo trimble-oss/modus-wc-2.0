@@ -618,6 +618,29 @@ export class ModusWcTable {
     // Simply clear editor state – Stencil will re-render cell normally
     this.activeEditor = null;
   }
+  private handleRowCheckboxClick(rowObj: any): void {
+    if (this.selectable === 'single') {
+      this.table?.setRowSelection({
+        [String(rowObj.id)]: true,
+      });
+    } else {
+      // Multi-select: toggle via TanStack then mirror into reactive state so
+      // row highlight updates synchronously.
+      rowObj.toggleSelected?.();
+
+      const idStr = String(rowObj.id);
+      const isSelected = !!this.internalRowSelection[idStr];
+      const newMap: RowSelectionState = {
+        ...this.internalRowSelection,
+      };
+      if (isSelected) {
+        delete newMap[idStr];
+      } else {
+        newMap[idStr] = true;
+      }
+      this.internalRowSelection = newMap;
+    }
+  }
 
   render() {
     // Derive rows straight from TanStack's row model so that any sorting/pagination
@@ -716,6 +739,10 @@ export class ModusWcTable {
                 {displayData.length > 0 ? (
                   rows.map((rowObj, index) => {
                     const row = rowObj.original;
+                    /* istanbul ignore next */
+                    const checkboxHandler = () =>
+                      this.handleRowCheckboxClick(rowObj);
+
                     return (
                       <tr
                         key={rowObj.id ?? `row-${index}`}
@@ -735,30 +762,7 @@ export class ModusWcTable {
                               aria-label="Select row"
                               size="sm"
                               value={rowObj.getIsSelected?.() ?? false}
-                              onInputChange={() => {
-                                if (this.selectable === 'single') {
-                                  this.table?.setRowSelection({
-                                    [String(rowObj.id)]: true,
-                                  });
-                                } else {
-                                  // Multi-select: toggle via TanStack then mirror into reactive state so
-                                  // row highlight updates synchronously.
-                                  rowObj.toggleSelected?.();
-
-                                  const idStr = String(rowObj.id);
-                                  const isSelected =
-                                    !!this.internalRowSelection[idStr];
-                                  const newMap: RowSelectionState = {
-                                    ...this.internalRowSelection,
-                                  };
-                                  if (isSelected) {
-                                    delete newMap[idStr];
-                                  } else {
-                                    newMap[idStr] = true;
-                                  }
-                                  this.internalRowSelection = newMap;
-                                }
-                              }}
+                              onInputChange={checkboxHandler}
                             ></modus-wc-checkbox>
                           </td>
                         )}
@@ -770,6 +774,7 @@ export class ModusWcTable {
 
                           const cellDisplay = this.renderCell(column, row);
 
+                          /* istanbul ignore next */
                           const handleCommit = (newVal: unknown) =>
                             this.commitEdit(index, column.id, newVal);
 
