@@ -3566,6 +3566,64 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-side-navigation/modus-wc-side-navigation.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModusWcSideNavigation",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "collapse-on-click-outside",
+              "fieldName": "collapseOnClickOutside",
+              "default": "true",
+              "description": "Collapse the panel when clicking outside."
+            },
+            {
+              "name": "expanded",
+              "fieldName": "expanded",
+              "default": "false",
+              "description": "Whether the side navigation is expanded."
+            },
+            {
+              "name": "max-width",
+              "fieldName": "maxWidth",
+              "default": "'256px'",
+              "description": "Maximum width of the side navigation panel in an expanded state."
+            }
+          ],
+          "tagName": "modus-wc-side-navigation",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcSideNavigation",
+          "declaration": {
+            "name": "ModusWcSideNavigation",
+            "module": "src/components/modus-wc-side-navigation/modus-wc-side-navigation.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-side-navigation",
+          "declaration": {
+            "name": "ModusWcSideNavigation",
+            "module": "src/components/modus-wc-side-navigation/modus-wc-side-navigation.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-skeleton/modus-wc-skeleton.tsx",
       "declarations": [
         {
