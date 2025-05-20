@@ -1,5 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { SortingState, Table } from '@tanstack/table-core';
+import { SortingState } from '@tanstack/table-core';
 import { ITableColumn, ModusWcTable } from './modus-wc-table';
 
 describe('modus-wc-table', () => {
@@ -4934,5 +4934,56 @@ describe('modus-wc-table', () => {
     // Check internal selection state is updated
     const firstRowId = '0'; // assuming row id = index here
     expect(component['internalRowSelection'][firstRowId]).toBe(true);
+  });
+  it('should run setupEditorCell and invoke editorSetup and blurHandler', async () => {
+    const mockEditorSetup = jest.fn();
+    const mockCommit = jest.fn();
+
+    const column: ITableColumn = {
+      id: 'name',
+      accessor: 'name',
+      header: 'Name',
+      editorTemplate: '<input type="text" value="${value}" />',
+      editorSetup: mockEditorSetup,
+    };
+
+    const row = { id: '1', name: 'Test User' };
+
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+
+    // Build cellNode from template
+    const htmlStr = column.editorTemplate.replace(
+      /\$\{value\}/g,
+      String(row.name)
+    );
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = htmlStr;
+    const cellNode = wrapper.firstElementChild as HTMLElement;
+
+    // Sanity check
+    expect(cellNode?.tagName?.toLowerCase()).toBe('input');
+
+    // Create dummy <td>
+    const td = document.createElement('td');
+
+    // Act
+    component['setupEditorCell'](td, cellNode, column, row, mockCommit);
+
+    // Assert
+    expect(mockEditorSetup).toHaveBeenCalledTimes(1);
+    expect(td.contains(cellNode)).toBe(true);
+
+    // Trigger blur
+    const blurEvent = new FocusEvent('focusout', {
+      relatedTarget: null,
+      bubbles: true,
+    });
+    cellNode.dispatchEvent(blurEvent);
+    expect(component['activeEditor']).toBeNull();
   });
 });

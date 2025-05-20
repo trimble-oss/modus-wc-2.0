@@ -176,6 +176,10 @@ export class ModusWcTable {
     selectedRows: Record<string, unknown>[];
     selectedRowIds: string[];
   }>;
+  pageSizeComp: {
+    setPagination: jest.Mock<any, any, any>;
+    setOptions: jest.Mock<any, any, any>;
+  };
 
   @Watch('currentPage')
   handleCurrentPageChange(newValue: number) {
@@ -642,6 +646,38 @@ export class ModusWcTable {
     }
   }
 
+  private setupEditorCell(
+    el: HTMLElement,
+    cellNode: HTMLElement | string,
+    column: ITableColumn,
+    row: Record<string, unknown>,
+    handleCommit: (val: unknown) => void
+  ): void {
+    el.innerHTML = '';
+
+    const isNode = typeof cellNode !== 'string' && 'tagName' in cellNode;
+
+    if (isNode) {
+      el.appendChild(cellNode);
+
+      if (column.editorTemplate && column.editorSetup) {
+        column.editorSetup(cellNode, row, handleCommit);
+      }
+
+      const blurHandler = (event: FocusEvent) => {
+        const relatedTarget = event.relatedTarget as Node | null;
+        if (!el.contains(relatedTarget)) {
+          this.activeEditor = null;
+          el.removeEventListener('focusout', blurHandler);
+        }
+      };
+
+      el.addEventListener('focusout', blurHandler, { capture: true });
+    } else {
+      el.textContent = String(cellNode);
+    }
+  }
+
   render() {
     // Derive rows straight from TanStack's row model so that any sorting/pagination
     // is reflected automatically
@@ -818,48 +854,13 @@ export class ModusWcTable {
                               }
                               ref={(el) => {
                                 if (!el) return;
-
-                                // Always refresh the cell's content so leftover editor markup is cleared
-                                el.innerHTML = '';
-
-                                if (cellNode instanceof HTMLElement) {
-                                  el.appendChild(cellNode);
-                                } else {
-                                  el.textContent = String(cellNode);
-                                }
-
-                                // If we are currently in edit mode, wire setup & blur handling
-                                if (
-                                  editing &&
-                                  cellNode instanceof HTMLElement
-                                ) {
-                                  if (
-                                    column.editorTemplate &&
-                                    column.editorSetup
-                                  ) {
-                                    // run setup again in case of template editors
-                                    column.editorSetup(
-                                      cellNode,
-                                      row,
-                                      handleCommit
-                                    );
-                                  }
-
-                                  const blurHandler = (event: FocusEvent) => {
-                                    const relatedTarget =
-                                      event.relatedTarget as Node | null;
-                                    if (!el.contains(relatedTarget)) {
-                                      this.activeEditor = null; // triggers rerender, ref will rewrite content
-                                      el.removeEventListener(
-                                        'focusout',
-                                        blurHandler
-                                      );
-                                    }
-                                  };
-                                  el.addEventListener('focusout', blurHandler, {
-                                    capture: true,
-                                  });
-                                }
+                                this.setupEditorCell(
+                                  el,
+                                  cellNode,
+                                  column,
+                                  row,
+                                  handleCommit
+                                );
                               }}
                             ></td>
                           );
