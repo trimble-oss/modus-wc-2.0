@@ -364,6 +364,12 @@ export const InlineEditing: Story = {
             handleItemSelect as EventListener
           );
           container.appendChild(autocomplete);
+
+          setTimeout(() => {
+            const input = autocomplete.querySelector('input');
+            input?.focus();
+          }, 0);
+
           return container;
         },
         cellRenderer: (value) => {
