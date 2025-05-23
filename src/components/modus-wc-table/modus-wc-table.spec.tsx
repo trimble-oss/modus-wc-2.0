@@ -1,5 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { SortingState } from '@tanstack/table-core';
+import { Row, SortingState } from '@tanstack/table-core';
 import { ITableColumn, ModusWcTable } from './modus-wc-table';
 import { Table } from './modus-wc-table.core';
 
@@ -966,44 +966,6 @@ describe('modus-wc-table', () => {
     // Assert
     expect(component.internalRowSelection).toEqual({ '3': true });
   });
-  it('should handle checkbox selection in single and multi modes', () => {
-    const component = new ModusWcTable();
-
-    const mockRow = { id: 'row-1', toggleSelected: jest.fn() };
-
-    // SINGLE mode
-    const mockTable = { setRowSelection: jest.fn() };
-    component['table'] = mockTable as unknown as Table<Record<string, unknown>>;
-    component.selectable = 'single';
-    component['handleRowCheckboxClick'](mockRow);
-    expect(mockTable.setRowSelection).toHaveBeenCalledWith({ 'row-1': true });
-
-    // MULTI mode
-    component.selectable = 'multi';
-    component.internalRowSelection = {};
-    component['handleRowCheckboxClick'](mockRow);
-    expect(mockRow.toggleSelected).toHaveBeenCalled();
-    expect(component.internalRowSelection).toEqual({ 'row-1': true });
-  });
-
-  it('should unselect a row when already selected in multi-select mode', () => {
-    const component = new ModusWcTable();
-    const mockRow = { id: 'row-1', toggleSelected: jest.fn() };
-
-    component.selectable = 'multi';
-    component['table'] = {
-      getRow: () => ({ id: 'row-1', original: mockRow }),
-    } as unknown as Table<Record<string, unknown>>;
-
-    // Set the row as initially selected
-    component.internalRowSelection = { 'row-1': true };
-
-    // Call the handler (manually or via refactored method)
-    component['handleRowCheckboxClick'](mockRow);
-
-    // Assert it's now unselected
-    expect(component.internalRowSelection).toEqual({});
-  });
 
   // Additional tests to improve coverage
   it('should call handleCommit from customEditorRenderer', async () => {
@@ -1451,65 +1413,6 @@ describe('modus-wc-table', () => {
     const updaterFn2 = setOptionsMock.mock.calls[0][0];
     const result2 = updaterFn2(prevOptions);
     expect(result2.enableSorting).toBe(true);
-  });
-
-  it('should handle row click selection behavior (lines 414-422)', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table aria-label="Row Selection Test"></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-    component.columns = defaultColumns;
-    component.data = defaultData;
-
-    // Test single selection mode
-    component.selectable = 'single';
-
-    // Create a mock for the table and row model
-    const mockRowObj = {
-      id: '1',
-      original: defaultData[0],
-      toggleSelected: jest.fn(),
-    };
-
-    const mockRows = [mockRowObj];
-
-    component['table'] = {
-      getPaginationRowModel: jest.fn().mockReturnValue({ rows: mockRows }),
-      getRowModel: jest.fn().mockReturnValue({ rows: mockRows }),
-      setRowSelection: jest.fn(),
-    } as unknown as Table<Record<string, unknown>>;
-
-    // Call handleRowClick to test the selection behavior - paginated false
-    component.paginated = false;
-    component['handleRowClick'](defaultData[0], 0);
-
-    // Check if setRowSelection was called for single mode
-    expect(component['table']?.setRowSelection).toHaveBeenCalledWith({
-      '1': true,
-    });
-
-    // Test with paginated=true
-    component.paginated = true;
-    (component['table']?.setRowSelection as jest.Mock).mockClear();
-
-    component['handleRowClick'](defaultData[0], 0);
-
-    // Should still call setRowSelection
-    expect(component['table']?.setRowSelection).toHaveBeenCalledWith({
-      '1': true,
-    });
-
-    // Test multi-select mode
-    component.selectable = 'multi';
-    (component['table']?.setRowSelection as jest.Mock).mockClear();
-
-    component['handleRowClick'](defaultData[0], 0);
-
-    // Should call toggleSelected instead of setRowSelection
-    expect(mockRowObj.toggleSelected).toHaveBeenCalled();
-    expect(component['table']?.setRowSelection).not.toHaveBeenCalled();
   });
 
   it('should test renderCell method with various inputs (lines 497-507)', async () => {
@@ -2646,28 +2549,6 @@ describe('modus-wc-table', () => {
     expect(error).toBeUndefined();
   });
 
-  it('should not throw if rowObj.id is undefined in multi-select mode', () => {
-    const component = new ModusWcTable();
-    component.selectable = 'multi';
-    component.internalRowSelection = {};
-    // rowObj without id and toggleSelected
-    const rowObj = {};
-    expect(() => component['handleRowCheckboxClick'](rowObj)).not.toThrow();
-    // Should add 'undefined' as key
-    expect(component.internalRowSelection).toEqual({ undefined: true });
-  });
-
-  it('should not throw if this.table is undefined in handleRowCheckboxClick (single mode)', () => {
-    const component = new ModusWcTable();
-    component.selectable = 'single';
-    component['table'] = null; // Simulate missing table
-    // Should not throw even if table is null
-    expect(() =>
-      component['handleRowCheckboxClick']({ id: 'row-1' })
-    ).not.toThrow();
-    // No error, nothing to assert on setRowSelection
-  });
-
   it('should render sort icons correctly based on sorting state', async () => {
     const sortableColumns = [
       {
@@ -2984,5 +2865,183 @@ describe('modus-wc-table', () => {
         });
       }
     }).not.toThrow();
+  });
+
+  it('should handle row selection in single-select mode using setRowSelection', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Single-select Test" selectable="single"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = defaultColumns;
+    component.data = defaultData;
+
+    // Mock the table and row model
+    const mockSetRowSelection = jest.fn();
+    const mockRowObj = {
+      id: '1',
+      original: defaultData[0],
+      getIsSelected: jest.fn().mockReturnValue(false),
+    } as unknown as Row<Record<string, unknown>>;
+
+    component['table'] = {
+      getPaginationRowModel: jest.fn().mockReturnValue({ rows: [mockRowObj] }),
+      getRowModel: jest.fn().mockReturnValue({ rows: [mockRowObj] }),
+      setRowSelection: mockSetRowSelection,
+      getColumn: jest.fn().mockReturnValue({
+        getIsSorted: jest.fn().mockReturnValue(false),
+      }),
+      // Add missing methods required for row selection
+      getIsAllRowsSelected: jest.fn().mockReturnValue(false),
+      getIsSomeRowsSelected: jest.fn().mockReturnValue(false),
+      getSelectedRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      getAllColumns: jest.fn().mockReturnValue([]),
+      getSortedRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      getPreFilteredRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      getFilteredRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      getGroupedRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      resetRowSelection: jest.fn(),
+      toggleAllRowsSelected: jest.fn(),
+      getPageCount: jest.fn().mockReturnValue(1),
+      setOptions: jest.fn(),
+      setData: jest.fn(),
+      getState: jest.fn().mockReturnValue({
+        pagination: { pageIndex: 0, pageSize: 10 },
+      }),
+    } as unknown as Table<Record<string, unknown>>;
+
+    await page.waitForChanges();
+
+    // Call handleRowClick directly with the mock row object
+    component['handleRowClick'](mockRowObj, 0);
+    await page.waitForChanges();
+
+    // Verify that setRowSelection was called with the correct parameters
+    expect(mockSetRowSelection).toHaveBeenCalledWith({ '1': true });
+  });
+  it('should toggle row selection using toggleSelected in multi-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Multi-select Test" selectable="multi"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = defaultColumns;
+    component.data = defaultData;
+
+    // Mock the table and row model
+    const mockToggleSelected = jest.fn();
+    const mockRowObj = {
+      id: '1',
+      original: defaultData[0],
+      toggleSelected: mockToggleSelected,
+      getIsSelected: jest.fn().mockReturnValue(false),
+    } as unknown as Row<Record<string, unknown>>;
+
+    component['table'] = {
+      getPaginationRowModel: jest.fn().mockReturnValue({ rows: [mockRowObj] }),
+      getRowModel: jest.fn().mockReturnValue({ rows: [mockRowObj] }),
+      setRowSelection: jest.fn(),
+      getColumn: jest.fn().mockReturnValue({
+        getIsSorted: jest.fn().mockReturnValue(false),
+      }),
+      // Add missing methods required for row selection
+      getIsAllRowsSelected: jest.fn().mockReturnValue(false),
+      getIsSomeRowsSelected: jest.fn().mockReturnValue(false),
+      getSelectedRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      getAllColumns: jest.fn().mockReturnValue([]),
+      getSortedRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      getPreFilteredRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      getFilteredRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      getGroupedRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      resetRowSelection: jest.fn(),
+      toggleAllRowsSelected: jest.fn(),
+      getPageCount: jest.fn().mockReturnValue(1),
+      setOptions: jest.fn(),
+      setData: jest.fn(),
+      getState: jest.fn().mockReturnValue({
+        pagination: { pageIndex: 0, pageSize: 10 },
+      }),
+    } as unknown as Table<Record<string, unknown>>;
+
+    await page.waitForChanges();
+
+    // Call handleRowClick directly with the mock row object
+    component['handleRowClick'](mockRowObj, 0);
+    await page.waitForChanges();
+
+    // Verify that toggleSelected was called
+    expect(mockToggleSelected).toHaveBeenCalled();
+  });
+
+  it('should handle row selection edge cases with optional chaining', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Selection Edge Cases Test" selectable="multi"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = defaultColumns;
+    component.data = defaultData;
+
+    // Test case 1: table is null
+    component['table'] = null;
+    const mockRowObj1 = {
+      id: '1',
+      original: defaultData[0],
+      getIsSelected: jest.fn().mockReturnValue(false),
+    } as unknown as Row<Record<string, unknown>>;
+
+    // This should not throw when table is null
+    component['handleRowClick'](mockRowObj1, 0);
+    await page.waitForChanges();
+
+    // Test case 2: toggleSelected is undefined
+    const mockRowObj2 = {
+      id: '2',
+      original: defaultData[1],
+      getIsSelected: jest.fn().mockReturnValue(false),
+      // Note: toggleSelected is not defined
+    } as unknown as Row<Record<string, unknown>>;
+
+    component['table'] = {
+      getPaginationRowModel: jest.fn().mockReturnValue({ rows: [mockRowObj2] }),
+      getRowModel: jest.fn().mockReturnValue({ rows: [mockRowObj2] }),
+      setRowSelection: jest.fn(),
+      getColumn: jest.fn().mockReturnValue({
+        getIsSorted: jest.fn().mockReturnValue(false),
+      }),
+      getIsAllRowsSelected: jest.fn().mockReturnValue(false),
+      getIsSomeRowsSelected: jest.fn().mockReturnValue(false),
+      getSelectedRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      getAllColumns: jest.fn().mockReturnValue([]),
+      getSortedRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      getPreFilteredRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      getFilteredRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      getGroupedRowModel: jest.fn().mockReturnValue({ rows: [] }),
+      resetRowSelection: jest.fn(),
+      toggleAllRowsSelected: jest.fn(),
+      getPageCount: jest.fn().mockReturnValue(1),
+      setOptions: jest.fn(),
+      setData: jest.fn(),
+      getState: jest.fn().mockReturnValue({
+        pagination: { pageIndex: 0, pageSize: 10 },
+      }),
+    } as unknown as Table<Record<string, unknown>>;
+
+    // This should not throw when toggleSelected is undefined
+    component['handleRowClick'](mockRowObj2, 0);
+    await page.waitForChanges();
+
+    // Test case 3: setRowSelection is undefined
+    component['table'] = {
+      ...component['table'],
+      setRowSelection: undefined,
+    } as unknown as Table<Record<string, unknown>>;
+
+    // This should not throw when setRowSelection is undefined
+    component['handleRowClick'](mockRowObj2, 0);
+    await page.waitForChanges();
   });
 });

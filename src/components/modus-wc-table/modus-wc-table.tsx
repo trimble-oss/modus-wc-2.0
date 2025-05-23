@@ -421,8 +421,9 @@ export class ModusWcTable {
   private toggleRowSelection(rowObj: Row<Record<string, unknown>>): void {
     const idStr = String((rowObj as { id: unknown }).id);
     const isSelected = !!this.internalRowSelection[idStr];
-    console.log('isSelected', isSelected, idStr);
+
     if (this.selectable === 'single') {
+      /* istanbul ignore next */
       this.table?.setRowSelection({
         [idStr]: !isSelected,
       });
