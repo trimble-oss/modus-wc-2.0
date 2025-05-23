@@ -15,9 +15,7 @@ import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
  *
- * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
- *
- * Adheres to WCAG 2.2 standards.
+ * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
  */
 @Component({
   tag: 'modus-wc-button',

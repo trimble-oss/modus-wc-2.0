@@ -16,7 +16,9 @@ interface PaginationArgs {
   'aria-label-values'?: IAriaLabelValues;
   count: number;
   'custom-class'?: string;
+  'next-button-text'?: string;
   page: number;
+  'prev-button-text'?: string;
   size?: 'sm' | 'md' | 'lg';
 }
 
@@ -88,7 +90,9 @@ export const Default: Story = {
       .ariaLabelValues=${args['aria-label-values']}
       count=${args.count}
       custom-class=${ifDefined(args['custom-class'])}
+      next-button-text="${ifDefined(args['next-button-text'])}"
       page=${args.page}
+      prev-button-text="${ifDefined(args['prev-button-text'])}"
       size=${ifDefined(args.size)}
     ></modus-wc-pagination>
   `,
@@ -117,8 +121,8 @@ export const Migration: Story = {
 | aria-label            | aria-label         |                                                             |
 | max-page              | count              |                                                             |
 | min-page              |                    | Not carried over, minimum page is always 1                  |
-| next-page-button-text |                    | Not carried over                                            |
-| prev-page-button-text |                    | Not carried over                                            |
+| next-page-button-text | next-button-text   |                                                             |
+| prev-page-button-text | prev-button-text   |                                                             |
 | size                  | size               | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
 
 #### Event Mapping

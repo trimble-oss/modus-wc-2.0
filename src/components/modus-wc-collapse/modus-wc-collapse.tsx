@@ -41,8 +41,6 @@ export interface ICollapseOptions {
  *
  * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
  * Do not set
- *
- * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-collapse',

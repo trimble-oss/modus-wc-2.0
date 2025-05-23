@@ -405,4 +405,50 @@ describe('modus-wc-pagination', () => {
     expect(lastPageButton).not.toBeNull();
     expect(pageThreeButton!.getAttribute('aria-label')).toBe('Page 3');
   });
+
+  it('should apply custom text for the previous page button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination aria-label="pagination test" count="10" page="3"></modus-wc-pagination>`,
+    });
+
+    // Get the component instance and set custom text for the previous button
+    // eslint-disable-next-line no-undef
+    const pagination = page.root as HTMLModusWcPaginationElement;
+
+    pagination.prevButtonText = 'Go Back';
+    await page.waitForChanges();
+
+    // Find all buttons and locate the one with the matching text
+    const buttons = page.root!.querySelectorAll('button');
+    const previousPageButton = Array.from(buttons).find(
+      (btn) => btn.textContent?.trim() === 'Go Back'
+    );
+
+    expect(previousPageButton).not.toBeNull();
+    expect(previousPageButton!.textContent?.trim()).toBe('Go Back');
+  });
+
+  it('should apply custom text for the next page button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination aria-label="pagination test" count="10" page="3"></modus-wc-pagination>`,
+    });
+
+    // Get the component instance and set custom text for the next button
+    // eslint-disable-next-line no-undef
+    const pagination = page.root as HTMLModusWcPaginationElement;
+
+    pagination.nextButtonText = 'Go Forward';
+    await page.waitForChanges();
+
+    // Find all buttons and locate the one with the matching text
+    const buttons = page.root!.querySelectorAll('button');
+    const nextPageButton = Array.from(buttons).find(
+      (btn) => btn.textContent?.trim() === 'Go Forward'
+    );
+
+    expect(nextPageButton).not.toBeNull();
+    expect(nextPageButton!.textContent?.trim()).toBe('Go Forward');
+  });
 });

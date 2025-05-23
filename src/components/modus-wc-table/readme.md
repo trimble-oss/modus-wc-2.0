@@ -5,6 +5,10 @@
 <!-- Auto Generated Below -->
 
 
+## Overview
+
+A customizable table component used to show a list of data in a table format.
+
 ## Properties
 
 | Property               | Attribute                 | Description                                                                                      | Type                                                                  | Default         |

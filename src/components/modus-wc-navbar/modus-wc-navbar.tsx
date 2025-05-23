@@ -13,6 +13,8 @@ import {
   State,
   Event as StencilEvent,
 } from '@stencil/core';
+import { AiDarkIcon } from '../../icons/ai-dark.icon';
+import { AiLightIcon } from '../../icons/ai-light.icon';
 import { AppsSolidIcon } from '../../icons/apps-solid.icon';
 import { HelpSolidIcon } from '../../icons/help-solid.icon';
 import { MenuSolidIcon } from '../../icons/menu-solid.icon';
@@ -21,7 +23,7 @@ import { NotificationsSolidIcon } from '../../icons/notifications-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import { TrimbleLogoFullIcon } from '../../icons/trimble-logo-full.icon';
 import { TrimbleLogoGlobeIcon } from '../../icons/trimble-logo-globe.icon';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import { Attributes, inheritAriaAttributes, isLightMode } from '../utils';
 
 export interface INavbarTextOverrides {
   /** Replaces the text for "Apps" in the condensed menu. */
@@ -35,6 +37,8 @@ export interface INavbarTextOverrides {
 }
 
 export interface INavbarVisibility {
+  /** Controls the visibility of the AI button. */
+  ai?: boolean;
   /** Controls visibility of the apps button. */
   apps?: boolean;
   /** Controls visibility of the help button. */
@@ -70,9 +74,7 @@ export interface INavbarUserCard {
  * A customizable navbar component used for top level navigation of all Trimble applications.
  *
  * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
- * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
- *
- * Adheres to WCAG 2.2 standards.
+ * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML
  */
 @Component({
   tag: 'modus-wc-navbar',
@@ -126,6 +128,7 @@ export class ModusWcNavbar {
 
   /** The visibility of individual navbar buttons. Default is user profile visible, others hidden. */
   @Prop() visibility?: INavbarVisibility = {
+    ai: false,
     apps: false,
     help: false,
     mainMenu: false,
@@ -134,6 +137,9 @@ export class ModusWcNavbar {
     searchInput: false,
     user: true,
   };
+
+  /** Event emitted when the AI button is clicked or activated via keyboard. */
+  @StencilEvent() aiClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the apps button is clicked or activated via keyboard. */
   @StencilEvent() appsClick!: EventEmitter<MouseEvent | KeyboardEvent>;
@@ -177,10 +183,32 @@ export class ModusWcNavbar {
   /** Event emitted when the user menu open state changes. */
   @StencilEvent() userMenuOpenChange!: EventEmitter<boolean>;
 
+  @State() private isLight: boolean = true;
   @State() private searchValue: string = '';
+
+  private themeObserver: MutationObserver | null = null;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+
+    this.isLight = isLightMode();
+
+    // Watch for theme attribute changes
+    this.themeObserver = new MutationObserver(() => {
+      this.isLight = isLightMode();
+    });
+
+    // Observe the html element for data-theme attribute changes
+    this.themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.themeObserver) {
+      this.themeObserver.disconnect();
+    }
   }
 
   @Listen('click', { target: 'document' })
@@ -281,6 +309,10 @@ export class ModusWcNavbar {
       .join('')
       .toUpperCase();
   }
+
+  private handleAiClick = (event?: CustomEvent<MouseEvent | KeyboardEvent>) => {
+    this.aiClick.emit(event?.detail);
+  };
 
   private handleAppsClick = (
     event?: CustomEvent<MouseEvent | KeyboardEvent>
@@ -441,6 +473,20 @@ export class ModusWcNavbar {
 
           <div slot="end">
             <slot name="end" />
+
+            {this.visibility?.ai && (
+              <Fragment>
+                <modus-wc-button
+                  customClass="ai"
+                  onButtonClick={this.handleAiClick}
+                  shape="square"
+                  size="sm"
+                  variant="borderless"
+                >
+                  {this.isLight ? <AiLightIcon /> : <AiDarkIcon />}
+                </modus-wc-button>
+              </Fragment>
+            )}
 
             {this.condensed && condensedHasItems && (
               <Fragment>

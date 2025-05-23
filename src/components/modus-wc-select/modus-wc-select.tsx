@@ -21,9 +21,7 @@ export interface ISelectOption {
 }
 
 /**
- * A customizable select component used to pick a value from a list of options.
- *
- * Adheres to WCAG 2.2 standards.
+ * A customizable select component used to pick a value from a list of options
  */
 @Component({
   tag: 'modus-wc-select',
