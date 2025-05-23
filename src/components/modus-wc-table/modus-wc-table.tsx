@@ -13,6 +13,7 @@ import {
 import {
   ColumnDef,
   PaginationState,
+  Row,
   RowSelectionState,
   SortingState,
   Updater,
@@ -88,7 +89,8 @@ export class ModusWcTable {
   @Element() el!: HTMLElement;
 
   /** Enable cell editing. Either a boolean (all rows) or a predicate per row. */
-  @Prop() editable?: boolean | ((row: Record<string, unknown>) => boolean) = false;
+  @Prop() editable?: boolean | ((row: Record<string, unknown>) => boolean) =
+    false;
 
   /** An array of column definitions. */
   @Prop() columns!: ITableColumn[];
@@ -406,25 +408,30 @@ export class ModusWcTable {
     return classList.join(' ');
   }
 
-  private handleRowClick = (row: Record<string, unknown>, index: number) => {
-    // Toggle selection via row click if enabled
+  private handleRowClick = (
+    rowObj: Row<Record<string, unknown>>,
+    index: number
+  ) => {
     if (this.selectable !== 'none' && this.table) {
-      const rowsModel = this.paginated
-        ? this.table.getPaginationRowModel().rows
-        : this.table.getRowModel().rows;
-      const targetRow = rowsModel[index];
-      if (targetRow) {
-        if (this.selectable === 'single') {
-          /* istanbul ignore next */
-          this.table?.setRowSelection({ [String(targetRow.id)]: true });
-        } else {
-          targetRow.toggleSelected();
-        }
-      }
+      this.toggleRowSelection(rowObj);
     }
-
-    this.rowClick.emit({ row, index });
+    this.rowClick.emit({ row: rowObj.original, index });
   };
+
+  private toggleRowSelection(rowObj: Row<Record<string, unknown>>): void {
+    const idStr = String((rowObj as { id: unknown }).id);
+    const isSelected = !!this.internalRowSelection[idStr];
+    console.log('isSelected', isSelected, idStr);
+    if (this.selectable === 'single') {
+      this.table?.setRowSelection({
+        [idStr]: !isSelected,
+      });
+    } else {
+      // Multi-select: toggle via TanStack then mirror into reactive state so
+      // row highlight updates synchronously.
+      rowObj.toggleSelected?.();
+    }
+  }
 
   private handleHeaderClick = (columnId: string) => {
     const column = this.columns.find((col) => col.id === columnId);
@@ -617,29 +624,6 @@ export class ModusWcTable {
     // Simply clear editor state – Stencil will re-render cell normally
     this.activeEditor = null;
   }
-  private handleRowCheckboxClick(rowObj: unknown): void {
-    if (this.selectable === 'single') {
-      this.table?.setRowSelection({
-        [String((rowObj as { id: unknown }).id)]: true,
-      });
-    } else {
-      // Multi-select: toggle via TanStack then mirror into reactive state so
-      // row highlight updates synchronously.
-      (rowObj as { toggleSelected?: () => void }).toggleSelected?.();
-
-      const idStr = String((rowObj as { id: unknown }).id);
-      const isSelected = !!this.internalRowSelection[idStr];
-      const newMap: RowSelectionState = {
-        ...this.internalRowSelection,
-      };
-      if (isSelected) {
-        delete newMap[idStr];
-      } else {
-        newMap[idStr] = true;
-      }
-      this.internalRowSelection = newMap;
-    }
-  }
 
   private setupEditorCell(
     el: HTMLElement,
@@ -771,9 +755,6 @@ export class ModusWcTable {
                 {displayData.length > 0 ? (
                   rows.map((rowObj, index) => {
                     const row = rowObj.original;
-                    /* istanbul ignore next */
-                    const checkboxHandler = () =>
-                      this.handleRowCheckboxClick(rowObj);
 
                     return (
                       <tr
@@ -783,7 +764,7 @@ export class ModusWcTable {
                             !!this.internalRowSelection[String(rowObj.id)] ||
                             rowObj.getIsSelected?.(),
                         }}
-                        onClick={() => this.handleRowClick(row, index)}
+                        onClick={() => this.handleRowClick(rowObj, index)}
                       >
                         {this.selectable !== 'none' && (
                           <td
@@ -794,7 +775,6 @@ export class ModusWcTable {
                               aria-label="Select row"
                               size="sm"
                               value={rowObj.getIsSelected?.() ?? false}
-                              onInputChange={checkboxHandler}
                             ></modus-wc-checkbox>
                           </td>
                         )}
