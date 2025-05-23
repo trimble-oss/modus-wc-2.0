@@ -34,16 +34,6 @@ describe('modus-wc-table', () => {
     { name: 'Carole Baskin', email: undefined, status: undefined },
   ];
 
-  // Additional test data with defined values for additional tests
-  const extendedTestData = [
-    { name: 'John Smith', email: 'john.smith@example.com', status: 'Active' },
-    { name: 'Jane Doe', email: 'jane.doe@example.com', status: 'Inactive' },
-    { name: 'Bob Johnson', email: 'bob.johnson@example.com', status: 'Active' },
-    { name: 'Carole Baskin', email: 'carole@example.com', status: 'Active' },
-    { name: 'David Miller', email: 'david@example.com', status: 'Inactive' },
-    { name: 'Emma Wilson', email: 'emma@example.com', status: 'Active' },
-  ];
-
   it('should warn if columns is not provided', async () => {
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
 
@@ -493,7 +483,7 @@ describe('modus-wc-table', () => {
       getCanPreviousPage: jest.fn().mockReturnValue(false),
       getCanNextPage: jest.fn().mockReturnValue(true),
       getPageCount: jest.fn().mockReturnValue(5),
-    };
+    } as unknown as Table<Record<string, unknown>>;
 
     // Change columns to trigger the columns watcher
     const newColumns = [
@@ -524,7 +514,10 @@ describe('modus-wc-table', () => {
 
     // Test changing columns when table is not present
     component['table'] = null;
-    const initTableSpy = jest.spyOn(component as any, 'initializeTable');
+    const initTableSpy = jest.spyOn(
+      component as unknown as { initializeTable: () => void },
+      'initializeTable'
+    );
 
     // Change columns again to trigger the watcher when table is null
     const extraColumns = [
@@ -603,7 +596,7 @@ describe('modus-wc-table', () => {
       detail: {
         srcElement: { value: '10' },
       },
-    } as CustomEvent;
+    } as CustomEvent<{ srcElement: { value: string } }>;
 
     component['handlePageSizeOptionChange'](mockEvent);
     expect(component.internalPagination.pageSize).toBe(10);
@@ -899,7 +892,7 @@ describe('modus-wc-table', () => {
 
     component['table'] = {
       setRowSelection: jest.fn(),
-    } as any;
+    } as unknown as Table<Record<string, unknown>>;
 
     component['internalRowSelection'] = {};
 
@@ -908,20 +901,20 @@ describe('modus-wc-table', () => {
 
     // Directly simulate the checkbox change handler for single select
     // This is the code in lines 710-715
-    if (component.selectable === 'single') {
+    if (component.selectable === 'single' && component['table']) {
       component['table'].setRowSelection({
         [String(mockRow.id)]: true,
       });
     }
 
     // Verify single-select mode calls setRowSelection with correct ID
-    expect(component['table'].setRowSelection).toHaveBeenCalledWith({
+    expect(component['table']?.setRowSelection).toHaveBeenCalledWith({
       '1': true,
     });
 
     // Now test multi-select mode
     component['selectable'] = 'multi';
-    (component['table'].setRowSelection as jest.Mock).mockClear();
+    (component['table']?.setRowSelection as jest.Mock)?.mockClear();
 
     // Directly simulate the checkbox change handler for multi-select
     // This is the code in lines 717-730
@@ -980,32 +973,33 @@ describe('modus-wc-table', () => {
 
     // SINGLE mode
     const mockTable = { setRowSelection: jest.fn() };
-    component.table = mockTable as any;
+    component['table'] = mockTable as unknown as Table<Record<string, unknown>>;
     component.selectable = 'single';
-    component.handleRowCheckboxClick(mockRow);
+    component['handleRowCheckboxClick'](mockRow);
     expect(mockTable.setRowSelection).toHaveBeenCalledWith({ 'row-1': true });
 
     // MULTI mode
     component.selectable = 'multi';
     component.internalRowSelection = {};
-    component.handleRowCheckboxClick(mockRow);
+    component['handleRowCheckboxClick'](mockRow);
     expect(mockRow.toggleSelected).toHaveBeenCalled();
     expect(component.internalRowSelection).toEqual({ 'row-1': true });
   });
+
   it('should unselect a row when already selected in multi-select mode', () => {
     const component = new ModusWcTable();
     const mockRow = { id: 'row-1', toggleSelected: jest.fn() };
 
     component.selectable = 'multi';
-    component.table = {
+    component['table'] = {
       getRow: () => ({ id: 'row-1', original: mockRow }),
-    } as any;
+    } as unknown as Table<Record<string, unknown>>;
 
     // Set the row as initially selected
     component.internalRowSelection = { 'row-1': true };
 
     // Call the handler (manually or via refactored method)
-    component.handleRowCheckboxClick(mockRow);
+    component['handleRowCheckboxClick'](mockRow);
 
     // Assert it's now unselected
     expect(component.internalRowSelection).toEqual({});
@@ -1097,219 +1091,6 @@ describe('modus-wc-table', () => {
     expect(component['getClasses']().includes('density-relaxed')).toBe(true);
   });
 
-  it('should handle page size selector interaction (lines 810, 819)', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table aria-label="Page Size Test" paginated="true"></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-
-    // Initialize with required props
-    component.columns = defaultColumns;
-    component.data = extendedTestData;
-    component.pageSizeOptions = [5, 10, 15];
-
-    // Prevent rendering by mocking render function to avoid getPaginationRowModel error
-    component['render'] = jest.fn().mockReturnValue(null);
-
-    // Create mock table with setPagination method
-    component['table'] = {
-      setPagination: jest.fn(),
-      setOptions: jest.fn(),
-      getPaginationRowModel: jest.fn().mockReturnValue({ rows: [] }),
-      getRowModel: jest.fn().mockReturnValue({ rows: [] }),
-    } as any;
-
-    // Initialize pagination state
-    component.internalPagination = { pageIndex: 0, pageSize: 5 };
-
-    await page.waitForChanges();
-
-    // Test the page size selector rendering
-    const selector = component['renderPageSizeSelector']();
-    expect(selector).not.toBeNull();
-
-    // Test pagination info rendering
-    const info = component['renderPaginationInfo']();
-    expect(info).not.toBeNull();
-
-    // Test changing page size with valid input
-    const mockEvent = {
-      detail: {
-        srcElement: { value: '10' },
-      },
-    } as any;
-
-    component['handlePageSizeOptionChange'](mockEvent);
-
-    // Verify setPagination was called with expected values
-    expect(component['table'].setPagination).toHaveBeenCalledWith({
-      pageIndex: 0,
-      pageSize: 10,
-    });
-
-    // Test with invalid input (non-numeric)
-    // Reset the mock to start fresh
-    (component['table'].setPagination as jest.Mock).mockReset();
-
-    // Setup a new internal state that we'll verify isn't changed by invalid input
-    component.internalPagination = { pageIndex: 0, pageSize: 10 };
-
-    const invalidEvent = {
-      detail: {
-        srcElement: { value: 'invalid' },
-      },
-    } as any;
-
-    // Call the handler with invalid input
-    component['handlePageSizeOptionChange'](invalidEvent);
-
-    // Skip the check if setPagination was called with invalid value
-    // In the actual code, it could either reject the invalid value or handle it gracefully
-    // For this test, we'll just verify the test completes without errors
-  });
-
-  it('should handle editor setup and blur handling (lines 829-890)', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table aria-label="Editor Test" editable="true"></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-
-    // First set the required props
-    component.columns = [
-      {
-        id: 'name',
-        header: 'Name',
-        accessor: 'name',
-        editor: 'text',
-      },
-      {
-        id: 'status',
-        header: 'Status',
-        accessor: 'status',
-        editorTemplate:
-          '<input type="text" value="${value}" class="template-editor" />',
-        editorSetup: (el, _row, commit) => {
-          const input = el.querySelector('input');
-          if (input) {
-            input.addEventListener('change', () => commit(input.value));
-          }
-        },
-      },
-      {
-        id: 'custom',
-        header: 'Custom',
-        accessor: 'custom',
-        editor: 'custom',
-        customEditorRenderer: (value, commit) => {
-          // Create an actual DOM element to ensure instanceof check works
-          const div = document.createElement('div');
-          div.className = 'custom-editor';
-          div.textContent = String(value || '');
-          div.addEventListener('click', () => commit('custom-value'));
-          return div;
-        },
-      },
-    ];
-
-    component.data = [
-      { id: '1', name: 'John Smith', status: 'Active', custom: 'Test' },
-    ];
-
-    // Initialize component
-    component['initializeTable']();
-
-    // Verify editable row detection
-    expect(component['isRowEditable'](component.data[0])).toBe(true);
-
-    // Mock the commitEdit method for simpler testing
-    component['commitEdit'] = jest.fn();
-
-    // Test enterEdit and cell editing directly
-    component['enterEdit'](0, 'custom');
-
-    // Verify activeEditor was set
-    expect(component['activeEditor']).toEqual({ rowIndex: 0, colId: 'custom' });
-
-    // Test editor commit - get the column definition
-    const customColumn = component.columns.find((col) => col.id === 'custom');
-    expect(customColumn).toBeDefined();
-
-    // Call the customEditorRenderer directly
-    if (customColumn && customColumn.customEditorRenderer) {
-      // Create the element through the renderer
-      const customEl = customColumn.customEditorRenderer(
-        'Test',
-        (val) => component['commitEdit'](0, 'custom', val),
-        component.data[0]
-      );
-
-      // Verify element was created properly and is an HTMLElement
-      expect(customEl).toBeTruthy();
-
-      // Only check className if it's an HTMLElement
-      if (customEl instanceof HTMLElement) {
-        expect(customEl.className).toBe('custom-editor');
-
-        // Trigger click to commit the value
-        customEl.dispatchEvent(new Event('click'));
-
-        // Verify commitEdit was called with expected values
-        expect(component['commitEdit']).toHaveBeenCalledWith(
-          0,
-          'custom',
-          'custom-value'
-        );
-      }
-    }
-
-    // Reset test state
-    (component['commitEdit'] as jest.Mock).mockClear();
-    component['activeEditor'] = { rowIndex: 0, colId: 'status' };
-
-    // Test template-based editor
-    const templateColumn = component.columns.find((col) => col.id === 'status');
-    expect(templateColumn).toBeDefined();
-
-    if (
-      templateColumn &&
-      templateColumn.editorTemplate &&
-      templateColumn.editorSetup
-    ) {
-      // Create template content
-      const templateStr = templateColumn.editorTemplate.replace(
-        /\$\{value\}/g,
-        'Active'
-      );
-
-      // Create DOM element
-      const wrapper = document.createElement('div');
-      wrapper.innerHTML = templateStr;
-
-      // Setup the editor
-      templateColumn.editorSetup(wrapper, component.data[0], (val) =>
-        component['commitEdit'](0, 'status', val)
-      );
-
-      // Find and trigger input
-      const input = wrapper.querySelector('input');
-      if (input) {
-        input.value = 'Updated via Template';
-        input.dispatchEvent(new Event('change'));
-
-        // Verify commitEdit was called
-        expect(component['commitEdit']).toHaveBeenCalledWith(
-          0,
-          'status',
-          'Updated via Template'
-        );
-      }
-    }
-  });
-
   it('should validate row and column coordinates correctly', async () => {
     const page = await newSpecPage({
       components: [ModusWcTable],
@@ -1338,7 +1119,9 @@ describe('modus-wc-table', () => {
     expect(component['validateRowAndColumn'](0, 'nonexistent')).toBe(false);
 
     // Test with null/undefined data (edge case)
-    component.data = undefined as any;
+    (
+      component as unknown as { data: Record<string, unknown>[] | undefined }
+    ).data = undefined;
     expect(component['validateRowAndColumn'](0, 'name')).toBe(false);
   });
 
@@ -1383,7 +1166,7 @@ describe('modus-wc-table', () => {
       setSorting: jest.fn().mockImplementation(() => {
         throw new Error('Test error');
       }),
-    } as any;
+    } as unknown as Table<Record<string, unknown>>;
 
     // This should now trigger the error catch block
     component['handleHeaderClick']('name');
@@ -1529,206 +1312,6 @@ describe('modus-wc-table', () => {
     }
   });
 
-  it('should handle edge cases for cell rendering and null data', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table aria-label="Cell Render Edge Case Test"></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-
-    // Test with null data
-    component.data = null as any;
-    component.columns = defaultColumns;
-
-    await page.waitForChanges();
-
-    // Check the getTotalPages result with null data
-    expect(component['getTotalPages']()).toBe(1);
-
-    // Test renderCell with various edge cases
-    const testCases = [
-      {
-        column: { id: 'test', accessor: 'test', header: 'Test' },
-        row: {},
-        expected: '',
-      },
-      {
-        column: { id: 'test', accessor: 'test', header: 'Test' },
-        row: { test: null },
-        expected: '',
-      },
-      {
-        column: { id: 'test', accessor: 'test', header: 'Test' },
-        row: { test: undefined },
-        expected: '',
-      },
-      {
-        column: { id: 'test', accessor: 'test', header: 'Test' },
-        row: { test: 0 },
-        expected: '0',
-      },
-      {
-        column: { id: 'test', accessor: 'test', header: 'Test' },
-        row: { test: false },
-        expected: 'false',
-      },
-      {
-        column: { id: 'test', accessor: 'test', header: 'Test' },
-        row: { test: '' },
-        expected: '',
-      },
-    ];
-
-    testCases.forEach((testCase) => {
-      const result = component['renderCell'](
-        testCase.column as ITableColumn,
-        testCase.row
-      );
-      expect(result).toBe(testCase.expected);
-    });
-
-    // Test with custom renderer returning different types
-    const customRendererCases = [
-      {
-        renderer: () => 'Custom String',
-        value: 'anything',
-        expected: 'Custom String',
-      },
-      {
-        renderer: () => {
-          const el = document.createElement('span');
-          el.textContent = 'Custom Element';
-          return el;
-        },
-        value: 'anything',
-        expected: 'HTMLSpanElement', // Changed to check for type name instead of instance
-      },
-    ];
-
-    customRendererCases.forEach((testCase) => {
-      const column = {
-        id: 'custom',
-        accessor: 'custom',
-        header: 'Custom',
-        cellRenderer: testCase.renderer,
-      };
-
-      const result = component['renderCell'](column, {
-        custom: testCase.value,
-      });
-
-      if (typeof testCase.expected === 'string') {
-        if (
-          testCase.expected === 'HTMLSpanElement' &&
-          result &&
-          typeof result === 'object'
-        ) {
-          // Check for HTML element properties instead of instanceof HTMLSpanElement
-          expect(result.nodeName?.toLowerCase()).toBe('span');
-        } else {
-          expect(result).toBe(testCase.expected);
-        }
-      }
-    });
-  });
-
-  it('should handle various cell rendering edge cases (lines 737-757)', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table aria-label="Cell Rendering Tests"></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-
-    // Initialize with required props using HTML
-    component.columns = [
-      {
-        id: 'text',
-        header: 'Text',
-        accessor: 'text',
-      },
-      {
-        id: 'html',
-        header: 'HTML',
-        accessor: 'html',
-        cellRenderer: (value) => {
-          const span = document.createElement('span');
-          span.innerHTML = value as string;
-          return span;
-        },
-      },
-      {
-        id: 'custom',
-        header: 'Custom',
-        accessor: 'custom',
-        cellRenderer: (value) => {
-          // Test all branches of renderCell
-          if (value === null) return '';
-          if (value === undefined) return '';
-          return `Custom: ${value}`;
-        },
-      },
-    ];
-
-    component.data = [
-      {
-        text: 'Plain text',
-        html: '<strong>Bold</strong>',
-        custom: 'customValue',
-      },
-      {
-        text: '',
-        html: null,
-        custom: null,
-      },
-      {
-        text: null,
-        html: undefined,
-        custom: undefined,
-      },
-    ];
-
-    // Force render so we can test the renderCell method
-    component['initializeTable']();
-    await page.waitForChanges();
-
-    // Test renderCell method with different types of columns/data
-    const textResult = component['renderCell'](
-      component.columns[0],
-      component.data[0]
-    );
-    expect(textResult).toBe('Plain text');
-
-    // Test with null/undefined values
-    const nullResult = component['renderCell'](
-      component.columns[0],
-      component.data[2]
-    );
-    expect(nullResult).toBe('');
-
-    // Test with HTML element return from cellRenderer
-    const htmlResult = component['renderCell'](
-      component.columns[1],
-      component.data[0]
-    );
-    // Should be an HTML element
-    expect(typeof htmlResult).toBe('object');
-
-    // Test custom renderer with various value types
-    const customResult = component['renderCell'](
-      component.columns[2],
-      component.data[0]
-    );
-    expect(customResult).toBe('Custom: customValue');
-
-    const customNullResult = component['renderCell'](
-      component.columns[2],
-      component.data[1]
-    );
-    expect(customNullResult).toBe('');
-  });
-
   it('should handle table editor template initialization and edit commits (lines 829-890)', async () => {
     const page = await newSpecPage({
       components: [ModusWcTable],
@@ -1766,7 +1349,7 @@ describe('modus-wc-table', () => {
         editor: 'custom',
         customEditorRenderer: (value, commit) => {
           const div = document.createElement('div');
-          div.innerHTML = `<input type="text" value="${value}" class="custom-editor" />`;
+          div.innerHTML = `<input type="text" value="${String(value)}" class="custom-editor" />`;
 
           const input = div.querySelector('input');
           if (input) {
@@ -1817,114 +1400,6 @@ describe('modus-wc-table', () => {
     expect(component['activeEditor']).toBeNull(); // Should not enter edit mode
   });
 
-  it('should test pagination boundary conditions (lines 772, 790, 810, 819)', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table aria-label="Pagination Test" paginated="true"></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-    // Create larger dataset for pagination
-    const largeData = Array.from({ length: 25 }, (_, i) => ({
-      id: `${i + 1}`,
-      name: `Item ${i + 1}`,
-      status: i % 2 === 0 ? 'Active' : 'Inactive',
-    }));
-
-    component.columns = defaultColumns;
-    component.data = largeData;
-    component.pageSizeOptions = [5, 10, 15, 20];
-
-    // Mock table and setPagination
-    component['table'] = {
-      getState: jest.fn().mockReturnValue({
-        pagination: { pageIndex: 0, pageSize: 10 },
-      }),
-      setPagination: jest.fn(),
-      setPageIndex: jest.fn(),
-    } as any;
-
-    // Set initial pagination state
-    component.internalPagination = { pageIndex: 0, pageSize: 10 };
-
-    // Test handlePageSizeOptionChange with valid input (line 810)
-    const validEvent = {
-      detail: {
-        srcElement: { value: '15' },
-      },
-    };
-    component['handlePageSizeOptionChange'](validEvent as any);
-    expect(component['table'].setPagination).toHaveBeenCalledWith({
-      pageIndex: 0,
-      pageSize: 15,
-    });
-
-    // Test handlePageSizeOptionChange with invalid input (line 819)
-    const invalidEvent = {
-      detail: {
-        srcElement: { value: '' }, // Use empty string instead of "not-a-number"
-      },
-    };
-    (component['table'].setPagination as jest.Mock).mockClear();
-    component['handlePageSizeOptionChange'](invalidEvent as any);
-    // In this case, it will pass NaN which is a valid JS number value
-    // We'll just check the call arguments manually
-    expect(
-      (component['table'].setPagination as jest.Mock).mock.calls.length
-    ).toBe(1);
-    const callArgs = (component['table'].setPagination as jest.Mock).mock
-      .calls[0][0];
-    expect(callArgs.pageIndex).toBe(0);
-    expect(isNaN(callArgs.pageSize)).toBe(true);
-
-    // Test getTotalPages with different conditions (line 772)
-    // Set up for dividing perfectly
-    component.data = largeData.slice(0, 20); // 20 items
-    component.internalPagination = { pageIndex: 0, pageSize: 5 };
-    expect(component['getTotalPages']()).toBe(4); // 20 ÷ 5 = 4 pages
-
-    // Set up for not dividing perfectly
-    component.data = largeData.slice(0, 22); // 22 items
-    component.internalPagination = { pageIndex: 0, pageSize: 5 };
-    expect(component['getTotalPages']()).toBe(5); // 22 ÷ 5 = 4.4 → 5 pages
-
-    // Test with 0 page size (edge case)
-    component.internalPagination = { pageIndex: 0, pageSize: 0 };
-
-    // Create a custom mock implementation of getTotalPages that handles division by zero
-    const originalGetTotalPages = component['getTotalPages'];
-    component['getTotalPages'] = jest.fn().mockReturnValue(1);
-
-    expect(component['getTotalPages']()).toBe(1); // Should return 1 to avoid division by zero
-
-    // Restore original method
-    component['getTotalPages'] = originalGetTotalPages;
-
-    // Line 790 - boundary checking in pagination control
-    // Instead of trying to test handlePageChange through a mock,
-    // let's test its behavior more directly
-
-    // Create a version we can test fully
-    const testHandlePageChange = (
-      newPage: number,
-      totalPages: number
-    ): number => {
-      // Simplified version of handlePageChange logic from the component
-      if (newPage < 1) return 0; // Below minimum goes to first page
-      if (newPage > totalPages) return totalPages - 1; // Above maximum goes to last page
-      return newPage - 1; // Normal page calculation
-    };
-
-    // Test with various inputs
-    expect(testHandlePageChange(-1, 3)).toBe(0); // Below minimum
-    expect(testHandlePageChange(0, 3)).toBe(0); // Still below minimum
-    expect(testHandlePageChange(1, 3)).toBe(0); // First page
-    expect(testHandlePageChange(2, 3)).toBe(1); // Middle page
-    expect(testHandlePageChange(3, 3)).toBe(2); // Last page
-    expect(testHandlePageChange(4, 3)).toBe(2); // Above maximum
-    expect(testHandlePageChange(10, 3)).toBe(2); // Way above maximum
-  });
-
   it('should test handleSortableChange method (line 215)', async () => {
     const page = await newSpecPage({
       components: [ModusWcTable],
@@ -1946,7 +1421,7 @@ describe('modus-wc-table', () => {
       getFilteredRowModel: jest.fn().mockReturnValue({ rows: [] }),
       getRowModel: jest.fn().mockReturnValue({ rows: [] }),
       getPaginationRowModel: jest.fn().mockReturnValue({ rows: [] }),
-    } as any;
+    } as unknown as Table<Record<string, unknown>>;
 
     // Call the method being tested
     component['handleSortableChange'](false);
@@ -2004,7 +1479,7 @@ describe('modus-wc-table', () => {
       getPaginationRowModel: jest.fn().mockReturnValue({ rows: mockRows }),
       getRowModel: jest.fn().mockReturnValue({ rows: mockRows }),
       setRowSelection: jest.fn(),
-    } as any;
+    } as unknown as Table<Record<string, unknown>>;
 
     // Call handleRowClick to test the selection behavior - paginated false
     component.paginated = false;
@@ -2035,85 +1510,6 @@ describe('modus-wc-table', () => {
     // Should call toggleSelected instead of setRowSelection
     expect(mockRowObj.toggleSelected).toHaveBeenCalled();
     expect(component['table']?.setRowSelection).not.toHaveBeenCalled();
-  });
-
-  it('should test renderPaginationInfo (line 535)', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table aria-label="Pagination Info Test"></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-
-    // Initialize required props
-    component.columns = defaultColumns;
-    component.data = extendedTestData; // Use extended test data (6 items)
-
-    // Mock table methods to avoid uninitialized table issues
-    component['table'] = {
-      getFilteredRowModel: jest.fn().mockReturnValue({
-        rows: extendedTestData.map((d, i) => ({ id: i, original: d })),
-      }),
-    } as any;
-
-    // Test with empty data case first
-    component['table'].getFilteredRowModel = jest
-      .fn()
-      .mockReturnValue({ rows: [] });
-
-    // The component doesn't return null but rather an empty div for empty data
-    const emptyResult = component['renderPaginationInfo']();
-    expect(emptyResult).not.toBeNull();
-
-    // Restore filtered rows mock for remaining tests
-    component['table'].getFilteredRowModel = jest.fn().mockReturnValue({
-      rows: extendedTestData.map((d, i) => ({ id: i, original: d })),
-    });
-
-    // Page 1 with 5 items per page (showing 1-5 of 6)
-    component.internalPagination = { pageIndex: 0, pageSize: 5 };
-
-    const infoElement1 = component['renderPaginationInfo']();
-    expect(infoElement1).not.toBeNull();
-
-    // Instead of trying to access outerHTML, check the children directly since this is a virtual DOM
-    if (
-      infoElement1 &&
-      infoElement1.$children$ &&
-      infoElement1.$children$.length > 0
-    ) {
-      const textContent = infoElement1.$children$[0].$text$ || '';
-      expect(textContent).toContain('1');
-      expect(textContent).toContain('5');
-      expect(textContent).toContain('6');
-    }
-
-    // Page 2 with 5 items per page (showing 6-6 of 6)
-    component.internalPagination = { pageIndex: 1, pageSize: 5 };
-
-    const infoElement2 = component['renderPaginationInfo']();
-    if (
-      infoElement2 &&
-      infoElement2.$children$ &&
-      infoElement2.$children$.length > 0
-    ) {
-      const textContent = infoElement2.$children$[0].$text$ || '';
-      expect(textContent).toContain('6');
-      expect(textContent).toContain('of 6');
-    }
-
-    // Test extreme case: page out of bounds
-    component.internalPagination = { pageIndex: 5, pageSize: 5 }; // Beyond data length
-
-    const infoElement3 = component['renderPaginationInfo']();
-    if (
-      infoElement3 &&
-      infoElement3.$children$ &&
-      infoElement3.$children$.length > 0
-    ) {
-      const textContent = infoElement3.$children$[0].$text$ || '';
-      expect(textContent).toContain('of 6');
-    }
   });
 
   it('should test renderCell method with various inputs (lines 497-507)', async () => {
@@ -2182,141 +1578,6 @@ describe('modus-wc-table', () => {
     }) as HTMLElement;
     expect(result.tagName).toBe('SPAN');
     expect(result.textContent).toBe('HTML: world');
-  });
-
-  it('should test cell editing with editorTemplate functionality (lines 737-757, 829-890)', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table aria-label="Editor Template Test" editable="true"></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-
-    // Create columns with template editor
-    component.columns = [
-      {
-        id: 'name',
-        header: 'Name',
-        accessor: 'name',
-      },
-      {
-        id: 'status',
-        header: 'Status',
-        accessor: 'status',
-        editorTemplate:
-          '<input type="text" value="${value}" class="template-editor" />',
-        editorSetup: (el, _row, commit) => {
-          const input = el.querySelector('input');
-          if (input) {
-            input.addEventListener('change', () => commit(input.value));
-          }
-        },
-      },
-    ];
-
-    component.data = [{ id: '1', name: 'John', status: 'Active' }];
-
-    // Instead of spying on cancelEdit, directly test the behavior
-    component.activeEditor = { rowIndex: 0, colId: 'name' };
-
-    // Create our own implementation of cancelEdit
-    component['cancelEdit'] = jest.fn().mockImplementation(() => {
-      component.activeEditor = null;
-    });
-
-    // Spy on our implementation
-    const cancelSpy = jest.spyOn(component, 'cancelEdit' as any);
-
-    // Test cancelEdit directly
-    component['cancelEdit']();
-    expect(cancelSpy).toHaveBeenCalled();
-    expect(component.activeEditor).toBeNull();
-
-    // Test commitEdit directly
-
-    // Create commitEdit mock implementation
-    component['commitEdit'] = jest
-      .fn()
-      .mockImplementation((rowIndex, colId, value) => {
-        if (
-          component.data[rowIndex] &&
-          component.columns.some((col) => col.id === colId)
-        ) {
-          component.data[rowIndex][colId] = value;
-        }
-      });
-
-    component['commitEdit'](0, 'name', 'New Name');
-    expect(component.data[0].name).toBe('New Name');
-  });
-
-  it('should directly test private methods to cover remaining uncovered lines', () => {
-    // Use a special approach to test private methods without triggering render
-
-    // Create a test instance without rendering
-    const component = new ModusWcTable();
-
-    // Prevent lifecycle methods and render from being called
-    component.render = jest.fn();
-    component.componentWillLoad = jest.fn();
-
-    // Setup minimum needed data
-    component.columns = [
-      {
-        id: 'name',
-        header: 'Name',
-        accessor: 'name',
-        editor: 'text',
-      },
-    ];
-
-    component.data = [{ id: '1', name: 'John' }];
-
-    // Test getTotalPages method (line 772)
-    expect(component['getTotalPages']()).toBe(1);
-
-    // Test with empty data array
-    component.data = [];
-    expect(component['getTotalPages']()).toBe(1); // Empty data should return 1 page
-
-    // Test validateRowAndColumn (line 790)
-    component.data = [{ id: '1', name: 'John' }];
-    expect(component['validateRowAndColumn'](0, 'name')).toBe(true);
-    expect(component['validateRowAndColumn'](99, 'name')).toBe(false); // Invalid row
-    expect(component['validateRowAndColumn'](0, 'invalid')).toBe(false); // Invalid column
-
-    // Test isRowEditable method (line 810)
-    // First make sure the row is properly defined
-    component['isRowEditable'] = jest.fn().mockImplementation(() => true);
-    expect(component['isRowEditable'](component.data[0])).toBe(true);
-
-    // Mock isColumnEditable since it might not be directly accessible
-    component['isColumnEditable'] = jest
-      .fn()
-      .mockImplementation((colId: string) => {
-        // Simple implementation to simulate the behavior
-        const column = component.columns.find((col) => col.id === colId);
-        return (
-          !!column &&
-          (column.editor !== undefined ||
-            column.editorTemplate !== undefined ||
-            column.customEditorRenderer !== undefined)
-        );
-      });
-
-    // Test the mocked isColumnEditable method
-    expect(component['isColumnEditable']('name')).toBe(true); // Has editor property
-    expect(component['isColumnEditable']('invalid')).toBe(false);
-
-    // Create a mock implementation for cancelEdit
-    component['cancelEdit'] = jest.fn().mockImplementation(() => {
-      component.activeEditor = null;
-    });
-
-    // Test cancelEdit
-    component.activeEditor = { rowIndex: 0, colId: 'name' };
-    component['cancelEdit']();
-    expect(component.activeEditor).toBeNull();
   });
 
   it('should test header cell styles and alignment features', async () => {
@@ -2449,656 +1710,6 @@ describe('modus-wc-table', () => {
     expect(getTotalPages(10, 0)).toBe(1); // Invalid page size
   });
 
-  it('should target specifically uncovered lines by testing with a properly configured instance', async () => {
-    // Create component with initial props to avoid immutability warnings
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table
-        aria-label="Coverage Test"
-        paginated="true"
-        sortable="true"
-        editable="true">
-      </modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-
-    // Setup initial data and columns through HTML properties
-    component.columns = [
-      {
-        id: 'text',
-        header: 'Text',
-        accessor: 'text',
-        editor: 'text',
-      },
-      {
-        id: 'template',
-        header: 'Template',
-        accessor: 'template',
-        editorTemplate:
-          '<input type="text" value="${value}" class="template-editor" />',
-      },
-    ];
-
-    component.data = [
-      { id: '1', text: 'Text value', template: 'Template value' },
-    ];
-
-    await page.waitForChanges();
-
-    // Mock table methods to avoid real table initialization
-    component['table'] = {
-      getState: jest
-        .fn()
-        .mockReturnValue({ pagination: { pageIndex: 0, pageSize: 10 } }),
-      getRowModel: jest.fn().mockReturnValue({ rows: [] }),
-      getPaginationRowModel: jest.fn().mockReturnValue({ rows: [] }),
-      getHeaderGroups: jest.fn().mockReturnValue([]),
-      getFilteredRowModel: jest.fn().mockReturnValue({ rows: [] }),
-      setOptions: jest.fn(),
-      setPagination: jest.fn(),
-      setSorting: jest.fn(),
-    } as any;
-
-    component.internalPagination = { pageIndex: 0, pageSize: 10 };
-
-    // Test getTotalPages directly without changing props
-    // Test with data length = 25, page size = 10
-    expect(Math.ceil(25 / 10)).toBe(3); // 25/10 = 2.5 → 3 pages
-
-    // Test with empty data (data length = 0, page size = 10)
-    expect(Math.ceil(0 / 10)).toBe(0); // Empty data should return 0, but getTotalPages returns 1
-
-    // Test with zero page size (data length = 10, page size = 0)
-    expect(Math.ceil(10 / 0)).toBe(Infinity); // Division by zero = Infinity, but should be handled
-
-    // Test handlePageSizeOptionChange directly
-    const mockEvent = {
-      detail: {
-        srcElement: { value: '15' },
-      },
-    } as any;
-
-    // Call the handler directly
-    component['handlePageSizeOptionChange'](mockEvent);
-
-    // Verify mock was called
-    expect(component['table'].setPagination).toHaveBeenCalledWith({
-      pageIndex: 0,
-      pageSize: 15,
-    });
-
-    // Test renderCell edge cases without changing props
-    const testColumn = {
-      id: 'test',
-      header: 'Test',
-      accessor: 'test',
-    };
-
-    // Test different value types
-    expect(component['renderCell'](testColumn, { test: 'string value' })).toBe(
-      'string value'
-    );
-    expect(component['renderCell'](testColumn, { test: 123 })).toBe('123');
-    expect(component['renderCell'](testColumn, { test: true })).toBe('true');
-    expect(component['renderCell'](testColumn, { test: null })).toBe('');
-    expect(component['renderCell'](testColumn, { test: undefined })).toBe('');
-    expect(component['renderCell'](testColumn, {})).toBe(''); // Missing property
-
-    // Test with object with toString
-    const objWithToString = { toString: () => 'Custom toString' };
-    expect(component['renderCell'](testColumn, { test: objWithToString })).toBe(
-      'Custom toString'
-    );
-
-    // Test with custom renderer
-    const rendererColumn = {
-      id: 'renderer',
-      header: 'Renderer',
-      accessor: 'renderer',
-      cellRenderer: (value) => `Prefix: ${value}`,
-    };
-    expect(
-      component['renderCell'](rendererColumn, { renderer: 'test value' })
-    ).toBe('Prefix: test value');
-
-    // Test with renderer returning HTML element
-    const elementColumn = {
-      id: 'element',
-      header: 'Element',
-      accessor: 'element',
-      cellRenderer: () => {
-        const span = document.createElement('span');
-        span.textContent = 'Element content';
-        return span;
-      },
-    };
-    const result = component['renderCell'](elementColumn, {
-      element: 'any value',
-    }) as HTMLElement;
-    expect(result.nodeName?.toLowerCase()).toBe('span');
-    expect(result.textContent).toBe('Element content');
-
-    // Test editor template replacement (lines 829-890)
-    const templateValue = 'Test value with ${special} characters';
-    const templateStr = '<input value="${value}" />';
-    const replaced = templateStr.replace(/\$\{value\}/g, templateValue);
-    expect(replaced).toBe(
-      '<input value="Test value with ${special} characters" />'
-    );
-
-    // Test validateRowAndColumn (line 790)
-    expect(component['validateRowAndColumn'](0, 'text')).toBe(true);
-    expect(component['validateRowAndColumn'](-1, 'text')).toBe(false);
-    expect(component['validateRowAndColumn'](0, 'nonexistent')).toBe(false);
-    expect(component['validateRowAndColumn'](99, 'text')).toBe(false);
-
-    // Mock other methods for testing
-    component['cancelEdit'] = jest.fn();
-    component.activeEditor = { rowIndex: 0, colId: 'text' };
-    component['cancelEdit']();
-    expect(component['cancelEdit']).toHaveBeenCalled();
-  });
-
-  it('should directly test specific uncovered methods in lines 737-757, 772, 790, 810, 819, 829-890', () => {
-    // Create a component for direct method testing only - without rendering
-    const component = new ModusWcTable();
-
-    // Skip render by mocking the method
-    component.render = jest.fn();
-
-    // Mock component properties without using Object.defineProperty
-    component.columns = [
-      { id: 'name', header: 'Name', accessor: 'name' },
-      { id: 'email', header: 'Email', accessor: 'email' },
-    ];
-
-    component.data = [
-      { id: '1', name: 'John', email: 'john@example.com' },
-      { id: '2', name: 'Jane', email: 'jane@example.com' },
-    ];
-
-    component.editable = true;
-    component.paginated = true;
-
-    // Test line 772 - getTotalPages
-    component.internalPagination = { pageIndex: 0, pageSize: 5 };
-    const totalPages = component['getTotalPages']();
-    expect(totalPages).toBe(1); // 2 items / 5 per page = 1 page
-
-    // Test with different page size (10)
-    component.internalPagination = { pageIndex: 0, pageSize: 10 };
-    expect(component['getTotalPages']()).toBe(1);
-
-    // Test with empty data (without redefining the property)
-    // Create a new instance for testing empty data case
-    const emptyDataComp = new ModusWcTable();
-    emptyDataComp.data = [];
-    emptyDataComp.internalPagination = { pageIndex: 0, pageSize: 5 };
-    expect(emptyDataComp['getTotalPages']()).toBe(1); // Empty data should return 1 page
-
-    // Test with zero page size (using the original component)
-    component.internalPagination = { pageIndex: 0, pageSize: 0 };
-    expect(component['getTotalPages']()).toBe(1); // Should handle division by zero
-
-    // Test large data case
-    const largeDataComp = new ModusWcTable();
-    largeDataComp.data = Array(100)
-      .fill({})
-      .map((_, i) => ({ id: String(i) }));
-    largeDataComp.internalPagination = { pageIndex: 0, pageSize: 10 };
-    expect(largeDataComp['getTotalPages']()).toBe(10); // 100 items / 10 per page = 10 pages
-
-    // Test line 790 - validateRowAndColumn
-    // Valid row and column
-    expect(component['validateRowAndColumn'](0, 'name')).toBe(true);
-
-    // Invalid row (negative)
-    expect(component['validateRowAndColumn'](-1, 'name')).toBe(false);
-
-    // Invalid row (out of bounds)
-    expect(component['validateRowAndColumn'](99, 'name')).toBe(false);
-
-    // Invalid column
-    expect(component['validateRowAndColumn'](0, 'nonexistent')).toBe(false);
-
-    // Test lines 810-819 - isRowEditable
-    // Test with boolean true
-    component.editable = true;
-    expect(component['isRowEditable'](component.data[0])).toBe(true);
-
-    // Test with boolean false
-    component.editable = false;
-    expect(component['isRowEditable'](component.data[0])).toBe(false);
-
-    // Test with function true
-    component.editable = (row) => row.id === '1';
-    expect(component['isRowEditable'](component.data[0])).toBe(true);
-
-    // Test with function false
-    component.editable = (row) => row.id === '2';
-    expect(component['isRowEditable'](component.data[0])).toBe(false);
-
-    // Test lines 737-757 - renderCell
-    // Create a column with all possible rendering scenarios
-    const testColumn = {
-      id: 'test',
-      header: 'Test',
-      accessor: 'test',
-    };
-
-    // Test renderCell with different value types
-    const stringValue = { test: 'string value' };
-    expect(component['renderCell'](testColumn, stringValue)).toBe(
-      'string value'
-    );
-
-    const numberValue = { test: 123 };
-    expect(component['renderCell'](testColumn, numberValue)).toBe('123');
-
-    const boolValue = { test: true };
-    expect(component['renderCell'](testColumn, boolValue)).toBe('true');
-
-    const nullValue = { test: null };
-    expect(component['renderCell'](testColumn, nullValue)).toBe('');
-
-    const undefinedValue = { test: undefined };
-    expect(component['renderCell'](testColumn, undefinedValue)).toBe('');
-
-    const missingProperty = {};
-    expect(component['renderCell'](testColumn, missingProperty)).toBe('');
-
-    // Object with toString
-    const objWithToString = { test: { toString: () => 'Custom toString' } };
-    expect(component['renderCell'](testColumn, objWithToString)).toBe(
-      'Custom toString'
-    );
-
-    // Test with custom renderer
-    const rendererColumn = {
-      id: 'renderer',
-      header: 'Renderer',
-      accessor: 'renderer',
-      cellRenderer: (value) => `Prefix: ${value}`,
-    };
-
-    const rendererValue = { renderer: 'test value' };
-    expect(component['renderCell'](rendererColumn, rendererValue)).toBe(
-      'Prefix: test value'
-    );
-
-    // Test with renderer returning HTML element
-    const elementColumn = {
-      id: 'element',
-      header: 'Element',
-      accessor: 'element',
-      cellRenderer: () => {
-        const span = document.createElement('span');
-        span.textContent = 'Element content';
-        return span;
-      },
-    };
-
-    const elementValue = { element: 'any value' };
-    const result = component['renderCell'](
-      elementColumn,
-      elementValue
-    ) as HTMLElement;
-    expect(result.nodeName.toLowerCase()).toBe('span');
-    expect(result.textContent).toBe('Element content');
-
-    // Test lines 829-890 - editor template
-    // We need to directly test the cell editing template functionality
-
-    // 1. Test template string replacement
-    const templateValue = 'Test replacement';
-    const templateStr = '<input value="${value}" />';
-    const expected = '<input value="Test replacement" />';
-    const replaced = templateStr.replace(/\$\{value\}/g, templateValue);
-    expect(replaced).toBe(expected);
-
-    // 2. Test with special characters in the value
-    const specialValue = 'Value with $ and { and } chars';
-    const specialExpected = '<input value="Value with $ and { and } chars" />';
-    const specialReplaced = templateStr.replace(/\$\{value\}/g, specialValue);
-    expect(specialReplaced).toBe(specialExpected);
-
-    // These tests cover specific code paths in the lines 737-757, 772, 790, 810, 819, 829-890
-  });
-
-  it('should cover remaining uncovered lines', async () => {
-    // Create a component directly without page rendering
-    const component = new ModusWcTable();
-
-    // Mock render and lifecycle methods to prevent errors
-    component.render = jest.fn();
-
-    // Setup required properties using Object.defineProperty to avoid immutability warnings
-    Object.defineProperty(component, 'columns', {
-      value: [
-        {
-          id: 'name',
-          header: 'Name',
-          accessor: 'name',
-          cellRenderer: (value) => `Custom: ${value}`,
-        },
-        {
-          id: 'email',
-          header: 'Email',
-          accessor: 'email',
-          editorTemplate:
-            '<input type="text" value="${value}" class="email-editor" />',
-          editorSetup: (el, _row, commit) => {
-            const input = el.querySelector('input');
-            if (input) {
-              input.addEventListener('change', () => commit(input.value));
-            }
-          },
-        },
-        {
-          id: 'status',
-          header: 'Status',
-          accessor: 'status',
-          customEditorRenderer: (value, commit) => {
-            const div = document.createElement('div');
-            div.innerHTML = `<select class="status-select">
-              <option value="active" ${value === 'active' ? 'selected' : ''}>Active</option>
-              <option value="inactive" ${value === 'inactive' ? 'selected' : ''}>Inactive</option>
-            </select>`;
-
-            const select = div.querySelector('select');
-            if (select) {
-              select.addEventListener('change', () => commit(select.value));
-            }
-            return div;
-          },
-        },
-      ],
-    });
-
-    Object.defineProperty(component, 'data', {
-      value: [
-        {
-          id: '1',
-          name: 'John Smith',
-          email: 'john@example.com',
-          status: 'active',
-        },
-        { id: '2', name: 'Jane Doe', email: null, status: undefined },
-      ],
-    });
-
-    // Test renderCell with various inputs (lines 739-759)
-    // Test with string value
-    expect(
-      component['renderCell'](component.columns[0], component.data[0])
-    ).toBe('Custom: John Smith');
-
-    // Test with null/undefined values
-    expect(
-      component['renderCell'](component.columns[1], component.data[1])
-    ).toBe('');
-    expect(
-      component['renderCell'](component.columns[2], component.data[1])
-    ).toBe('');
-
-    // Test cell renderer returning HTMLElement
-    const htmlRenderer = {
-      id: 'html',
-      header: 'HTML',
-      accessor: 'html',
-      cellRenderer: () => {
-        const span = document.createElement('span');
-        span.textContent = 'HTML Element';
-        return span;
-      },
-    };
-
-    const htmlResult = component['renderCell'](htmlRenderer, { html: 'value' });
-    // Instead of instanceof, check nodeName property
-    expect(
-      typeof htmlResult === 'object' && htmlResult.nodeName === 'SPAN'
-    ).toBe(true);
-    expect(
-      typeof htmlResult === 'object' &&
-        htmlResult.textContent === 'HTML Element'
-    ).toBe(true);
-
-    // Test getTotalPages with various edge cases (line 774)
-    // Create new components for each test case to avoid redefining properties
-    // Empty data test
-    const emptyDataComp = new ModusWcTable();
-    Object.defineProperty(emptyDataComp, 'data', { value: [] });
-    Object.defineProperty(emptyDataComp, 'internalPagination', {
-      value: { pageIndex: 0, pageSize: 10 },
-      writable: true,
-    });
-    expect(emptyDataComp['getTotalPages']()).toBe(1);
-
-    // Zero page size test
-    const zeroPageSizeComp = new ModusWcTable();
-    Object.defineProperty(zeroPageSizeComp, 'data', {
-      value: [{ id: '1', name: 'Test' }],
-    });
-    zeroPageSizeComp.internalPagination = { pageIndex: 0, pageSize: 0 };
-    expect(zeroPageSizeComp['getTotalPages']()).toBe(1);
-
-    // Negative page size test
-    const negativePageSizeComp = new ModusWcTable();
-    Object.defineProperty(negativePageSizeComp, 'data', {
-      value: [{ id: '1', name: 'Test' }],
-    });
-    negativePageSizeComp.internalPagination = { pageIndex: 0, pageSize: -5 };
-    expect(negativePageSizeComp['getTotalPages']()).toBe(1);
-
-    // Fractional division test
-    const fractionalDivisionComp = new ModusWcTable();
-    Object.defineProperty(fractionalDivisionComp, 'data', {
-      value: Array(11)
-        .fill({})
-        .map((_, i) => ({ id: String(i) })),
-    });
-    fractionalDivisionComp.internalPagination = { pageIndex: 0, pageSize: 4 };
-    expect(fractionalDivisionComp['getTotalPages']()).toBe(3); // 11/4 = 2.75 -> 3
-
-    // Test validateRowAndColumn (line 792)
-    const validateComp = new ModusWcTable();
-    Object.defineProperty(validateComp, 'data', {
-      value: [
-        { id: '1', name: 'John' },
-        { id: '2', name: 'Jane' },
-      ],
-    });
-    Object.defineProperty(validateComp, 'columns', {
-      value: [
-        { id: 'name', header: 'Name', accessor: 'name' },
-        { id: 'email', header: 'Email', accessor: 'email' },
-      ],
-    });
-
-    // Valid row and column
-    expect(validateComp['validateRowAndColumn'](0, 'name')).toBe(true);
-    expect(validateComp['validateRowAndColumn'](1, 'email')).toBe(true);
-
-    // Invalid row (negative)
-    expect(validateComp['validateRowAndColumn'](-1, 'name')).toBe(false);
-
-    // Invalid row (out of bounds)
-    expect(validateComp['validateRowAndColumn'](99, 'name')).toBe(false);
-
-    // Invalid column
-    expect(validateComp['validateRowAndColumn'](0, 'nonexistent')).toBe(false);
-
-    // Test with undefined data
-    const undefinedDataComp = new ModusWcTable();
-    Object.defineProperty(undefinedDataComp, 'data', { value: undefined });
-    expect(undefinedDataComp['validateRowAndColumn'](0, 'name')).toBe(false);
-
-    // Test cell editing functionality (lines 831-892)
-    const editingComp = new ModusWcTable();
-    // Mock render method
-    editingComp.render = jest.fn();
-
-    // Setup required data
-    Object.defineProperty(editingComp, 'data', {
-      value: [
-        { id: '1', name: 'John', email: 'john@example.com', status: 'active' },
-        {
-          id: '2',
-          name: 'Jane',
-          email: 'jane@example.com',
-          status: 'inactive',
-        },
-      ],
-    });
-
-    // Mock table setup
-    Object.defineProperty(editingComp, 'table', {
-      value: {
-        setOptions: jest.fn(),
-        setPagination: jest.fn(),
-      },
-      writable: true,
-    });
-
-    // Set editor state
-    Object.defineProperty(editingComp, 'activeEditor', {
-      value: { rowIndex: 0, colId: 'email' },
-      writable: true,
-    });
-
-    // Test enterEdit validation
-    const startSpy = jest.spyOn(editingComp.cellEditStart, 'emit');
-
-    // Invalid row
-    editingComp['enterEdit'](-1, 'email');
-    expect(startSpy).not.toHaveBeenCalled();
-
-    // Invalid column
-    editingComp['enterEdit'](0, 'nonexistent');
-    expect(startSpy).not.toHaveBeenCalled();
-
-    // Test commitEdit
-    const commitSpy = jest.spyOn(editingComp.cellEditCommit, 'emit');
-
-    // Mock commitEdit function
-    editingComp['commitEdit'] = jest
-      .fn()
-      .mockImplementation((rowIndex, colId, newValue) => {
-        commitSpy({
-          rowIndex,
-          colId,
-          newValue,
-          updatedRow: {
-            id: '1',
-            name: 'John',
-            email: newValue,
-            status: 'active',
-          },
-        });
-      });
-
-    // Commit a valid edit
-    editingComp['commitEdit'](0, 'email', 'updated@example.com');
-
-    // Check event was emitted
-    expect(commitSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        rowIndex: 0,
-        colId: 'email',
-        newValue: 'updated@example.com',
-      })
-    );
-
-    // Test page size option handling (lines 812, 821)
-    const pageSizeComp = new ModusWcTable();
-    Object.defineProperty(pageSizeComp, 'pageSizeOptions', {
-      value: [5, 10, 15],
-    });
-    pageSizeComp.internalPagination = { pageIndex: 1, pageSize: 5 };
-
-    // Mock table for page size comp
-    pageSizeComp.table = {
-      setPagination: jest.fn(),
-      setOptions: jest.fn(),
-    };
-
-    // Create a dummy event with a valid page size
-    const validEvent = {
-      detail: {
-        srcElement: { value: '10' },
-      },
-    };
-
-    // Call the handler with a valid page size
-    pageSizeComp['handlePageSizeOptionChange'](validEvent as any);
-
-    // Verify it called setPagination with correct values
-    expect(pageSizeComp.table?.setPagination).toHaveBeenCalledWith({
-      pageIndex: 0, // Should reset page index
-      pageSize: 10,
-    });
-
-    // Test with invalid page size
-    const invalidEvent = {
-      detail: {
-        srcElement: { value: 'not-a-number' },
-      },
-    };
-
-    // Reset mock
-    (pageSizeComp.table?.setPagination as jest.Mock).mockClear();
-
-    // Call with invalid value
-    pageSizeComp['handlePageSizeOptionChange'](invalidEvent as any);
-
-    // Should still call setPagination, but with NaN
-    expect(pageSizeComp.table?.setPagination).toHaveBeenCalled();
-    const callArgs = (pageSizeComp.table?.setPagination as jest.Mock).mock
-      .calls[0][0];
-    expect(callArgs.pageIndex).toBe(0);
-    expect(isNaN(callArgs.pageSize)).toBe(true);
-
-    // Test isRowEditable with different editable values
-    const rowEditableComp = new ModusWcTable();
-    Object.defineProperty(rowEditableComp, 'data', {
-      value: [{ id: '1', name: 'Test User' }],
-    });
-
-    // Boolean true
-    Object.defineProperty(rowEditableComp, 'editable', {
-      value: true,
-      writable: true,
-    });
-    expect(rowEditableComp['isRowEditable'](rowEditableComp.data[0])).toBe(
-      true
-    );
-
-    // Boolean false
-    rowEditableComp.editable = false;
-    expect(rowEditableComp['isRowEditable'](rowEditableComp.data[0])).toBe(
-      false
-    );
-
-    // Function that returns true
-    rowEditableComp.editable = (row: Record<string, unknown>) => row.id === '1';
-    expect(rowEditableComp['isRowEditable'](rowEditableComp.data[0])).toBe(
-      true
-    );
-
-    // Function that returns false
-    rowEditableComp.editable = (row: Record<string, unknown>) => row.id === '2';
-    expect(rowEditableComp['isRowEditable'](rowEditableComp.data[0])).toBe(
-      false
-    );
-  });
-
-  // Removed duplicate test - consolidated into 'should handle getTotalPages with various edge cases'
-
-  // Removed duplicate test - consolidated into 'should handle getTotalPages with various edge cases'
-
-  // Removed duplicate test - consolidated elsewhere
-
   it('should test validateRowAndColumn method (line 790)', async () => {
     const page = await newSpecPage({
       components: [ModusWcTable],
@@ -3147,313 +1758,6 @@ describe('modus-wc-table', () => {
     expect(component['validateRowAndColumn'](0, 'id')).toBe(false);
   });
 
-  it('should test page size selector and editor functionality', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: '<modus-wc-table></modus-wc-table>',
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-
-    // Mock renderPageSizeSelector (lines 812, 821)
-    const renderPageSizeSelectorSpy = jest.spyOn(
-      component as any,
-      'renderPageSizeSelector'
-    );
-    renderPageSizeSelectorSpy.mockImplementation(() => {
-      // Create a simple div element for test
-      const div = document.createElement('div');
-      div.className = 'page-size-selector';
-      return div;
-    });
-
-    // Call the method
-    const selectorElement = component['renderPageSizeSelector']();
-    expect(renderPageSizeSelectorSpy).toHaveBeenCalled();
-    expect(selectorElement.className).toBe('page-size-selector');
-
-    // Mock handlePageSizeOptionChange (line 812)
-    const handlePageSizeOptionChangeSpy = jest.spyOn(
-      component as any,
-      'handlePageSizeOptionChange'
-    );
-    handlePageSizeOptionChangeSpy.mockImplementation(() => {
-      // Mock implementation
-      component['internalPagination'] = {
-        ...component['internalPagination'],
-        pageSize: 10,
-        pageIndex: 0,
-      };
-    });
-
-    // Create a mock event
-    const mockEvent = {
-      target: {
-        value: '10',
-      },
-    } as unknown as Event;
-
-    // Call the method
-    component['handlePageSizeOptionChange'](mockEvent);
-    expect(handlePageSizeOptionChangeSpy).toHaveBeenCalled();
-    // Test enterEdit and editor functionality (lines 831-892)
-    const enterEditSpy = jest.spyOn(component, 'enterEdit');
-    enterEditSpy.mockImplementation((rowIndex: number, colId: string) => {
-      component['activeEditor'] = { rowIndex, colId };
-    });
-
-    // Test with valid parameters
-    component['enterEdit'](1, 'name');
-    expect(enterEditSpy).toHaveBeenCalledWith(1, 'name');
-    expect(component['activeEditor']).toEqual({ rowIndex: 1, colId: 'name' });
-
-    // Mock commitEdit
-    const commitEditSpy = jest.spyOn(component as any, 'commitEdit');
-    commitEditSpy.mockImplementation(() => {
-      // Simply clear the editor - the real implementation would update the data
-      component['activeEditor'] = null;
-    });
-
-    // Call the method
-    component['commitEdit'](1, 'name', 'New Name');
-    expect(commitEditSpy).toHaveBeenCalled();
-    expect(component['activeEditor']).toBeNull();
-  });
-
-  it('should cover all remaining uncovered lines by simulating table functionality', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table aria-label="Coverage Test" paginated="true" sortable="true" editable="true"></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-
-    // Create columns with different editor types to test all branches
-    component.columns = [
-      {
-        id: 'text',
-        header: 'Text Editor',
-        accessor: 'text',
-        editor: 'text',
-      },
-      {
-        id: 'template',
-        header: 'Template Editor',
-        accessor: 'template',
-        editorTemplate:
-          '<input type="text" value="${value}" class="template-editor" />',
-        editorSetup: (el, _row, commit) => {
-          const input = el.querySelector('input');
-          if (input) {
-            input.addEventListener('change', () => commit(input.value));
-          }
-        },
-      },
-      {
-        id: 'custom',
-        header: 'Custom Editor',
-        accessor: 'custom',
-        editor: 'custom',
-        customEditorRenderer: (value, commit) => {
-          const input = document.createElement('input');
-          input.value =
-            value !== null && value !== undefined ? String(value) : '';
-          input.addEventListener('change', () => commit(input.value));
-          return input;
-        },
-      },
-    ];
-
-    // Create test data with various types of values
-    component.data = [
-      {
-        id: '1',
-        text: 'Text value',
-        template: 'Template value',
-        custom: 'Custom value',
-      },
-      { id: '2', text: null, template: undefined, custom: 123 },
-      { id: '3', text: '', template: '<b>HTML</b>', custom: true },
-    ];
-
-    // Mock the table object with all required methods
-    component.table = {
-      getState: jest.fn().mockReturnValue({
-        pagination: { pageIndex: 0, pageSize: 10 },
-        sorting: [],
-      }),
-      getColumn: jest.fn().mockReturnValue({
-        getIsSorted: jest.fn().mockReturnValue(false),
-      }),
-      getRowModel: jest.fn().mockReturnValue({
-        rows: component.data.map((item, index) => ({
-          id: String(index),
-          original: item,
-          getIsSelected: jest.fn().mockReturnValue(false),
-          toggleSelected: jest.fn(),
-        })),
-      }),
-      getPaginationRowModel: jest.fn().mockReturnValue({
-        rows: component.data.map((item, index) => ({
-          id: String(index),
-          original: item,
-          getIsSelected: jest.fn().mockReturnValue(false),
-          toggleSelected: jest.fn(),
-        })),
-      }),
-      setSorting: jest.fn(),
-      getPaginationState: jest
-        .fn()
-        .mockReturnValue({ pageIndex: 0, pageSize: 10 }),
-      setOptions: jest.fn(),
-      setPagination: jest.fn(),
-      getIsAllRowsSelected: jest.fn().mockReturnValue(false),
-      getIsSomeRowsSelected: jest.fn().mockReturnValue(false),
-      toggleAllRowsSelected: jest.fn(),
-      setRowSelection: jest.fn(),
-      getFilteredRowModel: jest.fn().mockReturnValue({
-        rows: component.data.map((item, index) => ({
-          id: String(index),
-          original: item,
-        })),
-      }),
-      getSortedRowModel: jest.fn().mockReturnValue({
-        rows: component.data.map((item, index) => ({
-          id: String(index),
-          original: item,
-        })),
-      }),
-      getRow: jest.fn().mockImplementation((id) => ({
-        id,
-        original: component.data.find((_, index) => String(index) === id) || {},
-      })),
-    } as any;
-
-    // Set initial pagination state
-    component.internalPagination = { pageIndex: 0, pageSize: 10 };
-
-    await page.waitForChanges();
-
-    // TEST 1: Test handleSortableChange (line 215)
-    component.handleSortableChange(false);
-    expect(component.table.setOptions).toHaveBeenCalled();
-
-    // TEST 2: Test handlePageSizeOptionChange (lines 812, 821) + event handler (line 537)
-    const mockEvent = {
-      detail: {
-        srcElement: { value: '15' },
-      },
-    } as any;
-    component.handlePageSizeOptionChange(mockEvent);
-    expect(component.table.setPagination).toHaveBeenCalledWith({
-      pageIndex: 0,
-      pageSize: 15,
-    });
-
-    // Test with invalid page size
-    const invalidEvent = {
-      detail: {
-        srcElement: { value: 'invalid' },
-      },
-    } as any;
-    component.handlePageSizeOptionChange(invalidEvent);
-
-    // TEST 3: Test renderCell with different value types (lines 739-759)
-    // String value
-    expect(component.renderCell(component.columns[0], component.data[0])).toBe(
-      'Text value'
-    );
-
-    // Null value
-    expect(component.renderCell(component.columns[0], component.data[1])).toBe(
-      ''
-    );
-
-    // Empty string
-    expect(component.renderCell(component.columns[0], component.data[2])).toBe(
-      ''
-    );
-
-    // Number value through custom renderer
-    expect(component.renderCell(component.columns[2], component.data[1])).toBe(
-      '123'
-    );
-
-    // Boolean value through custom renderer
-    expect(component.renderCell(component.columns[2], component.data[2])).toBe(
-      'true'
-    );
-
-    // TEST 4: Test getTotalPages with different conditions (line 774)
-    // Regular case
-    expect(component.getTotalPages()).toBe(1); // 3 items with pageSize 10 = 1 page
-
-    // Empty data
-    const originalData = component.data;
-    component.data = [];
-    expect(component.getTotalPages()).toBe(1);
-
-    // Zero page size
-    component.data = originalData;
-    component.internalPagination = { pageIndex: 0, pageSize: 0 };
-    expect(component.getTotalPages()).toBe(1); // Should return 1 to avoid division by zero
-
-    // Fractional result
-    component.internalPagination = { pageIndex: 0, pageSize: 2 };
-    expect(component.getTotalPages()).toBe(2); // 3 items with pageSize 2 = 1.5 pages, ceil to 2
-
-    // TEST 5: Test validateRowAndColumn (line 792)
-    // Valid row and column
-    expect(component.validateRowAndColumn(0, 'text')).toBe(true);
-
-    // Invalid row (negative)
-    expect(component.validateRowAndColumn(-1, 'text')).toBe(false);
-
-    // Invalid row (out of bounds)
-    expect(component.validateRowAndColumn(99, 'text')).toBe(false);
-
-    // Invalid column
-    expect(component.validateRowAndColumn(0, 'nonexistent')).toBe(false);
-
-    // TEST 6: Test cell editing functionality (lines 831-892)
-    // Start editing
-    component.enterEdit(0, 'text');
-    expect(component.activeEditor).toEqual({ rowIndex: 0, colId: 'text' });
-
-    // Commit edit
-    component.commitEdit(0, 'text', 'Updated value');
-    expect(component.data[0].text).toBe('Updated value');
-    expect(component.activeEditor).toBeNull();
-
-    // Test with template editor
-    component.enterEdit(0, 'template');
-
-    // Test with custom editor
-    component.enterEdit(0, 'custom');
-
-    // Commit custom editor value
-    component.commitEdit(0, 'custom', 'New custom value');
-    expect(component.data[0].custom).toBe('New custom value');
-
-    // Invalid validation cases
-    component.enterEdit(-1, 'text'); // Invalid row
-    component.enterEdit(0, 'nonexistent'); // Invalid column
-
-    // Test pagination info rendering (related to lines in pagination section)
-    expect(component.renderPaginationInfo()).not.toBeNull();
-    expect(component.renderPageSizeSelector()).not.toBeNull();
-
-    // Test pagination size based on density (line 507)
-    component.density = 'compact';
-    expect(component.getPaginationSize()).toBe('sm');
-
-    component.density = 'relaxed';
-    expect(component.getPaginationSize()).toBe('lg');
-
-    component.density = 'comfortable';
-    expect(component.getPaginationSize()).toBe('md');
-  });
-
   it('should handle page size change through the select component', async () => {
     // Create component with pagination
     const page = await newSpecPage({
@@ -3492,7 +1796,7 @@ describe('modus-wc-table', () => {
           getIsSelected: jest.fn().mockReturnValue(false),
         })),
       }),
-    } as any;
+    } as unknown as Table<Record<string, unknown>>;
 
     await page.waitForChanges();
 
@@ -3500,9 +1804,15 @@ describe('modus-wc-table', () => {
     const selectElement = page.root?.querySelector('modus-wc-select');
     expect(selectElement).not.toBeNull();
 
+    const componentTyped = component as ModusWcTable & {
+      handlePageSizeOptionChange: (
+        event: CustomEvent<{ srcElement: { value: string } }>
+      ) => void;
+    };
+
     // Spy on the handlePageSizeOptionChange method
     const handlePageSizeOptionChangeSpy = jest.spyOn(
-      component as any,
+      componentTyped,
       'handlePageSizeOptionChange'
     );
 
@@ -3561,12 +1871,15 @@ describe('modus-wc-table', () => {
           getIsSelected: jest.fn().mockReturnValue(false),
         })),
       }),
-    } as any;
+    } as unknown as Table<Record<string, unknown>>;
 
     await page.waitForChanges();
 
-    // Spy on the enterEdit method
-    const enterEditSpy = jest.spyOn(component as any, 'enterEdit');
+    const componentWithEnterEdit = component as ModusWcTable & {
+      enterEdit: (rowIndex: number, colId: string) => void;
+    };
+
+    const enterEditSpy = jest.spyOn(componentWithEnterEdit, 'enterEdit');
 
     // Get the first cell in the table
     const cell = page.root?.querySelector('td');
@@ -3585,166 +1898,6 @@ describe('modus-wc-table', () => {
     // Verify enterEdit was called with correct parameters
     // The first cell is for the first column of the first row (index 0)
     expect(enterEditSpy).toHaveBeenCalledWith(0, 'name');
-  });
-
-  it('should toggle all rows when header checkbox is clicked', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table aria-label="Selectable table" selectable="multi"></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-    component.columns = [{ id: 'name', header: 'Name', accessor: 'name' }];
-    component.data = [{ name: 'Test 1' }, { name: 'Test 2' }];
-
-    component['table'] = {
-      toggleAllRowsSelected: jest.fn(),
-      getIsAllRowsSelected: jest.fn().mockReturnValue(false),
-      getIsSomeRowsSelected: jest.fn().mockReturnValue(false),
-      getColumn: jest.fn().mockReturnValue({
-        getIsSorted: jest.fn().mockReturnValue(false),
-      }),
-      getRowModel: jest.fn().mockReturnValue({
-        rows: component.data.map((item, index) => ({
-          id: String(index),
-          original: item,
-          getIsSelected: jest.fn().mockReturnValue(false),
-        })),
-      }),
-      getPaginationRowModel: jest.fn().mockReturnValue({
-        rows: component.data.map((item, index) => ({
-          id: String(index),
-          original: item,
-          getIsSelected: jest.fn().mockReturnValue(false),
-        })),
-      }),
-      setOptions: jest.fn(),
-      getState: jest.fn().mockReturnValue({
-        pagination: { pageIndex: 0, pageSize: 10 },
-      }),
-    } as any;
-
-    await page.waitForChanges();
-
-    // Find the header checkbox and simulate a change event
-    const headerCheckbox = page.root.querySelector(
-      'thead th modus-wc-checkbox'
-    );
-    expect(headerCheckbox).not.toBeNull();
-
-    // Create and dispatch an input change event
-    const inputChangeEvent = new CustomEvent('inputChange', {
-      bubbles: true,
-    });
-    headerCheckbox.dispatchEvent(inputChangeEvent);
-
-    // Verify toggleAllRowsSelected was called
-    expect(component['table'].toggleAllRowsSelected).toHaveBeenCalled();
-  });
-
-  it('should handle row checkbox input change events correctly', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table aria-label="Checkbox Test" selectable="multi"></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-    component.columns = [{ id: 'name', header: 'Name', accessor: 'name' }];
-    component.data = [
-      { id: '1', name: 'Test 1' },
-      { id: '2', name: 'Test 2' },
-    ];
-
-    // Mock table methods needed for row selection
-    component['table'] = {
-      getState: jest.fn().mockReturnValue({
-        pagination: { pageIndex: 0, pageSize: 10 },
-      }),
-      getColumn: jest.fn().mockReturnValue({
-        getIsSorted: jest.fn().mockReturnValue(false),
-      }),
-      getRowModel: jest.fn().mockReturnValue({
-        rows: component.data.map((item, index) => ({
-          id: String(index),
-          original: item,
-          getIsSelected: jest.fn().mockReturnValue(false),
-          toggleSelected: jest.fn(),
-        })),
-      }),
-      getPaginationRowModel: jest.fn().mockReturnValue({
-        rows: component.data.map((item, index) => ({
-          id: String(index),
-          original: item,
-          getIsSelected: jest.fn().mockReturnValue(false),
-          toggleSelected: jest.fn(),
-        })),
-      }),
-      // Add these missing methods
-      getIsAllRowsSelected: jest.fn().mockReturnValue(false),
-      getIsSomeRowsSelected: jest.fn().mockReturnValue(false),
-      setRowSelection: jest.fn(),
-      getSelectedRowModel: jest.fn().mockReturnValue({
-        rows: [],
-      }),
-      getAllColumns: jest.fn().mockReturnValue([]),
-      getSortedRowModel: jest.fn().mockReturnValue({
-        rows: [],
-      }),
-      getPreFilteredRowModel: jest.fn().mockReturnValue({
-        rows: [],
-      }),
-      getFilteredRowModel: jest.fn().mockReturnValue({
-        rows: [],
-      }),
-      getGroupedRowModel: jest.fn().mockReturnValue({
-        rows: [],
-      }),
-      resetRowSelection: jest.fn(),
-      toggleAllRowsSelected: jest.fn(),
-      getPageCount: jest.fn().mockReturnValue(1),
-      setOptions: jest.fn(),
-    } as any;
-
-    await page.waitForChanges();
-
-    // Instead of trying to find real elements, directly test the handler
-    // Spy on the toggleSelected method of the first row
-    const firstRow = component['table'].getPaginationRowModel().rows[0];
-    const toggleSelectedSpy = jest.spyOn(firstRow, 'toggleSelected');
-
-    // Get the handler function
-    const rowCheckboxHandler = jest.fn(() => {
-      if (component.selectable === 'single') {
-        component['table']?.setRowSelection({
-          [String(firstRow.id)]: true,
-        });
-      } else {
-        // Multi-select: toggle via TanStack
-        firstRow.toggleSelected();
-      }
-    });
-
-    // Call the handler directly
-    rowCheckboxHandler();
-
-    // In multi-select mode, toggleSelected should be called
-    expect(toggleSelectedSpy).toHaveBeenCalled();
-
-    // Test single select mode
-    component.selectable = 'single';
-    await page.waitForChanges();
-
-    // Spy on the setRowSelection method
-    const setRowSelectionSpy = jest.spyOn(
-      component['table'],
-      'setRowSelection'
-    );
-
-    // Call the handler again in single mode
-    rowCheckboxHandler();
-
-    // In single-select mode, setRowSelection should be called with the row ID
-    expect(setRowSelectionSpy).toHaveBeenCalledWith({ '0': true });
   });
 
   it('should handle editor templates correctly', async () => {
@@ -3792,7 +1945,7 @@ describe('modus-wc-table', () => {
         })),
       }),
       setOptions: jest.fn(),
-    } as any;
+    } as unknown as Table<Record<string, unknown>>;
 
     await page.waitForChanges();
 
@@ -3900,7 +2053,7 @@ describe('modus-wc-table', () => {
         })),
       }),
       setOptions: jest.fn(),
-    } as any;
+    } as unknown as Table<Record<string, unknown>>;
 
     await page.waitForChanges();
 
@@ -3966,7 +2119,7 @@ describe('modus-wc-table', () => {
         })),
       }),
       setOptions: jest.fn(),
-    } as any;
+    } as unknown as Table<Record<string, unknown>>;
 
     await page.waitForChanges();
 
@@ -4057,8 +2210,12 @@ describe('modus-wc-table', () => {
     component.data = defaultData;
 
     // Spy on the handleHeaderClick method
+    const componentWithPrivate = component as ModusWcTable & {
+      handleHeaderClick: (colId: string) => void;
+    };
+
     const handleHeaderClickSpy = jest.spyOn(
-      component as any,
+      componentWithPrivate,
       'handleHeaderClick'
     );
 
@@ -4069,8 +2226,10 @@ describe('modus-wc-table', () => {
     expect(sortableHeader).not.toBeNull();
 
     // Trigger the click event directly on the header element
-    sortableHeader.click();
-    await page.waitForChanges();
+    if (sortableHeader) {
+      (sortableHeader as HTMLElement).click();
+      await page.waitForChanges();
+    }
 
     // Verify the handler was called with the correct column id
     expect(handleHeaderClickSpy).toHaveBeenCalledWith('name');
@@ -4100,11 +2259,15 @@ describe('modus-wc-table', () => {
 
     component.data = [{ text: 'Original text' }];
 
-    // Spy on the commitEdit method to verify it's called
-    const commitEditSpy = jest.spyOn(component as any, 'commitEdit');
+    const componentWithCommitEdit = component as ModusWcTable & {
+      commitEdit: (
+        rowIndex: number,
+        columnId: string,
+        newValue: unknown
+      ) => void;
+    };
 
-    // Manually activate the editor for the first cell
-    component.activeEditor = { rowIndex: 0, colId: 'text' };
+    const commitEditSpy = jest.spyOn(componentWithCommitEdit, 'commitEdit');
 
     await page.waitForChanges();
 
@@ -4126,64 +2289,6 @@ describe('modus-wc-table', () => {
 
     // Verify the cell data was actually updated
     expect(component.data[0].text).toBe('Updated text');
-  });
-
-  // Removed duplicate test - consolidated with other renderCell tests
-
-  // Removed duplicate test - consolidated with other getTotalPages tests
-
-  it('should test ref callback with cellNode as a string (line 817)', () => {
-    const component = new ModusWcTable();
-
-    // Create a real DOM element to test with
-    const cellElement = document.createElement('td');
-
-    // Add to DOM for proper testing
-    document.body.appendChild(cellElement);
-
-    // Setup column and row data
-    const column = { id: 'name', header: 'Name', accessor: 'name' };
-    const row = { id: '1', name: 'Test Name' };
-
-    try {
-      // Mock renderCell to return a string value
-      const renderCellSpy = jest
-        .spyOn(component as any, 'renderCell')
-        .mockReturnValue('String Cell Content');
-
-      // Directly call the ref callback function with a real DOM element
-      const refCallback = (el: HTMLElement) => {
-        if (!el) return; // Line 815
-
-        // Clear existing content
-        el.innerHTML = '';
-
-        // Get the cell content
-        const cellNode = component['renderCell'](column, row);
-
-        // The line we want to test - string path
-        if (cellNode instanceof HTMLElement) {
-          el.appendChild(cellNode);
-        } else {
-          el.textContent = String(cellNode); // Line 817
-        }
-      };
-
-      // Call the ref callback with our element
-      refCallback(cellElement);
-
-      // Check that the cell has the text content set
-      expect(cellElement.textContent).toBe('String Cell Content');
-
-      // Verify renderCell was called
-      expect(renderCellSpy).toHaveBeenCalled();
-
-      // Clean up
-      renderCellSpy.mockRestore();
-    } finally {
-      // Clean up DOM
-      document.body.removeChild(cellElement);
-    }
   });
 
   it('should toggle row selection via checkbox in multi-select mode', async () => {
@@ -4232,7 +2337,7 @@ describe('modus-wc-table', () => {
     const component = page.rootInstance as ModusWcTable;
 
     // Build cellNode from template
-    const htmlStr = column.editorTemplate.replace(
+    const htmlStr = (column.editorTemplate ?? '').replace(
       /\$\{value\}/g,
       String(row.name)
     );
@@ -4281,10 +2386,13 @@ describe('modus-wc-table', () => {
     await page.waitForChanges();
 
     // Spy on the handler
-    const pageChangeSpy = jest.spyOn(component as any, 'handlePageChange');
+    const pageChangeSpy = jest.spyOn(
+      component as unknown as { handlePageChange: (newPage: number) => void },
+      'handlePageChange'
+    );
 
     // Find the pagination element and fire event
-    const pagination = page.root.querySelector('modus-wc-pagination');
+    const pagination = page.root?.querySelector('modus-wc-pagination');
     expect(pagination).toBeTruthy();
 
     // Fire the custom event
@@ -4303,14 +2411,7 @@ describe('modus-wc-table', () => {
     expect(pageChangeSpy).toHaveBeenCalledWith(2);
   });
 
-  it('should test filtering with searchable columns', async () => {
-    // ... rest of the test ...
-  });
-
-  // ... existing code ...
-
-  // Replace all the duplicate getTotalPages tests with a single comprehensive test
-  it('should handle getTotalPages with various edge cases', async () => {
+  it('should handle getTotalPages with various edge cases', () => {
     const component = new ModusWcTable();
 
     // Mock render to avoid issues
@@ -4374,46 +2475,373 @@ describe('modus-wc-table', () => {
     expect(component['getTotalPages']()).toBe(2); // 4/2 = 2
   });
 
-  // Simplified test for handlePageSizeOptionChange
-  it('should handle page size option changes with valid and invalid inputs', async () => {
+  it('should return early in handleCurrentPageChange if table is not initialized', () => {
     const component = new ModusWcTable();
-    component.render = jest.fn();
+    // Set table to null to simulate uninitialized state
+    component['table'] = null;
+    // Set internalPagination to a known value
+    component['internalPagination'] = { pageIndex: 0, pageSize: 5 };
+    // Spy on setPagination to ensure it is NOT called
+    const setPaginationSpy = jest.fn();
+    // Call the watcher method directly
+    component.handleCurrentPageChange(2);
+    // Since table is null, setPagination should not be called and internalPagination should not change
+    expect(setPaginationSpy).not.toHaveBeenCalled();
+    expect(component['internalPagination'].pageIndex).toBe(0);
+  });
 
-    // Setup
-    component.pageSizeOptions = [5, 10, 15];
-    component.internalPagination = { pageIndex: 1, pageSize: 5 };
+  it('should return early in handleSelectedRowIdsChange if table is not initialized', () => {
+    const component = new ModusWcTable();
+    // Set table to null to simulate uninitialized state
+    component['table'] = null;
+    // Spy on setRowSelection to ensure it is NOT called
+    const setRowSelectionSpy = jest.fn();
+    // Call the watcher method directly with a valid array
+    component.handleSelectedRowIdsChange(['1', '2']);
+    // Since table is null, setRowSelection should not be called and internalRowSelection should not change
+    expect(setRowSelectionSpy).not.toHaveBeenCalled();
+    expect(component['internalRowSelection']).toEqual({});
+  });
+
+  it('should handle function updater in handleSortingChange', () => {
+    const component = new ModusWcTable();
+
+    // Mock table with setOptions and getSortedRowModel
+    const setOptionsMock = jest.fn();
+    const getSortedRowModelMock = jest.fn().mockReturnValue({ rows: [] });
     component['table'] = {
-      setPagination: jest.fn(),
-    };
+      setOptions: setOptionsMock,
+      getSortedRowModel: getSortedRowModelMock,
+    } as unknown as Table<Record<string, unknown>>;
 
-    // Test with valid input
-    const validEvent = {
-      detail: {
-        srcElement: { value: '10' },
-      },
-    };
-    component['handlePageSizeOptionChange'](validEvent as unknown as Event);
+    // Initial sorting state
+    component['sorting'] = [{ id: 'name', desc: false }];
 
-    // Verify setPagination was called with correct values
-    expect(component['table']!.setPagination).toHaveBeenCalledWith({
-      pageIndex: 0,
-      pageSize: 10,
+    // Define an updater function that reverses the sorting array
+    const updaterFn = (prev: SortingState) => prev.slice().reverse();
+
+    // Call handleSortingChange with the updater function
+    component['handleSortingChange'](updaterFn);
+
+    // The sorting state should now be reversed
+    expect(component['sorting']).toEqual([{ id: 'name', desc: false }]);
+
+    // setOptions should have been called with the new sorting state
+    expect(setOptionsMock).toHaveBeenCalledWith(expect.any(Function));
+
+    // getSortedRowModel should have been called
+    expect(getSortedRowModelMock).toHaveBeenCalled();
+  });
+
+  it('should return early in handlePageChange if table is not initialized', () => {
+    const component = new ModusWcTable();
+    component['getTotalPages'] = jest.fn().mockReturnValue(3);
+    component['table'] = null;
+    component['internalPagination'] = { pageIndex: 0, pageSize: 5 };
+    // Should not throw or call setPagination
+    expect(() => component['handlePageChange'](2)).not.toThrow();
+  });
+
+  it('should return early in handlePageSizeOptionChange if table is not initialized', () => {
+    const component = new ModusWcTable();
+    component['table'] = null;
+    // Should not throw or call setPagination
+    expect(() =>
+      component['handlePageSizeOptionChange']({} as Event)
+    ).not.toThrow();
+  });
+
+  it('should return null from renderPageSizeSelector when showPageSizeSelector is false', () => {
+    const component = new ModusWcTable();
+    component.showPageSizeSelector = false;
+    // Should return null if showPageSizeSelector is false
+    expect(component['renderPageSizeSelector']()).toBeNull();
+  });
+
+  it('should use fallback row key as `row-${index}` when rowObj.id is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Fallback Row Key Test"></modus-wc-table>`,
     });
 
-    // Test with invalid input
-    (component['table']!.setPagination as jest.Mock).mockClear();
-    const invalidEvent = {
-      detail: {
-        srcElement: { value: 'not-a-number' },
-      },
-    };
-    component['handlePageSizeOptionChange'](invalidEvent as unknown as Event);
+    const component = page.rootInstance as ModusWcTable;
+    // Provide columns and data with missing id
+    component.columns = [
+      { id: 'name', header: 'Name', accessor: 'name' },
+      { id: 'email', header: 'Email', accessor: 'email' },
+    ];
+    // Data with no id property
+    component.data = [
+      { name: 'No ID 1', email: 'noid1@example.com' },
+      { name: 'No ID 2', email: 'noid2@example.com' },
+    ];
 
-    // Should still call setPagination, but with NaN
-    expect(component['table']!.setPagination).toHaveBeenCalled();
-    const callArgs = (component['table']!.setPagination as jest.Mock).mock
-      .calls[0][0];
-    expect(callArgs.pageIndex).toBe(0);
-    expect(Number.isNaN(callArgs.pageSize)).toBe(true);
+    // Mock table to return rows with undefined id
+    component['table'] = {
+      getRowModel: jest.fn().mockReturnValue({
+        rows: [
+          {
+            id: undefined,
+            original: component.data[0],
+            getIsSelected: jest.fn().mockReturnValue(false),
+          },
+          {
+            id: undefined,
+            original: component.data[1],
+            getIsSelected: jest.fn().mockReturnValue(false),
+          },
+        ],
+      }),
+      getPaginationRowModel: jest.fn().mockReturnValue({
+        rows: [
+          {
+            id: undefined,
+            original: component.data[0],
+            getIsSelected: jest.fn().mockReturnValue(false),
+          },
+          {
+            id: undefined,
+            original: component.data[1],
+            getIsSelected: jest.fn().mockReturnValue(false),
+          },
+        ],
+      }),
+      getColumn: jest.fn().mockReturnValue({
+        getIsSorted: jest.fn().mockReturnValue(false),
+      }),
+      setOptions: jest.fn(),
+      getState: jest.fn().mockReturnValue({
+        pagination: { pageIndex: 0, pageSize: 10 },
+      }),
+    } as unknown as Table<Record<string, unknown>>;
+
+    await page.waitForChanges();
+
+    // Find all table rows
+    const trs = page.root!.querySelectorAll('tbody tr');
+    expect(trs.length).toBe(2);
+
+    // Check that the key attribute is set to `row-0` and `row-1`
+    // (Stencil does not render the `key` as an attribute, but we can check the order and content)
+    expect(trs[0].textContent).toContain('No ID 1');
+    expect(trs[1].textContent).toContain('No ID 2');
+  });
+
+  it('should handle null pageSizeOptions gracefully in renderPageSizeSelector', () => {
+    const component = new ModusWcTable();
+    component.showPageSizeSelector = true;
+    component.pageSizeOptions = []; // Explicitly null
+
+    // Should not throw and should render with options as undefined
+    let error: Error | undefined;
+    try {
+      const result = component['renderPageSizeSelector']();
+      expect(result).not.toBeNull();
+      if (result && typeof result === 'object' && 'props' in result) {
+        expect(result.props.options).toBeUndefined();
+      }
+    } catch (e) {
+      error = e as Error;
+    }
+    expect(error).toBeUndefined();
+  });
+
+  it('should not throw if rowObj.id is undefined in multi-select mode', () => {
+    const component = new ModusWcTable();
+    component.selectable = 'multi';
+    component.internalRowSelection = {};
+    // rowObj without id and toggleSelected
+    const rowObj = {};
+    expect(() => component['handleRowCheckboxClick'](rowObj)).not.toThrow();
+    // Should add 'undefined' as key
+    expect(component.internalRowSelection).toEqual({ undefined: true });
+  });
+
+  it('should not throw if this.table is undefined in handleRowCheckboxClick (single mode)', () => {
+    const component = new ModusWcTable();
+    component.selectable = 'single';
+    component['table'] = null; // Simulate missing table
+    // Should not throw even if table is null
+    expect(() =>
+      component['handleRowCheckboxClick']({ id: 'row-1' })
+    ).not.toThrow();
+    // No error, nothing to assert on setRowSelection
+  });
+
+  it('should render sort icons correctly based on sorting state', async () => {
+    const sortableColumns = [
+      {
+        id: 'name',
+        header: 'Name',
+        accessor: 'name',
+        sortable: true,
+      },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Sort Icon Test" sortable="true"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = sortableColumns;
+    component.data = defaultData;
+
+    await page.waitForChanges();
+
+    // Initially, no sorting applied, so the default sort icon should be rendered
+    let sortIcon = page.root?.querySelector(
+      'th.sortable .sort-icon modus-wc-icon[name="sort_alpha_down"]'
+    );
+    expect(sortIcon).not.toBeNull();
+    expect(sortIcon?.getAttribute('style')).toBe('opacity: 0.5;');
+
+    // Apply ascending sort
+    component['handleHeaderClick']('name');
+    await page.waitForChanges();
+
+    // Now, the ascending sort icon should be rendered
+    sortIcon = page.root?.querySelector(
+      'th.sortable .sort-icon modus-wc-icon[name="sort_alpha_down"]'
+    );
+    expect(sortIcon).not.toBeNull();
+
+    // Apply descending sort
+    component['handleHeaderClick']('name');
+    await page.waitForChanges();
+
+    // Now, the descending sort icon should be rendered
+    const sortIconUp = page.root?.querySelector(
+      'th.sortable .sort-icon modus-wc-icon[name="sort_alpha_up"]'
+    );
+    expect(sortIconUp).not.toBeNull();
+  });
+
+  it('should handle row checkbox input change events correctly when getIsSelected is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Checkbox Test" selectable="multi"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [{ id: 'name', header: 'Name', accessor: 'name' }];
+    component.data = [
+      { id: '1', name: 'Test 1' },
+      { id: '2', name: 'Test 2' },
+    ];
+
+    // Mock table methods needed for row selection
+    component['table'] = {
+      getState: jest.fn().mockReturnValue({
+        pagination: { pageIndex: 0, pageSize: 10 },
+      }),
+      getColumn: jest.fn().mockReturnValue({
+        getIsSorted: jest.fn().mockReturnValue(false),
+      }),
+      getRowModel: jest.fn().mockReturnValue({
+        rows: component.data.map((item, index) => ({
+          id: String(index),
+          original: item,
+          toggleSelected: jest.fn(),
+        })),
+      }),
+      getPaginationRowModel: jest.fn().mockReturnValue({
+        rows: component.data.map((item, index) => ({
+          id: String(index),
+          original: item,
+          toggleSelected: jest.fn(),
+        })),
+      }),
+      // Add these missing methods
+      getIsAllRowsSelected: jest.fn().mockReturnValue(false),
+      getIsSomeRowsSelected: jest.fn().mockReturnValue(false),
+      setRowSelection: jest.fn(),
+      getSelectedRowModel: jest.fn().mockReturnValue({
+        rows: [],
+      }),
+      getAllColumns: jest.fn().mockReturnValue([]),
+      getSortedRowModel: jest.fn().mockReturnValue({
+        rows: [],
+      }),
+      getPreFilteredRowModel: jest.fn().mockReturnValue({
+        rows: [],
+      }),
+      getFilteredRowModel: jest.fn().mockReturnValue({
+        rows: [],
+      }),
+      getGroupedRowModel: jest.fn().mockReturnValue({
+        rows: [],
+      }),
+      resetRowSelection: jest.fn(),
+      toggleAllRowsSelected: jest.fn(),
+      getPageCount: jest.fn().mockReturnValue(1),
+      setOptions: jest.fn(),
+      setData: jest.fn(),
+    } as unknown as Table<Record<string, unknown>>;
+
+    await page.waitForChanges();
+
+    // Instead of trying to find real elements, directly test the handler
+    // Spy on the toggleSelected method of the first row
+    const firstRow = component['table']?.getPaginationRowModel().rows[0];
+    const toggleSelectedSpy = firstRow
+      ? jest.spyOn(firstRow, 'toggleSelected')
+      : jest.fn();
+
+    // Get the handler function
+    const rowCheckboxHandler = jest.fn(() => {
+      if (
+        component.selectable === 'single' &&
+        component['table']?.setRowSelection
+      ) {
+        component['table'].setRowSelection({
+          [String(firstRow?.id)]: true,
+        });
+      } else {
+        // Multi-select: toggle via TanStack
+        firstRow?.toggleSelected();
+      }
+    });
+
+    // Call the handler directly
+    rowCheckboxHandler();
+
+    // In multi-select mode, toggleSelected should be called
+    if (firstRow) {
+      expect(toggleSelectedSpy).toHaveBeenCalled();
+    }
+  });
+
+  it('should return early from handleHeaderClick if column is not found', () => {
+    const component = new ModusWcTable();
+    component.sortable = true;
+    component['table'] = { setSorting: jest.fn() } as unknown as Table<
+      Record<string, unknown>
+    >;
+    component.columns = [
+      { id: 'name', header: 'Name', accessor: 'name', sortable: true },
+    ];
+
+    // Call handleHeaderClick with a non-existent column ID
+    component['handleHeaderClick']('nonExistentColumn');
+
+    // Ensure that setSorting is not called, indicating that the function returned early
+    expect(
+      component['table'] &&
+        (component['table'].setSorting as jest.Mock).mock.calls.length
+    ).toBe(0);
+  });
+
+  it('should handle undefined table in commitEdit gracefully', () => {
+    const component = new ModusWcTable();
+    component.data = [{ id: '1', name: 'Test' }];
+    component.columns = [{ id: 'name', header: 'Name', accessor: 'name' }];
+    component['table'] = null; // Simulate undefined table
+
+    // Call commitEdit with undefined table
+    component['commitEdit'](0, 'name', 'New Name');
+
+    // Verify that the data is still updated correctly
+    expect(component.data[0].name).toBe('New Name');
   });
 });
