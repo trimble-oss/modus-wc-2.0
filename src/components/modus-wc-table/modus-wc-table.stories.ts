@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ITableColumn } from './modus-wc-table';
@@ -8,7 +9,7 @@ import { Density } from '../types';
 
 interface TableStoryArgs {
   columns?: ITableColumn[];
-  data?: Record<string, any>[];
+  data?: Record<string, unknown>[];
   density?: Density;
   hover?: boolean;
   sortable?: boolean;
@@ -47,18 +48,22 @@ const meta: Meta<TableStoryArgs> = {
     hover: {
       control: 'boolean',
       description: 'Enable hover effect on table rows.',
+      defaultValue: true,
     },
     sortable: {
       control: 'boolean',
       description: 'Enable sorting functionality for sortable columns.',
+      defaultValue: true,
     },
     paginated: {
       control: 'boolean',
       description: 'Enable pagination for the table.',
+      defaultValue: false,
     },
     showPageSizeSelector: {
       control: 'boolean',
       description: 'Show/hide the page size selector in pagination.',
+      defaultValue: true,
     },
     customClass: {
       control: 'text',
@@ -71,29 +76,35 @@ const meta: Meta<TableStoryArgs> = {
       options: ['none', 'single', 'multi'],
       description:
         "Row selection mode: 'none' for no selection, 'single' for single row, 'multi' for multiple rows.",
+      defaultValue: 'none',
     },
     zebra: {
       control: 'boolean',
       description:
         'Zebra striped tables differentiate rows by styling them in an alternating fashion.',
+      defaultValue: false,
     },
     currentPage: {
       control: 'number',
       description: 'The current page number in pagination (1-based index).',
+      defaultValue: 1,
     },
     pageSizeOptions: {
       control: 'object',
       description: 'Available options for the number of rows per page.',
+      defaultValue: [5, 10, 15],
     },
     selectedRowIds: {
       control: 'object',
       description:
         'Array of selected row IDs. Used for controlled selection state.',
+      defaultValue: [],
     },
     editable: {
       control: 'boolean',
       description:
         'Enable cell editing. Either a boolean (all rows) or a predicate per row.',
+      defaultValue: false,
     },
   },
 };
@@ -154,11 +165,39 @@ export const Default: Story = {
         .columns=${columns}
         .data=${data}
         .density=${args.density}
+        .hover=${args.hover}
+        .sortable=${args.sortable}
+        .paginated=${args.paginated}
+        .showPageSizeSelector=${args.showPageSizeSelector}
+        .customClass=${args.customClass}
+        .selectable=${args.selectable}
+        .zebra=${args.zebra}
+        .currentPage=${args.currentPage}
+        .pageSizeOptions=${args.pageSizeOptions}
+        .selectedRowIds=${args.selectedRowIds}
+        .editable=${args.editable}
+        @rowClick=${action('rowClick')}
+        @sortChange=${action('sortChange')}
+        @paginationChange=${action('paginationChange')}
+        @rowSelectionChange=${action('rowSelectionChange')}
+        @cellEditStart=${action('cellEditStart')}
+        @cellEditCommit=${action('cellEditCommit')}
       ></modus-wc-table>
     `;
   },
   args: {
     density: 'comfortable',
+    hover: true,
+    sortable: true,
+    paginated: false,
+    showPageSizeSelector: true,
+    customClass: '',
+    selectable: 'none',
+    zebra: false,
+    currentPage: 1,
+    pageSizeOptions: [5, 10, 15],
+    selectedRowIds: [],
+    editable: false,
   },
 };
 
@@ -172,12 +211,23 @@ export const Hover: Story = {
         .data=${data}
         .density=${args.density}
         .hover=${args.hover}
+        .sortable=${args.sortable}
+        .paginated=${args.paginated}
+        .showPageSizeSelector=${args.showPageSizeSelector}
+        .customClass=${args.customClass}
+        .selectable=${args.selectable}
+        .zebra=${args.zebra}
+        .currentPage=${args.currentPage}
+        .pageSizeOptions=${args.pageSizeOptions}
+        .selectedRowIds=${args.selectedRowIds}
+        .editable=${args.editable}
+        @rowClick=${action('rowClick')}
       ></modus-wc-table>
     `;
   },
   args: {
     density: 'comfortable',
-    hover: false,
+    hover: true,
   },
 };
 
@@ -190,12 +240,24 @@ export const Sorting: Story = {
         .columns=${columns}
         .data=${data}
         .density=${args.density}
-        .sortable=${true}
+        .hover=${args.hover}
+        .sortable=${args.sortable}
+        .paginated=${args.paginated}
+        .showPageSizeSelector=${args.showPageSizeSelector}
+        .customClass=${args.customClass}
+        .selectable=${args.selectable}
+        .zebra=${args.zebra}
+        .currentPage=${args.currentPage}
+        .pageSizeOptions=${args.pageSizeOptions}
+        .selectedRowIds=${args.selectedRowIds}
+        .editable=${args.editable}
+        @sortChange=${action('sortChange')}
       ></modus-wc-table>
     `;
   },
   args: {
     density: 'comfortable',
+    sortable: true,
   },
 };
 
@@ -208,13 +270,25 @@ export const Pagination: Story = {
         .columns=${columns}
         .data=${data}
         .density=${args.density}
-        .paginated=${true}
-        .showPageSizeSelector=${true}
+        .hover=${args.hover}
+        .sortable=${args.sortable}
+        .paginated=${args.paginated}
+        .showPageSizeSelector=${args.showPageSizeSelector}
+        .customClass=${args.customClass}
+        .selectable=${args.selectable}
+        .zebra=${args.zebra}
+        .currentPage=${args.currentPage}
+        .pageSizeOptions=${args.pageSizeOptions}
+        .selectedRowIds=${args.selectedRowIds}
+        .editable=${args.editable}
+        @paginationChange=${action('paginationChange')}
       ></modus-wc-table>
     `;
   },
   args: {
     density: 'comfortable',
+    paginated: true,
+    showPageSizeSelector: true,
   },
 };
 
@@ -227,7 +301,18 @@ export const CheckBoxRowSelection: Story = {
         .columns=${columns}
         .data=${data}
         .density=${args.density}
+        .hover=${args.hover}
+        .sortable=${args.sortable}
+        .paginated=${args.paginated}
+        .showPageSizeSelector=${args.showPageSizeSelector}
+        .customClass=${args.customClass}
         .selectable=${args.selectable}
+        .zebra=${args.zebra}
+        .currentPage=${args.currentPage}
+        .pageSizeOptions=${args.pageSizeOptions}
+        .selectedRowIds=${args.selectedRowIds}
+        .editable=${args.editable}
+        @rowSelectionChange=${action('rowSelectionChange')}
       ></modus-wc-table>
     `;
   },
@@ -308,11 +393,33 @@ export const InlineEditing: Story = {
         .columns=${columns}
         .data=${data}
         .density=${args.density}
-        editable=${true}
+        .hover=${args.hover}
+        .sortable=${args.sortable}
+        .paginated=${args.paginated}
+        .showPageSizeSelector=${args.showPageSizeSelector}
+        .customClass=${args.customClass}
+        .selectable=${args.selectable}
+        .zebra=${args.zebra}
+        .currentPage=${args.currentPage}
+        .pageSizeOptions=${args.pageSizeOptions}
+        .selectedRowIds=${args.selectedRowIds}
+        .editable=${true}
+        @cellEditStart=${action('cellEditStart')}
+        @cellEditCommit=${action('cellEditCommit')}
       ></modus-wc-table>
     `;
   },
   args: {
     density: 'comfortable',
+    hover: true,
+    sortable: true,
+    paginated: false,
+    showPageSizeSelector: true,
+    customClass: '',
+    selectable: 'none',
+    zebra: false,
+    currentPage: 1,
+    pageSizeOptions: [5, 10, 15],
+    selectedRowIds: [],
   },
 };
