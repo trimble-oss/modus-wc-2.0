@@ -8,20 +8,20 @@ import { IAutocompleteItem } from '../modus-wc-autocomplete/modus-wc-autocomplet
 import { Density } from '../types';
 
 interface TableStoryArgs {
+  'custom-class'?: string;
+  'current-page'?: number;
+  'page-size-options'?: number[];
+  'selected-row-ids'?: string[];
+  'show-page-size-selector'?: boolean;
   columns?: ITableColumn[];
   data?: Record<string, unknown>[];
   density?: Density;
-  hover?: boolean;
-  sortable?: boolean;
-  paginated?: boolean;
-  showPageSizeSelector?: boolean;
-  customClass?: string;
-  selectable?: 'none' | 'single' | 'multi';
-  zebra?: boolean;
-  currentPage?: number;
-  pageSizeOptions?: number[];
-  selectedRowIds?: string[];
   editable?: boolean;
+  hover?: boolean;
+  paginated?: boolean;
+  selectable?: 'none' | 'single' | 'multi';
+  sortable?: boolean;
+  zebra?: boolean;
 }
 
 const meta: Meta<TableStoryArgs> = {
@@ -60,12 +60,12 @@ const meta: Meta<TableStoryArgs> = {
       description: 'Enable pagination for the table.',
       defaultValue: false,
     },
-    showPageSizeSelector: {
+    'show-page-size-selector': {
       control: 'boolean',
       description: 'Show/hide the page size selector in pagination.',
       defaultValue: true,
     },
-    customClass: {
+    'custom-class': {
       control: 'text',
       description: 'Custom CSS class to apply to the inner div.',
     },
@@ -84,17 +84,17 @@ const meta: Meta<TableStoryArgs> = {
         'Zebra striped tables differentiate rows by styling them in an alternating fashion.',
       defaultValue: false,
     },
-    currentPage: {
+    'current-page': {
       control: 'number',
       description: 'The current page number in pagination (1-based index).',
       defaultValue: 1,
     },
-    pageSizeOptions: {
+    'page-size-options': {
       control: 'object',
       description: 'Available options for the number of rows per page.',
       defaultValue: [5, 10, 15],
     },
-    selectedRowIds: {
+    'selected-row-ids': {
       control: 'object',
       description:
         'Array of selected row IDs. Used for controlled selection state.',
@@ -168,13 +168,13 @@ export const Default: Story = {
         .hover=${args.hover}
         .sortable=${args.sortable}
         .paginated=${args.paginated}
-        .showPageSizeSelector=${args.showPageSizeSelector}
-        .customClass=${args.customClass}
+        .showPageSizeSelector=${args['show-page-size-selector']}
+        .customClass=${args['custom-class']}
         .selectable=${args.selectable}
         .zebra=${args.zebra}
-        .currentPage=${args.currentPage}
-        .pageSizeOptions=${args.pageSizeOptions}
-        .selectedRowIds=${args.selectedRowIds}
+        .currentPage=${args['current-page']}
+        .pageSizeOptions=${args['page-size-options']}
+        .selectedRowIds=${args['selected-row-ids']}
         .editable=${args.editable}
         @rowClick=${action('rowClick')}
         @sortChange=${action('sortChange')}
@@ -187,16 +187,16 @@ export const Default: Story = {
   },
   args: {
     density: 'comfortable',
-    hover: true,
+    hover: false,
     sortable: true,
     paginated: false,
-    showPageSizeSelector: true,
-    customClass: '',
+    'show-page-size-selector': true,
+    'custom-class': '',
     selectable: 'none',
     zebra: false,
-    currentPage: 1,
-    pageSizeOptions: [5, 10, 15],
-    selectedRowIds: [],
+    'current-page': 1,
+    'page-size-options': [5, 10, 15],
+    'selected-row-ids': [],
     editable: false,
   },
 };
@@ -213,13 +213,13 @@ export const Hover: Story = {
         .hover=${args.hover}
         .sortable=${args.sortable}
         .paginated=${args.paginated}
-        .showPageSizeSelector=${args.showPageSizeSelector}
-        .customClass=${args.customClass}
+        .showPageSizeSelector=${args['show-page-size-selector']}
+        .customClass=${args['custom-class']}
         .selectable=${args.selectable}
         .zebra=${args.zebra}
-        .currentPage=${args.currentPage}
-        .pageSizeOptions=${args.pageSizeOptions}
-        .selectedRowIds=${args.selectedRowIds}
+        .currentPage=${args['current-page']}
+        .pageSizeOptions=${args['page-size-options']}
+        .selectedRowIds=${args['selected-row-ids']}
         .editable=${args.editable}
         @rowClick=${action('rowClick')}
       ></modus-wc-table>
@@ -243,13 +243,13 @@ export const Sorting: Story = {
         .hover=${args.hover}
         .sortable=${args.sortable}
         .paginated=${args.paginated}
-        .showPageSizeSelector=${args.showPageSizeSelector}
-        .customClass=${args.customClass}
+        .showPageSizeSelector=${args['show-page-size-selector']}
+        .customClass=${args['custom-class']}
         .selectable=${args.selectable}
         .zebra=${args.zebra}
-        .currentPage=${args.currentPage}
-        .pageSizeOptions=${args.pageSizeOptions}
-        .selectedRowIds=${args.selectedRowIds}
+        .currentPage=${args['current-page']}
+        .pageSizeOptions=${args['page-size-options']}
+        .selectedRowIds=${args['selected-row-ids']}
         .editable=${args.editable}
         @sortChange=${action('sortChange')}
       ></modus-wc-table>
@@ -273,13 +273,13 @@ export const Pagination: Story = {
         .hover=${args.hover}
         .sortable=${args.sortable}
         .paginated=${args.paginated}
-        .showPageSizeSelector=${args.showPageSizeSelector}
-        .customClass=${args.customClass}
+        .showPageSizeSelector=${args['show-page-size-selector']}
+        .customClass=${args['custom-class']}
         .selectable=${args.selectable}
         .zebra=${args.zebra}
-        .currentPage=${args.currentPage}
-        .pageSizeOptions=${args.pageSizeOptions}
-        .selectedRowIds=${args.selectedRowIds}
+        .currentPage=${args['current-page']}
+        .pageSizeOptions=${args['page-size-options']}
+        .selectedRowIds=${args['selected-row-ids']}
         .editable=${args.editable}
         @paginationChange=${action('paginationChange')}
       ></modus-wc-table>
@@ -288,7 +288,7 @@ export const Pagination: Story = {
   args: {
     density: 'comfortable',
     paginated: true,
-    showPageSizeSelector: true,
+    'show-page-size-selector': true,
   },
 };
 
@@ -304,13 +304,13 @@ export const CheckBoxRowSelection: Story = {
         .hover=${args.hover}
         .sortable=${args.sortable}
         .paginated=${args.paginated}
-        .showPageSizeSelector=${args.showPageSizeSelector}
-        .customClass=${args.customClass}
+        .showPageSizeSelector=${args['show-page-size-selector']}
+        .customClass=${args['custom-class']}
         .selectable=${args.selectable}
         .zebra=${args.zebra}
-        .currentPage=${args.currentPage}
-        .pageSizeOptions=${args.pageSizeOptions}
-        .selectedRowIds=${args.selectedRowIds}
+        .currentPage=${args['current-page']}
+        .pageSizeOptions=${args['page-size-options']}
+        .selectedRowIds=${args['selected-row-ids']}
         .editable=${args.editable}
         @rowSelectionChange=${action('rowSelectionChange')}
       ></modus-wc-table>
@@ -396,13 +396,13 @@ export const InlineEditing: Story = {
         .hover=${args.hover}
         .sortable=${args.sortable}
         .paginated=${args.paginated}
-        .showPageSizeSelector=${args.showPageSizeSelector}
-        .customClass=${args.customClass}
+        .showPageSizeSelector=${args['show-page-size-selector']}
+        .customClass=${args['custom-class']}
         .selectable=${args.selectable}
         .zebra=${args.zebra}
-        .currentPage=${args.currentPage}
-        .pageSizeOptions=${args.pageSizeOptions}
-        .selectedRowIds=${args.selectedRowIds}
+        .currentPage=${args['current-page']}
+        .pageSizeOptions=${args['page-size-options']}
+        .selectedRowIds=${args['selected-row-ids']}
         .editable=${true}
         @cellEditStart=${action('cellEditStart')}
         @cellEditCommit=${action('cellEditCommit')}
@@ -414,12 +414,12 @@ export const InlineEditing: Story = {
     hover: true,
     sortable: true,
     paginated: false,
-    showPageSizeSelector: true,
-    customClass: '',
+    'show-page-size-selector': true,
+    'custom-class': '',
     selectable: 'none',
     zebra: false,
-    currentPage: 1,
-    pageSizeOptions: [5, 10, 15],
-    selectedRowIds: [],
+    'current-page': 1,
+    'page-size-options': [5, 10, 15],
+    'selected-row-ids': [],
   },
 };

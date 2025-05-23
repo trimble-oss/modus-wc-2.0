@@ -87,6 +87,9 @@ export class ModusWcTable {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** Enable cell editing. Either a boolean (all rows) or a predicate per row. */
+  @Prop() editable?: boolean | ((row: Record<string, unknown>) => boolean) = false;
+
   /** An array of column definitions. */
   @Prop() columns!: ITableColumn[];
 
@@ -99,20 +102,14 @@ export class ModusWcTable {
   /** The density of the table, used to save space or increase readability. */
   @Prop() density?: Density = 'comfortable';
 
-  /** Zebra striped tables differentiate rows by styling them in an alternating fashion. */
-  @Prop() zebra?: boolean = false;
-
   /** Enable hover effect on table rows. */
   @Prop() hover?: boolean = true;
 
-  /** Enable sorting functionality for sortable columns. */
-  @Prop() sortable?: boolean = true;
+  /** The current page number in pagination (1-based index). */
+  @Prop() currentPage: number = 1;
 
   /** Enable pagination for the table. */
   @Prop() paginated?: boolean = false;
-
-  /** The current page number in pagination (1-based index). */
-  @Prop() currentPage: number = 1;
 
   /** Available options for the number of rows per page. */
   @Prop() pageSizeOptions: number[] = [5, 10, 15];
@@ -120,15 +117,17 @@ export class ModusWcTable {
   /** Show/hide the page size selector in pagination. */
   @Prop() showPageSizeSelector?: boolean = true;
 
+  /** Enable sorting functionality for sortable columns. */
+  @Prop() sortable?: boolean = true;
+
   /** Row selection mode: 'none' for no selection, 'single' for single row, 'multi' for multiple rows. */
   @Prop() selectable?: 'none' | 'single' | 'multi' = 'none';
 
   /** Array of selected row IDs. Used for controlled selection state. */
   @Prop() selectedRowIds?: string[];
 
-  /** Enable cell editing. Either a boolean (all rows) or a predicate per row. */
-  @Prop() editable?: boolean | ((row: Record<string, unknown>) => boolean) =
-    false;
+  /** Zebra striped tables differentiate rows by styling them in an alternating fashion. */
+  @Prop() zebra?: boolean = false;
 
   /** Currently editing cell coordinates */
   @State() activeEditor?: { rowIndex: number; colId: string } | null = null;
