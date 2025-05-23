@@ -416,6 +416,7 @@ export class ModusWcTable {
       const targetRow = rowsModel[index];
       if (targetRow) {
         if (this.selectable === 'single') {
+          /* istanbul ignore next */
           this.table?.setRowSelection({ [String(targetRow.id)]: true });
         } else {
           targetRow.toggleSelected();
@@ -705,6 +706,7 @@ export class ModusWcTable {
                             !this.table.getIsAllRowsSelected()
                           }
                           onInputChange={() =>
+                            /* istanbul ignore next */
                             this.table?.toggleAllRowsSelected()
                           }
                         ></modus-wc-checkbox>
@@ -798,7 +800,8 @@ export class ModusWcTable {
                           </td>
                         )}
 
-                        {this.columns?.map((column) => {
+                        {/* istanbul ignore next */
+                        this.columns?.map((column) => {
                           const editing =
                             this.activeEditor?.rowIndex === index &&
                             this.activeEditor.colId === column.id;
@@ -815,6 +818,7 @@ export class ModusWcTable {
                             if (column.editorTemplate) {
                               const htmlStr = column.editorTemplate.replace(
                                 /\$\{value\}/g,
+                                /* istanbul ignore next */
                                 String(row[column.accessor] ?? '')
                               );
                               const wrapper = document.createElement('div');

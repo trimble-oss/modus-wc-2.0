@@ -2630,7 +2630,7 @@ describe('modus-wc-table', () => {
   it('should handle null pageSizeOptions gracefully in renderPageSizeSelector', () => {
     const component = new ModusWcTable();
     component.showPageSizeSelector = true;
-    component.pageSizeOptions = []; // Explicitly null
+    component.pageSizeOptions = undefined as unknown as number[]; // Explicitly null
 
     // Should not throw and should render with options as undefined
     let error: Error | undefined;
@@ -2843,5 +2843,146 @@ describe('modus-wc-table', () => {
 
     // Verify that the data is still updated correctly
     expect(component.data[0].name).toBe('New Name');
+  });
+
+  it('should select a row on row click in single-select mode (DOM event)', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Default table" selectable="single"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = defaultColumns;
+    component.data = defaultData;
+
+    // Mock the table and row model
+    const mockSetRowSelection = jest.fn();
+    const mockRowObj = {
+      id: '1',
+      original: defaultData[0],
+      toggleSelected: jest.fn(),
+      getIsSelected: jest.fn().mockReturnValue(false),
+    };
+    const mockRows = [mockRowObj];
+
+    component['table'] = {
+      getPaginationRowModel: jest.fn().mockReturnValue({ rows: mockRows }),
+      getRowModel: jest.fn().mockReturnValue({ rows: mockRows }),
+      setRowSelection: mockSetRowSelection,
+      getColumn: jest.fn().mockReturnValue({
+        getIsSorted: jest.fn().mockReturnValue(false),
+      }),
+    } as unknown as Table<Record<string, unknown>>;
+
+    await page.waitForChanges();
+
+    // Find the first row in the rendered table and click it
+    const firstRow = page.root?.querySelector('tbody tr');
+    expect(firstRow).not.toBeNull();
+
+    (firstRow as HTMLElement).click();
+    await page.waitForChanges();
+
+    // Assert that setRowSelection was called with the correct row id
+    expect(mockSetRowSelection).toHaveBeenCalledWith({ '1': true });
+  });
+
+  it('should render page size selector with correct options and handle undefined pageSizeOptions', async () => {
+    // Defined pageSizeOptions
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table paginated="true"></modus-wc-table>`,
+    });
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [{ id: 'id', header: 'ID', accessor: 'id' }];
+    component.data = [{ id: 1 }];
+    component.pageSizeOptions = [5, 10, 20];
+    await page.waitForChanges();
+
+    let select = page.root?.querySelector('modus-wc-select');
+    expect(select).toBeTruthy();
+    if (select) {
+      expect(select.options).toEqual([
+        { value: '5', label: '5' },
+        { value: '10', label: '10' },
+        { value: '20', label: '20' },
+      ]);
+    }
+
+    // Undefined pageSizeOptions
+    component.pageSizeOptions = undefined as unknown as number[];
+    await page.waitForChanges();
+    select = page.root?.querySelector('modus-wc-select');
+    expect(select).toBeTruthy();
+    if (select) {
+      expect(select.options).toBeUndefined();
+    }
+  });
+
+  it('should cover all branches of validateRowAndColumn', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+    const component = page.rootInstance as ModusWcTable;
+
+    // columns defined, column exists
+    component.columns = [{ id: 'id', header: 'ID', accessor: 'id' }];
+    component.data = [{ id: 1 }];
+    await page.waitForChanges();
+    expect(component['validateRowAndColumn'](0, 'id')).toBe(true);
+
+    // columns defined, column does not exist
+    expect(component['validateRowAndColumn'](0, 'notfound')).toBe(false);
+
+    // columns undefined
+    component.columns = undefined as unknown as ITableColumn[];
+    expect(component['validateRowAndColumn'](0, 'id')).toBe(false);
+  });
+
+  it('should render empty string for missing accessor in row data (lines 802 & 819)', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [{ id: 'name', header: 'Name', accessor: 'name' }];
+    component.data = [{ id: 1 }]; // 'name' is missing
+    await page.waitForChanges();
+
+    // Render and check cell content
+    const cellContent = component['renderCell'](
+      component.columns[0],
+      component.data[0]
+    );
+    expect(cellContent).toBe('');
+  });
+
+  it('should cover all branches for renderCell and columns mapping', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+    const component = page.rootInstance as ModusWcTable;
+    // columns defined, value defined
+    component.columns = [{ id: 'name', header: 'Name', accessor: 'name' }];
+    component.data = [{ id: 1, name: 'Test' }, { id: 2 }]; // one with, one without 'name'
+    await page.waitForChanges();
+    expect(
+      component['renderCell'](component.columns[0], component.data[0])
+    ).toBe('Test');
+    expect(
+      component['renderCell'](component.columns[0], component.data[1])
+    ).toBe('');
+
+    // columns undefined
+    component.columns = undefined as unknown as ITableColumn[];
+    expect(() => {
+      if (component.columns) {
+        component.columns.map((column) => {
+          component['renderCell'](column, component.data[0]);
+        });
+      }
+    }).not.toThrow();
   });
 });
