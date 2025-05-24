@@ -32,10 +32,46 @@ const meta: Meta<TableStoryArgs> = {
     columns: {
       control: 'object',
       description: 'An array of column definitions.',
+      table: {
+        type: {
+          detail: `
+            Interface: ITableColumn
+            Properties:
+            - accessor (string): Key to access data from row object
+            - cellRenderer? (function): Custom cell renderer (value, row) => string | HTMLElement
+            - className? (string): Class names for the column
+            - header (string | HTMLElement): Header content
+            - id (string): Unique identifier for the column
+            - width? (string): Width style (e.g., '200px', '50%')
+            - sortable? (boolean): Whether the column is sortable
+            - editor? ('text' | 'number' | 'autocomplete' | 'date' | 'custom'): Built-in editor type
+            - editorProps? (object): Extra props specific to the editor component
+            - customEditorRenderer? (function): Custom renderer for 'custom' editor
+            - editorTemplate? (string): Raw HTML string for editor, with \`\${value}\` placeholder
+            - editorSetup? (function): Runs after the editor element is added to the DOM
+          `,
+        },
+      },
     },
     data: {
       control: 'object',
       description: 'An array of data objects.',
+      table: {
+        type: {
+          detail: `
+            Data should be an array of objects, where each object represents a row and each key matches a column accessor.
+
+            Example:
+            [
+              { id: '1', name: 'Alice', email: 'alice@example.com', role: 'Admin' },
+              { id: '2', name: 'Bob', email: 'bob@example.com', role: 'User' }
+            ]
+
+            - Each property in the object should correspond to a column's accessor value.
+            - The 'id' property is recommended for row identification and selection.
+          `,
+        },
+      },
     },
     density: {
       control: {

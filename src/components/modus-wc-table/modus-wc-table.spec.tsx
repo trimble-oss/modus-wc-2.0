@@ -114,8 +114,10 @@ describe('modus-wc-table', () => {
 
     await page.waitForChanges();
 
-    // Direct handler call since testing with component initialization is unreliable
-    component['handleRowClick'](defaultData[0], 0);
+    // Simulate a click event on the first row instead of calling the handler directly
+    const firstRow = page.root!.querySelector('tbody tr') as HTMLAnchorElement;
+    firstRow.click();
+    await page.waitForChanges();
 
     // Check string content
     const firstCell = page.root!.querySelector('tbody tr td');
