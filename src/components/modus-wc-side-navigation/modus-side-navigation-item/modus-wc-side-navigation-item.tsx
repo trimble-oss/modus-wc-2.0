@@ -10,7 +10,7 @@ import {
 @Component({
   tag: 'modus-wc-side-navigation-item',
   styleUrl: 'modus-wc-side-navigation-item.scss',
-  shadow: false,
+  shadow: true,
 })
 export class ModusWcSideNavigationItem {
   /** Reference to the host element */

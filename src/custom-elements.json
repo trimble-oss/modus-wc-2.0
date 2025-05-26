@@ -3691,6 +3691,15 @@
               "description": "Whether the side navigation should collapse when clicking outside of it."
             },
             {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "expanded",
               "fieldName": "expanded",
               "default": "false",

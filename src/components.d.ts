@@ -1042,6 +1042,10 @@ export namespace Components {
          */
         "collapseOnClickOutside": boolean;
         /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
           * Whether the side navigation is expanded.
          */
         "expanded": boolean;
@@ -3692,6 +3696,10 @@ declare namespace LocalJSX {
           * Whether the side navigation should collapse when clicking outside of it.
          */
         "collapseOnClickOutside"?: boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
         /**
           * Whether the side navigation is expanded.
          */
