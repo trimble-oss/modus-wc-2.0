@@ -1,0 +1,31 @@
+.side-nav-item {
+  align-items: center;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  height: 3rem;
+
+  &:hover {
+    background-color: #e0e1e9;
+  }
+
+  &.selected {
+    background-color: #217cbb;
+  }
+
+  .menu-icon {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding-left: 1.25rem;
+    z-index: 0;
+  }
+
+  .menu-label {
+    font-size: 16px;
+    overflow: hidden;
+    padding-left: 1.2rem;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+}

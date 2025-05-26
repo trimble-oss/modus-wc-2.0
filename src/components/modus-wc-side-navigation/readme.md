@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property                 | Attribute                   | Description                                                      | Type      | Default   |
-| ------------------------ | --------------------------- | ---------------------------------------------------------------- | --------- | --------- |
-| `collapseOnClickOutside` | `collapse-on-click-outside` | Collapse the panel when clicking outside.                        | `boolean` | `true`    |
-| `expanded`               | `expanded`                  | Whether the side navigation is expanded.                         | `boolean` | `false`   |
-| `maxWidth`               | `max-width`                 | Maximum width of the side navigation panel in an expanded state. | `string`  | `'256px'` |
+| Property                 | Attribute                   | Description                                                              | Type      | Default   |
+| ------------------------ | --------------------------- | ------------------------------------------------------------------------ | --------- | --------- |
+| `collapseOnClickOutside` | `collapse-on-click-outside` | Whether the side navigation should collapse when clicking outside of it. | `boolean` | `true`    |
+| `expanded`               | `expanded`                  | Whether the side navigation is expanded.                                 | `boolean` | `false`   |
+| `maxWidth`               | `max-width`                 | Maximum width of the side navigation panel in an expanded state.         | `string`  | `'256px'` |
 
 
 ----------------------------------------------

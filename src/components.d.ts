@@ -1038,7 +1038,7 @@ export namespace Components {
     }
     interface ModusWcSideNavigation {
         /**
-          * Collapse the panel when clicking outside.
+          * Whether the side navigation should collapse when clicking outside of it.
          */
         "collapseOnClickOutside": boolean;
         /**
@@ -1049,6 +1049,24 @@ export namespace Components {
           * Maximum width of the side navigation panel in an expanded state.
          */
         "maxWidth": string;
+    }
+    interface ModusWcSideNavigationItem {
+        /**
+          * (optional) Disables item selection.
+         */
+        "disableSelection": boolean;
+        /**
+          * (optional) The disabled state of side navigation panel item.
+         */
+        "disabled": boolean;
+        /**
+          * Whether the side navigation is expanded.
+         */
+        "expanded": boolean;
+        /**
+          * (optional) The selected state of the side navigation item.
+         */
+        "selected": boolean;
     }
     /**
      * A customizable skeleton component used to create skeletons of various sizes and shapes
@@ -1674,6 +1692,10 @@ export interface ModusWcSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSelectElement;
 }
+export interface ModusWcSideNavigationItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcSideNavigationItemElement;
+}
 export interface ModusWcSliderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSliderElement;
@@ -2178,6 +2200,26 @@ declare global {
         prototype: HTMLModusWcSideNavigationElement;
         new (): HTMLModusWcSideNavigationElement;
     };
+    interface HTMLModusWcSideNavigationItemElementEventMap {
+        "sideNavItemClicked": {
+    id: string;
+    selected: boolean;
+  };
+    }
+    interface HTMLModusWcSideNavigationItemElement extends Components.ModusWcSideNavigationItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcSideNavigationItemElementEventMap>(type: K, listener: (this: HTMLModusWcSideNavigationItemElement, ev: ModusWcSideNavigationItemCustomEvent<HTMLModusWcSideNavigationItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcSideNavigationItemElementEventMap>(type: K, listener: (this: HTMLModusWcSideNavigationItemElement, ev: ModusWcSideNavigationItemCustomEvent<HTMLModusWcSideNavigationItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcSideNavigationItemElement: {
+        prototype: HTMLModusWcSideNavigationItemElement;
+        new (): HTMLModusWcSideNavigationItemElement;
+    };
     /**
      * A customizable skeleton component used to create skeletons of various sizes and shapes
      */
@@ -2445,6 +2487,7 @@ declare global {
         "modus-wc-rating": HTMLModusWcRatingElement;
         "modus-wc-select": HTMLModusWcSelectElement;
         "modus-wc-side-navigation": HTMLModusWcSideNavigationElement;
+        "modus-wc-side-navigation-item": HTMLModusWcSideNavigationItemElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
         "modus-wc-stepper": HTMLModusWcStepperElement;
@@ -3646,7 +3689,7 @@ declare namespace LocalJSX {
     }
     interface ModusWcSideNavigation {
         /**
-          * Collapse the panel when clicking outside.
+          * Whether the side navigation should collapse when clicking outside of it.
          */
         "collapseOnClickOutside"?: boolean;
         /**
@@ -3657,6 +3700,31 @@ declare namespace LocalJSX {
           * Maximum width of the side navigation panel in an expanded state.
          */
         "maxWidth"?: string;
+    }
+    interface ModusWcSideNavigationItem {
+        /**
+          * (optional) Disables item selection.
+         */
+        "disableSelection"?: boolean;
+        /**
+          * (optional) The disabled state of side navigation panel item.
+         */
+        "disabled"?: boolean;
+        /**
+          * Whether the side navigation is expanded.
+         */
+        "expanded"?: boolean;
+        /**
+          * An event that fires when mouse click or `Enter` key press on an item.
+         */
+        "onSideNavItemClicked"?: (event: ModusWcSideNavigationItemCustomEvent<{
+    id: string;
+    selected: boolean;
+  }>) => void;
+        /**
+          * (optional) The selected state of the side navigation item.
+         */
+        "selected"?: boolean;
     }
     /**
      * A customizable skeleton component used to create skeletons of various sizes and shapes
@@ -4324,6 +4392,7 @@ declare namespace LocalJSX {
         "modus-wc-rating": ModusWcRating;
         "modus-wc-select": ModusWcSelect;
         "modus-wc-side-navigation": ModusWcSideNavigation;
+        "modus-wc-side-navigation-item": ModusWcSideNavigationItem;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
         "modus-wc-stepper": ModusWcStepper;
@@ -4468,6 +4537,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-select": LocalJSX.ModusWcSelect & JSXBase.HTMLAttributes<HTMLModusWcSelectElement>;
             "modus-wc-side-navigation": LocalJSX.ModusWcSideNavigation & JSXBase.HTMLAttributes<HTMLModusWcSideNavigationElement>;
+            "modus-wc-side-navigation-item": LocalJSX.ModusWcSideNavigationItem & JSXBase.HTMLAttributes<HTMLModusWcSideNavigationItemElement>;
             /**
              * A customizable skeleton component used to create skeletons of various sizes and shapes
              */
