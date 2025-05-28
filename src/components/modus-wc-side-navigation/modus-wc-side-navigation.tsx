@@ -28,18 +28,10 @@ export class ModusWcSideNavigation {
     if (this.collapseOnClickOutside) {
       document.addEventListener('click', this.handleClickOutside, true);
     }
-    this.el.addEventListener(
-      'sideNavItemClicked',
-      this.handleItemClick as EventListener
-    );
   }
 
   disconnectedCallback() {
     document.removeEventListener('click', this.handleClickOutside, true);
-    this.el.removeEventListener(
-      'sideNavItemClicked',
-      this.handleItemClick as EventListener
-    );
   }
 
   private getClasses(): string {
@@ -65,21 +57,14 @@ export class ModusWcSideNavigation {
     }
   };
 
-  private handleItemClick = (event: CustomEvent<{ id: string }>) => {
-    const items = this.el.querySelectorAll('modus-wc-side-navigation-item');
-    items.forEach((item) => {
-      item.setAttribute('selected', (item.id === event.detail.id).toString());
-    });
-  };
-
   render() {
     return (
       <Host>
         <nav
-          ref={(el) => (this.navRef = el || undefined)}
-          class={this.getClasses()}
-          style={{ width: this.expanded ? this.maxWidth : '4rem' }}
           aria-label="side navigation"
+          class={this.getClasses()}
+          ref={(el) => (this.navRef = el)}
+          style={{ width: this.expanded ? this.maxWidth : '4rem' }}
         >
           <div class="side-navigation-content">
             <slot />

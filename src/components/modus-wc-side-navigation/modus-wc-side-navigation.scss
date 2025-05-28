@@ -3,9 +3,9 @@ modus-wc-side-navigation {
   height: 100vh;
 
   .modus-wc-side-navigation {
-    background: var(--modus-wc-color-white, #fff);
+    background: var(--modus-wc-color-white);
     box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
-    color: var(--modus-wc-color-trimble-gray, #252a2e);
+    color: var(--modus-wc-color-trimble-gray);
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -23,31 +23,15 @@ modus-wc-side-navigation {
   }
 
   .side-navigation-content {
-    background: var(--modus-wc-color-white, #fff);
-    color: var(--modus-wc-color-trimble-gray, #252a2e);
+    background: var(--modus-wc-color-white);
+    color: var(--modus-wc-color-trimble-gray);
     flex: 1 1 auto;
-    overflow-y: auto;
-
-    .side-nav-menu {
-      margin: unset;
-      padding: unset;
-    }
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-side-navigation,
 [data-theme='modus-classic-dark'] modus-wc-side-navigation {
-  .side-nav-panel,
   .side-navigation-content {
-    background: var(--modus-wc-color-trimble-gray);
+    background: var(--modus-wc-color-gray-10);
     color: var(--modus-wc-color-white);
-  }
-}
-
-[data-theme='modus-classic-light'] modus-wc-side-navigation {
-  .side-nav-panel,
-  .side-navigation-content {
-    background: var(--modus-wc-color-white, #fff);
-    color: var(--modus-wc-color-gray-10);
   }
 }
