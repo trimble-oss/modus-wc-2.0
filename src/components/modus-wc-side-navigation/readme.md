@@ -5,6 +5,10 @@
 <!-- Auto Generated Below -->
 
 
+## Overview
+
+A customizable side navigation component for organizing primary navigation and content areas in an application.
+
 ## Properties
 
 | Property                 | Attribute                   | Description                                                              | Type                  | Default   |

@@ -1,6 +1,9 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-side-navigation.tailwind';
 
+/**
+ * A customizable side navigation component for organizing primary navigation and content areas in an application.
+ */
 @Component({
   tag: 'modus-wc-side-navigation',
   styleUrl: 'modus-wc-side-navigation.scss',

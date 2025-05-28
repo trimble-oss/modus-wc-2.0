@@ -1,9 +1,11 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface SideNavigationArgs {
+  'custom-class'?: string;
   expanded: boolean;
-  maxWidth: string;
+  'max-width': string;
   'collapse-on-click-outside'?: boolean;
 }
 
@@ -13,41 +15,17 @@ const meta: Meta<SideNavigationArgs> = {
   args: {
     'collapse-on-click-outside': true,
     expanded: false,
-    maxWidth: '256px',
+    'max-width': '256px',
   },
   argTypes: {
-    expanded: {
-      control: 'boolean',
-      table: {
-        category: 'Properties',
-        type: { summary: 'boolean' },
-      },
-    },
-    'collapse-on-click-outside': {
-      control: 'boolean',
-      table: {
-        category: 'Properties',
-        type: { summary: 'boolean' },
-      },
-    },
-    maxWidth: {
-      control: 'text',
-      name: 'max-width',
-      table: {
-        category: 'Attributes',
-        type: { summary: 'string' },
-      },
+    'max-width': {
+      control: { type: 'text' },
+      description:
+        'Maximum width of the side navigation panel in an expanded state.',
     },
   },
   parameters: {
     layout: 'padded',
-    docs: {
-      description: {
-        component: `
-A vertical navigation panel for organizing primary navigation and content areas in an application.
-        `,
-      },
-    },
   },
 };
 
@@ -63,9 +41,10 @@ export const Default: Story = {
       }
     </style>
     <modus-wc-side-navigation
-      .expanded=${args.expanded}
-      .maxWidth=${args.maxWidth}
-      .collapseOnClickOutside=${args['collapse-on-click-outside'] ?? true}
+      collapse-on-click-outside=${args['collapse-on-click-outside']}
+      custom-class=${ifDefined(args['custom-class'])}
+      expanded=${args.expanded}
+      max-width=${args['max-width']}
     >
       <modus-wc-menu size="lg">
         <modus-wc-menu-item label="menu" start-icon="menu"></modus-wc-menu-item>

@@ -1036,6 +1036,9 @@ export namespace Components {
          */
         "value": string;
     }
+    /**
+     * A customizable side navigation component for organizing primary navigation and content areas in an application.
+     */
     interface ModusWcSideNavigation {
         /**
           * Whether the side navigation should collapse when clicking outside of it.
@@ -2176,6 +2179,9 @@ declare global {
         prototype: HTMLModusWcSelectElement;
         new (): HTMLModusWcSelectElement;
     };
+    /**
+     * A customizable side navigation component for organizing primary navigation and content areas in an application.
+     */
     interface HTMLModusWcSideNavigationElement extends Components.ModusWcSideNavigation, HTMLStencilElement {
     }
     var HTMLModusWcSideNavigationElement: {
@@ -3648,6 +3654,9 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    /**
+     * A customizable side navigation component for organizing primary navigation and content areas in an application.
+     */
     interface ModusWcSideNavigation {
         /**
           * Whether the side navigation should collapse when clicking outside of it.
@@ -4475,6 +4484,9 @@ declare module "@stencil/core" {
              * A customizable select component used to pick a value from a list of options
              */
             "modus-wc-select": LocalJSX.ModusWcSelect & JSXBase.HTMLAttributes<HTMLModusWcSelectElement>;
+            /**
+             * A customizable side navigation component for organizing primary navigation and content areas in an application.
+             */
             "modus-wc-side-navigation": LocalJSX.ModusWcSideNavigation & JSXBase.HTMLAttributes<HTMLModusWcSideNavigationElement>;
             /**
              * A customizable skeleton component used to create skeletons of various sizes and shapes
