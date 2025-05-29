@@ -5,12 +5,17 @@ modus-wc-side-navigation {
   .modus-wc-side-navigation {
     background: var(--modus-wc-color-white);
     box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
+    box-sizing: border-box;
     color: var(--modus-wc-color-trimble-gray);
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
     height: 100%;
+    max-height: 100vh;
+    min-height: 0;
     min-width: 4rem;
     overflow: hidden;
+    overflow-y: auto;
     position: absolute;
     transition: width 0.2s ease-out;
     width: 4rem;
