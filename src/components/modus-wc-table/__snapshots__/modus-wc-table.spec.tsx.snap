@@ -2,64 +2,95 @@
 
 exports[`modus-wc-table renders with default props (empty table) 1`] = `
 <modus-wc-table>
-  <div aria-label="Default table" class="modus-wc-overflow-x-auto">
-    <table class="modus-wc-table">
-      <thead>
-        <tr></tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+  <div class="table-container">
+    <div aria-label="Default table" class="modus-wc-overflow-x-auto">
+      <table class="modus-wc-table modus-wc-table-density-comfortable modus-wc-table-hover">
+        <thead>
+          <tr></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="no-data-message" colspan="1">
+              No data available
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</modus-wc-table>
+`;
+
+exports[`modus-wc-table renders with default props 1`] = `
+<modus-wc-table>
+  <div class="table-container">
+    <div class="modus-wc-overflow-x-auto">
+      <table class="modus-wc-table modus-wc-table-density-comfortable modus-wc-table-hover">
+        <thead>
+          <tr></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="no-data-message" colspan="1">
+              No data available
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </modus-wc-table>
 `;
 
 exports[`modus-wc-table should render with custom props 1`] = `
 <modus-wc-table custom-class="test-class" density="compact" zebra="true">
-  <div aria-label="Default table" class="modus-wc-overflow-x-auto">
-    <table class="modus-wc-table modus-wc-table-xs modus-wc-table-zebra test-class">
-      <thead>
-        <tr>
-          <th style="width: 200px;">
-            Name
-          </th>
-          <th>
-            Email
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            John Smith
-          </td>
-          <td>
-            john.smith@example.com
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Jane Doe
-          </td>
-          <td>
-            jane.doe@example.com
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Bob Johnson
-          </td>
-          <td>
-            bob.johnson@example.com
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Carole Baskin
-          </td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="table-container">
+    <div aria-label="Default table" class="modus-wc-overflow-x-auto">
+      <table class="modus-wc-table modus-wc-table-density-compact modus-wc-table-hover modus-wc-table-zebra test-class">
+        <thead>
+          <tr>
+            <th style="width: 200px;">
+              Name
+            </th>
+            <th>
+              Email
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-col="name">
+              John Smith
+            </td>
+            <td data-col="email">
+              john.smith@example.com
+            </td>
+          </tr>
+          <tr>
+            <td data-col="name">
+              Jane Doe
+            </td>
+            <td data-col="email">
+              jane.doe@example.com
+            </td>
+          </tr>
+          <tr>
+            <td data-col="name">
+              Bob Johnson
+            </td>
+            <td data-col="email">
+              bob.johnson@example.com
+            </td>
+          </tr>
+          <tr>
+            <td data-col="name">
+              Carole Baskin
+            </td>
+            <td data-col="email"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </modus-wc-table>
 `;
