@@ -26,6 +26,7 @@ export class ModusWcSideNavigation {
   @Prop() maxWidth = '256px';
 
   private navRef?: HTMLElement;
+  private minWidth = '4rem';
 
   connectedCallback() {
     if (this.collapseOnClickOutside) {
@@ -67,7 +68,7 @@ export class ModusWcSideNavigation {
           aria-label="side navigation"
           class={this.getClasses()}
           ref={(el) => (this.navRef = el)}
-          style={{ width: this.expanded ? this.maxWidth : '4rem' }}
+          style={{ width: this.expanded ? this.maxWidth : this.minWidth }}
         >
           <div class="side-navigation-content">
             <slot />

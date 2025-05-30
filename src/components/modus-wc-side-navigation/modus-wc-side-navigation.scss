@@ -34,7 +34,8 @@ modus-wc-side-navigation {
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-side-navigation {
+[data-theme='modus-classic-dark'] modus-wc-side-navigation,
+[data-theme='modus-modern-dark'] modus-wc-side-navigation {
   .side-navigation-content {
     background: var(--modus-wc-color-gray-10);
     color: var(--modus-wc-color-white);

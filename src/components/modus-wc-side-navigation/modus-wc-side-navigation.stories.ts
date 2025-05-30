@@ -112,6 +112,7 @@ export const Default: Story = {
             <modus-wc-menu-item
               label="home"
               start-icon="home"
+              selected
             ></modus-wc-menu-item>
             <modus-wc-menu-item
               label="profile"
