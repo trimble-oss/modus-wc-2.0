@@ -59,9 +59,8 @@ export const Default: Story = {
       }
     </style>
     <script>
-      const sideNav = document.querySelector('modus-wc-side-navigation');
       const toggleSideNav = () => {
-        if (!sideNav) return;
+        const sideNav = document.querySelector('modus-wc-side-navigation');
         if (sideNav.hasAttribute('expanded')) {
           sideNav.removeAttribute('expanded');
         } else {
@@ -69,16 +68,22 @@ export const Default: Story = {
         }
       };
 
+      const collapseSideNav = () => {
+        const sideNav = document.querySelector('modus-wc-side-navigation');
+        if (sideNav) {
+          sideNav.removeAttribute('expanded');
+        }
+      };
+
       document.addEventListener('DOMContentLoaded', () => {
         const menuItems = document.querySelectorAll('modus-wc-menu-item');
+        const sideNav = document.querySelector('modus-wc-side-navigation');
         menuItems.forEach((item) => {
           item.addEventListener('itemSelect', () => {
             menuItems.forEach((i) => i.removeAttribute('selected'));
             item.setAttribute('selected', '');
-            if (sideNav) {
-              sideNav.removeAttribute('expanded');
-            }
           });
+          collapseSideNav();
         });
 
         const navbar = document.querySelector('modus-wc-navbar');
