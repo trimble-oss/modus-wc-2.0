@@ -59,8 +59,9 @@ export const Default: Story = {
       }
     </style>
     <script>
+      const sideNav = document.querySelector('modus-wc-side-navigation');
       const toggleSideNav = () => {
-        const sideNav = document.querySelector('modus-wc-side-navigation');
+        if (!sideNav) return;
         if (sideNav.hasAttribute('expanded')) {
           sideNav.removeAttribute('expanded');
         } else {
@@ -74,6 +75,9 @@ export const Default: Story = {
           item.addEventListener('itemSelect', () => {
             menuItems.forEach((i) => i.removeAttribute('selected'));
             item.setAttribute('selected', '');
+            if (sideNav) {
+              sideNav.removeAttribute('expanded');
+            }
           });
         });
 
