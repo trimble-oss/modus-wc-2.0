@@ -1,27 +1,51 @@
 import { Density } from '../types';
 
-export const convertTablePropsToClasses = ({
-  density,
-  zebra,
-}: {
+interface TableProps {
   density?: Density;
   zebra?: boolean;
-}): string => {
-  let classes = '';
+  hover?: boolean;
+}
 
-  if (density) {
-    switch (density) {
-      case 'compact':
-        classes = `${classes} modus-wc-table-xs`;
-        break;
-    }
+/**
+ * Converts table props to CSS classes for styling
+ * @param props Table props
+ * @returns CSS class string
+ */
+export function convertTablePropsToClasses(props: TableProps): string {
+  const classes: string[] = [];
+
+  // Add density class
+  if (props.density) {
+    classes.push(`modus-wc-table-density-${props.density}`);
   }
 
-  if (zebra) {
-    classes = `${classes} modus-wc-table-zebra`;
+  // Add zebra class
+  if (props.zebra) {
+    classes.push('modus-wc-table-zebra');
   }
 
-  return classes.trim();
+  // Add hover class
+  if (props.hover) {
+    classes.push('modus-wc-table-hover');
+  }
+
+  return classes.join(' ');
+}
+
+// Utility classes for sortable functionality
+export const tableSortableClasses = {
+  header: {
+    sortable: 'cursor-pointer',
+    sorted: 'font-bold',
+    asc: 'sort-asc',
+    desc: 'sort-desc',
+  },
+  icon: {
+    base: 'ml-2 inline-block',
+    asc: '▲',
+    desc: '▼',
+    none: '',
+  },
 };
 
 export const convertRowPropsToClasses = ({

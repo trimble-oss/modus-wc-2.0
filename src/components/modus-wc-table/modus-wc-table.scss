@@ -3,6 +3,29 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+@use '../../styles/mixins';
+
+:host {
+  display: block;
+
+  /* Reset to make the table and its contents look like they do in a normal DOM context. */
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+  }
+}
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 modus-wc-table .modus-wc-table {
   &.modus-wc-table-zebra tbody tr:nth-child(2n) {
     background-color: var(--modus-wc-color-base-100);
@@ -24,12 +47,216 @@ modus-wc-table .modus-wc-table {
 modus-wc-table .modus-wc-overflow-x-auto {
   border: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-base-100);
   border-radius: var(--modus-wc-border-radius-table);
+  overflow-x: auto;
 }
 
 [data-theme='modus-classic-light'] modus-wc-table,
 [data-theme='modus-classic-dark'] modus-wc-table {
   .modus-wc-overflow-x-auto {
-    border: none;
-    border-radius: inherit;
+    border-radius: 0;
   }
+
+  .modus-wc-table {
+    border-collapse: collapse;
+    border-radius: 0;
+
+    th,
+    td {
+      border-right: 1px solid #b7b9c3;
+    }
+
+    th:last-child,
+    td:last-child {
+      border-right: none;
+    }
+  }
+}
+
+/* Modern theme specific hover styles */
+[data-theme='modus-classic-light'] {
+  th {
+    background-color: #f1f1f6 !important;
+    color: #464b52 !important;
+  }
+
+  .modus-wc-table.modus-wc-table-hover tbody tr:hover {
+    background-color: #dcedf9 !important;
+  }
+}
+
+[data-theme='modus-classic-dark'] {
+  th {
+    background-color: #464b52 !important;
+    color: #e0e1e9 !important;
+  }
+
+  .modus-wc-table.modus-wc-table-hover tbody tr:hover {
+    background-color: #464b52 !important;
+  }
+}
+
+.modus-wc-table {
+  overflow: hidden;
+  width: 100%;
+
+  th {
+    background-color: var(--modus-wc-color-alt-white);
+    color: var(--modus-wc-color-gray-dark);
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.75rem;
+    text-align: left;
+    vertical-align: middle;
+
+    &.sortable {
+      cursor: pointer;
+      padding-right: 1.5rem;
+      position: relative;
+
+      .sort-icon {
+        color: var(--modus-wc-color-blue);
+        position: absolute;
+        right: 0.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      &:hover {
+        background-color: var(--modus-wc-color-alt-silver-light);
+      }
+    }
+  }
+
+  td {
+    border-bottom: 1px solid var(--modus-wc-color-alt-silver);
+    padding: 0.75rem;
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Apply styles based on table density */
+  &.modus-wc-table-density-compact {
+    td,
+    th {
+      padding: 0.5rem;
+    }
+  }
+
+  &.modus-wc-table-density-relaxed {
+    td,
+    th {
+      padding: 1.25rem 1rem;
+    }
+  }
+
+  &.modus-wc-table-density-comfortable {
+    td,
+    th {
+      padding: 1rem;
+    }
+  }
+
+  /* Apply zebra striping styles */
+  &.modus-wc-table-zebra {
+    tbody tr:nth-child(odd) {
+      background-color: var(--modus-wc-color-alt-silver-light);
+    }
+  }
+
+  /* Apply hover effect when enabled */
+  &.modus-wc-table-hover {
+    tbody tr {
+      transition: background-color 0.15s ease-in-out;
+
+      &:hover {
+        background-color: var(--modus-wc-color-alt-silver-light);
+      }
+    }
+  }
+
+  tbody tr {
+    cursor: pointer;
+  }
+
+  .no-data-message {
+    color: var(--modus-wc-color-gray);
+    font-style: italic;
+    padding: 1.5rem;
+    text-align: center;
+  }
+}
+
+/* Pagination Styles */
+.pagination-container {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding: 0.5rem 0;
+
+  @media (width <= 768px) {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.pagination-info {
+  color: var(--modus-wc-color-gray-dark);
+  font-size: 0.875rem;
+}
+
+.pagination-controls {
+  align-items: center;
+  display: flex;
+}
+
+.page-size-selector,
+.modus-wc-table-page-size-selector {
+  align-items: center;
+  color: var(--modus-wc-color-gray-dark);
+  display: flex;
+  font-size: 0.875rem;
+  gap: 0.5rem;
+
+  select {
+    background-color: var(--modus-wc-color-alt-white);
+    border: 1px solid var(--modus-wc-color-alt-silver);
+    border-radius: 0.25rem;
+    color: var(--modus-wc-color-gray-dark);
+    font-size: 0.875rem;
+    height: 2rem;
+    min-width: 4rem;
+    padding: 0 0.5rem;
+
+    &:focus {
+      border-color: var(--modus-wc-color-blue);
+      box-shadow: 0 0 0 2px var(--modus-wc-color-blue-light);
+      outline: none;
+    }
+  }
+}
+
+tr.selected {
+  background-color: var(--modus-wc-color-primary-light, #e6f4ff);
+}
+
+/* === Editing cell overrides === */
+.modus-wc-table td.editing {
+  padding-bottom: 0.25rem;
+
+  /* Reduce vertical padding so editors like autocomplete do not push the row taller */
+  padding-top: 0.25rem;
+}
+
+/* Ensure any editor injected into the cell stretches to the full cell width but
+   does not add extra margins that could affect the row height. */
+.modus-wc-table td.editing > * {
+  margin: 0; /* strip default margins (e.g., Host blocks) */
+  width: 100%;
 }
