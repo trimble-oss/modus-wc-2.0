@@ -1,5 +1,6 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-side-navigation.tailwind';
+import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * A customizable side navigation component for organizing primary navigation and content areas in an application.
@@ -10,6 +11,13 @@ import { convertPropsToClasses } from './modus-wc-side-navigation.tailwind';
   shadow: false,
 })
 export class ModusWcSideNavigation {
+  private inheritedAttributes: Attributes = {};
+  private minWidth = '4rem';
+  private navRef?: HTMLElement;
+
+  /** Reference to the host element */
+  @Element() el!: HTMLElement;
+
   /** Whether the side navigation should collapse when clicking outside of it. */
   @Prop() collapseOnClickOutside = true;
 
@@ -19,14 +27,12 @@ export class ModusWcSideNavigation {
   /** Whether the side navigation is expanded. */
   @Prop({ mutable: true, reflect: true }) expanded = false;
 
-  /** Reference to the host element */
-  @Element() el!: HTMLElement;
-
   /** Maximum width of the side navigation panel in an expanded state. */
   @Prop() maxWidth = '256px';
 
-  private navRef?: HTMLElement;
-  private minWidth = '4rem';
+  componentWillLoad() {
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
 
   connectedCallback() {
     if (this.collapseOnClickOutside) {
@@ -65,7 +71,7 @@ export class ModusWcSideNavigation {
     return (
       <Host>
         <nav
-          aria-label="side navigation"
+          {...this.inheritedAttributes}
           class={this.getClasses()}
           ref={(el) => (this.navRef = el)}
           style={{ width: this.expanded ? this.maxWidth : this.minWidth }}

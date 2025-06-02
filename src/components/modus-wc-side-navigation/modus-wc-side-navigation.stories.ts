@@ -59,22 +59,7 @@ export const Default: Story = {
       }
     </style>
     <script>
-      const toggleSideNav = () => {
-        const sideNav = document.querySelector('modus-wc-side-navigation');
-        if (sideNav.hasAttribute('expanded')) {
-          sideNav.removeAttribute('expanded');
-        } else {
-          sideNav.setAttribute('expanded', '');
-        }
-      };
-
-      const collapseSideNav = () => {
-        const sideNav = document.querySelector('modus-wc-side-navigation');
-        if (sideNav) {
-          sideNav.removeAttribute('expanded');
-        }
-      };
-
+      const navbar = document.querySelector('modus-wc-navbar');
       document.addEventListener('DOMContentLoaded', () => {
         const menuItems = document.querySelectorAll('modus-wc-menu-item');
         const sideNav = document.querySelector('modus-wc-side-navigation');
@@ -82,14 +67,20 @@ export const Default: Story = {
           item.addEventListener('itemSelect', () => {
             menuItems.forEach((i) => i.removeAttribute('selected'));
             item.setAttribute('selected', '');
+            if (sideNav) {
+              sideNav.expanded = false;
+            }
           });
-          collapseSideNav();
         });
+      });
 
-        const navbar = document.querySelector('modus-wc-navbar');
-        navbar?.addEventListener('mainMenuOpenChange', () => {
-          toggleSideNav();
-        });
+      document.addEventListener('mainMenuOpenChange', () => {
+        if (navbar) {
+          const sideNav = document.querySelector('modus-wc-side-navigation');
+          if (sideNav) {
+            sideNav.toggleAttribute('expanded');
+          }
+        }
       });
     </script>
     <div class="layout-with-navbar">
