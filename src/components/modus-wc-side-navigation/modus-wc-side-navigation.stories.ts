@@ -57,6 +57,13 @@ export const Default: Story = {
         margin-left: 4rem;
         padding: 10px;
       }
+      .side-navigation {
+        height: 500px;
+        max-height: 500px;
+        min-height: 100px;
+        align-self: flex-start;
+        position: relative;
+      }
     </style>
     <script>
       const navbar = document.querySelector('modus-wc-navbar');
@@ -103,6 +110,7 @@ export const Default: Story = {
       ></modus-wc-navbar>
       <div class="main-content-row">
         <modus-wc-side-navigation
+          class="side-navigation"
           collapse-on-click-outside=${args['collapse-on-click-outside']}
           custom-class=${ifDefined(args['custom-class'])}
           expanded=${args.expanded}

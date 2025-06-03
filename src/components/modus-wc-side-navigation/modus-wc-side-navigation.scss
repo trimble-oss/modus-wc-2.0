@@ -1,11 +1,11 @@
 modus-wc-side-navigation {
   display: block;
   height: 100vh;
+  position: relative;
 
   .modus-wc-side-navigation {
     background: var(--modus-wc-color-white);
     box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
-    box-sizing: border-box;
     color: var(--modus-wc-color-trimble-gray);
     display: flex;
     flex-direction: column;
@@ -13,7 +13,6 @@ modus-wc-side-navigation {
     height: 100%;
     max-height: 100vh;
     min-height: 0;
-    min-width: 4rem;
     overflow: hidden;
     overflow-y: auto;
     position: absolute;
@@ -22,7 +21,6 @@ modus-wc-side-navigation {
     z-index: 999;
 
     &.expanded {
-      min-width: 256px;
       width: 256px;
     }
   }
