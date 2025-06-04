@@ -1037,6 +1037,27 @@ export namespace Components {
         "value": string;
     }
     /**
+     * A customizable side navigation component for organizing primary navigation and content areas in an application.
+     */
+    interface ModusWcSideNavigation {
+        /**
+          * Whether the side navigation should collapse when clicking outside of it.
+         */
+        "collapseOnClickOutside": boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the side navigation is expanded.
+         */
+        "expanded": boolean;
+        /**
+          * Maximum width of the side navigation panel in an expanded state.
+         */
+        "maxWidth": string;
+    }
+    /**
      * A customizable skeleton component used to create skeletons of various sizes and shapes
      */
     interface ModusWcSkeleton {
@@ -2159,6 +2180,15 @@ declare global {
         new (): HTMLModusWcSelectElement;
     };
     /**
+     * A customizable side navigation component for organizing primary navigation and content areas in an application.
+     */
+    interface HTMLModusWcSideNavigationElement extends Components.ModusWcSideNavigation, HTMLStencilElement {
+    }
+    var HTMLModusWcSideNavigationElement: {
+        prototype: HTMLModusWcSideNavigationElement;
+        new (): HTMLModusWcSideNavigationElement;
+    };
+    /**
      * A customizable skeleton component used to create skeletons of various sizes and shapes
      */
     interface HTMLModusWcSkeletonElement extends Components.ModusWcSkeleton, HTMLStencilElement {
@@ -2424,6 +2454,7 @@ declare global {
         "modus-wc-radio": HTMLModusWcRadioElement;
         "modus-wc-rating": HTMLModusWcRatingElement;
         "modus-wc-select": HTMLModusWcSelectElement;
+        "modus-wc-side-navigation": HTMLModusWcSideNavigationElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
         "modus-wc-stepper": HTMLModusWcStepperElement;
@@ -3624,6 +3655,27 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
+     * A customizable side navigation component for organizing primary navigation and content areas in an application.
+     */
+    interface ModusWcSideNavigation {
+        /**
+          * Whether the side navigation should collapse when clicking outside of it.
+         */
+        "collapseOnClickOutside"?: boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the side navigation is expanded.
+         */
+        "expanded"?: boolean;
+        /**
+          * Maximum width of the side navigation panel in an expanded state.
+         */
+        "maxWidth"?: string;
+    }
+    /**
      * A customizable skeleton component used to create skeletons of various sizes and shapes
      */
     interface ModusWcSkeleton {
@@ -4288,6 +4340,7 @@ declare namespace LocalJSX {
         "modus-wc-radio": ModusWcRadio;
         "modus-wc-rating": ModusWcRating;
         "modus-wc-select": ModusWcSelect;
+        "modus-wc-side-navigation": ModusWcSideNavigation;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
         "modus-wc-stepper": ModusWcStepper;
@@ -4431,6 +4484,10 @@ declare module "@stencil/core" {
              * A customizable select component used to pick a value from a list of options
              */
             "modus-wc-select": LocalJSX.ModusWcSelect & JSXBase.HTMLAttributes<HTMLModusWcSelectElement>;
+            /**
+             * A customizable side navigation component for organizing primary navigation and content areas in an application.
+             */
+            "modus-wc-side-navigation": LocalJSX.ModusWcSideNavigation & JSXBase.HTMLAttributes<HTMLModusWcSideNavigationElement>;
             /**
              * A customizable skeleton component used to create skeletons of various sizes and shapes
              */

@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-side-navigation should render with custom props 1`] = `
+<modus-wc-side-navigation expanded="" max-width="300px">
+  <!---->
+  <nav class="modus-wc-side-navigation modus-wc-side-navigation-expanded" style="width: 300px;">
+    <div class="side-navigation-content"></div>
+  </nav>
+</modus-wc-side-navigation>
+`;
+
+exports[`modus-wc-side-navigation should render with default props 1`] = `
+<modus-wc-side-navigation>
+  <!---->
+  <nav class="modus-wc-side-navigation" style="width: 4rem;">
+    <div class="side-navigation-content"></div>
+  </nav>
+</modus-wc-side-navigation>
+`;
