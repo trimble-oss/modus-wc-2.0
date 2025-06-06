@@ -96,7 +96,7 @@
     "stylelint": "16.19.1",
     "stylelint-config-standard-scss": "14.0.0",
     "stylelint-order": "6.0.4",
-    "tailwindcss": "^3.4.14",
+    "tailwindcss": "^4.1.8",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.2",
     "wireit": "^0.14.12"
