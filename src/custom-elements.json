@@ -3583,6 +3583,10 @@
             },
             {
               "kind": "method",
+              "name": "handleExpandedChange"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -3613,10 +3617,37 @@
               "fieldName": "maxWidth",
               "default": "'256px'",
               "description": "Maximum width of the side navigation panel in an expanded state."
+            },
+            {
+              "name": "mode",
+              "fieldName": "mode",
+              "default": "'overlay'",
+              "description": "Mode to make side navigation either overlay or push the content for the selector specified in targetContent",
+              "type": {
+                "text": "'overlay' | 'push'"
+              }
+            },
+            {
+              "name": "target-content",
+              "fieldName": "targetContent",
+              "default": "''",
+              "description": "(optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode.",
+              "type": {
+                "text": "string"
+              }
             }
           ],
           "tagName": "modus-wc-side-navigation",
-          "events": [],
+          "events": [
+            {
+              "kind": "field",
+              "name": "expandedChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the expanded state changes (expanded/collapsed)."
+            }
+          ],
           "customElement": true
         }
       ],
@@ -4144,7 +4175,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable table component used to show a list of data in a table format.",
+          "description": "",
           "name": "ModusWcTable",
           "members": [
             {
@@ -4153,22 +4184,28 @@
               "type": {
                 "text": "{ rowIndex: number; colId: string } | null | undefined"
               },
-              "default": "null"
+              "default": "null",
+              "description": "Currently editing cell coordinates"
             },
             {
               "kind": "field",
               "name": "el",
               "type": {
                 "text": "HTMLElement"
-              }
+              },
+              "description": "Reference to the host element"
             },
             {
               "kind": "method",
-              "name": "handleColumnsChange"
-            },
-            {
-              "kind": "method",
-              "name": "handleConfigChange"
+              "name": "handleColumnsChange",
+              "parameters": [
+                {
+                  "name": "newColumns",
+                  "type": {
+                    "text": "ITableColumn[]"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
@@ -4184,16 +4221,24 @@
             },
             {
               "kind": "method",
-              "name": "handleDataChange"
+              "name": "handleDataChange",
+              "parameters": [
+                {
+                  "name": "newData",
+                  "type": {
+                    "text": "Record<string, unknown>[]"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
-              "name": "handlePageSizeChange",
+              "name": "handlePaginatedChange",
               "parameters": [
                 {
-                  "name": "newValue",
+                  "name": "newPaginated",
                   "type": {
-                    "text": "number"
+                    "text": "boolean"
                   }
                 }
               ]
@@ -4211,12 +4256,25 @@
               ]
             },
             {
+              "kind": "method",
+              "name": "handleSortableChange",
+              "parameters": [
+                {
+                  "name": "newSortable",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
               "kind": "field",
               "name": "internalPagination",
               "type": {
                 "text": "PaginationState"
               },
-              "default": "{ pageIndex: 0, pageSize: 10, }"
+              "default": "{ pageIndex: 0, pageSize: 5, }",
+              "description": "Internal state for pagination."
             },
             {
               "kind": "field",
@@ -4224,7 +4282,8 @@
               "type": {
                 "text": "RowSelectionState"
               },
-              "default": "{}"
+              "default": "{}",
+              "description": "Internal state for row selection."
             },
             {
               "kind": "method",
@@ -4236,13 +4295,15 @@
               "type": {
                 "text": "SortingState"
               },
-              "default": "[]"
+              "default": "[]",
+              "description": "Internal state for column sorting."
             }
           ],
           "attributes": [
             {
               "name": "columns",
               "fieldName": "columns",
+              "description": "An array of column definitions.",
               "type": {
                 "text": "ITableColumn[]"
               }
@@ -4251,6 +4312,7 @@
               "name": "current-page",
               "fieldName": "currentPage",
               "default": "1",
+              "description": "The current page number in pagination (1-based index).",
               "type": {
                 "text": "number"
               }
@@ -4259,6 +4321,7 @@
               "name": "custom-class",
               "fieldName": "customClass",
               "default": "''",
+              "description": "Custom CSS class to apply to the inner div.",
               "type": {
                 "text": "string"
               }
@@ -4266,6 +4329,7 @@
             {
               "name": "data",
               "fieldName": "data",
+              "description": "An array of data objects.",
               "type": {
                 "text": "Record<string, unknown>[]"
               }
@@ -4274,6 +4338,7 @@
               "name": "density",
               "fieldName": "density",
               "default": "'comfortable'",
+              "description": "The density of the table, used to save space or increase readability.",
               "type": {
                 "text": "Density"
               }
@@ -4291,22 +4356,16 @@
               "name": "hover",
               "fieldName": "hover",
               "default": "true",
+              "description": "Enable hover effect on table rows.",
               "type": {
                 "text": "boolean"
               }
             },
             {
-              "name": "page-size",
-              "fieldName": "pageSize",
-              "default": "10",
-              "type": {
-                "text": "number"
-              }
-            },
-            {
               "name": "page-size-options",
               "fieldName": "pageSizeOptions",
-              "default": "[5, 10, 25, 50, 100]",
+              "default": "[5, 10, 15]",
+              "description": "Available options for the number of rows per page.",
               "type": {
                 "text": "number[]"
               }
@@ -4315,6 +4374,7 @@
               "name": "paginated",
               "fieldName": "paginated",
               "default": "false",
+              "description": "Enable pagination for the table.",
               "type": {
                 "text": "boolean"
               }
@@ -4323,6 +4383,7 @@
               "name": "selectable",
               "fieldName": "selectable",
               "default": "'none'",
+              "description": "Row selection mode: 'none' for no selection, 'single' for single row, 'multi' for multiple rows.",
               "type": {
                 "text": "'none' | 'single' | 'multi'"
               }
@@ -4330,6 +4391,7 @@
             {
               "name": "selected-row-ids",
               "fieldName": "selectedRowIds",
+              "description": "Array of selected row IDs. Used for controlled selection state.",
               "type": {
                 "text": "string[]"
               }
@@ -4338,6 +4400,7 @@
               "name": "show-page-size-selector",
               "fieldName": "showPageSizeSelector",
               "default": "true",
+              "description": "Show/hide the page size selector in pagination.",
               "type": {
                 "text": "boolean"
               }
@@ -4346,6 +4409,7 @@
               "name": "sortable",
               "fieldName": "sortable",
               "default": "true",
+              "description": "Enable sorting functionality for sortable columns.",
               "type": {
                 "text": "boolean"
               }
@@ -4354,6 +4418,7 @@
               "name": "zebra",
               "fieldName": "zebra",
               "default": "false",
+              "description": "Zebra striped tables differentiate rows by styling them in an alternating fashion.",
               "type": {
                 "text": "boolean"
               }
@@ -4365,43 +4430,49 @@
               "kind": "field",
               "name": "cellEditCommit",
               "type": {
-                "text": "EventEmitter<{\n    rowIndex: number;\n    colId: string;\n    newValue: unknown;\n    updatedRow: Record<string, unknown>;\n  }>"
-              }
+                "text": "EventEmitter<{\r\n    rowIndex: number;\r\n    colId: string;\r\n    newValue: unknown;\r\n    updatedRow: Record<string, unknown>;\r\n  }>"
+              },
+              "description": "Emits when cell editing is committed with the new value."
             },
             {
               "kind": "field",
               "name": "cellEditStart",
               "type": {
-                "text": "EventEmitter<{\n    rowIndex: number;\n    colId: string;\n  }>"
-              }
+                "text": "EventEmitter<{\r\n    rowIndex: number;\r\n    colId: string;\r\n  }>"
+              },
+              "description": "Emits when cell editing starts."
             },
             {
               "kind": "field",
               "name": "paginationChange",
               "type": {
                 "text": "EventEmitter<IPaginationChangeEventDetail>"
-              }
+              },
+              "description": "Emits when pagination changes with the new pagination state."
             },
             {
               "kind": "field",
               "name": "rowClick",
               "type": {
-                "text": "EventEmitter<{\n    row: Record<string, unknown>;\n    index: number;\n  }>"
-              }
+                "text": "EventEmitter<{\r\n    row: Record<string, unknown>;\r\n    index: number;\r\n  }>"
+              },
+              "description": "Emits when a row is clicked."
             },
             {
               "kind": "field",
               "name": "rowSelectionChange",
               "type": {
-                "text": "EventEmitter<{\n    selectedRows: Record<string, unknown>[];\n    selectedRowIds: string[];\n  }>"
-              }
+                "text": "EventEmitter<{\r\n    selectedRows: Record<string, unknown>[];\r\n    selectedRowIds: string[];\r\n  }>"
+              },
+              "description": "Emits when row selection changes with the selected rows and their IDs."
             },
             {
               "kind": "field",
               "name": "sortChange",
               "type": {
                 "text": "EventEmitter<SortingState>"
-              }
+              },
+              "description": "Emits when sorting changes with the new sorting state."
             }
           ],
           "customElement": true

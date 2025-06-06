@@ -95,8 +95,10 @@ export class ModusWcSideNavigation {
     if (mode !== 'push' || !target) return;
 
     const content = document.querySelector(target);
-    if (content instanceof HTMLElement) {
-      content.style.marginLeft = isExpanded ? this.maxWidth : this.minWidth;
+    if (content && 'style' in content) {
+      (content as HTMLElement).style.marginLeft = isExpanded
+        ? this.maxWidth
+        : this.minWidth;
     }
   }
 

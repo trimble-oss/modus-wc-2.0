@@ -16,7 +16,8 @@ import { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/
 import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
-import { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+import { IPaginationChangeEventDetail, ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+import { SortingState } from "@tanstack/table-core";
 import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
@@ -32,7 +33,8 @@ export { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/
 export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
-export { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+export { IPaginationChangeEventDetail, ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+export { SortingState } from "@tanstack/table-core";
 export { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
@@ -1056,6 +1058,14 @@ export namespace Components {
           * Maximum width of the side navigation panel in an expanded state.
          */
         "maxWidth": string;
+        /**
+          * Mode to make side navigation either overlay or push the content for the selector specified in targetContent
+         */
+        "mode": 'overlay' | 'push';
+        /**
+          * (optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode.
+         */
+        "targetContent": string;
     }
     /**
      * A customizable skeleton component used to create skeletons of various sizes and shapes
@@ -1193,14 +1203,15 @@ export namespace Components {
          */
         "value": boolean;
     }
-    /**
-     * A customizable table component used to show a list of data in a table format.
-     */
     interface ModusWcTable {
         /**
           * An array of column definitions.
          */
         "columns": ITableColumn[];
+        /**
+          * The current page number in pagination (1-based index).
+         */
+        "currentPage": number;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -1208,11 +1219,43 @@ export namespace Components {
         /**
           * An array of data objects.
          */
-        "data": Record<string, any>[];
+        "data": Record<string, unknown>[];
         /**
           * The density of the table, used to save space or increase readability.
          */
         "density"?: Density;
+        /**
+          * Enable cell editing. Either a boolean (all rows) or a predicate per row.
+         */
+        "editable"?: boolean | ((row: Record<string, unknown>) => boolean);
+        /**
+          * Enable hover effect on table rows.
+         */
+        "hover"?: boolean;
+        /**
+          * Available options for the number of rows per page.
+         */
+        "pageSizeOptions": number[];
+        /**
+          * Enable pagination for the table.
+         */
+        "paginated"?: boolean;
+        /**
+          * Row selection mode: 'none' for no selection, 'single' for single row, 'multi' for multiple rows.
+         */
+        "selectable"?: 'none' | 'single' | 'multi';
+        /**
+          * Array of selected row IDs. Used for controlled selection state.
+         */
+        "selectedRowIds"?: string[];
+        /**
+          * Show/hide the page size selector in pagination.
+         */
+        "showPageSizeSelector"?: boolean;
+        /**
+          * Enable sorting functionality for sortable columns.
+         */
+        "sortable"?: boolean;
         /**
           * Zebra striped tables differentiate rows by styling them in an alternating fashion.
          */
@@ -1680,6 +1723,10 @@ export interface ModusWcRatingCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSelectElement;
+}
+export interface ModusWcSideNavigationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcSideNavigationElement;
 }
 export interface ModusWcSliderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2179,10 +2226,21 @@ declare global {
         prototype: HTMLModusWcSelectElement;
         new (): HTMLModusWcSelectElement;
     };
+    interface HTMLModusWcSideNavigationElementEventMap {
+        "expandedChange": boolean;
+    }
     /**
      * A customizable side navigation component for organizing primary navigation and content areas in an application.
      */
     interface HTMLModusWcSideNavigationElement extends Components.ModusWcSideNavigation, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcSideNavigationElementEventMap>(type: K, listener: (this: HTMLModusWcSideNavigationElement, ev: ModusWcSideNavigationCustomEvent<HTMLModusWcSideNavigationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcSideNavigationElementEventMap>(type: K, listener: (this: HTMLModusWcSideNavigationElement, ev: ModusWcSideNavigationCustomEvent<HTMLModusWcSideNavigationElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcSideNavigationElement: {
         prototype: HTMLModusWcSideNavigationElement;
@@ -2251,14 +2309,27 @@ declare global {
         new (): HTMLModusWcSwitchElement;
     };
     interface HTMLModusWcTableElementEventMap {
+        "cellEditStart": {
+    rowIndex: number;
+    colId: string;
+  };
+        "cellEditCommit": {
+    rowIndex: number;
+    colId: string;
+    newValue: unknown;
+    updatedRow: Record<string, unknown>;
+  };
         "rowClick": {
-    row: Record<string, any>;
+    row: Record<string, unknown>;
     index: number;
   };
+        "sortChange": SortingState;
+        "paginationChange": IPaginationChangeEventDetail;
+        "rowSelectionChange": {
+    selectedRows: Record<string, unknown>[];
+    selectedRowIds: string[];
+  };
     }
-    /**
-     * A customizable table component used to show a list of data in a table format.
-     */
     interface HTMLModusWcTableElement extends Components.ModusWcTable, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTableElementEventMap>(type: K, listener: (this: HTMLModusWcTableElement, ev: ModusWcTableCustomEvent<HTMLModusWcTableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3674,6 +3745,18 @@ declare namespace LocalJSX {
           * Maximum width of the side navigation panel in an expanded state.
          */
         "maxWidth"?: string;
+        /**
+          * Mode to make side navigation either overlay or push the content for the selector specified in targetContent
+         */
+        "mode"?: 'overlay' | 'push';
+        /**
+          * Event emitted when the expanded state changes (expanded/collapsed).
+         */
+        "onExpandedChange"?: (event: ModusWcSideNavigationCustomEvent<boolean>) => void;
+        /**
+          * (optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode.
+         */
+        "targetContent"?: string;
     }
     /**
      * A customizable skeleton component used to create skeletons of various sizes and shapes
@@ -3835,14 +3918,15 @@ declare namespace LocalJSX {
          */
         "value"?: boolean;
     }
-    /**
-     * A customizable table component used to show a list of data in a table format.
-     */
     interface ModusWcTable {
         /**
           * An array of column definitions.
          */
         "columns": ITableColumn[];
+        /**
+          * The current page number in pagination (1-based index).
+         */
+        "currentPage"?: number;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -3850,18 +3934,81 @@ declare namespace LocalJSX {
         /**
           * An array of data objects.
          */
-        "data": Record<string, any>[];
+        "data": Record<string, unknown>[];
         /**
           * The density of the table, used to save space or increase readability.
          */
         "density"?: Density;
         /**
+          * Enable cell editing. Either a boolean (all rows) or a predicate per row.
+         */
+        "editable"?: boolean | ((row: Record<string, unknown>) => boolean);
+        /**
+          * Enable hover effect on table rows.
+         */
+        "hover"?: boolean;
+        /**
+          * Emits when cell editing is committed with the new value.
+         */
+        "onCellEditCommit"?: (event: ModusWcTableCustomEvent<{
+    rowIndex: number;
+    colId: string;
+    newValue: unknown;
+    updatedRow: Record<string, unknown>;
+  }>) => void;
+        /**
+          * Emits when cell editing starts.
+         */
+        "onCellEditStart"?: (event: ModusWcTableCustomEvent<{
+    rowIndex: number;
+    colId: string;
+  }>) => void;
+        /**
+          * Emits when pagination changes with the new pagination state.
+         */
+        "onPaginationChange"?: (event: ModusWcTableCustomEvent<IPaginationChangeEventDetail>) => void;
+        /**
           * Emits when a row is clicked.
          */
         "onRowClick"?: (event: ModusWcTableCustomEvent<{
-    row: Record<string, any>;
+    row: Record<string, unknown>;
     index: number;
   }>) => void;
+        /**
+          * Emits when row selection changes with the selected rows and their IDs.
+         */
+        "onRowSelectionChange"?: (event: ModusWcTableCustomEvent<{
+    selectedRows: Record<string, unknown>[];
+    selectedRowIds: string[];
+  }>) => void;
+        /**
+          * Emits when sorting changes with the new sorting state.
+         */
+        "onSortChange"?: (event: ModusWcTableCustomEvent<SortingState>) => void;
+        /**
+          * Available options for the number of rows per page.
+         */
+        "pageSizeOptions"?: number[];
+        /**
+          * Enable pagination for the table.
+         */
+        "paginated"?: boolean;
+        /**
+          * Row selection mode: 'none' for no selection, 'single' for single row, 'multi' for multiple rows.
+         */
+        "selectable"?: 'none' | 'single' | 'multi';
+        /**
+          * Array of selected row IDs. Used for controlled selection state.
+         */
+        "selectedRowIds"?: string[];
+        /**
+          * Show/hide the page size selector in pagination.
+         */
+        "showPageSizeSelector"?: boolean;
+        /**
+          * Enable sorting functionality for sortable columns.
+         */
+        "sortable"?: boolean;
         /**
           * Zebra striped tables differentiate rows by styling them in an alternating fashion.
          */
@@ -4504,9 +4651,6 @@ declare module "@stencil/core" {
              * A customizable checkbox component
              */
             "modus-wc-switch": LocalJSX.ModusWcSwitch & JSXBase.HTMLAttributes<HTMLModusWcSwitchElement>;
-            /**
-             * A customizable table component used to show a list of data in a table format.
-             */
             "modus-wc-table": LocalJSX.ModusWcTable & JSXBase.HTMLAttributes<HTMLModusWcTableElement>;
             /**
              * A customizable tabs component used to create groups of tabs.
