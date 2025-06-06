@@ -1,3 +1,4 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -7,6 +8,8 @@ interface SideNavigationArgs {
   expanded: boolean;
   'max-width': string;
   'collapse-on-click-outside'?: boolean;
+  mode: 'overlay' | 'push';
+  'target-content'?: string;
 }
 
 const meta: Meta<SideNavigationArgs> = {
@@ -16,6 +19,8 @@ const meta: Meta<SideNavigationArgs> = {
     'collapse-on-click-outside': true,
     expanded: false,
     'max-width': '256px',
+    mode: 'push',
+    'target-content': '.panel-content',
   },
   argTypes: {
     'max-width': {
@@ -23,9 +28,18 @@ const meta: Meta<SideNavigationArgs> = {
       description:
         'Maximum width of the side navigation panel in an expanded state.',
     },
+    mode: {
+      control: { type: 'select' },
+      options: ['overlay', 'push'],
+      description: 'Display mode of the side navigation (overlay or push).',
+    },
   },
+  decorators: [withActions],
   parameters: {
     layout: 'padded',
+    actions: {
+      handles: ['expandedChange'],
+    },
   },
 };
 
@@ -115,6 +129,8 @@ export const Default: Story = {
           custom-class=${ifDefined(args['custom-class'])}
           expanded=${args.expanded}
           max-width=${args['max-width']}
+          mode=${ifDefined(args.mode)}
+          target-content=${ifDefined(args['target-content'])}
         >
           <modus-wc-menu size="lg">
             <modus-wc-menu-item
