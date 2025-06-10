@@ -25,10 +25,9 @@ modus-wc-icon {
   &.icon-slot-host {
     align-items: center;
     display: flex;
-    // Remove any potential Modus interference
     font-family: inherit !important;
     
-    // Make the span wrapper behave like an inline element (no extra space)
+    // Make the span wrapper behave like an inline element 
     .modus-icons {
       align-items: center;
       display: inline-flex;
