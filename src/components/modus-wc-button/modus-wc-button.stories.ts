@@ -176,7 +176,7 @@ export const ButtonGroup: Story = {
     const handleSingleSelect = (groupKey: string, value: string) => {
       return (e: CustomEvent) => {
         buttonGroupState[groupKey] = value;
-        console.log(`${groupKey} selected:`, value);
+
         // Force re-render by updating the DOM
         const button = e.target as HTMLElement;
         const group = button.closest('.button-group');
@@ -203,9 +203,9 @@ export const ButtonGroup: Story = {
           buttonGroupState[groupKey] = [...currentArray, value];
           button.setAttribute('pressed', 'true');
         }
-        console.log(`${groupKey} selected:`, buttonGroupState[groupKey]);
       };
     };
+
     // prettier-ignore
     return html`
 <style>
@@ -213,8 +213,7 @@ export const ButtonGroup: Story = {
     display: flex;
     gap: 0;
   }
-
-
+  
   .button-group-horizontal {
     flex-direction: row;
   }
@@ -290,235 +289,234 @@ export const ButtonGroup: Story = {
     background-color: var(--modus-wc-color-blue-light) !important;
     border-color: var(--modus-wc-color-blue-light) !important;
   }
-
 </style>
 
 <main>
-<section class="demo-section">
-  <h4>Vertical Button Groups</h4>
-  
-  <div class="demo-row">
-      <div class="button-group button-group-vertical">
-      <modus-wc-button 
-        variant="borderless" 
-        aria-label="Bold"
-        full-width
-        ?pressed=${buttonGroupState.formatting.includes('bold')}
-        @buttonClick=${handleSingleSelect('formatting', 'bold')}
-      >
-        <modus-wc-icon decorative name="play_circle"></modus-wc-icon>
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="borderless" 
-        aria-label="Italic"
-        full-width
-        ?pressed=${buttonGroupState.formatting.includes('italic')}
-        @buttonClick=${handleSingleSelect('formatting', 'italic')}
-      >
-        <modus-wc-icon decorative name="pause_circle"></modus-wc-icon>
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="borderless" 
-        aria-label="Underline"
-        full-width
-        ?pressed=${buttonGroupState.formatting.includes('underline')}
-        @buttonClick=${handleSingleSelect('formatting', 'underline')}
-      >
-        <modus-wc-icon decorative name="stop_circle"></modus-wc-icon>
-      </modus-wc-button>
-    </div>
-  </div>
-  <div class="demo-row">
-      <div class="button-group button-group-vertical">
-      <modus-wc-button 
-        variant="borderless" 
-        aria-label="Bold"
-        full-width
-        ?pressed=${buttonGroupState.formatting.includes('bold')}
-        @buttonClick=${handleMultiSelect('formatting', 'bold')}
-      >
-        <modus-wc-icon decorative name="text_bold"></modus-wc-icon>
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="borderless" 
-        aria-label="Italic"
-        full-width
-        ?pressed=${buttonGroupState.formatting.includes('italic')}
-        @buttonClick=${handleMultiSelect('formatting', 'italic')}
-      >
-        <modus-wc-icon decorative name="text_italic"></modus-wc-icon>
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="borderless" 
-        aria-label="Underline"
-        full-width
-        ?pressed=${buttonGroupState.formatting.includes('underline')}
-        @buttonClick=${handleMultiSelect('formatting', 'underline')}
-      >
-        <modus-wc-icon decorative name="text_underlined"></modus-wc-icon>
-      </modus-wc-button>
-    </div>
-  </div>
+  <section class="demo-section">
+    <h4>Vertical Button Groups</h4>
     
- 
-</section>
+    <div class="demo-row">
+      <div class="button-group button-group-vertical">
+        <modus-wc-button 
+          variant="borderless" 
+          aria-label="Bold"
+          full-width
+          ?pressed=${buttonGroupState.formatting.includes('bold')}
+          @buttonClick=${handleSingleSelect('formatting', 'bold')}
+        >
+          <modus-wc-icon decorative name="play_circle"></modus-wc-icon>
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="borderless" 
+          aria-label="Italic"
+          full-width
+          ?pressed=${buttonGroupState.formatting.includes('italic')}
+          @buttonClick=${handleSingleSelect('formatting', 'italic')}
+        >
+          <modus-wc-icon decorative name="pause_circle"></modus-wc-icon>
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="borderless" 
+          aria-label="Underline"
+          full-width
+          ?pressed=${buttonGroupState.formatting.includes('underline')}
+          @buttonClick=${handleSingleSelect('formatting', 'underline')}
+        >
+          <modus-wc-icon decorative name="stop_circle"></modus-wc-icon>
+        </modus-wc-button>
+      </div>
+    </div>
+    
+    <div class="demo-row">
+      <div class="button-group button-group-vertical">
+        <modus-wc-button 
+          variant="borderless" 
+          aria-label="Bold"
+          full-width
+          ?pressed=${buttonGroupState.formatting.includes('bold')}
+          @buttonClick=${handleMultiSelect('formatting', 'bold')}
+        >
+          <modus-wc-icon decorative name="text_bold"></modus-wc-icon>
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="borderless" 
+          aria-label="Italic"
+          full-width
+          ?pressed=${buttonGroupState.formatting.includes('italic')}
+          @buttonClick=${handleMultiSelect('formatting', 'italic')}
+        >
+          <modus-wc-icon decorative name="text_italic"></modus-wc-icon>
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="borderless" 
+          aria-label="Underline"
+          full-width
+          ?pressed=${buttonGroupState.formatting.includes('underline')}
+          @buttonClick=${handleMultiSelect('formatting', 'underline')}
+        >
+          <modus-wc-icon decorative name="text_underlined"></modus-wc-icon>
+        </modus-wc-button>
+      </div>
+    </div>
+  </section>
 
-<section class="demo-section">
-  <h4>Horizontal Button Groups</h4>
-  
-  <div class="demo-row">
-    <div class="button-group button-group-horizontal">
-      <modus-wc-button 
-        variant="outlined" 
-        size="sm" 
-        ?pressed=${buttonGroupState.period === 'day'}
-        @buttonClick=${handleSingleSelect('period', 'day')}
-      >
-        Day
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="outlined" 
-        size="sm"
-        ?pressed=${buttonGroupState.period === 'week'}
-        @buttonClick=${handleSingleSelect('period', 'week')}
-      >
-        Week
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="outlined" 
-        size="sm"
-        ?pressed=${buttonGroupState.period === 'month'}
-        @buttonClick=${handleSingleSelect('period', 'month')}
-      >
-        Month
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="outlined" 
-        size="sm"
-        ?pressed=${buttonGroupState.period === 'year'}
-        @buttonClick=${handleSingleSelect('period', 'year')}
-      >
-        Year
-      </modus-wc-button>
+  <section class="demo-section">
+    <h4>Horizontal Button Groups</h4>
+    
+    <div class="demo-row">
+      <div class="button-group button-group-horizontal">
+        <modus-wc-button 
+          variant="outlined" 
+          size="sm" 
+          ?pressed=${buttonGroupState.period === 'day'}
+          @buttonClick=${handleSingleSelect('period', 'day')}
+        >
+          Day
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="outlined" 
+          size="sm"
+          ?pressed=${buttonGroupState.period === 'week'}
+          @buttonClick=${handleSingleSelect('period', 'week')}
+        >
+          Week
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="outlined" 
+          size="sm"
+          ?pressed=${buttonGroupState.period === 'month'}
+          @buttonClick=${handleSingleSelect('period', 'month')}
+        >
+          Month
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="outlined" 
+          size="sm"
+          ?pressed=${buttonGroupState.period === 'year'}
+          @buttonClick=${handleSingleSelect('period', 'year')}
+        >
+          Year
+        </modus-wc-button>
+      </div>
     </div>
-  </div>
-  <div class="demo-row">
-    <div class="button-group button-group-horizontal">
-      <modus-wc-button 
-        variant="outlined"
-        ?pressed=${buttonGroupState.options.includes('option1')}
-        @buttonClick=${handleMultiSelect('options', 'option1')}
-      >
-        Bold
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="outlined"
-        ?pressed=${buttonGroupState.options.includes('option2')}
-        @buttonClick=${handleMultiSelect('options', 'option2')}
-      >
-        Italic
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="outlined"
-        ?pressed=${buttonGroupState.options.includes('option3')}
-        @buttonClick=${handleMultiSelect('options', 'option3')}
-      >
-        Underline
-      </modus-wc-button>
+    
+    <div class="demo-row">
+      <div class="button-group button-group-horizontal">
+        <modus-wc-button 
+          variant="outlined"
+          ?pressed=${buttonGroupState.options.includes('option1')}
+          @buttonClick=${handleMultiSelect('options', 'option1')}
+        >
+          Bold
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="outlined"
+          ?pressed=${buttonGroupState.options.includes('option2')}
+          @buttonClick=${handleMultiSelect('options', 'option2')}
+        >
+          Italic
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="outlined"
+          ?pressed=${buttonGroupState.options.includes('option3')}
+          @buttonClick=${handleMultiSelect('options', 'option3')}
+        >
+          Underline
+        </modus-wc-button>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="demo-section">
-  <h4>Different Sizes</h4>
-  
-  <div class="demo-row">
-    <div class="button-group button-group-horizontal">
-      <modus-wc-button 
-        variant="outlined" 
-        size="sm"
-        ?pressed=${buttonGroupState.sizes.sm === 'small'}
-        @buttonClick=${handleSingleSelect('sizes.sm', 'small')}
-      >
-        Small
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="outlined" 
-        size="sm"
-        ?pressed=${buttonGroupState.sizes.sm === 'group'}
-        @buttonClick=${handleSingleSelect('sizes.sm', 'group')}
-      >
-        Group
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="outlined" 
-        size="sm"
-        ?pressed=${buttonGroupState.sizes.sm === 'example'}
-        @buttonClick=${handleSingleSelect('sizes.sm', 'example')}
-      >
-        Example
-      </modus-wc-button>
+  <section class="demo-section">
+    <h4>Different Sizes</h4>
+    
+    <div class="demo-row">
+      <div class="button-group button-group-horizontal">
+        <modus-wc-button 
+          variant="outlined" 
+          size="sm"
+          ?pressed=${buttonGroupState.sizes.sm === 'small'}
+          @buttonClick=${handleSingleSelect('sizes.sm', 'small')}
+        >
+          Small
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="outlined" 
+          size="sm"
+          ?pressed=${buttonGroupState.sizes.sm === 'group'}
+          @buttonClick=${handleSingleSelect('sizes.sm', 'group')}
+        >
+          Group
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="outlined" 
+          size="sm"
+          ?pressed=${buttonGroupState.sizes.sm === 'example'}
+          @buttonClick=${handleSingleSelect('sizes.sm', 'example')}
+        >
+          Example
+        </modus-wc-button>
+      </div>
     </div>
-  </div>
-  
-  <div class="demo-row">
-    <div class="button-group button-group-horizontal">
-      <modus-wc-button 
-        variant="outlined" 
-        size="md"
-        ?pressed=${buttonGroupState.sizes.md === 'medium'}
-        @buttonClick=${handleSingleSelect('sizes.md', 'medium')}
-      >
-        Medium
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="outlined" 
-        size="md"
-        ?pressed=${buttonGroupState.sizes.md === 'group'}
-        @buttonClick=${handleSingleSelect('sizes.md', 'group')}
-      >
-        Group
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="outlined" 
-        size="md"
-        ?pressed=${buttonGroupState.sizes.md === 'example'}
-        @buttonClick=${handleSingleSelect('sizes.md', 'example')}
-      >
-        Example
-      </modus-wc-button>
+    
+    <div class="demo-row">
+      <div class="button-group button-group-horizontal">
+        <modus-wc-button 
+          variant="outlined" 
+          size="md"
+          ?pressed=${buttonGroupState.sizes.md === 'medium'}
+          @buttonClick=${handleSingleSelect('sizes.md', 'medium')}
+        >
+          Medium
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="outlined" 
+          size="md"
+          ?pressed=${buttonGroupState.sizes.md === 'group'}
+          @buttonClick=${handleSingleSelect('sizes.md', 'group')}
+        >
+          Group
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="outlined" 
+          size="md"
+          ?pressed=${buttonGroupState.sizes.md === 'example'}
+          @buttonClick=${handleSingleSelect('sizes.md', 'example')}
+        >
+          Example
+        </modus-wc-button>
+      </div>
     </div>
-  </div>
-  
-  <div class="demo-row">
-    <div class="button-group button-group-horizontal">
-      <modus-wc-button 
-        variant="outlined" 
-        size="lg"
-        ?pressed=${buttonGroupState.sizes.lg === 'large'}
-        @buttonClick=${handleSingleSelect('sizes.lg', 'large')}
-      >
-        Large
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="outlined" 
-        size="lg"
-        ?pressed=${buttonGroupState.sizes.lg === 'group'}
-        @buttonClick=${handleSingleSelect('sizes.lg', 'group')}
-      >
-        Group
-      </modus-wc-button>
-      <modus-wc-button 
-        variant="outlined" 
-        size="lg"
-        ?pressed=${buttonGroupState.sizes.lg === 'example'}
-        @buttonClick=${handleSingleSelect('sizes.lg', 'example')}
-      >
-        Example
-      </modus-wc-button>
+    
+    <div class="demo-row">
+      <div class="button-group button-group-horizontal">
+        <modus-wc-button 
+          variant="outlined" 
+          size="lg"
+          ?pressed=${buttonGroupState.sizes.lg === 'large'}
+          @buttonClick=${handleSingleSelect('sizes.lg', 'large')}
+        >
+          Large
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="outlined" 
+          size="lg"
+          ?pressed=${buttonGroupState.sizes.lg === 'group'}
+          @buttonClick=${handleSingleSelect('sizes.lg', 'group')}
+        >
+          Group
+        </modus-wc-button>
+        <modus-wc-button 
+          variant="outlined" 
+          size="lg"
+          ?pressed=${buttonGroupState.sizes.lg === 'example'}
+          @buttonClick=${handleSingleSelect('sizes.lg', 'example')}
+        >
+          Example
+        </modus-wc-button>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 </main>
     `;
   },
