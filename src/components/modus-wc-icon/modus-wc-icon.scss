@@ -23,15 +23,15 @@ modus-wc-icon .modus-icons {
 modus-wc-icon {
   // Host styling for slot content
   &.icon-slot-host {
-    display: flex;
     align-items: center;
+    display: flex;
     // Remove any potential Modus interference
     font-family: inherit !important;
     
     // Make the span wrapper behave like an inline element (no extra space)
     .modus-icons {
-      display: inline-flex;
       align-items: center;
+      display: inline-flex;
       line-height: 1;
     }
   }
@@ -57,8 +57,8 @@ modus-wc-icon {
     font-size: 4rem;
   }
 
-  .icon-font:before,
-  .icon-font:after {
+  .icon-font::before,
+  .icon-font::after {
     font-family: inherit !important;
   }
 }
