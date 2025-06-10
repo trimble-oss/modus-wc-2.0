@@ -290,6 +290,54 @@ export const ButtonGroup: Story = {
     border-color: var(--modus-wc-color-blue-light) !important;
   }
 </style>
+<script>
+    // State to track button groups
+    const buttonGroupState = {
+      alignment: 'center',
+      period: 'week',
+      formatting: ['italic'],
+      options: ['option1', 'option3'],
+      sizes: {
+        sm: 'group',
+        md: 'group',
+        lg: 'group',
+      },
+    };
+
+    // Handler for single-select groups (radio behavior)
+    const handleSingleSelect = (groupKey: string, value: string) => {
+      return (e: CustomEvent) => {
+        buttonGroupState[groupKey] = value;
+
+        // Force re-render by updating the DOM
+        const button = e.target as HTMLElement;
+        const group = button.closest('.button-group');
+        if (group) {
+          const buttons = group.querySelectorAll('modus-wc-button');
+          buttons.forEach((btn) => {
+            btn.removeAttribute('pressed');
+          });
+          button.setAttribute('pressed', 'true');
+        }
+      };
+    };
+
+    // Handler for multi-select groups (checkbox behavior)
+    const handleMultiSelect = (groupKey: string, value: string) => {
+      return (e: CustomEvent) => {
+        const currentArray = buttonGroupState[groupKey] as string[];
+        const button = e.target as HTMLElement;
+
+        if (currentArray.includes(value)) {
+          buttonGroupState[groupKey] = currentArray.filter((v) => v !== value);
+          button.removeAttribute('pressed');
+        } else {
+          buttonGroupState[groupKey] = [...currentArray, value];
+          button.setAttribute('pressed', 'true');
+        }
+      };
+    };
+</script>    
 
 <main>
   <section class="demo-section">
