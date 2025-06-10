@@ -19,3 +19,46 @@ modus-wc-icon .modus-icons {
     font-size: 4rem;
   }
 }
+
+modus-wc-icon {
+  // Host styling for slot content
+  &.icon-slot-host {
+    display: flex;
+    align-items: center;
+    // Remove any potential Modus interference
+    font-family: inherit !important;
+    
+    // Make the span wrapper behave like an inline element (no extra space)
+    .modus-icons {
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+  }
+
+  // Sizing for slot content 
+  &.icon-slot-host .modus-icons.modus-wc-icon--xs * {
+    font-size: 1rem;
+  }
+
+  &.icon-slot-host .modus-icons.modus-wc-icon--sm * {
+    font-size: 1.25rem;
+  }
+
+  &.icon-slot-host .modus-icons.modus-wc-icon--md * {
+    font-size: 1.5rem;
+  }
+
+  &.icon-slot-host .modus-icons.modus-wc-icon--lg * {
+    font-size: 2rem;
+  }
+
+  &.icon-slot-host .modus-icons.modus-wc-icon--xl * {
+    font-size: 4rem;
+  }
+
+  .icon-font:before,
+  .icon-font:after {
+    font-family: inherit !important;
+  }
+}

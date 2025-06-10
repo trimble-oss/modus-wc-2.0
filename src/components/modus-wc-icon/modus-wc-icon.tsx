@@ -6,7 +6,8 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  * A customizable icon component used to render Modus icons.
  *
  * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
-
+ *
+ * <b>For custom icons:</b> Use the default slot to pass any icon content (Connect icons, SVGs, etc.). The component automatically preserves icon font families.
  */
 @Component({
   tag: 'modus-wc-icon',
@@ -19,7 +20,7 @@ export class ModusWcIcon {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Custom CSS class to apply to the i element. */
+  /** Custom CSS class to apply to the icon element. */
   @Prop() customClass?: string = '';
 
   /** Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers. */
@@ -33,7 +34,7 @@ export class ModusWcIcon {
 
   componentWillLoad() {
     if (!this.decorative && !this.el.ariaLabel) {
-      this.el.ariaLabel = `${this.name} icon`;
+      this.el.ariaLabel = this.name ? `${this.name} icon` : 'icon';
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -54,17 +55,35 @@ export class ModusWcIcon {
     const role = this.decorative ? undefined : 'img';
 
     return (
-      <Host class="modus-wc-flex modus-wc-items-center">
-        <i
-          aria-hidden={ariaHidden}
-          aria-label={this.decorative ? null : this.el.ariaLabel}
-          class={this.getClasses()}
-          role={role}
-          tabindex={-1}
-          {...this.inheritedAttributes}
-        >
-          {this.name}
-        </i>
+      <Host
+        class={
+          this.name ? 'modus-wc-flex modus-wc-items-center' : 'icon-slot-host'
+        }
+      >
+        {this.name ? (
+          <i
+            aria-hidden={ariaHidden}
+            aria-label={this.decorative ? null : this.el.ariaLabel}
+            class={this.getClasses()}
+            role={role}
+            tabindex={-1}
+            {...this.inheritedAttributes}
+          >
+            {this.name}
+          </i>
+        ) : (
+          // Slot content for custom icons when no name prop
+          <span
+            aria-hidden={ariaHidden}
+            aria-label={this.decorative ? null : this.el.ariaLabel}
+            class={this.getClasses()}
+            role={role}
+            tabindex={-1}
+            {...this.inheritedAttributes}
+          >
+            <slot></slot>
+          </span>
+        )}
       </Host>
     );
   }

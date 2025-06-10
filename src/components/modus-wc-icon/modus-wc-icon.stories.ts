@@ -67,6 +67,23 @@ export const CustomColor: Story = {
   },
 };
 
+export const CustomIcons: Story = {
+  decorators: [
+    (story) => html`
+      <link
+        rel="stylesheet"
+        href="https://resources.connect.trimble.com/1.12.0/fonts/icon-font.min.css"
+      />
+      ${story()}
+    `,
+  ],
+  render: () => html`
+    <modus-wc-icon aria-label="Cloud Queue icon" size="lg">
+      <i class="icon-font tc-icon-cloud-queue"></i>
+    </modus-wc-icon>
+  `,
+};
+
 export const Migration: Story = {
   parameters: {
     docs: {
