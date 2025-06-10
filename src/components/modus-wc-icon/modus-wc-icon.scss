@@ -26,8 +26,8 @@ modus-wc-icon {
     align-items: center;
     display: flex;
     font-family: inherit !important;
-    
-    // Make the span wrapper behave like an inline element 
+
+    // Make the span wrapper behave like an inline element
     .modus-icons {
       align-items: center;
       display: inline-flex;
@@ -35,7 +35,7 @@ modus-wc-icon {
     }
   }
 
-  // Sizing for slot content 
+  // Sizing for slot content
   &.icon-slot-host .modus-icons.modus-wc-icon--xs * {
     font-size: 1rem;
   }
