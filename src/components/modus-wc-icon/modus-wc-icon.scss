@@ -20,44 +20,56 @@ modus-wc-icon .modus-icons {
   }
 }
 
-modus-wc-icon {
-  // Host styling for slot content
-  &.icon-slot-host {
-    align-items: center;
-    display: flex;
-    font-family: inherit !important;
-
-    // Make the span wrapper behave like an inline element
-    .modus-icons {
-      align-items: center;
-      display: inline-flex;
-      line-height: 1;
-    }
-  }
-
-  // Sizing for slot content
-  &.icon-slot-host .modus-icons.modus-wc-icon--xs * {
+// Size styles for slot content
+modus-wc-icon .modus-wc-icon--xs {
+  font-size: 1rem;
+  
+  // Apply to slot content
+  i {
     font-size: 1rem;
   }
+}
 
-  &.icon-slot-host .modus-icons.modus-wc-icon--sm * {
+modus-wc-icon .modus-wc-icon--sm {
+  font-size: 1.25rem;
+  
+  // Apply to slot content  
+  i {
     font-size: 1.25rem;
   }
+}
 
-  &.icon-slot-host .modus-icons.modus-wc-icon--md * {
+modus-wc-icon .modus-wc-icon--md {
+  font-size: 1.5rem;
+  
+  // Apply to slot content
+  i {
     font-size: 1.5rem;
   }
+}
 
-  &.icon-slot-host .modus-icons.modus-wc-icon--lg * {
+modus-wc-icon .modus-wc-icon--lg {
+  font-size: 2rem;
+  
+  // Apply to slot content
+  i {
     font-size: 2rem;
   }
+}
 
-  &.icon-slot-host .modus-icons.modus-wc-icon--xl * {
+modus-wc-icon .modus-wc-icon--xl {
+  font-size: 4rem;
+  
+  // Apply to slot content
+  i {
     font-size: 4rem;
   }
+}
 
-  .icon-font::before,
-  .icon-font::after {
+modus-wc-icon {
+  // Generic icon font support for all icon libraries
+  i::before,
+  i::after {
     font-family: inherit !important;
   }
 }

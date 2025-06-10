@@ -55,11 +55,7 @@ export class ModusWcIcon {
     const role = this.decorative ? undefined : 'img';
 
     return (
-      <Host
-        class={
-          this.name ? 'modus-wc-flex modus-wc-items-center' : 'icon-slot-host'
-        }
-      >
+      <Host class={'modus-wc-flex modus-wc-items-center'}>
         {this.name ? (
           <i
             aria-hidden={ariaHidden}
