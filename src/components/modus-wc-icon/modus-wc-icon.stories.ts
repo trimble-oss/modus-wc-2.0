@@ -68,6 +68,12 @@ export const CustomColor: Story = {
 };
 
 export const CustomIcons: Story = {
+  args: {
+    'custom-class': 'icon-font tc-icon-cloud-queue',
+    decorative: false,
+    name: '',
+    size: 'lg',
+  },
   decorators: [
     (story) => html`
       <link
@@ -77,9 +83,14 @@ export const CustomIcons: Story = {
       ${story()}
     `,
   ],
-  render: () => html`
-    <modus-wc-icon aria-label="Cloud Queue icon" size="lg">
-      <i class="icon-font tc-icon-cloud-queue"></i>
+  render: (args) => html`
+    <modus-wc-icon
+      aria-label="Cloud Queue icon"
+      custom-class="${ifDefined(args['custom-class'])}"
+      ?decorative="${args.decorative}"
+      name="${args.name}"
+      size="${args.size}"
+    >
     </modus-wc-icon>
   `,
 };

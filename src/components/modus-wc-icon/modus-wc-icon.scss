@@ -20,52 +20,6 @@ modus-wc-icon .modus-icons {
   }
 }
 
-// Size styles for slot content
-modus-wc-icon .modus-wc-icon--xs {
-  font-size: 1rem;
-
-  // Apply to slot content
-  i {
-    font-size: 1rem;
-  }
-}
-
-modus-wc-icon .modus-wc-icon--sm {
-  font-size: 1.25rem;
-
-  // Apply to slot content
-  i {
-    font-size: 1.25rem;
-  }
-}
-
-modus-wc-icon .modus-wc-icon--md {
-  font-size: 1.5rem;
-
-  // Apply to slot content
-  i {
-    font-size: 1.5rem;
-  }
-}
-
-modus-wc-icon .modus-wc-icon--lg {
-  font-size: 2rem;
-
-  // Apply to slot content
-  i {
-    font-size: 2rem;
-  }
-}
-
-modus-wc-icon .modus-wc-icon--xl {
-  font-size: 4rem;
-
-  // Apply to slot content
-  i {
-    font-size: 4rem;
-  }
-}
-
 modus-wc-icon {
   // Generic icon font support for all icon libraries
   i::before,
