@@ -44,7 +44,10 @@
 }
 
 /* Dark theme pressed state */
-[data-theme='modus-classic-dark'] .modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn {
+[data-theme='modus-classic-dark']
+  .modus-wc-button-group
+  modus-wc-button[pressed]
+  .modus-wc-btn {
   background-color: var(--modus-wc-color-highlight-blue) !important;
   border-color: var(--modus-wc-color-highlight-blue) !important;
   color: var(--modus-wc-color-gray-10) !important;
@@ -52,24 +55,26 @@
 
 /* Seamless horizontal button group appearance - only for outlined buttons */
 .modus-wc-button-group--horizontal:not(.modus-wc-button-group--spaced)
-  modus-wc-button[variant="outlined"]:not(:first-child) {
+  modus-wc-button[variant='outlined']:not(:first-child) {
   margin-left: -1px;
 }
 
 /* Borderless horizontal buttons don't need margin overlap */
 .modus-wc-button-group--horizontal:not(.modus-wc-button-group--spaced)
-  modus-wc-button[variant="borderless"]:not(:first-child) {
+  modus-wc-button[variant='borderless']:not(:first-child) {
   margin-left: 0;
 }
 
 .modus-wc-button-group--horizontal:not(.modus-wc-button-group--spaced)
-  modus-wc-button:not(:first-child) .modus-wc-btn {
+  modus-wc-button:not(:first-child)
+  .modus-wc-btn {
   border-bottom-left-radius: 0 !important;
   border-top-left-radius: 0 !important;
 }
 
 .modus-wc-button-group--horizontal:not(.modus-wc-button-group--spaced)
-  modus-wc-button:not(:last-child) .modus-wc-btn {
+  modus-wc-button:not(:last-child)
+  .modus-wc-btn {
   border-bottom-right-radius: 0 !important;
   border-top-right-radius: 0 !important;
 }
@@ -80,7 +85,10 @@
   border-color: var(--modus-wc-color-blue-light) !important;
 }
 
-[data-theme='modus-classic-dark'] .modus-wc-button-group modus-wc-button[pressed]:hover .modus-wc-btn {
+[data-theme='modus-classic-dark']
+  .modus-wc-button-group
+  modus-wc-button[pressed]:hover
+  .modus-wc-btn {
   background-color: var(--modus-wc-color-blue-light) !important;
   border-color: var(--modus-wc-color-blue-light) !important;
 }
@@ -92,35 +100,37 @@
 }
 
 /* Ensure outlined buttons in groups have proper borders */
-.modus-wc-button-group modus-wc-button[variant="outlined"] .modus-wc-btn {
+.modus-wc-button-group modus-wc-button[variant='outlined'] .modus-wc-btn {
   border: 1px solid var(--modus-wc-color-trimble-gray);
 }
 
 /* Ensure borderless buttons have no borders */
-.modus-wc-button-group modus-wc-button[variant="borderless"] .modus-wc-btn {
+.modus-wc-button-group modus-wc-button[variant='borderless'] .modus-wc-btn {
   border: none !important;
 }
 
 /* Vertical button group specific styles - only for outlined buttons */
 .modus-wc-button-group--vertical:not(.modus-wc-button-group--spaced)
-  modus-wc-button[variant="outlined"]:not(:first-child) {
+  modus-wc-button[variant='outlined']:not(:first-child) {
   margin-top: -1px;
 }
 
 /* Borderless vertical buttons don't need margin overlap */
 .modus-wc-button-group--vertical:not(.modus-wc-button-group--spaced)
-  modus-wc-button[variant="borderless"]:not(:first-child) {
+  modus-wc-button[variant='borderless']:not(:first-child) {
   margin-top: 0;
 }
 
 .modus-wc-button-group--vertical:not(.modus-wc-button-group--spaced)
-  modus-wc-button:not(:first-child) .modus-wc-btn {
+  modus-wc-button:not(:first-child)
+  .modus-wc-btn {
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
 }
 
 .modus-wc-button-group--vertical:not(.modus-wc-button-group--spaced)
-  modus-wc-button:not(:last-child) .modus-wc-btn {
+  modus-wc-button:not(:last-child)
+  .modus-wc-btn {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 }
