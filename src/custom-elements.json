@@ -3587,6 +3587,24 @@
             },
             {
               "kind": "method",
+              "name": "handleModeChange",
+              "parameters": [
+                {
+                  "name": "mode"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleTargetContentChange",
+              "parameters": [
+                {
+                  "name": "target"
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],

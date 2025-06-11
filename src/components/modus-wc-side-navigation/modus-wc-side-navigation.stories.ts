@@ -80,28 +80,21 @@ export const Default: Story = {
       }
     </style>
     <script>
-      const navbar = document.querySelector('modus-wc-navbar');
       document.addEventListener('DOMContentLoaded', () => {
+        const navbar = document.querySelector('modus-wc-navbar');
         const menuItems = document.querySelectorAll('modus-wc-menu-item');
-        const sideNav = document.querySelector('modus-wc-side-navigation');
-        menuItems.forEach((item) => {
+
+        menuItems.forEach((item) =>
           item.addEventListener('itemSelect', () => {
             menuItems.forEach((i) => i.removeAttribute('selected'));
             item.setAttribute('selected', '');
-            if (sideNav) {
-              sideNav.expanded = false;
-            }
-          });
-        });
-      });
+          })
+        );
 
-      document.addEventListener('mainMenuOpenChange', () => {
-        if (navbar) {
-          const sideNav = document.querySelector('modus-wc-side-navigation');
-          if (sideNav) {
-            sideNav.toggleAttribute('expanded');
-          }
-        }
+        const sideNav = document.querySelector('modus-wc-side-navigation');
+        navbar.addEventListener('mainMenuOpenChange', (e) => {
+          sideNav.expanded = e.detail;
+        });
       });
     </script>
     <div class="layout-with-navbar">

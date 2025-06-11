@@ -54,6 +54,16 @@ export class ModusWcSideNavigation {
     this.expandedChange.emit(this.expanded);
   }
 
+  @Watch('mode')
+  handleModeChange(mode) {
+    this.setTargetContentMargin(this.expanded, mode, this.targetContent);
+  }
+
+  @Watch('targetContent')
+  handleTargetContentChange(target) {
+    this.setTargetContentMargin(this.expanded, this.mode, target);
+  }
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -92,13 +102,10 @@ export class ModusWcSideNavigation {
   };
 
   private setTargetContentMargin(isExpanded, mode, target) {
-    if (mode !== 'push' || !target) return;
-
     const content = document.querySelector(target);
     if (content && 'style' in content) {
-      (content as HTMLElement).style.marginLeft = isExpanded
-        ? this.maxWidth
-        : this.minWidth;
+      (content as HTMLElement).style.marginLeft =
+        isExpanded && mode === 'push' ? this.maxWidth : this.minWidth;
     }
   }
 

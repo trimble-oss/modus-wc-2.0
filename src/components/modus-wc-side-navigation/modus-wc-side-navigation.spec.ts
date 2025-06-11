@@ -155,7 +155,7 @@ describe('modus-wc-side-navigation', () => {
     component.targetContent = '.main-content';
     await page.waitForChanges();
 
-    expect(content.style.marginLeft).toBe(''); // Still no margin because not expanded
+    expect(content.style.marginLeft).toBe('4rem'); // Default minWidth is 4rem when not expanded
 
     // Now expand — margin should be applied;
     component.expanded = true;
@@ -186,5 +186,23 @@ describe('modus-wc-side-navigation', () => {
     component.expanded = false;
     await page.waitForChanges();
     expect(content.style.marginLeft).toBe('4rem');
+  });
+
+  it('calls setTargetContentMargin when targetContent changes via handleTargetContentChange', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSideNavigation],
+      html: '<modus-wc-side-navigation></modus-wc-side-navigation>',
+    });
+    const instance = page.rootInstance;
+    instance.setTargetContentMargin = jest.fn();
+    instance.expanded = true;
+    instance.mode = 'push';
+    const newTarget = '.new-content';
+    instance.handleTargetContentChange(newTarget);
+    expect(instance.setTargetContentMargin).toHaveBeenCalledWith(
+      true,
+      'push',
+      newTarget
+    );
   });
 });
