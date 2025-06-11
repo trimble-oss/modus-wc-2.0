@@ -541,7 +541,7 @@ export class ModusWcTable {
           aria-label="Select page size"
           bordered
           size={paginationSize}
-          onInputChange={(e) => this.handlePageSizeOptionChange(e)}
+          onInputChange={(e: Event) => this.handlePageSizeOptionChange(e)}
           options={options}
         ></modus-wc-select>
       </div>
@@ -874,7 +874,9 @@ export class ModusWcTable {
                   count={totalPages}
                   page={this.internalPagination.pageIndex + 1}
                   size={this.getPaginationSize()}
-                  onPageChange={(e) => this.handlePageChange(e.detail.newPage)}
+                  onPageChange={(e: CustomEvent<{ newPage: number }>) =>
+                    this.handlePageChange(e.detail.newPage)
+                  }
                 ></modus-wc-pagination>
               </div>
             </div>
