@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-button-group applies disabled state 1`] = `
+<modus-wc-button-group disabled="">
+  <!---->
+  <div class="modus-wc-button-group modus-wc-button-group--disabled modus-wc-button-group--horizontal" role="radiogroup"></div>
+</modus-wc-button-group>
+`;
+
+exports[`modus-wc-button-group applies spaced modifier 1`] = `
+<modus-wc-button-group spaced="">
+  <!---->
+  <div class="modus-wc-button-group modus-wc-button-group--horizontal modus-wc-button-group--spaced" role="radiogroup"></div>
+</modus-wc-button-group>
+`;
+
+exports[`modus-wc-button-group applies vertical orientation 1`] = `
+<modus-wc-button-group orientation="vertical">
+  <!---->
+  <div class="modus-wc-button-group modus-wc-button-group--vertical" role="radiogroup"></div>
+</modus-wc-button-group>
+`;
+
+exports[`modus-wc-button-group renders 1`] = `
+<modus-wc-button-group>
+  <!---->
+  <div class="modus-wc-button-group modus-wc-button-group--horizontal" role="radiogroup">
+    <modus-wc-button size="md" value="test" variant="outlined">
+      <!---->
+      <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" tabindex="0" type="button">
+        Test
+      </button>
+    </modus-wc-button>
+  </div>
+</modus-wc-button-group>
+`;
+
+exports[`modus-wc-button-group sets correct role for multiple selection mode 1`] = `
+<modus-wc-button-group selection-mode="multiple">
+  <!---->
+  <div class="modus-wc-button-group modus-wc-button-group--horizontal" role="group"></div>
+</modus-wc-button-group>
+`;
+
+exports[`modus-wc-button-group sets correct role for state when none selection mode 1`] = `
+<modus-wc-button-group selection-mode="none">
+  <!---->
+  <div class="modus-wc-button-group modus-wc-button-group--horizontal" role="group"></div>
+</modus-wc-button-group>
+`;
+
+exports[`modus-wc-button-group sets custom class 1`] = `
+<modus-wc-button-group custom-class="custom" selection-mode="none">
+  <!---->
+  <div class="custom modus-wc-button-group modus-wc-button-group--horizontal" role="group">
+    <modus-wc-button size="md" value="test" variant="outlined">
+      <!---->
+      <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" tabindex="0" type="button">
+        Test
+      </button>
+    </modus-wc-button>
+  </div>
+</modus-wc-button-group>
+`;
+
+exports[`modus-wc-button-group should render with custom props 1`] = `
+<modus-wc-button-group custom-class="test-class" orientation="vertical" selection-mode="multiple" size="lg" spaced="" value="[&quot;button1&quot;]" variant="borderless">
+  <!---->
+  <div class="modus-wc-button-group modus-wc-button-group--spaced modus-wc-button-group--vertical test-class" role="group">
+    <modus-wc-button size="lg" value="button1" variant="borderless">
+      <!---->
+      <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-lg modus-wc-btn-primary" tabindex="0" type="button">
+        Button 1
+      </button>
+    </modus-wc-button>
+    <modus-wc-button size="lg" value="button2" variant="borderless">
+      <!---->
+      <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-lg modus-wc-btn-primary" tabindex="0" type="button">
+        Button 2
+      </button>
+    </modus-wc-button>
+  </div>
+</modus-wc-button-group>
+`;
+
+exports[`modus-wc-button-group should render with default props 1`] = `
+<modus-wc-button-group>
+  <!---->
+  <div class="modus-wc-button-group modus-wc-button-group--horizontal" role="radiogroup">
+    <modus-wc-button size="md" value="button1" variant="outlined">
+      <!---->
+      <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" tabindex="0" type="button">
+        Button 1
+      </button>
+    </modus-wc-button>
+    <modus-wc-button size="md" value="button2" variant="outlined">
+      <!---->
+      <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" tabindex="0" type="button">
+        Button 2
+      </button>
+    </modus-wc-button>
+  </div>
+</modus-wc-button-group>
+`;
+
+exports[`modus-wc-button-group should render with disabled state 1`] = `
+<modus-wc-button-group disabled="">
+  <!---->
+  <div class="modus-wc-button-group modus-wc-button-group--disabled modus-wc-button-group--horizontal" role="radiogroup">
+    <modus-wc-button disabled="true" size="md" value="button1" variant="outlined">
+      <!---->
+      <button class="modus-wc-btn modus-wc-btn-disabled modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" disabled="" tabindex="-1" type="button">
+        Button 1
+      </button>
+    </modus-wc-button>
+    <modus-wc-button disabled="true" size="md" value="button2" variant="outlined">
+      <!---->
+      <button class="modus-wc-btn modus-wc-btn-disabled modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" disabled="" tabindex="-1" type="button">
+        Button 2
+      </button>
+    </modus-wc-button>
+  </div>
+</modus-wc-button-group>
+`;

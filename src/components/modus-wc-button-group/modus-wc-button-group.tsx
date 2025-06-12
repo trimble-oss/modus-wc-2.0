@@ -7,6 +7,7 @@ import {
   Host,
   Listen,
   Prop,
+  Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-button-group.tailwind';
 import { ModusSize, Orientation } from '../types';
@@ -62,14 +63,20 @@ export class ModusWcButtonGroup {
   componentWillLoad() {
     if (!this.el.getAttribute('role')) {
       if (this.selectionMode === 'single') {
-        this.el.setAttribute('role', 'radiogroup');
-      } else if (this.selectionMode === 'multiple') {
-        this.el.setAttribute('role', 'group');
-      } else {
-        this.el.setAttribute('role', 'group');
+        this.setAttributes('radiogroup');
+        return;
       }
+      if (this.selectionMode === 'multiple') {
+        this.setAttributes('group');
+        return;
+      }
+      this.setAttributes('group');
+      return;
     }
+  }
 
+  setAttributes(role: 'radiogroup' | 'group') {
+    this.el.setAttribute('role', role);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
@@ -144,7 +151,6 @@ export class ModusWcButtonGroup {
       if (this.disabled) {
         button.setAttribute('disabled', 'true');
       }
-      // Note: We don't remove disabled attribute here to preserve individual button disabled states
     });
   }
 
