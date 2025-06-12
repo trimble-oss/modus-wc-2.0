@@ -1,7 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 
-const meta: Meta = {
+// Define the arg types for strong typing in Storybook controls/autocomplete
+interface ButtonGroupArgs {
+  orientation?: 'horizontal' | 'vertical';
+  'selection-mode'?: 'single' | 'multiple' | 'none';
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'outlined' | 'borderless';
+  value?: string | string[];
+  disabled?: boolean;
+  spaced?: boolean;
+  'custom-class'?: string;
+}
+
+const meta: Meta<ButtonGroupArgs> = {
   title: 'Components/Button Group',
   component: 'modus-wc-button-group',
   parameters: {
@@ -27,7 +39,7 @@ The Button Group component provides an easy way to group related buttons togethe
       options: ['horizontal', 'vertical'],
       description: 'Layout orientation of the button group',
     },
-    selectionMode: {
+    'selection-mode': {
       control: 'select',
       options: ['single', 'multiple', 'none'],
       description:
@@ -56,7 +68,7 @@ The Button Group component provides an easy way to group related buttons togethe
       control: 'boolean',
       description: 'Add spacing between buttons',
     },
-    customClass: {
+    'custom-class': {
       control: 'text',
       description: 'Custom CSS class to apply',
     },
@@ -64,19 +76,19 @@ The Button Group component provides an easy way to group related buttons togethe
 };
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<ButtonGroupArgs>;
 
 export const Default: Story = {
   render: (args) => html`
     <modus-wc-button-group
       orientation="${args.orientation || 'horizontal'}"
-      selection-mode="${args.selectionMode || 'single'}"
+      selection-mode="${args['selection-mode'] || 'single'}"
       size="${args.size || 'md'}"
       variant="${args.variant || 'outlined'}"
       value="${args.value || 'week'}"
       ?disabled="${args.disabled}"
       ?spaced="${args.spaced}"
-      custom-class="${args.customClass || ''}"
+      custom-class="${args['custom-class'] || ''}"
       @buttonGroupSelectionChange="${(e) =>
         console.log('Selection changed:', e.detail)}"
     >
@@ -88,13 +100,13 @@ export const Default: Story = {
   `,
   args: {
     orientation: 'horizontal',
-    selectionMode: 'single',
+    'selection-mode': 'single',
     size: 'md',
     variant: 'outlined',
     value: 'week',
     disabled: false,
     spaced: false,
-    customClass: '',
+    'custom-class': '',
   },
 };
 
