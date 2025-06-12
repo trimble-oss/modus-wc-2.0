@@ -7,7 +7,6 @@ import {
   Host,
   Listen,
   Prop,
-  Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-button-group.tailwind';
 import { ModusSize, Orientation } from '../types';
