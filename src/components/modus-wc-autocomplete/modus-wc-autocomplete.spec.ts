@@ -94,7 +94,20 @@ describe('modus-wc-autocomplete', () => {
     const blurSpy = jest.fn();
     page.root!.addEventListener('inputBlur', blurSpy);
 
-    input!.dispatchEvent(new FocusEvent('blur'));
+    // Create a proper FocusEvent and wrap it in a CustomEvent
+    const focusEvent = new FocusEvent('blur', {
+      relatedTarget: null, // This simulates focus moving outside the component
+    });
+    const customEvent = new CustomEvent('inputBlur', {
+      detail: focusEvent,
+    });
+
+    // Dispatch the custom event on the text input component, not the raw input
+    const textInput = page.root!.querySelector('modus-wc-text-input');
+    textInput!.dispatchEvent(customEvent);
+
+    // Wait for the timeout in handleBlur (200ms)
+    await new Promise((resolve) => setTimeout(resolve, 250));
     await page.waitForChanges();
 
     expect(blurSpy).toHaveBeenCalled();
