@@ -21,6 +21,13 @@ The component supports a `<slot>` for injecting custom li elements inside the ul
 | `size`        | `size`         | The size of the menu.                         | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
 
 
+## Events
+
+| Event          | Description                              | Type                      |
+| -------------- | ---------------------------------------- | ------------------------- |
+| `menuFocusout` | Event emitted when the menu loses focus. | `CustomEvent<FocusEvent>` |
+
+
 ## Dependencies
 
 ### Used by
