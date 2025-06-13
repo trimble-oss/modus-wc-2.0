@@ -191,6 +191,9 @@ export class ModusWcAutocomplete {
   }
 
   private handleBlur = (event: CustomEvent<FocusEvent>) => {
+    // Stop text input blur event from bubbling up
+    event.stopPropagation();
+
     // Hide menu after a short delay to allow for item selection
     // istanbul ignore next - TODO
     setTimeout(() => {
