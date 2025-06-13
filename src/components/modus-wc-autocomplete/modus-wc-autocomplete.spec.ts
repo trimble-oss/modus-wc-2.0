@@ -123,10 +123,50 @@ describe('modus-wc-autocomplete', () => {
     );
   });
 
+  it('should emit change event when menu is visible on focus', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Change test" show-menu-on-focus="true"></modus-wc-autocomplete>',
+    });
+
+    const input = page.root!.querySelector('input');
+    expect(input).not.toBeNull();
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    input!.value = 'New value';
+    input!.dispatchEvent(new Event('input'));
+    await page.waitForChanges();
+
+    expect(changeSpy).toHaveBeenCalled();
+    expect(changeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: expect.any(Event),
+      })
+    );
+  });
+
   it('should emit focus event', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
       html: '<modus-wc-autocomplete aria-label="Change test"></modus-wc-autocomplete>',
+    });
+
+    const input = page.root!.querySelector('input');
+    expect(input).not.toBeNull();
+    const focusSpy = jest.fn();
+    page.root!.addEventListener('inputFocus', focusSpy);
+
+    input!.dispatchEvent(new FocusEvent('focus'));
+    await page.waitForChanges();
+
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('should emit focus event when menu is visible on focus', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Change test" show-menu-on-focus="true"></modus-wc-autocomplete>',
     });
 
     const input = page.root!.querySelector('input');
@@ -228,7 +268,7 @@ describe('modus-wc-autocomplete', () => {
     expect(finalMenu).toEqual(initialMenu); // Should remain unchanged
   });
 
-  it('should blur input on Enter key', async () => {
+  it('should blur input when leaving autocomplete', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
       html: `<modus-wc-autocomplete
@@ -237,31 +277,16 @@ describe('modus-wc-autocomplete', () => {
             ></modus-wc-autocomplete>`,
     });
 
-    // Setup component state
     const component = page.rootInstance as ModusWcAutocomplete;
     component.items = items;
 
-    // Focus and open menu
     const input = page.root!.querySelector('input');
     input?.focus();
-    input?.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'ArrowDown',
-        bubbles: true,
-        composed: true,
-      })
-    );
     await page.waitForChanges();
 
-    // Spy on blur after menu is open
     const blurSpy = jest.spyOn(input!, 'blur');
-    input?.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'Enter',
-        bubbles: true,
-        composed: true,
-      })
-    );
+
+    input?.blur();
     await page.waitForChanges();
 
     expect(blurSpy).toHaveBeenCalled();

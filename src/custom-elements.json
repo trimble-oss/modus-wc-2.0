@@ -385,6 +385,15 @@
               }
             },
             {
+              "name": "show-menu-on-focus",
+              "fieldName": "showMenuOnFocus",
+              "default": "false",
+              "description": "Whether to show the menu whenever the input has focus, regardless of input value.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "show-spinner",
               "fieldName": "showSpinner",
               "default": "false",
@@ -2225,7 +2234,16 @@
             }
           ],
           "tagName": "modus-wc-menu",
-          "events": [],
+          "events": [
+            {
+              "kind": "field",
+              "name": "menuFocusout",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the menu loses focus."
+            }
+          ],
           "customElement": true
         }
       ],

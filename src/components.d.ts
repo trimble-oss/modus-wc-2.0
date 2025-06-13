@@ -152,6 +152,10 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
+          * Whether to show the menu whenever the input has focus, regardless of input value.
+         */
+        "showMenuOnFocus"?: boolean;
+        /**
           * A spinner that appears when set to true
          */
         "showSpinner"?: boolean;
@@ -1688,6 +1692,10 @@ export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDateElement;
 }
+export interface ModusWcMenuCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcMenuElement;
+}
 export interface ModusWcMenuItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcMenuItemElement;
@@ -2022,11 +2030,22 @@ declare global {
         prototype: HTMLModusWcLoaderElement;
         new (): HTMLModusWcLoaderElement;
     };
+    interface HTMLModusWcMenuElementEventMap {
+        "menuFocusout": FocusEvent;
+    }
     /**
      * A customizable menu component used to display a list of li elements vertically or horizontally.
      * The component supports a `<slot>` for injecting custom li elements inside the ul
      */
     interface HTMLModusWcMenuElement extends Components.ModusWcMenu, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcMenuElementEventMap>(type: K, listener: (this: HTMLModusWcMenuElement, ev: ModusWcMenuCustomEvent<HTMLModusWcMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcMenuElementEventMap>(type: K, listener: (this: HTMLModusWcMenuElement, ev: ModusWcMenuCustomEvent<HTMLModusWcMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcMenuElement: {
         prototype: HTMLModusWcMenuElement;
@@ -2664,6 +2683,10 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
+          * Whether to show the menu whenever the input has focus, regardless of input value.
+         */
+        "showMenuOnFocus"?: boolean;
+        /**
           * A spinner that appears when set to true
          */
         "showSpinner"?: boolean;
@@ -3175,6 +3198,10 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the ul element.
          */
         "customClass"?: string;
+        /**
+          * Event emitted when the menu loses focus.
+         */
+        "onMenuFocusout"?: (event: ModusWcMenuCustomEvent<FocusEvent>) => void;
         /**
           * The orientation of the menu.
          */
