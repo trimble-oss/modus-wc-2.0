@@ -36,21 +36,87 @@
   pointer-events: none;
 }
 
-/* Pressed state styling for button groups */
-.modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn {
+/* Pressed state styling for button groups - Primary (default) */
+.modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn,
+.modus-wc-button-group--primary modus-wc-button[pressed] .modus-wc-btn {
   background-color: var(--modus-wc-color-trimble-blue) !important;
   border-color: var(--modus-wc-color-trimble-blue) !important;
   color: var(--modus-wc-color-white) !important;
 }
 
-/* Dark theme pressed state */
-[data-theme='modus-classic-dark']
-  .modus-wc-button-group
-  modus-wc-button[pressed]
-  .modus-wc-btn {
-  background-color: var(--modus-wc-color-highlight-blue) !important;
-  border-color: var(--modus-wc-color-highlight-blue) !important;
-  color: var(--modus-wc-color-gray-10) !important;
+/* Secondary pressed state */
+.modus-wc-button-group--secondary modus-wc-button[pressed] .modus-wc-btn {
+  background-color: var(--modus-wc-color-gray-7) !important;
+  border-color: var(--modus-wc-color-gray-7) !important;
+  color: var(--modus-wc-color-white) !important;
+}
+
+/* Tertiary pressed state */
+.modus-wc-button-group--tertiary modus-wc-button[pressed] .modus-wc-btn {
+  background-color: var(--modus-wc-color-gray-2) !important;
+  border-color: var(--modus-wc-color-gray-2) !important;
+  color: var(--modus-wc-color-trimble-gray) !important;
+}
+
+/* Warning pressed state */
+.modus-wc-button-group--warning modus-wc-button[pressed] .modus-wc-btn {
+  background-color: var(--modus-wc-color-yellow-dark) !important;
+  border-color: var(--modus-wc-color-yellow-dark) !important;
+  color: var(--modus-wc-color-trimble-gray) !important;
+}
+
+/* Danger pressed state */
+.modus-wc-button-group--danger modus-wc-button[pressed] .modus-wc-btn {
+  background-color: var(--modus-wc-color-red-dark) !important;
+  border-color: var(--modus-wc-color-red-dark) !important;
+  color: var(--modus-wc-color-white) !important;
+}
+
+/* Light theme specific overrides */
+:root,
+[data-mwc-theme='light'] {
+  /* Primary */
+  --modus-wc-color-primary-pressed: #004f83;
+  --modus-wc-color-primary-active: #004f83;
+  
+  /* Secondary */
+  --modus-wc-color-secondary-pressed: #585c65;
+  --modus-wc-color-secondary-active: #585c65;
+  
+  /* Tertiary */
+  --modus-wc-color-tertiary-pressed: #b7b9c3;
+  --modus-wc-color-tertiary-active: #b7b9c3;
+  
+  /* Warning */
+  --modus-wc-color-warning-pressed: #e49325;
+  --modus-wc-color-warning-active: #e49325;
+  
+  /* Danger */
+  --modus-wc-color-danger-pressed: #ab1f26;
+  --modus-wc-color-danger-active: #ab1f26;
+}
+
+/* Dark theme specific overrides */
+[data-mwc-theme='dark'] {
+  /* Primary */
+  --modus-wc-color-primary-pressed: #019aeb;
+  --modus-wc-color-primary-active: #019aeb;
+  
+  /* Secondary */
+  --modus-wc-color-secondary-pressed: #90939f;
+  --modus-wc-color-secondary-active: #90939f;
+  
+  /* Tertiary */
+  --modus-wc-color-tertiary-pressed: #90939f;
+  --modus-wc-color-tertiary-active: #90939f;
+  
+  /* Warning */
+  --modus-wc-color-warning-pressed: #fbad26;
+  --modus-wc-color-warning-active: #fbad26;
+  
+  /* Danger */
+  --modus-wc-color-danger-pressed: #e86363;
+  --modus-wc-color-danger-active: #e86363;
 }
 
 /* Seamless horizontal button group appearance - only for outlined buttons */
@@ -80,17 +146,74 @@
 }
 
 /* Hover effects for pressed buttons */
-.modus-wc-button-group modus-wc-button[pressed]:hover .modus-wc-btn {
+.modus-wc-button-group modus-wc-button[pressed]:hover .modus-wc-btn,
+.modus-wc-button-group--primary modus-wc-button[pressed]:hover .modus-wc-btn {
   background-color: var(--modus-wc-color-blue-light) !important;
   border-color: var(--modus-wc-color-blue-light) !important;
+}
+
+.modus-wc-button-group--secondary modus-wc-button[pressed]:hover .modus-wc-btn {
+  background-color: var(--modus-wc-color-gray-6) !important;
+  border-color: var(--modus-wc-color-gray-6) !important;
+}
+
+.modus-wc-button-group--tertiary modus-wc-button[pressed]:hover .modus-wc-btn {
+  background-color: var(--modus-wc-color-gray-3) !important;
+  border-color: var(--modus-wc-color-gray-3) !important;
+}
+
+.modus-wc-button-group--warning modus-wc-button[pressed]:hover .modus-wc-btn {
+  background-color: var(--modus-wc-color-warning-light) !important;
+  border-color: var(--modus-wc-color-warning-light) !important;
+}
+
+.modus-wc-button-group--danger modus-wc-button[pressed]:hover .modus-wc-btn {
+  background-color: var(--modus-wc-color-danger-light) !important;
+  border-color: var(--modus-wc-color-danger-light) !important;
 }
 
 [data-theme='modus-classic-dark']
   .modus-wc-button-group
   modus-wc-button[pressed]:hover
+  .modus-wc-btn,
+[data-theme='modus-classic-dark']
+  .modus-wc-button-group--primary
+  modus-wc-button[pressed]:hover
   .modus-wc-btn {
   background-color: var(--modus-wc-color-blue-light) !important;
   border-color: var(--modus-wc-color-blue-light) !important;
+}
+
+[data-theme='modus-classic-dark']
+  .modus-wc-button-group--secondary
+  modus-wc-button[pressed]:hover
+  .modus-wc-btn {
+  background-color: var(--modus-wc-color-gray-3) !important;
+  border-color: var(--modus-wc-color-gray-3) !important;
+}
+
+[data-theme='modus-classic-dark']
+  .modus-wc-button-group--tertiary
+  modus-wc-button[pressed]:hover
+  .modus-wc-btn {
+  background-color: var(--modus-wc-color-gray-6) !important;
+  border-color: var(--modus-wc-color-gray-6) !important;
+}
+
+[data-theme='modus-classic-dark']
+  .modus-wc-button-group--warning
+  modus-wc-button[pressed]:hover
+  .modus-wc-btn {
+  background-color: var(--modus-wc-color-warning-light) !important;
+  border-color: var(--modus-wc-color-warning-light) !important;
+}
+
+[data-theme='modus-classic-dark']
+  .modus-wc-button-group--danger
+  modus-wc-button[pressed]:hover
+  .modus-wc-btn {
+  background-color: var(--modus-wc-color-danger-light) !important;
+  border-color: var(--modus-wc-color-danger-light) !important;
 }
 
 /* Focus styles for accessibility */
@@ -133,4 +256,180 @@
   .modus-wc-btn {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
+}
+
+/* Dark theme specific overrides */
+[data-theme='modus-classic-dark'] .modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn,
+[data-theme='modus-classic-dark'] .modus-wc-button-group--primary modus-wc-button[pressed] .modus-wc-btn,
+[data-theme='modus-modern-dark'] .modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn,
+[data-theme='modus-modern-dark'] .modus-wc-button-group--primary modus-wc-button[pressed] .modus-wc-btn {
+  background-color: var(--modus-wc-color-highlight-blue) !important;
+  border-color: var(--modus-wc-color-highlight-blue) !important;
+  color: var(--modus-wc-color-black) !important;
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-button-group--secondary modus-wc-button[pressed] .modus-wc-btn,
+[data-theme='modus-modern-dark'] .modus-wc-button-group--secondary modus-wc-button[pressed] .modus-wc-btn {
+  background-color: var(--modus-wc-color-gray-4) !important;
+  border-color: var(--modus-wc-color-gray-4) !important;
+  color: var(--modus-wc-color-white) !important;
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-button-group--tertiary modus-wc-button[pressed] .modus-wc-btn,
+[data-theme='modus-modern-dark'] .modus-wc-button-group--tertiary modus-wc-button[pressed] .modus-wc-btn {
+  background-color: var(--modus-wc-color-gray-4) !important;
+  border-color: var(--modus-wc-color-gray-4) !important;
+  color: var(--modus-wc-color-white) !important;
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-button-group--warning modus-wc-button[pressed] .modus-wc-btn,
+[data-theme='modus-modern-dark'] .modus-wc-button-group--warning modus-wc-button[pressed] .modus-wc-btn {
+  background-color: var(--modus-wc-color-yellow) !important;
+  border-color: var(--modus-wc-color-yellow) !important;
+  color: var(--modus-wc-color-black) !important;
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-button-group--danger modus-wc-button[pressed] .modus-wc-btn,
+[data-theme='modus-modern-dark'] .modus-wc-button-group--danger modus-wc-button[pressed] .modus-wc-btn {
+  background-color: var(--modus-wc-color-red-light) !important;
+  border-color: var(--modus-wc-color-red-light) !important;
+  color: var(--modus-wc-color-black) !important;
+}
+
+
+
+/* Theme-specific overrides for Classic Light */
+[data-theme='modus-classic-light'] {
+  .modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn,
+  .modus-wc-button-group--primary modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-blue-dark) !important;
+    border-color: var(--modus-wc-color-blue-dark) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  .modus-wc-button-group--secondary modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-gray-7) !important;
+    border-color: var(--modus-wc-color-gray-7) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  .modus-wc-button-group--tertiary modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-gray-2) !important;
+    border-color: var(--modus-wc-color-gray-2) !important;
+    color: var(--modus-wc-color-trimble-gray) !important;
+  }
+
+  .modus-wc-button-group--warning modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-yellow-dark) !important;
+    border-color: var(--modus-wc-color-yellow-dark) !important;
+    color: var(--modus-wc-color-trimble-gray) !important;
+  }
+
+  .modus-wc-button-group--danger modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-red-dark) !important;
+    border-color: var(--modus-wc-color-red-dark) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+}
+
+/* Theme-specific overrides for Classic Dark */
+[data-theme='modus-classic-dark'] {
+  .modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn,
+  .modus-wc-button-group--primary modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-blue-dark) !important;
+    border-color: var(--modus-wc-color-blue-dark) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  .modus-wc-button-group--secondary modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-gray-5) !important;
+    border-color: var(--modus-wc-color-gray-5) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  .modus-wc-button-group--tertiary modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-gray-4) !important;
+    border-color: var(--modus-wc-color-gray-4) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  .modus-wc-button-group--warning modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-yellow-dark) !important;
+    border-color: var(--modus-wc-color-yellow-dark) !important;
+    color: var(--modus-wc-color-black) !important;
+  }
+
+  .modus-wc-button-group--danger modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-red-dark) !important;
+    border-color: var(--modus-wc-color-red-dark) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+}
+
+/* Theme-specific overrides for Modern Light */
+[data-theme='modus-modern-light'] {
+  .modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn,
+  .modus-wc-button-group--primary modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-blue-dark) !important;
+    border-color: var(--modus-wc-color-blue-dark) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  .modus-wc-button-group--secondary modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-gray-7) !important;
+    border-color: var(--modus-wc-color-gray-7) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  .modus-wc-button-group--tertiary modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-gray-2) !important;
+    border-color: var(--modus-wc-color-gray-2) !important;
+    color: var(--modus-wc-color-trimble-gray) !important;
+  }
+
+  .modus-wc-button-group--warning modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-yellow-dark) !important;
+    border-color: var(--modus-wc-color-yellow-dark) !important;
+    color: var(--modus-wc-color-trimble-gray) !important;
+  }
+
+  .modus-wc-button-group--danger modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-red-dark) !important;
+    border-color: var(--modus-wc-color-red-dark) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+}
+
+/* Theme-specific overrides for Modern Dark */
+[data-theme='modus-modern-dark'] {
+  .modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn,
+  .modus-wc-button-group--primary modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-blue-dark) !important;
+    border-color: var(--modus-wc-color-blue-dark) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  .modus-wc-button-group--secondary modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-gray-5) !important;
+    border-color: var(--modus-wc-color-gray-5) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  .modus-wc-button-group--tertiary modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-gray-4) !important;
+    border-color: var(--modus-wc-color-gray-4) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  .modus-wc-button-group--warning modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-yellow-dark) !important;
+    border-color: var(--modus-wc-color-yellow-dark) !important;
+    color: var(--modus-wc-color-black) !important;
+  }
+
+  .modus-wc-button-group--danger modus-wc-button[pressed] .modus-wc-btn {
+    background-color: var(--modus-wc-color-red-dark) !important;
+    border-color: var(--modus-wc-color-red-dark) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
 }

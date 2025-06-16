@@ -32,6 +32,10 @@ export class ModusWcButtonGroup {
   /** Custom CSS class to apply to the button group element */
   @Prop() customClass?: string = '';
 
+  /** The color of buttons in the group */
+  @Prop() color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger' =
+    'primary';
+
   /** Whether the button group is disabled */
   @Prop() disabled?: boolean = false;
 
@@ -135,6 +139,11 @@ export class ModusWcButtonGroup {
     const buttons = this.el.querySelectorAll('modus-wc-button');
 
     buttons.forEach((button) => {
+      // Set color property
+      if (this.color) {
+        button.setAttribute('color', this.color);
+      }
+
       // Set size property
       if (this.size) {
         button.setAttribute('size', this.size);
@@ -173,6 +182,11 @@ export class ModusWcButtonGroup {
 
   private getClasses(): string {
     const classList = ['modus-wc-button-group'];
+
+    // Add color class
+    if (this.color) {
+      classList.push(`modus-wc-button-group--${this.color}`);
+    }
 
     const propClasses = convertPropsToClasses({
       disabled: this.disabled,

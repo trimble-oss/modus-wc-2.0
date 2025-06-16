@@ -54,6 +54,42 @@ describe('modus-wc-button-group', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should apply color prop to child buttons', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group color="danger">
+               <modus-wc-button value="button1">Button 1</modus-wc-button>
+               <modus-wc-button value="button2">Button 2</modus-wc-button>
+             </modus-wc-button-group>`,
+    });
+
+    await page.waitForChanges();
+
+    const button1 = page.root?.querySelector(
+      'modus-wc-button[value="button1"]'
+    );
+    const button2 = page.root?.querySelector(
+      'modus-wc-button[value="button2"]'
+    );
+
+    expect(button1?.getAttribute('color')).toBe('danger');
+    expect(button2?.getAttribute('color')).toBe('danger');
+  });
+
+  it('should apply color class to button group', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group color="warning">
+               <modus-wc-button value="button1">Button 1</modus-wc-button>
+             </modus-wc-button-group>`,
+    });
+
+    const buttonGroupDiv = page.root?.querySelector('.modus-wc-button-group');
+    expect(
+      buttonGroupDiv?.classList.contains('modus-wc-button-group--warning')
+    ).toBe(true);
+  });
+
   it('applies vertical orientation', async () => {
     const page = await newSpecPage({
       components: [ModusWcButtonGroup],

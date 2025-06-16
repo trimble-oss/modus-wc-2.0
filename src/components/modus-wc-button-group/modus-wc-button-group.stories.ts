@@ -5,8 +5,9 @@ import { html } from 'lit';
 interface ButtonGroupArgs {
   orientation?: 'horizontal' | 'vertical';
   'selection-mode'?: 'single' | 'multiple' | 'none';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   variant?: 'outlined' | 'borderless';
+  color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   value?: string | string[];
   disabled?: boolean;
   spaced?: boolean;
@@ -47,13 +48,18 @@ The Button Group component provides an easy way to group related buttons togethe
     },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg'],
       description: 'Size of buttons in the group',
     },
     variant: {
       control: 'select',
       options: ['outlined', 'borderless'],
       description: 'Visual variant of buttons',
+    },
+    color: {
+      control: 'select',
+      options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],
+      description: 'Color of buttons in the group',
     },
     value: {
       control: 'text',
@@ -85,6 +91,7 @@ export const Default: Story = {
       selection-mode="${args['selection-mode'] || 'single'}"
       size="${args.size || 'md'}"
       variant="${args.variant || 'outlined'}"
+      color="${args.color || 'primary'}"
       value="${args.value || 'week'}"
       ?disabled="${args.disabled}"
       ?spaced="${args.spaced}"
@@ -103,6 +110,7 @@ export const Default: Story = {
     'selection-mode': 'single',
     size: 'md',
     variant: 'outlined',
+    color: 'primary',
     value: 'week',
     disabled: false,
     spaced: false,
@@ -219,6 +227,15 @@ export const DifferentSizes: Story = {
       style="display: flex; flex-direction: column; gap: 2rem; align-items: flex-start;"
     >
       <div>
+        <h4 style="margin-bottom: 1rem;">Extra Small Size</h4>
+        <modus-wc-button-group size="xs" value="option2">
+          <modus-wc-button value="option1">Option 1</modus-wc-button>
+          <modus-wc-button value="option2">Option 2</modus-wc-button>
+          <modus-wc-button value="option3">Option 3</modus-wc-button>
+        </modus-wc-button-group>
+      </div>
+
+      <div>
         <h4 style="margin-bottom: 1rem;">Small Size</h4>
         <modus-wc-button-group size="sm" value="option2">
           <modus-wc-button value="option1">Option 1</modus-wc-button>
@@ -239,6 +256,59 @@ export const DifferentSizes: Story = {
       <div>
         <h4 style="margin-bottom: 1rem;">Large Size</h4>
         <modus-wc-button-group size="lg" value="option2">
+          <modus-wc-button value="option1">Option 1</modus-wc-button>
+          <modus-wc-button value="option2">Option 2</modus-wc-button>
+          <modus-wc-button value="option3">Option 3</modus-wc-button>
+        </modus-wc-button-group>
+      </div>
+    </div>
+  `,
+};
+
+export const DifferentColors: Story = {
+  render: () => html`
+    <div
+      style="display: flex; flex-direction: column; gap: 2rem; align-items: flex-start;"
+    >
+      <div>
+        <h4 style="margin-bottom: 1rem;">Primary Color (Default)</h4>
+        <modus-wc-button-group color="primary" value="option2">
+          <modus-wc-button value="option1">Option 1</modus-wc-button>
+          <modus-wc-button value="option2">Option 2</modus-wc-button>
+          <modus-wc-button value="option3">Option 3</modus-wc-button>
+        </modus-wc-button-group>
+      </div>
+
+      <div>
+        <h4 style="margin-bottom: 1rem;">Secondary Color</h4>
+        <modus-wc-button-group color="secondary" value="option2">
+          <modus-wc-button value="option1">Option 1</modus-wc-button>
+          <modus-wc-button value="option2">Option 2</modus-wc-button>
+          <modus-wc-button value="option3">Option 3</modus-wc-button>
+        </modus-wc-button-group>
+      </div>
+
+      <div>
+        <h4 style="margin-bottom: 1rem;">Tertiary Color</h4>
+        <modus-wc-button-group color="tertiary" value="option2">
+          <modus-wc-button value="option1">Option 1</modus-wc-button>
+          <modus-wc-button value="option2">Option 2</modus-wc-button>
+          <modus-wc-button value="option3">Option 3</modus-wc-button>
+        </modus-wc-button-group>
+      </div>
+
+      <div>
+        <h4 style="margin-bottom: 1rem;">Warning Color</h4>
+        <modus-wc-button-group color="warning" value="option2">
+          <modus-wc-button value="option1">Option 1</modus-wc-button>
+          <modus-wc-button value="option2">Option 2</modus-wc-button>
+          <modus-wc-button value="option3">Option 3</modus-wc-button>
+        </modus-wc-button-group>
+      </div>
+
+      <div>
+        <h4 style="margin-bottom: 1rem;">Danger Color</h4>
+        <modus-wc-button-group color="danger" value="option2">
           <modus-wc-button value="option1">Option 1</modus-wc-button>
           <modus-wc-button value="option2">Option 2</modus-wc-button>
           <modus-wc-button value="option3">Option 3</modus-wc-button>
@@ -294,4 +364,107 @@ export const WithSpacing: Story = {
       </div>
     </div>
   `,
+};
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+## Migration from v1 to v2
+
+The Button Group component has been redesigned in v2 to provide a simpler, more intuitive API while maintaining all the functionality from v1.
+
+### Key Improvements in v2
+
+- **Simplified API**: No need to manually manage pressed states or handle selection logic
+- **Automatic button management**: Child buttons are automatically configured with the correct properties
+- **Built-in accessibility**: ARIA attributes and keyboard navigation handled automatically
+- **Seamless visual connection**: Buttons are visually connected by default (can be spaced with \`spaced\` prop)
+
+### Breaking Changes
+
+1. **Component Structure**: In v1, you had to manually manage button states. In v2, just wrap buttons in \`modus-wc-button-group\`
+2. **Selection Management**: The component now handles all selection logic internally
+3. **Size Prop**: Size values changed from verbose names to abbreviations (same as button component)
+4. **New Props**: Added \`color\` prop for consistent theming across all buttons
+
+### Prop Mapping
+
+| v1 Approach | v2 Prop | Notes |
+|-------------|---------|-------|
+| Manual button state management | \`value\` | Component handles pressed states automatically |
+| Individual button sizing | \`size\` | Applied to all buttons in the group |
+| Manual aria attributes | Built-in | Component adds appropriate ARIA roles |
+| Individual button colors | \`color\` | Applied to all buttons in the group |
+| N/A | \`selection-mode\` | New: 'single', 'multiple', or 'none' |
+| N/A | \`orientation\` | New: 'horizontal' or 'vertical' |
+| N/A | \`spaced\` | New: Adds spacing between buttons |
+
+### Migration Example
+
+#### v1 Approach (Manual Management)
+\`\`\`html
+<!-- Had to manually manage pressed states and selection logic -->
+<div class="button-group" role="group">
+  <modus-button 
+    id="btn1"
+    button-style="outline"
+    onclick="handleSelection('btn1')"
+  >
+    Option 1
+  </modus-button>
+  <modus-button 
+    id="btn2"
+    button-style="outline"
+    onclick="handleSelection('btn2')"
+  >
+    Option 2
+  </modus-button>
+</div>
+
+<script>
+  function handleSelection(id) {
+    // Manual logic to update pressed states
+    document.querySelectorAll('.button-group modus-button').forEach(btn => {
+      btn.removeAttribute('pressed');
+    });
+    document.getElementById(id).setAttribute('pressed', 'true');
+  }
+</script>
+\`\`\`
+
+#### v2 Approach (Automatic Management)
+\`\`\`html
+<!-- Component handles everything automatically -->
+<modus-wc-button-group 
+  selection-mode="single" 
+  value="option1"
+  @buttonGroupSelectionChange="\${(e) => console.log('Selected:', e.detail)}"
+>
+  <modus-wc-button value="option1">Option 1</modus-wc-button>
+  <modus-wc-button value="option2">Option 2</modus-wc-button>
+</modus-wc-button-group>
+\`\`\`
+
+### Event Mapping
+
+| v1 Event | v2 Event | Notes |
+|----------|----------|-------|
+| Manual click handlers | \`buttonGroupSelectionChange\` | Emitted when selection changes |
+
+### Additional Features in v2
+
+- **Multiple Selection**: Set \`selection-mode="multiple"\` for checkbox-like behavior
+- **No Selection**: Set \`selection-mode="none"\` for action groups without selection
+- **Vertical Layout**: Set \`orientation="vertical"\` for vertical button groups
+- **Color Theming**: Use \`color\` prop to apply consistent theming
+- **Size Control**: Use \`size\` prop to control all button sizes at once
+        `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
 };
