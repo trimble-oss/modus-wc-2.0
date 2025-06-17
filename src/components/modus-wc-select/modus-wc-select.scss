@@ -58,6 +58,7 @@ modus-wc-select {
   border-color: var(--modus-wc-color-highlight-blue);
 }
 
-[data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select {
+[data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select,
+[data-theme='modus-modern-dark'] modus-wc-select .modus-wc-select {
   background-color: var(--modus-wc-color-gray-10);
 }
