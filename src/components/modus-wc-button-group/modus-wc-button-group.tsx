@@ -51,9 +51,6 @@ export class ModusWcButtonGroup {
   /** Whether buttons should be spaced apart */
   @Prop() spaced?: boolean = false;
 
-  /** Current selected value(s) */
-  @Prop({ mutable: true }) value?: string | string[] = '';
-
   /** The variant of buttons in the group */
   @Prop() variant?: 'outlined' | 'borderless' = 'outlined';
 
@@ -84,15 +81,14 @@ export class ModusWcButtonGroup {
   }
 
   componentDidLoad() {
-    // Set initial button states and properties
+    // Set initial button properties
     this.updateButtonProperties();
-    this.updateButtonStates();
   }
 
   componentDidUpdate() {
-    // Update button states when value prop changes
+    // Update button properties when props change
     this.updateButtonProperties();
-    this.updateButtonStates();
+    this.initializeButtonStates();
   }
 
   @Listen('buttonClick')
@@ -102,43 +98,60 @@ export class ModusWcButtonGroup {
     }
 
     event.stopPropagation();
-    const button = event.target as HTMLElement;
-    const buttonValue =
-      button.getAttribute('value') || button.textContent?.trim() || '';
-
-    let newValue: string | string[];
+    const clickedButton = event.target as HTMLElement;
 
     if (this.selectionMode === 'single') {
-      newValue = buttonValue;
-      this.value = newValue;
+      this.getButtons().forEach((button) => {
+        const shouldBeSelected = button === clickedButton;
+        this.setButtonSelection(button, shouldBeSelected);
+      });
     } else if (this.selectionMode === 'multiple') {
-      const currentValues = Array.isArray(this.value)
-        ? [...this.value]
-        : this.value
-          ? [this.value]
-          : [];
-
-      if (currentValues.includes(buttonValue)) {
-        newValue = currentValues.filter((v) => v !== buttonValue);
-      } else {
-        newValue = [...currentValues, buttonValue];
-      }
-      this.value = newValue;
+      const isSelected = clickedButton.hasAttribute('selected');
+      this.setButtonSelection(clickedButton, !isSelected);
     }
 
-    // Update button pressed states
-    this.updateButtonStates();
+    // Emit the new selection value
+    this.emitSelectionChange(clickedButton);
+  }
+
+  private getButtons(): HTMLElement[] {
+    return Array.from(this.el.querySelectorAll('modus-wc-button'));
+  }
+
+  private initializeButtonStates() {
+    this.getButtons().forEach((button) => {
+      const isSelected = button.hasAttribute('selected');
+      this.setButtonSelection(button, isSelected);
+    });
+  }
+
+  private setButtonSelection(button: HTMLElement, isSelected: boolean) {
+    if (isSelected) {
+      button.setAttribute('selected', 'true');
+      button.setAttribute('aria-pressed', 'true');
+    } else {
+      button.removeAttribute('selected');
+      button.setAttribute('aria-pressed', 'false');
+    }
+  }
+
+  private emitSelectionChange(source: HTMLElement) {
+    const selectedButtons = this.getButtons().filter((button) =>
+      button.hasAttribute('selected')
+    );
+    const value = selectedButtons.map(
+      (button) =>
+        button.getAttribute('value') || button.textContent?.trim() || ''
+    );
 
     this.buttonGroupSelectionChange.emit({
-      value: this.value || '',
-      source: button,
+      value: this.selectionMode === 'single' ? value[0] || '' : value,
+      source,
     });
   }
 
   private updateButtonProperties() {
-    const buttons = this.el.querySelectorAll('modus-wc-button');
-
-    buttons.forEach((button) => {
+    this.getButtons().forEach((button) => {
       // Set color property
       if (this.color) {
         button.setAttribute('color', this.color);
@@ -158,24 +171,6 @@ export class ModusWcButtonGroup {
       // Preserve individual button disabled states when group is not disabled
       if (this.disabled) {
         button.setAttribute('disabled', 'true');
-      }
-    });
-  }
-
-  private updateButtonStates() {
-    const buttons = this.el.querySelectorAll('modus-wc-button');
-    const selectedValues = Array.isArray(this.value)
-      ? this.value
-      : [this.value];
-
-    buttons.forEach((button) => {
-      const buttonValue =
-        button.getAttribute('value') || button.textContent?.trim() || '';
-
-      if (selectedValues.includes(buttonValue)) {
-        button.setAttribute('pressed', 'true');
-      } else {
-        button.removeAttribute('pressed');
       }
     });
   }

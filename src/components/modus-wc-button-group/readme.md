@@ -23,7 +23,6 @@ button styling, spacing, and accessibility features.
 | `selectionMode` | `selection-mode` | The selection behavior mode                           | `"multiple" \| "none" \| "single" \| undefined`                                | `'single'`     |
 | `size`          | `size`           | The size of buttons in the group                      | `"lg" \| "md" \| "sm" \| undefined`                                            | `'md'`         |
 | `spaced`        | `spaced`         | Whether buttons should be spaced apart                | `boolean \| undefined`                                                         | `false`        |
-| `value`         | `value`          | Current selected value(s)                             | `string \| string[] \| undefined`                                              | `''`           |
 | `variant`       | `variant`        | The variant of buttons in the group                   | `"borderless" \| "outlined" \| undefined`                                      | `'outlined'`   |
 
 

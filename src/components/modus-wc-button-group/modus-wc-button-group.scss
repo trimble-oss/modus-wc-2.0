@@ -12,15 +12,11 @@
 }
 
 .modus-wc-button-group--vertical {
-  flex-direction: column;
+  display: inline-grid;
   width: fit-content;
 }
 
 /* Ensure consistent width and centered content for vertical button groups */
-.modus-wc-button-group--vertical modus-wc-button {
-  width: 100%;
-}
-
 .modus-wc-button-group--vertical modus-wc-button .modus-wc-btn {
   justify-content: center;
   text-align: center;
@@ -37,36 +33,36 @@
 }
 
 /* Pressed state styling for button groups - Primary (default) */
-.modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn,
-.modus-wc-button-group--primary modus-wc-button[pressed] .modus-wc-btn {
+.modus-wc-button-group modus-wc-button[selected] .modus-wc-btn,
+.modus-wc-button-group--primary modus-wc-button[selected] .modus-wc-btn {
   background-color: var(--modus-wc-color-trimble-blue) !important;
   border-color: var(--modus-wc-color-trimble-blue) !important;
   color: var(--modus-wc-color-white) !important;
 }
 
 /* Secondary pressed state */
-.modus-wc-button-group--secondary modus-wc-button[pressed] .modus-wc-btn {
+.modus-wc-button-group--secondary modus-wc-button[selected] .modus-wc-btn {
   background-color: var(--modus-wc-color-gray-7) !important;
   border-color: var(--modus-wc-color-gray-7) !important;
   color: var(--modus-wc-color-white) !important;
 }
 
 /* Tertiary pressed state */
-.modus-wc-button-group--tertiary modus-wc-button[pressed] .modus-wc-btn {
+.modus-wc-button-group--tertiary modus-wc-button[selected] .modus-wc-btn {
   background-color: var(--modus-wc-color-gray-2) !important;
   border-color: var(--modus-wc-color-gray-2) !important;
   color: var(--modus-wc-color-trimble-gray) !important;
 }
 
 /* Warning pressed state */
-.modus-wc-button-group--warning modus-wc-button[pressed] .modus-wc-btn {
+.modus-wc-button-group--warning modus-wc-button[selected] .modus-wc-btn {
   background-color: var(--modus-wc-color-yellow-dark) !important;
   border-color: var(--modus-wc-color-yellow-dark) !important;
   color: var(--modus-wc-color-trimble-gray) !important;
 }
 
 /* Danger pressed state */
-.modus-wc-button-group--danger modus-wc-button[pressed] .modus-wc-btn {
+.modus-wc-button-group--danger modus-wc-button[selected] .modus-wc-btn {
   background-color: var(--modus-wc-color-red-dark) !important;
   border-color: var(--modus-wc-color-red-dark) !important;
   color: var(--modus-wc-color-white) !important;
@@ -146,39 +142,39 @@
 }
 
 /* Hover effects for pressed buttons */
-.modus-wc-button-group modus-wc-button[pressed]:hover .modus-wc-btn,
-.modus-wc-button-group--primary modus-wc-button[pressed]:hover .modus-wc-btn {
+.modus-wc-button-group modus-wc-button[selected]:hover .modus-wc-btn,
+.modus-wc-button-group--primary modus-wc-button[selected]:hover .modus-wc-btn {
   background-color: var(--modus-wc-color-blue-light) !important;
   border-color: var(--modus-wc-color-blue-light) !important;
 }
 
-.modus-wc-button-group--secondary modus-wc-button[pressed]:hover .modus-wc-btn {
+.modus-wc-button-group--secondary modus-wc-button[selected]:hover .modus-wc-btn {
   background-color: var(--modus-wc-color-gray-6) !important;
   border-color: var(--modus-wc-color-gray-6) !important;
 }
 
-.modus-wc-button-group--tertiary modus-wc-button[pressed]:hover .modus-wc-btn {
+.modus-wc-button-group--tertiary modus-wc-button[selected]:hover .modus-wc-btn {
   background-color: var(--modus-wc-color-gray-3) !important;
   border-color: var(--modus-wc-color-gray-3) !important;
 }
 
-.modus-wc-button-group--warning modus-wc-button[pressed]:hover .modus-wc-btn {
+.modus-wc-button-group--warning modus-wc-button[selected]:hover .modus-wc-btn {
   background-color: var(--modus-wc-color-warning-light) !important;
   border-color: var(--modus-wc-color-warning-light) !important;
 }
 
-.modus-wc-button-group--danger modus-wc-button[pressed]:hover .modus-wc-btn {
+.modus-wc-button-group--danger modus-wc-button[selected]:hover .modus-wc-btn {
   background-color: var(--modus-wc-color-danger-light) !important;
   border-color: var(--modus-wc-color-danger-light) !important;
 }
 
 [data-theme='modus-classic-dark']
   .modus-wc-button-group
-  modus-wc-button[pressed]:hover
+  modus-wc-button[selected]:hover
   .modus-wc-btn,
 [data-theme='modus-classic-dark']
   .modus-wc-button-group--primary
-  modus-wc-button[pressed]:hover
+  modus-wc-button[selected]:hover
   .modus-wc-btn {
   background-color: var(--modus-wc-color-blue-light) !important;
   border-color: var(--modus-wc-color-blue-light) !important;
@@ -186,7 +182,7 @@
 
 [data-theme='modus-classic-dark']
   .modus-wc-button-group--secondary
-  modus-wc-button[pressed]:hover
+  modus-wc-button[selected]:hover
   .modus-wc-btn {
   background-color: var(--modus-wc-color-gray-3) !important;
   border-color: var(--modus-wc-color-gray-3) !important;
@@ -194,7 +190,7 @@
 
 [data-theme='modus-classic-dark']
   .modus-wc-button-group--tertiary
-  modus-wc-button[pressed]:hover
+  modus-wc-button[selected]:hover
   .modus-wc-btn {
   background-color: var(--modus-wc-color-gray-6) !important;
   border-color: var(--modus-wc-color-gray-6) !important;
@@ -202,7 +198,7 @@
 
 [data-theme='modus-classic-dark']
   .modus-wc-button-group--warning
-  modus-wc-button[pressed]:hover
+  modus-wc-button[selected]:hover
   .modus-wc-btn {
   background-color: var(--modus-wc-color-warning-light) !important;
   border-color: var(--modus-wc-color-warning-light) !important;
@@ -210,7 +206,7 @@
 
 [data-theme='modus-classic-dark']
   .modus-wc-button-group--danger
-  modus-wc-button[pressed]:hover
+  modus-wc-button[selected]:hover
   .modus-wc-btn {
   background-color: var(--modus-wc-color-danger-light) !important;
   border-color: var(--modus-wc-color-danger-light) !important;
@@ -261,19 +257,19 @@
 /* Dark theme specific overrides */
 [data-theme='modus-classic-dark']
   .modus-wc-button-group
-  modus-wc-button[pressed]
+  modus-wc-button[selected]
   .modus-wc-btn,
 [data-theme='modus-classic-dark']
   .modus-wc-button-group--primary
-  modus-wc-button[pressed]
+  modus-wc-button[selected]
   .modus-wc-btn,
 [data-theme='modus-modern-dark']
   .modus-wc-button-group
-  modus-wc-button[pressed]
+  modus-wc-button[selected]
   .modus-wc-btn,
 [data-theme='modus-modern-dark']
   .modus-wc-button-group--primary
-  modus-wc-button[pressed]
+  modus-wc-button[selected]
   .modus-wc-btn {
   background-color: var(--modus-wc-color-highlight-blue) !important;
   border-color: var(--modus-wc-color-highlight-blue) !important;
@@ -282,11 +278,11 @@
 
 [data-theme='modus-classic-dark']
   .modus-wc-button-group--secondary
-  modus-wc-button[pressed]
+  modus-wc-button[selected]
   .modus-wc-btn,
 [data-theme='modus-modern-dark']
   .modus-wc-button-group--secondary
-  modus-wc-button[pressed]
+  modus-wc-button[selected]
   .modus-wc-btn {
   background-color: var(--modus-wc-color-gray-4) !important;
   border-color: var(--modus-wc-color-gray-4) !important;
@@ -295,11 +291,11 @@
 
 [data-theme='modus-classic-dark']
   .modus-wc-button-group--tertiary
-  modus-wc-button[pressed]
+  modus-wc-button[selected]
   .modus-wc-btn,
 [data-theme='modus-modern-dark']
   .modus-wc-button-group--tertiary
-  modus-wc-button[pressed]
+  modus-wc-button[selected]
   .modus-wc-btn {
   background-color: var(--modus-wc-color-gray-4) !important;
   border-color: var(--modus-wc-color-gray-4) !important;
@@ -308,11 +304,11 @@
 
 [data-theme='modus-classic-dark']
   .modus-wc-button-group--warning
-  modus-wc-button[pressed]
+  modus-wc-button[selected]
   .modus-wc-btn,
 [data-theme='modus-modern-dark']
   .modus-wc-button-group--warning
-  modus-wc-button[pressed]
+  modus-wc-button[selected]
   .modus-wc-btn {
   background-color: var(--modus-wc-color-yellow) !important;
   border-color: var(--modus-wc-color-yellow) !important;
@@ -321,11 +317,11 @@
 
 [data-theme='modus-classic-dark']
   .modus-wc-button-group--danger
-  modus-wc-button[pressed]
+  modus-wc-button[selected]
   .modus-wc-btn,
 [data-theme='modus-modern-dark']
   .modus-wc-button-group--danger
-  modus-wc-button[pressed]
+  modus-wc-button[selected]
   .modus-wc-btn {
   background-color: var(--modus-wc-color-red-light) !important;
   border-color: var(--modus-wc-color-red-light) !important;
@@ -334,32 +330,32 @@
 
 /* Theme-specific overrides for Classic Light */
 [data-theme='modus-classic-light'] {
-  .modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn,
-  .modus-wc-button-group--primary modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group modus-wc-button[selected] .modus-wc-btn,
+  .modus-wc-button-group--primary modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-blue-dark) !important;
     border-color: var(--modus-wc-color-blue-dark) !important;
     color: var(--modus-wc-color-white) !important;
   }
 
-  .modus-wc-button-group--secondary modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--secondary modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-gray-7) !important;
     border-color: var(--modus-wc-color-gray-7) !important;
     color: var(--modus-wc-color-white) !important;
   }
 
-  .modus-wc-button-group--tertiary modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--tertiary modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-gray-2) !important;
     border-color: var(--modus-wc-color-gray-2) !important;
     color: var(--modus-wc-color-trimble-gray) !important;
   }
 
-  .modus-wc-button-group--warning modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--warning modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-yellow-dark) !important;
     border-color: var(--modus-wc-color-yellow-dark) !important;
     color: var(--modus-wc-color-trimble-gray) !important;
   }
 
-  .modus-wc-button-group--danger modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--danger modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-red-dark) !important;
     border-color: var(--modus-wc-color-red-dark) !important;
     color: var(--modus-wc-color-white) !important;
@@ -368,32 +364,32 @@
 
 /* Theme-specific overrides for Classic Dark */
 [data-theme='modus-classic-dark'] {
-  .modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn,
-  .modus-wc-button-group--primary modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group modus-wc-button[selected] .modus-wc-btn,
+  .modus-wc-button-group--primary modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-blue-dark) !important;
     border-color: var(--modus-wc-color-blue-dark) !important;
     color: var(--modus-wc-color-white) !important;
   }
 
-  .modus-wc-button-group--secondary modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--secondary modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-gray-5) !important;
     border-color: var(--modus-wc-color-gray-5) !important;
     color: var(--modus-wc-color-white) !important;
   }
 
-  .modus-wc-button-group--tertiary modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--tertiary modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-gray-4) !important;
     border-color: var(--modus-wc-color-gray-4) !important;
     color: var(--modus-wc-color-white) !important;
   }
 
-  .modus-wc-button-group--warning modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--warning modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-yellow-dark) !important;
     border-color: var(--modus-wc-color-yellow-dark) !important;
     color: var(--modus-wc-color-black) !important;
   }
 
-  .modus-wc-button-group--danger modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--danger modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-red-dark) !important;
     border-color: var(--modus-wc-color-red-dark) !important;
     color: var(--modus-wc-color-white) !important;
@@ -402,32 +398,32 @@
 
 /* Theme-specific overrides for Modern Light */
 [data-theme='modus-modern-light'] {
-  .modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn,
-  .modus-wc-button-group--primary modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group modus-wc-button[selected] .modus-wc-btn,
+  .modus-wc-button-group--primary modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-blue-dark) !important;
     border-color: var(--modus-wc-color-blue-dark) !important;
     color: var(--modus-wc-color-white) !important;
   }
 
-  .modus-wc-button-group--secondary modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--secondary modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-gray-7) !important;
     border-color: var(--modus-wc-color-gray-7) !important;
     color: var(--modus-wc-color-white) !important;
   }
 
-  .modus-wc-button-group--tertiary modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--tertiary modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-gray-2) !important;
     border-color: var(--modus-wc-color-gray-2) !important;
     color: var(--modus-wc-color-trimble-gray) !important;
   }
 
-  .modus-wc-button-group--warning modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--warning modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-yellow-dark) !important;
     border-color: var(--modus-wc-color-yellow-dark) !important;
     color: var(--modus-wc-color-trimble-gray) !important;
   }
 
-  .modus-wc-button-group--danger modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--danger modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-red-dark) !important;
     border-color: var(--modus-wc-color-red-dark) !important;
     color: var(--modus-wc-color-white) !important;
@@ -436,32 +432,32 @@
 
 /* Theme-specific overrides for Modern Dark */
 [data-theme='modus-modern-dark'] {
-  .modus-wc-button-group modus-wc-button[pressed] .modus-wc-btn,
-  .modus-wc-button-group--primary modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group modus-wc-button[selected] .modus-wc-btn,
+  .modus-wc-button-group--primary modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-blue-dark) !important;
     border-color: var(--modus-wc-color-blue-dark) !important;
     color: var(--modus-wc-color-white) !important;
   }
 
-  .modus-wc-button-group--secondary modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--secondary modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-gray-5) !important;
     border-color: var(--modus-wc-color-gray-5) !important;
     color: var(--modus-wc-color-white) !important;
   }
 
-  .modus-wc-button-group--tertiary modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--tertiary modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-gray-4) !important;
     border-color: var(--modus-wc-color-gray-4) !important;
     color: var(--modus-wc-color-white) !important;
   }
 
-  .modus-wc-button-group--warning modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--warning modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-yellow-dark) !important;
     border-color: var(--modus-wc-color-yellow-dark) !important;
     color: var(--modus-wc-color-black) !important;
   }
 
-  .modus-wc-button-group--danger modus-wc-button[pressed] .modus-wc-btn {
+  .modus-wc-button-group--danger modus-wc-button[selected] .modus-wc-btn {
     background-color: var(--modus-wc-color-red-dark) !important;
     border-color: var(--modus-wc-color-red-dark) !important;
     color: var(--modus-wc-color-white) !important;
