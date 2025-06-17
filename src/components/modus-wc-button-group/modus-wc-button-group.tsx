@@ -81,8 +81,8 @@ export class ModusWcButtonGroup {
   }
 
   componentDidLoad() {
-    // Set initial button properties
     this.updateButtonProperties();
+    this.initializeButtonStates();
   }
 
   componentDidUpdate() {
