@@ -124,12 +124,15 @@ describe('modus-wc-button-group', () => {
     expect(button2?.hasAttribute('selected')).toBe(true);
   });
 
-  it('does not allow selection when mode is "none"', async () => {
+  it.each([
+    ['none', 'selection-mode="none"'],
+    ['disabled', 'disabled'],
+  ])('does not allow selection when mode is %s', async (_name, attr) => {
     const page = await newSpecPage({
       components: [ModusWcButtonGroup, ModusWcButton],
-      html: `<modus-wc-button-group selection-mode="none">
-               <modus-wc-button>Button 1</modus-wc-button>
-             </modus-wc-button-group>`,
+      html: `<modus-wc-button-group ${attr}>
+                 <modus-wc-button>Button 1</modus-wc-button>
+               </modus-wc-button-group>`,
     });
     const eventSpy = jest.fn();
     page.root?.addEventListener('buttonGroupSelectionChange', eventSpy);
@@ -142,59 +145,44 @@ describe('modus-wc-button-group', () => {
     expect(eventSpy).not.toHaveBeenCalled();
   });
 
-  it('does not allow selection when disabled', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcButtonGroup, ModusWcButton],
-      html: `<modus-wc-button-group disabled>
-               <modus-wc-button>Button 1</modus-wc-button>
-             </modus-wc-button-group>`,
-    });
-    const eventSpy = jest.fn();
-    page.root?.addEventListener('buttonGroupSelectionChange', eventSpy);
+  it('emits selection change with the correct value', async () => {
+    const scenarios = [
+      {
+        name: 'from textContent',
+        html: '<modus-wc-button>My Button</modus-wc-button>',
+        expectedValue: 'My Button',
+      },
+      {
+        name: 'from value attribute',
+        html: '<modus-wc-button value="customValue">My Button</modus-wc-button>',
+        expectedValue: 'customValue',
+      },
+      {
+        name: 'as empty string for empty button',
+        html: '<modus-wc-button></modus-wc-button>',
+        expectedValue: '',
+      },
+    ];
 
-    const button = page.root?.querySelector('modus-wc-button');
-    button?.dispatchEvent(new CustomEvent('buttonClick', { bubbles: true }));
-    await page.waitForChanges();
+    for (const scenario of scenarios) {
+      const page = await newSpecPage({
+        components: [ModusWcButtonGroup, ModusWcButton],
+        html: `<modus-wc-button-group>${scenario.html}</modus-wc-button-group>`,
+      });
+      const eventSpy = jest.fn();
+      page.root?.addEventListener('buttonGroupSelectionChange', eventSpy);
 
-    expect(button?.hasAttribute('selected')).toBe(false);
-    expect(eventSpy).not.toHaveBeenCalled();
+      const button = page.root?.querySelector('modus-wc-button');
+      button?.dispatchEvent(new CustomEvent('buttonClick', { bubbles: true }));
+      await page.waitForChanges();
+
+      expect(eventSpy.mock.calls[0][0].detail.value).toBe(
+        scenario.expectedValue
+      );
+    }
   });
 
-  it('emits selection change with correct value from textContent', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcButtonGroup, ModusWcButton],
-      html: `<modus-wc-button-group>
-               <modus-wc-button>My Button</modus-wc-button>
-             </modus-wc-button-group>`,
-    });
-    const eventSpy = jest.fn();
-    page.root?.addEventListener('buttonGroupSelectionChange', eventSpy);
-
-    const button = page.root?.querySelector('modus-wc-button');
-    button?.dispatchEvent(new CustomEvent('buttonClick', { bubbles: true }));
-    await page.waitForChanges();
-
-    expect(eventSpy.mock.calls[0][0].detail.value).toBe('My Button');
-  });
-
-  it('emits selection change with correct value from value attribute', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcButtonGroup, ModusWcButton],
-      html: `<modus-wc-button-group>
-               <modus-wc-button value="customValue">My Button</modus-wc-button>
-             </modus-wc-button-group>`,
-    });
-    const eventSpy = jest.fn();
-    page.root?.addEventListener('buttonGroupSelectionChange', eventSpy);
-
-    const button = page.root?.querySelector('modus-wc-button');
-    button?.dispatchEvent(new CustomEvent('buttonClick', { bubbles: true }));
-    await page.waitForChanges();
-
-    expect(eventSpy.mock.calls[0][0].detail.value).toBe('customValue');
-  });
-
-  it('emits selection change with empty string for empty button', async () => {
+  it('handles null textContent when emitting selection change', async () => {
     const page = await newSpecPage({
       components: [ModusWcButtonGroup, ModusWcButton],
       html: `<modus-wc-button-group>
@@ -205,9 +193,45 @@ describe('modus-wc-button-group', () => {
     page.root?.addEventListener('buttonGroupSelectionChange', eventSpy);
 
     const button = page.root?.querySelector('modus-wc-button');
+    // Force textContent to be null for the test
+    Object.defineProperty(button, 'textContent', {
+      value: null,
+      writable: true,
+    });
+
     button?.dispatchEvent(new CustomEvent('buttonClick', { bubbles: true }));
     await page.waitForChanges();
 
     expect(eventSpy.mock.calls[0][0].detail.value).toBe('');
+  });
+
+  it('updates button properties on prop change', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+               <modus-wc-button>Button 1</modus-wc-button>
+             </modus-wc-button-group>`,
+    });
+    await page.waitForChanges();
+
+    // Change a prop to trigger componentDidUpdate
+    if (page.root) page.root.color = 'secondary';
+    await page.waitForChanges();
+
+    const button = page.root?.querySelector('modus-wc-button');
+    expect(button?.getAttribute('color')).toBe('secondary');
+  });
+
+  it('applies custom class', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group custom-class="my-custom-class">
+               <modus-wc-button>Button 1</modus-wc-button>
+             </modus-wc-button-group>`,
+    });
+    await page.waitForChanges();
+
+    const groupDiv = page.root?.querySelector('.modus-wc-button-group');
+    expect(groupDiv?.classList.contains('my-custom-class')).toBe(true);
   });
 });
