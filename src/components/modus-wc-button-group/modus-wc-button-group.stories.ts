@@ -85,28 +85,6 @@ The Button Group component provides an easy way to group related buttons togethe
 export default meta;
 type Story = StoryObj<ButtonGroupArgs>;
 
-export const Controls: Story = {
-  render: (args) => html`
-    <modus-wc-button-group
-      orientation="${args.orientation || 'horizontal'}"
-      selection-mode="${args['selection-mode'] || 'single'}"
-      size="${args.size || 'md'}"
-      variant="${args.variant || 'outlined'}"
-      color="${args.color || 'primary'}"
-      ?disabled="${args.disabled}"
-      ?spaced="${args.spaced}"
-      custom-class="${args['custom-class'] || ''}"
-      @buttonGroupSelectionChange="${(e) =>
-        console.log('Selection changed:', e.detail)}"
-    >
-      <modus-wc-button>Day</modus-wc-button>
-      <modus-wc-button selected>Week</modus-wc-button>
-      <modus-wc-button>Month</modus-wc-button>
-      <modus-wc-button>Year</modus-wc-button>
-    </modus-wc-button-group>
-  `,
-};
-
 export const Selection: Story = {
   render: () => html`
     <main style="display: flex; flex-direction: column; gap: 2rem;">
