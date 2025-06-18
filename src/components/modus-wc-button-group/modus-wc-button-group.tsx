@@ -25,6 +25,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcButtonGroup {
   private inheritedAttributes: Attributes = {};
+  private readonly buttonStates = new Map<HTMLElement, boolean>();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -150,27 +151,33 @@ export class ModusWcButtonGroup {
     });
   }
 
-  private updateButtonProperties() {
+  private updateButtonProperties(): void {
     this.getButtons().forEach((button) => {
-      // Set color property
-      if (this.color) {
-        button.setAttribute('color', this.color);
+      // Capture initial disabled state on first encounter
+      if (!this.buttonStates.has(button)) {
+        this.buttonStates.set(button, button.hasAttribute('disabled'));
       }
 
-      // Set size property
-      if (this.size) {
-        button.setAttribute('size', this.size);
-      }
+      // Apply visual properties
+      const properties = {
+        color: this.color,
+        size: this.size,
+        variant: this.variant,
+      };
 
-      // Set variant property
-      if (this.variant) {
-        button.setAttribute('variant', this.variant);
-      }
+      Object.entries(properties).forEach(([prop, value]) => {
+        if (value) {
+          button.setAttribute(prop, value);
+        }
+      });
 
-      // Set disabled state - only override if group is disabled
-      // Preserve individual button disabled states when group is not disabled
+      // Handle disabled state - respect individual button's original state
+      const isDisabled = this.buttonStates.get(button) ?? false;
+
       if (this.disabled) {
         button.setAttribute('disabled', 'true');
+      } else if (!isDisabled) {
+        button.removeAttribute('disabled');
       }
     });
   }

@@ -234,4 +234,125 @@ describe('modus-wc-button-group', () => {
     const groupDiv = page.root?.querySelector('.modus-wc-button-group');
     expect(groupDiv?.classList.contains('my-custom-class')).toBe(true);
   });
+
+  it('preserves individual button disabled states when group is not disabled', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+               <modus-wc-button>Enabled Button</modus-wc-button>
+               <modus-wc-button disabled>Disabled Button</modus-wc-button>
+             </modus-wc-button-group>`,
+    });
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button');
+    const enabledButton = buttons?.[0];
+    const disabledButton = buttons?.[1];
+
+    expect(enabledButton?.hasAttribute('disabled')).toBe(false);
+    expect(disabledButton?.hasAttribute('disabled')).toBe(true);
+  });
+
+  it('disables all buttons when group is disabled', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+               <modus-wc-button>Button 1</modus-wc-button>
+               <modus-wc-button>Button 2</modus-wc-button>
+             </modus-wc-button-group>`,
+    });
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button');
+    buttons?.forEach((button) => {
+      expect(button.hasAttribute('disabled')).toBe(false);
+    });
+
+    if (page.root) page.root.disabled = true;
+    await page.waitForChanges();
+
+    buttons?.forEach((button) => {
+      expect(button.hasAttribute('disabled')).toBe(true);
+    });
+  });
+
+  it('restores original disabled states when group is re-enabled', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+               <modus-wc-button>Enabled Button</modus-wc-button>
+               <modus-wc-button disabled>Originally Disabled</modus-wc-button>
+             </modus-wc-button-group>`,
+    });
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button');
+    const enabledButton = buttons?.[0];
+    const originallyDisabledButton = buttons?.[1];
+
+    if (page.root) page.root.disabled = true;
+    await page.waitForChanges();
+
+    expect(enabledButton?.hasAttribute('disabled')).toBe(true);
+    expect(originallyDisabledButton?.hasAttribute('disabled')).toBe(true);
+
+    if (page.root) page.root.disabled = false;
+    await page.waitForChanges();
+
+    expect(enabledButton?.hasAttribute('disabled')).toBe(false);
+    expect(originallyDisabledButton?.hasAttribute('disabled')).toBe(true);
+  });
+
+  it('uses fallback when button state is not in Map (covers ?? false)', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+               <modus-wc-button>Button 1</modus-wc-button>
+             </modus-wc-button-group>`,
+    });
+    await page.waitForChanges();
+
+    const component = page.rootInstance as ModusWcButtonGroup;
+    const button = page.root?.querySelector('modus-wc-button');
+
+    const getSpy = jest
+      .spyOn(component['buttonStates'], 'get')
+      .mockReturnValue(undefined);
+
+    // Trigger update from disabled false -> true
+    if (page.root) page.root.disabled = true;
+    await page.waitForChanges();
+
+    expect(getSpy).toHaveBeenCalled();
+    expect(button?.hasAttribute('disabled')).toBe(true);
+
+    // Trigger update from disabled true -> false
+    if (page.root) page.root.disabled = false;
+    await page.waitForChanges();
+
+    expect(button?.hasAttribute('disabled')).toBe(false);
+
+    getSpy.mockRestore();
+  });
+
+  it('handles dynamically added buttons correctly', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+               <modus-wc-button>Original Button</modus-wc-button>
+             </modus-wc-button-group>`,
+    });
+    await page.waitForChanges();
+
+    const newButton = page.doc.createElement('modus-wc-button');
+    newButton.textContent = 'Dynamic Button';
+    page.root?.appendChild(newButton);
+
+    // Trigger property update
+    if (page.root) page.root.color = 'secondary';
+    await page.waitForChanges();
+
+    expect(newButton.getAttribute('color')).toBe('secondary');
+    expect(newButton.hasAttribute('disabled')).toBe(false);
+  });
 });
