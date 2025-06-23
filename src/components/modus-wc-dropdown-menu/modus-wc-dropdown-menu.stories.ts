@@ -102,6 +102,7 @@ const Template: Story = {
     // prettier-ignore
     return html`
 <style>
+  /* Storybook styling */
   div#story--components-dropdown-menu--default--primary-inner {
     height: 120px;
   }
@@ -117,6 +118,28 @@ const Template: Story = {
     padding-top: 12px;
   }
 </style>
+
+<script>
+  let selectedValue = '';
+
+  const handleItemSelect = (event: CustomEvent) => {
+    // Update the "Selected Value" label
+    selectedValue = event.detail.value;
+    const displayElement = document.querySelector('#selected-value');
+    if (displayElement) {
+      displayElement.textContent = selectedValue;
+    }
+
+    // Close the dropdown menu when an item is selected
+    const dropdownMenu = event.target as HTMLElement;
+    const dropdownMenuElement = dropdownMenu.closest(
+      'modus-wc-dropdown-menu'
+    );
+    if (dropdownMenuElement) {
+      dropdownMenuElement.menuVisible = false;
+    }
+  };
+</script>
 
 <modus-wc-dropdown-menu
   button-color=${ifDefined(args['button-color'])}
@@ -134,6 +157,7 @@ const Template: Story = {
     Button
     <modus-wc-icon name="expand_more" size="sm" />
   </div>
+
   <div slot="menu">
     <modus-wc-menu-item label="Item One" value="1" @itemSelect=${handleItemSelect}></modus-wc-menu-item>
     <modus-wc-menu-item label="Item Two" value="2" @itemSelect=${handleItemSelect} /></modus-wc-menu-item>
