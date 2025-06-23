@@ -119,6 +119,7 @@ export class ModusWcDropdownMenu {
   };
 
   private updateMenuPosition = async () => {
+    // istanbul ignore next
     if (!this.buttonRef || !this.menuRef) return;
 
     const { x, y } = await computePosition(this.buttonRef, this.menuRef, {
