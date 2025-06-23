@@ -104,7 +104,9 @@ const Template: Story = {
 <style>
   /* Storybook styling */
   div#story--components-dropdown-menu--default--primary-inner {
-    height: 120px;
+    display: flex;
+    align-items: center;
+    height: 240px;
   }
 
   [slot="button"] {
