@@ -59,6 +59,10 @@
     "test:update-snapshot": "stencil test --spec --update-snapshot",
     "test:watch": "stencil test --spec --watchAll"
   },
+  "dependencies": {
+    "@floating-ui/dom": "^1.7.1",
+    "@tanstack/table-core": "^8.21.3"
+  },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
     "@stencil/angular-output-target": "^0.10.2",
@@ -288,8 +292,5 @@
   "volta": {
     "node": "18.20.5"
   },
-  "customElements": "src/custom-elements.json",
-  "dependencies": {
-    "@tanstack/table-core": "^8.21.3"
-  }
+  "customElements": "src/custom-elements.json"
 }
