@@ -61,7 +61,7 @@ export const Default: Story = {
       }
 
       if (sideNav) {
-        (sideNav as any).expanded = e.detail;
+        (sideNav as HTMLElement & { expanded: boolean }).expanded = e.detail;
       }
     };
 
