@@ -1678,6 +1678,189 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable dropdown menu component used to render a button and toggleable menu.",
+          "name": "ModusWcDropdownMenu",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleDocumentClick",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyDown",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onMenuVisibilityChange",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "button-color",
+              "fieldName": "buttonColor",
+              "default": "'primary'",
+              "description": "The color variant of the button.",
+              "type": {
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'warning'\r\n    | 'danger'"
+              }
+            },
+            {
+              "name": "button-size",
+              "fieldName": "buttonSize",
+              "default": "'md'",
+              "description": "The size of the button.",
+              "type": {
+                "text": "DaisySize"
+              }
+            },
+            {
+              "name": "button-variant",
+              "fieldName": "buttonVariant",
+              "default": "'filled'",
+              "description": "The variant of the button.",
+              "type": {
+                "text": "'borderless' | 'filled' | 'outlined'"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the host element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "default": "false",
+              "description": "If true, the button will be disabled.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "menu-bordered",
+              "fieldName": "menuBordered",
+              "default": "true",
+              "description": "Indicates that the menu should have a border.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "menu-offset",
+              "fieldName": "menuOffset",
+              "default": "10",
+              "description": "Distance between the button and menu in pixels.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "menu-placement",
+              "fieldName": "menuPlacement",
+              "default": "'bottom-start'",
+              "description": "The placement of the menu relative to the button.",
+              "type": {
+                "text": "PopoverPlacement"
+              }
+            },
+            {
+              "name": "menu-size",
+              "fieldName": "menuSize",
+              "default": "'md'",
+              "description": "The size of the menu.",
+              "type": {
+                "text": "ModusSize"
+              }
+            },
+            {
+              "name": "menu-visible",
+              "fieldName": "menuVisible",
+              "default": "false",
+              "description": "Indicates that the menu is visible.",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "tagName": "modus-wc-dropdown-menu",
+          "events": [
+            {
+              "kind": "field",
+              "name": "menuVisibilityChange",
+              "type": {
+                "text": "EventEmitter<{ isVisible: boolean }>"
+              },
+              "description": "Event emitted when the menuVisible prop changes."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcDropdownMenu",
+          "declaration": {
+            "name": "ModusWcDropdownMenu",
+            "module": "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-dropdown-menu",
+          "declaration": {
+            "name": "ModusWcDropdownMenu",
+            "module": "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-icon/modus-wc-icon.tsx",
       "declarations": [
         {
