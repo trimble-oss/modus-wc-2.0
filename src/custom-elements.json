@@ -281,6 +281,24 @@
               }
             },
             {
+              "name": "include-clear",
+              "fieldName": "includeClear",
+              "default": "false",
+              "description": "Show the clear button within the input field.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "include-search",
+              "fieldName": "includeSearch",
+              "default": "false",
+              "description": "Show the search icon within the input field.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
               "description": "The ID of the input element.",
@@ -1682,7 +1700,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable dropdown menu component used to render a button and toggleable menu.",
+          "description": "A customizable dropdown menu component used to render a button and toggleable menu.\r\n\r\nThe component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.",
           "name": "ModusWcDropdownMenu",
           "members": [
             {
