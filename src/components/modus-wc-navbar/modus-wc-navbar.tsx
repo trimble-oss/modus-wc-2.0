@@ -256,7 +256,6 @@ export class ModusWcNavbar {
         !menuButton?.contains(target)
       ) {
         this.mainMenuOpen = false;
-        this.mainMenuOpenChange.emit(false);
       }
     }
 
