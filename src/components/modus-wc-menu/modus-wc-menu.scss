@@ -17,12 +17,14 @@ modus-wc-menu .modus-wc-menu {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-menu .modus-wc-menu {
+[data-theme='modus-classic-light'] modus-wc-menu .modus-wc-menu,
+[data-theme='modus-modern-light'] modus-wc-menu .modus-wc-menu {
   background-color: var(--modus-wc-color-white);
   border-color: var(--modus-wc-color-gray-0);
 }
 
-[data-theme='modus-classic-dark'] modus-wc-menu .modus-wc-menu {
+[data-theme='modus-classic-dark'] modus-wc-menu .modus-wc-menu,
+[data-theme='modus-modern-dark'] modus-wc-menu .modus-wc-menu {
   background-color: var(--modus-wc-color-black);
   border-color: var(--modus-wc-color-gray-8);
 }

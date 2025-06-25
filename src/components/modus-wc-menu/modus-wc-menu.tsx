@@ -1,4 +1,12 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+  Event as StencilEvent,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu.tailwind';
 import { ModusSize, Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
@@ -31,6 +39,9 @@ export class ModusWcMenu {
   /** The size of the menu. */
   @Prop() size?: ModusSize = 'md';
 
+  /** Event emitted when the menu loses focus. */
+  @StencilEvent() menuFocusout!: EventEmitter<FocusEvent>;
+
   componentWillLoad() {
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Menu';
@@ -54,6 +65,14 @@ export class ModusWcMenu {
     return classList.join(' ');
   }
 
+  private handleFocusout = (e: FocusEvent) => {
+    // Check if the new focus target is still within this menu
+    if (!this.el.contains(e.relatedTarget as Node)) {
+      // Focus has left the menu entirely
+      this.menuFocusout.emit(e);
+    }
+  };
+
   private getMenuRole = (): string =>
     this.orientation === 'horizontal' ? 'menubar' : 'menu';
 
@@ -63,6 +82,7 @@ export class ModusWcMenu {
         <ul
           aria-orientation={this.orientation}
           class={this.getClasses()}
+          onFocusout={this.handleFocusout}
           role={this.getMenuRole()}
           {...this.inheritedAttributes}
         >

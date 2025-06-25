@@ -1,3 +1,4 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -25,6 +26,12 @@ const meta: Meta<MenuArgs> = {
     size: {
       control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
+    },
+  },
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['menuFocusout'],
     },
   },
 };

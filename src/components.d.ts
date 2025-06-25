@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IAutocompleteItem, IAutocompleteNoResults } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
-import { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, TextFieldTypes } from "./components/types";
+import { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -23,7 +23,7 @@ import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 import { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export { IAutocompleteItem, IAutocompleteNoResults } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
-export { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, TextFieldTypes } from "./components/types";
+export { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -104,6 +104,14 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * Show the clear button within the input field.
+         */
+        "includeClear"?: boolean;
+        /**
+          * Show the search icon within the input field.
+         */
+        "includeSearch"?: boolean;
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -151,6 +159,10 @@ export namespace Components {
           * A value is required for the form to be submittable.
          */
         "required"?: boolean;
+        /**
+          * Whether to show the menu whenever the input has focus, regardless of input value.
+         */
+        "showMenuOnFocus"?: boolean;
         /**
           * A spinner that appears when set to true
          */
@@ -506,6 +518,56 @@ export namespace Components {
           * Whether the divider is responsive or not.
          */
         "responsive"?: boolean;
+    }
+    /**
+     * A customizable dropdown menu component used to render a button and toggleable menu.
+     * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
+     */
+    interface ModusWcDropdownMenu {
+        /**
+          * The color variant of the button.
+         */
+        "buttonColor"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger';
+        /**
+          * The size of the button.
+         */
+        "buttonSize"?: DaisySize;
+        /**
+          * The variant of the button.
+         */
+        "buttonVariant"?: 'borderless' | 'filled' | 'outlined';
+        /**
+          * Custom CSS class to apply to the host element.
+         */
+        "customClass"?: string;
+        /**
+          * If true, the button will be disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Indicates that the menu should have a border.
+         */
+        "menuBordered"?: boolean;
+        /**
+          * Distance between the button and menu in pixels.
+         */
+        "menuOffset"?: number;
+        /**
+          * The placement of the menu relative to the button.
+         */
+        "menuPlacement"?: PopoverPlacement;
+        /**
+          * The size of the menu.
+         */
+        "menuSize"?: ModusSize;
+        /**
+          * Indicates that the menu is visible.
+         */
+        "menuVisible": boolean;
     }
     /**
      * A customizable icon component used to render Modus icons.
@@ -1688,6 +1750,14 @@ export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDateElement;
 }
+export interface ModusWcDropdownMenuCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcDropdownMenuElement;
+}
+export interface ModusWcMenuCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcMenuElement;
+}
 export interface ModusWcMenuItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcMenuItemElement;
@@ -1983,6 +2053,27 @@ declare global {
         prototype: HTMLModusWcDividerElement;
         new (): HTMLModusWcDividerElement;
     };
+    interface HTMLModusWcDropdownMenuElementEventMap {
+        "menuVisibilityChange": { isVisible: boolean };
+    }
+    /**
+     * A customizable dropdown menu component used to render a button and toggleable menu.
+     * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
+     */
+    interface HTMLModusWcDropdownMenuElement extends Components.ModusWcDropdownMenu, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcDropdownMenuElementEventMap>(type: K, listener: (this: HTMLModusWcDropdownMenuElement, ev: ModusWcDropdownMenuCustomEvent<HTMLModusWcDropdownMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcDropdownMenuElementEventMap>(type: K, listener: (this: HTMLModusWcDropdownMenuElement, ev: ModusWcDropdownMenuCustomEvent<HTMLModusWcDropdownMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcDropdownMenuElement: {
+        prototype: HTMLModusWcDropdownMenuElement;
+        new (): HTMLModusWcDropdownMenuElement;
+    };
     /**
      * A customizable icon component used to render Modus icons.
      * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
@@ -2022,11 +2113,22 @@ declare global {
         prototype: HTMLModusWcLoaderElement;
         new (): HTMLModusWcLoaderElement;
     };
+    interface HTMLModusWcMenuElementEventMap {
+        "menuFocusout": FocusEvent;
+    }
     /**
      * A customizable menu component used to display a list of li elements vertically or horizontally.
      * The component supports a `<slot>` for injecting custom li elements inside the ul
      */
     interface HTMLModusWcMenuElement extends Components.ModusWcMenu, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcMenuElementEventMap>(type: K, listener: (this: HTMLModusWcMenuElement, ev: ModusWcMenuCustomEvent<HTMLModusWcMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcMenuElementEventMap>(type: K, listener: (this: HTMLModusWcMenuElement, ev: ModusWcMenuCustomEvent<HTMLModusWcMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcMenuElement: {
         prototype: HTMLModusWcMenuElement;
@@ -2488,6 +2590,7 @@ declare global {
         "modus-wc-collapse": HTMLModusWcCollapseElement;
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
+        "modus-wc-dropdown-menu": HTMLModusWcDropdownMenuElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
@@ -2596,6 +2699,14 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Show the clear button within the input field.
+         */
+        "includeClear"?: boolean;
+        /**
+          * Show the search icon within the input field.
+         */
+        "includeSearch"?: boolean;
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -2663,6 +2774,10 @@ declare namespace LocalJSX {
           * A value is required for the form to be submittable.
          */
         "required"?: boolean;
+        /**
+          * Whether to show the menu whenever the input has focus, regardless of input value.
+         */
+        "showMenuOnFocus"?: boolean;
         /**
           * A spinner that appears when set to true
          */
@@ -3064,6 +3179,60 @@ declare namespace LocalJSX {
         "responsive"?: boolean;
     }
     /**
+     * A customizable dropdown menu component used to render a button and toggleable menu.
+     * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
+     */
+    interface ModusWcDropdownMenu {
+        /**
+          * The color variant of the button.
+         */
+        "buttonColor"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger';
+        /**
+          * The size of the button.
+         */
+        "buttonSize"?: DaisySize;
+        /**
+          * The variant of the button.
+         */
+        "buttonVariant"?: 'borderless' | 'filled' | 'outlined';
+        /**
+          * Custom CSS class to apply to the host element.
+         */
+        "customClass"?: string;
+        /**
+          * If true, the button will be disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Indicates that the menu should have a border.
+         */
+        "menuBordered"?: boolean;
+        /**
+          * Distance between the button and menu in pixels.
+         */
+        "menuOffset"?: number;
+        /**
+          * The placement of the menu relative to the button.
+         */
+        "menuPlacement"?: PopoverPlacement;
+        /**
+          * The size of the menu.
+         */
+        "menuSize"?: ModusSize;
+        /**
+          * Indicates that the menu is visible.
+         */
+        "menuVisible"?: boolean;
+        /**
+          * Event emitted when the menuVisible prop changes.
+         */
+        "onMenuVisibilityChange"?: (event: ModusWcDropdownMenuCustomEvent<{ isVisible: boolean }>) => void;
+    }
+    /**
      * A customizable icon component used to render Modus icons.
      * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      */
@@ -3175,6 +3344,10 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the ul element.
          */
         "customClass"?: string;
+        /**
+          * Event emitted when the menu loses focus.
+         */
+        "onMenuFocusout"?: (event: ModusWcMenuCustomEvent<FocusEvent>) => void;
         /**
           * The orientation of the menu.
          */
@@ -4438,6 +4611,7 @@ declare namespace LocalJSX {
         "modus-wc-collapse": ModusWcCollapse;
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
+        "modus-wc-dropdown-menu": ModusWcDropdownMenu;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-feedback": ModusWcInputFeedback;
         "modus-wc-input-label": ModusWcInputLabel;
@@ -4532,6 +4706,11 @@ declare module "@stencil/core" {
              * A customizable divider component used to separate content horizontally or vertically
              */
             "modus-wc-divider": LocalJSX.ModusWcDivider & JSXBase.HTMLAttributes<HTMLModusWcDividerElement>;
+            /**
+             * A customizable dropdown menu component used to render a button and toggleable menu.
+             * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
+             */
+            "modus-wc-dropdown-menu": LocalJSX.ModusWcDropdownMenu & JSXBase.HTMLAttributes<HTMLModusWcDropdownMenuElement>;
             /**
              * A customizable icon component used to render Modus icons.
              * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>

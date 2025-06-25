@@ -57,6 +57,8 @@ interface AutocompleteArgs {
   'custom-class'?: string;
   'debounce-ms'?: number;
   disabled?: boolean;
+  'include-clear'?: boolean;
+  'include-search'?: boolean;
   'input-id'?: string;
   'input-tab-index'?: number;
   items: IAutocompleteItem[];
@@ -70,6 +72,7 @@ interface AutocompleteArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
+  'show-menu-on-focus'?: boolean;
   'show-spinner'?: boolean;
   size?: ModusSize;
   value: string;
@@ -82,11 +85,14 @@ const meta: Meta<AutocompleteArgs> = {
     bordered: true,
     'debounce-ms': 300,
     disabled: false,
+    'include-clear': false,
+    'include-search': false,
     items: items,
     label: 'Label',
     'leave-menu-open': false,
     'min-chars': 0,
     'multi-select': false,
+    'show-menu-on-focus': false,
     'show-spinner': false,
     'no-results': {
       ariaLabel: 'No results found',
@@ -144,11 +150,6 @@ const Template: Story = {
       );
       if (!autocomplete) return;
 
-      // Initialize initialNavigation if undefined
-      if (args.initialNavigation === undefined) {
-        args.initialNavigation = true;
-      }
-
       // Prevent default for navigation keys
       if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
         e.preventDefault();
@@ -164,43 +165,34 @@ const Template: Story = {
             ...item,
             focused: false,
           }));
-          args.initialNavigation = true;
           autocomplete.items = [...args.items];
-          return;
-
-        case 'ArrowDown':
-          if (args.initialNavigation) {
-            args.initialNavigation = false;
-            return;
-          } else {
-            const currentIndex = visibleItems.findIndex((item) => item.focused);
-            const nextIndex =
-              currentIndex < 0
-                ? 0
-                : Math.min(currentIndex + 1, visibleItems.length - 1);
-            args.items = args.items.map((item) => ({
-              ...item,
-              focused: visibleItems[nextIndex]?.value === item.value,
-            }));
-          }
           break;
 
-        case 'ArrowUp':
-          if (args.initialNavigation) {
-            args.initialNavigation = false;
-            return;
-          } else {
-            const currentIndex = visibleItems.findIndex((item) => item.focused);
-            const prevIndex =
-              currentIndex < 0
-                ? visibleItems.length - 1
-                : Math.max(currentIndex - 1, 0);
-            args.items = args.items.map((item) => ({
-              ...item,
-              focused: visibleItems[prevIndex]?.value === item.value,
-            }));
-          }
+        case 'ArrowDown': {
+          const currentIndex = visibleItems.findIndex((item) => item.focused);
+          const nextIndex =
+            currentIndex < 0
+              ? 0
+              : Math.min(currentIndex + 1, visibleItems.length - 1);
+          args.items = args.items.map((item) => ({
+            ...item,
+            focused: visibleItems[nextIndex]?.value === item.value,
+          }));
           break;
+        }
+
+        case 'ArrowUp': {
+          const currentIndex = visibleItems.findIndex((item) => item.focused);
+          const prevIndex =
+            currentIndex < 0
+              ? visibleItems.length - 1
+              : Math.max(currentIndex - 1, 0);
+          args.items = args.items.map((item) => ({
+            ...item,
+            focused: visibleItems[prevIndex]?.value === item.value,
+          }));
+          break;
+        }
 
         case 'Enter': {
           const focusedItem = visibleItems.find((item) => item.focused);
@@ -211,7 +203,6 @@ const Template: Story = {
               focused: false,
             }));
             autocomplete.value = focusedItem.label;
-            args.initialNavigation = true;
           }
           break;
         }
@@ -244,15 +235,6 @@ const Template: Story = {
         autocomplete.items = [...args.items];
         autocomplete.value = input.value;
       }
-    };
-
-    const handleBlur = () => {
-      args.initialNavigation = true;
-      args.items = args.items.map((item) => ({
-        ...item,
-        focused: false,
-        visibleInMenu: true,
-      }));
     };
 
     const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
@@ -294,11 +276,6 @@ const Template: Story = {
           );
           if (!autocomplete) return;
 
-          // Initialize initialNavigation if undefined
-          if (args.initialNavigation === undefined) {
-            args.initialNavigation = true;
-          }
-
           // Prevent default for navigation keys
           if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
             e.preventDefault();
@@ -314,43 +291,34 @@ const Template: Story = {
                 ...item,
                 focused: false,
               }));
-              args.initialNavigation = true;
               autocomplete.items = [...args.items];
               return;
 
-            case 'ArrowDown':
-              if (args.initialNavigation) {
-                args.initialNavigation = false;
-                return;
-              } else {
-                const currentIndex = visibleItems.findIndex((item) => item.focused);
-                const nextIndex =
-                  currentIndex < 0
-                    ? 0
-                    : Math.min(currentIndex + 1, visibleItems.length - 1);
-                args.items = args.items.map((item) => ({
-                  ...item,
-                  focused: visibleItems[nextIndex]?.value === item.value,
-                }));
-              }
+            case 'ArrowDown': {
+              const currentIndex = visibleItems.findIndex((item) => item.focused);
+              const nextIndex =
+                currentIndex < 0
+                  ? 0
+                  : Math.min(currentIndex + 1, visibleItems.length - 1);
+              args.items = args.items.map((item) => ({
+                ...item,
+                focused: visibleItems[nextIndex]?.value === item.value,
+              }));
               break;
+            }
 
-            case 'ArrowUp':
-              if (args.initialNavigation) {
-                args.initialNavigation = false;
-                return;
-              } else {
-                const currentIndex = visibleItems.findIndex((item) => item.focused);
-                const prevIndex =
-                  currentIndex < 0
-                    ? visibleItems.length - 1
-                    : Math.max(currentIndex - 1, 0);
-                args.items = args.items.map((item) => ({
-                  ...item,
-                  focused: visibleItems[prevIndex]?.value === item.value,
-                }));
-              }
+            case 'ArrowUp': {
+              const currentIndex = visibleItems.findIndex((item) => item.focused);
+              const prevIndex =
+                currentIndex < 0
+                  ? visibleItems.length - 1
+                  : Math.max(currentIndex - 1, 0);
+              args.items = args.items.map((item) => ({
+                ...item,
+                focused: visibleItems[prevIndex]?.value === item.value,
+              }));
               break;
+            }
 
             case 'Enter': {
               const focusedItem = visibleItems.find((item) => item.focused);
@@ -361,7 +329,6 @@ const Template: Story = {
                   focused: false,
                 }));
                 autocomplete.value = focusedItem.label;
-                args.initialNavigation = true;
               }
               break;
             }
@@ -396,15 +363,6 @@ const Template: Story = {
           }
         };
 
-        const handleBlur = () => {
-          args.initialNavigation = true;
-          args.items = args.items.map((item) => ({
-            ...item,
-            focused: false,
-            visibleInMenu: true,
-          }));
-        };
-
         const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
           const autocomplete = (e.target as HTMLInputElement).closest(
             'modus-wc-autocomplete'
@@ -434,6 +392,8 @@ const Template: Story = {
         custom-class=${ifDefined(args['custom-class'])}
         debounce-ms=${ifDefined(args['debounce-ms'])}
         ?disabled=${args.disabled}
+        ?include-clear=${args['include-clear']}
+        ?include-search=${args['include-search']}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         .items=${args.items}
@@ -446,12 +406,12 @@ const Template: Story = {
         placeholder=${ifDefined(args.placeholder)}
         ?read-only=${args['read-only']}
         ?required=${args.required}
+        ?show-menu-on-focus=${args['show-menu-on-focus']}
         ?show-spinner=${args['show-spinner']}
         size=${ifDefined(args.size)}
         value=${args.value}
         @inputChange=${handleInputChange}
         @itemSelect=${handleItemSelect}
-        @inputBlur=${handleBlur}
         @keydown=${handleKeyDown}
       ></modus-wc-autocomplete>
     `;
@@ -874,6 +834,7 @@ export const WithSpinner: Story = {
   placeholder=${ifDefined(args.placeholder)}
   ?read-only=${args['read-only']}
   ?required=${args.required}
+  ?show-menu-on-focus=${args['show-menu-on-focus']}
   ?show-spinner=${args['show-spinner']}
   size=${ifDefined(args.size)}
   value=${args.value}

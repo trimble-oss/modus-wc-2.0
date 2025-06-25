@@ -71,6 +71,12 @@ export class ModusWcAutocomplete {
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
 
+  /** Show the clear button within the input field. */
+  @Prop() includeClear?: boolean = false;
+
+  /** Show the search icon within the input field. */
+  @Prop() includeSearch?: boolean = false;
+
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
@@ -113,6 +119,9 @@ export class ModusWcAutocomplete {
 
   /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
+
+  /** Whether to show the menu whenever the input has focus, regardless of input value. */
+  @Prop() showMenuOnFocus?: boolean = false;
 
   /** The size of the autocomplete (input and menu). */
   @Prop() size?: ModusSize = 'md';
@@ -188,24 +197,45 @@ export class ModusWcAutocomplete {
   }
 
   private handleBlur = (event: CustomEvent<FocusEvent>) => {
-    // if enter key is pressed, return
+    // Stop text input blur event from bubbling up
+    event.stopPropagation();
+
     // Hide menu after a short delay to allow for item selection
     // istanbul ignore next - TODO
     setTimeout(() => {
       const relatedTarget = event.detail.relatedTarget as HTMLElement;
+
+      // Only emit blur if focus is moving completely outside the autocomplete widget
+      // If focus stays within the component (input -> menu item), don't emit blur
       if (!relatedTarget || !this.el.contains(relatedTarget)) {
         this.menuVisible = false;
+        this.inputBlur.emit(event.detail);
       }
     }, 200);
+  };
 
-    this.inputBlur.emit(event.detail);
+  // istanbul ignore next - TODO
+  private handleMenuFocusout = (event: CustomEvent<FocusEvent>) => {
+    setTimeout(() => {
+      const relatedTarget = event.detail.relatedTarget as HTMLElement;
+
+      // Only emit blur if focus is moving completely outside the autocomplete widget
+      if (!relatedTarget || !this.el.contains(relatedTarget)) {
+        this.menuVisible = false;
+        this.inputBlur.emit(event.detail);
+      }
+    }, 200);
   };
 
   private handleChange = (event: CustomEvent<Event>) => {
     const value = (event.detail.target as HTMLInputElement).value;
 
-    // Show menu only if we meet minimum character threshold
-    this.menuVisible = value.length >= this.minChars;
+    // Show menu based on either showMenuOnFocus prop or minimum character threshold
+    if (this.showMenuOnFocus) {
+      this.menuVisible = true;
+    } else {
+      this.menuVisible = value.length >= this.minChars;
+    }
 
     // Clear any existing timer
     // istanbul ignore next - TODO
@@ -236,22 +266,29 @@ export class ModusWcAutocomplete {
     switch (event.key) {
       case KEY.ArrowDown:
         event.preventDefault();
-        if (input.value.length >= this.minChars) {
+
+        // Show menu based on either showMenuOnFocus prop or minimum character threshold
+        if (this.showMenuOnFocus || input.value.length >= this.minChars) {
           this.menuVisible = true;
         }
+
         break;
 
       case KEY.Backspace:
         if (this.multiSelect && input.value.length === 0) {
           let selectedItems: IAutocompleteItem[] = [];
+
           if (this.items) {
             selectedItems = this.items.filter((item) => item.selected);
           }
+
           const lastSelectedItem = selectedItems[selectedItems.length - 1];
+
           if (lastSelectedItem) {
             this.chipRemove.emit(lastSelectedItem);
           }
         }
+
         break;
 
       case KEY.Escape:
@@ -261,12 +298,16 @@ export class ModusWcAutocomplete {
 
       case KEY.Enter:
         event.preventDefault();
+
         if (this.multiSelect) {
           let selectedItems: IAutocompleteItem[] = [];
+
           if (this.items) {
             selectedItems = this.items.filter((item) => item.selected);
           }
+
           const lastSelectedItem = selectedItems[selectedItems.length - 1];
+
           if (lastSelectedItem) {
             this.itemSelect.emit(lastSelectedItem);
           }
@@ -276,14 +317,21 @@ export class ModusWcAutocomplete {
             this.itemSelect.emit(selectedItem);
           }
         }
+
         if (this.menuVisible && !this.leaveMenuOpen) {
-          input.blur();
+          // Don't call input.blur() here as it will trigger unwanted blur events
+          this.menuVisible = false;
         }
+
         break;
     }
   }
 
   private handleFocus = (event: CustomEvent<FocusEvent>) => {
+    if (this.showMenuOnFocus) {
+      this.menuVisible = true;
+    }
+
     this.inputFocus.emit(event.detail);
   };
 
@@ -291,6 +339,7 @@ export class ModusWcAutocomplete {
   // istanbul ignore next
   private handleItemSelect = (item: IAutocompleteItem) => {
     if (this.disabled || this.readOnly) return;
+
     this.menuVisible = !!this.leaveMenuOpen;
     this.itemSelect.emit(item);
   };
@@ -301,6 +350,7 @@ export class ModusWcAutocomplete {
     if (this.disabled || this.readOnly) {
       return; // Do nothing if the component is disabled
     }
+
     this.chipRemove.emit(item);
   };
 
@@ -335,7 +385,7 @@ export class ModusWcAutocomplete {
             <modus-wc-chip
               aria-label="Remove item button"
               label={item.label}
-              show-remove="true"
+              show-remove={true}
               size="sm"
               disabled={this.disabled || this.readOnly}
               onChipRemove={() => this.handleChipRemove(item)}
@@ -350,6 +400,8 @@ export class ModusWcAutocomplete {
       <modus-wc-text-input
         bordered={this.bordered && !this.multiSelect}
         disabled={this.disabled}
+        includeClear={this.includeClear}
+        includeSearch={this.includeSearch}
         inputId={this.inputId}
         inputTabIndex={this.inputTabIndex}
         name={this.name}
@@ -391,11 +443,11 @@ export class ModusWcAutocomplete {
           {menuItems?.length > 0 || !noResults
             ? menuItems.map((item) => (
                 <modus-wc-menu-item
+                  disabled={item.disabled}
+                  focused={item.focused}
                   label={item.label}
                   onItemSelect={() => this.handleItemSelect(item)}
                   selected={item.selected}
-                  disabled={item.disabled}
-                  focused={item.focused}
                   value={item.value}
                 />
               ))
@@ -426,6 +478,7 @@ export class ModusWcAutocomplete {
           aria-label="Autocomplete menu"
           bordered={this.bordered}
           class={this.menuVisible ? 'menu-visible' : ' menu-hidden'}
+          onMenuFocusout={this.handleMenuFocusout}
           size={this.size}
         >
           {getMenuItems()}
