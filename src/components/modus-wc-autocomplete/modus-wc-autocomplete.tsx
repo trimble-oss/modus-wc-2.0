@@ -234,7 +234,7 @@ export class ModusWcAutocomplete {
     if (this.showMenuOnFocus) {
       this.menuVisible = true;
     } else {
-      this.menuVisible = value.length >= this.minChars;
+      this.menuVisible = value?.length >= this.minChars;
     }
 
     // Clear any existing timer
