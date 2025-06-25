@@ -545,6 +545,7 @@ export class ModusWcNavbar {
                   <modus-wc-text-input
                     includeClear={true}
                     includeSearch={true}
+                    size="sm"
                     onInputChange={this.handleSearchChange}
                     placeholder={this.textOverrides?.search || 'Search'}
                     value={this.searchValue}

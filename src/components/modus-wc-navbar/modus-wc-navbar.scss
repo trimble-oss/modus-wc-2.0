@@ -1,5 +1,8 @@
 modus-wc-navbar .modus-wc-navbar {
-  background-color: var(--modus-wc-color-white);
+  background-color: var(--modus-wc-color-base-page);
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: cover;
   height: 56px;
   min-height: 0;
   padding: 0 var(--modus-wc-spacing-md);
@@ -9,12 +12,20 @@ modus-wc-navbar .modus-wc-navbar {
     display: inline-flex;
 
     svg {
-      height: 32px;
+      height: 24px;
     }
   }
 
-  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
-    color: var(--modus-wc-color-trimble-gray);
+  &:not(.trimble-logo)
+    .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+    background: var(--modus-wc-color-base-100);
+    border: 0;
+    box-shadow: none;
+    color: var(--modus-wc-color-base-content);
+  }
+
+  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary.trimble-logo {
+    background: transparent;
   }
 
   // Common dropdown styles
@@ -148,8 +159,14 @@ modus-wc-navbar .modus-wc-navbar {
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-navbar .modus-wc-navbar,
-[data-theme='modus-modern-dark'] modus-wc-navbar .modus-wc-navbar {
+[data-theme='modus-classic-light'] modus-wc-navbar .modus-wc-navbar,
+[data-theme='modus-classic-dark'] modus-wc-navbar .modus-wc-navbar {
+  svg {
+    height: 32px;
+  }
+}
+
+[data-theme='modus-classic-dark'] modus-wc-navbar .modus-wc-navbar {
   background-color: var(--modus-wc-color-gray-10);
 
   // Common button styles
@@ -170,4 +187,16 @@ modus-wc-navbar .modus-wc-navbar {
     .sign-out.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
     color: var(--modus-wc-color-white);
   }
+}
+
+[data-theme='modus-classic-light']
+  modus-wc-text-input
+  .modus-wc-text-input.modus-wc-input.modus-wc-input-sm,
+[data-theme='modus-classic-dark']
+  modus-wc-text-input
+  .modus-wc-text-input.modus-wc-input.modus-wc-input-sm {
+  font-size: var(--modus-wc-font-size-md);
+  height: var(--modus-wc-input-height-md);
+  line-height: var(--modus-wc-line-height-md);
+  padding: var(--modus-wc-spacing-sm);
 }
