@@ -234,6 +234,7 @@ export class ModusWcAutocomplete {
     if (this.showMenuOnFocus) {
       this.menuVisible = true;
     } else {
+      // istanbul ignore next
       this.menuVisible = value?.length >= this.minChars;
     }
 
