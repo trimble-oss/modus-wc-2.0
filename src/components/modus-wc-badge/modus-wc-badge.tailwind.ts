@@ -14,7 +14,7 @@ export const convertPropsToClasses = ({
     | 'warning'
     | 'danger';
   size?: DaisySize;
-  variant?: 'counter' | 'filled' | 'text';
+  variant?: 'counter' | 'filled' | 'text' | 'outlined';
 }): string => {
   let classes = '';
 
@@ -55,6 +55,9 @@ export const convertPropsToClasses = ({
         break;
       case 'text':
         classes = `${classes} modus-wc-badge-text`;
+        break;
+      case 'outlined':
+        classes = `${classes} modus-wc-badge-outlined`;
         break;
     }
   }

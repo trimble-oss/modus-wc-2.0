@@ -60,6 +60,48 @@ modus-wc-badge .modus-wc-badge {
       color: var(--modus-wc-color-error);
     }
   }
+
+  &.modus-wc-badge-outlined {
+    background-color: transparent;
+    border: 1px solid var(--modus-wc-color-gray-6);
+    border-radius: 1rem;
+    color: var(--modus-wc-color-gray-6);
+
+    &.modus-wc-badge-primary {
+      border-color: var(--modus-wc-color-trimble-blue);
+      color: var(--modus-wc-color-trimble-blue);
+    }
+
+    &.modus-wc-badge-secondary {
+      border-color: var(--modus-wc-color-yellow);
+      color: var(--modus-wc-color-yellow);
+    }
+
+    &.modus-wc-badge-neutral {
+      border-color: var(--modus-wc-color-gray-1);
+      color: var(--modus-wc-color-gray-10);
+    }
+
+    &.modus-wc-badge-high-contrast {
+      border-color: var(--modus-wc-color-base-content);
+      color: var(--modus-wc-color-base-content);
+    }
+
+    &.modus-wc-badge-success {
+      border-color: var(--modus-wc-color-green-dark);
+      color: var(--modus-wc-color-green-dark);
+    }
+
+    &.modus-wc-badge-warning {
+      border-color: var(--modus-wc-color-yellow-dark);
+      color: var(--modus-wc-color-yellow-dark);
+    }
+
+    &.modus-wc-badge-error {
+      border-color: var(--modus-wc-color-red-dark);
+      color: var(--modus-wc-color-red-dark);
+    }
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-badge .modus-wc-badge,
