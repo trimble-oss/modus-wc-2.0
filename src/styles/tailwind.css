@@ -34,6 +34,69 @@
     font-weight: var(--modus-wc-font-weight-bold);
   }
 
+  /* Paragraphs */
+  p {
+    margin-bottom: var(--modus-wc-spacing-lg);
+  }
+
+  /* Blockquotes */
+  blockquote {
+    margin-top: var(--modus-wc-spacing-lg);
+    margin-bottom: var(--modus-wc-spacing-lg);
+    padding-inline-start: var(--modus-wc-spacing-xl);
+    border-inline-start-width: var(--modus-wc-border-width-lg);
+    border-color: var(--modus-wc-color-base-200);
+  }
+
+  /* Horizontal Rules */
+  hr {
+    height: var(--modus-wc-border-width-xs);
+    margin-top: var(--modus-wc-spacing-xl);
+    margin-bottom: var(--modus-wc-spacing-xl);
+    background-color: var(--modus-wc-color-base-200);
+    border: 0;
+  }
+
+  /* Strong */
+  b,
+  strong {
+    font-weight: var(--modus-wc-font-weight-bold);
+  }
+
+  /* Code */
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+
+  /* Figures, Pre-formatted text, Definition Lists */
+  figure,
+  pre,
+  dl {
+    margin-bottom: var(--modus-wc-spacing-lg);
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--modus-wc-spacing-lg);
+  }
+
+  th,
+  td {
+    border-width: 1px;
+    border-color: var(--modus-wc-color-base-200);
+    padding: var(--modus-wc-spacing-sm);
+    text-align: left;
+  }
+
+  th {
+    font-weight: var(--modus-wc-font-weight-semibold);
+  }
+
   /* Links */
   a {
     color: var(--modus-wc-color-highlight-blue);
