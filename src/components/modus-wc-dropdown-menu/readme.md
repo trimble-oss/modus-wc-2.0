@@ -9,6 +9,8 @@
 
 A customizable dropdown menu component used to render a button and toggleable menu.
 
+The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
+
 ## Properties
 
 | Property        | Attribute        | Description                                       | Type                                                                                                                                                                              | Default          |

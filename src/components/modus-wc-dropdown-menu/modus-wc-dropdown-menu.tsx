@@ -16,6 +16,8 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * A customizable dropdown menu component used to render a button and toggleable menu.
+ *
+ * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
  */
 @Component({
   tag: 'modus-wc-dropdown-menu',

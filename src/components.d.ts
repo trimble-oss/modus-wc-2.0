@@ -104,6 +104,14 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * Show the clear button within the input field.
+         */
+        "includeClear"?: boolean;
+        /**
+          * Show the search icon within the input field.
+         */
+        "includeSearch"?: boolean;
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -513,6 +521,7 @@ export namespace Components {
     }
     /**
      * A customizable dropdown menu component used to render a button and toggleable menu.
+     * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
      */
     interface ModusWcDropdownMenu {
         /**
@@ -2061,6 +2070,7 @@ declare global {
     }
     /**
      * A customizable dropdown menu component used to render a button and toggleable menu.
+     * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
      */
     interface HTMLModusWcDropdownMenuElement extends Components.ModusWcDropdownMenu, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcDropdownMenuElementEventMap>(type: K, listener: (this: HTMLModusWcDropdownMenuElement, ev: ModusWcDropdownMenuCustomEvent<HTMLModusWcDropdownMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2712,6 +2722,14 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Show the clear button within the input field.
+         */
+        "includeClear"?: boolean;
+        /**
+          * Show the search icon within the input field.
+         */
+        "includeSearch"?: boolean;
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -3185,6 +3203,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable dropdown menu component used to render a button and toggleable menu.
+     * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
      */
     interface ModusWcDropdownMenu {
         /**
@@ -4724,6 +4743,7 @@ declare module "@stencil/core" {
             "modus-wc-divider": LocalJSX.ModusWcDivider & JSXBase.HTMLAttributes<HTMLModusWcDividerElement>;
             /**
              * A customizable dropdown menu component used to render a button and toggleable menu.
+             * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
              */
             "modus-wc-dropdown-menu": LocalJSX.ModusWcDropdownMenu & JSXBase.HTMLAttributes<HTMLModusWcDropdownMenuElement>;
             /**
