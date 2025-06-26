@@ -652,7 +652,7 @@
               "default": "'filled'",
               "description": "The variant of the badge.",
               "type": {
-                "text": "'counter' | 'filled' | 'text'"
+                "text": "'counter' | 'filled' | 'text' | 'outlined'"
               }
             }
           ],
