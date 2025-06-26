@@ -15,6 +15,7 @@ on:
 permissions:
   contents: write
   actions: write
+  packages: write
 
 jobs:
   build-and-publish-react:
@@ -112,9 +113,7 @@ jobs:
 
       - name: Publish npm Package to GitHub Registry
         working-directory: integrations/react/v${{ matrix.react-version }}/dist
-        run: npm publish --access public --ignore-scripts --@trimble-oss:registry='https://npm.pkg.github.com'
-        # TODO: remove once we configure this repo's permissions
-        continue-on-error: true
+        run: npm publish --registry=https://npm.pkg.github.com --access public --ignore-scripts
 
   release-react:
     needs: build-and-publish-react
