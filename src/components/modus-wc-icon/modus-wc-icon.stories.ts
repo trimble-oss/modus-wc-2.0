@@ -33,15 +33,16 @@ type Story = StoryObj<IconArgs>;
 
 const Template: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
-      <modus-wc-icon
-        aria-label="Alert icon"
-        custom-class="${ifDefined(args['custom-class'])}"
-        ?decorative="${args.decorative}"
-        name="${args.name}"
-        size="${args.size}"
-      >
-      </modus-wc-icon>
+<modus-wc-icon
+  aria-label="Alert icon"
+  custom-class="${ifDefined(args['custom-class'])}"
+  ?decorative="${args.decorative}"
+  name="${args.name}"
+  size="${args.size}"
+>
+</modus-wc-icon>
     `;
   },
 };
@@ -50,19 +51,20 @@ export const Default: Story = { ...Template };
 
 export const CustomColor: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
-      <style>
-        .red-icon {
-          color: red;
-        }
-      </style>
-      <modus-wc-icon
-        aria-label="Red alert icon"
-        custom-class="red-icon"
-        name="alert"
-        size="${args.size}"
-      >
-      </modus-wc-icon>
+<style>
+  .red-icon {
+    color: red;
+  }
+</style>
+<modus-wc-icon
+  aria-label="Red alert icon"
+  custom-class="red-icon"
+  name="alert"
+  size="${args.size}"
+>
+</modus-wc-icon>
     `;
   },
 };
@@ -83,16 +85,19 @@ export const CustomIcons: Story = {
       ${story()}
     `,
   ],
-  render: (args) => html`
-    <modus-wc-icon
-      aria-label="Cloud Queue icon"
-      custom-class="${ifDefined(args['custom-class'])}"
-      ?decorative="${args.decorative}"
-      name="${args.name}"
-      size="${args.size}"
-    >
-    </modus-wc-icon>
-  `,
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-icon
+  aria-label="Cloud Queue icon"
+  custom-class="${ifDefined(args['custom-class'])}"
+  ?decorative="${args.decorative}"
+  name="${args.name}"
+  size="${args.size}"
+>
+</modus-wc-icon>
+    `;
+  },
 };
 
 export const Migration: Story = {
