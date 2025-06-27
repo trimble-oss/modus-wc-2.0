@@ -103,13 +103,11 @@ jobs:
       - name: Publish distribution
         run: npm publish *.tgz
 
-      - run: rm -f $(find . -name '*.tgz')
-
       - name: Set GitHub Registry Auth Token
         run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish npm Package to GitHub Registry
-        run: npm publish --registry=https://npm.pkg.github.com --access public --ignore-scripts
+        run: npm publish *.tgz --registry=https://npm.pkg.github.com --access public --ignore-scripts
 
   release-angular:
     needs: build-and-publish-angular
