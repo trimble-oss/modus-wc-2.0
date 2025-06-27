@@ -36,7 +36,7 @@
 
   /* Paragraphs */
   p {
-    margin-bottom: var(--modus-wc-spacing-lg);
+    margin-bottom: var(--modus-wc-spacing-2xl);
   }
 
   /* Blockquotes */
