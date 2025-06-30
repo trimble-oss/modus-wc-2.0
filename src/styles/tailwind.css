@@ -108,11 +108,6 @@
   /* Links */
   a {
     color: var(--modus-wc-color-primary);
-    text-decoration-line: none;
-  }
-
-  a:hover {
-    text-decoration-line: underline;
   }
 
   a:active {
