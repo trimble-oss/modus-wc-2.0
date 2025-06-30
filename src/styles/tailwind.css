@@ -49,7 +49,6 @@
   blockquote {
     margin-top: var(--modus-wc-spacing-lg);
     margin-bottom: var(--modus-wc-spacing-lg);
-    padding-inline-start: var(--modus-wc-spacing-xl);
     border-inline-start-width: var(--modus-wc-border-width-lg);
     border-color: var(--modus-wc-color-base-200);
   }
@@ -90,14 +89,12 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: var(--modus-wc-spacing-lg);
   }
 
   th,
   td {
     border-width: 1px;
     border-color: var(--modus-wc-color-base-200);
-    padding: var(--modus-wc-spacing-sm);
     text-align: left;
   }
 
@@ -128,15 +125,6 @@
   }
 
   /* Forms */
-  button,
-  [role='button'] {
-    background-color: var(--modus-wc-color-primary);
-    color: var(--modus-wc-color-primary-content);
-    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
-    border-radius: var(--modus-wc-border-radius-md);
-    border: none;
-    font-weight: var(--modus-wc-font-weight-semibold);
-  }
 
   input,
   select,
@@ -144,9 +132,7 @@
     font-family: inherit;
     color: inherit;
     background-color: transparent;
-    border: 1px solid var(--modus-wc-color-base-300);
     border-radius: var(--modus-wc-border-radius-md);
-    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
   }
 
   input:focus,
@@ -177,21 +163,12 @@
   /* Lists */
   menu {
     list-style-type: none;
-    padding-inline-start: 2.5rem; /* 40px */
-    margin-top: var(--modus-wc-spacing-lg);
-    margin-bottom: var(--modus-wc-spacing-lg);
   }
   ol {
     list-style-type: decimal;
-    padding-inline-start: 2.5rem; /* 40px */
-    margin-top: var(--modus-wc-spacing-lg);
-    margin-bottom: var(--modus-wc-spacing-lg);
   }
   ul {
-    list-style-type: disc;
-    padding-inline-start: 2.5rem; /* 40px */
-    margin-top: var(--modus-wc-spacing-lg);
-    margin-bottom: var(--modus-wc-spacing-lg);
+    list-style-type: disc;  
   }
   li {
     display: list-item;
