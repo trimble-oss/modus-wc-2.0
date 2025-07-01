@@ -90,8 +90,6 @@ export const Default: Story = {
         }
         .side-navigation {
           height: 500px;
-          max-height: 500px;
-          min-height: 100px;
           align-self: flex-start;
           position: relative;
         }
