@@ -1,8 +1,5 @@
 modus-wc-navbar .modus-wc-navbar {
   background-color: var(--modus-wc-color-base-page);
-  background-position: left;
-  background-repeat: no-repeat;
-  background-size: cover;
   height: 56px;
   min-height: 0;
   padding: 0 var(--modus-wc-spacing-md);
@@ -164,8 +161,8 @@ modus-wc-navbar .modus-wc-navbar {
   }
 }
 
-[data-theme='modus-classic-light'],
-[data-theme='modus-classic-dark'] {
+[data-theme='modus-classic-light'] modus-wc-navbar .modus-wc-navbar,
+[data-theme='modus-classic-dark'] modus-wc-navbar .modus-wc-navbar {
   svg {
     height: 32px;
   }
