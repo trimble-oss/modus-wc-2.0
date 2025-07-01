@@ -33,15 +33,16 @@ type Story = StoryObj<IconArgs>;
 
 const Template: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
-      <modus-wc-icon
-        aria-label="Alert icon"
-        custom-class="${ifDefined(args['custom-class'])}"
-        ?decorative="${args.decorative}"
-        name="${args.name}"
-        size="${args.size}"
-      >
-      </modus-wc-icon>
+<modus-wc-icon
+  aria-label="Alert icon"
+  custom-class="${ifDefined(args['custom-class'])}"
+  ?decorative="${args.decorative}"
+  name="${args.name}"
+  size="${args.size}"
+>
+</modus-wc-icon>
     `;
   },
 };
@@ -50,19 +51,51 @@ export const Default: Story = { ...Template };
 
 export const CustomColor: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
-      <style>
-        .red-icon {
-          color: red;
-        }
-      </style>
-      <modus-wc-icon
-        aria-label="Red alert icon"
-        custom-class="red-icon"
-        name="alert"
-        size="${args.size}"
-      >
-      </modus-wc-icon>
+<style>
+  .red-icon {
+    color: red;
+  }
+</style>
+<modus-wc-icon
+  aria-label="Red alert icon"
+  custom-class="red-icon"
+  name="alert"
+  size="${args.size}"
+>
+</modus-wc-icon>
+    `;
+  },
+};
+
+export const CustomIcons: Story = {
+  args: {
+    'custom-class': 'icon-font tc-icon-cloud-queue',
+    decorative: false,
+    name: '',
+    size: 'lg',
+  },
+  decorators: [
+    (story) => html`
+      <link
+        rel="stylesheet"
+        href="https://resources.connect.trimble.com/1.12.0/fonts/icon-font.min.css"
+      />
+      ${story()}
+    `,
+  ],
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-icon
+  aria-label="Cloud Queue icon"
+  custom-class="${ifDefined(args['custom-class'])}"
+  ?decorative="${args.decorative}"
+  name="${args.name}"
+  size="${args.size}"
+>
+</modus-wc-icon>
     `;
   },
 };

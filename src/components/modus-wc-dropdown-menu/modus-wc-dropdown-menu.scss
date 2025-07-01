@@ -1,0 +1,13 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+modus-wc-dropdown-menu.modus-wc-dropdown-menu {
+  .menu-wrapper {
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: max-content;
+  }
+}

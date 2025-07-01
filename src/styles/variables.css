@@ -79,6 +79,11 @@
   --modus-wc-line-height-lg: 2rem;
   --modus-wc-line-height-xl: 3rem;
 
+  --modus-wc-line-height-h6: 1.125rem; /* 18px */
+  --modus-wc-line-height-h3: 1.6875rem; /* 27px */
+  --modus-wc-line-height-h2: 1.875rem; /* 30px */
+  --modus-wc-line-height-h1: 2.25rem; /* 36px */
+
   /* Font Family */
   --modus-wc-font-family:
     'Open Sans', 'Segoe UI', 'Noto Sans', 'San Francisco', 'Helvetica', 'Arial',

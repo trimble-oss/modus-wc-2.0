@@ -19,3 +19,11 @@ modus-wc-icon .modus-icons {
     font-size: 4rem;
   }
 }
+
+modus-wc-icon {
+  // Generic icon font support for all icon libraries
+  i::before,
+  i::after {
+    font-family: inherit !important;
+  }
+}

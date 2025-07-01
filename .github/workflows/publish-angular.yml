@@ -15,6 +15,7 @@ on:
 permissions:
   contents: write
   actions: write
+  packages: write
 
 jobs:
   build-and-publish-angular:
@@ -102,15 +103,11 @@ jobs:
       - name: Publish distribution
         run: npm publish *.tgz
 
-      - run: rm -f $(find . -name '*.tgz')
-
       - name: Set GitHub Registry Auth Token
         run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish npm Package to GitHub Registry
-        run: npm publish --access public --ignore-scripts --@trimble-oss:registry='https://npm.pkg.github.com'
-        # TODO: remove once we configure this repo's permissions
-        continue-on-error: true
+        run: npm publish *.tgz --registry=https://npm.pkg.github.com --access public --ignore-scripts
 
   release-angular:
     needs: build-and-publish-angular
