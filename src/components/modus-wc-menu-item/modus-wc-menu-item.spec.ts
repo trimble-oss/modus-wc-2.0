@@ -19,12 +19,21 @@ describe('modus-wc-menu-item', () => {
               custom-class="test-class" 
               disabled="true" 
               label="Test label" 
-              start-icon="check" 
               selected="true" 
               size="lg" 
               sub-label="Test sub-label" 
               value="Test value"
             ></modus-wc-menu-item>`,
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with a start-icon slot', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem, ModusWcIcon],
+      html: `<modus-wc-menu-item label="Test label" value="Test value">
+              <modus-wc-icon slot="start-icon" name="check"></modus-wc-icon>
+            </modus-wc-menu-item>`,
     });
     expect(page.root).toMatchSnapshot();
   });
