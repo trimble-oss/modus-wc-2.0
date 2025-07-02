@@ -9,7 +9,6 @@ interface MenuItemArgs {
   'custom-class'?: string;
   disabled?: boolean;
   label: string;
-  'start-icon'?: string;
   selected?: boolean;
   size?: ModusSize;
   'sub-label'?: string;
@@ -52,7 +51,6 @@ const Template: Story = {
     custom-class=${ifDefined(args['custom-class'])}
     ?disabled=${args.disabled}
     label=${args.label}
-    start-icon=${ifDefined(args['start-icon'])}
     ?selected=${args.selected}
     size=${args.size}
     sub-label=${ifDefined(args['sub-label'])}
@@ -64,3 +62,29 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const WithIcon: Story = {
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-menu>
+  <modus-wc-menu-item
+    ?bordered=${args.bordered}
+    custom-class=${ifDefined(args['custom-class'])}
+    ?disabled=${args.disabled}
+    label=${args.label}
+    ?selected=${args.selected}
+    size=${args.size}
+    sub-label=${ifDefined(args['sub-label'])}
+    value=${args.value}
+  >
+    <modus-wc-icon
+      slot="start-icon"
+      name="alert"
+      size="sm"
+    ></modus-wc-icon>
+  </modus-wc-menu-item>
+</modus-wc-menu>
+    `;
+  },
+};
