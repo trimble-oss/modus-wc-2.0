@@ -113,14 +113,7 @@ export class ModusWcMenuItem {
             type="button"
           >
             <div class="modus-wc-menu-item-content">
-              {this.startIcon && (
-                <modus-wc-icon
-                  customClass="modus-wc-menu-item-start-icon"
-                  decorative={true}
-                  name={this.startIcon}
-                  size={this.getIconSize()}
-                />
-              )}
+              <slot name="start-icon"></slot>
               <div class="modus-wc-menu-item-labels">
                 <div>{this.label}</div>
                 {this.subLabel && (

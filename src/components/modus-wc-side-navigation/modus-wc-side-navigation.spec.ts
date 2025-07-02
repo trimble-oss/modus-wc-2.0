@@ -128,4 +128,81 @@ describe('modus-wc-side-navigation', () => {
     instance.handleClickOutside(new MouseEvent('click'));
     expect(instance.expanded).toBe(true);
   });
+
+  it('should not set margin if mode or targetContent change without expanded changing', async () => {
+    // Set up DOM content element
+    const contentElement = document.createElement('div');
+    contentElement.setAttribute('id', 'main-content');
+    document.body.appendChild(contentElement);
+
+    const page = await newSpecPage({
+      components: [ModusWcSideNavigation],
+      html: `<div>
+          <modus-wc-side-navigation mode="overlay" target-content=".main-content"></modus-wc-side-navigation>
+          <div class="main-content"></div>
+        </div>`,
+    });
+
+    const component = page.rootInstance;
+    const content = document.querySelector('.main-content') as HTMLElement;
+
+    // Initial: collapsed
+    expect(component.expanded).toBe(false);
+    expect(page.root).toMatchSnapshot();
+
+    // Update mode and targetContent — nothing should change
+    component.mode = 'push';
+    component.targetContent = '.main-content';
+    await page.waitForChanges();
+
+    expect(content.style.marginLeft).toBe('4rem'); // Default minWidth is 4rem when not expanded
+
+    // Now expand — margin should be applied;
+    component.expanded = true;
+    await page.waitForChanges();
+    expect(content.style.marginLeft).toBe(component.maxWidth);
+  });
+
+  it('should set marginLeft to minWidth when collapsed', async () => {
+    const contentElement = document.createElement('div');
+    contentElement.setAttribute('id', 'main-content');
+    document.body.appendChild(contentElement);
+
+    const page = await newSpecPage({
+      components: [ModusWcSideNavigation],
+      html: `<div>
+          <modus-wc-side-navigation mode="push" target-content="#main-content" min-width="60px" max-width="240px"></modus-wc-side-navigation>
+          <div id="main-content"></div>
+        </div>`,
+    });
+
+    const component = page.rootInstance;
+    const content = document.querySelector('#main-content') as HTMLElement;
+
+    component.expanded = true;
+    await page.waitForChanges();
+    expect(content.style.marginLeft).toBe('240px');
+
+    component.expanded = false;
+    await page.waitForChanges();
+    expect(content.style.marginLeft).toBe('4rem');
+  });
+
+  it('calls setTargetContentMargin when targetContent changes via handleTargetContentChange', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSideNavigation],
+      html: '<modus-wc-side-navigation></modus-wc-side-navigation>',
+    });
+    const instance = page.rootInstance;
+    instance.setTargetContentMargin = jest.fn();
+    instance.expanded = true;
+    instance.mode = 'push';
+    const newTarget = '.new-content';
+    instance.handleTargetContentChange(newTarget);
+    expect(instance.setTargetContentMargin).toHaveBeenCalledWith(
+      true,
+      'push',
+      newTarget
+    );
+  });
 });
