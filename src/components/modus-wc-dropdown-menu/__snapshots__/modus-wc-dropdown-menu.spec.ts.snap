@@ -59,7 +59,9 @@ exports[`modus-wc-dropdown-menu should render with menu items 1`] = `
       <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
         <div slot="menu">
           <modus-wc-menu-item label="Item One" value="1">
-            <modus-wc-menu-item label="Item Two" value="2">
+            <!---->
+            <modus-wc-menu-item hidden="" label="Item Two" value="2">
+              <!---->
               <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
                 <button type="button">
                   <div class="modus-wc-menu-item-content">
