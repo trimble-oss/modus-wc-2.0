@@ -3802,6 +3802,28 @@
             },
             {
               "kind": "method",
+              "name": "handleExpandedChange"
+            },
+            {
+              "kind": "method",
+              "name": "handleModeChange",
+              "parameters": [
+                {
+                  "name": "mode"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleTargetContentChange",
+              "parameters": [
+                {
+                  "name": "target"
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -3832,10 +3854,37 @@
               "fieldName": "maxWidth",
               "default": "'256px'",
               "description": "Maximum width of the side navigation panel in an expanded state."
+            },
+            {
+              "name": "mode",
+              "fieldName": "mode",
+              "default": "'overlay'",
+              "description": "Mode to make side navigation either overlay or push the content for the selector specified in targetContent",
+              "type": {
+                "text": "'overlay' | 'push'"
+              }
+            },
+            {
+              "name": "target-content",
+              "fieldName": "targetContent",
+              "default": "''",
+              "description": "(optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode.",
+              "type": {
+                "text": "string"
+              }
             }
           ],
           "tagName": "modus-wc-side-navigation",
-          "events": [],
+          "events": [
+            {
+              "kind": "field",
+              "name": "expandedChange",
+              "type": {
+                "text": "EventEmitter<boolean>"
+              },
+              "description": "Event emitted when the expanded state changes (expanded/collapsed)."
+            }
+          ],
           "customElement": true
         }
       ],

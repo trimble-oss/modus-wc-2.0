@@ -1,4 +1,13 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+  Event as StencilEvent,
+  Watch,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-side-navigation.tailwind';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -29,6 +38,31 @@ export class ModusWcSideNavigation {
 
   /** Maximum width of the side navigation panel in an expanded state. */
   @Prop() maxWidth = '256px';
+
+  /** Mode to make side navigation either overlay or push the content for the selector specified in targetContent */
+  @Prop() mode: 'overlay' | 'push' = 'overlay';
+
+  /** (optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode. */
+  @Prop() targetContent: string = '';
+
+  /** Event emitted when the expanded state changes (expanded/collapsed). */
+  @StencilEvent() expandedChange!: EventEmitter<boolean>;
+
+  @Watch('expanded')
+  handleExpandedChange() {
+    this.setTargetContentMargin(this.expanded, this.mode, this.targetContent);
+    this.expandedChange.emit(this.expanded);
+  }
+
+  @Watch('mode')
+  handleModeChange(mode) {
+    this.setTargetContentMargin(this.expanded, mode, this.targetContent);
+  }
+
+  @Watch('targetContent')
+  handleTargetContentChange(target) {
+    this.setTargetContentMargin(this.expanded, this.mode, target);
+  }
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -66,6 +100,14 @@ export class ModusWcSideNavigation {
       this.expanded = false;
     }
   };
+
+  private setTargetContentMargin(isExpanded, mode, target) {
+    const content = document.querySelector(target);
+    if (content && 'style' in content) {
+      (content as HTMLElement).style.marginLeft =
+        isExpanded && mode === 'push' ? this.maxWidth : this.minWidth;
+    }
+  }
 
   render() {
     return (
