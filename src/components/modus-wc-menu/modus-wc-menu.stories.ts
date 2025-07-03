@@ -80,8 +80,9 @@ export const Default: Story = {
   <modus-wc-menu-item
     label="With Start Icon"
     value="3"
-    start-icon="info"
-  ></modus-wc-menu-item>
+  >
+    <modus-wc-icon slot="start-icon" name="info"></modus-wc-icon>
+  </modus-wc-menu-item>
   <modus-wc-menu-item
     label="Disabled"
     value="3"
