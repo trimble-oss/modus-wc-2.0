@@ -153,20 +153,13 @@ export const Default: Story = {
             target-content=${ifDefined(args['target-content'])}
           >
             <modus-wc-menu size="lg">
-              <modus-wc-menu-item
-                label="home"
-                selected
-              >
+              <modus-wc-menu-item label="home" selected>
                 <modus-wc-icon slot="start-icon" name="home"></modus-wc-icon>
               </modus-wc-menu-item>
-              <modus-wc-menu-item
-                label="profile"
-              >
+              <modus-wc-menu-item label="profile">
                 <modus-wc-icon slot="start-icon" name="person"></modus-wc-icon>
               </modus-wc-menu-item>
-              <modus-wc-menu-item
-                label="settings"
-              >
+              <modus-wc-menu-item label="settings">
                 <modus-wc-icon slot="start-icon" name="gears"></modus-wc-icon>
               </modus-wc-menu-item>
             </modus-wc-menu>
