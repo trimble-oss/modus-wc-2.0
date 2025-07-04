@@ -17,12 +17,7 @@ modus-wc-side-navigation {
     overflow-y: auto;
     position: absolute;
     transition: width 0.2s ease-out;
-    width: 4rem;
     z-index: 999;
-
-    &.expanded {
-      width: 256px;
-    }
   }
 
   .side-navigation-content {

@@ -1120,6 +1120,14 @@ export namespace Components {
           * Maximum width of the side navigation panel in an expanded state.
          */
         "maxWidth": string;
+        /**
+          * Mode to make side navigation either overlay or push the content for the selector specified in targetContent
+         */
+        "mode": 'overlay' | 'push';
+        /**
+          * (optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode.
+         */
+        "targetContent": string;
     }
     /**
      * A customizable skeleton component used to create skeletons of various sizes and shapes
@@ -1786,6 +1794,10 @@ export interface ModusWcSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSelectElement;
 }
+export interface ModusWcSideNavigationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcSideNavigationElement;
+}
 export interface ModusWcSliderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSliderElement;
@@ -2316,10 +2328,21 @@ declare global {
         prototype: HTMLModusWcSelectElement;
         new (): HTMLModusWcSelectElement;
     };
+    interface HTMLModusWcSideNavigationElementEventMap {
+        "expandedChange": boolean;
+    }
     /**
      * A customizable side navigation component for organizing primary navigation and content areas in an application.
      */
     interface HTMLModusWcSideNavigationElement extends Components.ModusWcSideNavigation, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcSideNavigationElementEventMap>(type: K, listener: (this: HTMLModusWcSideNavigationElement, ev: ModusWcSideNavigationCustomEvent<HTMLModusWcSideNavigationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcSideNavigationElementEventMap>(type: K, listener: (this: HTMLModusWcSideNavigationElement, ev: ModusWcSideNavigationCustomEvent<HTMLModusWcSideNavigationElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcSideNavigationElement: {
         prototype: HTMLModusWcSideNavigationElement;
@@ -3895,6 +3918,18 @@ declare namespace LocalJSX {
           * Maximum width of the side navigation panel in an expanded state.
          */
         "maxWidth"?: string;
+        /**
+          * Mode to make side navigation either overlay or push the content for the selector specified in targetContent
+         */
+        "mode"?: 'overlay' | 'push';
+        /**
+          * Event emitted when the expanded state changes (expanded/collapsed).
+         */
+        "onExpandedChange"?: (event: ModusWcSideNavigationCustomEvent<boolean>) => void;
+        /**
+          * (optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode.
+         */
+        "targetContent"?: string;
     }
     /**
      * A customizable skeleton component used to create skeletons of various sizes and shapes

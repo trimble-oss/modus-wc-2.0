@@ -223,7 +223,7 @@ const Template: Story = {
 
       if (autocomplete) {
         const input = e.detail.target as HTMLInputElement;
-        const searchText = input.value.toLowerCase();
+        const searchText = input.value?.toLowerCase() ?? '';
 
         args.items = args.items.map((item) => ({
           ...item,

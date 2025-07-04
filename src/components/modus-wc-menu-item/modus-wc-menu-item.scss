@@ -14,7 +14,7 @@ modus-wc-menu-item .modus-wc-menu-item {
       display: flex;
       width: 100%;
 
-      .modus-wc-menu-item-start-icon {
+      [slot='start-icon'] {
         padding-inline-end: var(--modus-wc-spacing-lg);
       }
 
