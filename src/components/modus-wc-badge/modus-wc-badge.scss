@@ -16,7 +16,7 @@ modus-wc-badge .modus-wc-badge {
   }
 
   // Colors
-  &.modus-wc-badge-high-contrast:not(.modus-wc-badge-outlined) {
+  &.modus-wc-badge-high-contrast {
     background-color: var(--modus-wc-color-black);
     border-color: var(--modus-wc-color-base-content);
     color: var(--modus-wc-color-white);
@@ -82,6 +82,7 @@ modus-wc-badge .modus-wc-badge {
 
     &.modus-wc-badge-high-contrast {
       border-color: var(--modus-wc-color-base-content);
+      color: var(--modus-wc-color-base-content);
     }
 
     &.modus-wc-badge-success {
