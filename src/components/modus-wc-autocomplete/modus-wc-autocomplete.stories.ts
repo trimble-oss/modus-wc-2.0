@@ -236,6 +236,12 @@ export const MultiSelect: Story = {
     }
 
     return html`
+      <script>
+        // Initialize args.items if empty
+        if (!args.items || args.items.length === 0) {
+          args.items = [...items];
+        }
+      </script>
       <style>
         .modus-wc-autocomplete-multi-select {
           width: 400px !important;
@@ -271,6 +277,8 @@ export const MultiSelect: Story = {
 
 export const WithSpinner: Story = {
   render: (args) => {
+    let debounceTimer: number;
+
     const handleInputChange = (e: CustomEvent<Event>) => {
       if (!e.detail?.target) return;
 
@@ -286,24 +294,69 @@ export const WithSpinner: Story = {
         const input = e.detail.target as HTMLInputElement;
         const searchText = input.value.toLowerCase();
 
-        // Show spinner immediately to simulate API call
+        // Clear previous timeout to avoid multiple API calls
+        if (debounceTimer) {
+          window.clearTimeout(debounceTimer);
+        }
+
+        // Show spinner immediately and update input value
         autocomplete.showSpinner = true;
-        autocomplete.value = input.value;
 
-        // Simulate API call delay - filter results after 2 seconds
-        setTimeout(() => {
-          const updatedItems = items.map((item) => ({
-            ...item,
-            visibleInMenu: item.label.toLowerCase().includes(searchText),
-          }));
+        // Simulate an API call with a 2-second delay
+        debounceTimer = window.setTimeout(() => {
+          // Filter the master list of items to get the new results
+          const filteredItems = items.filter((item) =>
+            item.label.toLowerCase().includes(searchText)
+          );
 
-          autocomplete.items = [...updatedItems];
+          // Update the component with the new filtered list and hide the spinner
+          autocomplete.items = filteredItems;
           autocomplete.showSpinner = false;
         }, 2000);
       }
     };
 
     return html`
+      <script>
+              let debounceTimer: number;
+
+        const handleInputChange = (e: CustomEvent<Event>) => {
+          if (!e.detail?.target) return;
+
+          const autocomplete = (e.target as HTMLInputElement).closest(
+            'modus-wc-autocomplete'
+          ) as Element & {
+            items: IAutocompleteItem[];
+            showSpinner: boolean;
+            value: string;
+          };
+
+          if (autocomplete) {
+            const input = e.detail.target as HTMLInputElement;
+            const searchText = input.value.toLowerCase();
+
+            // Clear previous timeout to avoid multiple API calls
+            if (debounceTimer) {
+              window.clearTimeout(debounceTimer);
+            }
+
+            // Show spinner immediately and update input value
+            autocomplete.showSpinner = true;
+
+            // Simulate an API call with a 2-second delay
+            debounceTimer = window.setTimeout(() => {
+              // Filter the master list of items to get the new results
+              const filteredItems = items.filter((item) =>
+                item.label.toLowerCase().includes(searchText)
+              );
+
+              // Update the component with the new filtered list and hide the spinner
+              autocomplete.items = filteredItems;
+              autocomplete.showSpinner = false;
+            }, 2000);
+          }
+        };
+      </script>
       <style>
         div[id^='story--components-forms-autocomplete--with-spinner'] {
           height: 400px;
@@ -403,6 +456,71 @@ export const CustomMenuItems: Story = {
     };
 
     return html`
+      <script>
+             const originalNoResults = args['no-results'];
+        if (args['leave-menu-open'] == true) {
+          args['no-results'] = {
+            ariaLabel: '',
+            label: '',
+            subLabel: '',
+          };
+        }
+
+        const handleInputChange = (e) => {
+          if (!e.detail?.target) return;
+
+          const autocomplete = (e.target as HTMLInputElement).closest(
+            'modus-wc-autocomplete'
+          ) as Element & { noResults: IAutocompleteNoResults };
+
+          if (autocomplete) {
+            const searchText = (
+              e.detail.target as HTMLInputElement
+            ).value.toLowerCase();
+            const allLiItems = autocomplete?.querySelectorAll('li');
+
+            if (searchText === '') {
+              allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
+            }
+
+            let hiddenCount = 0;
+            Array.from(allLiItems ?? []).forEach((menuItem) => {
+              const label =
+                menuItem.querySelector('.title')?.textContent?.toLowerCase() || '';
+              if (!label.includes(searchText)) {
+                menuItem.classList.add('hidden');
+                hiddenCount++;
+              } else {
+                menuItem.classList.remove('hidden');
+              }
+            });
+
+            // Show no results if all items are hidden
+            autocomplete.noResults =
+              hiddenCount === allLiItems?.length
+                ? originalNoResults
+                : { ariaLabel: '', label: '', subLabel: '' };
+          }
+        };
+
+        const handleItemSelect = (e) => {
+          const autocomplete = (e.target as HTMLInputElement).closest(
+            'modus-wc-autocomplete'
+          );
+
+          if (autocomplete) {
+            const allLiItems = autocomplete?.querySelectorAll('li');
+            allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
+
+            const clickedItem = (e.target as HTMLElement).closest('li');
+            if (clickedItem) {
+              clickedItem.classList.add('selected');
+              autocomplete.value = clickedItem.querySelector('.title')
+                ?.textContent as string;
+            }
+          }
+        };
+      </script>
       <style>
         div[id^='story--components-forms-autocomplete--custom-menu-items'] {
           height: 400px;
@@ -518,7 +636,8 @@ export const CustomMenuItems: Story = {
             </div>
           </li>
         </div>
-      </modus-wc-autocomplete>
+        ></modus-wc-autocomplete
+      >
     `;
   },
 };
