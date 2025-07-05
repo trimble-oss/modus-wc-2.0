@@ -6,6 +6,7 @@ import {
   h,
   Host,
   Listen,
+  Method,
   Prop,
   State,
   Event as StencilEvent,
@@ -48,13 +49,18 @@ export interface IAutocompleteNoResults {
   shadow: false,
 })
 export class ModusWcAutocomplete {
+  @State() private menuVisible: boolean = false;
+  @State() private isChipsExpanded: boolean = false;
+  @State() private initialNavigation: boolean = true;
+  @State() private filteredItems: IAutocompleteItem[] = [];
+  @State() private isFocused: boolean = false;
+  @State() private selectionOrder: string[] = []; // Track order of chip selection
+
   private debounceTimer?: number;
   private inheritedAttributes: Attributes = {};
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
-
-  @State() private menuVisible: boolean = false;
 
   /** Indicates that the autocomplete should have a border. */
   @Prop() bordered?: boolean = true;
@@ -132,8 +138,29 @@ export class ModusWcAutocomplete {
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
+  /** Maximum number of chips to display. When exceeded, shows expand/collapse button. Set to -1 to disable limit. */
+  @Prop() maxChips?: number = -1;
+
+  /** Custom item selection handler - if provided, overrides default selection logic */
+  @Prop() customItemSelect?: (item: IAutocompleteItem) => void;
+
+  /** Custom input change handler - if provided, overrides default search filtering */
+  @Prop() customInputChange?: (value: string) => void;
+
+  /** Custom key down handler - if provided, overrides default keyboard navigation */
+  @Prop() customKeyDown?: (event: KeyboardEvent) => void;
+
+  /** Custom blur handler - if provided, overrides default blur behavior */
+  @Prop() customBlur?: (event: FocusEvent) => void;
+
+  /** Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead. */
+  @Prop() minInputWidth?: number = 60;
+
   /** Event emitted when a selected item chip is removed. */
   @StencilEvent() chipRemove!: EventEmitter<IAutocompleteItem>;
+
+  /** Event emitted when chips expansion state changes. */
+  @StencilEvent() chipsExpansionChange!: EventEmitter<{ expanded: boolean }>;
 
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
@@ -154,17 +181,15 @@ export class ModusWcAutocomplete {
   @Watch('readOnly')
   handleMenuVisibilityChange() {
     if (this.disabled || this.readOnly) {
-      this.menuVisible = false; // Close the menu immediately
+      this.menuVisible = false;
     }
   }
 
-  // istanbul ignore next - TODO
-  disconnectedCallback() {
-    // Clean up any existing debounce timer when component is destroyed
-    if (this.debounceTimer) {
-      window.clearTimeout(this.debounceTimer);
+  @Watch('items')
+  handleItemsChange() {
+    if (this.items) {
+      this.filteredItems = [...this.items];
     }
-    document.removeEventListener('click', this.handleOutsideClick);
   }
 
   componentWillLoad() {
@@ -174,12 +199,27 @@ export class ModusWcAutocomplete {
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
     document.addEventListener('click', this.handleOutsideClick);
+
+    if (this.items) {
+      this.filteredItems = [...this.items];
+
+      // Initialize selection order for pre-selected items
+      this.selectionOrder = this.items
+        .filter((item) => item.selected)
+        .map((item) => item.value);
+    }
+  }
+
+  disconnectedCallback() {
+    if (this.debounceTimer) {
+      window.clearTimeout(this.debounceTimer);
+    }
+    document.removeEventListener('click', this.handleOutsideClick);
   }
 
   private getClasses(): string {
     const classList: string[] = ['modus-wc-autocomplete'];
 
-    // The order CSS classes are added matters to CSS specificity
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
@@ -188,6 +228,15 @@ export class ModusWcAutocomplete {
   private getMultiSelectClasses(): string {
     return [
       'modus-wc-autocomplete-multi-select',
+      'modus-wc-input',
+      'modus-wc-w-full',
+      'modus-wc-flex',
+      'modus-wc-items-center',
+      'modus-wc-gap-1',
+      this.bordered && 'modus-wc-input-bordered',
+      this.disabled && 'modus-wc-input-disabled',
+      this.readOnly && 'modus-wc-text-input--readonly',
+      this.size && `modus-wc-input-${this.size}`,
       this.bordered && 'modus-wc-autocomplete-multi-select--bordered',
       this.disabled && 'modus-wc-autocomplete-multi-select--disabled',
       this.readOnly && 'modus-wc-autocomplete-multi-select--readonly',
@@ -197,29 +246,41 @@ export class ModusWcAutocomplete {
   }
 
   private handleBlur = (event: CustomEvent<FocusEvent>) => {
-    // Stop text input blur event from bubbling up
+    if (this.customBlur) {
+      this.customBlur(event.detail);
+      return;
+    }
+
     event.stopPropagation();
 
-    // Hide menu after a short delay to allow for item selection
-    // istanbul ignore next - TODO
+    this.initialNavigation = true;
+    if (this.items) {
+      this.items = [
+        ...this.items.map((item) => ({
+          ...item,
+          focused: false,
+        })),
+      ];
+      // Sync filtered items from updated items (maintains current search filter)
+      this.syncFilteredItems();
+    }
+
     setTimeout(() => {
       const relatedTarget = event.detail.relatedTarget as HTMLElement;
 
-      // Only emit blur if focus is moving completely outside the autocomplete widget
-      // If focus stays within the component (input -> menu item), don't emit blur
       if (!relatedTarget || !this.el.contains(relatedTarget)) {
+        this.isFocused = false;
+        this.isChipsExpanded = false; // Reset expansion when losing focus
         this.menuVisible = false;
         this.inputBlur.emit(event.detail);
       }
     }, 200);
   };
 
-  // istanbul ignore next - TODO
   private handleMenuFocusout = (event: CustomEvent<FocusEvent>) => {
     setTimeout(() => {
       const relatedTarget = event.detail.relatedTarget as HTMLElement;
 
-      // Only emit blur if focus is moving completely outside the autocomplete widget
       if (!relatedTarget || !this.el.contains(relatedTarget)) {
         this.menuVisible = false;
         this.inputBlur.emit(event.detail);
@@ -228,31 +289,49 @@ export class ModusWcAutocomplete {
   };
 
   private handleChange = (event: CustomEvent<Event>) => {
-    const value = (event.detail.target as HTMLInputElement).value;
+    if (this.customInputChange) {
+      const value = (event.detail.target as HTMLInputElement).value;
+      this.customInputChange(value);
+      return;
+    }
 
-    // Show menu based on either showMenuOnFocus prop or minimum character threshold
+    if (!event.detail?.target) return;
+
+    const input = event.detail.target as HTMLInputElement;
     if (this.showMenuOnFocus) {
       this.menuVisible = true;
     } else {
-      // istanbul ignore next
-      this.menuVisible = value?.length >= this.minChars;
+      this.menuVisible = input.value?.length >= this.minChars;
     }
 
-    // Clear any existing timer
-    // istanbul ignore next - TODO
+    if (this.items) {
+      // Clear focus from all items in master list
+      this.items = [
+        ...this.items.map((item) => ({
+          ...item,
+          focused: false,
+        })),
+      ];
+
+      this.value = input.value;
+
+      // Sync filtered items based on new search value
+      this.syncFilteredItems();
+
+      if (this.value) {
+        this.initialNavigation = false;
+      }
+    }
+
     if (this.debounceTimer) {
       window.clearTimeout(this.debounceTimer);
     }
 
-    // If debouncing is disabled, emit immediately
-    // istanbul ignore next - TODO
     if (!this.debounceMs) {
       this.inputChange.emit(event.detail);
       return;
     }
 
-    // Set up new debounce timer
-    // istanbul ignore next - TODO
     this.debounceTimer = window.setTimeout(() => {
       this.inputChange.emit(event.detail);
     }, this.debounceMs);
@@ -260,53 +339,91 @@ export class ModusWcAutocomplete {
 
   @Listen('keydown')
   handleKeyDown(event: KeyboardEvent) {
+    if (this.customKeyDown) {
+      this.customKeyDown(event);
+      return;
+    }
+
     if (!(event.target instanceof HTMLInputElement)) return;
 
     const input = event.target;
 
-    switch (event.key) {
-      case KEY.ArrowDown:
-        event.preventDefault();
+    if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {
+      event.preventDefault();
+    }
 
-        // Show menu based on either showMenuOnFocus prop or minimum character threshold
+    const visibleItems = this.getVisibleItems();
+
+    switch (event.key) {
+      case KEY.ArrowDown: {
         if (this.showMenuOnFocus || input.value.length >= this.minChars) {
           this.menuVisible = true;
         }
 
-        break;
-
-      case KEY.Backspace:
-        if (this.multiSelect && input.value.length === 0) {
-          let selectedItems: IAutocompleteItem[] = [];
-
-          if (this.items) {
-            selectedItems = this.items.filter((item) => item.selected);
-          }
-
-          const lastSelectedItem = selectedItems[selectedItems.length - 1];
-
-          if (lastSelectedItem) {
-            this.chipRemove.emit(lastSelectedItem);
-          }
+        if (this.initialNavigation) {
+          this.initialNavigation = false;
+          return;
         }
 
-        break;
+        const currentIndex = visibleItems.findIndex((item) => item.focused);
+        const nextIndex =
+          currentIndex < 0
+            ? 0
+            : Math.min(currentIndex + 1, visibleItems.length - 1);
 
-      case KEY.Escape:
-        event.preventDefault();
+        if (visibleItems[nextIndex]) {
+          this.updateItemFocus(visibleItems[nextIndex].value);
+        }
+        break;
+      }
+
+      case KEY.ArrowUp: {
+        if (this.initialNavigation) {
+          this.initialNavigation = false;
+          return;
+        }
+
+        const currentIndex = visibleItems.findIndex((item) => item.focused);
+        const prevIndex =
+          currentIndex < 0
+            ? visibleItems.length - 1
+            : Math.max(currentIndex - 1, 0);
+
+        if (visibleItems[prevIndex]) {
+          this.updateItemFocus(visibleItems[prevIndex].value);
+        }
+        break;
+      }
+
+      case KEY.Escape: {
+        this.clearAllFocus();
+        this.initialNavigation = true;
         this.menuVisible = false;
         break;
+      }
 
-      case KEY.Enter:
-        event.preventDefault();
+      case KEY.Enter: {
+        const focusedItem = visibleItems.find((item) => item.focused);
 
-        if (this.multiSelect) {
-          let selectedItems: IAutocompleteItem[] = [];
-
-          if (this.items) {
-            selectedItems = this.items.filter((item) => item.selected);
+        if (focusedItem) {
+          if (this.multiSelect) {
+            this.updateItemSelection(focusedItem.value, !focusedItem.selected);
+            this.value = '';
+          } else {
+            this.updateItemSelection(focusedItem.value, true);
+            this.value = focusedItem.label;
           }
 
+          this.clearAllFocus();
+          this.initialNavigation = true;
+          this.itemSelect.emit(focusedItem);
+
+          if (!this.leaveMenuOpen) {
+            this.menuVisible = false;
+          }
+        } else if (this.multiSelect) {
+          const selectedItems =
+            this.items?.filter((item) => item.selected) || [];
           const lastSelectedItem = selectedItems[selectedItems.length - 1];
 
           if (lastSelectedItem) {
@@ -318,17 +435,33 @@ export class ModusWcAutocomplete {
             this.itemSelect.emit(selectedItem);
           }
         }
-
-        if (this.menuVisible && !this.leaveMenuOpen) {
-          // Don't call input.blur() here as it will trigger unwanted blur events
-          this.menuVisible = false;
-        }
-
         break;
+      }
+
+      case KEY.Backspace: {
+        if (this.multiSelect && input.value.length === 0) {
+          // Get the last selected chip in selection order
+          if (this.selectionOrder.length > 0) {
+            const lastSelectedValue =
+              this.selectionOrder[this.selectionOrder.length - 1];
+            const lastSelectedItem = this.items?.find(
+              (item) => item.value === lastSelectedValue
+            );
+
+            if (lastSelectedItem) {
+              // Remove the chip internally
+              this.handleChipRemove(lastSelectedItem);
+            }
+          }
+        }
+        break;
+      }
     }
   }
 
   private handleFocus = (event: CustomEvent<FocusEvent>) => {
+    this.isFocused = true;
+
     if (this.showMenuOnFocus) {
       this.menuVisible = true;
     }
@@ -336,23 +469,187 @@ export class ModusWcAutocomplete {
     this.inputFocus.emit(event.detail);
   };
 
-  // TODO - add code coverage once autocomplete is updated
-  // istanbul ignore next
-  private handleItemSelect = (item: IAutocompleteItem) => {
+  /**
+   * Programmatically select an item
+   */
+  @Method()
+  async selectItem(item: IAutocompleteItem | null) {
+    if (item) {
+      this.handleItemSelect(item);
+    } else {
+      this.selectionOrder = []; // Clear selection order
+      if (this.items) {
+        this.items = [
+          ...this.items.map((menuItem) => ({
+            ...menuItem,
+            selected: false,
+          })),
+        ];
+      }
+      this.value = '';
+    }
+    return Promise.resolve();
+  }
+
+  /**
+   * Programmatically open the menu
+   */
+  @Method()
+  async openMenu() {
+    this.menuVisible = true;
+    return Promise.resolve();
+  }
+
+  /**
+   * Programmatically close the menu
+   */
+  @Method()
+  async closeMenu() {
+    this.menuVisible = false;
+    return Promise.resolve();
+  }
+
+  /**
+   * Programmatically toggle the menu open/closed
+   */
+  @Method()
+  async toggleMenu() {
+    this.menuVisible = !this.menuVisible;
+    return Promise.resolve();
+  }
+
+  /**
+   * Programmatically set focus to input
+   */
+  @Method()
+  async focusInput() {
+    const inputElement = this.el.querySelector('input');
+    if (inputElement) {
+      inputElement.focus();
+    }
+    return Promise.resolve();
+  }
+
+  /**
+   * Clear the input value and reset items
+   */
+  @Method()
+  async clearInput() {
+    this.value = '';
+    this.selectionOrder = []; // Clear selection order
+    if (this.items) {
+      this.items = [
+        ...this.items.map((item) => ({
+          ...item,
+          selected: false, // Explicitly clear all selections
+        })),
+      ];
+      this.filteredItems = [...this.items];
+    }
+    return Promise.resolve();
+  }
+
+  private handleItemSelectByValue = (value: string) => {
     if (this.disabled || this.readOnly) return;
 
-    this.menuVisible = !!this.leaveMenuOpen;
+    const currentItem = this.items?.find((item) => item.value === value);
+    if (!currentItem) return;
+
+    this.handleItemSelect(currentItem);
+  };
+
+  private handleItemSelect = (item: IAutocompleteItem) => {
+    if (this.disabled || this.readOnly || !this.items) return;
+
+    if (this.customItemSelect) {
+      this.customItemSelect(item);
+      return;
+    }
+
+    if (this.multiSelect) {
+      this.value = '';
+
+      const currentItem = this.items.find(
+        (menuItem) => menuItem.value === item.value
+      );
+      const isCurrentlySelected = currentItem?.selected || false;
+      this.items = [
+        ...this.items.map((menuItem) => ({
+          ...menuItem,
+          selected:
+            menuItem.value === item.value
+              ? !menuItem.selected
+              : menuItem.selected,
+          focused: false,
+        })),
+      ];
+
+      // Update selection order
+      if (isCurrentlySelected) {
+        // Remove from selection order if deselecting
+        this.selectionOrder = this.selectionOrder.filter(
+          (value) => value !== item.value
+        );
+      } else {
+        // Add to end of selection order if selecting
+        this.selectionOrder = [...this.selectionOrder, item.value];
+      }
+
+      // Sync filtered items from updated items (maintains current search filter)
+      this.syncFilteredItems();
+    } else {
+      this.items = [
+        ...this.items.map((menuItem) => ({
+          ...menuItem,
+          selected: menuItem.value === item.value,
+          focused: false,
+        })),
+      ];
+      this.value = item.label;
+
+      // Sync filtered items from updated items
+      this.syncFilteredItems();
+    }
+
+    this.initialNavigation = true;
+
+    if (!this.leaveMenuOpen) {
+      this.menuVisible = false;
+    }
+
     this.itemSelect.emit(item);
   };
 
-  // TODO - add code coverage once chip component is implemented
-  // istanbul ignore next
   private handleChipRemove = (item: IAutocompleteItem) => {
     if (this.disabled || this.readOnly) {
-      return; // Do nothing if the component is disabled
+      return;
     }
 
+    // Handle chip removal internally by default
+    if (this.items) {
+      this.items = [
+        ...this.items.map((menuItem) => ({
+          ...menuItem,
+          selected: menuItem.value === item.value ? false : menuItem.selected,
+        })),
+      ];
+
+      // Remove from selection order
+      this.selectionOrder = this.selectionOrder.filter(
+        (value) => value !== item.value
+      );
+
+      // Sync filtered items from updated items (maintains current search filter)
+      this.syncFilteredItems();
+    }
+
+    // Emit event for external handlers who want to know about the removal
     this.chipRemove.emit(item);
+  };
+
+  private toggleChipsExpansion = () => {
+    this.isChipsExpanded = !this.isChipsExpanded;
+    this.chipsExpansionChange.emit({ expanded: this.isChipsExpanded });
   };
 
   private renderNoResults() {
@@ -369,31 +666,192 @@ export class ModusWcAutocomplete {
 
   private handleOutsideClick = (event: MouseEvent) => {
     if (!this.el.contains(event.target as Node)) {
-      this.menuVisible = false; // Close menu if click is outside
+      this.menuVisible = false;
     }
   };
 
+  private getVisibleItems(): IAutocompleteItem[] {
+    return this.filteredItems?.filter((item) => !item.disabled) || [];
+  }
+
+  private syncFilteredItems(): void {
+    if (!this.items) {
+      this.filteredItems = [];
+      return;
+    }
+
+    const currentSearchText = this.value?.toLowerCase() || '';
+
+    if (currentSearchText === '') {
+      // When no search text, show all items
+      this.filteredItems = [...this.items];
+    } else {
+      // Filter items based on current search text
+      this.filteredItems = this.items.filter((item) =>
+        item.label.toLowerCase().includes(currentSearchText)
+      );
+    }
+  }
+
+  private updateItemFocus(targetValue: string): void {
+    if (!this.items) return;
+
+    this.items = [
+      ...this.items.map((item) => ({
+        ...item,
+        focused: item.value === targetValue,
+      })),
+    ];
+
+    // Sync filtered items from updated items
+    this.syncFilteredItems();
+  }
+
+  private clearAllFocus(): void {
+    if (!this.items) return;
+
+    this.items = [
+      ...this.items.map((item) => ({
+        ...item,
+        focused: false,
+      })),
+    ];
+
+    // Sync filtered items from updated items
+    this.syncFilteredItems();
+  }
+
+  private updateItemSelection(targetValue: string, selected: boolean): void {
+    if (!this.items) return;
+
+    if (this.multiSelect) {
+      this.items = [
+        ...this.items.map((item) => ({
+          ...item,
+          selected: item.value === targetValue ? selected : item.selected,
+        })),
+      ];
+    } else {
+      this.items = [
+        ...this.items.map((item) => ({
+          ...item,
+          selected: item.value === targetValue ? selected : false,
+        })),
+      ];
+    }
+
+    // Sync filtered items from updated items
+    this.syncFilteredItems();
+  }
+
   render() {
     const getChips = () => {
-      const selectedItems = this.items?.filter((item) => item.selected);
+      // Get selected items in selection order
+      const selectedItems = this.selectionOrder
+        .map((value) =>
+          this.items?.find((item) => item.value === value && item.selected)
+        )
+        .filter(Boolean) as IAutocompleteItem[];
 
-      // TODO - use chip component
-      // TODO - add code coverage once chip component is implemented
-      // istanbul ignore next
+      if (selectedItems.length === 0) {
+        return <Fragment></Fragment>;
+      }
+
+      // Chip display logic:
+      // - Not focused: show up to maxChips (compact view)
+      // - Focused but not expanded: show up to maxChips with expand button
+      // - Focused and expanded: show all chips with collapse button
+      const effectiveMaxChips =
+        (!this.isFocused || !this.isChipsExpanded) &&
+        this.maxChips &&
+        this.maxChips > 0
+          ? this.maxChips
+          : selectedItems.length;
+
+      const visibleItems = selectedItems.slice(0, effectiveMaxChips);
+
       return (
         <Fragment>
-          {selectedItems?.map((item) => (
+          {visibleItems.map((item) => (
             <modus-wc-chip
               aria-label="Remove item button"
               label={item.label}
               show-remove={true}
               size="sm"
               disabled={this.disabled || this.readOnly}
-              onChipRemove={() => this.handleChipRemove(item)}
+              onChipRemove={(event) => {
+                event.stopPropagation();
+                this.handleChipRemove(item);
+              }}
               variant="filled"
             ></modus-wc-chip>
           ))}
         </Fragment>
+      );
+    };
+
+    const getExpandCollapseButton = () => {
+      const selectedItemsCount = this.selectionOrder.length;
+
+      // Only show expand/collapse button when focused and there are more chips than maxChips
+      if (
+        !this.isFocused ||
+        !this.maxChips ||
+        this.maxChips <= 0 ||
+        selectedItemsCount <= this.maxChips
+      ) {
+        return null;
+      }
+
+      const remainingCount = selectedItemsCount - this.maxChips;
+
+      return (
+        <modus-wc-button
+          custom-class={`modus-wc-autocomplete-expand-button ${this.isChipsExpanded ? 'expanded' : ''}`}
+          onClick={this.toggleChipsExpansion}
+          variant="borderless"
+          color="secondary"
+          aria-label={
+            this.isChipsExpanded
+              ? 'Collapse chips'
+              : `Show ${remainingCount} more`
+          }
+          disabled={this.disabled || this.readOnly}
+          size="xs"
+          shape="circle"
+          type="button"
+        >
+          <modus-wc-icon
+            aria-label={
+              this.isChipsExpanded ? 'Collapse chips' : 'Expand chips'
+            }
+            name={this.isChipsExpanded ? 'caret_up' : 'caret_down'}
+            size="md"
+          />
+        </modus-wc-button>
+      );
+    };
+
+    const getMoreChipsIndicator = () => {
+      const selectedItemsCount = this.selectionOrder.length;
+
+      // Show "+N more" when there are more chips than maxChips and not expanded
+      if (!this.maxChips || this.maxChips <= 0 || this.isChipsExpanded) {
+        return null;
+      }
+
+      const remainingCount = selectedItemsCount - this.maxChips;
+
+      if (remainingCount <= 0) {
+        return null;
+      }
+
+      return (
+        <modus-wc-chip
+          label={`+${remainingCount}`}
+          size="sm"
+          variant="filled"
+        ></modus-wc-chip>
       );
     };
 
@@ -418,9 +876,6 @@ export class ModusWcAutocomplete {
       />
     );
 
-    // TODO - to improve flexibility, allow users to pass their own `<modus-wc-menu-item>` elements
-    // TODO - add code coverage once autocomplete is updated
-    // istanbul ignore next
     const getMenuItems = () => {
       if (this.showSpinner) {
         return (
@@ -433,7 +888,7 @@ export class ModusWcAutocomplete {
         );
       }
 
-      const menuItems = this.items?.filter((item) => item.visibleInMenu) || [];
+      const menuItems = this.filteredItems || this.items || [];
       const noResults =
         this.noResults?.label ||
         this.noResults?.subLabel ||
@@ -447,7 +902,7 @@ export class ModusWcAutocomplete {
                   disabled={item.disabled}
                   focused={item.focused}
                   label={item.label}
-                  onItemSelect={() => this.handleItemSelect(item)}
+                  onItemSelect={() => this.handleItemSelectByValue(item.value)}
                   selected={item.selected}
                   value={item.value}
                 />
@@ -457,8 +912,14 @@ export class ModusWcAutocomplete {
       );
     };
 
+    // Set CSS custom properties for dynamic min-width control
+    const minWidth = this.minInputWidth || 60;
+    const cssVariables = {
+      '--modus-autocomplete-min-input-width': `${minWidth}px`,
+    };
+
     return (
-      <Host class={this.getClasses()}>
+      <Host class={this.getClasses()} style={cssVariables}>
         {this.label && (
           <modus-wc-input-label
             forId={this.inputId}
@@ -469,8 +930,14 @@ export class ModusWcAutocomplete {
         )}
         {this.multiSelect ? (
           <div class={this.getMultiSelectClasses()}>
-            {getChips()}
-            {getInput()}
+            <div class="modus-wc-autocomplete-content">
+              {getChips()}
+              {getMoreChipsIndicator()}
+              {getInput()}
+            </div>
+            <div class="modus-wc-autocomplete-button-container">
+              {getExpandCollapseButton()}
+            </div>
           </div>
         ) : (
           <Fragment>{getInput()}</Fragment>

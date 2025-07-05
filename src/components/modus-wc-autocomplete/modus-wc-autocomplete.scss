@@ -8,48 +8,116 @@ modus-wc-autocomplete.modus-wc-autocomplete {
   position: relative;
   width: 100%;
 
-  .modus-wc-input-label {
-    padding-bottom: var(--modus-wc-spacing-sm);
-  }
-
   modus-wc-loader {
     display: flex;
     justify-content: center;
   }
 
-  .modus-wc-input-bordered {
-    border-radius: var(--modus-wc-border-radius-md);
-  }
-
   .modus-wc-autocomplete-multi-select {
-    align-items: center;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    align-items: flex-start; // Change from stretch to flex-start for proper wrapping
     padding: var(--modus-wc-spacing-xs);
+    min-height: fit-content; // Allow height to grow as needed
+    height: auto; // Ensure height can grow
+    border-radius: var(--modus-wc-border-radius-md);
+    background-color: transparent;
 
-    &.modus-wc-autocomplete-multi-select--bordered {
-      border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-0);
-      border-radius: var(--modus-wc-border-radius-md)
-        var(--modus-wc-border-radius-md) 0 0;
+    // Remove focus outline that appears when clicking on the container
+    &:focus,
+    &:focus-within {
+      outline: none !important;
+      box-shadow: none !important;
     }
 
-    /** TODO - chip styling is temporary, remove once chip component is implemented */
-    .chip {
+    // Content area for chips and input
+    .modus-wc-autocomplete-content {
       align-items: center;
-      background-color: var(--modus-wc-color-gray-1);
-      border-radius: var(--modus-wc-border-radius-xl);
+      align-content: flex-start; // Align wrapped content to start
       display: flex;
+      flex: 1; // Take up remaining space
+      flex-wrap: wrap; // Enable intelligent wrapping
+      gap: 0.25rem;
+      min-width: 0; // Allow shrinking
+      min-height: fit-content; // Allow content area to grow
 
-      button {
-        i {
-          font-size: 0.75rem;
+      // Remove border from internal text-input
+      .modus-wc-text-input {
+        &:focus-within {
+          border: none !important;
         }
       }
+    }
 
-      .label {
-        font-size: var(--modus-wc-font-size-md);
-        padding: 0 var(--modus-wc-spacing-xs);
+    // Button container that stays at the right
+    .modus-wc-autocomplete-button-container {
+      align-items: center;
+      align-self: center; // Center with respect to the main container
+      display: none; // Hidden by default
+      flex-shrink: 0; // Never shrink
+      justify-content: center; // Center the button horizontally within container
+
+      // Show when it contains visible buttons
+      &:not(:empty) {
+        display: flex;
+      }
+
+      // Ensure modus-wc-button is properly centered
+      modus-wc-button {
+        align-self: center;
+        display: flex;
+        margin: 0; // Remove any default margins
+      }
+    }
+
+    // Chip styling - maintains consistent size (inside content container)
+    .modus-wc-autocomplete-content modus-wc-chip {
+      align-self: center;
+      flex-shrink: 0; // Chips never shrink - they maintain their natural size
+    }
+
+    // Text input - intelligent flexible sizing (inside content container)
+    .modus-wc-autocomplete-content modus-wc-text-input {
+      align-self: center;
+      flex: 1 1 var(--modus-autocomplete-min-input-width, 60px); // Grow, shrink, but not below minimum
+      min-width: var(
+        --modus-autocomplete-min-input-width,
+        60px
+      ); // Simple minimum width
+      max-width: 100%; // Ensure it doesn't exceed container
+
+      // Ensure text content respects the input boundaries
+      input {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%; // Ensure input respects its container width
+      }
+
+      // When input is alone (no chips), it takes full width
+      &:only-child {
+        flex: 1 1 100%; // Take full width when no chips present
+      }
+    }
+
+    // "+N more" indicator - shows extra chip count when not focused
+    .modus-wc-autocomplete-content .modus-wc-autocomplete-more-indicator {
+      align-items: center;
+      align-self: center;
+      display: flex;
+      flex-shrink: 0; // Never shrinks
+      height: 32px;
+      justify-content: center;
+      padding: 0 8px;
+
+      .modus-wc-autocomplete-more-text {
+        background-color: var(--modus-wc-color-gray-2);
+        border-radius: var(--modus-wc-border-radius-sm);
+        color: var(--modus-wc-color-text-secondary);
+        font-size: var(--modus-wc-font-size-sm);
+        font-weight: var(--modus-wc-font-weight-medium);
+        padding: 4px 8px;
+        text-align: center;
+        white-space: nowrap;
       }
     }
   }
@@ -116,7 +184,6 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     box-shadow: 0 0 4px 0 rgba(54, 53, 69, 0.3);
   }
 
-  .modus-wc-input-disabled,
   .modus-wc-text-input-readonly {
     background-color: var(--modus-wc-color-gray-10);
   }
@@ -125,10 +192,6 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     cursor: not-allowed;
     opacity: 0.6;
     user-select: none;
-
-    .modus-wc-input-disabled {
-      border: none;
-    }
   }
 
   .modus-wc-autocomplete-multi-select--readonly {
@@ -139,8 +202,12 @@ modus-wc-autocomplete.modus-wc-autocomplete {
 }
 
 [data-theme='modus-classic-light'] modus-wc-autocomplete.modus-wc-autocomplete {
+  // Light theme background
+  .modus-wc-autocomplete-multi-select {
+    background-color: var(--modus-wc-color-white);
+  }
+
   .modus-wc-autocomplete-multi-select--disabled,
-  .modus-wc-input-disabled,
   .modus-wc-autocomplete-multi-select--readonly,
   .modus-wc-text-input-readonly {
     background-color: var(--modus-wc-color-gray-0);
@@ -153,6 +220,11 @@ modus-wc-autocomplete.modus-wc-autocomplete {
 }
 
 [data-theme='modus-classic-dark'] modus-wc-autocomplete.modus-wc-autocomplete {
+  // Dark theme background
+  .modus-wc-autocomplete-multi-select {
+    background-color: var(--modus-wc-color-gray-10);
+  }
+
   .modus-wc-autocomplete-no-results {
     .sub-label {
       color: var(--modus-wc-color-white);

@@ -215,12 +215,31 @@
           "name": "ModusWcAutocomplete",
           "members": [
             {
+              "kind": "method",
+              "name": "clearInput",
+              "description": "Clear the input value and reset items"
+            },
+            {
+              "kind": "method",
+              "name": "closeMenu",
+              "description": "Programmatically close the menu"
+            },
+            {
               "kind": "field",
               "name": "el",
               "type": {
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "focusInput",
+              "description": "Programmatically set focus to input"
+            },
+            {
+              "kind": "method",
+              "name": "handleItemsChange"
             },
             {
               "kind": "method",
@@ -240,7 +259,30 @@
             },
             {
               "kind": "method",
+              "name": "openMenu",
+              "description": "Programmatically open the menu"
+            },
+            {
+              "kind": "method",
               "name": "render"
+            },
+            {
+              "kind": "method",
+              "name": "selectItem",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "IAutocompleteItem | null"
+                  }
+                }
+              ],
+              "description": "Programmatically select an item"
+            },
+            {
+              "kind": "method",
+              "name": "toggleMenu",
+              "description": "Programmatically toggle the menu open/closed"
             }
           ],
           "attributes": [
@@ -254,12 +296,44 @@
               }
             },
             {
+              "name": "custom-blur",
+              "fieldName": "customBlur",
+              "description": "Custom blur handler - if provided, overrides default blur behavior",
+              "type": {
+                "text": "(event: FocusEvent) => void"
+              }
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "default": "''",
               "description": "Custom CSS class to apply to host element.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "custom-input-change",
+              "fieldName": "customInputChange",
+              "description": "Custom input change handler - if provided, overrides default search filtering",
+              "type": {
+                "text": "(value: string) => void"
+              }
+            },
+            {
+              "name": "custom-item-select",
+              "fieldName": "customItemSelect",
+              "description": "Custom item selection handler - if provided, overrides default selection logic",
+              "type": {
+                "text": "(item: IAutocompleteItem) => void"
+              }
+            },
+            {
+              "name": "custom-key-down",
+              "fieldName": "customKeyDown",
+              "description": "Custom key down handler - if provided, overrides default keyboard navigation",
+              "type": {
+                "text": "(event: KeyboardEvent) => void"
               }
             },
             {
@@ -341,10 +415,28 @@
               }
             },
             {
+              "name": "max-chips",
+              "fieldName": "maxChips",
+              "default": "-1",
+              "description": "Maximum number of chips to display. When exceeded, shows expand/collapse button. Set to -1 to disable limit.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
               "name": "min-chars",
               "fieldName": "minChars",
               "default": "0",
               "description": "The minimum number of characters required to render the menu.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "min-input-width",
+              "fieldName": "minInputWidth",
+              "default": "60",
+              "description": "Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead.",
               "type": {
                 "text": "number"
               }
@@ -448,6 +540,30 @@
                 "text": "EventEmitter<IAutocompleteItem>"
               },
               "description": "Event emitted when a selected item chip is removed."
+            },
+            {
+              "kind": "field",
+              "name": "chipsExpansionChange",
+              "type": {
+                "text": "EventEmitter<{ expanded: boolean }>"
+              },
+              "description": "Event emitted when chips expansion state changes."
+            },
+            {
+              "kind": "field",
+              "name": "customBlur",
+              "type": {
+                "text": "(event: FocusEvent) => void | undefined"
+              },
+              "description": "Custom blur handler - if provided, overrides default blur behavior"
+            },
+            {
+              "kind": "field",
+              "name": "customKeyDown",
+              "type": {
+                "text": "(event: KeyboardEvent) => void | undefined"
+              },
+              "description": "Custom key down handler - if provided, overrides default keyboard navigation"
             },
             {
               "kind": "field",

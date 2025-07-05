@@ -92,9 +92,33 @@ export namespace Components {
          */
         "bordered"?: boolean;
         /**
+          * Clear the input value and reset items
+         */
+        "clearInput": () => Promise<void>;
+        /**
+          * Programmatically close the menu
+         */
+        "closeMenu": () => Promise<void>;
+        /**
+          * Custom blur handler - if provided, overrides default blur behavior
+         */
+        "customBlur"?: (event: FocusEvent) => void;
+        /**
           * Custom CSS class to apply to host element.
          */
         "customClass"?: string;
+        /**
+          * Custom input change handler - if provided, overrides default search filtering
+         */
+        "customInputChange"?: (value: string) => void;
+        /**
+          * Custom item selection handler - if provided, overrides default selection logic
+         */
+        "customItemSelect"?: (item: IAutocompleteItem) => void;
+        /**
+          * Custom key down handler - if provided, overrides default keyboard navigation
+         */
+        "customKeyDown"?: (event: KeyboardEvent) => void;
         /**
           * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
          */
@@ -103,6 +127,10 @@ export namespace Components {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * Programmatically set focus to input
+         */
+        "focusInput": () => Promise<void>;
         /**
           * Show the clear button within the input field.
          */
@@ -132,9 +160,17 @@ export namespace Components {
          */
         "leaveMenuOpen"?: boolean;
         /**
+          * Maximum number of chips to display. When exceeded, shows expand/collapse button. Set to -1 to disable limit.
+         */
+        "maxChips"?: number;
+        /**
           * The minimum number of characters required to render the menu.
          */
         "minChars": number;
+        /**
+          * Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead.
+         */
+        "minInputWidth"?: number;
         /**
           * Whether the input allows multiple items to be selected.
          */
@@ -148,6 +184,10 @@ export namespace Components {
          */
         "noResults"?: IAutocompleteNoResults;
         /**
+          * Programmatically open the menu
+         */
+        "openMenu": () => Promise<void>;
+        /**
           * Text that appears in the form control when it has no value set.
          */
         "placeholder"?: string;
@@ -160,6 +200,10 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
+          * Programmatically select an item
+         */
+        "selectItem": (item: IAutocompleteItem | null) => Promise<void>;
+        /**
           * Whether to show the menu whenever the input has focus, regardless of input value.
          */
         "showMenuOnFocus"?: boolean;
@@ -171,6 +215,10 @@ export namespace Components {
           * The size of the autocomplete (input and menu).
          */
         "size"?: ModusSize;
+        /**
+          * Programmatically toggle the menu open/closed
+         */
+        "toggleMenu": () => Promise<void>;
         /**
           * The value of the control.
          */
@@ -1877,6 +1925,7 @@ declare global {
     };
     interface HTMLModusWcAutocompleteElementEventMap {
         "chipRemove": IAutocompleteItem;
+        "chipsExpansionChange": { expanded: boolean };
         "inputBlur": FocusEvent;
         "inputChange": Event;
         "inputFocus": FocusEvent;
@@ -2710,9 +2759,25 @@ declare namespace LocalJSX {
          */
         "bordered"?: boolean;
         /**
+          * Custom blur handler - if provided, overrides default blur behavior
+         */
+        "customBlur"?: (event: FocusEvent) => void;
+        /**
           * Custom CSS class to apply to host element.
          */
         "customClass"?: string;
+        /**
+          * Custom input change handler - if provided, overrides default search filtering
+         */
+        "customInputChange"?: (value: string) => void;
+        /**
+          * Custom item selection handler - if provided, overrides default selection logic
+         */
+        "customItemSelect"?: (item: IAutocompleteItem) => void;
+        /**
+          * Custom key down handler - if provided, overrides default keyboard navigation
+         */
+        "customKeyDown"?: (event: KeyboardEvent) => void;
         /**
           * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
          */
@@ -2750,9 +2815,17 @@ declare namespace LocalJSX {
          */
         "leaveMenuOpen"?: boolean;
         /**
+          * Maximum number of chips to display. When exceeded, shows expand/collapse button. Set to -1 to disable limit.
+         */
+        "maxChips"?: number;
+        /**
           * The minimum number of characters required to render the menu.
          */
         "minChars"?: number;
+        /**
+          * Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead.
+         */
+        "minInputWidth"?: number;
         /**
           * Whether the input allows multiple items to be selected.
          */
@@ -2769,6 +2842,10 @@ declare namespace LocalJSX {
           * Event emitted when a selected item chip is removed.
          */
         "onChipRemove"?: (event: ModusWcAutocompleteCustomEvent<IAutocompleteItem>) => void;
+        /**
+          * Event emitted when chips expansion state changes.
+         */
+        "onChipsExpansionChange"?: (event: ModusWcAutocompleteCustomEvent<{ expanded: boolean }>) => void;
         /**
           * Event emitted when the input loses focus.
          */

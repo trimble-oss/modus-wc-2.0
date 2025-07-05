@@ -15,14 +15,14 @@ const items: IAutocompleteItem[] = [
     value: 'apple',
     visibleInMenu: true,
     focused: false,
-    disabled: true,
+    disabled: false,
   },
   {
     label: 'Banana',
     value: 'banana',
     visibleInMenu: true,
     focused: false,
-    disabled: true,
+    disabled: false,
   },
   {
     label: 'Blueberry',
@@ -38,7 +38,7 @@ const items: IAutocompleteItem[] = [
     value: 'orange',
     visibleInMenu: true,
     focused: false,
-    disabled: true,
+    disabled: false,
   },
   { label: 'Peach', value: 'peach', visibleInMenu: true, focused: false },
   { label: 'Pear', value: 'pear', visibleInMenu: true, focused: false },
@@ -47,7 +47,36 @@ const items: IAutocompleteItem[] = [
     value: 'strawberry',
     visibleInMenu: true,
     focused: false,
-    disabled: true,
+    disabled: false,
+  },
+  {
+    label: 'Watermelon',
+    value: 'watermelon',
+    visibleInMenu: true,
+    focused: false,
+    disabled: false,
+  },
+  {
+    label: 'Pineapple',
+    value: 'pineapple',
+    visibleInMenu: true,
+    focused: false,
+  },
+  { label: 'Kiwi', value: 'kiwi', visibleInMenu: true, focused: false },
+  { label: 'Mango', value: 'mango', visibleInMenu: true, focused: false },
+  { label: 'Papaya', value: 'papaya', visibleInMenu: true, focused: false },
+  { label: 'Plum', value: 'plum', visibleInMenu: true, focused: false },
+  {
+    label: 'Raspberry',
+    value: 'raspberry',
+    visibleInMenu: true,
+    focused: false,
+  },
+  {
+    label: 'Tangerine',
+    value: 'tangerine',
+    visibleInMenu: true,
+    focused: false,
   },
 ];
 
@@ -65,7 +94,9 @@ interface AutocompleteArgs {
   initialNavigation?: boolean;
   label?: string;
   'leave-menu-open'?: boolean;
+  'max-chips'?: number;
   'min-chars': number;
+  'min-input-width'?: number;
   'multi-select'?: boolean;
   name?: string;
   'no-results': IAutocompleteNoResults;
@@ -90,7 +121,9 @@ const meta: Meta<AutocompleteArgs> = {
     items: items,
     label: 'Label',
     'leave-menu-open': false,
+    'max-chips': 1,
     'min-chars': 0,
+    'min-input-width': 60,
     'multi-select': false,
     'show-menu-on-focus': false,
     'show-spinner': false,
@@ -119,6 +152,16 @@ const meta: Meta<AutocompleteArgs> = {
         },
       },
     },
+    'max-chips': {
+      control: { type: 'number', min: 1, max: 10 },
+      description:
+        'Maximum number of chips to display before showing "+N more" button',
+    },
+    'min-input-width': {
+      control: { type: 'number', min: 12, max: 300 },
+      description:
+        'Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead. Default: 60px.',
+    },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
@@ -129,6 +172,7 @@ const meta: Meta<AutocompleteArgs> = {
     actions: {
       handles: [
         'chipRemove',
+        'chipsExpansionChange',
         'inputBlur',
         'inputChange',
         'inputFocus',
@@ -144,248 +188,12 @@ type Story = StoryObj<AutocompleteArgs>;
 
 const Template: Story = {
   render: (args) => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
-      if (!autocomplete) return;
-
-      // Prevent default for navigation keys
-      if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
-        e.preventDefault();
-      }
-
-      const visibleItems = args.items.filter(
-        (item) => item.visibleInMenu && !item.disabled
-      );
-
-      switch (e.key) {
-        case 'Escape':
-          args.items = args.items.map((item) => ({
-            ...item,
-            focused: false,
-          }));
-          autocomplete.items = [...args.items];
-          break;
-
-        case 'ArrowDown': {
-          const currentIndex = visibleItems.findIndex((item) => item.focused);
-          const nextIndex =
-            currentIndex < 0
-              ? 0
-              : Math.min(currentIndex + 1, visibleItems.length - 1);
-          args.items = args.items.map((item) => ({
-            ...item,
-            focused: visibleItems[nextIndex]?.value === item.value,
-          }));
-          break;
-        }
-
-        case 'ArrowUp': {
-          const currentIndex = visibleItems.findIndex((item) => item.focused);
-          const prevIndex =
-            currentIndex < 0
-              ? visibleItems.length - 1
-              : Math.max(currentIndex - 1, 0);
-          args.items = args.items.map((item) => ({
-            ...item,
-            focused: visibleItems[prevIndex]?.value === item.value,
-          }));
-          break;
-        }
-
-        case 'Enter': {
-          const focusedItem = visibleItems.find((item) => item.focused);
-          if (focusedItem) {
-            args.items = args.items.map((item) => ({
-              ...item,
-              selected: item.value === focusedItem.value,
-              focused: false,
-            }));
-            autocomplete.value = focusedItem.label;
-          }
-          break;
-        }
-
-        default:
-          return;
-      }
-
-      autocomplete.items = [...args.items];
-    };
-
-    const handleInputChange = (e: CustomEvent<Event>) => {
-      if (!e.detail?.target) return;
-
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
-
-      if (autocomplete) {
-        const input = e.detail.target as HTMLInputElement;
-        const searchText = input.value?.toLowerCase() ?? '';
-
-        args.items = args.items.map((item) => ({
-          ...item,
-          visibleInMenu: item.label.toLowerCase().includes(searchText),
-          focused: false,
-          selected: searchText ? item.selected : false,
-        }));
-
-        autocomplete.items = [...args.items];
-        autocomplete.value = input.value;
-      }
-    };
-
-    const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
-
-      if (autocomplete) {
-        const label = e.detail.label;
-        if (label) {
-          autocomplete.value = label;
-        }
-
-        // Clear the previous selection.
-        args.items.forEach((item) => (item.selected = false));
-
-        // Mark the user selected menu item as selected and create a new array to update items.
-        const foundItem = args.items.find(
-          (item) => item.value === e.detail.value
-        );
-
-        if (foundItem) {
-          foundItem.selected = true;
-          autocomplete.items = [...args.items];
-        }
-      }
-    };
-
     return html`
       <style>
         div[id^='story--components-forms-autocomplete--default'] {
           height: 400px;
         }
       </style>
-      <script>
-          const handleKeyDown = (e: KeyboardEvent) => {
-          const autocomplete = (e.target as HTMLInputElement).closest(
-            'modus-wc-autocomplete'
-          );
-          if (!autocomplete) return;
-
-          // Prevent default for navigation keys
-          if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
-            e.preventDefault();
-          }
-
-          const visibleItems = args.items.filter(
-            (item) => item.visibleInMenu && !item.disabled
-          );
-
-          switch (e.key) {
-            case 'Escape':
-              args.items = args.items.map((item) => ({
-                ...item,
-                focused: false,
-              }));
-              autocomplete.items = [...args.items];
-              return;
-
-            case 'ArrowDown': {
-              const currentIndex = visibleItems.findIndex((item) => item.focused);
-              const nextIndex =
-                currentIndex < 0
-                  ? 0
-                  : Math.min(currentIndex + 1, visibleItems.length - 1);
-              args.items = args.items.map((item) => ({
-                ...item,
-                focused: visibleItems[nextIndex]?.value === item.value,
-              }));
-              break;
-            }
-
-            case 'ArrowUp': {
-              const currentIndex = visibleItems.findIndex((item) => item.focused);
-              const prevIndex =
-                currentIndex < 0
-                  ? visibleItems.length - 1
-                  : Math.max(currentIndex - 1, 0);
-              args.items = args.items.map((item) => ({
-                ...item,
-                focused: visibleItems[prevIndex]?.value === item.value,
-              }));
-              break;
-            }
-
-            case 'Enter': {
-              const focusedItem = visibleItems.find((item) => item.focused);
-              if (focusedItem) {
-                args.items = args.items.map((item) => ({
-                  ...item,
-                  selected: item.value === focusedItem.value,
-                  focused: false,
-                }));
-                autocomplete.value = focusedItem.label;
-              }
-              break;
-            }
-
-            default:
-              return;
-          }
-
-          autocomplete.items = [...args.items];
-        };
-
-        const handleInputChange = (e: CustomEvent<Event>) => {
-          if (!e.detail?.target) return;
-
-          const autocomplete = (e.target as HTMLInputElement).closest(
-            'modus-wc-autocomplete'
-          );
-
-          if (autocomplete) {
-            const input = e.detail.target as HTMLInputElement;
-            const searchText = input.value.toLowerCase();
-
-            args.items = args.items.map((item) => ({
-              ...item,
-              visibleInMenu: item.label.toLowerCase().includes(searchText),
-              focused: false,
-              selected: searchText ? item.selected : false,
-            }));
-
-            autocomplete.items = [...args.items];
-            autocomplete.value = input.value;
-          }
-        };
-
-        const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
-          const autocomplete = (e.target as HTMLInputElement).closest(
-            'modus-wc-autocomplete'
-          );
-
-          if (autocomplete) {
-            const label = e.detail.label;
-            if (label) {
-              autocomplete.value = label;
-            }
-
-            // Clear the previous selection.
-            args.items.forEach((item) => (item.selected = false));
-
-            // Mark the user selected menu item as selected and create a new array to update items.
-            const foundItem = args.items.find((item) => item.value === e.detail.value);
-            if (foundItem) {
-              foundItem.selected = true;
-              autocomplete.items = [...args.items];
-            }
-          }
-        };
-      </script>
       <modus-wc-autocomplete
         aria-label="Fruit autocomplete"
         ?bordered=${args.bordered}
@@ -400,6 +208,7 @@ const Template: Story = {
         label=${ifDefined(args.label)}
         ?leave-menu-open=${args['leave-menu-open']}
         min-chars=${args['min-chars']}
+        min-input-width=${ifDefined(args['min-input-width'])}
         ?multi-select=${false}
         name=${ifDefined(args.name)}
         .noResults=${args['no-results']}
@@ -410,9 +219,6 @@ const Template: Story = {
         ?show-spinner=${args['show-spinner']}
         size=${ifDefined(args.size)}
         value=${args.value}
-        @inputChange=${handleInputChange}
-        @itemSelect=${handleItemSelect}
-        @keydown=${handleKeyDown}
       ></modus-wc-autocomplete>
     `;
   },
@@ -429,261 +235,27 @@ export const MultiSelect: Story = {
       args.items = [...items];
     }
 
-    const handleChipRemove = (e: CustomEvent<IAutocompleteItem>) => {
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
-
-      if (autocomplete) {
-        args.items = args.items.map((item) =>
-          item.value === e.detail.value ? { ...item, selected: false } : item
-        );
-        autocomplete.items = [...args.items];
-      }
-    };
-
-    const handleInputChange = (e: CustomEvent<Event>) => {
-      if (!e.detail?.target) return;
-
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
-
-      if (autocomplete) {
-        const input = e.detail.target as HTMLInputElement;
-        const searchText = input.value.toLowerCase();
-
-        const updatedItems = args.items.map((item) => ({
-          ...item,
-          visibleInMenu: item.label.toLowerCase().includes(searchText),
-          focused: false,
-        }));
-
-        args.items = updatedItems;
-        autocomplete.items = [...args.items];
-        autocomplete.value = input.value;
-        if (autocomplete.value) {
-          args.initialNavigation = false;
-        }
-      }
-    };
-
-    const handleBlur = () => {
-      args.initialNavigation = true;
-      args.items = args.items.map((item) => ({
-        ...item,
-        focused: false,
-        visibleInMenu: true,
-      }));
-    };
-
-    const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
-
-      if (autocomplete) {
-        args.items = args.items.map((item) =>
-          item.value === e.detail.value ? { ...item, selected: true } : item
-        );
-        autocomplete.items = [...args.items];
-        autocomplete.value = '';
-      }
-    };
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
-
-      if (!autocomplete) return;
-
-      // Initialize initialNavigation if undefined
-      if (args.initialNavigation === undefined) {
-        args.initialNavigation = true;
-      }
-
-      // Prevent default for navigation keys
-      if (['ArrowDown', 'ArrowUp', 'Enter'].includes(e.key)) {
-        e.preventDefault();
-      }
-
-      const visibleItems = args.items.filter(
-        (item) => item.visibleInMenu && !item.disabled
-      );
-      // Reset initial navigation when input value changes
-      if ((e.target as HTMLInputElement).value !== autocomplete.value) {
-        args.initialNavigation = true;
-      }
-
-      switch (e.key) {
-        case 'Escape':
-          args.items = args.items.map((item) => ({ ...item, focused: false }));
-          args.initialNavigation = true;
-          autocomplete.items = [...args.items];
-          return;
-
-        case 'ArrowDown':
-          if (args.initialNavigation) {
-            // On first arrow press, skip selection
-            args.initialNavigation = false;
-            return;
-          } else {
-            // Normal navigation
-            const currentFocusedIndex = visibleItems.findIndex(
-              (item) => item.focused
-            );
-            const nextIndex =
-              currentFocusedIndex < 0
-                ? 0
-                : Math.min(currentFocusedIndex + 1, visibleItems.length - 1);
-
-            args.items = args.items.map((item) => ({
-              ...item,
-              focused: visibleItems[nextIndex]?.value === item.value,
-            }));
-          }
-          break;
-
-        case 'ArrowUp':
-          if (args.initialNavigation) {
-            // On first arrow press, skip selection
-            args.initialNavigation = false;
-            return;
-          } else {
-            // Normal navigation
-            const currentFocusedIndex = visibleItems.findIndex(
-              (item) => item.focused
-            );
-            const prevIndex =
-              currentFocusedIndex < 0
-                ? visibleItems.length - 1
-                : Math.max(currentFocusedIndex - 1, 0);
-
-            args.items = args.items.map((item) => ({
-              ...item,
-              focused: visibleItems[prevIndex]?.value === item.value,
-            }));
-          }
-          break;
-
-        case 'Enter': {
-          const focusedItem = visibleItems.find((item) => item.focused);
-          if (focusedItem) {
-            args.items = args.items.map((item) => ({
-              ...item,
-              selected:
-                item.value === focusedItem.value
-                  ? !item.selected
-                  : item.selected,
-              focused: false,
-            }));
-            autocomplete.value = '';
-            args.initialNavigation = true; // Reset for next interaction
-          }
-          break;
-        }
-
-        default:
-          return;
-      }
-
-      autocomplete.items = [...args.items];
-    };
-
     return html`
       <style>
-        div#story--components-forms-autocomplete--multi-select-inner {
-          height: 400px;
+        .modus-wc-autocomplete-multi-select {
+          width: 400px !important;
         }
       </style>
-      <script>
-              // Initialize args.items if empty
-              if (!args.items || args.items.length === 0) {
-                args.items = [...items];
-              }
-
-              const handleChipRemove = (e: CustomEvent<IAutocompleteItem>) => {
-                const autocomplete = (e.target as HTMLInputElement).closest(
-                  'modus-wc-autocomplete'
-                );
-
-                if (autocomplete) {
-                  args.items = args.items.map((item) =>
-                    item.value === e.detail.value ? { ...item, selected: false } : item
-                  );
-                  autocomplete.items = [...args.items];
-                }
-              };
-
-              const handleInputChange = (e: CustomEvent<Event>) => {
-                if (!e.detail?.target) return;
-
-                const autocomplete = (e.target as HTMLInputElement).closest(
-                  'modus-wc-autocomplete'
-                );
-
-                if (autocomplete) {
-                  const input = e.detail.target as HTMLInputElement;
-                  const searchText = input.value.toLowerCase();
-
-                  const updatedItems = args.items.map((item) => ({
-                    ...item,
-                    visibleInMenu: item.label.toLowerCase().includes(searchText),
-                    focused: false,
-                  }));
-
-                  args.items = updatedItems;
-                  autocomplete.items = [...args.items];
-                  autocomplete.value = input.value;
-                  if (autocomplete.value) {
-                    args.initialNavigation = false;
-                  }
-                }
-              };
-
-              const handleBlur = () => {
-                args.initialNavigation = true;
-                args.items = args.items.map((item) => ({
-                  ...item,
-                  focused: false,
-                  visibleInMenu: true,
-                }));
-              };
-
-              const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
-                const autocomplete = (e.target as HTMLInputElement).closest(
-                  'modus-wc-autocomplete'
-                );
-
-          if (autocomplete) {
-            // Reset autocomplete 'value' and update the value of 'visibleInMenu' for all items.
-            autocomplete.value = '';
-            autocomplete.items = items.map((item) => ({
-              ...item,
-              visibleInMenu: true,
-            }));
-
-            // Mark the user selected item as selected.
-            const fruit = items.find((fruit) => fruit.value === e.detail.value);
-            if (fruit) {
-              fruit.selected = true;
-            }
-          }
-        };
-      </script>
       <modus-wc-autocomplete
         aria-label="Fruit autocomplete"
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         debounce-ms=${ifDefined(args['debounce-ms'])}
         ?disabled=${args.disabled}
+        ?include-clear=${args['include-clear']}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         .items=${args.items}
         label=${ifDefined(args.label)}
         ?leave-menu-open=${args['leave-menu-open']}
+        max-chips=${args['max-chips'] ?? 3}
         min-chars=${args['min-chars']}
+        min-input-width=${ifDefined(args['min-input-width'])}
         ?multi-select=${true}
         name=${ifDefined(args.name)}
         .noResults=${args['no-results']}
@@ -692,11 +264,6 @@ export const MultiSelect: Story = {
         ?required=${args.required}
         size=${ifDefined(args.size)}
         value=${args.value}
-        @chipRemove=${handleChipRemove}
-        @inputChange=${handleInputChange}
-        @itemSelect=${handleItemSelect}
-        @inputBlur=${handleBlur}
-        @keydown=${handleKeyDown}
       ></modus-wc-autocomplete>
     `;
   },
@@ -709,145 +276,69 @@ export const WithSpinner: Story = {
 
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
-      );
+      ) as Element & {
+        items: IAutocompleteItem[];
+        showSpinner: boolean;
+        value: string;
+      };
 
       if (autocomplete) {
         const input = e.detail.target as HTMLInputElement;
         const searchText = input.value.toLowerCase();
-        // show the spinner for 2 seconds
+
+        // Show spinner immediately to simulate API call
+        autocomplete.showSpinner = true;
+        autocomplete.value = input.value;
+
+        // Simulate API call delay - filter results after 2 seconds
         setTimeout(() => {
+          const updatedItems = items.map((item) => ({
+            ...item,
+            visibleInMenu: item.label.toLowerCase().includes(searchText),
+          }));
+
+          autocomplete.items = [...updatedItems];
           autocomplete.showSpinner = false;
         }, 2000);
-
-        autocomplete.showSpinner = true;
-        // Create a new array, updating the values of 'selected' and 'visibleInMenu'.
-        const updatedItems = items.map((item) => ({
-          ...item,
-          selected: searchText ? item.selected : false,
-          visibleInMenu: item.label.toLowerCase().includes(searchText),
-        }));
-
-        // Ensuring that a new array is created when updating items is critical to component re-render.
-        autocomplete.items = [...updatedItems];
-        autocomplete.value = input.value;
       }
     };
 
-    const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
-
-      if (autocomplete) {
-        const label = e.detail.label;
-        if (label) {
-          autocomplete.value = label;
-        }
-
-        // Clear the previous selection.
-        items.forEach((item) => (item.selected = false));
-
-        // Mark the user selected menu item as selected and create a new array to update items.
-        const foundItem = items.find((item) => item.value === e.detail.value);
-        if (foundItem) {
-          foundItem.selected = true;
-          autocomplete.items = [...items];
-        }
-      }
-    };
-
-    // prettier-ignore
     return html`
-<style>
-  /* Only for Storybook */
-  div[id^="story--components-forms-autocomplete--default"] {
-    height: 400px;
-  }
-</style>
-<script>
-    const handleInputChange = (e: CustomEvent<Event>) => {
-      if (!e.detail?.target) return;
-
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
-
-      if (autocomplete) {
-        const input = e.detail.target as HTMLInputElement;
-        const searchText = input.value.toLowerCase();
-        // show the spinner for 2 seconds
-        setTimeout(() => {
-          autocomplete.showSpinner = false;
-        }, 2000);
-
-        autocomplete.showSpinner = true;
-        // Create a new array, updating the values of 'selected' and 'visibleInMenu'.
-        const updatedItems = items.map((item) => ({
-          ...item,
-          selected: searchText ? item.selected : false,
-          visibleInMenu: item.label.toLowerCase().includes(searchText),
-        }));
-
-        // Ensuring that a new array is created when updating items is critical to component re-render.
-        autocomplete.items = [...updatedItems];
-        autocomplete.value = input.value;
-      }
-    };
-
-    const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
-
-      if (autocomplete) {
-        const label = e.detail.label;
-        if (label) {
-          autocomplete.value = label;
+      <style>
+        div[id^='story--components-forms-autocomplete--with-spinner'] {
+          height: 400px;
         }
-
-        // Clear the previous selection.
-        items.forEach((item) => (item.selected = false));
-
-        // Mark the user selected menu item as selected and create a new array to update items.
-        const foundItem = items.find((item) => item.value === e.detail.value);
-        if (foundItem) {
-          foundItem.selected = true;
-          autocomplete.items = [...items];
-        }
-      }
-    };
-</script>
-<modus-wc-autocomplete
-  aria-label="Fruit autocomplete"
-  ?bordered=${args.bordered}
-  custom-class=${ifDefined(args['custom-class'])}
-  debounce-ms=${ifDefined(args['debounce-ms'])}
-  ?disabled=${args.disabled}
-  input-id=${ifDefined(args['input-id'])}
-  input-tab-index=${ifDefined(args['input-tab-index'])}
-  .items=${args.items}
-  label=${ifDefined(args.label)}
-  ?leave-menu-open=${args['leave-menu-open']}
-  min-chars=${args['min-chars']}
-  ?multi-select=${false}
-  name=${ifDefined(args.name)}
-  placeholder=${ifDefined(args.placeholder)}
-  ?read-only=${args['read-only']}
-  ?required=${args.required}
-  ?show-menu-on-focus=${args['show-menu-on-focus']}
-  ?show-spinner=${args['show-spinner']}
-  size=${ifDefined(args.size)}
-  value=${args.value}
-  @inputChange=${handleInputChange}
-  @itemSelect=${handleItemSelect}
-></modus-wc-autocomplete>
+      </style>
+      <modus-wc-autocomplete
+        aria-label="Fruit autocomplete with spinner"
+        ?bordered=${args.bordered}
+        custom-class=${ifDefined(args['custom-class'])}
+        debounce-ms=${ifDefined(args['debounce-ms'])}
+        ?disabled=${args.disabled}
+        input-id=${ifDefined(args['input-id'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
+        .items=${args.items}
+        label=${ifDefined(args.label)}
+        ?leave-menu-open=${args['leave-menu-open']}
+        min-chars=${args['min-chars']}
+        ?multi-select=${false}
+        name=${ifDefined(args.name)}
+        placeholder=${ifDefined(args.placeholder)}
+        ?read-only=${args['read-only']}
+        ?required=${args.required}
+        ?show-menu-on-focus=${args['show-menu-on-focus']}
+        ?show-spinner=${args['show-spinner']}
+        size=${ifDefined(args.size)}
+        value=${args.value}
+        @inputChange=${handleInputChange}
+      ></modus-wc-autocomplete>
     `;
   },
 };
 
 export const CustomMenuItems: Story = {
   render: (args) => {
-    const temp = args['no-results'];
+    const originalNoResults = args['no-results'];
     if (args['leave-menu-open'] == true) {
       args['no-results'] = {
         ariaLabel: '',
@@ -855,53 +346,41 @@ export const CustomMenuItems: Story = {
         subLabel: '',
       };
     }
+
     const handleInputChange = (e) => {
       if (!e.detail?.target) return;
 
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
-      );
+      ) as Element & { noResults: IAutocompleteNoResults };
 
       if (autocomplete) {
-        const searchText = (e.detail.target as HTMLInputElement).value;
-
-        // Create a new array, updating the selected values.
+        const searchText = (
+          e.detail.target as HTMLInputElement
+        ).value.toLowerCase();
         const allLiItems = autocomplete?.querySelectorAll('li');
+
         if (searchText === '') {
           allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
         }
-        let itemCount = 0;
+
+        let hiddenCount = 0;
         Array.from(allLiItems ?? []).forEach((menuItem) => {
           const label =
             menuItem.querySelector('.title')?.textContent?.toLowerCase() || '';
-          if (!label.includes(searchText.toLowerCase())) {
+          if (!label.includes(searchText)) {
             menuItem.classList.add('hidden');
-            itemCount++;
-            if (itemCount === allLiItems?.length) {
-              autocomplete.noResults = temp;
-            }
+            hiddenCount++;
           } else {
             menuItem.classList.remove('hidden');
-            autocomplete.noResults = {
-              ariaLabel: '',
-              label: '',
-              subLabel: '',
-            };
           }
         });
-      }
-    };
-    const handleFocus = (e) => {
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
 
-      if (autocomplete) {
-        autocomplete.noResults = {
-          ariaLabel: '',
-          label: '',
-          subLabel: '',
-        };
+        // Show no results if all items are hidden
+        autocomplete.noResults =
+          hiddenCount === allLiItems?.length
+            ? originalNoResults
+            : { ariaLabel: '', label: '', subLabel: '' };
       }
     };
 
@@ -911,265 +390,136 @@ export const CustomMenuItems: Story = {
       );
 
       if (autocomplete) {
-        const searchText = (e.detail.target as HTMLInputElement)?.value;
-
-        autocomplete.value = searchText;
-
         const allLiItems = autocomplete?.querySelectorAll('li');
         allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
-        allLiItems?.forEach((liItem) => {
-          if (liItem.contains(e.target as HTMLElement)) {
-            liItem.classList.add('selected');
-            autocomplete.value = liItem.querySelector('.title')
-              ?.textContent as string;
-          }
-        });
+
+        const clickedItem = (e.target as HTMLElement).closest('li');
+        if (clickedItem) {
+          clickedItem.classList.add('selected');
+          autocomplete.value = clickedItem.querySelector('.title')
+            ?.textContent as string;
+        }
       }
     };
 
-    // prettier-ignore
     return html`
-<style>
-  /* Only for Storybook */
-  div[id^="story--components-forms-autocomplete--custom-menu-items"] {
-    height: 400px;
-  }
-  .list-item {
-    display: flex;
-    gap: 1rem;
-    border-bottom: 1px solid #ccc;
-  }
-  li.list-item.hidden {
-    display: none;
-  }
-  li.list-item img {
-    height: 28px;
-    width: 28px;
-  }
-  .item-info .title {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-  }
-  .item-info .description {
-    color: #666;
-    font-size: 0.875rem;
-  }
-  li.list-item.selected {
-    background-color: #dcedf9;
-  }
-  li.list-item .modus-wc-menu-item-selected-icon {
-    display: none;
-  }
-  li.list-item.selected .modus-wc-menu-item-selected-icon {
-    display: block;
-  }
-</style>
-<script>
-    const temp = args['no-results'];
-    if (args['leave-menu-open'] == true) {
-      args['no-results'] = {
-        ariaLabel: '',
-        label: '',
-        subLabel: '',
-      };
-    }
-    const handleInputChange = (e) => {
-      if (!e.detail?.target) return;
-
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
-
-      if (autocomplete) {
-        const searchText = (e.detail.target as HTMLInputElement).value;
-
-        // Create a new array, updating the selected values.
-        const allLiItems = autocomplete?.querySelectorAll('li');
-        if (searchText === '') {
-          allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
+      <style>
+        div[id^='story--components-forms-autocomplete--custom-menu-items'] {
+          height: 400px;
         }
-        let itemCount = 0;
-        Array.from(allLiItems ?? []).forEach((menuItem) => {
-          const label =
-            menuItem.querySelector('.title')?.textContent?.toLowerCase() || '';
-          if (!label.includes(searchText.toLowerCase())) {
-            menuItem.classList.add('hidden');
-            itemCount++;
-            if (itemCount === allLiItems?.length) {
-              autocomplete.noResults = temp;
-            }
-          } else {
-            menuItem.classList.remove('hidden');
-            autocomplete.noResults = {
-              ariaLabel: '',
-              label: '',
-              subLabel: '',
-            };
-          }
-        });
-      }
-    };
-    const handleFocus = (e) => {
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
-
-      if (autocomplete) {
-        autocomplete.noResults = {
-          ariaLabel: '',
-          label: '',
-          subLabel: '',
-        };
-      }
-    };
-
-    const handleItemSelect = (e) => {
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
-      );
-
-      if (autocomplete) {
-        const searchText = (e.detail.target as HTMLInputElement)?.value;
-
-        autocomplete.value = searchText;
-
-        const allLiItems = autocomplete?.querySelectorAll('li');
-        allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
-        allLiItems?.forEach((liItem) => {
-          if (liItem.contains(e.target as HTMLElement)) {
-            liItem.classList.add('selected');
-            autocomplete.value = liItem.querySelector('.title')
-              ?.textContent as string;
-          }
-        });
-      }
-    };
-</script>
-<modus-wc-autocomplete
-  aria-label="Custom items autocomplete"
-  ?bordered=${args.bordered}
-  custom-class=${ifDefined(args['custom-class'])}
-  debounce-ms=${ifDefined(args['debounce-ms'])}
-  ?disabled=${args.disabled}
-  input-id=${ifDefined(args['input-id'])}
-  input-tab-index=${ifDefined(args['input-tab-index'])}
-  label=${ifDefined(args.label)}
-  ?leave-menu-open=${args['leave-menu-open']}
-  min-chars=${args['min-chars']}
-  ?multi-select=${false}
-  name=${ifDefined(args.name)}
-  .noResults=${args['no-results']}
-  placeholder=${ifDefined(args.placeholder)}
-  ?read-only=${args['read-only']}
-  ?required=${args.required}
-  size=${ifDefined(args.size)}
-  value=${args.value}
-  @inputFocus=${handleFocus}
-  @inputChange=${handleInputChange}
->
-  <div slot="menu-items" id="custom-menu-items">
-    <li class="list-item" @click=${handleItemSelect}>
-      <div class="item-info">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/5166/5166970.png"
-          alt="Project 1"
-        />
-        <div>
-          <div class="title">Project 1</div>
-          <div class="description">Description</div>
+        .list-item {
+          display: flex;
+          gap: 1rem;
+          border-bottom: 1px solid #ccc;
+          cursor: pointer;
+        }
+        li.list-item.hidden {
+          display: none;
+        }
+        li.list-item img {
+          height: 28px;
+          width: 28px;
+        }
+        .item-info .title {
+          font-weight: 600;
+          margin-bottom: 0.25rem;
+        }
+        .item-info .description {
+          color: #666;
+          font-size: 0.875rem;
+        }
+        li.list-item.selected {
+          background-color: #dcedf9;
+        }
+        li.list-item .modus-wc-menu-item-selected-icon {
+          display: none;
+        }
+        li.list-item.selected .modus-wc-menu-item-selected-icon {
+          display: block;
+        }
+      </style>
+      <modus-wc-autocomplete
+        aria-label="Custom items autocomplete"
+        ?bordered=${args.bordered}
+        custom-class=${ifDefined(args['custom-class'])}
+        debounce-ms=${ifDefined(args['debounce-ms'])}
+        ?disabled=${args.disabled}
+        input-id=${ifDefined(args['input-id'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
+        label=${ifDefined(args.label)}
+        ?leave-menu-open=${args['leave-menu-open']}
+        min-chars=${args['min-chars']}
+        ?multi-select=${false}
+        name=${ifDefined(args.name)}
+        .noResults=${args['no-results']}
+        placeholder=${ifDefined(args.placeholder)}
+        ?read-only=${args['read-only']}
+        ?required=${args.required}
+        size=${ifDefined(args.size)}
+        value=${args.value}
+        @inputChange=${handleInputChange}
+      >
+        <div slot="menu-items" id="custom-menu-items">
+          <li class="list-item" @click=${handleItemSelect}>
+            <div class="item-info">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/5166/5166970.png"
+                alt="Project 1"
+              />
+              <div>
+                <div class="title">Project 1</div>
+                <div class="description">Description for Project 1</div>
+              </div>
+              <div class="modus-wc-menu-item-selected-icon">
+                <modus-wc-icon
+                  decorative=${true}
+                  name="check"
+                  size=${ifDefined(args.size)}
+                />
+              </div>
+            </div>
+          </li>
+          <li class="list-item" @click=${handleItemSelect}>
+            <div class="item-info">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1087/1087927.png"
+                alt="Project 2"
+              />
+              <div>
+                <div class="title">Project 2</div>
+                <div class="description">Description for Project 2</div>
+              </div>
+              <div class="modus-wc-menu-item-selected-icon">
+                <modus-wc-icon
+                  decorative=${true}
+                  name="check"
+                  size=${ifDefined(args.size)}
+                />
+              </div>
+            </div>
+          </li>
+          <li class="list-item" @click=${handleItemSelect}>
+            <div class="item-info">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1659/1659067.png"
+                alt="Project 3"
+              />
+              <div>
+                <div class="title">Project 3</div>
+                <div class="description">Description for Project 3</div>
+              </div>
+              <div class="modus-wc-menu-item-selected-icon">
+                <modus-wc-icon
+                  decorative=${true}
+                  name="check"
+                  size=${ifDefined(args.size)}
+                />
+              </div>
+            </div>
+          </li>
         </div>
-        <div class="modus-wc-menu-item-selected-icon">
-          <modus-wc-icon
-            decorative=${true}
-            name="check"
-            size=${ifDefined(args.size)}
-          />
-        </div>
-      </div>
-    </li>
-
-    <li class="list-item" @click=${handleItemSelect}>
-      <div class="item-info">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/1087/1087927.png"
-          alt="Project 2"
-        />
-        <div>
-          <div class="title">Project 2</div>
-          <div class="description">Description</div>
-        </div>
-        <div class="modus-wc-menu-item-selected-icon">
-          <modus-wc-icon
-            decorative=${true}
-            name="check"
-            size=${ifDefined(args.size)}
-          />
-        </div>
-      </div>
-    </li>
-
-    <li class="list-item" @click=${handleItemSelect}>
-      <div class="item-info">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/1659/1659067.png"
-          alt="Project 3"
-        />
-        <div>
-          <div class="title">Project 3</div>
-          <div class="description">Description</div>
-        </div>
-        <div class="modus-wc-menu-item-selected-icon">
-          <modus-wc-icon
-            decorative=${true}
-            name="check"
-            size=${ifDefined(args.size)}
-          />
-        </div>
-      </div>
-    </li>
-
-    <li class="list-item" @click=${handleItemSelect}>
-      <div class="item-info">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/1420/1420462.png"
-          alt="Project 4"
-        />
-        <div>
-          <div class="title">Project 4</div>
-          <div class="description">Description</div>
-        </div>
-        <div class="modus-wc-menu-item-selected-icon">
-          <modus-wc-icon
-            decorative=${true}
-            name="check"
-            size=${ifDefined(args.size)}
-          />
-        </div>
-      </div>
-    </li>
-
-    <li class="list-item" @click=${handleItemSelect}>
-      <div class="item-info">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/12959/12959935.png"
-          alt="Project 5"
-        />
-        <div>
-          <div class="title">Project 5</div>
-          <div class="description">Description</div>
-        </div>
-        <div class="modus-wc-menu-item-selected-icon">
-          <modus-wc-icon
-            decorative=${true}
-            name="check"
-            size=${ifDefined(args.size)}
-          />
-        </div>
-      </div>
-    </li>
-  </div>
-</modus-wc-autocomplete>
-`;
+      </modus-wc-autocomplete>
+    `;
   },
 };
 
