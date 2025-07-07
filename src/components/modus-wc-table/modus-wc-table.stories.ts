@@ -197,6 +197,51 @@ export const Default: Story = {
     const columns = args.columns || createDemoColumns();
     const data = args.data || createDemoData();
     return html`
+      <script>
+            // Helper functions
+        const createDemoColumns = (): ITableColumn[] => [
+          {
+            id: 'id',
+            header: 'ID',
+            accessor: 'id',
+            width: '60px',
+          },
+          {
+            id: 'name',
+            header: 'Name',
+            accessor: 'name',
+            width: '100px',
+          },
+          {
+            id: 'email',
+            header: 'Email',
+            accessor: 'email',
+          },
+          {
+            id: 'role',
+            header: 'Role',
+            accessor: 'role',
+          },
+        ];
+
+        const createSortableColumns = (): ITableColumn[] => {
+          const columns = createDemoColumns();
+          return columns.map((col) => ({ ...col, sortable: true }));
+        };
+
+        const createDemoData = (count = 5): Record<string, any>[] => {
+          const data: Record<string, any>[] = [];
+          for (let i = 1; i <= count; i++) {
+            data.push({
+              id: i.toString(),
+              name: \`User \${i}\`,
+              email: \`user\${i}@example.com\`,
+              role: i % 2 === 0 ? 'Admin' : 'User',
+            });
+          }
+          return data;
+        };
+      </script>
       <modus-wc-table
         .columns=${columns}
         .data=${data}
@@ -242,6 +287,51 @@ export const Hover: Story = {
     const columns = args.columns || createDemoColumns();
     const data = args.data || createDemoData();
     return html`
+      <script>
+        // Helper functions
+        const createDemoColumns = (): ITableColumn[] => [
+          {
+            id: 'id',
+            header: 'ID',
+            accessor: 'id',
+            width: '60px',
+          },
+          {
+            id: 'name',
+            header: 'Name',
+            accessor: 'name',
+            width: '100px',
+          },
+          {
+            id: 'email',
+            header: 'Email',
+            accessor: 'email',
+          },
+          {
+            id: 'role',
+            header: 'Role',
+            accessor: 'role',
+          },
+        ];
+
+        const createSortableColumns = (): ITableColumn[] => {
+          const columns = createDemoColumns();
+          return columns.map((col) => ({ ...col, sortable: true }));
+        };
+
+        const createDemoData = (count = 5): Record<string, any>[] => {
+          const data: Record<string, any>[] = [];
+          for (let i = 1; i <= count; i++) {
+            data.push({
+              id: i.toString(),
+              name: \`User \${i}\`,
+              email: \`user\${i}@example.com\`,
+              role: i % 2 === 0 ? 'Admin' : 'User',
+            });
+          }
+          return data;
+        };
+      </script>
       <modus-wc-table
         .columns=${columns}
         .data=${data}
@@ -272,6 +362,51 @@ export const Sorting: Story = {
     const columns = args.columns || createSortableColumns();
     const data = args.data || createDemoData();
     return html`
+      <script>
+        // Helper functions
+        const createDemoColumns = (): ITableColumn[] => [
+          {
+            id: 'id',
+            header: 'ID',
+            accessor: 'id',
+            width: '60px',
+          },
+          {
+            id: 'name',
+            header: 'Name',
+            accessor: 'name',
+            width: '100px',
+          },
+          {
+            id: 'email',
+            header: 'Email',
+            accessor: 'email',
+          },
+          {
+            id: 'role',
+            header: 'Role',
+            accessor: 'role',
+          },
+        ];
+
+        const createSortableColumns = (): ITableColumn[] => {
+          const columns = createDemoColumns();
+          return columns.map((col) => ({ ...col, sortable: true }));
+        };
+
+        const createDemoData = (count = 5): Record<string, any>[] => {
+          const data: Record<string, any>[] = [];
+          for (let i = 1; i <= count; i++) {
+            data.push({
+              id: i.toString(),
+              name: \`User \${i}\`,
+              email: \`user\${i}@example.com\`,
+              role: i % 2 === 0 ? 'Admin' : 'User',
+            });
+          }
+          return data;
+        };
+      </script>
       <modus-wc-table
         .columns=${columns}
         .data=${data}
@@ -302,6 +437,53 @@ export const Pagination: Story = {
     const columns = args.columns || createDemoColumns();
     const data = args.data || createDemoData(15);
     return html`
+      <script>
+            // Helper functions
+            const createDemoColumns = (): ITableColumn[] => [
+              {
+                id: 'id',
+                header: 'ID',
+                accessor: 'id',
+                width: '60px',
+              },
+              {
+                id: 'name',
+                header: 'Name',
+                accessor: 'name',
+                width: '100px',
+              },
+              {
+                id: 'email',
+                header: 'Email',
+                accessor: 'email',
+              },
+              {
+                id: 'role',
+                header: 'Role',
+                accessor: 'role',
+              },
+            ];
+
+            const createSortableColumns = (): ITableColumn[] => {
+              const columns = createDemoColumns();
+              return columns.map((col) => ({ ...col, sortable: true }));
+            };
+
+                            const createDemoData = (count = 5): Record<string, any>[] => {
+                  const data: Record<string, any>[] = [];
+                  for (let i = 1; i <= count; i++) {
+                    data.push({
+                      id: i.toString(),
+                      name: \`User \${i}\`,
+                      email: \`user\${i}@example.com\`,
+                      role: i % 2 === 0 ? 'Admin' : 'User',
+                    });
+                  }
+                  return data;
+                };
+        const columns = args.columns || createDemoColumns();
+        const data = args.data || createDemoData(15);
+      </script>
       <modus-wc-table
         .columns=${columns}
         .data=${data}
@@ -333,6 +515,53 @@ export const CheckBoxRowSelection: Story = {
     const columns = args.columns || createDemoColumns();
     const data = args.data || createDemoData();
     return html`
+      <script>
+            // Helper functions
+            const createDemoColumns = (): ITableColumn[] => [
+              {
+                id: 'id',
+                header: 'ID',
+                accessor: 'id',
+                width: '60px',
+              },
+              {
+                id: 'name',
+                header: 'Name',
+                accessor: 'name',
+                width: '100px',
+              },
+              {
+                id: 'email',
+                header: 'Email',
+                accessor: 'email',
+              },
+              {
+                id: 'role',
+                header: 'Role',
+                accessor: 'role',
+              },
+            ];
+
+            const createSortableColumns = (): ITableColumn[] => {
+              const columns = createDemoColumns();
+              return columns.map((col) => ({ ...col, sortable: true }));
+            };
+
+            const createDemoData = (count = 5): Record<string, any>[] => {
+              const data: Record<string, any>[] = [];
+              for (let i = 1; i <= count; i++) {
+                data.push({
+                  id: i.toString(),
+                  name: \`User \${i}\`,
+                  email: \`user\${i}@example.com\`,
+                  role: i % 2 === 0 ? 'Admin' : 'User',
+                });
+              }
+              return data;
+            };
+        const columns = args.columns || createDemoColumns();
+        const data = args.data || createDemoData(15);
+      </script>
       <modus-wc-table
         .columns=${columns}
         .data=${data}
@@ -431,6 +660,120 @@ export const InlineEditing: Story = {
     ];
 
     return html`
+      <script>
+                // Helper functions
+                const createDemoColumns = (): ITableColumn[] => [
+                  {
+                    id: 'id',
+                    header: 'ID',
+                    accessor: 'id',
+                    width: '60px',
+                  },
+                  {
+                    id: 'name',
+                    header: 'Name',
+                    accessor: 'name',
+                    width: '100px',
+                  },
+                  {
+                    id: 'email',
+                    header: 'Email',
+                    accessor: 'email',
+                  },
+                  {
+                    id: 'role',
+                    header: 'Role',
+                    accessor: 'role',
+                  },
+                ];
+
+                const createSortableColumns = (): ITableColumn[] => {
+                  const columns = createDemoColumns();
+                  return columns.map((col) => ({ ...col, sortable: true }));
+                };
+
+                const createDemoData = (count = 5): Record<string, any>[] => {
+                  const data: Record<string, any>[] = [];
+                  for (let i = 1; i <= count; i++) {
+                    data.push({
+                      id: i.toString(),
+                      name: \`User \${i}\`,
+                      email: \`user\${i}@example.com\`,
+                      role: i % 2 === 0 ? 'Admin' : 'User',
+                    });
+                  }
+                  return data;
+                };
+                    const columns: ITableColumn[] = [
+          {
+            id: 'id',
+            header: 'ID',
+            accessor: 'id',
+            width: '20px',
+          },
+          {
+            id: 'name',
+            header: 'Name',
+            accessor: 'name',
+            editor: 'text',
+          },
+          {
+            id: 'status',
+            header: 'Status',
+            accessor: 'status',
+            editor: 'custom',
+            customEditorRenderer: (value, onCommit) => {
+              const container = document.createElement('div');
+              container.style.width = '100%';
+
+              const autocomplete = document.createElement('modus-wc-autocomplete');
+              autocomplete.items = [
+                { label: 'Active', value: 'Active', visibleInMenu: true },
+                { label: 'Inactive', value: 'Inactive', visibleInMenu: true },
+                { label: 'Pending', value: 'Pending', visibleInMenu: true },
+              ];
+              autocomplete.value = value as string;
+              autocomplete.style.width = '100%';
+
+              const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
+                onCommit(e.detail.value);
+              };
+
+              autocomplete.addEventListener(
+                'itemSelect',
+                handleItemSelect as EventListener
+              );
+              container.appendChild(autocomplete);
+
+              setTimeout(() => {
+                const input = autocomplete.querySelector('input');
+                input?.focus();
+              }, 0);
+
+              return container;
+            },
+            cellRenderer: (value) => {
+              const statusColors = {
+                Active: 'green',
+                Inactive: 'gray',
+                Pending: 'blue',
+              };
+              const color = statusColors[value as string] || 'black';
+              const span = document.createElement('span');
+              span.textContent = value as string;
+              span.style.color = color;
+              span.style.fontWeight = 'bold';
+              return span;
+            },
+          },
+        ];
+
+        const data = [
+          { id: '1', name: 'John Doe', status: 'Active' },
+          { id: '2', name: 'Jane Smith', status: 'Inactive' },
+          { id: '3', name: 'Bob Johnson', status: 'Pending' },
+        ];
+      </script>
       <modus-wc-table
         .columns=${columns}
         .data=${data}
