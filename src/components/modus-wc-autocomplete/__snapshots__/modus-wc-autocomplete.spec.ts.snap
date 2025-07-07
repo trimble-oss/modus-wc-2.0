@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-autocomplete should close the menu when clicking outside if leaveMenuOpen is false 1`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" value="">
+<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 60px;">
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
@@ -20,7 +20,7 @@ exports[`modus-wc-autocomplete should close the menu when clicking outside if le
 `;
 
 exports[`modus-wc-autocomplete should display no results ui when no items are available 1`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" value="">
+<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 60px;">
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
@@ -46,7 +46,7 @@ exports[`modus-wc-autocomplete should display no results ui when no items are av
 `;
 
 exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 1`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="">
+<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 60px;">
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
@@ -65,7 +65,7 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 1`
 `;
 
 exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 2`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="">
+<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 60px;">
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-disabled modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
@@ -84,7 +84,7 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 2`
 `;
 
 exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 3`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="">
+<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 60px;">
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-text-input--readonly modus-wc-w-full">
@@ -103,16 +103,39 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 3`
 `;
 
 exports[`modus-wc-autocomplete should render chips for selected items in multi-select mode 1`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" multi-select="true" value="">
+<modus-wc-autocomplete class="modus-wc-autocomplete" multi-select="true" value="" style="--modus-autocomplete-min-input-width: 60px;">
   <!---->
-  <div class="modus-wc-autocomplete-multi-select modus-wc-autocomplete-multi-select--bordered">
-    <modus-wc-chip aria-label="Remove item button" label="Chip 1" show-remove="" size="sm" variant="filled"></modus-wc-chip>
-    <modus-wc-chip aria-label="Remove item button" label="Chip 3" show-remove="" size="sm" variant="filled"></modus-wc-chip>
-    <modus-wc-text-input value="">
-      <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-        <input aria-label="MultiSelect Chip Test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
-      </label>
-    </modus-wc-text-input>
+  <div class="modus-wc-autocomplete-multi-select modus-wc-autocomplete-multi-select--bordered modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-w-full">
+    <div class="modus-wc-autocomplete-content">
+      <modus-wc-chip show-remove="">
+        <!---->
+        <button aria-label="Remove item button" class="modus-wc-btn modus-wc-btn-sm modus-wc-chip" tabindex="0" type="button">
+          <span class="modus-wc-chip-label">
+            Chip 1
+          </span>
+          <svg class="mi-cancel-circle mi-solid modus-wc-chip-remove-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m4.3 14.3a.996.996 0 0 1-1.41 0L12 13.41 9.11 16.3a.996.996 0 1 1-1.41-1.41L10.59 12 7.7 9.11A.996.996 0 1 1 9.11 7.7L12 10.59l2.89-2.89a.996.996 0 1 1 1.41 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41"></path>
+          </svg>
+        </button>
+      </modus-wc-chip>
+      <modus-wc-chip show-remove="">
+        <!---->
+        <button aria-label="Remove item button" class="modus-wc-btn modus-wc-btn-sm modus-wc-chip" tabindex="0" type="button">
+          <span class="modus-wc-chip-label">
+            Chip 3
+          </span>
+          <svg class="mi-cancel-circle mi-solid modus-wc-chip-remove-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m4.3 14.3a.996.996 0 0 1-1.41 0L12 13.41 9.11 16.3a.996.996 0 1 1-1.41-1.41L10.59 12 7.7 9.11A.996.996 0 1 1 9.11 7.7L12 10.59l2.89-2.89a.996.996 0 1 1 1.41 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41"></path>
+          </svg>
+        </button>
+      </modus-wc-chip>
+      <modus-wc-text-input value="">
+        <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
+          <input aria-label="MultiSelect Chip Test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
+        </label>
+      </modus-wc-text-input>
+    </div>
+    <div class="modus-wc-autocomplete-button-container"></div>
   </div>
   <modus-wc-menu aria-label="Autocomplete menu" bordered="" class="menu-hidden" size="md">
     <modus-wc-menu-item label="Chip 1" selected="" value="1"></modus-wc-menu-item>
@@ -206,14 +229,17 @@ exports[`modus-wc-autocomplete should render default no results values when noRe
 `;
 
 exports[`modus-wc-autocomplete should render multi select without border 1`] = `
-<modus-wc-autocomplete bordered="false" class="modus-wc-autocomplete" multi-select="true" value="">
+<modus-wc-autocomplete bordered="false" class="modus-wc-autocomplete" multi-select="true" value="" style="--modus-autocomplete-min-input-width: 60px;">
   <!---->
-  <div class="modus-wc-autocomplete-multi-select">
-    <modus-wc-text-input value="">
-      <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-        <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
-      </label>
-    </modus-wc-text-input>
+  <div class="modus-wc-autocomplete-multi-select modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-w-full">
+    <div class="modus-wc-autocomplete-content">
+      <modus-wc-text-input value="">
+        <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
+          <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
+        </label>
+      </modus-wc-text-input>
+    </div>
+    <div class="modus-wc-autocomplete-button-container"></div>
   </div>
   <modus-wc-menu class="menu-hidden">
     <!---->
@@ -227,7 +253,7 @@ exports[`modus-wc-autocomplete should render multi select without border 1`] = `
 `;
 
 exports[`modus-wc-autocomplete should render with custom props 1`] = `
-<modus-wc-autocomplete active-item-value="1" bordered="false" class="modus-wc-autocomplete test-class" custom-class="test-class" debounce-ms="500" disabled="true" include-clear="true" include-search="true" input-id="test-id" input-tab-index="1" label="Test label" min-chars="2" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" value="Item 1">
+<modus-wc-autocomplete active-item-value="1" bordered="false" class="modus-wc-autocomplete test-class" custom-class="test-class" debounce-ms="500" disabled="true" include-clear="true" include-search="true" input-id="test-id" input-tab-index="1" label="Test label" min-chars="2" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" value="Item 1" style="--modus-autocomplete-min-input-width: 60px;">
   <!---->
   <modus-wc-input-label forid="test-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
   <modus-wc-text-input value="Item 1">
@@ -294,7 +320,7 @@ exports[`modus-wc-autocomplete should render with custom props 1`] = `
 `;
 
 exports[`modus-wc-autocomplete should render with default props 1`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" value="">
+<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 60px;">
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
