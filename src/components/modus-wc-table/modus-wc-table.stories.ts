@@ -224,11 +224,6 @@ export const Default: Story = {
           },
         ];
 
-        const createSortableColumns = (): ITableColumn[] => {
-          const columns = createDemoColumns();
-          return columns.map((col) => ({ ...col, sortable: true }));
-        };
-
         const createDemoData = (count = 5): Record<string, any>[] => {
           const data: Record<string, any>[] = [];
           for (let i = 1; i <= count; i++) {
@@ -313,11 +308,6 @@ export const Hover: Story = {
             accessor: 'role',
           },
         ];
-
-        const createSortableColumns = (): ITableColumn[] => {
-          const columns = createDemoColumns();
-          return columns.map((col) => ({ ...col, sortable: true }));
-        };
 
         const createDemoData = (count = 5): Record<string, any>[] => {
           const data: Record<string, any>[] = [];
@@ -464,23 +454,18 @@ export const Pagination: Story = {
               },
             ];
 
-            const createSortableColumns = (): ITableColumn[] => {
-              const columns = createDemoColumns();
-              return columns.map((col) => ({ ...col, sortable: true }));
-            };
-
-                            const createDemoData = (count = 5): Record<string, any>[] => {
-                  const data: Record<string, any>[] = [];
-                  for (let i = 1; i <= count; i++) {
-                    data.push({
-                      id: i.toString(),
-                      name: \`User \${i}\`,
-                      email: \`user\${i}@example.com\`,
-                      role: i % 2 === 0 ? 'Admin' : 'User',
-                    });
-                  }
-                  return data;
-                };
+          const createDemoData = (count = 5): Record<string, any>[] => {
+          const data: Record<string, any>[] = [];
+          for (let i = 1; i <= count; i++) {
+            data.push({
+              id: i.toString(),
+              name: \`User \${i}\`,
+              email: \`user\${i}@example.com\`,
+              role: i % 2 === 0 ? 'Admin' : 'User',
+            });
+          }
+          return data;
+        };
         const columns = args.columns || createDemoColumns();
         const data = args.data || createDemoData(15);
       </script>
@@ -541,11 +526,6 @@ export const CheckBoxRowSelection: Story = {
                 accessor: 'role',
               },
             ];
-
-            const createSortableColumns = (): ITableColumn[] => {
-              const columns = createDemoColumns();
-              return columns.map((col) => ({ ...col, sortable: true }));
-            };
 
             const createDemoData = (count = 5): Record<string, any>[] => {
               const data: Record<string, any>[] = [];
@@ -686,11 +666,6 @@ export const InlineEditing: Story = {
                     accessor: 'role',
                   },
                 ];
-
-                const createSortableColumns = (): ITableColumn[] => {
-                  const columns = createDemoColumns();
-                  return columns.map((col) => ({ ...col, sortable: true }));
-                };
 
                 const createDemoData = (count = 5): Record<string, any>[] => {
                   const data: Record<string, any>[] = [];
