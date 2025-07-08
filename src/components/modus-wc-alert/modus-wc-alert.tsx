@@ -56,7 +56,7 @@ export class ModusWcAlert {
   @Event() dismissClick!: EventEmitter;
 
   componentWillLoad() {
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.inheritedAttributes = inheritAriaAttributes(this.el, ['role']);
   }
 
   private getClasses(): string {
@@ -115,7 +115,7 @@ export class ModusWcAlert {
       <Host>
         <div
           class={this.getClasses()}
-          role="alert"
+          role={this.role}
           {...this.inheritedAttributes}
         >
           {this.getLeadingIcon()}
