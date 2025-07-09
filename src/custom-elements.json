@@ -435,7 +435,7 @@
             {
               "name": "min-input-width",
               "fieldName": "minInputWidth",
-              "default": "60",
+              "default": "20",
               "description": "Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead.",
               "type": {
                 "text": "number"

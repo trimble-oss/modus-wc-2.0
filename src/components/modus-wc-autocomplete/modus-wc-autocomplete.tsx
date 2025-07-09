@@ -154,7 +154,7 @@ export class ModusWcAutocomplete {
   @Prop() customBlur?: (event: FocusEvent) => void;
 
   /** Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead. */
-  @Prop() minInputWidth?: number = 60;
+  @Prop() minInputWidth?: number = 20;
 
   /** Event emitted when a selected item chip is removed. */
   @StencilEvent() chipRemove!: EventEmitter<IAutocompleteItem>;
@@ -269,8 +269,9 @@ export class ModusWcAutocomplete {
       const relatedTarget = event.detail.relatedTarget as HTMLElement;
 
       if (!relatedTarget || !this.el.contains(relatedTarget)) {
+        console.log('blur');
         this.isFocused = false;
-        this.isChipsExpanded = false; // Reset expansion when losing focus
+        this.isChipsExpanded = false; // Always collapse on blur
         this.menuVisible = false;
         this.inputBlur.emit(event.detail);
       }
@@ -593,6 +594,15 @@ export class ModusWcAutocomplete {
       } else {
         // Add to end of selection order if selecting
         this.selectionOrder = [...this.selectionOrder, item.value];
+
+        // If we exceed maxChips, automatically expand
+        if (
+          this.maxChips &&
+          this.maxChips > 0 &&
+          this.selectionOrder.length > this.maxChips
+        ) {
+          this.isChipsExpanded = true;
+        }
       }
 
       // Sync filtered items from updated items (maintains current search filter)
@@ -667,6 +677,7 @@ export class ModusWcAutocomplete {
   private handleOutsideClick = (event: MouseEvent) => {
     if (!this.el.contains(event.target as Node)) {
       this.menuVisible = false;
+      this.isChipsExpanded = false;
     }
   };
 
@@ -913,7 +924,7 @@ export class ModusWcAutocomplete {
     };
 
     // Set CSS custom properties for dynamic min-width control
-    const minWidth = this.minInputWidth || 60;
+    const minWidth = this.minInputWidth || 20;
     const cssVariables = {
       '--modus-autocomplete-min-input-width': `${minWidth}px`,
     };

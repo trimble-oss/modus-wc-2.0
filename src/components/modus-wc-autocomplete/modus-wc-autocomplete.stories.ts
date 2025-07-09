@@ -121,9 +121,9 @@ const meta: Meta<AutocompleteArgs> = {
     items: items,
     label: 'Label',
     'leave-menu-open': false,
-    'max-chips': 1,
+    'max-chips': 3,
     'min-chars': 0,
-    'min-input-width': 60,
+    'min-input-width': 20,
     'multi-select': false,
     'show-menu-on-focus': false,
     'show-spinner': false,
@@ -160,7 +160,7 @@ const meta: Meta<AutocompleteArgs> = {
     'min-input-width': {
       control: { type: 'number', min: 12, max: 300 },
       description:
-        'Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead. Default: 60px.',
+        'Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead. Default: 20px.',
     },
     size: {
       control: { type: 'select' },
