@@ -14,7 +14,7 @@ interface BadgeArgs {
     | 'danger';
   'custom-class'?: string;
   size: ModusSize;
-  variant: 'counter' | 'filled' | 'text' | 'outlined';
+  variant: 'counter' | 'filled' | 'outlined' | 'text';
 }
 
 const meta: Meta<BadgeArgs> = {
@@ -44,7 +44,7 @@ const meta: Meta<BadgeArgs> = {
     },
     variant: {
       control: { type: 'select' },
-      options: ['counter', 'filled', 'text', 'outlined'],
+      options: ['counter', 'filled', 'outlined', 'text'],
     },
   },
 };
