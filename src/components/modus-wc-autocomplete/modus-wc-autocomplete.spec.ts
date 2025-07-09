@@ -1,3 +1,4 @@
+import { EventEmitter } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import {
   IAutocompleteItem,
@@ -1009,8 +1010,8 @@ describe('modus-wc-autocomplete', () => {
     });
 
     await page.waitForChanges();
-    const inputElement = page.root.querySelector('input');
-    const focusSpy = jest.spyOn(inputElement, 'focus');
+    const inputElement = page.root?.querySelector('input');
+    const focusSpy = jest.spyOn(inputElement as HTMLInputElement, 'focus');
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
     await autocomplete.focusInput();
@@ -1066,7 +1067,7 @@ describe('modus-wc-autocomplete', () => {
     autocomplete['initialNavigation'] = false;
     await page.waitForChanges();
 
-    const inputElement = page.root.querySelector('input');
+    const inputElement = page.root?.querySelector('input');
     const keyEvent = new KeyboardEvent('keydown', { key: 'ArrowUp' });
     Object.defineProperty(keyEvent, 'target', { value: inputElement });
 
@@ -1086,7 +1087,9 @@ describe('modus-wc-autocomplete', () => {
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
     const itemSelectSpy = jest.fn();
-    autocomplete.itemSelect = { emit: itemSelectSpy } as any;
+    autocomplete.itemSelect = {
+      emit: itemSelectSpy,
+    } as unknown as EventEmitter<IAutocompleteItem>;
 
     const testItems: IAutocompleteItem[] = [
       { label: 'Item 1', value: '1', visibleInMenu: true, selected: true },
@@ -1096,7 +1099,7 @@ describe('modus-wc-autocomplete', () => {
     autocomplete.items = testItems;
     await page.waitForChanges();
 
-    const inputElement = page.root.querySelector('input');
+    const inputElement = page.root?.querySelector('input');
     const keyEvent = new KeyboardEvent('keydown', { key: 'Enter' });
     Object.defineProperty(keyEvent, 'target', { value: inputElement });
 
@@ -1119,7 +1122,9 @@ describe('modus-wc-autocomplete', () => {
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
     const chipsExpansionSpy = jest.fn();
-    autocomplete.chipsExpansionChange = { emit: chipsExpansionSpy } as any;
+    autocomplete.chipsExpansionChange = {
+      emit: chipsExpansionSpy,
+    } as unknown as EventEmitter<{ expanded: boolean }>;
 
     const testItems: IAutocompleteItem[] = [
       { label: 'Item 1', value: '1', visibleInMenu: true, selected: true },
@@ -1153,7 +1158,9 @@ describe('modus-wc-autocomplete', () => {
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
     const inputBlurSpy = jest.fn();
-    autocomplete.inputBlur = { emit: inputBlurSpy } as any;
+    autocomplete.inputBlur = {
+      emit: inputBlurSpy,
+    } as unknown as EventEmitter<FocusEvent>;
     autocomplete['menuVisible'] = true;
 
     // Create a focus event with relatedTarget outside the component
@@ -1201,7 +1208,10 @@ describe('modus-wc-autocomplete', () => {
     });
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
-    const customEvent = new CustomEvent('inputChange', { detail: {} });
+    // Create a CustomEvent with a detail object that mimics the expected Event structure but omits 'target'
+    const customEvent = new CustomEvent<Event>('inputChange', {
+      detail: {} as Event,
+    });
 
     // Should not throw error
     expect(() => autocomplete['handleChange'](customEvent)).not.toThrow();
@@ -1215,7 +1225,7 @@ describe('modus-wc-autocomplete', () => {
     });
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
-    autocomplete.items = null;
+    autocomplete.items = [];
 
     // Should not throw error
     expect(() => autocomplete['updateItemFocus']('test')).not.toThrow();
@@ -1229,7 +1239,7 @@ describe('modus-wc-autocomplete', () => {
     });
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
-    autocomplete.items = null;
+    autocomplete.items = [];
 
     // Should not throw error
     expect(() => autocomplete['clearAllFocus']()).not.toThrow();
@@ -1243,7 +1253,7 @@ describe('modus-wc-autocomplete', () => {
     });
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
-    autocomplete.items = null;
+    autocomplete.items = [];
 
     // Should not throw error
     expect(() =>

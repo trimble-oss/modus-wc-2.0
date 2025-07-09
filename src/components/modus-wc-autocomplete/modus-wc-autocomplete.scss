@@ -14,31 +14,31 @@ modus-wc-autocomplete.modus-wc-autocomplete {
   }
 
   .modus-wc-autocomplete-multi-select {
-    display: flex;
     align-items: flex-start; // Change from stretch to flex-start for proper wrapping
-    padding: var(--modus-wc-spacing-xs);
-    min-height: fit-content; // Allow height to grow as needed
-    height: auto; // Ensure height can grow
-    border-radius: var(--modus-wc-border-radius-md);
     background-color: transparent;
+    border-radius: var(--modus-wc-border-radius-md);
+    display: flex;
+    height: auto; // Ensure height can grow
+    min-height: fit-content; // Allow height to grow as needed
+    padding: var(--modus-wc-spacing-xs);
 
     // Remove focus outline that appears when clicking on the container
     &:focus,
     &:focus-within {
-      outline: none !important;
       box-shadow: none !important;
+      outline: none !important;
     }
 
     // Content area for chips and input
     .modus-wc-autocomplete-content {
-      align-items: center;
       align-content: flex-start; // Align wrapped content to start
+      align-items: center;
       display: flex;
       flex: 1; // Take up remaining space
       flex-wrap: wrap; // Enable intelligent wrapping
       gap: 0.25rem;
-      min-width: 0; // Allow shrinking
       min-height: fit-content; // Allow content area to grow
+      min-width: 0; // Allow shrinking
 
       // Remove border from internal text-input
       .modus-wc-text-input {
@@ -79,11 +79,11 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     .modus-wc-autocomplete-content modus-wc-text-input {
       align-self: center;
       flex: 1 1 var(--modus-autocomplete-min-input-width, 60px); // Grow, shrink, but not below minimum
+      max-width: 100%; // Ensure it doesn't exceed container
       min-width: var(
         --modus-autocomplete-min-input-width,
         60px
       ); // Simple minimum width
-      max-width: 100%; // Ensure it doesn't exceed container
 
       // Ensure text content respects the input boundaries
       input {
