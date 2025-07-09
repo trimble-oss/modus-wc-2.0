@@ -1,5 +1,5 @@
 import { TypographyVariant, TypographyWeight } from './modus-wc-typography';
-import { DaisySize } from '../types';
+import { TypographySize } from '../types';
 
 const HEADINGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
@@ -8,7 +8,7 @@ export const convertPropsToClasses = ({
   weight,
   variant,
 }: {
-  size?: DaisySize;
+  size?: TypographySize;
   weight?: TypographyWeight;
   variant?: TypographyVariant;
 }): string => {

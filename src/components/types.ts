@@ -9,6 +9,18 @@ export type ModusSize = Extract<DaisySize, 'sm' | 'md' | 'lg'>;
 
 export type Orientation = 'horizontal' | 'vertical';
 
+export type TypographySize =
+  | 'xs'
+  | 'sm'
+  | 'md'
+  | 'lg'
+  | '4xl'
+  | '5xl'
+  | '6xl'
+  | '7xl'
+  | '8xl'
+  | '9xl';
+
 // -- Web Types -- //
 
 /** For `autocomplete`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete */

@@ -98,6 +98,12 @@
   --modus-wc-font-size-xl: 1.125rem; /* 18px */
   --modus-wc-font-size-2xl: 1.25rem; /* 20px */
   --modus-wc-font-size-3xl: 1.5rem; /* 24px */
+  --modus-wc-font-size-4xl: 2.25rem; /* 36px */
+  --modus-wc-font-size-5xl: 3rem; /* 48px */
+  --modus-wc-font-size-6xl: 3.75rem; /* 60px */
+  --modus-wc-font-size-7xl: 4.5rem; /* 72px */
+  --modus-wc-font-size-8xl: 6rem; /* 96px */
+  --modus-wc-font-size-9xl: 8rem; /* 128px */
 
   /* Font Weights */
   --modus-wc-font-weight-light: 300;

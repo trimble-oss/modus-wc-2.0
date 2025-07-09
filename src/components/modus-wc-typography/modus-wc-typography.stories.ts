@@ -27,7 +27,18 @@ const meta: Meta<TypographyArgs> = {
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: [
+        'xs',
+        'sm',
+        'md',
+        'lg',
+        '4xl',
+        '5xl',
+        '6xl',
+        '7xl',
+        '8xl',
+        '9xl',
+      ],
     },
     variant: {
       control: { type: 'select' },
