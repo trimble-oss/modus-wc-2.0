@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IAutocompleteItem, IAutocompleteNoResults } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
-import { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, TypographySize } from "./components/types";
+import { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -21,9 +21,9 @@ import { SortingState } from "@tanstack/table-core";
 import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-import { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
+import { TypographySize, TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export { IAutocompleteItem, IAutocompleteNoResults } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
-export { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, TypographySize } from "./components/types";
+export { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -38,7 +38,7 @@ export { SortingState } from "@tanstack/table-core";
 export { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-export { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
+export { TypographySize, TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.

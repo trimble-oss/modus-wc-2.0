@@ -1,7 +1,16 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-typography.tailwind';
-import { TypographySize } from '../types';
+import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
+
+export type TypographySize =
+  | DaisySize
+  | '4xl'
+  | '5xl'
+  | '6xl'
+  | '7xl'
+  | '8xl'
+  | '9xl';
 
 export type TypographyVariant =
   | 'body'
