@@ -12,6 +12,7 @@ import {
   Event as StencilEvent,
   Watch,
 } from '@stencil/core';
+import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
@@ -407,21 +408,7 @@ export class ModusWcAutocomplete {
         const focusedItem = visibleItems.find((item) => item.focused);
 
         if (focusedItem) {
-          if (this.multiSelect) {
-            this.updateItemSelection(focusedItem.value, !focusedItem.selected);
-            this.value = '';
-          } else {
-            this.updateItemSelection(focusedItem.value, true);
-            this.value = focusedItem.label;
-          }
-
-          this.clearAllFocus();
-          this.initialNavigation = true;
-          this.itemSelect.emit(focusedItem);
-
-          if (!this.leaveMenuOpen) {
-            this.menuVisible = false;
-          }
+          this.handleItemSelect(focusedItem);
         } else if (this.multiSelect) {
           const selectedItems =
             this.items?.filter((item) => item.selected) || [];
@@ -574,35 +561,32 @@ export class ModusWcAutocomplete {
         (menuItem) => menuItem.value === item.value
       );
       const isCurrentlySelected = currentItem?.selected || false;
+
+      if (isCurrentlySelected) {
+        if (!this.leaveMenuOpen) {
+          this.menuVisible = false;
+        }
+        return;
+      }
+
       this.items = [
         ...this.items.map((menuItem) => ({
           ...menuItem,
-          selected:
-            menuItem.value === item.value
-              ? !menuItem.selected
-              : menuItem.selected,
+          selected: menuItem.value === item.value ? true : menuItem.selected,
           focused: false,
         })),
       ];
 
-      // Update selection order
-      if (isCurrentlySelected) {
-        // Remove from selection order if deselecting
-        this.selectionOrder = this.selectionOrder.filter(
-          (value) => value !== item.value
-        );
-      } else {
-        // Add to end of selection order if selecting
-        this.selectionOrder = [...this.selectionOrder, item.value];
+      // Add to end of selection order
+      this.selectionOrder = [...this.selectionOrder, item.value];
 
-        // If we exceed maxChips, automatically expand
-        if (
-          this.maxChips &&
-          this.maxChips > 0 &&
-          this.selectionOrder.length > this.maxChips
-        ) {
-          this.isChipsExpanded = true;
-        }
+      // If we exceed maxChips, automatically expand
+      if (
+        this.maxChips &&
+        this.maxChips > 0 &&
+        this.selectionOrder.length > this.maxChips
+      ) {
+        this.isChipsExpanded = true;
       }
 
       // Sync filtered items from updated items (maintains current search filter)
@@ -655,6 +639,10 @@ export class ModusWcAutocomplete {
 
     // Emit event for external handlers who want to know about the removal
     this.chipRemove.emit(item);
+  };
+
+  private handleClearAll = () => {
+    void this.clearInput();
   };
 
   private toggleChipsExpansion = () => {
@@ -732,29 +720,6 @@ export class ModusWcAutocomplete {
     this.syncFilteredItems();
   }
 
-  private updateItemSelection(targetValue: string, selected: boolean): void {
-    if (!this.items) return;
-
-    if (this.multiSelect) {
-      this.items = [
-        ...this.items.map((item) => ({
-          ...item,
-          selected: item.value === targetValue ? selected : item.selected,
-        })),
-      ];
-    } else {
-      this.items = [
-        ...this.items.map((item) => ({
-          ...item,
-          selected: item.value === targetValue ? selected : false,
-        })),
-      ];
-    }
-
-    // Sync filtered items from updated items
-    this.syncFilteredItems();
-  }
-
   render() {
     const getChips = () => {
       // Get selected items in selection order
@@ -798,6 +763,33 @@ export class ModusWcAutocomplete {
             ></modus-wc-chip>
           ))}
         </Fragment>
+      );
+    };
+
+    const getClearButton = () => {
+      const showClear =
+        this.includeClear &&
+        !this.disabled &&
+        !this.readOnly &&
+        (this.selectionOrder.length > 0 || this.value?.length > 0);
+
+      if (!showClear) {
+        return null;
+      }
+
+      return (
+        <modus-wc-button
+          onClick={this.handleClearAll}
+          variant="borderless"
+          color="secondary"
+          aria-label="Clear all"
+          disabled={this.disabled || this.readOnly}
+          size="xs"
+          shape="circle"
+          type="button"
+        >
+          <CloseSolidIcon />
+        </modus-wc-button>
       );
     };
 
@@ -870,8 +862,8 @@ export class ModusWcAutocomplete {
       <modus-wc-text-input
         bordered={this.bordered && !this.multiSelect}
         disabled={this.disabled}
-        includeClear={this.includeClear}
-        includeSearch={this.includeSearch}
+        includeClear={!this.multiSelect && this.includeClear}
+        includeSearch={!this.multiSelect && this.includeSearch}
         inputId={this.inputId}
         inputTabIndex={this.inputTabIndex}
         name={this.name}
@@ -941,12 +933,16 @@ export class ModusWcAutocomplete {
         )}
         {this.multiSelect ? (
           <div class={this.getMultiSelectClasses()}>
+            {this.includeSearch && (
+              <SearchSolidIcon className="modus-wc-autocomplete-search-icon" />
+            )}
             <div class="modus-wc-autocomplete-content">
               {getChips()}
               {getMoreChipsIndicator()}
               {getInput()}
             </div>
             <div class="modus-wc-autocomplete-button-container">
+              {getClearButton()}
               {getExpandCollapseButton()}
             </div>
           </div>

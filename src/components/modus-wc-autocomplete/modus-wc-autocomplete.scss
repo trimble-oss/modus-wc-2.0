@@ -22,6 +22,30 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     min-height: fit-content; // Allow height to grow as needed
     padding: var(--modus-wc-spacing-xs);
 
+    .modus-wc-autocomplete-search-icon {
+      align-self: center;
+      flex-shrink: 0;
+    }
+
+    &.modus-wc-input-sm {
+      .modus-wc-autocomplete-search-icon {
+        height: var(--modus-wc-line-height-sm);
+        width: var(--modus-wc-line-height-sm);
+      }
+    }
+    &.modus-wc-input-md {
+      .modus-wc-autocomplete-search-icon {
+        height: var(--modus-wc-line-height-md);
+        width: var(--modus-wc-line-height-md);
+      }
+    }
+    &.modus-wc-input-lg {
+      .modus-wc-autocomplete-search-icon {
+        height: var(--modus-wc-line-height-lg);
+        width: var(--modus-wc-line-height-lg);
+      }
+    }
+
     // Remove focus outline that appears when clicking on the container
     &:focus,
     &:focus-within {
@@ -125,9 +149,9 @@ modus-wc-autocomplete.modus-wc-autocomplete {
   .modus-wc-menu {
     border-radius: 0 0 var(--modus-wc-border-radius-md)
       var(--modus-wc-border-radius-md);
+    display: block;
     left: 0;
     margin-top: var(--modus-wc-spacing-2xs);
-    display: block;
     max-height: 320px;
     overflow: auto;
     position: absolute;

@@ -121,7 +121,7 @@ const meta: Meta<AutocompleteArgs> = {
     items: items,
     label: 'Label',
     'leave-menu-open': false,
-    'max-chips': 3,
+    'max-chips': 4,
     'min-chars': 0,
     'min-input-width': 20,
     'multi-select': false,
@@ -254,12 +254,13 @@ export const MultiSelect: Story = {
         debounce-ms=${ifDefined(args['debounce-ms'])}
         ?disabled=${args.disabled}
         ?include-clear=${args['include-clear']}
+        ?include-search=${args['include-search']}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         .items=${args.items}
         label=${ifDefined(args.label)}
         ?leave-menu-open=${args['leave-menu-open']}
-        max-chips=${args['max-chips'] ?? 3}
+        max-chips=${args['max-chips'] ?? 4}
         min-chars=${args['min-chars']}
         min-input-width=${ifDefined(args['min-input-width'])}
         ?multi-select=${true}
@@ -268,6 +269,7 @@ export const MultiSelect: Story = {
         placeholder=${ifDefined(args.placeholder)}
         ?read-only=${args['read-only']}
         ?required=${args.required}
+        ?show-menu-on-focus=${args['show-menu-on-focus']}
         size=${ifDefined(args.size)}
         value=${args.value}
       ></modus-wc-autocomplete>
