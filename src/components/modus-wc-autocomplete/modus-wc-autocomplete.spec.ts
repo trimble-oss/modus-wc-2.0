@@ -2242,4 +2242,451 @@ describe('modus-wc-autocomplete', () => {
     expect(autocomplete.items[0].focused).toBe(false);
     expect(autocomplete.items[1].focused).toBe(false);
   });
+
+  // Tests for optional chaining and null coalescing edge cases
+
+  // Test handleChange with null event.detail.target
+  it('should handle change event when event.detail.target is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Null target test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const inputChangeSpy = jest.spyOn(autocomplete.inputChange, 'emit');
+
+    // Create event with null target
+    const fakeEvent = new Event('input');
+    const event = new CustomEvent('input', { detail: fakeEvent });
+    Object.defineProperty(event.detail, 'target', {
+      value: null,
+      writable: true,
+    });
+
+    // Call handleChange directly
+    autocomplete['handleChange'](event);
+
+    // Should return early and not emit
+    expect(inputChangeSpy).not.toHaveBeenCalled();
+  });
+
+  // Test input.value?.length when value is null
+  it('should handle input value null check in handleChange', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Null value test" show-menu-on-focus="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = [
+      { label: 'Test', value: 'test', visibleInMenu: true },
+    ];
+
+    // Create input element with null value
+    const input = document.createElement('input');
+    Object.defineProperty(input, 'value', { value: null, writable: true });
+
+    // Create a properly formed event
+    const fakeEvent = new Event('input');
+    Object.defineProperty(fakeEvent, 'target', {
+      value: input,
+      writable: true,
+    });
+    const event = new CustomEvent('input', { detail: fakeEvent });
+
+    // Call handleChange
+    autocomplete['handleChange'](event);
+    await page.waitForChanges();
+
+    // Menu should still be visible due to showMenuOnFocus
+    expect(autocomplete['menuVisible']).toBe(true);
+  });
+
+  // Test Enter key with null items in multiselect
+  it('should handle Enter key when items is null in multiselect', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Null items test" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = undefined!;
+
+    const itemSelectSpy = jest.spyOn(autocomplete.itemSelect, 'emit');
+
+    const input = page.root!.querySelector('input')!;
+    const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
+    Object.defineProperty(enterEvent, 'target', {
+      value: input,
+      writable: false,
+    });
+
+    autocomplete.handleKeyDown(enterEvent);
+
+    expect(itemSelectSpy).not.toHaveBeenCalled();
+  });
+
+  // Test Backspace with null items
+  it('should handle Backspace when items is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Backspace null test" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    autocomplete.items = null as any;
+    autocomplete['selectionOrder'] = ['test'];
+
+    const input = page.root!.querySelector('input')!;
+    input.value = '';
+
+    const backspaceEvent = new KeyboardEvent('keydown', { key: 'Backspace' });
+    Object.defineProperty(backspaceEvent, 'target', {
+      value: input,
+      writable: false,
+    });
+
+    autocomplete.handleKeyDown(backspaceEvent);
+
+    // Selection order should remain unchanged since items is null
+    expect(autocomplete['selectionOrder']).toEqual(['test']);
+  });
+
+  // Test handleItemSelectByValue with null items
+  it('should handle item select by value when items is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Select null test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    autocomplete.items = null as any;
+
+    const itemSelectSpy = jest.spyOn(autocomplete.itemSelect, 'emit');
+
+    autocomplete['handleItemSelectByValue']('test');
+
+    expect(itemSelectSpy).not.toHaveBeenCalled();
+  });
+
+  // Test currentItem?.selected fallback
+  it('should handle null currentItem in multiselect', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Current item test" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = []; // Empty array so find returns undefined
+
+    const testItem: IAutocompleteItem = {
+      label: 'Test',
+      value: 'test',
+      visibleInMenu: true,
+    };
+
+    autocomplete['handleItemSelect'](testItem);
+    await page.waitForChanges();
+
+    // Should add the item even though currentItem was undefined
+    expect(autocomplete['selectionOrder']).toContain('test');
+  });
+
+  // Test this.value?.toLowerCase() null check
+  it('should handle null value in syncFilteredItems', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Sync null test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = [
+      { label: 'Item 1', value: '1', visibleInMenu: true },
+      { label: 'Item 2', value: '2', visibleInMenu: true },
+    ];
+
+    // Set value to null
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    autocomplete.value = null as any;
+
+    autocomplete['syncFilteredItems']();
+
+    // Should treat null as empty string and show all items
+    expect(autocomplete['filteredItems'].length).toBe(2);
+  });
+
+  // Test this.items?.find in getChips with null items
+  it('should handle null items in getChips render', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcChip],
+      html: `<modus-wc-autocomplete aria-label="Chips null test" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['selectionOrder'] = ['1', '2'];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    autocomplete.items = null as any;
+
+    await page.waitForChanges();
+
+    // Should render empty without errors
+    const chips = page.root?.querySelectorAll('modus-wc-chip');
+    expect(chips?.length).toBe(0);
+  });
+
+  // Test this.value?.length null check in getClearButton
+  it('should handle null value in getClearButton', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcButton],
+      html: `<modus-wc-autocomplete aria-label="Clear null test" include-clear="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    autocomplete.value = null as any;
+
+    await page.waitForChanges();
+
+    const clearButton = page.root?.querySelector('modus-wc-button');
+    expect(clearButton).toBeFalsy();
+  });
+
+  // Test menuItems fallback chain in getMenuItems
+  it('should handle all null fallbacks in getMenuItems', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Menu fallback test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['menuVisible'] = true;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    autocomplete['filteredItems'] = null as any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    autocomplete.items = null as any;
+
+    await page.waitForChanges();
+
+    // Should render empty menu without errors
+    const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
+    expect(menuItems?.length).toBe(0);
+  });
+
+  // Test noResults null checks
+  it('should handle null noResults properties', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="No results null test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['menuVisible'] = true;
+    autocomplete.items = [];
+
+    // Set all noResults properties to null
+    autocomplete.noResults = {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      label: null as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      subLabel: null as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ariaLabel: null as any,
+    };
+
+    await page.waitForChanges();
+
+    // Should not render no results when all properties are null
+    const noResults = page.root?.querySelector(
+      '.modus-wc-autocomplete-no-results'
+    );
+    expect(noResults).toBeFalsy();
+  });
+
+  // Test menuItems?.length null check
+  it('should handle null menuItems length check', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Menu length test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['menuVisible'] = true;
+
+    // Temporarily override getMenuItems to return null
+    const originalRender = autocomplete.render.bind(autocomplete);
+    autocomplete.render = function () {
+      const result = originalRender();
+      // Force menuItems to be null in the check
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      autocomplete['filteredItems'] = null as any;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      autocomplete.items = null as any;
+      return result;
+    };
+
+    await page.waitForChanges();
+
+    // Should handle gracefully without errors
+    const menu = page.root?.querySelector('modus-wc-menu');
+    expect(menu).toBeTruthy();
+  });
+
+  // Tests for remaining uncovered branches and statements
+
+  // Test event.detail?.target when event.detail is null
+  it('should handle change event when event.detail is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Null detail test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    // Create event with null detail
+    const event = new CustomEvent('input', {
+      detail: null,
+    } as CustomEventInit<Event | null>);
+
+    // Call handleChange directly
+    autocomplete['handleChange'](event as CustomEvent<Event>);
+
+    // Should return early without errors
+    expect(autocomplete.value).toBe('');
+  });
+
+  // Test input.value?.length when input.value is null
+  it('should handle change event when input value is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Null value test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    // Create a properly typed event
+    const fakeEvent = new Event('input');
+    const mockTarget = { value: null } as unknown as HTMLInputElement;
+    Object.defineProperty(fakeEvent, 'target', {
+      value: mockTarget,
+      writable: true,
+    });
+    const event = new CustomEvent('input', { detail: fakeEvent });
+
+    // Call handleChange directly
+    autocomplete['handleChange'](event);
+
+    // Should handle null value gracefully
+    expect(autocomplete['menuVisible']).toBe(false);
+  });
+
+  // Test this.value?.length when this.value is null
+  it('should handle getClearButton when value is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcButton],
+      html: `<modus-wc-autocomplete aria-label="Null value clear test" include-clear="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    // Force value to be null
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (autocomplete as any).value = null;
+    await page.waitForChanges();
+
+    // Clear button should not be rendered when value is null
+    const clearButton = page.root?.querySelector(
+      '.modus-wc-autocomplete-button-container modus-wc-button'
+    );
+    expect(clearButton).toBeFalsy();
+  });
+
+  // Test this.noResults?.label, ?.subLabel, ?.ariaLabel when noResults is null
+  it('should handle null noResults in getMenuItems', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Null no results test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    // Force noResults to be null
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (autocomplete as any).noResults = null;
+    autocomplete['menuVisible'] = true;
+    autocomplete.items = [];
+    autocomplete['filteredItems'] = [];
+    await page.waitForChanges();
+
+    // Should render menu items without no results section
+    const noResultsDiv = page.root?.querySelector(
+      '.modus-wc-autocomplete-no-results'
+    );
+    expect(noResultsDiv).toBeFalsy();
+  });
+
+  // Test menuItems?.length when menuItems is null
+  it('should handle null menuItems in getMenuItems', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Null menu items test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['menuVisible'] = true;
+    // Force both to be null
+    autocomplete['filteredItems'] = undefined!;
+    autocomplete.items = undefined!;
+
+    await page.waitForChanges();
+
+    // Should handle null gracefully
+    const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
+    expect(menuItems?.length).toBe(0);
+  });
+
+  // Test updateItemFocus when items is null
+  it('should handle updateItemFocus when items is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete],
+      html: `<modus-wc-autocomplete aria-label="Update focus null test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    // Force items to be null
+    autocomplete.items = undefined!;
+
+    // Call updateItemFocus
+    autocomplete['updateItemFocus']('test-value');
+
+    // Should return early without errors
+    expect(autocomplete.items).toBeUndefined();
+  });
+
+  // Test clearAllFocus when items is null
+  it('should handle clearAllFocus when items is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete],
+      html: `<modus-wc-autocomplete aria-label="Clear focus null test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    // Force items to be null
+    autocomplete.items = undefined!;
+
+    // Call clearAllFocus
+    autocomplete['clearAllFocus']();
+
+    // Should return early without errors
+    expect(autocomplete.items).toBeUndefined();
+  });
 });
