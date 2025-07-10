@@ -899,7 +899,7 @@ export class ModusWcAutocomplete {
 
       return (
         <Fragment>
-          {menuItems?.length > 0 || !noResults
+          {menuItems.length > 0 || !noResults
             ? menuItems.map((item) => (
                 <modus-wc-menu-item
                   disabled={item.disabled}

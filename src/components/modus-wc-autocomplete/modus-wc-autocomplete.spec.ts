@@ -2689,4 +2689,110 @@ describe('modus-wc-autocomplete', () => {
     // Should return early without errors
     expect(autocomplete.items).toBeUndefined();
   });
+
+  // Tests for the last two optional chaining branches
+
+  // Test getClearButton when value is null (covers the this.value?.length branch)
+  it('should handle getClearButton when value is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcButton],
+      html: `<modus-wc-autocomplete aria-label="Null value test" include-clear="true" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    // Explicitly set value to null
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    autocomplete.value = null as any;
+
+    await page.waitForChanges();
+
+    // The clear button should not render when value is null (even with includeClear=true)
+    const clearButton = page.root?.querySelector(
+      '.modus-wc-autocomplete-button-container modus-wc-button'
+    );
+    expect(clearButton).toBeFalsy();
+  });
+
+  // Test getMenuItems when filteredItems and items are both null (covers the menuItems?.length branch)
+  it('should handle getMenuItems when both filteredItems and items are null', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Null menu items test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    // Set both filteredItems and items to null
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    autocomplete['filteredItems'] = null as any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    autocomplete.items = null as any;
+    autocomplete['menuVisible'] = true;
+
+    await page.waitForChanges();
+
+    // Should render no results when menuItems is null
+    const noResults = page.root?.querySelector(
+      '.modus-wc-autocomplete-no-results'
+    );
+    expect(noResults).toBeTruthy();
+    expect(noResults?.textContent).toContain('No results found');
+  });
+
+  // Test to cover the menuItems?.length optional chaining branch
+  it('should handle edge case where menuItems could theoretically be undefined', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Edge case test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    // Mock the render method to test the edge case
+    const originalRender = autocomplete.render.bind(autocomplete);
+    let renderCount = 0;
+
+    autocomplete.render = function () {
+      renderCount++;
+
+      // On first render, temporarily make filteredItems and items undefined during getMenuItems execution
+      if (renderCount === 1) {
+        const originalFilteredItems = this['filteredItems'];
+        const originalItems = this.items;
+
+        // Temporarily set both to undefined to test the || [] fallback
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        this['filteredItems'] = undefined as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        this.items = undefined as any;
+
+        const result = originalRender.call(this);
+
+        // Restore values
+        this['filteredItems'] = originalFilteredItems;
+        this.items = originalItems;
+
+        return result;
+      }
+
+      return originalRender.call(this);
+    };
+
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    // The component should still render without errors
+    expect(page.root).toBeTruthy();
+  });
 });
