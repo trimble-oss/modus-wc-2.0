@@ -815,9 +815,8 @@ export class ModusWcAutocomplete {
     const getExpandCollapseButton = () => {
       const selectedItemsCount = this.selectionOrder.length;
 
-      // Only show expand/collapse button when focused and there are more chips than maxChips
+      // Show expand/collapse button when there are more chips than maxChips
       if (
-        !this.isFocused ||
         !this.maxChips ||
         this.maxChips <= 0 ||
         selectedItemsCount <= this.maxChips
