@@ -1,8 +1,11 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { TypographyVariant, TypographyWeight } from './modus-wc-typography';
-import { DaisySize } from '../types';
+import {
+  TypographySize,
+  TypographyVariant,
+  TypographyWeight,
+} from './modus-wc-typography';
 
 // Slot content was lost due to rendering issues when changing the "variant" attribute.
 // Because of this, each variant is rendered as a unique story below.
@@ -11,7 +14,7 @@ const content = 'The quick brown fox jumps over the lazy dog';
 
 interface TypographyArgs {
   'custom-class'?: string;
-  size?: DaisySize;
+  size?: TypographySize;
   variant: TypographyVariant;
   weight?: TypographyWeight;
 }
@@ -27,7 +30,21 @@ const meta: Meta<TypographyArgs> = {
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: [
+        'xs',
+        'sm',
+        'md',
+        'lg',
+        'xl',
+        '2xl',
+        '3xl',
+        '4xl',
+        '5xl',
+        '6xl',
+        '7xl',
+        '8xl',
+        '9xl',
+      ],
     },
     variant: {
       control: { type: 'select' },
