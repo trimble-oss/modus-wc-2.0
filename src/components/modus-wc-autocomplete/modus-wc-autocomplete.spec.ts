@@ -2826,7 +2826,7 @@ describe('modus-wc-autocomplete', () => {
       configurable: true,
     });
 
-        // Call handleOutsideClick directly with the event
+    // Call handleOutsideClick directly with the event
     autocomplete['handleOutsideClick'](clickEvent);
 
     // programmaticOpen should be reset to false after the click

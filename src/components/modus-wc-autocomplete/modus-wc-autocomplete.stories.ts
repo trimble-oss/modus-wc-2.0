@@ -188,38 +188,39 @@ type Story = StoryObj<AutocompleteArgs>;
 
 const Template: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
-      <style>
-        div[id^='story--components-forms-autocomplete--default'] {
-          height: 400px;
-        }
-      </style>
-      <modus-wc-autocomplete
-        aria-label="Fruit autocomplete"
-        ?bordered=${args.bordered}
-        custom-class=${ifDefined(args['custom-class'])}
-        debounce-ms=${ifDefined(args['debounce-ms'])}
-        ?disabled=${args.disabled}
-        ?include-clear=${args['include-clear']}
-        ?include-search=${args['include-search']}
-        input-id=${ifDefined(args['input-id'])}
-        input-tab-index=${ifDefined(args['input-tab-index'])}
-        .items=${args.items}
-        label=${ifDefined(args.label)}
-        ?leave-menu-open=${args['leave-menu-open']}
-        min-chars=${args['min-chars']}
-        min-input-width=${ifDefined(args['min-input-width'])}
-        ?multi-select=${false}
-        name=${ifDefined(args.name)}
-        .noResults=${args['no-results']}
-        placeholder=${ifDefined(args.placeholder)}
-        ?read-only=${args['read-only']}
-        ?required=${args.required}
-        ?show-menu-on-focus=${args['show-menu-on-focus']}
-        ?show-spinner=${args['show-spinner']}
-        size=${ifDefined(args.size)}
-        value=${args.value}
-      ></modus-wc-autocomplete>
+<style>
+  div[id^='story--components-forms-autocomplete--default'] {
+    height: 400px;
+  }
+</style>
+<modus-wc-autocomplete
+  aria-label="Fruit autocomplete"
+  ?bordered=${args.bordered}
+  custom-class=${ifDefined(args['custom-class'])}
+  debounce-ms=${ifDefined(args['debounce-ms'])}
+  ?disabled=${args.disabled}
+  ?include-clear=${args['include-clear']}
+  ?include-search=${args['include-search']}
+  input-id=${ifDefined(args['input-id'])}
+  input-tab-index=${ifDefined(args['input-tab-index'])}
+  .items=${args.items}
+  label=${ifDefined(args.label)}
+  ?leave-menu-open=${args['leave-menu-open']}
+  min-chars=${args['min-chars']}
+  min-input-width=${ifDefined(args['min-input-width'])}
+  ?multi-select=${false}
+  name=${ifDefined(args.name)}
+  .noResults=${args['no-results']}
+  placeholder=${ifDefined(args.placeholder)}
+  ?read-only=${args['read-only']}
+  ?required=${args.required}
+  ?show-menu-on-focus=${args['show-menu-on-focus']}
+  ?show-spinner=${args['show-spinner']}
+  size=${ifDefined(args.size)}
+  value=${args.value}
+></modus-wc-autocomplete>
     `;
   },
 };
@@ -234,45 +235,45 @@ export const MultiSelect: Story = {
     if (!args.items || args.items.length === 0) {
       args.items = [...items];
     }
-
+    // prettier-ignore
     return html`
-      <script>
-        // Initialize args.items if empty
-        if (!args.items || args.items.length === 0) {
-          args.items = [...items];
-        }
-      </script>
-      <style>
-        .modus-wc-autocomplete-multi-select {
-          width: 480px !important;
-        }
-      </style>
-      <modus-wc-autocomplete
-        aria-label="Fruit autocomplete"
-        ?bordered=${args.bordered}
-        custom-class=${ifDefined(args['custom-class'])}
-        debounce-ms=${ifDefined(args['debounce-ms'])}
-        ?disabled=${args.disabled}
-        ?include-clear=${args['include-clear']}
-        ?include-search=${args['include-search']}
-        input-id=${ifDefined(args['input-id'])}
-        input-tab-index=${ifDefined(args['input-tab-index'])}
-        .items=${args.items}
-        label=${ifDefined(args.label)}
-        ?leave-menu-open=${args['leave-menu-open']}
-        max-chips=${args['max-chips'] ?? 4}
-        min-chars=${args['min-chars']}
-        min-input-width=${ifDefined(args['min-input-width'])}
-        ?multi-select=${true}
-        name=${ifDefined(args.name)}
-        .noResults=${args['no-results']}
-        placeholder=${ifDefined(args.placeholder)}
-        ?read-only=${args['read-only']}
-        ?required=${args.required}
-        ?show-menu-on-focus=${args['show-menu-on-focus']}
-        size=${ifDefined(args.size)}
-        value=${args.value}
-      ></modus-wc-autocomplete>
+<script>
+  // Initialize args.items if empty
+  if (!args.items || args.items.length === 0) {
+    args.items = [...items];
+  }
+</script>
+<style>
+  .modus-wc-autocomplete-multi-select {
+    width: 480px !important;
+  }
+</style>
+<modus-wc-autocomplete
+  aria-label="Fruit autocomplete"
+  ?bordered=${args.bordered}
+  custom-class=${ifDefined(args['custom-class'])}
+  debounce-ms=${ifDefined(args['debounce-ms'])}
+  ?disabled=${args.disabled}
+  ?include-clear=${args['include-clear']}
+  ?include-search=${args['include-search']}
+  input-id=${ifDefined(args['input-id'])}
+  input-tab-index=${ifDefined(args['input-tab-index'])}
+  .items=${args.items}
+  label=${ifDefined(args.label)}
+  ?leave-menu-open=${args['leave-menu-open']}
+  max-chips=${args['max-chips'] ?? 4}
+  min-chars=${args['min-chars']}
+  min-input-width=${ifDefined(args['min-input-width'])}
+  ?multi-select=${true}
+  name=${ifDefined(args.name)}
+  .noResults=${args['no-results']}
+  placeholder=${ifDefined(args.placeholder)}
+  ?read-only=${args['read-only']}
+  ?required=${args.required}
+  ?show-menu-on-focus=${args['show-menu-on-focus']}
+  size=${ifDefined(args.size)}
+  value=${args.value}
+></modus-wc-autocomplete>
     `;
   },
 };
@@ -317,76 +318,76 @@ export const WithSpinner: Story = {
         }, 2000);
       }
     };
-
+    // prettier-ignore
     return html`
-      <script>
-              let debounceTimer: number;
+<script>
+        let debounceTimer: number;
 
-        const handleInputChange = (e: CustomEvent<Event>) => {
-          if (!e.detail?.target) return;
+  const handleInputChange = (e: CustomEvent<Event>) => {
+    if (!e.detail?.target) return;
 
-          const autocomplete = (e.target as HTMLInputElement).closest(
-            'modus-wc-autocomplete'
-          ) as Element & {
-            items: IAutocompleteItem[];
-            showSpinner: boolean;
-            value: string;
-          };
+    const autocomplete = (e.target as HTMLInputElement).closest(
+      'modus-wc-autocomplete'
+    ) as Element & {
+      items: IAutocompleteItem[];
+      showSpinner: boolean;
+      value: string;
+    };
 
-          if (autocomplete) {
-            const input = e.detail.target as HTMLInputElement;
-            const searchText = input.value.toLowerCase();
+    if (autocomplete) {
+      const input = e.detail.target as HTMLInputElement;
+      const searchText = input.value.toLowerCase();
 
-            // Clear previous timeout to avoid multiple API calls
-            if (debounceTimer) {
-              window.clearTimeout(debounceTimer);
-            }
+      // Clear previous timeout to avoid multiple API calls
+      if (debounceTimer) {
+        window.clearTimeout(debounceTimer);
+      }
 
-            // Show spinner immediately and update input value
-            autocomplete.showSpinner = true;
+      // Show spinner immediately and update input value
+      autocomplete.showSpinner = true;
 
-            // Simulate an API call with a 2-second delay
-            debounceTimer = window.setTimeout(() => {
-              // Filter the master list of items to get the new results
-              const filteredItems = items.filter((item) =>
-                item.label.toLowerCase().includes(searchText)
-              );
+      // Simulate an API call with a 2-second delay
+      debounceTimer = window.setTimeout(() => {
+        // Filter the master list of items to get the new results
+        const filteredItems = items.filter((item) =>
+          item.label.toLowerCase().includes(searchText)
+        );
 
-              // Update the component with the new filtered list and hide the spinner
-              autocomplete.items = filteredItems;
-              autocomplete.showSpinner = false;
-            }, 2000);
-          }
-        };
-      </script>
-      <style>
-        div[id^='story--components-forms-autocomplete--with-spinner'] {
-          height: 400px;
-        }
-      </style>
-      <modus-wc-autocomplete
-        aria-label="Fruit autocomplete with spinner"
-        ?bordered=${args.bordered}
-        custom-class=${ifDefined(args['custom-class'])}
-        debounce-ms=${ifDefined(args['debounce-ms'])}
-        ?disabled=${args.disabled}
-        input-id=${ifDefined(args['input-id'])}
-        input-tab-index=${ifDefined(args['input-tab-index'])}
-        .items=${args.items}
-        label=${ifDefined(args.label)}
-        ?leave-menu-open=${args['leave-menu-open']}
-        min-chars=${args['min-chars']}
-        ?multi-select=${false}
-        name=${ifDefined(args.name)}
-        placeholder=${ifDefined(args.placeholder)}
-        ?read-only=${args['read-only']}
-        ?required=${args.required}
-        ?show-menu-on-focus=${args['show-menu-on-focus']}
-        ?show-spinner=${args['show-spinner']}
-        size=${ifDefined(args.size)}
-        value=${args.value}
-        @inputChange=${handleInputChange}
-      ></modus-wc-autocomplete>
+        // Update the component with the new filtered list and hide the spinner
+        autocomplete.items = filteredItems;
+        autocomplete.showSpinner = false;
+      }, 2000);
+    }
+  };
+</script>
+<style>
+  div[id^='story--components-forms-autocomplete--with-spinner'] {
+    height: 400px;
+  }
+</style>
+<modus-wc-autocomplete
+  aria-label="Fruit autocomplete with spinner"
+  ?bordered=${args.bordered}
+  custom-class=${ifDefined(args['custom-class'])}
+  debounce-ms=${ifDefined(args['debounce-ms'])}
+  ?disabled=${args.disabled}
+  input-id=${ifDefined(args['input-id'])}
+  input-tab-index=${ifDefined(args['input-tab-index'])}
+  .items=${args.items}
+  label=${ifDefined(args.label)}
+  ?leave-menu-open=${args['leave-menu-open']}
+  min-chars=${args['min-chars']}
+  ?multi-select=${false}
+  name=${ifDefined(args.name)}
+  placeholder=${ifDefined(args.placeholder)}
+  ?read-only=${args['read-only']}
+  ?required=${args.required}
+  ?show-menu-on-focus=${args['show-menu-on-focus']}
+  ?show-spinner=${args['show-spinner']}
+  size=${ifDefined(args.size)}
+  value=${args.value}
+  @inputChange=${handleInputChange}
+></modus-wc-autocomplete>
     `;
   },
 };
@@ -456,190 +457,189 @@ export const CustomMenuItems: Story = {
         }
       }
     };
-
+    // prettier-ignore
     return html`
-      <script>
-             const originalNoResults = args['no-results'];
-        if (args['leave-menu-open'] == true) {
-          args['no-results'] = {
-            ariaLabel: '',
-            label: '',
-            subLabel: '',
-          };
-        }
+<script>
+      const originalNoResults = args['no-results'];
+if (args['leave-menu-open'] == true) {
+  args['no-results'] = {
+    ariaLabel: '',
+    label: '',
+    subLabel: '',
+  };
+}
 
-        const handleInputChange = (e) => {
-          if (!e.detail?.target) return;
+const handleInputChange = (e) => {
+  if (!e.detail?.target) return;
 
-          const autocomplete = (e.target as HTMLInputElement).closest(
-            'modus-wc-autocomplete'
-          ) as Element & { noResults: IAutocompleteNoResults };
+  const autocomplete = (e.target as HTMLInputElement).closest(
+    'modus-wc-autocomplete'
+  ) as Element & { noResults: IAutocompleteNoResults };
 
-          if (autocomplete) {
-            const searchText = (
-              e.detail.target as HTMLInputElement
-            ).value.toLowerCase();
-            const allLiItems = autocomplete?.querySelectorAll('li');
+  if (autocomplete) {
+    const searchText = (
+      e.detail.target as HTMLInputElement
+    ).value.toLowerCase();
+    const allLiItems = autocomplete?.querySelectorAll('li');
 
-            if (searchText === '') {
-              allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
-            }
+    if (searchText === '') {
+      allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
+    }
 
-            let hiddenCount = 0;
-            Array.from(allLiItems ?? []).forEach((menuItem) => {
-              const label =
-                menuItem.querySelector('.title')?.textContent?.toLowerCase() || '';
-              if (!label.includes(searchText)) {
-                menuItem.classList.add('hidden');
-                hiddenCount++;
-              } else {
-                menuItem.classList.remove('hidden');
-              }
-            });
+    let hiddenCount = 0;
+    Array.from(allLiItems ?? []).forEach((menuItem) => {
+      const label =
+        menuItem.querySelector('.title')?.textContent?.toLowerCase() || '';
+      if (!label.includes(searchText)) {
+        menuItem.classList.add('hidden');
+        hiddenCount++;
+      } else {
+        menuItem.classList.remove('hidden');
+      }
+    });
 
-            // Show no results if all items are hidden
-            autocomplete.noResults =
-              hiddenCount === allLiItems?.length
-                ? originalNoResults
-                : { ariaLabel: '', label: '', subLabel: '' };
-          }
-        };
+    // Show no results if all items are hidden
+    autocomplete.noResults =
+      hiddenCount === allLiItems?.length
+        ? originalNoResults
+        : { ariaLabel: '', label: '', subLabel: '' };
+  }
+};
 
-        const handleItemSelect = (e) => {
-          const autocomplete = (e.target as HTMLInputElement).closest(
-            'modus-wc-autocomplete'
-          );
+const handleItemSelect = (e) => {
+  const autocomplete = (e.target as HTMLInputElement).closest(
+    'modus-wc-autocomplete'
+  );
 
-          if (autocomplete) {
-            const allLiItems = autocomplete?.querySelectorAll('li');
-            allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
+  if (autocomplete) {
+    const allLiItems = autocomplete?.querySelectorAll('li');
+    allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
 
-            const clickedItem = (e.target as HTMLElement).closest('li');
-            if (clickedItem) {
-              clickedItem.classList.add('selected');
-              autocomplete.value = clickedItem.querySelector('.title')
-                ?.textContent as string;
-            }
-          }
-        };
-      </script>
-      <style>
-        div[id^='story--components-forms-autocomplete--custom-menu-items'] {
-          height: 400px;
-        }
-        .list-item {
-          display: flex;
-          gap: 1rem;
-          border-bottom: 1px solid #ccc;
-          cursor: pointer;
-        }
-        li.list-item.hidden {
-          display: none;
-        }
-        li.list-item img {
-          height: 28px;
-          width: 28px;
-        }
-        .item-info .title {
-          font-weight: 600;
-          margin-bottom: 0.25rem;
-        }
-        .item-info .description {
-          color: #666;
-          font-size: 0.875rem;
-        }
-        li.list-item.selected {
-          background-color: #dcedf9;
-        }
-        li.list-item .modus-wc-menu-item-selected-icon {
-          display: none;
-        }
-        li.list-item.selected .modus-wc-menu-item-selected-icon {
-          display: block;
-        }
-      </style>
-      <modus-wc-autocomplete
-        aria-label="Custom items autocomplete"
-        ?bordered=${args.bordered}
-        custom-class=${ifDefined(args['custom-class'])}
-        debounce-ms=${ifDefined(args['debounce-ms'])}
-        ?disabled=${args.disabled}
-        input-id=${ifDefined(args['input-id'])}
-        input-tab-index=${ifDefined(args['input-tab-index'])}
-        label=${ifDefined(args.label)}
-        ?leave-menu-open=${args['leave-menu-open']}
-        min-chars=${args['min-chars']}
-        ?multi-select=${false}
-        name=${ifDefined(args.name)}
-        .noResults=${args['no-results']}
-        placeholder=${ifDefined(args.placeholder)}
-        ?read-only=${args['read-only']}
-        ?required=${args.required}
-        size=${ifDefined(args.size)}
-        value=${args.value}
-        @inputChange=${handleInputChange}
-      >
-        <div slot="menu-items" id="custom-menu-items">
-          <li class="list-item" @click=${handleItemSelect}>
-            <div class="item-info">
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/5166/5166970.png"
-                alt="Project 1"
-              />
-              <div>
-                <div class="title">Project 1</div>
-                <div class="description">Description for Project 1</div>
-              </div>
-              <div class="modus-wc-menu-item-selected-icon">
-                <modus-wc-icon
-                  decorative=${true}
-                  name="check"
-                  size=${ifDefined(args.size)}
-                />
-              </div>
-            </div>
-          </li>
-          <li class="list-item" @click=${handleItemSelect}>
-            <div class="item-info">
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/1087/1087927.png"
-                alt="Project 2"
-              />
-              <div>
-                <div class="title">Project 2</div>
-                <div class="description">Description for Project 2</div>
-              </div>
-              <div class="modus-wc-menu-item-selected-icon">
-                <modus-wc-icon
-                  decorative=${true}
-                  name="check"
-                  size=${ifDefined(args.size)}
-                />
-              </div>
-            </div>
-          </li>
-          <li class="list-item" @click=${handleItemSelect}>
-            <div class="item-info">
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/1659/1659067.png"
-                alt="Project 3"
-              />
-              <div>
-                <div class="title">Project 3</div>
-                <div class="description">Description for Project 3</div>
-              </div>
-              <div class="modus-wc-menu-item-selected-icon">
-                <modus-wc-icon
-                  decorative=${true}
-                  name="check"
-                  size=${ifDefined(args.size)}
-                />
-              </div>
-            </div>
-          </li>
-        </div>
-        ></modus-wc-autocomplete
-      >
+    const clickedItem = (e.target as HTMLElement).closest('li');
+    if (clickedItem) {
+      clickedItem.classList.add('selected');
+      autocomplete.value = clickedItem.querySelector('.title')
+        ?.textContent as string;
+    }
+  }
+};
+</script>
+<style>
+div[id^='story--components-forms-autocomplete--custom-menu-items'] {
+  height: 400px;
+}
+.list-item {
+  display: flex;
+  gap: 1rem;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+li.list-item.hidden {
+  display: none;
+}
+li.list-item img {
+  height: 28px;
+  width: 28px;
+}
+.item-info .title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.item-info .description {
+  color: #666;
+  font-size: 0.875rem;
+}
+li.list-item.selected {
+  background-color: #dcedf9;
+}
+li.list-item .modus-wc-menu-item-selected-icon {
+  display: none;
+}
+li.list-item.selected .modus-wc-menu-item-selected-icon {
+  display: block;
+}
+</style>
+<modus-wc-autocomplete
+aria-label="Custom items autocomplete"
+?bordered=${args.bordered}
+custom-class=${ifDefined(args['custom-class'])}
+debounce-ms=${ifDefined(args['debounce-ms'])}
+?disabled=${args.disabled}
+input-id=${ifDefined(args['input-id'])}
+input-tab-index=${ifDefined(args['input-tab-index'])}
+label=${ifDefined(args.label)}
+?leave-menu-open=${args['leave-menu-open']}
+min-chars=${args['min-chars']}
+?multi-select=${false}
+name=${ifDefined(args.name)}
+.noResults=${args['no-results']}
+placeholder=${ifDefined(args.placeholder)}
+?read-only=${args['read-only']}
+?required=${args.required}
+size=${ifDefined(args.size)}
+value=${args.value}
+@inputChange=${handleInputChange}
+>
+<div slot="menu-items" id="custom-menu-items">
+  <li class="list-item" @click=${handleItemSelect}>
+    <div class="item-info">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/5166/5166970.png"
+        alt="Project 1"
+      />
+      <div>
+        <div class="title">Project 1</div>
+        <div class="description">Description for Project 1</div>
+      </div>
+      <div class="modus-wc-menu-item-selected-icon">
+        <modus-wc-icon
+          decorative=${true}
+          name="check"
+          size=${ifDefined(args.size)}
+        />
+      </div>
+    </div>
+  </li>
+  <li class="list-item" @click=${handleItemSelect}>
+    <div class="item-info">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/1087/1087927.png"
+        alt="Project 2"
+      />
+      <div>
+        <div class="title">Project 2</div>
+        <div class="description">Description for Project 2</div>
+      </div>
+      <div class="modus-wc-menu-item-selected-icon">
+        <modus-wc-icon
+          decorative=${true}
+          name="check"
+          size=${ifDefined(args.size)}
+        />
+      </div>
+    </div>
+  </li>
+  <li class="list-item" @click=${handleItemSelect}>
+    <div class="item-info">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/1659/1659067.png"
+        alt="Project 3"
+      />
+      <div>
+        <div class="title">Project 3</div>
+        <div class="description">Description for Project 3</div>
+      </div>
+      <div class="modus-wc-menu-item-selected-icon">
+        <modus-wc-icon
+          decorative=${true}
+          name="check"
+          size=${ifDefined(args.size)}
+        />
+      </div>
+    </div>
+  </li>
+</div>
+</modus-wc-autocomplete>
     `;
   },
 };
