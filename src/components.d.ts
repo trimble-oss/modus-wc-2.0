@@ -227,7 +227,7 @@ export namespace Components {
         /**
           * The variant of the badge.
          */
-        "variant": 'counter' | 'filled' | 'text';
+        "variant": 'counter' | 'filled' | 'outlined' | 'text';
     }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
@@ -2865,7 +2865,7 @@ declare namespace LocalJSX {
         /**
           * The variant of the badge.
          */
-        "variant"?: 'counter' | 'filled' | 'text';
+        "variant"?: 'counter' | 'filled' | 'outlined' | 'text';
     }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
