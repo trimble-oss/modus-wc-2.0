@@ -244,7 +244,7 @@ export const MultiSelect: Story = {
       </script>
       <style>
         .modus-wc-autocomplete-multi-select {
-          width: 400px !important;
+          width: 480px !important;
         }
       </style>
       <modus-wc-autocomplete
@@ -442,7 +442,7 @@ export const CustomMenuItems: Story = {
     const handleItemSelect = (e) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
-      );
+      ) as HTMLElement & { value: string };
 
       if (autocomplete) {
         const allLiItems = autocomplete?.querySelectorAll('li');
@@ -641,6 +641,297 @@ export const CustomMenuItems: Story = {
         ></modus-wc-autocomplete
       >
     `;
+  },
+};
+
+export const WithProgrammaticControl: Story = {
+  args: {
+    ...meta.args,
+    items: items, // Explicitly set items for this story
+  },
+  render: (args) => {
+    // Type for autocomplete element with methods
+    interface AutocompleteElement extends HTMLElement {
+      selectItem(item: IAutocompleteItem | null): Promise<void>;
+      openMenu(): Promise<void>;
+      closeMenu(): Promise<void>;
+      toggleMenu(): Promise<void>;
+      focusInput(): Promise<void>;
+      clearInput(): Promise<void>;
+    }
+
+    // Handler functions that will be attached to buttons
+    const handleSelectApple = async () => {
+      const autocomplete = document.getElementById(
+        'programmatic-autocomplete'
+      ) as AutocompleteElement;
+      if (autocomplete) {
+        const appleItem = items.find((item) => item.value === 'apple') || null;
+        await autocomplete.selectItem(appleItem);
+      }
+    };
+
+    const handleSelectNull = async () => {
+      const autocomplete = document.getElementById(
+        'programmatic-autocomplete'
+      ) as AutocompleteElement;
+      if (autocomplete) {
+        await autocomplete.selectItem(null);
+      }
+    };
+
+    const handleOpenMenu = async () => {
+      const autocomplete = document.getElementById(
+        'programmatic-autocomplete'
+      ) as AutocompleteElement;
+      if (autocomplete) {
+        await autocomplete.openMenu();
+      }
+    };
+
+    const handleCloseMenu = async () => {
+      const autocomplete = document.getElementById(
+        'programmatic-autocomplete'
+      ) as AutocompleteElement;
+      if (autocomplete) {
+        await autocomplete.closeMenu();
+      }
+    };
+
+    const handleToggleMenu = async () => {
+      const autocomplete = document.getElementById(
+        'programmatic-autocomplete'
+      ) as AutocompleteElement;
+      if (autocomplete) {
+        await autocomplete.toggleMenu();
+      }
+    };
+
+    const handleFocusInput = async () => {
+      const autocomplete = document.getElementById(
+        'programmatic-autocomplete'
+      ) as AutocompleteElement;
+      if (autocomplete) {
+        await autocomplete.focusInput();
+      }
+    };
+
+    const handleClearInput = async () => {
+      const autocomplete = document.getElementById(
+        'programmatic-autocomplete'
+      ) as AutocompleteElement;
+      if (autocomplete) {
+        await autocomplete.clearInput();
+      }
+    };
+
+    // Attach handlers to window for inline onclick
+    interface WindowWithHandlers extends Window {
+      handleSelectApple?: () => Promise<void>;
+      handleSelectNull?: () => Promise<void>;
+      handleOpenMenu?: () => Promise<void>;
+      handleCloseMenu?: () => Promise<void>;
+      handleToggleMenu?: () => Promise<void>;
+      handleFocusInput?: () => Promise<void>;
+      handleClearInput?: () => Promise<void>;
+    }
+
+    const windowWithHandlers = window as WindowWithHandlers;
+    windowWithHandlers.handleSelectApple = handleSelectApple;
+    windowWithHandlers.handleSelectNull = handleSelectNull;
+    windowWithHandlers.handleOpenMenu = handleOpenMenu;
+    windowWithHandlers.handleCloseMenu = handleCloseMenu;
+    windowWithHandlers.handleToggleMenu = handleToggleMenu;
+    windowWithHandlers.handleFocusInput = handleFocusInput;
+    windowWithHandlers.handleClearInput = handleClearInput;
+
+    return html`
+      <style>
+        div[id^='story--components-forms-autocomplete--with-programmatic-control'] {
+          height: 500px;
+        }
+        .controls-section {
+          margin-bottom: 2rem;
+          padding: 1rem;
+          background-color: #f5f5f5;
+          border-radius: 8px;
+        }
+        .controls-section h3 {
+          margin-top: 0;
+          margin-bottom: 1rem;
+          font-size: 1.2rem;
+        }
+        .control-group {
+          margin-bottom: 1rem;
+        }
+        .control-group label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 600;
+        }
+        .button-row {
+          display: flex;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+        }
+      </style>
+
+      <div class="controls-section">
+        <h3>Programmatic Control Methods</h3>
+
+        <div class="control-group">
+          <label>Selection Methods:</label>
+          <div class="button-row">
+            <modus-wc-button
+              onclick="window.handleSelectApple()"
+              variant="primary"
+              size="sm"
+            >
+              Select Apple
+            </modus-wc-button>
+            <modus-wc-button
+              onclick="window.handleSelectNull()"
+              variant="secondary"
+              size="sm"
+            >
+              Clear Selection
+            </modus-wc-button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>Menu Control Methods:</label>
+          <div class="button-row">
+            <modus-wc-button
+              onclick="window.handleOpenMenu()"
+              variant="primary"
+              size="sm"
+            >
+              Open Menu
+            </modus-wc-button>
+            <modus-wc-button
+              onclick="window.handleCloseMenu()"
+              variant="primary"
+              size="sm"
+            >
+              Close Menu
+            </modus-wc-button>
+            <modus-wc-button
+              onclick="window.handleToggleMenu()"
+              variant="secondary"
+              size="sm"
+            >
+              Toggle Menu
+            </modus-wc-button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>Input Control Methods:</label>
+          <div class="button-row">
+            <modus-wc-button
+              onclick="window.handleFocusInput()"
+              variant="primary"
+              size="sm"
+            >
+              Focus Input
+            </modus-wc-button>
+            <modus-wc-button
+              onclick="window.handleClearInput()"
+              variant="danger"
+              size="sm"
+            >
+              Clear All
+            </modus-wc-button>
+          </div>
+        </div>
+      </div>
+
+      <modus-wc-autocomplete
+        id="programmatic-autocomplete"
+        aria-label="Programmatic control demo"
+        ?bordered=${args.bordered}
+        custom-class=${ifDefined(args['custom-class'])}
+        debounce-ms=${ifDefined(args['debounce-ms'])}
+        ?disabled=${args.disabled}
+        ?include-clear=${args['include-clear']}
+        ?include-search=${args['include-search']}
+        input-id=${ifDefined(args['input-id'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
+        .items=${args.items}
+        label="Try the control buttons above"
+        ?leave-menu-open=${args['leave-menu-open']}
+        max-chips=${args['max-chips'] ?? 4}
+        min-chars=${args['min-chars']}
+        min-input-width=${ifDefined(args['min-input-width'])}
+        ?multi-select=${args['multi-select']}
+        name=${ifDefined(args.name)}
+        .noResults=${args['no-results']}
+        placeholder="Use buttons above to control"
+        ?read-only=${args['read-only']}
+        ?required=${args.required}
+        ?show-menu-on-focus=${args['show-menu-on-focus']}
+        ?show-spinner=${args['show-spinner']}
+        size=${ifDefined(args.size)}
+        value=${args.value}
+      ></modus-wc-autocomplete>
+    `;
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+## Public Methods
+
+The autocomplete component exposes several methods that can be called programmatically:
+
+### selectItem(item: IAutocompleteItem | null): Promise<void>
+Programmatically select an item. Pass \`null\` to clear selection.
+
+\`\`\`javascript
+const autocomplete = document.querySelector('modus-wc-autocomplete');
+const item = { label: 'Apple', value: 'apple', visibleInMenu: true };
+await autocomplete.selectItem(item);
+\`\`\`
+
+### openMenu(): Promise<void>
+Programmatically open the dropdown menu.
+
+\`\`\`javascript
+await autocomplete.openMenu();
+\`\`\`
+
+### closeMenu(): Promise<void>
+Programmatically close the dropdown menu.
+
+\`\`\`javascript
+await autocomplete.closeMenu();
+\`\`\`
+
+### toggleMenu(): Promise<void>
+Toggle the dropdown menu open/closed.
+
+\`\`\`javascript
+await autocomplete.toggleMenu();
+\`\`\`
+
+### focusInput(): Promise<void>
+Set focus to the input element.
+
+\`\`\`javascript
+await autocomplete.focusInput();
+\`\`\`
+
+### clearInput(): Promise<void>
+Clear the input value and all selections.
+
+\`\`\`javascript
+await autocomplete.clearInput();
+\`\`\`
+
+        `,
+      },
+    },
   },
 };
 

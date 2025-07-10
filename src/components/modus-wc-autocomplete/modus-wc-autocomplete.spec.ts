@@ -2795,4 +2795,46 @@ describe('modus-wc-autocomplete', () => {
     // The component should still render without errors
     expect(page.root).toBeTruthy();
   });
+
+  // Test to cover line 689 - programmaticOpen reset in handleOutsideClick
+  it('should reset programmaticOpen flag when clicking outside after programmatic open', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Programmatic open test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    // Open menu programmatically (sets programmaticOpen to true)
+    await autocomplete.openMenu();
+    expect(autocomplete['programmaticOpen']).toBe(true);
+    expect(autocomplete['menuVisible']).toBe(true);
+
+    // Create and dispatch an outside click event
+    const outsideElement = document.createElement('div');
+    document.body.appendChild(outsideElement);
+
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+
+    // Simulate click on outside element
+    Object.defineProperty(clickEvent, 'target', {
+      value: outsideElement,
+      configurable: true,
+    });
+
+        // Call handleOutsideClick directly with the event
+    autocomplete['handleOutsideClick'](clickEvent);
+
+    // programmaticOpen should be reset to false after the click
+    expect(autocomplete['programmaticOpen']).toBe(false);
+    // Menu should still be visible because the click happened while programmaticOpen was true
+    expect(autocomplete['menuVisible']).toBe(true);
+
+    // Cleanup
+    document.body.removeChild(outsideElement);
+  });
 });

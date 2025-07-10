@@ -41,6 +41,9 @@ export interface IAutocompleteNoResults {
   subLabel: string;
 }
 
+// Timeout constants for consistent behavior
+const BLUR_FOCUSOUT_DELAY_MS = 200; // Delay before handling blur/focusout to allow related element focus
+
 /**
  * A customizable autocomplete component used to create searchable text inputs.
  */
@@ -59,6 +62,7 @@ export class ModusWcAutocomplete {
 
   private debounceTimer?: number;
   private inheritedAttributes: Attributes = {};
+  private programmaticOpen: boolean = false;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -270,13 +274,14 @@ export class ModusWcAutocomplete {
       const relatedTarget = event.detail.relatedTarget as HTMLElement;
 
       if (!relatedTarget || !this.el.contains(relatedTarget)) {
-        console.log('blur');
         this.isFocused = false;
         this.isChipsExpanded = false; // Always collapse on blur
-        this.menuVisible = false;
+        if (!this.programmaticOpen) {
+          this.menuVisible = false;
+        }
         this.inputBlur.emit(event.detail);
       }
-    }, 200);
+    }, BLUR_FOCUSOUT_DELAY_MS);
   };
 
   private handleMenuFocusout = (event: CustomEvent<FocusEvent>) => {
@@ -284,10 +289,12 @@ export class ModusWcAutocomplete {
       const relatedTarget = event.detail.relatedTarget as HTMLElement;
 
       if (!relatedTarget || !this.el.contains(relatedTarget)) {
-        this.menuVisible = false;
+        if (!this.programmaticOpen) {
+          this.menuVisible = false;
+        }
         this.inputBlur.emit(event.detail);
       }
-    }, 200);
+    }, BLUR_FOCUSOUT_DELAY_MS);
   };
 
   private handleChange = (event: CustomEvent<Event>) => {
@@ -484,6 +491,7 @@ export class ModusWcAutocomplete {
    */
   @Method()
   async openMenu() {
+    this.programmaticOpen = true;
     this.menuVisible = true;
     return Promise.resolve();
   }
@@ -493,6 +501,7 @@ export class ModusWcAutocomplete {
    */
   @Method()
   async closeMenu() {
+    this.programmaticOpen = false;
     this.menuVisible = false;
     return Promise.resolve();
   }
@@ -502,6 +511,11 @@ export class ModusWcAutocomplete {
    */
   @Method()
   async toggleMenu() {
+    if (!this.menuVisible) {
+      this.programmaticOpen = true;
+    } else {
+      this.programmaticOpen = false;
+    }
     this.menuVisible = !this.menuVisible;
     return Promise.resolve();
   }
@@ -663,9 +677,14 @@ export class ModusWcAutocomplete {
   }
 
   private handleOutsideClick = (event: MouseEvent) => {
-    if (!this.el.contains(event.target as Node)) {
+    if (!this.el.contains(event.target as Node) && !this.programmaticOpen) {
       this.menuVisible = false;
       this.isChipsExpanded = false;
+    }
+
+    // Reset programmaticOpen flag after handling the click
+    if (this.programmaticOpen) {
+      this.programmaticOpen = false;
     }
   };
 
