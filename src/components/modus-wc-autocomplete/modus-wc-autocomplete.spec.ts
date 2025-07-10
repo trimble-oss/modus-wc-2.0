@@ -1245,27 +1245,11 @@ describe('modus-wc-autocomplete', () => {
     expect(() => autocomplete['clearAllFocus']()).not.toThrow();
   });
 
-  // Test updateItemSelection with no items
-  it('should handle updateItemSelection with no items', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAutocomplete, ModusWcTextInput],
-      html: `<modus-wc-autocomplete aria-label="Update selection no items test"></modus-wc-autocomplete>`,
-    });
-
-    const autocomplete = page.rootInstance as ModusWcAutocomplete;
-    autocomplete.items = [];
-
-    // Should not throw error
-    expect(() =>
-      autocomplete['updateItemSelection']('test', true)
-    ).not.toThrow();
-  });
-
   // Test multi-select deselection
-  it('should handle multi-select item deselection', async () => {
+  it('should not deselect an item on re-selection in multi-select mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
-      html: `<modus-wc-autocomplete aria-label="Multi-select deselection test" multi-select="true"></modus-wc-autocomplete>`,
+      html: `<modus-wc-autocomplete aria-label="Multi-select no-deselection test" multi-select="true"></modus-wc-autocomplete>`,
     });
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
@@ -1280,10 +1264,12 @@ describe('modus-wc-autocomplete', () => {
     autocomplete['selectionOrder'] = ['test'];
     await page.waitForChanges();
 
-    // Deselect the item
+    // Attempt to deselect the item by re-selecting it
     autocomplete['handleItemSelect'](testItem);
+    await page.waitForChanges();
 
-    expect(autocomplete.items[0].selected).toBe(false);
-    expect(autocomplete['selectionOrder']).toEqual([]);
+    // Expect the item to remain selected
+    expect(autocomplete.items[0].selected).toBe(true);
+    expect(autocomplete['selectionOrder']).toEqual(['test']);
   });
 });

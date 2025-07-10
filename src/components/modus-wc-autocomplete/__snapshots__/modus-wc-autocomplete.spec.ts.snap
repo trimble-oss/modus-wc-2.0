@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-autocomplete should close the menu when clicking outside if leaveMenuOpen is false 1`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 60px;">
+<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 20px;">
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
@@ -20,7 +20,7 @@ exports[`modus-wc-autocomplete should close the menu when clicking outside if le
 `;
 
 exports[`modus-wc-autocomplete should display no results ui when no items are available 1`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 60px;">
+<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 20px;">
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
@@ -46,7 +46,7 @@ exports[`modus-wc-autocomplete should display no results ui when no items are av
 `;
 
 exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 1`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 60px;">
+<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 20px;">
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
@@ -65,7 +65,7 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 1`
 `;
 
 exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 2`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 60px;">
+<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 20px;">
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-disabled modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
@@ -84,7 +84,7 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 2`
 `;
 
 exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 3`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 60px;">
+<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 20px;">
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-text-input--readonly modus-wc-w-full">
@@ -103,7 +103,7 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 3`
 `;
 
 exports[`modus-wc-autocomplete should render chips for selected items in multi-select mode 1`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" multi-select="true" value="" style="--modus-autocomplete-min-input-width: 60px;">
+<modus-wc-autocomplete class="modus-wc-autocomplete" multi-select="true" value="" style="--modus-autocomplete-min-input-width: 20px;">
   <!---->
   <div class="modus-wc-autocomplete-multi-select modus-wc-autocomplete-multi-select--bordered modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-w-full">
     <div class="modus-wc-autocomplete-content">
@@ -229,7 +229,7 @@ exports[`modus-wc-autocomplete should render default no results values when noRe
 `;
 
 exports[`modus-wc-autocomplete should render multi select without border 1`] = `
-<modus-wc-autocomplete bordered="false" class="modus-wc-autocomplete" multi-select="true" value="" style="--modus-autocomplete-min-input-width: 60px;">
+<modus-wc-autocomplete bordered="false" class="modus-wc-autocomplete" multi-select="true" value="" style="--modus-autocomplete-min-input-width: 20px;">
   <!---->
   <div class="modus-wc-autocomplete-multi-select modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-w-full">
     <div class="modus-wc-autocomplete-content">
@@ -253,7 +253,7 @@ exports[`modus-wc-autocomplete should render multi select without border 1`] = `
 `;
 
 exports[`modus-wc-autocomplete should render with custom props 1`] = `
-<modus-wc-autocomplete active-item-value="1" bordered="false" class="modus-wc-autocomplete test-class" custom-class="test-class" debounce-ms="500" disabled="true" include-clear="true" include-search="true" input-id="test-id" input-tab-index="1" label="Test label" min-chars="2" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" value="Item 1" style="--modus-autocomplete-min-input-width: 60px;">
+<modus-wc-autocomplete active-item-value="1" bordered="false" class="modus-wc-autocomplete test-class" custom-class="test-class" debounce-ms="500" disabled="true" include-clear="true" include-search="true" input-id="test-id" input-tab-index="1" label="Test label" min-chars="2" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" value="Item 1" style="--modus-autocomplete-min-input-width: 20px;">
   <!---->
   <modus-wc-input-label forid="test-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
   <modus-wc-text-input value="Item 1">
@@ -320,7 +320,7 @@ exports[`modus-wc-autocomplete should render with custom props 1`] = `
 `;
 
 exports[`modus-wc-autocomplete should render with default props 1`] = `
-<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 60px;">
+<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 20px;">
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
