@@ -5929,7 +5929,7 @@
               "default": "'md'",
               "description": "The size of the font.",
               "type": {
-                "text": "DaisySize"
+                "text": "TypographySize"
               }
             },
             {
