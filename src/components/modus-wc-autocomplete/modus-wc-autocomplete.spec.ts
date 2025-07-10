@@ -6,6 +6,7 @@ import {
 } from './modus-wc-autocomplete';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcChip } from '../modus-wc-chip/modus-wc-chip';
+import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
 import { ModusWcMenuItem } from '../modus-wc-menu-item/modus-wc-menu-item';
 import { ModusWcTextInput } from '../modus-wc-text-input/modus-wc-text-input';
@@ -1271,5 +1272,543 @@ describe('modus-wc-autocomplete', () => {
     // Expect the item to remain selected
     expect(autocomplete.items[0].selected).toBe(true);
     expect(autocomplete['selectionOrder']).toEqual(['test']);
+  });
+
+  // Test ArrowUp key with initialNavigation set to true
+  it('should handle ArrowUp key with initialNavigation true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="ArrowUp initial test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['initialNavigation'] = true;
+
+    const inputElement = document.createElement('input');
+    const keyEvent = new KeyboardEvent('keydown', { key: 'ArrowUp' });
+    Object.defineProperty(keyEvent, 'target', { value: inputElement });
+
+    autocomplete.handleKeyDown(keyEvent);
+
+    expect(autocomplete['initialNavigation']).toBe(false);
+  });
+
+  // Test Enter key with no focused item in single-select mode
+  it('should handle Enter key with no focused item in single-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Enter single-select test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const itemSelectSpy = jest.fn();
+    autocomplete.itemSelect = {
+      emit: itemSelectSpy,
+    } as unknown as EventEmitter<IAutocompleteItem>;
+
+    const testItem: IAutocompleteItem = {
+      label: 'Test Item',
+      value: 'test',
+      visibleInMenu: true,
+      selected: true,
+    };
+
+    autocomplete.items = [testItem];
+    await page.waitForChanges();
+
+    const inputElement = document.createElement('input');
+    const keyEvent = new KeyboardEvent('keydown', { key: 'Enter' });
+    Object.defineProperty(keyEvent, 'target', { value: inputElement });
+
+    autocomplete.handleKeyDown(keyEvent);
+
+    expect(itemSelectSpy).toHaveBeenCalledWith(testItem);
+  });
+
+  // Test auto-expansion when maxChips is exceeded
+  it('should auto-expand chips when selection exceeds maxChips', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Auto-expand test" multi-select="true" max-chips="2"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const testItems: IAutocompleteItem[] = [
+      { label: 'Item 1', value: '1', visibleInMenu: true },
+      { label: 'Item 2', value: '2', visibleInMenu: true },
+      { label: 'Item 3', value: '3', visibleInMenu: true },
+    ];
+
+    autocomplete.items = testItems;
+    autocomplete['selectionOrder'] = ['1', '2'];
+    await page.waitForChanges();
+
+    // Select third item which should trigger auto-expansion
+    autocomplete['handleItemSelect'](testItems[2]);
+    await page.waitForChanges();
+
+    expect(autocomplete['isChipsExpanded']).toBe(true);
+  });
+
+  // Test clear button rendering
+  it('should render clear button when includeClear is true and has value', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcButton],
+      html: `<modus-wc-autocomplete aria-label="Clear button test" include-clear="true" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    // Simulate typing 'test' into the input
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.value = 'test';
+    await page.waitForChanges();
+
+    const clearButton = page.root?.querySelector(
+      '.modus-wc-autocomplete-button-container modus-wc-button'
+    );
+    expect(clearButton).toBeTruthy();
+  });
+
+  // Test clear button with selected chips
+  it('should render clear button when includeClear is true and has selected chips', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcButton,
+        ModusWcChip,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Clear button chips test" include-clear="true" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = [
+      { label: 'Item 1', value: '1', visibleInMenu: true, selected: true },
+    ];
+    autocomplete['selectionOrder'] = ['1'];
+    await page.waitForChanges();
+
+    const clearButton = page.root?.querySelector(
+      '.modus-wc-autocomplete-button-container modus-wc-button'
+    );
+    expect(clearButton).toBeTruthy();
+  });
+
+  // Test more chips indicator
+  it('should render more chips indicator when not expanded', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcChip,
+        ModusWcIcon,
+      ],
+      html: `<modus-wc-autocomplete aria-label="More chips test" multi-select="true" max-chips="2"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = [
+      { label: 'Item 1', value: '1', visibleInMenu: true, selected: true },
+      { label: 'Item 2', value: '2', visibleInMenu: true, selected: true },
+      { label: 'Item 3', value: '3', visibleInMenu: true, selected: true },
+    ];
+    autocomplete['selectionOrder'] = ['1', '2', '3'];
+    autocomplete['isChipsExpanded'] = false;
+    await page.waitForChanges();
+
+    // Find the chip that contains +1 text
+    const hasMoreChip = Array.from(
+      page.root?.querySelectorAll('modus-wc-chip .modus-wc-chip-label') || []
+    ).some((chip) => chip.textContent === '+1');
+
+    expect(hasMoreChip).toBeTruthy();
+  });
+
+  // Test expand/collapse button conditions
+  it('should render expand button when focused and chips exceed maxChips', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcChip,
+        ModusWcButton,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Expand button test" multi-select="true" max-chips="2"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = [
+      { label: 'Item 1', value: '1', visibleInMenu: true, selected: true },
+      { label: 'Item 2', value: '2', visibleInMenu: true, selected: true },
+      { label: 'Item 3', value: '3', visibleInMenu: true, selected: true },
+    ];
+    autocomplete['selectionOrder'] = ['1', '2', '3'];
+    autocomplete['isFocused'] = true;
+    await page.waitForChanges();
+
+    const expandButton = page.root?.querySelector(
+      '.modus-wc-autocomplete-expand-button'
+    );
+    expect(expandButton).toBeTruthy();
+  });
+
+  // Test expanded state rendering
+  it('should render collapse button and text when chips are expanded', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcChip,
+        ModusWcButton,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Collapse button test" multi-select="true" max-chips="2"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = [
+      { label: 'Item 1', value: '1', visibleInMenu: true, selected: true },
+      { label: 'Item 2', value: '2', visibleInMenu: true, selected: true },
+      { label: 'Item 3', value: '3', visibleInMenu: true, selected: true },
+    ];
+    autocomplete['selectionOrder'] = ['1', '2', '3'];
+    autocomplete['isFocused'] = true;
+    autocomplete['isChipsExpanded'] = true;
+    await page.waitForChanges();
+
+    const expandButton = page.root?.querySelector(
+      '.modus-wc-autocomplete-expand-button.expanded'
+    );
+    expect(expandButton).toBeTruthy();
+
+    const icon = expandButton?.querySelector('modus-wc-icon[name="caret_up"]');
+    expect(icon).toBeTruthy();
+  });
+
+  // Test menu spinner rendering
+  it('should render spinner when showSpinner is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Spinner test" show-spinner="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    const loader = page.root?.querySelector('modus-wc-loader');
+    expect(loader).toBeTruthy();
+    expect(loader?.getAttribute('variant')).toBe('spinner');
+  });
+
+  // Test fallback for undefined filtered items
+  it('should handle undefined filtered items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Undefined items test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['filteredItems'] = undefined!;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
+  });
+
+  // Test syncFilteredItems with undefined items
+  it('should handle syncFilteredItems with undefined items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Sync filtered test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = undefined;
+
+    autocomplete['syncFilteredItems']();
+
+    expect(autocomplete['filteredItems']).toEqual([]);
+  });
+
+  // Test handleItemSelectByValue when disabled
+  it('should not select item by value when disabled', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Disabled select test" disabled="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const testItem: IAutocompleteItem = {
+      label: 'Test Item',
+      value: 'test',
+      visibleInMenu: true,
+    };
+
+    autocomplete.items = [testItem];
+    await page.waitForChanges();
+
+    autocomplete['handleItemSelectByValue']('test');
+
+    expect(autocomplete.items[0].selected).toBeFalsy();
+  });
+
+  // Test handleItemSelectByValue with invalid value
+  it('should not select item with invalid value', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Invalid value test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const testItem: IAutocompleteItem = {
+      label: 'Test Item',
+      value: 'test',
+      visibleInMenu: true,
+    };
+
+    autocomplete.items = [testItem];
+    await page.waitForChanges();
+
+    autocomplete['handleItemSelectByValue']('invalid');
+
+    expect(autocomplete.items[0].selected).toBeFalsy();
+  });
+
+  // Test immediate input change when debounceMs is 0
+  it('should emit input change immediately when debounceMs is 0', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="No debounce test" debounce-ms="0"></modus-wc-autocomplete>`,
+    });
+
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    const input = page.root!.querySelector('input');
+    const changeEvent = new Event('input');
+    Object.defineProperty(changeEvent, 'target', { value: input });
+
+    const customEvent = new CustomEvent('inputChange', { detail: changeEvent });
+    const textInput = page.root!.querySelector('modus-wc-text-input');
+    textInput!.dispatchEvent(customEvent);
+
+    await page.waitForChanges();
+
+    expect(changeSpy).toHaveBeenCalledTimes(1);
+  });
+
+  // Test input with search icon in multi-select
+  it('should render search icon in multi-select when includeSearch is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Search icon test" multi-select="true" include-search="true"></modus-wc-autocomplete>`,
+    });
+
+    await page.waitForChanges();
+
+    const searchIcon = page.root?.querySelector(
+      '.modus-wc-autocomplete-search-icon'
+    );
+    expect(searchIcon).toBeTruthy();
+  });
+
+  // Test ArrowUp navigation wrapping to last item
+  it('should wrap to last item when navigating up from no selection', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-autocomplete aria-label="ArrowUp wrap test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const testItems: IAutocompleteItem[] = [
+      { label: 'Item 1', value: '1', visibleInMenu: true },
+      { label: 'Item 2', value: '2', visibleInMenu: true },
+      { label: 'Item 3', value: '3', visibleInMenu: true },
+    ];
+
+    autocomplete.items = testItems;
+    autocomplete['menuVisible'] = true;
+    autocomplete['initialNavigation'] = false;
+    await page.waitForChanges();
+
+    const inputElement = page.root?.querySelector('input');
+    const keyEvent = new KeyboardEvent('keydown', { key: 'ArrowUp' });
+    Object.defineProperty(keyEvent, 'target', { value: inputElement });
+
+    autocomplete.handleKeyDown(keyEvent);
+    await page.waitForChanges();
+
+    expect(autocomplete.items[2].focused).toBe(true);
+  });
+
+  // Test getVisibleItems fallback when filteredItems is undefined
+  it('should return empty array when getVisibleItems has no filteredItems', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Visible items test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['filteredItems'] = undefined!;
+
+    const visibleItems = autocomplete['getVisibleItems']();
+
+    expect(visibleItems).toEqual([]);
+  });
+
+  // Test handling change event with existing debounce timer
+  it('should clear existing debounce timer before setting new one', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Debounce clear test" debounce-ms="300"></modus-wc-autocomplete>`,
+    });
+
+    const clearTimeoutSpy = jest.spyOn(window, 'clearTimeout');
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    // Set an existing timer
+    autocomplete['debounceTimer'] = 123;
+
+    const input = page.root!.querySelector('input');
+    const changeEvent = new Event('input');
+    Object.defineProperty(changeEvent, 'target', { value: input });
+
+    const customEvent = new CustomEvent('inputChange', { detail: changeEvent });
+    const textInput = page.root!.querySelector('modus-wc-text-input');
+    textInput!.dispatchEvent(customEvent);
+
+    expect(clearTimeoutSpy).toHaveBeenCalledWith(123);
+  });
+
+  // Test multi-select with no items and clear button
+  it('should not show clear button when disabled even with value', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcButton],
+      html: `<modus-wc-autocomplete aria-label="Disabled clear test" include-clear="true" disabled="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.value = 'test';
+    await page.waitForChanges();
+
+    const clearButton = page.root?.querySelector(
+      'modus-wc-button[aria-label="Clear all"]'
+    );
+    expect(clearButton).toBeFalsy();
+  });
+
+  // Test clear button when readonly
+  it('should not show clear button when readonly even with value', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcButton],
+      html: `<modus-wc-autocomplete aria-label="Readonly clear test" include-clear="true" read-only="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.value = 'test';
+    await page.waitForChanges();
+
+    const clearButton = page.root?.querySelector(
+      'modus-wc-button[aria-label="Clear all"]'
+    );
+    expect(clearButton).toBeFalsy();
+  });
+
+  // Test custom minInputWidth
+  it('should apply custom minInputWidth CSS variable', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Min width test" min-input-width="100"></modus-wc-autocomplete>`,
+    });
+
+    await page.waitForChanges();
+
+    const hostStyle = page.root?.style;
+    expect(
+      hostStyle?.getPropertyValue('--modus-autocomplete-min-input-width')
+    ).toBe('100px');
+  });
+
+  // Test default minInputWidth when not provided
+  it('should apply default minInputWidth when not provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Default min width test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.minInputWidth = undefined;
+    await page.waitForChanges();
+
+    const hostStyle = page.root?.style;
+    expect(
+      hostStyle?.getPropertyValue('--modus-autocomplete-min-input-width')
+    ).toBe('20px');
+  });
+
+  // Test menu item click handler
+  it('should handle menu item click to select item', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Menu item click test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const testItems: IAutocompleteItem[] = [
+      { label: 'Item 1', value: '1', visibleInMenu: true },
+    ];
+
+    autocomplete.items = testItems;
+    autocomplete['menuVisible'] = true;
+
+    // Ensure filtered items are synced
+    autocomplete['syncFilteredItems']();
+    await page.waitForChanges();
+
+    // Directly call handleItemSelectByValue to simulate menu item click
+    autocomplete['handleItemSelectByValue']('1');
+    await page.waitForChanges();
+
+    expect(autocomplete.items[0].selected).toBe(true);
+  });
+
+  // Test focus event when blur event has relatedTarget within component
+  it('should not blur when focus moves within component', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Internal focus test"></modus-wc-autocomplete>',
+    });
+
+    const blurSpy = jest.fn();
+    page.root!.addEventListener('inputBlur', blurSpy);
+
+    // Create an element within the component
+    const internalElement = page.root!.querySelector('modus-wc-text-input');
+    // Create a focus event with relatedTarget inside the component
+    const focusEvent = new FocusEvent('blur', {
+      relatedTarget: internalElement as EventTarget,
+    });
+    const customEvent = new CustomEvent('inputBlur', {
+      detail: focusEvent,
+    });
+
+    const textInput = page.root!.querySelector('modus-wc-text-input');
+    textInput!.dispatchEvent(customEvent);
+
+    // Wait for the timeout in handleBlur (200ms)
+    await new Promise((resolve) => setTimeout(resolve, 250));
+    await page.waitForChanges();
+
+    // Should not emit blur when focus stays within component
+    expect(blurSpy).not.toHaveBeenCalled();
   });
 });
