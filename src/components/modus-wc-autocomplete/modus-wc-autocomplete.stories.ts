@@ -107,6 +107,10 @@ interface AutocompleteArgs {
   'show-spinner'?: boolean;
   size?: ModusSize;
   value: string;
+  'custom-blur'?: (event: FocusEvent) => void;
+  'custom-input-change'?: (value: string) => void;
+  'custom-item-select'?: (item: IAutocompleteItem) => void;
+  'custom-key-down'?: (event: KeyboardEvent) => void;
 }
 
 const meta: Meta<AutocompleteArgs> = {
@@ -165,6 +169,38 @@ const meta: Meta<AutocompleteArgs> = {
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
+    },
+    'custom-blur': {
+      description:
+        'Custom blur handler function that overrides default blur behavior',
+      table: {
+        type: { summary: '(event: FocusEvent) => void' },
+        category: 'Custom Handlers',
+      },
+    },
+    'custom-input-change': {
+      description:
+        'Custom input change handler function that overrides default input change behavior',
+      table: {
+        type: { summary: '(value: string) => void' },
+        category: 'Custom Handlers',
+      },
+    },
+    'custom-item-select': {
+      description:
+        'Custom item select handler function that overrides default item selection behavior',
+      table: {
+        type: { summary: '(item: IAutocompleteItem) => void' },
+        category: 'Custom Handlers',
+      },
+    },
+    'custom-key-down': {
+      description:
+        'Custom keydown handler function that overrides default keyboard navigation',
+      table: {
+        type: { summary: '(event: KeyboardEvent) => void' },
+        category: 'Custom Handlers',
+      },
     },
   },
   decorators: [withActions],
