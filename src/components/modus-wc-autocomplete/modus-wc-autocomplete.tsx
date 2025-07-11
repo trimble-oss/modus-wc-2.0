@@ -57,7 +57,6 @@ export class ModusWcAutocomplete {
   @State() private isChipsExpanded: boolean = false;
   @State() private initialNavigation: boolean = true;
   @State() private filteredItems: IAutocompleteItem[] = [];
-  @State() private isFocused: boolean = false;
   @State() private selectionOrder: string[] = []; // Track order of chip selection
 
   private debounceTimer?: number;
@@ -274,7 +273,6 @@ export class ModusWcAutocomplete {
       const relatedTarget = event.detail.relatedTarget as HTMLElement;
 
       if (!relatedTarget || !this.el.contains(relatedTarget)) {
-        this.isFocused = false;
         this.isChipsExpanded = false; // Always collapse on blur
         if (!this.programmaticOpen) {
           this.menuVisible = false;
@@ -298,23 +296,30 @@ export class ModusWcAutocomplete {
   };
 
   private handleChange = (event: CustomEvent<Event>) => {
-    if (this.customInputChange) {
-      const value = (event.detail.target as HTMLInputElement).value;
-      this.customInputChange(value);
+    if (this.disabled || this.readOnly) return;
+
+    // Add null checks for edge cases
+    if (!event.detail || !event.detail.target) {
       return;
     }
 
-    if (!event.detail?.target) return;
-
     const input = event.detail.target as HTMLInputElement;
+    const inputValue = input.value || '';
+
+    if (this.customInputChange) {
+      this.customInputChange(inputValue);
+      return;
+    }
+
+    // Update menu visibility
     if (this.showMenuOnFocus) {
       this.menuVisible = true;
     } else {
-      this.menuVisible = input.value?.length >= this.minChars;
+      this.menuVisible = inputValue.length >= this.minChars;
     }
 
     if (this.items) {
-      // Clear focus from all items in master list
+      // Clear the focused state from all items
       this.items = [
         ...this.items.map((item) => ({
           ...item,
@@ -322,14 +327,24 @@ export class ModusWcAutocomplete {
         })),
       ];
 
-      this.value = input.value;
-
-      // Sync filtered items based on new search value
-      this.syncFilteredItems();
-
-      if (this.value) {
-        this.initialNavigation = false;
+      // In single select mode, if the input is cleared, also clear the selection
+      if (!this.multiSelect && inputValue === '') {
+        this.items = [
+          ...this.items.map((item) => ({
+            ...item,
+            selected: false,
+          })),
+        ];
       }
+    }
+
+    this.value = inputValue;
+
+    // Sync filtered items based on new search value
+    this.syncFilteredItems();
+
+    if (this.value) {
+      this.initialNavigation = false;
     }
 
     if (this.debounceTimer) {
@@ -455,8 +470,6 @@ export class ModusWcAutocomplete {
   }
 
   private handleFocus = (event: CustomEvent<FocusEvent>) => {
-    this.isFocused = true;
-
     if (this.showMenuOnFocus) {
       this.menuVisible = true;
     }
@@ -753,13 +766,10 @@ export class ModusWcAutocomplete {
       }
 
       // Chip display logic:
-      // - Not focused: show up to maxChips (compact view)
-      // - Focused but not expanded: show up to maxChips with expand button
-      // - Focused and expanded: show all chips with collapse button
+      // - Not expanded: show up to maxChips (compact view)
+      // - Expanded: show all chips regardless of focus state
       const effectiveMaxChips =
-        (!this.isFocused || !this.isChipsExpanded) &&
-        this.maxChips &&
-        this.maxChips > 0
+        !this.isChipsExpanded && this.maxChips && this.maxChips > 0
           ? this.maxChips
           : selectedItems.length;
 

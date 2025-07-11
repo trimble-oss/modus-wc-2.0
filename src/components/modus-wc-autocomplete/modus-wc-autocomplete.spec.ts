@@ -2300,6 +2300,7 @@ describe('modus-wc-autocomplete', () => {
 
     // Menu should still be visible due to showMenuOnFocus
     expect(autocomplete['menuVisible']).toBe(true);
+    expect(autocomplete.value).toBe('');
   });
 
   // Test Enter key with null items in multiselect
@@ -2583,7 +2584,9 @@ describe('modus-wc-autocomplete', () => {
     autocomplete['handleChange'](event);
 
     // Should handle null value gracefully
-    expect(autocomplete['menuVisible']).toBe(false);
+    // When minChars is 0 (default), empty string should show menu
+    expect(autocomplete['menuVisible']).toBe(true);
+    expect(autocomplete.value).toBe('');
   });
 
   // Test this.value?.length when this.value is null
@@ -2836,5 +2839,100 @@ describe('modus-wc-autocomplete', () => {
 
     // Cleanup
     document.body.removeChild(outsideElement);
+  });
+
+  // Test to ensure selection is cleared when input is cleared in single select mode
+  it('should clear selection when input is cleared in single select mode', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Single select test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { value: '1', label: 'Option 1', visibleInMenu: true },
+      { value: '2', label: 'Option 2', visibleInMenu: true },
+    ];
+
+    autocomplete.items = items;
+    autocomplete.multiSelect = false;
+    await page.waitForChanges();
+
+    // Select an item
+    await autocomplete.selectItem(items[0]);
+    expect(autocomplete.items[0].selected).toBe(true);
+    expect(autocomplete.value).toBe('Option 1');
+
+    // Clear the input
+    const input = page.root?.querySelector('input');
+    if (!input) {
+      throw new Error('Input element not found');
+    }
+    input.value = '';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await page.waitForChanges();
+
+    // Wait for handleChange to process
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    // Selection should be cleared
+    expect(autocomplete.items[0].selected).toBe(false);
+    expect(autocomplete.value).toBe('');
+  });
+
+  // Test to cover line 299 - disabled/readOnly check in handleChange
+  it('should not process change event when disabled', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Disabled test" disabled="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const spy = jest.spyOn(autocomplete.inputChange, 'emit');
+
+    // Create a change event
+    const event = new CustomEvent('input', {
+      detail: new Event('input'),
+    });
+    Object.defineProperty(event.detail, 'target', {
+      value: { value: 'test' } as HTMLInputElement,
+    });
+
+    // Call handleChange directly
+    autocomplete['handleChange'](event);
+
+    // Should not emit change event when disabled
+    expect(spy).not.toHaveBeenCalled();
+    expect(autocomplete.value).toBe('');
+  });
+
+  it('should not process change event when readOnly', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="ReadOnly test" read-only="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const spy = jest.spyOn(autocomplete.inputChange, 'emit');
+
+    // Create a change event
+    const event = new CustomEvent('input', {
+      detail: new Event('input'),
+    });
+    Object.defineProperty(event.detail, 'target', {
+      value: { value: 'test' } as HTMLInputElement,
+    });
+
+    // Call handleChange directly
+    autocomplete['handleChange'](event);
+
+    // Should not emit change event when readOnly
+    expect(spy).not.toHaveBeenCalled();
+    expect(autocomplete.value).toBe('');
   });
 });
