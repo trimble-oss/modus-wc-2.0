@@ -2935,4 +2935,90 @@ describe('modus-wc-autocomplete', () => {
     expect(spy).not.toHaveBeenCalled();
     expect(autocomplete.value).toBe('');
   });
+
+  // Test keyboard navigation in readOnly mode
+  it('should not open menu with arrow keys when readOnly', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-autocomplete aria-label="ReadOnly keyboard test" read-only="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { value: '1', label: 'Option 1', visibleInMenu: true },
+      { value: '2', label: 'Option 2', visibleInMenu: true },
+    ];
+    autocomplete.items = items;
+    await page.waitForChanges();
+
+    const input = page.root?.querySelector('input');
+    if (!input) {
+      throw new Error('Input element not found');
+    }
+
+    // Focus the input
+    input.focus();
+    await page.waitForChanges();
+
+    // Try to open menu with ArrowDown
+    const arrowDownEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      bubbles: true,
+    });
+    input.dispatchEvent(arrowDownEvent);
+    await page.waitForChanges();
+
+    // Menu should not open
+    expect(autocomplete['menuVisible']).toBe(false);
+
+    // Try with ArrowUp
+    const arrowUpEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowUp',
+      bubbles: true,
+    });
+    input.dispatchEvent(arrowUpEvent);
+    await page.waitForChanges();
+
+    // Menu should still not open
+    expect(autocomplete['menuVisible']).toBe(false);
+  });
+
+  // Test keyboard navigation in disabled mode
+  it('should not open menu with arrow keys when disabled', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Disabled keyboard test" disabled="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { value: '1', label: 'Option 1', visibleInMenu: true },
+      { value: '2', label: 'Option 2', visibleInMenu: true },
+    ];
+    autocomplete.items = items;
+    await page.waitForChanges();
+
+    // Try to open menu with ArrowDown
+    const arrowDownEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      bubbles: true,
+      target: page.root?.querySelector('input'),
+    } as KeyboardEventInit);
+
+    autocomplete.handleKeyDown(arrowDownEvent);
+    await page.waitForChanges();
+
+    // Menu should not open
+    expect(autocomplete['menuVisible']).toBe(false);
+  });
 });

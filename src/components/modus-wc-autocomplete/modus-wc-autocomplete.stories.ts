@@ -644,6 +644,222 @@ value=${args.value}
   },
 };
 
+export const CustomEventHandlers: Story = {
+  render: (args) => {
+    interface AutocompleteElement extends HTMLElement {
+      items: IAutocompleteItem[];
+      value: string;
+      openMenu(): Promise<void>;
+      closeMenu(): Promise<void>;
+    }
+
+    // Custom keydown handler
+    const customKeyDown = (e: KeyboardEvent) => {
+      const autocomplete = (e.target as HTMLInputElement).closest(
+        'modus-wc-autocomplete'
+      ) as AutocompleteElement;
+      if (!autocomplete) return;
+
+      // Prevent default for navigation keys
+      if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
+        e.preventDefault();
+      }
+
+      const visibleItems = args.items.filter(
+        (item) => item.visibleInMenu && !item.disabled
+      );
+
+      switch (e.key) {
+        case 'Escape':
+          args.items = args.items.map((item) => ({
+            ...item,
+            focused: false,
+          }));
+          autocomplete.items = [...args.items];
+          void autocomplete.closeMenu();
+          break;
+
+        case 'ArrowDown': {
+          // Open menu if not already open
+          void autocomplete.openMenu();
+
+          const currentIndex = visibleItems.findIndex((item) => item.focused);
+          const nextIndex =
+            currentIndex < 0
+              ? 0
+              : Math.min(currentIndex + 1, visibleItems.length - 1);
+          args.items = args.items.map((item) => ({
+            ...item,
+            focused: visibleItems[nextIndex]?.value === item.value,
+          }));
+          break;
+        }
+
+        case 'ArrowUp': {
+          const currentIndex = visibleItems.findIndex((item) => item.focused);
+          const prevIndex =
+            currentIndex < 0
+              ? visibleItems.length - 1
+              : Math.max(currentIndex - 1, 0);
+          args.items = args.items.map((item) => ({
+            ...item,
+            focused: visibleItems[prevIndex]?.value === item.value,
+          }));
+          break;
+        }
+
+        case 'Enter': {
+          const focusedItem = visibleItems.find((item) => item.focused);
+          if (focusedItem) {
+            // For single select, clear previous selection
+            args.items = args.items.map((item) => ({
+              ...item,
+              selected: item.value === focusedItem.value,
+              focused: false,
+            }));
+            autocomplete.value = focusedItem.label;
+            void autocomplete.closeMenu();
+          }
+          break;
+        }
+
+        default:
+          return;
+      }
+
+      autocomplete.items = [...args.items];
+    };
+
+    // Custom input change handler
+    const customInputChange = (value: string) => {
+      const autocomplete = document.querySelector(
+        'modus-wc-autocomplete'
+      ) as AutocompleteElement;
+      if (!autocomplete) return;
+
+      const searchText = value.toLowerCase();
+
+      // Filter items based on search text
+      args.items = args.items.map((item) => ({
+        ...item,
+        visibleInMenu: item.label.toLowerCase().includes(searchText),
+        focused: false,
+        // Clear selection if search text doesn't match
+        selected:
+          searchText &&
+          item.selected &&
+          item.label.toLowerCase().includes(searchText)
+            ? true
+            : false,
+      }));
+
+      autocomplete.items = [...args.items];
+      autocomplete.value = value;
+
+      // Show menu if there are visible items
+      const hasVisibleItems = args.items.some((item) => item.visibleInMenu);
+      if (hasVisibleItems && value.length >= args['min-chars']) {
+        void autocomplete.openMenu();
+      } else {
+        void autocomplete.closeMenu();
+      }
+    };
+
+    // Custom item select handler
+    const customItemSelect = (item: IAutocompleteItem) => {
+      const autocomplete = document.querySelector(
+        'modus-wc-autocomplete'
+      ) as AutocompleteElement;
+      if (!autocomplete) return;
+
+      // Clear previous selections for single select
+      args.items = args.items.map((menuItem) => ({
+        ...menuItem,
+        selected: menuItem.value === item.value,
+        focused: false,
+      }));
+
+      autocomplete.items = [...args.items];
+      autocomplete.value = item.label;
+      void autocomplete.closeMenu();
+
+      // Show a custom notification
+      console.log('Custom handler: Selected item', item);
+    };
+
+    return html`
+      <style>
+        div[id^='story--components-forms-autocomplete--custom-event-handlers'] {
+          height: 400px;
+        }
+      </style>
+      <modus-wc-autocomplete
+        aria-label="Custom handlers autocomplete"
+        ?bordered=${args.bordered}
+        custom-class=${ifDefined(args['custom-class'])}
+        debounce-ms=${ifDefined(args['debounce-ms'])}
+        ?disabled=${args.disabled}
+        ?include-clear=${args['include-clear']}
+        ?include-search=${args['include-search']}
+        input-id=${ifDefined(args['input-id'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
+        .items=${args.items}
+        label="Fruit with custom handlers"
+        ?leave-menu-open=${args['leave-menu-open']}
+        min-chars=${args['min-chars']}
+        ?multi-select=${false}
+        name=${ifDefined(args.name)}
+        .noResults=${args['no-results']}
+        placeholder="Type to search fruits..."
+        ?read-only=${args['read-only']}
+        ?required=${args.required}
+        ?show-menu-on-focus=${args['show-menu-on-focus']}
+        ?show-spinner=${args['show-spinner']}
+        size=${ifDefined(args.size)}
+        value=${args.value}
+        .customKeyDown=${customKeyDown}
+        .customInputChange=${customInputChange}
+        .customItemSelect=${customItemSelect}
+      ></modus-wc-autocomplete>
+    `;
+  },
+  args: {
+    bordered: true,
+    'debounce-ms': 300,
+    disabled: false,
+    'include-clear': true,
+    'include-search': true,
+    items: items,
+    'leave-menu-open': false,
+    'min-chars': 0,
+    'no-results': {
+      label: 'No results found',
+      subLabel: 'Try searching for a different fruit',
+    },
+    placeholder: 'Search fruits...',
+    'read-only': false,
+    required: false,
+    'show-menu-on-focus': true,
+    'show-spinner': false,
+    size: 'md',
+    value: '',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `This example demonstrates how to use custom event handlers to completely override the default autocomplete behavior.
+        
+The \`customKeyDown\`, \`customInputChange\`, and \`customItemSelect\` props allow you to implement your own logic for:
+- Keyboard navigation and interaction
+- Input filtering and search
+- Item selection handling
+
+This is useful when you need specialized behavior that differs from the standard autocomplete functionality.`,
+      },
+    },
+  },
+};
+
 export const WithProgrammaticControl: Story = {
   args: {
     ...meta.args,

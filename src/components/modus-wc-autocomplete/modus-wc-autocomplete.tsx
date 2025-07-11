@@ -368,6 +368,11 @@ export class ModusWcAutocomplete {
       return;
     }
 
+    // Don't process keyboard events when disabled or readOnly
+    if (this.disabled || this.readOnly) {
+      return;
+    }
+
     if (!(event.target instanceof HTMLInputElement)) return;
 
     const input = event.target;
