@@ -186,7 +186,7 @@ export const Default: Story = {
   },
 };
 
-export const sideNavigationWithCollapsibleMenu: Story = {
+export const collapsibleMenu: Story = {
   render: (args) => {
     const handleMenuOpenChange = (e: CustomEvent) => {
       const eventSource = e.target as HTMLElement;
@@ -262,6 +262,9 @@ export const sideNavigationWithCollapsibleMenu: Story = {
           text-decoration: none;
           color: var(--modus-wc-color-gray-9);
         }
+        .menu-icon {
+          margin-right: 1rem;
+        }
 
         ul {
           list-style: none;
@@ -317,7 +320,7 @@ export const sideNavigationWithCollapsibleMenu: Story = {
                   <modus-wc-icon
                     name="folder_open"
                     size="sm"
-                    style="margin-right: 1rem;"
+                    class="menu-icon"
                   ></modus-wc-icon>
                   Projects
                 </span>
@@ -351,7 +354,7 @@ export const sideNavigationWithCollapsibleMenu: Story = {
                   <modus-wc-icon
                     name="document"
                     size="sm"
-                    style="margin-right: 1rem;"
+                    class="menu-icon"
                   ></modus-wc-icon>
                   Reports
                 </span>
@@ -369,7 +372,7 @@ export const sideNavigationWithCollapsibleMenu: Story = {
                   <modus-wc-icon
                     name="person"
                     size="sm"
-                    style="margin-right: 1rem;"
+                    class="menu-icon"
                   ></modus-wc-icon>
                   Users
                 </span>
