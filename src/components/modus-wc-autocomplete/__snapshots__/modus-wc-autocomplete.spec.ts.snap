@@ -8,14 +8,6 @@ exports[`modus-wc-autocomplete should close the menu when clicking outside if le
       <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-hidden">
-    <!---->
-    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
-      <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
-    </ul>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
@@ -27,21 +19,6 @@ exports[`modus-wc-autocomplete should display no results ui when no items are av
       <input aria-label="No results test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu aria-label="Autocomplete menu" bordered="" class="menu-hidden" size="md">
-    <div class="modus-wc-autocomplete-no-results">
-      <div aria-label="No results found" class="icon-label">
-        <svg aria-hidden="true" class="modus-wc-autocomplete-search-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
-        </svg>
-        <div class="label">
-          No results found
-        </div>
-      </div>
-      <div class="sub-label">
-        Check spelling or try a different keyword
-      </div>
-    </div>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
@@ -53,14 +30,6 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 1`
       <input aria-label="Leave menu open test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-hidden">
-    <!---->
-    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
-      <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
-    </ul>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
@@ -72,14 +41,6 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 2`
       <input aria-label="Leave menu open test" aria-placeholder="" class="modus-wc-grow" disabled="" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-hidden">
-    <!---->
-    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
-      <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
-    </ul>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
@@ -91,14 +52,6 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 3`
       <input aria-label="Leave menu open test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" readonly="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-hidden">
-    <!---->
-    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
-      <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
-    </ul>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
@@ -166,11 +119,6 @@ exports[`modus-wc-autocomplete should render chips for selected items in multi-s
     </div>
     <div class="modus-wc-autocomplete-button-container"></div>
   </div>
-  <modus-wc-menu aria-label="Autocomplete menu" bordered="" class="menu-hidden" size="md">
-    <modus-wc-menu-item label="Chip 1" selected="" value="1"></modus-wc-menu-item>
-    <modus-wc-menu-item label="Chip 2" value="2"></modus-wc-menu-item>
-    <modus-wc-menu-item label="Chip 3" selected="" value="3"></modus-wc-menu-item>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
@@ -270,14 +218,6 @@ exports[`modus-wc-autocomplete should render multi select without border 1`] = `
     </div>
     <div class="modus-wc-autocomplete-button-container"></div>
   </div>
-  <modus-wc-menu class="menu-hidden">
-    <!---->
-    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-md modus-wc-w-full" role="menu">
-      <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
-      <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
-    </ul>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
@@ -298,53 +238,6 @@ exports[`modus-wc-autocomplete should render with custom props 1`] = `
       </div>
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-hidden">
-    <!---->
-    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-lg modus-wc-w-full" role="menu">
-      <modus-wc-menu-item>
-        <!---->
-        <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
-          <button type="button">
-            <div class="modus-wc-menu-item-content">
-              <div class="modus-wc-menu-item-labels">
-                <div>
-                  Item 1
-                </div>
-              </div>
-            </div>
-          </button>
-        </li>
-      </modus-wc-menu-item>
-      <modus-wc-menu-item>
-        <!---->
-        <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
-          <button type="button">
-            <div class="modus-wc-menu-item-content">
-              <div class="modus-wc-menu-item-labels">
-                <div>
-                  Item 2
-                </div>
-              </div>
-            </div>
-          </button>
-        </li>
-      </modus-wc-menu-item>
-      <modus-wc-menu-item>
-        <!---->
-        <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
-          <button type="button">
-            <div class="modus-wc-menu-item-content">
-              <div class="modus-wc-menu-item-labels">
-                <div>
-                  Item 3
-                </div>
-              </div>
-            </div>
-          </button>
-        </li>
-      </modus-wc-menu-item>
-    </ul>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
 
@@ -356,23 +249,5 @@ exports[`modus-wc-autocomplete should render with default props 1`] = `
       <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-hidden">
-    <!---->
-    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
-      <div class="modus-wc-autocomplete-no-results">
-        <div aria-label="No results found" class="icon-label">
-          <svg aria-hidden="true" class="modus-wc-autocomplete-search-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
-          </svg>
-          <div class="label">
-            No results found
-          </div>
-        </div>
-        <div class="sub-label">
-          Check spelling or try a different keyword
-        </div>
-      </div>
-    </ul>
-  </modus-wc-menu>
 </modus-wc-autocomplete>
 `;

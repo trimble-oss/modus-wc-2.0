@@ -216,8 +216,9 @@ describe('modus-wc-autocomplete', () => {
     input?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
     await page.waitForChanges();
 
+    // Menu should not exist in DOM when not visible (no custom slots)
     const menu = page.root!.querySelector('modus-wc-menu');
-    expect(menu?.className).toContain('menu-hidden');
+    expect(menu).toBeFalsy();
   });
 
   it('should hide menu on Escape key', async () => {
@@ -237,8 +238,9 @@ describe('modus-wc-autocomplete', () => {
     input?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
     await page.waitForChanges();
 
+    // Menu should not exist in DOM when not visible (no custom slots)
     const menu = page.root!.querySelector('modus-wc-menu');
-    expect(menu?.className).toContain('menu-hidden');
+    expect(menu).toBeFalsy();
   });
 
   it('should not open menu on input click', async () => {
@@ -254,8 +256,9 @@ describe('modus-wc-autocomplete', () => {
     input?.click();
     await page.waitForChanges();
 
+    // Menu should not exist in DOM when not visible (no custom slots)
     const menu = page.root!.querySelector('modus-wc-menu');
-    expect(menu?.className).toContain('menu-hidden');
+    expect(menu).toBeFalsy();
   });
 
   it('should ignore keydown events from non-input elements', async () => {
@@ -548,9 +551,10 @@ describe('modus-wc-autocomplete', () => {
     const preventDefaultSpy = jest.spyOn(escapeEvent, 'preventDefault');
     input!.dispatchEvent(escapeEvent);
     await page.waitForChanges();
-    const menu = page.root!.querySelector('modus-wc-menu');
     expect(preventDefaultSpy).toHaveBeenCalled();
-    expect(menu?.className).toContain('menu-hidden');
+    // Menu should not exist in DOM when not visible (no custom slots)
+    const menu = page.root!.querySelector('modus-wc-menu');
+    expect(menu).toBeFalsy();
   });
   it('should emit the last selected item when Enter is pressed in multi-select mode', async () => {
     const page = await newSpecPage({
@@ -3020,5 +3024,234 @@ describe('modus-wc-autocomplete', () => {
 
     // Menu should not open
     expect(autocomplete['menuVisible']).toBe(false);
+  });
+
+  // Test readonly focus behavior - menu should not open when focusing readonly input
+  it('should not open menu on focus when readonly is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Readonly focus test" read-only="true" show-menu-on-focus="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { value: '1', label: 'Option 1', visibleInMenu: true },
+      { value: '2', label: 'Option 2', visibleInMenu: true },
+    ];
+    autocomplete.items = items;
+    await page.waitForChanges();
+
+    // Focus the input
+    const focusEvent = new CustomEvent('focus', {
+      detail: new FocusEvent('focus'),
+      bubbles: true,
+    });
+
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+
+    // Menu should not open despite showMenuOnFocus being true
+    expect(autocomplete['menuVisible']).toBe(false);
+
+    // Verify focus event is still emitted
+    const focusSpy = jest.spyOn(autocomplete.inputFocus, 'emit');
+    autocomplete['handleFocus'](focusEvent);
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  // Test hybrid menu rendering - menu stays in DOM with custom slots
+  it('should keep menu in DOM when custom slot content is present', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `
+        <modus-wc-autocomplete aria-label="Custom slot test">
+          <li slot="menu-items">Custom Item 1</li>
+          <li slot="menu-items">Custom Item 2</li>
+        </modus-wc-autocomplete>
+      `,
+    });
+
+    await page.waitForChanges();
+
+    // Menu should exist in DOM even when not visible
+    const menu = page.root?.querySelector('modus-wc-menu');
+    expect(menu).toBeTruthy();
+    expect(menu?.classList.contains('menu-hidden')).toBe(true);
+
+    // Open menu
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    // Menu should have visible class
+    expect(menu?.classList.contains('menu-visible')).toBe(true);
+    expect(menu?.classList.contains('menu-hidden')).toBe(false);
+
+    // Close menu
+    autocomplete['menuVisible'] = false;
+    await page.waitForChanges();
+
+    // Menu should still be in DOM but hidden
+    expect(menu?.parentElement).toBeTruthy();
+    expect(menu?.classList.contains('menu-hidden')).toBe(true);
+  });
+
+  // Test hybrid menu rendering - menu removed from DOM without custom slots
+  it('should conditionally render menu when no custom slot content', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="No slot test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = [
+      { value: '1', label: 'Option 1', visibleInMenu: true },
+      { value: '2', label: 'Option 2', visibleInMenu: true },
+    ];
+    await page.waitForChanges();
+
+    // Menu should not exist in DOM when closed
+    let menu = page.root?.querySelector('modus-wc-menu');
+    expect(menu).toBeFalsy();
+
+    // Open menu
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    // Menu should now exist and be visible
+    menu = page.root?.querySelector('modus-wc-menu');
+    expect(menu).toBeTruthy();
+    expect(menu?.classList.contains('menu-visible')).toBe(true);
+
+    // Close menu
+    autocomplete['menuVisible'] = false;
+    await page.waitForChanges();
+
+    // Menu should be removed from DOM
+    menu = page.root?.querySelector('modus-wc-menu');
+    expect(menu).toBeFalsy();
+  });
+
+  // Test that no results is not shown when custom slot content is present
+  it('should not show no results when custom slot content exists and filtered items is empty', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `
+        <modus-wc-autocomplete aria-label="Custom slot no results test">
+          <li slot="menu-items">Custom Item 1</li>
+          <li slot="menu-items">Custom Item 2</li>
+        </modus-wc-autocomplete>
+      `,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['menuVisible'] = true;
+
+    // Set empty items to trigger "no results" condition
+    autocomplete.items = [];
+    autocomplete['filteredItems'] = [];
+    await page.waitForChanges();
+
+    // No results should not be shown
+    const noResults = page.root?.querySelector(
+      '.modus-wc-autocomplete-no-results'
+    );
+    expect(noResults).toBeFalsy();
+
+    // Custom slot content should still be visible
+    const slotContent = page.root?.querySelectorAll('[slot="menu-items"]');
+    expect(slotContent?.length).toBe(2);
+  });
+
+  // Test menu visibility on focus for different states
+  it('should handle focus correctly based on disabled, readonly, and showMenuOnFocus states', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Focus state test" show-menu-on-focus="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = [
+      { value: '1', label: 'Option 1', visibleInMenu: true },
+    ];
+
+    const focusEvent = new CustomEvent('focus', {
+      detail: new FocusEvent('focus'),
+      bubbles: true,
+    });
+
+    // Test 1: Normal state - menu should open
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+    expect(autocomplete['menuVisible']).toBe(true);
+
+    // Reset
+    autocomplete['menuVisible'] = false;
+
+    // Test 2: Disabled state - menu should not open
+    autocomplete.disabled = true;
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+    expect(autocomplete['menuVisible']).toBe(false);
+
+    // Test 3: Readonly state - menu should not open
+    autocomplete.disabled = false;
+    autocomplete.readOnly = true;
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+    expect(autocomplete['menuVisible']).toBe(false);
+
+    // Test 4: showMenuOnFocus false - menu should not open
+    autocomplete.readOnly = false;
+    autocomplete.showMenuOnFocus = false;
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+    expect(autocomplete['menuVisible']).toBe(false);
+  });
+
+  // Test that getMenuItems handles hasSlottedContent in the condition
+  it('should include hasSlottedContent in menu items rendering decision', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `
+        <modus-wc-autocomplete aria-label="Slotted content menu test">
+          <li slot="menu-items">Custom Option</li>
+        </modus-wc-autocomplete>
+      `,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    // Set conditions that would normally show "no results"
+    autocomplete['menuVisible'] = true;
+    autocomplete.items = [];
+    autocomplete['filteredItems'] = [];
+    autocomplete.noResults = {
+      label: 'No results found',
+      subLabel: 'Try again',
+      ariaLabel: 'No results',
+    };
+
+    await page.waitForChanges();
+
+    // Despite empty items and noResults config, should not show no results div
+    const noResultsDiv = page.root?.querySelector(
+      '.modus-wc-autocomplete-no-results'
+    );
+    expect(noResultsDiv).toBeFalsy();
+
+    // Menu items container should exist (even if empty)
+    const menuItemsContainer = page.root?.querySelector('modus-wc-menu');
+    expect(menuItemsContainer).toBeTruthy();
   });
 });
