@@ -203,15 +203,21 @@ export const collapsibleMenu: Story = {
         (sideNav as HTMLElement & { expanded: boolean }).expanded = e.detail;
       }
     };
-    const handleExpandedChange = (e: CustomEvent) => {
-      if (!e.detail) {
-        // Close all dropdown menus when the side navigation collapses
-        document.querySelectorAll('.dropdown-content').forEach((dropdown) => {
-          dropdown.classList.remove('modus-menu-dropdown-show');
-        });
-      }
-    }; // Setup dropdown toggle handlers after render
-    setTimeout(() => {
+
+    const handleMenuFocusout = (e: FocusEvent) => {
+      const menu = e.target as HTMLElement;
+      if (!menu) return;
+      const dropdowns = menu.querySelectorAll('.modus-wc-menu-dropdown-toggle');
+      dropdowns.forEach((dropdown) => {
+        dropdown.classList.remove('modus-wc-menu-dropdown-show');
+      });
+
+      document.querySelectorAll('.dropdown-content').forEach((dropdown) => {
+        dropdown.classList.remove('modus-wc-menu-dropdown-show');
+      });
+    };
+
+    requestAnimationFrame(() => {
       document
         .querySelectorAll('.modus-wc-menu-dropdown-toggle')
         .forEach((toggle) => {
@@ -221,15 +227,17 @@ export const collapsibleMenu: Story = {
             ) as HTMLElement & { expanded: boolean };
 
             if (sideNav && sideNav.expanded) {
+              const toggle = e.currentTarget as HTMLElement;
               const dropdown = (e.currentTarget as HTMLElement)
                 .nextElementSibling as HTMLElement;
               if (dropdown) {
-                dropdown.classList.toggle('modus-menu-dropdown-show');
+                dropdown.classList.toggle('modus-wc-menu-dropdown-show');
+                toggle.classList.toggle('modus-wc-menu-dropdown-show');
               }
             }
           });
         });
-    }, 0);
+    });
 
     return html`
       <style>
@@ -239,51 +247,58 @@ export const collapsibleMenu: Story = {
           flex-direction: column;
           height: 100%;
         }
+
         .main-content-row {
           display: flex;
           flex: 1;
           overflow: hidden;
         }
-        .navbar {
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        .menu-icon {
+          margin-right: 1rem;
         }
-        .panel-content {
-          margin-left: 4rem;
-          padding: 10px;
-        }
-        .side-navigation {
-          height: 500px;
-          align-self: flex-start;
-          position: relative;
-        }
+
         .menu-item {
           display: block;
           padding: 0.5rem 1rem;
           text-decoration: none;
           color: var(--modus-wc-color-gray-9);
-        }
-        .menu-icon {
-          margin-right: 1rem;
+          font-size: 16px;
+          line-height: 1.5;
         }
 
-        ul {
-          list-style: none;
-        }
         .modus-wc-menu-dropdown {
-          display: none;
           padding-left: 1rem;
-        }
-
-        .modus-menu-dropdown-show {
-          display: block;
         }
 
         .modus-wc-menu-dropdown-toggle {
           cursor: pointer;
           align-items: center;
           padding: 0.7rem 1.25rem;
+          font-size: 16px;
+          line-height: 1.5;
+        }
+
+        .navbar {
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel-content {
+          margin-left: 4rem;
+          padding: 10px;
+        }
+
+        .side-navigation {
+          height: 500px;
+          align-self: flex-start;
+          position: relative;
+        }
+
+        ul {
+          list-style: none;
         }
       </style>
+
       <div class="layout-with-navbar">
         <modus-wc-navbar
           app-title="Modus App"
@@ -312,15 +327,14 @@ export const collapsibleMenu: Story = {
             max-width=${args['max-width']}
             mode=${ifDefined(args.mode)}
             target-content=${ifDefined(args['target-content'])}
-            @expandedChange=${handleExpandedChange}
           >
-            <modus-wc-menu size="lg">
+            <modus-wc-menu size="lg" @menuFocusout=${handleMenuFocusout}>
               <li class="dropdown dropdown-hover">
                 <span tabindex="0" class="modus-wc-menu-dropdown-toggle">
                   <modus-wc-icon
+                    class="menu-icon"
                     name="folder_open"
                     size="sm"
-                    class="menu-icon"
                   ></modus-wc-icon>
                   Projects
                 </span>
@@ -352,9 +366,9 @@ export const collapsibleMenu: Story = {
               <li class="dropdown dropdown-hover">
                 <span tabindex="0" class="modus-wc-menu-dropdown-toggle">
                   <modus-wc-icon
+                    class="menu-icon"
                     name="document"
                     size="sm"
-                    class="menu-icon"
                   ></modus-wc-icon>
                   Reports
                 </span>
@@ -362,17 +376,17 @@ export const collapsibleMenu: Story = {
                   tabindex="0"
                   class="modus-wc-menu-dropdown dropdown-content"
                 >
-                  <li><a class="menu-item">Financial Reports</a></li>
                   <li><a class="menu-item">Analytics</a></li>
+                  <li><a class="menu-item">Financial Reports</a></li>
                   <li><a class="menu-item">Performance</a></li>
                 </ul>
               </li>
               <li class="dropdown dropdown-hover">
                 <span tabindex="0" class="modus-wc-menu-dropdown-toggle">
                   <modus-wc-icon
+                    class="menu-icon"
                     name="person"
                     size="sm"
-                    class="menu-icon"
                   ></modus-wc-icon>
                   Users
                 </span>
@@ -380,9 +394,9 @@ export const collapsibleMenu: Story = {
                   tabindex="0"
                   class="modus-wc-menu-dropdown dropdown-content"
                 >
-                  <li><a class="menu-item">User Management</a></li>
                   <li><a class="menu-item">Permissions</a></li>
                   <li><a class="menu-item">Roles</a></li>
+                  <li><a class="menu-item">User Management</a></li>
                 </ul>
               </li>
             </modus-wc-menu>
