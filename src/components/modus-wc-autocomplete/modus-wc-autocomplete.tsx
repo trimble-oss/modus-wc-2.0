@@ -475,7 +475,7 @@ export class ModusWcAutocomplete {
   }
 
   private handleFocus = (event: CustomEvent<FocusEvent>) => {
-    if (this.showMenuOnFocus) {
+    if (!this.disabled && !this.readOnly && this.showMenuOnFocus) {
       this.menuVisible = true;
     }
 
@@ -932,7 +932,7 @@ export class ModusWcAutocomplete {
 
       return (
         <Fragment>
-          {menuItems.length > 0 || !noResults
+          {menuItems.length > 0 || !noResults || hasSlottedContent
             ? menuItems.map((item) => (
                 <modus-wc-menu-item
                   disabled={item.disabled}
@@ -953,6 +953,9 @@ export class ModusWcAutocomplete {
     const cssVariables = {
       '--modus-autocomplete-min-input-width': `${minWidth}px`,
     };
+
+    // Check if we have slotted content
+    const hasSlottedContent = !!this.el.querySelector('[slot="menu-items"]');
 
     return (
       <Host class={this.getClasses()} style={cssVariables}>
@@ -982,16 +985,33 @@ export class ModusWcAutocomplete {
         ) : (
           <Fragment>{getInput()}</Fragment>
         )}
-        <modus-wc-menu
-          aria-label="Autocomplete menu"
-          bordered={this.bordered}
-          class={this.menuVisible ? 'menu-visible' : ' menu-hidden'}
-          onMenuFocusout={this.handleMenuFocusout}
-          size={this.size}
-        >
-          {getMenuItems()}
-          <slot name="menu-items"></slot>
-        </modus-wc-menu>
+        {hasSlottedContent ? (
+          // When using custom slots, keep menu in DOM and use CSS to hide/show
+          <modus-wc-menu
+            aria-label="Autocomplete menu"
+            bordered={this.bordered}
+            class={this.menuVisible ? 'menu-visible' : 'menu-hidden'}
+            onMenuFocusout={this.handleMenuFocusout}
+            size={this.size}
+          >
+            {getMenuItems()}
+            <slot name="menu-items"></slot>
+          </modus-wc-menu>
+        ) : (
+          // When NOT using slots, conditionally render menu (automatic scroll reset)
+          this.menuVisible && (
+            <modus-wc-menu
+              aria-label="Autocomplete menu"
+              bordered={this.bordered}
+              class="menu-visible"
+              onMenuFocusout={this.handleMenuFocusout}
+              size={this.size}
+            >
+              {getMenuItems()}
+              <slot name="menu-items"></slot>
+            </modus-wc-menu>
+          )
+        )}
       </Host>
     );
   }
