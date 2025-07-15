@@ -217,27 +217,21 @@ export const collapsibleMenu: Story = {
       });
     };
 
-    requestAnimationFrame(() => {
-      document
-        .querySelectorAll('.modus-wc-menu-dropdown-toggle')
-        .forEach((toggle) => {
-          toggle.addEventListener('click', (e) => {
-            const sideNav = (e.currentTarget as HTMLElement).closest(
-              'modus-wc-side-navigation'
-            ) as HTMLElement & { expanded: boolean };
+    const handleClick = (e: MouseEvent) => {
+      const target = e.currentTarget as HTMLElement;
+      if (!target) return;
 
-            if (sideNav && sideNav.expanded) {
-              const toggle = e.currentTarget as HTMLElement;
-              const dropdown = (e.currentTarget as HTMLElement)
-                .nextElementSibling as HTMLElement;
-              if (dropdown) {
-                dropdown.classList.toggle('modus-wc-menu-dropdown-show');
-                toggle.classList.toggle('modus-wc-menu-dropdown-show');
-              }
-            }
-          });
-        });
-    });
+      target.classList.toggle('modus-wc-menu-dropdown-show');
+
+      const dropdown = target.nextElementSibling as HTMLElement;
+      const sideNav = (e.currentTarget as HTMLElement).closest(
+        'modus-wc-side-navigation'
+      ) as HTMLElement & { expanded: boolean };
+
+      if (sideNav?.expanded && dropdown) {
+        dropdown.classList.toggle('modus-wc-menu-dropdown-show');
+      }
+    };
 
     return html`
       <style>
@@ -330,7 +324,11 @@ export const collapsibleMenu: Story = {
           >
             <modus-wc-menu size="lg" @menuFocusout=${handleMenuFocusout}>
               <li class="dropdown dropdown-hover">
-                <span tabindex="0" class="modus-wc-menu-dropdown-toggle">
+                <span
+                  tabindex="0"
+                  class="modus-wc-menu-dropdown-toggle"
+                  @click=${handleClick}
+                >
                   <modus-wc-icon
                     class="menu-icon"
                     name="folder_open"
@@ -339,13 +337,17 @@ export const collapsibleMenu: Story = {
                   Projects
                 </span>
                 <ul
-                  tabindex="0"
+    
                   class="modus-wc-menu-dropdown dropdown-content"
                 >
                   <li><a class="menu-item">Submenu 1</a></li>
                   <li><a class="menu-item">Submenu 2</a></li>
                   <li class="dropdown dropdown-hover dropdown-right">
-                    <span tabindex="0" class="modus-wc-menu-dropdown-toggle">
+                    <span
+                      tabindex="0"
+                      class="modus-wc-menu-dropdown-toggle"
+                      @click=${handleClick}
+                    >
                       <modus-wc-icon
                         name="settings"
                         size="sm"
@@ -364,7 +366,11 @@ export const collapsibleMenu: Story = {
                 </ul>
               </li>
               <li class="dropdown dropdown-hover">
-                <span tabindex="0" class="modus-wc-menu-dropdown-toggle">
+                <span
+                  tabindex="0"
+                  class="modus-wc-menu-dropdown-toggle"
+                  @click=${handleClick}
+                >
                   <modus-wc-icon
                     class="menu-icon"
                     name="document"
@@ -382,7 +388,11 @@ export const collapsibleMenu: Story = {
                 </ul>
               </li>
               <li class="dropdown dropdown-hover">
-                <span tabindex="0" class="modus-wc-menu-dropdown-toggle">
+                <span
+                  tabindex="0"
+                  class="modus-wc-menu-dropdown-toggle"
+                  @click=${handleClick}
+                >
                   <modus-wc-icon
                     class="menu-icon"
                     name="person"
