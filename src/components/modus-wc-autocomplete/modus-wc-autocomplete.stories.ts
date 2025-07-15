@@ -439,7 +439,85 @@ export const CustomMenuItems: Story = {
       };
     }
 
-    const handleInputChange = (e) => {
+    const getVisibleItems = (autocomplete: Element): HTMLElement[] => {
+      const menuItems = autocomplete.querySelectorAll(
+        'modus-wc-menu-item:not([disabled])'
+      );
+      return Array.from(menuItems).filter(
+        (item: Element): item is HTMLElement => {
+          const style = window.getComputedStyle(item);
+          return style.display !== 'none' && !item.classList.contains('hidden');
+        }
+      );
+    };
+
+    const handleCustomKeyDown = (e: KeyboardEvent) => {
+      const autocomplete = (e.target as HTMLInputElement).closest(
+        'modus-wc-autocomplete'
+      ) as Element & {
+        openMenu: () => Promise<void>;
+        closeMenu: () => Promise<void>;
+      };
+      if (!autocomplete) return;
+
+      const visibleItems = getVisibleItems(autocomplete);
+
+      // Get all button elements within visible menu items
+      const buttons = visibleItems
+        .map((item) => item.querySelector('button'))
+        .filter(Boolean) as HTMLButtonElement[];
+      const currentFocusedButton = document.activeElement as HTMLButtonElement;
+      const currentIndex = buttons.indexOf(currentFocusedButton);
+
+      switch (e.key) {
+        case 'ArrowDown': {
+          e.preventDefault();
+          // Open menu when arrow key is pressed
+          void autocomplete.openMenu();
+
+          let nextIndex = currentIndex + 1;
+          // Stop at the last item instead of wrapping
+          if (nextIndex >= buttons.length) return;
+          if (nextIndex < 0) nextIndex = 0;
+
+          buttons[nextIndex]?.focus();
+          break;
+        }
+
+        case 'ArrowUp': {
+          e.preventDefault();
+          // Open menu when arrow key is pressed
+          void autocomplete.openMenu();
+
+          let prevIndex = currentIndex - 1;
+          // Stop at the first item instead of wrapping
+          if (prevIndex < 0) return;
+
+          buttons[prevIndex]?.focus();
+          break;
+        }
+
+        case 'Enter': {
+          e.preventDefault();
+          // If a button is focused, click it
+          if (buttons.includes(currentFocusedButton)) {
+            currentFocusedButton.click();
+          }
+          break;
+        }
+
+        case 'Escape': {
+          e.preventDefault();
+          void autocomplete.closeMenu();
+          // Return focus to input
+          const input = autocomplete.querySelector('input');
+          input?.focus();
+          break;
+        }
+      }
+    };
+
+    const handleInputChange = (e: CustomEvent<Event>) => {
       if (!e.detail?.target) return;
 
       const autocomplete = (e.target as HTMLInputElement).closest(
@@ -450,16 +528,11 @@ export const CustomMenuItems: Story = {
         const searchText = (
           e.detail.target as HTMLInputElement
         ).value.toLowerCase();
-        const allLiItems = autocomplete?.querySelectorAll('li');
 
-        if (searchText === '') {
-          allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
-        }
-
+        const menuItems = autocomplete?.querySelectorAll('modus-wc-menu-item');
         let hiddenCount = 0;
-        Array.from(allLiItems ?? []).forEach((menuItem) => {
-          const label =
-            menuItem.querySelector('.title')?.textContent?.toLowerCase() || '';
+        Array.from(menuItems ?? []).forEach((menuItem) => {
+          const label = menuItem.getAttribute('label')?.toLowerCase() || '';
           if (!label.includes(searchText)) {
             menuItem.classList.add('hidden');
             hiddenCount++;
@@ -470,33 +543,39 @@ export const CustomMenuItems: Story = {
 
         // Show no results if all items are hidden
         autocomplete.noResults =
-          hiddenCount === allLiItems?.length
+          hiddenCount === menuItems?.length
             ? originalNoResults
             : { ariaLabel: '', label: '', subLabel: '' };
       }
     };
 
-    const handleItemSelect = (e) => {
+    const handleItemSelect = (e: CustomEvent<{ value: string }>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
-      ) as HTMLElement & { value: string };
+      ) as HTMLElement & { value: string; closeMenu: () => Promise<void> };
 
       if (autocomplete) {
-        const allLiItems = autocomplete?.querySelectorAll('li');
-        allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
-
-        const clickedItem = (e.target as HTMLElement).closest('li');
-        if (clickedItem) {
-          clickedItem.classList.add('selected');
-          autocomplete.value = clickedItem.querySelector('.title')
-            ?.textContent as string;
+        const selectedValue = e.detail.value;
+        autocomplete.value = selectedValue;
+        // Update selected state on menu items
+        const menuItems = autocomplete.querySelectorAll('modus-wc-menu-item');
+        menuItems.forEach((item) => {
+          if (item.getAttribute('value') === selectedValue) {
+            item.setAttribute('selected', 'true');
+          } else {
+            item.removeAttribute('selected');
+          }
+        });
+        // Close menu after selection unless leaveMenuOpen is true
+        if (!args['leave-menu-open']) {
+          void autocomplete.closeMenu();
         }
       }
     };
     // prettier-ignore
     return html`
 <script>
-      const originalNoResults = args['no-results'];
+const originalNoResults = args['no-results'];
 if (args['leave-menu-open'] == true) {
   args['no-results'] = {
     ariaLabel: '',
@@ -505,7 +584,85 @@ if (args['leave-menu-open'] == true) {
   };
 }
 
-const handleInputChange = (e) => {
+const getVisibleItems = (autocomplete: Element): HTMLElement[] => {
+  const menuItems = autocomplete.querySelectorAll(
+    'modus-wc-menu-item:not([disabled])'
+  );
+  return Array.from(menuItems).filter(
+    (item: Element): item is HTMLElement => {
+      const style = window.getComputedStyle(item);
+      return style.display !== 'none' && !item.classList.contains('hidden');
+    }
+  );
+};
+
+const handleCustomKeyDown = (e: KeyboardEvent) => {
+  const autocomplete = (e.target as HTMLInputElement).closest(
+    'modus-wc-autocomplete'
+  ) as Element & {
+    openMenu: () => Promise<void>;
+    closeMenu: () => Promise<void>;
+  };
+  if (!autocomplete) return;
+
+  const visibleItems = getVisibleItems(autocomplete);
+
+  // Get all button elements within visible menu items
+  const buttons = visibleItems
+    .map((item) => item.querySelector('button'))
+    .filter(Boolean) as HTMLButtonElement[];
+  const currentFocusedButton = document.activeElement as HTMLButtonElement;
+  const currentIndex = buttons.indexOf(currentFocusedButton);
+
+  switch (e.key) {
+    case 'ArrowDown': {
+      e.preventDefault();
+      // Open menu when arrow key is pressed
+      void autocomplete.openMenu();
+
+      let nextIndex = currentIndex + 1;
+      // Stop at the last item instead of wrapping
+      if (nextIndex >= buttons.length) return;
+      if (nextIndex < 0) nextIndex = 0;
+
+      buttons[nextIndex]?.focus();
+      break;
+    }
+
+    case 'ArrowUp': {
+      e.preventDefault();
+      // Open menu when arrow key is pressed
+      void autocomplete.openMenu();
+
+      let prevIndex = currentIndex - 1;
+      // Stop at the first item instead of wrapping
+      if (prevIndex < 0) return;
+      
+      buttons[prevIndex]?.focus();
+      break;
+    }
+
+    case 'Enter': {
+      e.preventDefault();
+      // If a button is focused, click it
+      if (buttons.includes(currentFocusedButton)) {
+        currentFocusedButton.click();
+      }
+      break;
+    }
+
+    case 'Escape': {
+      e.preventDefault();
+      void autocomplete.closeMenu();
+      // Return focus to input
+      const input = autocomplete.querySelector('input');
+      input?.focus();
+      break;
+    }
+  }
+};
+
+const handleInputChange = (e: CustomEvent<Event>) => {
   if (!e.detail?.target) return;
 
   const autocomplete = (e.target as HTMLInputElement).closest(
@@ -516,16 +673,10 @@ const handleInputChange = (e) => {
     const searchText = (
       e.detail.target as HTMLInputElement
     ).value.toLowerCase();
-    const allLiItems = autocomplete?.querySelectorAll('li');
-
-    if (searchText === '') {
-      allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
-    }
-
+    const menuItems = autocomplete?.querySelectorAll('modus-wc-menu-item');
     let hiddenCount = 0;
-    Array.from(allLiItems ?? []).forEach((menuItem) => {
-      const label =
-        menuItem.querySelector('.title')?.textContent?.toLowerCase() || '';
+    Array.from(menuItems ?? []).forEach((menuItem) => {
+      const label = menuItem.getAttribute('label')?.toLowerCase() || '';
       if (!label.includes(searchText)) {
         menuItem.classList.add('hidden');
         hiddenCount++;
@@ -536,26 +687,32 @@ const handleInputChange = (e) => {
 
     // Show no results if all items are hidden
     autocomplete.noResults =
-      hiddenCount === allLiItems?.length
+      hiddenCount === menuItems?.length
         ? originalNoResults
         : { ariaLabel: '', label: '', subLabel: '' };
   }
 };
 
-const handleItemSelect = (e) => {
+const handleItemSelect = (e: CustomEvent<{ value: string }>) => {
   const autocomplete = (e.target as HTMLInputElement).closest(
     'modus-wc-autocomplete'
-  );
+  ) as HTMLElement & { value: string; closeMenu: () => Promise<void> };
 
   if (autocomplete) {
-    const allLiItems = autocomplete?.querySelectorAll('li');
-    allLiItems?.forEach((liItem) => liItem.classList.remove('selected'));
-
-    const clickedItem = (e.target as HTMLElement).closest('li');
-    if (clickedItem) {
-      clickedItem.classList.add('selected');
-      autocomplete.value = clickedItem.querySelector('.title')
-        ?.textContent as string;
+    const selectedValue = e.detail.value;
+    autocomplete.value = selectedValue;
+    // Update selected state on menu items
+    const menuItems = autocomplete.querySelectorAll('modus-wc-menu-item');
+    menuItems.forEach((item) => {
+      if (item.getAttribute('value') === selectedValue) {
+        item.setAttribute('selected', 'true');
+      } else {
+        item.removeAttribute('selected');
+      }
+    });
+    // Close menu after selection unless leaveMenuOpen is true
+    if (!args['leave-menu-open']) {
+      void autocomplete.closeMenu();
     }
   }
 };
@@ -564,117 +721,97 @@ const handleItemSelect = (e) => {
 div[id^='story--components-forms-autocomplete--custom-menu-items'] {
   height: 400px;
 }
-.list-item {
+.modus-wc-autocomplete {
+    width: 480px !important;
+  }
+.custom-menu-content {
   display: flex;
-  gap: 1rem;
-  border-bottom: 1px solid #ccc;
-  cursor: pointer;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
-li.list-item.hidden {
-  display: none;
+.content-wrapper {
+  flex: 1;
 }
-li.list-item img {
-  height: 28px;
-  width: 28px;
+.title {
+  font-weight: 500;
 }
-.item-info .title {
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
-.item-info .description {
-  color: #666;
+.subtitle {
   font-size: 0.875rem;
+  color: #666;
 }
-li.list-item.selected {
-  background-color: #dcedf9;
-}
-li.list-item .modus-wc-menu-item-selected-icon {
+modus-wc-menu-item.hidden {
   display: none;
 }
-li.list-item.selected .modus-wc-menu-item-selected-icon {
-  display: block;
-}
+
 </style>
 <modus-wc-autocomplete
-aria-label="Custom items autocomplete"
-?bordered=${args.bordered}
-custom-class=${ifDefined(args['custom-class'])}
-debounce-ms=${ifDefined(args['debounce-ms'])}
-?disabled=${args.disabled}
-input-id=${ifDefined(args['input-id'])}
-input-tab-index=${ifDefined(args['input-tab-index'])}
-label=${ifDefined(args.label)}
-?leave-menu-open=${args['leave-menu-open']}
-min-chars=${args['min-chars']}
-?multi-select=${false}
-name=${ifDefined(args.name)}
-.noResults=${args['no-results']}
-placeholder=${ifDefined(args.placeholder)}
-?read-only=${args['read-only']}
-?required=${args.required}
-size=${ifDefined(args.size)}
-value=${args.value}
-@inputChange=${handleInputChange}
+  aria-label="Custom menu items example"
+  ?bordered=${args.bordered}
+  custom-class=${ifDefined(args['custom-class'])}
+  debounce-ms=${ifDefined(args['debounce-ms'])}
+  ?disabled=${args.disabled}
+  input-id=${ifDefined(args['input-id'])}
+  input-tab-index=${ifDefined(args['input-tab-index'])}
+  label=${ifDefined(args.label)}
+  ?leave-menu-open=${args['leave-menu-open']}
+  min-chars=${args['min-chars']}
+  ?multi-select=${false}
+  name=${ifDefined(args.name)}
+  .no-results=${args['no-results']}
+  placeholder="Search people..."
+  ?read-only=${args['read-only']}
+  ?required=${args.required}
+  ?show-menu-on-focus=${args['show-menu-on-focus']}
+  size=${ifDefined(args.size)}
+  ?show-spinner=${args['show-spinner']}
+  value=${args.value}
+  .customKeyDown=${handleCustomKeyDown}
+  @inputChange=${handleInputChange}
+  ?include-search=${true}
 >
-<div slot="menu-items" id="custom-menu-items">
-  <li class="list-item" @click=${handleItemSelect}>
-    <div class="item-info">
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/5166/5166970.png"
-        alt="Project 1"
-      />
-      <div>
-        <div class="title">Project 1</div>
-        <div class="description">Description for Project 1</div>
+  <div slot="menu-items">
+    <modus-wc-menu-item
+      label="John Doe"
+      sub-label="john.doe@example.com"
+      value="John Doe"
+      @itemSelect=${handleItemSelect}
+    >
+           <div slot="start-icon">
+      <modus-wc-avatar aria-label="Avatar" size="xs" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" size="xs"></modus-wc-avatar>
       </div>
-      <div class="modus-wc-menu-item-selected-icon">
-        <modus-wc-icon
-          decorative=${true}
-          name="check"
-          size=${ifDefined(args.size)}
-        />
+    </modus-wc-menu-item>
+    <modus-wc-menu-item
+      label="Jane Smith"
+      sub-label="jane.smith@example.com"
+      value="Jane Smith"
+      @itemSelect=${handleItemSelect}
+    >
+      <div slot="start-icon">
+      <modus-wc-avatar aria-label="Avatar" size="xs" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" size="xs"></modus-wc-avatar>
       </div>
-    </div>
-  </li>
-  <li class="list-item" @click=${handleItemSelect}>
-    <div class="item-info">
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/1087/1087927.png"
-        alt="Project 2"
-      />
-      <div>
-        <div class="title">Project 2</div>
-        <div class="description">Description for Project 2</div>
+    </modus-wc-menu-item>
+    <modus-wc-menu-item
+      label="Bob Johnson"
+      sub-label="bob.johnson@example.com"
+      value="Bob Johnson"
+      @itemSelect=${handleItemSelect}
+    >
+                <div slot="start-icon">
+      <modus-wc-avatar aria-label="Avatar" size="xs" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" size="xs"></modus-wc-avatar>
       </div>
-      <div class="modus-wc-menu-item-selected-icon">
-        <modus-wc-icon
-          decorative=${true}
-          name="check"
-          size=${ifDefined(args.size)}
-        />
+    </modus-wc-menu-item>
+    <modus-wc-menu-item
+      label="Alice Williams"
+      sub-label="alice.williams@example.com"
+      value="Alice Williams"
+      @itemSelect=${handleItemSelect}
+    >
+      <div slot="start-icon">
+      <modus-wc-avatar aria-label="Avatar" size="xs" alt="Example avatar" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" size="md"></modus-wc-avatar>
       </div>
-    </div>
-  </li>
-  <li class="list-item" @click=${handleItemSelect}>
-    <div class="item-info">
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/1659/1659067.png"
-        alt="Project 3"
-      />
-      <div>
-        <div class="title">Project 3</div>
-        <div class="description">Description for Project 3</div>
-      </div>
-      <div class="modus-wc-menu-item-selected-icon">
-        <modus-wc-icon
-          decorative=${true}
-          name="check"
-          size=${ifDefined(args.size)}
-        />
-      </div>
-    </div>
-  </li>
-</div>
+    </modus-wc-menu-item>
+  </div>
 </modus-wc-autocomplete>
     `;
   },
@@ -818,9 +955,6 @@ export const CustomEventHandlers: Story = {
       autocomplete.items = [...args.items];
       autocomplete.value = item.label;
       void autocomplete.closeMenu();
-
-      // Show a custom notification
-      console.log('Custom handler: Selected item', item);
     };
 
     return html`
