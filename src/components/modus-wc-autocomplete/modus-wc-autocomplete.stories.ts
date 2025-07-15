@@ -457,8 +457,13 @@ export const CustomMenuItems: Story = {
       ) as Element & {
         openMenu: () => Promise<void>;
         closeMenu: () => Promise<void>;
+        readOnly?: boolean;
+        disabled?: boolean;
       };
       if (!autocomplete) return;
+
+      // Don't process keyboard events when disabled or readOnly
+      if (autocomplete.disabled || autocomplete.readOnly) return;
 
       const visibleItems = getVisibleItems(autocomplete);
 
@@ -530,6 +535,14 @@ export const CustomMenuItems: Story = {
         ).value.toLowerCase();
 
         const menuItems = autocomplete?.querySelectorAll('modus-wc-menu-item');
+
+        // Clear selected state when input is empty
+        if (searchText === '') {
+          menuItems?.forEach((item) => {
+            item.removeAttribute('selected');
+          });
+        }
+
         let hiddenCount = 0;
         Array.from(menuItems ?? []).forEach((menuItem) => {
           const label = menuItem.getAttribute('label')?.toLowerCase() || '';
@@ -546,6 +559,18 @@ export const CustomMenuItems: Story = {
           hiddenCount === menuItems?.length
             ? originalNoResults
             : { ariaLabel: '', label: '', subLabel: '' };
+
+        // Show/hide the no results element
+        const noResultsElement = autocomplete.querySelector(
+          '.no-results-item'
+        ) as HTMLElement;
+        if (noResultsElement) {
+          if (hiddenCount === menuItems?.length) {
+            noResultsElement.classList.add('visible');
+          } else {
+            noResultsElement.classList.remove('visible');
+          }
+        }
       }
     };
 
@@ -602,8 +627,13 @@ const handleCustomKeyDown = (e: KeyboardEvent) => {
   ) as Element & {
     openMenu: () => Promise<void>;
     closeMenu: () => Promise<void>;
+    readOnly?: boolean;
+    disabled?: boolean;
   };
   if (!autocomplete) return;
+
+  // Don't process keyboard events when disabled or readOnly
+  if (autocomplete.disabled || autocomplete.readOnly) return;
 
   const visibleItems = getVisibleItems(autocomplete);
 
@@ -674,6 +704,14 @@ const handleInputChange = (e: CustomEvent<Event>) => {
       e.detail.target as HTMLInputElement
     ).value.toLowerCase();
     const menuItems = autocomplete?.querySelectorAll('modus-wc-menu-item');
+    
+    // Clear selected state when input is empty
+    if (searchText === '') {
+      menuItems?.forEach((item) => {
+        item.removeAttribute('selected');
+      });
+    }
+    
     let hiddenCount = 0;
     Array.from(menuItems ?? []).forEach((menuItem) => {
       const label = menuItem.getAttribute('label')?.toLowerCase() || '';
@@ -690,6 +728,16 @@ const handleInputChange = (e: CustomEvent<Event>) => {
       hiddenCount === menuItems?.length
         ? originalNoResults
         : { ariaLabel: '', label: '', subLabel: '' };
+        
+    // Show/hide the no results element
+    const noResultsElement = autocomplete.querySelector('.no-results-item') as HTMLElement;
+    if (noResultsElement) {
+      if (hiddenCount === menuItems?.length) {
+        noResultsElement.classList.add('visible');
+      } else {
+        noResultsElement.classList.remove('visible');
+      }
+    }
   }
 };
 
@@ -743,6 +791,27 @@ div[id^='story--components-forms-autocomplete--custom-menu-items'] {
 modus-wc-menu-item.hidden {
   display: none;
 }
+.no-results-item {
+  display: none;
+  padding: 16px;
+  text-align: center;
+}
+.no-results-item.visible {
+  display: block;
+}
+.no-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.no-results-title {
+  font-weight: bold;
+}
+.no-results-header modus-wc-icon {
+  color: var(--modus-wc-color-gray-6);
+}
 
 </style>
 <modus-wc-autocomplete
@@ -759,7 +828,7 @@ modus-wc-menu-item.hidden {
   ?multi-select=${false}
   name=${ifDefined(args.name)}
   .no-results=${args['no-results']}
-  placeholder="Search people..."
+  placeholder=${ifDefined(args.placeholder)}
   ?read-only=${args['read-only']}
   ?required=${args.required}
   ?show-menu-on-focus=${args['show-menu-on-focus']}
@@ -811,6 +880,12 @@ modus-wc-menu-item.hidden {
       <modus-wc-avatar aria-label="Avatar" size="xs" alt="Example avatar" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" size="md"></modus-wc-avatar>
       </div>
     </modus-wc-menu-item>
+    <li class="no-results-item">
+      <div class="no-results-header">
+        <modus-wc-icon name="search" size="lg"></modus-wc-icon>
+        <div class="no-results-title">No results found</div>
+      </div>
+    </li>
   </div>
 </modus-wc-autocomplete>
     `;
