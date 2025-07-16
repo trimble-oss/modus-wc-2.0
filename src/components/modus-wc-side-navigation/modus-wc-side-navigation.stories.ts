@@ -210,9 +210,9 @@ export const collapsibleMenu: Story = {
       const parentLi = iconEl.closest('.flex-row')?.closest('li');
       if (!parentLi) return;
 
-      // Toggle between expand_more and chevron_right icons
+      // Toggle between expand_more and expand_less icons
       const isExpanded = iconEl.getAttribute('name') === 'expand_more';
-      iconEl.setAttribute('name', isExpanded ? 'chevron_right' : 'expand_more');
+      iconEl.setAttribute('name', isExpanded ? 'expand_less' : 'expand_more');
 
       // Find and toggle children visibility
       const childContainer = parentLi.nextElementSibling?.classList.contains(
@@ -240,11 +240,51 @@ export const collapsibleMenu: Story = {
           container.classList.add('hidden');
           container.setAttribute('aria-hidden', 'true');
         });
+
+        // Reset all collapse icons to expand_more
+        const collapseIcons = document.querySelectorAll('.collapse-icon');
+        collapseIcons.forEach((icon) => {
+          if (icon.getAttribute('name') === 'expand_less') {
+            icon.setAttribute('name', 'expand_more');
+          }
+        });
       }
     };
 
     return html`
       <style>
+        .children-container {
+          transition: height 0.2s ease-out;
+        }
+
+        .collapse-icon {
+          color: var(--modus-wc-color-gray-7);
+          cursor: pointer;
+          min-width: 24px;
+        }
+
+        .dropdown-menu {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .flex-row {
+          align-items: center;
+          display: flex;
+          gap: 1.3rem;
+          padding: 0.5rem 0.25rem;
+          padding-inline-start: 1rem;
+        }
+
+        .hidden {
+          display: none;
+        }
+
+        .justify-end {
+          margin-left: auto;
+        }
+
         .layout-with-navbar {
           box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
           display: flex;
@@ -263,12 +303,20 @@ export const collapsibleMenu: Story = {
         }
 
         .menu-item {
-          display: block;
-          padding: 0.5rem 1rem;
-          text-decoration: none;
           color: var(--modus-wc-color-gray-9);
+          display: block;
           font-size: 16px;
           line-height: 1.5;
+          padding: 0.5rem 1rem;
+          text-decoration: none;
+        }
+
+        .menu-width {
+          width: 100%;
+        }
+
+        .modus-wc-menu li ul {
+          margin-inline-start: 2rem;
         }
 
         .modus-wc-menu-dropdown {
@@ -276,15 +324,19 @@ export const collapsibleMenu: Story = {
         }
 
         .modus-wc-menu-dropdown-toggle {
-          cursor: pointer;
           align-items: center;
-          padding: 0.7rem 1.25rem;
+          cursor: pointer;
           font-size: 16px;
           line-height: 1.5;
+          padding: 0.7rem 1.25rem;
         }
 
         .navbar {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nested-row {
+          padding-inline-start: 2.5rem;
         }
 
         .panel-content {
@@ -293,57 +345,15 @@ export const collapsibleMenu: Story = {
         }
 
         .side-navigation {
-          height: 500px;
           align-self: flex-start;
+          height: 500px;
           position: relative;
         }
 
         ul {
           list-style: none;
-          padding: 0;
           margin: 0;
-        }
-
-        .menu-width {
-          width: 100%;
-        }
-
-        .flex-row {
-          display: flex;
-          align-items: center;
-          padding: 0.5rem 0.25rem;
-        }
-
-        .nested-row {
-          padding-inline-start: 2rem;
-        }
-
-        .justify-end {
-          margin-left: auto;
-        }
-
-        .collapse-icon {
-          cursor: pointer;
-          min-width: 24px;
-        }
-
-        .hidden {
-          display: none;
-        }
-
-        .children-container {
-          transition: height 0.2s ease-out;
-        }
-
-        .dropdown-menu {
-          padding-left: 20px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .icon-left {
-          padding-left: 16px;
+          padding: 0;
         }
       </style>
       <script>
@@ -369,37 +379,47 @@ export const collapsibleMenu: Story = {
           const parentLi = iconEl.closest('.flex-row')?.closest('li');
           if (!parentLi) return;
 
+          // Toggle between expand_more and expand_less icons
           const isExpanded = iconEl.getAttribute('name') === 'expand_more';
           iconEl.setAttribute(
             'name',
-            isExpanded ? 'chevron_right' : 'expand_more'
+            isExpanded ? 'expand_less' : 'expand_more'
           );
 
-          const nextEl = parentLi.nextElementSibling;
-          const childContainer = nextEl?.classList.contains(
-            'children-container'
-          )
-            ? nextEl
-            : null;
+          // Find and toggle children visibility
+          const childContainer =
+            parentLi.nextElementSibling?.classList.contains(
+              'children-container'
+            )
+              ? parentLi.nextElementSibling
+              : null;
 
           if (childContainer) {
             childContainer.classList.toggle('hidden');
             childContainer.setAttribute(
               'aria-hidden',
-              isExpanded ? 'true' : 'false'
+              !isExpanded ? 'true' : 'false'
             );
           }
         }
 
         function handleExpandChange(e) {
           if (!e.detail) {
+            // Collapse all child containers if the side navigation is collapsed
             const childrenContainers = document.querySelectorAll(
               '.children-container'
             );
-
             childrenContainers.forEach((container) => {
               container.classList.add('hidden');
               container.setAttribute('aria-hidden', 'true');
+            });
+
+            // Reset all collapse icons to expand_more
+            const collapseIcons = document.querySelectorAll('.collapse-icon');
+            collapseIcons.forEach((icon) => {
+              if (icon.getAttribute('name') === 'expand_less') {
+                icon.setAttribute('name', 'expand_more');
+              }
             });
           }
         }
@@ -459,7 +479,7 @@ export const collapsibleMenu: Story = {
                     >
                       <modus-wc-icon
                         decorative="true"
-                        name="chevron_right"
+                        name="expand_more"
                         class="collapse-icon"
                         @click=${handleCollapseToggle}
                       ></modus-wc-icon>
@@ -501,7 +521,6 @@ export const collapsibleMenu: Story = {
                   <div class="dropdown-menu">Single Item</div>
                 </div>
               </li>
-
               <!-- Second parent group (collapsed) -->
               <li>
                 <div class="flex-row">
@@ -527,7 +546,7 @@ export const collapsibleMenu: Story = {
                     >
                       <modus-wc-icon
                         decorative="true"
-                        name="chevron_right"
+                        name="expand_more"
                         class="collapse-icon"
                         @click=${handleCollapseToggle}
                       ></modus-wc-icon>
@@ -554,7 +573,7 @@ export const collapsibleMenu: Story = {
                         >
                           <modus-wc-icon
                             decorative="true"
-                            name="chevron_right"
+                            name="expand_more"
                             class="collapse-icon"
                             @click=${handleCollapseToggle}
                           ></modus-wc-icon>
@@ -567,7 +586,7 @@ export const collapsibleMenu: Story = {
                       <li>
                         <div
                           class="flex-row"
-                          style="padding-inline-start: 3rem;"
+                          style="padding-inline-start: 2rem;"
                         >
                           <div>Submenu Item 1</div>
                         </div>
@@ -575,7 +594,7 @@ export const collapsibleMenu: Story = {
                       <li>
                         <div
                           class="flex-row"
-                          style="padding-inline-start: 3rem;"
+                          style="padding-inline-start: 2rem;"
                         >
                           <div>Submenu Item 2</div>
                         </div>
@@ -591,7 +610,6 @@ export const collapsibleMenu: Story = {
               </li>
             </modus-wc-menu>
           </modus-wc-side-navigation>
-
           <div class="panel-content">
             <div id="overview">
               <p>
