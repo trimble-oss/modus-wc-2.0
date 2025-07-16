@@ -128,10 +128,16 @@ export const Default: Story = {
           app-title="Modus App"
           class="navbar"
           logo="/assets/logo.svg"
-          user-name="John Doe"
-          user-avatar="/assets/avatar.png"
           @mainMenuOpenChange=${handleMenuOpenChange}
+          .userCard=${{
+            avatarAlt: 'User Avatar',
+            avatarSrc:
+              'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+            email: 'user@trimble.com',
+            name: 'Sonic the Hedgehog',
+          }}
           .visibility=${{
+            ai: true,
             apps: true,
             help: true,
             mainMenu: true,
@@ -442,10 +448,16 @@ export const collapsibleMenu: Story = {
           app-title="Modus App"
           class="navbar"
           logo="/assets/logo.svg"
-          user-name="John Doe"
-          user-avatar="/assets/avatar.png"
           @mainMenuOpenChange=${handleMenuOpenChange}
+          .userCard=${{
+            avatarAlt: 'User Avatar',
+            avatarSrc:
+              'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+            email: 'user@trimble.com',
+            name: 'Sonic the Hedgehog',
+          }}
           .visibility=${{
+            ai: true,
             apps: true,
             help: true,
             mainMenu: true,
