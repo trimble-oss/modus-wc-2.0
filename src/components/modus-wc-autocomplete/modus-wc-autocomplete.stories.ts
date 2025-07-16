@@ -1210,16 +1210,11 @@ export const WithProgrammaticControl: Story = {
         div[id^='story--components-forms-autocomplete--with-programmatic-control'] {
           height: 500px;
         }
-        .controls-section {
-          margin-bottom: 2rem;
-          padding: 1rem;
-          background-color: #f5f5f5;
-          border-radius: 8px;
-        }
-        .controls-section h3 {
-          margin-top: 0;
-          margin-bottom: 1rem;
-          font-size: 1.2rem;
+
+        .controls-content {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
         }
         .control-group {
           margin-bottom: 1rem;
@@ -1236,76 +1231,78 @@ export const WithProgrammaticControl: Story = {
         }
       </style>
 
-      <div class="controls-section">
-        <h3>Programmatic Control Methods</h3>
+      <modus-wc-card class="controls-card">
+        <div class="controls-content">
+          <h3>Programmatic Control Methods</h3>
 
-        <div class="control-group">
-          <label>Selection Methods:</label>
-          <div class="button-row">
-            <modus-wc-button
-              onclick="window.handleSelectApple()"
-              variant="primary"
-              size="sm"
-            >
-              Select Apple
-            </modus-wc-button>
-            <modus-wc-button
-              onclick="window.handleSelectNull()"
-              variant="secondary"
-              size="sm"
-            >
-              Clear Selection
-            </modus-wc-button>
+          <div class="control-group">
+            <label>Selection Methods:</label>
+            <div class="button-row">
+              <modus-wc-button
+                onclick="window.handleSelectApple()"
+                variant="primary"
+                size="sm"
+              >
+                Select Apple
+              </modus-wc-button>
+              <modus-wc-button
+                onclick="window.handleSelectNull()"
+                variant="secondary"
+                size="sm"
+              >
+                Clear Selection
+              </modus-wc-button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Menu Control Methods:</label>
+            <div class="button-row">
+              <modus-wc-button
+                onclick="window.handleOpenMenu()"
+                variant="primary"
+                size="sm"
+              >
+                Open Menu
+              </modus-wc-button>
+              <modus-wc-button
+                onclick="window.handleCloseMenu()"
+                variant="primary"
+                size="sm"
+              >
+                Close Menu
+              </modus-wc-button>
+              <modus-wc-button
+                onclick="window.handleToggleMenu()"
+                variant="secondary"
+                size="sm"
+              >
+                Toggle Menu
+              </modus-wc-button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Input Control Methods:</label>
+            <div class="button-row">
+              <modus-wc-button
+                onclick="window.handleFocusInput()"
+                variant="primary"
+                size="sm"
+              >
+                Focus Input
+              </modus-wc-button>
+              <modus-wc-button
+                onclick="window.handleClearInput()"
+                variant="danger"
+                size="sm"
+              >
+                Clear All
+              </modus-wc-button>
+            </div>
           </div>
         </div>
-
-        <div class="control-group">
-          <label>Menu Control Methods:</label>
-          <div class="button-row">
-            <modus-wc-button
-              onclick="window.handleOpenMenu()"
-              variant="primary"
-              size="sm"
-            >
-              Open Menu
-            </modus-wc-button>
-            <modus-wc-button
-              onclick="window.handleCloseMenu()"
-              variant="primary"
-              size="sm"
-            >
-              Close Menu
-            </modus-wc-button>
-            <modus-wc-button
-              onclick="window.handleToggleMenu()"
-              variant="secondary"
-              size="sm"
-            >
-              Toggle Menu
-            </modus-wc-button>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <label>Input Control Methods:</label>
-          <div class="button-row">
-            <modus-wc-button
-              onclick="window.handleFocusInput()"
-              variant="primary"
-              size="sm"
-            >
-              Focus Input
-            </modus-wc-button>
-            <modus-wc-button
-              onclick="window.handleClearInput()"
-              variant="danger"
-              size="sm"
-            >
-              Clear All
-            </modus-wc-button>
-          </div>
-        </div>
-      </div>
+      </modus-wc-card>
 
       <modus-wc-autocomplete
         id="programmatic-autocomplete"
