@@ -5,8 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IAutocompleteItem, IAutocompleteNoResults } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
-import { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
+import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -22,8 +21,7 @@ import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 import { TypographySize, TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
-export { IAutocompleteItem, IAutocompleteNoResults } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
-export { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
+export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";

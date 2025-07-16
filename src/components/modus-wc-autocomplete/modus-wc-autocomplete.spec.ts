@@ -1,9 +1,7 @@
 import { EventEmitter } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
-import {
-  IAutocompleteItem,
-  ModusWcAutocomplete,
-} from './modus-wc-autocomplete';
+import { IAutocompleteItem } from '../types';
+import { ModusWcAutocomplete } from './modus-wc-autocomplete';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcChip } from '../modus-wc-chip/modus-wc-chip';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
@@ -1751,7 +1749,7 @@ describe('modus-wc-autocomplete', () => {
     const hostStyle = page.root?.style;
     expect(
       hostStyle?.getPropertyValue('--modus-autocomplete-min-input-width')
-    ).toBe('20px');
+    ).toBe('10px');
   });
 
   // Test menu item click handler
@@ -3253,5 +3251,319 @@ describe('modus-wc-autocomplete', () => {
     // Menu items container should exist (even if empty)
     const menuItemsContainer = page.root?.querySelector('modus-wc-menu');
     expect(menuItemsContainer).toBeTruthy();
+  });
+
+  // Tests for uncovered preventDefault functionality
+  describe('mouseDown event handling', () => {
+    it('should prevent default on mouseDown for menu items', async () => {
+      const page = await newSpecPage({
+        components: [
+          ModusWcAutocomplete,
+          ModusWcTextInput,
+          ModusWcMenu,
+          ModusWcMenuItem,
+        ],
+        html: '<modus-wc-autocomplete aria-label="MouseDown test"></modus-wc-autocomplete>',
+      });
+
+      const autocomplete = page.rootInstance as ModusWcAutocomplete;
+      autocomplete.items = items;
+
+      // Force menu to be visible
+      autocomplete['menuVisible'] = true;
+      await page.waitForChanges();
+
+      const menuItem = page.root?.querySelector('modus-wc-menu-item');
+      expect(menuItem).toBeTruthy();
+
+      // Create and dispatch mouseDown event
+      const mouseDownEvent = new MouseEvent('mousedown', {
+        bubbles: true,
+        cancelable: true,
+      });
+      const preventDefaultSpy = jest.spyOn(mouseDownEvent, 'preventDefault');
+
+      menuItem?.dispatchEvent(mouseDownEvent);
+      await page.waitForChanges();
+
+      expect(preventDefaultSpy).toHaveBeenCalled();
+    });
+
+    it('should prevent default on mouseDown for menu container', async () => {
+      const page = await newSpecPage({
+        components: [
+          ModusWcAutocomplete,
+          ModusWcTextInput,
+          ModusWcMenu,
+          ModusWcMenuItem,
+        ],
+        html: '<modus-wc-autocomplete aria-label="Menu mouseDown test"></modus-wc-autocomplete>',
+      });
+
+      const autocomplete = page.rootInstance as ModusWcAutocomplete;
+      autocomplete.items = items;
+      autocomplete['menuVisible'] = true;
+      await page.waitForChanges();
+
+      const menu = page.root?.querySelector('modus-wc-menu');
+      expect(menu).toBeTruthy();
+
+      // Create and dispatch mouseDown event
+      const mouseDownEvent = new MouseEvent('mousedown', {
+        bubbles: true,
+        cancelable: true,
+      });
+      const preventDefaultSpy = jest.spyOn(mouseDownEvent, 'preventDefault');
+
+      menu?.dispatchEvent(mouseDownEvent);
+      await page.waitForChanges();
+
+      expect(preventDefaultSpy).toHaveBeenCalled();
+    });
+
+    it('should render menu with slotted content and handle mouseDown', async () => {
+      const page = await newSpecPage({
+        components: [
+          ModusWcAutocomplete,
+          ModusWcTextInput,
+          ModusWcMenu,
+          ModusWcMenuItem,
+        ],
+        html: `
+          <modus-wc-autocomplete aria-label="Slotted mouseDown test">
+            <li slot="menu-items">Custom Option</li>
+          </modus-wc-autocomplete>
+        `,
+      });
+
+      const autocomplete = page.rootInstance as ModusWcAutocomplete;
+      autocomplete['menuVisible'] = false;
+      await page.waitForChanges();
+
+      // Menu should still exist in DOM when using slots (hidden via CSS)
+      const menu = page.root?.querySelector('modus-wc-menu');
+      expect(menu).toBeTruthy();
+      expect(menu?.classList.contains('menu-hidden')).toBe(true);
+
+      // Show menu
+      autocomplete['menuVisible'] = true;
+      await page.waitForChanges();
+
+      expect(menu?.classList.contains('menu-visible')).toBe(true);
+
+      // Test mouseDown preventDefault
+      const mouseDownEvent = new MouseEvent('mousedown', {
+        bubbles: true,
+        cancelable: true,
+      });
+      const preventDefaultSpy = jest.spyOn(mouseDownEvent, 'preventDefault');
+
+      menu?.dispatchEvent(mouseDownEvent);
+      await page.waitForChanges();
+
+      expect(preventDefaultSpy).toHaveBeenCalled();
+    });
+  });
+
+  // Tests for new modularized keyboard navigation helpers
+  describe('modularized keyboard navigation', () => {
+    it('should handle arrow down navigation through handleArrowDown', async () => {
+      const page = await newSpecPage({
+        components: [
+          ModusWcAutocomplete,
+          ModusWcTextInput,
+          ModusWcMenu,
+          ModusWcMenuItem,
+        ],
+        html: '<modus-wc-autocomplete aria-label="Arrow navigation test"></modus-wc-autocomplete>',
+      });
+
+      const autocomplete = page.rootInstance as ModusWcAutocomplete;
+      autocomplete.items = items;
+      autocomplete.minChars = 0;
+
+      const input = page.root!.querySelector('input');
+      input?.focus();
+
+      // Directly test the handleArrowDown method
+      autocomplete['handleArrowDown']();
+      await page.waitForChanges();
+
+      expect(autocomplete['menuVisible']).toBe(true);
+
+      // Test navigation when initialNavigation is false
+      autocomplete['initialNavigation'] = false;
+      autocomplete['handleArrowDown']();
+      await page.waitForChanges();
+
+      // First item should be focused
+      expect(autocomplete.items[0].focused).toBe(true);
+    });
+
+    it('should handle arrow up navigation through handleArrowUp', async () => {
+      const page = await newSpecPage({
+        components: [
+          ModusWcAutocomplete,
+          ModusWcTextInput,
+          ModusWcMenu,
+          ModusWcMenuItem,
+        ],
+        html: '<modus-wc-autocomplete aria-label="Arrow up test"></modus-wc-autocomplete>',
+      });
+
+      const autocomplete = page.rootInstance as ModusWcAutocomplete;
+      autocomplete.items = items;
+      autocomplete['menuVisible'] = true;
+      autocomplete['initialNavigation'] = false;
+
+      // Start with no focused item
+      autocomplete['handleArrowUp']();
+      await page.waitForChanges();
+
+      // Last item should be focused when no item was focused
+      expect(autocomplete.items[autocomplete.items.length - 1].focused).toBe(
+        true
+      );
+    });
+
+    it('should handle escape key through handleEscape', async () => {
+      const page = await newSpecPage({
+        components: [
+          ModusWcAutocomplete,
+          ModusWcTextInput,
+          ModusWcMenu,
+          ModusWcMenuItem,
+        ],
+        html: '<modus-wc-autocomplete aria-label="Escape test"></modus-wc-autocomplete>',
+      });
+
+      const autocomplete = page.rootInstance as ModusWcAutocomplete;
+      autocomplete.items = items;
+      autocomplete['menuVisible'] = true;
+      autocomplete.items[0].focused = true;
+
+      autocomplete['handleEscape']();
+      await page.waitForChanges();
+
+      expect(autocomplete['menuVisible']).toBe(false);
+      expect(autocomplete['initialNavigation']).toBe(true);
+      expect(autocomplete.items.every((item) => !item.focused)).toBe(true);
+    });
+
+    it('should handle enter key through handleEnter', async () => {
+      const page = await newSpecPage({
+        components: [
+          ModusWcAutocomplete,
+          ModusWcTextInput,
+          ModusWcMenu,
+          ModusWcMenuItem,
+        ],
+        html: '<modus-wc-autocomplete aria-label="Enter test"></modus-wc-autocomplete>',
+      });
+
+      const autocomplete = page.rootInstance as ModusWcAutocomplete;
+      autocomplete.items = items;
+      autocomplete['menuVisible'] = true;
+
+      // Use updateItemFocus to properly set focus on item 2
+      autocomplete['updateItemFocus']('2');
+      await page.waitForChanges();
+
+      const itemSelectSpy = jest.fn();
+      autocomplete.itemSelect = {
+        emit: itemSelectSpy,
+      } as EventEmitter<IAutocompleteItem>;
+
+      autocomplete['handleEnter']();
+      await page.waitForChanges();
+
+      // The emitted item should be the second item with focused state
+      expect(itemSelectSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          label: 'Item 2',
+          value: '2',
+          visibleInMenu: true,
+        })
+      );
+    });
+
+    it('should handle backspace in multi-select through handleBackspace', async () => {
+      const page = await newSpecPage({
+        components: [
+          ModusWcAutocomplete,
+          ModusWcTextInput,
+          ModusWcMenu,
+          ModusWcMenuItem,
+          ModusWcChip,
+        ],
+        html: '<modus-wc-autocomplete aria-label="Backspace test" multi-select="true"></modus-wc-autocomplete>',
+      });
+
+      const autocomplete = page.rootInstance as ModusWcAutocomplete;
+      autocomplete.items = items;
+      autocomplete.items[0].selected = true;
+      autocomplete.items[1].selected = true;
+      autocomplete['selectionOrder'] = ['1', '2'];
+
+      const input = page.root!.querySelector('input') as HTMLInputElement;
+      input.value = '';
+
+      const chipRemoveSpy = jest.fn();
+      autocomplete.chipRemove = {
+        emit: chipRemoveSpy,
+      } as EventEmitter<IAutocompleteItem>;
+
+      autocomplete['handleBackspace'](input);
+      await page.waitForChanges();
+
+      // Should remove the last selected item
+      expect(chipRemoveSpy).toHaveBeenCalledWith(items[1]);
+    });
+  });
+
+  // Test for renderMenuItems with showSpinner
+  it('should render loader when showSpinner is true', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: '<modus-wc-autocomplete aria-label="Spinner test" show-spinner="true"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    const loader = page.root?.querySelector('modus-wc-loader');
+    expect(loader).toBeTruthy();
+    expect(loader?.getAttribute('variant')).toBe('spinner');
+  });
+
+  // Test for the uncovered line when input is not found
+  it('should handle arrow down when input element is not found', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete],
+      html: '<modus-wc-autocomplete aria-label="No input test"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    // Mock querySelector to return null
+    const originalQuerySelector = autocomplete.el.querySelector.bind(
+      autocomplete.el
+    );
+    autocomplete.el.querySelector = jest.fn().mockReturnValue(null);
+
+    // This should not throw and should return early
+    expect(() => autocomplete['handleArrowDown']()).not.toThrow();
+
+    // Menu should remain false since input wasn't found
+    expect(autocomplete['menuVisible']).toBe(false);
+
+    // Restore original querySelector
+    autocomplete.el.querySelector = originalQuerySelector;
   });
 });

@@ -5,6 +5,7 @@ import {
   Fragment,
   h,
   Host,
+  JSX,
   Listen,
   Method,
   Prop,
@@ -14,32 +15,8 @@ import {
 } from '@stencil/core';
 import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
-import { ModusSize } from '../types';
+import { IAutocompleteItem, IAutocompleteNoResults, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
-
-export interface IAutocompleteItem {
-  /** Whether the item is disabled */
-  disabled?: boolean;
-  /** Whether the item is currently focused */
-  focused?: boolean;
-  /** The display text shown for the autocomplete item */
-  label: string;
-  /** Whether the item is currently selected */
-  selected?: boolean;
-  /** The unique value identifier for the item */
-  value: string;
-  /** Whether the item should be shown in the dropdown menu */
-  visibleInMenu: boolean;
-}
-
-export interface IAutocompleteNoResults {
-  /** The aria-label to provide accessibility information for the no results section. */
-  ariaLabel?: string;
-  /** The main label to display when no results are found. */
-  label: string;
-  /** The sub-label or additional text to display below the main label. */
-  subLabel: string;
-}
 
 // Timeout constants for consistent behavior
 const BLUR_FOCUSOUT_DELAY_MS = 200; // Delay before handling blur/focusout to allow related element focus
@@ -249,6 +226,145 @@ export class ModusWcAutocomplete {
       .join(' ');
   }
 
+  private getVisibleItems(): IAutocompleteItem[] {
+    return this.filteredItems?.filter((item) => !item.disabled) || [];
+  }
+
+  private syncFilteredItems(): void {
+    if (!this.items) {
+      this.filteredItems = [];
+      return;
+    }
+
+    const currentSearchText = this.value?.toLowerCase() || '';
+
+    if (currentSearchText === '') {
+      // When no search text, show all items
+      this.filteredItems = [...this.items];
+    } else {
+      // Filter items based on current search text
+      this.filteredItems = this.items.filter((item) =>
+        item.label.toLowerCase().includes(currentSearchText)
+      );
+    }
+  }
+
+  private updateItemFocus(targetValue: string): void {
+    if (!this.items) return;
+
+    this.items = [
+      ...this.items.map((item) => ({
+        ...item,
+        focused: item.value === targetValue,
+      })),
+    ];
+
+    // Sync filtered items from updated items
+    this.syncFilteredItems();
+  }
+
+  private clearAllFocus(): void {
+    if (!this.items) return;
+
+    this.items = [
+      ...this.items.map((item) => ({
+        ...item,
+        focused: false,
+      })),
+    ];
+
+    // Sync filtered items from updated items
+    this.syncFilteredItems();
+  }
+
+  private handleArrowDown(): void {
+    const input = this.el.querySelector('input');
+    if (!input) return;
+
+    if (this.showMenuOnFocus || input.value.length >= this.minChars) {
+      this.menuVisible = true;
+    }
+
+    if (this.initialNavigation) {
+      this.initialNavigation = false;
+      return;
+    }
+
+    const visibleItems = this.getVisibleItems();
+    const currentIndex = visibleItems.findIndex((item) => item.focused);
+    const nextIndex =
+      currentIndex < 0
+        ? 0
+        : Math.min(currentIndex + 1, visibleItems.length - 1);
+
+    if (visibleItems[nextIndex]) {
+      this.updateItemFocus(visibleItems[nextIndex].value);
+    }
+  }
+
+  private handleArrowUp(): void {
+    if (this.initialNavigation) {
+      this.initialNavigation = false;
+      return;
+    }
+
+    const visibleItems = this.getVisibleItems();
+    const currentIndex = visibleItems.findIndex((item) => item.focused);
+    const prevIndex =
+      currentIndex < 0
+        ? visibleItems.length - 1
+        : Math.max(currentIndex - 1, 0);
+
+    if (visibleItems[prevIndex]) {
+      this.updateItemFocus(visibleItems[prevIndex].value);
+    }
+  }
+
+  private handleEscape(): void {
+    this.clearAllFocus();
+    this.initialNavigation = true;
+    this.menuVisible = false;
+  }
+
+  private handleEnter(): void {
+    const visibleItems = this.getVisibleItems();
+    const focusedItem = visibleItems.find((item) => item.focused);
+
+    if (focusedItem) {
+      this.handleItemSelect(focusedItem);
+    } else if (this.multiSelect) {
+      const selectedItems = this.items?.filter((item) => item.selected) || [];
+      const lastSelectedItem = selectedItems[selectedItems.length - 1];
+
+      if (lastSelectedItem) {
+        this.itemSelect.emit(lastSelectedItem);
+      }
+    } else {
+      const selectedItem = this.items?.find((item) => item.selected);
+      if (selectedItem) {
+        this.itemSelect.emit(selectedItem);
+      }
+    }
+  }
+
+  private handleBackspace(input: HTMLInputElement): void {
+    if (this.multiSelect && input.value.length === 0) {
+      // Get the last selected chip in selection order
+      if (this.selectionOrder.length > 0) {
+        const lastSelectedValue =
+          this.selectionOrder[this.selectionOrder.length - 1];
+        const lastSelectedItem = this.items?.find(
+          (item) => item.value === lastSelectedValue
+        );
+
+        if (lastSelectedItem) {
+          // Remove the chip internally
+          this.handleChipRemove(lastSelectedItem);
+        }
+      }
+    }
+  }
+
   private handleBlur = (event: CustomEvent<FocusEvent>) => {
     if (this.customBlur) {
       this.customBlur(event.detail);
@@ -386,94 +502,29 @@ export class ModusWcAutocomplete {
       event.preventDefault();
     }
 
-    const visibleItems = this.getVisibleItems();
-
     switch (keyLower) {
       case KEY.ArrowDown.toLowerCase(): {
-        if (this.showMenuOnFocus || input.value.length >= this.minChars) {
-          this.menuVisible = true;
-        }
-
-        if (this.initialNavigation) {
-          this.initialNavigation = false;
-          return;
-        }
-
-        const currentIndex = visibleItems.findIndex((item) => item.focused);
-        const nextIndex =
-          currentIndex < 0
-            ? 0
-            : Math.min(currentIndex + 1, visibleItems.length - 1);
-
-        if (visibleItems[nextIndex]) {
-          this.updateItemFocus(visibleItems[nextIndex].value);
-        }
+        this.handleArrowDown();
         break;
       }
 
       case KEY.ArrowUp.toLowerCase(): {
-        if (this.initialNavigation) {
-          this.initialNavigation = false;
-          return;
-        }
-
-        const currentIndex = visibleItems.findIndex((item) => item.focused);
-        const prevIndex =
-          currentIndex < 0
-            ? visibleItems.length - 1
-            : Math.max(currentIndex - 1, 0);
-
-        if (visibleItems[prevIndex]) {
-          this.updateItemFocus(visibleItems[prevIndex].value);
-        }
+        this.handleArrowUp();
         break;
       }
 
       case KEY.Escape.toLowerCase(): {
-        this.clearAllFocus();
-        this.initialNavigation = true;
-        this.menuVisible = false;
+        this.handleEscape();
         break;
       }
 
       case KEY.Enter.toLowerCase(): {
-        const focusedItem = visibleItems.find((item) => item.focused);
-
-        if (focusedItem) {
-          this.handleItemSelect(focusedItem);
-        } else if (this.multiSelect) {
-          const selectedItems =
-            this.items?.filter((item) => item.selected) || [];
-          const lastSelectedItem = selectedItems[selectedItems.length - 1];
-
-          if (lastSelectedItem) {
-            this.itemSelect.emit(lastSelectedItem);
-          }
-        } else {
-          const selectedItem = this.items?.find((item) => item.selected);
-          if (selectedItem) {
-            this.itemSelect.emit(selectedItem);
-          }
-        }
+        this.handleEnter();
         break;
       }
 
       case KEY.Backspace.toLowerCase(): {
-        if (this.multiSelect && input.value.length === 0) {
-          // Get the last selected chip in selection order
-          if (this.selectionOrder.length > 0) {
-            const lastSelectedValue =
-              this.selectionOrder[this.selectionOrder.length - 1];
-            const lastSelectedItem = this.items?.find(
-              (item) => item.value === lastSelectedValue
-            );
-
-            if (lastSelectedItem) {
-              // Remove the chip internally
-              this.handleChipRemove(lastSelectedItem);
-            }
-          }
-        }
+        this.handleBackspace(input);
         break;
       }
     }
@@ -699,204 +750,139 @@ export class ModusWcAutocomplete {
     );
   }
 
-  private handleOutsideClick = (event: MouseEvent) => {
-    if (!this.el.contains(event.target as Node) && !this.programmaticOpen) {
-      this.menuVisible = false;
-      this.isChipsExpanded = false;
+  private renderChips(): JSX.Element {
+    // Get selected items in selection order
+    const selectedItems = this.selectionOrder
+      .map((value) =>
+        this.items?.find((item) => item.value === value && item.selected)
+      )
+      .filter(Boolean) as IAutocompleteItem[];
+
+    if (selectedItems.length === 0) {
+      return <Fragment></Fragment>;
     }
 
-    // Reset programmaticOpen flag after handling the click
-    if (this.programmaticOpen) {
-      this.programmaticOpen = false;
+    // Chip display logic:
+    // - Not expanded: show up to maxChips (compact view)
+    // - Expanded: show all chips regardless of focus state
+    const effectiveMaxChips =
+      !this.isChipsExpanded && this.maxChips && this.maxChips > 0
+        ? this.maxChips
+        : selectedItems.length;
+
+    const visibleItems = selectedItems.slice(0, effectiveMaxChips);
+
+    return (
+      <Fragment>
+        {visibleItems.map((item) => (
+          <modus-wc-chip
+            aria-label="Remove item button"
+            label={item.label}
+            show-remove={true}
+            size="sm"
+            disabled={this.disabled || this.readOnly}
+            onChipRemove={(event) => {
+              event.stopPropagation();
+              this.handleChipRemove(item);
+            }}
+            variant="filled"
+          ></modus-wc-chip>
+        ))}
+      </Fragment>
+    );
+  }
+
+  private renderClearButton(): JSX.Element | null {
+    const showClear =
+      this.includeClear &&
+      !this.disabled &&
+      !this.readOnly &&
+      (this.selectionOrder.length > 0 || this.value?.length > 0);
+
+    if (!showClear) {
+      return null;
     }
-  };
 
-  private getVisibleItems(): IAutocompleteItem[] {
-    return this.filteredItems?.filter((item) => !item.disabled) || [];
+    return (
+      <modus-wc-button
+        onClick={this.handleClearAll}
+        variant="borderless"
+        color="secondary"
+        aria-label="Clear all"
+        disabled={this.disabled || this.readOnly}
+        size="xs"
+        shape="circle"
+        type="button"
+      >
+        <CloseSolidIcon />
+      </modus-wc-button>
+    );
   }
 
-  private syncFilteredItems(): void {
-    if (!this.items) {
-      this.filteredItems = [];
-      return;
+  private renderExpandCollapseButton(): JSX.Element | null {
+    const selectedItemsCount = this.selectionOrder.length;
+
+    // Show expand/collapse button when there are more chips than maxChips
+    if (
+      !this.maxChips ||
+      this.maxChips <= 0 ||
+      selectedItemsCount <= this.maxChips
+    ) {
+      return null;
     }
 
-    const currentSearchText = this.value?.toLowerCase() || '';
+    const remainingCount = selectedItemsCount - this.maxChips;
 
-    if (currentSearchText === '') {
-      // When no search text, show all items
-      this.filteredItems = [...this.items];
-    } else {
-      // Filter items based on current search text
-      this.filteredItems = this.items.filter((item) =>
-        item.label.toLowerCase().includes(currentSearchText)
-      );
+    return (
+      <modus-wc-button
+        custom-class={`modus-wc-autocomplete-expand-button ${this.isChipsExpanded ? 'expanded' : ''}`}
+        onClick={this.toggleChipsExpansion}
+        variant="borderless"
+        color="secondary"
+        aria-label={
+          this.isChipsExpanded
+            ? 'Collapse chips'
+            : `Show ${remainingCount} more`
+        }
+        disabled={this.disabled || this.readOnly}
+        size="xs"
+        shape="circle"
+        type="button"
+      >
+        <modus-wc-icon
+          aria-label={this.isChipsExpanded ? 'Collapse chips' : 'Expand chips'}
+          name={this.isChipsExpanded ? 'caret_up' : 'caret_down'}
+          size="md"
+        />
+      </modus-wc-button>
+    );
+  }
+
+  private renderMoreChipsIndicator(): JSX.Element | null {
+    const selectedItemsCount = this.selectionOrder.length;
+
+    // Show "+N more" when there are more chips than maxChips and not expanded
+    if (!this.maxChips || this.maxChips <= 0 || this.isChipsExpanded) {
+      return null;
     }
+
+    const remainingCount = selectedItemsCount - this.maxChips;
+
+    if (remainingCount <= 0) {
+      return null;
+    }
+
+    return (
+      <modus-wc-chip
+        label={`+${remainingCount}`}
+        size="sm"
+        variant="filled"
+      ></modus-wc-chip>
+    );
   }
 
-  private updateItemFocus(targetValue: string): void {
-    if (!this.items) return;
-
-    this.items = [
-      ...this.items.map((item) => ({
-        ...item,
-        focused: item.value === targetValue,
-      })),
-    ];
-
-    // Sync filtered items from updated items
-    this.syncFilteredItems();
-  }
-
-  private clearAllFocus(): void {
-    if (!this.items) return;
-
-    this.items = [
-      ...this.items.map((item) => ({
-        ...item,
-        focused: false,
-      })),
-    ];
-
-    // Sync filtered items from updated items
-    this.syncFilteredItems();
-  }
-
-  render() {
-    const getChips = () => {
-      // Get selected items in selection order
-      const selectedItems = this.selectionOrder
-        .map((value) =>
-          this.items?.find((item) => item.value === value && item.selected)
-        )
-        .filter(Boolean) as IAutocompleteItem[];
-
-      if (selectedItems.length === 0) {
-        return <Fragment></Fragment>;
-      }
-
-      // Chip display logic:
-      // - Not expanded: show up to maxChips (compact view)
-      // - Expanded: show all chips regardless of focus state
-      const effectiveMaxChips =
-        !this.isChipsExpanded && this.maxChips && this.maxChips > 0
-          ? this.maxChips
-          : selectedItems.length;
-
-      const visibleItems = selectedItems.slice(0, effectiveMaxChips);
-
-      return (
-        <Fragment>
-          {visibleItems.map((item) => (
-            <modus-wc-chip
-              aria-label="Remove item button"
-              label={item.label}
-              show-remove={true}
-              size="sm"
-              disabled={this.disabled || this.readOnly}
-              onChipRemove={(event) => {
-                event.stopPropagation();
-                this.handleChipRemove(item);
-              }}
-              variant="filled"
-            ></modus-wc-chip>
-          ))}
-        </Fragment>
-      );
-    };
-
-    const getClearButton = () => {
-      const showClear =
-        this.includeClear &&
-        !this.disabled &&
-        !this.readOnly &&
-        (this.selectionOrder.length > 0 || this.value?.length > 0);
-
-      if (!showClear) {
-        return null;
-      }
-
-      return (
-        <modus-wc-button
-          onClick={this.handleClearAll}
-          variant="borderless"
-          color="secondary"
-          aria-label="Clear all"
-          disabled={this.disabled || this.readOnly}
-          size="xs"
-          shape="circle"
-          type="button"
-        >
-          <CloseSolidIcon />
-        </modus-wc-button>
-      );
-    };
-
-    const getExpandCollapseButton = () => {
-      const selectedItemsCount = this.selectionOrder.length;
-
-      // Show expand/collapse button when there are more chips than maxChips
-      if (
-        !this.maxChips ||
-        this.maxChips <= 0 ||
-        selectedItemsCount <= this.maxChips
-      ) {
-        return null;
-      }
-
-      const remainingCount = selectedItemsCount - this.maxChips;
-
-      return (
-        <modus-wc-button
-          custom-class={`modus-wc-autocomplete-expand-button ${this.isChipsExpanded ? 'expanded' : ''}`}
-          onClick={this.toggleChipsExpansion}
-          variant="borderless"
-          color="secondary"
-          aria-label={
-            this.isChipsExpanded
-              ? 'Collapse chips'
-              : `Show ${remainingCount} more`
-          }
-          disabled={this.disabled || this.readOnly}
-          size="xs"
-          shape="circle"
-          type="button"
-        >
-          <modus-wc-icon
-            aria-label={
-              this.isChipsExpanded ? 'Collapse chips' : 'Expand chips'
-            }
-            name={this.isChipsExpanded ? 'caret_up' : 'caret_down'}
-            size="md"
-          />
-        </modus-wc-button>
-      );
-    };
-
-    const getMoreChipsIndicator = () => {
-      const selectedItemsCount = this.selectionOrder.length;
-
-      // Show "+N more" when there are more chips than maxChips and not expanded
-      if (!this.maxChips || this.maxChips <= 0 || this.isChipsExpanded) {
-        return null;
-      }
-
-      const remainingCount = selectedItemsCount - this.maxChips;
-
-      if (remainingCount <= 0) {
-        return null;
-      }
-
-      return (
-        <modus-wc-chip
-          label={`+${remainingCount}`}
-          size="sm"
-          variant="filled"
-        ></modus-wc-chip>
-      );
-    };
-
-    const getInput = () => (
+  private renderInput(): JSX.Element {
+    return (
       <modus-wc-text-input
         bordered={this.bordered && !this.multiSelect}
         disabled={this.disabled}
@@ -916,44 +902,55 @@ export class ModusWcAutocomplete {
         {...this.inheritedAttributes}
       />
     );
+  }
 
-    const getMenuItems = () => {
-      if (this.showSpinner) {
-        return (
-          <li>
-            <modus-wc-loader
-              variant="spinner"
-              size={this.size}
-            ></modus-wc-loader>
-          </li>
-        );
-      }
-
-      const menuItems = this.filteredItems || this.items || [];
-      const noResults =
-        this.noResults?.label ||
-        this.noResults?.subLabel ||
-        this.noResults?.ariaLabel;
-
+  private renderMenuItems(hasSlottedContent: boolean): JSX.Element {
+    if (this.showSpinner) {
       return (
-        <Fragment>
-          {menuItems.length > 0 || !noResults || hasSlottedContent
-            ? menuItems.map((item) => (
-                <modus-wc-menu-item
-                  disabled={item.disabled}
-                  focused={item.focused}
-                  label={item.label}
-                  onItemSelect={() => this.handleItemSelectByValue(item.value)}
-                  onMouseDown={(e) => e.preventDefault()}
-                  selected={item.selected}
-                  value={item.value}
-                />
-              ))
-            : this.renderNoResults()}
-        </Fragment>
+        <li>
+          <modus-wc-loader variant="spinner" size={this.size}></modus-wc-loader>
+        </li>
       );
-    };
+    }
 
+    const menuItems = this.filteredItems || this.items || [];
+    const noResults =
+      this.noResults?.label ||
+      this.noResults?.subLabel ||
+      this.noResults?.ariaLabel;
+
+    return (
+      <Fragment>
+        {menuItems.length > 0 || !noResults || hasSlottedContent
+          ? menuItems.map((item) => (
+              <modus-wc-menu-item
+                disabled={item.disabled}
+                focused={item.focused}
+                label={item.label}
+                onItemSelect={() => this.handleItemSelectByValue(item.value)}
+                onMouseDown={(e) => e.preventDefault()}
+                selected={item.selected}
+                value={item.value}
+              />
+            ))
+          : this.renderNoResults()}
+      </Fragment>
+    );
+  }
+
+  private handleOutsideClick = (event: MouseEvent) => {
+    if (!this.el.contains(event.target as Node) && !this.programmaticOpen) {
+      this.menuVisible = false;
+      this.isChipsExpanded = false;
+    }
+
+    // Reset programmaticOpen flag after handling the click
+    if (this.programmaticOpen) {
+      this.programmaticOpen = false;
+    }
+  };
+
+  render() {
     // Set CSS custom properties for dynamic min-width control
     const minWidth = this.minInputWidth || 10;
     const cssVariables = {
@@ -979,17 +976,17 @@ export class ModusWcAutocomplete {
               <SearchSolidIcon className="modus-wc-autocomplete-search-icon" />
             )}
             <div class="modus-wc-autocomplete-content">
-              {getChips()}
-              {getMoreChipsIndicator()}
-              {getInput()}
+              {this.renderChips()}
+              {this.renderMoreChipsIndicator()}
+              {this.renderInput()}
             </div>
             <div class="modus-wc-autocomplete-button-container">
-              {getClearButton()}
-              {getExpandCollapseButton()}
+              {this.renderClearButton()}
+              {this.renderExpandCollapseButton()}
             </div>
           </div>
         ) : (
-          <Fragment>{getInput()}</Fragment>
+          <Fragment>{this.renderInput()}</Fragment>
         )}
         {hasSlottedContent ? (
           // When using custom slots, keep menu in DOM and use CSS to hide/show
@@ -1001,7 +998,7 @@ export class ModusWcAutocomplete {
             onMouseDown={(e) => e.preventDefault()}
             size={this.size}
           >
-            {getMenuItems()}
+            {this.renderMenuItems(hasSlottedContent)}
             <slot name="menu-items"></slot>
           </modus-wc-menu>
         ) : (
@@ -1015,7 +1012,7 @@ export class ModusWcAutocomplete {
               onMouseDown={(e) => e.preventDefault()}
               size={this.size}
             >
-              {getMenuItems()}
+              {this.renderMenuItems(hasSlottedContent)}
               <slot name="menu-items"></slot>
             </modus-wc-menu>
           )

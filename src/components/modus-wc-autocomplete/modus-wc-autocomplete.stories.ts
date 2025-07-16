@@ -2,10 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import {
-  IAutocompleteItem,
-  IAutocompleteNoResults,
-} from './modus-wc-autocomplete';
+import { IAutocompleteItem, IAutocompleteNoResults } from '../types';
 import { ModusSize } from '../types';
 
 // Updated items array includes an optional "focused" property.
