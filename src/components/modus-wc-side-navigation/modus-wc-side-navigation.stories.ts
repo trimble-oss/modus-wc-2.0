@@ -204,39 +204,43 @@ export const collapsibleMenu: Story = {
       }
     };
 
-    const handleMenuFocusout = (e: FocusEvent) => {
-      const menu = e.target as HTMLElement;
-      if (!menu) return;
-      const dropdowns = menu.querySelectorAll('.modus-wc-menu-dropdown-toggle');
-      dropdowns.forEach((dropdown) => {
-        dropdown.classList.remove('modus-wc-menu-dropdown-show');
-      });
+    const handleCollapseToggle = (e: MouseEvent) => {
+      const iconEl = e.currentTarget as HTMLElement;
+      // Find the closest li parent
+      const parentLi = iconEl.closest('.flex-row')?.closest('li');
+      if (!parentLi) return;
 
-      document.querySelectorAll('.dropdown-content').forEach((dropdown) => {
-        dropdown.classList.remove('modus-wc-menu-dropdown-show');
-      });
+      // Toggle between expand_more and chevron_right icons
+      const isExpanded = iconEl.getAttribute('name') === 'expand_more';
+      iconEl.setAttribute('name', isExpanded ? 'chevron_right' : 'expand_more');
+
+      // Find and toggle children visibility
+      const childContainer = parentLi.nextElementSibling?.classList.contains(
+        'children-container'
+      )
+        ? (parentLi.nextElementSibling as HTMLElement)
+        : null;
+
+      if (childContainer) {
+        childContainer.classList.toggle('hidden');
+        childContainer.setAttribute(
+          'aria-hidden',
+          !isExpanded ? 'true' : 'false'
+        );
+      }
     };
 
-    const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-
-      const toggle = target.closest(
-        '.modus-wc-menu-dropdown-toggle'
-      ) as HTMLElement;
-      if (!toggle) return;
-
-      const dropdown = toggle.nextElementSibling as HTMLElement | null;
-      const sideNav = toggle.closest(
-        'modus-wc-side-navigation'
-      ) as HTMLElement & { expanded?: boolean };
-
-      if (
-        dropdown?.classList.contains('modus-wc-menu-dropdown') &&
-        sideNav?.expanded
-      ) {
-        dropdown.classList.toggle('modus-wc-menu-dropdown-show');
+    const handleExpandChange = (e: CustomEvent) => {
+      if (!e.detail) {
+        // Collapse all child containers if the side navigation is collapsed
+        const childrenContainers = document.querySelectorAll(
+          '.children-container'
+        );
+        childrenContainers.forEach((container) => {
+          container.classList.add('hidden');
+          container.setAttribute('aria-hidden', 'true');
+        });
       }
-      toggle.classList.toggle('modus-wc-menu-dropdown-show');
     };
 
     return html`
@@ -296,9 +300,110 @@ export const collapsibleMenu: Story = {
 
         ul {
           list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .menu-width {
+          width: 100%;
+        }
+
+        .flex-row {
+          display: flex;
+          align-items: center;
+          padding: 0.5rem 0.25rem;
+        }
+
+        .nested-row {
+          padding-inline-start: 2rem;
+        }
+
+        .justify-end {
+          margin-left: auto;
+        }
+
+        .collapse-icon {
+          cursor: pointer;
+          min-width: 24px;
+        }
+
+        .hidden {
+          display: none;
+        }
+
+        .children-container {
+          transition: height 0.2s ease-out;
+        }
+
+        .dropdown-menu {
+          padding-left: 20px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .icon-left {
+          padding-left: 16px;
         }
       </style>
+      <script>
+        function handleMenuOpenChange(e) {
+          const eventSource = e.target;
+          const storyContainer = eventSource?.closest('.layout-with-navbar');
 
+          let sideNav;
+
+          if (storyContainer) {
+            sideNav = storyContainer.querySelector('modus-wc-side-navigation');
+          } else {
+            sideNav = document.querySelector('modus-wc-side-navigation');
+          }
+
+          if (sideNav) {
+            sideNav.expanded = e.detail;
+          }
+        }
+
+        function handleCollapseToggle(e) {
+          const iconEl = e.currentTarget;
+          const parentLi = iconEl.closest('.flex-row')?.closest('li');
+          if (!parentLi) return;
+
+          const isExpanded = iconEl.getAttribute('name') === 'expand_more';
+          iconEl.setAttribute(
+            'name',
+            isExpanded ? 'chevron_right' : 'expand_more'
+          );
+
+          const nextEl = parentLi.nextElementSibling;
+          const childContainer = nextEl?.classList.contains(
+            'children-container'
+          )
+            ? nextEl
+            : null;
+
+          if (childContainer) {
+            childContainer.classList.toggle('hidden');
+            childContainer.setAttribute(
+              'aria-hidden',
+              isExpanded ? 'true' : 'false'
+            );
+          }
+        }
+
+        function handleExpandChange(e) {
+          if (!e.detail) {
+            const childrenContainers = document.querySelectorAll(
+              '.children-container'
+            );
+
+            childrenContainers.forEach((container) => {
+              container.classList.add('hidden');
+              container.setAttribute('aria-hidden', 'true');
+            });
+          }
+        }
+      </script>
       <div class="layout-with-navbar">
         <modus-wc-navbar
           app-title="Modus App"
@@ -327,77 +432,161 @@ export const collapsibleMenu: Story = {
             max-width=${args['max-width']}
             mode=${ifDefined(args.mode)}
             target-content=${ifDefined(args['target-content'])}
+            @expandedChange=${handleExpandChange}
           >
-            <modus-wc-menu
-              size="lg"
-              @menuFocusout=${handleMenuFocusout}
-              @click=${handleClick}
-            >
-              <li class="dropdown dropdown-hover">
-                <span tabindex="0" class="modus-wc-menu-dropdown-toggle">
-                  <modus-wc-icon
-                    class="menu-icon"
-                    name="folder_open"
+            <modus-wc-menu aria-label="Custom menu" custom-class="menu-width">
+              <li>
+                <div class="flex-row">
+                  <modus-wc-button
+                    aria-label="Visible button"
                     size="sm"
-                  ></modus-wc-icon>
-                  Projects
-                </span>
-                <ul class="modus-wc-menu-dropdown dropdown-content">
-                  <li><a class="menu-item">Submenu 1</a></li>
-                  <li><a class="menu-item">Submenu 2</a></li>
-                  <li class="dropdown dropdown-hover dropdown-right">
-                    <span tabindex="0" class="modus-wc-menu-dropdown-toggle">
-                      <modus-wc-icon
-                        name="settings"
-                        size="sm"
-                        style="margin-right: 0.5rem;"
-                      ></modus-wc-icon>
-                      Settings
-                    </span>
-                    <ul
-                      tabindex="0"
-                      class="modus-wc-menu-dropdown dropdown-content"
+                    shape="circle"
+                    variant="borderless"
+                  >
+                    <modus-wc-icon
+                      decorative="true"
+                      name="profile"
+                      class="collapse-icon icon-left"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
+                  <div class="dropdown-menu">Parent</div>
+                  <div class="justify-end">
+                    <modus-wc-button
+                      aria-label="Actions button"
+                      size="sm"
+                      shape="circle"
+                      variant="borderless"
                     >
-                      <li><a class="menu-item">Submenu 1</a></li>
-                      <li><a class="menu-item">Submenu 2</a></li>
-                    </ul>
+                      <modus-wc-icon
+                        decorative="true"
+                        name="chevron_right"
+                        class="collapse-icon"
+                        @click=${handleCollapseToggle}
+                      ></modus-wc-icon>
+                    </modus-wc-button>
+                  </div>
+                </div>
+              </li>
+              <li class="children-container hidden" aria-hidden="true">
+                <ul>
+                  <li>
+                    <div class="flex-row nested-row">
+                      <div>Child 1</div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="flex-row nested-row">
+                      <div>Child 2</div>
+                    </div>
                   </li>
                 </ul>
               </li>
-              <li class="dropdown dropdown-hover">
-                <span tabindex="0" class="modus-wc-menu-dropdown-toggle">
-                  <modus-wc-icon
-                    class="menu-icon"
-                    name="document"
+
+              <!-- Item without children -->
+              <li>
+                <div class="flex-row">
+                  <modus-wc-button
+                    aria-label="Visible button"
                     size="sm"
-                  ></modus-wc-icon>
-                  Reports
-                </span>
-                <ul
-                  tabindex="0"
-                  class="modus-wc-menu-dropdown dropdown-content"
-                >
-                  <li><a class="menu-item">Analytics</a></li>
-                  <li><a class="menu-item">Financial Reports</a></li>
-                  <li><a class="menu-item">Performance</a></li>
-                </ul>
+                    shape="circle"
+                    variant="borderless"
+                  >
+                    <modus-wc-icon
+                      decorative="true"
+                      name="settings"
+                      class="collapse-icon icon-left"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
+
+                  <div class="dropdown-menu">Single Item</div>
+                </div>
               </li>
-              <li class="dropdown dropdown-hover">
-                <span tabindex="0" class="modus-wc-menu-dropdown-toggle">
-                  <modus-wc-icon
-                    class="menu-icon"
-                    name="person"
+
+              <!-- Second parent group (collapsed) -->
+              <li>
+                <div class="flex-row">
+                  <modus-wc-button
+                    aria-label="Visible button"
                     size="sm"
-                  ></modus-wc-icon>
-                  Users
-                </span>
-                <ul
-                  tabindex="0"
-                  class="modus-wc-menu-dropdown dropdown-content"
-                >
-                  <li><a class="menu-item">Permissions</a></li>
-                  <li><a class="menu-item">Roles</a></li>
-                  <li><a class="menu-item">User Management</a></li>
+                    shape="circle"
+                    variant="borderless"
+                  >
+                    <modus-wc-icon
+                      decorative="true"
+                      name="chat"
+                      class="collapse-icon icon-left"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
+                  <div class="dropdown-menu">Another Parent</div>
+                  <div class="justify-end">
+                    <modus-wc-button
+                      aria-label="Actions button"
+                      size="sm"
+                      shape="circle"
+                      variant="borderless"
+                    >
+                      <modus-wc-icon
+                        decorative="true"
+                        name="chevron_right"
+                        class="collapse-icon"
+                        @click=${handleCollapseToggle}
+                      ></modus-wc-icon>
+                    </modus-wc-button>
+                  </div>
+                </div>
+              </li>
+              <li class="children-container hidden" aria-hidden="true">
+                <ul>
+                  <li>
+                    <div class="flex-row nested-row">
+                      <div>Another Child 1</div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="flex-row nested-row">
+                      <div>Another Child 2</div>
+                      <div class="justify-end">
+                        <modus-wc-button
+                          aria-label="Actions button"
+                          size="sm"
+                          shape="circle"
+                          variant="borderless"
+                        >
+                          <modus-wc-icon
+                            decorative="true"
+                            name="chevron_right"
+                            class="collapse-icon"
+                            @click=${handleCollapseToggle}
+                          ></modus-wc-icon>
+                        </modus-wc-button>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="children-container hidden" aria-hidden="true">
+                    <ul>
+                      <li>
+                        <div
+                          class="flex-row"
+                          style="padding-inline-start: 3rem;"
+                        >
+                          <div>Submenu Item 1</div>
+                        </div>
+                      </li>
+                      <li>
+                        <div
+                          class="flex-row"
+                          style="padding-inline-start: 3rem;"
+                        >
+                          <div>Submenu Item 2</div>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div class="flex-row nested-row">
+                      <div>Another Child 3</div>
+                    </div>
+                  </li>
                 </ul>
               </li>
             </modus-wc-menu>
@@ -411,10 +600,10 @@ export const collapsibleMenu: Story = {
                 connect to various pages in the application.
               </p>
               <p>
-                The side navigation is a collapsible side content of the site’s
-                pages. It is located alongside the page’s primary content. The
+                The side navigation is a collapsible side content of the site's
+                pages. It is located alongside the page's primary content. The
                 component is designed to add side content to a fullscreen
-                application. It is activated through the “hamburger” menu in the
+                application. It is activated through the "hamburger" menu in the
                 Navbar.
               </p>
             </div>
