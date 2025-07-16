@@ -205,23 +205,28 @@ export const collapsibleMenu: Story = {
     };
 
     const handleCollapseToggle = (e: MouseEvent) => {
-      const iconEl = e.currentTarget as HTMLElement;
-      // Find the closest li parent
-      const parentLi = iconEl.closest('.flex-row')?.closest('li');
+      const clickedEl = e.currentTarget as HTMLElement;
+      const parentLi = clickedEl.closest('li');
       if (!parentLi) return;
 
-      // Toggle between expand_more and expand_less icons
-      const isExpanded = iconEl.getAttribute('name') === 'expand_more';
-      iconEl.setAttribute('name', isExpanded ? 'expand_less' : 'expand_more');
+      const iconEl = clickedEl.querySelector('.dropdown-toggle') as HTMLElement;
+      if (!iconEl) return;
 
-      // Find and toggle children visibility
+      const sideNav = document.querySelector('modus-wc-side-navigation');
+      const isExpanded = iconEl.getAttribute('name') === 'expand_more';
+
+      // Only change the icon if the side nav is expanded
+      if (sideNav?.expanded) {
+        iconEl.setAttribute('name', isExpanded ? 'expand_less' : 'expand_more');
+      }
+
       const childContainer = parentLi.nextElementSibling?.classList.contains(
         'children-container'
       )
         ? (parentLi.nextElementSibling as HTMLElement)
         : null;
 
-      if (childContainer) {
+      if (childContainer && sideNav?.expanded) {
         childContainer.classList.toggle('hidden');
         childContainer.setAttribute(
           'aria-hidden',
@@ -232,7 +237,6 @@ export const collapsibleMenu: Story = {
 
     const handleExpandChange = (e: CustomEvent) => {
       if (!e.detail) {
-        // Collapse all child containers if the side navigation is collapsed
         const childrenContainers = document.querySelectorAll(
           '.children-container'
         );
@@ -241,8 +245,7 @@ export const collapsibleMenu: Story = {
           container.setAttribute('aria-hidden', 'true');
         });
 
-        // Reset all collapse icons to expand_more
-        const collapseIcons = document.querySelectorAll('.collapse-icon');
+        const collapseIcons = document.querySelectorAll('.dropdown-toggle');
         collapseIcons.forEach((icon) => {
           if (icon.getAttribute('name') === 'expand_less') {
             icon.setAttribute('name', 'expand_more');
@@ -261,6 +264,7 @@ export const collapsibleMenu: Story = {
           color: var(--modus-wc-color-gray-7);
           cursor: pointer;
           min-width: 24px;
+          padding-inline-start: 0.2rem;
         }
 
         .dropdown-menu {
@@ -316,7 +320,7 @@ export const collapsibleMenu: Story = {
         }
 
         .modus-wc-menu li ul {
-          margin-inline-start: 2rem;
+          margin-inline-start: 1.8rem;
         }
 
         .modus-wc-menu-dropdown {
@@ -375,16 +379,25 @@ export const collapsibleMenu: Story = {
         }
 
         function handleCollapseToggle(e) {
-          const iconEl = e.currentTarget;
-          const parentLi = iconEl.closest('.flex-row')?.closest('li');
+          const clickedEl = e.currentTarget;
+          const parentLi = clickedEl.closest('li');
           if (!parentLi) return;
 
-          // Toggle between expand_more and expand_less icons
+          // Find the icon element that needs to be toggled using the dropdown-toggle class
+          const iconEl = clickedEl.querySelector('.dropdown-toggle');
+          if (!iconEl) return;
+
+          // Check if side nav is expanded
+          const sideNav = document.querySelector('modus-wc-side-navigation');
+
+          // Toggle between expand_more and expand_less icons only if side nav is expanded
           const isExpanded = iconEl.getAttribute('name') === 'expand_more';
-          iconEl.setAttribute(
-            'name',
-            isExpanded ? 'expand_less' : 'expand_more'
-          );
+          if (sideNav?.expanded) {
+            iconEl.setAttribute(
+              'name',
+              isExpanded ? 'expand_less' : 'expand_more'
+            );
+          }
 
           // Find and toggle children visibility
           const childContainer =
@@ -394,7 +407,7 @@ export const collapsibleMenu: Story = {
               ? parentLi.nextElementSibling
               : null;
 
-          if (childContainer) {
+          if (childContainer && sideNav?.expanded) {
             childContainer.classList.toggle('hidden');
             childContainer.setAttribute(
               'aria-hidden',
@@ -415,7 +428,7 @@ export const collapsibleMenu: Story = {
             });
 
             // Reset all collapse icons to expand_more
-            const collapseIcons = document.querySelectorAll('.collapse-icon');
+            const collapseIcons = document.querySelectorAll('.dropdown-toggle');
             collapseIcons.forEach((icon) => {
               if (icon.getAttribute('name') === 'expand_less') {
                 icon.setAttribute('name', 'expand_more');
@@ -456,34 +469,19 @@ export const collapsibleMenu: Story = {
           >
             <modus-wc-menu aria-label="Custom menu" custom-class="menu-width">
               <li>
-                <div class="flex-row">
-                  <modus-wc-button
-                    aria-label="Visible button"
-                    size="sm"
-                    shape="circle"
-                    variant="borderless"
-                  >
-                    <modus-wc-icon
-                      decorative="true"
-                      name="profile"
-                      class="collapse-icon icon-left"
-                    ></modus-wc-icon>
-                  </modus-wc-button>
+                <div class="flex-row" @click=${handleCollapseToggle}>
+                  <modus-wc-icon
+                    decorative="true"
+                    name="profile"
+                    class="collapse-icon icon-left"
+                  ></modus-wc-icon>
                   <div class="dropdown-menu">Parent</div>
                   <div class="justify-end">
-                    <modus-wc-button
-                      aria-label="Actions button"
-                      size="sm"
-                      shape="circle"
-                      variant="borderless"
-                    >
-                      <modus-wc-icon
-                        decorative="true"
-                        name="expand_more"
-                        class="collapse-icon"
-                        @click=${handleCollapseToggle}
-                      ></modus-wc-icon>
-                    </modus-wc-button>
+                    <modus-wc-icon
+                      decorative="true"
+                      name="expand_more"
+                      class="collapse-icon dropdown-toggle"
+                    ></modus-wc-icon>
                   </div>
                 </div>
               </li>
@@ -505,52 +503,29 @@ export const collapsibleMenu: Story = {
               <!-- Item without children -->
               <li>
                 <div class="flex-row">
-                  <modus-wc-button
-                    aria-label="Visible button"
-                    size="sm"
-                    shape="circle"
-                    variant="borderless"
-                  >
-                    <modus-wc-icon
-                      decorative="true"
-                      name="settings"
-                      class="collapse-icon icon-left"
-                    ></modus-wc-icon>
-                  </modus-wc-button>
-
+                  <modus-wc-icon
+                    decorative="true"
+                    name="settings"
+                    class="collapse-icon icon-left"
+                  ></modus-wc-icon>
                   <div class="dropdown-menu">Single Item</div>
                 </div>
               </li>
               <!-- Second parent group (collapsed) -->
               <li>
-                <div class="flex-row">
-                  <modus-wc-button
-                    aria-label="Visible button"
-                    size="sm"
-                    shape="circle"
-                    variant="borderless"
-                  >
-                    <modus-wc-icon
-                      decorative="true"
-                      name="chat"
-                      class="collapse-icon icon-left"
-                    ></modus-wc-icon>
-                  </modus-wc-button>
+                <div class="flex-row" @click=${handleCollapseToggle}>
+                  <modus-wc-icon
+                    decorative="true"
+                    name="chat"
+                    class="collapse-icon icon-left"
+                  ></modus-wc-icon>
                   <div class="dropdown-menu">Another Parent</div>
                   <div class="justify-end">
-                    <modus-wc-button
-                      aria-label="Actions button"
-                      size="sm"
-                      shape="circle"
-                      variant="borderless"
-                    >
-                      <modus-wc-icon
-                        decorative="true"
-                        name="expand_more"
-                        class="collapse-icon"
-                        @click=${handleCollapseToggle}
-                      ></modus-wc-icon>
-                    </modus-wc-button>
+                    <modus-wc-icon
+                      decorative="true"
+                      name="expand_more"
+                      class="collapse-icon dropdown-toggle"
+                    ></modus-wc-icon>
                   </div>
                 </div>
               </li>
@@ -562,22 +537,17 @@ export const collapsibleMenu: Story = {
                     </div>
                   </li>
                   <li>
-                    <div class="flex-row nested-row">
+                    <div
+                      class="flex-row nested-row"
+                      @click=${handleCollapseToggle}
+                    >
                       <div>Another Child 2</div>
                       <div class="justify-end">
-                        <modus-wc-button
-                          aria-label="Actions button"
-                          size="sm"
-                          shape="circle"
-                          variant="borderless"
-                        >
-                          <modus-wc-icon
-                            decorative="true"
-                            name="expand_more"
-                            class="collapse-icon"
-                            @click=${handleCollapseToggle}
-                          ></modus-wc-icon>
-                        </modus-wc-button>
+                        <modus-wc-icon
+                          decorative="true"
+                          name="expand_more"
+                          class="collapse-icon dropdown-toggle"
+                        ></modus-wc-icon>
                       </div>
                     </div>
                   </li>
