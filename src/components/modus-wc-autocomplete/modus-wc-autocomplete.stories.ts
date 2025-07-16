@@ -826,7 +826,7 @@ modus-wc-menu-item.hidden {
   min-chars=${args['min-chars']}
   ?multi-select=${false}
   name=${ifDefined(args.name)}
-  .no-results=${args['no-results']}
+  .noResults=${args['no-results']}
   placeholder=${ifDefined(args.placeholder)}
   ?read-only=${args['read-only']}
   ?required=${args.required}
@@ -900,7 +900,7 @@ export const CustomEventHandlers: Story = {
       closeMenu(): Promise<void>;
     }
 
-    // Custom keydown handler
+    // Custom keydown handler with skip navigation and escape animation
     const customKeyDown = (e: KeyboardEvent) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
@@ -924,6 +924,11 @@ export const CustomEventHandlers: Story = {
           }));
           autocomplete.items = [...args.items];
           void autocomplete.closeMenu();
+          // Custom: Show escape animation
+          autocomplete.style.transform = 'scale(0.98)';
+          setTimeout(() => {
+            autocomplete.style.transform = '';
+          }, 200);
           break;
 
         case 'ArrowDown': {
@@ -935,9 +940,14 @@ export const CustomEventHandlers: Story = {
             currentIndex < 0
               ? 0
               : Math.min(currentIndex + 1, visibleItems.length - 1);
+
+          // Custom: Skip every other item for faster navigation
+          const skipIndex =
+            nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
+
           args.items = args.items.map((item) => ({
             ...item,
-            focused: visibleItems[nextIndex]?.value === item.value,
+            focused: visibleItems[skipIndex]?.value === item.value,
           }));
           break;
         }
@@ -948,9 +958,13 @@ export const CustomEventHandlers: Story = {
             currentIndex < 0
               ? visibleItems.length - 1
               : Math.max(currentIndex - 1, 0);
+
+          // Custom: Skip every other item for faster navigation
+          const skipIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
+
           args.items = args.items.map((item) => ({
             ...item,
-            focused: visibleItems[prevIndex]?.value === item.value,
+            focused: visibleItems[skipIndex]?.value === item.value,
           }));
           break;
         }
@@ -977,31 +991,77 @@ export const CustomEventHandlers: Story = {
       autocomplete.items = [...args.items];
     };
 
-    // Custom input change handler
+    // Custom input change handler with fuzzy character matching
     const customInputChange = (value: string) => {
       const autocomplete = document.querySelector(
         'modus-wc-autocomplete'
       ) as AutocompleteElement;
       if (!autocomplete) return;
 
-      const searchText = value.toLowerCase();
+      const searchChars = value.toLowerCase().split('');
 
-      // Filter items based on search text
-      args.items = args.items.map((item) => ({
-        ...item,
-        visibleInMenu: item.label.toLowerCase().includes(searchText),
-        focused: false,
-        // Clear selection if search text doesn't match
-        selected:
-          searchText &&
-          item.selected &&
-          item.label.toLowerCase().includes(searchText)
-            ? true
-            : false,
-      }));
+      // Custom fuzzy search: Match items that contain ALL typed characters (in any order)
+      if (searchChars.length > 0 && searchChars[0] !== '') {
+        // Calculate match score for each item
+        const scoredItems = args.items.map((item) => {
+          const itemLower = item.label.toLowerCase();
+          let score = 0;
+          let allCharsFound = true;
+
+          // Check if all search characters exist in the item
+          for (const char of searchChars) {
+            if (itemLower.includes(char)) {
+              // Bonus points for consecutive characters
+              const charIndex = itemLower.indexOf(char);
+              if (charIndex === 0)
+                score += 3; // Start of word bonus
+              else if (itemLower[charIndex - 1] === ' ')
+                score += 2; // Start of any word
+              else score += 1;
+            } else {
+              allCharsFound = false;
+              break;
+            }
+          }
+
+          // Additional bonus for exact substring match
+          if (allCharsFound && itemLower.includes(value.toLowerCase())) {
+            score += 10;
+          }
+
+          return {
+            item,
+            score: allCharsFound ? score : -1,
+            visible: allCharsFound,
+          };
+        });
+
+        // Sort by score (highest first) and update items
+        scoredItems.sort((a, b) => b.score - a.score);
+
+        args.items = scoredItems.map(({ item, visible }) => ({
+          ...item,
+          visibleInMenu: visible,
+          focused: false,
+          selected: item.selected && visible,
+          // Add score as part of label for demonstration (you can remove this in production)
+          label: item.label,
+        }));
+      } else {
+        // No search text, show all items
+        args.items = args.items.map((item) => ({
+          ...item,
+          visibleInMenu: true,
+          focused: false,
+        }));
+      }
 
       autocomplete.items = [...args.items];
       autocomplete.value = value;
+
+      // Show match count in console for demonstration
+      const matchCount = args.items.filter((item) => item.visibleInMenu).length;
+      console.log(`Fuzzy search for "${value}": ${matchCount} matches found`);
 
       // Show menu if there are visible items
       const hasVisibleItems = args.items.some((item) => item.visibleInMenu);
@@ -1036,25 +1096,33 @@ export const CustomEventHandlers: Story = {
         div[id^='story--components-forms-autocomplete--custom-event-handlers'] {
           height: 400px;
         }
+        .fuzzy-info {
+          margin-top: 1rem;
+          padding: 1rem;
+          background-color: var(--modus-wc-color-info-light);
+          border-radius: 4px;
+          font-size: 0.875rem;
+        }
       </style>
+
       <modus-wc-autocomplete
         aria-label="Custom handlers autocomplete"
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
-        debounce-ms=${ifDefined(args['debounce-ms'])}
+        debounce-ms=${0}
         ?disabled=${args.disabled}
         ?include-clear=${args['include-clear']}
         ?include-search=${args['include-search']}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         .items=${args.items}
-        label="Fruit with custom handlers"
+        label="Fruit list with custom handlers"
         ?leave-menu-open=${args['leave-menu-open']}
         min-chars=${args['min-chars']}
         ?multi-select=${false}
         name=${ifDefined(args.name)}
         .noResults=${args['no-results']}
-        placeholder="Type to search fruits..."
+        placeholder="Try typing 'pae' for Pineapple or 'bry' for Berry fruits"
         ?read-only=${args['read-only']}
         ?required=${args.required}
         ?show-menu-on-focus=${args['show-menu-on-focus']}
@@ -1069,7 +1137,7 @@ export const CustomEventHandlers: Story = {
   },
   args: {
     bordered: true,
-    'debounce-ms': 300,
+    'debounce-ms': 0, // Set to 0 to see immediate feedback
     disabled: false,
     'include-clear': true,
     'include-search': true,
@@ -1077,8 +1145,8 @@ export const CustomEventHandlers: Story = {
     'leave-menu-open': false,
     'min-chars': 0,
     'no-results': {
-      label: 'No results found',
-      subLabel: 'Try searching for a different fruit',
+      label: 'No fruits found',
+      subLabel: 'Try different characters',
     },
     placeholder: 'Search fruits...',
     'read-only': false,
@@ -1091,14 +1159,18 @@ export const CustomEventHandlers: Story = {
   parameters: {
     docs: {
       description: {
-        story: `This example demonstrates how to use custom event handlers to completely override the default autocomplete behavior.
-        
-The \`customKeyDown\`, \`customInputChange\`, and \`customItemSelect\` props allow you to implement your own logic for:
-- Keyboard navigation and interaction
-- Input filtering and search
-- Item selection handling
+        story: `This example demonstrates custom event handlers with three specific behaviors:
 
-This is useful when you need specialized behavior that differs from the standard autocomplete functionality.`,
+1. **Skip Navigation**: Arrow keys skip every other item for 2x faster navigation
+2. **Escape Animation**: Pressing Escape triggers a subtle scale animation
+3. **Fuzzy Character Search**: Instead of normal substring matching, this searches for items containing ALL typed characters in any order
+
+The fuzzy search allows finding items with scattered characters:
+- Type "pae" to find Pine**a**ppl**e**
+- Type "bry" to find Blue**b**er**ry**, Straw**b**er**ry**, Rasp**b**er**ry**
+- Type "ngo" to find Ma**ng**o, Ta**ng**erine
+
+Items are automatically sorted by relevance with exact substring matches appearing first.`,
       },
     },
   },
