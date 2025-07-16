@@ -1168,7 +1168,6 @@ export const CustomEventHandlers: Story = {
 The fuzzy search allows finding items with scattered characters:
 - Type "pae" to find Pine**a**ppl**e**
 - Type "bry" to find Blue**b**er**ry**, Straw**b**er**ry**, Rasp**b**er**ry**
-- Type "ngo" to find Ma**ng**o, Ta**ng**erine
 
 Items are automatically sorted by relevance with exact substring matches appearing first.`,
       },
