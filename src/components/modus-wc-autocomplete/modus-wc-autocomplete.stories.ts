@@ -127,7 +127,7 @@ const meta: Meta<AutocompleteArgs> = {
     'leave-menu-open': false,
     'max-chips': 4,
     'min-chars': 0,
-    'min-input-width': 20,
+    'min-input-width': 10,
     'multi-select': false,
     'show-menu-on-focus': false,
     'show-spinner': false,
@@ -508,6 +508,8 @@ export const CustomMenuItems: Story = {
           if (buttons.includes(currentFocusedButton)) {
             currentFocusedButton.click();
           }
+          const input = autocomplete.querySelector('input');
+          input?.focus();
           break;
         }
 

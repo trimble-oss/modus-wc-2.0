@@ -14,12 +14,12 @@ modus-wc-autocomplete.modus-wc-autocomplete {
   }
 
   .modus-wc-autocomplete-multi-select {
-    align-items: flex-start; // Change from stretch to flex-start for proper wrapping
+    align-items: flex-start;
     background-color: transparent;
     border-radius: var(--modus-wc-border-radius-md);
     display: flex;
-    height: auto; // Ensure height can grow
-    min-height: fit-content; // Allow height to grow as needed
+    height: auto;
+    min-height: fit-content;
     padding: var(--modus-wc-spacing-xs);
 
     .modus-wc-autocomplete-search-icon {
@@ -57,14 +57,14 @@ modus-wc-autocomplete.modus-wc-autocomplete {
 
     // Content area for chips and input
     .modus-wc-autocomplete-content {
-      align-content: flex-start; // Align wrapped content to start
+      align-content: flex-start;
       align-items: center;
       display: flex;
-      flex: 1; // Take up remaining space
-      flex-wrap: wrap; // Enable intelligent wrapping
+      flex: 1;
+      flex-wrap: wrap;
       gap: 0.25rem;
-      min-height: fit-content; // Allow content area to grow
-      min-width: 0; // Allow shrinking
+      min-height: fit-content;
+      min-width: 0;
 
       // Remove border from internal text-input
       .modus-wc-text-input {
@@ -77,10 +77,10 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     // Button container that stays at the right
     .modus-wc-autocomplete-button-container {
       align-items: center;
-      align-self: center; // Center with respect to the main container
+      align-self: center;
       display: none; // Hidden by default
-      flex-shrink: 0; // Never shrink
-      justify-content: center; // Center the button horizontally within container
+      flex-shrink: 0;
+      justify-content: center;
 
       // Show when it contains visible buttons
       &:not(:empty) {
@@ -91,7 +91,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
       modus-wc-button {
         align-self: center;
         display: flex;
-        margin: 0; // Remove any default margins
+        margin: 0;
       }
     }
 
@@ -104,24 +104,21 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     // Text input - intelligent flexible sizing (inside content container)
     .modus-wc-autocomplete-content modus-wc-text-input {
       align-self: center;
-      flex: 1 1 var(--modus-autocomplete-min-input-width, 60px); // Grow, shrink, but not below minimum
-      max-width: 100%; // Ensure it doesn't exceed container
-      min-width: var(
-        --modus-autocomplete-min-input-width,
-        60px
-      ); // Simple minimum width
+      flex: 1 1 var(--modus-autocomplete-min-input-width, 60px);
+      max-width: 100%;
+      min-width: var(--modus-autocomplete-min-input-width, 60px);
 
       // Ensure text content respects the input boundaries
       input {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        width: 100%; // Ensure input respects its container width
+        width: 100%;
       }
 
       // When input is alone (no chips), it takes full width
       &:only-child {
-        flex: 1 1 100%; // Take full width when no chips present
+        flex: 1 1 100%;
       }
     }
 
@@ -130,7 +127,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
       align-items: center;
       align-self: center;
       display: flex;
-      flex-shrink: 0; // Never shrinks
+      flex-shrink: 0;
       height: 32px;
       justify-content: center;
       padding: 0 8px;

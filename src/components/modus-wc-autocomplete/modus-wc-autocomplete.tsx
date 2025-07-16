@@ -158,7 +158,7 @@ export class ModusWcAutocomplete {
   @Prop() customBlur?: (event: FocusEvent) => void;
 
   /** Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead. */
-  @Prop() minInputWidth?: number = 20;
+  @Prop() minInputWidth?: number = 10;
 
   /** Event emitted when a selected item chip is removed. */
   @StencilEvent() chipRemove!: EventEmitter<IAutocompleteItem>;
@@ -376,15 +376,20 @@ export class ModusWcAutocomplete {
     if (!(event.target instanceof HTMLInputElement)) return;
 
     const input = event.target;
+    const keyLower = event.key.toLowerCase();
 
-    if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {
+    if (
+      [KEY.ArrowDown, KEY.ArrowUp, KEY.Enter, KEY.Escape]
+        .map((k) => k.toLowerCase())
+        .includes(keyLower)
+    ) {
       event.preventDefault();
     }
 
     const visibleItems = this.getVisibleItems();
 
-    switch (event.key) {
-      case KEY.ArrowDown: {
+    switch (keyLower) {
+      case KEY.ArrowDown.toLowerCase(): {
         if (this.showMenuOnFocus || input.value.length >= this.minChars) {
           this.menuVisible = true;
         }
@@ -406,7 +411,7 @@ export class ModusWcAutocomplete {
         break;
       }
 
-      case KEY.ArrowUp: {
+      case KEY.ArrowUp.toLowerCase(): {
         if (this.initialNavigation) {
           this.initialNavigation = false;
           return;
@@ -424,14 +429,14 @@ export class ModusWcAutocomplete {
         break;
       }
 
-      case KEY.Escape: {
+      case KEY.Escape.toLowerCase(): {
         this.clearAllFocus();
         this.initialNavigation = true;
         this.menuVisible = false;
         break;
       }
 
-      case KEY.Enter: {
+      case KEY.Enter.toLowerCase(): {
         const focusedItem = visibleItems.find((item) => item.focused);
 
         if (focusedItem) {
@@ -453,7 +458,7 @@ export class ModusWcAutocomplete {
         break;
       }
 
-      case KEY.Backspace: {
+      case KEY.Backspace.toLowerCase(): {
         if (this.multiSelect && input.value.length === 0) {
           // Get the last selected chip in selection order
           if (this.selectionOrder.length > 0) {
@@ -939,6 +944,7 @@ export class ModusWcAutocomplete {
                   focused={item.focused}
                   label={item.label}
                   onItemSelect={() => this.handleItemSelectByValue(item.value)}
+                  onMouseDown={(e) => e.preventDefault()}
                   selected={item.selected}
                   value={item.value}
                 />
@@ -949,7 +955,7 @@ export class ModusWcAutocomplete {
     };
 
     // Set CSS custom properties for dynamic min-width control
-    const minWidth = this.minInputWidth || 20;
+    const minWidth = this.minInputWidth || 10;
     const cssVariables = {
       '--modus-autocomplete-min-input-width': `${minWidth}px`,
     };
@@ -992,6 +998,7 @@ export class ModusWcAutocomplete {
             bordered={this.bordered}
             class={this.menuVisible ? 'menu-visible' : 'menu-hidden'}
             onMenuFocusout={this.handleMenuFocusout}
+            onMouseDown={(e) => e.preventDefault()}
             size={this.size}
           >
             {getMenuItems()}
@@ -1005,6 +1012,7 @@ export class ModusWcAutocomplete {
               bordered={this.bordered}
               class="menu-visible"
               onMenuFocusout={this.handleMenuFocusout}
+              onMouseDown={(e) => e.preventDefault()}
               size={this.size}
             >
               {getMenuItems()}
