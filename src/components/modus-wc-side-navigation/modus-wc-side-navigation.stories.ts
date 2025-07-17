@@ -210,53 +210,27 @@ export const collapsibleMenu: Story = {
       }
     };
 
-    const handleCollapseToggle = (e: MouseEvent) => {
-      const clickedEl = e.currentTarget as HTMLElement;
-      const parentLi = clickedEl.closest('li');
-      if (!parentLi) return;
-
-      const iconEl = clickedEl.querySelector('.dropdown-toggle') as HTMLElement;
-      if (!iconEl) return;
-
-      const sideNav = document.querySelector('modus-wc-side-navigation');
-      const isExpanded = iconEl.getAttribute('name') === 'expand_more';
-
-      // Only change the icon if the side nav is expanded
-      if (sideNav?.expanded) {
-        iconEl.setAttribute('name', isExpanded ? 'expand_less' : 'expand_more');
-      }
-
-      const childContainer = parentLi.nextElementSibling?.classList.contains(
-        'children-container'
-      )
-        ? (parentLi.nextElementSibling as HTMLElement)
-        : null;
-
-      if (childContainer && sideNav?.expanded) {
-        childContainer.classList.toggle('hidden');
-        childContainer.setAttribute(
-          'aria-hidden',
-          !isExpanded ? 'true' : 'false'
-        );
-      }
-    };
-
     const handleExpandChange = (e: CustomEvent) => {
       if (!e.detail) {
-        const childrenContainers = document.querySelectorAll(
-          '.children-container'
-        );
-        childrenContainers.forEach((container) => {
-          container.classList.add('hidden');
-          container.setAttribute('aria-hidden', 'true');
-        });
+        const eventSource = e.target as HTMLElement;
+        const container = eventSource?.closest('.layout-with-navbar');
 
-        const collapseIcons = document.querySelectorAll('.dropdown-toggle');
-        collapseIcons.forEach((icon) => {
-          if (icon.getAttribute('name') === 'expand_less') {
-            icon.setAttribute('name', 'expand_more');
-          }
-        });
+        if (container) {
+          const childrenContainers = container.querySelectorAll(
+            '.children-container'
+          );
+          childrenContainers.forEach((container) => {
+            container.classList.add('hidden');
+            container.setAttribute('aria-hidden', 'true');
+          });
+
+          const collapseIcons = container.querySelectorAll('.dropdown-toggle');
+          collapseIcons.forEach((icon) => {
+            if (icon.getAttribute('name') === 'expand_less') {
+              icon.setAttribute('name', 'expand_more');
+            }
+          });
+        }
       }
     };
 
@@ -267,8 +241,6 @@ export const collapsibleMenu: Story = {
         }
 
         .collapse-icon {
-          color: var(--modus-wc-color-gray-7);
-          cursor: pointer;
           min-width: 24px;
           padding-inline-start: 0.2rem;
         }
@@ -283,7 +255,7 @@ export const collapsibleMenu: Story = {
           align-items: center;
           display: flex;
           gap: 1.3rem;
-          padding: 0.5rem 0.25rem;
+          padding: 0.8rem 0.25rem;
           padding-inline-start: 1rem;
         }
 
@@ -393,8 +365,11 @@ export const collapsibleMenu: Story = {
           const iconEl = clickedEl.querySelector('.dropdown-toggle');
           if (!iconEl) return;
 
-          // Check if side nav is expanded
-          const sideNav = document.querySelector('modus-wc-side-navigation');
+          // Find the parent side nav element
+          const parentContainer = clickedEl.closest('.layout-with-navbar');
+          const sideNav = parentContainer?.querySelector(
+            'modus-wc-side-navigation'
+          );
 
           // Toggle between expand_more and expand_less icons only if side nav is expanded
           const isExpanded = iconEl.getAttribute('name') === 'expand_more';
@@ -424,22 +399,28 @@ export const collapsibleMenu: Story = {
 
         function handleExpandChange(e) {
           if (!e.detail) {
-            // Collapse all child containers if the side navigation is collapsed
-            const childrenContainers = document.querySelectorAll(
-              '.children-container'
-            );
-            childrenContainers.forEach((container) => {
-              container.classList.add('hidden');
-              container.setAttribute('aria-hidden', 'true');
-            });
+            const eventSource = e.target;
+            const container = eventSource?.closest('.layout-with-navbar');
 
-            // Reset all collapse icons to expand_more
-            const collapseIcons = document.querySelectorAll('.dropdown-toggle');
-            collapseIcons.forEach((icon) => {
-              if (icon.getAttribute('name') === 'expand_less') {
-                icon.setAttribute('name', 'expand_more');
-              }
-            });
+            if (container) {
+              // Collapse all child containers if the side navigation is collapsed
+              const childrenContainers = container.querySelectorAll(
+                '.children-container'
+              );
+              childrenContainers.forEach((container) => {
+                container.classList.add('hidden');
+                container.setAttribute('aria-hidden', 'true');
+              });
+
+              // Reset all collapse icons to expand_more
+              const collapseIcons =
+                container.querySelectorAll('.dropdown-toggle');
+              collapseIcons.forEach((icon) => {
+                if (icon.getAttribute('name') === 'expand_less') {
+                  icon.setAttribute('name', 'expand_more');
+                }
+              });
+            }
           }
         }
       </script>
@@ -481,13 +462,13 @@ export const collapsibleMenu: Story = {
           >
             <modus-wc-menu aria-label="Custom menu" custom-class="menu-width">
               <li>
-                <div class="flex-row" @click=${handleCollapseToggle}>
+                <div class="flex-row" onClick="handleCollapseToggle(event)">
                   <modus-wc-icon
                     decorative="true"
-                    name="profile"
+                    name="bar_graph"
                     class="collapse-icon icon-left"
                   ></modus-wc-icon>
-                  <div class="dropdown-menu">Parent</div>
+                  <div class="dropdown-menu">Charts</div>
                   <div class="justify-end">
                     <modus-wc-icon
                       decorative="true"
@@ -501,12 +482,12 @@ export const collapsibleMenu: Story = {
                 <ul>
                   <li>
                     <div class="flex-row nested-row">
-                      <div>Child 1</div>
+                      <div>Bar Chart</div>
                     </div>
                   </li>
                   <li>
                     <div class="flex-row nested-row">
-                      <div>Child 2</div>
+                      <div>Line Chart</div>
                     </div>
                   </li>
                 </ul>
@@ -517,21 +498,21 @@ export const collapsibleMenu: Story = {
                 <div class="flex-row">
                   <modus-wc-icon
                     decorative="true"
-                    name="settings"
+                    name="calendar"
                     class="collapse-icon icon-left"
                   ></modus-wc-icon>
-                  <div class="dropdown-menu">Single Item</div>
+                  <div class="dropdown-menu">Calendar</div>
                 </div>
               </li>
               <!-- Second parent group (collapsed) -->
               <li>
-                <div class="flex-row" @click=${handleCollapseToggle}>
+                <div class="flex-row" onClick="handleCollapseToggle(event)">
                   <modus-wc-icon
                     decorative="true"
-                    name="chat"
+                    name="compass"
                     class="collapse-icon icon-left"
                   ></modus-wc-icon>
-                  <div class="dropdown-menu">Another Parent</div>
+                  <div class="dropdown-menu">Maps</div>
                   <div class="justify-end">
                     <modus-wc-icon
                       decorative="true"
@@ -545,15 +526,15 @@ export const collapsibleMenu: Story = {
                 <ul>
                   <li>
                     <div class="flex-row nested-row">
-                      <div>Another Child 1</div>
+                      <div>Map 1</div>
                     </div>
                   </li>
                   <li>
                     <div
                       class="flex-row nested-row"
-                      @click=${handleCollapseToggle}
+                      onClick="handleCollapseToggle(event)"
                     >
-                      <div>Another Child 2</div>
+                      <div>Map 2</div>
                       <div class="justify-end">
                         <modus-wc-icon
                           decorative="true"
@@ -570,7 +551,7 @@ export const collapsibleMenu: Story = {
                           class="flex-row"
                           style="padding-inline-start: 2rem;"
                         >
-                          <div>Submenu Item 1</div>
+                          <div>Map 1</div>
                         </div>
                       </li>
                       <li>
@@ -578,14 +559,14 @@ export const collapsibleMenu: Story = {
                           class="flex-row"
                           style="padding-inline-start: 2rem;"
                         >
-                          <div>Submenu Item 2</div>
+                          <div>Map 2</div>
                         </div>
                       </li>
                     </ul>
                   </li>
                   <li>
                     <div class="flex-row nested-row">
-                      <div>Another Child 3</div>
+                      <div>Map 3</div>
                     </div>
                   </li>
                 </ul>
