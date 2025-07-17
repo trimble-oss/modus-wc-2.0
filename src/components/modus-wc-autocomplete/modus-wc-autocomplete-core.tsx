@@ -1,5 +1,9 @@
-import { IAutocompleteItem, ModusSize } from '../types';
+import { Fragment, h, JSX } from '@stencil/core';
+import { CloseSolidIcon } from '../../icons/close-solid.icon';
+import { SearchSolidIcon } from '../../icons/search-solid.icon';
+import { IAutocompleteItem, IAutocompleteNoResults, ModusSize } from '../types';
 import { KEY } from '../utils';
+import { Attributes } from '../utils';
 
 // Timeout constants for consistent behavior
 export const BLUR_FOCUSOUT_DELAY_MS = 200; // Delay before handling blur/focusout to allow related element focus
@@ -440,4 +444,279 @@ export function processInputChange(
     updatedItems,
     shouldResetNavigation: !!inputValue,
   };
+}
+
+// Rendering Functions
+interface RenderNoResultsParams {
+  noResults?: IAutocompleteNoResults;
+}
+
+export function renderNoResults(params: RenderNoResultsParams): JSX.Element {
+  return (
+    <div class="modus-wc-autocomplete-no-results">
+      <div class="icon-label" aria-label={params.noResults?.ariaLabel}>
+        <SearchSolidIcon className="modus-wc-autocomplete-search-icon" />
+        <div class="label">{params.noResults?.label}</div>
+      </div>
+      <div class="sub-label">{params.noResults?.subLabel}</div>
+    </div>
+  );
+}
+
+interface RenderChipsParams {
+  selectionOrder: string[];
+  items?: IAutocompleteItem[];
+  isChipsExpanded: boolean;
+  maxChips?: number;
+  disabled?: boolean;
+  readOnly?: boolean;
+  onChipRemove: (item: IAutocompleteItem) => void;
+}
+
+export function renderChips(params: RenderChipsParams): JSX.Element {
+  // Get selected items in selection order
+  const selectedItems = params.selectionOrder
+    .map((value) =>
+      params.items?.find((item) => item.value === value && item.selected)
+    )
+    .filter(Boolean) as IAutocompleteItem[];
+
+  if (selectedItems.length === 0) {
+    return <Fragment></Fragment>;
+  }
+
+  // Chip display logic:
+  // - Not expanded: show up to maxChips (compact view)
+  // - Expanded: show all chips regardless of focus state
+  const effectiveMaxChips =
+    !params.isChipsExpanded && params.maxChips && params.maxChips > 0
+      ? params.maxChips
+      : selectedItems.length;
+
+  const visibleItems = selectedItems.slice(0, effectiveMaxChips);
+
+  return (
+    <Fragment>
+      {visibleItems.map((item) => (
+        <modus-wc-chip
+          aria-label="Remove item button"
+          label={item.label}
+          show-remove={true}
+          size="sm"
+          disabled={params.disabled || params.readOnly}
+          onChipRemove={(event) => {
+            event.stopPropagation();
+            params.onChipRemove(item);
+          }}
+          variant="filled"
+        ></modus-wc-chip>
+      ))}
+    </Fragment>
+  );
+}
+
+interface RenderClearButtonParams {
+  includeClear?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  selectionOrder: string[];
+  value?: string;
+  onClearAll: () => void;
+}
+
+export function renderClearButton(
+  params: RenderClearButtonParams
+): JSX.Element | null {
+  const showClear =
+    params.includeClear &&
+    !params.disabled &&
+    !params.readOnly &&
+    (params.selectionOrder.length > 0 || (params.value?.length ?? 0) > 0);
+
+  if (!showClear) {
+    return null;
+  }
+
+  return (
+    <modus-wc-button
+      onClick={params.onClearAll}
+      variant="borderless"
+      color="secondary"
+      aria-label="Clear all"
+      disabled={params.disabled || params.readOnly}
+      size="xs"
+      shape="circle"
+      type="button"
+    >
+      <CloseSolidIcon />
+    </modus-wc-button>
+  );
+}
+
+interface RenderExpandCollapseButtonParams {
+  selectionOrder: string[];
+  maxChips?: number;
+  isChipsExpanded: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  onToggleExpansion: () => void;
+}
+
+export function renderExpandCollapseButton(
+  params: RenderExpandCollapseButtonParams
+): JSX.Element | null {
+  const selectedItemsCount = params.selectionOrder.length;
+
+  // Show expand/collapse button when there are more chips than maxChips
+  if (
+    !params.maxChips ||
+    params.maxChips <= 0 ||
+    selectedItemsCount <= params.maxChips
+  ) {
+    return null;
+  }
+
+  const remainingCount = selectedItemsCount - params.maxChips;
+
+  return (
+    <modus-wc-button
+      custom-class={`modus-wc-autocomplete-expand-button ${params.isChipsExpanded ? 'expanded' : ''}`}
+      onClick={params.onToggleExpansion}
+      variant="borderless"
+      color="secondary"
+      aria-label={
+        params.isChipsExpanded
+          ? 'Collapse chips'
+          : `Show ${remainingCount} more`
+      }
+      disabled={params.disabled || params.readOnly}
+      size="xs"
+      shape="circle"
+      type="button"
+    >
+      <modus-wc-icon
+        aria-label={params.isChipsExpanded ? 'Collapse chips' : 'Expand chips'}
+        name={params.isChipsExpanded ? 'caret_up' : 'caret_down'}
+        size="md"
+      />
+    </modus-wc-button>
+  );
+}
+
+interface RenderMoreChipsIndicatorParams {
+  selectionOrder: string[];
+  maxChips?: number;
+  isChipsExpanded: boolean;
+}
+
+export function renderMoreChipsIndicator(
+  params: RenderMoreChipsIndicatorParams
+): JSX.Element | null {
+  const selectedItemsCount = params.selectionOrder.length;
+
+  // Show "+N more" when there are more chips than maxChips and not expanded
+  if (!params.maxChips || params.maxChips <= 0 || params.isChipsExpanded) {
+    return null;
+  }
+
+  const remainingCount = selectedItemsCount - params.maxChips;
+
+  if (remainingCount <= 0) {
+    return null;
+  }
+
+  return (
+    <modus-wc-chip
+      label={`+${remainingCount}`}
+      size="sm"
+      variant="filled"
+    ></modus-wc-chip>
+  );
+}
+
+interface RenderInputParams {
+  bordered?: boolean;
+  multiSelect?: boolean;
+  disabled?: boolean;
+  includeClear?: boolean;
+  includeSearch?: boolean;
+  inputId?: string;
+  inputTabIndex?: number;
+  name?: string;
+  placeholder?: string;
+  readOnly?: boolean;
+  required?: boolean;
+  size?: ModusSize;
+  value: string;
+  inheritedAttributes: Attributes;
+  onBlur: (event: CustomEvent<FocusEvent>) => void;
+  onChange: (event: CustomEvent<Event>) => void;
+  onFocus: (event: CustomEvent<FocusEvent>) => void;
+}
+
+export function renderInput(params: RenderInputParams): JSX.Element {
+  return (
+    <modus-wc-text-input
+      bordered={params.bordered && !params.multiSelect}
+      disabled={params.disabled}
+      includeClear={!params.multiSelect && params.includeClear}
+      includeSearch={!params.multiSelect && params.includeSearch}
+      inputId={params.inputId}
+      inputTabIndex={params.inputTabIndex}
+      name={params.name}
+      onInputBlur={params.onBlur}
+      onInputChange={params.onChange}
+      onInputFocus={params.onFocus}
+      placeholder={params.placeholder}
+      readOnly={params.readOnly}
+      required={params.required}
+      size={params.size}
+      value={params.value}
+      {...params.inheritedAttributes}
+    />
+  );
+}
+
+interface RenderMenuItemsParams {
+  showSpinner?: boolean;
+  size?: ModusSize;
+  filteredItems?: IAutocompleteItem[];
+  items?: IAutocompleteItem[];
+  noResults?: IAutocompleteNoResults;
+  hasSlottedContent: boolean;
+  onItemSelect: (value: string) => void;
+}
+
+export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
+  if (params.showSpinner) {
+    return (
+      <li>
+        <modus-wc-loader variant="spinner" size={params.size}></modus-wc-loader>
+      </li>
+    );
+  }
+
+  const menuItems = params.filteredItems || params.items || [];
+  const noResults =
+    params.noResults?.label ||
+    params.noResults?.subLabel ||
+    params.noResults?.ariaLabel;
+
+  return (
+    <Fragment>
+      {menuItems.length > 0 || !noResults || params.hasSlottedContent
+        ? menuItems.map((item) => (
+            <modus-wc-menu-item
+              disabled={item.disabled}
+              focused={item.focused}
+              label={item.label}
+              onItemSelect={() => params.onItemSelect(item.value)}
+              onMouseDown={(e) => e.preventDefault()}
+              selected={item.selected}
+              value={item.value}
+            />
+          ))
+        : renderNoResults({ noResults: params.noResults })}
+    </Fragment>
+  );
 }

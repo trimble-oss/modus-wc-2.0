@@ -438,6 +438,125 @@
         },
         {
           "kind": "function",
+          "name": "renderChips",
+          "return": {
+            "type": {
+              "text": "JSX.Element"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderChipsParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "renderClearButton",
+          "return": {
+            "type": {
+              "text": "JSX.Element | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderClearButtonParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "renderExpandCollapseButton",
+          "return": {
+            "type": {
+              "text": "JSX.Element | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderExpandCollapseButtonParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "renderInput",
+          "return": {
+            "type": {
+              "text": "JSX.Element"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderInputParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "renderMenuItems",
+          "return": {
+            "type": {
+              "text": "JSX.Element"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderMenuItemsParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "renderMoreChipsIndicator",
+          "return": {
+            "type": {
+              "text": "JSX.Element | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderMoreChipsIndicatorParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "renderNoResults",
+          "return": {
+            "type": {
+              "text": "JSX.Element"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderNoResultsParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
           "name": "syncFilteredItems",
           "return": {
             "type": {
@@ -593,6 +712,62 @@
           "name": "processInputChange",
           "declaration": {
             "name": "processInputChange",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderNoResults",
+          "declaration": {
+            "name": "renderNoResults",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderChips",
+          "declaration": {
+            "name": "renderChips",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderClearButton",
+          "declaration": {
+            "name": "renderClearButton",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderExpandCollapseButton",
+          "declaration": {
+            "name": "renderExpandCollapseButton",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderMoreChipsIndicator",
+          "declaration": {
+            "name": "renderMoreChipsIndicator",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderInput",
+          "declaration": {
+            "name": "renderInput",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderMenuItems",
+          "declaration": {
+            "name": "renderMenuItems",
             "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
           }
         }

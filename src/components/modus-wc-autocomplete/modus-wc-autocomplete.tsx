@@ -5,7 +5,6 @@ import {
   Fragment,
   h,
   Host,
-  JSX,
   Listen,
   Method,
   Prop,
@@ -13,7 +12,6 @@ import {
   Event as StencilEvent,
   Watch,
 } from '@stencil/core';
-import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import { IAutocompleteItem, IAutocompleteNoResults, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
@@ -30,6 +28,12 @@ import {
   processInputChange,
   processItemSelection,
   processKeyEvent,
+  renderChips,
+  renderClearButton,
+  renderExpandCollapseButton,
+  renderInput,
+  renderMenuItems,
+  renderMoreChipsIndicator,
   syncFilteredItems,
   updateItemFocus,
 } from './modus-wc-autocomplete-core';
@@ -614,206 +618,6 @@ export class ModusWcAutocomplete {
     this.chipsExpansionChange.emit({ expanded: this.isChipsExpanded });
   };
 
-  private renderNoResults() {
-    return (
-      <div class="modus-wc-autocomplete-no-results">
-        <div class="icon-label" aria-label={this.noResults?.ariaLabel}>
-          <SearchSolidIcon className="modus-wc-autocomplete-search-icon" />
-          <div class="label">{this.noResults?.label}</div>
-        </div>
-        <div class="sub-label">{this.noResults?.subLabel}</div>
-      </div>
-    );
-  }
-
-  private renderChips(): JSX.Element {
-    // Get selected items in selection order
-    const selectedItems = this.selectionOrder
-      .map((value) =>
-        this.items?.find((item) => item.value === value && item.selected)
-      )
-      .filter(Boolean) as IAutocompleteItem[];
-
-    if (selectedItems.length === 0) {
-      return <Fragment></Fragment>;
-    }
-
-    // Chip display logic:
-    // - Not expanded: show up to maxChips (compact view)
-    // - Expanded: show all chips regardless of focus state
-    const effectiveMaxChips =
-      !this.isChipsExpanded && this.maxChips && this.maxChips > 0
-        ? this.maxChips
-        : selectedItems.length;
-
-    const visibleItems = selectedItems.slice(0, effectiveMaxChips);
-
-    return (
-      <Fragment>
-        {visibleItems.map((item) => (
-          <modus-wc-chip
-            aria-label="Remove item button"
-            label={item.label}
-            show-remove={true}
-            size="sm"
-            disabled={this.disabled || this.readOnly}
-            onChipRemove={(event) => {
-              event.stopPropagation();
-              this.handleChipRemove(item);
-            }}
-            variant="filled"
-          ></modus-wc-chip>
-        ))}
-      </Fragment>
-    );
-  }
-
-  private renderClearButton(): JSX.Element | null {
-    const showClear =
-      this.includeClear &&
-      !this.disabled &&
-      !this.readOnly &&
-      (this.selectionOrder.length > 0 || this.value?.length > 0);
-
-    if (!showClear) {
-      return null;
-    }
-
-    return (
-      <modus-wc-button
-        onClick={this.handleClearAll}
-        variant="borderless"
-        color="secondary"
-        aria-label="Clear all"
-        disabled={this.disabled || this.readOnly}
-        size="xs"
-        shape="circle"
-        type="button"
-      >
-        <CloseSolidIcon />
-      </modus-wc-button>
-    );
-  }
-
-  private renderExpandCollapseButton(): JSX.Element | null {
-    const selectedItemsCount = this.selectionOrder.length;
-
-    // Show expand/collapse button when there are more chips than maxChips
-    if (
-      !this.maxChips ||
-      this.maxChips <= 0 ||
-      selectedItemsCount <= this.maxChips
-    ) {
-      return null;
-    }
-
-    const remainingCount = selectedItemsCount - this.maxChips;
-
-    return (
-      <modus-wc-button
-        custom-class={`modus-wc-autocomplete-expand-button ${this.isChipsExpanded ? 'expanded' : ''}`}
-        onClick={this.toggleChipsExpansion}
-        variant="borderless"
-        color="secondary"
-        aria-label={
-          this.isChipsExpanded
-            ? 'Collapse chips'
-            : `Show ${remainingCount} more`
-        }
-        disabled={this.disabled || this.readOnly}
-        size="xs"
-        shape="circle"
-        type="button"
-      >
-        <modus-wc-icon
-          aria-label={this.isChipsExpanded ? 'Collapse chips' : 'Expand chips'}
-          name={this.isChipsExpanded ? 'caret_up' : 'caret_down'}
-          size="md"
-        />
-      </modus-wc-button>
-    );
-  }
-
-  private renderMoreChipsIndicator(): JSX.Element | null {
-    const selectedItemsCount = this.selectionOrder.length;
-
-    // Show "+N more" when there are more chips than maxChips and not expanded
-    if (!this.maxChips || this.maxChips <= 0 || this.isChipsExpanded) {
-      return null;
-    }
-
-    const remainingCount = selectedItemsCount - this.maxChips;
-
-    if (remainingCount <= 0) {
-      return null;
-    }
-
-    return (
-      <modus-wc-chip
-        label={`+${remainingCount}`}
-        size="sm"
-        variant="filled"
-      ></modus-wc-chip>
-    );
-  }
-
-  private renderInput(): JSX.Element {
-    return (
-      <modus-wc-text-input
-        bordered={this.bordered && !this.multiSelect}
-        disabled={this.disabled}
-        includeClear={!this.multiSelect && this.includeClear}
-        includeSearch={!this.multiSelect && this.includeSearch}
-        inputId={this.inputId}
-        inputTabIndex={this.inputTabIndex}
-        name={this.name}
-        onInputBlur={this.handleBlur}
-        onInputChange={this.handleChange}
-        onInputFocus={this.handleFocus}
-        placeholder={this.placeholder}
-        readOnly={this.readOnly}
-        required={this.required}
-        size={this.size}
-        value={this.value}
-        {...this.inheritedAttributes}
-      />
-    );
-  }
-
-  private renderMenuItems(hasSlottedContent: boolean): JSX.Element {
-    if (this.showSpinner) {
-      return (
-        <li>
-          <modus-wc-loader variant="spinner" size={this.size}></modus-wc-loader>
-        </li>
-      );
-    }
-
-    const menuItems = this.filteredItems || this.items || [];
-    const noResults =
-      this.noResults?.label ||
-      this.noResults?.subLabel ||
-      this.noResults?.ariaLabel;
-
-    return (
-      <Fragment>
-        {menuItems.length > 0 || !noResults || hasSlottedContent
-          ? menuItems.map((item) => (
-              <modus-wc-menu-item
-                disabled={item.disabled}
-                focused={item.focused}
-                label={item.label}
-                onItemSelect={() => this.handleItemSelectByValue(item.value)}
-                onMouseDown={(e) => e.preventDefault()}
-                selected={item.selected}
-                value={item.value}
-              />
-            ))
-          : this.renderNoResults()}
-      </Fragment>
-    );
-  }
-
   private handleOutsideClick = (event: MouseEvent) => {
     if (!this.el.contains(event.target as Node) && !this.programmaticOpen) {
       this.menuVisible = false;
@@ -852,17 +656,81 @@ export class ModusWcAutocomplete {
               <SearchSolidIcon className="modus-wc-autocomplete-search-icon" />
             )}
             <div class="modus-wc-autocomplete-content">
-              {this.renderChips()}
-              {this.renderMoreChipsIndicator()}
-              {this.renderInput()}
+              {renderChips({
+                selectionOrder: this.selectionOrder,
+                items: this.items,
+                isChipsExpanded: this.isChipsExpanded,
+                maxChips: this.maxChips,
+                disabled: this.disabled,
+                readOnly: this.readOnly,
+                onChipRemove: (item) => this.handleChipRemove(item),
+              })}
+              {renderMoreChipsIndicator({
+                selectionOrder: this.selectionOrder,
+                maxChips: this.maxChips,
+                isChipsExpanded: this.isChipsExpanded,
+              })}
+              {renderInput({
+                bordered: this.bordered,
+                multiSelect: this.multiSelect,
+                disabled: this.disabled,
+                includeClear: this.includeClear,
+                includeSearch: this.includeSearch,
+                inputId: this.inputId,
+                inputTabIndex: this.inputTabIndex,
+                name: this.name,
+                placeholder: this.placeholder,
+                readOnly: this.readOnly,
+                required: this.required,
+                size: this.size,
+                value: this.value,
+                inheritedAttributes: this.inheritedAttributes,
+                onBlur: this.handleBlur,
+                onChange: this.handleChange,
+                onFocus: this.handleFocus,
+              })}
             </div>
             <div class="modus-wc-autocomplete-button-container">
-              {this.renderClearButton()}
-              {this.renderExpandCollapseButton()}
+              {renderClearButton({
+                includeClear: this.includeClear,
+                disabled: this.disabled,
+                readOnly: this.readOnly,
+                selectionOrder: this.selectionOrder,
+                value: this.value,
+                onClearAll: this.handleClearAll,
+              })}
+              {renderExpandCollapseButton({
+                selectionOrder: this.selectionOrder,
+                maxChips: this.maxChips,
+                isChipsExpanded: this.isChipsExpanded,
+                disabled: this.disabled,
+                readOnly: this.readOnly,
+                onToggleExpansion: this.toggleChipsExpansion,
+              })}
             </div>
           </div>
         ) : (
-          <Fragment>{this.renderInput()}</Fragment>
+          <Fragment>
+            {renderInput({
+              bordered: this.bordered,
+              multiSelect: this.multiSelect,
+              disabled: this.disabled,
+              includeClear: this.includeClear,
+              includeSearch: this.includeSearch,
+              inputId: this.inputId,
+              inputTabIndex: this.inputTabIndex,
+              name: this.name,
+              placeholder: this.placeholder,
+              readOnly: this.readOnly,
+              required: this.required,
+              size: this.size,
+              value: this.value,
+              inheritedAttributes: this.inheritedAttributes,
+              onBlur: this.handleBlur,
+              onChange: this.handleChange,
+              onFocus: this.handleFocus,
+            })}
+          </Fragment>
         )}
         {hasSlottedContent ? (
           // When using custom slots, keep menu in DOM and use CSS to hide/show
@@ -874,7 +742,15 @@ export class ModusWcAutocomplete {
             onMouseDown={(e) => e.preventDefault()}
             size={this.size}
           >
-            {this.renderMenuItems(hasSlottedContent)}
+            {renderMenuItems({
+              showSpinner: this.showSpinner,
+              size: this.size,
+              filteredItems: this.filteredItems,
+              items: this.items,
+              noResults: this.noResults,
+              hasSlottedContent: hasSlottedContent,
+              onItemSelect: this.handleItemSelectByValue,
+            })}
             <slot name="menu-items"></slot>
           </modus-wc-menu>
         ) : (
@@ -888,7 +764,15 @@ export class ModusWcAutocomplete {
               onMouseDown={(e) => e.preventDefault()}
               size={this.size}
             >
-              {this.renderMenuItems(hasSlottedContent)}
+              {renderMenuItems({
+                showSpinner: this.showSpinner,
+                size: this.size,
+                filteredItems: this.filteredItems,
+                items: this.items,
+                noResults: this.noResults,
+                hasSlottedContent: hasSlottedContent,
+                onItemSelect: this.handleItemSelectByValue,
+              })}
               <slot name="menu-items"></slot>
             </modus-wc-menu>
           )

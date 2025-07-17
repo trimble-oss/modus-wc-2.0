@@ -2,6 +2,7 @@ import { EventEmitter } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { IAutocompleteItem } from '../types';
 import { ModusWcAutocomplete } from './modus-wc-autocomplete';
+import { renderNoResults } from './modus-wc-autocomplete-core';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcChip } from '../modus-wc-chip/modus-wc-chip';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
@@ -413,8 +414,8 @@ describe('modus-wc-autocomplete', () => {
     // Ensure noResults is undefined.
     component.noResults = undefined;
 
-    // Directly call the private method.
-    const renderedNoResults = component['renderNoResults']();
+    // Call the render function from the core module.
+    const renderedNoResults = renderNoResults({ noResults: undefined });
 
     // Use snapshot testing to cover the output.
     expect(renderedNoResults).toMatchSnapshot();

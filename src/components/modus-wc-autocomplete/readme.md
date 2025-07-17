@@ -128,26 +128,26 @@ Type: `Promise<void>`
 
 ### Depends on
 
+- [modus-wc-input-label](../modus-wc-input-label)
+- [modus-wc-menu](../modus-wc-menu)
 - [modus-wc-chip](../modus-wc-chip)
 - [modus-wc-button](../modus-wc-button)
 - [modus-wc-icon](../modus-wc-icon)
 - [modus-wc-text-input](../modus-wc-text-input)
 - [modus-wc-loader](../modus-wc-loader)
 - [modus-wc-menu-item](../modus-wc-menu-item)
-- [modus-wc-input-label](../modus-wc-input-label)
-- [modus-wc-menu](../modus-wc-menu)
 
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-autocomplete --> modus-wc-input-label
+  modus-wc-autocomplete --> modus-wc-menu
   modus-wc-autocomplete --> modus-wc-chip
   modus-wc-autocomplete --> modus-wc-button
   modus-wc-autocomplete --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-text-input
   modus-wc-autocomplete --> modus-wc-loader
   modus-wc-autocomplete --> modus-wc-menu-item
-  modus-wc-autocomplete --> modus-wc-input-label
-  modus-wc-autocomplete --> modus-wc-menu
   modus-wc-text-input --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon
