@@ -1096,6 +1096,11 @@ export const CustomEventHandlers: Story = {
         div[id^='story--components-forms-autocomplete--custom-event-handlers'] {
           height: 400px;
         }
+
+        .modus-wc-autocomplete.modus-wc-autocomplete {
+          width: 300px;
+        }
+
         .fuzzy-info {
           margin-top: 1rem;
           padding: 1rem;
@@ -1122,7 +1127,7 @@ export const CustomEventHandlers: Story = {
         ?multi-select=${false}
         name=${ifDefined(args.name)}
         .noResults=${args['no-results']}
-        placeholder="Try typing 'pae' for Pineapple or 'bry' for Berry fruits"
+        placeholder="Type 'app' for Apple or Pineapple"
         ?read-only=${args['read-only']}
         ?required=${args.required}
         ?show-menu-on-focus=${args['show-menu-on-focus']}

@@ -17,9 +17,22 @@ import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import { IAutocompleteItem, IAutocompleteNoResults, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
-
-// Timeout constants for consistent behavior
-const BLUR_FOCUSOUT_DELAY_MS = 200; // Delay before handling blur/focusout to allow related element focus
+import {
+  BLUR_FOCUSOUT_DELAY_MS,
+  clearAllFocus,
+  getClasses,
+  getMultiSelectClasses,
+  getVisibleItems,
+  handleArrowDown as processArrowDown,
+  handleArrowUp as processArrowUp,
+  handleBackspace as processBackspace,
+  processChipRemoval,
+  processInputChange,
+  processItemSelection,
+  processKeyEvent,
+  syncFilteredItems,
+  updateItemFocus,
+} from './modus-wc-autocomplete-core';
 
 /**
  * A customizable autocomplete component used to create searchable text inputs.
@@ -199,125 +212,65 @@ export class ModusWcAutocomplete {
   }
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-autocomplete'];
-
-    if (this.customClass) classList.push(this.customClass);
-
-    return classList.join(' ');
+    return getClasses(this.customClass);
   }
 
   private getMultiSelectClasses(): string {
-    return [
-      'modus-wc-autocomplete-multi-select',
-      'modus-wc-input',
-      'modus-wc-w-full',
-      'modus-wc-flex',
-      'modus-wc-items-center',
-      'modus-wc-gap-1',
-      this.bordered && 'modus-wc-input-bordered',
-      this.disabled && 'modus-wc-input-disabled',
-      this.readOnly && 'modus-wc-text-input--readonly',
-      this.size && `modus-wc-input-${this.size}`,
-      this.bordered && 'modus-wc-autocomplete-multi-select--bordered',
-      this.disabled && 'modus-wc-autocomplete-multi-select--disabled',
-      this.readOnly && 'modus-wc-autocomplete-multi-select--readonly',
-    ]
-      .filter(Boolean)
-      .join(' ');
+    return getMultiSelectClasses({
+      bordered: this.bordered,
+      disabled: this.disabled,
+      readOnly: this.readOnly,
+      size: this.size,
+    });
   }
 
   private getVisibleItems(): IAutocompleteItem[] {
-    return this.filteredItems?.filter((item) => !item.disabled) || [];
+    return getVisibleItems(this.filteredItems);
   }
 
   private syncFilteredItems(): void {
-    if (!this.items) {
-      this.filteredItems = [];
-      return;
-    }
-
-    const currentSearchText = this.value?.toLowerCase() || '';
-
-    if (currentSearchText === '') {
-      // When no search text, show all items
-      this.filteredItems = [...this.items];
-    } else {
-      // Filter items based on current search text
-      this.filteredItems = this.items.filter((item) =>
-        item.label.toLowerCase().includes(currentSearchText)
-      );
-    }
+    this.filteredItems = syncFilteredItems(this.items, this.value);
   }
 
   private updateItemFocus(targetValue: string): void {
-    if (!this.items) return;
-
-    this.items = [
-      ...this.items.map((item) => ({
-        ...item,
-        focused: item.value === targetValue,
-      })),
-    ];
-
-    // Sync filtered items from updated items
-    this.syncFilteredItems();
+    const updated = updateItemFocus(this.items, targetValue);
+    if (updated) {
+      this.items = updated;
+      this.syncFilteredItems();
+    }
   }
 
   private clearAllFocus(): void {
-    if (!this.items) return;
-
-    this.items = [
-      ...this.items.map((item) => ({
-        ...item,
-        focused: false,
-      })),
-    ];
-
-    // Sync filtered items from updated items
-    this.syncFilteredItems();
+    const updated = clearAllFocus(this.items);
+    if (updated) {
+      this.items = updated;
+      this.syncFilteredItems();
+    }
   }
 
   private handleArrowDown(): void {
     const input = this.el.querySelector('input');
     if (!input) return;
 
-    if (this.showMenuOnFocus || input.value.length >= this.minChars) {
-      this.menuVisible = true;
-    }
-
-    if (this.initialNavigation) {
-      this.initialNavigation = false;
-      return;
-    }
-
-    const visibleItems = this.getVisibleItems();
-    const currentIndex = visibleItems.findIndex((item) => item.focused);
-    const nextIndex =
-      currentIndex < 0
-        ? 0
-        : Math.min(currentIndex + 1, visibleItems.length - 1);
-
-    if (visibleItems[nextIndex]) {
-      this.updateItemFocus(visibleItems[nextIndex].value);
-    }
+    processArrowDown({
+      showMenuOnFocus: this.showMenuOnFocus,
+      minChars: this.minChars,
+      inputValue: input.value,
+      initialNavigation: this.initialNavigation,
+      visibleItems: this.getVisibleItems(),
+      onUpdateFocus: (value) => this.updateItemFocus(value),
+      onSetMenuVisible: (visible) => (this.menuVisible = visible),
+      onSetInitialNavigation: (value) => (this.initialNavigation = value),
+    });
   }
 
   private handleArrowUp(): void {
-    if (this.initialNavigation) {
-      this.initialNavigation = false;
-      return;
-    }
-
-    const visibleItems = this.getVisibleItems();
-    const currentIndex = visibleItems.findIndex((item) => item.focused);
-    const prevIndex =
-      currentIndex < 0
-        ? visibleItems.length - 1
-        : Math.max(currentIndex - 1, 0);
-
-    if (visibleItems[prevIndex]) {
-      this.updateItemFocus(visibleItems[prevIndex].value);
-    }
+    processArrowUp({
+      initialNavigation: this.initialNavigation,
+      visibleItems: this.getVisibleItems(),
+      onUpdateFocus: (value) => this.updateItemFocus(value),
+      onSetInitialNavigation: (value) => (this.initialNavigation = value),
+    });
   }
 
   private handleEscape(): void {
@@ -348,21 +301,12 @@ export class ModusWcAutocomplete {
   }
 
   private handleBackspace(input: HTMLInputElement): void {
-    if (this.multiSelect && input.value.length === 0) {
-      // Get the last selected chip in selection order
-      if (this.selectionOrder.length > 0) {
-        const lastSelectedValue =
-          this.selectionOrder[this.selectionOrder.length - 1];
-        const lastSelectedItem = this.items?.find(
-          (item) => item.value === lastSelectedValue
-        );
-
-        if (lastSelectedItem) {
-          // Remove the chip internally
-          this.handleChipRemove(lastSelectedItem);
-        }
-      }
-    }
+    processBackspace(input, {
+      multiSelect: this.multiSelect,
+      selectionOrder: this.selectionOrder,
+      items: this.items,
+      onChipRemove: (item) => this.handleChipRemove(item),
+    });
   }
 
   private handleBlur = (event: CustomEvent<FocusEvent>) => {
@@ -412,95 +356,57 @@ export class ModusWcAutocomplete {
   };
 
   private handleChange = (event: CustomEvent<Event>) => {
-    if (this.disabled || this.readOnly) return;
+    const result = processInputChange(event, {
+      disabled: this.disabled,
+      readOnly: this.readOnly,
+      customInputChange: this.customInputChange,
+      showMenuOnFocus: this.showMenuOnFocus,
+      minChars: this.minChars,
+      items: this.items,
+      multiSelect: this.multiSelect,
+      debounceMs: this.debounceMs,
+    });
 
-    // Add null checks for edge cases
-    if (!event.detail || !event.detail.target) {
+    if (!result.inputValue && !result.shouldShowMenu) {
       return;
     }
 
-    const input = event.detail.target as HTMLInputElement;
-    const inputValue = input.value || '';
-
-    if (this.customInputChange) {
-      this.customInputChange(inputValue);
-      return;
-    }
-
-    // Update menu visibility
-    if (this.showMenuOnFocus) {
-      this.menuVisible = true;
-    } else {
-      this.menuVisible = inputValue.length >= this.minChars;
-    }
-
-    if (this.items) {
-      // Clear the focused state from all items
-      this.items = [
-        ...this.items.map((item) => ({
-          ...item,
-          focused: false,
-        })),
-      ];
-
-      // In single select mode, if the input is cleared, also clear the selection
-      if (!this.multiSelect && inputValue === '') {
-        this.items = [
-          ...this.items.map((item) => ({
-            ...item,
-            selected: false,
-          })),
-        ];
-      }
-    }
-
-    this.value = inputValue;
+    this.menuVisible = result.shouldShowMenu;
+    this.items = result.updatedItems;
+    this.value = result.inputValue;
 
     // Sync filtered items based on new search value
     this.syncFilteredItems();
 
-    if (this.value) {
+    if (result.shouldResetNavigation) {
       this.initialNavigation = false;
     }
 
-    if (this.debounceTimer) {
-      window.clearTimeout(this.debounceTimer);
-    }
-
+    // Handle immediate emit if no debounce
     if (!this.debounceMs) {
       this.inputChange.emit(event.detail);
-      return;
+    } else if (!this.customInputChange) {
+      // Handle debounced emit
+      if (this.debounceTimer) {
+        window.clearTimeout(this.debounceTimer);
+      }
+      this.debounceTimer = window.setTimeout(() => {
+        this.inputChange.emit(event.detail);
+      }, this.debounceMs);
     }
-
-    this.debounceTimer = window.setTimeout(() => {
-      this.inputChange.emit(event.detail);
-    }, this.debounceMs);
   };
 
   @Listen('keydown')
   handleKeyDown(event: KeyboardEvent) {
-    if (this.customKeyDown) {
-      this.customKeyDown(event);
-      return;
-    }
+    const { handled, keyLower } = processKeyEvent(event, {
+      disabled: this.disabled,
+      readOnly: this.readOnly,
+      customKeyDown: this.customKeyDown,
+    });
 
-    // Don't process keyboard events when disabled or readOnly
-    if (this.disabled || this.readOnly) {
-      return;
-    }
+    if (handled) return;
 
-    if (!(event.target instanceof HTMLInputElement)) return;
-
-    const input = event.target;
-    const keyLower = event.key.toLowerCase();
-
-    if (
-      [KEY.ArrowDown, KEY.ArrowUp, KEY.Enter, KEY.Escape]
-        .map((k) => k.toLowerCase())
-        .includes(keyLower)
-    ) {
-      event.preventDefault();
-    }
+    const input = event.target as HTMLInputElement;
 
     switch (keyLower) {
       case KEY.ArrowDown.toLowerCase(): {
@@ -635,98 +541,68 @@ export class ModusWcAutocomplete {
   };
 
   private handleItemSelect = (item: IAutocompleteItem) => {
-    if (this.disabled || this.readOnly || !this.items) return;
+    const result = processItemSelection(item, {
+      disabled: this.disabled,
+      readOnly: this.readOnly,
+      items: this.items,
+      multiSelect: this.multiSelect,
+      leaveMenuOpen: this.leaveMenuOpen,
+      selectionOrder: this.selectionOrder,
+      maxChips: this.maxChips,
+      customItemSelect: this.customItemSelect,
+    });
 
-    if (this.customItemSelect) {
-      this.customItemSelect(item);
-      return;
-    }
-
-    if (this.multiSelect) {
-      this.value = '';
-
-      const currentItem = this.items.find(
-        (menuItem) => menuItem.value === item.value
-      );
-      const isCurrentlySelected = currentItem?.selected || false;
-
-      if (isCurrentlySelected) {
-        if (!this.leaveMenuOpen) {
-          this.menuVisible = false;
-        }
-        return;
-      }
-
-      this.items = [
-        ...this.items.map((menuItem) => ({
-          ...menuItem,
-          selected: menuItem.value === item.value ? true : menuItem.selected,
-          focused: false,
-        })),
-      ];
-
-      // Add to end of selection order
-      this.selectionOrder = [...this.selectionOrder, item.value];
-
-      // If we exceed maxChips, automatically expand
-      if (
-        this.maxChips &&
-        this.maxChips > 0 &&
-        this.selectionOrder.length > this.maxChips
-      ) {
-        this.isChipsExpanded = true;
-      }
-
-      // Sync filtered items from updated items (maintains current search filter)
-      this.syncFilteredItems();
-    } else {
-      this.items = [
-        ...this.items.map((menuItem) => ({
-          ...menuItem,
-          selected: menuItem.value === item.value,
-          focused: false,
-        })),
-      ];
-      this.value = item.label;
-
-      // Sync filtered items from updated items
+    if (result.updatedItems && result.updatedItems !== this.items) {
+      this.items = result.updatedItems;
       this.syncFilteredItems();
     }
 
-    this.initialNavigation = true;
+    if (result.updatedValue !== undefined) {
+      this.value = result.updatedValue;
+    }
 
-    if (!this.leaveMenuOpen) {
+    if (result.updatedSelectionOrder) {
+      this.selectionOrder = result.updatedSelectionOrder;
+    }
+
+    if (result.shouldExpandChips) {
+      this.isChipsExpanded = true;
+    }
+
+    if (result.shouldCloseMenu) {
       this.menuVisible = false;
     }
 
-    this.itemSelect.emit(item);
+    // Only emit event and update navigation if not disabled/readonly and not using custom handler
+    if (
+      !this.disabled &&
+      !this.readOnly &&
+      !this.customItemSelect &&
+      this.items
+    ) {
+      this.initialNavigation = true;
+      this.itemSelect.emit(item);
+    }
   };
 
   private handleChipRemove = (item: IAutocompleteItem) => {
-    if (this.disabled || this.readOnly) {
-      return;
-    }
+    const result = processChipRemoval(item, {
+      disabled: this.disabled,
+      readOnly: this.readOnly,
+      items: this.items,
+      selectionOrder: this.selectionOrder,
+    });
 
-    // Handle chip removal internally by default
-    if (this.items) {
-      this.items = [
-        ...this.items.map((menuItem) => ({
-          ...menuItem,
-          selected: menuItem.value === item.value ? false : menuItem.selected,
-        })),
-      ];
-
-      // Remove from selection order
-      this.selectionOrder = this.selectionOrder.filter(
-        (value) => value !== item.value
-      );
-
-      // Sync filtered items from updated items (maintains current search filter)
+    if (result.updatedItems) {
+      this.items = result.updatedItems;
+      this.selectionOrder = result.updatedSelectionOrder;
       this.syncFilteredItems();
     }
 
     // Emit event for external handlers who want to know about the removal
-    this.chipRemove.emit(item);
+    if (!this.disabled && !this.readOnly) {
+      this.chipRemove.emit(item);
+    }
   };
 
   private handleClearAll = () => {
