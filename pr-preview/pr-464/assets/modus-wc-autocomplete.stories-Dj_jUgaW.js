@@ -1,0 +1,1941 @@
+import{w as Y}from"./decorator-D4YmxizW.js";import{x as f}from"./lit-element-C8zulti1.js";import{o as n}from"./if-defined-yv6owfG8.js";import"./chunk-4XZ63LWV-CnYBn8W6.js";import"./v4-CtRu48qb.js";var S=Object.freeze,Z=Object.defineProperty,E=(e,p)=>S(Z(e,"raw",{value:S(e.slice())})),A,T,L;const v=[{label:"Apple",value:"apple",visibleInMenu:!0,focused:!1,disabled:!1},{label:"Banana",value:"banana",visibleInMenu:!0,focused:!1,disabled:!1},{label:"Blueberry",value:"blueberry",visibleInMenu:!0,focused:!1},{label:"Cherry",value:"cherry",visibleInMenu:!0,focused:!1},{label:"Grape",value:"grape",visibleInMenu:!0,focused:!1},{label:"Lemon",value:"lemon",visibleInMenu:!0,focused:!1},{label:"Orange",value:"orange",visibleInMenu:!0,focused:!1,disabled:!1},{label:"Peach",value:"peach",visibleInMenu:!0,focused:!1},{label:"Pear",value:"pear",visibleInMenu:!0,focused:!1},{label:"Strawberry",value:"strawberry",visibleInMenu:!0,focused:!1,disabled:!1},{label:"Watermelon",value:"watermelon",visibleInMenu:!0,focused:!1,disabled:!1},{label:"Pineapple",value:"pineapple",visibleInMenu:!0,focused:!1},{label:"Kiwi",value:"kiwi",visibleInMenu:!0,focused:!1},{label:"Mango",value:"mango",visibleInMenu:!0,focused:!1},{label:"Papaya",value:"papaya",visibleInMenu:!0,focused:!1},{label:"Plum",value:"plum",visibleInMenu:!0,focused:!1},{label:"Raspberry",value:"raspberry",visibleInMenu:!0,focused:!1},{label:"Tangerine",value:"tangerine",visibleInMenu:!0,focused:!1}],ee={title:"Components/Forms/Autocomplete",component:"modus-wc-autocomplete",args:{bordered:!0,"debounce-ms":300,disabled:!1,"include-clear":!1,"include-search":!1,items:v,label:"Label","leave-menu-open":!1,"max-chips":4,"min-chars":0,"min-input-width":10,"multi-select":!1,"show-menu-on-focus":!1,"show-spinner":!1,"no-results":{ariaLabel:"No results found",label:"No results found",subLabel:"Check spelling or try a different keyword"},size:"md",value:""},argTypes:{items:{description:"Array of items for the autocomplete component",table:{type:{detail:`
+            Interface: IAutocompleteItem
+            Properties:
+            - label (string): The display text shown for the autocomplete item
+            - selected (boolean, optional): Whether the item is currently selected
+            - focused (boolean, optional): Whether the item is focused
+            - value (string): The unique value identifier for the item
+            - visibleInMenu (boolean): Whether the item should be shown in the dropdown menu
+          `}}},"max-chips":{control:{type:"number",min:1,max:10},description:'Maximum number of chips to display before showing "+N more" button'},"min-input-width":{control:{type:"number",min:12,max:300},description:"Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead. Default: 20px."},size:{control:{type:"select"},options:["sm","md","lg"]},"custom-blur":{description:"Custom blur handler function that overrides default blur behavior",table:{type:{summary:"(event: FocusEvent) => void"},category:"Custom Handlers"}},"custom-input-change":{description:"Custom input change handler function that overrides default input change behavior",table:{type:{summary:"(value: string) => void"},category:"Custom Handlers"}},"custom-item-select":{description:"Custom item select handler function that overrides default item selection behavior",table:{type:{summary:"(item: IAutocompleteItem) => void"},category:"Custom Handlers"}},"custom-key-down":{description:"Custom keydown handler function that overrides default keyboard navigation",table:{type:{summary:"(event: KeyboardEvent) => void"},category:"Custom Handlers"}}},decorators:[Y],parameters:{actions:{handles:["chipRemove","chipsExpansionChange","inputBlur","inputChange","inputFocus","itemSelect"]}}},te={render:e=>f`
+<style>
+  div[id^='story--components-forms-autocomplete--default'] {
+    height: 400px;
+  }
+</style>
+<modus-wc-autocomplete
+  aria-label="Fruit autocomplete"
+  ?bordered=${e.bordered}
+  custom-class=${n(e["custom-class"])}
+  debounce-ms=${n(e["debounce-ms"])}
+  ?disabled=${e.disabled}
+  ?include-clear=${e["include-clear"]}
+  ?include-search=${e["include-search"]}
+  input-id=${n(e["input-id"])}
+  input-tab-index=${n(e["input-tab-index"])}
+  .items=${e.items}
+  label=${n(e.label)}
+  ?leave-menu-open=${e["leave-menu-open"]}
+  min-chars=${e["min-chars"]}
+  min-input-width=${n(e["min-input-width"])}
+  ?multi-select=${!1}
+  name=${n(e.name)}
+  .noResults=${e["no-results"]}
+  placeholder=${n(e.placeholder)}
+  ?read-only=${e["read-only"]}
+  ?required=${e.required}
+  ?show-menu-on-focus=${e["show-menu-on-focus"]}
+  ?show-spinner=${e["show-spinner"]}
+  size=${n(e.size)}
+  value=${e.value}
+></modus-wc-autocomplete>
+    `},g={...te},y={render:e=>((!e.items||e.items.length===0)&&(e.items=[...v]),f(A||(A=E([`
+<script>
+  // Initialize args.items if empty
+  if (!args.items || args.items.length === 0) {
+    args.items = [...items];
+  }
+<\/script>
+<style>
+  .modus-wc-autocomplete-multi-select {
+    width: 480px !important;
+  }
+</style>
+<modus-wc-autocomplete
+  aria-label="Fruit autocomplete"
+  ?bordered=`,`
+  custom-class=`,`
+  debounce-ms=`,`
+  ?disabled=`,`
+  ?include-clear=`,`
+  ?include-search=`,`
+  input-id=`,`
+  input-tab-index=`,`
+  .items=`,`
+  label=`,`
+  ?leave-menu-open=`,`
+  max-chips=`,`
+  min-chars=`,`
+  min-input-width=`,`
+  ?multi-select=`,`
+  name=`,`
+  .noResults=`,`
+  placeholder=`,`
+  ?read-only=`,`
+  ?required=`,`
+  ?show-menu-on-focus=`,`
+  size=`,`
+  value=`,`
+></modus-wc-autocomplete>
+    `])),e.bordered,n(e["custom-class"]),n(e["debounce-ms"]),e.disabled,e["include-clear"],e["include-search"],n(e["input-id"]),n(e["input-tab-index"]),e.items,n(e.label),e["leave-menu-open"],e["max-chips"]??4,e["min-chars"],n(e["min-input-width"]),!0,n(e.name),e["no-results"],n(e.placeholder),e["read-only"],e.required,e["show-menu-on-focus"],n(e.size),e.value))},I={render:e=>{let p;const b=h=>{var i;if(!((i=h.detail)!=null&&i.target))return;const u=h.target.closest("modus-wc-autocomplete");if(u){const o=h.detail.target.value.toLowerCase();p&&window.clearTimeout(p),u.showSpinner=!0,p=window.setTimeout(()=>{const l=v.filter(t=>t.label.toLowerCase().includes(o));u.items=l,u.showSpinner=!1},2e3)}};return f(T||(T=E([`
+<script>
+        let debounceTimer: number;
+
+  const handleInputChange = (e: CustomEvent<Event>) => {
+    if (!e.detail?.target) return;
+
+    const autocomplete = (e.target as HTMLInputElement).closest(
+      'modus-wc-autocomplete'
+    ) as Element & {
+      items: IAutocompleteItem[];
+      showSpinner: boolean;
+      value: string;
+    };
+
+    if (autocomplete) {
+      const input = e.detail.target as HTMLInputElement;
+      const searchText = input.value.toLowerCase();
+
+      // Clear previous timeout to avoid multiple API calls
+      if (debounceTimer) {
+        window.clearTimeout(debounceTimer);
+      }
+
+      // Show spinner immediately and update input value
+      autocomplete.showSpinner = true;
+
+      // Simulate an API call with a 2-second delay
+      debounceTimer = window.setTimeout(() => {
+        // Filter the master list of items to get the new results
+        const filteredItems = items.filter((item) =>
+          item.label.toLowerCase().includes(searchText)
+        );
+
+        // Update the component with the new filtered list and hide the spinner
+        autocomplete.items = filteredItems;
+        autocomplete.showSpinner = false;
+      }, 2000);
+    }
+  };
+<\/script>
+<style>
+  div[id^='story--components-forms-autocomplete--with-spinner'] {
+    height: 400px;
+  }
+</style>
+<modus-wc-autocomplete
+  aria-label="Fruit autocomplete with spinner"
+  ?bordered=`,`
+  custom-class=`,`
+  debounce-ms=`,`
+  ?disabled=`,`
+  input-id=`,`
+  input-tab-index=`,`
+  .items=`,`
+  label=`,`
+  ?leave-menu-open=`,`
+  min-chars=`,`
+  ?multi-select=`,`
+  name=`,`
+  placeholder=`,`
+  ?read-only=`,`
+  ?required=`,`
+  ?show-menu-on-focus=`,`
+  ?show-spinner=`,`
+  size=`,`
+  value=`,`
+  @inputChange=`,`
+></modus-wc-autocomplete>
+    `])),e.bordered,n(e["custom-class"]),n(e["debounce-ms"]),e.disabled,n(e["input-id"]),n(e["input-tab-index"]),e.items,n(e.label),e["leave-menu-open"],e["min-chars"],!1,n(e.name),n(e.placeholder),e["read-only"],e.required,e["show-menu-on-focus"],e["show-spinner"],n(e.size),e.value,b)}},x={render:e=>{const p=e["no-results"];e["leave-menu-open"]==!0&&(e["no-results"]={ariaLabel:"",label:"",subLabel:""});const b=a=>{const o=a.querySelectorAll("modus-wc-menu-item:not([disabled])");return Array.from(o).filter(l=>window.getComputedStyle(l).display!=="none"&&!l.classList.contains("hidden"))},h=a=>{var d,m;const o=a.target.closest("modus-wc-autocomplete");if(!o||o.disabled||o.readOnly)return;const t=b(o).map(c=>c.querySelector("button")).filter(Boolean),s=document.activeElement,r=t.indexOf(s);switch(a.key){case"ArrowDown":{a.preventDefault(),o.openMenu();let c=r+1;if(c>=t.length)return;c<0&&(c=0),(d=t[c])==null||d.focus();break}case"ArrowUp":{a.preventDefault(),o.openMenu();let c=r-1;if(c<0)return;(m=t[c])==null||m.focus();break}case"Enter":{a.preventDefault(),t.includes(s)&&s.click();const c=o.querySelector("input");c==null||c.focus();break}case"Escape":{a.preventDefault(),o.closeMenu();const c=o.querySelector("input");c==null||c.focus();break}}},u=a=>{var l;if(!((l=a.detail)!=null&&l.target))return;const o=a.target.closest("modus-wc-autocomplete");if(o){const t=a.detail.target.value.toLowerCase(),s=o==null?void 0:o.querySelectorAll("modus-wc-menu-item");t===""&&(s==null||s.forEach(m=>{m.removeAttribute("selected")}));let r=0;Array.from(s??[]).forEach(m=>{var w;(((w=m.getAttribute("label"))==null?void 0:w.toLowerCase())||"").includes(t)?m.classList.remove("hidden"):(m.classList.add("hidden"),r++)}),o.noResults=r===(s==null?void 0:s.length)?p:{ariaLabel:"",label:"",subLabel:""};const d=o.querySelector(".no-results-item");d&&(r===(s==null?void 0:s.length)?d.classList.add("visible"):d.classList.remove("visible"))}},i=a=>{const o=a.target.closest("modus-wc-autocomplete");if(o){const l=a.detail.value;o.value=l,o.querySelectorAll("modus-wc-menu-item").forEach(s=>{s.getAttribute("value")===l?s.setAttribute("selected","true"):s.removeAttribute("selected")}),e["leave-menu-open"]||o.closeMenu()}};return f(L||(L=E([`
+<script>
+const originalNoResults = args['no-results'];
+if (args['leave-menu-open'] == true) {
+  args['no-results'] = {
+    ariaLabel: '',
+    label: '',
+    subLabel: '',
+  };
+}
+
+const getVisibleItems = (autocomplete: Element): HTMLElement[] => {
+  const menuItems = autocomplete.querySelectorAll(
+    'modus-wc-menu-item:not([disabled])'
+  );
+  return Array.from(menuItems).filter(
+    (item: Element): item is HTMLElement => {
+      const style = window.getComputedStyle(item);
+      return style.display !== 'none' && !item.classList.contains('hidden');
+    }
+  );
+};
+
+const handleCustomKeyDown = (e: KeyboardEvent) => {
+  const autocomplete = (e.target as HTMLInputElement).closest(
+    'modus-wc-autocomplete'
+  ) as Element & {
+    openMenu: () => Promise<void>;
+    closeMenu: () => Promise<void>;
+    readOnly?: boolean;
+    disabled?: boolean;
+  };
+  if (!autocomplete) return;
+
+  // Don't process keyboard events when disabled or readOnly
+  if (autocomplete.disabled || autocomplete.readOnly) return;
+
+  const visibleItems = getVisibleItems(autocomplete);
+
+  // Get all button elements within visible menu items
+  const buttons = visibleItems
+    .map((item) => item.querySelector('button'))
+    .filter(Boolean) as HTMLButtonElement[];
+  const currentFocusedButton = document.activeElement as HTMLButtonElement;
+  const currentIndex = buttons.indexOf(currentFocusedButton);
+
+  switch (e.key) {
+    case 'ArrowDown': {
+      e.preventDefault();
+      // Open menu when arrow key is pressed
+      void autocomplete.openMenu();
+
+      let nextIndex = currentIndex + 1;
+      // Stop at the last item instead of wrapping
+      if (nextIndex >= buttons.length) return;
+      if (nextIndex < 0) nextIndex = 0;
+
+      buttons[nextIndex]?.focus();
+      break;
+    }
+
+    case 'ArrowUp': {
+      e.preventDefault();
+      // Open menu when arrow key is pressed
+      void autocomplete.openMenu();
+
+      let prevIndex = currentIndex - 1;
+      // Stop at the first item instead of wrapping
+      if (prevIndex < 0) return;
+      
+      buttons[prevIndex]?.focus();
+      break;
+    }
+
+    case 'Enter': {
+      e.preventDefault();
+      // If a button is focused, click it
+      if (buttons.includes(currentFocusedButton)) {
+        currentFocusedButton.click();
+      }
+      break;
+    }
+
+    case 'Escape': {
+      e.preventDefault();
+      void autocomplete.closeMenu();
+      // Return focus to input
+      const input = autocomplete.querySelector('input');
+      input?.focus();
+      break;
+    }
+  }
+};
+
+const handleInputChange = (e: CustomEvent<Event>) => {
+  if (!e.detail?.target) return;
+
+  const autocomplete = (e.target as HTMLInputElement).closest(
+    'modus-wc-autocomplete'
+  ) as Element & { noResults: IAutocompleteNoResults };
+
+  if (autocomplete) {
+    const searchText = (
+      e.detail.target as HTMLInputElement
+    ).value.toLowerCase();
+    const menuItems = autocomplete?.querySelectorAll('modus-wc-menu-item');
+    
+    // Clear selected state when input is empty
+    if (searchText === '') {
+      menuItems?.forEach((item) => {
+        item.removeAttribute('selected');
+      });
+    }
+    
+    let hiddenCount = 0;
+    Array.from(menuItems ?? []).forEach((menuItem) => {
+      const label = menuItem.getAttribute('label')?.toLowerCase() || '';
+      if (!label.includes(searchText)) {
+        menuItem.classList.add('hidden');
+        hiddenCount++;
+      } else {
+        menuItem.classList.remove('hidden');
+      }
+    });
+
+    // Show no results if all items are hidden
+    autocomplete.noResults =
+      hiddenCount === menuItems?.length
+        ? originalNoResults
+        : { ariaLabel: '', label: '', subLabel: '' };
+        
+    // Show/hide the no results element
+    const noResultsElement = autocomplete.querySelector('.no-results-item') as HTMLElement;
+    if (noResultsElement) {
+      if (hiddenCount === menuItems?.length) {
+        noResultsElement.classList.add('visible');
+      } else {
+        noResultsElement.classList.remove('visible');
+      }
+    }
+  }
+};
+
+const handleItemSelect = (e: CustomEvent<{ value: string }>) => {
+  const autocomplete = (e.target as HTMLInputElement).closest(
+    'modus-wc-autocomplete'
+  ) as HTMLElement & { value: string; closeMenu: () => Promise<void> };
+
+  if (autocomplete) {
+    const selectedValue = e.detail.value;
+    autocomplete.value = selectedValue;
+    // Update selected state on menu items
+    const menuItems = autocomplete.querySelectorAll('modus-wc-menu-item');
+    menuItems.forEach((item) => {
+      if (item.getAttribute('value') === selectedValue) {
+        item.setAttribute('selected', 'true');
+      } else {
+        item.removeAttribute('selected');
+      }
+    });
+    // Close menu after selection unless leaveMenuOpen is true
+    if (!args['leave-menu-open']) {
+      void autocomplete.closeMenu();
+    }
+  }
+};
+<\/script>
+<style>
+div[id^='story--components-forms-autocomplete--custom-menu-items'] {
+  height: 400px;
+}
+.modus-wc-autocomplete {
+    width: 480px !important;
+  }
+.custom-menu-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.content-wrapper {
+  flex: 1;
+}
+.title {
+  font-weight: 500;
+}
+.subtitle {
+  font-size: 0.875rem;
+  color: #666;
+}
+modus-wc-menu-item.hidden {
+  display: none;
+}
+.no-results-item {
+  display: none;
+  padding: 16px;
+  text-align: center;
+}
+.no-results-item.visible {
+  display: block;
+}
+.no-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.no-results-title {
+  font-weight: bold;
+}
+.no-results-header modus-wc-icon {
+  color: var(--modus-wc-color-gray-6);
+}
+
+</style>
+<modus-wc-autocomplete
+  aria-label="Custom menu items example"
+  ?bordered=`,`
+  custom-class=`,`
+  debounce-ms=`,`
+  ?disabled=`,`
+  input-id=`,`
+  input-tab-index=`,`
+  label=`,`
+  ?leave-menu-open=`,`
+  min-chars=`,`
+  ?multi-select=`,`
+  name=`,`
+  .noResults=`,`
+  placeholder=`,`
+  ?read-only=`,`
+  ?required=`,`
+  ?show-menu-on-focus=`,`
+  size=`,`
+  ?show-spinner=`,`
+  value=`,`
+  .customKeyDown=`,`
+  @inputChange=`,`
+  ?include-search=`,`
+>
+  <div slot="menu-items">
+    <modus-wc-menu-item
+      label="John Doe"
+      sub-label="john.doe@example.com"
+      value="John Doe"
+      @itemSelect=`,`
+    >
+           <div slot="start-icon">
+      <modus-wc-avatar aria-label="Avatar" size="xs" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" size="xs"></modus-wc-avatar>
+      </div>
+    </modus-wc-menu-item>
+    <modus-wc-menu-item
+      label="Jane Smith"
+      sub-label="jane.smith@example.com"
+      value="Jane Smith"
+      @itemSelect=`,`
+    >
+      <div slot="start-icon">
+      <modus-wc-avatar aria-label="Avatar" size="xs" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" size="xs"></modus-wc-avatar>
+      </div>
+    </modus-wc-menu-item>
+    <modus-wc-menu-item
+      label="Bob Johnson"
+      sub-label="bob.johnson@example.com"
+      value="Bob Johnson"
+      @itemSelect=`,`
+    >
+                <div slot="start-icon">
+      <modus-wc-avatar aria-label="Avatar" size="xs" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" size="xs"></modus-wc-avatar>
+      </div>
+    </modus-wc-menu-item>
+    <modus-wc-menu-item
+      label="Alice Williams"
+      sub-label="alice.williams@example.com"
+      value="Alice Williams"
+      @itemSelect=`,`
+    >
+      <div slot="start-icon">
+      <modus-wc-avatar aria-label="Avatar" size="xs" alt="Example avatar" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" size="md"></modus-wc-avatar>
+      </div>
+    </modus-wc-menu-item>
+    <li class="no-results-item">
+      <div class="no-results-header">
+        <modus-wc-icon name="search" size="lg"></modus-wc-icon>
+        <div class="no-results-title">No results found</div>
+      </div>
+    </li>
+  </div>
+</modus-wc-autocomplete>
+    `])),e.bordered,n(e["custom-class"]),n(e["debounce-ms"]),e.disabled,n(e["input-id"]),n(e["input-tab-index"]),n(e.label),e["leave-menu-open"],e["min-chars"],!1,n(e.name),e["no-results"],n(e.placeholder),e["read-only"],e.required,e["show-menu-on-focus"],n(e.size),e["show-spinner"],e.value,h,u,!0,i,i,i,i)}},M={render:e=>{const p=u=>{const i=u.target.closest("modus-wc-autocomplete");if(!i)return;["ArrowDown","ArrowUp","Enter","Escape"].includes(u.key)&&u.preventDefault();const a=e.items.filter(o=>o.visibleInMenu&&!o.disabled);switch(u.key){case"Escape":e.items=e.items.map(o=>({...o,focused:!1})),i.items=[...e.items],i.closeMenu(),i.style.transform="scale(0.98)",setTimeout(()=>{i.style.transform=""},200);break;case"ArrowDown":{i.openMenu();const o=a.findIndex(s=>s.focused),l=o<0?0:Math.min(o+1,a.length-1),t=l+1<a.length?l+1:l;e.items=e.items.map(s=>{var r;return{...s,focused:((r=a[t])==null?void 0:r.value)===s.value}});break}case"ArrowUp":{const o=a.findIndex(s=>s.focused),l=o<0?a.length-1:Math.max(o-1,0),t=l-1>=0?l-1:l;e.items=e.items.map(s=>{var r;return{...s,focused:((r=a[t])==null?void 0:r.value)===s.value}});break}case"Enter":{const o=a.find(l=>l.focused);o&&(e.items=e.items.map(l=>({...l,selected:l.value===o.value,focused:!1})),i.value=o.label,i.closeMenu());break}default:return}i.items=[...e.items]},b=u=>{const i=document.querySelector("modus-wc-autocomplete");if(!i)return;const a=u.toLowerCase().split("");if(a.length>0&&a[0]!==""){const t=e.items.map(s=>{const r=s.label.toLowerCase();let d=0,m=!0;for(const c of a)if(r.includes(c)){const w=r.indexOf(c);w===0?d+=3:r[w-1]===" "?d+=2:d+=1}else{m=!1;break}return m&&r.includes(u.toLowerCase())&&(d+=10),{item:s,score:m?d:-1,visible:m}});t.sort((s,r)=>r.score-s.score),e.items=t.map(({item:s,visible:r})=>({...s,visibleInMenu:r,focused:!1,selected:s.selected&&r,label:s.label}))}else e.items=e.items.map(t=>({...t,visibleInMenu:!0,focused:!1}));i.items=[...e.items],i.value=u;const o=e.items.filter(t=>t.visibleInMenu).length;console.log(`Fuzzy search for "${u}": ${o} matches found`),e.items.some(t=>t.visibleInMenu)&&u.length>=e["min-chars"]?i.openMenu():i.closeMenu()},h=u=>{const i=document.querySelector("modus-wc-autocomplete");i&&(e.items=e.items.map(a=>({...a,selected:a.value===u.value,focused:!1})),i.items=[...e.items],i.value=u.label,i.closeMenu())};return f`
+      <style>
+        div[id^='story--components-forms-autocomplete--custom-event-handlers'] {
+          height: 400px;
+        }
+
+        .modus-wc-autocomplete.modus-wc-autocomplete {
+          width: 300px;
+        }
+
+        .fuzzy-info {
+          margin-top: 1rem;
+          padding: 1rem;
+          background-color: var(--modus-wc-color-info-light);
+          border-radius: 4px;
+          font-size: 0.875rem;
+        }
+      </style>
+
+      <modus-wc-autocomplete
+        aria-label="Custom handlers autocomplete"
+        ?bordered=${e.bordered}
+        custom-class=${n(e["custom-class"])}
+        debounce-ms=${0}
+        ?disabled=${e.disabled}
+        ?include-clear=${e["include-clear"]}
+        ?include-search=${e["include-search"]}
+        input-id=${n(e["input-id"])}
+        input-tab-index=${n(e["input-tab-index"])}
+        .items=${e.items}
+        label="Fruit list with custom handlers"
+        ?leave-menu-open=${e["leave-menu-open"]}
+        min-chars=${e["min-chars"]}
+        ?multi-select=${!1}
+        name=${n(e.name)}
+        .noResults=${e["no-results"]}
+        placeholder="Type 'app' for Apple or Pineapple"
+        ?read-only=${e["read-only"]}
+        ?required=${e.required}
+        ?show-menu-on-focus=${e["show-menu-on-focus"]}
+        ?show-spinner=${e["show-spinner"]}
+        size=${n(e.size)}
+        value=${e.value}
+        .customKeyDown=${p}
+        .customInputChange=${b}
+        .customItemSelect=${h}
+      ></modus-wc-autocomplete>
+    `},args:{bordered:!0,"debounce-ms":0,disabled:!1,"include-clear":!0,"include-search":!0,items:v,"leave-menu-open":!1,"min-chars":0,"no-results":{label:"No fruits found",subLabel:"Try different characters"},placeholder:"Search fruits...","read-only":!1,required:!1,"show-menu-on-focus":!0,"show-spinner":!1,size:"md",value:""},parameters:{docs:{description:{story:`This example demonstrates custom event handlers with three specific behaviors:
+
+1. **Skip Navigation**: Arrow keys skip every other item for 2x faster navigation
+2. **Escape Animation**: Pressing Escape triggers a subtle scale animation
+3. **Fuzzy Character Search**: Instead of normal substring matching, this searches for items containing ALL typed characters in any order
+
+The fuzzy search allows finding items with scattered characters:
+- Type "pae" to find Pine**a**ppl**e**
+- Type "bry" to find Blue**b**er**ry**, Straw**b**er**ry**, Rasp**b**er**ry**
+
+Items are automatically sorted by relevance with exact substring matches appearing first.`}}}},$={args:{...ee.args,items:v},render:e=>{const p=async()=>{const t=document.getElementById("programmatic-autocomplete");if(t){const s=v.find(r=>r.value==="apple")||null;await t.selectItem(s)}},b=async()=>{const t=document.getElementById("programmatic-autocomplete");t&&await t.selectItem(null)},h=async()=>{const t=document.getElementById("programmatic-autocomplete");t&&await t.openMenu()},u=async()=>{const t=document.getElementById("programmatic-autocomplete");t&&await t.closeMenu()},i=async()=>{const t=document.getElementById("programmatic-autocomplete");t&&await t.toggleMenu()},a=async()=>{const t=document.getElementById("programmatic-autocomplete");t&&await t.focusInput()},o=async()=>{const t=document.getElementById("programmatic-autocomplete");t&&await t.clearInput()},l=window;return l.handleSelectApple=p,l.handleSelectNull=b,l.handleOpenMenu=h,l.handleCloseMenu=u,l.handleToggleMenu=i,l.handleFocusInput=a,l.handleClearInput=o,f`
+      <style>
+        div[id^='story--components-forms-autocomplete--with-programmatic-control'] {
+          height: 500px;
+        }
+
+        .controls-content {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+        .control-group {
+          margin-bottom: 1rem;
+        }
+        .control-group label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 600;
+        }
+        .button-row {
+          display: flex;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+        }
+      </style>
+
+      <modus-wc-card class="controls-card">
+        <div class="controls-content">
+          <h3>Programmatic Control Methods</h3>
+
+          <div class="control-group">
+            <label>Selection Methods:</label>
+            <div class="button-row">
+              <modus-wc-button
+                onclick="window.handleSelectApple()"
+                variant="primary"
+                size="sm"
+              >
+                Select Apple
+              </modus-wc-button>
+              <modus-wc-button
+                onclick="window.handleSelectNull()"
+                variant="secondary"
+                size="sm"
+              >
+                Clear Selection
+              </modus-wc-button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Menu Control Methods:</label>
+            <div class="button-row">
+              <modus-wc-button
+                onclick="window.handleOpenMenu()"
+                variant="primary"
+                size="sm"
+              >
+                Open Menu
+              </modus-wc-button>
+              <modus-wc-button
+                onclick="window.handleCloseMenu()"
+                variant="primary"
+                size="sm"
+              >
+                Close Menu
+              </modus-wc-button>
+              <modus-wc-button
+                onclick="window.handleToggleMenu()"
+                variant="secondary"
+                size="sm"
+              >
+                Toggle Menu
+              </modus-wc-button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Input Control Methods:</label>
+            <div class="button-row">
+              <modus-wc-button
+                onclick="window.handleFocusInput()"
+                variant="primary"
+                size="sm"
+              >
+                Focus Input
+              </modus-wc-button>
+              <modus-wc-button
+                onclick="window.handleClearInput()"
+                variant="danger"
+                size="sm"
+              >
+                Clear All
+              </modus-wc-button>
+            </div>
+          </div>
+        </div>
+      </modus-wc-card>
+
+      <modus-wc-autocomplete
+        id="programmatic-autocomplete"
+        aria-label="Programmatic control demo"
+        ?bordered=${e.bordered}
+        custom-class=${n(e["custom-class"])}
+        debounce-ms=${n(e["debounce-ms"])}
+        ?disabled=${e.disabled}
+        ?include-clear=${e["include-clear"]}
+        ?include-search=${e["include-search"]}
+        input-id=${n(e["input-id"])}
+        input-tab-index=${n(e["input-tab-index"])}
+        .items=${e.items}
+        label="Try the control buttons above"
+        ?leave-menu-open=${e["leave-menu-open"]}
+        max-chips=${e["max-chips"]??4}
+        min-chars=${e["min-chars"]}
+        min-input-width=${n(e["min-input-width"])}
+        ?multi-select=${e["multi-select"]}
+        name=${n(e.name)}
+        .noResults=${e["no-results"]}
+        placeholder="Use buttons above to control"
+        ?read-only=${e["read-only"]}
+        ?required=${e.required}
+        ?show-menu-on-focus=${e["show-menu-on-focus"]}
+        ?show-spinner=${e["show-spinner"]}
+        size=${n(e.size)}
+        value=${e.value}
+      ></modus-wc-autocomplete>
+    `},parameters:{docs:{description:{story:`
+## Public Methods
+
+The autocomplete component exposes several methods that can be called programmatically:
+
+### selectItem(item: IAutocompleteItem | null): Promise<void>
+Programmatically select an item. Pass \`null\` to clear selection.
+
+\`\`\`javascript
+const autocomplete = document.querySelector('modus-wc-autocomplete');
+const item = { label: 'Apple', value: 'apple', visibleInMenu: true };
+await autocomplete.selectItem(item);
+\`\`\`
+
+### openMenu(): Promise<void>
+Programmatically open the dropdown menu.
+
+\`\`\`javascript
+await autocomplete.openMenu();
+\`\`\`
+
+### closeMenu(): Promise<void>
+Programmatically close the dropdown menu.
+
+\`\`\`javascript
+await autocomplete.closeMenu();
+\`\`\`
+
+### toggleMenu(): Promise<void>
+Toggle the dropdown menu open/closed.
+
+\`\`\`javascript
+await autocomplete.toggleMenu();
+\`\`\`
+
+### focusInput(): Promise<void>
+Set focus to the input element.
+
+\`\`\`javascript
+await autocomplete.focusInput();
+\`\`\`
+
+### clearInput(): Promise<void>
+Clear the input value and all selections.
+
+\`\`\`javascript
+await autocomplete.clearInput();
+\`\`\`
+
+        `}}}},C={parameters:{docs:{description:{story:`
+#### Breaking Changes
+
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
+  additional info and examples.
+  - To handle updating items in 2.0, simply create a new array of items and bind it to the \`items\` prop. The 1.0 prop
+  \`filter-options\` is no longer necessary.
+  - Size values have changed from verbose names (\`small\`, \`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+
+#### Prop Mapping
+
+| 1.0 Prop                      | 2.0 Prop            | Notes                                                       |
+|-------------------------------|---------------------|-------------------------------------------------------------|
+| aria-label                    | aria-label          |                                                             |
+| clearable                     |                     | Upcoming feature                                            |
+| disabled                      | disabled            |                                                             |
+| disable-close-on-select       | leave-menu-open     |                                                             |
+| dropdown-max-height           |                     | Not carried over, use CSS instead                           |
+| dropdown-z-index              |                     | Not carried over, use CSS instead                           |
+| error-text                    | feedback.message    | Use feedback level                                          |
+| filter-options                |                     | Rebind options                                              |
+| include-search-icon           |                     | Coming soon                                                 |
+| label                         | label               |                                                             |
+| loading                       |                     | Upcoming feature                                            |
+| multiple                      | multi-select        |                                                             |
+| no-results-found-text         | no-results.label    |                                                             |
+| no-results-found-subtext      | no-results.subLabel |                                                             |
+| options                       | items               |                                                             |
+| placeholder                   | placeholder         |                                                             |
+| read-only                     | read-only           |                                                             |
+| required                      | required            |                                                             |
+| show-no-results-found-message |                     | Not carried over, use \`no-results\` prop                   |
+| show-options-on-focus         |                     | Not carried over                                            |
+| size                          | size                | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
+| value                         | value               |                                                             |
+
+#### Event Mapping
+
+| 1.0 Event   | 2.0 Event   | Notes            |
+|-------------|-------------|------------------|
+| optionSelected ||
+| selectionsChanged ||
+| valueChange | inputChange |                  |
+
+#### Interfaces
+
+##### 1.0
+
+\`\`\`typescript
+interface ModusAutocompleteOption {
+  id: string;
+  value: string;
+}
+\`\`\`
+
+##### 2.0
+
+\`\`\`typescript
+interface IAutocompleteItem {
+  label: string;
+  selected?: boolean;
+  value: string;
+  visibleInMenu: boolean;
+}
+\`\`\`
+        `}},controls:{disable:!0},canvas:{disable:!0}},render:()=>f`<div></div>`};var k,z,D;g.parameters={...g.parameters,docs:{...(k=g.parameters)==null?void 0:k.docs,source:{originalSource:`{
+  ...Template
+}`,...(D=(z=g.parameters)==null?void 0:z.docs)==null?void 0:D.source}}};var P,q,H;y.parameters={...y.parameters,docs:{...(P=y.parameters)==null?void 0:P.docs,source:{originalSource:`{
+  render: args => {
+    // Initialize args.items if empty
+    if (!args.items || args.items.length === 0) {
+      args.items = [...items];
+    }
+    // prettier-ignore
+    return html\`
+<script>
+  // Initialize args.items if empty
+  if (!args.items || args.items.length === 0) {
+    args.items = [...items];
+  }
+<\/script>
+<style>
+  .modus-wc-autocomplete-multi-select {
+    width: 480px !important;
+  }
+</style>
+<modus-wc-autocomplete
+  aria-label="Fruit autocomplete"
+  ?bordered=\${args.bordered}
+  custom-class=\${ifDefined(args['custom-class'])}
+  debounce-ms=\${ifDefined(args['debounce-ms'])}
+  ?disabled=\${args.disabled}
+  ?include-clear=\${args['include-clear']}
+  ?include-search=\${args['include-search']}
+  input-id=\${ifDefined(args['input-id'])}
+  input-tab-index=\${ifDefined(args['input-tab-index'])}
+  .items=\${args.items}
+  label=\${ifDefined(args.label)}
+  ?leave-menu-open=\${args['leave-menu-open']}
+  max-chips=\${args['max-chips'] ?? 4}
+  min-chars=\${args['min-chars']}
+  min-input-width=\${ifDefined(args['min-input-width'])}
+  ?multi-select=\${true}
+  name=\${ifDefined(args.name)}
+  .noResults=\${args['no-results']}
+  placeholder=\${ifDefined(args.placeholder)}
+  ?read-only=\${args['read-only']}
+  ?required=\${args.required}
+  ?show-menu-on-focus=\${args['show-menu-on-focus']}
+  size=\${ifDefined(args.size)}
+  value=\${args.value}
+></modus-wc-autocomplete>
+    \`;
+  }
+}`,...(H=(q=y.parameters)==null?void 0:q.docs)==null?void 0:H.source}}};var B,F,R;I.parameters={...I.parameters,docs:{...(B=I.parameters)==null?void 0:B.docs,source:{originalSource:`{
+  render: args => {
+    let debounceTimer: number;
+    const handleInputChange = (e: CustomEvent<Event>) => {
+      if (!e.detail?.target) return;
+      const autocomplete = (e.target as HTMLInputElement).closest('modus-wc-autocomplete') as Element & {
+        items: IAutocompleteItem[];
+        showSpinner: boolean;
+        value: string;
+      };
+      if (autocomplete) {
+        const input = e.detail.target as HTMLInputElement;
+        const searchText = input.value.toLowerCase();
+
+        // Clear previous timeout to avoid multiple API calls
+        if (debounceTimer) {
+          window.clearTimeout(debounceTimer);
+        }
+
+        // Show spinner immediately and update input value
+        autocomplete.showSpinner = true;
+
+        // Simulate an API call with a 2-second delay
+        debounceTimer = window.setTimeout(() => {
+          // Filter the master list of items to get the new results
+          const filteredItems = items.filter(item => item.label.toLowerCase().includes(searchText));
+
+          // Update the component with the new filtered list and hide the spinner
+          autocomplete.items = filteredItems;
+          autocomplete.showSpinner = false;
+        }, 2000);
+      }
+    };
+    // prettier-ignore
+    return html\`
+<script>
+        let debounceTimer: number;
+
+  const handleInputChange = (e: CustomEvent<Event>) => {
+    if (!e.detail?.target) return;
+
+    const autocomplete = (e.target as HTMLInputElement).closest(
+      'modus-wc-autocomplete'
+    ) as Element & {
+      items: IAutocompleteItem[];
+      showSpinner: boolean;
+      value: string;
+    };
+
+    if (autocomplete) {
+      const input = e.detail.target as HTMLInputElement;
+      const searchText = input.value.toLowerCase();
+
+      // Clear previous timeout to avoid multiple API calls
+      if (debounceTimer) {
+        window.clearTimeout(debounceTimer);
+      }
+
+      // Show spinner immediately and update input value
+      autocomplete.showSpinner = true;
+
+      // Simulate an API call with a 2-second delay
+      debounceTimer = window.setTimeout(() => {
+        // Filter the master list of items to get the new results
+        const filteredItems = items.filter((item) =>
+          item.label.toLowerCase().includes(searchText)
+        );
+
+        // Update the component with the new filtered list and hide the spinner
+        autocomplete.items = filteredItems;
+        autocomplete.showSpinner = false;
+      }, 2000);
+    }
+  };
+<\/script>
+<style>
+  div[id^='story--components-forms-autocomplete--with-spinner'] {
+    height: 400px;
+  }
+</style>
+<modus-wc-autocomplete
+  aria-label="Fruit autocomplete with spinner"
+  ?bordered=\${args.bordered}
+  custom-class=\${ifDefined(args['custom-class'])}
+  debounce-ms=\${ifDefined(args['debounce-ms'])}
+  ?disabled=\${args.disabled}
+  input-id=\${ifDefined(args['input-id'])}
+  input-tab-index=\${ifDefined(args['input-tab-index'])}
+  .items=\${args.items}
+  label=\${ifDefined(args.label)}
+  ?leave-menu-open=\${args['leave-menu-open']}
+  min-chars=\${args['min-chars']}
+  ?multi-select=\${false}
+  name=\${ifDefined(args.name)}
+  placeholder=\${ifDefined(args.placeholder)}
+  ?read-only=\${args['read-only']}
+  ?required=\${args.required}
+  ?show-menu-on-focus=\${args['show-menu-on-focus']}
+  ?show-spinner=\${args['show-spinner']}
+  size=\${ifDefined(args.size)}
+  value=\${args.value}
+  @inputChange=\${handleInputChange}
+></modus-wc-autocomplete>
+    \`;
+  }
+}`,...(R=(F=I.parameters)==null?void 0:F.docs)==null?void 0:R.source}}};var O,N,j;x.parameters={...x.parameters,docs:{...(O=x.parameters)==null?void 0:O.docs,source:{originalSource:`{
+  render: args => {
+    const originalNoResults = args['no-results'];
+    if (args['leave-menu-open'] == true) {
+      args['no-results'] = {
+        ariaLabel: '',
+        label: '',
+        subLabel: ''
+      };
+    }
+    const getVisibleItems = (autocomplete: Element): HTMLElement[] => {
+      const menuItems = autocomplete.querySelectorAll('modus-wc-menu-item:not([disabled])');
+      return Array.from(menuItems).filter((item: Element): item is HTMLElement => {
+        const style = window.getComputedStyle(item);
+        return style.display !== 'none' && !item.classList.contains('hidden');
+      });
+    };
+    const handleCustomKeyDown = (e: KeyboardEvent) => {
+      const autocomplete = (e.target as HTMLInputElement).closest('modus-wc-autocomplete') as Element & {
+        openMenu: () => Promise<void>;
+        closeMenu: () => Promise<void>;
+        readOnly?: boolean;
+        disabled?: boolean;
+      };
+      if (!autocomplete) return;
+
+      // Don't process keyboard events when disabled or readOnly
+      if (autocomplete.disabled || autocomplete.readOnly) return;
+      const visibleItems = getVisibleItems(autocomplete);
+
+      // Get all button elements within visible menu items
+      const buttons = visibleItems.map(item => item.querySelector('button')).filter(Boolean) as HTMLButtonElement[];
+      const currentFocusedButton = document.activeElement as HTMLButtonElement;
+      const currentIndex = buttons.indexOf(currentFocusedButton);
+      switch (e.key) {
+        case 'ArrowDown':
+          {
+            e.preventDefault();
+            // Open menu when arrow key is pressed
+            void autocomplete.openMenu();
+            let nextIndex = currentIndex + 1;
+            // Stop at the last item instead of wrapping
+            if (nextIndex >= buttons.length) return;
+            if (nextIndex < 0) nextIndex = 0;
+            buttons[nextIndex]?.focus();
+            break;
+          }
+        case 'ArrowUp':
+          {
+            e.preventDefault();
+            // Open menu when arrow key is pressed
+            void autocomplete.openMenu();
+            let prevIndex = currentIndex - 1;
+            // Stop at the first item instead of wrapping
+            if (prevIndex < 0) return;
+            buttons[prevIndex]?.focus();
+            break;
+          }
+        case 'Enter':
+          {
+            e.preventDefault();
+            // If a button is focused, click it
+            if (buttons.includes(currentFocusedButton)) {
+              currentFocusedButton.click();
+            }
+            const input = autocomplete.querySelector('input');
+            input?.focus();
+            break;
+          }
+        case 'Escape':
+          {
+            e.preventDefault();
+            void autocomplete.closeMenu();
+            // Return focus to input
+            const input = autocomplete.querySelector('input');
+            input?.focus();
+            break;
+          }
+      }
+    };
+    const handleInputChange = (e: CustomEvent<Event>) => {
+      if (!e.detail?.target) return;
+      const autocomplete = (e.target as HTMLInputElement).closest('modus-wc-autocomplete') as Element & {
+        noResults: IAutocompleteNoResults;
+      };
+      if (autocomplete) {
+        const searchText = (e.detail.target as HTMLInputElement).value.toLowerCase();
+        const menuItems = autocomplete?.querySelectorAll('modus-wc-menu-item');
+
+        // Clear selected state when input is empty
+        if (searchText === '') {
+          menuItems?.forEach(item => {
+            item.removeAttribute('selected');
+          });
+        }
+        let hiddenCount = 0;
+        Array.from(menuItems ?? []).forEach(menuItem => {
+          const label = menuItem.getAttribute('label')?.toLowerCase() || '';
+          if (!label.includes(searchText)) {
+            menuItem.classList.add('hidden');
+            hiddenCount++;
+          } else {
+            menuItem.classList.remove('hidden');
+          }
+        });
+
+        // Show no results if all items are hidden
+        autocomplete.noResults = hiddenCount === menuItems?.length ? originalNoResults : {
+          ariaLabel: '',
+          label: '',
+          subLabel: ''
+        };
+
+        // Show/hide the no results element
+        const noResultsElement = autocomplete.querySelector('.no-results-item') as HTMLElement;
+        if (noResultsElement) {
+          if (hiddenCount === menuItems?.length) {
+            noResultsElement.classList.add('visible');
+          } else {
+            noResultsElement.classList.remove('visible');
+          }
+        }
+      }
+    };
+    const handleItemSelect = (e: CustomEvent<{
+      value: string;
+    }>) => {
+      const autocomplete = (e.target as HTMLInputElement).closest('modus-wc-autocomplete') as HTMLElement & {
+        value: string;
+        closeMenu: () => Promise<void>;
+      };
+      if (autocomplete) {
+        const selectedValue = e.detail.value;
+        autocomplete.value = selectedValue;
+        // Update selected state on menu items
+        const menuItems = autocomplete.querySelectorAll('modus-wc-menu-item');
+        menuItems.forEach(item => {
+          if (item.getAttribute('value') === selectedValue) {
+            item.setAttribute('selected', 'true');
+          } else {
+            item.removeAttribute('selected');
+          }
+        });
+        // Close menu after selection unless leaveMenuOpen is true
+        if (!args['leave-menu-open']) {
+          void autocomplete.closeMenu();
+        }
+      }
+    };
+    // prettier-ignore
+    return html\`
+<script>
+const originalNoResults = args['no-results'];
+if (args['leave-menu-open'] == true) {
+  args['no-results'] = {
+    ariaLabel: '',
+    label: '',
+    subLabel: '',
+  };
+}
+
+const getVisibleItems = (autocomplete: Element): HTMLElement[] => {
+  const menuItems = autocomplete.querySelectorAll(
+    'modus-wc-menu-item:not([disabled])'
+  );
+  return Array.from(menuItems).filter(
+    (item: Element): item is HTMLElement => {
+      const style = window.getComputedStyle(item);
+      return style.display !== 'none' && !item.classList.contains('hidden');
+    }
+  );
+};
+
+const handleCustomKeyDown = (e: KeyboardEvent) => {
+  const autocomplete = (e.target as HTMLInputElement).closest(
+    'modus-wc-autocomplete'
+  ) as Element & {
+    openMenu: () => Promise<void>;
+    closeMenu: () => Promise<void>;
+    readOnly?: boolean;
+    disabled?: boolean;
+  };
+  if (!autocomplete) return;
+
+  // Don't process keyboard events when disabled or readOnly
+  if (autocomplete.disabled || autocomplete.readOnly) return;
+
+  const visibleItems = getVisibleItems(autocomplete);
+
+  // Get all button elements within visible menu items
+  const buttons = visibleItems
+    .map((item) => item.querySelector('button'))
+    .filter(Boolean) as HTMLButtonElement[];
+  const currentFocusedButton = document.activeElement as HTMLButtonElement;
+  const currentIndex = buttons.indexOf(currentFocusedButton);
+
+  switch (e.key) {
+    case 'ArrowDown': {
+      e.preventDefault();
+      // Open menu when arrow key is pressed
+      void autocomplete.openMenu();
+
+      let nextIndex = currentIndex + 1;
+      // Stop at the last item instead of wrapping
+      if (nextIndex >= buttons.length) return;
+      if (nextIndex < 0) nextIndex = 0;
+
+      buttons[nextIndex]?.focus();
+      break;
+    }
+
+    case 'ArrowUp': {
+      e.preventDefault();
+      // Open menu when arrow key is pressed
+      void autocomplete.openMenu();
+
+      let prevIndex = currentIndex - 1;
+      // Stop at the first item instead of wrapping
+      if (prevIndex < 0) return;
+      
+      buttons[prevIndex]?.focus();
+      break;
+    }
+
+    case 'Enter': {
+      e.preventDefault();
+      // If a button is focused, click it
+      if (buttons.includes(currentFocusedButton)) {
+        currentFocusedButton.click();
+      }
+      break;
+    }
+
+    case 'Escape': {
+      e.preventDefault();
+      void autocomplete.closeMenu();
+      // Return focus to input
+      const input = autocomplete.querySelector('input');
+      input?.focus();
+      break;
+    }
+  }
+};
+
+const handleInputChange = (e: CustomEvent<Event>) => {
+  if (!e.detail?.target) return;
+
+  const autocomplete = (e.target as HTMLInputElement).closest(
+    'modus-wc-autocomplete'
+  ) as Element & { noResults: IAutocompleteNoResults };
+
+  if (autocomplete) {
+    const searchText = (
+      e.detail.target as HTMLInputElement
+    ).value.toLowerCase();
+    const menuItems = autocomplete?.querySelectorAll('modus-wc-menu-item');
+    
+    // Clear selected state when input is empty
+    if (searchText === '') {
+      menuItems?.forEach((item) => {
+        item.removeAttribute('selected');
+      });
+    }
+    
+    let hiddenCount = 0;
+    Array.from(menuItems ?? []).forEach((menuItem) => {
+      const label = menuItem.getAttribute('label')?.toLowerCase() || '';
+      if (!label.includes(searchText)) {
+        menuItem.classList.add('hidden');
+        hiddenCount++;
+      } else {
+        menuItem.classList.remove('hidden');
+      }
+    });
+
+    // Show no results if all items are hidden
+    autocomplete.noResults =
+      hiddenCount === menuItems?.length
+        ? originalNoResults
+        : { ariaLabel: '', label: '', subLabel: '' };
+        
+    // Show/hide the no results element
+    const noResultsElement = autocomplete.querySelector('.no-results-item') as HTMLElement;
+    if (noResultsElement) {
+      if (hiddenCount === menuItems?.length) {
+        noResultsElement.classList.add('visible');
+      } else {
+        noResultsElement.classList.remove('visible');
+      }
+    }
+  }
+};
+
+const handleItemSelect = (e: CustomEvent<{ value: string }>) => {
+  const autocomplete = (e.target as HTMLInputElement).closest(
+    'modus-wc-autocomplete'
+  ) as HTMLElement & { value: string; closeMenu: () => Promise<void> };
+
+  if (autocomplete) {
+    const selectedValue = e.detail.value;
+    autocomplete.value = selectedValue;
+    // Update selected state on menu items
+    const menuItems = autocomplete.querySelectorAll('modus-wc-menu-item');
+    menuItems.forEach((item) => {
+      if (item.getAttribute('value') === selectedValue) {
+        item.setAttribute('selected', 'true');
+      } else {
+        item.removeAttribute('selected');
+      }
+    });
+    // Close menu after selection unless leaveMenuOpen is true
+    if (!args['leave-menu-open']) {
+      void autocomplete.closeMenu();
+    }
+  }
+};
+<\/script>
+<style>
+div[id^='story--components-forms-autocomplete--custom-menu-items'] {
+  height: 400px;
+}
+.modus-wc-autocomplete {
+    width: 480px !important;
+  }
+.custom-menu-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.content-wrapper {
+  flex: 1;
+}
+.title {
+  font-weight: 500;
+}
+.subtitle {
+  font-size: 0.875rem;
+  color: #666;
+}
+modus-wc-menu-item.hidden {
+  display: none;
+}
+.no-results-item {
+  display: none;
+  padding: 16px;
+  text-align: center;
+}
+.no-results-item.visible {
+  display: block;
+}
+.no-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.no-results-title {
+  font-weight: bold;
+}
+.no-results-header modus-wc-icon {
+  color: var(--modus-wc-color-gray-6);
+}
+
+</style>
+<modus-wc-autocomplete
+  aria-label="Custom menu items example"
+  ?bordered=\${args.bordered}
+  custom-class=\${ifDefined(args['custom-class'])}
+  debounce-ms=\${ifDefined(args['debounce-ms'])}
+  ?disabled=\${args.disabled}
+  input-id=\${ifDefined(args['input-id'])}
+  input-tab-index=\${ifDefined(args['input-tab-index'])}
+  label=\${ifDefined(args.label)}
+  ?leave-menu-open=\${args['leave-menu-open']}
+  min-chars=\${args['min-chars']}
+  ?multi-select=\${false}
+  name=\${ifDefined(args.name)}
+  .noResults=\${args['no-results']}
+  placeholder=\${ifDefined(args.placeholder)}
+  ?read-only=\${args['read-only']}
+  ?required=\${args.required}
+  ?show-menu-on-focus=\${args['show-menu-on-focus']}
+  size=\${ifDefined(args.size)}
+  ?show-spinner=\${args['show-spinner']}
+  value=\${args.value}
+  .customKeyDown=\${handleCustomKeyDown}
+  @inputChange=\${handleInputChange}
+  ?include-search=\${true}
+>
+  <div slot="menu-items">
+    <modus-wc-menu-item
+      label="John Doe"
+      sub-label="john.doe@example.com"
+      value="John Doe"
+      @itemSelect=\${handleItemSelect}
+    >
+           <div slot="start-icon">
+      <modus-wc-avatar aria-label="Avatar" size="xs" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" size="xs"></modus-wc-avatar>
+      </div>
+    </modus-wc-menu-item>
+    <modus-wc-menu-item
+      label="Jane Smith"
+      sub-label="jane.smith@example.com"
+      value="Jane Smith"
+      @itemSelect=\${handleItemSelect}
+    >
+      <div slot="start-icon">
+      <modus-wc-avatar aria-label="Avatar" size="xs" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" size="xs"></modus-wc-avatar>
+      </div>
+    </modus-wc-menu-item>
+    <modus-wc-menu-item
+      label="Bob Johnson"
+      sub-label="bob.johnson@example.com"
+      value="Bob Johnson"
+      @itemSelect=\${handleItemSelect}
+    >
+                <div slot="start-icon">
+      <modus-wc-avatar aria-label="Avatar" size="xs" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" size="xs"></modus-wc-avatar>
+      </div>
+    </modus-wc-menu-item>
+    <modus-wc-menu-item
+      label="Alice Williams"
+      sub-label="alice.williams@example.com"
+      value="Alice Williams"
+      @itemSelect=\${handleItemSelect}
+    >
+      <div slot="start-icon">
+      <modus-wc-avatar aria-label="Avatar" size="xs" alt="Example avatar" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" size="md"></modus-wc-avatar>
+      </div>
+    </modus-wc-menu-item>
+    <li class="no-results-item">
+      <div class="no-results-header">
+        <modus-wc-icon name="search" size="lg"></modus-wc-icon>
+        <div class="no-results-title">No results found</div>
+      </div>
+    </li>
+  </div>
+</modus-wc-autocomplete>
+    \`;
+  }
+}`,...(j=(N=x.parameters)==null?void 0:N.docs)==null?void 0:j.source}}};var W,U,V;M.parameters={...M.parameters,docs:{...(W=M.parameters)==null?void 0:W.docs,source:{originalSource:`{
+  render: args => {
+    interface AutocompleteElement extends HTMLElement {
+      items: IAutocompleteItem[];
+      value: string;
+      openMenu(): Promise<void>;
+      closeMenu(): Promise<void>;
+    }
+
+    // Custom keydown handler with skip navigation and escape animation
+    const customKeyDown = (e: KeyboardEvent) => {
+      const autocomplete = (e.target as HTMLInputElement).closest('modus-wc-autocomplete') as AutocompleteElement;
+      if (!autocomplete) return;
+
+      // Prevent default for navigation keys
+      if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
+        e.preventDefault();
+      }
+      const visibleItems = args.items.filter(item => item.visibleInMenu && !item.disabled);
+      switch (e.key) {
+        case 'Escape':
+          args.items = args.items.map(item => ({
+            ...item,
+            focused: false
+          }));
+          autocomplete.items = [...args.items];
+          void autocomplete.closeMenu();
+          // Custom: Show escape animation
+          autocomplete.style.transform = 'scale(0.98)';
+          setTimeout(() => {
+            autocomplete.style.transform = '';
+          }, 200);
+          break;
+        case 'ArrowDown':
+          {
+            // Open menu if not already open
+            void autocomplete.openMenu();
+            const currentIndex = visibleItems.findIndex(item => item.focused);
+            const nextIndex = currentIndex < 0 ? 0 : Math.min(currentIndex + 1, visibleItems.length - 1);
+
+            // Custom: Skip every other item for faster navigation
+            const skipIndex = nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
+            args.items = args.items.map(item => ({
+              ...item,
+              focused: visibleItems[skipIndex]?.value === item.value
+            }));
+            break;
+          }
+        case 'ArrowUp':
+          {
+            const currentIndex = visibleItems.findIndex(item => item.focused);
+            const prevIndex = currentIndex < 0 ? visibleItems.length - 1 : Math.max(currentIndex - 1, 0);
+
+            // Custom: Skip every other item for faster navigation
+            const skipIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
+            args.items = args.items.map(item => ({
+              ...item,
+              focused: visibleItems[skipIndex]?.value === item.value
+            }));
+            break;
+          }
+        case 'Enter':
+          {
+            const focusedItem = visibleItems.find(item => item.focused);
+            if (focusedItem) {
+              // For single select, clear previous selection
+              args.items = args.items.map(item => ({
+                ...item,
+                selected: item.value === focusedItem.value,
+                focused: false
+              }));
+              autocomplete.value = focusedItem.label;
+              void autocomplete.closeMenu();
+            }
+            break;
+          }
+        default:
+          return;
+      }
+      autocomplete.items = [...args.items];
+    };
+
+    // Custom input change handler with fuzzy character matching
+    const customInputChange = (value: string) => {
+      const autocomplete = document.querySelector('modus-wc-autocomplete') as AutocompleteElement;
+      if (!autocomplete) return;
+      const searchChars = value.toLowerCase().split('');
+
+      // Custom fuzzy search: Match items that contain ALL typed characters (in any order)
+      if (searchChars.length > 0 && searchChars[0] !== '') {
+        // Calculate match score for each item
+        const scoredItems = args.items.map(item => {
+          const itemLower = item.label.toLowerCase();
+          let score = 0;
+          let allCharsFound = true;
+
+          // Check if all search characters exist in the item
+          for (const char of searchChars) {
+            if (itemLower.includes(char)) {
+              // Bonus points for consecutive characters
+              const charIndex = itemLower.indexOf(char);
+              if (charIndex === 0) score += 3; // Start of word bonus
+              else if (itemLower[charIndex - 1] === ' ') score += 2; // Start of any word
+              else score += 1;
+            } else {
+              allCharsFound = false;
+              break;
+            }
+          }
+
+          // Additional bonus for exact substring match
+          if (allCharsFound && itemLower.includes(value.toLowerCase())) {
+            score += 10;
+          }
+          return {
+            item,
+            score: allCharsFound ? score : -1,
+            visible: allCharsFound
+          };
+        });
+
+        // Sort by score (highest first) and update items
+        scoredItems.sort((a, b) => b.score - a.score);
+        args.items = scoredItems.map(({
+          item,
+          visible
+        }) => ({
+          ...item,
+          visibleInMenu: visible,
+          focused: false,
+          selected: item.selected && visible,
+          // Add score as part of label for demonstration (you can remove this in production)
+          label: item.label
+        }));
+      } else {
+        // No search text, show all items
+        args.items = args.items.map(item => ({
+          ...item,
+          visibleInMenu: true,
+          focused: false
+        }));
+      }
+      autocomplete.items = [...args.items];
+      autocomplete.value = value;
+
+      // Show match count in console for demonstration
+      const matchCount = args.items.filter(item => item.visibleInMenu).length;
+      console.log(\`Fuzzy search for "\${value}": \${matchCount} matches found\`);
+
+      // Show menu if there are visible items
+      const hasVisibleItems = args.items.some(item => item.visibleInMenu);
+      if (hasVisibleItems && value.length >= args['min-chars']) {
+        void autocomplete.openMenu();
+      } else {
+        void autocomplete.closeMenu();
+      }
+    };
+
+    // Custom item select handler
+    const customItemSelect = (item: IAutocompleteItem) => {
+      const autocomplete = document.querySelector('modus-wc-autocomplete') as AutocompleteElement;
+      if (!autocomplete) return;
+
+      // Clear previous selections for single select
+      args.items = args.items.map(menuItem => ({
+        ...menuItem,
+        selected: menuItem.value === item.value,
+        focused: false
+      }));
+      autocomplete.items = [...args.items];
+      autocomplete.value = item.label;
+      void autocomplete.closeMenu();
+    };
+    return html\`
+      <style>
+        div[id^='story--components-forms-autocomplete--custom-event-handlers'] {
+          height: 400px;
+        }
+
+        .modus-wc-autocomplete.modus-wc-autocomplete {
+          width: 300px;
+        }
+
+        .fuzzy-info {
+          margin-top: 1rem;
+          padding: 1rem;
+          background-color: var(--modus-wc-color-info-light);
+          border-radius: 4px;
+          font-size: 0.875rem;
+        }
+      </style>
+
+      <modus-wc-autocomplete
+        aria-label="Custom handlers autocomplete"
+        ?bordered=\${args.bordered}
+        custom-class=\${ifDefined(args['custom-class'])}
+        debounce-ms=\${0}
+        ?disabled=\${args.disabled}
+        ?include-clear=\${args['include-clear']}
+        ?include-search=\${args['include-search']}
+        input-id=\${ifDefined(args['input-id'])}
+        input-tab-index=\${ifDefined(args['input-tab-index'])}
+        .items=\${args.items}
+        label="Fruit list with custom handlers"
+        ?leave-menu-open=\${args['leave-menu-open']}
+        min-chars=\${args['min-chars']}
+        ?multi-select=\${false}
+        name=\${ifDefined(args.name)}
+        .noResults=\${args['no-results']}
+        placeholder="Type 'app' for Apple or Pineapple"
+        ?read-only=\${args['read-only']}
+        ?required=\${args.required}
+        ?show-menu-on-focus=\${args['show-menu-on-focus']}
+        ?show-spinner=\${args['show-spinner']}
+        size=\${ifDefined(args.size)}
+        value=\${args.value}
+        .customKeyDown=\${customKeyDown}
+        .customInputChange=\${customInputChange}
+        .customItemSelect=\${customItemSelect}
+      ></modus-wc-autocomplete>
+    \`;
+  },
+  args: {
+    bordered: true,
+    'debounce-ms': 0,
+    // Set to 0 to see immediate feedback
+    disabled: false,
+    'include-clear': true,
+    'include-search': true,
+    items: items,
+    'leave-menu-open': false,
+    'min-chars': 0,
+    'no-results': {
+      label: 'No fruits found',
+      subLabel: 'Try different characters'
+    },
+    placeholder: 'Search fruits...',
+    'read-only': false,
+    required: false,
+    'show-menu-on-focus': true,
+    'show-spinner': false,
+    size: 'md',
+    value: ''
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: \`This example demonstrates custom event handlers with three specific behaviors:
+
+1. **Skip Navigation**: Arrow keys skip every other item for 2x faster navigation
+2. **Escape Animation**: Pressing Escape triggers a subtle scale animation
+3. **Fuzzy Character Search**: Instead of normal substring matching, this searches for items containing ALL typed characters in any order
+
+The fuzzy search allows finding items with scattered characters:
+- Type "pae" to find Pine**a**ppl**e**
+- Type "bry" to find Blue**b**er**ry**, Straw**b**er**ry**, Rasp**b**er**ry**
+
+Items are automatically sorted by relevance with exact substring matches appearing first.\`
+      }
+    }
+  }
+}`,...(V=(U=M.parameters)==null?void 0:U.docs)==null?void 0:V.source}}};var K,J,_;$.parameters={...$.parameters,docs:{...(K=$.parameters)==null?void 0:K.docs,source:{originalSource:`{
+  args: {
+    ...meta.args,
+    items: items // Explicitly set items for this story
+  },
+  render: args => {
+    // Type for autocomplete element with methods
+    interface AutocompleteElement extends HTMLElement {
+      selectItem(item: IAutocompleteItem | null): Promise<void>;
+      openMenu(): Promise<void>;
+      closeMenu(): Promise<void>;
+      toggleMenu(): Promise<void>;
+      focusInput(): Promise<void>;
+      clearInput(): Promise<void>;
+    }
+
+    // Handler functions that will be attached to buttons
+    const handleSelectApple = async () => {
+      const autocomplete = document.getElementById('programmatic-autocomplete') as AutocompleteElement;
+      if (autocomplete) {
+        const appleItem = items.find(item => item.value === 'apple') || null;
+        await autocomplete.selectItem(appleItem);
+      }
+    };
+    const handleSelectNull = async () => {
+      const autocomplete = document.getElementById('programmatic-autocomplete') as AutocompleteElement;
+      if (autocomplete) {
+        await autocomplete.selectItem(null);
+      }
+    };
+    const handleOpenMenu = async () => {
+      const autocomplete = document.getElementById('programmatic-autocomplete') as AutocompleteElement;
+      if (autocomplete) {
+        await autocomplete.openMenu();
+      }
+    };
+    const handleCloseMenu = async () => {
+      const autocomplete = document.getElementById('programmatic-autocomplete') as AutocompleteElement;
+      if (autocomplete) {
+        await autocomplete.closeMenu();
+      }
+    };
+    const handleToggleMenu = async () => {
+      const autocomplete = document.getElementById('programmatic-autocomplete') as AutocompleteElement;
+      if (autocomplete) {
+        await autocomplete.toggleMenu();
+      }
+    };
+    const handleFocusInput = async () => {
+      const autocomplete = document.getElementById('programmatic-autocomplete') as AutocompleteElement;
+      if (autocomplete) {
+        await autocomplete.focusInput();
+      }
+    };
+    const handleClearInput = async () => {
+      const autocomplete = document.getElementById('programmatic-autocomplete') as AutocompleteElement;
+      if (autocomplete) {
+        await autocomplete.clearInput();
+      }
+    };
+
+    // Attach handlers to window for inline onclick
+    interface WindowWithHandlers extends Window {
+      handleSelectApple?: () => Promise<void>;
+      handleSelectNull?: () => Promise<void>;
+      handleOpenMenu?: () => Promise<void>;
+      handleCloseMenu?: () => Promise<void>;
+      handleToggleMenu?: () => Promise<void>;
+      handleFocusInput?: () => Promise<void>;
+      handleClearInput?: () => Promise<void>;
+    }
+    const windowWithHandlers = window as WindowWithHandlers;
+    windowWithHandlers.handleSelectApple = handleSelectApple;
+    windowWithHandlers.handleSelectNull = handleSelectNull;
+    windowWithHandlers.handleOpenMenu = handleOpenMenu;
+    windowWithHandlers.handleCloseMenu = handleCloseMenu;
+    windowWithHandlers.handleToggleMenu = handleToggleMenu;
+    windowWithHandlers.handleFocusInput = handleFocusInput;
+    windowWithHandlers.handleClearInput = handleClearInput;
+    return html\`
+      <style>
+        div[id^='story--components-forms-autocomplete--with-programmatic-control'] {
+          height: 500px;
+        }
+
+        .controls-content {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+        .control-group {
+          margin-bottom: 1rem;
+        }
+        .control-group label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 600;
+        }
+        .button-row {
+          display: flex;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+        }
+      </style>
+
+      <modus-wc-card class="controls-card">
+        <div class="controls-content">
+          <h3>Programmatic Control Methods</h3>
+
+          <div class="control-group">
+            <label>Selection Methods:</label>
+            <div class="button-row">
+              <modus-wc-button
+                onclick="window.handleSelectApple()"
+                variant="primary"
+                size="sm"
+              >
+                Select Apple
+              </modus-wc-button>
+              <modus-wc-button
+                onclick="window.handleSelectNull()"
+                variant="secondary"
+                size="sm"
+              >
+                Clear Selection
+              </modus-wc-button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Menu Control Methods:</label>
+            <div class="button-row">
+              <modus-wc-button
+                onclick="window.handleOpenMenu()"
+                variant="primary"
+                size="sm"
+              >
+                Open Menu
+              </modus-wc-button>
+              <modus-wc-button
+                onclick="window.handleCloseMenu()"
+                variant="primary"
+                size="sm"
+              >
+                Close Menu
+              </modus-wc-button>
+              <modus-wc-button
+                onclick="window.handleToggleMenu()"
+                variant="secondary"
+                size="sm"
+              >
+                Toggle Menu
+              </modus-wc-button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Input Control Methods:</label>
+            <div class="button-row">
+              <modus-wc-button
+                onclick="window.handleFocusInput()"
+                variant="primary"
+                size="sm"
+              >
+                Focus Input
+              </modus-wc-button>
+              <modus-wc-button
+                onclick="window.handleClearInput()"
+                variant="danger"
+                size="sm"
+              >
+                Clear All
+              </modus-wc-button>
+            </div>
+          </div>
+        </div>
+      </modus-wc-card>
+
+      <modus-wc-autocomplete
+        id="programmatic-autocomplete"
+        aria-label="Programmatic control demo"
+        ?bordered=\${args.bordered}
+        custom-class=\${ifDefined(args['custom-class'])}
+        debounce-ms=\${ifDefined(args['debounce-ms'])}
+        ?disabled=\${args.disabled}
+        ?include-clear=\${args['include-clear']}
+        ?include-search=\${args['include-search']}
+        input-id=\${ifDefined(args['input-id'])}
+        input-tab-index=\${ifDefined(args['input-tab-index'])}
+        .items=\${args.items}
+        label="Try the control buttons above"
+        ?leave-menu-open=\${args['leave-menu-open']}
+        max-chips=\${args['max-chips'] ?? 4}
+        min-chars=\${args['min-chars']}
+        min-input-width=\${ifDefined(args['min-input-width'])}
+        ?multi-select=\${args['multi-select']}
+        name=\${ifDefined(args.name)}
+        .noResults=\${args['no-results']}
+        placeholder="Use buttons above to control"
+        ?read-only=\${args['read-only']}
+        ?required=\${args.required}
+        ?show-menu-on-focus=\${args['show-menu-on-focus']}
+        ?show-spinner=\${args['show-spinner']}
+        size=\${ifDefined(args.size)}
+        value=\${args.value}
+      ></modus-wc-autocomplete>
+    \`;
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: \`
+## Public Methods
+
+The autocomplete component exposes several methods that can be called programmatically:
+
+### selectItem(item: IAutocompleteItem | null): Promise<void>
+Programmatically select an item. Pass \\\`null\\\` to clear selection.
+
+\\\`\\\`\\\`javascript
+const autocomplete = document.querySelector('modus-wc-autocomplete');
+const item = { label: 'Apple', value: 'apple', visibleInMenu: true };
+await autocomplete.selectItem(item);
+\\\`\\\`\\\`
+
+### openMenu(): Promise<void>
+Programmatically open the dropdown menu.
+
+\\\`\\\`\\\`javascript
+await autocomplete.openMenu();
+\\\`\\\`\\\`
+
+### closeMenu(): Promise<void>
+Programmatically close the dropdown menu.
+
+\\\`\\\`\\\`javascript
+await autocomplete.closeMenu();
+\\\`\\\`\\\`
+
+### toggleMenu(): Promise<void>
+Toggle the dropdown menu open/closed.
+
+\\\`\\\`\\\`javascript
+await autocomplete.toggleMenu();
+\\\`\\\`\\\`
+
+### focusInput(): Promise<void>
+Set focus to the input element.
+
+\\\`\\\`\\\`javascript
+await autocomplete.focusInput();
+\\\`\\\`\\\`
+
+### clearInput(): Promise<void>
+Clear the input value and all selections.
+
+\\\`\\\`\\\`javascript
+await autocomplete.clearInput();
+\\\`\\\`\\\`
+
+        \`
+      }
+    }
+  }
+}`,...(_=(J=$.parameters)==null?void 0:J.docs)==null?void 0:_.source}}};var G,Q,X;C.parameters={...C.parameters,docs:{...(G=C.parameters)==null?void 0:G.docs,source:{originalSource:`{
+  parameters: {
+    docs: {
+      description: {
+        story: \`
+#### Breaking Changes
+
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
+  additional info and examples.
+  - To handle updating items in 2.0, simply create a new array of items and bind it to the \\\`items\\\` prop. The 1.0 prop
+  \\\`filter-options\\\` is no longer necessary.
+  - Size values have changed from verbose names (\\\`small\\\`, \\\`medium\\\`, \\\`large\\\`) to abbreviations (\\\`sm\\\`, \\\`md\\\`, \\\`lg\\\`).
+
+#### Prop Mapping
+
+| 1.0 Prop                      | 2.0 Prop            | Notes                                                       |
+|-------------------------------|---------------------|-------------------------------------------------------------|
+| aria-label                    | aria-label          |                                                             |
+| clearable                     |                     | Upcoming feature                                            |
+| disabled                      | disabled            |                                                             |
+| disable-close-on-select       | leave-menu-open     |                                                             |
+| dropdown-max-height           |                     | Not carried over, use CSS instead                           |
+| dropdown-z-index              |                     | Not carried over, use CSS instead                           |
+| error-text                    | feedback.message    | Use feedback level                                          |
+| filter-options                |                     | Rebind options                                              |
+| include-search-icon           |                     | Coming soon                                                 |
+| label                         | label               |                                                             |
+| loading                       |                     | Upcoming feature                                            |
+| multiple                      | multi-select        |                                                             |
+| no-results-found-text         | no-results.label    |                                                             |
+| no-results-found-subtext      | no-results.subLabel |                                                             |
+| options                       | items               |                                                             |
+| placeholder                   | placeholder         |                                                             |
+| read-only                     | read-only           |                                                             |
+| required                      | required            |                                                             |
+| show-no-results-found-message |                     | Not carried over, use \\\`no-results\\\` prop                   |
+| show-options-on-focus         |                     | Not carried over                                            |
+| size                          | size                | \\\`small\\\` → \\\`sm\\\`, \\\`medium\\\` → \\\`md\\\`, \\\`large\\\` → \\\`lg\\\` |
+| value                         | value               |                                                             |
+
+#### Event Mapping
+
+| 1.0 Event   | 2.0 Event   | Notes            |
+|-------------|-------------|------------------|
+| optionSelected ||
+| selectionsChanged ||
+| valueChange | inputChange |                  |
+
+#### Interfaces
+
+##### 1.0
+
+\\\`\\\`\\\`typescript
+interface ModusAutocompleteOption {
+  id: string;
+  value: string;
+}
+\\\`\\\`\\\`
+
+##### 2.0
+
+\\\`\\\`\\\`typescript
+interface IAutocompleteItem {
+  label: string;
+  selected?: boolean;
+  value: string;
+  visibleInMenu: boolean;
+}
+\\\`\\\`\\\`
+        \`
+      }
+    },
+    // To hide the actual story rendering and only show docs:
+    controls: {
+      disable: true
+    },
+    canvas: {
+      disable: true
+    }
+  },
+  // Simple render function or leave it empty
+  render: () => html\`<div></div>\`
+}`,...(X=(Q=C.parameters)==null?void 0:Q.docs)==null?void 0:X.source}}};const ie=["Default","MultiSelect","WithSpinner","CustomMenuItems","CustomEventHandlers","WithProgrammaticControl","Migration"];export{M as CustomEventHandlers,x as CustomMenuItems,g as Default,C as Migration,y as MultiSelect,$ as WithProgrammaticControl,I as WithSpinner,ie as __namedExportsOrder,ee as default};
