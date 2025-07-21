@@ -70,7 +70,7 @@ export function updateItemFocus(
   items: IAutocompleteItem[] | undefined,
   targetValue: string
 ): IAutocompleteItem[] | undefined {
-  if (!items) return undefined;
+  if (!items) return [];
 
   return [
     ...items.map((item) => ({
@@ -83,7 +83,7 @@ export function updateItemFocus(
 export function clearAllFocus(
   items: IAutocompleteItem[] | undefined
 ): IAutocompleteItem[] | undefined {
-  if (!items) return undefined;
+  if (!items) return [];
 
   return [
     ...items.map((item) => ({

@@ -2675,7 +2675,7 @@ describe('modus-wc-autocomplete', () => {
     autocomplete['updateItemFocus']('test-value');
 
     // Should return early without errors
-    expect(autocomplete.items).toBeUndefined();
+    expect(autocomplete.items).toEqual([]);
   });
 
   // Test clearAllFocus when items is null
@@ -2693,7 +2693,7 @@ describe('modus-wc-autocomplete', () => {
     autocomplete['clearAllFocus']();
 
     // Should return early without errors
-    expect(autocomplete.items).toBeUndefined();
+    expect(autocomplete.items).toEqual([]);
   });
 
   // Tests for the last two optional chaining branches
