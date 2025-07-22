@@ -1,8 +1,9 @@
 <template>
   <div>
-    <h3>modus-wc-autocomplete</h3>
+    <h3>Modus Autocomplete</h3>
     <modus-wc-autocomplete
       ref="autocompleteRef"
+      label="Fruit List"
       :items="items"
       :value="inputValue"
       @input="handleInputChange"
