@@ -466,3 +466,60 @@ modus-wc-button .modus-wc-btn {
     }
   }
 }
+
+[data-theme='modus-modern-light'] modus-wc-button .modus-wc-btn,
+[data-theme='modus-modern-dark'] modus-wc-button .modus-wc-btn {
+  &.modus-wc-btn-borderless {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+  }
+}
+
+[data-theme='modus-modern-light'] modus-wc-button .modus-wc-btn {
+  &.modus-wc-btn-borderless {
+    &.modus-wc-btn-primary {
+      color: var(--modus-wc-color-trimble-blue);
+    }
+
+    &.modus-wc-btn-secondary {
+      color: var(--modus-wc-color-gray-6);
+    }
+
+    &.modus-wc-btn-neutral {
+      color: var(--modus-wc-color-gray-1);
+    }
+
+    &.modus-wc-btn-warning {
+      color: var(--modus-wc-color-yellow);
+    }
+
+    &.modus-wc-btn-error {
+      color: var(--modus-wc-color-red);
+    }
+  }
+}
+
+[data-theme='modus-modern-dark'] modus-wc-button .modus-wc-btn {
+  &.modus-wc-btn-borderless {
+    &.modus-wc-btn-primary {
+      color: var(--modus-wc-color-highlight-blue);
+    }
+
+    &.modus-wc-btn-secondary {
+      color: var(--modus-wc-color-gray-6);
+    }
+
+    &.modus-wc-btn-neutral {
+      color: var(--modus-wc-color-gray-1);
+    }
+
+    &.modus-wc-btn-warning {
+      color: var(--modus-wc-color-yellow);
+    }
+
+    &.modus-wc-btn-error {
+      color: var(--modus-wc-color-red);
+    }
+  }
+}

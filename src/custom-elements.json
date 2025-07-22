@@ -652,7 +652,7 @@
               "default": "'filled'",
               "description": "The variant of the badge.",
               "type": {
-                "text": "'counter' | 'filled' | 'text'"
+                "text": "'counter' | 'filled' | 'outlined' | 'text'"
               }
             }
           ],
@@ -5929,7 +5929,7 @@
               "default": "'md'",
               "description": "The size of the font.",
               "type": {
-                "text": "DaisySize"
+                "text": "TypographySize"
               }
             },
             {

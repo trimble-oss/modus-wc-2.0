@@ -21,7 +21,7 @@ import { SortingState } from "@tanstack/table-core";
 import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-import { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
+import { TypographySize, TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export { IAutocompleteItem, IAutocompleteNoResults } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
 export { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
@@ -38,7 +38,7 @@ export { SortingState } from "@tanstack/table-core";
 export { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-export { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
+export { TypographySize, TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
@@ -227,7 +227,7 @@ export namespace Components {
         /**
           * The variant of the badge.
          */
-        "variant": 'counter' | 'filled' | 'text';
+        "variant": 'counter' | 'filled' | 'outlined' | 'text';
     }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
@@ -1711,7 +1711,7 @@ export namespace Components {
         /**
           * The size of the font.
          */
-        "size"?: DaisySize;
+        "size"?: TypographySize;
         /**
           * The variant of the typography component.
          */
@@ -2865,7 +2865,7 @@ declare namespace LocalJSX {
         /**
           * The variant of the badge.
          */
-        "variant"?: 'counter' | 'filled' | 'text';
+        "variant"?: 'counter' | 'filled' | 'outlined' | 'text';
     }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
@@ -4622,7 +4622,7 @@ declare namespace LocalJSX {
         /**
           * The size of the font.
          */
-        "size"?: DaisySize;
+        "size"?: TypographySize;
         /**
           * The variant of the typography component.
          */
