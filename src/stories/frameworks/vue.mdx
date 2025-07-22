@@ -1,0 +1,98 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/Frameworks/Vue" />
+
+# Vue Framework Integration
+
+This guide will help you get started with consuming Modus Web Components in your Vue project.
+
+We highly recommend using the Modus Vue Components library for Vue based projects.
+These components are automatically generated using the Stencil Vue Framework Integration.
+
+Follow the steps outlined below to integrate and use Modus Vue Components effectively.
+
+## Using Modus Vue Components Library (Recommended)
+
+### 1. Install `@trimble-oss/moduswebcomponents-vue`:
+
+<b>
+  Lock the installed package versions to avoid unintended breakages on future
+  npm installs.
+</b>
+
+```bash
+npm install @trimble-oss/moduswebcomponents-vue@latest
+# e.g.,
+npm install @trimble-oss/moduswebcomponents-vue@1.0.0
+```
+
+### 2. Set up the styling:
+
+You will need to import our styling in your main JavaScript or CSS file:
+
+```js
+// main.ts
+import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
+```
+
+### 3. Use the components in your Vue templates:
+
+```vue
+<template>
+  <ModusWcButton label="Click Me" />
+  <ModusWcBadge aria-label="Badge" content="Words" />
+</template>
+
+<script setup lang="ts">
+import { ModusWcButton, ModusWcBadge } from '@trimble-oss/moduswebcomponents-vue';
+</script>
+```
+
+## Using Web Components Directly
+
+If you prefer to use the web components directly without the Vue wrapper library:
+
+### 1. Install `@trimble-oss/moduswebcomponents`:
+
+```bash
+npm install @trimble-oss/moduswebcomponents@latest
+```
+
+### 2. Set up the styling:
+
+```js
+// main.ts
+import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
+```
+
+### 3. Configure Vue to work with custom elements:
+
+In your `vite.config.ts`, you need to tell Vue to ignore custom elements:
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+
+export default defineConfig({
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          // Tell Vue to ignore all components starting with "modus-wc"
+          isCustomElement: (tag) => tag.startsWith('modus-wc')
+        }
+      }
+    })
+  ]
+});
+```
+
+### 4. Use the web components in your Vue templates:
+
+```vue
+<template>
+  <modus-wc-button label="Click Me" />
+  <modus-wc-badge aria-label="Badge" content="Words" />
+</template>
+``` 

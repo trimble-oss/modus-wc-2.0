@@ -1,21 +1,38 @@
 {
-  "name": "test-vue-v-latest",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc && vite build",
-    "preview": "vite preview"
-  },
+  "name": "@trimble-oss/moduswebcomponents-vue",
+  "version": "0.0.1",
+  "description": "Trimble Modus Vue Component Library",
+  "license": "MIT",
+  "author": "Trimble Inc.",
+  "files": [
+    "dist",
+    "types"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/types/index.d.ts",
   "dependencies": {
-    "vue": "^3.3.4",
-    "@trimble-oss/moduswebcomponents": "file:../.."
+    "@stencil/vue-output-target": "^0.7.4"
+  },
+  "peerDependencies": {
+    "@trimble-oss/moduswebcomponents": "0.0.0-alpha.1",
+    "vue": "^3.0.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.2.3",
-    "typescript": "^5.0.2",
-    "vite": "^4.4.5",
-    "vue-tsc": "^1.8.5"
+    "@trimble-oss/moduswebcomponents": "0.0.0-alpha.1",
+    "copyfiles": "^2.4.1",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.3"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run tsc && npm run copy-generated && npm run copy-meta",
+    "clean": "rimraf dist",
+    "tsc": "tsc -p .",
+    "copy-generated": "copyfiles -u 1 'src/components.ts' dist",
+    "copy-meta": "copyfiles -f README.md package.json LICENSE dist"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
   }
 } 
