@@ -86,7 +86,8 @@ export const config: Config = {
     }),
     vueOutputTarget({
       componentCorePackage: '@trimble-oss/moduswebcomponents',
-      proxiesFile: './integrations/vue/v-latest/src/components.ts',
+      proxiesFile: './integrations/vue/stencil-generated/components.ts',
+      customElementsDir: 'components',
     }),
   ],
   plugins: [

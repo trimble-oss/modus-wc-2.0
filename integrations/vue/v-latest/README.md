@@ -1,37 +1,32 @@
 # Modus Vue Components
 
-The [Modus Vue Component](https://modus-web-components.trimble.com/) library provides encapsulated UI elements that adhere to Trimble UX Standards.
+Vue-specific wrapper components for [@trimble-oss/moduswebcomponents](https://www.npmjs.com/package/@trimble-oss/moduswebcomponents).
 
-## Getting Started
+These components are automatically generated using the Stencil Vue Framework Integration.
 
-### 1. Install Package
+## Installation
 
 ```bash
-npm install @trimble-oss/moduswebcomponents-vue@latest
+npm install @trimble-oss/moduswebcomponents-vue
 ```
 
-**Important**: Lock the installed package versions to avoid unintended breakages on future npm installs.
-
-### 2. Set up the styling
-
-Import the Modus CSS file in your main JavaScript or CSS file:
-
-```js
-import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
-```
-
-### 3. Import and use the components
+## Usage
 
 ```vue
 <template>
   <ModusWcButton label="Click Me" />
+  <ModusWcBadge aria-label="Badge" content="Words" />
 </template>
 
 <script setup lang="ts">
-import { ModusWcButton } from '@trimble-oss/moduswebcomponents-vue';
+import { ModusWcButton, ModusWcBadge } from '@trimble-oss/moduswebcomponents-vue';
 </script>
 ```
 
-## Documentation
+## Styling
 
-For full documentation, visit [Modus Web Components Storybook](https://modus-web-components.trimble.com/). 
+Make sure to import the Modus styles in your main application:
+
+```js
+import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
+``` 

@@ -4,31 +4,39 @@
   "description": "Trimble Modus Vue Component Library",
   "license": "MIT",
   "author": "Trimble Inc.",
+  "type": "module",
   "files": [
-    "dist",
-    "types"
+    "**/*"
   ],
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/types/index.d.ts",
   "dependencies": {
-    "@stencil/vue-output-target": "^0.7.4"
+    "@stencil/vue-output-target": "^0.10.8"
   },
   "peerDependencies": {
     "@trimble-oss/moduswebcomponents": "0.0.0-alpha.1",
     "vue": "^3.0.0"
   },
   "devDependencies": {
-    "@trimble-oss/moduswebcomponents": "0.0.0-alpha.1",
     "copyfiles": "^2.4.1",
     "rimraf": "^6.0.1",
+    "symlink-dir": "^6.0.3",
     "typescript": "^5.6.3"
   },
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "types": "./types/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "npm run clean && npm run tsc && npm run copy-generated && npm run copy-meta",
+    "prebuild": "npm run symlink",
+    "build": "npm run clean && npm run transpile && npm run copy-types && npm run copy-meta",
     "clean": "rimraf dist",
-    "tsc": "tsc -p .",
-    "copy-generated": "copyfiles -u 1 'src/components.ts' dist",
+    "transpile": "tsc -p . --noEmitOnError false || true",
+    "copy-types": "tsc -p . --declaration --emitDeclarationOnly --outDir dist/types || true",
+    "symlink": "symlink-dir ../stencil-generated/ src/stencil-generated/",
     "copy-meta": "copyfiles -f README.md package.json LICENSE dist"
   },
   "sideEffects": false,

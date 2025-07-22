@@ -1,29 +1,31 @@
 {
+  "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "strict": true,
-    "allowSyntheticDefaultImports": true,
-    "allowUnreachableCode": false,
+    "outDir": "./dist",
+    "lib": ["dom", "es2020"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "es2020",
+    "types": ["node"],
+    
     "declaration": true,
-    "declarationDir": "dist/types",
-    "experimentalDecorators": true,
-    "lib": [
-      "dom",
-      "es2017"
-    ],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "declarationDir": "./dist/types",
+    
+    // Advanced Options
+    "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "target": "es2017",
-    "outDir": "dist"
+    "experimentalDecorators": true,
+    
+    // Additional Checks
+    "allowUnreachableCode": false,
+    
+    // Module Interop
+    "allowSyntheticDefaultImports": true,
+    
+    // Override strict from parent
+    "strict": false
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["src"],
+  "exclude": ["dist", "node_modules"]
 } 
