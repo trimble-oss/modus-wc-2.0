@@ -4,14 +4,19 @@ import { Meta } from '@storybook/blocks';
 
 # Vue Framework Integration
 
-This guide will help you get started with consuming Modus Web Components in your Vue project.
+This guide will help you get started with consuming the Modus Vue Web Component library in your Vue project.
 
 We highly recommend using the Modus Vue Components library for Vue based projects.
 These components are automatically generated using the Stencil Vue Framework Integration.
 
-Follow the steps outlined below to integrate and use Modus Vue Components effectively.
+Follow the steps outlined below to integrate and use Modus Vue Web Components effectively.
 
-## Using Modus Vue Components Library (Recommended)
+Please refer to the [official stencil documentation](https://stenciljs.com/docs/vue) for more information on how to integrate with your Vue project.
+
+## Usage
+
+Modus Vue Components have a peer dependency with Modus Web Components and require the
+installation of both packages.
 
 ### 1. Install `@trimble-oss/moduswebcomponents-vue`:
 
@@ -21,9 +26,9 @@ Follow the steps outlined below to integrate and use Modus Vue Components effect
 </b>
 
 ```bash
-npm install @trimble-oss/moduswebcomponents-vue@latest
+npm install @trimble-oss/moduswebcomponents @trimble-oss/moduswebcomponents-vue@<latest-version>
 # e.g.,
-npm install @trimble-oss/moduswebcomponents-vue@1.0.0
+npm install @trimble-oss/moduswebcomponents@1.0.0 @trimble-oss/moduswebcomponents-vue@1.0.0
 ```
 
 ### 2. Set up the styling:
@@ -35,22 +40,34 @@ You will need to import our styling in your main JavaScript or CSS file:
 import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
 ```
 
-### 3. Use the components in your Vue templates:
+### 3. Use the component library as normal:
+
+**Note:** Use camelCase for multi-word properties (e.g., `alertTitle` instead of `alert-title`)
 
 ```vue
 <template>
-  <ModusWcButton label="Click Me" />
+  <ModusWcButton color="primary" @click="handleClick">
+    Click Me
+  </ModusWcButton>
+  
   <ModusWcBadge aria-label="Badge" content="Words" />
 </template>
 
 <script setup lang="ts">
-import { ModusWcButton, ModusWcBadge } from '@trimble-oss/moduswebcomponents-vue';
+import {
+  ModusWcButton,
+  ModusWcBadge,
+} from '@trimble-oss/moduswebcomponents-vue';
+
+const handleClick = () => {
+  console.log('Button clicked!');
+};
 </script>
 ```
 
-## Using Web Components Directly
+## Custom Elements Configuration
 
-If you prefer to use the web components directly without the Vue wrapper library:
+When using web components directly in Vue, you need to configure Vue to recognize custom elements:
 
 ### 1. Install `@trimble-oss/moduswebcomponents`:
 
@@ -80,11 +97,11 @@ export default defineConfig({
       template: {
         compilerOptions: {
           // Tell Vue to ignore all components starting with "modus-wc"
-          isCustomElement: (tag) => tag.startsWith('modus-wc')
-        }
-      }
-    })
-  ]
+          isCustomElement: (tag) => tag.startsWith('modus-wc'),
+        },
+      },
+    }),
+  ],
 });
 ```
 
@@ -95,4 +112,52 @@ export default defineConfig({
   <modus-wc-button label="Click Me" />
   <modus-wc-badge aria-label="Badge" content="Words" />
 </template>
-``` 
+```
+
+## Wrapping Components
+
+When using Modus Vue Components directly, it is recommended to wrap them in corresponding Vue components within your application. This will abstract away from the library dependency, allowing more flexibility for you and your application in the future.
+
+Wrapped Modus Avatar Example:
+
+```vue
+<template>
+  <ModusWcAvatar v-bind="$props" />
+</template>
+
+<script setup lang="ts">
+import { ModusWcAvatar } from '@trimble-oss/moduswebcomponents-vue';
+import type { ComponentProps } from 'vue-component-type-helpers';
+
+interface Props extends ComponentProps<typeof ModusWcAvatar> {}
+
+defineProps<Props>();
+</script>
+```
+
+or, a more complex wrapper:
+
+```vue
+<template>
+  <ModusWcTextInput
+    v-bind="$props"
+    @inputChange="handleInputChange"
+  />
+</template>
+
+<script setup lang="ts">
+import { ModusWcTextInput } from '@trimble-oss/moduswebcomponents-vue';
+import type { ComponentProps } from 'vue-component-type-helpers';
+
+interface Props extends Omit<ComponentProps<typeof ModusWcTextInput>, 'onInputChange'> {
+  onValueChange?: (value: string) => void;
+}
+
+const props = defineProps<Props>();
+
+const handleInputChange = (e: CustomEvent) => {
+  const value = e.detail.target.value;
+  props.onValueChange?.(value);
+};
+</script>
+```
