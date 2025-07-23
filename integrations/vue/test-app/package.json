@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
+    "build:with-tsc": "vue-tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "@vitejs/plugin-vue": "^4.2.3",
     "typescript": "^5.6.3",
     "vite": "^4.4.5",
-    "vue-tsc": "^2.1.0"
+    "vue-tsc": "^2.1.0",
+    "@trimble-oss/moduswebcomponents": "file:../../.."
   }
 } 
