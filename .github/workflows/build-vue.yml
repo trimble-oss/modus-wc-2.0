@@ -70,4 +70,4 @@ jobs:
 
       - name: Build Test Vue App
         run: npm run build
-        working-directory: integrations/vue/test-app 
+        working-directory: integrations/vue/test-app
