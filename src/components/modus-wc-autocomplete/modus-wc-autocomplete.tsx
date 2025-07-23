@@ -233,7 +233,11 @@ export class ModusWcAutocomplete {
   }
 
   private syncFilteredItems(): void {
-    this.filteredItems = syncFilteredItems(this.items, this.value);
+    this.filteredItems = syncFilteredItems(
+      this.items,
+      this.value,
+      this.leaveMenuOpen
+    );
   }
 
   private updateItemFocus(targetValue: string): void {

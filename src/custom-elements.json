@@ -575,6 +575,13 @@
               "type": {
                 "text": "string"
               }
+            },
+            {
+              "name": "leaveMenuOpen",
+              "optional": true,
+              "type": {
+                "text": "boolean"
+              }
             }
           ]
         },

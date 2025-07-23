@@ -47,10 +47,16 @@ export function getVisibleItems(
 
 export function syncFilteredItems(
   items: IAutocompleteItem[] | undefined,
-  value: string
+  value: string,
+  leaveMenuOpen?: boolean
 ): IAutocompleteItem[] {
   if (!items) {
     return [];
+  }
+
+  // When leaveMenuOpen is true and an item is selected, show all items
+  if (leaveMenuOpen && items.some((item) => item.selected)) {
+    return [...items];
   }
 
   const currentSearchText = value?.toLowerCase() || '';
@@ -310,6 +316,7 @@ export function processItemSelection(
         focused: false,
       })),
     ];
+    // Always set the input value to show the selected item's label
     updatedValue = item.label;
   }
 

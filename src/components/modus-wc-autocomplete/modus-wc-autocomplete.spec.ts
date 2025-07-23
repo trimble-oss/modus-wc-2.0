@@ -404,6 +404,59 @@ describe('modus-wc-autocomplete', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should show selected label but keep all items visible when leaveMenuOpen is true in single-select mode', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: '<modus-wc-autocomplete aria-label="Leave menu open test" leave-menu-open="true" show-menu-on-focus="true"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+
+    // Focus to show menu
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    input?.focus();
+    await page.waitForChanges();
+
+    // Select an item
+    component['handleItemSelect'](items[0]);
+    await page.waitForChanges();
+
+    // Verify the input value shows the selected item's label
+    expect(component.value).toBe('Item 1');
+    expect(input.value).toBe('Item 1');
+
+    // Verify the item is marked as selected
+    expect(component.items[0].selected).toBe(true);
+
+    // Verify all items are still visible in the filtered items list
+    expect(component['filteredItems'].length).toBe(3);
+    expect(component['filteredItems'].every((item) => item.visibleInMenu)).toBe(
+      true
+    );
+
+    // Select another item
+    component['handleItemSelect'](items[1]);
+    await page.waitForChanges();
+
+    // Verify only the second item is now selected
+    expect(component.items[0].selected).toBe(false);
+    expect(component.items[1].selected).toBe(true);
+    expect(component.items[2].selected).toBe(false);
+
+    // Verify input shows new selection
+    expect(component.value).toBe('Item 2');
+    expect(input.value).toBe('Item 2');
+
+    // Verify all items are still visible
+    expect(component['filteredItems'].length).toBe(3);
+  });
+
   it('should render default no results values when noResults is undefined', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete],
