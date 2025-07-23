@@ -576,13 +576,8 @@ export class ModusWcAutocomplete {
       this.menuVisible = false;
     }
 
-    // Only emit event and update navigation if not disabled/readonly and not using custom handler
-    if (
-      !this.disabled &&
-      !this.readOnly &&
-      !this.customItemSelect &&
-      this.items
-    ) {
+    // Only emit event and update navigation if not disabled/readonly
+    if (!this.disabled && !this.readOnly && this.items) {
       this.initialNavigation = true;
       this.itemSelect.emit(item);
     }

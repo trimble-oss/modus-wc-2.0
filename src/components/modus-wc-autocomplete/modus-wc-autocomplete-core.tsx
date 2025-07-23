@@ -242,7 +242,7 @@ export function processItemSelection(
   }
 ): {
   updatedItems: IAutocompleteItem[] | undefined;
-  updatedValue: string;
+  updatedValue: string | undefined;
   updatedSelectionOrder: string[];
   shouldExpandChips: boolean;
   shouldCloseMenu: boolean;
@@ -250,7 +250,7 @@ export function processItemSelection(
   if (params.disabled || params.readOnly || !params.items) {
     return {
       updatedItems: params.items,
-      updatedValue: '',
+      updatedValue: undefined,
       updatedSelectionOrder: params.selectionOrder,
       shouldExpandChips: false,
       shouldCloseMenu: false,
@@ -260,8 +260,8 @@ export function processItemSelection(
   if (params.customItemSelect) {
     params.customItemSelect(item);
     return {
-      updatedItems: params.items,
-      updatedValue: '',
+      updatedItems: undefined,
+      updatedValue: undefined,
       updatedSelectionOrder: params.selectionOrder,
       shouldExpandChips: false,
       shouldCloseMenu: false,
@@ -269,7 +269,7 @@ export function processItemSelection(
   }
 
   let updatedItems: IAutocompleteItem[];
-  let updatedValue: string = '';
+  let updatedValue: string | undefined = undefined;
   let updatedSelectionOrder = params.selectionOrder;
   let shouldExpandChips = false;
 
@@ -282,7 +282,7 @@ export function processItemSelection(
     if (isCurrentlySelected) {
       return {
         updatedItems: params.items,
-        updatedValue: '',
+        updatedValue: undefined,
         updatedSelectionOrder: params.selectionOrder,
         shouldExpandChips: false,
         shouldCloseMenu: !params.leaveMenuOpen,

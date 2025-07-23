@@ -395,7 +395,7 @@
           "name": "processItemSelection",
           "return": {
             "type": {
-              "text": "{\n  updatedItems: IAutocompleteItem[] | undefined;\n  updatedValue: string;\n  updatedSelectionOrder: string[];\n  shouldExpandChips: boolean;\n  shouldCloseMenu: boolean;\n}"
+              "text": "{\n  updatedItems: IAutocompleteItem[] | undefined;\n  updatedValue: string | undefined;\n  updatedSelectionOrder: string[];\n  shouldExpandChips: boolean;\n  shouldCloseMenu: boolean;\n}"
             }
           },
           "parameters": [
