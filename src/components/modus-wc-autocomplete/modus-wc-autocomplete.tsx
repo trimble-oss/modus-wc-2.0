@@ -313,6 +313,19 @@ export class ModusWcAutocomplete {
     });
   }
 
+  private handleFocusOutside = (event: FocusEvent) => {
+    setTimeout(() => {
+      const relatedTarget = event.relatedTarget as HTMLElement;
+
+      if (!relatedTarget || !this.el.contains(relatedTarget)) {
+        if (!this.programmaticOpen) {
+          this.menuVisible = false;
+        }
+        this.inputBlur.emit(event);
+      }
+    }, BLUR_FOCUSOUT_DELAY_MS);
+  };
+
   private handleBlur = (event: CustomEvent<FocusEvent>) => {
     if (this.customBlur) {
       this.customBlur(event.detail);
@@ -333,30 +346,12 @@ export class ModusWcAutocomplete {
       this.syncFilteredItems();
     }
 
-    setTimeout(() => {
-      const relatedTarget = event.detail.relatedTarget as HTMLElement;
-
-      if (!relatedTarget || !this.el.contains(relatedTarget)) {
-        this.isChipsExpanded = false; // Always collapse on blur
-        if (!this.programmaticOpen) {
-          this.menuVisible = false;
-        }
-        this.inputBlur.emit(event.detail);
-      }
-    }, BLUR_FOCUSOUT_DELAY_MS);
+    this.isChipsExpanded = false; // Always collapse on blur
+    this.handleFocusOutside(event.detail);
   };
 
   private handleMenuFocusout = (event: CustomEvent<FocusEvent>) => {
-    setTimeout(() => {
-      const relatedTarget = event.detail.relatedTarget as HTMLElement;
-
-      if (!relatedTarget || !this.el.contains(relatedTarget)) {
-        if (!this.programmaticOpen) {
-          this.menuVisible = false;
-        }
-        this.inputBlur.emit(event.detail);
-      }
-    }, BLUR_FOCUSOUT_DELAY_MS);
+    this.handleFocusOutside(event.detail);
   };
 
   private handleChange = (event: CustomEvent<Event>) => {
