@@ -3620,4 +3620,37 @@ describe('modus-wc-autocomplete', () => {
     // Restore original querySelector
     autocomplete.el.querySelector = originalQuerySelector;
   });
+
+  it('should filter items by visibleInMenu when customInputChange is provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete],
+      html: '<modus-wc-autocomplete aria-label="Custom input change test"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    // Set up custom input handler
+    const customHandler = jest.fn();
+    autocomplete.customInputChange = customHandler;
+
+    // Set up items with mixed visibleInMenu values
+    autocomplete.items = [
+      { label: 'Item 1', value: '1', visibleInMenu: true },
+      { label: 'Item 2', value: '2', visibleInMenu: false },
+      { label: 'Item 3', value: '3', visibleInMenu: true },
+      { label: 'Item 4', value: '4', visibleInMenu: false },
+    ];
+
+    await page.waitForChanges();
+
+    // Trigger syncFilteredItems
+    autocomplete['syncFilteredItems']();
+
+    // Check that only items with visibleInMenu: true are in filteredItems
+    expect(autocomplete['filteredItems'].length).toBe(2);
+    expect(autocomplete['filteredItems']).toEqual([
+      { label: 'Item 1', value: '1', visibleInMenu: true },
+      { label: 'Item 3', value: '3', visibleInMenu: true },
+    ]);
+  });
 });

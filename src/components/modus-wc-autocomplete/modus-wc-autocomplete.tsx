@@ -186,7 +186,7 @@ export class ModusWcAutocomplete {
   @Watch('items')
   handleItemsChange() {
     if (this.items) {
-      this.filteredItems = [...this.items];
+      this.syncFilteredItems();
     }
   }
 
@@ -236,7 +236,8 @@ export class ModusWcAutocomplete {
     this.filteredItems = syncFilteredItems(
       this.items,
       this.value,
-      this.leaveMenuOpen
+      this.leaveMenuOpen,
+      this.customInputChange
     );
   }
 
@@ -375,7 +376,9 @@ export class ModusWcAutocomplete {
     }
 
     this.menuVisible = result.shouldShowMenu;
-    this.items = result.updatedItems;
+    if (result.updatedItems) {
+      this.items = result.updatedItems;
+    }
     this.value = result.inputValue;
 
     // Sync filtered items based on new search value

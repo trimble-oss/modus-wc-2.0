@@ -1001,7 +1001,7 @@ export const CustomEventHandlers: Story = {
       const searchChars = value.toLowerCase().split('');
 
       // Custom fuzzy search: Match items that contain ALL typed characters (in any order)
-      if (searchChars.length > 0 && searchChars[0] !== '') {
+      if (value.length > 0) {
         // Calculate match score for each item
         const scoredItems = args.items.map((item) => {
           const itemLower = item.label.toLowerCase();
@@ -1038,7 +1038,6 @@ export const CustomEventHandlers: Story = {
 
         // Sort by score (highest first) and update items
         scoredItems.sort((a, b) => b.score - a.score);
-
         args.items = scoredItems.map(({ item, visible }) => ({
           ...item,
           visibleInMenu: visible,
@@ -1058,7 +1057,6 @@ export const CustomEventHandlers: Story = {
 
       autocomplete.items = [...args.items];
       autocomplete.value = value;
-
       // Show match count in console for demonstration
       const matchCount = args.items.filter((item) => item.visibleInMenu).length;
       console.log(`Fuzzy search for "${value}": ${matchCount} matches found`);
@@ -1127,7 +1125,7 @@ export const CustomEventHandlers: Story = {
         ?multi-select=${false}
         name=${ifDefined(args.name)}
         .noResults=${args['no-results']}
-        placeholder="Type 'app' for Apple or Pineapple"
+        placeholder="Type 'bry' for Blueberry or Raspberry"
         ?read-only=${args['read-only']}
         ?required=${args.required}
         ?show-menu-on-focus=${args['show-menu-on-focus']}

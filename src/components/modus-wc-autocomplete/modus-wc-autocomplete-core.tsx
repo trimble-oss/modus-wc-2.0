@@ -48,7 +48,8 @@ export function getVisibleItems(
 export function syncFilteredItems(
   items: IAutocompleteItem[] | undefined,
   value: string,
-  leaveMenuOpen?: boolean
+  leaveMenuOpen?: boolean,
+  customInputChange?: (value: string) => void
 ): IAutocompleteItem[] {
   if (!items) {
     return [];
@@ -59,15 +60,22 @@ export function syncFilteredItems(
     return [...items];
   }
 
+  // if customInputChange is defined, return items that are visibleInMenu
+  if (customInputChange) {
+    return items.filter((item) => item.visibleInMenu);
+  }
+
   const currentSearchText = value?.toLowerCase() || '';
 
   if (currentSearchText === '') {
-    // When no search text, show all items
-    return [...items];
+    // When no search text, show all items that are visibleInMenu
+    return items.filter((item) => item.visibleInMenu);
   } else {
-    // Filter items based on current search text
-    return items.filter((item) =>
-      item.label.toLowerCase().includes(currentSearchText)
+    // Filter items based on current search text AND visibleInMenu
+    return items.filter(
+      (item) =>
+        item.visibleInMenu &&
+        item.label.toLowerCase().includes(currentSearchText)
     );
   }
 }
@@ -282,7 +290,7 @@ export function processItemSelection(
     if (isCurrentlySelected) {
       return {
         updatedItems: params.items,
-        updatedValue: undefined,
+        updatedValue: '',
         updatedSelectionOrder: params.selectionOrder,
         shouldExpandChips: false,
         shouldCloseMenu: !params.leaveMenuOpen,
@@ -299,6 +307,9 @@ export function processItemSelection(
 
     // Add to end of selection order
     updatedSelectionOrder = [...params.selectionOrder, item.value];
+
+    // Clear the input value in multi-select mode
+    updatedValue = '';
 
     // If we exceed maxChips, automatically expand
     if (
@@ -411,7 +422,7 @@ export function processInputChange(
     return {
       inputValue,
       shouldShowMenu: false,
-      updatedItems: params.items,
+      updatedItems: undefined, // Don't update items - custom handler will do it
       shouldResetNavigation: false,
     };
   }

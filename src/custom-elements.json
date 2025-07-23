@@ -582,6 +582,13 @@
               "type": {
                 "text": "boolean"
               }
+            },
+            {
+              "name": "customInputChange",
+              "optional": true,
+              "type": {
+                "text": "(value: string) => void"
+              }
             }
           ]
         },
