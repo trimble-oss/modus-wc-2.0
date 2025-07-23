@@ -46,10 +46,8 @@ import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
 
 ```vue
 <template>
-  <ModusWcButton color="primary" @click="handleClick">
-    Click Me
-  </ModusWcButton>
-  
+  <ModusWcButton color="primary" @click="handleClick"> Click Me </ModusWcButton>
+
   <ModusWcBadge aria-label="Badge" content="Words" />
 </template>
 
@@ -139,17 +137,15 @@ or, a more complex wrapper:
 
 ```vue
 <template>
-  <ModusWcTextInput
-    v-bind="$props"
-    @inputChange="handleInputChange"
-  />
+  <ModusWcTextInput v-bind="$props" @inputChange="handleInputChange" />
 </template>
 
 <script setup lang="ts">
 import { ModusWcTextInput } from '@trimble-oss/moduswebcomponents-vue';
 import type { ComponentProps } from 'vue-component-type-helpers';
 
-interface Props extends Omit<ComponentProps<typeof ModusWcTextInput>, 'onInputChange'> {
+interface Props
+  extends Omit<ComponentProps<typeof ModusWcTextInput>, 'onInputChange'> {
   onValueChange?: (value: string) => void;
 }
 
