@@ -64,10 +64,6 @@ jobs:
         run: npm ci
         working-directory: integrations/vue/test-app
 
-      - name: Install current modus-webcomponents tarball for test app
-        run: npm install ./${{ steps.npm_pack.outputs.modus_wc_tarball }}
-        working-directory: integrations/vue/test-app
-
       - name: Install current modus-webcomponents-vue implementation for vue integration
         run: npm install ./${{ steps.npm_pack_vue.outputs.modus_wc_vue_tarball }}
         working-directory: integrations/vue/test-app
