@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "vue": "^3.3.4",
-    "@trimble-oss/moduswebcomponents": "file:../../..",
     "@trimble-oss/moduswebcomponents-vue": "file:../v-latest/dist",
     "@stencil/vue-output-target": "^0.10.8"
   },
