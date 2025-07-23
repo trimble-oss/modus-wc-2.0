@@ -135,4 +135,4 @@ jobs:
           tag_name: moduswebcomponents-vue-${{ github.event.inputs.version }}-vue
           name: Modus Web Components Vue ${{ github.event.inputs.version }}
           files: |
-            **/package-vue.tgz 
+            **/package-vue.tgz
