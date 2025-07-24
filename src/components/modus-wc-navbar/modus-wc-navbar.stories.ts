@@ -156,7 +156,7 @@ const Template: Story = {
   [slot=main-menu] {
     background-color: #0063a3;
     color: white;
-    overflow-y: auto;
+    height: 400px;
   }
 </style>
 <modus-wc-navbar
