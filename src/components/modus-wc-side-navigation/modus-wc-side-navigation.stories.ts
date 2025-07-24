@@ -71,40 +71,27 @@ export const Default: Story = {
           box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
           display: flex;
           flex-direction: column;
-          height: 600px;
-          overflow: hidden;
+          height: 100%;
         }
         .main-content-row {
           display: flex;
           flex: 1;
           overflow: hidden;
-          position: relative;
         }
         .modus-wc-menu-item-labels {
           padding: 0 16px;
         }
         .navbar {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          flex-shrink: 0;
         }
         .panel-content {
           margin-left: 4rem;
           padding: 10px;
-          overflow-y: auto;
-          flex: 1;
         }
         .side-navigation {
-          height: 100%;
-          align-self: stretch;
+          height: 500px;
+          align-self: flex-start;
           position: relative;
-        }
-        /* Override the component's 100vh height */
-        modus-wc-side-navigation {
-          height: 100% !important;
-        }
-        modus-wc-side-navigation .modus-wc-side-navigation {
-          height: 100% !important;
-          max-height: 100% !important;
         }
       </style>
       <script>
