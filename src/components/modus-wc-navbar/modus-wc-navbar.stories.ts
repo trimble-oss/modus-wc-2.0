@@ -156,12 +156,7 @@ const Template: Story = {
   [slot=main-menu] {
     background-color: #0063a3;
     color: white;
-    height: 360px;
     overflow-y: auto;
-  }
-  /* Override the component's main-menu height */
-  modus-wc-navbar .main-menu {
-    height: 309px !important;
   }
 </style>
 <modus-wc-navbar
