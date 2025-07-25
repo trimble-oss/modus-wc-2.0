@@ -1173,6 +1173,192 @@ export const CustomMenuItems: Story = {
   },
 };
 
+export const DynamicOptions: Story = {
+  render: (args) => {
+    const defaultFruits = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true },
+      { label: 'Banana', value: 'banana', visibleInMenu: true },
+      { label: 'Orange', value: 'orange', visibleInMenu: true },
+      { label: 'Strawberry', value: 'strawberry', visibleInMenu: true },
+    ];
+
+    // Extended dataset that will be searched when typing
+    const allFruits = [
+      ...defaultFruits,
+      { label: 'Blackberry', value: 'blackberry', visibleInMenu: true },
+      { label: 'Blueberry', value: 'blueberry', visibleInMenu: true },
+      { label: 'Cherry', value: 'cherry', visibleInMenu: true },
+      { label: 'Cranberry', value: 'cranberry', visibleInMenu: true },
+      { label: 'Fig', value: 'fig', visibleInMenu: true },
+      { label: 'Grape', value: 'grape', visibleInMenu: true },
+      { label: 'Kiwi', value: 'kiwi', visibleInMenu: true },
+      { label: 'Lemon', value: 'lemon', visibleInMenu: true },
+      { label: 'Lime', value: 'lime', visibleInMenu: true },
+      { label: 'Mango', value: 'mango', visibleInMenu: true },
+      { label: 'Melon', value: 'melon', visibleInMenu: true },
+      { label: 'Peach', value: 'peach', visibleInMenu: true },
+      { label: 'Pineapple', value: 'pineapple', visibleInMenu: true },
+      { label: 'Raspberry', value: 'raspberry', visibleInMenu: true },
+      { label: 'Watermelon', value: 'watermelon', visibleInMenu: true },
+    ];
+
+    const handleInputChange = (e: CustomEvent<Event>) => {
+      if (!e.detail?.target) return;
+
+      const autocomplete = (e.target as HTMLInputElement).closest(
+        'modus-wc-autocomplete'
+      );
+
+      if (autocomplete) {
+        const input = e.detail.target as HTMLInputElement;
+        const searchText = input.value.toLowerCase();
+
+        if (searchText === '') {
+          autocomplete.items = [...defaultFruits];
+          autocomplete.value = input.value;
+          return;
+        }
+
+        autocomplete.showSpinner = true;
+        setTimeout(() => {
+          const filteredFruits = allFruits.filter((fruit) =>
+            fruit.label.toLowerCase().includes(searchText)
+          );
+
+          autocomplete.items = filteredFruits;
+          autocomplete.showSpinner = false;
+        }, 1000);
+
+        autocomplete.value = input.value;
+      }
+    };
+
+    const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
+      const autocomplete = (e.target as HTMLInputElement).closest(
+        'modus-wc-autocomplete'
+      );
+
+      if (autocomplete) {
+        const label = e.detail.label;
+        if (label) {
+          autocomplete.value = label;
+        }
+      }
+    };
+
+    return html`
+      <style>
+        div[id^='story--components-forms-autocomplete--dynamic-options'] {
+          height: 400px;
+        }
+      </style>
+      <script>
+          const defaultFruits = [
+          { label: 'Apple', value: 'apple', visibleInMenu: true },
+          { label: 'Banana', value: 'banana', visibleInMenu: true },
+          { label: 'Orange', value: 'orange', visibleInMenu: true },
+          { label: 'Strawberry', value: 'strawberry', visibleInMenu: true },
+        ];
+
+        // Extended dataset that will be searched when typing
+        const allFruits = [
+          ...defaultFruits,
+          { label: 'Blackberry', value: 'blackberry', visibleInMenu: true },
+          { label: 'Blueberry', value: 'blueberry', visibleInMenu: true },
+          { label: 'Cherry', value: 'cherry', visibleInMenu: true },
+          { label: 'Cranberry', value: 'cranberry', visibleInMenu: true },
+          { label: 'Fig', value: 'fig', visibleInMenu: true },
+          { label: 'Grape', value: 'grape', visibleInMenu: true },
+          { label: 'Kiwi', value: 'kiwi', visibleInMenu: true },
+          { label: 'Lemon', value: 'lemon', visibleInMenu: true },
+          { label: 'Lime', value: 'lime', visibleInMenu: true },
+          { label: 'Mango', value: 'mango', visibleInMenu: true },
+          { label: 'Melon', value: 'melon', visibleInMenu: true },
+          { label: 'Peach', value: 'peach', visibleInMenu: true },
+          { label: 'Pineapple', value: 'pineapple', visibleInMenu: true },
+          { label: 'Raspberry', value: 'raspberry', visibleInMenu: true },
+          { label: 'Watermelon', value: 'watermelon', visibleInMenu: true },
+        ];
+
+        const handleInputChange = (e: CustomEvent<Event>) => {
+          if (!e.detail?.target) return;
+
+          const autocomplete = (e.target as HTMLInputElement).closest(
+            'modus-wc-autocomplete'
+          );
+
+          if (autocomplete) {
+            const input = e.detail.target as HTMLInputElement;
+            const searchText = input.value.toLowerCase();
+
+            // // If empty, show default fruits again
+            if (searchText === '') {
+              autocomplete.items = [...defaultFruits];
+              autocomplete.value = input.value;
+              return;
+            }
+
+            // Show spinner while "loading" data
+            autocomplete.showSpinner = true;
+
+            // Simulate API call delay with setTimeout
+            setTimeout(() => {
+              const filteredFruits = allFruits.filter((fruit) =>
+                fruit.label.toLowerCase().includes(searchText)
+              );
+
+              // Update the items with the "API response"
+              autocomplete.items = filteredFruits;
+
+              // Hide spinner after "loading" completes
+              autocomplete.showSpinner = false;
+            }, 1000);
+
+            autocomplete.value = input.value;
+          }
+        };
+
+        const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
+          const autocomplete = (e.target as HTMLInputElement).closest(
+            'modus-wc-autocomplete'
+          );
+
+          if (autocomplete) {
+            const label = e.detail.label;
+            if (label) {
+              autocomplete.value = label;
+            }
+          }
+        };
+      </script>
+      <modus-wc-autocomplete
+        aria-label="Dynamic fruits autocomplete"
+        ?bordered=${args.bordered}
+        custom-class=${ifDefined(args['custom-class'])}
+        debounce-ms=${ifDefined(args['debounce-ms'])}
+        ?disabled=${args.disabled}
+        input-id=${ifDefined(args['input-id'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
+        .items=${defaultFruits}
+        label=${ifDefined(args.label)}
+        ?leave-menu-open=${args['leave-menu-open']}
+        min-chars=${0}
+        ?multi-select=${false}
+        name=${ifDefined(args.name)}
+        .noResults=${args['no-results']}
+        placeholder="Type to search fruits..."
+        ?read-only=${args['read-only']}
+        ?required=${args.required}
+        ?show-menu-on-focus=${true}
+        size=${ifDefined(args.size)}
+        value=${args.value}
+        @inputChange=${handleInputChange}
+        @itemSelect=${handleItemSelect}
+      ></modus-wc-autocomplete>
+    `;
+  },
+};
+
 export const Migration: Story = {
   parameters: {
     docs: {
