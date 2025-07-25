@@ -115,10 +115,6 @@
     outline: auto;
   }
 
-  a:visited {
-    color: var(--modus-wc-color-secondary);
-  }
-
   /* Forms */
 
   input,
