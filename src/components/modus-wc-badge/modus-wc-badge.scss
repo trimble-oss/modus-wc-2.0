@@ -37,7 +37,7 @@ modus-wc-badge .modus-wc-badge {
     }
 
     &.modus-wc-badge-secondary {
-      color: var(--modus-wc-color-gray-6);
+      color: var(--modus-wc-color-secondary);
     }
 
     &.modus-wc-badge-neutral {
@@ -108,6 +108,12 @@ modus-wc-badge .modus-wc-badge {
   font-weight: var(--modus-wc-font-weight-bold);
 
   &.modus-wc-badge-secondary {
+    color: var(--modus-wc-color-gray-6);
+  }
+
+  &.modus-wc-badge-secondary:not(.modus-wc-badge-text):not(
+      .modus-wc-badge-outlined
+    ) {
     background-color: var(--modus-wc-color-gray-6);
     color: var(--modus-wc-color-white);
   }
@@ -145,11 +151,6 @@ modus-wc-badge .modus-wc-badge {
     background-color: transparent;
     border: 1px solid;
     border-radius: 1rem;
-
-    &.modus-wc-badge-secondary {
-      border-color: var(--modus-wc-color-gray-6);
-      color: var(--modus-wc-color-gray-6);
-    }
   }
 }
 
