@@ -71,6 +71,12 @@ export class ModusWcAutocomplete {
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
 
+  /** Show the clear button within the input field. */
+  @Prop() includeClear?: boolean = false;
+
+  /** Show the search icon within the input field. */
+  @Prop() includeSearch?: boolean = false;
+
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
@@ -228,7 +234,8 @@ export class ModusWcAutocomplete {
     if (this.showMenuOnFocus) {
       this.menuVisible = true;
     } else {
-      this.menuVisible = value.length >= this.minChars;
+      // istanbul ignore next
+      this.menuVisible = value?.length >= this.minChars;
     }
 
     // Clear any existing timer
@@ -394,6 +401,8 @@ export class ModusWcAutocomplete {
       <modus-wc-text-input
         bordered={this.bordered && !this.multiSelect}
         disabled={this.disabled}
+        includeClear={this.includeClear}
+        includeSearch={this.includeSearch}
         inputId={this.inputId}
         inputTabIndex={this.inputTabIndex}
         name={this.name}

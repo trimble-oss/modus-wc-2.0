@@ -256,7 +256,6 @@ export class ModusWcNavbar {
         !menuButton?.contains(target)
       ) {
         this.mainMenuOpen = false;
-        this.mainMenuOpenChange.emit(false);
       }
     }
 
@@ -547,6 +546,7 @@ export class ModusWcNavbar {
                     includeSearch={true}
                     onInputChange={this.handleSearchChange}
                     placeholder={this.textOverrides?.search || 'Search'}
+                    size="sm"
                     value={this.searchValue}
                   />
                 )}

@@ -57,6 +57,8 @@ interface AutocompleteArgs {
   'custom-class'?: string;
   'debounce-ms'?: number;
   disabled?: boolean;
+  'include-clear'?: boolean;
+  'include-search'?: boolean;
   'input-id'?: string;
   'input-tab-index'?: number;
   items: IAutocompleteItem[];
@@ -83,6 +85,8 @@ const meta: Meta<AutocompleteArgs> = {
     bordered: true,
     'debounce-ms': 300,
     disabled: false,
+    'include-clear': false,
+    'include-search': false,
     items: items,
     label: 'Label',
     'leave-menu-open': false,
@@ -219,7 +223,7 @@ const Template: Story = {
 
       if (autocomplete) {
         const input = e.detail.target as HTMLInputElement;
-        const searchText = input.value.toLowerCase();
+        const searchText = input.value?.toLowerCase() ?? '';
 
         args.items = args.items.map((item) => ({
           ...item,
@@ -388,6 +392,8 @@ const Template: Story = {
         custom-class=${ifDefined(args['custom-class'])}
         debounce-ms=${ifDefined(args['debounce-ms'])}
         ?disabled=${args.disabled}
+        ?include-clear=${args['include-clear']}
+        ?include-search=${args['include-search']}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         .items=${args.items}

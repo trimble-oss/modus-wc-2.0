@@ -38,7 +38,7 @@ export class ModusWcBadge {
   @Prop() size: ModusSize = 'md';
 
   /** The variant of the badge. */
-  @Prop() variant: 'counter' | 'filled' | 'text' = 'filled';
+  @Prop() variant: 'counter' | 'filled' | 'outlined' | 'text' = 'filled';
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
