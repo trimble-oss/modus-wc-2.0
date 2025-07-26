@@ -36,6 +36,7 @@ The component supports a `<slot>` for injecting content within the button, simil
 ### Used by
 
  - [modus-wc-alert](../modus-wc-alert)
+ - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-dropdown-menu](../modus-wc-dropdown-menu)
  - [modus-wc-modal](../modus-wc-modal)
  - [modus-wc-navbar](../modus-wc-navbar)
@@ -44,6 +45,7 @@ The component supports a `<slot>` for injecting content within the button, simil
 ```mermaid
 graph TD;
   modus-wc-alert --> modus-wc-button
+  modus-wc-autocomplete --> modus-wc-button
   modus-wc-dropdown-menu --> modus-wc-button
   modus-wc-modal --> modus-wc-button
   modus-wc-navbar --> modus-wc-button

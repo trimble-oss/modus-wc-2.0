@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ITableColumn } from './modus-wc-table';
-import { IAutocompleteItem } from '../modus-wc-autocomplete/modus-wc-autocomplete';
+import { IAutocompleteItem } from '../types';
 import { Density } from '../types';
 
 interface TableStoryArgs {

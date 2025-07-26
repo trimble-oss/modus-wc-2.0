@@ -8,48 +8,139 @@ modus-wc-autocomplete.modus-wc-autocomplete {
   position: relative;
   width: 100%;
 
-  .modus-wc-input-label {
-    padding-bottom: var(--modus-wc-spacing-sm);
-  }
-
   modus-wc-loader {
     display: flex;
     justify-content: center;
   }
 
-  .modus-wc-input-bordered {
-    border-radius: var(--modus-wc-border-radius-md);
-  }
-
   .modus-wc-autocomplete-multi-select {
-    align-items: center;
+    align-items: flex-start;
+    background-color: transparent;
+    border-radius: var(--modus-wc-border-radius-md);
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    height: auto;
+    min-height: fit-content;
     padding: var(--modus-wc-spacing-xs);
 
-    &.modus-wc-autocomplete-multi-select--bordered {
-      border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-0);
-      border-radius: var(--modus-wc-border-radius-md)
-        var(--modus-wc-border-radius-md) 0 0;
+    .modus-wc-autocomplete-search-icon {
+      align-self: center;
+      flex-shrink: 0;
     }
 
-    /** TODO - chip styling is temporary, remove once chip component is implemented */
-    .chip {
-      align-items: center;
-      background-color: var(--modus-wc-color-gray-1);
-      border-radius: var(--modus-wc-border-radius-xl);
-      display: flex;
+    &.modus-wc-input-sm {
+      .modus-wc-autocomplete-search-icon {
+        height: var(--modus-wc-line-height-sm);
+        width: var(--modus-wc-line-height-sm);
+      }
+    }
 
-      button {
-        i {
-          font-size: 0.75rem;
+    &.modus-wc-input-md {
+      .modus-wc-autocomplete-search-icon {
+        height: var(--modus-wc-line-height-md);
+        width: var(--modus-wc-line-height-md);
+      }
+    }
+
+    &.modus-wc-input-lg {
+      .modus-wc-autocomplete-search-icon {
+        height: var(--modus-wc-line-height-lg);
+        width: var(--modus-wc-line-height-lg);
+      }
+    }
+
+    // Remove focus outline that appears when clicking on the container
+    &:focus,
+    &:focus-within {
+      box-shadow: none !important;
+      outline: none !important;
+    }
+
+    // Content area for chips and input
+    .modus-wc-autocomplete-content {
+      align-content: flex-start;
+      align-items: center;
+      display: flex;
+      flex: 1;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      min-height: fit-content;
+      min-width: 0;
+
+      // Remove border from internal text-input
+      .modus-wc-text-input {
+        &:focus-within {
+          border: none !important;
         }
       }
+    }
 
-      .label {
-        font-size: var(--modus-wc-font-size-md);
-        padding: 0 var(--modus-wc-spacing-xs);
+    // Button container that stays at the right
+    .modus-wc-autocomplete-button-container {
+      align-items: center;
+      align-self: center;
+      display: none; // Hidden by default
+      flex-shrink: 0;
+      justify-content: center;
+
+      // Show when it contains visible buttons
+      &:not(:empty) {
+        display: flex;
+      }
+
+      // Ensure modus-wc-button is properly centered
+      modus-wc-button {
+        align-self: center;
+        display: flex;
+        margin: 0;
+      }
+    }
+
+    // Chip styling - maintains consistent size (inside content container)
+    .modus-wc-autocomplete-content modus-wc-chip {
+      align-self: center;
+      flex-shrink: 0; // Chips never shrink - they maintain their natural size
+    }
+
+    // Text input - intelligent flexible sizing (inside content container)
+    .modus-wc-autocomplete-content modus-wc-text-input {
+      align-self: center;
+      flex: 1 1 var(--modus-autocomplete-min-input-width, 60px);
+      max-width: 100%;
+      min-width: var(--modus-autocomplete-min-input-width, 60px);
+
+      // Ensure text content respects the input boundaries
+      input {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+      }
+
+      // When input is alone (no chips), it takes full width
+      &:only-child {
+        flex: 1 1 100%;
+      }
+    }
+
+    // "+N more" indicator - shows extra chip count when not focused
+    .modus-wc-autocomplete-content .modus-wc-autocomplete-more-indicator {
+      align-items: center;
+      align-self: center;
+      display: flex;
+      flex-shrink: 0;
+      height: 32px;
+      justify-content: center;
+      padding: 0 8px;
+
+      .modus-wc-autocomplete-more-text {
+        background-color: var(--modus-wc-color-gray-2);
+        border-radius: var(--modus-wc-border-radius-sm);
+        color: var(--modus-wc-color-text-secondary);
+        font-size: var(--modus-wc-font-size-sm);
+        font-weight: var(--modus-wc-font-weight-medium);
+        padding: 4px 8px;
+        text-align: center;
+        white-space: nowrap;
       }
     }
   }
@@ -57,8 +148,11 @@ modus-wc-autocomplete.modus-wc-autocomplete {
   .modus-wc-menu {
     border-radius: 0 0 var(--modus-wc-border-radius-md)
       var(--modus-wc-border-radius-md);
+    display: block;
     left: 0;
     margin-top: var(--modus-wc-spacing-2xs);
+    max-height: 320px;
+    overflow: auto;
     position: absolute;
     top: 100%;
     z-index: 99;
@@ -116,7 +210,6 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     box-shadow: 0 0 4px 0 rgba(54, 53, 69, 0.3);
   }
 
-  .modus-wc-input-disabled,
   .modus-wc-text-input-readonly {
     background-color: var(--modus-wc-color-gray-10);
   }
@@ -125,10 +218,6 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     cursor: not-allowed;
     opacity: 0.6;
     user-select: none;
-
-    .modus-wc-input-disabled {
-      border: none;
-    }
   }
 
   .modus-wc-autocomplete-multi-select--readonly {
@@ -139,8 +228,12 @@ modus-wc-autocomplete.modus-wc-autocomplete {
 }
 
 [data-theme='modus-classic-light'] modus-wc-autocomplete.modus-wc-autocomplete {
+  // Light theme background
+  .modus-wc-autocomplete-multi-select {
+    background-color: var(--modus-wc-color-white);
+  }
+
   .modus-wc-autocomplete-multi-select--disabled,
-  .modus-wc-input-disabled,
   .modus-wc-autocomplete-multi-select--readonly,
   .modus-wc-text-input-readonly {
     background-color: var(--modus-wc-color-gray-0);
@@ -153,6 +246,11 @@ modus-wc-autocomplete.modus-wc-autocomplete {
 }
 
 [data-theme='modus-classic-dark'] modus-wc-autocomplete.modus-wc-autocomplete {
+  // Dark theme background
+  .modus-wc-autocomplete-multi-select {
+    background-color: var(--modus-wc-color-gray-10);
+  }
+
   .modus-wc-autocomplete-no-results {
     .sub-label {
       color: var(--modus-wc-color-white);
