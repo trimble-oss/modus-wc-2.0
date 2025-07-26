@@ -1,0 +1,108 @@
+name: Cursor AI PR Review Integration
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+
+jobs:
+  prepare-cursor-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Generate Review Instructions for Cursor
+        run: |
+          cat > cursor_review_instructions.md << 'EOF'
+          ## 🤖 Cursor AI Review Instructions
+          
+          To review this PR with Cursor:
+          
+          1. **In Cursor**, run this command:
+          ```
+          Review PR #${{ github.event.pull_request.number }} in ElishaSamPeterPrabhu/modus-wc-2.0 against CODE-GUIDELINES.md
+          ```
+          
+          2. **Or use Cursor Agent**:
+          - Open Cursor
+          - Use the Agent/Composer
+          - Paste: "Review the changes in PR #${{ github.event.pull_request.number }} against our CODE-GUIDELINES.md. Check for component structure, TypeScript usage, naming conventions, and all other guidelines."
+          
+          3. **Manual Review Checklist**:
+          EOF
+          
+          # Add specific checks based on changed files
+          echo "### Files Changed:" >> cursor_review_instructions.md
+          gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' >> cursor_review_instructions.md
+          
+          echo -e "\n### Review Focus Areas:" >> cursor_review_instructions.md
+          echo "Based on the changed files, pay special attention to:" >> cursor_review_instructions.md
+          
+          # Check for component files
+          if gh pr view ${{ github.event.pull_request.number }} --json files -q '.files[].path' | grep -q "src/components/"; then
+            echo "- ✅ Component naming (modus-wc-*)" >> cursor_review_instructions.md
+            echo "- ✅ Required files (.tsx, .scss, .spec.ts, .stories.ts)" >> cursor_review_instructions.md
+            echo "- ✅ TypeScript usage" >> cursor_review_instructions.md
+          fi
+          
+          # Add PR diff summary
+          echo -e "\n### Quick Diff Summary:" >> cursor_review_instructions.md
+          gh pr diff ${{ github.event.pull_request.number }} --name-only | head -20 >> cursor_review_instructions.md
+          
+          echo -e "\n---\n💡 **Tip**: You can also comment \`/cursor-review\` on this PR to trigger a reminder." >> cursor_review_instructions.md
+        env:
+          GH_TOKEN: ${{ github.token }}
+          
+      - name: Post Cursor Review Instructions
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: cursor-review-instructions
+          path: cursor_review_instructions.md
+          
+  # Trigger from comment
+  cursor-review-reminder:
+    if: >
+      github.event_name == 'issue_comment' && 
+      github.event.issue.pull_request && 
+      contains(github.event.comment.body, '/cursor-review')
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    
+    steps:
+      - name: Post Cursor Command
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.issue.number;
+            const comment = `## 🤖 Cursor Review Command
+            
+            Copy and paste this into Cursor:
+            
+            \`\`\`
+            Review PR #${prNumber} in ${context.repo.owner}/${context.repo.repo} against CODE-GUIDELINES.md. 
+            Check for:
+            - Component structure and naming (modus-wc-*)
+            - TypeScript usage
+            - Required files (.tsx, .scss, .spec.ts, .stories.ts)
+            - Code style conventions
+            - Accessibility compliance
+            - Test coverage
+            \`\`\`
+            
+            Or in Cursor's Agent/Composer, use the above command to get a comprehensive review.`;
+            
+            github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: prNumber,
+              body: comment
+            }); 

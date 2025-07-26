@@ -1,0 +1,69 @@
+name: GitHub Copilot Code Review Setup
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  copilot-review-setup:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      # GitHub Copilot for Pull Requests Instructions
+      - name: Generate Copilot Review Instructions
+        run: |
+          cat > copilot_instructions.md << 'EOF'
+          ## 🚀 GitHub Copilot Review Options
+          
+          ### Option 1: Enable Copilot for Pull Requests (Recommended)
+          
+          1. Go to your repository settings
+          2. Navigate to **Code security and analysis**
+          3. Enable **"Copilot for pull requests"** (if available for your organization)
+          4. Copilot will automatically review PRs against your codebase patterns
+          
+          ### Option 2: Use Copilot in VS Code/GitHub Codespaces
+          
+          1. Open this PR in GitHub Codespaces or pull locally
+          2. Use Copilot Chat with this prompt:
+          ```
+          Review the changes in this PR against CODE-GUIDELINES.md. 
+          Check for:
+          - Component naming (modus-wc-*)
+          - TypeScript usage
+          - Required files
+          - Code style violations
+          ```
+          
+          ### Option 3: Use GitHub Copilot CLI
+          
+          Install Copilot CLI:
+          ```bash
+          gh extension install github/gh-copilot
+          ```
+          
+          Then review:
+          ```bash
+          gh copilot suggest "review PR #${{ github.event.pull_request.number }} against CODE-GUIDELINES.md"
+          ```
+          
+          ### Current PR Details:
+          - PR Number: #${{ github.event.pull_request.number }}
+          - Branch: ${{ github.head_ref }}
+          - Base: ${{ github.base_ref }}
+          
+          ---
+          💡 **Note**: GitHub Copilot for PRs is gradually rolling out. If not available, use Option 2 or 3.
+          EOF
+          
+      - name: Post Copilot Instructions
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: copilot-review-setup
+          path: copilot_instructions.md 
