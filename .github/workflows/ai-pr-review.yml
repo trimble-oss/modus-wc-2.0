@@ -1,0 +1,137 @@
+name: AI-Powered PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+
+jobs:
+  ai-review:
+    # Only run on PR comments that contain "/review"
+    if: >
+      github.event_name == 'pull_request' || 
+      (github.event_name == 'issue_comment' && 
+       github.event.issue.pull_request && 
+       contains(github.event.comment.body, '/review'))
+    
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Get PR diff
+        id: get-diff
+        run: |
+          # Get the PR diff
+          gh pr diff ${{ github.event.pull_request.number || github.event.issue.number }} > pr.diff || true
+          
+          # Get list of changed files
+          gh pr view ${{ github.event.pull_request.number || github.event.issue.number }} --json files -q '.files[].path' > changed_files.txt || true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          
+      - name: Prepare Review Context
+        id: prepare-context
+        run: |
+          # Create a comprehensive review request
+          cat > review_request.txt << 'EOF'
+          Please review this pull request against the CODE-GUIDELINES.md file.
+          
+          Focus on:
+          1. Component Structure & Organization
+          2. TypeScript usage and type safety
+          3. Event naming conventions (camelCase)
+          4. CSS styling conventions
+          5. Accessibility compliance (WCAG 2.2)
+          6. Testing requirements
+          7. Documentation requirements
+          8. Error handling
+          
+          CODE-GUIDELINES.md content:
+          EOF
+          
+          cat CODE-GUIDELINES.md >> review_request.txt
+          
+          echo -e "\n\n--- PULL REQUEST DIFF ---\n" >> review_request.txt
+          cat pr.diff >> review_request.txt
+          
+      - name: Run AI Review
+        id: ai-review
+        run: |
+          # This is a placeholder for AI review
+          # In a real implementation, you would:
+          # 1. Use OpenAI API, Claude API, or another AI service
+          # 2. Send the review_request.txt content to the AI
+          # 3. Get structured feedback
+          
+          # For now, create a template response
+          cat > ai_review.md << 'EOF'
+          ## 🤖 AI Code Review
+          
+          This PR has been automatically reviewed against CODE-GUIDELINES.md
+          
+          ### Review Summary
+          ⚠️ **Manual AI integration required**
+          
+          To enable AI-powered reviews:
+          1. Add an AI API key as a GitHub secret (e.g., OPENAI_API_KEY)
+          2. Install an AI review action or create a custom script
+          3. Configure the AI prompt with your CODE-GUIDELINES.md
+          
+          ### Recommended AI Review Tools:
+          - **OpenAI GPT-4**: Use with a custom script
+          - **CodeRabbit**: GitHub App with built-in AI review
+          - **Codacy**: Automated code review with custom rules
+          - **PR-Agent**: Open-source AI code review tool
+          
+          ### Quick Setup with OpenAI:
+          ```bash
+          # Add this script to .github/scripts/ai-review.js
+          const OpenAI = require('openai');
+          const fs = require('fs');
+          
+          const openai = new OpenAI({
+            apiKey: process.env.OPENAI_API_KEY,
+          });
+          
+          async function reviewPR() {
+            const reviewRequest = fs.readFileSync('review_request.txt', 'utf8');
+            
+            const completion = await openai.chat.completions.create({
+              model: "gpt-4",
+              messages: [
+                {
+                  role: "system",
+                  content: "You are a code reviewer. Review the PR against the provided guidelines."
+                },
+                {
+                  role: "user",
+                  content: reviewRequest
+                }
+              ],
+            });
+            
+            console.log(completion.choices[0].message.content);
+          }
+          
+          reviewPR();
+          ```
+          EOF
+          
+      - name: Post AI Review
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: ai-code-review
+          path: ai_review.md 

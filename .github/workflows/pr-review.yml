@@ -1,0 +1,193 @@
+name: PR Code Guidelines Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        
+      - name: Check Component Structure
+        id: component-structure
+        run: |
+          echo "## Component Structure Review" >> review.md
+          echo "" >> review.md
+          
+          violations=0
+          
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            # Check if it's a component file
+            if [[ $file == src/components/* ]]; then
+              component_dir=$(dirname "$file")
+              component_name=$(basename "$component_dir")
+              
+              # Check naming pattern
+              if [[ ! $component_name =~ ^modus-wc- ]]; then
+                echo "❌ Component '$component_name' doesn't follow modus-wc-* naming pattern" >> review.md
+                ((violations++))
+              fi
+              
+              # Check required files
+              required_files=(
+                "$component_name.tsx"
+                "$component_name.scss"
+                "$component_name.spec.ts"
+                "$component_name.stories.ts"
+              )
+              
+              for req_file in "${required_files[@]}"; do
+                if [ ! -f "$component_dir/$req_file" ]; then
+                  echo "❌ Missing required file: $component_dir/$req_file" >> review.md
+                  ((violations++))
+                fi
+              done
+            fi
+          done
+          
+          echo "violations=$violations" >> $GITHUB_OUTPUT
+          
+      - name: Check TypeScript Usage
+        id: typescript-check
+        run: |
+          echo "" >> review.md
+          echo "## TypeScript Usage" >> review.md
+          echo "" >> review.md
+          
+          violations=0
+          
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            if [[ $file == *.js && $file == src/components/* ]]; then
+              echo "❌ JavaScript file detected: $file - Use TypeScript instead" >> review.md
+              ((violations++))
+            fi
+          done
+          
+          echo "violations=$violations" >> $GITHUB_OUTPUT
+          
+      - name: Check Code Style
+        id: code-style
+        run: |
+          echo "" >> review.md
+          echo "## Code Style Review" >> review.md
+          echo "" >> review.md
+          
+          violations=0
+          
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            if [[ $file == *.tsx || $file == *.ts ]]; then
+              # Check for double quotes
+              if grep -n '"' "$file" 2>/dev/null | grep -v "'" | head -5; then
+                echo "❌ Double quotes found in $file (use single quotes)" >> review.md
+                ((violations++))
+              fi
+              
+              # Check event naming (basic check for handle_ pattern)
+              if grep -n "handle_\|on_" "$file" 2>/dev/null | head -5; then
+                echo "❌ Non-camelCase event handlers found in $file" >> review.md
+                ((violations++))
+              fi
+            fi
+            
+            if [[ $file == *.scss ]]; then
+              # Check for margin-left/right
+              if grep -n "margin-left\|margin-right" "$file" 2>/dev/null | head -5; then
+                echo "❌ Use margin-inline-start/end instead of margin-left/right in $file" >> review.md
+                ((violations++))
+              fi
+            fi
+          done
+          
+          echo "violations=$violations" >> $GITHUB_OUTPUT
+          
+      - name: Check Commit Messages
+        id: commit-check
+        run: |
+          echo "" >> review.md
+          echo "## Commit Message Review" >> review.md
+          echo "" >> review.md
+          
+          violations=0
+          
+          # Get commits in this PR
+          commits=$(git log --format="%s" origin/main..HEAD)
+          
+          semantic_pattern="^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: .+"
+          
+          while IFS= read -r commit_msg; do
+            if [[ ! $commit_msg =~ $semantic_pattern ]]; then
+              echo "❌ Non-semantic commit message: '$commit_msg'" >> review.md
+              echo "   Should follow format: type(scope): description" >> review.md
+              ((violations++))
+            fi
+          done <<< "$commits"
+          
+          echo "violations=$violations" >> $GITHUB_OUTPUT
+          
+      - name: Check Branch Name
+        id: branch-check
+        run: |
+          echo "" >> review.md
+          echo "## Branch Name Review" >> review.md
+          echo "" >> review.md
+          
+          violations=0
+          branch_name="${{ github.head_ref }}"
+          
+          # Check branch naming patterns
+          if [[ ! $branch_name =~ ^[0-9]+-[a-zA-Z0-9-]+$ ]] && [[ ! $branch_name =~ ^[A-Z][a-zA-Z]+-[a-zA-Z0-9-]+$ ]]; then
+            echo "❌ Branch name '$branch_name' doesn't follow pattern:" >> review.md
+            echo "   - IssueNo-IssueTitle (e.g., 109-collapse-fix-animation)" >> review.md
+            echo "   - ComponentName-Description (e.g., Table-add-summaryRow)" >> review.md
+            ((violations++))
+          fi
+          
+          echo "violations=$violations" >> $GITHUB_OUTPUT
+          
+      - name: Create Review Summary
+        id: summary
+        run: |
+          echo "" >> review.md
+          echo "---" >> review.md
+          echo "" >> review.md
+          
+          total_violations=$((
+            ${{ steps.component-structure.outputs.violations }} + 
+            ${{ steps.typescript-check.outputs.violations }} + 
+            ${{ steps.code-style.outputs.violations }} + 
+            ${{ steps.commit-check.outputs.violations }} + 
+            ${{ steps.branch-check.outputs.violations }}
+          ))
+          
+          if [ $total_violations -eq 0 ]; then
+            echo "✅ **All checks passed!** This PR follows the CODE-GUIDELINES.md" >> review.md
+            echo "status=approved" >> $GITHUB_OUTPUT
+          else
+            echo "❌ **Found $total_violations violations** of CODE-GUIDELINES.md" >> review.md
+            echo "" >> review.md
+            echo "Please review and fix the issues listed above." >> review.md
+            echo "status=changes_requested" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Post Review Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: code-guidelines-review
+          path: review.md
+          
+      - name: Set PR Status
+        if: steps.summary.outputs.status == 'changes_requested'
+        run: exit 1 
