@@ -4032,7 +4032,10 @@ describe('modus-wc-autocomplete', () => {
 
     // Spy on syncFilteredItems before setting items
     const syncSpy = jest
-      .spyOn(autocomplete as any, 'syncFilteredItems')
+      .spyOn(
+        autocomplete as unknown as { syncFilteredItems: () => void },
+        'syncFilteredItems'
+      )
       .mockImplementation(() => {});
 
     // Set initial items
@@ -4043,7 +4046,15 @@ describe('modus-wc-autocomplete', () => {
     syncSpy.mockClear();
 
     // Manually call handleItemsChange with undefined newItems
-    (autocomplete as any).handleItemsChange(undefined, mockItems);
+    const handleItemsChange = (
+      autocomplete as unknown as {
+        handleItemsChange: (
+          newItems: IAutocompleteItem[] | undefined,
+          oldItems: IAutocompleteItem[] | undefined
+        ) => void;
+      }
+    ).handleItemsChange;
+    handleItemsChange.call(autocomplete, undefined, mockItems);
 
     // When newItems is undefined, JSON.stringify(undefined?.map(...)) returns "undefined"
     // and JSON.stringify(mockItems.map(...)) returns a valid JSON string
@@ -4068,10 +4079,21 @@ describe('modus-wc-autocomplete', () => {
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
 
     // Spy on syncFilteredItems
-    const syncSpy = jest.spyOn(autocomplete as any, 'syncFilteredItems');
+    const syncSpy = jest.spyOn(
+      autocomplete as unknown as { syncFilteredItems: () => void },
+      'syncFilteredItems'
+    );
 
     // Manually call handleItemsChange with undefined oldItems
-    (autocomplete as any).handleItemsChange(mockItems, undefined);
+    const handleItemsChange = (
+      autocomplete as unknown as {
+        handleItemsChange: (
+          newItems: IAutocompleteItem[] | undefined,
+          oldItems: IAutocompleteItem[] | undefined
+        ) => void;
+      }
+    ).handleItemsChange;
+    handleItemsChange.call(autocomplete, mockItems, undefined);
 
     // Should call syncFilteredItems when oldItems is undefined (initial load)
     expect(syncSpy).toHaveBeenCalled();
@@ -4086,10 +4108,21 @@ describe('modus-wc-autocomplete', () => {
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
 
     // Spy on syncFilteredItems
-    const syncSpy = jest.spyOn(autocomplete as any, 'syncFilteredItems');
+    const syncSpy = jest.spyOn(
+      autocomplete as unknown as { syncFilteredItems: () => void },
+      'syncFilteredItems'
+    );
 
     // Manually call handleItemsChange with both undefined
-    (autocomplete as any).handleItemsChange(undefined, undefined);
+    const handleItemsChange = (
+      autocomplete as unknown as {
+        handleItemsChange: (
+          newItems: IAutocompleteItem[] | undefined,
+          oldItems: IAutocompleteItem[] | undefined
+        ) => void;
+      }
+    ).handleItemsChange;
+    handleItemsChange.call(autocomplete, undefined, undefined);
 
     // Should not call syncFilteredItems
     expect(syncSpy).not.toHaveBeenCalled();
@@ -4103,7 +4136,7 @@ describe('modus-wc-autocomplete', () => {
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
 
-    const itemsWithUndefined: any[] = [
+    const itemsWithUndefined = [
       { label: 'Apple', value: undefined, visibleInMenu: true },
       {
         label: 'Banana',
@@ -4111,21 +4144,33 @@ describe('modus-wc-autocomplete', () => {
         selected: undefined,
         visibleInMenu: true,
       },
-    ];
+    ] as IAutocompleteItem[];
 
-    const newItemsWithUndefined: any[] = [
+    const newItemsWithUndefined = [
       { label: 'Apple', value: undefined, visibleInMenu: true },
       { label: 'Banana', value: 'banana', selected: true, visibleInMenu: true },
-    ];
+    ] as unknown as IAutocompleteItem[];
 
     // Spy on syncFilteredItems
-    const syncSpy = jest.spyOn(autocomplete as any, 'syncFilteredItems');
+    const syncSpy = jest.spyOn(
+      autocomplete as unknown as { syncFilteredItems: () => void },
+      'syncFilteredItems'
+    );
 
     // Set initial items
     autocomplete.items = itemsWithUndefined;
 
     // Manually call handleItemsChange
-    (autocomplete as any).handleItemsChange(
+    const handleItemsChange = (
+      autocomplete as unknown as {
+        handleItemsChange: (
+          newItems: IAutocompleteItem[] | undefined,
+          oldItems: IAutocompleteItem[] | undefined
+        ) => void;
+      }
+    ).handleItemsChange;
+    handleItemsChange.call(
+      autocomplete,
       newItemsWithUndefined,
       itemsWithUndefined
     );
@@ -4154,7 +4199,10 @@ describe('modus-wc-autocomplete', () => {
 
     // Spy on syncFilteredItems and mock it
     const syncSpy = jest
-      .spyOn(autocomplete as any, 'syncFilteredItems')
+      .spyOn(
+        autocomplete as unknown as { syncFilteredItems: () => void },
+        'syncFilteredItems'
+      )
       .mockImplementation(() => {});
 
     // Set initial items
@@ -4165,7 +4213,15 @@ describe('modus-wc-autocomplete', () => {
     syncSpy.mockClear();
 
     // Manually call handleItemsChange
-    (autocomplete as any).handleItemsChange(newItems, oldItems);
+    const handleItemsChange = (
+      autocomplete as unknown as {
+        handleItemsChange: (
+          newItems: IAutocompleteItem[] | undefined,
+          oldItems: IAutocompleteItem[] | undefined
+        ) => void;
+      }
+    ).handleItemsChange;
+    handleItemsChange.call(autocomplete, newItems, oldItems);
 
     // Should not call syncFilteredItems as only focused changed
     expect(syncSpy).not.toHaveBeenCalled();
@@ -4188,13 +4244,24 @@ describe('modus-wc-autocomplete', () => {
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
 
     // Spy on syncFilteredItems
-    const syncSpy = jest.spyOn(autocomplete as any, 'syncFilteredItems');
+    const syncSpy = jest.spyOn(
+      autocomplete as unknown as { syncFilteredItems: () => void },
+      'syncFilteredItems'
+    );
 
     // Set initial items
     autocomplete.items = [];
 
     // Manually call handleItemsChange with empty arrays
-    (autocomplete as any).handleItemsChange([], mockItems);
+    const handleItemsChange = (
+      autocomplete as unknown as {
+        handleItemsChange: (
+          newItems: IAutocompleteItem[] | undefined,
+          oldItems: IAutocompleteItem[] | undefined
+        ) => void;
+      }
+    ).handleItemsChange;
+    handleItemsChange.call(autocomplete, [], mockItems);
 
     // Should call syncFilteredItems as items changed
     expect(syncSpy).toHaveBeenCalled();
@@ -4215,10 +4282,13 @@ describe('modus-wc-autocomplete', () => {
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
 
     // Set isNavigating flag
-    (autocomplete as any).isNavigating = true;
+    (autocomplete as unknown as { isNavigating: boolean }).isNavigating = true;
 
     // Spy on syncFilteredItems
-    const syncSpy = jest.spyOn(autocomplete as any, 'syncFilteredItems');
+    const syncSpy = jest.spyOn(
+      autocomplete as unknown as { syncFilteredItems: () => void },
+      'syncFilteredItems'
+    );
 
     const newItems = [...mockItems];
     newItems[0] = { ...newItems[0], selected: true };
@@ -4227,7 +4297,15 @@ describe('modus-wc-autocomplete', () => {
     autocomplete.items = newItems;
 
     // Manually call handleItemsChange
-    (autocomplete as any).handleItemsChange(newItems, mockItems);
+    const handleItemsChange = (
+      autocomplete as unknown as {
+        handleItemsChange: (
+          newItems: IAutocompleteItem[] | undefined,
+          oldItems: IAutocompleteItem[] | undefined
+        ) => void;
+      }
+    ).handleItemsChange;
+    handleItemsChange.call(autocomplete, newItems, mockItems);
 
     // Should not call syncFilteredItems when isNavigating is true
     expect(syncSpy).not.toHaveBeenCalled();
@@ -4242,17 +4320,33 @@ describe('modus-wc-autocomplete', () => {
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
 
     // Create items with potential circular reference
-    const item1: any = { label: 'Item 1', value: '1', visibleInMenu: true };
-    const item2: any = { label: 'Item 2', value: '2', visibleInMenu: true };
+    interface CircularItem extends IAutocompleteItem {
+      ref?: CircularItem;
+    }
+    const item1: CircularItem = {
+      label: 'Item 1',
+      value: '1',
+      visibleInMenu: true,
+    };
+    const item2: CircularItem = {
+      label: 'Item 2',
+      value: '2',
+      visibleInMenu: true,
+    };
     item1.ref = item2;
     item2.ref = item1; // Circular reference
 
-    // Spy on syncFilteredItems
-    const syncSpy = jest.spyOn(autocomplete as any, 'syncFilteredItems');
-
     // This should not throw an error due to the map operation extracting only value and selected
     expect(() => {
-      (autocomplete as any).handleItemsChange([item1, item2], []);
+      const handleItemsChange = (
+        autocomplete as unknown as {
+          handleItemsChange: (
+            newItems: IAutocompleteItem[] | undefined,
+            oldItems: IAutocompleteItem[] | undefined
+          ) => void;
+        }
+      ).handleItemsChange;
+      handleItemsChange.call(autocomplete, [item1, item2], []);
     }).not.toThrow();
   });
 
@@ -4460,7 +4554,7 @@ describe('modus-wc-autocomplete', () => {
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
 
     // Set items to null to test the optional chaining operator
-    autocomplete.items = null as any;
+    autocomplete.items = null as unknown as IAutocompleteItem[];
     await page.waitForChanges();
 
     // Set input value to have text
@@ -4482,7 +4576,7 @@ describe('modus-wc-autocomplete', () => {
     await page.waitForChanges();
 
     // Reset and test with undefined items
-    autocomplete.items = undefined as any;
+    autocomplete.items = undefined as unknown as IAutocompleteItem[];
     await page.waitForChanges();
 
     // Trigger arrow up to test filtering logic with undefined items
