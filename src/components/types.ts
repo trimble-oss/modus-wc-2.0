@@ -101,3 +101,27 @@ export type PopoverPlacement =
   | 'right'
   | 'right-start'
   | 'right-end';
+
+export interface IAutocompleteItem {
+  /** Whether the item is disabled */
+  disabled?: boolean;
+  /** Whether the item is currently focused */
+  focused?: boolean;
+  /** The display text shown for the autocomplete item */
+  label: string;
+  /** Whether the item is currently selected */
+  selected?: boolean;
+  /** The unique value identifier for the item */
+  value: string;
+  /** Whether the item should be shown in the dropdown menu */
+  visibleInMenu: boolean;
+}
+
+export interface IAutocompleteNoResults {
+  /** The aria-label to provide accessibility information for the no results section. */
+  ariaLabel?: string;
+  /** The main label to display when no results are found. */
+  label: string;
+  /** The sub-label or additional text to display below the main label. */
+  subLabel: string;
+}
