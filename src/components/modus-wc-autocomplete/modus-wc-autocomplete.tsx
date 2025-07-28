@@ -56,6 +56,7 @@ export class ModusWcAutocomplete {
   private debounceTimer?: number;
   private inheritedAttributes: Attributes = {};
   private programmaticOpen: boolean = false;
+  private isNavigating: boolean = false; // Flag to prevent re-filtering during navigation
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -184,8 +185,22 @@ export class ModusWcAutocomplete {
   }
 
   @Watch('items')
-  handleItemsChange() {
-    if (this.items) {
+  handleItemsChange(
+    newItems: IAutocompleteItem[],
+    oldItems: IAutocompleteItem[]
+  ) {
+    // Only sync filtered items if items actually changed (not just focus updates)
+    // and we're not currently navigating
+    if (
+      this.items &&
+      !this.isNavigating &&
+      JSON.stringify(
+        newItems?.map((i) => ({ value: i.value, selected: i.selected }))
+      ) !==
+        JSON.stringify(
+          oldItems?.map((i) => ({ value: i.value, selected: i.selected }))
+        )
+    ) {
       this.syncFilteredItems();
     }
   }
@@ -242,11 +257,17 @@ export class ModusWcAutocomplete {
   }
 
   private updateItemFocus(targetValue: string): void {
+    this.isNavigating = true; // Prevent items watcher from re-filtering
     const updated = updateItemFocus(this.items, targetValue);
     if (updated) {
       this.items = updated;
+
+      // We need to update filteredItems to reflect the focus change
+      // If we're in filtering mode, syncFilteredItems will maintain the filter
+      // If we're not in filtering mode, the arrow handlers already set all items
       this.syncFilteredItems();
     }
+    this.isNavigating = false; // Reset flag
   }
 
   private clearAllFocus(): void {
@@ -261,23 +282,56 @@ export class ModusWcAutocomplete {
     const input = this.el.querySelector('input');
     if (!input) return;
 
+    // Check if we're in filtering mode:
+    // We're filtering if there's text AND we haven't selected that exact text
+    const isFiltering =
+      input.value.length > 0 &&
+      !this.items?.some(
+        (item) =>
+          item.selected &&
+          item.label.toLowerCase() === input.value.toLowerCase()
+      );
+
     processArrowDown({
       showMenuOnFocus: this.showMenuOnFocus,
       minChars: this.minChars,
       inputValue: input.value,
       initialNavigation: this.initialNavigation,
       visibleItems: this.getVisibleItems(),
-      onUpdateFocus: (value) => this.updateItemFocus(value),
+      onUpdateFocus: (value) => {
+        this.updateItemFocus(value);
+        // After updating focus, if not filtering, ensure we show all items
+        if (!isFiltering && this.items) {
+          this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+        }
+      },
       onSetMenuVisible: (visible) => (this.menuVisible = visible),
       onSetInitialNavigation: (value) => (this.initialNavigation = value),
     });
   }
 
   private handleArrowUp(): void {
+    const input = this.el.querySelector('input');
+
+    const isFiltering =
+      input &&
+      input.value.length > 0 &&
+      !this.items?.some(
+        (item) =>
+          item.selected &&
+          item.label.toLowerCase() === input.value.toLowerCase()
+      );
+
     processArrowUp({
       initialNavigation: this.initialNavigation,
       visibleItems: this.getVisibleItems(),
-      onUpdateFocus: (value) => this.updateItemFocus(value),
+      onUpdateFocus: (value) => {
+        this.updateItemFocus(value);
+        // After updating focus, if not filtering, ensure we show all items
+        if (!isFiltering && this.items) {
+          this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+        }
+      },
       onSetInitialNavigation: (value) => (this.initialNavigation = value),
     });
   }
@@ -443,8 +497,15 @@ export class ModusWcAutocomplete {
   }
 
   private handleFocus = (event: CustomEvent<FocusEvent>) => {
-    if (!this.disabled && !this.readOnly && this.showMenuOnFocus) {
-      this.menuVisible = true;
+    if (!this.disabled && !this.readOnly) {
+      // The filtering only applies while actively typing
+      if (this.items) {
+        this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+      }
+
+      if (this.showMenuOnFocus) {
+        this.menuVisible = true;
+      }
     }
 
     this.inputFocus.emit(event.detail);
@@ -583,6 +644,10 @@ export class ModusWcAutocomplete {
     if (!this.disabled && !this.readOnly && this.items) {
       this.initialNavigation = true;
       this.itemSelect.emit(item);
+
+      // After selection, show all items to exit filtering state
+      // This ensures the menu shows all items for the next interaction
+      this.filteredItems = this.items.filter((item) => item.visibleInMenu);
     }
   };
 

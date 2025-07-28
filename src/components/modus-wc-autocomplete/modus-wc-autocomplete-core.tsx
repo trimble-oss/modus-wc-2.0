@@ -143,8 +143,15 @@ export function handleArrowDown(params: ArrowNavigationParams): void {
   const nextIndex =
     currentIndex < 0 ? 0 : Math.min(currentIndex + 1, visibleItems.length - 1);
 
-  if (visibleItems[nextIndex]) {
-    onUpdateFocus(visibleItems[nextIndex].value);
+  if (
+    nextIndex >= 0 &&
+    nextIndex < visibleItems.length &&
+    visibleItems[nextIndex]
+  ) {
+    const item = visibleItems[nextIndex];
+    if (item && item.value) {
+      onUpdateFocus(item.value);
+    }
   }
 }
 
@@ -170,8 +177,15 @@ export function handleArrowUp(params: {
   const prevIndex =
     currentIndex < 0 ? visibleItems.length - 1 : Math.max(currentIndex - 1, 0);
 
-  if (visibleItems[prevIndex]) {
-    onUpdateFocus(visibleItems[prevIndex].value);
+  if (
+    prevIndex >= 0 &&
+    prevIndex < visibleItems.length &&
+    visibleItems[prevIndex]
+  ) {
+    const item = visibleItems[prevIndex];
+    if (item && item.value) {
+      onUpdateFocus(item.value);
+    }
   }
 }
 
