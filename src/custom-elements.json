@@ -207,6 +207,588 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "BLUR_FOCUSOUT_DELAY_MS",
+          "type": {
+            "text": "number"
+          },
+          "default": "200"
+        },
+        {
+          "kind": "function",
+          "name": "clearAllFocus",
+          "return": {
+            "type": {
+              "text": "IAutocompleteItem[] | undefined"
+            }
+          },
+          "parameters": [
+            {
+              "name": "items",
+              "type": {
+                "text": "IAutocompleteItem[] | undefined"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "getClasses",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "parameters": [
+            {
+              "name": "customClass",
+              "optional": true,
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "getMultiSelectClasses",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "parameters": [
+            {
+              "name": "props",
+              "type": {
+                "text": "{\n  bordered?: boolean;\n  disabled?: boolean;\n  readOnly?: boolean;\n  size?: ModusSize;\n}"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "getVisibleItems",
+          "return": {
+            "type": {
+              "text": "IAutocompleteItem[]"
+            }
+          },
+          "parameters": [
+            {
+              "name": "filteredItems",
+              "optional": true,
+              "type": {
+                "text": "IAutocompleteItem[]"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "handleArrowDown",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "ArrowNavigationParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "handleArrowUp",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "{\n  initialNavigation: boolean;\n  visibleItems: IAutocompleteItem[];\n  onUpdateFocus: (value: string) => void;\n  onSetInitialNavigation: (value: boolean) => void;\n}"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "handleBackspace",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "input",
+              "type": {
+                "text": "HTMLInputElement"
+              }
+            },
+            {
+              "name": "params",
+              "type": {
+                "text": "{\n    multiSelect?: boolean;\n    selectionOrder: string[];\n    items?: IAutocompleteItem[];\n    onChipRemove: (item: IAutocompleteItem) => void;\n  }"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "processChipRemoval",
+          "return": {
+            "type": {
+              "text": "{\n  updatedItems: IAutocompleteItem[] | undefined;\n  updatedSelectionOrder: string[];\n}"
+            }
+          },
+          "parameters": [
+            {
+              "name": "item",
+              "type": {
+                "text": "IAutocompleteItem"
+              }
+            },
+            {
+              "name": "params",
+              "type": {
+                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    items?: IAutocompleteItem[];\n    selectionOrder: string[];\n  }"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "processInputChange",
+          "return": {
+            "type": {
+              "text": "{\n  inputValue: string;\n  shouldShowMenu: boolean;\n  updatedItems: IAutocompleteItem[] | undefined;\n  shouldResetNavigation: boolean;\n}"
+            }
+          },
+          "parameters": [
+            {
+              "name": "event",
+              "type": {
+                "text": "CustomEvent<Event>"
+              }
+            },
+            {
+              "name": "params",
+              "type": {
+                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    customInputChange?: (value: string) => void;\n    showMenuOnFocus?: boolean;\n    minChars: number;\n    items?: IAutocompleteItem[];\n    multiSelect?: boolean;\n    debounceMs?: number;\n  }"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "processItemSelection",
+          "return": {
+            "type": {
+              "text": "{\n  updatedItems: IAutocompleteItem[] | undefined;\n  updatedValue: string | undefined;\n  updatedSelectionOrder: string[];\n  shouldExpandChips: boolean;\n  shouldCloseMenu: boolean;\n}"
+            }
+          },
+          "parameters": [
+            {
+              "name": "item",
+              "type": {
+                "text": "IAutocompleteItem"
+              }
+            },
+            {
+              "name": "params",
+              "type": {
+                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    items?: IAutocompleteItem[];\n    multiSelect?: boolean;\n    leaveMenuOpen?: boolean;\n    selectionOrder: string[];\n    maxChips?: number;\n    customItemSelect?: (item: IAutocompleteItem) => void;\n  }"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "processKeyEvent",
+          "return": {
+            "type": {
+              "text": "{ handled: boolean; keyLower: string }"
+            }
+          },
+          "parameters": [
+            {
+              "name": "event",
+              "type": {
+                "text": "KeyboardEvent"
+              }
+            },
+            {
+              "name": "params",
+              "type": {
+                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    customKeyDown?: (event: KeyboardEvent) => void;\n  }"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "renderChips",
+          "return": {
+            "type": {
+              "text": "JSX.Element"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderChipsParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "renderClearButton",
+          "return": {
+            "type": {
+              "text": "JSX.Element | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderClearButtonParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "renderExpandCollapseButton",
+          "return": {
+            "type": {
+              "text": "JSX.Element | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderExpandCollapseButtonParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "renderInput",
+          "return": {
+            "type": {
+              "text": "JSX.Element"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderInputParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "renderMenuItems",
+          "return": {
+            "type": {
+              "text": "JSX.Element"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderMenuItemsParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "renderMoreChipsIndicator",
+          "return": {
+            "type": {
+              "text": "JSX.Element | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderMoreChipsIndicatorParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "renderNoResults",
+          "return": {
+            "type": {
+              "text": "JSX.Element"
+            }
+          },
+          "parameters": [
+            {
+              "name": "params",
+              "type": {
+                "text": "RenderNoResultsParams"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "syncFilteredItems",
+          "return": {
+            "type": {
+              "text": "IAutocompleteItem[]"
+            }
+          },
+          "parameters": [
+            {
+              "name": "items",
+              "type": {
+                "text": "IAutocompleteItem[] | undefined"
+              }
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "leaveMenuOpen",
+              "optional": true,
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "customInputChange",
+              "optional": true,
+              "type": {
+                "text": "(value: string) => void"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "updateItemFocus",
+          "return": {
+            "type": {
+              "text": "IAutocompleteItem[] | undefined"
+            }
+          },
+          "parameters": [
+            {
+              "name": "items",
+              "type": {
+                "text": "IAutocompleteItem[] | undefined"
+              }
+            },
+            {
+              "name": "targetValue",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BLUR_FOCUSOUT_DELAY_MS",
+          "declaration": {
+            "name": "BLUR_FOCUSOUT_DELAY_MS",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getClasses",
+          "declaration": {
+            "name": "getClasses",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getMultiSelectClasses",
+          "declaration": {
+            "name": "getMultiSelectClasses",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getVisibleItems",
+          "declaration": {
+            "name": "getVisibleItems",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "syncFilteredItems",
+          "declaration": {
+            "name": "syncFilteredItems",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "updateItemFocus",
+          "declaration": {
+            "name": "updateItemFocus",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "clearAllFocus",
+          "declaration": {
+            "name": "clearAllFocus",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "handleArrowDown",
+          "declaration": {
+            "name": "handleArrowDown",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "handleArrowUp",
+          "declaration": {
+            "name": "handleArrowUp",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "processKeyEvent",
+          "declaration": {
+            "name": "processKeyEvent",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "handleBackspace",
+          "declaration": {
+            "name": "handleBackspace",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "processItemSelection",
+          "declaration": {
+            "name": "processItemSelection",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "processChipRemoval",
+          "declaration": {
+            "name": "processChipRemoval",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "processInputChange",
+          "declaration": {
+            "name": "processInputChange",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderNoResults",
+          "declaration": {
+            "name": "renderNoResults",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderChips",
+          "declaration": {
+            "name": "renderChips",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderClearButton",
+          "declaration": {
+            "name": "renderClearButton",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderExpandCollapseButton",
+          "declaration": {
+            "name": "renderExpandCollapseButton",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderMoreChipsIndicator",
+          "declaration": {
+            "name": "renderMoreChipsIndicator",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderInput",
+          "declaration": {
+            "name": "renderInput",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "renderMenuItems",
+          "declaration": {
+            "name": "renderMenuItems",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-autocomplete/modus-wc-autocomplete.tsx",
       "declarations": [
         {
@@ -215,12 +797,31 @@
           "name": "ModusWcAutocomplete",
           "members": [
             {
+              "kind": "method",
+              "name": "clearInput",
+              "description": "Clear the input value and reset items"
+            },
+            {
+              "kind": "method",
+              "name": "closeMenu",
+              "description": "Programmatically close the menu"
+            },
+            {
               "kind": "field",
               "name": "el",
               "type": {
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "focusInput",
+              "description": "Programmatically set focus to input"
+            },
+            {
+              "kind": "method",
+              "name": "handleItemsChange"
             },
             {
               "kind": "method",
@@ -240,7 +841,30 @@
             },
             {
               "kind": "method",
+              "name": "openMenu",
+              "description": "Programmatically open the menu"
+            },
+            {
+              "kind": "method",
               "name": "render"
+            },
+            {
+              "kind": "method",
+              "name": "selectItem",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "IAutocompleteItem | null"
+                  }
+                }
+              ],
+              "description": "Programmatically select an item"
+            },
+            {
+              "kind": "method",
+              "name": "toggleMenu",
+              "description": "Programmatically toggle the menu open/closed"
             }
           ],
           "attributes": [
@@ -254,12 +878,44 @@
               }
             },
             {
+              "name": "custom-blur",
+              "fieldName": "customBlur",
+              "description": "Custom blur handler - if provided, overrides default blur behavior",
+              "type": {
+                "text": "(event: FocusEvent) => void"
+              }
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "default": "''",
               "description": "Custom CSS class to apply to host element.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "custom-input-change",
+              "fieldName": "customInputChange",
+              "description": "Custom input change handler - if provided, overrides default search filtering",
+              "type": {
+                "text": "(value: string) => void"
+              }
+            },
+            {
+              "name": "custom-item-select",
+              "fieldName": "customItemSelect",
+              "description": "Custom item selection handler - if provided, overrides default selection logic",
+              "type": {
+                "text": "(item: IAutocompleteItem) => void"
+              }
+            },
+            {
+              "name": "custom-key-down",
+              "fieldName": "customKeyDown",
+              "description": "Custom key down handler - if provided, overrides default keyboard navigation",
+              "type": {
+                "text": "(event: KeyboardEvent) => void"
               }
             },
             {
@@ -341,10 +997,28 @@
               }
             },
             {
+              "name": "max-chips",
+              "fieldName": "maxChips",
+              "default": "-1",
+              "description": "Maximum number of chips to display. When exceeded, shows expand/collapse button. Set to -1 to disable limit.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
               "name": "min-chars",
               "fieldName": "minChars",
               "default": "0",
               "description": "The minimum number of characters required to render the menu.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "min-input-width",
+              "fieldName": "minInputWidth",
+              "default": "10",
+              "description": "Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead.",
               "type": {
                 "text": "number"
               }
@@ -448,6 +1122,30 @@
                 "text": "EventEmitter<IAutocompleteItem>"
               },
               "description": "Event emitted when a selected item chip is removed."
+            },
+            {
+              "kind": "field",
+              "name": "chipsExpansionChange",
+              "type": {
+                "text": "EventEmitter<{ expanded: boolean }>"
+              },
+              "description": "Event emitted when chips expansion state changes."
+            },
+            {
+              "kind": "field",
+              "name": "customBlur",
+              "type": {
+                "text": "(event: FocusEvent) => void | undefined"
+              },
+              "description": "Custom blur handler - if provided, overrides default blur behavior"
+            },
+            {
+              "kind": "field",
+              "name": "customKeyDown",
+              "type": {
+                "text": "(event: KeyboardEvent) => void | undefined"
+              },
+              "description": "Custom key down handler - if provided, overrides default keyboard navigation"
             },
             {
               "kind": "field",
