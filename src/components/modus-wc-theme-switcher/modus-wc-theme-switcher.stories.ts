@@ -71,9 +71,7 @@ const ThemeTestTemplate: ThemeTestStory = {
     <modus-wc-theme-provider
       .initialTheme=${{ theme: args.theme, mode: args.mode }}
     >
-      <div
-        style="padding: 40px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;"
-      >
+      <div style="padding: 40px">
         <h2 style="text-align: center; color: var(--mwc-color-on-surface);">
           Theme Configuration Test
         </h2>
