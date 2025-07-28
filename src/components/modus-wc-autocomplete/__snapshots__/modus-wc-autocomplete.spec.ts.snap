@@ -11,7 +11,29 @@ exports[`modus-wc-autocomplete should close the menu when clicking outside if le
 </modus-wc-autocomplete>
 `;
 
+exports[`modus-wc-autocomplete should close the menu when clicking outside if leaveMenuOpen is false 2`] = `
+<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 10px;">
+  <!---->
+  <modus-wc-text-input value="">
+    <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
+      <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
+    </label>
+  </modus-wc-text-input>
+</modus-wc-autocomplete>
+`;
+
 exports[`modus-wc-autocomplete should display no results ui when no items are available 1`] = `
+<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 10px;">
+  <!---->
+  <modus-wc-text-input value="">
+    <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
+      <input aria-label="No results test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
+    </label>
+  </modus-wc-text-input>
+</modus-wc-autocomplete>
+`;
+
+exports[`modus-wc-autocomplete should display no results ui when no items are available 2`] = `
 <modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input value="">
@@ -45,6 +67,39 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 2`
 `;
 
 exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 3`] = `
+<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 10px;">
+  <!---->
+  <modus-wc-text-input value="">
+    <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-text-input--readonly modus-wc-w-full">
+      <input aria-label="Leave menu open test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" readonly="" type="text" value="">
+    </label>
+  </modus-wc-text-input>
+</modus-wc-autocomplete>
+`;
+
+exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 4`] = `
+<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 10px;">
+  <!---->
+  <modus-wc-text-input value="">
+    <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
+      <input aria-label="Leave menu open test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
+    </label>
+  </modus-wc-text-input>
+</modus-wc-autocomplete>
+`;
+
+exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 5`] = `
+<modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 10px;">
+  <!---->
+  <modus-wc-text-input value="">
+    <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-disabled modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
+      <input aria-label="Leave menu open test" aria-placeholder="" class="modus-wc-grow" disabled="" inputmode="text" placeholder="" type="text" value="">
+    </label>
+  </modus-wc-text-input>
+</modus-wc-autocomplete>
+`;
+
+exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 6`] = `
 <modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input value="">
@@ -123,6 +178,89 @@ exports[`modus-wc-autocomplete should render chips for selected items in multi-s
 `;
 
 exports[`modus-wc-autocomplete should render default no results values when noResults is undefined 1`] = `
+{
+  "$attrs$": {
+    "class": "modus-wc-autocomplete-no-results",
+  },
+  "$children$": [
+    {
+      "$attrs$": {
+        "aria-label": undefined,
+        "class": "icon-label",
+      },
+      "$children$": [
+        {
+          "$attrs$": {
+            "aria-hidden": "true",
+            "class": "modus-wc-autocomplete-search-icon",
+            "fill": "currentColor",
+            "viewBox": "0 0 24 24",
+            "xmlns": "http://www.w3.org/2000/svg",
+          },
+          "$children$": [
+            {
+              "$attrs$": {
+                "d": "m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08",
+              },
+              "$children$": null,
+              "$elm$": null,
+              "$flags$": 0,
+              "$key$": null,
+              "$name$": null,
+              "$tag$": "path",
+              "$text$": null,
+            },
+          ],
+          "$elm$": null,
+          "$flags$": 0,
+          "$key$": null,
+          "$name$": null,
+          "$tag$": "svg",
+          "$text$": null,
+        },
+        {
+          "$attrs$": {
+            "class": "label",
+          },
+          "$children$": null,
+          "$elm$": null,
+          "$flags$": 0,
+          "$key$": null,
+          "$name$": null,
+          "$tag$": "div",
+          "$text$": null,
+        },
+      ],
+      "$elm$": null,
+      "$flags$": 0,
+      "$key$": null,
+      "$name$": null,
+      "$tag$": "div",
+      "$text$": null,
+    },
+    {
+      "$attrs$": {
+        "class": "sub-label",
+      },
+      "$children$": null,
+      "$elm$": null,
+      "$flags$": 0,
+      "$key$": null,
+      "$name$": null,
+      "$tag$": "div",
+      "$text$": null,
+    },
+  ],
+  "$elm$": null,
+  "$flags$": 0,
+  "$key$": null,
+  "$name$": null,
+  "$tag$": "div",
+  "$text$": null,
+}
+`;
+
+exports[`modus-wc-autocomplete should render default no results values when noResults is undefined 2`] = `
 {
   "$attrs$": {
     "class": "modus-wc-autocomplete-no-results",
