@@ -274,7 +274,8 @@ export class ModusWcAutocomplete {
     const updated = clearAllFocus(this.items);
     if (updated) {
       this.items = updated;
-      this.syncFilteredItems();
+      // When clearing focus (e.g., on Escape), show all items instead of filtered
+      this.filteredItems = this.items.filter((item) => item.visibleInMenu);
     }
   }
 
@@ -401,8 +402,9 @@ export class ModusWcAutocomplete {
           focused: false,
         })),
       ];
-      // Sync filtered items from updated items (maintains current search filter)
-      this.syncFilteredItems();
+      // When blurring, show all items instead of filtered to prevent
+      // briefly showing filtered items before menu closes
+      this.filteredItems = this.items.filter((item) => item.visibleInMenu);
     }
 
     this.isChipsExpanded = false; // Always collapse on blur
@@ -621,7 +623,6 @@ export class ModusWcAutocomplete {
 
     if (result.updatedItems && result.updatedItems !== this.items) {
       this.items = result.updatedItems;
-      this.syncFilteredItems();
     }
 
     if (result.updatedValue !== undefined) {
@@ -662,7 +663,8 @@ export class ModusWcAutocomplete {
     if (result.updatedItems) {
       this.items = result.updatedItems;
       this.selectionOrder = result.updatedSelectionOrder;
-      this.syncFilteredItems();
+      // When removing chips, show all items instead of applying text filtering
+      this.filteredItems = this.items.filter((item) => item.visibleInMenu);
     }
 
     // Emit event for external handlers who want to know about the removal
