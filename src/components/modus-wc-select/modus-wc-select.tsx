@@ -9,19 +9,19 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-select.tailwind';
 import { IInputFeedbackProp, ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import { Attributes, generateElementId, inheritAriaAttributes } from '../utils';
 
 export interface ISelectOption {
-  /** Whether the option is disabled and cannot be selected */
+  /** The disabled state of the option. */
   disabled?: boolean;
-  /** Display text for the option */
+  /** The text to render in the option. */
   label: string;
-  /** The value of the option */
+  /** The value of the option. */
   value: string;
 }
 
 /**
- * A customizable select component used to pick a value from a list of options
+ * A customizable select component used to create selects with different options.
  */
 @Component({
   tag: 'modus-wc-select',
@@ -30,6 +30,7 @@ export interface ISelectOption {
 })
 export class ModusWcSelect {
   private inheritedAttributes: Attributes = {};
+  private generatedId: string = generateElementId();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -116,11 +117,13 @@ export class ModusWcSelect {
   };
 
   render() {
+    const effectiveId = this.inputId || this.generatedId;
+
     return (
       <Host>
         {this.label && (
           <modus-wc-input-label
-            forId={this.inputId}
+            forId={effectiveId}
             labelText={this.label}
             required={this.required}
             size={this.size}
@@ -129,7 +132,7 @@ export class ModusWcSelect {
         <select
           class={this.getClasses()}
           disabled={this.disabled}
-          id={this.inputId}
+          id={effectiveId}
           name={this.name}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}

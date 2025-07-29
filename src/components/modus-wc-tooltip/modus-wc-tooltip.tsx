@@ -1,9 +1,21 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Listen,
+  Prop,
+  State,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-tooltip.tailwind';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * A customizable tooltip component used to create tooltips with different content.
+ *
+ * The tooltip can be dismissed by pressing the Escape key.
  */
 @Component({
   tag: 'modus-wc-tooltip',
@@ -34,16 +46,43 @@ export class ModusWcTooltip {
   /** The position that the tooltip will render in relation to the element. */
   @Prop() position?: 'auto' | 'top' | 'right' | 'bottom' | 'left' = 'auto';
 
+  /** Track if tooltip was dismissed with Escape key */
+  @State() escapeDismissed: boolean = false;
+
+  /** An event that fires when the tooltip is dismissed via Escape key */
+  @Event() dismissEscape!: EventEmitter;
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  @Listen('keyup', { target: 'document' })
+  elementKeyupHandler(event: KeyboardEvent): void {
+    switch (event.code) {
+      case 'Escape': {
+        // Check if tooltip is currently visible (either forced open or element is being hovered)
+        const tooltipDiv = this.el.querySelector('.modus-wc-tooltip');
+        if (tooltipDiv && (this.forceOpen || tooltipDiv.matches(':hover'))) {
+          this.escapeDismissed = true;
+          this.dismissEscape.emit();
+        }
+        break;
+      }
+    }
+  }
+
+  @Listen('mouseenter')
+  handleMouseEnter() {
+    // Reset escape dismissal on mouse enter
+    this.escapeDismissed = false;
   }
 
   private getClasses(): string {
     const classList: string[] = ['modus-wc-tooltip'];
 
     const propClasses = convertPropsToClasses({
-      disabled: this.disabled,
-      forceOpen: this.forceOpen,
+      disabled: this.disabled || this.escapeDismissed,
+      forceOpen: this.forceOpen && !this.escapeDismissed,
       position: this.position,
     });
 

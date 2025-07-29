@@ -71,6 +71,7 @@ const Template: Story = {
     // prettier-ignore
     return html`
 <modus-wc-breadcrumbs
+  aria-label="Breadcrumasabs"
   custom-class=${ifDefined(args['custom-class'])}
   .items=${args.items}
   size=${ifDefined(args.size)}

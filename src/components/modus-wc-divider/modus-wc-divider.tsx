@@ -43,10 +43,6 @@ export class ModusWcDivider {
   @Prop() responsive?: boolean = true;
 
   componentWillLoad() {
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Divider';
-    }
-
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
@@ -72,7 +68,6 @@ export class ModusWcDivider {
       <Host>
         <div
           class={this.getClasses()}
-          role="separator"
           tabindex={-1}
           {...this.inheritedAttributes}
         >

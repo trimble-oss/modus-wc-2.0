@@ -7,7 +7,7 @@
 
 ## Overview
 
-A customizable select component used to pick a value from a list of options
+A customizable select component used to create selects with different options.
 
 ## Properties
 

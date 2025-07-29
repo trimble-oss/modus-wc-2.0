@@ -35,9 +35,8 @@ export class ModusWcAvatar {
   @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {
-    if (!this.alt || !this.el.ariaLabel) {
-      this.el.ariaLabel = this.el.ariaLabel || `Avatar ${this.alt || 'image'}`;
-      this.alt = this.alt || 'Avatar image';
+    if (!this.alt) {
+      this.alt = 'Avatar image';
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -61,11 +60,7 @@ export class ModusWcAvatar {
   render() {
     return (
       <Host>
-        <div
-          class="modus-wc-avatar"
-          tabindex={-1}
-          {...this.inheritedAttributes}
-        >
+        <div class="modus-wc-avatar" {...this.inheritedAttributes}>
           <div class={this.getClasses()}>
             <img src={this.imgSrc} alt={this.alt} />
           </div>

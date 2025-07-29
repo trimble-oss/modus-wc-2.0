@@ -1016,7 +1016,7 @@ export namespace Components {
         "variant"?: 'default' | 'radial';
     }
     /**
-     * A customizable radio component
+     * A customizable radio button component used to create radio inputs.
      */
     interface ModusWcRadio {
         /**
@@ -1094,7 +1094,7 @@ export namespace Components {
         "variant": ModusWcRatingVariant;
     }
     /**
-     * A customizable select component used to pick a value from a list of options
+     * A customizable select component used to create selects with different options.
      */
     interface ModusWcSelect {
         /**
@@ -1719,6 +1719,7 @@ export namespace Components {
     }
     /**
      * A customizable tooltip component used to create tooltips with different content.
+     * The tooltip can be dismissed by pressing the Escape key.
      */
     interface ModusWcTooltip {
         /**
@@ -1875,6 +1876,10 @@ export interface ModusWcThemeSwitcherCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcTimeInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTimeInputElement;
+}
+export interface ModusWcTooltipCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTooltipElement;
 }
 declare global {
     interface HTMLModusWcAccordionElementEventMap {
@@ -2317,7 +2322,7 @@ declare global {
         "inputFocus": FocusEvent;
     }
     /**
-     * A customizable radio component
+     * A customizable radio button component used to create radio inputs.
      */
     interface HTMLModusWcRadioElement extends Components.ModusWcRadio, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcRadioElementEventMap>(type: K, listener: (this: HTMLModusWcRadioElement, ev: ModusWcRadioCustomEvent<HTMLModusWcRadioElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2359,7 +2364,7 @@ declare global {
         "inputFocus": FocusEvent;
     }
     /**
-     * A customizable select component used to pick a value from a list of options
+     * A customizable select component used to create selects with different options.
      */
     interface HTMLModusWcSelectElement extends Components.ModusWcSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcSelectElementEventMap>(type: K, listener: (this: HTMLModusWcSelectElement, ev: ModusWcSelectCustomEvent<HTMLModusWcSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2628,10 +2633,22 @@ declare global {
         prototype: HTMLModusWcToolbarElement;
         new (): HTMLModusWcToolbarElement;
     };
+    interface HTMLModusWcTooltipElementEventMap {
+        "dismissEscape": any;
+    }
     /**
      * A customizable tooltip component used to create tooltips with different content.
+     * The tooltip can be dismissed by pressing the Escape key.
      */
     interface HTMLModusWcTooltipElement extends Components.ModusWcTooltip, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTooltipElementEventMap>(type: K, listener: (this: HTMLModusWcTooltipElement, ev: ModusWcTooltipCustomEvent<HTMLModusWcTooltipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTooltipElementEventMap>(type: K, listener: (this: HTMLModusWcTooltipElement, ev: ModusWcTooltipCustomEvent<HTMLModusWcTooltipElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcTooltipElement: {
         prototype: HTMLModusWcTooltipElement;
@@ -3815,7 +3832,7 @@ declare namespace LocalJSX {
         "variant"?: 'default' | 'radial';
     }
     /**
-     * A customizable radio component
+     * A customizable radio button component used to create radio inputs.
      */
     interface ModusWcRadio {
         /**
@@ -3909,7 +3926,7 @@ declare namespace LocalJSX {
         "variant"?: ModusWcRatingVariant;
     }
     /**
-     * A customizable select component used to pick a value from a list of options
+     * A customizable select component used to create selects with different options.
      */
     interface ModusWcSelect {
         /**
@@ -4659,6 +4676,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable tooltip component used to create tooltips with different content.
+     * The tooltip can be dismissed by pressing the Escape key.
      */
     interface ModusWcTooltip {
         /**
@@ -4677,6 +4695,10 @@ declare namespace LocalJSX {
           * Use this attribute to force the tooltip to remain open.
          */
         "forceOpen"?: boolean;
+        /**
+          * An event that fires when the tooltip is dismissed via Escape key
+         */
+        "onDismissEscape"?: (event: ModusWcTooltipCustomEvent<any>) => void;
         /**
           * The position that the tooltip will render in relation to the element.
          */
@@ -4874,7 +4896,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-progress": LocalJSX.ModusWcProgress & JSXBase.HTMLAttributes<HTMLModusWcProgressElement>;
             /**
-             * A customizable radio component
+             * A customizable radio button component used to create radio inputs.
              */
             "modus-wc-radio": LocalJSX.ModusWcRadio & JSXBase.HTMLAttributes<HTMLModusWcRadioElement>;
             /**
@@ -4882,7 +4904,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-rating": LocalJSX.ModusWcRating & JSXBase.HTMLAttributes<HTMLModusWcRatingElement>;
             /**
-             * A customizable select component used to pick a value from a list of options
+             * A customizable select component used to create selects with different options.
              */
             "modus-wc-select": LocalJSX.ModusWcSelect & JSXBase.HTMLAttributes<HTMLModusWcSelectElement>;
             /**
@@ -4939,6 +4961,7 @@ declare module "@stencil/core" {
             "modus-wc-toolbar": LocalJSX.ModusWcToolbar & JSXBase.HTMLAttributes<HTMLModusWcToolbarElement>;
             /**
              * A customizable tooltip component used to create tooltips with different content.
+             * The tooltip can be dismissed by pressing the Escape key.
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**
