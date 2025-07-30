@@ -16,22 +16,29 @@ export const themeStore = {
   dispose,
 };
 
+const getStoredMode = (): ThemeMode | null => {
+  try {
+    const stored = localStorage.getItem('modus-theme-config');
+    return stored ? (JSON.parse(stored) as IThemeConfig).mode : null;
+  } catch (error) {
+    console.warn('Failed to parse theme config from localStorage:', error);
+    return null;
+  }
+};
+
+const getSystemPreferredMode = (): ThemeMode => {
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return prefersDark ? 'dark' : 'light';
+};
+
 // Initialize theme store with system preferences and stored values
 export const initializeThemeStore = (initialConfig?: Partial<IThemeConfig>) => {
-  // Set default theme
-  state.theme = initialConfig?.theme || 'modus-modern';
+  // Set theme with default fallback
+  state.theme = initialConfig?.theme ?? 'modus-modern';
 
-  // Get mode from storage or system preferences
-  const stored = localStorage.getItem('modus-theme-config');
-  if (stored) {
-    const config = JSON.parse(stored) as IThemeConfig;
-    state.mode = config.mode;
-  } else {
-    const prefersDark = window.matchMedia(
-      '(prefers-color-scheme: dark)'
-    ).matches;
-    state.mode = prefersDark ? 'dark' : 'light';
-  }
+  // Mode resolution with priority: explicit config > stored preference > system preference
+  state.mode =
+    initialConfig?.mode ?? getStoredMode() ?? getSystemPreferredMode();
 };
 
 // Watch for system theme changes
