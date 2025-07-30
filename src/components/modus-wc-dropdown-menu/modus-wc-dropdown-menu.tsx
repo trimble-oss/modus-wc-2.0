@@ -34,7 +34,7 @@ export class ModusWcDropdownMenu {
 
   /** The aria-label for the dropdown button. */
   @Prop() buttonAriaLabel?: string;
-  
+
   /** The color variant of the button. */
   @Prop() buttonColor?:
     | 'primary'
