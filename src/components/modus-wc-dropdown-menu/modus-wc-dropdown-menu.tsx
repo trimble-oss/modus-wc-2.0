@@ -32,6 +32,9 @@ export class ModusWcDropdownMenu {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** The aria-label for the dropdown button. */
+  @Prop() buttonAriaLabel?: string;
+  
   /** The color variant of the button. */
   @Prop() buttonColor?:
     | 'primary'
@@ -45,9 +48,6 @@ export class ModusWcDropdownMenu {
 
   /** The variant of the button. */
   @Prop() buttonVariant?: 'borderless' | 'filled' | 'outlined' = 'filled';
-
-  /** The aria-label for the dropdown button. */
-  @Prop() buttonAriaLabel?: string;
 
   /** Custom CSS class to apply to the host element. */
   @Prop() customClass?: string = '';
