@@ -12,7 +12,7 @@ import { IInputFeedbackProp, ModusSize } from '../types';
 import { Attributes, generateElementId, inheritAriaAttributes } from '../utils';
 
 export interface ISelectOption {
-  /** The disabled state of the option. */
+  /** Whether the option is disabled and cannot be selected. */
   disabled?: boolean;
   /** The text to render in the option. */
   label: string;
