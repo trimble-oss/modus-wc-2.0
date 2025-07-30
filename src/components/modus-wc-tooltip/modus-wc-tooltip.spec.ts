@@ -77,6 +77,26 @@ describe('modus-wc-tooltip', () => {
     expect(component.escapeDismissed).toBe(false);
   });
 
+  it('should set visibility state on mouse enter and clear on mouse leave', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<modus-wc-tooltip content="Test"></modus-wc-tooltip>',
+    });
+
+    const component = page.rootInstance as ModusWcTooltip;
+    expect(component.isVisible).toBe(false);
+
+    // Simulate mouse enter - should set visibility
+    const enterEvent = new MouseEvent('mouseenter');
+    page.root?.dispatchEvent(enterEvent);
+    expect(component.isVisible).toBe(true);
+
+    // Simulate mouse leave - should clear visibility
+    const leaveEvent = new MouseEvent('mouseleave');
+    page.root?.dispatchEvent(leaveEvent);
+    expect(component.isVisible).toBe(false);
+  });
+
   it('should add disabled class when escape dismissed', async () => {
     const page = await newSpecPage({
       components: [ModusWcTooltip],
