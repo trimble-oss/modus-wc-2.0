@@ -1,4 +1,4 @@
-*,
+:root,
 :host([data-theme]) {
   /**
   * The following variables should always match Modus
@@ -155,108 +155,66 @@
   --modus-wc-border-radius-alert: var(--modus-wc-border-radius-md);
 
   /* Dynamic Base Colors */
-  --modus-wc-color-base-page: light-dark(
-    var(--modus-wc-color-white),
-    var(--modus-wc-color-black)
-  );
-  --modus-wc-color-base-100: light-dark(
-    var(--modus-wc-color-gray-light),
-    var(--modus-wc-color-trimble-gray)
-  );
-  --modus-wc-color-base-200: light-dark(
-    var(--modus-wc-color-gray-1),
-    var(--modus-wc-color-gray-10)
-  );
-  --modus-wc-color-base-300: light-dark(
-    var(--modus-wc-color-gray-2),
-    var(--modus-wc-color-gray-9)
-  );
-  --modus-wc-color-base-content: light-dark(
-    var(--modus-wc-color-gray-10),
-    var(--modus-wc-color-gray-1)
-  );
+  --modus-wc-color-base-page: light-dark(var(--modus-wc-color-white),
+      var(--modus-wc-color-black));
+  --modus-wc-color-base-100: light-dark(var(--modus-wc-color-gray-light),
+      var(--modus-wc-color-trimble-gray));
+  --modus-wc-color-base-200: light-dark(var(--modus-wc-color-gray-1),
+      var(--modus-wc-color-gray-10));
+  --modus-wc-color-base-300: light-dark(var(--modus-wc-color-gray-2),
+      var(--modus-wc-color-gray-9));
+  --modus-wc-color-base-content: light-dark(var(--modus-wc-color-gray-10),
+      var(--modus-wc-color-gray-1));
 
   /**
   * The following variables are applied to themes for applications to override.
   */
 
   /* Primary Colors */
-  --modus-wc-color-primary: light-dark(
-    var(--modus-wc-color-trimble-blue),
-    var(--modus-wc-color-highlight-blue)
-  );
-  --modus-wc-color-primary-content: light-dark(
-    var(--modus-wc-color-white),
-    var(--modus-wc-color-black)
-  );
+  --modus-wc-color-primary: light-dark(var(--modus-wc-color-trimble-blue),
+      var(--modus-wc-color-highlight-blue));
+  --modus-wc-color-primary-content: light-dark(var(--modus-wc-color-white),
+      var(--modus-wc-color-black));
 
   /* Secondary Colors */
-  --modus-wc-color-secondary: light-dark(
-    var(--modus-wc-color-yellow),
-    var(--modus-wc-color-yellow-light)
-  );
-  --modus-wc-color-secondary-content: light-dark(
-    var(--modus-wc-color-black),
-    var(--modus-wc-color-black)
-  );
+  --modus-wc-color-secondary: light-dark(var(--modus-wc-color-yellow),
+      var(--modus-wc-color-yellow-light));
+  --modus-wc-color-secondary-content: light-dark(var(--modus-wc-color-black),
+      var(--modus-wc-color-black));
 
   /* Accent Colors */
-  --modus-wc-color-accent: light-dark(
-    var(--modus-wc-color-gray-6),
-    var(--modus-wc-color-gray-4)
-  );
-  --modus-wc-color-accent-content: light-dark(
-    var(--modus-wc-color-white),
-    var(--modus-wc-color-black)
-  );
+  --modus-wc-color-accent: light-dark(var(--modus-wc-color-gray-6),
+      var(--modus-wc-color-gray-4));
+  --modus-wc-color-accent-content: light-dark(var(--modus-wc-color-white),
+      var(--modus-wc-color-black));
 
   /* Neutral Colors */
-  --modus-wc-color-neutral: light-dark(
-    var(--modus-wc-color-base-100),
-    var(--modus-wc-color-base-100)
-  );
-  --modus-wc-color-neutral-content: light-dark(
-    var(--modus-wc-color-base-content),
-    var(--modus-wc-color-base-content)
-  );
+  --modus-wc-color-neutral: light-dark(var(--modus-wc-color-base-100),
+      var(--modus-wc-color-base-100));
+  --modus-wc-color-neutral-content: light-dark(var(--modus-wc-color-base-content),
+      var(--modus-wc-color-base-content));
 
   /* Info Colors */
-  --modus-wc-color-info: light-dark(
-    var(--modus-wc-color-blue-dark),
-    var(--modus-wc-color-blue-light)
-  );
-  --modus-wc-color-info-content: light-dark(
-    var(--modus-wc-color-white),
-    var(--modus-wc-color-white)
-  );
+  --modus-wc-color-info: light-dark(var(--modus-wc-color-blue-dark),
+      var(--modus-wc-color-blue-light));
+  --modus-wc-color-info-content: light-dark(var(--modus-wc-color-white),
+      var(--modus-wc-color-white));
 
   /* Success Colors */
-  --modus-wc-color-success: light-dark(
-    var(--modus-wc-color-green),
-    var(--modus-wc-color-green-light)
-  );
-  --modus-wc-color-success-content: light-dark(
-    var(--modus-wc-color-white),
-    var(--modus-wc-color-black)
-  );
+  --modus-wc-color-success: light-dark(var(--modus-wc-color-green),
+      var(--modus-wc-color-green-light));
+  --modus-wc-color-success-content: light-dark(var(--modus-wc-color-white),
+      var(--modus-wc-color-black));
 
   /* Warning Colors */
-  --modus-wc-color-warning: light-dark(
-    var(--modus-wc-color-yellow-dark),
-    var(--modus-wc-color-yellow-light)
-  );
-  --modus-wc-color-warning-content: light-dark(
-    var(--modus-wc-color-black),
-    var(--modus-wc-color-black)
-  );
+  --modus-wc-color-warning: light-dark(var(--modus-wc-color-yellow-dark),
+      var(--modus-wc-color-yellow-light));
+  --modus-wc-color-warning-content: light-dark(var(--modus-wc-color-black),
+      var(--modus-wc-color-black));
 
   /* Error Colors */
-  --modus-wc-color-error: light-dark(
-    var(--modus-wc-color-red),
-    var(--modus-wc-color-red-light)
-  );
-  --modus-wc-color-error-content: light-dark(
-    var(--modus-wc-color-white),
-    var(--modus-wc-color-black)
-  );
+  --modus-wc-color-error: light-dark(var(--modus-wc-color-red),
+      var(--modus-wc-color-red-light));
+  --modus-wc-color-error-content: light-dark(var(--modus-wc-color-white),
+      var(--modus-wc-color-black));
 }
