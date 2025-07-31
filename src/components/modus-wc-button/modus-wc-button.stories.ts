@@ -157,6 +157,19 @@ export const IconLeftAndRightButton: Story = {
   },
 };
 
+export const RenderedInShadowDom: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+      <modus-shadow-test-host>
+        <modus-wc-button aria-label="Click me button">
+          Click me
+        </modus-wc-button>
+      </modus-shadow-test-host>
+    `;
+  },
+};
+
 export const Migration: Story = {
   parameters: {
     docs: {
