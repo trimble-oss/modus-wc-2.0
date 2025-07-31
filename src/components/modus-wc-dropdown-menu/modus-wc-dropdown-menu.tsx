@@ -32,6 +32,9 @@ export class ModusWcDropdownMenu {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** The aria-label for the dropdown button. */
+  @Prop() buttonAriaLabel?: string;
+
   /** The color variant of the button. */
   @Prop() buttonColor?:
     | 'primary'
@@ -139,6 +142,7 @@ export class ModusWcDropdownMenu {
         <modus-wc-button
           aria-expanded={this.menuVisible.toString()}
           aria-haspopup="true"
+          aria-label={this.buttonAriaLabel}
           color={this.buttonColor}
           disabled={this.disabled}
           onButtonClick={this.handleButtonClick}
