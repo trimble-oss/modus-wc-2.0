@@ -71,7 +71,8 @@ modus-wc-button .modus-wc-btn {
 
   &.modus-wc-btn-outline {
     background-color: transparent;
-    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-trimble-gray);
+    border: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-trimble-gray);
 
     &:active {
       background-color: transparent;
@@ -144,7 +145,6 @@ modus-wc-button .modus-wc-btn {
   }
 
   &.modus-wc-btn-filled {
-
     // Colors
     &.modus-wc-btn-primary {
       background-color: var(--modus-wc-color-trimble-blue);
@@ -215,7 +215,6 @@ modus-wc-button .modus-wc-btn {
   }
 
   &.modus-wc-btn-outline {
-
     // Colors
     &.modus-wc-btn-primary {
       border-color: var(--modus-wc-color-trimble-blue);
@@ -329,7 +328,6 @@ modus-wc-button .modus-wc-btn {
   }
 
   &.modus-wc-btn-filled {
-
     // Colors
     &.modus-wc-btn-primary {
       background-color: var(--modus-wc-color-highlight-blue);
@@ -400,7 +398,6 @@ modus-wc-button .modus-wc-btn {
   }
 
   &.modus-wc-btn-outline {
-
     // Colors
     &.modus-wc-btn-primary {
       border-color: var(--modus-wc-color-highlight-blue);

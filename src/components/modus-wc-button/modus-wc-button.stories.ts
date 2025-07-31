@@ -157,6 +157,28 @@ export const IconLeftAndRightButton: Story = {
   },
 };
 
+const ShadowHost = (props) => {
+  // Create a shadow root and append the component
+  const host = document.createElement('div');
+  const shadow = host.attachShadow({ mode: 'open' });
+  const button = document.createElement('modus-wc-button');
+  // Pass props, attributes, etc. as needed
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  Object.entries(props).forEach(([key, value]) =>
+    button.setAttribute(key, value as string)
+  );
+  shadow.appendChild(button);
+  return host;
+};
+
+export const ShadowDOM = (args) => ShadowHost(args);
+ShadowDOM.args = {
+  // default args for your component
+  color: 'primary',
+  // ...
+};
+ShadowDOM.storyName = 'Rendered in Shadow DOM';
+
 export const Migration: Story = {
   parameters: {
     docs: {
