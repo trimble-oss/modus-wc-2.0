@@ -77,8 +77,9 @@ export class ModusWcDropdownMenu {
 
   @Listen('click', { target: 'document' })
   handleDocumentClick(event: Event) {
+    const path = event.composedPath();
     // Close the menu when the user clicks outside the component
-    if (!this.el.contains(event.target as Node) && this.menuVisible) {
+    if (!path.includes(this.el) && this.menuVisible) {
       this.menuVisible = false;
       this.menuVisibilityChange.emit({ isVisible: false });
     }

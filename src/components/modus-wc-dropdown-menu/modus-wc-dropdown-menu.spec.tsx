@@ -1,8 +1,16 @@
+import { Component, h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcDropdownMenu } from './modus-wc-dropdown-menu';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
 import { ModusWcMenuItem } from '../modus-wc-menu-item/modus-wc-menu-item';
+
+@Component({ tag: 'test-host-component', shadow: true })
+class TestHostComponent {
+  render() {
+    return <slot />;
+  }
+}
 
 describe('modus-wc-dropdown-menu', () => {
   it('should render with default props', async () => {
@@ -124,5 +132,39 @@ describe('modus-wc-dropdown-menu', () => {
 
     // Verify menu is now hidden
     expect(page.root!.menuVisible).toBe(false);
+  });
+
+  it('should open the menu when clicked within a shadow root host', async () => {
+    const page = await newSpecPage({
+      components: [
+        TestHostComponent,
+        ModusWcDropdownMenu,
+        ModusWcButton,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<test-host-component>
+               <modus-wc-dropdown-menu>
+                 <button slot="button">Button</button>
+                 <div slot="menu">
+                   <modus-wc-menu-item label="Item One" />
+                 </div>
+               </modus-wc-dropdown-menu>
+             </test-host-component>`,
+    });
+
+    const dropdownMenu = page.root!.querySelector('modus-wc-dropdown-menu')!;
+    expect(dropdownMenu.menuVisible).toBe(false);
+
+    const button = page.root!.querySelector('button')!;
+
+    button.click();
+    await page.waitForChanges();
+
+    expect(dropdownMenu.menuVisible).toBe(true);
+    const menu = page.root!.querySelector('modus-wc-menu-item')!;
+
+    expect(menu).toBeTruthy();
+    expect(menu.textContent).toContain('Item One');
   });
 });
