@@ -60,3 +60,8 @@ jobs:
     uses: ./.github/workflows/build-react.yml
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  build-vue-integration:
+    uses: ./.github/workflows/build-vue.yml
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
