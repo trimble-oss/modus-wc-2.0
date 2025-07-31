@@ -15,9 +15,9 @@ export default {
   daisyui: {
     base: true,
     darkTheme: 'modus-modern-dark',
-    logs: false,
+    logs: true,
     styled: true,
-    themeRoot: ':root',
+    themeRoot: '*',
     utils: true,
     themes: [
       { 'modus-classic-light': modusClassic.light },

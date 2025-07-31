@@ -1,5 +1,7 @@
 @supports (color: oklch(0% 0 0)) {
-  :root {
+
+  [data-theme],
+  :host([data-theme]) {
     --fallback-p: var(--modus-wc-color-primary);
     --fallback-pc: var(--modus-wc-color-primary-content);
     --fallback-s: var(--modus-wc-color-secondary);
@@ -52,7 +54,8 @@ modus-wc-date {
 }
 
 /* Modus Modern Themes */
-[data-theme='modus-modern-light']:root {
+[data-theme='modus-modern-light'],
+:host([data-theme='modus-modern-light']) {
   color-scheme: light;
 
   --modus-wc-color-base-page: #fff;
@@ -64,7 +67,8 @@ modus-wc-date {
   --modus-wc-color-primary-content: var(--modus-wc-color-white);
 }
 
-[data-theme='modus-modern-dark']:root {
+[data-theme='modus-modern-dark'],
+:host([data-theme='modus-modern-dark']) {
   color-scheme: dark;
 
   --modus-wc-color-base-page: #000;
@@ -77,7 +81,8 @@ modus-wc-date {
 }
 
 /* Modus Classic Themes */
-[data-theme='modus-classic-light']:root {
+[data-theme='modus-classic-light'],
+:host([data-theme='modus-classic-light']) {
   color-scheme: light;
 
   --modus-wc-color-base-page: #fff;
@@ -91,7 +96,8 @@ modus-wc-date {
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
 }
 
-[data-theme='modus-classic-dark']:root {
+[data-theme='modus-classic-dark'],
+:host([data-theme='modus-classic-dark']) {
   color-scheme: dark;
 
   --modus-wc-color-base-page: #000;
