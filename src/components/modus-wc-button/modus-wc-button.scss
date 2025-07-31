@@ -7,7 +7,9 @@ modus-wc-button .modus-wc-btn {
   --fallback-sc: var(--modus-wc-color-neutral);
 }
 
+:host([data-theme='modus-classic-light']) modus-wc-button .modus-wc-btn,
 [data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn,
+:host([data-theme='modus-classic-dark']) modus-wc-button .modus-wc-btn,
 [data-theme='modus-classic-dark'] modus-wc-button .modus-wc-btn {
   --rounded-btn: var(--modus-wc-border-radius-md);
 
@@ -107,6 +109,7 @@ modus-wc-button .modus-wc-btn {
   }
 }
 
+:host([data-theme='modus-classic-light']) modus-wc-button .modus-wc-btn,
 [data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn {
   &.modus-wc-btn-disabled {
     opacity: 0.3;
@@ -289,6 +292,7 @@ modus-wc-button .modus-wc-btn {
   }
 }
 
+:host([data-theme='modus-classic-dark']) modus-wc-button .modus-wc-btn,
 [data-theme='modus-classic-dark'] modus-wc-button .modus-wc-btn {
   &.modus-wc-btn-disabled {
     opacity: 0.4;
@@ -467,7 +471,7 @@ modus-wc-button .modus-wc-btn {
   }
 }
 
-[data-theme='modus-modern-light'] modus-wc-button .modus-wc-btn,
+:host([data-theme='modus-modern-dark']) modus-wc-button .modus-wc-btn,
 [data-theme='modus-modern-dark'] modus-wc-button .modus-wc-btn {
   &.modus-wc-btn-borderless {
     background-color: transparent;
@@ -476,6 +480,7 @@ modus-wc-button .modus-wc-btn {
   }
 }
 
+:host([data-theme='modus-modern-light']) modus-wc-button .modus-wc-btn,
 [data-theme='modus-modern-light'] modus-wc-button .modus-wc-btn {
   &.modus-wc-btn-borderless {
     &.modus-wc-btn-primary {
@@ -500,6 +505,7 @@ modus-wc-button .modus-wc-btn {
   }
 }
 
+:host([data-theme='modus-modern-dark']) modus-wc-button .modus-wc-btn,
 [data-theme='modus-modern-dark'] modus-wc-button .modus-wc-btn {
   &.modus-wc-btn-borderless {
     &.modus-wc-btn-primary {

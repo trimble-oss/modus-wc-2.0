@@ -1,4 +1,5 @@
-:root {
+*,
+:host([data-theme]) {
   /**
   * The following variables should always match Modus
   */
@@ -79,10 +80,14 @@
   --modus-wc-line-height-lg: 2rem;
   --modus-wc-line-height-xl: 3rem;
 
-  --modus-wc-line-height-h6: 1.125rem; /* 18px */
-  --modus-wc-line-height-h3: 1.6875rem; /* 27px */
-  --modus-wc-line-height-h2: 1.875rem; /* 30px */
-  --modus-wc-line-height-h1: 2.25rem; /* 36px */
+  --modus-wc-line-height-h6: 1.125rem;
+  /* 18px */
+  --modus-wc-line-height-h3: 1.6875rem;
+  /* 27px */
+  --modus-wc-line-height-h2: 1.875rem;
+  /* 30px */
+  --modus-wc-line-height-h1: 2.25rem;
+  /* 36px */
 
   /* Font Family */
   --modus-wc-font-family:
@@ -90,14 +95,22 @@
     sans-serif;
 
   /* Font Sizes */
-  --modus-wc-font-size-2xs: 0.5rem; /* 8px */
-  --modus-wc-font-size-xs: 0.625rem; /* 10px */
-  --modus-wc-font-size-sm: 0.75rem; /* 12px */
-  --modus-wc-font-size-md: 0.875rem; /* 14px */
-  --modus-wc-font-size-lg: 1rem; /* 16px */
-  --modus-wc-font-size-xl: 1.125rem; /* 18px */
-  --modus-wc-font-size-2xl: 1.25rem; /* 20px */
-  --modus-wc-font-size-3xl: 1.5rem; /* 24px */
+  --modus-wc-font-size-2xs: 0.5rem;
+  /* 8px */
+  --modus-wc-font-size-xs: 0.625rem;
+  /* 10px */
+  --modus-wc-font-size-sm: 0.75rem;
+  /* 12px */
+  --modus-wc-font-size-md: 0.875rem;
+  /* 14px */
+  --modus-wc-font-size-lg: 1rem;
+  /* 16px */
+  --modus-wc-font-size-xl: 1.125rem;
+  /* 18px */
+  --modus-wc-font-size-2xl: 1.25rem;
+  /* 20px */
+  --modus-wc-font-size-3xl: 1.5rem;
+  /* 24px */
 
   /* Font Weights */
   --modus-wc-font-weight-light: 300;
@@ -106,19 +119,30 @@
   --modus-wc-font-weight-bold: 700;
 
   /* Spacing */
-  --modus-wc-spacing-2xs: 0.125rem; /* 2px */
-  --modus-wc-spacing-xs: 0.25rem; /* 4px */
-  --modus-wc-spacing-sm: 0.5rem; /* 8px */
-  --modus-wc-spacing-md: 0.75rem; /* 12px */
-  --modus-wc-spacing-lg: 1rem; /* 16px */
-  --modus-wc-spacing-xl: 1.5rem; /* 24px */
-  --modus-wc-spacing-2xl: 2rem; /* 32px */
-  --modus-wc-spacing-3xl: 3rem; /* 48px */
+  --modus-wc-spacing-2xs: 0.125rem;
+  /* 2px */
+  --modus-wc-spacing-xs: 0.25rem;
+  /* 4px */
+  --modus-wc-spacing-sm: 0.5rem;
+  /* 8px */
+  --modus-wc-spacing-md: 0.75rem;
+  /* 12px */
+  --modus-wc-spacing-lg: 1rem;
+  /* 16px */
+  --modus-wc-spacing-xl: 1.5rem;
+  /* 24px */
+  --modus-wc-spacing-2xl: 2rem;
+  /* 32px */
+  --modus-wc-spacing-3xl: 3rem;
+  /* 48px */
 
   /* Inputs */
-  --modus-wc-input-height-sm: 1.5rem; /* 24px */
-  --modus-wc-input-height-md: 2rem; /* 32px */
-  --modus-wc-input-height-lg: 3rem; /* 48px */
+  --modus-wc-input-height-sm: 1.5rem;
+  /* 24px */
+  --modus-wc-input-height-md: 2rem;
+  /* 32px */
+  --modus-wc-input-height-lg: 3rem;
+  /* 48px */
 
   /* Border Variables */
   --modus-wc-border-radius-badge: var(--modus-wc-border-radius-md);
