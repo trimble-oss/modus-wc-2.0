@@ -2482,6 +2482,14 @@
           ],
           "attributes": [
             {
+              "name": "button-aria-label",
+              "fieldName": "buttonAriaLabel",
+              "description": "The aria-label for the dropdown button.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "button-color",
               "fieldName": "buttonColor",
               "default": "'primary'",
@@ -6699,6 +6707,44 @@
           "declaration": {
             "name": "ModusWCTypography",
             "module": "src/components/modus-wc-typography/modus-wc-typography.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/shadow-test-host/shadow-test-host.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ShadowTestHost",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "tagName": "modus-shadow-test-host",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ShadowTestHost",
+          "declaration": {
+            "name": "ShadowTestHost",
+            "module": "src/components/shadow-test-host/shadow-test-host.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-shadow-test-host",
+          "declaration": {
+            "name": "ShadowTestHost",
+            "module": "src/components/shadow-test-host/shadow-test-host.tsx"
           }
         }
       ]
