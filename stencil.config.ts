@@ -7,6 +7,7 @@ import tailwind, {
   setPluginConfigurationDefaults,
 } from 'stencil-tailwind-plugin';
 import tailwindConfig from './tailwind.config';
+import { vueOutputTarget } from '@stencil/vue-output-target';
 
 const tailwindOpts = {
   // enableDebug: true,
@@ -32,6 +33,7 @@ export const config: Config = {
     {
       // Required for the React integration
       type: 'dist-custom-elements',
+      customElementsExportBehavior: 'single-export-module',
       externalRuntime: false,
       // > We recommend publishing components as unoptimized JavaScript modules and performing build-time optimizations at the application level.
       // > This gives build tools the best chance to deduplicate code, remove dead code, and so on.
@@ -81,6 +83,11 @@ export const config: Config = {
     reactOutputTarget({
       customElementsDir: 'components',
       outDir: './integrations/react/stencil-generated',
+    }),
+    vueOutputTarget({
+      componentCorePackage: '@trimble-oss/moduswebcomponents',
+      proxiesFile: './integrations/vue/stencil-generated/components.ts',
+      customElementsDir: 'components',
     }),
   ],
   plugins: [

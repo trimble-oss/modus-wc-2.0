@@ -5,6 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { DaisySize, ModusSize, PopoverPlacement } from '../types';
 
 interface DropdownMenuArgs {
+  'button-aria-label'?: string;
   'button-color'?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   'button-size'?: DaisySize;
   'button-variant'?: 'borderless' | 'filled' | 'outlined';
@@ -21,6 +22,7 @@ const meta: Meta<DropdownMenuArgs> = {
   title: 'Components/Dropdown Menu',
   component: 'modus-wc-dropdown-menu',
   args: {
+    'button-aria-label': 'Dropdown menu button',
     'button-color': 'primary',
     'button-size': 'md',
     'button-variant': 'filled',
@@ -144,6 +146,7 @@ const Template: Story = {
 </script>
 
 <modus-wc-dropdown-menu
+  button-aria-label=${ifDefined(args['button-aria-label'])}
   button-color=${ifDefined(args['button-color'])}
   button-size=${ifDefined(args['button-size'])}
   button-variant=${ifDefined(args['button-variant'])}
