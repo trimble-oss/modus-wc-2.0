@@ -68,6 +68,14 @@ export const Default: Story = {
 export const RadioGroup: Story = {
   render: (args) => {
     return html`
+      <style>
+        .radio-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+      </style>
+
       <main role="main">
         <fieldset class="radio-group">
           <legend>Select an option:</legend>
