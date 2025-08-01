@@ -48,7 +48,6 @@ const Template: Story = {
   }
 </style>
 <modus-wc-card
-  aria-label="Sample card"
   ?background-figure=${args['background-figure']}
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
@@ -74,7 +73,7 @@ export const SimpleCard: Story = {
   ...Template,
   // prettier-ignore
   render: () => html`
-<modus-wc-card aria-label="Simple Card">
+<modus-wc-card>
   Raw card content.
 </modus-wc-card>
   `,
@@ -94,7 +93,6 @@ export const SlotsLayout: Story = {
   }
 </style>
 <modus-wc-card
-  aria-label="Card with all slots"
   ?background-figure=${args['background-figure']}
   layout=${ifDefined(args.layout)}
   padding=${ifDefined(args.padding)}
@@ -121,7 +119,6 @@ export const ComplexCard: Story = {
   }
 </style>
 <modus-wc-card
-  aria-label="Complex card with images and shadow"
   id="complex-card"
   ?background-figure=${args['background-figure']}
   ?bordered=${args.bordered}
