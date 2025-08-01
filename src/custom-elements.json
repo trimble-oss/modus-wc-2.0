@@ -2482,6 +2482,14 @@
           ],
           "attributes": [
             {
+              "name": "button-aria-label",
+              "fieldName": "buttonAriaLabel",
+              "description": "The aria-label for the dropdown button.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "button-color",
               "fieldName": "buttonColor",
               "default": "'primary'",
@@ -5689,7 +5697,6 @@
             {
               "name": "input-mode",
               "fieldName": "inputMode",
-              "default": "'text'",
               "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\nThis allows a browser to display an appropriate virtual keyboard.",
               "type": {
                 "text": "| 'decimal'\n    | 'email'\n    | 'none'\n    | 'numeric'\n    | 'search'\n    | 'tel'\n    | 'text'\n    | 'url'"
@@ -6565,6 +6572,19 @@
             {
               "kind": "method",
               "name": "handleMouseEnter"
+            },
+            {
+              "kind": "method",
+              "name": "handleMouseLeave"
+            },
+            {
+              "kind": "field",
+              "name": "isVisible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Track if tooltip is currently visible"
             },
             {
               "kind": "method",

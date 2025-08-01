@@ -87,8 +87,8 @@ export const SlotsLayout: Story = {
 <style>
   .slot-box {
     background: #ccccff;
-    border: 2px solid rebeccapurple;
-    color: rebeccapurple;
+    border: 2px solid purple;
+    color: purple;
     display: flex;
     justify-content: center;
   }

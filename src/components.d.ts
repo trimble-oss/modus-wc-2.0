@@ -571,6 +571,10 @@ export namespace Components {
      */
     interface ModusWcDropdownMenu {
         /**
+          * The aria-label for the dropdown button.
+         */
+        "buttonAriaLabel"?: string;
+        /**
           * The color variant of the button.
          */
         "buttonColor"?: | 'primary'
@@ -1460,7 +1464,7 @@ export namespace Components {
         /**
           * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
          */
-        "inputMode": | 'decimal'
+        "inputMode"?: | 'decimal'
     | 'email'
     | 'none'
     | 'numeric'
@@ -3298,6 +3302,10 @@ declare namespace LocalJSX {
      * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
      */
     interface ModusWcDropdownMenu {
+        /**
+          * The aria-label for the dropdown button.
+         */
+        "buttonAriaLabel"?: string;
         /**
           * The color variant of the button.
          */

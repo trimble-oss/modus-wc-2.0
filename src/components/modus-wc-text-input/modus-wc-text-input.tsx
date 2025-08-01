@@ -233,7 +233,7 @@ export class ModusWcTextInput {
             disabled={this.disabled}
             enterkeyhint={this.enterkeyhint}
             id={effectiveId}
-            inputmode={this.inputMode}
+            {...(this.inputMode && { inputmode: this.inputMode })}
             maxlength={this.maxLength}
             minlength={this.minLength}
             name={this.name}
