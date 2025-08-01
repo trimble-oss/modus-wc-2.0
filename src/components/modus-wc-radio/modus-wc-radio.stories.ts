@@ -74,6 +74,9 @@ export const RadioGroup: Story = {
           flex-direction: column;
           gap: 0.5rem;
         }
+        .radio-group legend {
+          margin-bottom: 0.5rem;
+        }
       </style>
 
       <main role="main">
