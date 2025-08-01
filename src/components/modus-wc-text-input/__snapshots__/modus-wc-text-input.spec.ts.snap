@@ -20,7 +20,7 @@ exports[`modus-wc-text-input should render with custom props 1`] = `
 exports[`modus-wc-text-input should render with default props 1`] = `
 <modus-wc-text-input value="">
   <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-    <input aria-label="Default input" class="modus-wc-grow" id="mwc_id_0" inputmode="text" placeholder="" type="text" value="">
+    <input aria-label="Default input" class="modus-wc-grow" id="mwc_id_0" placeholder="" type="text" value="">
   </label>
 </modus-wc-text-input>
 `;
@@ -28,7 +28,7 @@ exports[`modus-wc-text-input should render with default props 1`] = `
 exports[`modus-wc-text-input should render with error feedback 1`] = `
 <modus-wc-text-input value="">
   <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-    <input aria-label="Error input" class="modus-wc-grow" id="mwc_id_2" inputmode="text" placeholder="" type="text" value="">
+    <input aria-label="Error input" class="modus-wc-grow" id="mwc_id_2" placeholder="" type="text" value="">
   </label>
   <modus-wc-input-feedback>
     <div class="modus-wc-input-feedback modus-wc-input-feedback--error modus-wc-input-feedback--md">

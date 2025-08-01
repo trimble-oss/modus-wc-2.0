@@ -154,7 +154,6 @@ export const HorizontalImage: Story = {
   // prettier-ignore
   render: (args) => html`
 <modus-wc-card
-  aria-label="Horizontal image card"
   ?background-figure=${args['background-figure']}
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
@@ -174,7 +173,6 @@ export const BackgroundFigureImage: Story = {
   // prettier-ignore
   render: (args) => html`
 <modus-wc-card
-  aria-label="Full image card"
   background-figure
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
@@ -205,7 +203,6 @@ export const Migration: Story = {
 
 | 1.0 Prop             | 2.0 Prop            | Notes                                |
 |----------------------|---------------------|--------------------------------------|
-| aria-label           | aria-label          |                                      |
 | border-radius        |                     | Not carried over, use CSS instead    |
 | height               |                     | Not carried over, use CSS instead    |
 | show-card-border     | bordered            |                                      |

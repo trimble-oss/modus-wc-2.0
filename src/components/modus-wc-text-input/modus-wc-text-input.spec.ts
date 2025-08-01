@@ -262,4 +262,28 @@ describe('modus-wc-text-input', () => {
     clearContainer = page.root!.querySelector('.modus-wc-clear-icon-container');
     expect(clearContainer).toHaveClass('modus-wc-clear-icon-hidden');
   });
+
+  it('should set the inputmode attribute correctly', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input input-mode="numeric" aria-label="Input mode test"></modus-wc-text-input>',
+    });
+    const input = page.root!.querySelector('input');
+    expect(input).toHaveAttribute('inputmode');
+
+    // Test changing the inputMode property
+    const component = page.rootInstance as ModusWcTextInput;
+    component.inputMode = 'email';
+    await page.waitForChanges();
+
+    expect(input).toHaveAttribute('inputmode');
+    expect(input?.getAttribute('inputmode')).toBe('email');
+
+    // Test with undefined inputMode
+    component.inputMode = undefined;
+    await page.waitForChanges();
+
+    // Should not have inputmode attribute when undefined
+    expect(input).not.toHaveAttribute('inputmode');
+  });
 });
