@@ -71,7 +71,8 @@ modus-wc-button .modus-wc-btn {
 
   &.modus-wc-btn-outline {
     background-color: transparent;
-    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-trimble-gray);
+    border: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-trimble-gray);
 
     &:active {
       background-color: transparent;
