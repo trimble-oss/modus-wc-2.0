@@ -6710,44 +6710,6 @@
           }
         }
       ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/shadow-test-host/shadow-test-host.tsx",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "ShadowTestHost",
-          "members": [
-            {
-              "kind": "method",
-              "name": "render"
-            }
-          ],
-          "tagName": "modus-shadow-test-host",
-          "events": [],
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ShadowTestHost",
-          "declaration": {
-            "name": "ShadowTestHost",
-            "module": "src/components/shadow-test-host/shadow-test-host.tsx"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "modus-shadow-test-host",
-          "declaration": {
-            "name": "ShadowTestHost",
-            "module": "src/components/shadow-test-host/shadow-test-host.tsx"
-          }
-        }
-      ]
     }
   ]
 }

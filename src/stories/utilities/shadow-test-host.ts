@@ -69,10 +69,12 @@ export function createShadowTestHost() {
         const el = document.createElement(tag);
 
         // Set attributes
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         Object.entries(attrs).forEach(([k, v]) =>
           el.setAttribute(k, v as string)
         );
         // Set properties
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
         Object.entries(props).forEach(([k, v]) => ((el as any)[k] = v));
 
         el.innerHTML = innerHTML;
