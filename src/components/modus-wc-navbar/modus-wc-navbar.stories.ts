@@ -150,12 +150,13 @@ const Template: Story = {
 <style>
   div[id^='story--components-navbar--default'] {
     border: 1px dashed black;
-    height: 365px;
+    height: 360px;
+    overflow: hidden;
   }
   [slot=main-menu] {
     background-color: #0063a3;
     color: white;
-    height: 305px;
+    height: 400px;
   }
 </style>
 <modus-wc-navbar

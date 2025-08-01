@@ -2408,6 +2408,36 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.spec.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "TestHostComponent",
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "tagName": "test-host-component",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "test-host-component",
+          "declaration": {
+            "name": "TestHostComponent",
+            "module": "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.spec.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.tsx",
       "declarations": [
         {
