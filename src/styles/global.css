@@ -1,5 +1,4 @@
 @supports (color: oklch(0% 0 0)) {
-
   :root,
   :host([data-theme]) {
     --fallback-p: var(--modus-wc-color-primary);
