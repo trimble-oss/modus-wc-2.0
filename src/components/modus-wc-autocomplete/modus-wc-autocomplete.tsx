@@ -196,10 +196,18 @@ export class ModusWcAutocomplete {
       this.items &&
       !this.isNavigating &&
       JSON.stringify(
-        newItems?.map((i) => ({ value: i.value, selected: i.selected }))
+        newItems?.map((i) => ({
+          value: i.value,
+          selected: i.selected,
+          focused: i.focused,
+        }))
       ) !==
         JSON.stringify(
-          oldItems?.map((i) => ({ value: i.value, selected: i.selected }))
+          oldItems?.map((i) => ({
+            value: i.value,
+            selected: i.selected,
+            focused: i.focused,
+          }))
         )
     ) {
       if (this.multiSelect) {
@@ -653,10 +661,6 @@ export class ModusWcAutocomplete {
     if (!this.disabled && !this.readOnly && this.items) {
       this.initialNavigation = true;
       this.itemSelect.emit(item);
-
-      // After selection, show all items to exit filtering state
-      // This ensures the menu shows all items for the next interaction
-      this.filteredItems = this.items.filter((item) => item.visibleInMenu);
     }
   };
 

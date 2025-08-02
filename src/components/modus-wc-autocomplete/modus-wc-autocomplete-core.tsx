@@ -300,7 +300,7 @@ export function processItemSelection(
       (menuItem) => menuItem.value === item.value
     );
     const isCurrentlySelected = currentItem?.selected || false;
-    
+
     // Also check if item is already in selectionOrder to prevent duplicates
     const isInSelectionOrder = params.selectionOrder.includes(item.value);
 
@@ -341,7 +341,7 @@ export function processItemSelection(
       ...params.items.map((menuItem) => ({
         ...menuItem,
         selected: menuItem.value === item.value,
-        focused: false,
+        focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
       })),
     ];
     // Always set the input value to show the selected item's label

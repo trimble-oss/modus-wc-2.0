@@ -2,7 +2,10 @@ import { EventEmitter } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { IAutocompleteItem } from '../types';
 import { ModusWcAutocomplete } from './modus-wc-autocomplete';
-import { renderNoResults } from './modus-wc-autocomplete-core';
+import {
+  renderNoResults,
+  syncFilteredItems,
+} from './modus-wc-autocomplete-core';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcChip } from '../modus-wc-chip/modus-wc-chip';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
@@ -4179,7 +4182,7 @@ describe('modus-wc-autocomplete', () => {
     expect(syncSpy).toHaveBeenCalled();
   });
 
-  it('should not call syncFilteredItems when only focused property changes', async () => {
+  it('should call syncFilteredItems when focused property changes', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
       html: '<modus-wc-autocomplete></modus-wc-autocomplete>',
@@ -4223,8 +4226,8 @@ describe('modus-wc-autocomplete', () => {
     ).handleItemsChange;
     handleItemsChange.call(autocomplete, newItems, oldItems);
 
-    // Should not call syncFilteredItems as only focused changed
-    expect(syncSpy).not.toHaveBeenCalled();
+    // Should call syncFilteredItems as focused changed (with the new fix)
+    expect(syncSpy).toHaveBeenCalled();
 
     syncSpy.mockRestore();
   });
@@ -4592,5 +4595,267 @@ describe('modus-wc-autocomplete', () => {
     }).not.toThrow();
 
     await page.waitForChanges();
+  });
+
+  // Test for focused state tracking in handleItemsChange
+  it('should trigger handleItemsChange when item focused state changes', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: '<modus-wc-autocomplete aria-label="Focus tracking test"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true, focused: false },
+      { label: 'Banana', value: 'banana', visibleInMenu: true, focused: false },
+      { label: 'Cherry', value: 'cherry', visibleInMenu: true, focused: false },
+    ];
+    autocomplete.items = items;
+    await page.waitForChanges();
+
+    // Spy on syncFilteredItems to verify it's called when focus changes
+    const syncSpy = jest.spyOn(
+      autocomplete as unknown as { syncFilteredItems: () => void },
+      'syncFilteredItems'
+    );
+
+    // Create new items array with focus on first item
+    const itemsWithFocus = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true, focused: true },
+      { label: 'Banana', value: 'banana', visibleInMenu: true, focused: false },
+      { label: 'Cherry', value: 'cherry', visibleInMenu: true, focused: false },
+    ];
+
+    // Manually update items to simulate focus change
+    autocomplete.items = itemsWithFocus;
+    await page.waitForChanges();
+
+    // Should trigger syncFilteredItems when focus changes
+    expect(syncSpy).toHaveBeenCalled();
+  });
+
+  // Test that navigation properly updates focus state
+  it('should update focus state during keyboard navigation', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: '<modus-wc-autocomplete aria-label="Navigation test"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true },
+      { label: 'Banana', value: 'banana', visibleInMenu: true },
+      { label: 'Cherry', value: 'cherry', visibleInMenu: true },
+    ];
+    autocomplete.items = items;
+    autocomplete.showMenuOnFocus = true;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    const input = page.root?.querySelector('input') as HTMLInputElement;
+
+    // First arrow down should set initialNavigation to false
+    const firstArrowDown = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+    Object.defineProperty(firstArrowDown, 'target', {
+      value: input,
+      enumerable: true,
+    });
+
+    autocomplete.handleKeyDown(firstArrowDown);
+    await page.waitForChanges();
+
+    expect(autocomplete['initialNavigation']).toBe(false);
+
+    // Second arrow down should focus first item
+    const secondArrowDown = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+    Object.defineProperty(secondArrowDown, 'target', {
+      value: input,
+      enumerable: true,
+    });
+
+    autocomplete.handleKeyDown(secondArrowDown);
+    await page.waitForChanges();
+
+    // Now the first item should be focused
+    const visibleItems = autocomplete['getVisibleItems']();
+    expect(visibleItems[0].focused).toBe(true);
+  });
+
+  // Test focus state persistence when items array is updated externally
+  it('should maintain focus state when items are updated with same values', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: '<modus-wc-autocomplete aria-label="Focus persistence test"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true, focused: false },
+      { label: 'Banana', value: 'banana', visibleInMenu: true, focused: true },
+      { label: 'Cherry', value: 'cherry', visibleInMenu: true, focused: false },
+    ];
+    autocomplete.items = items;
+    await page.waitForChanges();
+
+    // Update items with same values but reset focus
+    const newItems: IAutocompleteItem[] = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true, focused: false },
+      { label: 'Banana', value: 'banana', visibleInMenu: true, focused: false },
+      { label: 'Cherry', value: 'cherry', visibleInMenu: true, focused: false },
+    ];
+
+    // This should trigger handleItemsChange because focused state changed
+    const handleItemsChangeSpy = jest.spyOn(
+      autocomplete as unknown as { handleItemsChange: () => void },
+      'handleItemsChange'
+    );
+
+    autocomplete.items = newItems;
+    await page.waitForChanges();
+
+    // Verify handleItemsChange was called due to focus change
+    expect(handleItemsChangeSpy).toHaveBeenCalled();
+  });
+
+  // Test for custom key handler - arrow keys should not work when custom handler is provided
+  it('should not navigate with arrow keys when customKeyDown is provided', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: '<modus-wc-autocomplete aria-label="Custom key handler blocking test"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true },
+      { label: 'Banana', value: 'banana', visibleInMenu: true },
+      { label: 'Cherry', value: 'cherry', visibleInMenu: true },
+    ];
+    autocomplete.items = items;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    // Custom handler that tracks which keys were pressed
+    const keysPressed: string[] = [];
+    const customHandler = jest.fn((event: KeyboardEvent) => {
+      keysPressed.push(event.key);
+    });
+
+    autocomplete.customKeyDown = customHandler;
+    await page.waitForChanges();
+
+    const input = page.root?.querySelector('input') as HTMLInputElement;
+
+    // Try arrow down
+    const arrowDownEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+    Object.defineProperty(arrowDownEvent, 'target', {
+      value: input,
+      enumerable: true,
+    });
+
+    autocomplete.handleKeyDown(arrowDownEvent);
+    await page.waitForChanges();
+
+    // Custom handler should have been called
+    expect(customHandler).toHaveBeenCalledWith(arrowDownEvent);
+    expect(keysPressed).toContain('ArrowDown');
+
+    // But navigation state should not have changed (still initial navigation)
+    expect(autocomplete['initialNavigation']).toBe(true);
+
+    // And no items should be focused
+    const visibleItems = autocomplete['getVisibleItems']();
+    expect(visibleItems.every((item) => !item.focused)).toBe(true);
+  });
+
+  // Test for line 511 - clearing searchText in handleFocus when selected item label matches value
+  it('should clear searchText when focusing and selected item label matches value', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: '<modus-wc-autocomplete aria-label="Focus search text clear test"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true, selected: true },
+      { label: 'Banana', value: 'banana', visibleInMenu: true },
+      { label: 'Cherry', value: 'cherry', visibleInMenu: true },
+    ];
+    autocomplete.items = items;
+    autocomplete.value = 'Apple'; // Set value to match selected item's label
+    autocomplete['searchText'] = 'App'; // Set some search text
+    await page.waitForChanges();
+
+    // Trigger focus
+    const focusEvent = new CustomEvent('inputFocus', {
+      detail: new FocusEvent('focus'),
+    });
+
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+
+    // searchText should be cleared when value matches selected item's label
+    expect(autocomplete['searchText']).toBe('');
+  });
+
+  // Test for line 68 branch - syncFilteredItems with null/undefined value
+  it('should handle null or undefined value in syncFilteredItems', () => {
+    const items: IAutocompleteItem[] = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true },
+      { label: 'Banana', value: 'banana', visibleInMenu: true },
+      { label: 'Cherry', value: 'cherry', visibleInMenu: false },
+    ];
+
+    // Test with null value
+    const resultWithNull = syncFilteredItems(
+      items,
+      null as unknown as string,
+      false,
+      undefined
+    );
+    expect(resultWithNull.length).toBe(2); // Only visibleInMenu items
+    expect(resultWithNull.map((i) => i.value)).toEqual(['apple', 'banana']);
+
+    // Test with undefined value
+    const resultWithUndefined = syncFilteredItems(
+      items,
+      undefined as unknown as string,
+      false,
+      undefined
+    );
+    expect(resultWithUndefined.length).toBe(2); // Only visibleInMenu items
+    expect(resultWithUndefined.map((i) => i.value)).toEqual([
+      'apple',
+      'banana',
+    ]);
+
+    // Test with empty string (should also show all visible items)
+    const resultWithEmpty = syncFilteredItems(items, '', false, undefined);
+    expect(resultWithEmpty.length).toBe(2);
+    expect(resultWithEmpty.map((i) => i.value)).toEqual(['apple', 'banana']);
   });
 });
