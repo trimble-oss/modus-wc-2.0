@@ -318,7 +318,7 @@ export function processItemSelection(
       ...params.items.map((menuItem) => ({
         ...menuItem,
         selected: menuItem.value === item.value ? true : menuItem.selected,
-        focused: false,
+        focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
       })),
     ];
 

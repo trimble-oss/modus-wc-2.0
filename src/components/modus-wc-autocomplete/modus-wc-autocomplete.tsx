@@ -211,9 +211,20 @@ export class ModusWcAutocomplete {
         )
     ) {
       if (this.multiSelect) {
-        this.selectionOrder = newItems
-          .filter((item) => item.selected)
+        // Keep items in selectionOrder that are still selected
+        const stillSelectedValues = this.selectionOrder.filter((value) =>
+          newItems.some((item) => item.value === value && item.selected)
+        );
+
+        // Add any newly selected items that aren't already in selectionOrder
+        const newlySelectedValues = newItems
+          .filter(
+            (item) => item.selected && !stillSelectedValues.includes(item.value)
+          )
           .map((item) => item.value);
+
+        // Preserve the original selection order and append new selections
+        this.selectionOrder = [...stillSelectedValues, ...newlySelectedValues];
       }
       this.syncFilteredItems();
     }

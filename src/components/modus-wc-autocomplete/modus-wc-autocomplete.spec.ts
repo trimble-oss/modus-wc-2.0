@@ -4858,4 +4858,138 @@ describe('modus-wc-autocomplete', () => {
     expect(resultWithEmpty.length).toBe(2);
     expect(resultWithEmpty.map((i) => i.value)).toEqual(['apple', 'banana']);
   });
+
+  // Test focused state with leaveMenuOpen in processItemSelection
+  it('should set focused state correctly based on leaveMenuOpen', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: '<modus-wc-autocomplete aria-label="Leave menu open test"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true, selected: false },
+      {
+        label: 'Banana',
+        value: 'banana',
+        visibleInMenu: true,
+        selected: false,
+      },
+      {
+        label: 'Cherry',
+        value: 'cherry',
+        visibleInMenu: true,
+        selected: false,
+      },
+    ];
+    autocomplete.items = items;
+    await page.waitForChanges();
+
+    // Test 1: When leaveMenuOpen is true, selected item should have focus
+    autocomplete.leaveMenuOpen = true;
+    autocomplete.multiSelect = true;
+    await page.waitForChanges();
+
+    // Select "Banana"
+    autocomplete['handleItemSelect'](items[1]);
+    await page.waitForChanges();
+
+    // Check that Banana is focused and selected
+    expect(autocomplete.items[0].focused).toBe(false);
+    expect(autocomplete.items[1].focused).toBe(true); // Banana should be focused
+    expect(autocomplete.items[1].selected).toBe(true); // Banana should be selected
+    expect(autocomplete.items[2].focused).toBe(false);
+
+    // Test 2: When leaveMenuOpen is false, no item should have focus after selection
+    autocomplete.leaveMenuOpen = false;
+
+    // Reset items
+    autocomplete.items = items.map((item) => ({
+      ...item,
+      selected: false,
+      focused: false,
+    }));
+    await page.waitForChanges();
+
+    // Select "Cherry"
+    autocomplete['handleItemSelect'](items[2]);
+    await page.waitForChanges();
+
+    // Check that no items are focused (menu would close)
+    expect(autocomplete.items[0].focused).toBe(false);
+    expect(autocomplete.items[1].focused).toBe(false);
+    expect(autocomplete.items[2].focused).toBe(false); // Cherry should NOT be focused
+    expect(autocomplete.items[2].selected).toBe(true); // But Cherry should be selected
+  });
+
+  // Test that selection order is preserved in multi-select mode
+  it('should preserve selection order when items change', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: '<modus-wc-autocomplete aria-label="Selection order test" multi-select="true"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    // Set up initial items
+    const initialItems: IAutocompleteItem[] = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true, selected: false },
+      {
+        label: 'Banana',
+        value: 'banana',
+        visibleInMenu: true,
+        selected: false,
+      },
+      {
+        label: 'Cherry',
+        value: 'cherry',
+        visibleInMenu: true,
+        selected: false,
+      },
+      { label: 'Date', value: 'date', visibleInMenu: true, selected: false },
+    ];
+    autocomplete.items = initialItems;
+
+    // Simulate selecting items in specific order: Cherry, Apple, Date
+    autocomplete['selectionOrder'] = ['cherry', 'apple', 'date'];
+    await page.waitForChanges();
+
+    // Update items to mark them as selected (simulating external prop change)
+    const updatedItems: IAutocompleteItem[] = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true, selected: true },
+      {
+        label: 'Banana',
+        value: 'banana',
+        visibleInMenu: true,
+        selected: false,
+      },
+      { label: 'Cherry', value: 'cherry', visibleInMenu: true, selected: true },
+      { label: 'Date', value: 'date', visibleInMenu: true, selected: true },
+    ];
+
+    // Manually trigger handleItemsChange
+    const handleItemsChange = (
+      autocomplete as unknown as {
+        handleItemsChange: (
+          newItems: IAutocompleteItem[],
+          oldItems: IAutocompleteItem[]
+        ) => void;
+      }
+    ).handleItemsChange.bind(autocomplete);
+    handleItemsChange(updatedItems, initialItems);
+
+    // Selection order should be preserved as: cherry, apple, date
+    // (not alphabetical: apple, cherry, date)
+    expect(autocomplete['selectionOrder']).toEqual(['cherry', 'apple', 'date']);
+  });
 });
