@@ -2496,6 +2496,14 @@
           ],
           "attributes": [
             {
+              "name": "button-aria-label",
+              "fieldName": "buttonAriaLabel",
+              "description": "The aria-label for the dropdown button.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "button-color",
               "fieldName": "buttonColor",
               "default": "'primary'",

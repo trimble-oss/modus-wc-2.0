@@ -300,8 +300,11 @@ export function processItemSelection(
       (menuItem) => menuItem.value === item.value
     );
     const isCurrentlySelected = currentItem?.selected || false;
+    
+    // Also check if item is already in selectionOrder to prevent duplicates
+    const isInSelectionOrder = params.selectionOrder.includes(item.value);
 
-    if (isCurrentlySelected) {
+    if (isCurrentlySelected || isInSelectionOrder) {
       return {
         updatedItems: params.items,
         updatedValue: '',
@@ -319,7 +322,7 @@ export function processItemSelection(
       })),
     ];
 
-    // Add to end of selection order
+    // Add to end of selection order (now guaranteed not to be a duplicate)
     updatedSelectionOrder = [...params.selectionOrder, item.value];
 
     // Clear the input value in multi-select mode

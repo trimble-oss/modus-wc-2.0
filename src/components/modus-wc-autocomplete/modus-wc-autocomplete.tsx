@@ -52,6 +52,7 @@ export class ModusWcAutocomplete {
   @State() private initialNavigation: boolean = true;
   @State() private filteredItems: IAutocompleteItem[] = [];
   @State() private selectionOrder: string[] = []; // Track order of chip selection
+  @State() private searchText: string = ''; // Dedicated state for active search query
 
   private debounceTimer?: number;
   private inheritedAttributes: Attributes = {};
@@ -201,6 +202,11 @@ export class ModusWcAutocomplete {
           oldItems?.map((i) => ({ value: i.value, selected: i.selected }))
         )
     ) {
+      if (this.multiSelect) {
+        this.selectionOrder = newItems
+          .filter((item) => item.selected)
+          .map((item) => item.value);
+      }
       this.syncFilteredItems();
     }
   }
@@ -250,7 +256,7 @@ export class ModusWcAutocomplete {
   private syncFilteredItems(): void {
     this.filteredItems = syncFilteredItems(
       this.items,
-      this.value,
+      this.searchText,
       this.leaveMenuOpen,
       this.customInputChange
     );
@@ -283,15 +289,8 @@ export class ModusWcAutocomplete {
     const input = this.el.querySelector('input');
     if (!input) return;
 
-    // Check if we're in filtering mode:
-    // We're filtering if there's text AND we haven't selected that exact text
-    const isFiltering =
-      input.value.length > 0 &&
-      !this.items?.some(
-        (item) =>
-          item.selected &&
-          item.label.toLowerCase() === input.value.toLowerCase()
-      );
+    // Check if we're in filtering mode based on searchText
+    const isFiltering = this.searchText.length > 0;
 
     processArrowDown({
       showMenuOnFocus: this.showMenuOnFocus,
@@ -312,16 +311,8 @@ export class ModusWcAutocomplete {
   }
 
   private handleArrowUp(): void {
-    const input = this.el.querySelector('input');
-
-    const isFiltering =
-      input &&
-      input.value.length > 0 &&
-      !this.items?.some(
-        (item) =>
-          item.selected &&
-          item.label.toLowerCase() === input.value.toLowerCase()
-      );
+    // Check if we're in filtering mode based on searchText
+    const isFiltering = this.searchText.length > 0;
 
     processArrowUp({
       initialNavigation: this.initialNavigation,
@@ -341,6 +332,7 @@ export class ModusWcAutocomplete {
     this.clearAllFocus();
     this.initialNavigation = true;
     this.menuVisible = false;
+    this.searchText = ''; // Clear search text on escape
   }
 
   private handleEnter(): void {
@@ -436,6 +428,7 @@ export class ModusWcAutocomplete {
       this.items = result.updatedItems;
     }
     this.value = result.inputValue;
+    this.searchText = result.inputValue; // Update search text as user types
 
     // Sync filtered items based on new search value
     this.syncFilteredItems();
@@ -500,7 +493,17 @@ export class ModusWcAutocomplete {
 
   private handleFocus = (event: CustomEvent<FocusEvent>) => {
     if (!this.disabled && !this.readOnly) {
-      // The filtering only applies while actively typing
+      // When focusing, clear searchText if value matches a selected item
+      // This prevents treating the display value as a search query
+      const hasSelectedItem = this.items?.some(
+        (item) => item.selected && item.label === this.value
+      );
+
+      if (hasSelectedItem) {
+        this.searchText = '';
+      }
+
+      // Show all items on focus
       if (this.items) {
         this.filteredItems = this.items.filter((item) => item.visibleInMenu);
       }
@@ -531,6 +534,7 @@ export class ModusWcAutocomplete {
         ];
       }
       this.value = '';
+      this.searchText = ''; // Clear search text when clearing selection
     }
     return Promise.resolve();
   }
@@ -587,6 +591,7 @@ export class ModusWcAutocomplete {
   @Method()
   async clearInput() {
     this.value = '';
+    this.searchText = ''; // Clear search text as well
     this.selectionOrder = []; // Clear selection order
     if (this.items) {
       this.items = [
@@ -640,6 +645,9 @@ export class ModusWcAutocomplete {
     if (result.shouldCloseMenu) {
       this.menuVisible = false;
     }
+
+    // Clear search text after selection - this is critical to prevent state ambiguity
+    this.searchText = '';
 
     // Only emit event and update navigation if not disabled/readonly
     if (!this.disabled && !this.readOnly && this.items) {
