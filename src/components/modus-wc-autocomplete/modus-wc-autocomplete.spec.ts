@@ -4992,4 +4992,169 @@ describe('modus-wc-autocomplete', () => {
     // (not alphabetical: apple, cherry, date)
     expect(autocomplete['selectionOrder']).toEqual(['cherry', 'apple', 'date']);
   });
+
+  it('should clear searchText when pressing arrow down with initialNavigation true', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Initial navigation test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { value: 'apple', label: 'Apple', visibleInMenu: true },
+      { value: 'banana', label: 'Banana', visibleInMenu: true },
+      { value: 'cherry', label: 'Cherry', visibleInMenu: true },
+    ];
+    autocomplete.items = items;
+    autocomplete.minChars = 0;
+    await page.waitForChanges();
+
+    // Set search text
+    autocomplete['searchText'] = 'app';
+    autocomplete['initialNavigation'] = true;
+    await page.waitForChanges();
+
+    // Press arrow down
+    const arrowDownEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+    const input = page.root?.querySelector('input');
+    Object.defineProperty(arrowDownEvent, 'target', {
+      value: input,
+      enumerable: true,
+    });
+
+    autocomplete.handleKeyDown(arrowDownEvent);
+    await page.waitForChanges();
+
+    // searchText should be cleared when initialNavigation is true
+    expect(autocomplete['searchText']).toBe('');
+  });
+
+  it('should close menu when collapsing chips with leaveMenuOpen true', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+        ModusWcChip,
+        ModusWcButton,
+      ],
+      html: `<modus-wc-autocomplete 
+        aria-label="Chip collapse test" 
+        multi-select="true" 
+        leave-menu-open="true"
+        max-chips="2"
+      ></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { value: 'apple', label: 'Apple', visibleInMenu: true, selected: true },
+      { value: 'banana', label: 'Banana', visibleInMenu: true, selected: true },
+      { value: 'cherry', label: 'Cherry', visibleInMenu: true, selected: true },
+    ];
+    autocomplete.items = items;
+    autocomplete['selectionOrder'] = ['apple', 'banana', 'cherry'];
+    autocomplete['isChipsExpanded'] = true;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    // Toggle chip expansion (collapse)
+    autocomplete['toggleChipsExpansion']();
+    await page.waitForChanges();
+
+    // Menu should be closed when collapsing chips with leaveMenuOpen
+    expect(autocomplete['menuVisible']).toBe(false);
+    expect(autocomplete['isChipsExpanded']).toBe(false);
+  });
+
+  it('should not close menu when expanding chips with leaveMenuOpen true', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+        ModusWcChip,
+        ModusWcButton,
+      ],
+      html: `<modus-wc-autocomplete 
+        aria-label="Chip expand test" 
+        multi-select="true" 
+        leave-menu-open="true"
+        max-chips="2"
+      ></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { value: 'apple', label: 'Apple', visibleInMenu: true, selected: true },
+      { value: 'banana', label: 'Banana', visibleInMenu: true, selected: true },
+      { value: 'cherry', label: 'Cherry', visibleInMenu: true, selected: true },
+    ];
+    autocomplete.items = items;
+    autocomplete['selectionOrder'] = ['apple', 'banana', 'cherry'];
+    autocomplete['isChipsExpanded'] = false;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    // Toggle chip expansion (expand)
+    autocomplete['toggleChipsExpansion']();
+    await page.waitForChanges();
+
+    // Menu should remain open when expanding chips
+    expect(autocomplete['menuVisible']).toBe(true);
+    expect(autocomplete['isChipsExpanded']).toBe(true);
+  });
+
+  it('should not collapse chips on blur when clicking expand button', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+        ModusWcChip,
+        ModusWcButton,
+      ],
+      html: `<modus-wc-autocomplete 
+        aria-label="Blur chip test" 
+        multi-select="true"
+        max-chips="2"
+      ></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { value: 'apple', label: 'Apple', visibleInMenu: true, selected: true },
+      { value: 'banana', label: 'Banana', visibleInMenu: true, selected: true },
+      { value: 'cherry', label: 'Cherry', visibleInMenu: true, selected: true },
+    ];
+    autocomplete.items = items;
+    autocomplete['selectionOrder'] = ['apple', 'banana', 'cherry'];
+    autocomplete['isChipsExpanded'] = true;
+    await page.waitForChanges();
+
+    // Create a mock expand button element
+    const mockExpandButton = document.createElement('modus-wc-button');
+    mockExpandButton.classList.add('modus-wc-autocomplete-expand-button');
+
+    // Simulate blur with relatedTarget being the expand button
+    const blurEvent = new CustomEvent('inputBlur', {
+      detail: new FocusEvent('blur', {
+        relatedTarget: mockExpandButton,
+      }),
+    });
+
+    autocomplete['handleBlur'](blurEvent);
+    await page.waitForChanges();
+
+    // Chips should remain expanded when blur is to the expand button
+    expect(autocomplete['isChipsExpanded']).toBe(true);
+  });
 });

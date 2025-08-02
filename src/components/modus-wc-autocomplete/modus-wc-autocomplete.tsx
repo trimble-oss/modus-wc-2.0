@@ -311,6 +311,10 @@ export class ModusWcAutocomplete {
     // Check if we're in filtering mode based on searchText
     const isFiltering = this.searchText.length > 0;
 
+    if (this.initialNavigation) {
+      this.searchText = '';
+    }
+
     processArrowDown({
       showMenuOnFocus: this.showMenuOnFocus,
       minChars: this.minChars,
@@ -418,7 +422,6 @@ export class ModusWcAutocomplete {
       this.filteredItems = this.items.filter((item) => item.visibleInMenu);
     }
 
-    this.isChipsExpanded = false; // Always collapse on blur
     this.handleFocusOutside(event.detail);
   };
 
@@ -701,6 +704,10 @@ export class ModusWcAutocomplete {
   };
 
   private toggleChipsExpansion = () => {
+    if (this.leaveMenuOpen && this.isChipsExpanded) {
+      this.menuVisible = false;
+    }
+
     this.isChipsExpanded = !this.isChipsExpanded;
     this.chipsExpansionChange.emit({ expanded: this.isChipsExpanded });
   };
