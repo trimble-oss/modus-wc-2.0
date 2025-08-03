@@ -5157,4 +5157,134 @@ describe('modus-wc-autocomplete', () => {
     // Chips should remain expanded when blur is to the expand button
     expect(autocomplete['isChipsExpanded']).toBe(true);
   });
+
+  it('should sync filtered items when updating focus with active search text', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Focus update test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { value: 'apple', label: 'Apple', visibleInMenu: true },
+      { value: 'apricot', label: 'Apricot', visibleInMenu: true },
+      { value: 'banana', label: 'Banana', visibleInMenu: true },
+      { value: 'cherry', label: 'Cherry', visibleInMenu: true },
+    ];
+    autocomplete.items = items;
+    autocomplete.minChars = 0;
+    await page.waitForChanges();
+
+    // Set search text to simulate active filtering
+    autocomplete['searchText'] = 'ap';
+    autocomplete['syncFilteredItems']();
+    await page.waitForChanges();
+
+    // Verify initial filtered state
+    expect(autocomplete['filteredItems'].length).toBe(2); // Apple and Apricot
+
+    // Spy on syncFilteredItems
+    const syncSpy = jest.spyOn(autocomplete as any, 'syncFilteredItems');
+
+    // Update focus while search text is active
+    autocomplete['updateItemFocus']('apricot');
+    await page.waitForChanges();
+
+    // Verify syncFilteredItems was called (line 293)
+    expect(syncSpy).toHaveBeenCalled();
+
+    // Verify the focused item
+    const focusedItem = autocomplete.items.find((item) => item.focused);
+    expect(focusedItem?.value).toBe('apricot');
+
+    // Verify filtered items still respect the search filter
+    expect(autocomplete['filteredItems'].length).toBe(2);
+    expect(autocomplete['filteredItems'].map((i) => i.label)).toEqual([
+      'Apple',
+      'Apricot',
+    ]);
+  });
+
+  it('should show all items on arrow down after selecting in single-select mode', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Single select arrow test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const items: IAutocompleteItem[] = [
+      { value: 'apple', label: 'Apple', visibleInMenu: true },
+      { value: 'apricot', label: 'Apricot', visibleInMenu: true },
+      { value: 'banana', label: 'Banana', visibleInMenu: true },
+      { value: 'cherry', label: 'Cherry', visibleInMenu: true },
+      { value: 'pineapple', label: 'Pineapple', visibleInMenu: true },
+    ];
+    autocomplete.items = items;
+    autocomplete.minChars = 0;
+    autocomplete.showMenuOnFocus = false;
+    await page.waitForChanges();
+
+    // Type to filter (this will match Apple and Pineapple)
+    const textInput = page.root?.querySelector('modus-wc-text-input');
+    textInput?.dispatchEvent(
+      new CustomEvent('inputChange', {
+        detail: { target: { value: 'apple' } } as any,
+        bubbles: true,
+      })
+    );
+    await page.waitForChanges();
+
+    // Verify filtered items
+    expect(autocomplete['searchText']).toBe('apple');
+    expect(autocomplete['filteredItems'].length).toBe(2); // Apple and Pineapple
+    expect(autocomplete['filteredItems'].map((i) => i.label).sort()).toEqual([
+      'Apple',
+      'Pineapple',
+    ]);
+
+    // Select Pineapple
+    autocomplete['handleItemSelect'](items[4]); // Pineapple
+    await page.waitForChanges();
+
+    // Verify search text is cleared and all items are reset
+    expect(autocomplete['searchText']).toBe('');
+    expect(autocomplete['value']).toBe('Pineapple');
+    expect(autocomplete['filteredItems'].length).toBe(5); // All items should be reset
+    expect(autocomplete['menuVisible']).toBe(false);
+    expect(autocomplete['initialNavigation']).toBe(true);
+
+    // First arrow down while focused (this is where the bug was)
+    const arrowDownEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+    const input = page.root?.querySelector('input');
+    Object.defineProperty(arrowDownEvent, 'target', {
+      value: input,
+      enumerable: true,
+    });
+
+    autocomplete.handleKeyDown(arrowDownEvent);
+    await page.waitForChanges();
+
+    // Menu should be open and show ALL items, not just the previously filtered ones
+    expect(autocomplete['menuVisible']).toBe(true);
+    expect(autocomplete['searchText']).toBe(''); // Should remain empty
+    expect(autocomplete['filteredItems'].length).toBe(5); // Should show all items
+    expect(autocomplete['filteredItems'].map((i) => i.label)).toEqual([
+      'Apple',
+      'Apricot',
+      'Banana',
+      'Cherry',
+      'Pineapple',
+    ]);
+    expect(autocomplete['initialNavigation']).toBe(false); // Should be reset after first navigation
+  });
 });

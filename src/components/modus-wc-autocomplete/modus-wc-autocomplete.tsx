@@ -288,9 +288,14 @@ export class ModusWcAutocomplete {
       this.items = updated;
 
       // We need to update filteredItems to reflect the focus change
-      // If we're in filtering mode, syncFilteredItems will maintain the filter
-      // If we're not in filtering mode, the arrow handlers already set all items
-      this.syncFilteredItems();
+      // But only if we're actively filtering
+      if (this.searchText) {
+        this.syncFilteredItems();
+      } else {
+        // When not filtering, update filteredItems to reflect the focus change
+        // without applying any filter
+        this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+      }
     }
     this.isNavigating = false; // Reset flag
   }
@@ -308,11 +313,17 @@ export class ModusWcAutocomplete {
     const input = this.el.querySelector('input');
     if (!input) return;
 
-    // Check if we're in filtering mode based on searchText
-    const isFiltering = this.searchText.length > 0;
+    // Check if we're in filtering mode based on searchText BEFORE clearing it
+    const wasFiltering = this.searchText.length > 0;
 
     if (this.initialNavigation) {
-      this.searchText = '';
+      if (this.searchText) {
+        this.searchText = '';
+      }
+      // Reset filtered items when initial navigation to ensure all items are shown
+      if (this.items) {
+        this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+      }
     }
 
     processArrowDown({
@@ -324,7 +335,7 @@ export class ModusWcAutocomplete {
       onUpdateFocus: (value) => {
         this.updateItemFocus(value);
         // After updating focus, if not filtering, ensure we show all items
-        if (!isFiltering && this.items) {
+        if (!wasFiltering && !this.searchText && this.items) {
           this.filteredItems = this.items.filter((item) => item.visibleInMenu);
         }
       },
@@ -670,6 +681,11 @@ export class ModusWcAutocomplete {
 
     // Clear search text after selection - this is critical to prevent state ambiguity
     this.searchText = '';
+
+    // Reset filtered items to show all items after selection
+    if (this.items) {
+      this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+    }
 
     // Only emit event and update navigation if not disabled/readonly
     if (!this.disabled && !this.readOnly && this.items) {
