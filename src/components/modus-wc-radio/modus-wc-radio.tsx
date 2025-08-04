@@ -13,7 +13,7 @@ import { ModusSize } from '../types';
 import { Attributes, generateElementId, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable radio button component used to create radio inputs.
+ * A customizable radio button component.
  */
 @Component({
   tag: 'modus-wc-radio',

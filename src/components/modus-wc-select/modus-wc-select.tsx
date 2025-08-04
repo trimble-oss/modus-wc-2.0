@@ -21,7 +21,7 @@ export interface ISelectOption {
 }
 
 /**
- * A customizable select component used to create selects with different options.
+ * A customizable select component used to pick a value from a list of options
  */
 @Component({
   tag: 'modus-wc-select',

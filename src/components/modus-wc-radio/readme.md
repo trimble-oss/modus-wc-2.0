@@ -7,7 +7,7 @@
 
 ## Overview
 
-A customizable radio button component used to create radio inputs.
+A customizable radio button component.
 
 ## Properties
 
