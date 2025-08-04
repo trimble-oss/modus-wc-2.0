@@ -232,7 +232,6 @@ export const CustomMenuAndSlots: Story = {
             display: none;
           }
           .custom-user-email {
-            color: #666;
             font-size: 0.8rem;
           }
           .custom-user-icon {
