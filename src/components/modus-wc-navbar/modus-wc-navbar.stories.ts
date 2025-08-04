@@ -182,3 +182,179 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const CustomMenuAndSlots: Story = {
+  render: (args) => {
+    function toggleCustomUserMenu(e) {
+      const customIcon = e.currentTarget;
+      const menu = customIcon.parentElement?.querySelector('#custom-user-menu');
+      menu?.classList.toggle('hidden');
+    }
+    return html`
+      <div id="custom-menu-and-slots">
+        <style>
+          #custom-menu-and-slots .modus-wc-navbar {
+            align-items: center;
+            display: flex;
+            gap: 0.2rem;
+            padding: 0 1rem;
+            width: 100%;
+          }
+          #custom-menu-and-slots .modus-wc-navbar-center,
+          #custom-menu-and-slots .modus-wc-navbar-end,
+          #custom-menu-and-slots .modus-wc-navbar-start {
+            align-items: center;
+            display: flex;
+            flex: 1;
+          }
+          #custom-menu-and-slots .modus-wc-navbar-center {
+            background: #d9d9d9;
+            justify-content: center;
+          }
+          #custom-menu-and-slots .modus-wc-navbar-end {
+            background: #d9d9d9;
+            justify-content: flex-end;
+          }
+          #custom-menu-and-slots .modus-wc-navbar-start {
+            background: #d9d9d9;
+            justify-content: flex-start;
+          }
+          #custom-user-menu {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            position: absolute;
+            right: 10px;
+            top: 60px;
+            z-index: 1000;
+          }
+          #custom-user-menu.hidden {
+            display: none;
+          }
+          .custom-user-icon {
+            cursor: pointer;
+            margin-left: 8px;
+          }
+          .custom-user-email {
+            color: #666;
+            font-size: 0.8rem;
+          }
+          .custom-user-menu-header {
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            padding: 8px 16px;
+          }
+          .custom-user-menu-title {
+            font-weight: bold;
+          }
+          div[id^='story--components-navbar--custom-menu-and-slots'] {
+            border: 1px dashed black;
+            height: 365px;
+          }
+          .menu-item {
+            align-items: center;
+            cursor: pointer;
+            display: flex;
+            padding: 8px;
+          }
+          .slot-bg {
+            align-items: center;
+            display: flex;
+            font-weight: bold;
+            height: 40px;
+            justify-content: center;
+            opacity: 0.4;
+          }
+        </style>
+        <script>
+          function toggleCustomUserMenu(e) {
+            const customIcon = e.currentTarget;
+            const menu =
+              customIcon.parentElement?.querySelector('#custom-user-menu');
+            menu?.classList.toggle('hidden');
+          }
+        </script>
+        <modus-wc-navbar
+          ?apps-menu-open=${args['apps-menu-open']}
+          ?condensed=${args.condensed}
+          ?condensed-menu-open=${args['condensed-menu-open']}
+          custom-class=${ifDefined(args['custom-class'])}
+          ?main-menu-open=${args['main-menu-open']}
+          ?notifications-menu-open=${args['notifications-menu-open']}
+          search-debounce-ms=${ifDefined(args['search-debounce-ms'])}
+          ?search-input-open=${args['search-input-open']}
+          .textOverrides=${ifDefined(args['text-overrides'])}
+          .userCard=${args['user-card']}
+          ?user-menu-open=${args['user-menu-open']}
+          .visibility=${{
+            ai: false,
+            apps: false,
+            help: false,
+            mainMenu: false,
+            notifications: false,
+            search: false,
+            searchInput: false,
+            user: false,
+          }}
+        >
+          <div slot="main-menu">Main menu contents</div>
+          <div slot="notifications">Notification contents</div>
+          <div slot="apps">App drawer contents</div>
+
+          <!-- Slots demonstration -->
+          <div slot="start">
+            <div class="slot-bg">Left slot</div>
+          </div>
+          <div slot="center">
+            <div class="slot-bg">Center slot</div>
+          </div>
+          <div slot="end">
+            <div class="slot-bg">Right Slot</div>
+            <div class="custom-user-icon" @click=${toggleCustomUserMenu}>
+              <modus-wc-avatar
+                alt="Sonic the Hedgehog"
+                img-src="https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg"
+                size="xs"
+                shape="circle"
+              ></modus-wc-avatar>
+            </div>
+
+            <!-- Custom user menu -->
+            <div id="custom-user-menu" class="hidden">
+              <div class="custom-user-menu-header">
+                <div class="custom-user-menu-title">Custom Menu</div>
+                <div class="custom-user-email">custom.user@example.com</div>
+              </div>
+              <div class="menu-item">
+                <span class="menu-item-icon"
+                  ><modus-wc-icon
+                    name="settings_solid"
+                    size="16px"
+                  ></modus-wc-icon
+                ></span>
+                <span class="custom-user-icon">Account Settings</span>
+              </div>
+              <div class="menu-item">
+                <span class="menu-item-icon"
+                  ><modus-wc-icon
+                    name="person_solid"
+                    size="16px"
+                  ></modus-wc-icon
+                ></span>
+                <span class="custom-user-icon">Profile</span>
+              </div>
+              <div class="menu-item">
+                <span class="menu-item-icon"
+                  ><modus-wc-icon name="sign_out" size="16px"></modus-wc-icon
+                ></span>
+                <span class="custom-user-icon">Logout</span>
+              </div>
+            </div>
+          </div>
+        </modus-wc-navbar>
+      </div>
+    `;
+  },
+};
