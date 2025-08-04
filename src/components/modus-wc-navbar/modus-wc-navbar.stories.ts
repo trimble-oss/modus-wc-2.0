@@ -200,6 +200,9 @@ export const CustomMenuAndSlots: Story = {
             padding: 0 1rem;
             width: 100%;
           }
+          .modus-wc-card-body {
+            padding: 1rem;
+          }
           #custom-menu-and-slots .modus-wc-navbar-center,
           #custom-menu-and-slots .modus-wc-navbar-end,
           #custom-menu-and-slots .modus-wc-navbar-start {
@@ -220,12 +223,6 @@ export const CustomMenuAndSlots: Story = {
             justify-content: flex-start;
           }
           #custom-user-menu {
-            background-color: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            color: #333;
-            padding: 10px;
             position: absolute;
             right: 10px;
             top: 50px;
@@ -326,7 +323,7 @@ export const CustomMenuAndSlots: Story = {
             </div>
 
             <!-- Custom user menu -->
-            <div id="custom-user-menu">
+            <modus-wc-card id="custom-user-menu" bordered="true">
               <div class="custom-user-menu-header">
                 <div class="custom-user-menu-title">Custom Menu</div>
                 <div class="custom-user-email">custom.user@example.com</div>
@@ -355,7 +352,7 @@ export const CustomMenuAndSlots: Story = {
                 ></span>
                 <span class="custom-user-icon">Logout</span>
               </div>
-            </div>
+            </modus-wc-card>
           </div>
         </modus-wc-navbar>
       </div>
