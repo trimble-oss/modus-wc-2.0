@@ -236,8 +236,8 @@ export const CustomMenuAndSlots: Story = {
           }
           .custom-user-icon {
             cursor: pointer;
-            margin-left: 8px;
-            margin-right: 8px;
+            margin-inline-start: 8px;
+            margin-inline-end: 8px;
             position: relative;
             top: 3px;
           }
