@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [main]
+    branches: [main, prod]
   workflow_dispatch:
     inputs:
       branch:
@@ -57,7 +57,7 @@ jobs:
         with:
           folder: storybook-static
           branch: gh-pages
-          target-folder: ${{ github.event.inputs.branch || 'main' }}
+          target-folder: ${{ (github.ref_name == 'prod' || github.event.inputs.branch == 'prod') && '.' || (github.event.inputs.branch || github.ref_name) }}
 
       - name: Get preview URL
         if: github.event_name == 'pull_request' && steps.preview-deploy.outcome == 'success'
@@ -69,7 +69,11 @@ jobs:
         if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
         id: deployment-url
         run: |
-          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${{ github.event.inputs.branch || 'main' }}/" >> $GITHUB_OUTPUT
+          if [[ "${{ github.ref_name }}" == "prod" || "${{ github.event.inputs.branch }}" == "prod" ]]; then
+            echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/" >> $GITHUB_OUTPUT
+          else
+            echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${{ github.event.inputs.branch || github.ref_name }}/" >> $GITHUB_OUTPUT
+          fi
 
       - name: Print deployment URL
         if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
