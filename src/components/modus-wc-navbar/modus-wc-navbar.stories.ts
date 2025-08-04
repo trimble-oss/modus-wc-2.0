@@ -208,15 +208,15 @@ export const CustomMenuAndSlots: Story = {
             flex: 1;
           }
           #custom-menu-and-slots .modus-wc-navbar-center {
-            background: #d9d9d9;
+            background: #d9d9d969;
             justify-content: center;
           }
           #custom-menu-and-slots .modus-wc-navbar-end {
-            background: #d9d9d9;
+            background: #d9d9d969;
             justify-content: flex-end;
           }
           #custom-menu-and-slots .modus-wc-navbar-start {
-            background: #d9d9d9;
+            background: #d9d9d969;
             justify-content: flex-start;
           }
           #custom-user-menu {
@@ -224,22 +224,26 @@ export const CustomMenuAndSlots: Story = {
             border: 1px solid #e0e0e0;
             border-radius: 4px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            color: #333;
             padding: 10px;
             position: absolute;
             right: 10px;
-            top: 60px;
+            top: 50px;
             z-index: 1000;
           }
           #custom-user-menu.hidden {
             display: none;
           }
-          .custom-user-icon {
-            cursor: pointer;
-            margin-left: 8px;
-          }
           .custom-user-email {
             color: #666;
             font-size: 0.8rem;
+          }
+          .custom-user-icon {
+            cursor: pointer;
+            margin-left: 8px;
+            margin-right: 8px;
+            position: relative;
+            top: 3px;
           }
           .custom-user-menu-header {
             border-bottom: 1px solid #e0e0e0;
@@ -262,7 +266,7 @@ export const CustomMenuAndSlots: Story = {
           .slot-bg {
             align-items: center;
             display: flex;
-            font-weight: bold;
+            font-weight: 600;
             height: 40px;
             justify-content: center;
             opacity: 0.4;
@@ -311,7 +315,7 @@ export const CustomMenuAndSlots: Story = {
             <div class="slot-bg">Center slot</div>
           </div>
           <div slot="end">
-            <div class="slot-bg">Right Slot</div>
+            <div class="slot-bg">Right slot</div>
             <div class="custom-user-icon" @click=${toggleCustomUserMenu}>
               <modus-wc-avatar
                 alt="Sonic the Hedgehog"
@@ -322,7 +326,7 @@ export const CustomMenuAndSlots: Story = {
             </div>
 
             <!-- Custom user menu -->
-            <div id="custom-user-menu" class="hidden">
+            <div id="custom-user-menu">
               <div class="custom-user-menu-header">
                 <div class="custom-user-menu-title">Custom Menu</div>
                 <div class="custom-user-email">custom.user@example.com</div>
