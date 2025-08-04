@@ -51,7 +51,7 @@ jobs:
           umbrella-dir: pr-preview
 
       - name: Deploy to GitHub Pages (prod to root)
-        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref_name == 'prod' || github.event.inputs.branch == 'prod')
+        if: (github.event_name == 'push' && github.ref_name == 'prod') || (github.event_name == 'workflow_dispatch' && github.event.inputs.branch == 'prod')
         uses: JamesIves/github-pages-deploy-action@v4
         id: deploy-prod
         with:
@@ -59,7 +59,7 @@ jobs:
           branch: gh-pages
 
       - name: Deploy to GitHub Pages (others to subfolders)
-        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref_name != 'prod' && github.event.inputs.branch != 'prod')
+        if: (github.event_name == 'push' && github.ref_name != 'prod') || (github.event_name == 'workflow_dispatch' && github.event.inputs.branch != 'prod')
         uses: JamesIves/github-pages-deploy-action@v4
         id: deploy-others
         with:
