@@ -269,6 +269,7 @@ export const CustomMenuAndSlots: Story = {
           }
         </style>
         <script>
+        /** function to toggle custom user menu */
           function toggleCustomUserMenu(e) {
             const customIcon = e.currentTarget;
             const menu =
