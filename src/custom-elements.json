@@ -821,7 +821,21 @@
             },
             {
               "kind": "method",
-              "name": "handleItemsChange"
+              "name": "handleItemsChange",
+              "parameters": [
+                {
+                  "name": "newItems",
+                  "type": {
+                    "text": "IAutocompleteItem[]"
+                  }
+                },
+                {
+                  "name": "oldItems",
+                  "type": {
+                    "text": "IAutocompleteItem[]"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
@@ -2481,6 +2495,14 @@
             }
           ],
           "attributes": [
+            {
+              "name": "button-aria-label",
+              "fieldName": "buttonAriaLabel",
+              "description": "The aria-label for the dropdown button.",
+              "type": {
+                "text": "string"
+              }
+            },
             {
               "name": "button-color",
               "fieldName": "buttonColor",
