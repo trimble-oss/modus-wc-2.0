@@ -400,16 +400,23 @@ export class ModusWcAutocomplete {
   }
 
   private handleFocusOutside = (event: FocusEvent) => {
-    setTimeout(() => {
-      const relatedTarget = event.relatedTarget as HTMLElement;
+    const relatedTarget = event.relatedTarget as HTMLElement;
 
-      if (!relatedTarget || !this.el.contains(relatedTarget)) {
-        if (!this.programmaticOpen) {
-          this.menuVisible = false;
+    if (!relatedTarget || !this.el.contains(relatedTarget)) {
+      // Hide menu immediately to prevent flicker
+      if (!this.programmaticOpen) {
+        this.menuVisible = false;
+      }
+
+      // Use setTimeout for cleanup and blur event
+      setTimeout(() => {
+        // Reset filtered items after menu is hidden
+        if (this.items) {
+          this.filteredItems = this.items.filter((item) => item.visibleInMenu);
         }
         this.inputBlur.emit(event);
-      }
-    }, BLUR_FOCUSOUT_DELAY_MS);
+      }, BLUR_FOCUSOUT_DELAY_MS);
+    }
   };
 
   private handleBlur = (event: CustomEvent<FocusEvent>) => {
@@ -428,9 +435,6 @@ export class ModusWcAutocomplete {
           focused: false,
         })),
       ];
-      // When blurring, show all items instead of filtered to prevent
-      // briefly showing filtered items before menu closes
-      this.filteredItems = this.items.filter((item) => item.visibleInMenu);
     }
 
     this.handleFocusOutside(event.detail);

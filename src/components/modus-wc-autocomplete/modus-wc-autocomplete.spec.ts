@@ -5189,7 +5189,10 @@ describe('modus-wc-autocomplete', () => {
     expect(autocomplete['filteredItems'].length).toBe(2); // Apple and Apricot
 
     // Spy on syncFilteredItems
-    const syncSpy = jest.spyOn(autocomplete as any, 'syncFilteredItems');
+    const syncSpy = jest.spyOn(
+      autocomplete as ModusWcAutocomplete & { syncFilteredItems: () => void },
+      'syncFilteredItems'
+    );
 
     // Update focus while search text is active
     autocomplete['updateItemFocus']('apricot');
@@ -5238,7 +5241,7 @@ describe('modus-wc-autocomplete', () => {
     const textInput = page.root?.querySelector('modus-wc-text-input');
     textInput?.dispatchEvent(
       new CustomEvent('inputChange', {
-        detail: { target: { value: 'apple' } } as any,
+        detail: { target: { value: 'apple' } } as unknown as Event,
         bubbles: true,
       })
     );
