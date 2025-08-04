@@ -50,14 +50,22 @@ jobs:
           preview-branch: gh-pages
           umbrella-dir: pr-preview
 
-      - name: Deploy to GitHub Pages
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+      - name: Deploy to GitHub Pages (prod to root)
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref_name == 'prod' || github.event.inputs.branch == 'prod')
         uses: JamesIves/github-pages-deploy-action@v4
-        id: deploy
+        id: deploy-prod
         with:
           folder: storybook-static
           branch: gh-pages
-          target-folder: ${{ (github.ref_name == 'prod' || github.event.inputs.branch == 'prod') && '.' || (github.event.inputs.branch || github.ref_name) }}
+
+      - name: Deploy to GitHub Pages (others to subfolders)
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref_name != 'prod' && github.event.inputs.branch != 'prod')
+        uses: JamesIves/github-pages-deploy-action@v4
+        id: deploy-others
+        with:
+          folder: storybook-static
+          branch: gh-pages
+          target-folder: ${{ github.event.inputs.branch || github.ref_name }}
 
       - name: Get preview URL
         if: github.event_name == 'pull_request' && steps.preview-deploy.outcome == 'success'
@@ -66,7 +74,7 @@ jobs:
           echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/pr-preview/pr-${{ github.event.number }}/" >> $GITHUB_OUTPUT
 
       - name: Get deployment URL
-        if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
+        if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && (steps.deploy-prod.outcome == 'success' || steps.deploy-others.outcome == 'success')
         id: deployment-url
         run: |
           if [[ "${{ github.ref_name }}" == "prod" || "${{ github.event.inputs.branch }}" == "prod" ]]; then
@@ -76,7 +84,7 @@ jobs:
           fi
 
       - name: Print deployment URL
-        if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
+        if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && (steps.deploy-prod.outcome == 'success' || steps.deploy-others.outcome == 'success')
         run: |
           echo "Storybook deployed successfully to: ${{ steps.deployment-url.outputs.url }}"
 
