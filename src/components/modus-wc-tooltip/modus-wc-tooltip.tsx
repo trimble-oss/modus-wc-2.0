@@ -66,7 +66,7 @@ export class ModusWcTooltip {
       case 'Escape': {
         // Escape only works when hovering (isVisible is true)
         // This ensures when forceOpen is true, escape only works during hover
-        if (this.isVisible) {
+        if (this.isVisible && !this.forceOpen) {
           this.escapeDismissed = true;
           this.isVisible = false;
           this.dismissEscape.emit();
@@ -94,7 +94,7 @@ export class ModusWcTooltip {
 
     const propClasses = convertPropsToClasses({
       disabled: this.disabled || this.escapeDismissed,
-      forceOpen: this.forceOpen && !this.escapeDismissed,
+      forceOpen: this.forceOpen,
       position: this.position,
     });
 
