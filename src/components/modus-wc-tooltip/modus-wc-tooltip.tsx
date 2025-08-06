@@ -15,7 +15,8 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 /**
  * A customizable tooltip component used to create tooltips with different content.
  *
- * The tooltip can be dismissed by pressing the Escape key.
+ * The tooltip can be dismissed by pressing the Escape key when hovering over it.
+ * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
  */
 @Component({
   tag: 'modus-wc-tooltip',
@@ -63,8 +64,9 @@ export class ModusWcTooltip {
   elementKeyupHandler(event: KeyboardEvent): void {
     switch (event.code) {
       case 'Escape': {
-        // Check if tooltip is currently visible using component state
-        if (this.forceOpen || this.isVisible) {
+        // Escape only works when hovering (isVisible is true)
+        // This ensures when forceOpen is true, escape only works during hover
+        if (this.isVisible) {
           this.escapeDismissed = true;
           this.isVisible = false;
           this.dismissEscape.emit();

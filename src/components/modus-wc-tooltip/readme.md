@@ -9,7 +9,8 @@
 
 A customizable tooltip component used to create tooltips with different content.
 
-The tooltip can be dismissed by pressing the Escape key.
+The tooltip can be dismissed by pressing the Escape key when hovering over it.
+When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
 
 ## Properties
 

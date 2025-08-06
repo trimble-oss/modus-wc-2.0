@@ -49,6 +49,11 @@ export default meta;
 type Story = StoryObj<TooltipArgs>;
 
 const Template: Story = {
+  parameters: {
+    actions: {
+      handles: ['dismissEscape'],
+    },
+  },
   render: (args) => {
     // prettier-ignore
     return html`
@@ -70,9 +75,6 @@ export const Default: Story = { ...Template };
 
 export const Migration: Story = {
   parameters: {
-    actions: {
-      handles: ['dismissEscape'],
-    },
     docs: {
       description: {
         story: `
