@@ -48,10 +48,10 @@ export class ModusWcTooltip {
   @Prop() position?: 'auto' | 'top' | 'right' | 'bottom' | 'left' = 'auto';
 
   /** Track if tooltip was dismissed with Escape key */
-  @State() escapeDismissed: boolean = false;
+  @State() private escapeDismissed: boolean = false;
 
   /** Track if tooltip is currently visible */
-  @State() isVisible: boolean = false;
+  @State() private isVisible: boolean = false;
 
   /** An event that fires when the tooltip is dismissed via Escape key */
   @Event() dismissEscape!: EventEmitter;
