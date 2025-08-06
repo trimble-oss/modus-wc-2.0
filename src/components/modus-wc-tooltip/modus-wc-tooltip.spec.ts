@@ -18,27 +18,6 @@ describe('modus-wc-tooltip', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should dismiss on Escape key when forceOpen is true', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTooltip],
-      html: '<modus-wc-tooltip content="Test" force-open="true"></modus-wc-tooltip>',
-    });
-
-    const component = page.rootInstance as ModusWcTooltip;
-    expect(component.escapeDismissed).toBe(false);
-
-    // Set up event listener for dismissEscape event
-    const dismissEscapeSpy = jest.fn();
-    page.root?.addEventListener('dismissEscape', dismissEscapeSpy);
-
-    // Simulate Escape key press
-    const event = new KeyboardEvent('keyup', { code: 'Escape' });
-    document.dispatchEvent(event);
-
-    expect(component.escapeDismissed).toBe(true);
-    expect(dismissEscapeSpy).toHaveBeenCalled();
-  });
-
   it('should not dismiss on Escape key when tooltip is not visible', async () => {
     const page = await newSpecPage({
       components: [ModusWcTooltip],
@@ -59,6 +38,33 @@ describe('modus-wc-tooltip', () => {
     // Should not dismiss or emit event when not visible
     expect(component.escapeDismissed).toBe(false);
     expect(dismissEscapeSpy).not.toHaveBeenCalled();
+  });
+
+  it('should dismiss on Escape key when tooltip is visible', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<modus-wc-tooltip content="Test"></modus-wc-tooltip>',
+    });
+
+    const component = page.rootInstance as ModusWcTooltip;
+
+    // Set tooltip as visible
+    component.isVisible = true;
+    expect(component.escapeDismissed).toBe(false);
+    expect(component.isVisible).toBe(true);
+
+    // Set up event listener for dismissEscape event
+    const dismissEscapeSpy = jest.fn();
+    page.root?.addEventListener('dismissEscape', dismissEscapeSpy);
+
+    // Simulate Escape key press when tooltip is visible
+    const event = new KeyboardEvent('keyup', { code: 'Escape' });
+    document.dispatchEvent(event);
+
+    // Should dismiss and emit event when visible
+    expect(component.escapeDismissed).toBe(true);
+    expect(component.isVisible).toBe(false);
+    expect(dismissEscapeSpy).toHaveBeenCalled();
   });
 
   it('should reset escape dismissal on mouse enter', async () => {
