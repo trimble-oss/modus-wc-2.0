@@ -16,7 +16,7 @@ exports[`modus-wc-autocomplete should close the menu when clicking outside if le
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Default autocomplete" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
+      <input aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_26" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -38,7 +38,7 @@ exports[`modus-wc-autocomplete should display no results ui when no items are av
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="No results test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
+      <input aria-label="No results test" class="modus-wc-grow" id="mwc_id_25" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -82,7 +82,7 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 4`
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Leave menu open test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" type="text" value="">
+      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_29" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -93,7 +93,7 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 5`
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-disabled modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Leave menu open test" aria-placeholder="" class="modus-wc-grow" disabled="" inputmode="text" placeholder="" type="text" value="">
+      <input aria-label="Leave menu open test" class="modus-wc-grow" disabled="" id="mwc_id_29" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -104,7 +104,7 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 6`
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-text-input--readonly modus-wc-w-full">
-      <input aria-label="Leave menu open test" aria-placeholder="" class="modus-wc-grow" inputmode="text" placeholder="" readonly="" type="text" value="">
+      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_29" inputmode="text" placeholder="" readonly="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -115,7 +115,7 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 1`] = `
   <!---->
   <modus-wc-text-input value="">
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_64" inputmode="text" placeholder="" type="text" value="">
+      <input aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_77" inputmode="text" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
   <modus-wc-menu class="menu-visible">
@@ -168,7 +168,7 @@ exports[`modus-wc-autocomplete should render chips for selected items in multi-s
       </modus-wc-chip>
       <modus-wc-text-input value="">
         <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-          <input aria-label="MultiSelect Chip Test" class="modus-wc-grow" id="mwc_id_25" inputmode="text" placeholder="" type="text" value="">
+          <input aria-label="MultiSelect Chip Test" class="modus-wc-grow" id="mwc_id_38" inputmode="text" placeholder="" type="text" value="">
         </label>
       </modus-wc-text-input>
     </div>
