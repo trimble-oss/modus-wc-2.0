@@ -5303,35 +5303,45 @@ describe('modus-wc-autocomplete', () => {
     });
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
-    
-    // Mock the scrollToOptionSelected method to verify it gets called
-    const scrollSpy = jest.spyOn(
-      autocomplete as any,
-      'scrollToOptionSelected'
-    );
+    const scrollSpy = jest.spyOn(autocomplete as any, 'scrollToOptionSelected');
 
     // Mock scrollIntoView for the DOM element that would be targeted
     const mockScrollIntoView = jest.fn();
     const originalQuerySelector = autocomplete.el.querySelector;
-    
-    jest.spyOn(autocomplete.el, 'querySelector').mockImplementation((selector: string) => {
-      if (selector === '.modus-wc-menu-item-focused' || selector === '.modus-wc-menu-item-selected') {
-        return {
-          scrollIntoView: mockScrollIntoView
-        } as unknown as Element;
-      }
-      return originalQuerySelector.call(autocomplete.el, selector);
-    });
+
+    jest
+      .spyOn(autocomplete.el, 'querySelector')
+      .mockImplementation((selector: string) => {
+        if (
+          selector === '.modus-wc-menu-item-focused' ||
+          selector === '.modus-wc-menu-item-selected'
+        ) {
+          return {
+            scrollIntoView: mockScrollIntoView,
+          } as unknown as Element;
+        }
+        return originalQuerySelector.call(autocomplete.el, selector);
+      });
 
     // Set up items and mark one as selected
     const items: IAutocompleteItem[] = [
       { value: 'apple', label: 'Apple', visibleInMenu: true, selected: true },
-      { value: 'banana', label: 'Banana', visibleInMenu: true, selected: false },
-      { value: 'cherry', label: 'Cherry', visibleInMenu: true, selected: false },
+      {
+        value: 'banana',
+        label: 'Banana',
+        visibleInMenu: true,
+        selected: false,
+      },
+      {
+        value: 'cherry',
+        label: 'Cherry',
+        visibleInMenu: true,
+        selected: false,
+      },
     ];
     autocomplete.items = items;
     autocomplete.minChars = 0;
-    autocomplete['menuVisible'] = true; // Set menu as already visible
+    autocomplete['menuVisible'] = true;
     await page.waitForChanges();
 
     // Press arrow down to trigger scrollToOptionSelected
@@ -5344,36 +5354,25 @@ describe('modus-wc-autocomplete', () => {
 
     autocomplete.handleKeyDown(arrowDownEvent);
     await page.waitForChanges();
-
-    // Verify the scroll method was called
     expect(scrollSpy).toHaveBeenCalled();
-    
+
     // Allow time for requestAnimationFrame to complete
-    await new Promise(resolve => setTimeout(resolve, 50));
-    
-    // Verify scrollIntoView was called with the right parameters
+    await new Promise((resolve) => setTimeout(resolve, 50));
     expect(mockScrollIntoView).toHaveBeenCalledWith({
       behavior: 'smooth',
       block: 'nearest',
       inline: 'nearest',
     });
 
-    // Test that multiSelect prevents scrolling
     scrollSpy.mockClear();
     mockScrollIntoView.mockClear();
-    
     autocomplete.multiSelect = true;
     await page.waitForChanges();
-    
+
     autocomplete.handleKeyDown(arrowDownEvent);
     await page.waitForChanges();
-    
-    // scrollToOptionSelected is called but should return early for multiSelect
     expect(scrollSpy).toHaveBeenCalled();
     expect(mockScrollIntoView).not.toHaveBeenCalled();
-    
-    // Clean up mocks
     jest.restoreAllMocks();
   });
-
 });
