@@ -309,6 +309,25 @@ export class ModusWcAutocomplete {
     }
   }
 
+  private scrollToOptionSelected(): void {
+    if (this.multiSelect && !this.showMenuOnFocus) {
+      return;
+    }
+    requestAnimationFrame(() => {
+      let targetItem = this.el.querySelector(
+        '.modus-wc-menu-item-selected'
+      ) as HTMLElement;
+
+      if (targetItem) {
+        targetItem.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'nearest',
+        });
+      }
+    });
+  }
+
   private handleArrowDown(): void {
     const input = this.el.querySelector('input');
     if (!input) return;
@@ -339,7 +358,13 @@ export class ModusWcAutocomplete {
           this.filteredItems = this.items.filter((item) => item.visibleInMenu);
         }
       },
-      onSetMenuVisible: (visible) => (this.menuVisible = visible),
+      onSetMenuVisible: (visible) => {
+        this.menuVisible = visible;
+        // Only scroll if menu is becoming visible and there's a selected item
+        if (visible && this.items && this.items.some((item) => item.selected)) {
+          this.scrollToOptionSelected();
+        }
+      },
       onSetInitialNavigation: (value) => (this.initialNavigation = value),
     });
   }
