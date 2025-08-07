@@ -6,7 +6,7 @@
     "trimble",
     "modus"
   ],
-  "homepage": "https://trimble-oss.github.io/modus-wc-2.0/main",
+  "homepage": "https://trimble-oss.github.io/modus-wc-2.0/prod",
   "license": "MIT",
   "author": "Trimble Inc.",
   "contributors": [
@@ -57,7 +57,8 @@
     "test": "stencil test --spec",
     "test:coverage": "stencil test --spec --coverage",
     "test:update-snapshot": "stencil test --spec --update-snapshot",
-    "test:watch": "stencil test --spec --watchAll"
+    "test:watch": "stencil test --spec --watchAll",
+    "test:vue": "npm -C integrations/vue/v-latest run dev"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.1",
@@ -70,6 +71,7 @@
     "@stencil/react-output-target": "^0.7.4",
     "@stencil/sass": "^3.0.12",
     "@stencil/store": "^2.1.3",
+    "@stencil/vue-output-target": "^0.10.8",
     "@storybook/addon-a11y": "^8.6.12",
     "@storybook/addon-essentials": "^8.6.12",
     "@storybook/addon-links": "^8.6.12",

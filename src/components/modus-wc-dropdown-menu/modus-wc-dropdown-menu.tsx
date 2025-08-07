@@ -32,6 +32,9 @@ export class ModusWcDropdownMenu {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** The aria-label for the dropdown button. */
+  @Prop() buttonAriaLabel?: string;
+
   /** The color variant of the button. */
   @Prop() buttonColor?:
     | 'primary'
@@ -74,8 +77,9 @@ export class ModusWcDropdownMenu {
 
   @Listen('click', { target: 'document' })
   handleDocumentClick(event: Event) {
+    const path = event.composedPath();
     // Close the menu when the user clicks outside the component
-    if (!this.el.contains(event.target as Node) && this.menuVisible) {
+    if (!path.includes(this.el) && this.menuVisible) {
       this.menuVisible = false;
       this.menuVisibilityChange.emit({ isVisible: false });
     }
@@ -138,6 +142,7 @@ export class ModusWcDropdownMenu {
         <modus-wc-button
           aria-expanded={this.menuVisible.toString()}
           aria-haspopup="true"
+          aria-label={this.buttonAriaLabel}
           color={this.buttonColor}
           disabled={this.disabled}
           onButtonClick={this.handleButtonClick}
