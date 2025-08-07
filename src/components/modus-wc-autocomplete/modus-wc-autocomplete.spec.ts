@@ -5303,11 +5303,18 @@ describe('modus-wc-autocomplete', () => {
     });
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
-    const scrollSpy = jest.spyOn(autocomplete as any, 'scrollToOptionSelected');
+    const scrollSpy = jest.spyOn(
+      autocomplete as ModusWcAutocomplete & {
+        scrollToOptionSelected: () => void;
+      },
+      'scrollToOptionSelected'
+    );
 
     // Mock scrollIntoView for the DOM element that would be targeted
     const mockScrollIntoView = jest.fn();
-    const originalQuerySelector = autocomplete.el.querySelector;
+    const originalQuerySelector = autocomplete.el.querySelector.bind(
+      autocomplete.el
+    );
 
     jest
       .spyOn(autocomplete.el, 'querySelector')
