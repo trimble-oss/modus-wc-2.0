@@ -310,7 +310,7 @@ export class ModusWcAutocomplete {
   }
 
   private scrollToOptionSelected(): void {
-    if (this.multiSelect && !this.showMenuOnFocus) {
+    if (this.multiSelect) {
       return;
     }
     requestAnimationFrame(() => {
@@ -321,7 +321,6 @@ export class ModusWcAutocomplete {
       if (targetItem) {
         targetItem.scrollIntoView({
           behavior: 'smooth',
-          block: 'nearest',
           inline: 'nearest',
         });
       }
@@ -572,6 +571,13 @@ export class ModusWcAutocomplete {
 
       if (this.showMenuOnFocus) {
         this.menuVisible = true;
+
+        // Scroll to selected item when menu opens via mouse focus
+        if (this.items && this.items.some((item) => item.selected)) {
+          requestAnimationFrame(() => {
+            this.scrollToOptionSelected();
+          });
+        }
       }
     }
 
