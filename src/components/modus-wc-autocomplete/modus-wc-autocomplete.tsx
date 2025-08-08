@@ -726,6 +726,11 @@ export class ModusWcAutocomplete {
     if (!this.disabled && !this.readOnly && this.items) {
       this.initialNavigation = true;
       this.itemSelect.emit(item);
+
+      // Scroll to selected option after selection
+      if (!this.multiSelect && this.menuVisible) {
+        this.scrollToOptionSelected();
+      }
     }
   };
 
