@@ -53,6 +53,7 @@ modus-wc-number-input {
       &.modus-wc-input-sm {
         padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-xs);
         padding-inline-end: 0; // Align spinner buttons
+
         @supports (-moz-appearance: none) {
           padding-inline-end: unset;
         }
@@ -61,6 +62,7 @@ modus-wc-number-input {
       &.modus-wc-input-md {
         padding: var(--modus-wc-spacing-sm);
         padding-inline-end: var(--modus-wc-spacing-lg); // Align spinner buttons
+
         @supports (-moz-appearance: none) {
           padding-inline-end: unset;
         }
@@ -69,6 +71,7 @@ modus-wc-number-input {
       &.modus-wc-input-lg {
         padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
         padding-inline-end: var(--modus-wc-spacing-xl); // Align spinner buttons
+
         @supports (-moz-appearance: none) {
           padding-inline-end: unset;
         }
