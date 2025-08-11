@@ -1,7 +1,8 @@
+/* eslint-env node */
+
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { logger } from '../src/utils/logger';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Read CSS files
@@ -17,7 +18,7 @@ try {
     outputCSS = readFileSync(outputCSSPath, 'utf8');
   }
 } catch (error) {
-  logger.warn('Could not read output.css:', error.message);
+  globalThis.console.warn('Could not read output.css:', error.message);
 }
 
 try {
@@ -25,7 +26,7 @@ try {
     globalCSS = readFileSync(globalCSSPath, 'utf8');
   }
 } catch (error) {
-  console.warn('Could not read global.css:', error.message);
+  globalThis.console.warn('Could not read global.css:', error.message);
 }
 
 // Generate the TypeScript file
@@ -39,4 +40,4 @@ export const globalCSS = \`${globalCSS.replace(/`/g, '\\`')}\`;
 
 // Write the file
 writeFileSync(targetPath, content, 'utf8');
-console.log('CSS content embedded successfully!');
+globalThis.console.log('CSS content embedded successfully!');

@@ -5,282 +5,308 @@
 
 modus-wc-button .modus-wc-btn {
   --fallback-sc: var(--modus-wc-color-neutral);
-  
+
   /* Use semantic button variables that cascade through shadow DOM */
+
   /* Base button styles */
   border: none;
   border-radius: var(--modus-btn-border-radius);
   outline: none;
   transition: var(--modus-btn-transition);
-  
+
   /* Sizes - use semantic variables that themes can override */
   &.modus-wc-btn-xs {
     font-size: var(--modus-wc-font-size-xs);
-    
+
     &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
       height: var(--modus-btn-min-height-xs);
       min-height: var(--modus-btn-min-height-xs);
       padding: var(--modus-btn-padding-xs);
     }
   }
-  
+
   &.modus-wc-btn-sm {
     font-size: var(--modus-wc-font-size-sm);
-    
+
     &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
       height: var(--modus-btn-min-height-sm);
       min-height: var(--modus-btn-min-height-sm);
       padding: var(--modus-btn-padding-sm);
     }
   }
-  
+
   &.modus-wc-btn-md {
     font-size: var(--modus-wc-font-size-md);
-    
+
     &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
       height: var(--modus-btn-min-height-md);
       min-height: var(--modus-btn-min-height-md);
       padding: var(--modus-btn-padding-md);
     }
   }
-  
+
   &.modus-wc-btn-lg {
     font-size: var(--modus-wc-font-size-lg);
-    
+
     &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
       height: var(--modus-btn-min-height-lg);
       min-height: var(--modus-btn-min-height-lg);
       padding: var(--modus-btn-padding-lg);
     }
   }
-  
+
   /* Disabled state */
   &.modus-wc-btn-disabled {
     opacity: var(--modus-btn-disabled-opacity);
   }
-  
+
   /* Variants */
   &.modus-wc-btn-borderless {
     background-color: transparent;
     box-shadow: none;
-    
+
     &:active {
       background-color: transparent;
     }
-    
+
     &:hover {
       background-color: transparent;
     }
-    
+
     &:focus-visible {
-      border: var(--modus-wc-border-width-sm) solid var(--modus-btn-focus-border);
+      border: var(--modus-wc-border-width-sm) solid
+        var(--modus-btn-focus-border);
     }
-    
+
     /* Colors for borderless */
     &.modus-wc-btn-primary {
       color: var(--modus-btn-primary-color);
     }
-    
+
     &.modus-wc-btn-secondary {
       color: var(--modus-btn-secondary-color);
     }
-    
+
     &.modus-wc-btn-neutral {
       color: var(--modus-btn-neutral-color);
     }
-    
+
     &.modus-wc-btn-warning {
       color: var(--modus-btn-warning-color);
     }
-    
+
     &.modus-wc-btn-error {
       color: var(--modus-btn-error-color);
     }
   }
-  
+
   &.modus-wc-btn-filled {
     /* Colors for filled */
     &.modus-wc-btn-primary {
       background-color: var(--modus-btn-primary-bg);
       color: var(--modus-btn-primary-text-filled);
-      
+
       &:hover {
         background-color: var(--modus-btn-primary-bg-hover);
       }
-      
+
       &:active {
         background-color: var(--modus-btn-primary-bg-active);
       }
     }
-    
+
     &.modus-wc-btn-secondary {
       background-color: var(--modus-btn-secondary-bg);
       color: var(--modus-btn-secondary-text-filled);
-      
+
       &:hover {
         background-color: var(--modus-btn-secondary-bg-hover);
       }
-      
+
       &:active {
         background-color: var(--modus-btn-secondary-bg-active);
       }
     }
-    
+
     &.modus-wc-btn-neutral {
       background-color: var(--modus-btn-neutral-bg);
       color: var(--modus-btn-neutral-text-filled);
-      
+
       &:hover {
         background-color: var(--modus-btn-neutral-bg-hover);
       }
-      
+
       &:active {
         background-color: var(--modus-btn-neutral-bg-active);
       }
     }
-    
+
     &.modus-wc-btn-warning {
       background-color: var(--modus-btn-warning-bg);
-      border: var(--modus-wc-border-width-xs) solid var(--modus-btn-warning-border);
+      border: var(--modus-wc-border-width-xs) solid
+        var(--modus-btn-warning-border);
       color: var(--modus-btn-warning-text-filled);
-      
+
       &:hover {
         background-color: var(--modus-btn-warning-bg-hover);
       }
-      
+
       &:active {
         background-color: var(--modus-btn-warning-bg-active);
       }
     }
-    
+
     &.modus-wc-btn-error {
       background-color: var(--modus-btn-error-bg);
       color: var(--modus-btn-error-text-filled);
-      
+
       &:hover {
         background-color: var(--modus-btn-error-bg-hover);
       }
-      
+
       &:active {
         background-color: var(--modus-btn-error-bg-active);
       }
     }
   }
-  
+
   &.modus-wc-btn-outline {
     background-color: transparent;
-    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-trimble-gray);
-    
+    border: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-trimble-gray);
+
     &:active {
       background-color: transparent;
     }
-    
+
     &:hover {
       background-color: transparent;
     }
-    
+
     &:focus-visible {
-      border: var(--modus-wc-border-width-sm) solid var(--modus-btn-focus-border);
+      border: var(--modus-wc-border-width-sm) solid
+        var(--modus-btn-focus-border);
     }
-    
+
     /* Colors for outline */
     &.modus-wc-btn-primary {
       border-color: var(--modus-btn-primary-border);
       color: var(--modus-btn-primary-color);
-      
+
       &:hover {
         background-color: var(--modus-btn-primary-outline-bg-hover);
         border-color: var(--modus-btn-primary-bg-hover);
         color: var(--modus-btn-primary-bg-hover);
       }
-      
+
       &:active {
         background-color: var(--modus-btn-primary-outline-bg-active);
         border-color: var(--modus-btn-primary-bg-active);
         color: var(--modus-btn-primary-bg-active);
       }
     }
-    
+
     &.modus-wc-btn-secondary {
       border-color: var(--modus-btn-secondary-border);
       color: var(--modus-btn-secondary-color);
-      
+
       &:hover {
         background-color: var(--modus-btn-secondary-outline-bg-hover);
       }
-      
+
       &:active {
         background-color: var(--modus-btn-secondary-outline-bg-active);
       }
     }
-    
+
     &.modus-wc-btn-neutral {
       border-color: var(--modus-btn-neutral-border);
       color: var(--modus-btn-neutral-color);
-      
+
       &:hover {
         background-color: var(--modus-btn-neutral-outline-bg-hover);
       }
-      
+
       &:active {
         background-color: var(--modus-btn-neutral-outline-bg-active);
       }
     }
-    
+
     &.modus-wc-btn-warning {
       border-color: var(--modus-btn-warning-border);
       color: var(--modus-btn-warning-color);
-      
+
       &:hover {
         background-color: var(--modus-btn-warning-outline-bg-hover);
-        border-color: var(--modus-btn-warning-border-hover, var(--modus-btn-warning-border));
-        color: var(--modus-btn-warning-color-hover, var(--modus-btn-warning-color));
+        border-color: var(
+          --modus-btn-warning-border-hover,
+          var(--modus-btn-warning-border)
+        );
+        color: var(
+          --modus-btn-warning-color-hover,
+          var(--modus-btn-warning-color)
+        );
       }
-      
+
       &:active {
         background-color: var(--modus-btn-warning-outline-bg-active);
-        border-color: var(--modus-btn-warning-border-active, var(--modus-btn-warning-border));
-        color: var(--modus-btn-warning-color-active, var(--modus-btn-warning-color));
+        border-color: var(
+          --modus-btn-warning-border-active,
+          var(--modus-btn-warning-border)
+        );
+        color: var(
+          --modus-btn-warning-color-active,
+          var(--modus-btn-warning-color)
+        );
       }
     }
-    
+
     &.modus-wc-btn-error {
       border-color: var(--modus-btn-error-border);
       color: var(--modus-btn-error-color);
-      
+
       &:hover {
         background-color: var(--modus-btn-error-outline-bg-hover);
-        border-color: var(--modus-btn-error-border-hover, var(--modus-btn-error-border));
+        border-color: var(
+          --modus-btn-error-border-hover,
+          var(--modus-btn-error-border)
+        );
         color: var(--modus-btn-error-color-hover, var(--modus-btn-error-color));
       }
-      
+
       &:active {
         background-color: var(--modus-btn-error-outline-bg-active);
-        border-color: var(--modus-btn-error-border-active, var(--modus-btn-error-border));
-        color: var(--modus-btn-error-color-active, var(--modus-btn-error-color));
+        border-color: var(
+          --modus-btn-error-border-active,
+          var(--modus-btn-error-border)
+        );
+        color: var(
+          --modus-btn-error-color-active,
+          var(--modus-btn-error-color)
+        );
       }
     }
   }
-  
+
   /* Accessible box shadows for focus */
   &.modus-wc-btn-filled,
   &.modus-wc-btn-outline {
     &.modus-wc-btn-primary:focus-visible {
       box-shadow: var(--modus-btn-primary-focus-shadow);
     }
-    
+
     &.modus-wc-btn-secondary:focus-visible {
       box-shadow: var(--modus-btn-secondary-focus-shadow);
     }
-    
+
     &.modus-wc-btn-neutral:focus-visible {
       box-shadow: var(--modus-btn-neutral-focus-shadow);
     }
-    
+
     &.modus-wc-btn-warning:focus-visible {
       box-shadow: var(--modus-btn-warning-focus-shadow);
     }
-    
+
     &.modus-wc-btn-error:focus-visible {
       box-shadow: var(--modus-btn-error-focus-shadow);
     }

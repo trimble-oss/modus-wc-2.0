@@ -247,16 +247,19 @@
   --modus-btn-min-height-md: 3rem;
   --modus-btn-min-height-lg: 4rem;
   --modus-btn-fit-content: auto;
-  
+
   /* Border radius */
   --modus-btn-border-radius: var(--rounded-btn, 0.5rem);
-  
+
   /* Transitions */
-  --modus-btn-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out, opacity 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  
+  --modus-btn-transition:
+    background-color 0.2s ease-in-out, color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out, opacity 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+
   /* Focus border */
   --modus-btn-focus-border: var(--modus-wc-color-black);
-  
+
   /* Primary button colors - Default to classic light theme values */
   --modus-btn-primary-color: var(--modus-wc-color-trimble-blue);
   --modus-btn-primary-bg: var(--modus-wc-color-trimble-blue);
@@ -267,7 +270,7 @@
   --modus-btn-primary-outline-bg-hover: var(--modus-wc-color-blue-pale);
   --modus-btn-primary-outline-bg-active: rgba(0, 99, 163, 0.18);
   --modus-btn-primary-focus-shadow: 0 0 0 0.25rem rgba(38, 122, 177, 0.5);
-  
+
   /* Secondary button colors */
   --modus-btn-secondary-color: var(--modus-wc-color-gray-6);
   --modus-btn-secondary-bg: var(--modus-wc-color-gray-6);
@@ -278,7 +281,7 @@
   --modus-btn-secondary-outline-bg-hover: var(--modus-wc-color-gray-pale);
   --modus-btn-secondary-outline-bg-active: rgba(98, 102, 108, 0.3);
   --modus-btn-secondary-focus-shadow: 0 0 0 0.25rem rgba(98, 102, 108, 0.5);
-  
+
   /* Neutral button colors */
   --modus-btn-neutral-color: var(--modus-wc-color-gray-1);
   --modus-btn-neutral-bg: var(--modus-wc-color-gray-2);
@@ -289,7 +292,7 @@
   --modus-btn-neutral-outline-bg-hover: var(--modus-wc-color-gray-pale);
   --modus-btn-neutral-outline-bg-active: rgba(203, 205, 214, 0.3);
   --modus-btn-neutral-focus-shadow: 0 0 0 0.25rem rgba(98, 102, 108, 0.5);
-  
+
   /* Warning button colors */
   --modus-btn-warning-color: var(--modus-wc-color-yellow);
   --modus-btn-warning-bg: var(--modus-wc-color-yellow);
@@ -300,7 +303,7 @@
   --modus-btn-warning-outline-bg-hover: var(--modus-wc-color-yellow-pale);
   --modus-btn-warning-outline-bg-active: rgba(194, 125, 31, 0.3);
   --modus-btn-warning-focus-shadow: 0 0 0 0.25rem rgba(194, 125, 31, 0.5);
-  
+
   /* Error button colors */
   --modus-btn-error-color: var(--modus-wc-color-red);
   --modus-btn-error-bg: var(--modus-wc-color-red);
@@ -311,7 +314,7 @@
   --modus-btn-error-outline-bg-hover: var(--modus-wc-color-red-pale);
   --modus-btn-error-outline-bg-active: rgba(224, 66, 76, 0.3);
   --modus-btn-error-focus-shadow: 0 0 0 0.25rem rgba(224, 66, 76, 0.5);
-  
+
   /* Disabled state */
   --modus-btn-disabled-opacity: 0.3;
 }
@@ -326,73 +329,73 @@
 [data-theme='modus-modern-light'] {
   /* Modern themes use DaisyUI colors - override our defaults to match */
   /* Primary uses DaisyUI's trimble-blue (#0063A3) with white text */
-  --modus-btn-primary-bg: #0063A3;
-  --modus-btn-primary-text-filled: #FFFFFF;
-  --modus-btn-primary-bg-hover: #004F83; /* primary-focus */
-  --modus-btn-primary-bg-active: #004F83;
-  
+  --modus-btn-primary-bg: #0063a3;
+  --modus-btn-primary-text-filled: #ffffff;
+  --modus-btn-primary-bg-hover: #004f83; /* primary-focus */
+  --modus-btn-primary-bg-active: #004f83;
+
   /* Secondary uses DaisyUI's neutral-gray-10 (#252a2e) with white text */
   --modus-btn-secondary-bg: #252a2e;
-  --modus-btn-secondary-text-filled: #FFFFFF;
-  --modus-btn-secondary-bg-hover: #464B52; /* secondary-focus */
-  --modus-btn-secondary-bg-active: #464B52;
-  
+  --modus-btn-secondary-text-filled: #ffffff;
+  --modus-btn-secondary-bg-hover: #464b52; /* secondary-focus */
+  --modus-btn-secondary-bg-active: #464b52;
+
   /* Neutral uses DaisyUI's gray-1 (#CBCDD6) with trimble-gray text */
-  --modus-btn-neutral-bg: #CBCDD6;
-  --modus-btn-neutral-text-filled: #252A2E;
-  --modus-btn-neutral-bg-hover: #A3A6B1; /* neutral-focus */
-  --modus-btn-neutral-bg-active: #A3A6B1;
-  
+  --modus-btn-neutral-bg: #cbcdd6;
+  --modus-btn-neutral-text-filled: #252a2e;
+  --modus-btn-neutral-bg-hover: #a3a6b1; /* neutral-focus */
+  --modus-btn-neutral-bg-active: #a3a6b1;
+
   /* Warning uses DaisyUI's yellow (#FBAD26) with trimble-gray text */
-  --modus-btn-warning-bg: #FBAD26;
-  --modus-btn-warning-text-filled: #252A2E;
-  --modus-btn-warning-bg-hover: #E49325; /* Darker yellow */
-  --modus-btn-warning-bg-active: #E49325;
+  --modus-btn-warning-bg: #fbad26;
+  --modus-btn-warning-text-filled: #252a2e;
+  --modus-btn-warning-bg-hover: #e49325; /* Darker yellow */
+  --modus-btn-warning-bg-active: #e49325;
   --modus-btn-warning-border: transparent; /* No red border in modern */
-  
+
   /* Error uses DaisyUI's red (#E0424C) with white text */
-  --modus-btn-error-bg: #E0424C;
-  --modus-btn-error-text-filled: #FFFFFF;
-  --modus-btn-error-bg-hover: #B61E26; /* Darker red */
-  --modus-btn-error-bg-active: #B61E26;
+  --modus-btn-error-bg: #e0424c;
+  --modus-btn-error-text-filled: #ffffff;
+  --modus-btn-error-bg-hover: #b61e26; /* Darker red */
+  --modus-btn-error-bg-active: #b61e26;
 }
 
 /* Modus Modern - Dark */
 [data-theme='modus-modern-dark'] {
   /* Modern dark theme adjustments */
   --modus-btn-focus-border: var(--modus-wc-color-white);
-  
+
   /* Primary uses DaisyUI's highlight-blue (#019aeb) with BLACK text */
   --modus-btn-primary-color: var(--modus-wc-color-highlight-blue);
   --modus-btn-primary-bg: #019aeb;
   --modus-btn-primary-text-filled: #000000; /* BLACK text, not white! */
-  --modus-btn-primary-bg-hover: #004F83; /* primary-focus */
-  --modus-btn-primary-bg-active: #004F83;
-  
+  --modus-btn-primary-bg-hover: #004f83; /* primary-focus */
+  --modus-btn-primary-bg-active: #004f83;
+
   /* Secondary uses DaisyUI's light gray (#f1f1f6) with black text */
   --modus-btn-secondary-bg: #f1f1f6;
   --modus-btn-secondary-text-filled: #000000;
-  --modus-btn-secondary-bg-hover: #E49325; /* secondary-focus */
-  --modus-btn-secondary-bg-active: #E49325;
-  
+  --modus-btn-secondary-bg-hover: #e49325; /* secondary-focus */
+  --modus-btn-secondary-bg-active: #e49325;
+
   /* Neutral uses DaisyUI's gray-9 (#353A40) with white text */
-  --modus-btn-neutral-bg: #353A40;
-  --modus-btn-neutral-text-filled: #FFFFFF;
-  --modus-btn-neutral-bg-hover: #171C1E; /* neutral-focus */
-  --modus-btn-neutral-bg-active: #171C1E;
-  
+  --modus-btn-neutral-bg: #353a40;
+  --modus-btn-neutral-text-filled: #ffffff;
+  --modus-btn-neutral-bg-hover: #171c1e; /* neutral-focus */
+  --modus-btn-neutral-bg-active: #171c1e;
+
   /* Warning uses DaisyUI's lighter yellow (#FEC157) with trimble-gray text */
-  --modus-btn-warning-bg: #FEC157;
-  --modus-btn-warning-text-filled: #252A2E;
-  --modus-btn-warning-bg-hover: #E49325; /* Darker yellow */
-  --modus-btn-warning-bg-active: #E49325;
+  --modus-btn-warning-bg: #fec157;
+  --modus-btn-warning-text-filled: #252a2e;
+  --modus-btn-warning-bg-hover: #e49325; /* Darker yellow */
+  --modus-btn-warning-bg-active: #e49325;
   --modus-btn-warning-border: transparent; /* No red border in modern */
-  
+
   /* Error uses DaisyUI's lighter red (#E86363) with BLACK text */
-  --modus-btn-error-bg: #E86363;
+  --modus-btn-error-bg: #e86363;
   --modus-btn-error-text-filled: #000000;
-  --modus-btn-error-bg-hover: #B61E26; /* Darker red */
-  --modus-btn-error-bg-active: #B61E26;
+  --modus-btn-error-bg-hover: #b61e26; /* Darker red */
+  --modus-btn-error-bg-active: #b61e26;
 }
 
 /* Modus Classic - Light */
@@ -407,32 +410,34 @@
   --modus-btn-min-height-md: fit-content;
   --modus-btn-min-height-lg: fit-content;
   --modus-btn-fit-content: fit-content;
-  
+
   /* Border radius override for classic */
   --modus-btn-border-radius: var(--modus-wc-border-radius-md);
   /* Classic theme color overrides - remain the same as before */
   --modus-btn-primary-text-filled: var(--modus-wc-color-white);
   --modus-btn-primary-outline-bg-hover: var(--modus-wc-color-gray-0);
   --modus-btn-primary-outline-bg-active: var(--modus-wc-color-gray-1);
-  
+
   --modus-btn-secondary-outline-bg-hover: var(--modus-wc-color-gray-0);
   --modus-btn-secondary-outline-bg-active: var(--modus-wc-color-gray-1);
-  
+
   --modus-btn-neutral-text-filled: var(--modus-wc-color-trimble-gray);
   --modus-btn-neutral-bg: var(--modus-wc-color-gray-1);
   --modus-btn-neutral-bg-hover: var(--modus-wc-color-gray-0);
   --modus-btn-neutral-bg-active: var(--modus-wc-color-gray-2);
   --modus-btn-neutral-outline-bg-hover: var(--modus-wc-color-gray-1);
   --modus-btn-neutral-outline-bg-active: var(--modus-wc-color-gray-2);
-  
+
   --modus-btn-warning-text-filled: var(--modus-wc-color-trimble-gray);
   --modus-btn-warning-bg-hover: var(--modus-wc-color-yellow-light);
   --modus-btn-warning-bg-active: var(--modus-wc-color-yellow-dark);
-  --modus-btn-warning-border: var(--modus-wc-color-red); /* Red border for warning filled */
-  
+  --modus-btn-warning-border: var(
+    --modus-wc-color-red
+  ); /* Red border for warning filled */
+
   --modus-btn-error-bg-hover: var(--modus-wc-color-red-light);
   --modus-btn-error-bg-active: var(--modus-wc-color-red-dark);
-  
+
   --modus-btn-disabled-opacity: 0.3;
 }
 
@@ -448,12 +453,12 @@
   --modus-btn-min-height-md: fit-content;
   --modus-btn-min-height-lg: fit-content;
   --modus-btn-fit-content: fit-content;
-  
+
   /* Border radius override for classic */
   --modus-btn-border-radius: var(--modus-wc-border-radius-md);
   /* Classic dark theme color overrides */
   --modus-btn-focus-border: var(--modus-wc-color-white);
-  
+
   /* Primary - uses highlight blue in dark mode */
   --modus-btn-primary-color: var(--modus-wc-color-highlight-blue);
   --modus-btn-primary-bg: var(--modus-wc-color-highlight-blue);
@@ -462,9 +467,11 @@
   --modus-btn-primary-text-filled: var(--modus-wc-color-gray-10);
   --modus-btn-primary-outline-bg-hover: rgba(1, 154, 235, 0.12);
   --modus-btn-primary-outline-bg-active: rgba(1, 154, 235, 0.3);
-  
+
   /* Secondary */
-  --modus-btn-secondary-color: var(--modus-wc-color-gray-1); /* Outline text color */
+  --modus-btn-secondary-color: var(
+    --modus-wc-color-gray-1
+  ); /* Outline text color */
   --modus-btn-secondary-bg: var(--modus-wc-color-gray-6);
   --modus-btn-secondary-bg-hover: var(--modus-wc-color-gray-5);
   --modus-btn-secondary-bg-active: var(--modus-wc-color-gray-7);
@@ -472,37 +479,59 @@
   --modus-btn-secondary-border: var(--modus-wc-color-gray-1);
   --modus-btn-secondary-outline-bg-hover: rgba(203, 205, 214, 0.12);
   --modus-btn-secondary-outline-bg-active: rgba(203, 205, 214, 0.3);
-  
+
   /* Neutral */
-  --modus-btn-neutral-color: var(--modus-wc-color-gray-2); /* Outline text color */
+  --modus-btn-neutral-color: var(
+    --modus-wc-color-gray-2
+  ); /* Outline text color */
   --modus-btn-neutral-text-filled: var(--modus-wc-color-trimble-gray);
   --modus-btn-neutral-bg: var(--modus-wc-color-gray-1);
   --modus-btn-neutral-bg-hover: var(--modus-wc-color-gray-0);
-  --modus-btn-neutral-bg-active: var(--modus-wc-color-gray-4); /* Classic dark uses gray-4 for active */
+  --modus-btn-neutral-bg-active: var(
+    --modus-wc-color-gray-4
+  ); /* Classic dark uses gray-4 for active */
   --modus-btn-neutral-border: var(--modus-wc-color-gray-2);
   --modus-btn-neutral-outline-bg-hover: rgba(203, 205, 214, 0.12);
   --modus-btn-neutral-outline-bg-active: rgba(203, 205, 214, 0.3);
-  
+
   /* Warning */
   --modus-btn-warning-bg: var(--modus-wc-color-yellow);
   --modus-btn-warning-text-filled: var(--modus-wc-color-trimble-gray);
   --modus-btn-warning-bg-hover: var(--modus-wc-color-yellow-light);
   --modus-btn-warning-bg-active: var(--modus-wc-color-yellow-dark);
-  --modus-btn-warning-border: var(--modus-wc-color-red); /* Red border for warning filled */
-  --modus-btn-warning-border-hover: var(--modus-wc-color-yellow-light); /* Outline hover */
-  --modus-btn-warning-color-hover: var(--modus-wc-color-yellow-light); /* Outline hover text */
-  --modus-btn-warning-border-active: var(--modus-wc-color-yellow-dark); /* Outline active */
-  --modus-btn-warning-color-active: var(--modus-wc-color-yellow-dark); /* Outline active text */
-  
+  --modus-btn-warning-border: var(
+    --modus-wc-color-red
+  ); /* Red border for warning filled */
+  --modus-btn-warning-border-hover: var(
+    --modus-wc-color-yellow-light
+  ); /* Outline hover */
+  --modus-btn-warning-color-hover: var(
+    --modus-wc-color-yellow-light
+  ); /* Outline hover text */
+  --modus-btn-warning-border-active: var(
+    --modus-wc-color-yellow-dark
+  ); /* Outline active */
+  --modus-btn-warning-color-active: var(
+    --modus-wc-color-yellow-dark
+  ); /* Outline active text */
+
   /* Error */
   --modus-btn-error-bg: var(--modus-wc-color-red);
   --modus-btn-error-text-filled: var(--modus-wc-color-white);
   --modus-btn-error-bg-hover: var(--modus-wc-color-red-light);
   --modus-btn-error-bg-active: var(--modus-wc-color-red-dark);
-  --modus-btn-error-border-hover: var(--modus-wc-color-red-light); /* Outline hover */
-  --modus-btn-error-color-hover: var(--modus-wc-color-red-light); /* Outline hover text */
-  --modus-btn-error-border-active: var(--modus-wc-color-red-dark); /* Outline active */
-  --modus-btn-error-color-active: var(--modus-wc-color-red-dark); /* Outline active text */
-  
+  --modus-btn-error-border-hover: var(
+    --modus-wc-color-red-light
+  ); /* Outline hover */
+  --modus-btn-error-color-hover: var(
+    --modus-wc-color-red-light
+  ); /* Outline hover text */
+  --modus-btn-error-border-active: var(
+    --modus-wc-color-red-dark
+  ); /* Outline active */
+  --modus-btn-error-color-active: var(
+    --modus-wc-color-red-dark
+  ); /* Outline active text */
+
   --modus-btn-disabled-opacity: 0.4;
 }
