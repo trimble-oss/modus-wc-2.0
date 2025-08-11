@@ -313,6 +313,7 @@ export class ModusWcAutocomplete {
     if (this.multiSelect) {
       return;
     }
+
     requestAnimationFrame(() => {
       let targetItem = this.el.querySelector(
         '.modus-wc-menu-item-selected'
@@ -360,7 +361,7 @@ export class ModusWcAutocomplete {
       onSetMenuVisible: (visible) => {
         this.menuVisible = visible;
         // Only scroll if menu is becoming visible and there's a selected item
-        if (visible && this.items && this.items.some((item) => item.selected)) {
+        if (visible && this.items?.some((item) => item.selected)) {
           this.scrollToOptionSelected();
         }
       },
@@ -573,7 +574,7 @@ export class ModusWcAutocomplete {
         this.menuVisible = true;
 
         // Scroll to selected item when menu opens via mouse focus
-        if (this.items && this.items.some((item) => item.selected)) {
+        if (this.items?.some((item) => item.selected)) {
           requestAnimationFrame(() => {
             this.scrollToOptionSelected();
           });
