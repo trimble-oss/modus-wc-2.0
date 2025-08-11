@@ -16,6 +16,7 @@ A customizable alert component used to inform the user about important events
 | `alertDescription`        | `alert-description` | The description of the alert.                       | `string \| undefined`                                      | `undefined` |
 | `alertTitle` _(required)_ | `alert-title`       | The title of the alert.                             | `string`                                                   | `undefined` |
 | `customClass`             | `custom-class`      | Custom CSS class to apply to the outer div element. | `string \| undefined`                                      | `''`        |
+| `delay`                   | `delay`             | Time taken to dismiss the alert in milliseconds     | `number \| undefined`                                      | `undefined` |
 | `dismissible`             | `dismissible`       | Whether the alert has a dismiss button              | `boolean \| undefined`                                     | `false`     |
 | `icon`                    | `icon`              | The Modus icon to render.                           | `string \| undefined`                                      | `undefined` |
 | `role`                    | `role`              | Role taken by the alert. Defaults to 'status'       | `"alert" \| "log" \| "marquee" \| "status" \| "timer"`     | `'status'`  |
