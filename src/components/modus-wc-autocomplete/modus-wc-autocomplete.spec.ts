@@ -5367,6 +5367,7 @@ describe('modus-wc-autocomplete', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
     expect(mockScrollIntoView).toHaveBeenCalledWith({
       behavior: 'smooth',
+      block: 'nearest',
       inline: 'nearest',
     });
 
@@ -5445,6 +5446,7 @@ describe('modus-wc-autocomplete', () => {
     expect(scrollSpy).toHaveBeenCalled();
     expect(mockScrollIntoView).toHaveBeenCalledWith({
       behavior: 'smooth',
+      block: 'nearest',
       inline: 'nearest',
     });
     jest.restoreAllMocks();
@@ -5506,6 +5508,48 @@ describe('modus-wc-autocomplete', () => {
     expect(autocomplete['menuVisible']).toBe(true);
     expect(scrollSpy).toHaveBeenCalled();
     expect(autocomplete.multiSelect).toBe(false);
+    jest.restoreAllMocks();
+  });
+
+  it('should not call scrollToOptionSelected when items array is empty', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Empty items test" show-menu-on-focus="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const scrollSpy = jest.spyOn(
+      autocomplete as ModusWcAutocomplete & {
+        scrollToOptionSelected: () => void;
+      },
+      'scrollToOptionSelected'
+    );
+    autocomplete.items = [];
+    await page.waitForChanges();
+    const focusEvent = new CustomEvent('inputFocus', {
+      detail: new FocusEvent('focus'),
+    });
+
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+    expect(autocomplete['menuVisible']).toBe(true);
+    expect(scrollSpy).not.toHaveBeenCalled();
+
+    autocomplete.items = null as unknown as IAutocompleteItem[];
+    await page.waitForChanges();
+    scrollSpy.mockClear();
+
+    // Trigger focus again
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+
+    // scrollToOptionSelected should still not be called
+    expect(scrollSpy).not.toHaveBeenCalled();
     jest.restoreAllMocks();
   });
 });

@@ -322,6 +322,7 @@ export class ModusWcAutocomplete {
       if (targetItem) {
         targetItem.scrollIntoView({
           behavior: 'smooth',
+          block: 'nearest',
           inline: 'nearest',
         });
       }
