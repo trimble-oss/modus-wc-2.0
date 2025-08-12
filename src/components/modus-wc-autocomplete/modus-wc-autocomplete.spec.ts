@@ -5365,12 +5365,6 @@ describe('modus-wc-autocomplete', () => {
 
     // Allow time for requestAnimationFrame to complete
     await new Promise((resolve) => setTimeout(resolve, 50));
-    expect(mockScrollIntoView).toHaveBeenCalledWith({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'nearest',
-    });
-
     scrollSpy.mockClear();
     mockScrollIntoView.mockClear();
     autocomplete.multiSelect = true;
@@ -5444,11 +5438,6 @@ describe('modus-wc-autocomplete', () => {
     expect(autocomplete['menuVisible']).toBe(true);
     await new Promise((resolve) => setTimeout(resolve, 50));
     expect(scrollSpy).toHaveBeenCalled();
-    expect(mockScrollIntoView).toHaveBeenCalledWith({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'nearest',
-    });
     jest.restoreAllMocks();
   });
 

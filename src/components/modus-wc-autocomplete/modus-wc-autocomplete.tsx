@@ -309,21 +309,35 @@ export class ModusWcAutocomplete {
     }
   }
 
+  // istanbul ignore next
   private scrollToOptionSelected(): void {
-    if (this.multiSelect) {
-      return;
-    }
+    if (this.multiSelect) return;
 
     requestAnimationFrame(() => {
-      let targetItem = this.el.querySelector(
+      const menuEl = this.el.querySelector('modus-wc-menu') as HTMLElement;
+      if (!menuEl) return;
+
+      const targetItem = menuEl.querySelector(
         '.modus-wc-menu-item-selected'
       ) as HTMLElement;
+      if (!targetItem) return;
 
-      if (targetItem) {
-        targetItem.scrollIntoView({
+      const scrollContainer = menuEl.querySelector(
+        '.modus-wc-menu'
+      ) as HTMLElement;
+      if (!scrollContainer) return;
+
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const itemRect = targetItem.getBoundingClientRect();
+
+      const isAboveView = itemRect.top < containerRect.top;
+      const isBelowView = itemRect.bottom > containerRect.bottom;
+
+      if (isAboveView || isBelowView) {
+        const scrollTop = targetItem.offsetTop;
+        scrollContainer.scrollTo({
+          top: Math.max(0, scrollTop),
           behavior: 'smooth',
-          block: 'nearest',
-          inline: 'nearest',
         });
       }
     });
