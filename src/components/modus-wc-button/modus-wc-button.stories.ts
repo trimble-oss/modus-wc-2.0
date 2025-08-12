@@ -157,6 +157,45 @@ export const IconLeftAndRightButton: Story = {
   },
 };
 
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('shadow-dom-parent')) {
+      class ShadowDomParent extends HTMLElement {
+        shadowRootRef;
+        buttonEl;
+
+        constructor() {
+          super();
+          this.shadowRootRef = this.attachShadow({ mode: 'open' });
+          const wrapper = document.createElement('div');
+          this.buttonEl = document.createElement('modus-wc-button');
+          wrapper.appendChild(this.buttonEl);
+          this.shadowRootRef.appendChild(wrapper);
+        }
+
+        set props(v) {
+          if (!this.buttonEl) return;
+          // Use properties so Stencil updates without remount
+          this.buttonEl.ariaLabel = 'Click me button';
+          this.buttonEl.color = v.color;
+          this.buttonEl.shape = v.shape;
+          this.buttonEl.size = v.size;
+          this.buttonEl.type = v.type;
+          this.buttonEl.variant = v.variant;
+          this.buttonEl.customClass = v['custom-class'] || '';
+          this.buttonEl.disabled = Boolean(v.disabled);
+          this.buttonEl.fullWidth = Boolean(v['full-width']);
+          this.buttonEl.pressed = Boolean(v.pressed);
+          this.buttonEl.textContent = 'Click me';
+        }
+      }
+      customElements.define('shadow-dom-parent', ShadowDomParent);
+    }
+
+    return html`<shadow-dom-parent .props=${{ ...args }}></shadow-dom-parent>`;
+  },
+};
+
 export const Migration: Story = {
   parameters: {
     docs: {
@@ -196,25 +235,4 @@ export const Migration: Story = {
     canvas: { disable: true },
   },
   render: () => html`<div></div>`,
-};
-// create a story for the button with the parent component having a shadow dom and the button is rendered inside the parent component
-export const ShadowDomParent: Story = {
-  render: () => {
-    // Create a custom element with shadow DOM that contains our button
-    if (!customElements.get('shadow-dom-parent')) {
-      class ShadowDomParent extends HTMLElement {
-        constructor() {
-          super();
-          const shadow = this.attachShadow({ mode: 'open' });
-          const wrapper = document.createElement('div');
-          wrapper.className = 'shadow-lg p-4';
-          wrapper.innerHTML = '<modus-wc-button>Click me</modus-wc-button>';
-          shadow.appendChild(wrapper);
-        }
-      }
-      customElements.define('shadow-dom-parent', ShadowDomParent);
-    }
-
-    return html`<shadow-dom-parent></shadow-dom-parent>`;
-  },
 };
