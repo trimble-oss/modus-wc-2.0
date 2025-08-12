@@ -1,7 +1,21 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-typography.tailwind';
-import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
+
+export type TypographySize =
+  | 'xs'
+  | 'sm'
+  | 'md'
+  | 'lg'
+  | 'xl'
+  | '2xl'
+  | '3xl'
+  | '4xl'
+  | '5xl'
+  | '6xl'
+  | '7xl'
+  | '8xl'
+  | '9xl';
 
 export type TypographyVariant =
   | 'body'
@@ -17,8 +31,6 @@ export type TypographyWeight = 'light' | 'normal' | 'semibold' | 'bold';
 
 /**
  * A customizable typography component used to render text with different sizes, variants, and weights.
- *
- * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-typography',
@@ -35,7 +47,7 @@ export class ModusWCTypography {
   @Prop() customClass?: string = '';
 
   /** The size of the font. */
-  @Prop() size?: DaisySize = 'md';
+  @Prop() size?: TypographySize = 'md';
 
   /** The variant of the typography component. */
   @Prop() variant: TypographyVariant = 'p';

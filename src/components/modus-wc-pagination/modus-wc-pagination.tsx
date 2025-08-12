@@ -38,9 +38,7 @@ export interface IPageChange {
 }
 
 /**
- * Pagination component to navigate through pages of content.
- *
- * Adheres to WCAG 2.2 standards.
+ * Pagination component to navigate through pages of content
  */
 @Component({
   tag: 'modus-wc-pagination',
@@ -63,8 +61,14 @@ export class ModusWcPagination {
   /** Custom CSS class to apply */
   @Prop() customClass?: string = '';
 
+  /** The next page button text. If not set, an icon control will be used. */
+  @Prop() nextButtonText?: string;
+
   /** The current page number */
   @Prop() page: number = 1;
+
+  /** The previous page button text. If not set, an icon control will be used. */
+  @Prop() prevButtonText?: string;
 
   /** Size of the pagination buttons */
   @Prop() size: ModusSize = 'md';
@@ -165,12 +169,16 @@ export class ModusWcPagination {
         )}
 
         <button
-          aria-label={ariaLabels.previousPage}
-          class={buttonClasses}
+          aria-label={this.prevButtonText ? undefined : ariaLabels.previousPage}
+          class={`${buttonClasses} ${this.prevButtonText ? 'modus-wc-pagination-button-text' : ''}`}
           disabled={isFirstPage}
           onClick={() => this.handlePageClick(this.page - 1)}
         >
-          <ChevronLeftSolidIcon className="modus-wc-pagination-icon" />
+          {this.prevButtonText ? (
+            <span>{this.prevButtonText}</span>
+          ) : (
+            <ChevronLeftSolidIcon className="modus-wc-pagination-icon" />
+          )}
         </button>
 
         {this.visiblePages.map((page) => (
@@ -185,12 +193,16 @@ export class ModusWcPagination {
         ))}
 
         <button
-          aria-label={ariaLabels.nextPage}
-          class={buttonClasses}
+          aria-label={this.nextButtonText ? undefined : ariaLabels.nextPage}
+          class={`${buttonClasses} ${this.nextButtonText ? 'modus-wc-pagination-button-text' : ''}`}
           disabled={isLastPage}
           onClick={() => this.handlePageClick(this.page + 1)}
         >
-          <ChevronRightSolidIcon className="modus-wc-pagination-icon" />
+          {this.nextButtonText ? (
+            <span>{this.nextButtonText}</span>
+          ) : (
+            <ChevronRightSolidIcon className="modus-wc-pagination-icon" />
+          )}
         </button>
 
         {shouldShowFirstLastButtons && (

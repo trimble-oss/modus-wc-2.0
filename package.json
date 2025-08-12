@@ -1,43 +1,56 @@
 {
-  "name": "@trimble-cms/modus-wc",
-  "version": "0.0.1",
-  "description": "Modus Web Components using Stencil",
-  "keywords": [],
-  "homepage": "https://github.com/trimble-oss/modus-wc-2.0#readme",
+  "name": "@trimble-oss/moduswebcomponents",
+  "version": "0.0.0-alpha.1",
+  "description": "Modus Web Components is a modern, accessible UI library built with Stencil JS that provides reusable web components following Trimble's Modus design system. This updated version focuses on improved flexibility, enhanced theming options, comprehensive customization capabilities, and WCAG 2.2 compliance. The library offers a collection of enterprise-ready components that can be used in any web framework or vanilla JavaScript application. Separate SPA framework integrations are published for Angular and React.",
+  "keywords": [
+    "trimble",
+    "modus"
+  ],
+  "homepage": "https://trimble-oss.github.io/modus-wc-2.0/prod",
   "license": "MIT",
   "author": "Trimble Inc.",
+  "contributors": [
+    {
+      "name": "gabriel-piltzer-trimble",
+      "url": "https://github.com/gabriel-piltzer-trimble"
+    },
+    {
+      "name": "stuart-rimel",
+      "url": "https://github.com/stuart-rimel"
+    },
+    {
+      "name": "Kai-Richardson",
+      "url": "https://github.com/Kai-Richardson"
+    }
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/trimble-oss/modus-wc-2.0/issues/"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/trimble-oss/modus-wc-2.0.git"
+    "url": "git+https://github.com/trimble-oss/modus-wc-2.0.git"
   },
   "type": "module",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.js",
-  "es2015": "dist/esm/index.js",
-  "es2017": "dist/esm/index.js",
-  "esnext": "dist/esm/index.js",
-  "jsnext:main": "dist/esm/index.js",
-  "types": "dist/types/components.d.ts",
-  "collection": "dist/collection/collection-manifest.json",
-  "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/modus-wc/modus-wc.esm.js",
-  "jsdelivr": "dist/modus-wc/modus-wc.js",
-  "files": [
-    "dist/",
-    "loader/"
-  ],
+  "main": "index.cjs.js",
+  "module": "index.js",
+  "es2017": "esm/index.js",
+  "esnext": "esm/index.js",
+  "collection": "collection/collection-manifest.json",
+  "collection:main": "collection/index.js",
+  "unpkg": "modus-wc/modus-wc.esm.js",
+  "jsdelivr": "modus-wc/modus-wc.js",
+  "types": "types/components.d.ts",
   "scripts": {
     "build": "wireit",
     "build:ci": "wireit",
-    "clean": "npx rimraf .wireit .stencil .storybook-static dist loader",
+    "clean": "npx rimraf .wireit .stencil .storybook-static dist",
     "lint": "wireit",
     "lint:eslint": "wireit",
     "lint:prettier": "wireit",
-    "lint:stylelint": "stylelint \"src/**/*.scss\"",
-    "lint:stylelint-fix": "stylelint \"src/**/*.scss\" --fix",
+    "lint:stylelint": "wireit",
     "format": "wireit",
     "prettier": "prettier --write \"src/**/*.*\"",
     "start": "wireit",
@@ -45,52 +58,58 @@
     "test": "stencil test --spec",
     "test:coverage": "stencil test --spec --coverage",
     "test:update-snapshot": "stencil test --spec --update-snapshot",
-    "test:watch": "stencil test --spec --watchAll"
+    "test:watch": "stencil test --spec --watchAll",
+    "test:vue": "npm -C integrations/vue/v-latest run dev"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "^1.7.1",
+    "@tanstack/table-core": "^8.21.3"
   },
   "devDependencies": {
-    "@eslint/js": "^9.11.1",
-    "@stencil/angular-output-target": "^0.9.1",
-    "@stencil/core": "^4.22.0",
+    "@eslint/js": "^9.26.0",
+    "@stencil/angular-output-target": "^0.10.2",
+    "@stencil/core": "^4.31.0",
     "@stencil/react-output-target": "^0.7.4",
     "@stencil/sass": "^3.0.12",
-    "@stencil/store": "^2.1.2",
-    "@storybook/addon-a11y": "^8.4.2",
-    "@storybook/addon-essentials": "^8.4.2",
-    "@storybook/addon-links": "^8.4.2",
-    "@storybook/addon-themes": "^8.4.2",
-    "@storybook/blocks": "^8.4.2",
-    "@storybook/test": "^8.4.2",
-    "@storybook/web-components": "^8.4.2",
-    "@storybook/web-components-vite": "^8.4.2",
+    "@stencil/store": "^2.1.3",
+    "@stencil/vue-output-target": "^0.10.8",
+    "@storybook/addon-a11y": "^8.6.12",
+    "@storybook/addon-essentials": "^8.6.12",
+    "@storybook/addon-links": "^8.6.12",
+    "@storybook/addon-themes": "^8.6.12",
+    "@storybook/blocks": "^8.6.12",
+    "@storybook/test": "^8.6.12",
+    "@storybook/web-components": "^8.6.12",
+    "@storybook/web-components-vite": "^8.6.12",
     "@tailwindcss/typography": "^0.5.15",
     "@types/jest": "^29.5.13",
-    "@typescript-eslint/eslint-plugin": "^8.13.0",
-    "@typescript-eslint/parser": "^8.13.0",
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
     "concurrently": "^9.0.1",
     "daisyui": "^4.12.13",
-    "eslint": "^9.11.1",
+    "eslint": "^9.31.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-import-resolver-typescript": "^3.7.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "globals": "^15.10.0",
+    "eslint-plugin-prettier": "^5.4.0",
+    "globals": "^16.2.0",
     "jest": "^29.7.0",
     "jest-cli": "^29.7.0",
-    "marked": "^15.0.8",
+    "marked": "^15.0.11",
     "prettier": "3.5.3",
     "puppeteer": "^23.5.3",
     "stencil-tailwind-plugin": "^1.8.0",
-    "stylelint": "16.18.0",
+    "stylelint": "16.19.1",
     "stylelint-config-standard-scss": "14.0.0",
     "stylelint-order": "6.0.4",
     "tailwindcss": "^3.4.14",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.2",
-    "wireit": "^0.14.9"
+    "wireit": "^0.14.12"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.9.5",
+    "@rollup/rollup-linux-x64-gnu": "4.40.2",
     "@trimble-oss/custom-elements-manifest-analyzer": "^0.0.4"
   },
   "wireit": {
@@ -117,7 +136,8 @@
     "format": {
       "dependencies": [
         "format:prettier",
-        "format:eslint"
+        "format:eslint",
+        "format:stylelint"
       ]
     },
     "format:eslint": {
@@ -130,10 +150,21 @@
         "!src/components.d.ts"
       ]
     },
+    "format:stylelint": {
+      "command": "stylelint \"src/**/*.scss\" --fix",
+      "clean": false,
+      "files": [
+        "src/**/*.scss"
+      ],
+      "output": [
+        "src/**/*.scss"
+      ]
+    },
     "lint": {
       "dependencies": [
         "lint:eslint",
-        "lint:prettier"
+        "lint:prettier",
+        "lint:stylelint"
       ]
     },
     "lint:eslint": {
@@ -151,6 +182,16 @@
         "!src/components.d.ts"
       ]
     },
+    "lint:stylelint": {
+      "command": "stylelint \"src/**/*.scss\"",
+      "clean": false,
+      "files": [
+        "src/**/*.scss"
+      ],
+      "output": [
+        "src/**/*.scss"
+      ]
+    },
     "start": {
       "dependencies": [
         "storybook:start",
@@ -161,22 +202,24 @@
       "command": "stencil build --docs --prod",
       "dependencies": [
         "build:cem-json",
-        "tailwind:build"
+        "tailwind:build",
+        "embed:css"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
         "src/custom-elements.json",
         "!src/components.d.ts",
         "stencil.config.ts",
-        "tsconfig.json"
+        "tsconfig.json",
+        "package.json"
       ],
       "output": [
         "src/components.d.ts",
         "dist/**",
-        "loader/**",
         "integrations/react/stencil-generated/**",
-        "integrations/angular/ng18/projects/trimble-cms/modus-wc-angular/src/lib/stencil-generated/**",
-        "integrations/angular/ng17/projects/trimble-cms/modus-wc-angular/src/lib/stencil-generated/**"
+        "integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
+        "integrations/angular/ng17/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
+        "integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**"
       ]
     },
     "stencil:watch": {
@@ -195,7 +238,8 @@
         "src/custom-elements.json",
         "!src/components.d.ts",
         "stencil.config.ts",
-        "tsconfig.json"
+        "tsconfig.json",
+        "package.json"
       ]
     },
     "storybook:build": {
@@ -209,7 +253,6 @@
         "src/",
         ".storybook",
         "dist/",
-        "loader/",
         "stencil.config.ts"
       ],
       "output": [
@@ -226,11 +269,27 @@
       "command": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --minify",
       "files": [
         "src/**/*.scss",
+        "src/styles/global.css",
         "src/styles/tailwind.css",
+        "src/styles/variables.css",
         "tailwind.config.js"
       ],
       "output": [
         "src/styles/output.css"
+      ]
+    },
+    "embed:css": {
+      "command": "node scripts/embed-css.js",
+      "dependencies": [
+        "tailwind:build"
+      ],
+      "files": [
+        "src/styles/output.css",
+        "src/styles/global.css",
+        "scripts/embed-css.js"
+      ],
+      "output": [
+        "src/providers/theme/css-content.ts"
       ]
     },
     "tailwind:watch": {
@@ -238,7 +297,9 @@
       "service": true,
       "files": [
         "src/**/*.scss",
+        "src/styles/global.css",
         "src/styles/tailwind.css",
+        "src/styles/variables.css",
         "tailwind.config.js"
       ]
     }

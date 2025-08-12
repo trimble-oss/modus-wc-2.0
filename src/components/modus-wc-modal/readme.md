@@ -9,9 +9,7 @@
 
 A customizable modal component used to display content in a dialog.
 
-The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
-
-Adheres to WCAG 2.2 standards.
+The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML
 
 ## Properties
 
@@ -25,6 +23,19 @@ Adheres to WCAG 2.2 standards.
 | `showClose`            | `show-close`             | Specifies whether to show the close icon button at the top right of modal                                                  | `boolean \| undefined`                       | `true`      |
 | `showFullscreenToggle` | `show-fullscreen-toggle` | Specifies whether to show the fullscreen toggle icon button                                                                | `boolean \| undefined`                       | `false`     |
 
+
+## Dependencies
+
+### Depends on
+
+- [modus-wc-button](../modus-wc-button)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-modal --> modus-wc-button
+  style modus-wc-modal fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

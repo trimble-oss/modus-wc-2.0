@@ -1,5 +1,7 @@
 # Contributing
 
+- Adhere to the Guidelines [CODE-GUIDE.md](https://github.com/trimble-oss/modus-wc-2.0/blob/main/CODE-GUIDELINES.md) while contributing.
+
 ---
 
 ## Table of Contents
@@ -137,7 +139,7 @@ For more information about Jest snapshot testing, check out the docs [here](http
 
 ## Changelog
 
-The release notes can be viewed on the [GitHub Releases](https://github.com/Trimble-Construction/modus-wc-2.0/releases) page.
+The release notes can be viewed on the [GitHub Releases](https://github.com/trimble-oss/modus-wc-2.0/releases) page.
 
 ### Semantic Versioning
 

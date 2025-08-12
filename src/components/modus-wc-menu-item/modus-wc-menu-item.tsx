@@ -12,9 +12,7 @@ import { DaisySize, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable menu item component used to display the item portion of a menu.
- *
- * Adheres to WCAG 2.2 standards.
+ * A customizable menu item component used to display the item portion of a menu
  */
 @Component({
   tag: 'modus-wc-menu-item',
@@ -115,14 +113,7 @@ export class ModusWcMenuItem {
             type="button"
           >
             <div class="modus-wc-menu-item-content">
-              {this.startIcon && (
-                <modus-wc-icon
-                  customClass="modus-wc-menu-item-start-icon"
-                  decorative={true}
-                  name={this.startIcon}
-                  size={this.getIconSize()}
-                />
-              )}
+              <slot name="start-icon"></slot>
               <div class="modus-wc-menu-item-labels">
                 <div>{this.label}</div>
                 {this.subLabel && (

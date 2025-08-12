@@ -9,9 +9,7 @@
 
 A customizable menu component used to display a list of li elements vertically or horizontally.
 
-The component supports a `<slot>` for injecting custom li elements inside the ul.
-
-Adheres to WCAG 2.2 standards.
+The component supports a `<slot>` for injecting custom li elements inside the ul
 
 ## Properties
 
@@ -23,16 +21,27 @@ Adheres to WCAG 2.2 standards.
 | `size`        | `size`         | The size of the menu.                         | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
 
 
+## Events
+
+| Event          | Description                              | Type                      |
+| -------------- | ---------------------------------------- | ------------------------- |
+| `menuFocusout` | Event emitted when the menu loses focus. | `CustomEvent<FocusEvent>` |
+
+
 ## Dependencies
 
 ### Used by
 
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
+ - [modus-wc-dropdown-menu](../modus-wc-dropdown-menu)
+ - [modus-wc-navbar](../modus-wc-navbar)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-autocomplete --> modus-wc-menu
+  modus-wc-dropdown-menu --> modus-wc-menu
+  modus-wc-navbar --> modus-wc-menu
   style modus-wc-menu fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -9,9 +9,7 @@
 
 A customizable progress component used to show the progress of a task or show the passing of time.
 
-The radial variant supports slotting in custom HTML to be displayed within the progress circle.
-
-Adheres to WCAG 2.2 standards.
+The radial variant supports slotting in custom HTML to be displayed within the progress circle
 
 ## Properties
 
@@ -24,6 +22,19 @@ Adheres to WCAG 2.2 standards.
 | `value`         | `value`         | The value of the progress component.               | `number`                             | `0`         |
 | `variant`       | `variant`       | The variant of the progress component.             | `"default" \| "radial" \| undefined` | `'default'` |
 
+
+## Dependencies
+
+### Depends on
+
+- [modus-wc-input-label](../modus-wc-input-label)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-progress --> modus-wc-input-label
+  style modus-wc-progress fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

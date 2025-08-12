@@ -41,8 +41,6 @@ export interface ICollapseOptions {
  *
  * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
  * Do not set
- *
- * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-collapse',
@@ -153,7 +151,7 @@ export class ModusWcCollapse {
 
   // istanbul ignore next
   private getDescriptionDivClasses(): string {
-    const classList: string[] = ['modus-wc-font-light'];
+    const classList: string[] = ['description modus-wc-font-light'];
 
     const descriptionFontSize = convertPropsToDescriptionDivClasses({
       size: this.options?.size,

@@ -1,0 +1,36 @@
+modus-wc-side-navigation {
+  display: block;
+  height: 100vh;
+  position: relative;
+
+  .modus-wc-side-navigation {
+    background: var(--modus-wc-color-white);
+    box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
+    color: var(--modus-wc-color-trimble-gray);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    height: 100%;
+    max-height: 100vh;
+    min-height: 0;
+    overflow: hidden;
+    overflow-y: auto;
+    position: absolute;
+    transition: width 0.2s ease-out;
+    z-index: 999;
+  }
+
+  .side-navigation-content {
+    background: var(--modus-wc-color-white);
+    color: var(--modus-wc-color-trimble-gray);
+    flex: 1 1 auto;
+  }
+}
+
+[data-theme='modus-classic-dark'] modus-wc-side-navigation,
+[data-theme='modus-modern-dark'] modus-wc-side-navigation {
+  .side-navigation-content {
+    background: var(--modus-wc-color-gray-10);
+    color: var(--modus-wc-color-white);
+  }
+}

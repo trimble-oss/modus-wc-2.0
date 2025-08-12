@@ -5,9 +5,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 /**
  * A customizable progress component used to show the progress of a task or show the passing of time.
  *
- * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
- *
- * Adheres to WCAG 2.2 standards.
+ * The radial variant supports slotting in custom HTML to be displayed within the progress circle
  */
 @Component({
   tag: 'modus-wc-progress',
@@ -89,11 +87,7 @@ export class ModusWcProgress {
               {...progressAriaAttributes}
               {...this.inheritedAttributes}
             />
-            {this.label && (
-              <span class={`modus-wc-progress-label ${this.customClass}`}>
-                {this.label}
-              </span>
-            )}
+            {this.label && <modus-wc-input-label labelText={this.label} />}
           </Fragment>
         ) : (
           <div

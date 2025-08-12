@@ -6,7 +6,7 @@ interface AlertArgs {
   'alert-description'?: string;
   'alert-title': string;
   'custom-class'?: string;
-  delay: number;
+  delay?: number;
   dismissible?: boolean;
   dismissClick?: () => void;
   icon?: string;
@@ -21,7 +21,6 @@ const meta: Meta<AlertArgs> = {
     'alert-description': 'You have 3 new messages.',
     'alert-title': 'New message!',
     dismissible: false,
-    delay: 15000,
     role: 'status',
     variant: 'info',
   },
@@ -52,6 +51,7 @@ const Template: Story = {
   alert-description=${ifDefined(args['alert-description'])}
   alert-title=${args['alert-title']}
   custom-class=${ifDefined(args['custom-class'])}
+  delay=${ifDefined(args.delay)}
   dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}
@@ -72,6 +72,7 @@ export const CustomButton: Story = {
   alert-description=${ifDefined(args['alert-description'])}
   alert-title=${args['alert-title']}
   custom-class=${ifDefined(args['custom-class'])}
+  delay=${ifDefined(args.delay)}
   dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}
@@ -81,6 +82,7 @@ export const CustomButton: Story = {
     aria-label="View messages"
     color="secondary"
     slot="button"
+    variant="outlined"
   >View Messages</modus-wc-button>
 </modus-wc-alert>
     `;
@@ -94,6 +96,7 @@ export const WithCustomContent: Story = {
 <modus-wc-alert
   id="alert-123"
   custom-class=${ifDefined(args['custom-class'])}
+  delay=${ifDefined(args.delay)}
   dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}

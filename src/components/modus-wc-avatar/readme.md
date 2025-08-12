@@ -9,8 +9,6 @@
 
 A customizable avatar component used to create avatars with different images.
 
-Adheres to WCAG 2.2 standards.
-
 ## Properties
 
 | Property           | Attribute      | Description                                 | Type                                        | Default     |
@@ -21,6 +19,19 @@ Adheres to WCAG 2.2 standards.
 | `shape`            | `shape`        | The shape of the avatar.                    | `"circle" \| "square" \| undefined`         | `'circle'`  |
 | `size`             | `size`         | The size of the avatar.                     | `"lg" \| "md" \| "sm" \| "xs" \| undefined` | `'md'`      |
 
+
+## Dependencies
+
+### Used by
+
+ - [modus-wc-navbar](../modus-wc-navbar)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-navbar --> modus-wc-avatar
+  style modus-wc-avatar fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

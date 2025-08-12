@@ -7,9 +7,7 @@
 
 ## Overview
 
-A customizable menu item component used to display the item portion of a menu.
-
-Adheres to WCAG 2.2 standards.
+A customizable menu item component used to display the item portion of a menu
 
 ## Properties
 
@@ -39,6 +37,7 @@ Adheres to WCAG 2.2 standards.
 ### Used by
 
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
+ - [modus-wc-navbar](../modus-wc-navbar)
 
 ### Depends on
 
@@ -49,6 +48,7 @@ Adheres to WCAG 2.2 standards.
 graph TD;
   modus-wc-menu-item --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-menu-item
+  modus-wc-navbar --> modus-wc-menu-item
   style modus-wc-menu-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

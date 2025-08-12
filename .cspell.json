@@ -37,6 +37,7 @@
     "fsvg",
     "gantt",
     "hoverable",
+    "impp",
     "inexplicitly",
     "inputmode",
     "jank",
@@ -61,11 +62,13 @@
     "octocat",
     "packagr",
     "Pendo",
+    "piltzer",
     "popperjs",
     "progressbar",
     "pwsh",
     "qezoi",
     "Qube",
+    "rimel",
     "Ritchie",
     "rossjrw",
     "SAMEORIGIN",
@@ -103,7 +106,8 @@
     "labeler.yml",
     "modus-variables.scss",
     "translations.ts",
-    "wss-unified-agent.config"
+    "wss-unified-agent.config",
+    "**/*.spec.ts.snap"
   ],
   "useGitignore": true
 }

@@ -12,9 +12,7 @@ import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable slider component.
- *
- * Adheres to WCAG 2.2 standards.
+ * A customizable slider component
  */
 @Component({
   tag: 'modus-wc-slider',

@@ -4,6 +4,7 @@
 # - The Web Components package
 # - The React package
 # - The Angular package
+# - The Vue package
 # This is triggered by a manual run with a specified version number.
 
 name: Publish & Release
@@ -19,6 +20,7 @@ on:
 permissions:
   contents: write
   actions: write
+  packages: write
 
 jobs:
   build-and-publish-wc:
@@ -30,10 +32,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ vars.NODE_VERSION }}
           cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
 
-      # - uses: google/wireit@setup-github-actions-caching/v2
+      - uses: google/wireit@setup-github-actions-caching/v2
 
       - name: Install dependencies
         run: npm ci
@@ -47,15 +49,11 @@ jobs:
       - name: Build web components
         run: npm run build:ci
 
-      - name: Configure npm registry
-        run: npm config set registry https://artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/
-
-      - name: Authenticate to Artifactory
-        run: echo "//artifactory.trimble.tools/artifactory/api/npm/trimble-cms-trimble-accounting-npm/:_authToken=${ARTIFACTORY_TOKEN}" >> .npmrc
-        env:
-          ARTIFACTORY_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Set npm Registry Auth Token
+        run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
 
       - name: Pack the package
+        working-directory: dist
         run: npm pack
         id: npm_pack
 
@@ -63,10 +61,21 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: npm-tarball
-          path: '*.tgz'
+          path: 'dist/*.tgz'
 
-      - name: Publish
+      - run: rm dist/*.tgz
+
+      - name: Publish npm Package Publicly
+        working-directory: dist
         run: npm publish
+
+      - name: Set GitHub Registry Auth Token
+        working-directory: dist
+        run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish npm Package to GitHub Registry
+        working-directory: dist
+        run: npm publish --registry=https://npm.pkg.github.com --access public --ignore-scripts
 
   trigger-angular-publish:
     needs: build-and-publish-wc
@@ -88,13 +97,20 @@ jobs:
           workflow: publish-react.yml
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
 
+  trigger-vue-publish:
+    needs: build-and-publish-wc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vue Publish Workflow
+        uses: benc-uk/workflow-dispatch@v1.2
+        with:
+          workflow: publish-vue.yml
+          inputs: '{"version": "${{ github.event.inputs.version }}"}'
+
   release-wc:
     needs: build-and-publish-wc
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Download tarball artifact
         uses: actions/download-artifact@v4
         with:
@@ -103,7 +119,7 @@ jobs:
 
       - name: Find the asset
         id: find-asset
-        run: echo "asset_path=$(find . -name 'trimble-cms-modus-wc-*.tgz')" >> $GITHUB_OUTPUT
+        run: echo "asset_path=$(find . -name 'trimble-oss-moduswebcomponents-*.tgz')" >> $GITHUB_OUTPUT
 
       - name: Rename the asset to package.tgz
         run: mv ${{ steps.find-asset.outputs.asset_path }} package.tgz
@@ -112,7 +128,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: modus-wc-${{ github.event.inputs.version }}
+          tag_name: moduswebcomponents-${{ github.event.inputs.version }}
           name: Modus Web Components ${{ github.event.inputs.version }}
           files: |
             package.tgz

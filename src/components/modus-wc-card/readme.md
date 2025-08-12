@@ -7,9 +7,7 @@
 
 ## Overview
 
-A customizable card component used to group and display content in a way that is easily readable.
-
-Adheres to WCAG 2.2 standards.
+A customizable card component used to group and display content in a way that is easily readable
 
 ## Properties
 
@@ -21,6 +19,19 @@ Adheres to WCAG 2.2 standards.
 | `layout`           | `layout`            | Determines how the card is laid out                           | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
 | `padding`          | `padding`           | Determines if the interior padding is compact or not          | `"compact" \| "normal" \| undefined`      | `'normal'`   |
 
+
+## Dependencies
+
+### Used by
+
+ - [modus-wc-navbar](../modus-wc-navbar)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-navbar --> modus-wc-card
+  style modus-wc-card fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

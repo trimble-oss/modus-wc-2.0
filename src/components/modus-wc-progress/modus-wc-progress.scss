@@ -4,17 +4,6 @@
 */
 
 modus-wc-progress.modus-wc-progress-container {
-  position: relative;
-
-  .modus-wc-progress-label {
-    display: flex;
-    font-size: var(--modus-wc-font-size-sm);
-    justify-content: center;
-    position: absolute;
-    top: 0;
-    width: 100%;
-  }
-
   .modus-wc-radial-progress-label {
     font-size: var(--modus-wc-font-size-md);
     margin: 0 var(--modus-wc-spacing-lg);

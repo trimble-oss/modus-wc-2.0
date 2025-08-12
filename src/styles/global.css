@@ -1,0 +1,106 @@
+@supports (color: oklch(0% 0 0)) {
+  :root {
+    --fallback-p: var(--modus-wc-color-primary);
+    --fallback-pc: var(--modus-wc-color-primary-content);
+    --fallback-s: var(--modus-wc-color-secondary);
+    --fallback-sc: var(--modus-wc-color-secondary-content);
+    --fallback-a: var(--modus-wc-color-accent);
+    --fallback-ac: var(--modus-wc-color-accent-content);
+    --fallback-n: var(--modus-wc-color-neutral);
+    --fallback-nc: var(--modus-wc-color-neutral-content);
+    --fallback-b1: var(--modus-wc-color-base-100);
+    --fallback-b2: var(--modus-wc-color-base-200);
+    --fallback-b3: var(--modus-wc-color-base-300);
+    --fallback-in: var(--modus-wc-color-info);
+    --fallback-inc: var(--modus-wc-color-info-content);
+    --fallback-su: var(--modus-wc-color-success);
+    --fallback-suc: var(--modus-wc-color-success-content);
+    --fallback-wa: var(--modus-wc-color-warning);
+    --fallback-wac: var(--modus-wc-color-warning-content);
+    --fallback-er: var(--modus-wc-color-error);
+    --fallback-erc: var(--modus-wc-color-error-content);
+  }
+}
+
+/* Universal resets */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: var(--modus-wc-font-family), sans-serif;
+}
+
+body {
+  background-color: var(--modus-wc-color-base-page);
+}
+
+.modus-wc-border {
+  border-color: var(--modus-wc-color-base-200);
+  border-radius: 1px;
+  border-style: solid;
+}
+
+modus-wc-text-input,
+modus-wc-select,
+modus-wc-textarea,
+modus-wc-time-input,
+modus-wc-number-input,
+modus-wc-date {
+  --fallback-b1: transparent;
+
+  background: transparent;
+}
+
+/* Modus Modern Themes */
+[data-theme='modus-modern-light']:root {
+  color-scheme: light;
+
+  --modus-wc-color-base-page: #fff;
+  --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-0);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-1);
+  --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
+  --modus-wc-color-primary: var(--modus-wc-color-trimble-blue);
+  --modus-wc-color-primary-content: var(--modus-wc-color-white);
+}
+
+[data-theme='modus-modern-dark']:root {
+  color-scheme: dark;
+
+  --modus-wc-color-base-page: #000;
+  --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-9);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-10);
+  --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
+  --modus-wc-color-primary: var(--modus-wc-color-highlight-blue);
+  --modus-wc-color-primary-content: var(--modus-wc-color-black);
+}
+
+/* Modus Classic Themes */
+[data-theme='modus-classic-light']:root {
+  color-scheme: light;
+
+  --modus-wc-color-base-page: #fff;
+  --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
+  --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
+  --modus-wc-color-info: var(--modus-wc-color-trimble-blue);
+  --modus-wc-color-success: var(--modus-wc-color-green);
+  --modus-wc-color-error: var(--modus-wc-color-red);
+  --modus-wc-color-warning: var(--modus-wc-color-yellow);
+}
+
+[data-theme='modus-classic-dark']:root {
+  color-scheme: dark;
+
+  --modus-wc-color-base-page: #000;
+  --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
+  --modus-wc-color-base-300: var(--modus-wc-color-9);
+  --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
+  --modus-wc-color-info: var(--modus-wc-color-trimble-blue);
+  --modus-wc-color-success: var(--modus-wc-color-green);
+  --modus-wc-color-error: var(--modus-wc-color-red);
+  --modus-wc-color-warning: var(--modus-wc-color-yellow);
+}

@@ -1,0 +1,210 @@
+modus-wc-navbar .modus-wc-navbar {
+  background-color: var(--modus-wc-color-base-page);
+  height: 56px;
+  min-height: 0;
+  padding: 0 var(--modus-wc-spacing-md);
+
+  // Common button styles
+  modus-wc-button {
+    display: inline-flex;
+
+    svg {
+      height: 24px;
+    }
+  }
+
+  &:not(.trimble-logo)
+    .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+    background: var(--modus-wc-color-base-100);
+    border: 0;
+    box-shadow: none;
+    color: var(--modus-wc-color-base-content);
+  }
+
+  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary.trimble-logo {
+    background: transparent;
+  }
+
+  // Trimble logo button
+  .trimble-logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary path {
+    fill: var(--modus-wc-color-primary);
+  }
+
+  // Common dropdown styles
+  %dropdown-menu {
+    position: absolute;
+    top: 45px;
+    z-index: 99;
+
+    &.hidden {
+      display: none;
+    }
+
+    &.visible {
+      display: block;
+    }
+  }
+
+  %flex-align-center {
+    align-items: center;
+    display: flex;
+    position: relative;
+  }
+
+  [slot='start'] {
+    @extend %flex-align-center;
+
+    modus-wc-button {
+      padding-inline-end: var(--modus-wc-spacing-sm);
+    }
+
+    // Menu slot
+    .main-menu {
+      @extend %dropdown-menu;
+
+      height: calc(100dvh - 56px); // 56px is the navbar height
+      left: calc(-1 * var(--modus-wc-spacing-md));
+      min-width: 256px;
+    }
+
+    // Trimble logo button
+    .trimble-logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+      padding: 0 var(--modus-wc-spacing-lg);
+
+      svg {
+        height: 24px;
+      }
+    }
+  }
+
+  [slot='center'] {
+    @extend %flex-align-center;
+  }
+
+  [slot='end'] {
+    @extend %flex-align-center;
+
+    modus-wc-button,
+    modus-wc-text-input {
+      padding-inline-start: var(--modus-wc-spacing-sm);
+    }
+
+    button.ai svg {
+      padding: 3px 0 3px 3px;
+    }
+
+    // Condensed menu
+    modus-wc-menu {
+      @extend %dropdown-menu;
+
+      right: var(--modus-wc-spacing-2xl);
+      z-index: 99;
+    }
+
+    // Notifications slot
+    .notifications {
+      @extend %dropdown-menu;
+
+      right: 100px;
+    }
+
+    // Apps slot
+    .apps {
+      @extend %dropdown-menu;
+
+      right: var(--modus-wc-spacing-2xl);
+    }
+
+    // User slot
+    .user {
+      @extend %dropdown-menu;
+
+      right: 0;
+
+      modus-wc-card article.modus-wc-card {
+        align-items: center;
+        padding: var(--modus-wc-spacing-xl);
+        width: max-content;
+
+        .initials {
+          background-color: var(--modus-wc-color-black);
+          border-radius: 50%;
+          color: var(--modus-wc-color-white);
+          font-weight: var(--modus-wc-font-weight-semibold);
+          padding: var(--modus-wc-spacing-sm);
+        }
+
+        .modus-wc-card-body {
+          align-items: center;
+        }
+
+        modus-wc-button {
+          padding: 0;
+        }
+
+        .sign-out.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+          color: var(--modus-wc-color-trimble-blue);
+        }
+      }
+    }
+
+    // User button
+    .user-button.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+      background-color: var(--modus-wc-color-black);
+      color: var(--modus-wc-color-white);
+
+      .modus-wc-avatar {
+        height: 32px;
+        width: 32px;
+      }
+    }
+  }
+}
+
+[data-theme='modus-classic-light'] modus-wc-navbar .modus-wc-navbar,
+[data-theme='modus-classic-dark'] modus-wc-navbar .modus-wc-navbar {
+  svg {
+    height: 32px;
+  }
+
+  modus-wc-text-input .modus-wc-text-input.modus-wc-input.modus-wc-input-sm {
+    font-size: var(--modus-wc-font-size-md);
+    height: var(--modus-wc-input-height-md);
+    line-height: var(--modus-wc-line-height-md);
+    padding: var(--modus-wc-spacing-sm);
+  }
+}
+
+[data-theme='modus-classic-light'] modus-wc-navbar .modus-wc-navbar {
+  background-color: var(--modus-wc-color-white);
+
+  // Common button styles
+  &:not(.trimble-logo)
+    .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+    background: transparent;
+  }
+}
+
+[data-theme='modus-classic-dark'] modus-wc-navbar .modus-wc-navbar {
+  background-color: var(--modus-wc-color-gray-10);
+
+  // Common button styles
+  &:not(.trimble-logo)
+    .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+    background: transparent;
+    color: var(--modus-wc-color-white);
+  }
+
+  // Trimble logo button
+  .trimble-logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary path {
+    fill: var(--modus-wc-color-white);
+  }
+
+  // Sign out button
+  .user
+    modus-wc-card
+    article.modus-wc-card
+    .sign-out.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+    color: var(--modus-wc-color-white);
+  }
+}

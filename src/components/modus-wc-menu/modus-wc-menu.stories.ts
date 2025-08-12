@@ -1,3 +1,4 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -25,6 +26,12 @@ const meta: Meta<MenuArgs> = {
     size: {
       control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
+    },
+  },
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['menuFocusout'],
     },
   },
 };
@@ -73,8 +80,9 @@ export const Default: Story = {
   <modus-wc-menu-item
     label="With Start Icon"
     value="3"
-    start-icon="info"
-  ></modus-wc-menu-item>
+  >
+    <modus-wc-icon slot="start-icon" name="info"></modus-wc-icon>
+  </modus-wc-menu-item>
   <modus-wc-menu-item
     label="Disabled"
     value="3"

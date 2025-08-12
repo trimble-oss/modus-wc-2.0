@@ -8,16 +8,15 @@ import {
   Listen,
   Prop,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-button.tailwind';
+import { ensureDaisyUIInShadow } from '../../providers/theme/inject-daisyui';
 import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
+import { convertPropsToClasses } from './modus-wc-button.tailwind';
 
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
  *
- * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
- *
- * Adheres to WCAG 2.2 standards.
+ * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
  */
 @Component({
   tag: 'modus-wc-button',
@@ -67,6 +66,12 @@ export class ModusWcButton {
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+
+    // Ensure DaisyUI/Tailwind CSS is available when rendered inside a shadow root
+    const root = this.el.getRootNode();
+    // Fire and forget; safe if not a ShadowRoot
+
+    void ensureDaisyUIInShadow(root as Document | ShadowRoot);
   }
 
   private getClasses(): string {

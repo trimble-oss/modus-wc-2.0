@@ -3,6 +3,7 @@ import {
   Element,
   Event,
   EventEmitter,
+  FunctionalComponent,
   h,
   Host,
   Listen,
@@ -10,13 +11,15 @@ import {
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
+import { AlertSolidIcon } from '../../icons/alert-solid.icon';
+import { CheckCircleSolidIcon } from '../../icons/check-circle-solid.icon';
 import { CloseSolidIcon } from '../../icons/close-solid.icon';
+import { InfoSolidIcon } from '../../icons/info-solid.icon';
+import { WarningSolidIcon } from '../../icons/warning-solid.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable alert component used to inform the user about important events.
- *
- * Adheres to WCAG 2.2 standards.
+ * A customizable alert component used to inform the user about important events
  */
 @Component({
   tag: 'modus-wc-alert',
@@ -29,26 +32,26 @@ export class ModusWcAlert {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** The description of the alert. **/
+  /** The description of the alert. */
   @Prop() alertDescription?: string;
 
-  /** The title of the alert. **/
+  /** The title of the alert. */
   @Prop() alertTitle!: string;
 
   /** Custom CSS class to apply to the outer div element. */
   @Prop() customClass?: string = '';
 
-  /** Time taken to dismiss the toast in milliseconds */
-  @Prop() delay?: number = 15000;
+  /** Time taken to dismiss the alert in milliseconds */
+  @Prop() delay?: number;
 
   /** Whether the alert has a dismiss button */
   @Prop() dismissible?: boolean = false;
 
-  /** The Modus icon to render. **/
+  /** The Modus icon to render. */
   @Prop() icon?: string;
 
   /** The variant of the alert. */
-  @Prop() variant?: 'error' | 'info' | 'success' | 'warning';
+  @Prop() variant?: 'error' | 'info' | 'success' | 'warning' = 'info';
 
   /** Role taken by the alert. Defaults to 'status' */
   @Prop() role: 'alert' | 'log' | 'marquee' | 'status' | 'timer' = 'status';
@@ -57,7 +60,7 @@ export class ModusWcAlert {
   @Event() dismissClick!: EventEmitter;
 
   componentWillLoad() {
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.inheritedAttributes = inheritAriaAttributes(this.el, ['role']);
   }
 
   private getClasses(): string {
@@ -73,23 +76,27 @@ export class ModusWcAlert {
     return classList.join(' ');
   }
 
-  private getIconName(): string {
-    if (this.icon) return this.icon;
+  private getLeadingIcon(): FunctionalComponent {
+    if (this.icon) {
+      return (
+        <modus-wc-icon custom-class="modus-wc-alert-icon" name={this.icon} />
+      );
+    }
 
     switch (this.variant) {
       case 'error':
-        return 'alert';
-      case 'info':
-        return 'info';
+        return <AlertSolidIcon className="modus-wc-alert-icon" />;
       case 'success':
-        return 'check_circle';
+        return <CheckCircleSolidIcon className="modus-wc-alert-icon" />;
       case 'warning':
-        return 'info';
+        return <WarningSolidIcon className="modus-wc-alert-icon" />;
+      case 'info':
       default:
-        return 'info';
+        return <InfoSolidIcon className="modus-wc-alert-icon" />;
     }
   }
 
+  // Handle delay
   private timerId!: ReturnType<typeof setTimeout>;
 
   @Watch('delay')
@@ -135,16 +142,14 @@ export class ModusWcAlert {
       <Host>
         <div
           class={this.getClasses()}
-          role="alert"
+          role={this.role}
           {...this.inheritedAttributes}
         >
-          <modus-wc-icon name={this.getIconName()} />
+          {this.getLeadingIcon()}
           <div>
-            <modus-wc-typography variant="h3" weight="bold">
-              {this.alertTitle}
-            </modus-wc-typography>
+            <div class="title">{this.alertTitle}</div>
             {this.alertDescription && (
-              <modus-wc-typography>{this.alertDescription}</modus-wc-typography>
+              <div class="description">{this.alertDescription}</div>
             )}
             {!this.alertTitle && !this.alertDescription && (
               <slot name="content" />
@@ -158,7 +163,7 @@ export class ModusWcAlert {
               size="sm"
               slot="button"
               variant="borderless"
-              onClick={() => this.dismissElement()}
+              onButtonClick={() => this.dismissElement()}
             >
               <CloseSolidIcon className="modus-wc-alert-close-icon" />
             </modus-wc-button>

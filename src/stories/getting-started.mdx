@@ -12,12 +12,20 @@ import { Meta } from '@storybook/blocks';
 </b>
 
 ```bash
-npm install @trimble-cms/modus-wc
+npm install @trimble-oss/moduswebcomponents
 ```
 
 ## Usage
 
-### 1. Set the theme:
+### 1. Set up the styling:
+
+You will need to import our styling in your main JavaScript or CSS file:
+
+```js
+import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
+```
+
+### 2. Set the theme:
 
 The theme can be set manually or by using the `ThemeSwitcher` component. See the "Use a Theme" section of [Styling](/docs/documentation-styling--docs) for guidance.
 
@@ -28,10 +36,10 @@ Available themes are:
 - `modus-modern-light` (default)
 - `modus-modern-dark`
 
-### 2. Register custom elements:
+### 3. Register custom elements:
 
 ```javascript
-import { defineCustomElements } from '@trimble-cms/modus-wc/loader';
+import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
 
 // Call during the initial loading of your application
 const Root = () => {
@@ -41,7 +49,7 @@ const Root = () => {
 };
 ```
 
-### 3. Use the components:
+### 4. Use the components:
 
 ```javascript
 // Use in HTML
@@ -53,7 +61,7 @@ const Root = () => {
 Types are a crucial part of our component library, providing robust type safety and enhanced developer experience through comprehensive TypeScript definitions for all components.
 
 ```javascript
-import { ISelectOption, ModusWcSelectCustomEvent } from '@trimble-cms/modus-wc';
+import { ISelectOption, ModusWcSelectCustomEvent } from '@trimble-oss/moduswebcomponents';
 
 const options: ISelectOption[] = [
   {
@@ -74,8 +82,6 @@ const handleEvent = (e: ModusWcSelectCustomEvent<ISelectOption>) => {}
 - ### [Angular](?path=/docs/documentation-frameworks-angular--docs)
 
 - ### [React](?path=/docs/documentation-frameworks-react--docs)
-
-- ### [Vue]()
 
 ---
 

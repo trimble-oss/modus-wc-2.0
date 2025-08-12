@@ -6,16 +6,17 @@ This application has been created using create-vite (React + TypeScript + Vite) 
 
 Setting up this small react project relies on `npm link`. See the docs [here](https://docs.npmjs.com/cli/v10/commands/npm-link)
 
-From inside the `/` (root stencil) directory:
+From inside the `/` (root folder) directory:
 
 1. Run `npm install`
 2. Run `npm run build`
-3. Run `npm link`
+
+Then, run `npm link` from inside the `/dist` (root dist folder) directory.
 
 From inside the `/integrations/react/v18` directory:
 
 1. Run `npm install`
-2. Run `npm link @trimble-cms/modus-wc`
+2. Run `npm link @trimble-oss/moduswebcomponents`
 3. Run `npm run build`
 
 From inside the `/integrations/react/test-react-v18` directory:

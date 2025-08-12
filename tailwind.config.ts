@@ -6,8 +6,10 @@ import { modusModern } from './src/styles/themes/modus-modern';
 
 export default {
   content: [
-    './src/components/**/*.{ts,tsx}',
+    './src/components/**/*.{ts,tsx,scss}',
     './src/styles/tailwind-themeable.ts',
+    './src/styles/global.css',
+    './src/styles/variables.css',
     './src/styles/themes/*.ts',
   ],
   daisyui: {

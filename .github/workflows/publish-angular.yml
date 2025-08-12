@@ -15,13 +15,16 @@ on:
 permissions:
   contents: write
   actions: write
+  packages: write
 
 jobs:
   build-and-publish-angular:
     runs-on: ubuntu-latest
     strategy:
+      # prevents race conditions
+      max-parallel: 1
       matrix:
-        angular-version: [17, 18]
+        angular-version: [17, 18, 19]
 
     defaults:
       run:
@@ -42,7 +45,7 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             integrations/angular/ng${{ matrix.angular-version }}/package-lock.json
-            integrations/angular/ng${{ matrix.angular-version }}/projects/trimble-cms/modus-wc-angular/package-lock.json
+            integrations/angular/ng${{ matrix.angular-version }}/projects/trimble-oss/moduswebcomponents-angular/package-lock.json
 
       # - uses: google/wireit@setup-github-actions-caching/v2
 
@@ -50,23 +53,34 @@ jobs:
         run: npm ci
         working-directory: .
 
-      - name: Build Web Components
+      - name: Build Base Web Components
         run: npm run build:ci
         working-directory: .
+
+      - name: Pack Base Web Components
+        working-directory: ./dist
+        run: |
+          TARBALL=$(npm pack)
+          echo "TARBALL=${TARBALL}" >> $GITHUB_ENV
 
       - name: Update to use new WebComponent version
         run: |
           jq --arg version "${{ github.event.inputs.version }}" \
-          '.dependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
-          mv package.json.tmp package.json && npm i && \
-          cd projects/trimble-cms/modus-wc-angular && \
+          '.dependencies["@trimble-oss/moduswebcomponents"] = $version' package.json > package.json.tmp && \
+          mv package.json.tmp package.json && \
+          cd projects/trimble-oss/moduswebcomponents-angular && \
           jq --arg version "${{ github.event.inputs.version }}" \
-          '.peerDependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
+          '.peerDependencies["@trimble-oss/moduswebcomponents"] = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
+
+      - run: npm i
+
+      - name: Install local WebComponent dependency (for build)
+        run: npm install file:../../../dist/${TARBALL} --no-save
 
       - name: Update package.json version
         run: |
-          cd projects/trimble-cms/modus-wc-angular && \
+          cd projects/trimble-oss/moduswebcomponents-angular && \
           jq --arg version "${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}" \
           '.version = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
@@ -75,7 +89,7 @@ jobs:
         run: npm run build
 
       - name: Package distribution
-        run: npm pack ./dist/trimble-cms/modus-wc-angular
+        run: npm pack ./dist/trimble-oss/moduswebcomponents-angular
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -83,15 +97,24 @@ jobs:
           name: angular-${{ matrix.angular-version }}-distribution-v${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           path: '**/*.tgz'
 
+      - name: Set npm Registry Auth Token
+        run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+
       - name: Publish distribution
         run: npm publish *.tgz
+
+      - name: Set GitHub Registry Auth Token
+        run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish npm Package to GitHub Registry
+        run: npm publish *.tgz --registry=https://npm.pkg.github.com --access public --ignore-scripts
 
   release-angular:
     needs: build-and-publish-angular
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        angular-version: [17, 18]
+        angular-version: [17, 18, 19]
 
     defaults:
       run:
@@ -110,7 +133,7 @@ jobs:
       - name: Find the release asset
         id: find-asset
         run: |
-          asset_path=$(find . -name 'trimble-cms-modus-wc-angular*.tgz')
+          asset_path=$(find . -name 'trimble-oss-moduswebcomponents-angular*.tgz')
           full_asset_path="${{ github.workspace }}/integrations/angular/ng${{ matrix.angular-version }}/${asset_path}"
           echo "asset_path=$full_asset_path" >> $GITHUB_OUTPUT
 
@@ -122,7 +145,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: modus-wc-angular-${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
+          tag_name: moduswebcomponents-angular-${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           name: Modus Web Components Angular ${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           files: |
             **/package-ng${{ matrix.angular-version }}.tgz

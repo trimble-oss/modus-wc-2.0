@@ -4,11 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng run @trimble-cms/modus-wc-angular:build:production",
+    "build": "ng run @trimble-oss/moduswebcomponents-angular:build:production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^17.3.0",
     "@angular/common": "^17.3.0",
@@ -18,13 +17,13 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
-    "@trimble-cms/modus-wc": "^0.0.13",
+    "@trimble-oss/moduswebcomponents": "^0.0.0-alpha.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.3.11",
+    "@angular-devkit/build-angular": "^17.3.17",
     "@angular/cli": "^17.3.11",
     "@angular/compiler-cli": "^17.3.0",
     "karma": "~6.4.0",
@@ -34,5 +33,8 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^17.3.0",
     "typescript": "~5.4.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [main]
+    branches: [main, prod]
   workflow_dispatch:
     inputs:
       branch:
@@ -36,6 +36,11 @@ jobs:
       - name: Build Storybook
         run: npm run build
 
+      # We need to copy the CSS so it can be served by Storybook.
+      - name: Copy CSS file
+        run: |
+          cp src/styles/output.css storybook-static/public/output.css
+
       - name: Deploy preview
         if: github.event_name == 'pull_request'
         uses: rossjrw/pr-preview-action@v1
@@ -52,7 +57,7 @@ jobs:
         with:
           folder: storybook-static
           branch: gh-pages
-          target-folder: ${{ github.event.inputs.branch || 'main' }}
+          target-folder: ${{ github.event.inputs.branch || 'main' || 'prod'}}
 
       - name: Get preview URL
         if: github.event_name == 'pull_request' && steps.preview-deploy.outcome == 'success'
@@ -64,7 +69,7 @@ jobs:
         if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
         id: deployment-url
         run: |
-          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${{ github.event.inputs.branch || 'main' }}/" >> $GITHUB_OUTPUT
+          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${{ github.event.inputs.branch || 'main' || 'prod' }}/" >> $GITHUB_OUTPUT
 
       - name: Print deployment URL
         if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'

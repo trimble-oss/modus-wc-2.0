@@ -1,0 +1,19 @@
+{
+  "name": "@trimble-oss/moduswebcomponents-angular",
+  "version": "0.0.1-ng18",
+  "description": "Trimble Modus Angular Component Library",
+  "license": "MIT",
+  "author": "Trimble Inc.",
+  "peerDependencies": {
+    "@angular/common": "^18.2.0",
+    "@angular/core": "^18.2.0",
+    "@trimble-oss/moduswebcomponents": "0.0.0-alpha.1"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}

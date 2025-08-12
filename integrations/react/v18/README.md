@@ -8,14 +8,20 @@ This is a React wrapper library for Modus Web Components 2.0 and the components 
 
 Install the Modus React Components Library using npm:
 ```bash
-npm install @trimble-cms/modus-wc-react@<latest-version>-react<target-version>
+npm install @trimble-oss/moduswebcomponents-react@<latest-version>-react<target-version>
 # e.g.,
-npm install @trimble-cms/modus-wc-react@1.0.0-react18
+npm install @trimble-oss/moduswebcomponents-react@1.0.0-react18
+```
+
+Import our styling in your main JavaScript or CSS file:
+
+```javascript
+import "@trimble-oss/moduswebcomponents/modus-wc-styles.css";
 ```
 
 ## Example Usage
 
-No extra setup is required to use the Modus React Components. You can use the components as you would any other React component.
+You can use the components as you would any other React component.
 
 - Use a Modus Button in your `App.tsx`
 

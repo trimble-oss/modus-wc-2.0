@@ -3,7 +3,7 @@ import { IInputFeedbackLevel } from './modus-wc-input-feedback/modus-wc-input-fe
 // These are the supported sizes in DaisyUI
 export type DaisySize = 'xs' | 'sm' | 'md' | 'lg';
 
-export type Density = 'comfortable' | 'compact';
+export type Density = 'comfortable' | 'compact' | 'relaxed';
 
 export type ModusSize = Extract<DaisySize, 'sm' | 'md' | 'lg'>;
 
@@ -86,4 +86,42 @@ export type TextFieldTypes =
 export interface IInputFeedbackProp {
   level: IInputFeedbackLevel;
   message?: string;
+}
+
+export type PopoverPlacement =
+  | 'top'
+  | 'top-start'
+  | 'top-end'
+  | 'bottom'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'left'
+  | 'left-start'
+  | 'left-end'
+  | 'right'
+  | 'right-start'
+  | 'right-end';
+
+export interface IAutocompleteItem {
+  /** Whether the item is disabled */
+  disabled?: boolean;
+  /** Whether the item is currently focused */
+  focused?: boolean;
+  /** The display text shown for the autocomplete item */
+  label: string;
+  /** Whether the item is currently selected */
+  selected?: boolean;
+  /** The unique value identifier for the item */
+  value: string;
+  /** Whether the item should be shown in the dropdown menu */
+  visibleInMenu: boolean;
+}
+
+export interface IAutocompleteNoResults {
+  /** The aria-label to provide accessibility information for the no results section. */
+  ariaLabel?: string;
+  /** The main label to display when no results are found. */
+  label: string;
+  /** The sub-label or additional text to display below the main label. */
+  subLabel: string;
 }

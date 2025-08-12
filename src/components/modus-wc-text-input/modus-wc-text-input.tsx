@@ -20,8 +20,6 @@ import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
 
 /**
  * A customizable input component used to create text inputs with types.
- *
- * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-text-input',
@@ -252,6 +250,7 @@ export class ModusWcTextInput {
               <CloseSolidIcon
                 ariaLabel={this.clearAriaLabel}
                 className="modus-wc-text-input-icon modus-wc-text-input-icon-clear"
+                decorative={false}
                 onClear={this.handleClearText}
               />
             </div>

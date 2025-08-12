@@ -5,41 +5,42 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IAutocompleteItem, IAutocompleteNoResults } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
-import { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, TextFieldTypes } from "./components/types";
+import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+import { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 import { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
-import { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+import { IPaginationChangeEventDetail, ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+import { SortingState } from "@tanstack/table-core";
 import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-import { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
-export { IAutocompleteItem, IAutocompleteNoResults } from "./components/modus-wc-autocomplete/modus-wc-autocomplete";
-export { AutocompleteTypes, DaisySize, Density, IInputFeedbackProp, ModusSize, Orientation, TextFieldTypes } from "./components/types";
+import { TypographySize, TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
+export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+export { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 export { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
-export { ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+export { IPaginationChangeEventDetail, ITableColumn } from "./components/modus-wc-table/modus-wc-table";
+export { SortingState } from "@tanstack/table-core";
 export { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-export { TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
+export { TypographySize, TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
-     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
      */
     interface ModusWcAccordion {
         /**
@@ -48,16 +49,15 @@ export namespace Components {
         "customClass"?: string;
     }
     /**
-     * A customizable alert component used to inform the user about important events.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable alert component used to inform the user about important events
      */
     interface ModusWcAlert {
         /**
-          * The description of the alert. *
+          * The description of the alert.
          */
         "alertDescription"?: string;
         /**
-          * The title of the alert. *
+          * The title of the alert.
          */
         "alertTitle": string;
         /**
@@ -65,7 +65,7 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
-          * Time taken to dismiss the toast in milliseconds
+          * Time taken to dismiss the alert in milliseconds
          */
         "delay"?: number;
         /**
@@ -73,7 +73,7 @@ export namespace Components {
          */
         "dismissible"?: boolean;
         /**
-          * The Modus icon to render. *
+          * The Modus icon to render.
          */
         "icon"?: string;
         /**
@@ -87,7 +87,6 @@ export namespace Components {
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcAutocomplete {
         /**
@@ -95,9 +94,33 @@ export namespace Components {
          */
         "bordered"?: boolean;
         /**
+          * Clear the input value and reset items
+         */
+        "clearInput": () => Promise<void>;
+        /**
+          * Programmatically close the menu
+         */
+        "closeMenu": () => Promise<void>;
+        /**
+          * Custom blur handler - if provided, overrides default blur behavior
+         */
+        "customBlur"?: (event: FocusEvent) => void;
+        /**
           * Custom CSS class to apply to host element.
          */
         "customClass"?: string;
+        /**
+          * Custom input change handler - if provided, overrides default search filtering
+         */
+        "customInputChange"?: (value: string) => void;
+        /**
+          * Custom item selection handler - if provided, overrides default selection logic
+         */
+        "customItemSelect"?: (item: IAutocompleteItem) => void;
+        /**
+          * Custom key down handler - if provided, overrides default keyboard navigation
+         */
+        "customKeyDown"?: (event: KeyboardEvent) => void;
         /**
           * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
          */
@@ -106,6 +129,18 @@ export namespace Components {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * Programmatically set focus to input
+         */
+        "focusInput": () => Promise<void>;
+        /**
+          * Show the clear button within the input field.
+         */
+        "includeClear"?: boolean;
+        /**
+          * Show the search icon within the input field.
+         */
+        "includeSearch"?: boolean;
         /**
           * The ID of the input element.
          */
@@ -127,9 +162,17 @@ export namespace Components {
          */
         "leaveMenuOpen"?: boolean;
         /**
+          * Maximum number of chips to display. When exceeded, shows expand/collapse button. Set to -1 to disable limit.
+         */
+        "maxChips"?: number;
+        /**
           * The minimum number of characters required to render the menu.
          */
         "minChars": number;
+        /**
+          * Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead.
+         */
+        "minInputWidth"?: number;
         /**
           * Whether the input allows multiple items to be selected.
          */
@@ -143,6 +186,10 @@ export namespace Components {
          */
         "noResults"?: IAutocompleteNoResults;
         /**
+          * Programmatically open the menu
+         */
+        "openMenu": () => Promise<void>;
+        /**
           * Text that appears in the form control when it has no value set.
          */
         "placeholder"?: string;
@@ -155,6 +202,14 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
+          * Programmatically select an item
+         */
+        "selectItem": (item: IAutocompleteItem | null) => Promise<void>;
+        /**
+          * Whether to show the menu whenever the input has focus, regardless of input value.
+         */
+        "showMenuOnFocus"?: boolean;
+        /**
           * A spinner that appears when set to true
          */
         "showSpinner"?: boolean;
@@ -163,13 +218,16 @@ export namespace Components {
          */
         "size"?: ModusSize;
         /**
+          * Programmatically toggle the menu open/closed
+         */
+        "toggleMenu": () => Promise<void>;
+        /**
           * The value of the control.
          */
         "value": string;
     }
     /**
      * A customizable avatar component used to create avatars with different images.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcAvatar {
         /**
@@ -196,7 +254,6 @@ export namespace Components {
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
      * The component supports a `<slot>` for injecting content within the badge.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcBadge {
         /**
@@ -220,11 +277,10 @@ export namespace Components {
         /**
           * The variant of the badge.
          */
-        "variant": 'counter' | 'filled' | 'text';
+        "variant": 'counter' | 'filled' | 'outlined' | 'text';
     }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcBreadcrumbs {
         /**
@@ -242,8 +298,7 @@ export namespace Components {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
-     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
      */
     interface ModusWcButton {
         /**
@@ -284,8 +339,7 @@ export namespace Components {
         "variant": 'borderless' | 'filled' | 'outlined';
     }
     /**
-     * A customizable card component used to group and display content in a way that is easily readable.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable card component used to group and display content in a way that is easily readable
      */
     interface ModusWcCard {
         /**
@@ -310,8 +364,7 @@ export namespace Components {
         "padding"?: 'normal' | 'compact';
     }
     /**
-     * A customizable checkbox component.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable checkbox component
      */
     interface ModusWcCheckbox {
         /**
@@ -356,8 +409,7 @@ export namespace Components {
         "value": boolean;
     }
     /**
-     * A customizable chip component used to display information in a compact area.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable chip component used to display information in a compact area
      */
     interface ModusWcChip {
         /**
@@ -397,7 +449,6 @@ export namespace Components {
      * A customizable collapse component used for showing and hiding content.
      * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
      * Do not set
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcCollapse {
         /**
@@ -484,8 +535,7 @@ export namespace Components {
         "value": string;
     }
     /**
-     * A customizable divider component used to separate content horizontally or vertically.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable divider component used to separate content horizontally or vertically
      */
     interface ModusWcDivider {
         /**
@@ -520,9 +570,62 @@ export namespace Components {
         "responsive"?: boolean;
     }
     /**
+     * A customizable dropdown menu component used to render a button and toggleable menu.
+     * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
+     */
+    interface ModusWcDropdownMenu {
+        /**
+          * The aria-label for the dropdown button.
+         */
+        "buttonAriaLabel"?: string;
+        /**
+          * The color variant of the button.
+         */
+        "buttonColor"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger';
+        /**
+          * The size of the button.
+         */
+        "buttonSize"?: DaisySize;
+        /**
+          * The variant of the button.
+         */
+        "buttonVariant"?: 'borderless' | 'filled' | 'outlined';
+        /**
+          * Custom CSS class to apply to the host element.
+         */
+        "customClass"?: string;
+        /**
+          * If true, the button will be disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Indicates that the menu should have a border.
+         */
+        "menuBordered"?: boolean;
+        /**
+          * Distance between the button and menu in pixels.
+         */
+        "menuOffset"?: number;
+        /**
+          * The placement of the menu relative to the button.
+         */
+        "menuPlacement"?: PopoverPlacement;
+        /**
+          * The size of the menu.
+         */
+        "menuSize"?: ModusSize;
+        /**
+          * Indicates that the menu is visible.
+         */
+        "menuVisible": boolean;
+    }
+    /**
      * A customizable icon component used to render Modus icons.
      * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcIcon {
         /**
@@ -545,7 +648,6 @@ export namespace Components {
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
      * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcInputFeedback {
         /**
@@ -571,8 +673,7 @@ export namespace Components {
     }
     /**
      * A customizable input label component.
-     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text
      */
     interface ModusWcInputLabel {
         /**
@@ -601,8 +702,7 @@ export namespace Components {
         "subLabelText"?: string;
     }
     /**
-     * A customizable loader component used to indicate the loading of content.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable loader component used to indicate the loading of content
      */
     interface ModusWcLoader {
         /**
@@ -624,8 +724,7 @@ export namespace Components {
     }
     /**
      * A customizable menu component used to display a list of li elements vertically or horizontally.
-     * The component supports a `<slot>` for injecting custom li elements inside the ul.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a `<slot>` for injecting custom li elements inside the ul
      */
     interface ModusWcMenu {
         /**
@@ -646,8 +745,7 @@ export namespace Components {
         "size"?: ModusSize;
     }
     /**
-     * A customizable menu item component used to display the item portion of a menu.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable menu item component used to display the item portion of a menu
      */
     interface ModusWcMenuItem {
         "bordered"?: boolean;
@@ -690,8 +788,7 @@ export namespace Components {
     }
     /**
      * A customizable modal component used to display content in a dialog.
-     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML
      */
     interface ModusWcModal {
         /**
@@ -724,8 +821,62 @@ export namespace Components {
         "showFullscreenToggle"?: boolean;
     }
     /**
-     * A customizable input component used to create number inputs with types.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable navbar component used for top level navigation of all Trimble applications.
+     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML
+     */
+    interface ModusWcNavbar {
+        /**
+          * The open state of the apps menu.
+         */
+        "appsMenuOpen"?: boolean;
+        /**
+          * Applies condensed layout and styling.
+         */
+        "condensed"?: boolean;
+        /**
+          * The open state of the condensed menu.
+         */
+        "condensedMenuOpen"?: boolean;
+        /**
+          * Custom CSS class to apply to the host element.
+         */
+        "customClass"?: string;
+        /**
+          * The open state of the main menu.
+         */
+        "mainMenuOpen"?: boolean;
+        /**
+          * The open state of the notifications menu.
+         */
+        "notificationsMenuOpen"?: boolean;
+        /**
+          * Debounce time in milliseconds for search input changes. Default is 300ms.
+         */
+        "searchDebounceMs"?: number;
+        /**
+          * The open state of the search input.
+         */
+        "searchInputOpen"?: boolean;
+        /**
+          * Text replacements for the navbar.
+         */
+        "textOverrides"?: INavbarTextOverrides;
+        /**
+          * User information used to render the user card.
+         */
+        "userCard": INavbarUserCard;
+        /**
+          * The open state of the user menu.
+         */
+        "userMenuOpen"?: boolean;
+        /**
+          * The visibility of individual navbar buttons. Default is user profile visible, others hidden.
+         */
+        "visibility"?: INavbarVisibility;
+    }
+    /**
+     * A customizable input component used to create number inputs with types
      */
     interface ModusWcNumberInput {
         /**
@@ -810,8 +961,7 @@ export namespace Components {
         "value": string;
     }
     /**
-     * Pagination component to navigate through pages of content.
-     * Adheres to WCAG 2.2 standards.
+     * Pagination component to navigate through pages of content
      */
     interface ModusWcPagination {
         /**
@@ -827,9 +977,17 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * The next page button text. If not set, an icon control will be used.
+         */
+        "nextButtonText"?: string;
+        /**
           * The current page number
          */
         "page": number;
+        /**
+          * The previous page button text. If not set, an icon control will be used.
+         */
+        "prevButtonText"?: string;
         /**
           * Size of the pagination buttons
          */
@@ -837,8 +995,7 @@ export namespace Components {
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
-     * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
-     * Adheres to WCAG 2.2 standards.
+     * The radial variant supports slotting in custom HTML to be displayed within the progress circle
      */
     interface ModusWcProgress {
         /**
@@ -867,8 +1024,7 @@ export namespace Components {
         "variant"?: 'default' | 'radial';
     }
     /**
-     * A customizable radio component.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable radio component
      */
     interface ModusWcRadio {
         /**
@@ -909,8 +1065,7 @@ export namespace Components {
         "value": boolean;
     }
     /**
-     * A rating component that allows users to choose a rating from predefined options.
-     * Adheres to WCAG 2.2 standards.
+     * A rating component that allows users to choose a rating from predefined options
      */
     interface ModusWcRating {
         /**
@@ -947,8 +1102,7 @@ export namespace Components {
         "variant": ModusWcRatingVariant;
     }
     /**
-     * A customizable select component used to pick a value from a list of options.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable select component used to pick a value from a list of options
      */
     interface ModusWcSelect {
         /**
@@ -1001,8 +1155,36 @@ export namespace Components {
         "value": string;
     }
     /**
-     * A customizable skeleton component used to create skeletons of various sizes and shapes.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable side navigation component for organizing primary navigation and content areas in an application.
+     */
+    interface ModusWcSideNavigation {
+        /**
+          * Whether the side navigation should collapse when clicking outside of it.
+         */
+        "collapseOnClickOutside": boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the side navigation is expanded.
+         */
+        "expanded": boolean;
+        /**
+          * Maximum width of the side navigation panel in an expanded state.
+         */
+        "maxWidth": string;
+        /**
+          * Mode to make side navigation either overlay or push the content for the selector specified in targetContent
+         */
+        "mode": 'overlay' | 'push';
+        /**
+          * (optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode.
+         */
+        "targetContent": string;
+    }
+    /**
+     * A customizable skeleton component used to create skeletons of various sizes and shapes
      */
     interface ModusWcSkeleton {
         /**
@@ -1023,8 +1205,7 @@ export namespace Components {
         "width": string;
     }
     /**
-     * A customizable slider component.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable slider component
      */
     interface ModusWcSlider {
         /**
@@ -1078,7 +1259,6 @@ export namespace Components {
     }
     /**
      * Used to show a list of steps in a process.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcStepper {
         /**
@@ -1095,14 +1275,59 @@ export namespace Components {
         "steps": IStepperItem[];
     }
     /**
-     * A customizable table component used to show a list of data in a table format.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable checkbox component
      */
+    interface ModusWcSwitch {
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the switch.
+         */
+        "disabled"?: boolean;
+        /**
+          * The indeterminate state of the switch.
+         */
+        "indeterminate": boolean;
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * The tabindex of the input.
+         */
+        "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: ModusSize;
+        /**
+          * The value of the switch.
+         */
+        "value": boolean;
+    }
     interface ModusWcTable {
         /**
           * An array of column definitions.
          */
         "columns": ITableColumn[];
+        /**
+          * The current page number in pagination (1-based index).
+         */
+        "currentPage": number;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -1110,11 +1335,43 @@ export namespace Components {
         /**
           * An array of data objects.
          */
-        "data": Record<string, any>[];
+        "data": Record<string, unknown>[];
         /**
           * The density of the table, used to save space or increase readability.
          */
         "density"?: Density;
+        /**
+          * Enable cell editing. Either a boolean (all rows) or a predicate per row.
+         */
+        "editable"?: boolean | ((row: Record<string, unknown>) => boolean);
+        /**
+          * Enable hover effect on table rows.
+         */
+        "hover"?: boolean;
+        /**
+          * Available options for the number of rows per page.
+         */
+        "pageSizeOptions": number[];
+        /**
+          * Enable pagination for the table.
+         */
+        "paginated"?: boolean;
+        /**
+          * Row selection mode: 'none' for no selection, 'single' for single row, 'multi' for multiple rows.
+         */
+        "selectable"?: 'none' | 'single' | 'multi';
+        /**
+          * Array of selected row IDs. Used for controlled selection state.
+         */
+        "selectedRowIds"?: string[];
+        /**
+          * Show/hide the page size selector in pagination.
+         */
+        "showPageSizeSelector"?: boolean;
+        /**
+          * Enable sorting functionality for sortable columns.
+         */
+        "sortable"?: boolean;
         /**
           * Zebra striped tables differentiate rows by styling them in an alternating fashion.
          */
@@ -1122,7 +1379,6 @@ export namespace Components {
     }
     /**
      * A customizable tabs component used to create groups of tabs.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTabs {
         /**
@@ -1148,7 +1404,6 @@ export namespace Components {
     }
     /**
      * A customizable input component used to create text inputs with types.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTextInput {
         /**
@@ -1272,7 +1527,6 @@ export namespace Components {
     }
     /**
      * A customizable textarea component.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTextarea {
         /**
@@ -1356,7 +1610,6 @@ export namespace Components {
     /**
      * A theme switcher component used to toggle the application theme and/or mode.
      * Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcThemeSwitcher {
         /**
@@ -1366,7 +1619,6 @@ export namespace Components {
     }
     /**
      * A customizable input component used to create time inputs.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTimeInput {
         /**
@@ -1449,7 +1701,6 @@ export namespace Components {
     /**
      * A customizable toast component used to stack elements, positioned on the corner of a page.
      * The component supports a `<slot>` for injecting additional custom content inside the toast.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcToast {
         /**
@@ -1457,59 +1708,16 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * Time taken to dismiss the toast in milliseconds
+         */
+        "delay"?: number;
+        /**
           * The position of the toast in the parent container.
          */
         "position"?: ToastPosition;
     }
     /**
-     * A customizable checkbox component.
-     * Adheres to WCAG 2.2 standards.
-     */
-    interface ModusWcToggle {
-        /**
-          * Custom CSS class to apply to the inner div.
-         */
-        "customClass"?: string;
-        /**
-          * The disabled state of the toggle.
-         */
-        "disabled"?: boolean;
-        /**
-          * The indeterminate state of the toggle.
-         */
-        "indeterminate": boolean;
-        /**
-          * The ID of the input element.
-         */
-        "inputId"?: string;
-        /**
-          * The tabindex of the input.
-         */
-        "inputTabIndex"?: number;
-        /**
-          * The text to display within the label.
-         */
-        "label"?: string;
-        /**
-          * Name of the form control. Submitted with the form as part of a name/value pair.
-         */
-        "name"?: string;
-        /**
-          * A value is required for the form to be submittable.
-         */
-        "required"?: boolean;
-        /**
-          * The size of the input.
-         */
-        "size"?: ModusSize;
-        /**
-          * The value of the toggle.
-         */
-        "value": boolean;
-    }
-    /**
      * A customizable toolbar component used to organize content across the entire page.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcToolbar {
         /**
@@ -1519,7 +1727,6 @@ export namespace Components {
     }
     /**
      * A customizable tooltip component used to create tooltips with different content.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTooltip {
         /**
@@ -1549,7 +1756,6 @@ export namespace Components {
     }
     /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTypography {
         /**
@@ -1559,7 +1765,7 @@ export namespace Components {
         /**
           * The size of the font.
          */
-        "size"?: DaisySize;
+        "size"?: TypographySize;
         /**
           * The variant of the typography component.
          */
@@ -1606,9 +1812,21 @@ export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDateElement;
 }
+export interface ModusWcDropdownMenuCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcDropdownMenuElement;
+}
+export interface ModusWcMenuCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcMenuElement;
+}
 export interface ModusWcMenuItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcMenuItemElement;
+}
+export interface ModusWcNavbarCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcNavbarElement;
 }
 export interface ModusWcNumberInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1630,9 +1848,17 @@ export interface ModusWcSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSelectElement;
 }
+export interface ModusWcSideNavigationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcSideNavigationElement;
+}
 export interface ModusWcSliderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSliderElement;
+}
+export interface ModusWcSwitchCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcSwitchElement;
 }
 export interface ModusWcTableCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1658,10 +1884,6 @@ export interface ModusWcTimeInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTimeInputElement;
 }
-export interface ModusWcToggleCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLModusWcToggleElement;
-}
 declare global {
     interface HTMLModusWcAccordionElementEventMap {
         "expandedChange": {
@@ -1671,8 +1893,7 @@ declare global {
     }
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
-     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
      */
     interface HTMLModusWcAccordionElement extends Components.ModusWcAccordion, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcAccordionElementEventMap>(type: K, listener: (this: HTMLModusWcAccordionElement, ev: ModusWcAccordionCustomEvent<HTMLModusWcAccordionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1692,8 +1913,7 @@ declare global {
         "dismissClick": any;
     }
     /**
-     * A customizable alert component used to inform the user about important events.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable alert component used to inform the user about important events
      */
     interface HTMLModusWcAlertElement extends Components.ModusWcAlert, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcAlertElementEventMap>(type: K, listener: (this: HTMLModusWcAlertElement, ev: ModusWcAlertCustomEvent<HTMLModusWcAlertElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1711,6 +1931,7 @@ declare global {
     };
     interface HTMLModusWcAutocompleteElementEventMap {
         "chipRemove": IAutocompleteItem;
+        "chipsExpansionChange": { expanded: boolean };
         "inputBlur": FocusEvent;
         "inputChange": Event;
         "inputFocus": FocusEvent;
@@ -1718,7 +1939,6 @@ declare global {
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcAutocompleteElement extends Components.ModusWcAutocomplete, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcAutocompleteElementEventMap>(type: K, listener: (this: HTMLModusWcAutocompleteElement, ev: ModusWcAutocompleteCustomEvent<HTMLModusWcAutocompleteElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1736,7 +1956,6 @@ declare global {
     };
     /**
      * A customizable avatar component used to create avatars with different images.
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcAvatarElement extends Components.ModusWcAvatar, HTMLStencilElement {
     }
@@ -1747,7 +1966,6 @@ declare global {
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
      * The component supports a `<slot>` for injecting content within the badge.
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcBadgeElement extends Components.ModusWcBadge, HTMLStencilElement {
     }
@@ -1760,7 +1978,6 @@ declare global {
     }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcBreadcrumbsElement extends Components.ModusWcBreadcrumbs, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcBreadcrumbsElementEventMap>(type: K, listener: (this: HTMLModusWcBreadcrumbsElement, ev: ModusWcBreadcrumbsCustomEvent<HTMLModusWcBreadcrumbsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1781,8 +1998,7 @@ declare global {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
-     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
      */
     interface HTMLModusWcButtonElement extends Components.ModusWcButton, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcButtonElementEventMap>(type: K, listener: (this: HTMLModusWcButtonElement, ev: ModusWcButtonCustomEvent<HTMLModusWcButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1799,8 +2015,7 @@ declare global {
         new (): HTMLModusWcButtonElement;
     };
     /**
-     * A customizable card component used to group and display content in a way that is easily readable.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable card component used to group and display content in a way that is easily readable
      */
     interface HTMLModusWcCardElement extends Components.ModusWcCard, HTMLStencilElement {
     }
@@ -1814,8 +2029,7 @@ declare global {
         "inputFocus": FocusEvent;
     }
     /**
-     * A customizable checkbox component.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable checkbox component
      */
     interface HTMLModusWcCheckboxElement extends Components.ModusWcCheckbox, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcCheckboxElementEventMap>(type: K, listener: (this: HTMLModusWcCheckboxElement, ev: ModusWcCheckboxCustomEvent<HTMLModusWcCheckboxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1836,8 +2050,7 @@ declare global {
         "chipRemove": MouseEvent | KeyboardEvent;
     }
     /**
-     * A customizable chip component used to display information in a compact area.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable chip component used to display information in a compact area
      */
     interface HTMLModusWcChipElement extends Components.ModusWcChip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcChipElementEventMap>(type: K, listener: (this: HTMLModusWcChipElement, ev: ModusWcChipCustomEvent<HTMLModusWcChipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1860,7 +2073,6 @@ declare global {
      * A customizable collapse component used for showing and hiding content.
      * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
      * Do not set
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcCollapseElement extends Components.ModusWcCollapse, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcCollapseElementEventMap>(type: K, listener: (this: HTMLModusWcCollapseElement, ev: ModusWcCollapseCustomEvent<HTMLModusWcCollapseElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1900,8 +2112,7 @@ declare global {
         new (): HTMLModusWcDateElement;
     };
     /**
-     * A customizable divider component used to separate content horizontally or vertically.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable divider component used to separate content horizontally or vertically
      */
     interface HTMLModusWcDividerElement extends Components.ModusWcDivider, HTMLStencilElement {
     }
@@ -1909,10 +2120,30 @@ declare global {
         prototype: HTMLModusWcDividerElement;
         new (): HTMLModusWcDividerElement;
     };
+    interface HTMLModusWcDropdownMenuElementEventMap {
+        "menuVisibilityChange": { isVisible: boolean };
+    }
+    /**
+     * A customizable dropdown menu component used to render a button and toggleable menu.
+     * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
+     */
+    interface HTMLModusWcDropdownMenuElement extends Components.ModusWcDropdownMenu, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcDropdownMenuElementEventMap>(type: K, listener: (this: HTMLModusWcDropdownMenuElement, ev: ModusWcDropdownMenuCustomEvent<HTMLModusWcDropdownMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcDropdownMenuElementEventMap>(type: K, listener: (this: HTMLModusWcDropdownMenuElement, ev: ModusWcDropdownMenuCustomEvent<HTMLModusWcDropdownMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcDropdownMenuElement: {
+        prototype: HTMLModusWcDropdownMenuElement;
+        new (): HTMLModusWcDropdownMenuElement;
+    };
     /**
      * A customizable icon component used to render Modus icons.
      * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcIconElement extends Components.ModusWcIcon, HTMLStencilElement {
     }
@@ -1923,7 +2154,6 @@ declare global {
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
      * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcInputFeedbackElement extends Components.ModusWcInputFeedback, HTMLStencilElement {
     }
@@ -1933,8 +2163,7 @@ declare global {
     };
     /**
      * A customizable input label component.
-     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text
      */
     interface HTMLModusWcInputLabelElement extends Components.ModusWcInputLabel, HTMLStencilElement {
     }
@@ -1943,8 +2172,7 @@ declare global {
         new (): HTMLModusWcInputLabelElement;
     };
     /**
-     * A customizable loader component used to indicate the loading of content.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable loader component used to indicate the loading of content
      */
     interface HTMLModusWcLoaderElement extends Components.ModusWcLoader, HTMLStencilElement {
     }
@@ -1952,12 +2180,22 @@ declare global {
         prototype: HTMLModusWcLoaderElement;
         new (): HTMLModusWcLoaderElement;
     };
+    interface HTMLModusWcMenuElementEventMap {
+        "menuFocusout": FocusEvent;
+    }
     /**
      * A customizable menu component used to display a list of li elements vertically or horizontally.
-     * The component supports a `<slot>` for injecting custom li elements inside the ul.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a `<slot>` for injecting custom li elements inside the ul
      */
     interface HTMLModusWcMenuElement extends Components.ModusWcMenu, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcMenuElementEventMap>(type: K, listener: (this: HTMLModusWcMenuElement, ev: ModusWcMenuCustomEvent<HTMLModusWcMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcMenuElementEventMap>(type: K, listener: (this: HTMLModusWcMenuElement, ev: ModusWcMenuCustomEvent<HTMLModusWcMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcMenuElement: {
         prototype: HTMLModusWcMenuElement;
@@ -1967,8 +2205,7 @@ declare global {
         "itemSelect": { value: string };
     }
     /**
-     * A customizable menu item component used to display the item portion of a menu.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable menu item component used to display the item portion of a menu
      */
     interface HTMLModusWcMenuItemElement extends Components.ModusWcMenuItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcMenuItemElementEventMap>(type: K, listener: (this: HTMLModusWcMenuItemElement, ev: ModusWcMenuItemCustomEvent<HTMLModusWcMenuItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1986,8 +2223,7 @@ declare global {
     };
     /**
      * A customizable modal component used to display content in a dialog.
-     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML
      */
     interface HTMLModusWcModalElement extends Components.ModusWcModal, HTMLStencilElement {
     }
@@ -1995,14 +2231,49 @@ declare global {
         prototype: HTMLModusWcModalElement;
         new (): HTMLModusWcModalElement;
     };
+    interface HTMLModusWcNavbarElementEventMap {
+        "aiClick": MouseEvent | KeyboardEvent;
+        "appsClick": MouseEvent | KeyboardEvent;
+        "appsMenuOpenChange": boolean;
+        "condensedMenuOpenChange": boolean;
+        "helpClick": MouseEvent | KeyboardEvent;
+        "mainMenuOpenChange": boolean;
+        "myTrimbleClick": MouseEvent | KeyboardEvent;
+        "notificationsClick": MouseEvent | KeyboardEvent;
+        "notificationsMenuOpenChange": boolean;
+        "searchChange": { value: string };
+        "searchClick": MouseEvent | KeyboardEvent;
+        "searchInputOpenChange": boolean;
+        "signOutClick": MouseEvent | KeyboardEvent;
+        "trimbleLogoClick": MouseEvent | KeyboardEvent;
+        "userMenuOpenChange": boolean;
+    }
+    /**
+     * A customizable navbar component used for top level navigation of all Trimble applications.
+     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML
+     */
+    interface HTMLModusWcNavbarElement extends Components.ModusWcNavbar, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcNavbarElementEventMap>(type: K, listener: (this: HTMLModusWcNavbarElement, ev: ModusWcNavbarCustomEvent<HTMLModusWcNavbarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcNavbarElementEventMap>(type: K, listener: (this: HTMLModusWcNavbarElement, ev: ModusWcNavbarCustomEvent<HTMLModusWcNavbarElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcNavbarElement: {
+        prototype: HTMLModusWcNavbarElement;
+        new (): HTMLModusWcNavbarElement;
+    };
     interface HTMLModusWcNumberInputElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
         "inputFocus": FocusEvent;
     }
     /**
-     * A customizable input component used to create number inputs with types.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable input component used to create number inputs with types
      */
     interface HTMLModusWcNumberInputElement extends Components.ModusWcNumberInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcNumberInputElementEventMap>(type: K, listener: (this: HTMLModusWcNumberInputElement, ev: ModusWcNumberInputCustomEvent<HTMLModusWcNumberInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2022,8 +2293,7 @@ declare global {
         "pageChange": IPageChange;
     }
     /**
-     * Pagination component to navigate through pages of content.
-     * Adheres to WCAG 2.2 standards.
+     * Pagination component to navigate through pages of content
      */
     interface HTMLModusWcPaginationElement extends Components.ModusWcPagination, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcPaginationElementEventMap>(type: K, listener: (this: HTMLModusWcPaginationElement, ev: ModusWcPaginationCustomEvent<HTMLModusWcPaginationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2041,8 +2311,7 @@ declare global {
     };
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
-     * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
-     * Adheres to WCAG 2.2 standards.
+     * The radial variant supports slotting in custom HTML to be displayed within the progress circle
      */
     interface HTMLModusWcProgressElement extends Components.ModusWcProgress, HTMLStencilElement {
     }
@@ -2056,8 +2325,7 @@ declare global {
         "inputFocus": FocusEvent;
     }
     /**
-     * A customizable radio component.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable radio component
      */
     interface HTMLModusWcRadioElement extends Components.ModusWcRadio, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcRadioElementEventMap>(type: K, listener: (this: HTMLModusWcRadioElement, ev: ModusWcRadioCustomEvent<HTMLModusWcRadioElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2077,8 +2345,7 @@ declare global {
         "ratingChange": IRatingChange;
     }
     /**
-     * A rating component that allows users to choose a rating from predefined options.
-     * Adheres to WCAG 2.2 standards.
+     * A rating component that allows users to choose a rating from predefined options
      */
     interface HTMLModusWcRatingElement extends Components.ModusWcRating, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcRatingElementEventMap>(type: K, listener: (this: HTMLModusWcRatingElement, ev: ModusWcRatingCustomEvent<HTMLModusWcRatingElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2100,8 +2367,7 @@ declare global {
         "inputFocus": FocusEvent;
     }
     /**
-     * A customizable select component used to pick a value from a list of options.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable select component used to pick a value from a list of options
      */
     interface HTMLModusWcSelectElement extends Components.ModusWcSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcSelectElementEventMap>(type: K, listener: (this: HTMLModusWcSelectElement, ev: ModusWcSelectCustomEvent<HTMLModusWcSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2117,9 +2383,28 @@ declare global {
         prototype: HTMLModusWcSelectElement;
         new (): HTMLModusWcSelectElement;
     };
+    interface HTMLModusWcSideNavigationElementEventMap {
+        "expandedChange": boolean;
+    }
     /**
-     * A customizable skeleton component used to create skeletons of various sizes and shapes.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable side navigation component for organizing primary navigation and content areas in an application.
+     */
+    interface HTMLModusWcSideNavigationElement extends Components.ModusWcSideNavigation, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcSideNavigationElementEventMap>(type: K, listener: (this: HTMLModusWcSideNavigationElement, ev: ModusWcSideNavigationCustomEvent<HTMLModusWcSideNavigationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcSideNavigationElementEventMap>(type: K, listener: (this: HTMLModusWcSideNavigationElement, ev: ModusWcSideNavigationCustomEvent<HTMLModusWcSideNavigationElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcSideNavigationElement: {
+        prototype: HTMLModusWcSideNavigationElement;
+        new (): HTMLModusWcSideNavigationElement;
+    };
+    /**
+     * A customizable skeleton component used to create skeletons of various sizes and shapes
      */
     interface HTMLModusWcSkeletonElement extends Components.ModusWcSkeleton, HTMLStencilElement {
     }
@@ -2133,8 +2418,7 @@ declare global {
         "inputFocus": FocusEvent;
     }
     /**
-     * A customizable slider component.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable slider component
      */
     interface HTMLModusWcSliderElement extends Components.ModusWcSlider, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcSliderElementEventMap>(type: K, listener: (this: HTMLModusWcSliderElement, ev: ModusWcSliderCustomEvent<HTMLModusWcSliderElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2152,7 +2436,6 @@ declare global {
     };
     /**
      * Used to show a list of steps in a process.
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcStepperElement extends Components.ModusWcStepper, HTMLStencilElement {
     }
@@ -2160,16 +2443,50 @@ declare global {
         prototype: HTMLModusWcStepperElement;
         new (): HTMLModusWcStepperElement;
     };
-    interface HTMLModusWcTableElementEventMap {
-        "rowClick": {
-    row: Record<string, any>;
-    index: number;
-  };
+    interface HTMLModusWcSwitchElementEventMap {
+        "inputBlur": FocusEvent;
+        "inputChange": InputEvent;
+        "inputFocus": FocusEvent;
     }
     /**
-     * A customizable table component used to show a list of data in a table format.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable checkbox component
      */
+    interface HTMLModusWcSwitchElement extends Components.ModusWcSwitch, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcSwitchElementEventMap>(type: K, listener: (this: HTMLModusWcSwitchElement, ev: ModusWcSwitchCustomEvent<HTMLModusWcSwitchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcSwitchElementEventMap>(type: K, listener: (this: HTMLModusWcSwitchElement, ev: ModusWcSwitchCustomEvent<HTMLModusWcSwitchElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcSwitchElement: {
+        prototype: HTMLModusWcSwitchElement;
+        new (): HTMLModusWcSwitchElement;
+    };
+    interface HTMLModusWcTableElementEventMap {
+        "cellEditStart": {
+    rowIndex: number;
+    colId: string;
+  };
+        "cellEditCommit": {
+    rowIndex: number;
+    colId: string;
+    newValue: unknown;
+    updatedRow: Record<string, unknown>;
+  };
+        "rowClick": {
+    row: Record<string, unknown>;
+    index: number;
+  };
+        "sortChange": SortingState;
+        "paginationChange": IPaginationChangeEventDetail;
+        "rowSelectionChange": {
+    selectedRows: Record<string, unknown>[];
+    selectedRowIds: string[];
+  };
+    }
     interface HTMLModusWcTableElement extends Components.ModusWcTable, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTableElementEventMap>(type: K, listener: (this: HTMLModusWcTableElement, ev: ModusWcTableCustomEvent<HTMLModusWcTableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2192,7 +2509,6 @@ declare global {
     }
     /**
      * A customizable tabs component used to create groups of tabs.
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcTabsElement extends Components.ModusWcTabs, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTabsElementEventMap>(type: K, listener: (this: HTMLModusWcTabsElement, ev: ModusWcTabsCustomEvent<HTMLModusWcTabsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2215,7 +2531,6 @@ declare global {
     }
     /**
      * A customizable input component used to create text inputs with types.
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcTextInputElement extends Components.ModusWcTextInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTextInputElementEventMap>(type: K, listener: (this: HTMLModusWcTextInputElement, ev: ModusWcTextInputCustomEvent<HTMLModusWcTextInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2238,7 +2553,6 @@ declare global {
     }
     /**
      * A customizable textarea component.
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcTextareaElement extends Components.ModusWcTextarea, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTextareaElementEventMap>(type: K, listener: (this: HTMLModusWcTextareaElement, ev: ModusWcTextareaCustomEvent<HTMLModusWcTextareaElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2266,7 +2580,6 @@ declare global {
     /**
      * A theme switcher component used to toggle the application theme and/or mode.
      * Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcThemeSwitcherElement extends Components.ModusWcThemeSwitcher, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcThemeSwitcherElementEventMap>(type: K, listener: (this: HTMLModusWcThemeSwitcherElement, ev: ModusWcThemeSwitcherCustomEvent<HTMLModusWcThemeSwitcherElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2289,7 +2602,6 @@ declare global {
     }
     /**
      * A customizable input component used to create time inputs.
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcTimeInputElement extends Components.ModusWcTimeInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTimeInputElementEventMap>(type: K, listener: (this: HTMLModusWcTimeInputElement, ev: ModusWcTimeInputCustomEvent<HTMLModusWcTimeInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2308,7 +2620,6 @@ declare global {
     /**
      * A customizable toast component used to stack elements, positioned on the corner of a page.
      * The component supports a `<slot>` for injecting additional custom content inside the toast.
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcToastElement extends Components.ModusWcToast, HTMLStencilElement {
     }
@@ -2316,32 +2627,8 @@ declare global {
         prototype: HTMLModusWcToastElement;
         new (): HTMLModusWcToastElement;
     };
-    interface HTMLModusWcToggleElementEventMap {
-        "inputBlur": FocusEvent;
-        "inputChange": InputEvent;
-        "inputFocus": FocusEvent;
-    }
-    /**
-     * A customizable checkbox component.
-     * Adheres to WCAG 2.2 standards.
-     */
-    interface HTMLModusWcToggleElement extends Components.ModusWcToggle, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLModusWcToggleElementEventMap>(type: K, listener: (this: HTMLModusWcToggleElement, ev: ModusWcToggleCustomEvent<HTMLModusWcToggleElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLModusWcToggleElementEventMap>(type: K, listener: (this: HTMLModusWcToggleElement, ev: ModusWcToggleCustomEvent<HTMLModusWcToggleElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLModusWcToggleElement: {
-        prototype: HTMLModusWcToggleElement;
-        new (): HTMLModusWcToggleElement;
-    };
     /**
      * A customizable toolbar component used to organize content across the entire page.
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcToolbarElement extends Components.ModusWcToolbar, HTMLStencilElement {
     }
@@ -2351,7 +2638,6 @@ declare global {
     };
     /**
      * A customizable tooltip component used to create tooltips with different content.
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcTooltipElement extends Components.ModusWcTooltip, HTMLStencilElement {
     }
@@ -2361,7 +2647,6 @@ declare global {
     };
     /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
-     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcTypographyElement extends Components.ModusWcTypography, HTMLStencilElement {
     }
@@ -2383,6 +2668,7 @@ declare global {
         "modus-wc-collapse": HTMLModusWcCollapseElement;
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
+        "modus-wc-dropdown-menu": HTMLModusWcDropdownMenuElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
@@ -2390,15 +2676,18 @@ declare global {
         "modus-wc-menu": HTMLModusWcMenuElement;
         "modus-wc-menu-item": HTMLModusWcMenuItemElement;
         "modus-wc-modal": HTMLModusWcModalElement;
+        "modus-wc-navbar": HTMLModusWcNavbarElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-pagination": HTMLModusWcPaginationElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
         "modus-wc-rating": HTMLModusWcRatingElement;
         "modus-wc-select": HTMLModusWcSelectElement;
+        "modus-wc-side-navigation": HTMLModusWcSideNavigationElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
         "modus-wc-stepper": HTMLModusWcStepperElement;
+        "modus-wc-switch": HTMLModusWcSwitchElement;
         "modus-wc-table": HTMLModusWcTableElement;
         "modus-wc-tabs": HTMLModusWcTabsElement;
         "modus-wc-text-input": HTMLModusWcTextInputElement;
@@ -2407,7 +2696,6 @@ declare global {
         "modus-wc-theme-switcher": HTMLModusWcThemeSwitcherElement;
         "modus-wc-time-input": HTMLModusWcTimeInputElement;
         "modus-wc-toast": HTMLModusWcToastElement;
-        "modus-wc-toggle": HTMLModusWcToggleElement;
         "modus-wc-toolbar": HTMLModusWcToolbarElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
@@ -2416,8 +2704,7 @@ declare global {
 declare namespace LocalJSX {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
-     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
      */
     interface ModusWcAccordion {
         /**
@@ -2433,16 +2720,15 @@ declare namespace LocalJSX {
   }>) => void;
     }
     /**
-     * A customizable alert component used to inform the user about important events.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable alert component used to inform the user about important events
      */
     interface ModusWcAlert {
         /**
-          * The description of the alert. *
+          * The description of the alert.
          */
         "alertDescription"?: string;
         /**
-          * The title of the alert. *
+          * The title of the alert.
          */
         "alertTitle": string;
         /**
@@ -2450,7 +2736,7 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * Time taken to dismiss the toast in milliseconds
+          * Time taken to dismiss the alert in milliseconds
          */
         "delay"?: number;
         /**
@@ -2458,7 +2744,7 @@ declare namespace LocalJSX {
          */
         "dismissible"?: boolean;
         /**
-          * The Modus icon to render. *
+          * The Modus icon to render.
          */
         "icon"?: string;
         /**
@@ -2476,7 +2762,6 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcAutocomplete {
         /**
@@ -2484,9 +2769,25 @@ declare namespace LocalJSX {
          */
         "bordered"?: boolean;
         /**
+          * Custom blur handler - if provided, overrides default blur behavior
+         */
+        "customBlur"?: (event: FocusEvent) => void;
+        /**
           * Custom CSS class to apply to host element.
          */
         "customClass"?: string;
+        /**
+          * Custom input change handler - if provided, overrides default search filtering
+         */
+        "customInputChange"?: (value: string) => void;
+        /**
+          * Custom item selection handler - if provided, overrides default selection logic
+         */
+        "customItemSelect"?: (item: IAutocompleteItem) => void;
+        /**
+          * Custom key down handler - if provided, overrides default keyboard navigation
+         */
+        "customKeyDown"?: (event: KeyboardEvent) => void;
         /**
           * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
          */
@@ -2495,6 +2796,14 @@ declare namespace LocalJSX {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * Show the clear button within the input field.
+         */
+        "includeClear"?: boolean;
+        /**
+          * Show the search icon within the input field.
+         */
+        "includeSearch"?: boolean;
         /**
           * The ID of the input element.
          */
@@ -2516,9 +2825,17 @@ declare namespace LocalJSX {
          */
         "leaveMenuOpen"?: boolean;
         /**
+          * Maximum number of chips to display. When exceeded, shows expand/collapse button. Set to -1 to disable limit.
+         */
+        "maxChips"?: number;
+        /**
           * The minimum number of characters required to render the menu.
          */
         "minChars"?: number;
+        /**
+          * Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead.
+         */
+        "minInputWidth"?: number;
         /**
           * Whether the input allows multiple items to be selected.
          */
@@ -2535,6 +2852,10 @@ declare namespace LocalJSX {
           * Event emitted when a selected item chip is removed.
          */
         "onChipRemove"?: (event: ModusWcAutocompleteCustomEvent<IAutocompleteItem>) => void;
+        /**
+          * Event emitted when chips expansion state changes.
+         */
+        "onChipsExpansionChange"?: (event: ModusWcAutocompleteCustomEvent<{ expanded: boolean }>) => void;
         /**
           * Event emitted when the input loses focus.
          */
@@ -2564,6 +2885,10 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
+          * Whether to show the menu whenever the input has focus, regardless of input value.
+         */
+        "showMenuOnFocus"?: boolean;
+        /**
           * A spinner that appears when set to true
          */
         "showSpinner"?: boolean;
@@ -2578,7 +2903,6 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable avatar component used to create avatars with different images.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcAvatar {
         /**
@@ -2605,7 +2929,6 @@ declare namespace LocalJSX {
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
      * The component supports a `<slot>` for injecting content within the badge.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcBadge {
         /**
@@ -2629,11 +2952,10 @@ declare namespace LocalJSX {
         /**
           * The variant of the badge.
          */
-        "variant"?: 'counter' | 'filled' | 'text';
+        "variant"?: 'counter' | 'filled' | 'outlined' | 'text';
     }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcBreadcrumbs {
         /**
@@ -2655,8 +2977,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
-     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
      */
     interface ModusWcButton {
         /**
@@ -2701,8 +3022,7 @@ declare namespace LocalJSX {
         "variant"?: 'borderless' | 'filled' | 'outlined';
     }
     /**
-     * A customizable card component used to group and display content in a way that is easily readable.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable card component used to group and display content in a way that is easily readable
      */
     interface ModusWcCard {
         /**
@@ -2727,8 +3047,7 @@ declare namespace LocalJSX {
         "padding"?: 'normal' | 'compact';
     }
     /**
-     * A customizable checkbox component.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable checkbox component
      */
     interface ModusWcCheckbox {
         /**
@@ -2785,8 +3104,7 @@ declare namespace LocalJSX {
         "value"?: boolean;
     }
     /**
-     * A customizable chip component used to display information in a compact area.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable chip component used to display information in a compact area
      */
     interface ModusWcChip {
         /**
@@ -2834,7 +3152,6 @@ declare namespace LocalJSX {
      * A customizable collapse component used for showing and hiding content.
      * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
      * Do not set
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcCollapse {
         /**
@@ -2937,8 +3254,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
-     * A customizable divider component used to separate content horizontally or vertically.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable divider component used to separate content horizontally or vertically
      */
     interface ModusWcDivider {
         /**
@@ -2973,9 +3289,66 @@ declare namespace LocalJSX {
         "responsive"?: boolean;
     }
     /**
+     * A customizable dropdown menu component used to render a button and toggleable menu.
+     * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
+     */
+    interface ModusWcDropdownMenu {
+        /**
+          * The aria-label for the dropdown button.
+         */
+        "buttonAriaLabel"?: string;
+        /**
+          * The color variant of the button.
+         */
+        "buttonColor"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger';
+        /**
+          * The size of the button.
+         */
+        "buttonSize"?: DaisySize;
+        /**
+          * The variant of the button.
+         */
+        "buttonVariant"?: 'borderless' | 'filled' | 'outlined';
+        /**
+          * Custom CSS class to apply to the host element.
+         */
+        "customClass"?: string;
+        /**
+          * If true, the button will be disabled.
+         */
+        "disabled"?: boolean;
+        /**
+          * Indicates that the menu should have a border.
+         */
+        "menuBordered"?: boolean;
+        /**
+          * Distance between the button and menu in pixels.
+         */
+        "menuOffset"?: number;
+        /**
+          * The placement of the menu relative to the button.
+         */
+        "menuPlacement"?: PopoverPlacement;
+        /**
+          * The size of the menu.
+         */
+        "menuSize"?: ModusSize;
+        /**
+          * Indicates that the menu is visible.
+         */
+        "menuVisible"?: boolean;
+        /**
+          * Event emitted when the menuVisible prop changes.
+         */
+        "onMenuVisibilityChange"?: (event: ModusWcDropdownMenuCustomEvent<{ isVisible: boolean }>) => void;
+    }
+    /**
      * A customizable icon component used to render Modus icons.
      * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcIcon {
         /**
@@ -2998,7 +3371,6 @@ declare namespace LocalJSX {
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
      * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcInputFeedback {
         /**
@@ -3024,8 +3396,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable input label component.
-     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text
      */
     interface ModusWcInputLabel {
         /**
@@ -3054,8 +3425,7 @@ declare namespace LocalJSX {
         "subLabelText"?: string;
     }
     /**
-     * A customizable loader component used to indicate the loading of content.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable loader component used to indicate the loading of content
      */
     interface ModusWcLoader {
         /**
@@ -3077,8 +3447,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable menu component used to display a list of li elements vertically or horizontally.
-     * The component supports a `<slot>` for injecting custom li elements inside the ul.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a `<slot>` for injecting custom li elements inside the ul
      */
     interface ModusWcMenu {
         /**
@@ -3090,6 +3459,10 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
+          * Event emitted when the menu loses focus.
+         */
+        "onMenuFocusout"?: (event: ModusWcMenuCustomEvent<FocusEvent>) => void;
+        /**
           * The orientation of the menu.
          */
         "orientation"?: Orientation;
@@ -3099,8 +3472,7 @@ declare namespace LocalJSX {
         "size"?: ModusSize;
     }
     /**
-     * A customizable menu item component used to display the item portion of a menu.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable menu item component used to display the item portion of a menu
      */
     interface ModusWcMenuItem {
         "bordered"?: boolean;
@@ -3147,8 +3519,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable modal component used to display content in a dialog.
-     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
-     * Adheres to WCAG 2.2 standards.
+     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML
      */
     interface ModusWcModal {
         /**
@@ -3181,8 +3552,122 @@ declare namespace LocalJSX {
         "showFullscreenToggle"?: boolean;
     }
     /**
-     * A customizable input component used to create number inputs with types.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable navbar component used for top level navigation of all Trimble applications.
+     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML
+     */
+    interface ModusWcNavbar {
+        /**
+          * The open state of the apps menu.
+         */
+        "appsMenuOpen"?: boolean;
+        /**
+          * Applies condensed layout and styling.
+         */
+        "condensed"?: boolean;
+        /**
+          * The open state of the condensed menu.
+         */
+        "condensedMenuOpen"?: boolean;
+        /**
+          * Custom CSS class to apply to the host element.
+         */
+        "customClass"?: string;
+        /**
+          * The open state of the main menu.
+         */
+        "mainMenuOpen"?: boolean;
+        /**
+          * The open state of the notifications menu.
+         */
+        "notificationsMenuOpen"?: boolean;
+        /**
+          * Event emitted when the AI button is clicked or activated via keyboard.
+         */
+        "onAiClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the apps button is clicked or activated via keyboard.
+         */
+        "onAppsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the apps menu open state changes.
+         */
+        "onAppsMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
+          * Event emitted when the condensed menu open state changes.
+         */
+        "onCondensedMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
+          * Event emitted when the help button is clicked or activated via keyboard.
+         */
+        "onHelpClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the main menu open state changes.
+         */
+        "onMainMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
+          * Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard.
+         */
+        "onMyTrimbleClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the notifications button is clicked or activated via keyboard.
+         */
+        "onNotificationsClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the notifications menu open state changes.
+         */
+        "onNotificationsMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
+          * Event emitted when the search input value is changed.
+         */
+        "onSearchChange"?: (event: ModusWcNavbarCustomEvent<{ value: string }>) => void;
+        /**
+          * Event emitted when the search button is clicked or activated via keyboard.
+         */
+        "onSearchClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the search input open state changes.
+         */
+        "onSearchInputOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
+          * Event emitted when the user profile sign out button is clicked or activated via keyboard.
+         */
+        "onSignOutClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the Trimble logo is clicked or activated via keyboard.
+         */
+        "onTrimbleLogoClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the user menu open state changes.
+         */
+        "onUserMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
+        /**
+          * Debounce time in milliseconds for search input changes. Default is 300ms.
+         */
+        "searchDebounceMs"?: number;
+        /**
+          * The open state of the search input.
+         */
+        "searchInputOpen"?: boolean;
+        /**
+          * Text replacements for the navbar.
+         */
+        "textOverrides"?: INavbarTextOverrides;
+        /**
+          * User information used to render the user card.
+         */
+        "userCard": INavbarUserCard;
+        /**
+          * The open state of the user menu.
+         */
+        "userMenuOpen"?: boolean;
+        /**
+          * The visibility of individual navbar buttons. Default is user profile visible, others hidden.
+         */
+        "visibility"?: INavbarVisibility;
+    }
+    /**
+     * A customizable input component used to create number inputs with types
      */
     interface ModusWcNumberInput {
         /**
@@ -3279,8 +3764,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
-     * Pagination component to navigate through pages of content.
-     * Adheres to WCAG 2.2 standards.
+     * Pagination component to navigate through pages of content
      */
     interface ModusWcPagination {
         /**
@@ -3296,6 +3780,10 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
+          * The next page button text. If not set, an icon control will be used.
+         */
+        "nextButtonText"?: string;
+        /**
           * Event emitted when page changes
          */
         "onPageChange"?: (event: ModusWcPaginationCustomEvent<IPageChange>) => void;
@@ -3304,14 +3792,17 @@ declare namespace LocalJSX {
          */
         "page"?: number;
         /**
+          * The previous page button text. If not set, an icon control will be used.
+         */
+        "prevButtonText"?: string;
+        /**
           * Size of the pagination buttons
          */
         "size"?: ModusSize;
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
-     * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
-     * Adheres to WCAG 2.2 standards.
+     * The radial variant supports slotting in custom HTML to be displayed within the progress circle
      */
     interface ModusWcProgress {
         /**
@@ -3340,8 +3831,7 @@ declare namespace LocalJSX {
         "variant"?: 'default' | 'radial';
     }
     /**
-     * A customizable radio component.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable radio component
      */
     interface ModusWcRadio {
         /**
@@ -3394,8 +3884,7 @@ declare namespace LocalJSX {
         "value"?: boolean;
     }
     /**
-     * A rating component that allows users to choose a rating from predefined options.
-     * Adheres to WCAG 2.2 standards.
+     * A rating component that allows users to choose a rating from predefined options
      */
     interface ModusWcRating {
         /**
@@ -3436,8 +3925,7 @@ declare namespace LocalJSX {
         "variant"?: ModusWcRatingVariant;
     }
     /**
-     * A customizable select component used to pick a value from a list of options.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable select component used to pick a value from a list of options
      */
     interface ModusWcSelect {
         /**
@@ -3502,8 +3990,40 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
-     * A customizable skeleton component used to create skeletons of various sizes and shapes.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable side navigation component for organizing primary navigation and content areas in an application.
+     */
+    interface ModusWcSideNavigation {
+        /**
+          * Whether the side navigation should collapse when clicking outside of it.
+         */
+        "collapseOnClickOutside"?: boolean;
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * Whether the side navigation is expanded.
+         */
+        "expanded"?: boolean;
+        /**
+          * Maximum width of the side navigation panel in an expanded state.
+         */
+        "maxWidth"?: string;
+        /**
+          * Mode to make side navigation either overlay or push the content for the selector specified in targetContent
+         */
+        "mode"?: 'overlay' | 'push';
+        /**
+          * Event emitted when the expanded state changes (expanded/collapsed).
+         */
+        "onExpandedChange"?: (event: ModusWcSideNavigationCustomEvent<boolean>) => void;
+        /**
+          * (optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode.
+         */
+        "targetContent"?: string;
+    }
+    /**
+     * A customizable skeleton component used to create skeletons of various sizes and shapes
      */
     interface ModusWcSkeleton {
         /**
@@ -3524,8 +4044,7 @@ declare namespace LocalJSX {
         "width"?: string;
     }
     /**
-     * A customizable slider component.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable slider component
      */
     interface ModusWcSlider {
         /**
@@ -3591,7 +4110,6 @@ declare namespace LocalJSX {
     }
     /**
      * Used to show a list of steps in a process.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcStepper {
         /**
@@ -3608,14 +4126,71 @@ declare namespace LocalJSX {
         "steps"?: IStepperItem[];
     }
     /**
-     * A customizable table component used to show a list of data in a table format.
-     * Adheres to WCAG 2.2 standards.
+     * A customizable checkbox component
      */
+    interface ModusWcSwitch {
+        /**
+          * Custom CSS class to apply to the inner div.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the switch.
+         */
+        "disabled"?: boolean;
+        /**
+          * The indeterminate state of the switch.
+         */
+        "indeterminate"?: boolean;
+        /**
+          * The ID of the input element.
+         */
+        "inputId"?: string;
+        /**
+          * The tabindex of the input.
+         */
+        "inputTabIndex"?: number;
+        /**
+          * The text to display within the label.
+         */
+        "label"?: string;
+        /**
+          * Name of the form control. Submitted with the form as part of a name/value pair.
+         */
+        "name"?: string;
+        /**
+          * Emitted when the input loses focus.
+         */
+        "onInputBlur"?: (event: ModusWcSwitchCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the input value changes.
+         */
+        "onInputChange"?: (event: ModusWcSwitchCustomEvent<InputEvent>) => void;
+        /**
+          * Emitted when the input gains focus.
+         */
+        "onInputFocus"?: (event: ModusWcSwitchCustomEvent<FocusEvent>) => void;
+        /**
+          * A value is required for the form to be submittable.
+         */
+        "required"?: boolean;
+        /**
+          * The size of the input.
+         */
+        "size"?: ModusSize;
+        /**
+          * The value of the switch.
+         */
+        "value"?: boolean;
+    }
     interface ModusWcTable {
         /**
           * An array of column definitions.
          */
         "columns": ITableColumn[];
+        /**
+          * The current page number in pagination (1-based index).
+         */
+        "currentPage"?: number;
         /**
           * Custom CSS class to apply to the inner div.
          */
@@ -3623,18 +4198,81 @@ declare namespace LocalJSX {
         /**
           * An array of data objects.
          */
-        "data": Record<string, any>[];
+        "data": Record<string, unknown>[];
         /**
           * The density of the table, used to save space or increase readability.
          */
         "density"?: Density;
         /**
+          * Enable cell editing. Either a boolean (all rows) or a predicate per row.
+         */
+        "editable"?: boolean | ((row: Record<string, unknown>) => boolean);
+        /**
+          * Enable hover effect on table rows.
+         */
+        "hover"?: boolean;
+        /**
+          * Emits when cell editing is committed with the new value.
+         */
+        "onCellEditCommit"?: (event: ModusWcTableCustomEvent<{
+    rowIndex: number;
+    colId: string;
+    newValue: unknown;
+    updatedRow: Record<string, unknown>;
+  }>) => void;
+        /**
+          * Emits when cell editing starts.
+         */
+        "onCellEditStart"?: (event: ModusWcTableCustomEvent<{
+    rowIndex: number;
+    colId: string;
+  }>) => void;
+        /**
+          * Emits when pagination changes with the new pagination state.
+         */
+        "onPaginationChange"?: (event: ModusWcTableCustomEvent<IPaginationChangeEventDetail>) => void;
+        /**
           * Emits when a row is clicked.
          */
         "onRowClick"?: (event: ModusWcTableCustomEvent<{
-    row: Record<string, any>;
+    row: Record<string, unknown>;
     index: number;
   }>) => void;
+        /**
+          * Emits when row selection changes with the selected rows and their IDs.
+         */
+        "onRowSelectionChange"?: (event: ModusWcTableCustomEvent<{
+    selectedRows: Record<string, unknown>[];
+    selectedRowIds: string[];
+  }>) => void;
+        /**
+          * Emits when sorting changes with the new sorting state.
+         */
+        "onSortChange"?: (event: ModusWcTableCustomEvent<SortingState>) => void;
+        /**
+          * Available options for the number of rows per page.
+         */
+        "pageSizeOptions"?: number[];
+        /**
+          * Enable pagination for the table.
+         */
+        "paginated"?: boolean;
+        /**
+          * Row selection mode: 'none' for no selection, 'single' for single row, 'multi' for multiple rows.
+         */
+        "selectable"?: 'none' | 'single' | 'multi';
+        /**
+          * Array of selected row IDs. Used for controlled selection state.
+         */
+        "selectedRowIds"?: string[];
+        /**
+          * Show/hide the page size selector in pagination.
+         */
+        "showPageSizeSelector"?: boolean;
+        /**
+          * Enable sorting functionality for sortable columns.
+         */
+        "sortable"?: boolean;
         /**
           * Zebra striped tables differentiate rows by styling them in an alternating fashion.
          */
@@ -3642,7 +4280,6 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable tabs component used to create groups of tabs.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTabs {
         /**
@@ -3675,7 +4312,6 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable input component used to create text inputs with types.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTextInput {
         /**
@@ -3811,7 +4447,6 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable textarea component.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTextarea {
         /**
@@ -3907,7 +4542,6 @@ declare namespace LocalJSX {
     /**
      * A theme switcher component used to toggle the application theme and/or mode.
      * Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcThemeSwitcher {
         /**
@@ -3921,7 +4555,6 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable input component used to create time inputs.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTimeInput {
         /**
@@ -4016,7 +4649,6 @@ declare namespace LocalJSX {
     /**
      * A customizable toast component used to stack elements, positioned on the corner of a page.
      * The component supports a `<slot>` for injecting additional custom content inside the toast.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcToast {
         /**
@@ -4024,71 +4656,16 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
+          * Time taken to dismiss the toast in milliseconds
+         */
+        "delay"?: number;
+        /**
           * The position of the toast in the parent container.
          */
         "position"?: ToastPosition;
     }
     /**
-     * A customizable checkbox component.
-     * Adheres to WCAG 2.2 standards.
-     */
-    interface ModusWcToggle {
-        /**
-          * Custom CSS class to apply to the inner div.
-         */
-        "customClass"?: string;
-        /**
-          * The disabled state of the toggle.
-         */
-        "disabled"?: boolean;
-        /**
-          * The indeterminate state of the toggle.
-         */
-        "indeterminate"?: boolean;
-        /**
-          * The ID of the input element.
-         */
-        "inputId"?: string;
-        /**
-          * The tabindex of the input.
-         */
-        "inputTabIndex"?: number;
-        /**
-          * The text to display within the label.
-         */
-        "label"?: string;
-        /**
-          * Name of the form control. Submitted with the form as part of a name/value pair.
-         */
-        "name"?: string;
-        /**
-          * Emitted when the input loses focus.
-         */
-        "onInputBlur"?: (event: ModusWcToggleCustomEvent<FocusEvent>) => void;
-        /**
-          * Emitted when the input value changes.
-         */
-        "onInputChange"?: (event: ModusWcToggleCustomEvent<InputEvent>) => void;
-        /**
-          * Emitted when the input gains focus.
-         */
-        "onInputFocus"?: (event: ModusWcToggleCustomEvent<FocusEvent>) => void;
-        /**
-          * A value is required for the form to be submittable.
-         */
-        "required"?: boolean;
-        /**
-          * The size of the input.
-         */
-        "size"?: ModusSize;
-        /**
-          * The value of the toggle.
-         */
-        "value"?: boolean;
-    }
-    /**
      * A customizable toolbar component used to organize content across the entire page.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcToolbar {
         /**
@@ -4098,7 +4675,6 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable tooltip component used to create tooltips with different content.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTooltip {
         /**
@@ -4128,7 +4704,6 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable typography component used to render text with different sizes, variants, and weights.
-     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTypography {
         /**
@@ -4138,7 +4713,7 @@ declare namespace LocalJSX {
         /**
           * The size of the font.
          */
-        "size"?: DaisySize;
+        "size"?: TypographySize;
         /**
           * The variant of the typography component.
          */
@@ -4162,6 +4737,7 @@ declare namespace LocalJSX {
         "modus-wc-collapse": ModusWcCollapse;
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
+        "modus-wc-dropdown-menu": ModusWcDropdownMenu;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-feedback": ModusWcInputFeedback;
         "modus-wc-input-label": ModusWcInputLabel;
@@ -4169,15 +4745,18 @@ declare namespace LocalJSX {
         "modus-wc-menu": ModusWcMenu;
         "modus-wc-menu-item": ModusWcMenuItem;
         "modus-wc-modal": ModusWcModal;
+        "modus-wc-navbar": ModusWcNavbar;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-pagination": ModusWcPagination;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
         "modus-wc-rating": ModusWcRating;
         "modus-wc-select": ModusWcSelect;
+        "modus-wc-side-navigation": ModusWcSideNavigation;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
         "modus-wc-stepper": ModusWcStepper;
+        "modus-wc-switch": ModusWcSwitch;
         "modus-wc-table": ModusWcTable;
         "modus-wc-tabs": ModusWcTabs;
         "modus-wc-text-input": ModusWcTextInput;
@@ -4186,7 +4765,6 @@ declare namespace LocalJSX {
         "modus-wc-theme-switcher": ModusWcThemeSwitcher;
         "modus-wc-time-input": ModusWcTimeInput;
         "modus-wc-toast": ModusWcToast;
-        "modus-wc-toggle": ModusWcToggle;
         "modus-wc-toolbar": ModusWcToolbar;
         "modus-wc-tooltip": ModusWcTooltip;
         "modus-wc-typography": ModusWcTypography;
@@ -4198,62 +4776,51 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             /**
              * A customizable accordion component used for showing and hiding related groups of content.
-             * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements.
-             * Adheres to WCAG 2.2 standards.
+             * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
              */
             "modus-wc-accordion": LocalJSX.ModusWcAccordion & JSXBase.HTMLAttributes<HTMLModusWcAccordionElement>;
             /**
-             * A customizable alert component used to inform the user about important events.
-             * Adheres to WCAG 2.2 standards.
+             * A customizable alert component used to inform the user about important events
              */
             "modus-wc-alert": LocalJSX.ModusWcAlert & JSXBase.HTMLAttributes<HTMLModusWcAlertElement>;
             /**
              * A customizable autocomplete component used to create searchable text inputs.
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-autocomplete": LocalJSX.ModusWcAutocomplete & JSXBase.HTMLAttributes<HTMLModusWcAutocompleteElement>;
             /**
              * A customizable avatar component used to create avatars with different images.
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-avatar": LocalJSX.ModusWcAvatar & JSXBase.HTMLAttributes<HTMLModusWcAvatarElement>;
             /**
              * A customizable badge component used to create badges with different sizes, types, and colors.
              * The component supports a `<slot>` for injecting content within the badge.
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-badge": LocalJSX.ModusWcBadge & JSXBase.HTMLAttributes<HTMLModusWcBadgeElement>;
             /**
              * A customizable breadcrumbs component used to help users navigate through a website.
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-breadcrumbs": LocalJSX.ModusWcBreadcrumbs & JSXBase.HTMLAttributes<HTMLModusWcBreadcrumbsElement>;
             /**
              * A customizable button component used to create buttons with different sizes, variants, and types.
-             * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
-             * Adheres to WCAG 2.2 standards.
+             * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
             /**
-             * A customizable card component used to group and display content in a way that is easily readable.
-             * Adheres to WCAG 2.2 standards.
+             * A customizable card component used to group and display content in a way that is easily readable
              */
             "modus-wc-card": LocalJSX.ModusWcCard & JSXBase.HTMLAttributes<HTMLModusWcCardElement>;
             /**
-             * A customizable checkbox component.
-             * Adheres to WCAG 2.2 standards.
+             * A customizable checkbox component
              */
             "modus-wc-checkbox": LocalJSX.ModusWcCheckbox & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
             /**
-             * A customizable chip component used to display information in a compact area.
-             * Adheres to WCAG 2.2 standards.
+             * A customizable chip component used to display information in a compact area
              */
             "modus-wc-chip": LocalJSX.ModusWcChip & JSXBase.HTMLAttributes<HTMLModusWcChipElement>;
             /**
              * A customizable collapse component used for showing and hiding content.
              * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
              * Do not set
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-collapse": LocalJSX.ModusWcCollapse & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;
             /**
@@ -4262,152 +4829,136 @@ declare module "@stencil/core" {
              */
             "modus-wc-date": LocalJSX.ModusWcDate & JSXBase.HTMLAttributes<HTMLModusWcDateElement>;
             /**
-             * A customizable divider component used to separate content horizontally or vertically.
-             * Adheres to WCAG 2.2 standards.
+             * A customizable divider component used to separate content horizontally or vertically
              */
             "modus-wc-divider": LocalJSX.ModusWcDivider & JSXBase.HTMLAttributes<HTMLModusWcDividerElement>;
             /**
+             * A customizable dropdown menu component used to render a button and toggleable menu.
+             * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
+             */
+            "modus-wc-dropdown-menu": LocalJSX.ModusWcDropdownMenu & JSXBase.HTMLAttributes<HTMLModusWcDropdownMenuElement>;
+            /**
              * A customizable icon component used to render Modus icons.
              * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-icon": LocalJSX.ModusWcIcon & JSXBase.HTMLAttributes<HTMLModusWcIconElement>;
             /**
              * A customizable feedback component used to provide additional context related to form input interactions.
              * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-input-feedback": LocalJSX.ModusWcInputFeedback & JSXBase.HTMLAttributes<HTMLModusWcInputFeedbackElement>;
             /**
              * A customizable input label component.
-             * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
-             * Adheres to WCAG 2.2 standards.
+             * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text
              */
             "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
             /**
-             * A customizable loader component used to indicate the loading of content.
-             * Adheres to WCAG 2.2 standards.
+             * A customizable loader component used to indicate the loading of content
              */
             "modus-wc-loader": LocalJSX.ModusWcLoader & JSXBase.HTMLAttributes<HTMLModusWcLoaderElement>;
             /**
              * A customizable menu component used to display a list of li elements vertically or horizontally.
-             * The component supports a `<slot>` for injecting custom li elements inside the ul.
-             * Adheres to WCAG 2.2 standards.
+             * The component supports a `<slot>` for injecting custom li elements inside the ul
              */
             "modus-wc-menu": LocalJSX.ModusWcMenu & JSXBase.HTMLAttributes<HTMLModusWcMenuElement>;
             /**
-             * A customizable menu item component used to display the item portion of a menu.
-             * Adheres to WCAG 2.2 standards.
+             * A customizable menu item component used to display the item portion of a menu
              */
             "modus-wc-menu-item": LocalJSX.ModusWcMenuItem & JSXBase.HTMLAttributes<HTMLModusWcMenuItemElement>;
             /**
              * A customizable modal component used to display content in a dialog.
-             * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML.
-             * Adheres to WCAG 2.2 standards.
+             * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML
              */
             "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
             /**
-             * A customizable input component used to create number inputs with types.
-             * Adheres to WCAG 2.2 standards.
+             * A customizable navbar component used for top level navigation of all Trimble applications.
+             * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
+             * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML
+             */
+            "modus-wc-navbar": LocalJSX.ModusWcNavbar & JSXBase.HTMLAttributes<HTMLModusWcNavbarElement>;
+            /**
+             * A customizable input component used to create number inputs with types
              */
             "modus-wc-number-input": LocalJSX.ModusWcNumberInput & JSXBase.HTMLAttributes<HTMLModusWcNumberInputElement>;
             /**
-             * Pagination component to navigate through pages of content.
-             * Adheres to WCAG 2.2 standards.
+             * Pagination component to navigate through pages of content
              */
             "modus-wc-pagination": LocalJSX.ModusWcPagination & JSXBase.HTMLAttributes<HTMLModusWcPaginationElement>;
             /**
              * A customizable progress component used to show the progress of a task or show the passing of time.
-             * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
-             * Adheres to WCAG 2.2 standards.
+             * The radial variant supports slotting in custom HTML to be displayed within the progress circle
              */
             "modus-wc-progress": LocalJSX.ModusWcProgress & JSXBase.HTMLAttributes<HTMLModusWcProgressElement>;
             /**
-             * A customizable radio component.
-             * Adheres to WCAG 2.2 standards.
+             * A customizable radio component
              */
             "modus-wc-radio": LocalJSX.ModusWcRadio & JSXBase.HTMLAttributes<HTMLModusWcRadioElement>;
             /**
-             * A rating component that allows users to choose a rating from predefined options.
-             * Adheres to WCAG 2.2 standards.
+             * A rating component that allows users to choose a rating from predefined options
              */
             "modus-wc-rating": LocalJSX.ModusWcRating & JSXBase.HTMLAttributes<HTMLModusWcRatingElement>;
             /**
-             * A customizable select component used to pick a value from a list of options.
-             * Adheres to WCAG 2.2 standards.
+             * A customizable select component used to pick a value from a list of options
              */
             "modus-wc-select": LocalJSX.ModusWcSelect & JSXBase.HTMLAttributes<HTMLModusWcSelectElement>;
             /**
-             * A customizable skeleton component used to create skeletons of various sizes and shapes.
-             * Adheres to WCAG 2.2 standards.
+             * A customizable side navigation component for organizing primary navigation and content areas in an application.
+             */
+            "modus-wc-side-navigation": LocalJSX.ModusWcSideNavigation & JSXBase.HTMLAttributes<HTMLModusWcSideNavigationElement>;
+            /**
+             * A customizable skeleton component used to create skeletons of various sizes and shapes
              */
             "modus-wc-skeleton": LocalJSX.ModusWcSkeleton & JSXBase.HTMLAttributes<HTMLModusWcSkeletonElement>;
             /**
-             * A customizable slider component.
-             * Adheres to WCAG 2.2 standards.
+             * A customizable slider component
              */
             "modus-wc-slider": LocalJSX.ModusWcSlider & JSXBase.HTMLAttributes<HTMLModusWcSliderElement>;
             /**
              * Used to show a list of steps in a process.
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-stepper": LocalJSX.ModusWcStepper & JSXBase.HTMLAttributes<HTMLModusWcStepperElement>;
             /**
-             * A customizable table component used to show a list of data in a table format.
-             * Adheres to WCAG 2.2 standards.
+             * A customizable checkbox component
              */
+            "modus-wc-switch": LocalJSX.ModusWcSwitch & JSXBase.HTMLAttributes<HTMLModusWcSwitchElement>;
             "modus-wc-table": LocalJSX.ModusWcTable & JSXBase.HTMLAttributes<HTMLModusWcTableElement>;
             /**
              * A customizable tabs component used to create groups of tabs.
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-tabs": LocalJSX.ModusWcTabs & JSXBase.HTMLAttributes<HTMLModusWcTabsElement>;
             /**
              * A customizable input component used to create text inputs with types.
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-text-input": LocalJSX.ModusWcTextInput & JSXBase.HTMLAttributes<HTMLModusWcTextInputElement>;
             /**
              * A customizable textarea component.
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-textarea": LocalJSX.ModusWcTextarea & JSXBase.HTMLAttributes<HTMLModusWcTextareaElement>;
             "modus-wc-theme-provider": LocalJSX.ModusWcThemeProvider & JSXBase.HTMLAttributes<HTMLModusWcThemeProviderElement>;
             /**
              * A theme switcher component used to toggle the application theme and/or mode.
              * Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-theme-switcher": LocalJSX.ModusWcThemeSwitcher & JSXBase.HTMLAttributes<HTMLModusWcThemeSwitcherElement>;
             /**
              * A customizable input component used to create time inputs.
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-time-input": LocalJSX.ModusWcTimeInput & JSXBase.HTMLAttributes<HTMLModusWcTimeInputElement>;
             /**
              * A customizable toast component used to stack elements, positioned on the corner of a page.
              * The component supports a `<slot>` for injecting additional custom content inside the toast.
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-toast": LocalJSX.ModusWcToast & JSXBase.HTMLAttributes<HTMLModusWcToastElement>;
             /**
-             * A customizable checkbox component.
-             * Adheres to WCAG 2.2 standards.
-             */
-            "modus-wc-toggle": LocalJSX.ModusWcToggle & JSXBase.HTMLAttributes<HTMLModusWcToggleElement>;
-            /**
              * A customizable toolbar component used to organize content across the entire page.
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-toolbar": LocalJSX.ModusWcToolbar & JSXBase.HTMLAttributes<HTMLModusWcToolbarElement>;
             /**
              * A customizable tooltip component used to create tooltips with different content.
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**
              * A customizable typography component used to render text with different sizes, variants, and weights.
-             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-typography": LocalJSX.ModusWcTypography & JSXBase.HTMLAttributes<HTMLModusWcTypographyElement>;
         }

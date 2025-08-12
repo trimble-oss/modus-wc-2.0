@@ -14,8 +14,6 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * A customizable input component used to create time inputs.
- *
- * Adheres to WCAG 2.2 standards.
  */
 @Component({
   tag: 'modus-wc-time-input',

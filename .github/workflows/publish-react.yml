@@ -15,13 +15,16 @@ on:
 permissions:
   contents: write
   actions: write
+  packages: write
 
 jobs:
   build-and-publish-react:
     runs-on: ubuntu-latest
     strategy:
+      # prevents race conditions
+      max-parallel: 1
       matrix:
-        react-version: [17, 18]
+        react-version: [17, 18, 19]
 
     defaults:
       run:
@@ -52,15 +55,26 @@ jobs:
             package-lock.json
             integrations/react/v${{ matrix.react-version }}/package-lock.json
 
-      - name: Build Web Components
+      - name: Build Base Web Components
         run: npm run build:ci
         working-directory: .
+
+      - name: Pack Base Web Components
+        working-directory: ./dist
+        run: |
+          TARBALL=$(npm pack)
+          echo "TARBALL=${TARBALL}" >> $GITHUB_ENV
 
       - name: Update to use new WebComponent version
         run: |
           jq --arg version "${{ github.event.inputs.version }}" \
-          '.dependencies["@trimble-cms/modus-wc"] = $version' package.json > package.json.tmp && \
-          mv package.json.tmp package.json && npm i
+          '.dependencies["@trimble-oss/moduswebcomponents"] = $version' package.json > package.json.tmp && \
+          mv package.json.tmp package.json
+
+      - run: npm i
+
+      - name: Install local WebComponent dependency (for build)
+        run: npm install file:../../../dist/${TARBALL} --no-save
 
       - name: Update package.json version
         run: |
@@ -72,32 +86,43 @@ jobs:
         run: npm run build
 
       - name: Package distribution
+        working-directory: integrations/react/v${{ matrix.react-version }}/dist
         run: npm pack
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: react-${{ matrix.react-version }}-distribution-v${{ github.event.inputs.version }}-react${{ matrix.react-version }}
-          path: '**/*.tgz'
+          path: 'integrations/react/v${{ matrix.react-version }}/dist/*.tgz'
+
+      - name: Clean up tgz files
+        working-directory: integrations/react/v${{ matrix.react-version }}/dist
+        run: rm -f $(find . -name '*.tgz')
+
+      - name: Set npm Registry Auth Token
+        working-directory: integrations/react/v${{ matrix.react-version }}/dist
+        run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
 
       - name: Publish distribution
+        working-directory: integrations/react/v${{ matrix.react-version }}/dist
         run: npm publish
+
+      - name: Set GitHub Registry Auth Token
+        working-directory: integrations/react/v${{ matrix.react-version }}/dist
+        run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish npm Package to GitHub Registry
+        working-directory: integrations/react/v${{ matrix.react-version }}/dist
+        run: npm publish --registry=https://npm.pkg.github.com --access public --ignore-scripts
 
   release-react:
     needs: build-and-publish-react
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        react-version: [17, 18]
-
-    defaults:
-      run:
-        working-directory: integrations/react/v${{ matrix.react-version }}
+        react-version: [17, 18, 19]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
@@ -106,10 +131,7 @@ jobs:
 
       - name: Find the release asset
         id: find-asset
-        run: |
-          asset_path=$(find . -name 'trimble-cms-modus-wc-react*.tgz')
-          full_asset_path="${{ github.workspace }}/integrations/react/v${{ matrix.react-version }}/${asset_path}"
-          echo "asset_path=$full_asset_path" >> $GITHUB_OUTPUT
+        run: echo "asset_path=$(find . -name '*.tgz')" >> $GITHUB_OUTPUT
 
       - name: Rename release asset
         run: mv ${{ steps.find-asset.outputs.asset_path }} package-react${{ matrix.react-version }}.tgz
@@ -118,7 +140,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: modus-wc-react-${{ github.event.inputs.version }}-react${{ matrix.react-version }}
+          tag_name: moduswebcomponents-react-${{ github.event.inputs.version }}-react${{ matrix.react-version }}
           name: Modus Web Components React ${{ github.event.inputs.version }} (React ${{ matrix.react-version }})
           files: |
             **/package-react${{ matrix.react-version }}.tgz
