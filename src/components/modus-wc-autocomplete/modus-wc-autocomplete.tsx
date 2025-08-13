@@ -445,6 +445,9 @@ export class ModusWcAutocomplete {
   };
 
   private handleChange = (event: CustomEvent<Event>) => {
+    // Prevent the child text-input's immediate inputChange event
+    event.stopPropagation();
+
     const result = processInputChange(event, {
       disabled: this.disabled,
       readOnly: this.readOnly,
@@ -529,6 +532,9 @@ export class ModusWcAutocomplete {
   }
 
   private handleFocus = (event: CustomEvent<FocusEvent>) => {
+    // Prevent the child text-input's immediate inputFocus event
+    event.stopPropagation();
+
     if (!this.disabled && !this.readOnly) {
       // When focusing, clear searchText if value matches a selected item
       // This prevents treating the display value as a search query

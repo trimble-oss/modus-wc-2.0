@@ -124,7 +124,7 @@ describe('modus-wc-autocomplete', () => {
   it('should emit change event', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
-      html: '<modus-wc-autocomplete aria-label="Change test"></modus-wc-autocomplete>',
+      html: '<modus-wc-autocomplete aria-label="Change test" debounce-ms="0"></modus-wc-autocomplete>',
     });
 
     const input = page.root!.querySelector('input');
@@ -147,7 +147,7 @@ describe('modus-wc-autocomplete', () => {
   it('should emit change event when menu is visible on focus', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
-      html: '<modus-wc-autocomplete aria-label="Change test" show-menu-on-focus="true"></modus-wc-autocomplete>',
+      html: '<modus-wc-autocomplete aria-label="Change test" show-menu-on-focus="true" debounce-ms="0"></modus-wc-autocomplete>',
     });
 
     const input = page.root!.querySelector('input');
