@@ -268,6 +268,13 @@ export const MultiSelect: Story = {
     if (!args.items || args.items.length === 0) {
       args.items = [...items];
     }
+    // If multi-select, set selected state for some items
+    args.items = items.map((item) => {
+      if (item.value === 'apple' || item.value === 'banana') {
+        return { ...item, selected: true };
+      }
+      return item;
+    });
     // prettier-ignore
     return html`
 <script>
@@ -275,6 +282,13 @@ export const MultiSelect: Story = {
   if (!args.items || args.items.length === 0) {
     args.items = [...items];
   }
+  // If multi-select, set selected state for some items
+  args.items = items.map((item) => {
+    if (item.value === 'apple' || item.value === 'banana') {
+      return { ...item, selected: true };
+    }
+    return item;
+  });
 </script>
 <style>
   .modus-wc-autocomplete-multi-select {

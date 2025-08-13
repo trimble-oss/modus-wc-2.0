@@ -917,14 +917,6 @@
               }
             },
             {
-              "name": "custom-blur",
-              "fieldName": "customBlur",
-              "description": "Custom blur handler - if provided, overrides default blur behavior",
-              "type": {
-                "text": "(event: FocusEvent) => void"
-              }
-            },
-            {
               "name": "custom-class",
               "fieldName": "customClass",
               "default": "''",
@@ -947,14 +939,6 @@
               "description": "Custom item selection handler - if provided, overrides default selection logic",
               "type": {
                 "text": "(item: IAutocompleteItem) => void"
-              }
-            },
-            {
-              "name": "custom-key-down",
-              "fieldName": "customKeyDown",
-              "description": "Custom key down handler - if provided, overrides default keyboard navigation",
-              "type": {
-                "text": "(event: KeyboardEvent) => void"
               }
             },
             {
@@ -1170,14 +1154,7 @@
               },
               "description": "Event emitted when chips expansion state changes."
             },
-            {
-              "kind": "field",
-              "name": "customBlur",
-              "type": {
-                "text": "(event: FocusEvent) => void | undefined"
-              },
-              "description": "Custom blur handler - if provided, overrides default blur behavior"
-            },
+
             {
               "kind": "field",
               "name": "customKeyDown",
