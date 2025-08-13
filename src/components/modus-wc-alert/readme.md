@@ -18,7 +18,6 @@ A customizable alert component used to inform the user about important events
 | `customClass`             | `custom-class`      | Custom CSS class to apply to the outer div element. | `string \| undefined`                                      | `''`        |
 | `dismissible`             | `dismissible`       | Whether the alert has a dismiss button              | `boolean \| undefined`                                     | `false`     |
 | `icon`                    | `icon`              | The Modus icon to render.                           | `string \| undefined`                                      | `undefined` |
-| `role`                    | `role`              | Role taken by the alert. Defaults to 'status'       | `"alert" \| "log" \| "marquee" \| "status" \| "timer"`     | `'status'`  |
 | `variant`                 | `variant`           | The variant of the alert.                           | `"error" \| "info" \| "success" \| "warning" \| undefined` | `'info'`    |
 
 

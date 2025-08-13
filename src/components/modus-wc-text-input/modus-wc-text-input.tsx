@@ -81,20 +81,6 @@ export class ModusWcTextInput {
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
-  /**
-   * Hints at the type of data that might be entered by the user while editing the element or its contents.
-   * This allows a browser to display an appropriate virtual keyboard.
-   */
-  @Prop() inputMode:
-    | 'decimal'
-    | 'email'
-    | 'none'
-    | 'numeric'
-    | 'search'
-    | 'tel'
-    | 'text'
-    | 'url' = 'text';
-
   /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
 
@@ -145,9 +131,14 @@ export class ModusWcTextInput {
       this.el.ariaLabel = this.placeholder || 'Text input';
     }
 
+    // Set default inputMode if not provided
+    if (!this.el.hasAttribute('inputmode')) {
+      this.el.setAttribute('inputmode', 'text');
+    }
+
     this.inheritedAttributes = {
       ...inheritAriaAttributes(this.el),
-      ...inheritAttributes(this.el, ['spellcheck']),
+      ...inheritAttributes(this.el, ['spellcheck', 'inputmode']),
     };
   }
 
@@ -227,7 +218,6 @@ export class ModusWcTextInput {
             disabled={this.disabled}
             enterkeyhint={this.enterkeyhint}
             id={this.inputId}
-            inputmode={this.inputMode}
             maxlength={this.maxLength}
             minlength={this.minLength}
             name={this.name}

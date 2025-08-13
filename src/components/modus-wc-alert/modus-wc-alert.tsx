@@ -49,14 +49,14 @@ export class ModusWcAlert {
   /** The variant of the alert. */
   @Prop() variant?: 'error' | 'info' | 'success' | 'warning' = 'info';
 
-  /** Role taken by the alert. Defaults to 'status' */
-  @Prop() role: 'alert' | 'log' | 'marquee' | 'status' | 'timer' = 'status';
-
   /** An event that fires when the alert is dismissed */
   @Event() dismissClick!: EventEmitter;
 
   componentWillLoad() {
-    this.inheritedAttributes = inheritAriaAttributes(this.el, ['role']);
+    const role = this.el.getAttribute('role');
+    this.inheritedAttributes = inheritAriaAttributes(this.el, [
+      role ?? 'status',
+    ]);
   }
 
   private getClasses(): string {
@@ -113,11 +113,7 @@ export class ModusWcAlert {
   render() {
     return (
       <Host>
-        <div
-          class={this.getClasses()}
-          role={this.role}
-          {...this.inheritedAttributes}
-        >
+        <div class={this.getClasses()} {...this.inheritedAttributes}>
           {this.getLeadingIcon()}
           <div>
             <div class="title">{this.alertTitle}</div>
