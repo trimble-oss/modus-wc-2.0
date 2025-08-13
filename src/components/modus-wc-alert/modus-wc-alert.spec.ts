@@ -4,6 +4,12 @@ import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 
 describe('modus-wc-alert', () => {
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.restoreAllMocks();
+  });
+
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcAlert, ModusWcIcon],
@@ -86,5 +92,61 @@ describe('modus-wc-alert', () => {
 
     page.root?.dispatchEvent(event);
     expect(dismissElementSpy).toHaveBeenCalled();
+  });
+
+  it('should set a new timeout on delayChanged and clear timeout on disconnectedCallback', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert],
+      html: '<modus-wc-alert delay="500"></modus-wc-alert>',
+    });
+
+    const component = page.rootInstance as ModusWcAlert;
+    jest.useFakeTimers();
+    const setTimeoutSpy = jest.spyOn(globalThis, 'setTimeout');
+    const clearTimeoutSpy = jest.spyOn(globalThis, 'clearTimeout');
+
+    component.delayChanged(1000);
+    expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 1000);
+
+    component.delayChanged(1100);
+    expect(clearTimeoutSpy).toHaveBeenCalled();
+    expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 1100);
+
+    component.disconnectedCallback();
+    expect(clearTimeoutSpy).toHaveBeenCalled();
+  });
+
+  it('should call dismissElement from timeout in delayChanged and componentDidLoad functions', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert],
+      html: '<modus-wc-alert delay="500"></modus-wc-alert>',
+    });
+
+    const component = page.rootInstance as ModusWcAlert;
+    jest.useFakeTimers();
+    const dismissElementSpy = jest.spyOn(component, 'dismissElement');
+
+    component.delayChanged(500);
+    jest.runAllTimers();
+
+    expect(dismissElementSpy).toHaveBeenCalled();
+
+    component.componentDidLoad();
+    jest.runAllTimers();
+
+    expect(dismissElementSpy).toHaveBeenCalled();
+  });
+
+  it('should clear timeout on disconnectedCallback', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert],
+      html: '<modus-wc-alert delay="500"></modus-wc-alert>',
+    });
+
+    const component = page.rootInstance as ModusWcAlert;
+    jest.useFakeTimers();
+    const clearTimeoutSpy = jest.spyOn(globalThis, 'clearTimeout');
+    component.disconnectedCallback();
+    expect(clearTimeoutSpy).toHaveBeenCalled();
   });
 });
