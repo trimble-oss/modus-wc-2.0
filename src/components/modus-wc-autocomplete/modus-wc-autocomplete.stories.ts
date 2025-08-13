@@ -291,6 +291,9 @@ export const MultiSelect: Story = {
   });
 </script>
 <style>
+div[id^='story--components-forms-autocomplete--multi-select'] {
+    height: 400px;
+  }
   .modus-wc-autocomplete-multi-select {
     width: 480px !important;
   }
