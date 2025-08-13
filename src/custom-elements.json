@@ -916,7 +916,7 @@
                 "text": "boolean"
               }
             },
-             {
+            {
               "name": "custom-blur",
               "fieldName": "customBlur",
               "description": "Custom blur handler - if provided, overrides default blur behavior",
@@ -949,7 +949,7 @@
                 "text": "(item: IAutocompleteItem) => void"
               }
             },
-              {
+            {
               "name": "custom-key-down",
               "fieldName": "customKeyDown",
               "description": "Custom key down handler - if provided, overrides default keyboard navigation",
