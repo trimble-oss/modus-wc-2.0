@@ -222,6 +222,7 @@ export const CollapsibleMenu: Story = {
       <style>
         .children-container {
           transition: height 0.2s ease-out;
+          padding-inline-start: 1rem;
         }
         .collapse-icon {
           min-width: 24px;
@@ -402,7 +403,7 @@ export const CollapsibleMenu: Story = {
           <div class="flex-row" @click=${handleCollapseToggle}>
             <modus-wc-icon
               decorative="true"
-              name="assignment"
+              name="master_data"
               class="collapse-icon icon-left"
             ></modus-wc-icon>
             <div class="dropdown-menu">Reports</div>
