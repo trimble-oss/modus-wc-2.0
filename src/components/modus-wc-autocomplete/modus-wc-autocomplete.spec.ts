@@ -5541,4 +5541,76 @@ describe('modus-wc-autocomplete', () => {
     expect(scrollSpy).not.toHaveBeenCalled();
     jest.restoreAllMocks();
   });
+
+  it('should evaluate targetItem.offsetTop in scrollToOptionSelected', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: '<modus-wc-autocomplete></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const menuEl = document.createElement('div');
+    menuEl.classList.add('modus-wc-menu');
+
+    const targetItem = document.createElement('div');
+    targetItem.classList.add('modus-wc-menu-item-selected');
+
+    (menuEl as HTMLElement).getBoundingClientRect = () =>
+      ({
+        top: 0,
+        bottom: 50,
+        left: 0,
+        right: 0,
+        height: 50,
+        width: 0,
+        x: 0,
+        y: 0,
+        toJSON: () => {},
+      }) as DOMRect;
+    (targetItem as HTMLElement).getBoundingClientRect = () =>
+      ({
+        top: 60,
+        bottom: 70,
+        left: 0,
+        right: 0,
+        height: 10,
+        width: 0,
+        x: 0,
+        y: 60,
+        toJSON: () => {},
+      }) as DOMRect;
+
+    Object.defineProperty(targetItem, 'offsetTop', {
+      get: () => 42,
+      configurable: true,
+    });
+    (menuEl as HTMLElement).scrollTo = jest.fn();
+    menuEl.appendChild(targetItem);
+    jest
+      .spyOn(autocomplete.el, 'querySelector')
+      .mockImplementation((selector: string) => {
+        if (selector === 'modus-wc-menu') return menuEl as HTMLElement;
+        return null;
+      });
+
+    jest.spyOn(menuEl, 'querySelector').mockImplementation(function (
+      selector: string
+    ) {
+      if (selector === '.modus-wc-menu-item-selected') return targetItem;
+      if (selector === '.modus-wc-menu') return menuEl as HTMLElement;
+      return null;
+    });
+    autocomplete['scrollToOptionSelected']();
+    await new Promise(requestAnimationFrame);
+    const scrollSpy = jest.spyOn(menuEl, 'scrollTo');
+    expect(scrollSpy).toHaveBeenCalledWith({
+      top: 42,
+      behavior: 'smooth',
+    });
+  });
 });
