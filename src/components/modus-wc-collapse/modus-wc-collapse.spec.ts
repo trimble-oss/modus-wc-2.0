@@ -81,10 +81,12 @@ describe('modus-wc-collapse', () => {
     const expandedChangeSpy = jest.fn();
     page.root!.addEventListener('expandedChange', expandedChangeSpy);
 
-    const checkbox = page.root!.querySelector('#123-checkbox') as HTMLElement;
-    expect(checkbox).not.toBeNull();
+    const details = page.root!.querySelector('details') as HTMLDetailsElement;
+    expect(details).not.toBeNull();
 
-    checkbox?.click();
+    // Simulate the details toggle by setting open and dispatching toggle event
+    details.open = true;
+    details.dispatchEvent(new Event('toggle'));
     await page.waitForChanges();
 
     expect(expandedChangeSpy).toHaveBeenCalled();
@@ -111,10 +113,13 @@ describe('modus-wc-collapse', () => {
     const expandedChangeSpy = jest.fn();
     page.root!.addEventListener('expandedChange', expandedChangeSpy);
 
-    const checkbox = page.root!.querySelector('#123-checkbox') as HTMLElement;
-    expect(checkbox).not.toBeNull();
+    const details = page.root!.querySelector('details') as HTMLDetailsElement;
+    expect(details).not.toBeNull();
 
-    checkbox?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+    // Simulate the details toggle by setting open and dispatching toggle event
+    // This tests the component's response to native toggle behavior (which handles keyboard natively)
+    details.open = true;
+    details.dispatchEvent(new Event('toggle'));
     await page.waitForChanges();
 
     expect(expandedChangeSpy).toHaveBeenCalled();
@@ -141,10 +146,13 @@ describe('modus-wc-collapse', () => {
     const expandedChangeSpy = jest.fn();
     page.root!.addEventListener('expandedChange', expandedChangeSpy);
 
-    const checkbox = page.root!.querySelector('#123-checkbox') as HTMLElement;
-    expect(checkbox).not.toBeNull();
+    const details = page.root!.querySelector('details') as HTMLDetailsElement;
+    expect(details).not.toBeNull();
 
-    checkbox?.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
+    // Simulate the details toggle by setting open and dispatching toggle event
+    // This tests the component's response to native toggle behavior (which handles keyboard natively)
+    details.open = true;
+    details.dispatchEvent(new Event('toggle'));
     await page.waitForChanges();
 
     expect(expandedChangeSpy).toHaveBeenCalled();

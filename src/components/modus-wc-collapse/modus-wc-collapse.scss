@@ -11,6 +11,10 @@ modus-wc-collapse .modus-wc-collapse {
   margin-bottom: var(--modus-wc-spacing-md);
   transition: none !important;
 
+  summary {
+    display: flex !important;
+  }
+
   .modus-wc-collapse-title {
     font-size: var(--modus-wc-font-size-md);
     font-weight: var(--modus-wc-font-weight-semibold);
