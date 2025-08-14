@@ -65,6 +65,10 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * Time taken to dismiss the alert in milliseconds
+         */
+        "delay"?: number;
+        /**
           * Whether the alert has a dismiss button
          */
         "dismissible"?: boolean;
@@ -2712,6 +2716,10 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the outer div element.
          */
         "customClass"?: string;
+        /**
+          * Time taken to dismiss the alert in milliseconds
+         */
+        "delay"?: number;
         /**
           * Whether the alert has a dismiss button
          */
