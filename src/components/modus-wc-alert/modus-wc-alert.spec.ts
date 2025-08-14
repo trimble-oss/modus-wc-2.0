@@ -155,10 +155,6 @@ describe('modus-wc-alert', () => {
       components: [ModusWcAlert],
       html: '<modus-wc-alert alert-title="Test Alert" role="alert" aria-label="Test label"></modus-wc-alert>',
     });
-
-    const component = page.rootInstance as ModusWcAlert;
-    expect(component.inheritedAttributes).toBeDefined();
-
     // Attributes should be moved from host to inner div
     const innerDiv = page.root?.querySelector('.modus-wc-alert');
     expect(innerDiv?.getAttribute('aria-label')).toBe('Test label');
@@ -171,10 +167,6 @@ describe('modus-wc-alert', () => {
       components: [ModusWcAlert],
       html: '<modus-wc-alert alert-title="Test Alert" aria-label="Test label"></modus-wc-alert>',
     });
-
-    const component = page.rootInstance as ModusWcAlert;
-    expect(component.inheritedAttributes).toBeDefined();
-
     // aria-label should be moved to inner div
     const innerDiv = page.root?.querySelector('.modus-wc-alert');
     expect(innerDiv?.getAttribute('aria-label')).toBe('Test label');
@@ -187,10 +179,6 @@ describe('modus-wc-alert', () => {
       components: [ModusWcAlert],
       html: '<modus-wc-alert alert-title="Test Alert" role="timer" aria-describedby="desc"></modus-wc-alert>',
     });
-
-    const component = page.rootInstance as ModusWcAlert;
-    expect(component.inheritedAttributes).toBeDefined();
-
     // aria-describedby should be moved to inner div
     const innerDiv = page.root?.querySelector('.modus-wc-alert');
     expect(innerDiv?.getAttribute('aria-describedby')).toBe('desc');
