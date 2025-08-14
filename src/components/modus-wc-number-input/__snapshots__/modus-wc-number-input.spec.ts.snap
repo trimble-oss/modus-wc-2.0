@@ -7,7 +7,7 @@ exports[`modus-wc-number-input should render with custom props 1`] = `
     <div class="modus-wc-flex modus-wc-input-bordered modus-wc-input-currency modus-wc-input-lg modus-wc-items-center modus-wc-join-item">
       $
     </div>
-    <input aria-describedby="description" aria-label="Test number input" aria-placeholder="Test placeholder" aria-required="" autocomplete="on" class="modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-join-item modus-wc-number-input modus-wc-w-full" disabled="" id="test-id" inputmode="decimal" max="10" min="1" name="test-name" placeholder="Test placeholder" required="" step="2" tabindex="1" type="range" value="test@example.com">
+    <input aria-describedby="description" aria-label="Test number input" aria-placeholder="Test placeholder" aria-required="" autocomplete="on" class="modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-join-item modus-wc-number-input modus-wc-w-full" disabled="" id="test-id" inputmode="numeric" max="10" min="1" name="test-name" placeholder="Test placeholder" required="" step="2" tabindex="1" type="range" value="test@example.com">
   </div>
 </modus-wc-number-input>
 `;
