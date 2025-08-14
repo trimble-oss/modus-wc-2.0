@@ -189,4 +189,31 @@ describe('modus-wc-collapse', () => {
 
     expect(expandedChangeSpy).not.toHaveBeenCalled();
   });
+
+  it('should update details open attribute when expanded prop changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcCollapse],
+      html: `<modus-wc-collapse collapse-id="123"></modus-wc-collapse>`,
+    });
+
+    const component = page.rootInstance as ModusWcCollapse;
+    await page.waitForChanges();
+    
+    const details = page.root!.querySelector('details') as HTMLDetailsElement;
+    
+    // Initially should be closed (false/undefined is falsy)
+    expect(details.open).toBeFalsy();
+
+    // Change the expanded prop to trigger the watcher
+    component.expanded = true;
+    await page.waitForChanges();
+
+    expect(details.open).toBe(true);
+
+    // Change it back to trigger the watcher again
+    component.expanded = false;
+    await page.waitForChanges();
+
+    expect(details.open).toBe(false);
+  });
 });
