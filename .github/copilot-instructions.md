@@ -231,5 +231,3 @@ modus-wc-2.0/
 - Create branches using the following format
   - IssueNo-IssueTitle (e.g, 109-collapse-fix-animation)
   - ComponentName-IssueDescription {feature/bug} (e.g, Table-add-summaryRow)
-
-
