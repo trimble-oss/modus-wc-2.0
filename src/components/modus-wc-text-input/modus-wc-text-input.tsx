@@ -131,15 +131,17 @@ export class ModusWcTextInput {
       this.el.ariaLabel = this.placeholder || 'Text input';
     }
 
-    // Set default inputMode if not provided
-    if (!this.el.hasAttribute('inputmode')) {
-      this.el.setAttribute('inputmode', 'text');
-    }
-
     this.inheritedAttributes = {
       ...inheritAriaAttributes(this.el),
       ...inheritAttributes(this.el, ['spellcheck', 'inputmode']),
     };
+
+    if (
+      !this.el.hasAttribute('inputmode') &&
+      !this.inheritedAttributes.inputmode
+    ) {
+      this.el.setAttribute('inputmode', 'text');
+    }
   }
 
   private getClasses(): string {

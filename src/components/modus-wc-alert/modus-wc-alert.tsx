@@ -57,10 +57,13 @@ export class ModusWcAlert {
   @Event() dismissClick!: EventEmitter;
 
   componentWillLoad() {
-    const role = this.el.getAttribute('role');
-    this.inheritedAttributes = inheritAriaAttributes(this.el, [
-      role ?? 'status',
-    ]);
+    // Set default role if none provided
+    if (!this.el.hasAttribute('role')) {
+      this.el.setAttribute('role', 'status');
+    }
+
+    // Then inherit all ARIA attributes normally
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {

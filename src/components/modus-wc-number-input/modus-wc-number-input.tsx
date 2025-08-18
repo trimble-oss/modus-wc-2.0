@@ -96,15 +96,17 @@ export class ModusWcNumberInput {
       this.el.ariaLabel = this.placeholder || 'Number input';
     }
 
-    // Set default inputMode if not provided
-    if (!this.el.hasAttribute('inputmode')) {
-      this.el.setAttribute('inputmode', 'numeric');
-    }
-
     this.inheritedAttributes = {
       ...inheritAriaAttributes(this.el),
       ...inheritAttributes(this.el, ['inputmode']),
     };
+
+    if (
+      !this.el.hasAttribute('inputmode') &&
+      !this.inheritedAttributes.inputmode
+    ) {
+      this.el.setAttribute('inputmode', 'numeric');
+    }
   }
 
   private getSharedClasses(styleList): string {
