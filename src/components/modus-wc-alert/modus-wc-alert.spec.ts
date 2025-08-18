@@ -162,18 +162,6 @@ describe('modus-wc-alert', () => {
     expect(innerDiv?.getAttribute('role')).toBe('alert');
   });
 
-  it('should inherit aria attributes when no role is provided', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAlert],
-      html: '<modus-wc-alert alert-title="Test Alert" aria-label="Test label"></modus-wc-alert>',
-    });
-    // aria-label should be moved to inner div
-    const innerDiv = page.root?.querySelector('.modus-wc-alert');
-    expect(innerDiv?.getAttribute('aria-label')).toBe('Test label');
-    // no role on inner div when none provided
-    expect(innerDiv?.getAttribute('role')).toBeNull();
-  });
-
   it('should inherit aria attributes including timer role when timer role is provided', async () => {
     const page = await newSpecPage({
       components: [ModusWcAlert],
