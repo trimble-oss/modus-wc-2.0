@@ -96,6 +96,7 @@ const meta: Meta<TextInputArgs> = {
       },
     },
     inputmode: {
+      control: { type: 'select' },
       options: [
         'decimal',
         'email',
