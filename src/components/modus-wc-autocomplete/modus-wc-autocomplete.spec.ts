@@ -5290,4 +5290,327 @@ describe('modus-wc-autocomplete', () => {
     ]);
     expect(autocomplete['initialNavigation']).toBe(false); // Should be reset after first navigation
   });
+
+  it('should call scrollToOptionSelected when arrow down is pressed and menu is open', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Scroll test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const scrollSpy = jest.spyOn(
+      autocomplete as ModusWcAutocomplete & {
+        scrollToOptionSelected: () => void;
+      },
+      'scrollToOptionSelected'
+    );
+
+    // Mock scrollIntoView for the DOM element that would be targeted
+    const mockScrollIntoView = jest.fn();
+    const originalQuerySelector = autocomplete.el.querySelector.bind(
+      autocomplete.el
+    );
+
+    jest
+      .spyOn(autocomplete.el, 'querySelector')
+      .mockImplementation((selector: string) => {
+        if (
+          selector === '.modus-wc-menu-item-focused' ||
+          selector === '.modus-wc-menu-item-selected'
+        ) {
+          return {
+            scrollIntoView: mockScrollIntoView,
+          } as unknown as Element;
+        }
+        return originalQuerySelector.call(autocomplete.el, selector);
+      });
+
+    // Set up items and mark one as selected
+    const items: IAutocompleteItem[] = [
+      { value: 'apple', label: 'Apple', visibleInMenu: true, selected: true },
+      {
+        value: 'banana',
+        label: 'Banana',
+        visibleInMenu: true,
+        selected: false,
+      },
+      {
+        value: 'cherry',
+        label: 'Cherry',
+        visibleInMenu: true,
+        selected: false,
+      },
+    ];
+    autocomplete.items = items;
+    autocomplete.minChars = 0;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    // Press arrow down to trigger scrollToOptionSelected
+    const arrowDownEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+    const input = page.root?.querySelector('input');
+    Object.defineProperty(arrowDownEvent, 'target', {
+      value: input,
+      enumerable: true,
+    });
+
+    autocomplete.handleKeyDown(arrowDownEvent);
+    await page.waitForChanges();
+    expect(scrollSpy).toHaveBeenCalled();
+
+    // Allow time for requestAnimationFrame to complete
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    scrollSpy.mockClear();
+    mockScrollIntoView.mockClear();
+    autocomplete.multiSelect = true;
+    await page.waitForChanges();
+
+    autocomplete.handleKeyDown(arrowDownEvent);
+    await page.waitForChanges();
+    expect(scrollSpy).toHaveBeenCalled();
+    expect(mockScrollIntoView).not.toHaveBeenCalled();
+    jest.restoreAllMocks();
+  });
+
+  it('should call scrollToOptionSelected when handleFocus is triggered with showMenuOnFocus true', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Focus scroll test" show-menu-on-focus="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const scrollSpy = jest.spyOn(
+      autocomplete as ModusWcAutocomplete & {
+        scrollToOptionSelected: () => void;
+      },
+      'scrollToOptionSelected'
+    );
+
+    const mockScrollIntoView = jest.fn();
+    const originalQuerySelector = autocomplete.el.querySelector.bind(
+      autocomplete.el
+    );
+
+    jest
+      .spyOn(autocomplete.el, 'querySelector')
+      .mockImplementation((selector: string) => {
+        if (selector === '.modus-wc-menu-item-selected') {
+          return {
+            scrollIntoView: mockScrollIntoView,
+          } as unknown as Element;
+        }
+        return originalQuerySelector.call(autocomplete.el, selector);
+      });
+
+    const items: IAutocompleteItem[] = [
+      { value: 'apple', label: 'Apple', visibleInMenu: true, selected: true },
+      {
+        value: 'banana',
+        label: 'Banana',
+        visibleInMenu: true,
+        selected: false,
+      },
+      {
+        value: 'cherry',
+        label: 'Cherry',
+        visibleInMenu: true,
+        selected: false,
+      },
+    ];
+    autocomplete.items = items;
+    await page.waitForChanges();
+    const focusEvent = new CustomEvent('inputFocus', {
+      detail: new FocusEvent('focus'),
+    });
+
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+    expect(autocomplete['menuVisible']).toBe(true);
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(scrollSpy).toHaveBeenCalled();
+    jest.restoreAllMocks();
+  });
+
+  it('should call scrollToOptionSelected after item selection when leaveMenuOpen is true', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Item selection scroll test" leave-menu-open="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['menuVisible'] = true; // Ensure menu is visible
+
+    const scrollSpy = jest.spyOn(
+      autocomplete as ModusWcAutocomplete & {
+        scrollToOptionSelected: () => void;
+      },
+      'scrollToOptionSelected'
+    );
+
+    const mockScrollIntoView = jest.fn();
+    jest
+      .spyOn(autocomplete.el, 'querySelector')
+      .mockImplementation((selector: string) => {
+        if (selector === '.modus-wc-menu-item-selected') {
+          return {
+            scrollIntoView: mockScrollIntoView,
+          } as unknown as Element;
+        }
+        return null;
+      });
+
+    const items: IAutocompleteItem[] = [
+      { value: 'apple', label: 'Apple', visibleInMenu: true, selected: false },
+      {
+        value: 'banana',
+        label: 'Banana',
+        visibleInMenu: true,
+        selected: false,
+      },
+      {
+        value: 'cherry',
+        label: 'Cherry',
+        visibleInMenu: true,
+        selected: false,
+      },
+    ];
+    autocomplete.items = items;
+    await page.waitForChanges();
+
+    autocomplete['handleItemSelect'](items[1]); // Select banana
+    await page.waitForChanges();
+    expect(autocomplete['menuVisible']).toBe(true);
+    expect(scrollSpy).toHaveBeenCalled();
+    expect(autocomplete.multiSelect).toBe(false);
+    jest.restoreAllMocks();
+  });
+
+  it('should not call scrollToOptionSelected when items array is empty', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Empty items test" show-menu-on-focus="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const scrollSpy = jest.spyOn(
+      autocomplete as ModusWcAutocomplete & {
+        scrollToOptionSelected: () => void;
+      },
+      'scrollToOptionSelected'
+    );
+    autocomplete.items = [];
+    await page.waitForChanges();
+    const focusEvent = new CustomEvent('inputFocus', {
+      detail: new FocusEvent('focus'),
+    });
+
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+    expect(autocomplete['menuVisible']).toBe(true);
+    expect(scrollSpy).not.toHaveBeenCalled();
+
+    autocomplete.items = null as unknown as IAutocompleteItem[];
+    await page.waitForChanges();
+    scrollSpy.mockClear();
+
+    // Trigger focus again
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+
+    // scrollToOptionSelected should still not be called
+    expect(scrollSpy).not.toHaveBeenCalled();
+    jest.restoreAllMocks();
+  });
+
+  it('should evaluate targetItem.offsetTop in scrollToOptionSelected', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: '<modus-wc-autocomplete></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const menuEl = document.createElement('div');
+    menuEl.classList.add('modus-wc-menu');
+
+    const targetItem = document.createElement('div');
+    targetItem.classList.add('modus-wc-menu-item-selected');
+
+    (menuEl as HTMLElement).getBoundingClientRect = () =>
+      ({
+        top: 0,
+        bottom: 50,
+        left: 0,
+        right: 0,
+        height: 50,
+        width: 0,
+        x: 0,
+        y: 0,
+        toJSON: () => {},
+      }) as DOMRect;
+    (targetItem as HTMLElement).getBoundingClientRect = () =>
+      ({
+        top: 60,
+        bottom: 70,
+        left: 0,
+        right: 0,
+        height: 10,
+        width: 0,
+        x: 0,
+        y: 60,
+        toJSON: () => {},
+      }) as DOMRect;
+
+    Object.defineProperty(targetItem, 'offsetTop', {
+      get: () => 42,
+      configurable: true,
+    });
+    (menuEl as HTMLElement).scrollTo = jest.fn();
+    menuEl.appendChild(targetItem);
+    jest
+      .spyOn(autocomplete.el, 'querySelector')
+      .mockImplementation((selector: string) => {
+        if (selector === 'modus-wc-menu') return menuEl as HTMLElement;
+        return null;
+      });
+
+    jest.spyOn(menuEl, 'querySelector').mockImplementation(function (
+      selector: string
+    ) {
+      if (selector === '.modus-wc-menu-item-selected') return targetItem;
+      if (selector === '.modus-wc-menu') return menuEl as HTMLElement;
+      return null;
+    });
+    autocomplete['scrollToOptionSelected']();
+    await new Promise(requestAnimationFrame);
+    const scrollSpy = jest.spyOn(menuEl, 'scrollTo');
+    expect(scrollSpy).toHaveBeenCalledWith({
+      top: 42,
+      behavior: 'smooth',
+    });
+  });
 });
