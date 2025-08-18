@@ -309,6 +309,37 @@ export class ModusWcAutocomplete {
     }
   }
 
+  private scrollToOptionSelected(): void {
+    if (this.multiSelect) return;
+
+    requestAnimationFrame(() => {
+      const menuEl = this.el.querySelector('modus-wc-menu') as HTMLElement;
+      if (menuEl) {
+        const targetItem = menuEl.querySelector(
+          '.modus-wc-menu-item-selected'
+        ) as HTMLElement;
+
+        const scrollContainer = menuEl.querySelector(
+          '.modus-wc-menu'
+        ) as HTMLElement;
+
+        const containerRect = scrollContainer.getBoundingClientRect();
+        const itemRect = targetItem.getBoundingClientRect();
+
+        const isAboveView = itemRect.top < containerRect.top;
+        const isBelowView = itemRect.bottom > containerRect.bottom;
+
+        if (isAboveView || isBelowView) {
+          const scrollTop = targetItem.offsetTop;
+          scrollContainer.scrollTo({
+            top: Math.max(0, scrollTop),
+            behavior: 'smooth',
+          });
+        }
+      }
+    });
+  }
+
   private handleArrowDown(): void {
     const input = this.el.querySelector('input');
     if (!input) return;
@@ -339,7 +370,13 @@ export class ModusWcAutocomplete {
           this.filteredItems = this.items.filter((item) => item.visibleInMenu);
         }
       },
-      onSetMenuVisible: (visible) => (this.menuVisible = visible),
+      onSetMenuVisible: (visible) => {
+        this.menuVisible = visible;
+        // Only scroll if menu is becoming visible and there's a selected item
+        if (visible && this.items?.some((item) => item.selected)) {
+          this.scrollToOptionSelected();
+        }
+      },
       onSetInitialNavigation: (value) => (this.initialNavigation = value),
     });
   }
@@ -547,6 +584,13 @@ export class ModusWcAutocomplete {
 
       if (this.showMenuOnFocus) {
         this.menuVisible = true;
+
+        // Scroll to selected item when menu opens via mouse focus
+        if (this.items?.some((item) => item.selected)) {
+          requestAnimationFrame(() => {
+            this.scrollToOptionSelected();
+          });
+        }
       }
     }
 
@@ -695,6 +739,11 @@ export class ModusWcAutocomplete {
     if (!this.disabled && !this.readOnly && this.items) {
       this.initialNavigation = true;
       this.itemSelect.emit(item);
+
+      // Scroll to selected option after selection
+      if (!this.multiSelect && this.menuVisible) {
+        this.scrollToOptionSelected();
+      }
     }
   };
 
