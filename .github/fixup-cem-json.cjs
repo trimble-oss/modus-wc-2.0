@@ -15,17 +15,18 @@ data.modules.sort((a, b) => a.path.localeCompare(b.path));
 
 data.modules.forEach((module) => {
   module.declarations.forEach((declaration) => {
-    // Fixup events
+    // Fixup events: Only treat EventEmitter-typed members as events
     const eventMembers =
       declaration.members?.filter((member) =>
-        member.type?.text.includes('Event')
+        member.type?.text.includes('EventEmitter')
       ) || [];
     if (eventMembers.length > 0) {
-      declaration.events = declaration.events || [];
-      declaration.events.push(...eventMembers);
+      // Replace any existing events with the derived EventEmitter members
+      declaration.events = [...eventMembers];
     }
+    // Remove only EventEmitter members from members list (keep function props like (event: ...) => void)
     declaration.members = declaration.members?.filter(
-      (member) => !member.type?.text.includes('Event')
+      (member) => !member.type?.text.includes('EventEmitter')
     );
 
     // Remove private members
