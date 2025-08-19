@@ -41,6 +41,7 @@ const Template: Story = {
   ?decorative="${args.decorative}"
   name="${args.name}"
   size="${args.size}"
+  variant="solid"
 >
 </modus-wc-icon>
     `;
@@ -62,6 +63,7 @@ export const CustomColor: Story = {
   aria-label="Red alert icon"
   custom-class="red-icon"
   name="alert"
+  variant="outlined"
   size="${args.size}"
 >
 </modus-wc-icon>

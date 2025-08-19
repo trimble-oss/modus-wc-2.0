@@ -21,6 +21,15 @@ modus-wc-icon .modus-icons {
 }
 
 modus-wc-icon {
+  /* Only override font-family when variant is explicitly set */
+  &[variant='outlined'] .modus-icons {
+    font-family: var(--modus-wc-icon-font-outlined, 'modus-icons-outlined') !important;
+  }
+
+  &[variant='solid'] .modus-icons {
+    font-family: var(--modus-wc-icon-font-solid, 'modus-icons') !important;
+  }
+
   // Generic icon font support for all icon libraries
   i::before,
   i::after {

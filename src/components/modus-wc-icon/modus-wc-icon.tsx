@@ -1,6 +1,7 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
+import { ensureModusIconFontAliases } from './font-alias.util';
 
 /**
  * A customizable icon component used to render Modus icons.
@@ -31,16 +32,39 @@ export class ModusWcIcon {
   /** The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon. */
   @Prop() size?: DaisySize = 'md';
 
+  /**
+   * Icon set to use when both outlined and solid font sets are available.
+   * This does not load fonts; it only provides a CSS hook to switch font-family.
+   * The host app must load both font CSS and provide the appropriate font-family
+   * names through CSS variables. See docs for details.
+   */
+  @Prop() variant?: 'outlined' | 'solid' = 'outlined';
+
   componentWillLoad() {
     if (!this.decorative && !this.el.ariaLabel) {
       this.el.ariaLabel = `${this.name} icon`;
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    // Best-effort: ensure alias font-families are available when variant is used
+    if (this.variant) {
+      void ensureModusIconFontAliases();
+    }
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-icon modus-icons'];
+    const classList = ['modus-wc-icon'];
+    const hasLigatureName = !!this.name && this.name.trim().length > 0;
+
+    // Only apply Modus ligature classes when a ligature name is provided.
+    // This keeps custom icon fonts (class-based) working without interference.
+    if (hasLigatureName) {
+      classList.push('modus-icons');
+
+      // Help hosts that ship a dedicated class per set (if present in CSS)
+      if (this.variant === 'outlined') classList.push('modus-icons-outlined');
+      if (this.variant === 'solid') classList.push('modus-icons-solid');
+    }
 
     // The order CSS classes are added matters to CSS specificity
     classList.push(`modus-wc-icon--${this.size}`);
@@ -54,7 +78,7 @@ export class ModusWcIcon {
     const role = this.decorative ? undefined : 'img';
 
     return (
-      <Host class="modus-wc-flex modus-wc-items-center">
+      <Host class="modus-wc-flex modus-wc-items-center" variant={this.variant}>
         <i
           aria-hidden={ariaHidden}
           aria-label={this.decorative ? null : this.el.ariaLabel}

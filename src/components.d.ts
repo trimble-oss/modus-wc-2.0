@@ -644,6 +644,10 @@ export namespace Components {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: DaisySize;
+        /**
+          * Icon set to use when both outlined and solid font sets are available. This does not load fonts; it only provides a CSS hook to switch font-family. The host app must load both font CSS and provide the appropriate font-family names through CSS variables. See docs for details.
+         */
+        "variant"?: 'outlined' | 'solid';
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
@@ -3367,6 +3371,10 @@ declare namespace LocalJSX {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: DaisySize;
+        /**
+          * Icon set to use when both outlined and solid font sets are available. This does not load fonts; it only provides a CSS hook to switch font-family. The host app must load both font CSS and provide the appropriate font-family names through CSS variables. See docs for details.
+         */
+        "variant"?: 'outlined' | 'solid';
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
