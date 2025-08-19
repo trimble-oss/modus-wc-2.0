@@ -99,6 +99,17 @@ modus-wc-table .modus-wc-overflow-x-auto {
   overflow: hidden;
   width: 100%;
 
+  caption {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    white-space: nowrap;
+    width: 1px;
+  }
+
   th {
     background-color: var(--modus-wc-color-alt-white);
     color: var(--modus-wc-color-gray-dark);

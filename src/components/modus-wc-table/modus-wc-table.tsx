@@ -131,6 +131,9 @@ export class ModusWcTable {
   /** Zebra striped tables differentiate rows by styling them in an alternating fashion. */
   @Prop() zebra?: boolean = false;
 
+  /** Accessibility caption for the table (visually hidden but available to screen readers). */
+  @Prop() caption?: string;
+
   /** Currently editing cell coordinates */
   @State() activeEditor?: { rowIndex: number; colId: string } | null = null;
 
@@ -250,9 +253,6 @@ export class ModusWcTable {
   }
 
   componentWillLoad() {
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Table';
-    }
 
     if (!this.columns) {
       console.error('ModusWcTable: columns is required.');
@@ -676,6 +676,7 @@ export class ModusWcTable {
         <div class="table-container">
           <div class="modus-wc-overflow-x-auto" {...this.inheritedAttributes}>
             <table class={this.getClasses()}>
+              {this.caption && <caption>{this.caption}</caption>}
               <thead>
                 <tr>
                   {this.selectable !== 'none' && (
