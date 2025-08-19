@@ -253,7 +253,6 @@ export class ModusWcTable {
   }
 
   componentWillLoad() {
-
     if (!this.columns) {
       console.error('ModusWcTable: columns is required.');
     }

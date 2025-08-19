@@ -3060,8 +3060,6 @@ describe('modus-wc-table', () => {
     await page.waitForChanges();
     const caption = page.root?.querySelector('caption');
 
-    // Verify caption exists and contains the correct text
-    expect(caption).not.toBeNull();
     expect(caption?.textContent).toBe('This is a table caption');
     expect(caption).not.toBeNull();
   });
