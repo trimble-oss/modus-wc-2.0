@@ -134,7 +134,7 @@ export default meta;
 
 type Story = StoryObj<TextInputArgs>;
 
-export const Default: Story = {
+const Template: Story = {
   render: (args) => html`
     <modus-wc-text-input
       aria-label="Text input"
@@ -169,23 +169,17 @@ export const Default: Story = {
   `,
 };
 
+export const Default: Story = { ...Template };
+
 const errorFeedback: IInputFeedbackProp = {
   level: 'error',
   message: 'Value is required.',
 };
 
 export const WithErrorFeedback: Story = {
-  render: (args) => html`
-    <modus-wc-text-input
-      aria-label="Text input"
-      .feedback=${errorFeedback}
-      label=${ifDefined(args.label)}
-      ?required=${true}
-      .value=${args.value}
-    ></modus-wc-text-input>
-  `,
+  ...Template,
+  args: { feedback: errorFeedback, required: true },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {
