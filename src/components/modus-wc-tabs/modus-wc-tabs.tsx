@@ -136,7 +136,7 @@ export class ModusWcTabs {
       <button
         role="tab"
         aria-disabled={tab.disabled}
-        aria-label={(tab.label ?? tab.icon) + ' tab'}
+        aria-label={tab.label ?? tab.icon}
         class={this.getTabClasses(tab, index)}
         id={`tab-${index}`}
         onClick={() => this.handleClick(tab, index)}

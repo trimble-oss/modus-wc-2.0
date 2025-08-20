@@ -180,15 +180,6 @@
               }
             },
             {
-              "name": "role",
-              "fieldName": "role",
-              "default": "'status'",
-              "description": "Role taken by the alert. Defaults to 'status'",
-              "type": {
-                "text": "'alert' | 'log' | 'marquee' | 'status' | 'timer'"
-              }
-            },
-            {
               "name": "variant",
               "fieldName": "variant",
               "default": "'info'",
@@ -3707,15 +3698,6 @@
               }
             },
             {
-              "name": "input-mode",
-              "fieldName": "inputMode",
-              "default": "'numeric'",
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\nThis allows a browser to display an appropriate virtual keyboard.",
-              "type": {
-                "text": "'decimal' | 'none' | 'numeric'"
-              }
-            },
-            {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
               "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).",
@@ -4094,7 +4076,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable radio component",
+          "description": "A customizable radio button component used to create radio inputs.",
           "name": "ModusWcRadio",
           "members": [
             {
@@ -4372,7 +4354,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable select component used to pick a value from a list of options",
+          "description": "A customizable select component used to create selects with different options.",
           "name": "ModusWcSelect",
           "members": [
             {
@@ -5718,15 +5700,6 @@
               }
             },
             {
-              "name": "input-mode",
-              "fieldName": "inputMode",
-              "default": "'text'",
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\nThis allows a browser to display an appropriate virtual keyboard.",
-              "type": {
-                "text": "| 'decimal'\n    | 'email'\n    | 'none'\n    | 'numeric'\n    | 'search'\n    | 'tel'\n    | 'text'\n    | 'url'"
-              }
-            },
-            {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
               "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).",
@@ -6556,7 +6529,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\n\nThe tooltip can be dismissed by pressing the Escape key.",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -6566,6 +6539,49 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "elementKeyupHandler",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "escapeDismissed",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Track if tooltip was dismissed with Escape key"
+            },
+            {
+              "kind": "method",
+              "name": "handleMouseEnter"
+            },
+            {
+              "kind": "method",
+              "name": "handleMouseLeave"
+            },
+            {
+              "kind": "field",
+              "name": "isVisible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Track if tooltip is currently visible"
             },
             {
               "kind": "method",
@@ -6627,7 +6643,15 @@
             }
           ],
           "tagName": "modus-wc-tooltip",
-          "events": [],
+          "events": [
+            {
+              "name": "dismissEscape",
+              "type": {
+                "text": "EventEmitter"
+              },
+              "description": "An event that fires when the tooltip is dismissed via Escape key"
+            }
+          ],
           "customElement": true
         }
       ],
