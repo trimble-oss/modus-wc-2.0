@@ -73,7 +73,7 @@ export class ModusWcCollapse {
   @Watch('expanded')
   expandedChanged(newValue: boolean) {
     if (this.detailsRef && this.detailsRef.open !== newValue) {
-      this.detailsRef.open = !!newValue;
+      this.detailsRef.open = newValue;
     }
   }
 
@@ -110,7 +110,7 @@ export class ModusWcCollapse {
   }
 
   // istanbul ignore next
-  private getTitleDivClasses(): string {
+  private getTitleClasses(): string {
     const classList: string[] = [
       'modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4',
     ];
@@ -164,7 +164,7 @@ export class ModusWcCollapse {
           ref={(el) => (this.detailsRef = el as HTMLDetailsElement)}
           {...this.inheritedAttributes}
         >
-          <summary class={this.getTitleDivClasses()} id={titleId}>
+          <summary class={this.getTitleClasses()} id={titleId}>
             {this.options ? (
               <Fragment>
                 <div class={this.getTitleChildDivClasses()}>
