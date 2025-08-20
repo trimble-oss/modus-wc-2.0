@@ -198,9 +198,9 @@ describe('modus-wc-collapse', () => {
 
     const component = page.rootInstance as ModusWcCollapse;
     await page.waitForChanges();
-    
+
     const details = page.root!.querySelector('details') as HTMLDetailsElement;
-    
+
     // Initially should be closed (false/undefined is falsy)
     expect(details.open).toBeFalsy();
 
