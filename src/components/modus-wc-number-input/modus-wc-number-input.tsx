@@ -188,7 +188,6 @@ export class ModusWcNumberInput {
             <div class={this.getCurrencyClasses()}>{this.currencySymbol}</div>
           )}
           <input
-            aria-placeholder={this.placeholder}
             aria-required={this.required}
             autocomplete={this.autoComplete}
             class={this.getInputClasses()}

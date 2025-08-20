@@ -7,7 +7,7 @@ exports[`modus-wc-number-input should render with custom props 1`] = `
     <div class="modus-wc-flex modus-wc-input-bordered modus-wc-input-currency modus-wc-input-lg modus-wc-items-center modus-wc-join-item">
       $
     </div>
-    <input aria-describedby="description" aria-label="Test number input" aria-placeholder="Test placeholder" aria-required="" autocomplete="on" class="modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-join-item modus-wc-number-input modus-wc-w-full" disabled="" id="test-id" max="10" min="1" name="test-name" placeholder="Test placeholder" required="" step="2" tabindex="1" type="range" value="test@example.com">
+    <input aria-describedby="description" aria-label="Test number input" aria-required="" autocomplete="on" class="modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-join-item modus-wc-number-input modus-wc-w-full" disabled="" id="test-id" max="10" min="1" name="test-name" placeholder="Test placeholder" required="" step="2" tabindex="1" type="range" value="test@example.com">
   </div>
 </modus-wc-number-input>
 `;
@@ -15,7 +15,7 @@ exports[`modus-wc-number-input should render with custom props 1`] = `
 exports[`modus-wc-number-input should render with default props 1`] = `
 <modus-wc-number-input inputmode="numeric" value="">
   <div class="modus-wc-number-input-container">
-    <input aria-label="Default input" aria-placeholder="" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-number-input modus-wc-w-full" placeholder="" type="number" value="">
+    <input aria-label="Default input" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-number-input modus-wc-w-full" placeholder="" type="number" value="">
   </div>
 </modus-wc-number-input>
 `;
@@ -23,7 +23,7 @@ exports[`modus-wc-number-input should render with default props 1`] = `
 exports[`modus-wc-number-input should render with error feedback 1`] = `
 <modus-wc-number-input inputmode="numeric" value="">
   <div class="modus-wc-number-input-container">
-    <input aria-label="Error input" aria-placeholder="" class="modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-number-input modus-wc-w-full" placeholder="" type="number" value="">
+    <input aria-label="Error input" class="modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-number-input modus-wc-w-full" placeholder="" type="number" value="">
   </div>
   <modus-wc-input-feedback>
     <div class="modus-wc-input-feedback modus-wc-input-feedback--error modus-wc-input-feedback--md">

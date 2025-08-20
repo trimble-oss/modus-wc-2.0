@@ -42,7 +42,6 @@ const Template: Story = {
     return html`
       <modus-wc-avatar
         alt="${args.alt}"
-        aria-label="Avatar"
         custom-class="${ifDefined(args['custom-class'])}"
         img-src="${args['img-src']}"
         shape="${args.shape}"
