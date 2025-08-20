@@ -18,11 +18,37 @@ describe('modus-wc-badge', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should render with alert role', async () => {
+  it('should render with alert role for warning color', async () => {
     const page = await newSpecPage({
       components: [ModusWcBadge],
       html: '<modus-wc-badge color="warning"></modus-wc-badge>',
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with status role for primary color', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcBadge],
+      html: '<modus-wc-badge color="primary"></modus-wc-badge>',
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should allow custom role to override default', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcBadge],
+      html: '<modus-wc-badge color="warning" role="status"></modus-wc-badge>',
+    });
+    const span = page.root?.querySelector('span');
+    expect(span?.getAttribute('role')).toBe('status');
+  });
+
+  it('should allow removing role with undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcBadge],
+      html: '<modus-wc-badge color="primary" role></modus-wc-badge>',
+    });
+    const span = page.root?.querySelector('span');
+    expect(span?.getAttribute('role')).toBe('');
   });
 });

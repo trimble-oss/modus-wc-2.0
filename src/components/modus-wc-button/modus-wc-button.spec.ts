@@ -5,7 +5,7 @@ describe('modus-wc-button', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
-      html: '<modus-wc-button aria-label="Default Button">Test</modus-wc-button>',
+      html: '<modus-wc-button>Test</modus-wc-button>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -14,7 +14,6 @@ describe('modus-wc-button', () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
       html: `<modus-wc-button
-              aria-label="Custom Button"
               color="secondary"
               custom-class="test-class"
               full-width="true"
@@ -31,7 +30,7 @@ describe('modus-wc-button', () => {
   it('should render with disabled attribute', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
-      html: '<modus-wc-button aria-label="Custom Button" disabled="true">Test</modus-wc-button>',
+      html: '<modus-wc-button disabled="true">Test</modus-wc-button>',
     });
     expect(page.root).toMatchSnapshot();
   });

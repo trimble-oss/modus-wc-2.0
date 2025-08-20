@@ -13,7 +13,7 @@ interface NumberInputArgs {
   feedback?: IInputFeedbackProp;
   'input-aria-invalid'?: 'true' | 'false';
   'input-id'?: string;
-  'input-mode': 'decimal' | 'none' | 'numeric';
+  inputmode?: 'decimal' | 'none' | 'numeric';
   'input-tab-index'?: number;
   label?: string;
   max?: number;
@@ -34,7 +34,7 @@ const meta: Meta<NumberInputArgs> = {
   args: {
     bordered: true,
     disabled: false,
-    'input-mode': 'numeric',
+    inputmode: 'numeric',
     label: 'Label',
     size: 'md',
     type: 'number',
@@ -62,7 +62,7 @@ const meta: Meta<NumberInputArgs> = {
       control: { type: 'select' },
       options: ['true', 'false'],
     },
-    'input-mode': {
+    inputmode: {
       control: { type: 'select' },
       options: ['decimal', 'none', 'numeric'],
     },
@@ -99,7 +99,7 @@ const Template: Story = {
       .feedback=${args.feedback}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-id=${ifDefined(args['input-id'])}
-      input-mode=${args['input-mode']}
+      inputmode=${ifDefined(args.inputmode)}
       input-tab-index=${ifDefined(args['input-tab-index'])}
       label=${ifDefined(args.label)}
       max=${ifDefined(args.max)}
