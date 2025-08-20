@@ -745,7 +745,10 @@ export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
               disabled={item.disabled}
               focused={item.focused}
               label={item.label}
-              onItemSelect={() => params.onItemSelect(item.value)}
+              onItemSelect={(e: CustomEvent) => {
+                e.stopPropagation();
+                params.onItemSelect(item.value);
+              }}
               onMouseDown={(e) => e.preventDefault()}
               selected={item.selected}
               value={item.value}

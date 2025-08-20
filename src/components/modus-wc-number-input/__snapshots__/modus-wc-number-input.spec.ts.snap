@@ -1,29 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-number-input should render with custom props 1`] = `
-<modus-wc-number-input auto-complete="on" auto-focus="true" class="test-class" currency-symbol="$" custom-class="test-class" disabled="true" input-aria-invalid="true" input-id="test-id" input-mode="decimal" input-tab-index="1" label="Test label" max="10" min="1" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" step="2" type="range" value="test@example.com">
+<modus-wc-number-input auto-complete="on" auto-focus="true" class="test-class" currency-symbol="$" custom-class="test-class" disabled="true" input-aria-invalid="true" input-id="test-id" input-mode="decimal" input-tab-index="1" inputmode="numeric" label="Test label" max="10" min="1" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" step="2" type="range" value="test@example.com">
   <modus-wc-input-label forid="test-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
   <div class="modus-wc-flex modus-wc-join modus-wc-number-input-container">
     <div class="modus-wc-flex modus-wc-input-bordered modus-wc-input-currency modus-wc-input-lg modus-wc-items-center modus-wc-join-item">
       $
     </div>
-    <input aria-describedby="description" aria-label="Test number input" aria-required="" autocomplete="on" class="modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-join-item modus-wc-number-input modus-wc-w-full" disabled="" id="test-id" inputmode="decimal" max="10" min="1" name="test-name" placeholder="Test placeholder" required="" step="2" tabindex="1" type="range" value="test@example.com">
+    <input aria-describedby="description" aria-label="Test number input" aria-required="" autocomplete="on" class="modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-join-item modus-wc-number-input modus-wc-w-full" disabled="" id="test-id" max="10" min="1" name="test-name" placeholder="Test placeholder" required="" step="2" tabindex="1" type="range" value="test@example.com">
   </div>
 </modus-wc-number-input>
 `;
 
 exports[`modus-wc-number-input should render with default props 1`] = `
-<modus-wc-number-input value="">
+<modus-wc-number-input inputmode="numeric" value="">
   <div class="modus-wc-number-input-container">
-    <input aria-label="Default input" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-number-input modus-wc-w-full" inputmode="numeric" placeholder="" type="number" value="">
+    <input aria-label="Default input" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-number-input modus-wc-w-full" placeholder="" type="number" value="">
   </div>
 </modus-wc-number-input>
 `;
 
 exports[`modus-wc-number-input should render with error feedback 1`] = `
-<modus-wc-number-input value="">
+<modus-wc-number-input inputmode="numeric" value="">
   <div class="modus-wc-number-input-container">
-    <input aria-label="Error input" class="modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-number-input modus-wc-w-full" inputmode="numeric" placeholder="" type="number" value="">
+    <input aria-label="Error input" class="modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-number-input modus-wc-w-full" placeholder="" type="number" value="">
   </div>
   <modus-wc-input-feedback>
     <div class="modus-wc-input-feedback modus-wc-input-feedback--error modus-wc-input-feedback--md">

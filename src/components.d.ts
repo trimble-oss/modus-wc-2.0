@@ -77,10 +77,6 @@ export namespace Components {
          */
         "icon"?: string;
         /**
-          * Role taken by the alert. Defaults to 'status'
-         */
-        "role": 'alert' | 'log' | 'marquee' | 'status' | 'timer';
-        /**
           * The variant of the alert.
          */
         "variant"?: 'error' | 'info' | 'success' | 'warning';
@@ -908,10 +904,6 @@ export namespace Components {
          */
         "inputId"?: string;
         /**
-          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
-         */
-        "inputMode": 'decimal' | 'none' | 'numeric';
-        /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
@@ -1024,7 +1016,7 @@ export namespace Components {
         "variant"?: 'default' | 'radial';
     }
     /**
-     * A customizable radio button component used to create radio inputs.
+     * A customizable radio button component.
      */
     interface ModusWcRadio {
         /**
@@ -1102,7 +1094,7 @@ export namespace Components {
         "variant": ModusWcRatingVariant;
     }
     /**
-     * A customizable select component used to create selects with different options.
+     * A customizable select component used to pick a value from a list of options
      */
     interface ModusWcSelect {
         /**
@@ -1275,7 +1267,7 @@ export namespace Components {
         "steps": IStepperItem[];
     }
     /**
-     * A customizable checkbox component
+     * A customizable switch component
      */
     interface ModusWcSwitch {
         /**
@@ -1465,17 +1457,6 @@ export namespace Components {
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
-         */
-        "inputMode"?: | 'decimal'
-    | 'email'
-    | 'none'
-    | 'numeric'
-    | 'search'
-    | 'tel'
-    | 'text'
-    | 'url';
         /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
@@ -1727,7 +1708,8 @@ export namespace Components {
     }
     /**
      * A customizable tooltip component used to create tooltips with different content.
-     * The tooltip can be dismissed by pressing the Escape key.
+     * The tooltip can be dismissed by pressing the Escape key when hovering over it.
+     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
      */
     interface ModusWcTooltip {
         /**
@@ -2330,7 +2312,7 @@ declare global {
         "inputFocus": FocusEvent;
     }
     /**
-     * A customizable radio button component used to create radio inputs.
+     * A customizable radio button component.
      */
     interface HTMLModusWcRadioElement extends Components.ModusWcRadio, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcRadioElementEventMap>(type: K, listener: (this: HTMLModusWcRadioElement, ev: ModusWcRadioCustomEvent<HTMLModusWcRadioElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2372,7 +2354,7 @@ declare global {
         "inputFocus": FocusEvent;
     }
     /**
-     * A customizable select component used to create selects with different options.
+     * A customizable select component used to pick a value from a list of options
      */
     interface HTMLModusWcSelectElement extends Components.ModusWcSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcSelectElementEventMap>(type: K, listener: (this: HTMLModusWcSelectElement, ev: ModusWcSelectCustomEvent<HTMLModusWcSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2454,7 +2436,7 @@ declare global {
         "inputFocus": FocusEvent;
     }
     /**
-     * A customizable checkbox component
+     * A customizable switch component
      */
     interface HTMLModusWcSwitchElement extends Components.ModusWcSwitch, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcSwitchElementEventMap>(type: K, listener: (this: HTMLModusWcSwitchElement, ev: ModusWcSwitchCustomEvent<HTMLModusWcSwitchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2646,7 +2628,8 @@ declare global {
     }
     /**
      * A customizable tooltip component used to create tooltips with different content.
-     * The tooltip can be dismissed by pressing the Escape key.
+     * The tooltip can be dismissed by pressing the Escape key when hovering over it.
+     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
      */
     interface HTMLModusWcTooltipElement extends Components.ModusWcTooltip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTooltipElementEventMap>(type: K, listener: (this: HTMLModusWcTooltipElement, ev: ModusWcTooltipCustomEvent<HTMLModusWcTooltipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2768,10 +2751,6 @@ declare namespace LocalJSX {
           * An event that fires when the alert is dismissed
          */
         "onDismissClick"?: (event: ModusWcAlertCustomEvent<any>) => void;
-        /**
-          * Role taken by the alert. Defaults to 'status'
-         */
-        "role"?: 'alert' | 'log' | 'marquee' | 'status' | 'timer';
         /**
           * The variant of the alert.
          */
@@ -3716,10 +3695,6 @@ declare namespace LocalJSX {
          */
         "inputId"?: string;
         /**
-          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
-         */
-        "inputMode"?: 'decimal' | 'none' | 'numeric';
-        /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
@@ -3848,7 +3823,7 @@ declare namespace LocalJSX {
         "variant"?: 'default' | 'radial';
     }
     /**
-     * A customizable radio button component used to create radio inputs.
+     * A customizable radio button component.
      */
     interface ModusWcRadio {
         /**
@@ -3942,7 +3917,7 @@ declare namespace LocalJSX {
         "variant"?: ModusWcRatingVariant;
     }
     /**
-     * A customizable select component used to create selects with different options.
+     * A customizable select component used to pick a value from a list of options
      */
     interface ModusWcSelect {
         /**
@@ -4143,7 +4118,7 @@ declare namespace LocalJSX {
         "steps"?: IStepperItem[];
     }
     /**
-     * A customizable checkbox component
+     * A customizable switch component
      */
     interface ModusWcSwitch {
         /**
@@ -4390,17 +4365,6 @@ declare namespace LocalJSX {
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
-         */
-        "inputMode"?: | 'decimal'
-    | 'email'
-    | 'none'
-    | 'numeric'
-    | 'search'
-    | 'tel'
-    | 'text'
-    | 'url';
         /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
@@ -4692,7 +4656,8 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable tooltip component used to create tooltips with different content.
-     * The tooltip can be dismissed by pressing the Escape key.
+     * The tooltip can be dismissed by pressing the Escape key when hovering over it.
+     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
      */
     interface ModusWcTooltip {
         /**
@@ -4912,7 +4877,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-progress": LocalJSX.ModusWcProgress & JSXBase.HTMLAttributes<HTMLModusWcProgressElement>;
             /**
-             * A customizable radio button component used to create radio inputs.
+             * A customizable radio button component.
              */
             "modus-wc-radio": LocalJSX.ModusWcRadio & JSXBase.HTMLAttributes<HTMLModusWcRadioElement>;
             /**
@@ -4920,7 +4885,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-rating": LocalJSX.ModusWcRating & JSXBase.HTMLAttributes<HTMLModusWcRatingElement>;
             /**
-             * A customizable select component used to create selects with different options.
+             * A customizable select component used to pick a value from a list of options
              */
             "modus-wc-select": LocalJSX.ModusWcSelect & JSXBase.HTMLAttributes<HTMLModusWcSelectElement>;
             /**
@@ -4940,7 +4905,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-stepper": LocalJSX.ModusWcStepper & JSXBase.HTMLAttributes<HTMLModusWcStepperElement>;
             /**
-             * A customizable checkbox component
+             * A customizable switch component
              */
             "modus-wc-switch": LocalJSX.ModusWcSwitch & JSXBase.HTMLAttributes<HTMLModusWcSwitchElement>;
             "modus-wc-table": LocalJSX.ModusWcTable & JSXBase.HTMLAttributes<HTMLModusWcTableElement>;
@@ -4977,7 +4942,8 @@ declare module "@stencil/core" {
             "modus-wc-toolbar": LocalJSX.ModusWcToolbar & JSXBase.HTMLAttributes<HTMLModusWcToolbarElement>;
             /**
              * A customizable tooltip component used to create tooltips with different content.
-             * The tooltip can be dismissed by pressing the Escape key.
+             * The tooltip can be dismissed by pressing the Escape key when hovering over it.
+             * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**
