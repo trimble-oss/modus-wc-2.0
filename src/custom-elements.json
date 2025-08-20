@@ -5005,7 +5005,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable checkbox component",
+          "description": "A customizable switch component",
           "name": "ModusWcSwitch",
           "members": [
             {
