@@ -7,7 +7,7 @@
 
 ## Overview
 
-A customizable checkbox component
+A customizable switch component
 
 ## Properties
 
