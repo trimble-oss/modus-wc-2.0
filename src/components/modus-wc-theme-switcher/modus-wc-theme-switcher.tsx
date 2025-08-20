@@ -79,6 +79,7 @@ export class ModusWcThemeSwitcher {
       <label class={this.getClasses()} {...this.inheritedAttributes}>
         <input
           aria-checked={this.isDarkMode}
+          aria-label={this.isDarkMode ? 'Dark theme' : 'Light theme'}
           checked={this.isDarkMode}
           class="modus-wc-toggle modus-wc-theme-controller modus-wc-bg-base-content modus-wc-col-span-2 modus-wc-col-start-1 modus-wc-row-start-1"
           onChange={(event) => this.handleModeToggle(event)}

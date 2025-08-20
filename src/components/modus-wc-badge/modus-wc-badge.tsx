@@ -61,14 +61,19 @@ export class ModusWcBadge {
 
   render() {
     const isAlert = ALERT_COLORS.includes(this.color);
+    // Use inherited role if provided, otherwise use default based on color
+    const defaultRole = isAlert ? 'alert' : 'status';
+    const role =
+      'role' in this.inheritedAttributes
+        ? this.inheritedAttributes.role
+        : defaultRole;
 
     return (
       <Host>
         <span
           class={this.getClasses()}
-          role={isAlert ? 'alert' : 'status'}
-          tabindex={-1}
           {...this.inheritedAttributes}
+          role={role}
         >
           <slot />
         </span>
