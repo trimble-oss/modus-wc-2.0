@@ -77,10 +77,6 @@ export namespace Components {
          */
         "icon"?: string;
         /**
-          * Role taken by the alert. Defaults to 'status'
-         */
-        "role": 'alert' | 'log' | 'marquee' | 'status' | 'timer';
-        /**
           * The variant of the alert.
          */
         "variant"?: 'error' | 'info' | 'success' | 'warning';
@@ -908,10 +904,6 @@ export namespace Components {
          */
         "inputId"?: string;
         /**
-          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
-         */
-        "inputMode": 'decimal' | 'none' | 'numeric';
-        /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
@@ -1465,17 +1457,6 @@ export namespace Components {
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
-         */
-        "inputMode": | 'decimal'
-    | 'email'
-    | 'none'
-    | 'numeric'
-    | 'search'
-    | 'tel'
-    | 'text'
-    | 'url';
         /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
@@ -2752,10 +2733,6 @@ declare namespace LocalJSX {
          */
         "onDismissClick"?: (event: ModusWcAlertCustomEvent<any>) => void;
         /**
-          * Role taken by the alert. Defaults to 'status'
-         */
-        "role"?: 'alert' | 'log' | 'marquee' | 'status' | 'timer';
-        /**
           * The variant of the alert.
          */
         "variant"?: 'error' | 'info' | 'success' | 'warning';
@@ -3699,10 +3676,6 @@ declare namespace LocalJSX {
          */
         "inputId"?: string;
         /**
-          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
-         */
-        "inputMode"?: 'decimal' | 'none' | 'numeric';
-        /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
         "inputTabIndex"?: number;
@@ -4373,17 +4346,6 @@ declare namespace LocalJSX {
           * The ID of the input element.
          */
         "inputId"?: string;
-        /**
-          * Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
-         */
-        "inputMode"?: | 'decimal'
-    | 'email'
-    | 'none'
-    | 'numeric'
-    | 'search'
-    | 'tel'
-    | 'text'
-    | 'url';
         /**
           * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
          */
