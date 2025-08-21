@@ -640,6 +640,10 @@ export namespace Components {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: DaisySize;
+        /**
+          * The icon variant, can be "outlined" or "solid".
+         */
+        "variant"?: 'outlined' | 'solid' | 'default';
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
@@ -3363,6 +3367,10 @@ declare namespace LocalJSX {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: DaisySize;
+        /**
+          * The icon variant, can be "outlined" or "solid".
+         */
+        "variant"?: 'outlined' | 'solid' | 'default';
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.

@@ -8,12 +8,18 @@ Several components require [Modus icons](https://modus-icons.trimble.com) to be 
 icons, add the following html to your application.
 
 <b>
-  Modus (font) icons currently only supports the usage of one icon set
-  (outlined, filled, transportation) per application. If you require multiple
-  sets, reach out to [Modus
-  Design](https://mail.google.com/chat/u/0/#chat/space/AAAAexugR1k) and comment
-  on this [GitHub Issue](https://github.com/trimble-oss/modus-icons/issues/363).
+  Starting from version 0.0.0-beta.3, Modus Web Components now includes the CSS for
+  both outlined and solid icon variants. You can use either set by importing the
+  `modus-icons.css` file.
 </b>
+
+```html
+<head>
+  <link rel="stylesheet" href="path-to-your-assets/modus-icons.css" />
+</head>
+```
+
+You can also still use the CDN approach:
 
 ```html
 <head>
@@ -40,14 +46,26 @@ For applications requiring offline capability or improved performance, you can b
 npm install @trimble-oss/modus-icons
 ```
 
-### 2. Copy the required font files and styles to your application:
+### 2. Use the pre-bundled Modus Icons CSS file:
+
+If you're using Modus Web Components, you can directly import the bundled CSS file:
+
+```html
+<link rel="stylesheet" href="/path-to-modus-web-components/modus-icons.css" />
+```
+
+This file includes both outlined and solid variants, which you can use with these classes:
+
+- `.modus-icons-outlined` - For outlined icons
+- `.modus-icons-solid` - For solid icons
+- `.modus-icons` - For default style (depends on which specific icon file was loaded last)
+
+### 3. Or copy the required font files and styles manually:
 
 - From `node_modules/@trimble-oss/modus-icons/dist/modus-outlined/fonts/`, copy:
   - `modus-icons.css`
   - Font files (.woff, .woff2, etc.)
 - Place them in a publicly accessible directory (e.g., /public/fonts/).
-
-### 3. Reference the local stylesheet in your application:
 
 ```html
 <head>
