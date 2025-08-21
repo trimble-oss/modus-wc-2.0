@@ -675,7 +675,9 @@ export class ModusWcTable {
         <div class="table-container">
           <div class="modus-wc-overflow-x-auto" {...this.inheritedAttributes}>
             <table class={this.getClasses()}>
-              {this.caption && <caption>{this.caption}</caption>}
+              {this.caption && (
+                <caption class="modus-wc-sr-only">{this.caption}</caption>
+              )}
               <thead>
                 <tr>
                   {this.selectable !== 'none' && (
