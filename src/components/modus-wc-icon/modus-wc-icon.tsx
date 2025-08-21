@@ -32,7 +32,7 @@ export class ModusWcIcon {
   @Prop() size?: DaisySize = 'md';
 
   /** The icon variant, can be "outlined" or "solid". */
-  @Prop() variant?: 'outlined' | 'solid' | 'default' = 'default';
+  @Prop() variant?: 'outlined' | 'solid';
 
   componentWillLoad() {
     if (!this.decorative && !this.el.ariaLabel) {

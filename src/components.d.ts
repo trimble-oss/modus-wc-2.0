@@ -643,7 +643,7 @@ export namespace Components {
         /**
           * The icon variant, can be "outlined" or "solid".
          */
-        "variant"?: 'outlined' | 'solid' | 'default';
+        "variant"?: 'outlined' | 'solid';
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
@@ -3370,7 +3370,7 @@ declare namespace LocalJSX {
         /**
           * The icon variant, can be "outlined" or "solid".
          */
-        "variant"?: 'outlined' | 'solid' | 'default';
+        "variant"?: 'outlined' | 'solid';
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.

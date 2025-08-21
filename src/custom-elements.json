@@ -2688,10 +2688,9 @@
             {
               "name": "variant",
               "fieldName": "variant",
-              "default": "'default'",
               "description": "The icon variant, can be \"outlined\" or \"solid\".",
               "type": {
-                "text": "'outlined' | 'solid' | 'default'"
+                "text": "'outlined' | 'solid'"
               }
             }
           ],
