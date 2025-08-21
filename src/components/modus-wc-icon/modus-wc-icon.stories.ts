@@ -46,7 +46,7 @@ const Template: Story = {
   ?decorative="${args.decorative}"
   name="${args.name}"
   size="${args.size}"
-  variant="${args.variant}"
+  variant="${ifDefined(args.variant)}"
 >
 </modus-wc-icon>
     `;
