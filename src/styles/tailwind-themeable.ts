@@ -4,6 +4,8 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const themeable = [
+  //Accessibility
+  'modus-wc-sr-only',
   //Alert
   'modus-wc-alert-error',
   'modus-wc-alert-info',
