@@ -48,7 +48,6 @@ const Template: Story = {
   }
 </style>
 <modus-wc-card
-  aria-label="Sample card"
   ?background-figure=${args['background-figure']}
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
@@ -74,7 +73,7 @@ export const SimpleCard: Story = {
   ...Template,
   // prettier-ignore
   render: () => html`
-<modus-wc-card aria-label="Simple Card">
+<modus-wc-card>
   Raw card content.
 </modus-wc-card>
   `,
@@ -87,14 +86,13 @@ export const SlotsLayout: Story = {
 <style>
   .slot-box {
     background: #ccccff;
-    border: 2px solid rebeccapurple;
-    color: rebeccapurple;
+    border: 2px solid purple;
+    color: purple;
     display: flex;
     justify-content: center;
   }
 </style>
 <modus-wc-card
-  aria-label="Card with all slots"
   ?background-figure=${args['background-figure']}
   layout=${ifDefined(args.layout)}
   padding=${ifDefined(args.padding)}
@@ -121,7 +119,6 @@ export const ComplexCard: Story = {
   }
 </style>
 <modus-wc-card
-  aria-label="Complex card with images and shadow"
   id="complex-card"
   ?background-figure=${args['background-figure']}
   ?bordered=${args.bordered}
@@ -154,7 +151,6 @@ export const HorizontalImage: Story = {
   // prettier-ignore
   render: (args) => html`
 <modus-wc-card
-  aria-label="Horizontal image card"
   ?background-figure=${args['background-figure']}
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
@@ -174,7 +170,6 @@ export const BackgroundFigureImage: Story = {
   // prettier-ignore
   render: (args) => html`
 <modus-wc-card
-  aria-label="Full image card"
   background-figure
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
@@ -205,7 +200,6 @@ export const Migration: Story = {
 
 | 1.0 Prop             | 2.0 Prop            | Notes                                |
 |----------------------|---------------------|--------------------------------------|
-| aria-label           | aria-label          |                                      |
 | border-radius        |                     | Not carried over, use CSS instead    |
 | height               |                     | Not carried over, use CSS instead    |
 | show-card-border     | bordered            |                                      |

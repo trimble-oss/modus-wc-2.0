@@ -19,7 +19,7 @@
 
     // Advanced Options
     "esModuleInterop": true,
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
 
