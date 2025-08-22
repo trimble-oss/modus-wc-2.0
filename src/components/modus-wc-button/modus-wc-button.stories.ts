@@ -68,7 +68,6 @@ const Template: Story = {
     // prettier-ignore
     return html`
 <modus-wc-button
-  aria-label="Click me button"
   color="${args.color}"
   custom-class="${ifDefined(args['custom-class'])}"
   ?disabled="${args.disabled}"
@@ -94,13 +93,11 @@ export const ButtonShapes: Story = {
     // prettier-ignore
     return html`
 <modus-wc-button
-  aria-label="Circle button"
   shape="circle"
 >
   Circle
 </modus-wc-button>
 <modus-wc-button
-  aria-label="Square button"
   shape="square"
 >
   Square
@@ -124,7 +121,7 @@ export const IconLeftButton: Story = {
   render: () => {
     // prettier-ignore
     return html`
-<modus-wc-button aria-label="Download button">
+<modus-wc-button>
   <modus-wc-icon decorative name="download"></modus-wc-icon>
   Download
 </modus-wc-button>
@@ -136,7 +133,7 @@ export const IconRightButton: Story = {
   render: () => {
     // prettier-ignore
     return html`
-<modus-wc-button aria-label="Details button">
+<modus-wc-button>
   Details
   <modus-wc-icon decorative name="launch"></modus-wc-icon>
 </modus-wc-button>
@@ -148,7 +145,7 @@ export const IconLeftAndRightButton: Story = {
   render: () => {
     // prettier-ignore
     return html`
-<modus-wc-button aria-label="Checkout button">
+<modus-wc-button>
   <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
   Checkout
   <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>

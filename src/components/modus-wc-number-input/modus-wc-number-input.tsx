@@ -9,7 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-number-input.tailwind';
 import { IInputFeedbackProp, ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
 
 /**
  * A customizable input component used to create number inputs with types
@@ -45,12 +45,6 @@ export class ModusWcNumberInput {
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
-
-  /**
-   * Hints at the type of data that might be entered by the user while editing the element or its contents.
-   * This allows a browser to display an appropriate virtual keyboard.
-   */
-  @Prop() inputMode: 'decimal' | 'none' | 'numeric' = 'numeric';
 
   /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
@@ -102,7 +96,17 @@ export class ModusWcNumberInput {
       this.el.ariaLabel = this.placeholder || 'Number input';
     }
 
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.inheritedAttributes = {
+      ...inheritAriaAttributes(this.el),
+      ...inheritAttributes(this.el, ['inputmode']),
+    };
+
+    if (
+      !this.el.hasAttribute('inputmode') &&
+      !this.inheritedAttributes.inputmode
+    ) {
+      this.el.setAttribute('inputmode', 'numeric');
+    }
   }
 
   private getSharedClasses(styleList): string {
@@ -184,13 +188,11 @@ export class ModusWcNumberInput {
             <div class={this.getCurrencyClasses()}>{this.currencySymbol}</div>
           )}
           <input
-            aria-placeholder={this.placeholder}
             aria-required={this.required}
             autocomplete={this.autoComplete}
             class={this.getInputClasses()}
             disabled={this.disabled}
             id={this.inputId}
-            inputmode={this.inputMode}
             max={this.max}
             min={this.min}
             name={this.name}
