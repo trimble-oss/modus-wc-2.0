@@ -3046,4 +3046,21 @@ describe('modus-wc-table', () => {
     component['handleRowClick'](mockRowObj2, 0);
     await page.waitForChanges();
   });
+
+  it('should render caption element when caption prop is provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Table with Caption" caption="This is a table caption"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = defaultColumns;
+    component.data = defaultData;
+
+    await page.waitForChanges();
+    const caption = page.root?.querySelector('caption');
+
+    expect(caption?.textContent).toBe('This is a table caption');
+    expect(caption).not.toBeNull();
+  });
 });
