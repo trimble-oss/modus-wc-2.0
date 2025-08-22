@@ -124,14 +124,14 @@ const Template: Story = {
               the left.
             </p>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+              This is an example of how the utility panel interacts with the main content.
+              When the panel opens with push content enabled, this area will shift to the left
+              to make room for the panel.
             </p>
             <p>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse
-              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-              cupidatat non proident.
+              The content area maintains its full functionality while the panel is open.
+              Users can continue to interact with the main content while accessing
+              the utility panel features.
             </p>
           </div>
 
@@ -248,8 +248,9 @@ export const Expanded: Story = {
               pushed to the left.
             </p>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              The utility panel provides quick access to additional tools and information.
+              It can be used for settings, filters, or any supplementary content
+              that enhances the main application.
             </p>
           </div>
 
@@ -355,8 +356,9 @@ export const OverlayMode: Story = {
               pushing it.
             </p>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              This example demonstrates the overlay mode where the panel appears
+              on top of the content without pushing it aside. This is useful when
+              you want to preserve the layout of the main content area.
             </p>
           </div>
 
