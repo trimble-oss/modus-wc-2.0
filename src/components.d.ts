@@ -1313,6 +1313,10 @@ export namespace Components {
     }
     interface ModusWcTable {
         /**
+          * Accessibility caption for the table (visually hidden but available to screen readers).
+         */
+        "caption"?: string;
+        /**
           * An array of column definitions.
          */
         "columns": ITableColumn[];
@@ -4175,6 +4179,10 @@ declare namespace LocalJSX {
         "value"?: boolean;
     }
     interface ModusWcTable {
+        /**
+          * Accessibility caption for the table (visually hidden but available to screen readers).
+         */
+        "caption"?: string;
         /**
           * An array of column definitions.
          */
