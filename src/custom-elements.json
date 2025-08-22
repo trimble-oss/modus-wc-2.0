@@ -5287,6 +5287,14 @@
           ],
           "attributes": [
             {
+              "name": "caption",
+              "fieldName": "caption",
+              "description": "Accessibility caption for the table (visually hidden but available to screen readers).",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "columns",
               "fieldName": "columns",
               "description": "An array of column definitions.",
