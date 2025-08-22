@@ -5,7 +5,7 @@ exports[`modus-wc-utility-panel should render with default props 1`] = `
   <template shadowrootmode="open">
     <div class="modus-wc-utility-panel">
       <div class="panel-content">
-        <div aria-labelledby="body" class="panel-body">
+        <div class="panel-body">
           <slot name="body"></slot>
         </div>
       </div>
@@ -19,7 +19,7 @@ exports[`modus-wc-utility-panel should render with expanded prop 1`] = `
   <template shadowrootmode="open">
     <div class="modus-wc-utility-panel open">
       <div class="panel-content">
-        <div aria-labelledby="body" class="panel-body">
+        <div class="panel-body">
           <slot name="body"></slot>
         </div>
       </div>
@@ -33,11 +33,11 @@ exports[`modus-wc-utility-panel should render with footer slot 1`] = `
   <template shadowrootmode="open">
     <div class="modus-wc-utility-panel">
       <div class="panel-content">
-        <div aria-labelledby="body" class="panel-body">
+        <div class="panel-body">
           <slot name="body"></slot>
         </div>
         <hr>
-        <div aria-labelledby="footer" class="panel-footer">
+        <div class="panel-footer">
           <slot name="footer"></slot>
         </div>
       </div>
@@ -57,11 +57,11 @@ exports[`modus-wc-utility-panel should render with header slot 1`] = `
   <template shadowrootmode="open">
     <div class="modus-wc-utility-panel">
       <div class="panel-content">
-        <div aria-labelledby="header" class="panel-header">
+        <div class="panel-header">
           <slot name="header"></slot>
         </div>
         <hr>
-        <div aria-labelledby="body" class="panel-body">
+        <div class="panel-body">
           <slot name="body"></slot>
         </div>
       </div>
@@ -81,7 +81,7 @@ exports[`modus-wc-utility-panel should render with pushContent prop 1`] = `
   <template shadowrootmode="open">
     <div class="modus-wc-utility-panel open">
       <div class="panel-content">
-        <div aria-labelledby="body" class="panel-body">
+        <div class="panel-body">
           <slot name="body"></slot>
         </div>
       </div>

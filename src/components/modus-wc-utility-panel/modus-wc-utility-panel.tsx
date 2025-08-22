@@ -86,7 +86,9 @@ export class ModusWcUtilityPanel {
       content.style.transition = 'margin-inline-end 0.3s ease-out';
 
       if (this.expanded) {
-        content.style.marginInlineEnd = '312px';
+        // Get the panel width from CSS variable
+        const panelWidth = getComputedStyle(this.el).getPropertyValue('--modus-wc-utility-panel-width');
+        content.style.marginInlineEnd = panelWidth || '312px'; // fallback to 312px if CSS variable is not found
       } else {
         content.style.marginInlineEnd = '0';
       }
@@ -115,21 +117,21 @@ export class ModusWcUtilityPanel {
         <div class="panel-content">
           {hasHeader && (
             <Fragment>
-              <div class="panel-header" aria-labelledby="header">
+              <div class="panel-header">
                 <slot name="header"></slot>
               </div>
               <hr />
             </Fragment>
           )}
 
-          <div class="panel-body" aria-labelledby="body">
+          <div class="panel-body">
             <slot name="body"></slot>
           </div>
 
           {hasFooter && (
             <Fragment>
               <hr />
-              <div class="panel-footer" aria-labelledby="footer">
+              <div class="panel-footer">
                 <slot name="footer"></slot>
               </div>
             </Fragment>
