@@ -96,7 +96,7 @@ const Template: Story = {
           <div slot="end">
             <modus-wc-tooltip content="Toggle Utility Panel" position="left">
               <modus-wc-button
-                color="secondary"
+                color="primary"
                 size="sm"
                 variant="outlined"
                 onclick="const panel = this.closest('.demo-container').querySelector('modus-wc-utility-panel'); panel.expanded = !panel.expanded"
@@ -160,8 +160,8 @@ const Template: Story = {
             </div>
 
             <div slot="footer" class="modus-wc-utility-panel-footer">
-              <modus-wc-button color="secondary">Cancel</modus-wc-button>
-              <modus-wc-button color="primary">Save</modus-wc-button>
+              <modus-wc-button color="tertiary" size="sm">Cancel</modus-wc-button>
+              <modus-wc-button color="primary" size="sm">Save</modus-wc-button>
             </div>
           </modus-wc-utility-panel>
         </div>
@@ -225,11 +225,12 @@ export const Expanded: Story = {
           <div slot="logo">My Application</div>
           <div slot="end">
             <modus-wc-button
-              color="secondary"
+              color="primary"
+              size="sm"
+              variant="outlined"
               onclick="const panel = this.closest('.demo-container').querySelector('modus-wc-utility-panel'); panel.expanded = !panel.expanded"
             >
               <modus-wc-icon name="menu"></modus-wc-icon>
-              Toggle Utility Panel
             </modus-wc-button>
           </div>
         </modus-wc-navbar>
@@ -270,8 +271,8 @@ export const Expanded: Story = {
             </div>
 
             <div slot="footer" class="modus-wc-utility-panel-footer">
-              <modus-wc-button color="secondary">Cancel</modus-wc-button>
-              <modus-wc-button color="primary">Save</modus-wc-button>
+              <modus-wc-button color="tertiary" size="sm">Cancel</modus-wc-button>
+              <modus-wc-button color="primary" size="sm">Save</modus-wc-button>
             </div>
           </modus-wc-utility-panel>
         </div>
@@ -335,11 +336,12 @@ export const OverlayMode: Story = {
         <modus-wc-navbar id="navbar-overlay">
           <div slot="end">
             <modus-wc-button
-              color="secondary"
+              color="primary"
+              size="sm"
+              variant="outlined"
               onclick="const panel = document.getElementById('overlay-panel'); panel.expanded = !panel.expanded"
             >
               <modus-wc-icon name="menu"></modus-wc-icon>
-              Toggle Utility Panel
             </modus-wc-button>
           </div>
         </modus-wc-navbar>
@@ -381,8 +383,8 @@ export const OverlayMode: Story = {
             </div>
 
             <div slot="footer" class="modus-wc-utility-panel-footer">
-              <modus-wc-button color="secondary" size="sm">Cancel</modus-wc-button>
-              <modus-wc-button color-type="primary" size="sm>Save</modus-wc-button>
+              <modus-wc-button color="tertiary" size="sm">Cancel</modus-wc-button>
+              <modus-wc-button color="primary" size="sm">Save</modus-wc-button>
             </div>
           </modus-wc-utility-panel>
         </div>
