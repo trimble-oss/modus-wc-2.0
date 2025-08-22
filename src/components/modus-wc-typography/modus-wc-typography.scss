@@ -62,3 +62,52 @@ modus-wc-typography {
     font-weight: var(--modus-wc-font-weight-bold);
   }
 }
+
+[data-theme='connect-light'] modus-wc-typography,
+[data-theme='connect-dark'] modus-wc-typography {
+  * {
+    color: var(--modus-wc-color-base-content-low-contrast);
+  }
+
+  h1.modus-wc-typography {
+    font-size: var(--modus-wc-font-size-4xl);
+    font-weight: var(--modus-wc-font-weight-normal);
+    letter-spacing: 0.5px;
+    line-height: 30px;
+  }
+
+  h2.modus-wc-typography {
+    font-size: var(--modus-wc-font-size-3xl);
+    font-weight: var(--modus-wc-font-weight-semibold);
+    letter-spacing: 0.15px;
+    line-height: 24px;
+  }
+
+  h3.modus-wc-typography {
+    font-size: var(--modus-wc-font-size-xl);
+    font-weight: var(--modus-wc-font-weight-semibold);
+    letter-spacing: 0.15px;
+    line-height: 18px;
+  }
+
+  h4.modus-wc-typography {
+    font-size: var(--modus-wc-font-size-lg);
+    letter-spacing: 0.15px;
+    line-height: 24px;
+  }
+
+  h5.modus-wc-typography {
+    font-size: var(--modus-wc-font-size-md);
+    font-weight: var(--modus-wc-font-weight-bold);
+    letter-spacing: 0.45px;
+    line-height: 24px;
+  }
+
+  h6.modus-wc-typography {
+    font-size: var(--modus-wc-font-size-xs);
+    font-weight: var(--modus-wc-font-weight-bold);
+    letter-spacing: 0.45px;
+    line-height: 18px;
+    text-transform: uppercase;
+  }
+}

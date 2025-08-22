@@ -12,6 +12,8 @@ modus-wc-collapse .modus-wc-collapse {
   transition: none !important;
 
   .modus-wc-collapse-title {
+    @include common-states;
+
     font-size: var(--modus-wc-font-size-md);
     font-weight: var(--modus-wc-font-weight-semibold);
     min-height: unset;
@@ -41,7 +43,8 @@ modus-wc-collapse .modus-wc-collapse {
     }
 
     .modus-wc-collapse-title {
-      background-color: var(--modus-wc-color-base-200);
+      background-color: var(--modus-wc-color-primary-pale);
+      color: var(--modus-wc-color-primary);
     }
   }
 
@@ -109,4 +112,9 @@ modus-wc-collapse .modus-wc-collapse {
       padding-inline-start: var(--modus-wc-spacing-md);
     }
   }
+}
+
+[data-theme='connect-light'] modus-wc-collapse .modus-wc-collapse,
+[data-theme='connect-dark'] modus-wc-collapse .modus-wc-collapse {
+  @include outline-styles;
 }

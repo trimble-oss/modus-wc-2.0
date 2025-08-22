@@ -64,3 +64,20 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
     color: var(--modus-wc-color-white);
   }
 }
+
+[data-theme='connect-light'] modus-wc-breadcrumbs .modus-wc-breadcrumbs,
+[data-theme='connect-dark'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
+  a {
+    color: var(--modus-wc-color-base-content);
+    opacity: 0.5;
+    text-decoration: none;
+
+    &:active {
+      color: var(--modus-wc-color-white);
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

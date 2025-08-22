@@ -3,8 +3,11 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-input {
+modus-wc-text-input .modus-wc-input {
   @include feedback-levels;
+  @include sizing-tokens;
+
+  border-bottom-width: var(--input-bottom-border-width);
 }
 
 modus-wc-text-input {
@@ -15,6 +18,8 @@ modus-wc-text-input {
   // Icon sizes
   .modus-wc-text-input {
     &.modus-wc-input {
+      padding: 0 var(--modus-wc-spacing-sm);
+
       &.modus-wc-input-sm {
         .modus-wc-text-input-icon {
           height: var(--modus-wc-line-height-sm);
@@ -144,4 +149,9 @@ modus-wc-text-input {
       border-color: var(--modus-wc-color-highlight-blue);
     }
   }
+}
+
+[data-theme='connect-light'] modus-wc-text-input .modus-wc-text-input,
+[data-theme='connect-dark'] modus-wc-text-input .modus-wc-text-input {
+  @include connect-input-styles;
 }

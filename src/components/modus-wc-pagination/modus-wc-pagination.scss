@@ -9,6 +9,8 @@ modus-wc-pagination .modus-wc-pagination {
   color: var(--modus-wc-color-base-content);
 
   .modus-wc-pagination-btn {
+    @include common-states;
+
     background-color: var(--modus-wc-color-base-100);
     border-color: transparent;
 
@@ -44,8 +46,8 @@ modus-wc-pagination .modus-wc-pagination {
     color: var(--modus-wc-color-base-content);
 
     &.modus-wc-btn-active {
-      background-color: var(--modus-wc-color-primary);
-      color: var(--modus-wc-color-primary-content);
+      background-color: var(--modus-wc-color-primary-pale);
+      color: var(--modus-wc-color-primary);
     }
 
     &:hover:not(.modus-wc-btn-active) {

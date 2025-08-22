@@ -28,7 +28,7 @@
 
 modus-wc-table .modus-wc-table {
   &.modus-wc-table-zebra tbody tr:nth-child(2n) {
-    background-color: var(--modus-wc-color-base-100);
+    background-color: var(--modus-wc-color-base-page);
   }
 
   &:where(thead, tfoot) {
@@ -72,7 +72,7 @@ modus-wc-table .modus-wc-overflow-x-auto {
   }
 }
 
-/* Modern theme specific hover styles */
+/* Classic theme specific hover styles */
 [data-theme='modus-classic-light'] {
   th {
     background-color: #f1f1f6 !important;
@@ -92,6 +92,43 @@ modus-wc-table .modus-wc-overflow-x-auto {
 
   .modus-wc-table.modus-wc-table-hover tbody tr:hover {
     background-color: #464b52 !important;
+  }
+}
+
+[data-theme='connect-light'] modus-wc-table,
+[data-theme='connect-dark'] modus-wc-table {
+  border: none;
+  box-shadow: none;
+
+  .modus-wc-overflow-x-auto {
+    border: none;
+    border-radius: 0;
+  }
+
+  .modus-wc-table {
+    border: none;
+    border-collapse: collapse;
+    border-radius: 0;
+
+    th,
+    td {
+      border-right: 1px solid transparent;
+    }
+  }
+
+  th {
+    background-color: var(--modus-wc-color-base-100) !important;
+    border: none !important;
+    color: var(--modus-wc-color-base-content-low-contrast) !important;
+  }
+
+  td {
+    border: none !important;
+    border-bottom: 1px solid var(--modus-wc-color-base-100);
+  }
+
+  .modus-wc-table.modus-wc-table-hover tbody tr:hover {
+    background-color: var(--modus-wc-color-base-100) !important;
   }
 }
 
@@ -160,20 +197,19 @@ modus-wc-table .modus-wc-overflow-x-auto {
   }
 
   /* Apply zebra striping styles */
+
   &.modus-wc-table-zebra {
     tbody tr:nth-child(odd) {
-      background-color: var(--modus-wc-color-alt-silver-light);
+      background-color: var(--modus-wc-color-base-100);
     }
   }
 
   /* Apply hover effect when enabled */
   &.modus-wc-table-hover {
     tbody tr {
-      transition: background-color 0.15s ease-in-out;
+      @include common-states;
 
-      &:hover {
-        background-color: var(--modus-wc-color-alt-silver-light);
-      }
+      transition: background-color 0.15s ease-in-out;
     }
   }
 
@@ -243,7 +279,7 @@ modus-wc-table .modus-wc-overflow-x-auto {
 }
 
 tr.selected {
-  background-color: var(--modus-wc-color-primary-light, #e6f4ff);
+  background-color: var(--modus-wc-color-primary-pale);
 }
 
 /* === Editing cell overrides === */

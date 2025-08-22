@@ -6,10 +6,12 @@
 // Default Styles
 modus-wc-chip .modus-wc-chip {
   &.modus-wc-btn {
+    @include common-states;
+    @include sizing-tokens;
+
     background-color: var(--modus-wc-color-base-100);
     border-color: transparent;
     box-sizing: border-box;
-    color: var(--modus-wc-color-base-content);
 
     --rounded-btn: #{var(--modus-wc-border-radius-chip)};
 
@@ -64,17 +66,18 @@ modus-wc-chip .modus-wc-chip {
 
     // States
     &.modus-wc-chip--active {
-      background-color: var(--modus-wc-color-primary);
+      background-color: var(--modus-wc-color-primary-pale);
       border-color: transparent;
-      color: var(--modus-wc-color-base-content);
+
+      // color: var(--modus-wc-color-base-content);
 
       &.modus-wc-chip--outline {
-        background-color: var(--modus-wc-color-primary);
+        background-color: var(--modus-wc-color-primary-pale);
         border-color: var(--modus-wc-color-primary);
         color: var(--modus-wc-color-primary);
 
         .modus-wc-chip-label {
-          color: var(--modus-wc-color-base-content);
+          color: var(--modus-wc-color-primary);
         }
       }
     }
@@ -91,29 +94,26 @@ modus-wc-chip .modus-wc-chip {
     }
 
     &.modus-wc-chip--outline {
-      background-color: transparent;
+      background-color: var(--modus-wc-color-base-page);
       border-color: var(--modus-wc-color-base-200);
     }
 
     &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {
-      background-color: var(--modus-wc-color-base-100);
-      border-color: transparent;
       color: var(--modus-wc-color-base-content);
 
       &.modus-wc-chip--outline {
-        background-color: var(--modus-wc-color-base-100);
         border-color: var(--modus-wc-color-base-200);
-        color: var(--modus-wc-color-base-content);
+
+        // color: var(--modus-wc-color-base-content);
       }
     }
 
     &:active:not(.modus-wc-chip--error):not(.modus-wc-chip--active) {
-      background-color: var(--modus-wc-color-primary);
       border-color: transparent;
-      color: var(--modus-wc-color-primary-content);
+
+      // color: var(--modus-wc-color-primary-content);
 
       &.modus-wc-chip--outline {
-        background-color: var(--modus-wc-color-base-100);
         background-color: transparent;
         border-color: var(--modus-wc-color-primary);
         color: var(--modus-wc-color-primary);

@@ -1,5 +1,6 @@
 modus-wc-navbar .modus-wc-navbar {
   background-color: var(--modus-wc-color-base-page);
+  box-shadow: none;
   height: 56px;
   min-height: 0;
   padding: 0 var(--modus-wc-spacing-md);
@@ -56,6 +57,7 @@ modus-wc-navbar .modus-wc-navbar {
 
     modus-wc-button {
       padding-inline-end: var(--modus-wc-spacing-sm);
+      padding-inline-start: var(--modus-wc-spacing-xs);
     }
 
     // Menu slot
@@ -206,5 +208,16 @@ modus-wc-navbar .modus-wc-navbar {
     article.modus-wc-card
     .sign-out.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
     color: var(--modus-wc-color-white);
+  }
+}
+
+[data-theme='connect-light'] modus-wc-navbar .modus-wc-navbar,
+[data-theme='connect-dark'] modus-wc-navbar .modus-wc-navbar {
+  border-bottom: var(--modus-wc-border-width-xs) solid
+    var(--modus-wc-color-base-200);
+
+  :not(.trimble-logo)
+    .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+    background: transparent;
   }
 }

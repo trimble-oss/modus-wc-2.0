@@ -4,10 +4,16 @@
 */
 
 modus-wc-dropdown-menu.modus-wc-dropdown-menu {
+  @include common-states;
+
   .menu-wrapper {
     left: 0;
     position: absolute;
     top: 0;
     width: max-content;
+  }
+
+  .modus-wc-menu-item > button:hover {
+    border-radius: 0;
   }
 }
