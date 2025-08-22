@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-utility-panel should render with default props 1`] = `
+<modus-wc-utility-panel>
+  <template shadowrootmode="open">
+    <div class="modus-wc-utility-panel">
+      <div class="panel-content">
+        <div aria-labelledby="body" class="panel-body">
+          <slot name="body"></slot>
+        </div>
+      </div>
+    </div>
+  </template>
+</modus-wc-utility-panel>
+`;
+
+exports[`modus-wc-utility-panel should render with expanded prop 1`] = `
+<modus-wc-utility-panel expanded="true">
+  <template shadowrootmode="open">
+    <div class="modus-wc-utility-panel open">
+      <div class="panel-content">
+        <div aria-labelledby="body" class="panel-body">
+          <slot name="body"></slot>
+        </div>
+      </div>
+    </div>
+  </template>
+</modus-wc-utility-panel>
+`;
+
+exports[`modus-wc-utility-panel should render with footer slot 1`] = `
+<modus-wc-utility-panel>
+  <template shadowrootmode="open">
+    <div class="modus-wc-utility-panel">
+      <div class="panel-content">
+        <div aria-labelledby="body" class="panel-body">
+          <slot name="body"></slot>
+        </div>
+        <hr>
+        <div aria-labelledby="footer" class="panel-footer">
+          <slot name="footer"></slot>
+        </div>
+      </div>
+    </div>
+  </template>
+  <div slot="body">
+    Panel Body
+  </div>
+  <div slot="footer">
+    Panel Footer
+  </div>
+</modus-wc-utility-panel>
+`;
+
+exports[`modus-wc-utility-panel should render with header slot 1`] = `
+<modus-wc-utility-panel>
+  <template shadowrootmode="open">
+    <div class="modus-wc-utility-panel">
+      <div class="panel-content">
+        <div aria-labelledby="header" class="panel-header">
+          <slot name="header"></slot>
+        </div>
+        <hr>
+        <div aria-labelledby="body" class="panel-body">
+          <slot name="body"></slot>
+        </div>
+      </div>
+    </div>
+  </template>
+  <div slot="header">
+    Panel Header
+  </div>
+  <div slot="body">
+    Panel Body
+  </div>
+</modus-wc-utility-panel>
+`;
+
+exports[`modus-wc-utility-panel should render with pushContent prop 1`] = `
+<modus-wc-utility-panel expanded="true" push-content="false">
+  <template shadowrootmode="open">
+    <div class="modus-wc-utility-panel open">
+      <div class="panel-content">
+        <div aria-labelledby="body" class="panel-body">
+          <slot name="body"></slot>
+        </div>
+      </div>
+    </div>
+  </template>
+</modus-wc-utility-panel>
+`;
