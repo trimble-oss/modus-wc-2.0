@@ -87,7 +87,9 @@ export class ModusWcUtilityPanel {
 
       if (this.expanded) {
         // Get the panel width from CSS variable
-        const panelWidth = getComputedStyle(this.el).getPropertyValue('--modus-wc-utility-panel-width');
+        const panelWidth = getComputedStyle(this.el).getPropertyValue(
+          '--modus-wc-utility-panel-width'
+        );
         content.style.marginInlineEnd = panelWidth || '312px'; // fallback to 312px if CSS variable is not found
       } else {
         content.style.marginInlineEnd = '0';
