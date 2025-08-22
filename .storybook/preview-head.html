@@ -2,10 +2,20 @@
   href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=fallback"
   rel="stylesheet"
 />
-<link rel="stylesheet" href="../src/styles/modus-icons.css" />
 <script>
   // Determine if we're running locally or deployed
   const isLocal = window.location.hostname.includes('localhost');
+
+  //modus-icons.css
+  const iconsCssPath = isLocal
+    ? '../src/styles/modus-icons.css'
+    : 'public/modus-icons.css';
+  const iconsLink = document.createElement('link');
+  iconsLink.rel = 'stylesheet';
+  iconsLink.href = iconsCssPath;
+  document.head.appendChild(iconsLink);
+
+  // Add output.css with conditional path
   const cssPath = isLocal ? '../src/styles/output.css' : 'public/output.css';
   const link = document.createElement('link');
   link.rel = 'stylesheet';
