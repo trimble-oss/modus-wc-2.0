@@ -96,8 +96,8 @@ const Template: Story = {
           <div slot="end">
             <modus-wc-tooltip content="Toggle Utility Panel" position="left">
               <modus-wc-button
-                button-type="secondary"
-                size="small"
+                color="secondary"
+                size="sm"
                 variant="outlined"
                 onclick="const panel = this.closest('.demo-container').querySelector('modus-wc-utility-panel'); panel.expanded = !panel.expanded"
               >
@@ -160,8 +160,8 @@ const Template: Story = {
             </div>
 
             <div slot="footer" class="modus-wc-utility-panel-footer">
-              <modus-wc-button button-type="secondary">Cancel</modus-wc-button>
-              <modus-wc-button button-type="primary">Save</modus-wc-button>
+              <modus-wc-button color="secondary">Cancel</modus-wc-button>
+              <modus-wc-button color="primary">Save</modus-wc-button>
             </div>
           </modus-wc-utility-panel>
         </div>
@@ -225,7 +225,7 @@ export const Expanded: Story = {
           <div slot="logo">My Application</div>
           <div slot="end">
             <modus-wc-button
-              button-type="secondary"
+              color="secondary"
               onclick="const panel = this.closest('.demo-container').querySelector('modus-wc-utility-panel'); panel.expanded = !panel.expanded"
             >
               <modus-wc-icon name="menu"></modus-wc-icon>
@@ -270,8 +270,8 @@ export const Expanded: Story = {
             </div>
 
             <div slot="footer" class="modus-wc-utility-panel-footer">
-              <modus-wc-button button-type="secondary">Cancel</modus-wc-button>
-              <modus-wc-button button-type="primary">Save</modus-wc-button>
+              <modus-wc-button color="secondary">Cancel</modus-wc-button>
+              <modus-wc-button color="primary">Save</modus-wc-button>
             </div>
           </modus-wc-utility-panel>
         </div>
@@ -335,7 +335,7 @@ export const OverlayMode: Story = {
         <modus-wc-navbar id="navbar-overlay">
           <div slot="end">
             <modus-wc-button
-              button-type="secondary"
+              color="secondary"
               onclick="const panel = document.getElementById('overlay-panel'); panel.expanded = !panel.expanded"
             >
               <modus-wc-icon name="menu"></modus-wc-icon>
