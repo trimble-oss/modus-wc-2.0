@@ -515,17 +515,6 @@
 <script>
   // Determine if we're running locally or deployed
   const isLocal = window.location.hostname.includes('localhost');
-
-  //modus-icons.css
-  const iconsCssPath = isLocal
-    ? '../src/styles/modus-icons.css'
-    : 'public/modus-icons.css';
-  const iconsLink = document.createElement('link');
-  iconsLink.rel = 'stylesheet';
-  iconsLink.href = iconsCssPath;
-  document.head.appendChild(iconsLink);
-
-  // Add output.css with conditional path
   const cssPath = isLocal ? '../src/styles/output.css' : 'public/output.css';
   const link = document.createElement('link');
   link.rel = 'stylesheet';
@@ -605,7 +594,7 @@
   }
 </style>
 
-    <script type="module" crossorigin src="./assets/iframe-BxmFDJ2o.js"></script>
+    <script type="module" crossorigin src="./assets/iframe-seAR8lIB.js"></script>
   </head>
 
   <body>
