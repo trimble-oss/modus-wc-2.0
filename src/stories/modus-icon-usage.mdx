@@ -4,83 +4,71 @@ import { Meta } from '@storybook/blocks';
 
 # Modus Icon Usage
 
-Several components require [Modus icons](https://modus-icons.trimble.com) to be installed in the host application. To install
-icons, add the following html to your application.
+Modus Web Components require Modus Icons.
 
-<b>
-  Starting from version 0.0.0-beta.3, Modus Web Components now includes the CSS
-  for both outlined and solid icon variants. You can use either set by importing
-  the `modus-icons.css` file.
-</b>
+Starting from v0.0.0-beta.3, the Web Components package supports both outlined and solid icon variants through a single CSS file.
+
+## 1. Installation
+
+Create a file at:
+
+```
+/public/modus-web-components/modus-icons.css
+```
+
+with the following contents:
+
+```css
+@font-face {
+  font-family: 'modus-icons';
+  src: url('https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-outlined/fonts/modus-icons.woff2')
+    format('woff2');
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'modus-icons-outlined';
+  src: url('https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-outlined/fonts/modus-icons.woff2')
+    format('woff2');
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'modus-icons-solid';
+  src: url('https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-solid/fonts/modus-icons.woff2')
+    format('woff2');
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+.modus-icons-outlined {
+  font-family: 'modus-icons-outlined';
+  font-style: normal;
+  font-weight: normal;
+}
+
+.modus-icons-solid {
+  font-family: 'modus-icons-solid';
+  font-style: normal;
+  font-weight: normal;
+}
+
+.modus-icons {
+  font-family: 'modus-icons';
+  font-style: normal;
+  font-weight: normal;
+}
+```
+
+Then include it in your app:
 
 ```html
 <head>
-  <link rel="stylesheet" href="path-to-your-assets/modus-icons.css" />
+  <link rel="stylesheet" href="/modus-web-components/modus-icons.css" />
 </head>
 ```
-
-You can also still use the CDN approach:
-
-```html
-<head>
-  <link
-    rel="preload"
-    href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@latest/dist/modus-outlined/fonts/modus-icons.css"
-    as="style"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@latest/dist/modus-outlined/fonts/modus-icons.css"
-  />
-</head>
-```
-
-## Offline usage
-
-For applications requiring offline capability or improved performance, you can bundle Modus icons directly with your app.
-
-### 1. Install the `@trimble-oss/modus-icons` package:
-
-```bash
-npm install @trimble-oss/modus-icons
-```
-
-### 2. Use the pre-bundled Modus Icons CSS file:
-
-If you're using Modus Web Components, you can directly import the bundled CSS file:
-
-```html
-<link rel="stylesheet" href="/path-to-modus-web-components/modus-icons.css" />
-```
-
-This file includes both outlined and solid variants, which you can use with these classes:
-
-- `.modus-icons-outlined` - For outlined icons
-- `.modus-icons-solid` - For solid icons
-- `.modus-icons` - For default style (depends on which specific icon file was loaded last)
-
-### 3. Or copy the required font files and styles manually:
-
-- From `node_modules/@trimble-oss/modus-icons/dist/modus-outlined/fonts/`, copy:
-  - `modus-icons.css`
-  - Font files (.woff, .woff2, etc.)
-- Place them in a publicly accessible directory (e.g., /public/fonts/).
-
-```html
-<head>
-  <link
-    rel="preload"
-    href="/path-to-your-local-modus-icons-font.woff2"
-    as="font"
-    type="font/woff2"
-    crossorigin="anonymous"
-  />
-  <link rel="stylesheet" href="/path-to-your-local-modus-icons.css" />
-</head>
-```
-
----
-
-Need help? Check out our [GitHub repository](https://github.com/trimble-oss/modus-web-components)
-or [raise an issue](https://github.com/trimble-oss/modus-web-components/issues).
