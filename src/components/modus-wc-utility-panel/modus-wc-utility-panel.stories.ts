@@ -160,7 +160,9 @@ const Template: Story = {
             </div>
 
             <div slot="footer" class="modus-wc-utility-panel-footer">
-              <modus-wc-button color="tertiary" size="sm">Cancel</modus-wc-button>
+              <modus-wc-button color="tertiary" size="sm"
+                >Cancel</modus-wc-button
+              >
               <modus-wc-button color="primary" size="sm">Save</modus-wc-button>
             </div>
           </modus-wc-utility-panel>
@@ -271,7 +273,9 @@ export const Expanded: Story = {
             </div>
 
             <div slot="footer" class="modus-wc-utility-panel-footer">
-              <modus-wc-button color="tertiary" size="sm">Cancel</modus-wc-button>
+              <modus-wc-button color="tertiary" size="sm"
+                >Cancel</modus-wc-button
+              >
               <modus-wc-button color="primary" size="sm">Save</modus-wc-button>
             </div>
           </modus-wc-utility-panel>
@@ -383,7 +387,9 @@ export const OverlayMode: Story = {
             </div>
 
             <div slot="footer" class="modus-wc-utility-panel-footer">
-              <modus-wc-button color="tertiary" size="sm">Cancel</modus-wc-button>
+              <modus-wc-button color="tertiary" size="sm"
+                >Cancel</modus-wc-button
+              >
               <modus-wc-button color="primary" size="sm">Save</modus-wc-button>
             </div>
           </modus-wc-utility-panel>
