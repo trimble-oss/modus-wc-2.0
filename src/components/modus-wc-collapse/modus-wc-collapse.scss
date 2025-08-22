@@ -9,10 +9,10 @@ modus-wc-collapse .modus-wc-collapse {
   box-sizing: border-box;
   color: var(--modus-wc-color-base-content);
   margin-bottom: var(--modus-wc-spacing-md);
-  transition: none !important;
+  transition: none;
 
   summary {
-    display: flex !important;
+    display: flex;
   }
 
   .modus-wc-collapse-title {
