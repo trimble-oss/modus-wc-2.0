@@ -74,16 +74,16 @@ const Template: Story = {
           overflow: auto;
         }
 
-        .panel-header {
+        .modus-wc-utility-panel-header {
           font-size: 18px;
           font-weight: 600;
         }
 
-        .panel-body {
+        .modus-wc-utility-panel-body {
           padding: 20px 0;
         }
 
-        .panel-footer {
+        .modus-wc-utility-panel-footer {
           display: flex;
           gap: 10px;
           justify-content: flex-end;
@@ -124,14 +124,14 @@ const Template: Story = {
               the left.
             </p>
             <p>
-              This is an example of how the utility panel interacts with the main content.
-              When the panel opens with push content enabled, this area will shift to the left
-              to make room for the panel.
+              This is an example of how the utility panel interacts with the
+              main content. When the panel opens with push content enabled, this
+              area will shift to the left to make room for the panel.
             </p>
             <p>
-              The content area maintains its full functionality while the panel is open.
-              Users can continue to interact with the main content while accessing
-              the utility panel features.
+              The content area maintains its full functionality while the panel
+              is open. Users can continue to interact with the main content
+              while accessing the utility panel features.
             </p>
           </div>
 
@@ -142,9 +142,11 @@ const Template: Story = {
             @panelOpened="${() => console.log('Panel opened')}"
             @panelClosed="${() => console.log('Panel closed')}"
           >
-            <div slot="header" class="panel-header">Utility Panel Header</div>
+            <div slot="header" class="modus-wc-utility-panel-header">
+              Utility Panel Header
+            </div>
 
-            <div slot="body" class="panel-body">
+            <div slot="body" class="modus-wc-utility-panel-body">
               <p>This is the utility panel body content.</p>
               <p>
                 You can add any content here including forms, lists, or other
@@ -157,9 +159,9 @@ const Template: Story = {
               </modus-wc-text-input>
             </div>
 
-            <div slot="footer" class="panel-footer">
+            <div slot="footer" class="modus-wc-utility-panel-footer">
               <modus-wc-button button-type="secondary">Cancel</modus-wc-button>
-              <modus-wc-button>Save</modus-wc-button>
+              <modus-wc-button button-type="primary">Save</modus-wc-button>
             </div>
           </modus-wc-utility-panel>
         </div>
@@ -202,16 +204,16 @@ export const Expanded: Story = {
           overflow: auto;
         }
 
-        .panel-header {
+        .modus-wc-utility-panel-header {
           font-size: 18px;
           font-weight: 600;
         }
 
-        .panel-body {
+        .modus-wc-utility-panel-body {
           padding: 20px 0;
         }
 
-        .panel-footer {
+        .modus-wc-utility-panel-footer {
           display: flex;
           gap: 10px;
           justify-content: flex-end;
@@ -248,9 +250,9 @@ export const Expanded: Story = {
               pushed to the left.
             </p>
             <p>
-              The utility panel provides quick access to additional tools and information.
-              It can be used for settings, filters, or any supplementary content
-              that enhances the main application.
+              The utility panel provides quick access to additional tools and
+              information. It can be used for settings, filters, or any
+              supplementary content that enhances the main application.
             </p>
           </div>
 
@@ -259,15 +261,17 @@ export const Expanded: Story = {
             ?push-content="${pushContent}"
             target-content="#main-content-expanded"
           >
-            <div slot="header" class="panel-header">Expanded Panel Header</div>
+            <div slot="header" class="modus-wc-utility-panel-header">
+              Expanded Panel Header
+            </div>
 
-            <div slot="body" class="panel-body">
+            <div slot="body" class="modus-wc-utility-panel-body">
               <p>This panel starts in the expanded state.</p>
             </div>
 
-            <div slot="footer" class="panel-footer">
+            <div slot="footer" class="modus-wc-utility-panel-footer">
               <modus-wc-button button-type="secondary">Cancel</modus-wc-button>
-              <modus-wc-button>Save</modus-wc-button>
+              <modus-wc-button button-type="primary">Save</modus-wc-button>
             </div>
           </modus-wc-utility-panel>
         </div>
@@ -311,16 +315,16 @@ export const OverlayMode: Story = {
           overflow: auto;
         }
 
-        .panel-header {
+        .modus-wc-utility-panel-header {
           font-size: 18px;
           font-weight: 600;
         }
 
-        .panel-body {
+        .modus-wc-utility-panel-body {
           padding: 20px 0;
         }
 
-        .panel-footer {
+        .modus-wc-utility-panel-footer {
           display: flex;
           gap: 10px;
           justify-content: flex-end;
@@ -357,8 +361,8 @@ export const OverlayMode: Story = {
             </p>
             <p>
               This example demonstrates the overlay mode where the panel appears
-              on top of the content without pushing it aside. This is useful when
-              you want to preserve the layout of the main content area.
+              on top of the content without pushing it aside. This is useful
+              when you want to preserve the layout of the main content area.
             </p>
           </div>
 
@@ -368,15 +372,17 @@ export const OverlayMode: Story = {
             ?push-content="${pushContent}"
             target-content="#main-content-overlay"
           >
-            <div slot="header" class="panel-header">Overlay Panel Header</div>
+            <div slot="header" class="modus-wc-utility-panel-header">
+              Overlay Panel Header
+            </div>
 
-            <div slot="body" class="panel-body">
+            <div slot="body" class="modus-wc-utility-panel-body">
               <p>This panel overlays the content without pushing it.</p>
             </div>
 
-            <div slot="footer" class="panel-footer">
-              <modus-wc-button button-type="secondary">Cancel</modus-wc-button>
-              <modus-wc-button>Save</modus-wc-button>
+            <div slot="footer" class="modus-wc-utility-panel-footer">
+              <modus-wc-button color="secondary" size="sm">Cancel</modus-wc-button>
+              <modus-wc-button color-type="primary" size="sm>Save</modus-wc-button>
             </div>
           </modus-wc-utility-panel>
         </div>

@@ -1,4 +1,4 @@
-:host {
+modus-wc-utility-panel {
   --modus-wc-utility-panel-padding: 1rem;
   --modus-wc-utility-panel-bg: #fff;
   --modus-wc-utility-panel-color: #000;
@@ -26,20 +26,20 @@
     transition: right var(--modus-wc-utility-panel-transition-duration) ease-out;
   }
 
-  .panel-content {
+  .modus-wc-utility-panel-content {
     display: flex;
     flex-direction: column;
     height: 100%;
 
-    .panel-header,
-    .panel-footer {
+    .modus-wc-utility-panel-header,
+    .modus-wc-utility-panel-footer {
       align-items: center;
       display: flex;
       height: var(--modus-wc-utility-panel-header-height);
       padding: 0 var(--modus-wc-utility-panel-padding);
     }
 
-    .panel-body {
+    .modus-wc-utility-panel-body {
       flex: 1;
       overflow: auto;
       padding: var(--modus-wc-utility-panel-padding);

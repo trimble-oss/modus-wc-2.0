@@ -12,7 +12,7 @@ import {
 @Component({
   tag: 'modus-wc-utility-panel',
   styleUrl: 'modus-wc-utility-panel.scss',
-  shadow: true,
+  shadow: false,
 })
 export class ModusWcUtilityPanel {
   /** The panel is expanded or closed */
@@ -116,24 +116,24 @@ export class ModusWcUtilityPanel {
           open: this.expanded,
         }}
       >
-        <div class="panel-content">
+        <div class="modus-wc-utility-panel-content">
           {hasHeader && (
             <Fragment>
-              <div class="panel-header">
+              <div class="modus-wc-utility-panel-header">
                 <slot name="header"></slot>
               </div>
               <hr />
             </Fragment>
           )}
 
-          <div class="panel-body">
+          <div class="modus-wc-utility-panel-body">
             <slot name="body"></slot>
           </div>
 
           {hasFooter && (
             <Fragment>
               <hr />
-              <div class="panel-footer">
+              <div class="modus-wc-utility-panel-footer">
                 <slot name="footer"></slot>
               </div>
             </Fragment>

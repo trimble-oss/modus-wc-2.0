@@ -6754,7 +6754,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A utility panel component that slides in from the right side of the screen.",
+          "description": "",
           "name": "ModusWcUtilityPanel",
           "members": [
             {
