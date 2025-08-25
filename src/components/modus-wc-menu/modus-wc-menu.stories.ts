@@ -186,3 +186,256 @@ export const CustomMenu: Story = {
     `;
   },
 };
+
+export const CollapsibleMenu: Story = {
+  render: () => {
+    const handleCollapseToggle = (e: MouseEvent) => {
+      const clickedEl = e.currentTarget as HTMLElement;
+      const parentLi = clickedEl.closest('li');
+      if (!parentLi) return;
+
+      // Find the icon element that needs to be toggled
+      const iconEl = clickedEl.querySelector('.dropdown-toggle') as HTMLElement;
+      if (!iconEl) return;
+
+      // Toggle between expand_more and expand_less icons
+      const isExpanded = iconEl.getAttribute('name') === 'expand_more';
+      iconEl.setAttribute('name', isExpanded ? 'expand_less' : 'expand_more');
+
+      // Find and toggle children visibility
+      const childContainer = parentLi.nextElementSibling?.classList.contains(
+        'children-container'
+      )
+        ? (parentLi.nextElementSibling as HTMLElement)
+        : null;
+
+      if (childContainer) {
+        childContainer.classList.toggle('hidden');
+        childContainer.setAttribute(
+          'aria-hidden',
+          !isExpanded ? 'true' : 'false'
+        );
+      }
+    };
+
+    return html`
+      <style>
+        .children-container {
+          transition: height 0.2s ease-out;
+          padding-inline-start: 1rem;
+        }
+        .collapse-icon {
+          min-width: 24px;
+          padding-inline-start: 0.2rem;
+        }
+        .dropdown-menu {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .flex-row {
+          align-items: center;
+          display: flex;
+          gap: 1.3rem;
+          padding: 0.8rem 0.25rem;
+          padding-inline-start: 1rem;
+          cursor: pointer;
+        }
+        .hidden {
+          display: none;
+        }
+        .justify-end {
+          margin-left: auto;
+        }
+        .menu-width {
+          width: 400px;
+        }
+        .nested-row {
+          padding-inline-start: 2.5rem;
+        }
+        ul {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+      </style>
+      <script>
+        function handleCollapseToggle(e) {
+          const clickedEl = e.currentTarget;
+          const parentLi = clickedEl.closest('li');
+          if (!parentLi) return;
+
+          // Find the icon element that needs to be toggled
+          const iconEl = clickedEl.querySelector('.dropdown-toggle');
+          if (!iconEl) return;
+
+          // Toggle between expand_more and expand_less icons
+          const isExpanded = iconEl.getAttribute('name') === 'expand_more';
+          iconEl.setAttribute(
+            'name',
+            isExpanded ? 'expand_less' : 'expand_more'
+          );
+
+          // Find and toggle children visibility
+          const childContainer =
+            parentLi.nextElementSibling?.classList.contains(
+              'children-container'
+            )
+              ? parentLi.nextElementSibling
+              : null;
+
+          if (childContainer) {
+            childContainer.classList.toggle('hidden');
+            childContainer.setAttribute(
+              'aria-hidden',
+              !isExpanded ? 'true' : 'false'
+            );
+          }
+        }
+      </script>
+      <modus-wc-menu aria-label="Collapsible menu" custom-class="menu-width">
+        <!-- Charts group -->
+        <li>
+          <div class="flex-row" @click=${handleCollapseToggle}>
+            <modus-wc-icon
+              decorative="true"
+              name="bar_graph"
+              class="collapse-icon icon-left"
+            ></modus-wc-icon>
+            <div class="dropdown-menu">Charts</div>
+            <div class="justify-end">
+              <modus-wc-icon
+                decorative="true"
+                name="expand_more"
+                class="collapse-icon dropdown-toggle"
+              ></modus-wc-icon>
+            </div>
+          </div>
+        </li>
+        <li class="children-container hidden" aria-hidden="true">
+          <ul>
+            <li>
+              <div class="flex-row nested-row">
+                <div>Bar Chart</div>
+              </div>
+            </li>
+            <li>
+              <div class="flex-row nested-row">
+                <div>Line Chart</div>
+              </div>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Calendar item (no children) -->
+        <li>
+          <div class="flex-row">
+            <modus-wc-icon
+              decorative="true"
+              name="calendar"
+              class="collapse-icon icon-left"
+            ></modus-wc-icon>
+            <div class="dropdown-menu">Calendar</div>
+          </div>
+        </li>
+
+        <!-- Maps group -->
+        <li>
+          <div class="flex-row" @click=${handleCollapseToggle}>
+            <modus-wc-icon
+              decorative="true"
+              name="compass"
+              class="collapse-icon icon-left"
+            ></modus-wc-icon>
+            <div class="dropdown-menu">Maps</div>
+            <div class="justify-end">
+              <modus-wc-icon
+                decorative="true"
+                name="expand_more"
+                class="collapse-icon dropdown-toggle"
+              ></modus-wc-icon>
+            </div>
+          </div>
+        </li>
+        <li class="children-container hidden" aria-hidden="true">
+          <ul>
+            <li>
+              <div class="flex-row nested-row">
+                <div>Map 1</div>
+              </div>
+            </li>
+            <li>
+              <div class="flex-row nested-row" @click=${handleCollapseToggle}>
+                <div>Map 2</div>
+                <div class="justify-end">
+                  <modus-wc-icon
+                    decorative="true"
+                    name="expand_more"
+                    class="collapse-icon dropdown-toggle"
+                  ></modus-wc-icon>
+                </div>
+              </div>
+            </li>
+            <li class="children-container hidden" aria-hidden="true">
+              <ul>
+                <li>
+                  <div class="flex-row" style="padding-inline-start: 4rem;">
+                    <div>Map 2.1</div>
+                  </div>
+                </li>
+                <li>
+                  <div class="flex-row" style="padding-inline-start: 4rem;">
+                    <div>Map 2.2</div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <div class="flex-row nested-row">
+                <div>Map 3</div>
+              </div>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Reports group -->
+        <li>
+          <div class="flex-row" @click=${handleCollapseToggle}>
+            <modus-wc-icon
+              decorative="true"
+              name="master_data"
+              class="collapse-icon icon-left"
+            ></modus-wc-icon>
+            <div class="dropdown-menu">Reports</div>
+            <div class="justify-end">
+              <modus-wc-icon
+                decorative="true"
+                name="expand_more"
+                class="collapse-icon dropdown-toggle"
+              ></modus-wc-icon>
+            </div>
+          </div>
+        </li>
+        <li class="children-container hidden" aria-hidden="true">
+          <ul>
+            <li>
+              <div class="flex-row nested-row">
+                <div>Daily Report</div>
+              </div>
+            </li>
+            <li>
+              <div class="flex-row nested-row">
+                <div>Weekly Report</div>
+              </div>
+            </li>
+            <li>
+              <div class="flex-row nested-row">
+                <div>Monthly Report</div>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </modus-wc-menu>
+    `;
+  },
+};

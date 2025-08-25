@@ -143,8 +143,15 @@ export function handleArrowDown(params: ArrowNavigationParams): void {
   const nextIndex =
     currentIndex < 0 ? 0 : Math.min(currentIndex + 1, visibleItems.length - 1);
 
-  if (visibleItems[nextIndex]) {
-    onUpdateFocus(visibleItems[nextIndex].value);
+  if (
+    nextIndex >= 0 &&
+    nextIndex < visibleItems.length &&
+    visibleItems[nextIndex]
+  ) {
+    const item = visibleItems[nextIndex];
+    if (item && item.value) {
+      onUpdateFocus(item.value);
+    }
   }
 }
 
@@ -170,8 +177,15 @@ export function handleArrowUp(params: {
   const prevIndex =
     currentIndex < 0 ? visibleItems.length - 1 : Math.max(currentIndex - 1, 0);
 
-  if (visibleItems[prevIndex]) {
-    onUpdateFocus(visibleItems[prevIndex].value);
+  if (
+    prevIndex >= 0 &&
+    prevIndex < visibleItems.length &&
+    visibleItems[prevIndex]
+  ) {
+    const item = visibleItems[prevIndex];
+    if (item && item.value) {
+      onUpdateFocus(item.value);
+    }
   }
 }
 
@@ -287,7 +301,10 @@ export function processItemSelection(
     );
     const isCurrentlySelected = currentItem?.selected || false;
 
-    if (isCurrentlySelected) {
+    // Also check if item is already in selectionOrder to prevent duplicates
+    const isInSelectionOrder = params.selectionOrder.includes(item.value);
+
+    if (isCurrentlySelected || isInSelectionOrder) {
       return {
         updatedItems: params.items,
         updatedValue: '',
@@ -301,11 +318,11 @@ export function processItemSelection(
       ...params.items.map((menuItem) => ({
         ...menuItem,
         selected: menuItem.value === item.value ? true : menuItem.selected,
-        focused: false,
+        focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
       })),
     ];
 
-    // Add to end of selection order
+    // Add to end of selection order (now guaranteed not to be a duplicate)
     updatedSelectionOrder = [...params.selectionOrder, item.value];
 
     // Clear the input value in multi-select mode
@@ -324,7 +341,7 @@ export function processItemSelection(
       ...params.items.map((menuItem) => ({
         ...menuItem,
         selected: menuItem.value === item.value,
-        focused: false,
+        focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
       })),
     ];
     // Always set the input value to show the selected item's label
@@ -728,7 +745,10 @@ export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
               disabled={item.disabled}
               focused={item.focused}
               label={item.label}
-              onItemSelect={() => params.onItemSelect(item.value)}
+              onItemSelect={(e: CustomEvent) => {
+                e.stopPropagation();
+                params.onItemSelect(item.value);
+              }}
               onMouseDown={(e) => e.preventDefault()}
               selected={item.selected}
               value={item.value}

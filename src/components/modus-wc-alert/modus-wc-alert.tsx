@@ -8,6 +8,7 @@ import {
   Host,
   Listen,
   Prop,
+  Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
 import { AlertSolidIcon } from '../../icons/alert-solid.icon';
@@ -40,6 +41,9 @@ export class ModusWcAlert {
   /** Custom CSS class to apply to the outer div element. */
   @Prop() customClass?: string = '';
 
+  /** Time taken to dismiss the alert in milliseconds */
+  @Prop() delay?: number;
+
   /** Whether the alert has a dismiss button */
   @Prop() dismissible?: boolean = false;
 
@@ -49,14 +53,17 @@ export class ModusWcAlert {
   /** The variant of the alert. */
   @Prop() variant?: 'error' | 'info' | 'success' | 'warning' = 'info';
 
-  /** Role taken by the alert. Defaults to 'status' */
-  @Prop() role: 'alert' | 'log' | 'marquee' | 'status' | 'timer' = 'status';
-
   /** An event that fires when the alert is dismissed */
   @Event() dismissClick!: EventEmitter;
 
   componentWillLoad() {
-    this.inheritedAttributes = inheritAriaAttributes(this.el, ['role']);
+    // Set default role if none provided
+    if (!this.el.hasAttribute('role')) {
+      this.el.setAttribute('role', 'status');
+    }
+
+    // Then inherit all ARIA attributes normally
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -92,9 +99,32 @@ export class ModusWcAlert {
     }
   }
 
+  // Handle delay
+  private timerId!: ReturnType<typeof setTimeout>;
+
+  @Watch('delay')
+  delayChanged(newDelay: number): void {
+    clearTimeout(this.timerId);
+    this.timerId = setTimeout(() => {
+      this.dismissElement();
+    }, newDelay);
+  }
+
   dismissElement() {
     this.dismissClick.emit();
     this.el.remove();
+  }
+
+  componentDidLoad(): void {
+    if (this.delay && this.delay > 0) {
+      this.timerId = setTimeout(() => {
+        this.dismissElement();
+      }, this.delay);
+    }
+  }
+
+  disconnectedCallback(): void {
+    clearTimeout(this.timerId);
   }
 
   @Listen('keyup')
@@ -113,11 +143,7 @@ export class ModusWcAlert {
   render() {
     return (
       <Host>
-        <div
-          class={this.getClasses()}
-          role={this.role}
-          {...this.inheritedAttributes}
-        >
+        <div class={this.getClasses()} {...this.inheritedAttributes}>
           {this.getLeadingIcon()}
           <div>
             <div class="title">{this.alertTitle}</div>

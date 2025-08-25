@@ -79,6 +79,23 @@
           "members": [
             {
               "kind": "method",
+              "name": "delayChanged",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newDelay",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "dismissElement"
             },
             {
@@ -138,6 +155,14 @@
               }
             },
             {
+              "name": "delay",
+              "fieldName": "delay",
+              "description": "Time taken to dismiss the alert in milliseconds",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
               "name": "dismissible",
               "fieldName": "dismissible",
               "default": "false",
@@ -152,15 +177,6 @@
               "description": "The Modus icon to render.",
               "type": {
                 "text": "string"
-              }
-            },
-            {
-              "name": "role",
-              "fieldName": "role",
-              "default": "'status'",
-              "description": "Role taken by the alert. Defaults to 'status'",
-              "type": {
-                "text": "'alert' | 'log' | 'marquee' | 'status' | 'timer'"
               }
             },
             {
@@ -821,7 +837,21 @@
             },
             {
               "kind": "method",
-              "name": "handleItemsChange"
+              "name": "handleItemsChange",
+              "parameters": [
+                {
+                  "name": "newItems",
+                  "type": {
+                    "text": "IAutocompleteItem[]"
+                  }
+                },
+                {
+                  "name": "oldItems",
+                  "type": {
+                    "text": "IAutocompleteItem[]"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
@@ -1130,22 +1160,6 @@
                 "text": "EventEmitter<{ expanded: boolean }>"
               },
               "description": "Event emitted when chips expansion state changes."
-            },
-            {
-              "kind": "field",
-              "name": "customBlur",
-              "type": {
-                "text": "(event: FocusEvent) => void | undefined"
-              },
-              "description": "Custom blur handler - if provided, overrides default blur behavior"
-            },
-            {
-              "kind": "field",
-              "name": "customKeyDown",
-              "type": {
-                "text": "(event: KeyboardEvent) => void | undefined"
-              },
-              "description": "Custom key down handler - if provided, overrides default keyboard navigation"
             },
             {
               "kind": "field",
@@ -2482,6 +2496,14 @@
           ],
           "attributes": [
             {
+              "name": "button-aria-label",
+              "fieldName": "buttonAriaLabel",
+              "description": "The aria-label for the dropdown button.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "button-color",
               "fieldName": "buttonColor",
               "default": "'primary'",
@@ -3676,15 +3698,6 @@
               }
             },
             {
-              "name": "input-mode",
-              "fieldName": "inputMode",
-              "default": "'numeric'",
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\nThis allows a browser to display an appropriate virtual keyboard.",
-              "type": {
-                "text": "'decimal' | 'none' | 'numeric'"
-              }
-            },
-            {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
               "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).",
@@ -4063,7 +4076,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable radio component",
+          "description": "A customizable radio button component used to create radio inputs.",
           "name": "ModusWcRadio",
           "members": [
             {
@@ -4341,7 +4354,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable select component used to pick a value from a list of options",
+          "description": "A customizable select component used to create selects with different options.",
           "name": "ModusWcSelect",
           "members": [
             {
@@ -4974,7 +4987,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable checkbox component",
+          "description": "A customizable switch component",
           "name": "ModusWcSwitch",
           "members": [
             {
@@ -5265,6 +5278,14 @@
             }
           ],
           "attributes": [
+            {
+              "name": "caption",
+              "fieldName": "caption",
+              "description": "Accessibility caption for the table (visually hidden but available to screen readers).",
+              "type": {
+                "text": "string"
+              }
+            },
             {
               "name": "columns",
               "fieldName": "columns",
@@ -5684,15 +5705,6 @@
               "description": "The ID of the input element.",
               "type": {
                 "text": "string"
-              }
-            },
-            {
-              "name": "input-mode",
-              "fieldName": "inputMode",
-              "default": "'text'",
-              "description": "Hints at the type of data that might be entered by the user while editing the element or its contents.\nThis allows a browser to display an appropriate virtual keyboard.",
-              "type": {
-                "text": "| 'decimal'\n    | 'email'\n    | 'none'\n    | 'numeric'\n    | 'search'\n    | 'tel'\n    | 'text'\n    | 'url'"
               }
             },
             {
@@ -6525,7 +6537,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\n\nThe tooltip can be dismissed by pressing the Escape key.",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -6535,6 +6547,49 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "elementKeyupHandler",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "escapeDismissed",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Track if tooltip was dismissed with Escape key"
+            },
+            {
+              "kind": "method",
+              "name": "handleMouseEnter"
+            },
+            {
+              "kind": "method",
+              "name": "handleMouseLeave"
+            },
+            {
+              "kind": "field",
+              "name": "isVisible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Track if tooltip is currently visible"
             },
             {
               "kind": "method",
@@ -6596,7 +6651,15 @@
             }
           ],
           "tagName": "modus-wc-tooltip",
-          "events": [],
+          "events": [
+            {
+              "name": "dismissEscape",
+              "type": {
+                "text": "EventEmitter"
+              },
+              "description": "An event that fires when the tooltip is dismissed via Escape key"
+            }
+          ],
           "customElement": true
         }
       ],

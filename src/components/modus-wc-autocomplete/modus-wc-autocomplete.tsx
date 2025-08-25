@@ -52,10 +52,12 @@ export class ModusWcAutocomplete {
   @State() private initialNavigation: boolean = true;
   @State() private filteredItems: IAutocompleteItem[] = [];
   @State() private selectionOrder: string[] = []; // Track order of chip selection
+  @State() private searchText: string = ''; // Dedicated state for active search query
 
   private debounceTimer?: number;
   private inheritedAttributes: Attributes = {};
   private programmaticOpen: boolean = false;
+  private isNavigating: boolean = false; // Flag to prevent re-filtering during navigation
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -184,8 +186,46 @@ export class ModusWcAutocomplete {
   }
 
   @Watch('items')
-  handleItemsChange() {
-    if (this.items) {
+  handleItemsChange(
+    newItems: IAutocompleteItem[],
+    oldItems: IAutocompleteItem[]
+  ) {
+    // Only sync filtered items if items actually changed (not just focus updates)
+    // and we're not currently navigating
+    if (
+      this.items &&
+      !this.isNavigating &&
+      JSON.stringify(
+        newItems?.map((i) => ({
+          value: i.value,
+          selected: i.selected,
+          focused: i.focused,
+        }))
+      ) !==
+        JSON.stringify(
+          oldItems?.map((i) => ({
+            value: i.value,
+            selected: i.selected,
+            focused: i.focused,
+          }))
+        )
+    ) {
+      if (this.multiSelect) {
+        // Keep items in selectionOrder that are still selected
+        const stillSelectedValues = this.selectionOrder.filter((value) =>
+          newItems.some((item) => item.value === value && item.selected)
+        );
+
+        // Add any newly selected items that aren't already in selectionOrder
+        const newlySelectedValues = newItems
+          .filter(
+            (item) => item.selected && !stillSelectedValues.includes(item.value)
+          )
+          .map((item) => item.value);
+
+        // Preserve the original selection order and append new selections
+        this.selectionOrder = [...stillSelectedValues, ...newlySelectedValues];
+      }
       this.syncFilteredItems();
     }
   }
@@ -235,31 +275,87 @@ export class ModusWcAutocomplete {
   private syncFilteredItems(): void {
     this.filteredItems = syncFilteredItems(
       this.items,
-      this.value,
+      this.searchText,
       this.leaveMenuOpen,
       this.customInputChange
     );
   }
 
   private updateItemFocus(targetValue: string): void {
+    this.isNavigating = true; // Prevent items watcher from re-filtering
     const updated = updateItemFocus(this.items, targetValue);
     if (updated) {
       this.items = updated;
-      this.syncFilteredItems();
+
+      // We need to update filteredItems to reflect the focus change
+      // But only if we're actively filtering
+      if (this.searchText) {
+        this.syncFilteredItems();
+      } else {
+        // When not filtering, update filteredItems to reflect the focus change
+        // without applying any filter
+        this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+      }
     }
+    this.isNavigating = false; // Reset flag
   }
 
   private clearAllFocus(): void {
     const updated = clearAllFocus(this.items);
     if (updated) {
       this.items = updated;
-      this.syncFilteredItems();
+      // When clearing focus (e.g., on Escape), show all items instead of filtered
+      this.filteredItems = this.items.filter((item) => item.visibleInMenu);
     }
+  }
+
+  private scrollToOptionSelected(): void {
+    if (this.multiSelect) return;
+
+    requestAnimationFrame(() => {
+      const menuEl = this.el.querySelector('modus-wc-menu') as HTMLElement;
+      if (menuEl) {
+        const targetItem = menuEl.querySelector(
+          '.modus-wc-menu-item-selected'
+        ) as HTMLElement;
+
+        const scrollContainer = menuEl.querySelector(
+          '.modus-wc-menu'
+        ) as HTMLElement;
+
+        const containerRect = scrollContainer.getBoundingClientRect();
+        const itemRect = targetItem.getBoundingClientRect();
+
+        const isAboveView = itemRect.top < containerRect.top;
+        const isBelowView = itemRect.bottom > containerRect.bottom;
+
+        if (isAboveView || isBelowView) {
+          const scrollTop = targetItem.offsetTop;
+          scrollContainer.scrollTo({
+            top: Math.max(0, scrollTop),
+            behavior: 'smooth',
+          });
+        }
+      }
+    });
   }
 
   private handleArrowDown(): void {
     const input = this.el.querySelector('input');
     if (!input) return;
+
+    // Check if we're in filtering mode based on searchText BEFORE clearing it
+    const wasFiltering = this.searchText.length > 0;
+
+    if (this.initialNavigation) {
+      if (this.searchText) {
+        this.searchText = '';
+      }
+      // Reset filtered items when initial navigation to ensure all items are shown
+      if (this.items) {
+        this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+      }
+    }
 
     processArrowDown({
       showMenuOnFocus: this.showMenuOnFocus,
@@ -267,17 +363,38 @@ export class ModusWcAutocomplete {
       inputValue: input.value,
       initialNavigation: this.initialNavigation,
       visibleItems: this.getVisibleItems(),
-      onUpdateFocus: (value) => this.updateItemFocus(value),
-      onSetMenuVisible: (visible) => (this.menuVisible = visible),
+      onUpdateFocus: (value) => {
+        this.updateItemFocus(value);
+        // After updating focus, if not filtering, ensure we show all items
+        if (!wasFiltering && !this.searchText && this.items) {
+          this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+        }
+      },
+      onSetMenuVisible: (visible) => {
+        this.menuVisible = visible;
+        // Only scroll if menu is becoming visible and there's a selected item
+        if (visible && this.items?.some((item) => item.selected)) {
+          this.scrollToOptionSelected();
+        }
+      },
       onSetInitialNavigation: (value) => (this.initialNavigation = value),
     });
   }
 
   private handleArrowUp(): void {
+    // Check if we're in filtering mode based on searchText
+    const isFiltering = this.searchText.length > 0;
+
     processArrowUp({
       initialNavigation: this.initialNavigation,
       visibleItems: this.getVisibleItems(),
-      onUpdateFocus: (value) => this.updateItemFocus(value),
+      onUpdateFocus: (value) => {
+        this.updateItemFocus(value);
+        // After updating focus, if not filtering, ensure we show all items
+        if (!isFiltering && this.items) {
+          this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+        }
+      },
       onSetInitialNavigation: (value) => (this.initialNavigation = value),
     });
   }
@@ -286,6 +403,7 @@ export class ModusWcAutocomplete {
     this.clearAllFocus();
     this.initialNavigation = true;
     this.menuVisible = false;
+    this.searchText = ''; // Clear search text on escape
   }
 
   private handleEnter(): void {
@@ -319,16 +437,23 @@ export class ModusWcAutocomplete {
   }
 
   private handleFocusOutside = (event: FocusEvent) => {
-    setTimeout(() => {
-      const relatedTarget = event.relatedTarget as HTMLElement;
+    const relatedTarget = event.relatedTarget as HTMLElement;
 
-      if (!relatedTarget || !this.el.contains(relatedTarget)) {
-        if (!this.programmaticOpen) {
-          this.menuVisible = false;
+    if (!relatedTarget || !this.el.contains(relatedTarget)) {
+      // Hide menu immediately to prevent flicker
+      if (!this.programmaticOpen) {
+        this.menuVisible = false;
+      }
+
+      // Use setTimeout for cleanup and blur event
+      setTimeout(() => {
+        // Reset filtered items after menu is hidden
+        if (this.items) {
+          this.filteredItems = this.items.filter((item) => item.visibleInMenu);
         }
         this.inputBlur.emit(event);
-      }
-    }, BLUR_FOCUSOUT_DELAY_MS);
+      }, BLUR_FOCUSOUT_DELAY_MS);
+    }
   };
 
   private handleBlur = (event: CustomEvent<FocusEvent>) => {
@@ -347,11 +472,8 @@ export class ModusWcAutocomplete {
           focused: false,
         })),
       ];
-      // Sync filtered items from updated items (maintains current search filter)
-      this.syncFilteredItems();
     }
 
-    this.isChipsExpanded = false; // Always collapse on blur
     this.handleFocusOutside(event.detail);
   };
 
@@ -360,6 +482,9 @@ export class ModusWcAutocomplete {
   };
 
   private handleChange = (event: CustomEvent<Event>) => {
+    // Prevent the child text-input's immediate inputChange event
+    event.stopPropagation();
+
     const result = processInputChange(event, {
       disabled: this.disabled,
       readOnly: this.readOnly,
@@ -380,6 +505,7 @@ export class ModusWcAutocomplete {
       this.items = result.updatedItems;
     }
     this.value = result.inputValue;
+    this.searchText = result.inputValue; // Update search text as user types
 
     // Sync filtered items based on new search value
     this.syncFilteredItems();
@@ -443,8 +569,35 @@ export class ModusWcAutocomplete {
   }
 
   private handleFocus = (event: CustomEvent<FocusEvent>) => {
-    if (!this.disabled && !this.readOnly && this.showMenuOnFocus) {
-      this.menuVisible = true;
+    // Prevent the child text-input's immediate inputFocus event
+    event.stopPropagation();
+
+    if (!this.disabled && !this.readOnly) {
+      // When focusing, clear searchText if value matches a selected item
+      // This prevents treating the display value as a search query
+      const hasSelectedItem = this.items?.some(
+        (item) => item.selected && item.label === this.value
+      );
+
+      if (hasSelectedItem) {
+        this.searchText = '';
+      }
+
+      // Show all items on focus
+      if (this.items) {
+        this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+      }
+
+      if (this.showMenuOnFocus) {
+        this.menuVisible = true;
+
+        // Scroll to selected item when menu opens via mouse focus
+        if (this.items?.some((item) => item.selected)) {
+          requestAnimationFrame(() => {
+            this.scrollToOptionSelected();
+          });
+        }
+      }
     }
 
     this.inputFocus.emit(event.detail);
@@ -468,6 +621,7 @@ export class ModusWcAutocomplete {
         ];
       }
       this.value = '';
+      this.searchText = ''; // Clear search text when clearing selection
     }
     return Promise.resolve();
   }
@@ -524,6 +678,7 @@ export class ModusWcAutocomplete {
   @Method()
   async clearInput() {
     this.value = '';
+    this.searchText = ''; // Clear search text as well
     this.selectionOrder = []; // Clear selection order
     if (this.items) {
       this.items = [
@@ -560,7 +715,6 @@ export class ModusWcAutocomplete {
 
     if (result.updatedItems && result.updatedItems !== this.items) {
       this.items = result.updatedItems;
-      this.syncFilteredItems();
     }
 
     if (result.updatedValue !== undefined) {
@@ -579,10 +733,23 @@ export class ModusWcAutocomplete {
       this.menuVisible = false;
     }
 
+    // Clear search text after selection - this is critical to prevent state ambiguity
+    this.searchText = '';
+
+    // Reset filtered items to show all items after selection
+    if (this.items) {
+      this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+    }
+
     // Only emit event and update navigation if not disabled/readonly
     if (!this.disabled && !this.readOnly && this.items) {
       this.initialNavigation = true;
       this.itemSelect.emit(item);
+
+      // Scroll to selected option after selection
+      if (!this.multiSelect && this.menuVisible) {
+        this.scrollToOptionSelected();
+      }
     }
   };
 
@@ -597,7 +764,8 @@ export class ModusWcAutocomplete {
     if (result.updatedItems) {
       this.items = result.updatedItems;
       this.selectionOrder = result.updatedSelectionOrder;
-      this.syncFilteredItems();
+      // When removing chips, show all items instead of applying text filtering
+      this.filteredItems = this.items.filter((item) => item.visibleInMenu);
     }
 
     // Emit event for external handlers who want to know about the removal
@@ -611,6 +779,10 @@ export class ModusWcAutocomplete {
   };
 
   private toggleChipsExpansion = () => {
+    if (this.leaveMenuOpen && this.isChipsExpanded) {
+      this.menuVisible = false;
+    }
+
     this.isChipsExpanded = !this.isChipsExpanded;
     this.chipsExpansionChange.emit({ expanded: this.isChipsExpanded });
   };

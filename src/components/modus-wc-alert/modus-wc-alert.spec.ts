@@ -4,6 +4,12 @@ import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 
 describe('modus-wc-alert', () => {
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.restoreAllMocks();
+  });
+
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcAlert, ModusWcIcon],
@@ -86,5 +92,85 @@ describe('modus-wc-alert', () => {
 
     page.root?.dispatchEvent(event);
     expect(dismissElementSpy).toHaveBeenCalled();
+  });
+
+  it('should set a new timeout on delayChanged and clear timeout on disconnectedCallback', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert],
+      html: '<modus-wc-alert delay="500"></modus-wc-alert>',
+    });
+
+    const component = page.rootInstance as ModusWcAlert;
+    jest.useFakeTimers();
+    const setTimeoutSpy = jest.spyOn(globalThis, 'setTimeout');
+    const clearTimeoutSpy = jest.spyOn(globalThis, 'clearTimeout');
+
+    component.delayChanged(1000);
+    expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 1000);
+
+    component.delayChanged(1100);
+    expect(clearTimeoutSpy).toHaveBeenCalled();
+    expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 1100);
+
+    component.disconnectedCallback();
+    expect(clearTimeoutSpy).toHaveBeenCalled();
+  });
+
+  it('should call dismissElement from timeout in delayChanged and componentDidLoad functions', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert],
+      html: '<modus-wc-alert delay="500"></modus-wc-alert>',
+    });
+
+    const component = page.rootInstance as ModusWcAlert;
+    jest.useFakeTimers();
+    const dismissElementSpy = jest.spyOn(component, 'dismissElement');
+
+    component.delayChanged(500);
+    jest.runAllTimers();
+
+    expect(dismissElementSpy).toHaveBeenCalled();
+
+    component.componentDidLoad();
+    jest.runAllTimers();
+
+    expect(dismissElementSpy).toHaveBeenCalled();
+  });
+
+  it('should clear timeout on disconnectedCallback', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert],
+      html: '<modus-wc-alert delay="500"></modus-wc-alert>',
+    });
+
+    const component = page.rootInstance as ModusWcAlert;
+    jest.useFakeTimers();
+    const clearTimeoutSpy = jest.spyOn(globalThis, 'clearTimeout');
+    component.disconnectedCallback();
+    expect(clearTimeoutSpy).toHaveBeenCalled();
+  });
+
+  it('should inherit aria attributes including role when role is provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert],
+      html: '<modus-wc-alert alert-title="Test Alert" role="alert" aria-label="Test label"></modus-wc-alert>',
+    });
+    // Attributes should be moved from host to inner div
+    const innerDiv = page.root?.querySelector('.modus-wc-alert');
+    expect(innerDiv?.getAttribute('aria-label')).toBe('Test label');
+    // role value gets inherited to inner div (current behavior)
+    expect(innerDiv?.getAttribute('role')).toBe('alert');
+  });
+
+  it('should inherit aria attributes including timer role when timer role is provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert],
+      html: '<modus-wc-alert alert-title="Test Alert" role="timer" aria-describedby="desc"></modus-wc-alert>',
+    });
+    // aria-describedby should be moved to inner div
+    const innerDiv = page.root?.querySelector('.modus-wc-alert');
+    expect(innerDiv?.getAttribute('aria-describedby')).toBe('desc');
+    // timer role gets inherited to inner div (current behavior)
+    expect(innerDiv?.getAttribute('role')).toBe('timer');
   });
 });

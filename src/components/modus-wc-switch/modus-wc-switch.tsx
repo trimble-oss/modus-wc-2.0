@@ -13,7 +13,7 @@ import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable checkbox component
+ * A customizable switch component
  */
 @Component({
   tag: 'modus-wc-switch',
@@ -118,10 +118,12 @@ export class ModusWcSwitch {
           class={this.getClasses()}
           disabled={this.disabled}
           id={this.inputId}
+          name={this.name}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
           onInput={this.handleInput}
           required={this.required}
+          role="switch"
           tabIndex={this.inputTabIndex}
           type="checkbox"
           {...this.inheritedAttributes}

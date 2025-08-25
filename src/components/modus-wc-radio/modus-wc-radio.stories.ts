@@ -65,6 +65,67 @@ export const Default: Story = {
   },
 };
 
+export const RadioGroup: Story = {
+  // prettier-ignore
+  render: (args) => {
+    return html`
+<style>
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .radio-group legend {
+    margin-bottom: 0.5rem;
+  }
+</style>
+
+<main role="main">
+  <fieldset class="radio-group">
+    <legend>Select an option:</legend>
+
+    <modus-wc-radio
+      label="Option 1"
+      name="radio-group-demo"
+      input-id="option1"
+      ?disabled=${args.disabled}
+      size=${ifDefined(args.size)}
+      .value=${true}
+      @inputChange=${(e: CustomEvent) => {
+        // In a real app, you would update your state management here
+        console.log('Selected:', e.target);
+      }}
+    ></modus-wc-radio>
+
+    <modus-wc-radio
+      label="Option 2"
+      name="radio-group-demo"
+      input-id="option2"
+      ?disabled=${args.disabled}
+      size=${ifDefined(args.size)}
+      .value=${false}
+      @inputChange=${(e: CustomEvent) => {
+        console.log('Selected:', e.target);
+      }}
+    ></modus-wc-radio>
+
+    <modus-wc-radio
+      label="Option 3"
+      name="radio-group-demo"
+      input-id="option3"
+      ?disabled=${args.disabled}
+      size=${ifDefined(args.size)}
+      .value=${false}
+      @inputChange=${(e: CustomEvent) => {
+        console.log('Selected:', e.target);
+      }}
+    ></modus-wc-radio>
+  </fieldset>
+</main>
+    `;
+  },
+};
+
 export const Migration: Story = {
   parameters: {
     docs: {

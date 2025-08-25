@@ -240,6 +240,13 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     border: none;
   }
 
+  .modus-wc-autocomplete-multi-select--readonly {
+    &:focus-within {
+      border: var(--modus-wc-border-width-sm) solid
+        var(--modus-wc-color-highlight-blue);
+    }
+  }
+
   .modus-wc-menu {
     background-color: var(--modus-wc-color-white);
   }

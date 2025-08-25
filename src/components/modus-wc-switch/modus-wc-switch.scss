@@ -4,6 +4,8 @@
 */
 
 modus-wc-switch.modus-wc-switch-host {
+  --rounded-badge: 32px;
+
   align-items: center;
   display: flex;
 
@@ -15,8 +17,6 @@ modus-wc-switch.modus-wc-switch-host {
 
 [data-theme='modus-classic-light'] modus-wc-switch .modus-wc-toggle,
 [data-theme='modus-classic-dark'] modus-wc-switch .modus-wc-toggle {
-  --rounded-badge: 32px;
-
   background-color: var(--modus-wc-color-white);
   border: none;
   color: var(--modus-wc-color-gray-4);
