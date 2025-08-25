@@ -16,12 +16,7 @@ import {
   convertPropsToTitleDivClasses,
 } from './modus-wc-collapse.tailwind';
 import { DaisySize } from '../types';
-import {
-  Attributes,
-  generateRandomId,
-  inheritAriaAttributes,
-  KEY,
-} from '../utils';
+import { Attributes, generateRandomId, inheritAriaAttributes } from '../utils';
 
 export interface ICollapseOptions {
   /** The description to render in the collapse header. */
@@ -49,6 +44,7 @@ export interface ICollapseOptions {
 })
 export class ModusWcCollapse {
   private inheritedAttributes: Attributes = {};
+  private detailsRef?: HTMLDetailsElement;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -76,10 +72,9 @@ export class ModusWcCollapse {
 
   @Watch('expanded')
   expandedChanged(newValue: boolean) {
-    const checkbox = this.el.querySelector(
-      'input[type="checkbox"]'
-    ) as HTMLInputElement;
-    if (checkbox) checkbox.checked = newValue;
+    if (this.detailsRef && this.detailsRef.open !== newValue) {
+      this.detailsRef.open = newValue;
+    }
   }
 
   componentWillLoad() {
@@ -90,19 +85,12 @@ export class ModusWcCollapse {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  private handleClick = () => {
-    this.expanded = !this.expanded;
-    this.expandedChange.emit({ expanded: this.expanded });
-  };
-
-  private handleContentClick = (event: Event) => {
-    event.stopPropagation();
-  };
-
-  private handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === KEY.Enter || event.key === KEY.Space) {
-      event.preventDefault();
-      this.handleClick();
+  private handleToggle = (event: Event) => {
+    const detailsElement = event.currentTarget as HTMLDetailsElement;
+    const isOpen = detailsElement.open;
+    if (this.expanded !== isOpen) {
+      this.expanded = isOpen;
+      this.expandedChange.emit({ expanded: isOpen });
     }
   };
 
@@ -122,7 +110,7 @@ export class ModusWcCollapse {
   }
 
   // istanbul ignore next
-  private getTitleDivClasses(): string {
+  private getTitleClasses(): string {
     const classList: string[] = [
       'modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4',
     ];
@@ -169,18 +157,14 @@ export class ModusWcCollapse {
 
     return (
       <Host>
-        <div class={this.getOuterDivClasses()} {...this.inheritedAttributes}>
-          <input
-            aria-controls={contentId}
-            aria-expanded={this.expanded}
-            aria-labelledby={titleId}
-            class="modus-wc-min-h-4 modus-wc-cursor-pointer"
-            id={`${baseId}-checkbox`}
-            onClick={this.handleClick}
-            onKeyDown={this.handleKeyDown}
-            type="checkbox"
-          />
-          <div class={this.getTitleDivClasses()} id={titleId}>
+        <details
+          class={this.getOuterDivClasses()}
+          open={this.expanded}
+          onToggle={this.handleToggle}
+          ref={(el) => (this.detailsRef = el as HTMLDetailsElement)}
+          {...this.inheritedAttributes}
+        >
+          <summary class={this.getTitleClasses()} id={titleId}>
             {this.options ? (
               <Fragment>
                 <div class={this.getTitleChildDivClasses()}>
@@ -203,17 +187,15 @@ export class ModusWcCollapse {
             ) : (
               <slot name="header" />
             )}
-          </div>
-          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
+          </summary>
           <div
             aria-labelledby={titleId}
             class="modus-wc-collapse-content modus-wc-cursor-default"
             id={contentId}
-            onClick={this.handleContentClick}
           >
             <slot name="content" />
           </div>
-        </div>
+        </details>
       </Host>
     );
   }
