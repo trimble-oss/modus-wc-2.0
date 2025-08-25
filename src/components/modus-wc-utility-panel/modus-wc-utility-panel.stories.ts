@@ -44,9 +44,10 @@ const meta: Meta<UtilityPanelArgs> = {
 export default meta;
 type Story = StoryObj<UtilityPanelArgs>;
 
-const Template: Story = {
+export const Default: Story = {
   render: (args) => {
     const { expanded, pushContent, targetContent } = args;
+
     return html`
       <style>
         .demo-container {
@@ -91,8 +92,7 @@ const Template: Story = {
       </style>
 
       <div class="demo-container">
-        <modus-wc-navbar id="navbar-default">
-          <div slot="logo">My Application</div>
+        <modus-wc-navbar id="navbar-default" .visibility=${{ user: false }}>
           <div slot="end">
             <modus-wc-tooltip content="Toggle Utility Panel" position="left">
               <modus-wc-button
@@ -106,14 +106,6 @@ const Template: Story = {
             </modus-wc-tooltip>
           </div>
         </modus-wc-navbar>
-        <script>
-          setTimeout(() => {
-            const navbar = document.getElementById('navbar-default');
-            if (navbar) {
-              navbar.visibility = { user: false };
-            }
-          }, 0);
-        </script>
 
         <div class="main-content-wrapper">
           <div id="main-content" class="main-content">
@@ -172,13 +164,10 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = {
-  ...Template,
-};
-
 export const Expanded: Story = {
   render: (args) => {
     const { expanded, pushContent } = args;
+
     return html`
       <style>
         .demo-container {
@@ -223,8 +212,7 @@ export const Expanded: Story = {
       </style>
 
       <div class="demo-container">
-        <modus-wc-navbar id="navbar-expanded">
-          <div slot="logo">My Application</div>
+        <modus-wc-navbar id="navbar-expanded" .visibility=${{ user: false }}>
           <div slot="end">
             <modus-wc-button
               color="primary"
@@ -236,14 +224,6 @@ export const Expanded: Story = {
             </modus-wc-button>
           </div>
         </modus-wc-navbar>
-        <script>
-          setTimeout(() => {
-            const navbar = document.getElementById('navbar-expanded');
-            if (navbar) {
-              navbar.visibility = { user: false };
-            }
-          }, 0);
-        </script>
 
         <div class="main-content-wrapper">
           <div id="main-content-expanded" class="main-content">
@@ -293,6 +273,7 @@ export const Expanded: Story = {
 export const OverlayMode: Story = {
   render: (args) => {
     const { expanded, pushContent } = args;
+
     return html`
       <style>
         .demo-container {
@@ -337,7 +318,7 @@ export const OverlayMode: Story = {
       </style>
 
       <div class="demo-container">
-        <modus-wc-navbar id="navbar-overlay">
+        <modus-wc-navbar id="navbar-overlay" .visibility=${{ user: false }}>
           <div slot="end">
             <modus-wc-button
               color="primary"
@@ -349,14 +330,6 @@ export const OverlayMode: Story = {
             </modus-wc-button>
           </div>
         </modus-wc-navbar>
-        <script>
-          setTimeout(() => {
-            const navbar = document.getElementById('navbar-overlay');
-            if (navbar) {
-              navbar.visibility = { user: false };
-            }
-          }, 0);
-        </script>
 
         <div class="main-content-wrapper">
           <div id="main-content-overlay" class="main-content">
