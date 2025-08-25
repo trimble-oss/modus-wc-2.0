@@ -2,7 +2,7 @@
 
 exports[`modus-wc-radio renders with default props 1`] = `
 <modus-wc-radio class="modus-wc-radio-host">
-  <input aria-label="Default radio" class="modus-wc-radio modus-wc-radio-md" type="radio">
+  <input aria-label="Default radio" class="modus-wc-radio modus-wc-radio-md" id="mwc_id_0" type="radio">
 </modus-wc-radio>
 `;
 
