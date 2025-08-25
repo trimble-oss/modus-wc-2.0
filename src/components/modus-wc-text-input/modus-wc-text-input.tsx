@@ -16,7 +16,12 @@ import {
   ModusSize,
   TextFieldTypes,
 } from '../types';
-import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
+import {
+  Attributes,
+  generateElementId,
+  inheritAriaAttributes,
+  inheritAttributes,
+} from '../utils';
 
 /**
  * A customizable input component used to create text inputs with types.
@@ -28,6 +33,7 @@ import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
 })
 export class ModusWcTextInput {
   private inheritedAttributes: Attributes = {};
+  private generatedId: string = generateElementId();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -195,12 +201,13 @@ export class ModusWcTextInput {
 
   render() {
     const showClear = this.shouldIncludeClear();
+    const effectiveId = this.inputId || this.generatedId;
 
     return (
       <Host>
         {this.label && (
           <modus-wc-input-label
-            forId={this.inputId}
+            forId={effectiveId}
             labelText={this.label}
             required={this.required}
             size={this.size}
@@ -211,7 +218,6 @@ export class ModusWcTextInput {
             <SearchSolidIcon className="modus-wc-text-input-icon modus-wc-text-input-icon-search" />
           )}
           <input
-            aria-placeholder={this.placeholder}
             aria-required={this.required}
             autocapitalize={this.autoCapitalize}
             autocomplete={this.autoComplete}
@@ -219,7 +225,7 @@ export class ModusWcTextInput {
             class="modus-wc-grow"
             disabled={this.disabled}
             enterkeyhint={this.enterkeyhint}
-            id={this.inputId}
+            id={effectiveId}
             maxlength={this.maxLength}
             minlength={this.minLength}
             name={this.name}

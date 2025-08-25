@@ -4076,7 +4076,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable radio component",
+          "description": "A customizable radio button component used to create radio inputs.",
           "name": "ModusWcRadio",
           "members": [
             {
@@ -4354,7 +4354,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable select component used to pick a value from a list of options",
+          "description": "A customizable select component used to create selects with different options.",
           "name": "ModusWcSelect",
           "members": [
             {
@@ -5278,6 +5278,14 @@
             }
           ],
           "attributes": [
+            {
+              "name": "caption",
+              "fieldName": "caption",
+              "description": "Accessibility caption for the table (visually hidden but available to screen readers).",
+              "type": {
+                "text": "string"
+              }
+            },
             {
               "name": "columns",
               "fieldName": "columns",
@@ -6529,7 +6537,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\n\nThe tooltip can be dismissed by pressing the Escape key.",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -6539,6 +6547,49 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "elementKeyupHandler",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "escapeDismissed",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Track if tooltip was dismissed with Escape key"
+            },
+            {
+              "kind": "method",
+              "name": "handleMouseEnter"
+            },
+            {
+              "kind": "method",
+              "name": "handleMouseLeave"
+            },
+            {
+              "kind": "field",
+              "name": "isVisible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Track if tooltip is currently visible"
             },
             {
               "kind": "method",
@@ -6600,7 +6651,15 @@
             }
           ],
           "tagName": "modus-wc-tooltip",
-          "events": [],
+          "events": [
+            {
+              "name": "dismissEscape",
+              "type": {
+                "text": "EventEmitter"
+              },
+              "description": "An event that fires when the tooltip is dismissed via Escape key"
+            }
+          ],
           "customElement": true
         }
       ],
