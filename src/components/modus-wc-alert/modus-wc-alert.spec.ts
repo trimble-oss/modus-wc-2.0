@@ -149,4 +149,28 @@ describe('modus-wc-alert', () => {
     component.disconnectedCallback();
     expect(clearTimeoutSpy).toHaveBeenCalled();
   });
+
+  it('should inherit aria attributes including role when role is provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert],
+      html: '<modus-wc-alert alert-title="Test Alert" role="alert" aria-label="Test label"></modus-wc-alert>',
+    });
+    // Attributes should be moved from host to inner div
+    const innerDiv = page.root?.querySelector('.modus-wc-alert');
+    expect(innerDiv?.getAttribute('aria-label')).toBe('Test label');
+    // role value gets inherited to inner div (current behavior)
+    expect(innerDiv?.getAttribute('role')).toBe('alert');
+  });
+
+  it('should inherit aria attributes including timer role when timer role is provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert],
+      html: '<modus-wc-alert alert-title="Test Alert" role="timer" aria-describedby="desc"></modus-wc-alert>',
+    });
+    // aria-describedby should be moved to inner div
+    const innerDiv = page.root?.querySelector('.modus-wc-alert');
+    expect(innerDiv?.getAttribute('aria-describedby')).toBe('desc');
+    // timer role gets inherited to inner div (current behavior)
+    expect(innerDiv?.getAttribute('role')).toBe('timer');
+  });
 });
