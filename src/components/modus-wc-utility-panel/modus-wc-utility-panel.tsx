@@ -21,8 +21,8 @@ export class ModusWcUtilityPanel {
   /** Determines if the panel pushes content or displays an overlay. */
   @Prop() pushContent = false;
 
-  /** Target content selector to adjust margin when panel is open */
-  @Prop() targetContent?: string;
+  /** Target element reference to push content when panel opens */
+  @Prop() targetElement?: HTMLElement;
 
   /** An event that fires when the panel is opened. */
   @Event() panelOpened!: EventEmitter<void>;
@@ -39,8 +39,8 @@ export class ModusWcUtilityPanel {
   }
 
   componentDidLoad() {
-    // Only adjust content if panel is already expanded on load
-    if (this.pushContent && this.expanded) {
+    // Only adjust content if panel is already expanded on load and we have a target
+    if (this.pushContent && this.expanded && this.targetElement) {
       this.adjustContent();
     }
 
@@ -62,6 +62,14 @@ export class ModusWcUtilityPanel {
     }
   }
 
+  @Watch('targetElement')
+  handleTargetChange() {
+    // Re-adjust content when target changes
+    if (this.expanded && this.pushContent && this.targetElement) {
+      this.adjustContent();
+    }
+  }
+
   openPanel(): void {
     this.panelOpened.emit();
     if (this.pushContent) {
@@ -77,23 +85,16 @@ export class ModusWcUtilityPanel {
   }
 
   adjustContent() {
-    if (!this.targetContent || !this.pushContent) return;
+    if (!this.pushContent || !this.targetElement) return;
 
-    const content = document.querySelector(this.targetContent) as HTMLElement;
+    // Add base class for transitions
+    this.targetElement.classList.add('modus-wc-utility-panel-push-target');
 
-    if (content) {
-      // Match the panel transition timing exactly
-      content.style.transition = 'margin-inline-end 0.3s ease-out';
-
-      if (this.expanded) {
-        // Get the panel width from CSS variable
-        const panelWidth = getComputedStyle(this.el).getPropertyValue(
-          '--modus-wc-utility-panel-width'
-        );
-        content.style.marginInlineEnd = panelWidth || '312px'; // fallback to 312px if CSS variable is not found
-      } else {
-        content.style.marginInlineEnd = '0';
-      }
+    // Toggle pushed class based on expanded state
+    if (this.expanded) {
+      this.targetElement.classList.add('modus-wc-utility-panel-pushed');
+    } else {
+      this.targetElement.classList.remove('modus-wc-utility-panel-pushed');
     }
   }
 

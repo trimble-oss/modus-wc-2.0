@@ -92,22 +92,30 @@ describe('modus-wc-utility-panel', () => {
       html: `
         <div>
           <div id="test-content">Test Content</div>
-          <modus-wc-utility-panel expanded="true" push-content="true" target-content="#test-content"></modus-wc-utility-panel>
+          <modus-wc-utility-panel expanded="true" push-content="true"></modus-wc-utility-panel>
         </div>
       `,
     });
 
-    // Find the content element
+    // Find the content element and component
     const content = page.doc.querySelector('#test-content') as HTMLElement;
+    const component = page.rootInstance as ModusWcUtilityPanel;
+
+    // Set the targetElement reference (new approach)
+    component.targetElement = content;
 
     // Manually trigger componentDidLoad to simulate lifecycle
-    const component = page.rootInstance as ModusWcUtilityPanel;
     component.componentDidLoad();
 
     await page.waitForChanges();
 
-    // Check that content margin was adjusted
-    expect(content.style.marginInlineEnd).toBe('312px');
+    // Check that CSS classes were added (new approach)
+    expect(
+      content.classList.contains('modus-wc-utility-panel-push-target')
+    ).toBe(true);
+    expect(content.classList.contains('modus-wc-utility-panel-pushed')).toBe(
+      true
+    );
   });
 
   it('should not call adjustContent during initial load watcher', async () => {
@@ -182,7 +190,7 @@ describe('modus-wc-utility-panel', () => {
       html: `
         <div>
           <div id="test-content-adjust">Test Content</div>
-          <modus-wc-utility-panel push-content="true" target-content="#test-content-adjust"></modus-wc-utility-panel>
+          <modus-wc-utility-panel push-content="true"></modus-wc-utility-panel>
         </div>
       `,
     });
@@ -192,41 +200,60 @@ describe('modus-wc-utility-panel', () => {
       '#test-content-adjust'
     ) as HTMLElement;
 
+    // Set the targetElement reference (new approach)
+    component.targetElement = content;
+
     // Test when expanded is true
     component.expanded = true;
     component.adjustContent();
-    expect(content.style.marginInlineEnd).toBe('312px');
-    expect(content.style.transition).toBe('margin-inline-end 0.3s ease-out');
+    expect(
+      content.classList.contains('modus-wc-utility-panel-push-target')
+    ).toBe(true);
+    expect(content.classList.contains('modus-wc-utility-panel-pushed')).toBe(
+      true
+    );
 
     // Test when expanded is false
     component.expanded = false;
     component.adjustContent();
-    expect(content.style.marginInlineEnd).toBe('0');
+    expect(
+      content.classList.contains('modus-wc-utility-panel-push-target')
+    ).toBe(true);
+    expect(content.classList.contains('modus-wc-utility-panel-pushed')).toBe(
+      false
+    );
 
-    // Test early return when no targetContent
-    component.targetContent = undefined;
-    const contentStyleBefore = content.style.marginInlineEnd;
+    // Test early return when no targetElement
+    component.targetElement = undefined;
+    const hadPushedClass = content.classList.contains(
+      'modus-wc-utility-panel-pushed'
+    );
     component.adjustContent();
-    // Should not change the margin
-    expect(content.style.marginInlineEnd).toBe(contentStyleBefore);
+    // Should not change the classes when no targetElement
+    expect(content.classList.contains('modus-wc-utility-panel-pushed')).toBe(
+      hadPushedClass
+    );
 
     // Test early return when pushContent is false
-    component.targetContent = '#test-content-adjust';
+    component.targetElement = content;
     component.pushContent = false;
     component.adjustContent();
-    // Should return early, no change to margin
-    expect(content.style.marginInlineEnd).toBe('0');
+    // Should return early, no change to classes
+    expect(content.classList.contains('modus-wc-utility-panel-pushed')).toBe(
+      hadPushedClass
+    );
   });
 
   it('should handle non-existent target content gracefully', async () => {
     const page = await newSpecPage({
       components: [ModusWcUtilityPanel],
-      html: '<modus-wc-utility-panel push-content="true" target-content="#non-existent"></modus-wc-utility-panel>',
+      html: '<modus-wc-utility-panel push-content="true"></modus-wc-utility-panel>',
     });
 
     const component = page.rootInstance as ModusWcUtilityPanel;
+    // Don't set targetElement - should handle gracefully
 
-    // Should not throw error
+    // Should not throw error when no targetElement is set
     expect(() => component.adjustContent()).not.toThrow();
   });
 

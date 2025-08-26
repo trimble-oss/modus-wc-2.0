@@ -1,11 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface UtilityPanelArgs {
   expanded: boolean;
   pushContent: boolean;
-  targetContent: string;
 }
 
 const meta: Meta<UtilityPanelArgs> = {
@@ -14,7 +12,6 @@ const meta: Meta<UtilityPanelArgs> = {
   args: {
     expanded: false,
     pushContent: true,
-    targetContent: '#main-content',
   },
   argTypes: {
     expanded: {
@@ -22,9 +19,6 @@ const meta: Meta<UtilityPanelArgs> = {
     },
     pushContent: {
       control: { type: 'boolean' },
-    },
-    targetContent: {
-      control: { type: 'text' },
     },
   },
   parameters: {
@@ -46,7 +40,16 @@ type Story = StoryObj<UtilityPanelArgs>;
 
 export const Default: Story = {
   render: (args) => {
-    const { expanded, pushContent, targetContent } = args;
+    const { expanded, pushContent } = args;
+
+    // Set element reference after DOM is ready
+    setTimeout(() => {
+      const contentElement = document.getElementById('main-content');
+      const panel = document.querySelector('modus-wc-utility-panel');
+      if (panel && contentElement) {
+        panel.targetElement = contentElement;
+      }
+    }, 0);
 
     return html`
       <style>
@@ -130,7 +133,6 @@ export const Default: Story = {
           <modus-wc-utility-panel
             ?expanded="${expanded}"
             ?push-content="${pushContent}"
-            target-content="${ifDefined(targetContent)}"
             @panelOpened="${() => console.log('Panel opened')}"
             @panelClosed="${() => console.log('Panel closed')}"
           >
@@ -240,9 +242,9 @@ export const Expanded: Story = {
           </div>
 
           <modus-wc-utility-panel
+            id="panel-expanded"
             ?expanded="${expanded}"
             ?push-content="${pushContent}"
-            target-content="#main-content-expanded"
           >
             <div slot="header" class="modus-wc-utility-panel-header">
               Expanded Panel Header
@@ -266,13 +268,23 @@ export const Expanded: Story = {
   args: {
     expanded: true,
     pushContent: true,
-    targetContent: '#main-content-expanded',
   },
 };
 
 export const OverlayMode: Story = {
   render: (args) => {
     const { expanded, pushContent } = args;
+
+    // Set element reference after render
+    setTimeout(() => {
+      const contentElement = document.getElementById('main-content-overlay');
+      const panel = document.querySelector('#panel-overlay') as HTMLElement & {
+        targetElement: HTMLElement;
+      };
+      if (panel && contentElement) {
+        panel.targetElement = contentElement;
+      }
+    }, 0);
 
     return html`
       <style>
@@ -324,7 +336,7 @@ export const OverlayMode: Story = {
               color="primary"
               size="sm"
               variant="outlined"
-              onclick="const panel = document.getElementById('overlay-panel'); panel.expanded = !panel.expanded"
+              onclick="const panel = document.getElementById('panel-overlay'); panel.expanded = !panel.expanded"
             >
               <modus-wc-icon name="menu"></modus-wc-icon>
             </modus-wc-button>
@@ -346,10 +358,9 @@ export const OverlayMode: Story = {
           </div>
 
           <modus-wc-utility-panel
-            id="overlay-panel"
+            id="panel-overlay"
             ?expanded="${expanded}"
             ?push-content="${pushContent}"
-            target-content="#main-content-overlay"
           >
             <div slot="header" class="modus-wc-utility-panel-header">
               Overlay Panel Header
@@ -373,13 +384,23 @@ export const OverlayMode: Story = {
   args: {
     expanded: true,
     pushContent: false,
-    targetContent: '#main-content-overlay',
   },
 };
 
 export const WithoutHeaderFooter: Story = {
   render: (args: UtilityPanelArgs) => {
-    const { expanded, pushContent, targetContent } = args;
+    const { expanded, pushContent } = args;
+
+    // Set element reference after render
+    setTimeout(() => {
+      const contentElement = document.getElementById('main-content-2');
+      const panel = document.querySelector('#panel-simple') as HTMLElement & {
+        targetElement: HTMLElement;
+      };
+      if (panel && contentElement) {
+        panel.targetElement = contentElement;
+      }
+    }, 0);
     return html`
       <style>
         .demo-container {
@@ -407,9 +428,9 @@ export const WithoutHeaderFooter: Story = {
         </div>
 
         <modus-wc-utility-panel
+          id="panel-simple"
           ?expanded="${expanded}"
           ?push-content="${pushContent}"
-          target-content="${ifDefined(targetContent)}"
         >
           <div slot="body">
             <h3>Simple Body Content</h3>
@@ -422,6 +443,5 @@ export const WithoutHeaderFooter: Story = {
   args: {
     expanded: false,
     pushContent: true,
-    targetContent: '#main-content-2',
   },
 };

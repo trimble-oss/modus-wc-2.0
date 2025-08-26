@@ -1772,9 +1772,9 @@ export namespace Components {
          */
         "pushContent": boolean;
         /**
-          * Target content selector to adjust margin when panel is open
+          * Target element reference to push content when panel opens
          */
-        "targetContent"?: string;
+        "targetElement"?: HTMLElement;
     }
 }
 export interface ModusWcAccordionCustomEvent<T> extends CustomEvent<T> {
@@ -4773,9 +4773,9 @@ declare namespace LocalJSX {
          */
         "pushContent"?: boolean;
         /**
-          * Target content selector to adjust margin when panel is open
+          * Target element reference to push content when panel opens
          */
-        "targetContent"?: string;
+        "targetElement"?: HTMLElement;
     }
     interface IntrinsicElements {
         "modus-wc-accordion": ModusWcAccordion;

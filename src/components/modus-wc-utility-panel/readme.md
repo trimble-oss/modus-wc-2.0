@@ -5,11 +5,11 @@
 
 ## Properties
 
-| Property        | Attribute        | Description                                                    | Type                  | Default     |
-| --------------- | ---------------- | -------------------------------------------------------------- | --------------------- | ----------- |
-| `expanded`      | `expanded`       | The panel is expanded or closed                                | `boolean`             | `false`     |
-| `pushContent`   | `push-content`   | Determines if the panel pushes content or displays an overlay. | `boolean`             | `false`     |
-| `targetContent` | `target-content` | Target content selector to adjust margin when panel is open    | `string \| undefined` | `undefined` |
+| Property        | Attribute        | Description                                                    | Type                       | Default     |
+| --------------- | ---------------- | -------------------------------------------------------------- | -------------------------- | ----------- |
+| `expanded`      | `expanded`       | The panel is expanded or closed                                | `boolean`                  | `false`     |
+| `pushContent`   | `push-content`   | Determines if the panel pushes content or displays an overlay. | `boolean`                  | `false`     |
+| `targetElement` | `target-element` | Target element reference to push content when panel opens      | `HTMLElement \| undefined` | `undefined` |
 
 
 ## Events

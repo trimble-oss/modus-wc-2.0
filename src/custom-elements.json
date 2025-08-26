@@ -6795,6 +6795,10 @@
             },
             {
               "kind": "method",
+              "name": "handleTargetChange"
+            },
+            {
+              "kind": "method",
               "name": "hasSlotContent",
               "return": {
                 "type": {
@@ -6838,11 +6842,11 @@
               "description": "Determines if the panel pushes content or displays an overlay."
             },
             {
-              "name": "target-content",
-              "fieldName": "targetContent",
-              "description": "Target content selector to adjust margin when panel is open",
+              "name": "target-element",
+              "fieldName": "targetElement",
+              "description": "Target element reference to push content when panel opens",
               "type": {
-                "text": "string"
+                "text": "HTMLElement"
               }
             }
           ],
