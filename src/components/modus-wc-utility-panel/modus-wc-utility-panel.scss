@@ -13,7 +13,7 @@ modus-wc-utility-panel {
   color: var(--modus-wc-utility-panel-color);
   height: 100%;
   position: absolute;
-  right: calc(var(--modus-wc-utility-panel-width) * -1 - 12px); 
+  right: calc(var(--modus-wc-utility-panel-width) * -1 - 12px);
   top: 0;
   transition: right var(--modus-wc-utility-panel-transition-duration) ease-out;
   width: var(--modus-wc-utility-panel-width);
