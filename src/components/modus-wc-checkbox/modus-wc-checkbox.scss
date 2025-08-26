@@ -15,9 +15,9 @@ modus-wc-checkbox.modus-wc-checkbox-host {
 
 [data-theme='modus-classic-light'] modus-wc-checkbox .modus-wc-checkbox,
 [data-theme='modus-classic-dark'] modus-wc-checkbox .modus-wc-checkbox {
-  --chkbg: var(--modus-wc-color-highlight-blue);
+  --check-bg: var(--modus-wc-color-highlight-blue);
   --fallback-bc: var(--modus-wc-color-gray-4);
-  --chkfg: var(--modus-wc-color-white);
+  --check-content: var(--modus-wc-color-white);
 
   border-radius: var(--modus-wc-border-radius-sm);
   border-width: var(--modus-wc-border-width-sm);
@@ -43,7 +43,7 @@ modus-wc-checkbox.modus-wc-checkbox-host {
   }
 
   &:checked:hover {
-    --chkbg: var(--modus-wc-color-blue-light);
+    --check-bg: var(--modus-wc-color-blue-light);
     --fallback-bc: var(--modus-wc-color-blue-light);
   }
 
@@ -74,14 +74,14 @@ modus-wc-checkbox.modus-wc-checkbox-host {
 }
 
 [data-theme='modus-classic-light'] modus-wc-checkbox .modus-wc-checkbox {
-  --chkbg: var(--modus-wc-color-blue-light);
+  --check-bg: var(--modus-wc-color-blue-light);
 
   &:checked {
     --fallback-bc: var(--modus-wc-color-blue-light);
   }
 
   &:checked:hover {
-    --chkbg: var(--modus-wc-color-trimble-blue);
+    --check-bg: var(--modus-wc-color-trimble-blue);
     --fallback-bc: var(--modus-wc-color-trimble-blue);
   }
 
@@ -100,9 +100,9 @@ modus-wc-checkbox.modus-wc-checkbox-host {
 
 [data-theme='connect-light'] modus-wc-checkbox .modus-wc-checkbox,
 [data-theme='connect-dark'] modus-wc-checkbox .modus-wc-checkbox {
-  --chkbg: var(--modus-wc-color-highlight-blue);
+  --check-bg: var(--modus-wc-color-highlight-blue);
   --fallback-bc: var(--modus-wc-color-gray-4);
-  --chkfg: var(--modus-wc-color-white);
+  --check-content: var(--modus-wc-color-white);
 
   border-radius: var(--modus-wc-border-radius-sm);
   border-width: var(--modus-wc-border-width-sm);
@@ -128,7 +128,7 @@ modus-wc-checkbox.modus-wc-checkbox-host {
   }
 
   &:checked:hover {
-    --chkbg: var(--modus-wc-color-blue-light);
+    --check-bg: var(--modus-wc-color-blue-light);
     --fallback-bc: var(--modus-wc-color-blue-light);
   }
 
@@ -159,14 +159,14 @@ modus-wc-checkbox.modus-wc-checkbox-host {
 }
 
 [data-theme='connect-light'] modus-wc-checkbox .modus-wc-checkbox {
-  --chkbg: var(--modus-wc-color-primary-color);
+  --check-bg: var(--modus-wc-color-primary-color);
 
   &:checked {
     --fallback-bc: var(--modus-wc-color-blue-light);
   }
 
   &:checked:hover {
-    --chkbg: var(--modus-wc-color-trimble-blue);
+    --check-bg: var(--modus-wc-color-trimble-blue);
     --fallback-bc: var(--modus-wc-color-trimble-blue);
   }
 
