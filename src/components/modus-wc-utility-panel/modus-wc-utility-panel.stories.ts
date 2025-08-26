@@ -1,9 +1,10 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 
 interface UtilityPanelArgs {
   expanded: boolean;
-  pushContent: boolean;
+  'push-content': boolean;
 }
 
 const meta: Meta<UtilityPanelArgs> = {
@@ -11,16 +12,17 @@ const meta: Meta<UtilityPanelArgs> = {
   component: 'modus-wc-utility-panel',
   args: {
     expanded: false,
-    pushContent: true,
+    'push-content': true,
   },
   argTypes: {
     expanded: {
       control: { type: 'boolean' },
     },
-    pushContent: {
+    'push-content': {
       control: { type: 'boolean' },
     },
   },
+  decorators: [withActions],
   parameters: {
     actions: {
       handles: ['panelOpened', 'panelClosed'],
@@ -40,16 +42,16 @@ type Story = StoryObj<UtilityPanelArgs>;
 
 export const Default: Story = {
   render: (args) => {
-    const { expanded, pushContent } = args;
+    const { expanded, 'push-content': pushContent } = args;
 
-    // Set element reference after DOM is ready
-    setTimeout(() => {
+    // Set element reference immediately on first update
+    requestAnimationFrame(() => {
       const contentElement = document.getElementById('main-content');
       const panel = document.querySelector('modus-wc-utility-panel');
       if (panel && contentElement) {
         panel.targetElement = contentElement;
       }
-    }, 0);
+    });
 
     return html`
       <style>
@@ -69,12 +71,13 @@ export const Default: Story = {
           flex: 1;
           overflow: hidden;
           position: relative;
+          background: var(--modus-wc-color-base-page);
         }
 
         .main-content {
           height: 100%;
           padding: 20px;
-          background: #f5f5f5;
+          background: var(--modus-wc-color-base-page);
           overflow: auto;
         }
 
@@ -133,8 +136,6 @@ export const Default: Story = {
           <modus-wc-utility-panel
             ?expanded="${expanded}"
             ?push-content="${pushContent}"
-            @panelOpened="${() => console.log('Panel opened')}"
-            @panelClosed="${() => console.log('Panel closed')}"
           >
             <div slot="header" class="modus-wc-utility-panel-header">
               Utility Panel Header
@@ -168,7 +169,7 @@ export const Default: Story = {
 
 export const Expanded: Story = {
   render: (args) => {
-    const { expanded, pushContent } = args;
+    const { expanded, 'push-content': pushContent } = args;
 
     return html`
       <style>
@@ -188,12 +189,13 @@ export const Expanded: Story = {
           flex: 1;
           overflow: hidden;
           position: relative;
+          background: var(--modus-wc-color-base-page);
         }
 
         .main-content {
           height: 100%;
           padding: 20px;
-          background: #f5f5f5;
+          background: var(--modus-wc-color-base-page);
           overflow: auto;
         }
 
@@ -204,6 +206,7 @@ export const Expanded: Story = {
 
         .modus-wc-utility-panel-body {
           padding: 20px 0;
+          background: var(--modus-wc-color-base-100);
         }
 
         .modus-wc-utility-panel-footer {
@@ -267,16 +270,16 @@ export const Expanded: Story = {
   },
   args: {
     expanded: true,
-    pushContent: true,
+    'push-content': true,
   },
 };
 
 export const OverlayMode: Story = {
   render: (args) => {
-    const { expanded, pushContent } = args;
+    const { expanded, 'push-content': pushContent } = args;
 
     // Set element reference after render
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       const contentElement = document.getElementById('main-content-overlay');
       const panel = document.querySelector('#panel-overlay') as HTMLElement & {
         targetElement: HTMLElement;
@@ -284,7 +287,7 @@ export const OverlayMode: Story = {
       if (panel && contentElement) {
         panel.targetElement = contentElement;
       }
-    }, 0);
+    });
 
     return html`
       <style>
@@ -304,12 +307,13 @@ export const OverlayMode: Story = {
           flex: 1;
           overflow: hidden;
           position: relative;
+          background: var(--modus-wc-color-base-page);
         }
 
         .main-content {
           height: 100%;
           padding: 20px;
-          background: #f5f5f5;
+          background: var(--modus-wc-color-base-page);
           overflow: auto;
         }
 
@@ -383,16 +387,16 @@ export const OverlayMode: Story = {
   },
   args: {
     expanded: true,
-    pushContent: false,
+    'push-content': false,
   },
 };
 
 export const WithoutHeaderFooter: Story = {
   render: (args: UtilityPanelArgs) => {
-    const { expanded, pushContent } = args;
+    const { expanded, 'push-content': pushContent } = args;
 
     // Set element reference after render
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       const contentElement = document.getElementById('main-content-2');
       const panel = document.querySelector('#panel-simple') as HTMLElement & {
         targetElement: HTMLElement;
@@ -400,20 +404,20 @@ export const WithoutHeaderFooter: Story = {
       if (panel && contentElement) {
         panel.targetElement = contentElement;
       }
-    }, 0);
+    });
     return html`
       <style>
         .demo-container {
           height: 100vh;
           position: relative;
           overflow: hidden;
-          background: white;
+          background: var(--modus-wc-color-base-page);
         }
 
         .main-content {
           height: 100%;
           padding: 20px;
-          background: #f5f5f5;
+          background: var(--modus-wc-color-base-page);
         }
       </style>
 
@@ -442,6 +446,6 @@ export const WithoutHeaderFooter: Story = {
   },
   args: {
     expanded: false,
-    pushContent: true,
+    'push-content': true,
   },
 };
