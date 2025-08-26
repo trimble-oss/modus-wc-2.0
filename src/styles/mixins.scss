@@ -18,28 +18,28 @@
 
 @mixin sizing-tokens {
   &-xs {
-    height: var(--modus-wc-size-xs) !important;
-    min-height: var(--modus-wc-size-xs) !important;
+    height: var(--modus-wc-size-xs);
+    min-height: var(--modus-wc-size-xs);
   }
 
   &-sm {
-    height: var(--modus-wc-size-sm) !important;
-    min-height: var(--modus-wc-size-sm) !important;
+    height: var(--modus-wc-size-sm);
+    min-height: var(--modus-wc-size-sm);
   }
 
   &-md {
-    height: var(--modus-wc-size-md) !important;
-    min-height: var(--modus-wc-size-md) !important;
+    height: var(--modus-wc-size-md);
+    min-height: var(--modus-wc-size-md);
   }
 
   &-lg {
-    height: var(--modus-wc-size-lg) !important;
-    min-height: var(--modus-wc-size-lg) !important;
+    height: var(--modus-wc-size-lg);
+    min-height: var(--modus-wc-size-lg);
   }
 
   &-xl {
-    height: var(--modus-wc-size-xl) !important;
-    min-height: var(--modus-wc-size-xl) !important;
+    height: var(--modus-wc-size-xl);
+    min-height: var(--modus-wc-size-xl);
   }
 }
 
@@ -74,12 +74,12 @@
     color: var(--modus-wc-color-primary);
   }
 
-  .selected {
+  &.selected {
     background-color: var(--modus-wc-color-primary-pale);
     color: var(--modus-wc-color-primary);
   }
 
-  .active {
+  &.active {
     background-color: var(--modus-wc-color-primary-pale);
     color: var(--modus-wc-color-primary);
   }

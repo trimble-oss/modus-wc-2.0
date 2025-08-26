@@ -106,7 +106,6 @@ modus-wc-date .modus-wc-date {
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
 }
 
-
 /* Connect Themes */
 [data-theme='connect-light']:root {
   color-scheme: light;
@@ -116,7 +115,6 @@ modus-wc-date .modus-wc-date {
   --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
-
 }
 
 [data-theme='connect-dark']:root {
@@ -127,5 +125,4 @@ modus-wc-date .modus-wc-date {
   --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
   --modus-wc-color-base-300: var(--modus-wc-color-9);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
-
 }
