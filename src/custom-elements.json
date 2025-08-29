@@ -4076,7 +4076,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable radio button component used to create radio inputs.",
+          "description": "A customizable radio button component.",
           "name": "ModusWcRadio",
           "members": [
             {
@@ -4354,7 +4354,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable select component used to create selects with different options.",
+          "description": "A customizable select component used to pick a value from a list of options",
           "name": "ModusWcSelect",
           "members": [
             {
@@ -6537,7 +6537,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.\n\nThe tooltip can be dismissed by pressing the Escape key.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\n\nThe tooltip can be dismissed by pressing the Escape key when hovering over it.\nWhen forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -6566,30 +6566,12 @@
               ]
             },
             {
-              "kind": "field",
-              "name": "escapeDismissed",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Track if tooltip was dismissed with Escape key"
-            },
-            {
               "kind": "method",
               "name": "handleMouseEnter"
             },
             {
               "kind": "method",
               "name": "handleMouseLeave"
-            },
-            {
-              "kind": "field",
-              "name": "isVisible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Track if tooltip is currently visible"
             },
             {
               "kind": "method",
@@ -6762,6 +6744,147 @@
           "declaration": {
             "name": "ModusWCTypography",
             "module": "src/components/modus-wc-typography/modus-wc-typography.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-utility-panel/modus-wc-utility-panel.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModusWcUtilityPanel",
+          "members": [
+            {
+              "kind": "method",
+              "name": "adjustContent"
+            },
+            {
+              "kind": "method",
+              "name": "closePanel",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleExpandedChange",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "handlePanelClose"
+            },
+            {
+              "kind": "method",
+              "name": "handleTargetChange"
+            },
+            {
+              "kind": "method",
+              "name": "hasSlotContent",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "slotName",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "openPanel",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "expanded",
+              "fieldName": "expanded",
+              "default": "false",
+              "description": "The panel is expanded or closed"
+            },
+            {
+              "name": "push-content",
+              "fieldName": "pushContent",
+              "default": "false",
+              "description": "Determines if the panel pushes content or displays an overlay."
+            },
+            {
+              "name": "target-element",
+              "fieldName": "targetElement",
+              "description": "Target element reference to push content when panel opens",
+              "type": {
+                "text": "HTMLElement"
+              }
+            }
+          ],
+          "tagName": "modus-wc-utility-panel",
+          "events": [
+            {
+              "name": "panelClosed",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "An event that fires when the panel is closed."
+            },
+            {
+              "name": "panelOpened",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "An event that fires when the panel is opened."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcUtilityPanel",
+          "declaration": {
+            "name": "ModusWcUtilityPanel",
+            "module": "src/components/modus-wc-utility-panel/modus-wc-utility-panel.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-utility-panel",
+          "declaration": {
+            "name": "ModusWcUtilityPanel",
+            "module": "src/components/modus-wc-utility-panel/modus-wc-utility-panel.tsx"
           }
         }
       ]
