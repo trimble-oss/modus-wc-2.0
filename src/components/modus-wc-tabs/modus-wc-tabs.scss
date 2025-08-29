@@ -16,7 +16,7 @@ modus-wc-tabs .modus-wc-tabs {
   border-top-right-radius: var(--modus-wc-border-radius-md);
   display: inline-flex;
   font-weight: var(--modus-wc-font-weight-bold);
-  
+
   @include sizing-tokens;
 
   // For centering purposes
