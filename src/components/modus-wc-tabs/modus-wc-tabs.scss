@@ -11,13 +11,13 @@ modus-wc-tabs {
 }
 
 modus-wc-tabs .modus-wc-tabs {
-  @include sizing-tokens;
-
   align-items: center;
   border-top-left-radius: var(--modus-wc-border-radius-md);
   border-top-right-radius: var(--modus-wc-border-radius-md);
   display: inline-flex;
   font-weight: var(--modus-wc-font-weight-bold);
+  
+  @include sizing-tokens;
 
   // For centering purposes
   modus-wc-icon {
@@ -64,10 +64,10 @@ modus-wc-tabs .modus-wc-tabs {
 }
 
 modus-wc-tabs .modus-wc-tab {
-  @include common-states;
-
   border-radius: var(--tab-radius) var(--tab-radius) 0 0;
   height: inherit;
+
+  @include common-states;
 }
 
 [data-theme='modus-classic-light'] modus-wc-tabs .modus-wc-tab {

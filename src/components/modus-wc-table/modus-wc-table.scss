@@ -207,9 +207,9 @@ modus-wc-table .modus-wc-overflow-x-auto {
   /* Apply hover effect when enabled */
   &.modus-wc-table-hover {
     tbody tr {
-      @include common-states;
-
       transition: background-color 0.15s ease-in-out;
+
+      @include common-states;
     }
   }
 

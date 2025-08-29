@@ -16,14 +16,14 @@ modus-wc-collapse .modus-wc-collapse {
   }
 
   .modus-wc-collapse-title {
-    @include common-states;
-
     font-size: var(--modus-wc-font-size-md);
     font-weight: var(--modus-wc-font-weight-semibold);
     min-height: unset;
     padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-3xl)
       var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
     width: auto;
+
+    @include common-states;
   }
 
   .description {

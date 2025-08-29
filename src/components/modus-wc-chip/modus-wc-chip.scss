@@ -6,14 +6,14 @@
 // Default Styles
 modus-wc-chip .modus-wc-chip {
   &.modus-wc-btn {
-    @include common-states;
-    @include sizing-tokens;
-
     background-color: var(--modus-wc-color-base-100);
     border-color: transparent;
     box-sizing: border-box;
 
     --rounded-btn: #{var(--modus-wc-border-radius-chip)};
+
+    @include common-states;
+    @include sizing-tokens;
 
     // Sizes
     &.modus-wc-btn-sm {

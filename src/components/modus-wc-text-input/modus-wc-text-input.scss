@@ -4,10 +4,10 @@
 */
 
 modus-wc-text-input .modus-wc-input {
+  border-bottom-width: var(--input-bottom-border-width);
+
   @include feedback-levels;
   @include sizing-tokens;
-
-  border-bottom-width: var(--input-bottom-border-width);
 }
 
 modus-wc-text-input {
