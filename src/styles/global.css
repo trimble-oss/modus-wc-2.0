@@ -52,6 +52,16 @@ modus-wc-date .modus-wc-date {
   padding: 0 var(--modus-wc-spacing-sm);
 }
 
+/* Utility Panel Content Push Classes */
+.modus-wc-utility-panel-push-target {
+  transition: margin-inline-end
+    var(--modus-wc-utility-panel-transition-duration, 0.3s) ease-out;
+}
+
+.modus-wc-utility-panel-push-target.modus-wc-utility-panel-pushed {
+  margin-inline-end: var(--modus-wc-utility-panel-width, 312px);
+}
+
 /* Modus Modern Themes */
 [data-theme='modus-modern-light']:root {
   color-scheme: light;
