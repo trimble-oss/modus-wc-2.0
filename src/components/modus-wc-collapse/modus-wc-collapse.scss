@@ -3,6 +3,10 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+modus-wc-collapse details.modus-wc-collapse > summary {
+  display: inline-flex;
+}
+
 modus-wc-collapse .modus-wc-collapse {
   background-color: var(--modus-wc-color-base-100);
   border-color: transparent;
@@ -10,10 +14,6 @@ modus-wc-collapse .modus-wc-collapse {
   color: var(--modus-wc-color-base-content);
   margin-bottom: var(--modus-wc-spacing-md);
   transition: none;
-
-  summary {
-    display: flex;
-  }
 
   .modus-wc-collapse-title {
     font-size: var(--modus-wc-font-size-md);
