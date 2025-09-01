@@ -6,7 +6,7 @@ import { Meta } from '@storybook/blocks';
 
 Modus Web Components require Modus Icons.
 
-Starting from v0.0.0-beta.3, the Web Components package supports both outlined and solid icon variants through a single CSS file.
+Starting from v0.0.0-beta.5, the Web Components package supports both outlined and solid icon variants through a single CSS file.
 
 ## 1. Installation
 
@@ -174,19 +174,19 @@ Once the stylesheet is loaded, you can use icons in any framework:
 ### React
 
 ```tsx
-import { ModusWcIcon as ModusIcon } from '@trimble-oss/moduswebcomponents-react';
+import { ModusWcIcon } from '@trimble-oss/moduswebcomponents-react';
 
 export function IconExamples() {
   return (
     <div>
       {/* Outlined */}
-      <ModusIcon name="alert" variant="outlined" />
+      <ModusWcIcon name="alert" variant="outlined" />
 
       {/* Solid */}
-      <ModusIcon name="alert" variant="solid" />
+      <ModusWcIcon name="alert" variant="solid" />
 
       {/* Accessible icon */}
-      <ModusIcon
+      <ModusWcIcon
         name="accessibility_circle"
         variant="solid"
         decorative={false}
@@ -194,7 +194,7 @@ export function IconExamples() {
       />
 
       {/* Custom styling */}
-      <ModusIcon
+      <ModusWcIcon
         name="add_bold"
         variant="outlined"
         decorative

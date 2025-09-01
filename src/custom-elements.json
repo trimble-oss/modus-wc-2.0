@@ -6545,7 +6545,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.\n\nThe tooltip can be dismissed by pressing the Escape key when hovering over it.\nWhen forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\r\n\r\nThe tooltip can be dismissed by pressing the Escape key when hovering over it.\r\nWhen forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.",
           "name": "ModusWcTooltip",
           "members": [
             {
