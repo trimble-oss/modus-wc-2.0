@@ -14,8 +14,8 @@ A customizable typography component used to render text with different sizes, va
 | Property      | Attribute      | Description                                          | Type                                                                  | Default    |
 | ------------- | -------------- | ---------------------------------------------------- | --------------------------------------------------------------------- | ---------- |
 | `customClass` | `custom-class` | Custom CSS class to apply to the typography element. | `string \| undefined`                                                 | `''`       |
+| `hierarchy`   | `hierarchy`    | The hierarchy of the typography component.           | `"body" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "p"`       | `'p'`      |
 | `size`        | `size`         | The size of the font.                                | `"2xl" \| "3xl" \| "lg" \| "md" \| "sm" \| "xl" \| "xs" \| undefined` | `'md'`     |
-| `variant`     | `variant`      | The variant of the typography component.             | `"body" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "p"`       | `'p'`      |
 | `weight`      | `weight`       | The weight of the text.                              | `"bold" \| "light" \| "normal" \| "semibold" \| undefined`            | `'normal'` |
 
 

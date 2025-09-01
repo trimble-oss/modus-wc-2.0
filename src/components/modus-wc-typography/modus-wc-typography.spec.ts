@@ -15,7 +15,7 @@ describe('modus-wc-typography', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWCTypography],
-      html: `<modus-wc-typography custom-class="test-class" size="sm" variant="body" weight="bold">Test content</modus-wc-typography>`,
+      html: `<modus-wc-typography custom-class="test-class" size="sm" hierarchy="body" weight="bold">Test content</modus-wc-typography>`,
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -23,7 +23,7 @@ describe('modus-wc-typography', () => {
   it('should render headings', async () => {
     const page = await newSpecPage({
       components: [ModusWCTypography],
-      html: `<modus-wc-typography variant="h1">Test content</modus-wc-typography>`,
+      html: `<modus-wc-typography hierarchy="h1">Test content</modus-wc-typography>`,
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -33,7 +33,7 @@ describe('modus-wc-typography - heading override class', () => {
   it('should add override class for heading with size/weight overrides', async () => {
     const page = await newSpecPage({
       components: [ModusWCTypography],
-      html: `<modus-wc-typography variant="h2" size="lg" weight="bold">Heading</modus-wc-typography>`,
+      html: `<modus-wc-typography hierarchy="h2" size="lg" weight="bold">Heading</modus-wc-typography>`,
     });
     expect(page.root).toBeDefined();
     const el = page.root && page.root.querySelector('h2');
@@ -65,7 +65,7 @@ describe('modus-wc-typography - convertPropsToClasses', () => {
     }
   );
 
-  it('returns combined classes when size and weight are provided and variant is not a heading', () => {
+  it('returns combined classes when size and weight are provided and hierarchy is not a heading', () => {
     expect(
       convertPropsToClasses({
         size: 'md',
