@@ -640,6 +640,10 @@ export namespace Components {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: DaisySize;
+        /**
+          * The icon variant, can be "outlined" or "solid".
+         */
+        "variant"?: 'outlined' | 'solid';
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
@@ -1762,6 +1766,20 @@ export namespace Components {
          */
         "weight"?: TypographyWeight;
     }
+    interface ModusWcUtilityPanel {
+        /**
+          * The panel is expanded or closed
+         */
+        "expanded": boolean;
+        /**
+          * Determines if the panel pushes content or displays an overlay.
+         */
+        "pushContent": boolean;
+        /**
+          * Target element reference to push content when panel opens
+         */
+        "targetElement"?: HTMLElement;
+    }
 }
 export interface ModusWcAccordionCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1874,6 +1892,10 @@ export interface ModusWcTimeInputCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcTooltipCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTooltipElement;
+}
+export interface ModusWcUtilityPanelCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcUtilityPanelElement;
 }
 declare global {
     interface HTMLModusWcAccordionElementEventMap {
@@ -2658,6 +2680,24 @@ declare global {
         prototype: HTMLModusWcTypographyElement;
         new (): HTMLModusWcTypographyElement;
     };
+    interface HTMLModusWcUtilityPanelElementEventMap {
+        "panelOpened": void;
+        "panelClosed": void;
+    }
+    interface HTMLModusWcUtilityPanelElement extends Components.ModusWcUtilityPanel, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcUtilityPanelElementEventMap>(type: K, listener: (this: HTMLModusWcUtilityPanelElement, ev: ModusWcUtilityPanelCustomEvent<HTMLModusWcUtilityPanelElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcUtilityPanelElementEventMap>(type: K, listener: (this: HTMLModusWcUtilityPanelElement, ev: ModusWcUtilityPanelCustomEvent<HTMLModusWcUtilityPanelElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcUtilityPanelElement: {
+        prototype: HTMLModusWcUtilityPanelElement;
+        new (): HTMLModusWcUtilityPanelElement;
+    };
     interface HTMLElementTagNameMap {
         "modus-wc-accordion": HTMLModusWcAccordionElement;
         "modus-wc-alert": HTMLModusWcAlertElement;
@@ -2703,6 +2743,7 @@ declare global {
         "modus-wc-toolbar": HTMLModusWcToolbarElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
+        "modus-wc-utility-panel": HTMLModusWcUtilityPanelElement;
     }
 }
 declare namespace LocalJSX {
@@ -3367,6 +3408,10 @@ declare namespace LocalJSX {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: DaisySize;
+        /**
+          * The icon variant, can be "outlined" or "solid".
+         */
+        "variant"?: 'outlined' | 'solid';
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
@@ -4718,6 +4763,28 @@ declare namespace LocalJSX {
          */
         "weight"?: TypographyWeight;
     }
+    interface ModusWcUtilityPanel {
+        /**
+          * The panel is expanded or closed
+         */
+        "expanded"?: boolean;
+        /**
+          * An event that fires when the panel is closed.
+         */
+        "onPanelClosed"?: (event: ModusWcUtilityPanelCustomEvent<void>) => void;
+        /**
+          * An event that fires when the panel is opened.
+         */
+        "onPanelOpened"?: (event: ModusWcUtilityPanelCustomEvent<void>) => void;
+        /**
+          * Determines if the panel pushes content or displays an overlay.
+         */
+        "pushContent"?: boolean;
+        /**
+          * Target element reference to push content when panel opens
+         */
+        "targetElement"?: HTMLElement;
+    }
     interface IntrinsicElements {
         "modus-wc-accordion": ModusWcAccordion;
         "modus-wc-alert": ModusWcAlert;
@@ -4763,6 +4830,7 @@ declare namespace LocalJSX {
         "modus-wc-toolbar": ModusWcToolbar;
         "modus-wc-tooltip": ModusWcTooltip;
         "modus-wc-typography": ModusWcTypography;
+        "modus-wc-utility-panel": ModusWcUtilityPanel;
     }
 }
 export { LocalJSX as JSX };
@@ -4958,6 +5026,7 @@ declare module "@stencil/core" {
              * A customizable typography component used to render text with different sizes, variants, and weights.
              */
             "modus-wc-typography": LocalJSX.ModusWcTypography & JSXBase.HTMLAttributes<HTMLModusWcTypographyElement>;
+            "modus-wc-utility-panel": LocalJSX.ModusWcUtilityPanel & JSXBase.HTMLAttributes<HTMLModusWcUtilityPanelElement>;
         }
     }
 }
