@@ -19,6 +19,7 @@ A customizable icon component used to render Modus icons.
 | `decorative`        | `decorative`   | Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.                 | `boolean \| undefined`                      | `true`      |
 | `name` _(required)_ | `name`         | The icon name, should match the CSS class in the icon font.                                                              | `string`                                    | `undefined` |
 | `size`              | `size`         | The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon. | `"lg" \| "md" \| "sm" \| "xs" \| undefined` | `'md'`      |
+| `variant`           | `variant`      | The icon variant, can be "outlined" or "solid".                                                                          | `"outlined" \| "solid" \| undefined`        | `undefined` |
 
 
 ## Dependencies
