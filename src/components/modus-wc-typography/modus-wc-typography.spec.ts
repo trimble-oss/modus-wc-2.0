@@ -1,9 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
-import {
-  ModusWCTypography,
-  TypographyVariant,
-  TypographyWeight,
-} from './modus-wc-typography';
+import { ModusWCTypography, TypographyWeight } from './modus-wc-typography';
 import { convertPropsToClasses } from './modus-wc-typography.tailwind';
 import { DaisySize } from '../types';
 
@@ -33,24 +29,22 @@ describe('modus-wc-typography', () => {
   });
 });
 
+describe('modus-wc-typography - heading override class', () => {
+  it('should add override class for heading with size/weight overrides', async () => {
+    const page = await newSpecPage({
+      components: [ModusWCTypography],
+      html: `<modus-wc-typography variant="h2" size="lg" weight="bold">Heading</modus-wc-typography>`,
+    });
+    expect(page.root).toBeDefined();
+    const el = page.root && page.root.querySelector('h2');
+    expect(el).not.toBeNull();
+    expect(el && el.className).toContain('modus-wc-typography-override');
+  });
+});
+
 describe('modus-wc-typography - convertPropsToClasses', () => {
   it('returns empty string when no props are provided', () => {
     expect(convertPropsToClasses({})).toBe('');
-  });
-
-  it.each([['h1'], ['h2'], ['h3'], ['h4'], ['h5'], ['h6']])(
-    'returns empty string when variant is a heading (%s)',
-    (headingVariant) => {
-      expect(
-        convertPropsToClasses({ variant: headingVariant as TypographyVariant })
-      ).toBe('');
-    }
-  );
-
-  it('returns empty string when variant is a heading AND other props are provided', () => {
-    expect(
-      convertPropsToClasses({ size: 'sm', variant: 'h1', weight: 'bold' })
-    ).toBe('');
   });
 
   it.each([['sm'], ['md'], ['lg']])(
@@ -76,7 +70,6 @@ describe('modus-wc-typography - convertPropsToClasses', () => {
       convertPropsToClasses({
         size: 'md',
         weight: 'semibold',
-        variant: 'body',
       })
     ).toBe('modus-wc-text-md modus-wc-typography-weight-semibold');
   });

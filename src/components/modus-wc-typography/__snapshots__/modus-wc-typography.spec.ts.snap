@@ -3,7 +3,7 @@
 exports[`modus-wc-typography should render headings 1`] = `
 <modus-wc-typography variant="h1">
   <!---->
-  <h1 class="modus-wc-typography">
+  <h1 class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
     Test content
   </h1>
 </modus-wc-typography>
