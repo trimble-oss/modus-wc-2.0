@@ -62,7 +62,9 @@ modus-wc-select .modus-wc-select {
   background-color: var(--modus-wc-color-gray-10);
 }
 
-[data-theme='connect-light'] modus-wc-select .modus-wc-select,
-[data-theme='connect-dark'] modus-wc-select .modus-wc-select {
+[data-theme='connect-light']
+  modus-wc-select
+  [data-theme='connect-dark']
+  modus-wc-select {
   @include connect-input-styles;
 }
