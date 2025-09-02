@@ -2,22 +2,7 @@ import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-typography.tailwind';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-export type TypographySize =
-  | 'xs'
-  | 'sm'
-  | 'md'
-  | 'lg'
-  | 'xl'
-  | '2xl'
-  | '3xl'
-  | '4xl'
-  | '5xl'
-  | '6xl'
-  | '7xl'
-  | '8xl'
-  | '9xl';
-
-export type TypographyVariant =
+export type TypographyHierarchy =
   | 'body'
   | 'h1'
   | 'h2'
@@ -26,6 +11,8 @@ export type TypographyVariant =
   | 'h5'
   | 'h6'
   | 'p';
+
+export type TypographySize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 
 export type TypographyWeight = 'light' | 'normal' | 'semibold' | 'bold';
 
@@ -46,11 +33,11 @@ export class ModusWCTypography {
   /** Custom CSS class to apply to the typography element. */
   @Prop() customClass?: string = '';
 
+  /** The hierarchy of the typography component. */
+  @Prop() hierarchy: TypographyHierarchy = 'p';
+
   /** The size of the font. */
   @Prop() size?: TypographySize = 'md';
-
-  /** The variant of the typography component. */
-  @Prop() variant: TypographyVariant = 'p';
 
   /** The weight of the text. */
   @Prop() weight?: TypographyWeight = 'normal';
@@ -62,9 +49,19 @@ export class ModusWCTypography {
   private getClasses(): string {
     const classList = ['modus-wc-typography'];
 
+    // Check if we're dealing with a heading and have size/weight overrides
+    const isHeading = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(
+      this.hierarchy
+    );
+    const hasOverrides = this.size !== 'md' || this.weight !== 'normal';
+
+    if (isHeading && hasOverrides) {
+      // Add a class to indicate overrides for headings
+      classList.push('modus-wc-typography-override');
+    }
+
     const propClasses = convertPropsToClasses({
       size: this.size,
-      variant: this.variant,
       weight: this.weight,
     });
 
@@ -76,7 +73,7 @@ export class ModusWCTypography {
   }
 
   render() {
-    const Element = this.variant;
+    const Element = this.hierarchy;
 
     return (
       <Host>
