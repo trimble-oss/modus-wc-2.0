@@ -2,8 +2,8 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import {
+  TypographyHierarchy,
   TypographySize,
-  TypographyVariant,
   TypographyWeight,
 } from './modus-wc-typography';
 
@@ -15,7 +15,7 @@ const content = 'The quick brown fox jumps over the lazy dog';
 interface TypographyArgs {
   'custom-class'?: string;
   size?: TypographySize;
-  variant: TypographyVariant;
+  hierarchy: TypographyHierarchy;
   weight?: TypographyWeight;
 }
 
@@ -24,7 +24,7 @@ const meta: Meta<TypographyArgs> = {
   component: 'modus-wc-typography',
   args: {
     size: 'md',
-    variant: 'p',
+    hierarchy: 'p',
     weight: 'normal',
   },
   argTypes: {
@@ -46,7 +46,7 @@ const meta: Meta<TypographyArgs> = {
         '9xl',
       ],
     },
-    variant: {
+    hierarchy: {
       control: { type: 'select' },
       options: ['body', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
     },
@@ -87,7 +87,7 @@ export const Default: Story = {
     <modus-wc-typography
       custom-class=${ifDefined(args['custom-class'])}
       size=${ifDefined(args.size)}
-      variant=${args.variant}
+      hierarchy=${args.hierarchy}
       weight=${ifDefined(args.weight)}
     ></modus-wc-typography>
   `,
@@ -95,48 +95,48 @@ export const Default: Story = {
 
 export const Body: Story = {
   args: {
-    variant: 'body',
+    hierarchy: 'body',
   },
 };
 
 export const Heading1: Story = {
   args: {
-    variant: 'h1',
+    hierarchy: 'h1',
   },
 };
 
 export const Heading2: Story = {
   args: {
-    variant: 'h2',
+    hierarchy: 'h2',
   },
 };
 
 export const Heading3: Story = {
   args: {
-    variant: 'h3',
+    hierarchy: 'h3',
   },
 };
 
 export const Heading4: Story = {
   args: {
-    variant: 'h4',
+    hierarchy: 'h4',
   },
 };
 
 export const Heading5: Story = {
   args: {
-    variant: 'h5',
+    hierarchy: 'h5',
   },
 };
 
 export const Heading6: Story = {
   args: {
-    variant: 'h6',
+    hierarchy: 'h6',
   },
 };
 
 export const Paragraph: Story = {
   args: {
-    variant: 'p',
+    hierarchy: 'p',
   },
 };

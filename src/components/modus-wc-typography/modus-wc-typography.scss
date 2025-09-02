@@ -4,42 +4,42 @@
 */
 
 modus-wc-typography {
-  h1.modus-wc-typography {
+  h1.modus-wc-typography:not(.modus-wc-typography-override) {
     font-size: var(--modus-wc-font-size-3xl);
     font-weight: var(--modus-wc-font-weight-normal);
     letter-spacing: 0.5px;
     line-height: 36px;
   }
 
-  h2.modus-wc-typography {
+  h2.modus-wc-typography:not(.modus-wc-typography-override) {
     font-size: var(--modus-wc-font-size-2xl);
     font-weight: var(--modus-wc-font-weight-normal);
     letter-spacing: 0.15px;
     line-height: 30px;
   }
 
-  h3.modus-wc-typography {
+  h3.modus-wc-typography:not(.modus-wc-typography-override) {
     font-size: var(--modus-wc-font-size-xl);
     font-weight: var(--modus-wc-font-weight-semibold);
     letter-spacing: 0.15px;
     line-height: 27px;
   }
 
-  h4.modus-wc-typography {
+  h4.modus-wc-typography:not(.modus-wc-typography-override) {
     font-size: var(--modus-wc-font-size-lg);
     font-weight: var(--modus-wc-font-weight-semibold);
     letter-spacing: 0.15px;
     line-height: 24px;
   }
 
-  h5.modus-wc-typography {
+  h5.modus-wc-typography:not(.modus-wc-typography-override) {
     font-size: var(--modus-wc-font-size-md);
     font-weight: var(--modus-wc-font-weight-bold);
     letter-spacing: 0.45px;
     line-height: 24px;
   }
 
-  h6.modus-wc-typography {
+  h6.modus-wc-typography:not(.modus-wc-typography-override) {
     font-size: var(--modus-wc-font-size-sm);
     font-weight: var(--modus-wc-font-weight-bold);
     letter-spacing: 0.45px;
@@ -60,6 +60,35 @@ modus-wc-typography {
 
   .modus-wc-typography-weight-bold {
     font-weight: var(--modus-wc-font-weight-bold);
+  }
+
+  // Text size classes
+  .modus-wc-text-xs {
+    font-size: var(--modus-wc-font-size-xs);
+  }
+
+  .modus-wc-text-sm {
+    font-size: var(--modus-wc-font-size-sm);
+  }
+
+  .modus-wc-text-md {
+    font-size: var(--modus-wc-font-size-md);
+  }
+
+  .modus-wc-text-lg {
+    font-size: var(--modus-wc-font-size-lg);
+  }
+
+  .modus-wc-text-xl {
+    font-size: var(--modus-wc-font-size-xl);
+  }
+
+  .modus-wc-text-2xl {
+    font-size: var(--modus-wc-font-size-2xl);
+  }
+
+  .modus-wc-text-3xl {
+    font-size: var(--modus-wc-font-size-3xl);
   }
 }
 

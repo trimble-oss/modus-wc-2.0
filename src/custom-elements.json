@@ -6705,21 +6705,21 @@
               }
             },
             {
+              "name": "hierarchy",
+              "fieldName": "hierarchy",
+              "default": "'p'",
+              "description": "The hierarchy of the typography component.",
+              "type": {
+                "text": "TypographyHierarchy"
+              }
+            },
+            {
               "name": "size",
               "fieldName": "size",
               "default": "'md'",
               "description": "The size of the font.",
               "type": {
                 "text": "TypographySize"
-              }
-            },
-            {
-              "name": "variant",
-              "fieldName": "variant",
-              "default": "'p'",
-              "description": "The variant of the typography component.",
-              "type": {
-                "text": "TypographyVariant"
               }
             },
             {
