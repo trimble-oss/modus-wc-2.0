@@ -108,7 +108,7 @@ modus-wc-date .modus-wc-date {
   --modus-wc-color-base-page: #000;
   --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
-  --modus-wc-color-base-300: var(--modus-wc-color-9);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-9);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
   --modus-wc-color-info: var(--modus-wc-color-trimble-blue);
   --modus-wc-color-success: var(--modus-wc-color-green);
