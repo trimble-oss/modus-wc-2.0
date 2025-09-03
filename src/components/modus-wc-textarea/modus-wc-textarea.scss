@@ -57,3 +57,8 @@ modus-wc-textarea {
 [data-theme='modus-classic-dark'] modus-wc-textarea .modus-wc-textarea:focus {
   border-color: var(--modus-wc-color-highlight-blue);
 }
+
+[data-theme='connect-light'] modus-wc-textarea .modus-wc-textarea,
+[data-theme='connect-dark'] modus-wc-textarea .modus-wc-textarea {
+  @include connect-input-styles;
+}

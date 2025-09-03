@@ -10,7 +10,7 @@ export const common = {
 
   // Button Component
   '--border-btn': '1px',
-  '--btn-focus-scale': '0.95',
+  '--btn-focus-scale': '0.98',
   '--rounded-btn': '0.5rem',
 
   // Card Component
@@ -24,7 +24,15 @@ export const common = {
   // '--tab-corner-bg': '',
   // '--tab-grad': '',
   // '--tab-padding': '',
-  // '--tab-radius': '0.25rem',
+  '--tab-radius': '0.25rem',
+
+  // Alert Component
+  '--alert-border-left-width': '0.5rem',
+  '--alert-border-width': '1px',
+  '--alert-border-radius': '0.5rem',
+
+  //Input Component
+  '--input-bottom-border-width': '1px',
 
   // Additional component variables can be added here
 };

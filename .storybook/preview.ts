@@ -7,6 +7,7 @@ import { createElement } from 'react';
 import { defineCustomElements } from '../dist/loader';
 import customElements from '../src/custom-elements.json';
 import a11yConfig from './a11yConfig';
+import '../src/styles/modus-icons.css';
 
 defineCustomElements();
 setCustomElementsManifest(customElements);
@@ -26,7 +27,9 @@ const preview: Preview = {
         const theme =
           props?.context.store.userGlobals.globals.theme ===
             'modus-classic-dark' ||
-          props?.context.store.userGlobals.globals.theme === 'modus-modern-dark'
+          props?.context.store.userGlobals.globals.theme ===
+            'modus-modern-dark' ||
+          props?.context.store.userGlobals.globals.theme === 'connect-dark'
             ? themes.dark
             : themes.light;
         el!.dataset['theme'] = props?.context.store.userGlobals.globals.theme;
@@ -77,6 +80,8 @@ const preview: Preview = {
         'modus-modern-dark': 'modus-modern-dark',
         'modus-classic-light': 'modus-classic-light',
         'modus-classic-dark': 'modus-classic-dark',
+        'connect-light': 'connect-light',
+        'connect-dark': 'connect-dark',
       },
       defaultTheme: 'modus-modern-light',
       attributeName: 'data-theme',

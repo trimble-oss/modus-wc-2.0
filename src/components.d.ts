@@ -20,7 +20,7 @@ import { SortingState } from "@tanstack/table-core";
 import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-import { TypographySize, TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
+import { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
@@ -36,7 +36,7 @@ export { SortingState } from "@tanstack/table-core";
 export { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-export { TypographySize, TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
+export { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
@@ -640,6 +640,10 @@ export namespace Components {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: DaisySize;
+        /**
+          * The icon variant, can be "outlined" or "solid".
+         */
+        "variant"?: 'outlined' | 'solid';
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
@@ -1742,7 +1746,10 @@ export namespace Components {
         "tooltipId"?: string;
     }
     /**
-     * A customizable typography component used to render text with different sizes, variants, and weights.
+     * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+     * Note: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
+     * the default size (size="md") and weight (weight="normal") properties. Default styling can be overridden by
+     * providing your own custom values for the size or weight properties from the available options.
      */
     interface ModusWcTypography {
         /**
@@ -1750,17 +1757,31 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * The hierarchy of the typography component.
+         */
+        "hierarchy": TypographyHierarchy;
+        /**
           * The size of the font.
          */
         "size"?: TypographySize;
         /**
-          * The variant of the typography component.
-         */
-        "variant": TypographyVariant;
-        /**
           * The weight of the text.
          */
         "weight"?: TypographyWeight;
+    }
+    interface ModusWcUtilityPanel {
+        /**
+          * The panel is expanded or closed
+         */
+        "expanded": boolean;
+        /**
+          * Determines if the panel pushes content or displays an overlay.
+         */
+        "pushContent": boolean;
+        /**
+          * Target element reference to push content when panel opens
+         */
+        "targetElement"?: HTMLElement;
     }
 }
 export interface ModusWcAccordionCustomEvent<T> extends CustomEvent<T> {
@@ -1874,6 +1895,10 @@ export interface ModusWcTimeInputCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcTooltipCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTooltipElement;
+}
+export interface ModusWcUtilityPanelCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcUtilityPanelElement;
 }
 declare global {
     interface HTMLModusWcAccordionElementEventMap {
@@ -2650,13 +2675,34 @@ declare global {
         new (): HTMLModusWcTooltipElement;
     };
     /**
-     * A customizable typography component used to render text with different sizes, variants, and weights.
+     * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+     * Note: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
+     * the default size (size="md") and weight (weight="normal") properties. Default styling can be overridden by
+     * providing your own custom values for the size or weight properties from the available options.
      */
     interface HTMLModusWcTypographyElement extends Components.ModusWcTypography, HTMLStencilElement {
     }
     var HTMLModusWcTypographyElement: {
         prototype: HTMLModusWcTypographyElement;
         new (): HTMLModusWcTypographyElement;
+    };
+    interface HTMLModusWcUtilityPanelElementEventMap {
+        "panelOpened": void;
+        "panelClosed": void;
+    }
+    interface HTMLModusWcUtilityPanelElement extends Components.ModusWcUtilityPanel, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcUtilityPanelElementEventMap>(type: K, listener: (this: HTMLModusWcUtilityPanelElement, ev: ModusWcUtilityPanelCustomEvent<HTMLModusWcUtilityPanelElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcUtilityPanelElementEventMap>(type: K, listener: (this: HTMLModusWcUtilityPanelElement, ev: ModusWcUtilityPanelCustomEvent<HTMLModusWcUtilityPanelElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcUtilityPanelElement: {
+        prototype: HTMLModusWcUtilityPanelElement;
+        new (): HTMLModusWcUtilityPanelElement;
     };
     interface HTMLElementTagNameMap {
         "modus-wc-accordion": HTMLModusWcAccordionElement;
@@ -2703,6 +2749,7 @@ declare global {
         "modus-wc-toolbar": HTMLModusWcToolbarElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
+        "modus-wc-utility-panel": HTMLModusWcUtilityPanelElement;
     }
 }
 declare namespace LocalJSX {
@@ -3367,6 +3414,10 @@ declare namespace LocalJSX {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: DaisySize;
+        /**
+          * The icon variant, can be "outlined" or "solid".
+         */
+        "variant"?: 'outlined' | 'solid';
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
@@ -4698,7 +4749,10 @@ declare namespace LocalJSX {
         "tooltipId"?: string;
     }
     /**
-     * A customizable typography component used to render text with different sizes, variants, and weights.
+     * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+     * Note: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
+     * the default size (size="md") and weight (weight="normal") properties. Default styling can be overridden by
+     * providing your own custom values for the size or weight properties from the available options.
      */
     interface ModusWcTypography {
         /**
@@ -4706,17 +4760,39 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
+          * The hierarchy of the typography component.
+         */
+        "hierarchy"?: TypographyHierarchy;
+        /**
           * The size of the font.
          */
         "size"?: TypographySize;
         /**
-          * The variant of the typography component.
-         */
-        "variant"?: TypographyVariant;
-        /**
           * The weight of the text.
          */
         "weight"?: TypographyWeight;
+    }
+    interface ModusWcUtilityPanel {
+        /**
+          * The panel is expanded or closed
+         */
+        "expanded"?: boolean;
+        /**
+          * An event that fires when the panel is closed.
+         */
+        "onPanelClosed"?: (event: ModusWcUtilityPanelCustomEvent<void>) => void;
+        /**
+          * An event that fires when the panel is opened.
+         */
+        "onPanelOpened"?: (event: ModusWcUtilityPanelCustomEvent<void>) => void;
+        /**
+          * Determines if the panel pushes content or displays an overlay.
+         */
+        "pushContent"?: boolean;
+        /**
+          * Target element reference to push content when panel opens
+         */
+        "targetElement"?: HTMLElement;
     }
     interface IntrinsicElements {
         "modus-wc-accordion": ModusWcAccordion;
@@ -4763,6 +4839,7 @@ declare namespace LocalJSX {
         "modus-wc-toolbar": ModusWcToolbar;
         "modus-wc-tooltip": ModusWcTooltip;
         "modus-wc-typography": ModusWcTypography;
+        "modus-wc-utility-panel": ModusWcUtilityPanel;
     }
 }
 export { LocalJSX as JSX };
@@ -4955,9 +5032,13 @@ declare module "@stencil/core" {
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**
-             * A customizable typography component used to render text with different sizes, variants, and weights.
+             * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+             * Note: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
+             * the default size (size="md") and weight (weight="normal") properties. Default styling can be overridden by
+             * providing your own custom values for the size or weight properties from the available options.
              */
             "modus-wc-typography": LocalJSX.ModusWcTypography & JSXBase.HTMLAttributes<HTMLModusWcTypographyElement>;
+            "modus-wc-utility-panel": LocalJSX.ModusWcUtilityPanel & JSXBase.HTMLAttributes<HTMLModusWcUtilityPanelElement>;
         }
     }
 }
