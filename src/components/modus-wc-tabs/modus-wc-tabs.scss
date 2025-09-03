@@ -68,6 +68,11 @@ modus-wc-tabs .modus-wc-tab {
   height: inherit;
 
   @include common-states;
+
+  &-active {
+    background-color: var(--modus-wc-color-base-page);
+    color: inherit;
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-tabs .modus-wc-tab {
@@ -88,7 +93,7 @@ modus-wc-tabs .modus-wc-tab {
     --tab-bg: var(--modus-wc-color-white);
 
     // Unfortunately needed, otherwise browsers sometimes don't apply.
-    background-color: var(--modus-wc-color-trimble-blue) !important;
+    background-color: var(--modus-wc-color-trimble-blue-pale) !important;
   }
 
   &.modus-wc-tab-active {
