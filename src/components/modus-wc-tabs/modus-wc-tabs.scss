@@ -127,7 +127,7 @@ modus-wc-tabs .modus-wc-tab {
 
   &:not(.modus-wc-tab-disabled):active {
     // Unfortunately needed, otherwise browsers sometimes don't apply.
-    background-color: var(--modus-wc-color-highlight-blue) !important;
+    background-color: var(--modus-wc-color-highlight-blue-pale) !important;
   }
 
   &.modus-wc-tab-active {
