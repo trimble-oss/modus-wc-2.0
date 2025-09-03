@@ -5,6 +5,40 @@
 
 modus-wc-button .modus-wc-btn {
   --fallback-sc: var(--modus-wc-color-neutral);
+
+  @include sizing-tokens;
+}
+
+modus-wc-button .modus-wc-btn-outline {
+  @include btn-state-colors;
+}
+
+modus-wc-button .modus-wc-btn-borderless {
+  @include btn-state-colors;
+
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+
+  &.modus-wc-btn-primary {
+    color: var(--modus-wc-color-primary);
+  }
+
+  &.modus-wc-btn-secondary {
+    color: var(--modus-wc-color-secondary);
+  }
+
+  &.modus-wc-btn-neutral {
+    color: var(--modus-wc-color-content);
+  }
+
+  &.modus-wc-btn-warning {
+    color: var(--modus-wc-color-warning);
+  }
+
+  &.modus-wc-btn-error {
+    color: var(--modus-wc-color-error);
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn,
@@ -25,7 +59,7 @@ modus-wc-button .modus-wc-btn {
     font-size: var(--modus-wc-font-size-xs);
 
     &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
-      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+      padding: var(--modus-wc-spacing-2xs) var(--modus-wc-spacing-sm);
     }
   }
 
@@ -33,7 +67,7 @@ modus-wc-button .modus-wc-btn {
     font-size: var(--modus-wc-font-size-sm);
 
     &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
-      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
+      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-md);
     }
   }
 
@@ -41,7 +75,7 @@ modus-wc-button .modus-wc-btn {
     font-size: var(--modus-wc-font-size-md);
 
     &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
-      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-lg);
     }
   }
 
@@ -49,7 +83,7 @@ modus-wc-button .modus-wc-btn {
     font-size: var(--modus-wc-font-size-lg);
 
     &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
-      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
+      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-xl);
     }
   }
 
@@ -463,63 +497,6 @@ modus-wc-button .modus-wc-btn {
         border-color: var(--modus-wc-color-red-dark);
         color: var(--modus-wc-color-red-dark);
       }
-    }
-  }
-}
-
-[data-theme='modus-modern-light'] modus-wc-button .modus-wc-btn,
-[data-theme='modus-modern-dark'] modus-wc-button .modus-wc-btn {
-  &.modus-wc-btn-borderless {
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-  }
-}
-
-[data-theme='modus-modern-light'] modus-wc-button .modus-wc-btn {
-  &.modus-wc-btn-borderless {
-    &.modus-wc-btn-primary {
-      color: var(--modus-wc-color-trimble-blue);
-    }
-
-    &.modus-wc-btn-secondary {
-      color: var(--modus-wc-color-gray-6);
-    }
-
-    &.modus-wc-btn-neutral {
-      color: var(--modus-wc-color-gray-1);
-    }
-
-    &.modus-wc-btn-warning {
-      color: var(--modus-wc-color-yellow);
-    }
-
-    &.modus-wc-btn-error {
-      color: var(--modus-wc-color-red);
-    }
-  }
-}
-
-[data-theme='modus-modern-dark'] modus-wc-button .modus-wc-btn {
-  &.modus-wc-btn-borderless {
-    &.modus-wc-btn-primary {
-      color: var(--modus-wc-color-highlight-blue);
-    }
-
-    &.modus-wc-btn-secondary {
-      color: var(--modus-wc-color-gray-6);
-    }
-
-    &.modus-wc-btn-neutral {
-      color: var(--modus-wc-color-gray-1);
-    }
-
-    &.modus-wc-btn-warning {
-      color: var(--modus-wc-color-yellow);
-    }
-
-    &.modus-wc-btn-error {
-      color: var(--modus-wc-color-red);
     }
   }
 }
