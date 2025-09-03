@@ -5,6 +5,7 @@
 
 modus-wc-input .modus-wc-input {
   @include feedback-levels;
+  @include sizing-tokens;
 }
 
 modus-wc-number-input {
@@ -135,4 +136,9 @@ modus-wc-number-input {
       }
     }
   }
+}
+
+[data-theme='connect-light'] modus-wc-number-input .modus-wc-number-input,
+[data-theme='connect-dark'] modus-wc-number-input .modus-wc-number-input {
+  @include connect-input-styles;
 }

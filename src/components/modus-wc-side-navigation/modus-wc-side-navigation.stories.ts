@@ -68,7 +68,6 @@ export const Default: Story = {
     return html`
       <style>
         .layout-with-navbar {
-          box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
           display: flex;
           flex-direction: column;
           height: 100%;
@@ -82,7 +81,7 @@ export const Default: Story = {
           padding: 0 16px;
         }
         .navbar {
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          box-shadow: none;
         }
         .panel-content {
           margin-left: 4rem;
@@ -311,10 +310,6 @@ export const collapsibleMenu: Story = {
           font-size: 16px;
           line-height: 1.5;
           padding: 0.7rem 1.25rem;
-        }
-
-        .navbar {
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .nested-row {

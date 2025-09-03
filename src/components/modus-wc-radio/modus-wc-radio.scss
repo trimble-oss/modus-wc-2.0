@@ -68,3 +68,59 @@ modus-wc-radio.modus-wc-radio-host {
     --fallback-bc: var(--modus-wc-color-trimble-blue);
   }
 }
+
+[data-theme='connect-light'] modus-wc-radio .modus-wc-radio,
+[data-theme='connect-dark'] modus-wc-radio .modus-wc-radio {
+  --fallback-bc: var(--modus-wc-color-gray-4);
+
+  border-width: var(--modus-wc-border-width-sm);
+
+  // Sizes
+  &.modus-wc-radio-xs {
+    height: 0.875rem;
+    width: 0.875rem;
+  }
+
+  &.modus-wc-radio-sm {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  &.modus-wc-radio-md {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  &.modus-wc-radio-lg {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
+}
+
+[data-theme='connect-light'] modus-wc-radio .modus-wc-radio {
+  &:checked {
+    --fallback-bc: var(--modus-wc-color-trimble-blue);
+  }
+
+  &:focus {
+    outline-color: var(--modus-wc-color-trimble-blue);
+  }
+
+  &:hover {
+    --fallback-bc: var(--modus-wc-color-trimble-blue);
+  }
+}
+
+[data-theme='connect-dark'] modus-wc-radio .modus-wc-radio {
+  &:checked {
+    --fallback-bc: var(--modus-wc-color-highlight-blue);
+  }
+
+  &:focus {
+    outline-color: var(--modus-wc-color-highlight-blue);
+  }
+
+  &:hover {
+    --fallback-bc: var(--modus-wc-color-trimble-blue);
+  }
+}

@@ -8,6 +8,8 @@ modus-wc-autocomplete.modus-wc-autocomplete {
   position: relative;
   width: 100%;
 
+  @include sizing-tokens;
+
   modus-wc-loader {
     display: flex;
     justify-content: center;
