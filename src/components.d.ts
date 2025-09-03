@@ -1747,7 +1747,7 @@ export namespace Components {
     }
     /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
-     * By default, all heading elements (<h1> through <h6>) are styled with modus default standard size="md" and weight="normal".
+     * By default, all heading elements (h1-h6) are styled with modus default standard size="md" and weight="normal".
      * You can override the default styling by providing your own custom values for the size or weight properties.
      */
     interface ModusWcTypography {
@@ -2675,7 +2675,7 @@ declare global {
     };
     /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
-     * By default, all heading elements (<h1> through <h6>) are styled with modus default standard size="md" and weight="normal".
+     * By default, all heading elements (h1-h6) are styled with modus default standard size="md" and weight="normal".
      * You can override the default styling by providing your own custom values for the size or weight properties.
      */
     interface HTMLModusWcTypographyElement extends Components.ModusWcTypography, HTMLStencilElement {
@@ -4748,7 +4748,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
-     * By default, all heading elements (<h1> through <h6>) are styled with modus default standard size="md" and weight="normal".
+     * By default, all heading elements (h1-h6) are styled with modus default standard size="md" and weight="normal".
      * You can override the default styling by providing your own custom values for the size or weight properties.
      */
     interface ModusWcTypography {
@@ -5030,7 +5030,7 @@ declare module "@stencil/core" {
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**
              * A customizable typography component used to render text with different sizes, hierarchy, and weights.
-             * By default, all heading elements (<h1> through <h6>) are styled with modus default standard size="md" and weight="normal".
+             * By default, all heading elements (h1-h6) are styled with modus default standard size="md" and weight="normal".
              * You can override the default styling by providing your own custom values for the size or weight properties.
              */
             "modus-wc-typography": LocalJSX.ModusWcTypography & JSXBase.HTMLAttributes<HTMLModusWcTypographyElement>;
