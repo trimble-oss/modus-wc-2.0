@@ -19,8 +19,9 @@ export type TypographyWeight = 'light' | 'normal' | 'semibold' | 'bold';
 /**
  * A customizable typography component used to render text with different sizes, hierarchy, and weights.
  *
- * By default, all heading elements (h1-h6) are styled with modus default standard size="md" and weight="normal".
- * You can override the default styling by providing your own custom values for the size or weight properties.
+ * Note: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
+ * the default size (size="md") and weight (weight="normal") properties. Default styling can be overridden by
+ * providing your own custom values for the size or weight properties from the available options.
  */
 @Component({
   tag: 'modus-wc-typography',
