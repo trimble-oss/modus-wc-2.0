@@ -9,8 +9,8 @@
 
 A customizable typography component used to render text with different sizes, hierarchy, and weights.
 
-When using heading elements (h1-h6), you can keep the default modus styling by using the default values of size="md" and weight="normal".
-If you specify custom size or weight values for headings, the component will override the default browser styling.
+By default, all heading elements (<h1> through <h6>) are styled with modus default standard size="md" and weight="normal".
+You can override the default styling by providing your own custom values for the size or weight properties.
 
 ## Properties
 
