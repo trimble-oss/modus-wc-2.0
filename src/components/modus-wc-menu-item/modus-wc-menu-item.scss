@@ -5,12 +5,17 @@
 
 modus-wc-menu-item .modus-wc-menu-item {
   button {
+    align-items: center;
+    border-radius: 0;
     display: flex;
 
     /* Enforce Tailwind CSS reset */
     width: 100%;
 
+    @include common-states;
+
     .modus-wc-menu-item-content {
+      align-items: center;
       display: flex;
       width: 100%;
 
@@ -19,7 +24,8 @@ modus-wc-menu-item .modus-wc-menu-item {
       }
 
       .modus-wc-menu-item-labels {
-        padding-inline-end: var(--modus-wc-spacing-md);
+        padding-inline-end: var(--modus-wc-spacing-xs);
+        padding-inline-start: var(--modus-wc-spacing-xs);
       }
 
       .modus-wc-menu-item-sublabel {
@@ -61,9 +67,9 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 
   &.modus-wc-menu-item-selected {
-    background-color: var(--modus-wc-color-primary);
+    background-color: var(--modus-wc-color-primary-pale);
     border-radius: inherit;
-    color: var(--modus-wc-color-primary-content);
+    color: var(--modus-wc-color-primary);
   }
 
   &.modus-wc-menu-item-disabled {
@@ -108,7 +114,7 @@ modus-wc-menu-item .modus-wc-menu-item {
 modus-wc-menu-item
   .modus-wc-menu-item.modus-wc-menu-item-selected
   > button:focus {
-  color: var(--modus-wc-color-base-content);
+  color: var(--modus-wc-color-primary);
 }
 
 [data-theme='modus-classic-light'] modus-wc-menu-item .modus-wc-menu-item {

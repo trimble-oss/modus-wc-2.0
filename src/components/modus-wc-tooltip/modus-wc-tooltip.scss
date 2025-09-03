@@ -33,3 +33,9 @@ modus-wc-tooltip {
     }
   }
 }
+
+[data-theme='connect-light'] modus-wc-tooltip .modus-wc-tooltip,
+[data-theme='connect-dark'] modus-wc-tooltip .modus-wc-tooltip {
+  --tooltip-color: var(--modus-wc-color-base-content);
+  --tooltip-text-color: var(--modus-wc-color-base-page);
+}
