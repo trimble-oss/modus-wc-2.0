@@ -6678,7 +6678,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable typography component used to render text with different sizes, variants, and weights.",
+          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\r\n\r\nNote: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying \r\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by \r\nproviding your own custom values for the size or weight properties from the available options.",
           "name": "ModusWCTypography",
           "members": [
             {

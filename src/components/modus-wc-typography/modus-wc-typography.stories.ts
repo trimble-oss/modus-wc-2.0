@@ -14,8 +14,8 @@ const content = 'The quick brown fox jumps over the lazy dog';
 
 interface TypographyArgs {
   'custom-class'?: string;
-  size?: TypographySize;
   hierarchy: TypographyHierarchy;
+  size?: TypographySize;
   weight?: TypographyWeight;
 }
 
@@ -23,11 +23,15 @@ const meta: Meta<TypographyArgs> = {
   title: 'Components/Typography',
   component: 'modus-wc-typography',
   args: {
-    size: 'md',
     hierarchy: 'p',
+    size: 'md',
     weight: 'normal',
   },
   argTypes: {
+    hierarchy: {
+      control: { type: 'select' },
+      options: ['body', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
+    },
     size: {
       control: { type: 'select' },
       options: [
@@ -45,10 +49,6 @@ const meta: Meta<TypographyArgs> = {
         '8xl',
         '9xl',
       ],
-    },
-    hierarchy: {
-      control: { type: 'select' },
-      options: ['body', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
     },
     weight: {
       control: { type: 'select' },
@@ -86,8 +86,8 @@ export const Default: Story = {
   render: (args) => html`
     <modus-wc-typography
       custom-class=${ifDefined(args['custom-class'])}
-      size=${ifDefined(args.size)}
       hierarchy=${args.hierarchy}
+      size=${ifDefined(args.size)}
       weight=${ifDefined(args.weight)}
     ></modus-wc-typography>
   `,
