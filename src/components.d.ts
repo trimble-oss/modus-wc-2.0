@@ -1746,7 +1746,9 @@ export namespace Components {
         "tooltipId"?: string;
     }
     /**
-     * A customizable typography component used to render text with different sizes, variants, and weights.
+     * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+     * When using heading elements (h1-h6), you can keep the default modus styling by using the default values of size="md" and weight="normal".
+     * If you specify custom size or weight values for headings, the component will override the default browser styling.
      */
     interface ModusWcTypography {
         /**
@@ -2672,7 +2674,9 @@ declare global {
         new (): HTMLModusWcTooltipElement;
     };
     /**
-     * A customizable typography component used to render text with different sizes, variants, and weights.
+     * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+     * When using heading elements (h1-h6), you can keep the default modus styling by using the default values of size="md" and weight="normal".
+     * If you specify custom size or weight values for headings, the component will override the default browser styling.
      */
     interface HTMLModusWcTypographyElement extends Components.ModusWcTypography, HTMLStencilElement {
     }
@@ -4743,7 +4747,9 @@ declare namespace LocalJSX {
         "tooltipId"?: string;
     }
     /**
-     * A customizable typography component used to render text with different sizes, variants, and weights.
+     * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+     * When using heading elements (h1-h6), you can keep the default modus styling by using the default values of size="md" and weight="normal".
+     * If you specify custom size or weight values for headings, the component will override the default browser styling.
      */
     interface ModusWcTypography {
         /**
@@ -5023,7 +5029,9 @@ declare module "@stencil/core" {
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**
-             * A customizable typography component used to render text with different sizes, variants, and weights.
+             * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+             * When using heading elements (h1-h6), you can keep the default modus styling by using the default values of size="md" and weight="normal".
+             * If you specify custom size or weight values for headings, the component will override the default browser styling.
              */
             "modus-wc-typography": LocalJSX.ModusWcTypography & JSXBase.HTMLAttributes<HTMLModusWcTypographyElement>;
             "modus-wc-utility-panel": LocalJSX.ModusWcUtilityPanel & JSXBase.HTMLAttributes<HTMLModusWcUtilityPanelElement>;

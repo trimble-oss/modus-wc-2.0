@@ -17,7 +17,10 @@ export type TypographySize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 export type TypographyWeight = 'light' | 'normal' | 'semibold' | 'bold';
 
 /**
- * A customizable typography component used to render text with different sizes, variants, and weights.
+ * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+ *
+ * When using heading elements (h1-h6), you can keep the default modus styling by using the default values of size="md" and weight="normal".
+ * If you specify custom size or weight values for headings, the component will override the default browser styling.
  */
 @Component({
   tag: 'modus-wc-typography',
