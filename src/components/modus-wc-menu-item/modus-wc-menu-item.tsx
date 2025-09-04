@@ -146,6 +146,7 @@ export class ModusWcMenuItem {
           <modus-wc-tooltip
             content={this.tooltip}
             position={this.tooltipPosition}
+            customClass="modus-wc-menu-item-tooltip"
           >
             {menuItem}
           </modus-wc-tooltip>
