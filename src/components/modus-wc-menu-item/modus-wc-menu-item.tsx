@@ -51,6 +51,13 @@ export class ModusWcMenuItem {
   /** The text rendered beneath the label. */
   @Prop() subLabel?: string;
 
+  /** The tooltip text to display when hovering over the menu item. */
+  @Prop() tooltip?: string;
+
+  /** The position of the tooltip relative to the menu item. */
+  @Prop() tooltipPosition?: 'auto' | 'top' | 'right' | 'bottom' | 'left' =
+    'auto';
+
   /** The unique identifying value of the menu item. */
   @Prop() value: string = '';
 
@@ -98,40 +105,53 @@ export class ModusWcMenuItem {
   };
 
   render() {
-    return (
-      <Host>
-        <li
-          aria-current={this.selected}
-          aria-disabled={this.disabled}
-          class={this.getClasses()}
-          role="menuitem"
-          {...this.inheritedAttributes}
+    const menuItem = (
+      <li
+        aria-current={this.selected}
+        aria-disabled={this.disabled}
+        class={this.getClasses()}
+        role="menuitem"
+        {...this.inheritedAttributes}
+      >
+        <button
+          disabled={this.disabled}
+          onClick={this.handleItemSelect}
+          type="button"
         >
-          <button
-            disabled={this.disabled}
-            onClick={this.handleItemSelect}
-            type="button"
-          >
-            <div class="modus-wc-menu-item-content">
-              <slot name="start-icon"></slot>
-              <div class="modus-wc-menu-item-labels">
-                <div>{this.label}</div>
-                {this.subLabel && (
-                  <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
-                )}
-              </div>
-              {this.selected && (
-                <div class="modus-wc-menu-item-selected-icon">
-                  <modus-wc-icon
-                    decorative={true}
-                    name="check"
-                    size={this.getIconSize()}
-                  />
-                </div>
+          <div class="modus-wc-menu-item-content">
+            <slot name="start-icon"></slot>
+            <div class="modus-wc-menu-item-labels">
+              <div>{this.label}</div>
+              {this.subLabel && (
+                <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
               )}
             </div>
-          </button>
-        </li>
+            {this.selected && (
+              <div class="modus-wc-menu-item-selected-icon">
+                <modus-wc-icon
+                  decorative={true}
+                  name="check"
+                  size={this.getIconSize()}
+                />
+              </div>
+            )}
+          </div>
+        </button>
+      </li>
+    );
+
+    return (
+      <Host>
+        {this.tooltip ? (
+          <modus-wc-tooltip
+            content={this.tooltip}
+            position={this.tooltipPosition}
+          >
+            {menuItem}
+          </modus-wc-tooltip>
+        ) : (
+          menuItem
+        )}
       </Host>
     );
   }
