@@ -27,6 +27,9 @@ export class ModusWcMenuItem {
 
   @Prop() bordered?: boolean;
 
+  /** If true, renders a checkbox slot at the start of the menu item. */
+  @Prop() checkbox?: boolean;
+
   /** Custom CSS class to apply to the li element. */
   @Prop() customClass?: string = '';
 
@@ -66,6 +69,7 @@ export class ModusWcMenuItem {
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
+      checkbox: this.checkbox,
       disabled: this.disabled,
       selected: this.selected,
       focused: this.focused,
@@ -93,7 +97,22 @@ export class ModusWcMenuItem {
     }
   }
 
+  // private getCheckboxSize(): DaisySize {
+  //   switch (this.size) {
+  //     case 'sm':
+  //       return 'sm';
+  //     case 'md':
+  //       return 'md';
+  //     case 'lg':
+  //       return 'lg';
+  //     // istanbul ignore next (unreachable code)
+  //     default:
+  //       return 'md';
+  //   }
+  // }
+
   private handleItemSelect = () => {
+    this.selected = !this.selected;
     this.itemSelect.emit({ value: this.value });
   };
 
@@ -112,24 +131,31 @@ export class ModusWcMenuItem {
             onClick={this.handleItemSelect}
             type="button"
           >
-            <div class="modus-wc-menu-item-content">
-              <slot name="start-icon"></slot>
-              <div class="modus-wc-menu-item-labels">
-                <div>{this.label}</div>
-                {this.subLabel && (
-                  <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
-                )}
-              </div>
-              {this.selected && (
-                <div class="modus-wc-menu-item-selected-icon">
-                  <modus-wc-icon
-                    decorative={true}
-                    name="check"
-                    size={this.getIconSize()}
-                  />
-                </div>
+            <slot name="start-icon"></slot>
+            {this.checkbox && (
+              <modus-wc-checkbox
+                aria-label="Checkbox"
+                size={this.size}
+                value={!!this.selected}
+              />
+            )}
+
+            <div class="modus-wc-menu-item-labels">
+              <div>{this.label}</div>
+              {this.subLabel && (
+                <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
               )}
             </div>
+
+            {this.selected && this.checkbox !== true && (
+              <div class="modus-wc-menu-item-selected-icon">
+                <modus-wc-icon
+                  decorative={true}
+                  name="check"
+                  size={this.getIconSize()}
+                />
+              </div>
+            )}
           </button>
         </li>
       </Host>

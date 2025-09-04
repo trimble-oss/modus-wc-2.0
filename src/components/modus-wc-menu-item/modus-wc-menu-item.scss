@@ -29,6 +29,10 @@ modus-wc-menu-item .modus-wc-menu-item {
       .modus-wc-menu-item-selected-icon {
         margin-left: auto;
       }
+
+      .modus-wc-menu-item-checkbox {
+        margin-right: var(--modus-wc-spacing-lg);
+      }
     }
 
     &:where(

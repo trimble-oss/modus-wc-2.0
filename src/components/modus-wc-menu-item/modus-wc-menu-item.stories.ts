@@ -6,6 +6,7 @@ import { ModusSize } from '../types';
 
 interface MenuItemArgs {
   bordered?: boolean;
+  checkbox?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
   label: string;
@@ -48,6 +49,7 @@ const Template: Story = {
 <modus-wc-menu>
   <modus-wc-menu-item
     ?bordered=${args.bordered}
+    ?checkbox=${args.checkbox}
     custom-class=${ifDefined(args['custom-class'])}
     ?disabled=${args.disabled}
     label=${args.label}
@@ -70,6 +72,7 @@ export const WithIcon: Story = {
 <modus-wc-menu>
   <modus-wc-menu-item
     ?bordered=${args.bordered}
+    ?checkbox=${args.checkbox}
     custom-class=${ifDefined(args['custom-class'])}
     ?disabled=${args.disabled}
     label=${args.label}
@@ -85,6 +88,28 @@ export const WithIcon: Story = {
     ></modus-wc-icon>
   </modus-wc-menu-item>
 </modus-wc-menu>
+    `;
+  },
+};
+export const WithCheckbox: Story = {
+  args: {
+    checkbox: true,
+  },
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-menu>
+  <modus-wc-menu-item
+    ?bordered=${args.bordered}
+    ?checkbox=${args.checkbox}
+    custom-class=${ifDefined(args['custom-class'])}
+    ?disabled=${args.disabled}
+    label=${args.label}
+    ?selected=${args.selected}
+    size=${args.size}
+    sub-label=${ifDefined(args['sub-label'])}
+    value=${args.value}
+  ></modus-wc-menu>
     `;
   },
 };

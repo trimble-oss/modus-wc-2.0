@@ -14,14 +14,14 @@ describe('modus-wc-menu-item', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenuItem, ModusWcIcon],
-      html: `<modus-wc-menu-item 
-              bordered="true" 
-              custom-class="test-class" 
-              disabled="true" 
-              label="Test label" 
-              selected="true" 
-              size="lg" 
-              sub-label="Test sub-label" 
+      html: `<modus-wc-menu-item
+              bordered="true"
+              custom-class="test-class"
+              disabled="true"
+              label="Test label"
+              selected="true"
+              size="lg"
+              sub-label="Test sub-label"
               value="Test value"
             ></modus-wc-menu-item>`,
     });
