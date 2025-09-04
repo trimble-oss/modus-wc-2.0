@@ -318,15 +318,59 @@ export const WithTooltips: Story = {
 
     // prettier-ignore
     return html`
-<div style="width: 300px;">
-  <modus-wc-autocomplete
-    aria-label="Fruits with tooltips"
-    leave-menu-open="true"
-    placeholder="Search fruits"
-    .items=${tooltipItems}
-    min-chars="0"
-  ></modus-wc-autocomplete>
-</div>
+      <script>
+        const tooltipItems: IAutocompleteItem[] = [
+            {
+              label: 'Apple',
+              value: 'apple',
+              tooltip: 'apple',
+              tooltipPosition: 'bottom',
+              visibleInMenu: true,
+              focused: false,
+            },
+            {
+              label: 'Banana',
+              value: 'banana',
+              tooltip: 'Banana',
+              tooltipPosition: 'bottom',
+              visibleInMenu: true,
+              focused: false,
+            },
+            {
+              label: 'Cherry',
+              value: 'cherry',
+              tooltip: 'Cherry',
+              tooltipPosition: 'bottom',
+              visibleInMenu: true,
+              focused: false,
+            },
+            {
+              label: 'Grape',
+              value: 'grape',
+              tooltip: 'Grape',
+              tooltipPosition: 'bottom',
+              visibleInMenu: true,
+              focused: false,
+            },
+            {
+              label: 'Orange',
+              value: 'orange',
+              tooltip: 'Orange',
+              tooltipPosition: 'top',
+              visibleInMenu: true,
+              focused: false,
+            },
+          ];
+      </script>
+      <div style="width: 300px;">
+        <modus-wc-autocomplete
+          aria-label="Fruits with tooltips"
+          leave-menu-open="true"
+          placeholder="Search fruits"
+          .items=${tooltipItems}
+          min-chars="0"
+        ></modus-wc-autocomplete>
+      </div>
     `;
   },
 };
