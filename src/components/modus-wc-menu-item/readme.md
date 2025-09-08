@@ -43,14 +43,14 @@ A customizable menu item component used to display the item portion of a menu
 
 ### Depends on
 
-- [modus-wc-icon](../modus-wc-icon)
 - [modus-wc-tooltip](../modus-wc-tooltip)
+- [modus-wc-icon](../modus-wc-icon)
 
 ### Graph
 ```mermaid
 graph TD;
-  modus-wc-menu-item --> modus-wc-icon
   modus-wc-menu-item --> modus-wc-tooltip
+  modus-wc-menu-item --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-menu-item
   modus-wc-navbar --> modus-wc-menu-item
   style modus-wc-menu-item fill:#f9f,stroke:#333,stroke-width:4px

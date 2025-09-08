@@ -105,54 +105,50 @@ export class ModusWcMenuItem {
   };
 
   render() {
-    const menuItem = (
-      <li
-        aria-current={this.selected}
-        aria-disabled={this.disabled}
-        class={this.getClasses()}
-        role="menuitem"
-        {...this.inheritedAttributes}
-      >
-        <button
-          disabled={this.disabled}
-          onClick={this.handleItemSelect}
-          type="button"
-        >
-          <div class="modus-wc-menu-item-content">
-            <slot name="start-icon"></slot>
-            <div class="modus-wc-menu-item-labels">
-              <div>{this.label}</div>
-              {this.subLabel && (
-                <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
-              )}
-            </div>
-            {this.selected && (
-              <div class="modus-wc-menu-item-selected-icon">
-                <modus-wc-icon
-                  decorative={true}
-                  name="check"
-                  size={this.getIconSize()}
-                />
-              </div>
-            )}
-          </div>
-        </button>
-      </li>
-    );
-
     return (
       <Host>
-        {this.tooltip ? (
-          <modus-wc-tooltip
-            content={this.tooltip}
-            position={this.tooltipPosition}
-            customClass="modus-wc-menu-item-tooltip"
+        <li
+          aria-current={this.selected}
+          aria-disabled={this.disabled}
+          class={this.getClasses()}
+          role="menuitem"
+          {...this.inheritedAttributes}
+        >
+          <button
+            disabled={this.disabled}
+            onClick={this.handleItemSelect}
+            type="button"
           >
-            {menuItem}
-          </modus-wc-tooltip>
-        ) : (
-          menuItem
-        )}
+            <div class="modus-wc-menu-item-content">
+              <slot name="start-icon"></slot>
+              <div class="modus-wc-menu-item-labels">
+                {this.tooltip ? (
+                  <modus-wc-tooltip
+                    content={this.tooltip}
+                    position={this.tooltipPosition}
+                    customClass="modus-wc-menu-item-tooltip"
+                  >
+                    <div>{this.label}</div>
+                  </modus-wc-tooltip>
+                ) : (
+                  <div>{this.label}</div>
+                )}
+                {this.subLabel && (
+                  <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
+                )}
+              </div>
+              {this.selected && (
+                <div class="modus-wc-menu-item-selected-icon">
+                  <modus-wc-icon
+                    decorative={true}
+                    name="check"
+                    size={this.getIconSize()}
+                  />
+                </div>
+              )}
+            </div>
+          </button>
+        </li>
       </Host>
     );
   }
