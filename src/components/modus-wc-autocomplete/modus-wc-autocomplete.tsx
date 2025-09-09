@@ -925,25 +925,25 @@ export class ModusWcAutocomplete {
         ) : (
           // When NOT using slots, conditionally render menu (automatic scroll reset)
           this.menuVisible && (
-            <modus-wc-menu
-              aria-label="Autocomplete menu"
-              bordered={this.bordered}
-              class="menu-visible"
-              onMenuFocusout={this.handleMenuFocusout}
-              onMouseDown={(e) => e.preventDefault()}
-              size={this.size}
-            >
-              {renderMenuItems({
-                showSpinner: this.showSpinner,
-                size: this.size,
-                filteredItems: this.filteredItems,
-                items: this.items,
-                noResults: this.noResults,
-                hasSlottedContent: hasSlottedContent,
-                onItemSelect: this.handleItemSelectByValue,
-              })}
-              <slot name="menu-items"></slot>
-            </modus-wc-menu>
+          <modus-wc-menu
+            aria-label="Autocomplete menu"
+            bordered={this.bordered}
+            class="menu-visible"
+            onMenuFocusout={this.handleMenuFocusout}
+            onMouseDown={(e) => e.preventDefault()}
+            size={this.size}
+          >
+            {renderMenuItems({
+              showSpinner: this.showSpinner,
+              size: this.size,
+              filteredItems: this.filteredItems,
+              items: this.items,
+              noResults: this.noResults,
+              hasSlottedContent: hasSlottedContent,
+              onItemSelect: this.handleItemSelectByValue,
+            })}
+            <slot name="menu-items"></slot>
+          </modus-wc-menu>
           )
         )}
       </Host>

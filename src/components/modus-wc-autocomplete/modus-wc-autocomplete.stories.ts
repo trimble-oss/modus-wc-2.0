@@ -270,98 +270,151 @@ export const WithTooltips: Story = {
         story:
           'This example demonstrates menu items with tooltips. Hover over the items to see the tooltips.',
       },
+      source: {
+        code: `
+const tooltipItems = [
+  {
+    label: 'Apple',
+    value: 'apple',
+    tooltip: 'Apple - A crisp and sweet fruit',
+    tooltipPosition: 'top',
+    visibleInMenu: true,
+    focused: false,
+  },
+  {
+    label: 'Banana',
+    value: 'banana',
+    tooltip: 'Banana - A tropical yellow fruit',
+    tooltipPosition: 'right',
+    visibleInMenu: true,
+    focused: false,
+  },
+  {
+    label: 'Cherry',
+    value: 'cherry',
+    tooltip: 'Cherry - Small red stone fruit',
+    tooltipPosition: 'bottom',
+    visibleInMenu: true,
+    focused: false,
+  },
+  {
+    label: 'Grape',
+    value: 'grape',
+    tooltip: 'Grape - Small juicy fruit that grows in clusters',
+    tooltipPosition: 'left',
+    visibleInMenu: true,
+    focused: false,
+  },
+  {
+    label: 'Orange',
+    value: 'orange',
+    tooltip: 'Orange - Citrus fruit with a bright color',
+    tooltipPosition: 'top',
+    visibleInMenu: true,
+    focused: false,
+  },
+];
+<modus-wc-autocomplete
+  aria-label="Fruits with tooltips"
+  leave-menu-open="true"
+  placeholder="Search fruits"
+  .items={tooltipItems}
+  min-chars="0"
+></modus-wc-autocomplete>
+`,
+      },
     },
   },
   render: () => {
     const tooltipItems: IAutocompleteItem[] = [
       {
-      label: 'Apple',
-      value: 'apple',
-      tooltip: 'Apple - A crisp and sweet fruit',
-      tooltipPosition: 'top',
-      visibleInMenu: true,
-      focused: false,
+        label: 'Apple',
+        value: 'apple',
+        tooltip: 'Apple - A crisp and sweet fruit',
+        tooltipPosition: 'top',
+        visibleInMenu: true,
+        focused: false,
       },
       {
-      label: 'Banana',
-      value: 'banana',
-      tooltip: 'Banana - A tropical yellow fruit',
-      tooltipPosition: 'right',
-      visibleInMenu: true,
-      focused: false,
+        label: 'Banana',
+        value: 'banana',
+        tooltip: 'Banana - A tropical yellow fruit',
+        tooltipPosition: 'right',
+        visibleInMenu: true,
+        focused: false,
       },
       {
-      label: 'Cherry',
-      value: 'cherry',
-      tooltip: 'Cherry - Small red stone fruit',
-      tooltipPosition: 'bottom',
-      visibleInMenu: true,
-      focused: false,
+        label: 'Cherry',
+        value: 'cherry',
+        tooltip: 'Cherry - Small red stone fruit',
+        tooltipPosition: 'bottom',
+        visibleInMenu: true,
+        focused: false,
       },
       {
-      label: 'Grape',
-      value: 'grape',
-      tooltip: 'Grape - Small juicy fruit that grows in clusters',
-      tooltipPosition: 'left',
-      visibleInMenu: true,
-      focused: false,
+        label: 'Grape',
+        value: 'grape',
+        tooltip: 'Grape - Small juicy fruit that grows in clusters',
+        tooltipPosition: 'left',
+        visibleInMenu: true,
+        focused: false,
       },
       {
-      label: 'Orange',
-      value: 'orange',
-      tooltip: 'Orange - Citrus fruit with a bright color',
-      tooltipPosition: 'top',
-      visibleInMenu: true,
-      focused: false,
+        label: 'Orange',
+        value: 'orange',
+        tooltip: 'Orange - Citrus fruit with a bright color',
+        tooltipPosition: 'top',
+        visibleInMenu: true,
+        focused: false,
+      },
+      {
+        label: 'Apple',
+        value: 'apple',
+        tooltip: 'Apple - A crisp and sweet fruit',
+        tooltipPosition: 'top',
+        visibleInMenu: true,
+        focused: false,
+      },
+      {
+        label: 'Banana',
+        value: 'banana',
+        tooltip: 'Banana - A tropical yellow fruit',
+        tooltipPosition: 'right',
+        visibleInMenu: true,
+        focused: false,
+      },
+      {
+        label: 'Cherry',
+        value: 'cherry',
+        tooltip: 'Cherry - Small red stone fruit',
+        tooltipPosition: 'bottom',
+        visibleInMenu: true,
+        focused: false,
+      },
+      {
+        label: 'Grape',
+        value: 'grape',
+        tooltip: 'Grape - Small juicy fruit that grows in clusters',
+        tooltipPosition: 'left',
+        visibleInMenu: true,
+        focused: false,
+      },
+      {
+        label: 'Orange',
+        value: 'orange',
+        tooltip: 'Orange - Citrus fruit with a bright color',
+        tooltipPosition: 'top',
+        visibleInMenu: true,
+        focused: false,
       },
     ];
 
-    // prettier-ignore
     return html`
-      <script>
-        const tooltipItems: IAutocompleteItem[] = [
-            {
-              label: 'Apple',
-              value: 'apple',
-              tooltip: 'apple',
-              tooltipPosition: 'bottom',
-              visibleInMenu: true,
-              focused: false,
-            },
-            {
-              label: 'Banana',
-              value: 'banana',
-              tooltip: 'Banana',
-              tooltipPosition: 'bottom',
-              visibleInMenu: true,
-              focused: false,
-            },
-            {
-              label: 'Cherry',
-              value: 'cherry',
-              tooltip: 'Cherry',
-              tooltipPosition: 'bottom',
-              visibleInMenu: true,
-              focused: false,
-            },
-            {
-              label: 'Grape',
-              value: 'grape',
-              tooltip: 'Grape',
-              tooltipPosition: 'bottom',
-              visibleInMenu: true,
-              focused: false,
-            },
-            {
-              label: 'Orange',
-              value: 'orange',
-              tooltip: 'Orange',
-              tooltipPosition: 'top',
-              visibleInMenu: true,
-              focused: false,
-            },
-          ];
-      </script>
+      <style>
+        div[id^='story--components-forms-autocomplete--with-tooltips'] {
+          height: 400px;
+        }
+      </style>
       <div style="width: 300px;">
         <modus-wc-autocomplete
           aria-label="Fruits with tooltips"

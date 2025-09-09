@@ -154,7 +154,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     left: 0;
     margin-top: var(--modus-wc-spacing-2xs);
     max-height: 320px;
-    overflow: visible;
+    overflow: auto;
     position: absolute;
     top: 100%;
     z-index: 99;
