@@ -129,18 +129,18 @@ exports[`modus-wc-menu-item should render with size sm 1`] = `
 exports[`modus-wc-menu-item should render with tooltip 1`] = `
 <modus-wc-menu-item label="Test label" tooltip="Test tooltip" value="Test value">
   <!---->
-  <modus-wc-tooltip content="Test tooltip" customclass="modus-wc-menu-item-tooltip" position="auto">
-    <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
-      <button type="button">
-        <div class="modus-wc-menu-item-content">
-          <div class="modus-wc-menu-item-labels">
+  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
+    <button type="button">
+      <div class="modus-wc-menu-item-content">
+        <div class="modus-wc-menu-item-labels">
+          <modus-wc-tooltip content="Test tooltip" customclass="modus-wc-menu-item-tooltip" position="auto">
             <div>
               Test label
             </div>
-          </div>
+          </modus-wc-tooltip>
         </div>
-      </button>
-    </li>
-  </modus-wc-tooltip>
+      </div>
+    </button>
+  </li>
 </modus-wc-menu-item>
 `;
