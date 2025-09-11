@@ -177,3 +177,33 @@ You can package the angular component library for local testing by running the f
 ```bash
 npm pack ./dist/trimble-oss/moduswebcomponents-angular
 ```
+
+### Step 14: update github workflows
+
+Add the new angular version to .github/workflows/build-angular.yaml
+
+```yaml
+  ...
+jobs:
+  build-angular:
+    strategy:
+      matrix:
+        angular-version: [17, 18, 19, 20, <version-number>]
+```
+
+Add the new angular version to .github/workflows/publish-angular.yaml
+
+```yaml
+  ...
+jobs:
+  build-and-publish-angular:
+    strategy:
+      matrix:
+        angular-version: [17, 18, 19, 20, <version-number>]
+  ...
+  release-angular:
+    strategy:
+      matrix:
+        angular-version: [17, 18, 19, 20, <version-number>]
+  ...
+```

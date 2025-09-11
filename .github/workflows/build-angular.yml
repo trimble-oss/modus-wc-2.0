@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        angular-version: [17, 18, 19]
+        angular-version: [17, 18, 19, 20]
 
     steps:
       - name: Checkout code
