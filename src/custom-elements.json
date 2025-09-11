@@ -6592,11 +6592,27 @@
             },
             {
               "kind": "method",
+              "name": "handleContentChange",
+              "parameters": [
+                {
+                  "name": "newContent",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "handleMouseEnter"
             },
             {
               "kind": "method",
               "name": "handleMouseLeave"
+            },
+            {
+              "kind": "method",
+              "name": "handlePositionChange"
             },
             {
               "kind": "method",
