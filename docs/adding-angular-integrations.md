@@ -8,25 +8,26 @@ For any updates or changes, please refer back to this document or the StencilJS 
 
 ## How to Scaffold a Specific Version of Angular Integration
 
-To scaffold a new Angular version integration (using version 18 as an example), follow these steps:
+To scaffold a new Angular version integration, follow these steps:
 
 > [!NOTE]
-> replace `@angular/cli@<version number>` with target version you're creating the integration for in the following steps.
+> replace `<version-number>` with target version(e.g. `21`) you're creating the integration for in the following steps.
+> replace `<latest-version>` with the latest modus web components version(e.g. `0.0.0-beta.12`)
 
 ### Step 1: Create a New Angular Workspace
 
 Run the following command to create a new Angular workspace without an application:
 
 ```bash
-npx -p @angular/cli@18 ng new ng18 --no-create-application
+npx -p @angular/cli@<version-number> ng new ng<version-number> --no-create-application
 ```
 
 ### Step 2: Generate a New Library
 
-From the angular workspace directory (`ng18/`) created in the previous step generate a new library for your Stencil web component integration:
+From the angular workspace directory (`ng<version-number>/`) created in the previous step generate a new library for your Stencil web component integration:
 
 ```bash
-npx -p @angular/cli@18 ng generate library @trimble-oss/moduswebcomponents-angular
+npx -p @angular/cli@<version-number> ng generate library @trimble-oss/moduswebcomponents-angular
 ```
 
 ### Step 3: Delete generated files
@@ -35,19 +36,19 @@ You can delete the generated `*.component.ts`, `*.service.ts`, and `*.spec.ts` f
 
 ### Step 4: Update `modus-wc-angular` version to reflect target Angular version
 
-Append `ng<target-version>` to the version field in the `package.json`:
+Append `ng<version-number>` to the version field in the `package.json`:
 
 ```json
 {
   "name": "@trimble-oss/moduswebcomponents-angular",
-  "version": "0.0.1-ng18",
+  "version": "0.0.1-ng<version-number>",
   ...
 }
 ```
 
 ### Step 5: Update Peer Dependencies
 
-Add `@trimble-oss/moduswebcomponents` as a peer dependency in the `package.json` file of your library located at `ng18/projects/trimble-oss/moduswebcomponents-angular/package.json`:
+Add `@trimble-oss/moduswebcomponents` as a peer dependency in the `package.json` file of your library located at `ng<version-number>/projects/trimble-oss/moduswebcomponents-angular/package.json`:
 
 ```json
 {
@@ -63,7 +64,7 @@ Angular CLI will install Jasmine as a dependency in the angular workspace. Howev
 so to avoid type definition collisions when building stencil remove `jasmine-core` and `@types/jasmine`.
 
 ```bash
-# from `/packages/ng18`
+# from `/integrations/angular/ng<version-number>`
 npm uninstall jasmine-core @types/jasmine
 ```
 
@@ -79,11 +80,11 @@ angularOutputTarget({
   componentCorePackage: '@trimble-oss/moduswebcomponents',
   outputType: 'component',
   directivesProxyFile:
-    './integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
+    './integrations/angular/ng<version-number>/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
   directivesArrayFile:
-    './integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/index.ts',
+    './integrations/angular/ng<version-number>/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/index.ts',
   valueAccessorConfigs: angularValueAccessorBindings,
-});
+}),
 ```
 
 ### Step 8: Generate Angular Stencil Component Wrappers
@@ -91,7 +92,7 @@ angularOutputTarget({
 Run the following command from the root directory to build the Stencil components and generate the Angular component wrappers:
 
 ```bash
-npm run stencil:build
+npm run build
 ```
 
 You should now be able to see the stencil generated angular component wrappers under `projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated`
@@ -114,21 +115,14 @@ registry=https://registry.npmjs.org/
 Create a new module at `projects/trimble-oss/moduswebcomponents-angular/src/lib/modus-wc-angular.module.ts` to import and export the generated component wrappers:
 
 ```ts
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule, provideAppInitializer } from '@angular/core';
 import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
 import { DIRECTIVES } from './stencil-generated';
 
 @NgModule({
-  declarations: [...DIRECTIVES],
-  imports: [],
+  imports: [...DIRECTIVES],
   exports: [...DIRECTIVES],
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: () => defineCustomElements,
-      multi: true,
-    },
-  ],
+  providers: [provideAppInitializer(() => defineCustomElements())],
 })
 export class ModusAngularComponentsModule {}
 ```
@@ -149,7 +143,7 @@ Any components that are included in the exports array should additionally be exp
 
 ### Step 12: Install Dependencies and Build
 
-Ensure `modus-wc` dependency is installed in the `ng18/` angular workspace:
+Ensure `modus-wc` dependency is installed in the `ng<version-number>/` angular workspace:
 
 ```bash
 npm install @trimble-oss/moduswebcomponents
@@ -161,7 +155,7 @@ You will need to import our styling in your main JavaScript or CSS file:
 import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
 ```
 
-You may need to edit the build script in the angular workspace (`ng18/`) to specifically target the `projects/trimble-oss/moduswebcomponents-angular` component library.
+You may need to edit the build script in the angular workspace (`ng<version-number>/`) to specifically target the `projects/trimble-oss/moduswebcomponents-angular` component library.
 
 For example:
 
@@ -169,7 +163,7 @@ For example:
   "build": "ng run @trimble-oss/moduswebcomponents-angular:build:production",
 ```
 
-Now we can install dependencies and build a local distribution. From `ng18/` run:
+Now we can install dependencies and build a local distribution. From `ng<version-number>/` run:
 
 ```bash
 npm install
