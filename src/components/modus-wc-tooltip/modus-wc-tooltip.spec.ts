@@ -471,9 +471,9 @@ describe('modus-wc-tooltip', () => {
 
   // Set a longer timeout for this test (30 seconds)
   it('should perform a second popper update after setTimeout in showTooltip', async () => {
-    const originalSetTimeout = window.setTimeout;
+    const originalSetTimeout = globalThis.setTimeout;
     // @ts-expect-error - Override setTimeout for the test
-    window.setTimeout = function mockSetTimeout(callback) {
+    globalThis.setTimeout = function mockSetTimeout(callback) {
       callback();
       return 999;
     };
@@ -508,7 +508,7 @@ describe('modus-wc-tooltip', () => {
       expect(mockUpdate).toHaveBeenCalledTimes(2);
     } finally {
       // Restore original setTimeout
-      window.setTimeout = originalSetTimeout;
+      globalThis.setTimeout = originalSetTimeout;
     }
   }, 30000);
 });
