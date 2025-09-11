@@ -32,8 +32,8 @@
 }
 
 .modus-wc-tooltip-arrow::before {
-  content: '';
   background-color: var(--modus-wc-color-neutral-content);
+  content: '';
   transform: rotate(45deg);
   visibility: visible;
 }
