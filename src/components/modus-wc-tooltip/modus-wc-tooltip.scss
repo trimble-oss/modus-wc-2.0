@@ -13,18 +13,18 @@
   max-width: 20rem;
   padding: 0.25rem 0.5rem;
   pointer-events: none;
+  position: relative;
   width: max-content;
   z-index: 1000;
-  position: relative;
 }
 
 /* Arrow styling */
 .modus-wc-tooltip-arrow,
 .modus-wc-tooltip-arrow::before {
+  background: inherit;
+  height: 8px;
   position: absolute;
   width: 8px;
-  height: 8px;
-  background: inherit;
 }
 
 .modus-wc-tooltip-arrow {
@@ -33,9 +33,9 @@
 
 .modus-wc-tooltip-arrow::before {
   content: '';
-  visibility: visible;
-  transform: rotate(45deg);
   background-color: var(--modus-wc-color-neutral-content);
+  transform: rotate(45deg);
+  visibility: visible;
 }
 
 /* Arrow placement based on tooltip position */
