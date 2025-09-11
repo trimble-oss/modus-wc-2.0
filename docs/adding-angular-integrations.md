@@ -207,3 +207,22 @@ jobs:
         angular-version: [17, 18, 19, 20, <version-number>]
   ...
 ```
+
+### Step 15: Include New Version Output Path
+
+Add the new angular version output path to the wireit stencil:build` config in the repo's root package.json
+
+```json
+    ...
+    "stencil:build": {
+      ...
+      "output": [
+        ...
+        "integrations/angular/ng17/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
+        "integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
+        "integrations/angular/ng20/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
+        "integrations/angular/ng<version-number>/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**"
+      ]
+    },
+    ...
+```
