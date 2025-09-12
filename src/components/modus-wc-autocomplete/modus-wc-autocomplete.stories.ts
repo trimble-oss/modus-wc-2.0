@@ -1580,7 +1580,7 @@ export const DynamicOptions: Story = {
 
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
-      ) as HTMLElement & { items: any; value: any; showSpinner: any };
+      );
 
       if (autocomplete) {
         const input = e.detail.target as HTMLInputElement;
@@ -1609,7 +1609,7 @@ export const DynamicOptions: Story = {
     const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
-      ) as HTMLElement & { value: any };
+      );
 
       if (autocomplete) {
         const label = e.detail.label;

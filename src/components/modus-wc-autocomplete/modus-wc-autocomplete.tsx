@@ -276,6 +276,7 @@ export class ModusWcAutocomplete {
     this.filteredItems = syncFilteredItems(
       this.items,
       this.searchText,
+      this.leaveMenuOpen,
       this.customInputChange
     );
   }
