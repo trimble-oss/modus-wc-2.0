@@ -5930,7 +5930,7 @@
               "fieldName": "enterkeyhint",
               "description": "A hint to the browser for which enter key to display.",
               "type": {
-                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
+                "text": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'"
               }
             },
             {
@@ -5969,6 +5969,14 @@
               "name": "max-length",
               "fieldName": "maxLength",
               "description": "The maximum number of characters allowed in the textarea.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "min-length",
+              "fieldName": "minLength",
+              "description": "Minimum length (number of characters) of value.",
               "type": {
                 "text": "number"
               }
@@ -6678,7 +6686,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\r\n\r\nNote: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying \r\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by \r\nproviding your own custom values for the size or weight properties from the available options.",
+          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\r\n\r\nNote: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying\r\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by\r\nproviding your own custom values for the size or weight properties from the available options.",
           "name": "ModusWCTypography",
           "members": [
             {

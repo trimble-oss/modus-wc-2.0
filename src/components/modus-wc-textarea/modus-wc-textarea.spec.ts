@@ -27,6 +27,7 @@ describe('modus-wc-textarea', () => {
         input-tab-index="1"
         label="Test label"
         max-length="100"
+        min-length="5"
         name="test-name"
         placeholder="Test placeholder"
         readonly="true"

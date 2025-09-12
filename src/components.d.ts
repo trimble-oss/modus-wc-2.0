@@ -1565,6 +1565,10 @@ export namespace Components {
          */
         "maxLength"?: number;
         /**
+          * The minimum number of characters required in the textarea.
+         */
+        "minLength"?: number;
+        /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
@@ -4535,6 +4539,10 @@ declare namespace LocalJSX {
           * The maximum number of characters allowed in the textarea.
          */
         "maxLength"?: number;
+        /**
+          * The minimum number of characters required in the textarea.
+         */
+        "minLength"?: number;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
