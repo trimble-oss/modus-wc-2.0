@@ -38,6 +38,7 @@ A customizable checkbox component
 
 ### Used by
 
+ - [modus-wc-menu-item](../modus-wc-menu-item)
  - [modus-wc-table](../modus-wc-table)
 
 ### Depends on
@@ -48,6 +49,7 @@ A customizable checkbox component
 ```mermaid
 graph TD;
   modus-wc-checkbox --> modus-wc-input-label
+  modus-wc-menu-item --> modus-wc-checkbox
   modus-wc-table --> modus-wc-checkbox
   style modus-wc-checkbox fill:#f9f,stroke:#333,stroke-width:4px
 ```

@@ -48,36 +48,31 @@ export function getVisibleItems(
 export function syncFilteredItems(
   items: IAutocompleteItem[] | undefined,
   value: string,
-  leaveMenuOpen?: boolean,
   customInputChange?: (value: string) => void
 ): IAutocompleteItem[] {
   if (!items) {
     return [];
   }
 
-  // When leaveMenuOpen is true and an item is selected, show all items
-  if (leaveMenuOpen && items.some((item) => item.selected)) {
-    return [...items];
-  }
+  const currentSearchText = value?.toLowerCase() || '';
 
-  // if customInputChange is defined, return items that are visibleInMenu
+  // If customInputChange is defined, return items that are visibleInMenu
   if (customInputChange) {
     return items.filter((item) => item.visibleInMenu);
   }
 
-  const currentSearchText = value?.toLowerCase() || '';
-
   if (currentSearchText === '') {
     // When no search text, show all items that are visibleInMenu
+    // This also handles the case where leaveMenuOpen is true and the input is empty.
     return items.filter((item) => item.visibleInMenu);
-  } else {
-    // Filter items based on current search text AND visibleInMenu
-    return items.filter(
-      (item) =>
-        item.visibleInMenu &&
-        item.label.toLowerCase().includes(currentSearchText)
-    );
   }
+
+  // Filter items based on current search text AND visibleInMenu
+  // This is the core logic that should be applied regardless of selection state.
+  return items.filter(
+    (item) =>
+      item.visibleInMenu && item.label.toLowerCase().includes(currentSearchText)
+  );
 }
 
 export function updateItemFocus(
@@ -301,51 +296,72 @@ export function processItemSelection(
     );
     const isCurrentlySelected = currentItem?.selected || false;
 
-    // Also check if item is already in selectionOrder to prevent duplicates
-    const isInSelectionOrder = params.selectionOrder.includes(item.value);
-
-    if (isCurrentlySelected || isInSelectionOrder) {
+    if (isCurrentlySelected) {
+      // Deselect item and remove from selectionOrder
+      updatedItems = [
+        ...params.items.map((menuItem) => ({
+          ...menuItem,
+          selected: menuItem.value === item.value ? false : menuItem.selected,
+          focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
+        })),
+      ];
+      updatedSelectionOrder = params.selectionOrder.filter(
+        (value) => value !== item.value
+      );
+      updatedValue = '';
       return {
-        updatedItems: params.items,
-        updatedValue: '',
-        updatedSelectionOrder: params.selectionOrder,
+        updatedItems,
+        updatedValue,
+        updatedSelectionOrder,
         shouldExpandChips: false,
         shouldCloseMenu: !params.leaveMenuOpen,
       };
-    }
-
-    updatedItems = [
-      ...params.items.map((menuItem) => ({
-        ...menuItem,
-        selected: menuItem.value === item.value ? true : menuItem.selected,
-        focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
-      })),
-    ];
-
-    // Add to end of selection order (now guaranteed not to be a duplicate)
-    updatedSelectionOrder = [...params.selectionOrder, item.value];
-
-    // Clear the input value in multi-select mode
-    updatedValue = '';
-
-    // If we exceed maxChips, automatically expand
-    if (
-      params.maxChips &&
-      params.maxChips > 0 &&
-      updatedSelectionOrder.length > params.maxChips
-    ) {
-      shouldExpandChips = true;
+    } else {
+      // Select item and add to selectionOrder
+      updatedItems = [
+        ...params.items.map((menuItem) => ({
+          ...menuItem,
+          selected: menuItem.value === item.value ? true : menuItem.selected,
+          focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
+        })),
+      ];
+      updatedSelectionOrder = [...params.selectionOrder, item.value];
+      updatedValue = '';
+      // If we exceed maxChips, automatically expand
+      if (
+        params.maxChips &&
+        params.maxChips > 0 &&
+        updatedSelectionOrder.length > params.maxChips
+      ) {
+        shouldExpandChips = true;
+      }
     }
   } else {
-    updatedItems = [
-      ...params.items.map((menuItem) => ({
-        ...menuItem,
-        selected: menuItem.value === item.value,
-        focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
-      })),
-    ];
-    // Always set the input value to show the selected item's label
-    updatedValue = item.label;
+    const currentItem = params.items.find(
+      (menuItem) => menuItem.value === item.value
+    );
+    const isCurrentlySelected = currentItem?.selected || false;
+    if (isCurrentlySelected) {
+      // Deselect item and clear input
+      updatedItems = [
+        ...params.items.map((menuItem) => ({
+          ...menuItem,
+          selected: menuItem.value === item.value ? false : menuItem.selected,
+          focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
+        })),
+      ];
+      updatedValue = '';
+    } else {
+      // Select item and set input value
+      updatedItems = [
+        ...params.items.map((menuItem) => ({
+          ...menuItem,
+          selected: menuItem.value === item.value,
+          focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
+        })),
+      ];
+      updatedValue = item.label;
+    }
   }
 
   return {
@@ -742,6 +758,7 @@ export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
       {menuItems.length > 0 || !noResults || params.hasSlottedContent
         ? menuItems.map((item) => (
             <modus-wc-menu-item
+              checkbox={item.checkbox}
               disabled={item.disabled}
               focused={item.focused}
               label={item.label}

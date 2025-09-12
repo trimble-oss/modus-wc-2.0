@@ -593,13 +593,6 @@
               }
             },
             {
-              "name": "leaveMenuOpen",
-              "optional": true,
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
               "name": "customInputChange",
               "optional": true,
               "type": {
@@ -3019,6 +3012,14 @@
             {
               "name": "bordered",
               "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "checkbox",
+              "fieldName": "checkbox",
+              "description": "If true, renders a checkbox slot at the start of the menu item.",
               "type": {
                 "text": "boolean"
               }

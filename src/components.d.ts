@@ -750,6 +750,10 @@ export namespace Components {
     interface ModusWcMenuItem {
         "bordered"?: boolean;
         /**
+          * If true, renders a checkbox slot at the start of the menu item.
+         */
+        "checkbox"?: boolean;
+        /**
           * Custom CSS class to apply to the li element.
          */
         "customClass"?: string;
@@ -3527,6 +3531,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcMenuItem {
         "bordered"?: boolean;
+        /**
+          * If true, renders a checkbox slot at the start of the menu item.
+         */
+        "checkbox"?: boolean;
         /**
           * Custom CSS class to apply to the li element.
          */

@@ -76,4 +76,20 @@ describe('modus-wc-menu-item', () => {
 
     expect(clickSpy).toHaveBeenCalledTimes(1);
   });
+
+  it('should render with checkbox', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Test label" value="Test value" checkbox="true"></modus-wc-menu-item>',
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with checkbox and selected', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Test label" value="Test value" checkbox="true" selected="true"></modus-wc-menu-item>',
+    });
+    expect(page.root).toMatchSnapshot();
+  });
 });

@@ -103,6 +103,8 @@ export type PopoverPlacement =
   | 'right-end';
 
 export interface IAutocompleteItem {
+  /** Whether the item should display a checkbox. Optional. */
+  checkbox?: boolean;
   /** Whether the item is disabled */
   disabled?: boolean;
   /** Whether the item is currently focused */
