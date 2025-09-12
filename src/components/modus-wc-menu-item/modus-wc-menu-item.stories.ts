@@ -12,7 +12,7 @@ interface MenuItemArgs {
   selected?: boolean;
   size?: ModusSize;
   'sub-label'?: string;
-  tooltip?: string;
+  'tooltip-content'?: string;
   'tooltip-position'?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
   value: string;
 }
@@ -60,7 +60,7 @@ const Template: Story = {
     ?selected=${args.selected}
     size=${args.size}
     sub-label=${ifDefined(args['sub-label'])}
-    tooltip=${ifDefined(args.tooltip)}
+    tooltip-content=${ifDefined(args['tooltip-content'])}
     tooltip-position=${ifDefined(args['tooltip-position'])}
     value=${args.value}
   ></modus-wc-menu-item>
@@ -84,7 +84,7 @@ export const WithIcon: Story = {
     ?selected=${args.selected}
     size=${args.size}
     sub-label=${ifDefined(args['sub-label'])}
-    tooltip=${ifDefined(args.tooltip)}
+    tooltip-content=${ifDefined(args['tooltip-content'])}
     tooltip-position=${ifDefined(args['tooltip-position'])}
     value=${args.value}
   >
@@ -101,7 +101,7 @@ export const WithIcon: Story = {
 
 export const WithTooltip: Story = {
   args: {
-    tooltip: 'This is a tooltip for the menu item',
+    'tooltip-content': 'This is a tooltip for the menu item',
     'tooltip-position': 'top',
   },
   render: (args) => {
@@ -116,7 +116,7 @@ export const WithTooltip: Story = {
     ?selected=${args.selected}
     size=${args.size}
     sub-label=${ifDefined(args['sub-label'])}
-    tooltip=${ifDefined(args.tooltip)}
+    tooltip-content=${ifDefined((args['tooltip-content']))}
     tooltip-position=${ifDefined(args['tooltip-position'])}
     value=${args.value}
   ></modus-wc-menu-item>

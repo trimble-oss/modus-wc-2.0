@@ -3091,8 +3091,8 @@
               }
             },
             {
-              "name": "tooltip",
-              "fieldName": "tooltip",
+              "name": "tooltip-content",
+              "fieldName": "tooltipContent",
               "description": "The tooltip text to display when hovering over the menu item.",
               "type": {
                 "text": "string"

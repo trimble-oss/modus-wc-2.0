@@ -113,6 +113,8 @@ export interface IAutocompleteItem {
   selected?: boolean;
   /** The tooltip text to display when hovering over the menu item */
   tooltip?: string;
+  /** The tooltip text to display when hovering over the menu item (preferred over tooltip) */
+  tooltipContent?: string;
   /** The position of the tooltip relative to the menu item */
   tooltipPosition?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
   /** The unique value identifier for the item */

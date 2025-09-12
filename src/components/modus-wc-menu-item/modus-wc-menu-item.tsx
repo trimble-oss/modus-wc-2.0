@@ -52,7 +52,7 @@ export class ModusWcMenuItem {
   @Prop() subLabel?: string;
 
   /** The tooltip text to display when hovering over the menu item. */
-  @Prop() tooltip?: string;
+  @Prop() tooltipContent?: string;
 
   /** The position of the tooltip relative to the menu item. */
   @Prop() tooltipPosition?: 'auto' | 'top' | 'right' | 'bottom' | 'left' =
@@ -122,9 +122,9 @@ export class ModusWcMenuItem {
             <div class="modus-wc-menu-item-content">
               <slot name="start-icon"></slot>
               <div class="modus-wc-menu-item-labels">
-                {this.tooltip ? (
+                {this.tooltipContent ? (
                   <modus-wc-tooltip
-                    content={this.tooltip}
+                    content={this.tooltipContent}
                     position={this.tooltipPosition}
                     customClass="modus-wc-menu-item-tooltip"
                   >

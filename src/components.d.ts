@@ -784,7 +784,7 @@ export namespace Components {
         /**
           * The tooltip text to display when hovering over the menu item.
          */
-        "tooltip"?: string;
+        "tooltipContent"?: string;
         /**
           * The position of the tooltip relative to the menu item.
          */
@@ -3574,7 +3574,7 @@ declare namespace LocalJSX {
         /**
           * The tooltip text to display when hovering over the menu item.
          */
-        "tooltip"?: string;
+        "tooltipContent"?: string;
         /**
           * The position of the tooltip relative to the menu item.
          */
