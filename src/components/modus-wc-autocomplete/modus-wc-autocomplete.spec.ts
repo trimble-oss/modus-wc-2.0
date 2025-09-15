@@ -1690,9 +1690,9 @@ describe('modus-wc-autocomplete', () => {
     autocomplete['handleItemSelect'](testItem);
     await page.waitForChanges();
 
-    // Expect the item to remain selected
-    expect(autocomplete.items[0].selected).toBe(true);
-    expect(autocomplete['selectionOrder']).toEqual(['test']);
+    // Expect the item to deselect
+    expect(autocomplete.items[0].selected).toBe(false);
+    expect(autocomplete['selectionOrder']).toEqual([]);
   });
 
   // Test ArrowUp key with initialNavigation set to true

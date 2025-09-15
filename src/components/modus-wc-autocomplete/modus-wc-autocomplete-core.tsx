@@ -268,6 +268,7 @@ export function processItemSelection(
   updatedSelectionOrder: string[];
   shouldExpandChips: boolean;
   shouldCloseMenu: boolean;
+  isDeselecting?: boolean;
 } {
   if (params.disabled || params.readOnly || !params.items) {
     return {
@@ -305,12 +306,27 @@ export function processItemSelection(
     const isInSelectionOrder = params.selectionOrder.includes(item.value);
 
     if (isCurrentlySelected || isInSelectionOrder) {
+      // Item is already selected, so we need to deselect it
+      updatedItems = [
+        ...params.items.map((menuItem) => ({
+          ...menuItem,
+          selected: menuItem.value === item.value ? false : menuItem.selected,
+          focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
+        })),
+      ];
+
+      // Remove from selection order
+      updatedSelectionOrder = params.selectionOrder.filter(
+        (value) => value !== item.value
+      );
+
       return {
-        updatedItems: params.items,
+        updatedItems,
         updatedValue: '',
-        updatedSelectionOrder: params.selectionOrder,
+        updatedSelectionOrder,
         shouldExpandChips: false,
         shouldCloseMenu: !params.leaveMenuOpen,
+        isDeselecting: true,
       };
     }
 
@@ -354,6 +370,7 @@ export function processItemSelection(
     updatedSelectionOrder,
     shouldExpandChips,
     shouldCloseMenu: !params.leaveMenuOpen,
+    isDeselecting: false,
   };
 }
 
@@ -742,6 +759,7 @@ export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
       {menuItems.length > 0 || !noResults || params.hasSlottedContent
         ? menuItems.map((item) => (
             <modus-wc-menu-item
+              checkbox={item.checkbox}
               disabled={item.disabled}
               focused={item.focused}
               label={item.label}

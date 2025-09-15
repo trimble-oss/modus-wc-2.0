@@ -327,12 +327,8 @@ export const Default: Story = {
 
 export const MultiSelect: Story = {
   render: (args) => {
-    // Initialize args.items if empty
-    if (!args.items || args.items.length === 0) {
-      args.items = [...items];
-    }
     // If multi-select, set selected state for some items
-    args.items = items.map((item) => {
+    args.items = args.items.map((item) => {
       if (item.value === 'apple' || item.value === 'banana') {
         return { ...item, selected: true };
       }

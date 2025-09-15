@@ -280,7 +280,7 @@
             {
               "name": "props",
               "type": {
-                "text": "{\r\n  bordered?: boolean;\r\n  disabled?: boolean;\r\n  readOnly?: boolean;\r\n  size?: ModusSize;\r\n}"
+                "text": "{\n  bordered?: boolean;\n  disabled?: boolean;\n  readOnly?: boolean;\n  size?: ModusSize;\n}"
               }
             }
           ]
@@ -332,7 +332,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\r\n  initialNavigation: boolean;\r\n  visibleItems: IAutocompleteItem[];\r\n  onUpdateFocus: (value: string) => void;\r\n  onSetInitialNavigation: (value: boolean) => void;\r\n}"
+                "text": "{\n  initialNavigation: boolean;\n  visibleItems: IAutocompleteItem[];\n  onUpdateFocus: (value: string) => void;\n  onSetInitialNavigation: (value: boolean) => void;\n}"
               }
             }
           ]
@@ -355,7 +355,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\r\n    multiSelect?: boolean;\r\n    selectionOrder: string[];\r\n    items?: IAutocompleteItem[];\r\n    onChipRemove: (item: IAutocompleteItem) => void;\r\n  }"
+                "text": "{\n    multiSelect?: boolean;\n    selectionOrder: string[];\n    items?: IAutocompleteItem[];\n    onChipRemove: (item: IAutocompleteItem) => void;\n  }"
               }
             }
           ]
@@ -365,7 +365,7 @@
           "name": "processChipRemoval",
           "return": {
             "type": {
-              "text": "{\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  updatedSelectionOrder: string[];\r\n}"
+              "text": "{\n  updatedItems: IAutocompleteItem[] | undefined;\n  updatedSelectionOrder: string[];\n}"
             }
           },
           "parameters": [
@@ -378,7 +378,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    items?: IAutocompleteItem[];\r\n    selectionOrder: string[];\r\n  }"
+                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    items?: IAutocompleteItem[];\n    selectionOrder: string[];\n  }"
               }
             }
           ]
@@ -388,7 +388,7 @@
           "name": "processInputChange",
           "return": {
             "type": {
-              "text": "{\r\n  inputValue: string;\r\n  shouldShowMenu: boolean;\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  shouldResetNavigation: boolean;\r\n}"
+              "text": "{\n  inputValue: string;\n  shouldShowMenu: boolean;\n  updatedItems: IAutocompleteItem[] | undefined;\n  shouldResetNavigation: boolean;\n}"
             }
           },
           "parameters": [
@@ -401,7 +401,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    customInputChange?: (value: string) => void;\r\n    showMenuOnFocus?: boolean;\r\n    minChars: number;\r\n    items?: IAutocompleteItem[];\r\n    multiSelect?: boolean;\r\n    debounceMs?: number;\r\n  }"
+                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    customInputChange?: (value: string) => void;\n    showMenuOnFocus?: boolean;\n    minChars: number;\n    items?: IAutocompleteItem[];\n    multiSelect?: boolean;\n    debounceMs?: number;\n  }"
               }
             }
           ]
@@ -411,7 +411,7 @@
           "name": "processItemSelection",
           "return": {
             "type": {
-              "text": "{\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  updatedValue: string | undefined;\r\n  updatedSelectionOrder: string[];\r\n  shouldExpandChips: boolean;\r\n  shouldCloseMenu: boolean;\r\n}"
+              "text": "{\n  updatedItems: IAutocompleteItem[] | undefined;\n  updatedValue: string | undefined;\n  updatedSelectionOrder: string[];\n  shouldExpandChips: boolean;\n  shouldCloseMenu: boolean;\n  isDeselecting?: boolean;\n}"
             }
           },
           "parameters": [
@@ -424,7 +424,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    items?: IAutocompleteItem[];\r\n    multiSelect?: boolean;\r\n    leaveMenuOpen?: boolean;\r\n    selectionOrder: string[];\r\n    maxChips?: number;\r\n    customItemSelect?: (item: IAutocompleteItem) => void;\r\n  }"
+                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    items?: IAutocompleteItem[];\n    multiSelect?: boolean;\n    leaveMenuOpen?: boolean;\n    selectionOrder: string[];\n    maxChips?: number;\n    customItemSelect?: (item: IAutocompleteItem) => void;\n  }"
               }
             }
           ]
@@ -447,7 +447,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    customKeyDown?: (event: KeyboardEvent) => void;\r\n  }"
+                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    customKeyDown?: (event: KeyboardEvent) => void;\n  }"
               }
             }
           ]
@@ -590,6 +590,13 @@
               "name": "value",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "leaveMenuOpen",
+              "optional": true,
+              "type": {
+                "text": "boolean"
               }
             },
             {
@@ -945,7 +952,7 @@
               "name": "debounce-ms",
               "fieldName": "debounceMs",
               "default": "300",
-              "description": "The debounce timeout in milliseconds.\r\nSet to 0 to disable debouncing.",
+              "description": "The debounce timeout in milliseconds.\nSet to 0 to disable debouncing.",
               "type": {
                 "text": "number"
               }
@@ -997,7 +1004,7 @@
               "name": "items",
               "fieldName": "items",
               "default": "[]",
-              "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render.",
+              "description": "The items to display in the menu.\nCreating a new array of items will ensure proper component re-render.",
               "type": {
                 "text": "IAutocompleteItem[]"
               }
@@ -1168,7 +1175,7 @@
               "type": {
                 "text": "EventEmitter<Event>"
               },
-              "description": "Event emitted when the input value changes.\r\nThis event is debounced based on the debounceMs prop."
+              "description": "Event emitted when the input value changes.\nThis event is debounced based on the debounceMs prop."
             },
             {
               "kind": "field",
@@ -6679,7 +6686,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\r\n\r\nNote: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying \r\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by \r\nproviding your own custom values for the size or weight properties from the available options.",
+          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\r\n\r\nNote: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying\r\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by\r\nproviding your own custom values for the size or weight properties from the available options.",
           "name": "ModusWCTypography",
           "members": [
             {

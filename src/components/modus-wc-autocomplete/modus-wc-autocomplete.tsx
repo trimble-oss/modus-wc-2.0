@@ -713,6 +713,11 @@ export class ModusWcAutocomplete {
       customItemSelect: this.customItemSelect,
     });
 
+    if (result.isDeselecting && this.multiSelect) {
+      this.handleChipRemove(item);
+      return;
+    }
+
     if (result.updatedItems && result.updatedItems !== this.items) {
       this.items = result.updatedItems;
     }
