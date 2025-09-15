@@ -751,6 +751,8 @@ export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
               }}
               onMouseDown={(e) => e.preventDefault()}
               selected={item.selected}
+              tooltip-content={item.tooltipContent}
+              tooltip-position={item.tooltipPosition}
               value={item.value}
             />
           ))

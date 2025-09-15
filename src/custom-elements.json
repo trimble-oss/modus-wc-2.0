@@ -3091,6 +3091,23 @@
               }
             },
             {
+              "name": "tooltip-content",
+              "fieldName": "tooltipContent",
+              "description": "The tooltip text to display when hovering over the menu item.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "tooltip-position",
+              "fieldName": "tooltipPosition",
+              "default": "'auto'",
+              "description": "The position of the tooltip relative to the menu item.",
+              "type": {
+                "text": "'auto' | 'top' | 'right' | 'bottom' | 'left'"
+              }
+            },
+            {
               "name": "value",
               "fieldName": "value",
               "default": "''",
@@ -6583,11 +6600,27 @@
             },
             {
               "kind": "method",
+              "name": "handleContentChange",
+              "parameters": [
+                {
+                  "name": "newContent",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "handleMouseEnter"
             },
             {
               "kind": "method",
               "name": "handleMouseLeave"
+            },
+            {
+              "kind": "method",
+              "name": "handlePositionChange"
             },
             {
               "kind": "method",

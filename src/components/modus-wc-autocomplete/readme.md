@@ -151,6 +151,7 @@ graph TD;
   modus-wc-text-input --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon
+  modus-wc-menu-item --> modus-wc-tooltip
   modus-wc-menu-item --> modus-wc-icon
   style modus-wc-autocomplete fill:#f9f,stroke:#333,stroke-width:4px
 ```

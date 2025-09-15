@@ -162,3 +162,8 @@ modus-wc-menu-item
     background-color: var(--modus-wc-color-gray-8);
   }
 }
+
+.modus-wc-menu-item-tooltip {
+  display: inline-block;
+  width: auto;
+}
