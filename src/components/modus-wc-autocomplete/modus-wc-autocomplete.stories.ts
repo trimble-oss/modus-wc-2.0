@@ -325,6 +325,132 @@ export const Default: Story = {
   ...Template,
 };
 
+export const WithTooltips: Story = {
+  name: 'With Tooltips',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This example demonstrates menu items with tooltips. Hover over the items to see the tooltips.',
+      },
+      source: {
+        code: `
+const tooltipItems = [
+  {
+    label: 'Apple',
+    value: 'apple',
+    tooltipContent: 'A crisp and sweet fruit',
+    tooltipPosition: 'top',
+    visibleInMenu: true,
+    focused: false,
+  },
+  {
+    label: 'Banana',
+    value: 'banana',
+    tooltipContent: 'A tropical yellow fruit',
+    tooltipPosition: 'right',
+    visibleInMenu: true,
+    focused: false,
+  },
+  {
+    label: 'Cherry',
+    value: 'cherry',
+    tooltipContent: 'Small red stone fruit',
+    tooltipPosition: 'bottom',
+    visibleInMenu: true,
+    focused: false,
+  },
+  {
+    label: 'Grape',
+    value: 'grape',
+    tooltipContent: 'Small juicy fruit that grows in clusters',
+    tooltipPosition: 'left',
+    visibleInMenu: true,
+    focused: false,
+  },
+  {
+    label: 'Orange',
+    value: 'orange',
+    tooltipContent: 'Citrus fruit with a bright color',
+    tooltipPosition: 'top',
+    visibleInMenu: true,
+    focused: false,
+  },
+];
+<modus-wc-autocomplete
+  aria-label="Fruits with tooltips"
+  leave-menu-open="true"
+  placeholder="Search fruits"
+  .items={tooltipItems}
+  min-chars="0"
+></modus-wc-autocomplete>
+`,
+      },
+    },
+  },
+  render: () => {
+    const tooltipItems: IAutocompleteItem[] = [
+      {
+        label: 'Apple',
+        value: 'apple',
+        tooltipContent: 'A crisp and sweet fruit',
+        tooltipPosition: 'top',
+        visibleInMenu: true,
+        focused: false,
+      },
+      {
+        label: 'Banana',
+        value: 'banana',
+        tooltipContent: 'A tropical yellow fruit',
+        tooltipPosition: 'right',
+        visibleInMenu: true,
+        focused: false,
+      },
+      {
+        label: 'Cherry',
+        value: 'cherry',
+        tooltipContent: 'Small red stone fruit',
+        tooltipPosition: 'bottom',
+        visibleInMenu: true,
+        focused: false,
+      },
+      {
+        label: 'Grape',
+        value: 'grape',
+        tooltipContent: 'Small juicy fruit that grows in clusters',
+        tooltipPosition: 'left',
+        visibleInMenu: true,
+        focused: false,
+      },
+      {
+        label: 'Orange',
+        value: 'orange',
+        tooltipContent: 'Citrus fruit with a bright color',
+        tooltipPosition: 'top',
+        visibleInMenu: true,
+        focused: false,
+      },
+    ];
+
+    return html`
+      <style>
+        div[id^='story--components-forms-autocomplete--with-tooltips'] {
+          height: 400px;
+        }
+      </style>
+      <div style="width: 300px;">
+        <modus-wc-autocomplete
+          aria-label="Fruits with tooltips"
+          leave-menu-open="true"
+          placeholder="Search fruits"
+          .items=${tooltipItems}
+          min-chars="0"
+        ></modus-wc-autocomplete>
+      </div>
+    `;
+  },
+};
+
 export const MultiSelect: Story = {
   render: (args) => {
     // If multi-select, set selected state for some items

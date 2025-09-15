@@ -786,6 +786,14 @@ export namespace Components {
          */
         "subLabel"?: string;
         /**
+          * The tooltip text to display when hovering over the menu item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the menu item.
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
           * The unique identifying value of the menu item.
          */
         "value": string;
@@ -3571,6 +3579,14 @@ declare namespace LocalJSX {
           * The text rendered beneath the label.
          */
         "subLabel"?: string;
+        /**
+          * The tooltip text to display when hovering over the menu item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the menu item.
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
           * The unique identifying value of the menu item.
          */

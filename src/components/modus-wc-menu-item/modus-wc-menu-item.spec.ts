@@ -92,4 +92,11 @@ describe('modus-wc-menu-item', () => {
     });
     expect(page.root).toMatchSnapshot();
   });
+   it('should render with tooltip', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Test label" value="Test value" tooltip-content="Test tooltip"></modus-wc-menu-item>',
+    });
+    expect(page.root).toMatchSnapshot();
+  });
 });

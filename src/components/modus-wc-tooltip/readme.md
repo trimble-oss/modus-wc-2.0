@@ -31,6 +31,19 @@ When forceOpen is enabled, the tooltip will remain open unless dismissed via Esc
 | `dismissEscape` | An event that fires when the tooltip is dismissed via Escape key | `CustomEvent<any>` |
 
 
+## Dependencies
+
+### Used by
+
+ - [modus-wc-menu-item](../modus-wc-menu-item)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-menu-item --> modus-wc-tooltip
+  style modus-wc-tooltip fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

@@ -54,6 +54,13 @@ export class ModusWcMenuItem {
   /** The text rendered beneath the label. */
   @Prop() subLabel?: string;
 
+  /** The tooltip text to display when hovering over the menu item. */
+  @Prop() tooltipContent?: string;
+
+  /** The position of the tooltip relative to the menu item. */
+  @Prop() tooltipPosition?: 'auto' | 'top' | 'right' | 'bottom' | 'left' =
+    'auto';
+
   /** The unique identifying value of the menu item. */
   @Prop() value: string = '';
 
@@ -126,7 +133,17 @@ export class ModusWcMenuItem {
               )}
               <slot name="start-icon"></slot>
               <div class="modus-wc-menu-item-labels">
-                <div>{this.label}</div>
+                {this.tooltipContent ? (
+                  <modus-wc-tooltip
+                    content={this.tooltipContent}
+                    position={this.tooltipPosition}
+                    customClass="modus-wc-menu-item-tooltip"
+                  >
+                    <div>{this.label}</div>
+                  </modus-wc-tooltip>
+                ) : (
+                  <div>{this.label}</div>
+                )}
                 {this.subLabel && (
                   <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
                 )}
