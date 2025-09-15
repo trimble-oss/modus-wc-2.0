@@ -1,3 +1,4 @@
+import { createPopper, Instance as PopperInstance } from '@popperjs/core';
 import {
   Component,
   Element,
@@ -8,8 +9,8 @@ import {
   Listen,
   Prop,
   State,
+  Watch,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-tooltip.tailwind';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -25,6 +26,9 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcTooltip {
   private inheritedAttributes: Attributes = {};
+  private popperInstance: PopperInstance | null = null;
+  private tooltipElement: HTMLDivElement | null = null;
+  private triggerElement: HTMLElement | null = null;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -70,8 +74,175 @@ export class ModusWcTooltip {
           this.escapeDismissed = true;
           this.isVisible = false;
           this.dismissEscape.emit();
+          this.hideTooltip();
         }
         break;
+      }
+    }
+  }
+
+  componentDidLoad() {
+    this.triggerElement = this.el.querySelector(
+      'div > :first-child'
+    ) as HTMLElement;
+
+    this.tooltipElement = document.createElement('div');
+    this.tooltipElement.className = `modus-wc-tooltip-content ${this.customClass || ''}`;
+    this.tooltipElement.textContent = this.content;
+    this.tooltipElement.setAttribute('role', 'tooltip');
+    if (this.tooltipId) {
+      this.tooltipElement.id = this.tooltipId;
+    }
+
+    const arrow = document.createElement('div');
+    arrow.className = 'modus-wc-tooltip-arrow';
+    this.tooltipElement.appendChild(arrow);
+
+    document.body.appendChild(this.tooltipElement);
+    this.tooltipElement.style.display = 'none';
+
+    if (this.triggerElement && this.tooltipElement) {
+      this.initializePopper();
+    }
+
+    if (this.forceOpen && !this.disabled && !this.escapeDismissed) {
+      this.showTooltip();
+    }
+  }
+
+  disconnectedCallback() {
+    if (this.popperInstance) {
+      this.popperInstance.destroy();
+      this.popperInstance = null;
+    }
+    if (this.tooltipElement && document.body.contains(this.tooltipElement)) {
+      document.body.removeChild(this.tooltipElement);
+    }
+
+    window.removeEventListener('resize', this.handleWindowResize);
+    window.removeEventListener('scroll', this.handleWindowScroll, true);
+  }
+
+  private initializePopper() {
+    if (!this.triggerElement || !this.tooltipElement) return;
+
+    const placement = this.position === 'auto' ? 'top' : this.position;
+
+    const arrowElement = this.tooltipElement.querySelector(
+      '.modus-wc-tooltip-arrow'
+    ) as HTMLElement;
+
+    this.popperInstance = createPopper(
+      this.triggerElement,
+      this.tooltipElement,
+      {
+        placement,
+        strategy: 'absolute',
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: [0, 8],
+            },
+          },
+          {
+            name: 'preventOverflow',
+            options: {
+              padding: 8,
+              boundary: 'viewport',
+            },
+          },
+          {
+            name: 'flip',
+            options: {
+              fallbackPlacements: ['top', 'right', 'bottom', 'left'],
+              padding: 8,
+              boundary: 'viewport',
+            },
+          },
+          {
+            name: 'arrow',
+            options: {
+              element: arrowElement,
+              padding: 5,
+            },
+          },
+          {
+            name: 'computeStyles',
+            options: {
+              adaptive: true,
+              gpuAcceleration: true,
+            },
+          },
+          {
+            name: 'eventListeners',
+            options: {
+              scroll: true,
+              resize: true,
+            },
+          },
+        ],
+      }
+    );
+
+    window.addEventListener('resize', this.handleWindowResize);
+    window.addEventListener('scroll', this.handleWindowScroll, true);
+  }
+
+  private handleWindowResize = () => {
+    if (this.popperInstance && this.isVisible) {
+      void this.popperInstance.update();
+    }
+  };
+
+  private handleWindowScroll = () => {
+    if (this.popperInstance && this.isVisible) {
+      void this.popperInstance.update();
+    }
+  };
+
+  private showTooltip() {
+    if (this.disabled || this.escapeDismissed || !this.tooltipElement) return;
+    this.tooltipElement.style.display = 'block';
+    this.isVisible = true;
+    if (this.popperInstance) {
+      void this.popperInstance.update();
+      // Force a second update after a short delay to ensure arrow positioning
+      setTimeout(() => {
+        if (this.popperInstance) {
+          void this.popperInstance.update();
+        }
+      }, 10);
+    }
+  }
+
+  private hideTooltip() {
+    if (!this.tooltipElement) return;
+    if (!this.forceOpen || this.escapeDismissed) {
+      this.tooltipElement.style.display = 'none';
+      this.isVisible = false;
+    }
+  }
+
+  @Watch('position')
+  handlePositionChange() {
+    if (this.popperInstance) {
+      void this.popperInstance.setOptions({
+        placement: this.position === 'auto' ? 'top' : this.position,
+      });
+      void this.popperInstance.update();
+    }
+  }
+
+  @Watch('content')
+  handleContentChange(newContent: string) {
+    if (this.tooltipElement) {
+      const arrow = this.tooltipElement.querySelector(
+        '.modus-wc-tooltip-arrow'
+      );
+      this.tooltipElement.textContent = newContent;
+      if (arrow) {
+        this.tooltipElement.appendChild(arrow);
       }
     }
   }
@@ -81,38 +252,22 @@ export class ModusWcTooltip {
     // Reset escape dismissal and set visibility state
     this.escapeDismissed = false;
     this.isVisible = true;
+    this.showTooltip();
   }
 
   @Listen('mouseleave')
   handleMouseLeave() {
     // Clear visibility state
     this.isVisible = false;
-  }
-
-  private getClasses(): string {
-    const classList: string[] = ['modus-wc-tooltip'];
-
-    const propClasses = convertPropsToClasses({
-      disabled: this.disabled || this.escapeDismissed,
-      forceOpen: this.forceOpen,
-      position: this.position,
-    });
-
-    // The order CSS classes are added matters to CSS specificity
-    if (propClasses) classList.push(propClasses);
-    if (this.customClass) classList.push(this.customClass);
-
-    return classList.join(' ');
+    this.hideTooltip();
   }
 
   render() {
     return (
       <Host>
         <div
-          class={this.getClasses()}
-          data-tip={this.content}
+          aria-describedby={this.tooltipId}
           id={this.tooltipId}
-          role="tooltip"
           {...this.inheritedAttributes}
         >
           <slot />

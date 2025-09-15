@@ -782,6 +782,14 @@ export namespace Components {
          */
         "subLabel"?: string;
         /**
+          * The tooltip text to display when hovering over the menu item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the menu item.
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
           * The unique identifying value of the menu item.
          */
         "value": string;
@@ -1564,6 +1572,10 @@ export namespace Components {
           * The maximum number of characters allowed in the textarea.
          */
         "maxLength"?: number;
+        /**
+          * The minimum number of characters required in the textarea.
+         */
+        "minLength"?: number;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
@@ -3564,6 +3576,14 @@ declare namespace LocalJSX {
          */
         "subLabel"?: string;
         /**
+          * The tooltip text to display when hovering over the menu item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the menu item.
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
           * The unique identifying value of the menu item.
          */
         "value"?: string;
@@ -4535,6 +4555,10 @@ declare namespace LocalJSX {
           * The maximum number of characters allowed in the textarea.
          */
         "maxLength"?: number;
+        /**
+          * The minimum number of characters required in the textarea.
+         */
+        "minLength"?: number;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
