@@ -280,7 +280,7 @@
             {
               "name": "props",
               "type": {
-                "text": "{\n  bordered?: boolean;\n  disabled?: boolean;\n  readOnly?: boolean;\n  size?: ModusSize;\n}"
+                "text": "{\r\n  bordered?: boolean;\r\n  disabled?: boolean;\r\n  readOnly?: boolean;\r\n  size?: ModusSize;\r\n}"
               }
             }
           ]
@@ -332,7 +332,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\n  initialNavigation: boolean;\n  visibleItems: IAutocompleteItem[];\n  onUpdateFocus: (value: string) => void;\n  onSetInitialNavigation: (value: boolean) => void;\n}"
+                "text": "{\r\n  initialNavigation: boolean;\r\n  visibleItems: IAutocompleteItem[];\r\n  onUpdateFocus: (value: string) => void;\r\n  onSetInitialNavigation: (value: boolean) => void;\r\n}"
               }
             }
           ]
@@ -355,7 +355,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\n    multiSelect?: boolean;\n    selectionOrder: string[];\n    items?: IAutocompleteItem[];\n    onChipRemove: (item: IAutocompleteItem) => void;\n  }"
+                "text": "{\r\n    multiSelect?: boolean;\r\n    selectionOrder: string[];\r\n    items?: IAutocompleteItem[];\r\n    onChipRemove: (item: IAutocompleteItem) => void;\r\n  }"
               }
             }
           ]
@@ -365,7 +365,7 @@
           "name": "processChipRemoval",
           "return": {
             "type": {
-              "text": "{\n  updatedItems: IAutocompleteItem[] | undefined;\n  updatedSelectionOrder: string[];\n}"
+              "text": "{\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  updatedSelectionOrder: string[];\r\n}"
             }
           },
           "parameters": [
@@ -378,7 +378,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    items?: IAutocompleteItem[];\n    selectionOrder: string[];\n  }"
+                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    items?: IAutocompleteItem[];\r\n    selectionOrder: string[];\r\n  }"
               }
             }
           ]
@@ -388,7 +388,7 @@
           "name": "processInputChange",
           "return": {
             "type": {
-              "text": "{\n  inputValue: string;\n  shouldShowMenu: boolean;\n  updatedItems: IAutocompleteItem[] | undefined;\n  shouldResetNavigation: boolean;\n}"
+              "text": "{\r\n  inputValue: string;\r\n  shouldShowMenu: boolean;\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  shouldResetNavigation: boolean;\r\n}"
             }
           },
           "parameters": [
@@ -401,7 +401,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    customInputChange?: (value: string) => void;\n    showMenuOnFocus?: boolean;\n    minChars: number;\n    items?: IAutocompleteItem[];\n    multiSelect?: boolean;\n    debounceMs?: number;\n  }"
+                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    customInputChange?: (value: string) => void;\r\n    showMenuOnFocus?: boolean;\r\n    minChars: number;\r\n    items?: IAutocompleteItem[];\r\n    multiSelect?: boolean;\r\n    debounceMs?: number;\r\n  }"
               }
             }
           ]
@@ -411,7 +411,7 @@
           "name": "processItemSelection",
           "return": {
             "type": {
-              "text": "{\n  updatedItems: IAutocompleteItem[] | undefined;\n  updatedValue: string | undefined;\n  updatedSelectionOrder: string[];\n  shouldExpandChips: boolean;\n  shouldCloseMenu: boolean;\n  isDeselecting?: boolean;\n}"
+              "text": "{\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  updatedValue: string | undefined;\r\n  updatedSelectionOrder: string[];\r\n  shouldExpandChips: boolean;\r\n  shouldCloseMenu: boolean;\r\n  isDeselecting?: boolean;\r\n}"
             }
           },
           "parameters": [
@@ -424,7 +424,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    items?: IAutocompleteItem[];\n    multiSelect?: boolean;\n    leaveMenuOpen?: boolean;\n    selectionOrder: string[];\n    maxChips?: number;\n    customItemSelect?: (item: IAutocompleteItem) => void;\n  }"
+                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    items?: IAutocompleteItem[];\r\n    multiSelect?: boolean;\r\n    leaveMenuOpen?: boolean;\r\n    selectionOrder: string[];\r\n    maxChips?: number;\r\n    customItemSelect?: (item: IAutocompleteItem) => void;\r\n  }"
               }
             }
           ]
@@ -447,7 +447,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    customKeyDown?: (event: KeyboardEvent) => void;\n  }"
+                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    customKeyDown?: (event: KeyboardEvent) => void;\r\n  }"
               }
             }
           ]
