@@ -1668,10 +1668,10 @@ describe('modus-wc-autocomplete', () => {
   });
 
   // Test multi-select deselection
-  it('should not deselect an item on re-selection in multi-select mode', async () => {
+  it('should deselect an item on re-selection in multi-select mode and close the menu', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
-      html: `<modus-wc-autocomplete aria-label="Multi-select no-deselection test" multi-select="true"></modus-wc-autocomplete>`,
+      html: `<modus-wc-autocomplete aria-label="Multi-select deselection test" multi-select="true" leave-menu-open="false"></modus-wc-autocomplete>`,
     });
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
@@ -1680,6 +1680,7 @@ describe('modus-wc-autocomplete', () => {
       value: 'test',
       visibleInMenu: true,
       selected: true,
+      focused: false, // This is the corrected line
     };
 
     autocomplete.items = [testItem];
@@ -1690,11 +1691,54 @@ describe('modus-wc-autocomplete', () => {
     autocomplete['handleItemSelect'](testItem);
     await page.waitForChanges();
 
-    // Expect the item to deselect
+    // When leaveMenuOpen is false, both selected and focused should be false
     expect(autocomplete.items[0].selected).toBe(false);
+    expect(autocomplete.items[0].focused).toBe(false);
     expect(autocomplete['selectionOrder']).toEqual([]);
   });
 
+  it('should deselect an item and set focused state when leaveMenuOpen is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Multi-select deselection test" multi-select="true" leave-menu-open="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const testItem: IAutocompleteItem = {
+      label: 'Test Item',
+      value: 'test',
+      visibleInMenu: true,
+      selected: true,
+      focused: false, // This is the corrected line
+    };
+
+    autocomplete.items = [testItem];
+    autocomplete['selectionOrder'] = ['test'];
+    await page.waitForChanges();
+
+    // Attempt to deselect the item by re-selecting it
+    autocomplete['handleItemSelect'](testItem);
+    await page.waitForChanges();
+
+    // When leaveMenuOpen is true, selected should be false and focused should be true
+    expect(autocomplete.items[0].selected).toBe(false);
+    expect(autocomplete.items[0].focused).toBe(false);
+    expect(autocomplete['selectionOrder']).toEqual([]);
+  });
+
+  it('should handle undefined filtered items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Undefined items test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['filteredItems'] = undefined!;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
+  });
   // Test ArrowUp key with initialNavigation set to true
   it('should handle ArrowUp key with initialNavigation true', async () => {
     const page = await newSpecPage({
@@ -5044,9 +5088,9 @@ describe('modus-wc-autocomplete', () => {
         ModusWcChip,
         ModusWcButton,
       ],
-      html: `<modus-wc-autocomplete 
-        aria-label="Chip collapse test" 
-        multi-select="true" 
+      html: `<modus-wc-autocomplete
+        aria-label="Chip collapse test"
+        multi-select="true"
         leave-menu-open="true"
         max-chips="2"
       ></modus-wc-autocomplete>`,
@@ -5083,9 +5127,9 @@ describe('modus-wc-autocomplete', () => {
         ModusWcChip,
         ModusWcButton,
       ],
-      html: `<modus-wc-autocomplete 
-        aria-label="Chip expand test" 
-        multi-select="true" 
+      html: `<modus-wc-autocomplete
+        aria-label="Chip expand test"
+        multi-select="true"
         leave-menu-open="true"
         max-chips="2"
       ></modus-wc-autocomplete>`,
@@ -5122,8 +5166,8 @@ describe('modus-wc-autocomplete', () => {
         ModusWcChip,
         ModusWcButton,
       ],
-      html: `<modus-wc-autocomplete 
-        aria-label="Blur chip test" 
+      html: `<modus-wc-autocomplete
+        aria-label="Blur chip test"
         multi-select="true"
         max-chips="2"
       ></modus-wc-autocomplete>`,
@@ -5613,4 +5657,103 @@ describe('modus-wc-autocomplete', () => {
       behavior: 'smooth',
     });
   });
+});
+
+// Test for explicitly testing the menuItem.selected logic in processItemSelection for multi-select
+it('should correctly toggle selected state for each item when selecting in multi-select mode', async () => {
+  const page = await newSpecPage({
+    components: [ModusWcAutocomplete, ModusWcTextInput],
+    html: `<modus-wc-autocomplete aria-label="Multi-select toggle test" multi-select="true"></modus-wc-autocomplete>`,
+  });
+
+  const autocomplete = page.rootInstance as ModusWcAutocomplete;
+  const items: IAutocompleteItem[] = [
+    { label: 'Item 1', value: 'item1', visibleInMenu: true, selected: false },
+    { label: 'Item 2', value: 'item2', visibleInMenu: true, selected: true },
+    { label: 'Item 3', value: 'item3', visibleInMenu: true, selected: false },
+  ];
+
+  autocomplete.items = items;
+  autocomplete['selectionOrder'] = ['item2']; // Item 2 is already selected
+  await page.waitForChanges();
+
+  // Select item1 (should become selected=true)
+  const item1 = items[0];
+  autocomplete['handleItemSelect'](item1);
+  await page.waitForChanges();
+
+  // Deselect item2 (should become selected=false)
+  const item2 = items[1];
+  autocomplete['handleItemSelect'](item2);
+  await page.waitForChanges();
+
+  // Verify item1 is now selected and item2 is now deselected
+  expect(autocomplete.items[0].selected).toBe(true); // item1 should be selected
+  expect(autocomplete.items[1].selected).toBe(false); // item2 should be deselected
+  expect(autocomplete.items[2].selected).toBe(false); // item3 should remain deselected
+
+  // Selection order should have item1 only
+  expect(autocomplete['selectionOrder']).toEqual(['item1']);
+});
+
+// Test for single-select mode where only the selected item should have selected=true
+it('should set selected=true only for the selected item in single-select mode', async () => {
+  const page = await newSpecPage({
+    components: [ModusWcAutocomplete, ModusWcTextInput],
+    html: `<modus-wc-autocomplete aria-label="Single-select test"></modus-wc-autocomplete>`,
+  });
+
+  const autocomplete = page.rootInstance as ModusWcAutocomplete;
+  const items: IAutocompleteItem[] = [
+    { label: 'Item 1', value: 'item1', visibleInMenu: true, selected: false },
+    { label: 'Item 2', value: 'item2', visibleInMenu: true, selected: true },
+    { label: 'Item 3', value: 'item3', visibleInMenu: true, selected: false },
+  ];
+
+  autocomplete.items = items;
+  await page.waitForChanges();
+
+  // Select item3
+  const item3 = items[2];
+  autocomplete['handleItemSelect'](item3);
+  await page.waitForChanges();
+
+  // In single-select mode, only item3 should be selected
+  expect(autocomplete.items[0].selected).toBe(false); // item1 should not be selected
+  expect(autocomplete.items[1].selected).toBe(false); // item2 should now be deselected
+  expect(autocomplete.items[2].selected).toBe(true); // item3 should be selected
+
+  // The input value should be set to the label of item3
+  expect(autocomplete.value).toBe('Item 3');
+});
+
+// Test for menuItem.selected in processChipRemoval
+it('should update menuItem.selected to false when removing a chip', async () => {
+  const page = await newSpecPage({
+    components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcChip],
+    html: `<modus-wc-autocomplete aria-label="Chip removal test" multi-select="true"></modus-wc-autocomplete>`,
+  });
+
+  const autocomplete = page.rootInstance as ModusWcAutocomplete;
+  const items: IAutocompleteItem[] = [
+    { label: 'Item 1', value: 'item1', visibleInMenu: true, selected: true },
+    { label: 'Item 2', value: 'item2', visibleInMenu: true, selected: true },
+    { label: 'Item 3', value: 'item3', visibleInMenu: true, selected: false },
+  ];
+
+  autocomplete.items = items;
+  autocomplete['selectionOrder'] = ['item1', 'item2'];
+  await page.waitForChanges();
+
+  // Remove Item 1 chip
+  autocomplete['handleChipRemove'](items[0]);
+  await page.waitForChanges();
+
+  // Check that Item 1's selected state is now false
+  expect(autocomplete.items[0].selected).toBe(false); // item1 should be deselected
+  expect(autocomplete.items[1].selected).toBe(true); // item2 should still be selected
+  expect(autocomplete.items[2].selected).toBe(false); // item3 should remain not selected
+
+  // Selection order should now only contain item2
+  expect(autocomplete['selectionOrder']).toEqual(['item2']);
 });
