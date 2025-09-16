@@ -1481,7 +1481,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button",
+          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button.\r\n\r\nYou can update the text content by using the span class `slot-text` within the button element.",
           "name": "ModusWcButton",
           "members": [
             {
@@ -5947,7 +5947,7 @@
               "fieldName": "enterkeyhint",
               "description": "A hint to the browser for which enter key to display.",
               "type": {
-                "text": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'"
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
               }
             },
             {
@@ -5993,7 +5993,7 @@
             {
               "name": "min-length",
               "fieldName": "minLength",
-              "description": "Minimum length (number of characters) of value.",
+              "description": "The minimum number of characters required in the textarea.",
               "type": {
                 "text": "number"
               }
