@@ -268,7 +268,6 @@ export function processItemSelection(
   updatedSelectionOrder: string[];
   shouldExpandChips: boolean;
   shouldCloseMenu: boolean;
-  isDeselecting?: boolean;
 } {
   if (params.disabled || params.readOnly || !params.items) {
     return {
@@ -326,7 +325,6 @@ export function processItemSelection(
         updatedSelectionOrder,
         shouldExpandChips: false,
         shouldCloseMenu: !params.leaveMenuOpen,
-        isDeselecting: true,
       };
     }
 
@@ -370,7 +368,6 @@ export function processItemSelection(
     updatedSelectionOrder,
     shouldExpandChips,
     shouldCloseMenu: !params.leaveMenuOpen,
-    isDeselecting: false,
   };
 }
 

@@ -104,7 +104,29 @@ export class ModusWcMenuItem {
   }
 
   private handleItemSelect = () => {
-    this.selected = !this.selected;
+    // For checkbox items, provide immediate visual feedback
+    if (this.checkbox) {
+      const liElement = this.el.querySelector('li');
+      const checkboxElement = this.el.querySelector('modus-wc-checkbox');
+
+      if (liElement) {
+        // Toggle based on current state
+        const isSelected = liElement.classList.contains(
+          'modus-wc-menu-item-selected'
+        );
+        if (isSelected) {
+          liElement.classList.remove('modus-wc-menu-item-selected');
+        } else {
+          liElement.classList.add('modus-wc-menu-item-selected');
+        }
+        // Update checkbox visual state
+        if (checkboxElement) {
+          checkboxElement.setAttribute('value', (!isSelected).toString());
+        }
+      }
+    }
+
+    // Always emit the event - let the parent decide whether to handle deselection
     this.itemSelect.emit({ value: this.value });
   };
 

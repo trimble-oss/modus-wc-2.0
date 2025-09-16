@@ -714,9 +714,8 @@ export class ModusWcAutocomplete {
     });
 
     const isSelected = item.selected;
-    if (this.multiSelect && isSelected) {
+    if (this.multiSelect && isSelected && item.checkbox) {
       this.handleChipRemove(item);
-      return;
     }
 
     if (result.updatedItems && result.updatedItems !== this.items) {
