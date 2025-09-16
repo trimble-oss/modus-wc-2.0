@@ -1204,6 +1204,53 @@ describe('modus-wc-autocomplete', () => {
     expect(itemSelectSpy).not.toHaveBeenCalled();
   });
 
+  it('should call handleChipRemove when selecting an item with checkbox in multiSelect mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Checkbox test" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    // Get component instance
+    const component = page.rootInstance as ModusWcAutocomplete;
+    
+    // Create items with checkbox property
+    const checkboxItems = [
+      { label: 'Item 1', value: '1', visibleInMenu: true, selected: true, checkbox: true },
+      { label: 'Item 2', value: '2', visibleInMenu: true, checkbox: true },
+      { label: 'Item 3', value: '3', visibleInMenu: true, checkbox: true }
+    ];
+    
+    component.items = checkboxItems;
+    await page.waitForChanges();
+    
+    // Spy on handleChipRemove method
+    const handleChipRemoveSpy = jest.spyOn(component as any, 'handleChipRemove');
+    
+    // Call handleItemSelect with a selected item that has checkbox=true
+    component['handleItemSelect'](checkboxItems[0]);
+    
+    // Verify handleChipRemove was called with the correct item
+    expect(handleChipRemoveSpy).toHaveBeenCalledWith(checkboxItems[0]);
+    
+    // Reset the spy and test with an unselected item
+    handleChipRemoveSpy.mockClear();
+    component['handleItemSelect'](checkboxItems[1]);
+    
+    // handleChipRemove should not be called since the item is not selected yet
+    expect(handleChipRemoveSpy).not.toHaveBeenCalled();
+    
+    // Test with an item without checkbox property
+    const regularItem = { label: 'Regular Item', value: '4', visibleInMenu: true, selected: true };
+    component.items = [...checkboxItems, regularItem];
+    await page.waitForChanges();
+    
+    handleChipRemoveSpy.mockClear();
+    component['handleItemSelect'](regularItem);
+    
+    // handleChipRemove should not be called since the item doesn't have checkbox=true
+    expect(handleChipRemoveSpy).not.toHaveBeenCalled();
+  });
+
   it('should not render any chips when items is undefined', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
@@ -1722,7 +1769,7 @@ describe('modus-wc-autocomplete', () => {
 
     // When leaveMenuOpen is true, selected should be false and focused should be true
     expect(autocomplete.items[0].selected).toBe(false);
-    expect(autocomplete.items[0].focused).toBe(false);
+    expect(autocomplete.items[0].focused).toBe(true); // Updated to expect true instead of false
     expect(autocomplete['selectionOrder']).toEqual([]);
   });
 
