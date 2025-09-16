@@ -114,7 +114,9 @@ export class ModusWcButton {
           type={this.type}
           {...this.inheritedAttributes}
         >
-          <slot />
+          <span class="modus-wc-btn-content">
+            <slot />
+          </span>
         </button>
       </Host>
     );
