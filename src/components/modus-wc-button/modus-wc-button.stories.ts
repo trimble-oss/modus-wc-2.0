@@ -92,10 +92,14 @@ export const ButtonShapes: Story = {
   render: () => {
     // prettier-ignore
     return html`
-<modus-wc-button shape="circle">
+<modus-wc-button
+  shape="circle"
+>
   Circle
 </modus-wc-button>
-<modus-wc-button shape="square">
+<modus-wc-button
+  shape="square"
+>
   Square
 </modus-wc-button>
     `;
