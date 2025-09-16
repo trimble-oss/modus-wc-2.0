@@ -68,9 +68,9 @@ export class ModusWcTooltip {
   elementKeyupHandler(event: KeyboardEvent): void {
     switch (event.code) {
       case 'Escape': {
-        // Escape only works when hovering (isVisible is true)
-        // This ensures when forceOpen is true, escape only works during hover
-        if (this.isVisible && !this.forceOpen) {
+        // Allow Escape to dismiss tooltip when it's visible
+        // When forceOpen is true, Escape should still work to dismiss it
+        if (this.isVisible) {
           this.escapeDismissed = true;
           this.isVisible = false;
           this.dismissEscape.emit();
@@ -247,19 +247,32 @@ export class ModusWcTooltip {
     }
   }
 
+  @Watch('forceOpen')
+  handleForceOpenChange(newForceOpen: boolean) {
+    if (newForceOpen && !this.disabled && !this.escapeDismissed) {
+      this.showTooltip();
+    } else if (!newForceOpen) {
+      this.hideTooltip();
+    }
+  }
+
   @Listen('mouseenter')
   handleMouseEnter() {
-    // Reset escape dismissal and set visibility state
-    this.escapeDismissed = false;
+    // If escapeDismissed is true, reset it on mouseenter
+    if (this.escapeDismissed) {
+      this.escapeDismissed = false;
+    }
     this.isVisible = true;
     this.showTooltip();
   }
 
   @Listen('mouseleave')
   handleMouseLeave() {
-    // Clear visibility state
-    this.isVisible = false;
-    this.hideTooltip();
+    // Clear visibility state only if not forced open
+    if (!this.forceOpen) {
+      this.isVisible = false;
+      this.hideTooltip();
+    }
   }
 
   render() {
