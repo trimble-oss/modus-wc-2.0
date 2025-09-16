@@ -140,24 +140,5 @@ modus-wc-number-input {
 
 [data-theme='connect-light'] modus-wc-number-input .modus-wc-number-input,
 [data-theme='connect-dark'] modus-wc-number-input .modus-wc-number-input {
-  border-bottom-width: var(--input-bottom-border-width);
-  outline: 0;
-
-  &:hover {
-    border-bottom-color: var(--modus-wc-color-primary);
-  }
-
-  &:active {
-    border-bottom-color: var(--modus-wc-color-primary);
-  }
-
-  &:focus {
-    border-bottom-color: var(--modus-wc-color-primary);
-    outline: none;
-  }
-
-  &:focus-within {
-    border-bottom-color: var(--modus-wc-color-primary);
-    outline: none;
-  }
+  @include connect-input-styles;
 }
