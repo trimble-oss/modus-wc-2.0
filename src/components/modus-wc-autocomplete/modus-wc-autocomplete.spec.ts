@@ -1231,7 +1231,9 @@ describe('modus-wc-autocomplete', () => {
 
     // Spy on handleChipRemove method
     const handleChipRemoveSpy = jest.spyOn(
-      component as any,
+      component as unknown as {
+        handleChipRemove: (item: IAutocompleteItem) => void;
+      },
       'handleChipRemove'
     );
 

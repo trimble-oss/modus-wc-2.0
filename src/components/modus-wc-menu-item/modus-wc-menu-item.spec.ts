@@ -65,7 +65,7 @@ describe('modus-wc-menu-item', () => {
   it('should emit itemSelect event when clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenuItem],
-      html: '<modus-wc-menu-itemvalue="test-value"></modus-wc-menu-item>',
+      html: '<modus-wc-menu-item value="test-value"></modus-wc-menu-item>',
     });
     const button = page.root?.querySelector('button');
     const clickSpy = jest.fn();
