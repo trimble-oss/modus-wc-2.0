@@ -8,11 +8,10 @@ modus-wc-button .modus-wc-btn {
 
   @include sizing-tokens;
 }
-
 modus-wc-button .modus-wc-btn-content {
-  align-items: center;
   display: flex;
-  gap: var(--modus-wc-spacing-xs);
+  align-items: center;
+  gap: 0.5rem;
   justify-content: center;
   width: 100%;
 }
