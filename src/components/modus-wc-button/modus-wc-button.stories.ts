@@ -78,7 +78,7 @@ const Template: Story = {
   type="${args.type}"
   variant="${args.variant}"
 >
- <span class="slot-text">Click me</span>
+  Click me
 </modus-wc-button>
     `;
   },
@@ -93,11 +93,46 @@ export const ButtonShapes: Story = {
     // prettier-ignore
     return html`
 <modus-wc-button shape="circle">
- <span class="slot-text">Circle</span>
+  Circle
 </modus-wc-button>
 <modus-wc-button shape="square">
- <span class="slot-text">Square</span>
+  Square
 </modus-wc-button>
+    `;
+  },
+};
+
+export const DynamicTextUpdate: Story = {
+  render: () => {
+    const updateButtonText = () => {
+      const btnText = document.getElementById('btn-text') as HTMLSpanElement;
+      const input = document.getElementById(
+        'btn-text-input'
+      ) as HTMLInputElement;
+
+      btnText.textContent = input.value;
+    };
+
+    // prettier-ignore
+    return html`
+<script>
+  function updateButtonText() {
+    const btnText = document.getElementById('btn-text');
+    const input = document.getElementById('btn-text-input');
+    btnText.textContent = input.value;
+  }
+</script>
+
+<div>
+  <modus-wc-button id="text-update-btn" color="primary" variant="filled" @buttonClick=${updateButtonText}>
+    <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon><span id="btn-text">Press button to update content</span>
+    <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
+  </modus-wc-button>
+
+  <div style="margin-top: 8px; display: flex; gap: 8px; align-items: center;">
+    <modus-wc-text-input id="btn-text-input" type="text" value="Updated Text" style="padding: 4px 8px;" />
+  </div>
+</div>
     `;
   },
 };
@@ -119,7 +154,7 @@ export const IconLeftButton: Story = {
     return html`
 <modus-wc-button>
   <modus-wc-icon decorative name="download"></modus-wc-icon>
-  <span class="slot-text">Download</span>
+  Download
 </modus-wc-button>
     `;
   },
@@ -130,8 +165,8 @@ export const IconRightButton: Story = {
     // prettier-ignore
     return html`
 <modus-wc-button>
- <span class="slot-text">Details</span>
- <modus-wc-icon decorative name="launch"></modus-wc-icon>
+  Details
+  <modus-wc-icon decorative name="launch"></modus-wc-icon>
 </modus-wc-button>
     `;
   },
@@ -142,9 +177,9 @@ export const IconLeftAndRightButton: Story = {
     // prettier-ignore
     return html`
 <modus-wc-button>
- <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
-  <span class="slot-text">Checkout</span>
- <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
+  <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
+  Checkout
+  <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
 </modus-wc-button>
     `;
   },
