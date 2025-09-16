@@ -5947,7 +5947,7 @@
               "fieldName": "enterkeyhint",
               "description": "A hint to the browser for which enter key to display.",
               "type": {
-                "text": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'"
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
               }
             },
             {
@@ -5993,7 +5993,7 @@
             {
               "name": "min-length",
               "fieldName": "minLength",
-              "description": "Minimum length (number of characters) of value.",
+              "description": "The minimum number of characters required in the textarea.",
               "type": {
                 "text": "number"
               }

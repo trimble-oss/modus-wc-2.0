@@ -8,6 +8,13 @@ modus-wc-button .modus-wc-btn {
 
   @include sizing-tokens;
 }
+modus-wc-button .modus-wc-btn-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  width: 100%;
+}
 
 modus-wc-button .modus-wc-btn-outline {
   @include btn-state-colors;
