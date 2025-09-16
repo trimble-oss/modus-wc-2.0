@@ -713,7 +713,8 @@ export class ModusWcAutocomplete {
       customItemSelect: this.customItemSelect,
     });
 
-    if (result.isDeselecting && this.multiSelect) {
+    const isSelected = item.selected;
+    if (this.multiSelect && isSelected) {
       this.handleChipRemove(item);
       return;
     }

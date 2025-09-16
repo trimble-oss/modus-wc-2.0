@@ -1709,7 +1709,7 @@ describe('modus-wc-autocomplete', () => {
       value: 'test',
       visibleInMenu: true,
       selected: true,
-      focused: false, // This is the corrected line
+      focused: false,
     };
 
     autocomplete.items = [testItem];
@@ -5754,6 +5754,5 @@ it('should update menuItem.selected to false when removing a chip', async () => 
   expect(autocomplete.items[1].selected).toBe(true); // item2 should still be selected
   expect(autocomplete.items[2].selected).toBe(false); // item3 should remain not selected
 
-  // Selection order should now only contain item2
   expect(autocomplete['selectionOrder']).toEqual(['item2']);
 });

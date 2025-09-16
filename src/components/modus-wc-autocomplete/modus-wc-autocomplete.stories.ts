@@ -453,6 +453,10 @@ const tooltipItems = [
 
 export const MultiSelect: Story = {
   render: (args) => {
+    // Ensure args.items is initialized
+    if (!args.items) {
+      args.items = [...items];
+    }
     // If multi-select, set selected state for some items
     args.items = args.items.map((item) => {
       if (item.value === 'apple' || item.value === 'banana') {

@@ -119,7 +119,8 @@ export const WithCheckbox: Story = {
     size=${args.size}
     sub-label=${ifDefined(args['sub-label'])}
     value=${args.value}
-  ></modus-wc-menu>
+ ></modus-wc-menu-item>
+</modus-wc-menu>
     `;
   },
 };
