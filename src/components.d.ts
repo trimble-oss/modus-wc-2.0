@@ -294,7 +294,8 @@ export namespace Components {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
-     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
+     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
+     * You can update the text content by using the span class within the button element.
      */
     interface ModusWcButton {
         /**
@@ -2026,7 +2027,8 @@ declare global {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
-     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
+     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
+     * You can update the text content by using the span class within the button element.
      */
     interface HTMLModusWcButtonElement extends Components.ModusWcButton, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcButtonElementEventMap>(type: K, listener: (this: HTMLModusWcButtonElement, ev: ModusWcButtonCustomEvent<HTMLModusWcButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3036,7 +3038,8 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
-     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
+     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
+     * You can update the text content by using the span class within the button element.
      */
     interface ModusWcButton {
         /**
@@ -4898,7 +4901,8 @@ declare module "@stencil/core" {
             "modus-wc-breadcrumbs": LocalJSX.ModusWcBreadcrumbs & JSXBase.HTMLAttributes<HTMLModusWcBreadcrumbsElement>;
             /**
              * A customizable button component used to create buttons with different sizes, variants, and types.
-             * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
+             * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
+             * You can update the text content by using the span class within the button element.
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
             /**

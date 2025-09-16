@@ -78,7 +78,7 @@ const Template: Story = {
   type="${args.type}"
   variant="${args.variant}"
 >
-  Click me
+ <span class="slot-text">Click me</span>
 </modus-wc-button>
     `;
   },
@@ -92,15 +92,11 @@ export const ButtonShapes: Story = {
   render: () => {
     // prettier-ignore
     return html`
-<modus-wc-button
-  shape="circle"
->
-  Circle
+<modus-wc-button shape="circle">
+ <span class="slot-text">Circle</span>
 </modus-wc-button>
-<modus-wc-button
-  shape="square"
->
-  Square
+<modus-wc-button shape="square">
+ <span class="slot-text">Square</span>
 </modus-wc-button>
     `;
   },
@@ -123,7 +119,7 @@ export const IconLeftButton: Story = {
     return html`
 <modus-wc-button>
   <modus-wc-icon decorative name="download"></modus-wc-icon>
-  Download
+  <span class="slot-text">Download</span>
 </modus-wc-button>
     `;
   },
@@ -134,8 +130,8 @@ export const IconRightButton: Story = {
     // prettier-ignore
     return html`
 <modus-wc-button>
-  Details
-  <modus-wc-icon decorative name="launch"></modus-wc-icon>
+ <span class="slot-text">Details</span>
+ <modus-wc-icon decorative name="launch"></modus-wc-icon>
 </modus-wc-button>
     `;
   },
@@ -146,9 +142,9 @@ export const IconLeftAndRightButton: Story = {
     // prettier-ignore
     return html`
 <modus-wc-button>
-  <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
-  Checkout
-  <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
+ <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
+  <span class="slot-text">Checkout</span>
+ <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
 </modus-wc-button>
     `;
   },
