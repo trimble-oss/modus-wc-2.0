@@ -1481,7 +1481,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button.\r\n\r\nYou can update the text content by using the span class `slot-text` within the button element.",
+          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button",
           "name": "ModusWcButton",
           "members": [
             {
