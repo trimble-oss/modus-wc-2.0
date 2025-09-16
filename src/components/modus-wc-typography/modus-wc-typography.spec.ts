@@ -15,7 +15,7 @@ describe('modus-wc-typography', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWCTypography],
-      html: `<modus-wc-typography custom-class="test-class" size="sm" hierarchy="body" weight="bold">Test content</modus-wc-typography>`,
+      html: `<modus-wc-typography custom-class="test-class" size="sm" hierarchy="p" weight="bold">Test content</modus-wc-typography>`,
     });
     expect(page.root).toMatchSnapshot();
   });
