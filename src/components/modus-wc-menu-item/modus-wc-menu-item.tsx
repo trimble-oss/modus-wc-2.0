@@ -149,6 +149,7 @@ export class ModusWcMenuItem {
               {this.checkbox && (
                 <modus-wc-checkbox
                   aria-label="Checkbox"
+                  disabled={this.disabled}
                   size={this.size}
                   value={!!this.selected}
                 />
