@@ -265,7 +265,13 @@ export class ModusWcTable {
       pageIndex: this.currentPage - 1,
       pageSize: this.pageSizeOptions[0],
     };
-
+    // Initialize row selection from selectedRowIds prop
+    const rowSelection: RowSelectionState = Object.fromEntries(
+      this.selectedRowIds?.map((id) => [id, true]) ?? []
+    );
+    if (rowSelection && Object.keys(rowSelection).length > 0) {
+      this.internalRowSelection = rowSelection;
+    }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
     this.initializeTable();
   }

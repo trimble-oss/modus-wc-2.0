@@ -2,15 +2,7 @@ import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-typography.tailwind';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-export type TypographyHierarchy =
-  | 'body'
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'h5'
-  | 'h6'
-  | 'p';
+export type TypographyHierarchy = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p';
 
 export type TypographySize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 

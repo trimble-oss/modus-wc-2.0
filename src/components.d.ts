@@ -750,6 +750,10 @@ export namespace Components {
     interface ModusWcMenuItem {
         "bordered"?: boolean;
         /**
+          * If true, renders a checkbox slot at the start of the menu item.
+         */
+        "checkbox"?: boolean;
+        /**
           * Custom CSS class to apply to the li element.
          */
         "customClass"?: string;
@@ -781,6 +785,14 @@ export namespace Components {
           * The text rendered beneath the label.
          */
         "subLabel"?: string;
+        /**
+          * The tooltip text to display when hovering over the menu item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the menu item.
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
           * The unique identifying value of the menu item.
          */
@@ -1565,6 +1577,10 @@ export namespace Components {
          */
         "maxLength"?: number;
         /**
+          * The minimum number of characters required in the textarea.
+         */
+        "minLength"?: number;
+        /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
@@ -1717,7 +1733,7 @@ export namespace Components {
     /**
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
      */
     interface ModusWcTooltip {
         /**
@@ -2658,7 +2674,7 @@ declare global {
     /**
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
      */
     interface HTMLModusWcTooltipElement extends Components.ModusWcTooltip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTooltipElementEventMap>(type: K, listener: (this: HTMLModusWcTooltipElement, ev: ModusWcTooltipCustomEvent<HTMLModusWcTooltipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3528,6 +3544,10 @@ declare namespace LocalJSX {
     interface ModusWcMenuItem {
         "bordered"?: boolean;
         /**
+          * If true, renders a checkbox slot at the start of the menu item.
+         */
+        "checkbox"?: boolean;
+        /**
           * Custom CSS class to apply to the li element.
          */
         "customClass"?: string;
@@ -3563,6 +3583,14 @@ declare namespace LocalJSX {
           * The text rendered beneath the label.
          */
         "subLabel"?: string;
+        /**
+          * The tooltip text to display when hovering over the menu item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the menu item.
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
           * The unique identifying value of the menu item.
          */
@@ -4536,6 +4564,10 @@ declare namespace LocalJSX {
          */
         "maxLength"?: number;
         /**
+          * The minimum number of characters required in the textarea.
+         */
+        "minLength"?: number;
+        /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
@@ -4716,7 +4748,7 @@ declare namespace LocalJSX {
     /**
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
      */
     interface ModusWcTooltip {
         /**
@@ -5028,7 +5060,7 @@ declare module "@stencil/core" {
             /**
              * A customizable tooltip component used to create tooltips with different content.
              * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-             * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+             * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**

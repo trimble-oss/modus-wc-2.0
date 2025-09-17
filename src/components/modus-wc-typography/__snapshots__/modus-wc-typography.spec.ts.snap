@@ -10,11 +10,11 @@ exports[`modus-wc-typography should render headings 1`] = `
 `;
 
 exports[`modus-wc-typography should render with custom props 1`] = `
-<modus-wc-typography custom-class="test-class" hierarchy="body" size="sm" weight="bold">
+<modus-wc-typography custom-class="test-class" hierarchy="p" size="sm" weight="bold">
   <!---->
-  <body class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-bold test-class">
+  <p class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-bold test-class">
     Test content
-  </body>
+  </p>
 </modus-wc-typography>
 `;
 

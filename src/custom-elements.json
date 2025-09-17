@@ -411,7 +411,7 @@
           "name": "processItemSelection",
           "return": {
             "type": {
-              "text": "{\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  updatedValue: string | undefined;\r\n  updatedSelectionOrder: string[];\r\n  shouldExpandChips: boolean;\r\n  shouldCloseMenu: boolean;\r\n}"
+              "text": "{\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  updatedValue: string | undefined;\r\n  updatedSelectionOrder: string[];\r\n  shouldExpandChips: boolean;\r\n  shouldCloseMenu: boolean;\r\n  isDeselecting?: boolean;\r\n}"
             }
           },
           "parameters": [
@@ -952,7 +952,7 @@
               "name": "debounce-ms",
               "fieldName": "debounceMs",
               "default": "300",
-              "description": "The debounce timeout in milliseconds.\r\nSet to 0 to disable debouncing.",
+              "description": "The debounce timeout in milliseconds.\nSet to 0 to disable debouncing.",
               "type": {
                 "text": "number"
               }
@@ -1004,7 +1004,7 @@
               "name": "items",
               "fieldName": "items",
               "default": "[]",
-              "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render.",
+              "description": "The items to display in the menu.\nCreating a new array of items will ensure proper component re-render.",
               "type": {
                 "text": "IAutocompleteItem[]"
               }
@@ -1175,7 +1175,7 @@
               "type": {
                 "text": "EventEmitter<Event>"
               },
-              "description": "Event emitted when the input value changes.\r\nThis event is debounced based on the debounceMs prop."
+              "description": "Event emitted when the input value changes.\nThis event is debounced based on the debounceMs prop."
             },
             {
               "kind": "field",
@@ -3024,6 +3024,14 @@
               }
             },
             {
+              "name": "checkbox",
+              "fieldName": "checkbox",
+              "description": "If true, renders a checkbox slot at the start of the menu item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "default": "''",
@@ -3088,6 +3096,23 @@
               "description": "The text rendered beneath the label.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "tooltip-content",
+              "fieldName": "tooltipContent",
+              "description": "The tooltip text to display when hovering over the menu item.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "tooltip-position",
+              "fieldName": "tooltipPosition",
+              "default": "'auto'",
+              "description": "The position of the tooltip relative to the menu item.",
+              "type": {
+                "text": "'auto' | 'top' | 'right' | 'bottom' | 'left'"
               }
             },
             {
@@ -5974,6 +5999,14 @@
               }
             },
             {
+              "name": "min-length",
+              "fieldName": "minLength",
+              "description": "The minimum number of characters required in the textarea.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
               "name": "name",
               "fieldName": "name",
               "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
@@ -6575,11 +6608,27 @@
             },
             {
               "kind": "method",
+              "name": "handleContentChange",
+              "parameters": [
+                {
+                  "name": "newContent",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "handleMouseEnter"
             },
             {
               "kind": "method",
               "name": "handleMouseLeave"
+            },
+            {
+              "kind": "method",
+              "name": "handlePositionChange"
             },
             {
               "kind": "method",
@@ -6678,7 +6727,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\r\n\r\nNote: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying \r\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by \r\nproviding your own custom values for the size or weight properties from the available options.",
+          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\r\n\r\nNote: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying\r\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by\r\nproviding your own custom values for the size or weight properties from the available options.",
           "name": "ModusWCTypography",
           "members": [
             {

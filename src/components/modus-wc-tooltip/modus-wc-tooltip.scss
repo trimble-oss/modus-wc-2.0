@@ -1,41 +1,94 @@
 /**
-* This component uses Tailwind CSS and DaisyUI.
-* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+* This component uses custom styling with PopperJS.
+* Only add styles here that should not be applied by Tailwind or the theme.
 */
-.modus-wc-tooltip {
-  --tooltip-color: var(--modus-wc-color-neutral-content);
-  --tooltip-text-color: var(--modus-wc-color-neutral);
 
+/* Tooltip content styling for PopperJS */
+.modus-wc-tooltip-content {
+  background-color: var(--modus-wc-color-neutral-content);
+  border-radius: 0.25rem;
+  color: var(--modus-wc-color-neutral);
+  font-size: 0.875rem;
   font-weight: var(--modus-wc-font-weight-regular);
+  max-width: 20rem;
+  overflow-wrap: break-word;
+  padding: 0.25rem 0.5rem;
+  pointer-events: none;
+  position: relative;
+  text-align: center;
+  white-space: normal;
+  width: max-content;
+  word-break: break-word;
+  z-index: 1000;
 }
 
-[data-theme='modus-classic-light'] modus-wc-tooltip .modus-wc-tooltip {
-  --tooltip-color: var(--modus-wc-color-gray-7);
-  --tooltip-text-color: var(--modus-wc-color-white);
-
-  font-weight: var(--modus-wc-font-weight-regular);
+/* Arrow styling */
+.modus-wc-tooltip-arrow,
+.modus-wc-tooltip-arrow::before {
+  background: inherit;
+  height: 8px;
+  position: absolute;
+  width: 8px;
 }
 
-[data-theme='modus-classic-dark'] modus-wc-tooltip .modus-wc-tooltip {
-  --tooltip-color: var(--modus-wc-color-gray-0);
-  --tooltip-text-color: var(--modus-wc-color-trimble-gray);
-
-  font-weight: var(--modus-wc-font-weight-regular);
+.modus-wc-tooltip-arrow {
+  text-align: initial;
+  visibility: hidden;
 }
 
-modus-wc-tooltip {
-  .modus-wc-tooltip-disabled {
-    &::before,
-    &::after {
-      display: none;
-      opacity: 0;
-      visibility: hidden;
-    }
-  }
+.modus-wc-tooltip-arrow::before {
+  background-color: var(--modus-wc-color-neutral-content);
+  content: '';
+  transform: rotate(45deg);
+  visibility: visible;
 }
 
-[data-theme='connect-light'] modus-wc-tooltip .modus-wc-tooltip,
-[data-theme='connect-dark'] modus-wc-tooltip .modus-wc-tooltip {
-  --tooltip-color: var(--modus-wc-color-base-content);
-  --tooltip-text-color: var(--modus-wc-color-base-page);
+/* Arrow placement based on tooltip position */
+.modus-wc-tooltip-content[data-popper-placement^='top']
+  .modus-wc-tooltip-arrow {
+  bottom: -4px;
+}
+
+.modus-wc-tooltip-content[data-popper-placement^='bottom']
+  .modus-wc-tooltip-arrow {
+  top: -4px;
+}
+
+.modus-wc-tooltip-content[data-popper-placement^='left']
+  .modus-wc-tooltip-arrow {
+  right: -4px;
+}
+
+.modus-wc-tooltip-content[data-popper-placement^='right']
+  .modus-wc-tooltip-arrow {
+  left: -4px;
+}
+
+[data-theme='modus-classic-light'] .modus-wc-tooltip-content {
+  background-color: var(--modus-wc-color-gray-7);
+  color: var(--modus-wc-color-white);
+}
+
+[data-theme='modus-classic-light'] .modus-wc-tooltip-arrow::before {
+  background-color: var(--modus-wc-color-gray-7);
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-tooltip-content {
+  background-color: var(--modus-wc-color-gray-0);
+  color: var(--modus-wc-color-trimble-gray);
+}
+
+[data-theme='modus-classic-dark'] .modus-wc-tooltip-arrow::before {
+  background-color: var(--modus-wc-color-gray-0);
+}
+
+[data-theme='connect-light'] .modus-wc-tooltip-content,
+[data-theme='connect-dark'] .modus-wc-tooltip-content {
+  background-color: var(--modus-wc-color-base-content);
+  color: var(--modus-wc-color-base-page);
+}
+
+[data-theme='connect-light'] .modus-wc-tooltip-arrow::before,
+[data-theme='connect-dark'] .modus-wc-tooltip-arrow::before {
+  background-color: var(--modus-wc-color-base-content);
 }
