@@ -27,7 +27,7 @@ export class ModusWcMenuItem {
 
   @Prop() bordered?: boolean;
 
-  /** If true, renders a checkbox slot at the start of the menu item. */
+  /** If true, renders a checkbox at the start of the menu item. */
   @Prop() checkbox?: boolean;
 
   /** Custom CSS class to apply to the li element. */
