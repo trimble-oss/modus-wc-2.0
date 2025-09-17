@@ -5,6 +5,7 @@ modus-wc-side-navigation {
 
   .modus-wc-side-navigation {
     background: var(--modus-wc-color-base-page);
+    box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
     color: var(--modus-wc-color-base-content);
     display: flex;
     flex-direction: column;
