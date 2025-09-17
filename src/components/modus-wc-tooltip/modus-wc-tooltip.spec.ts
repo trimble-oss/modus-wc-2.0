@@ -68,44 +68,50 @@ describe('modus-wc-tooltip', () => {
       expect(showTooltipSpy).not.toHaveBeenCalled();
     });
 
-    it('should not show the tooltip when forceOpen is true but it was previously dismissed with Escape', async () => {
+    it('should only hide the tooltip opened by forceOpen when forceOpen is set to false', async () => {
       const page = await newSpecPage({
         components: [ModusWcTooltip],
         html: '<modus-wc-tooltip content="Test" force-open="true"></modus-wc-tooltip>',
       });
 
-      // First make tooltip visible
       if (page.root) {
-        // The component sets isVisible state when force-open is true
         await page.waitForChanges();
       }
 
-      // Spy on methods
       const hideTooltipSpy = jest.spyOn(page.rootInstance, 'hideTooltip');
       const showTooltipSpy = jest.spyOn(page.rootInstance, 'showTooltip');
 
-      // Simulate Escape key press when tooltip is visible (sets escapeDismissed to true)
+      expect(page.rootInstance.isVisible).toBe(true);
+
       const escapeEvent = new KeyboardEvent('keyup', { code: 'Escape' });
       document.dispatchEvent(escapeEvent);
       await page.waitForChanges();
 
-      // Should have called hideTooltip due to Escape
-      expect(hideTooltipSpy).toHaveBeenCalled();
+      expect(hideTooltipSpy).not.toHaveBeenCalled();
+      expect(page.rootInstance.isVisible).toBe(true);
 
       // Reset spies
       hideTooltipSpy.mockClear();
       showTooltipSpy.mockClear();
 
-      // Set forceOpen again to test that it doesn't show after escape dismiss
       if (page.root) {
         page.root.forceOpen = false;
         await page.waitForChanges();
-        page.root.forceOpen = true;
       }
-      await page.waitForChanges();
+      expect(hideTooltipSpy).toHaveBeenCalled();
 
-      // Should not call showTooltip method due to previous escape dismissal
-      expect(showTooltipSpy).not.toHaveBeenCalled();
+      hideTooltipSpy.mockClear();
+      showTooltipSpy.mockClear();
+
+      if (page.root) {
+        page.root.forceOpen = true;
+        await page.waitForChanges();
+      }
+
+      const leaveEvent = new MouseEvent('mouseleave');
+      page.root?.dispatchEvent(leaveEvent);
+      await page.waitForChanges();
+      expect(hideTooltipSpy).not.toHaveBeenCalled();
     });
   });
 
