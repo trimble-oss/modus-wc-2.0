@@ -305,7 +305,18 @@ export function processItemSelection(
     const isInSelectionOrder = params.selectionOrder.includes(item.value);
 
     if (isCurrentlySelected || isInSelectionOrder) {
-      // Item is already selected, so we need to deselect it
+      // Only allow deselection if item has checkbox enabled
+      if (!item.checkbox) {
+        // Don't deselect non-checkbox items, keep them selected
+        return {
+          updatedItems: params.items,
+          updatedValue: undefined,
+          updatedSelectionOrder: params.selectionOrder,
+          shouldExpandChips: false,
+          shouldCloseMenu: params.leaveMenuOpen ? false : true,
+        };
+      }
+
       updatedItems = [
         ...params.items.map((menuItem) => ({
           ...menuItem,

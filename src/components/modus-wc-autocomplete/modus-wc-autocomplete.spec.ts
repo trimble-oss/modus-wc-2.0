@@ -1731,7 +1731,7 @@ describe('modus-wc-autocomplete', () => {
   });
 
   // Test multi-select deselection
-  it('should deselect an item on re-selection in multi-select mode and close the menu', async () => {
+  it('should deselect an item on re-selection in multi-select mode and close the menu when it has checkbox property', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
       html: `<modus-wc-autocomplete aria-label="Multi-select deselection test" multi-select="true" leave-menu-open="false"></modus-wc-autocomplete>`,
@@ -1743,7 +1743,8 @@ describe('modus-wc-autocomplete', () => {
       value: 'test',
       visibleInMenu: true,
       selected: true,
-      focused: false, // This is the corrected line
+      focused: false,
+      checkbox: true, // Added checkbox property to allow deselection
     };
 
     autocomplete.items = [testItem];
@@ -1760,7 +1761,7 @@ describe('modus-wc-autocomplete', () => {
     expect(autocomplete['selectionOrder']).toEqual([]);
   });
 
-  it('should deselect an item and set focused state when leaveMenuOpen is true', async () => {
+  it('should deselect an item and set focused state when leaveMenuOpen is true and it has checkbox property', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
       html: `<modus-wc-autocomplete aria-label="Multi-select deselection test" multi-select="true" leave-menu-open="true"></modus-wc-autocomplete>`,
@@ -1773,6 +1774,7 @@ describe('modus-wc-autocomplete', () => {
       visibleInMenu: true,
       selected: true,
       focused: false,
+      checkbox: true, // Added checkbox property to allow deselection
     };
 
     autocomplete.items = [testItem];
@@ -1787,6 +1789,35 @@ describe('modus-wc-autocomplete', () => {
     expect(autocomplete.items[0].selected).toBe(false);
     expect(autocomplete.items[0].focused).toBe(true); // Updated to expect true instead of false
     expect(autocomplete['selectionOrder']).toEqual([]);
+  });
+
+  it('should NOT deselect a regular item (without checkbox property) on re-selection in multi-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Multi-select non-checkbox test" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const testItem: IAutocompleteItem = {
+      label: 'Regular Item',
+      value: 'regular',
+      visibleInMenu: true,
+      selected: true,
+      focused: false,
+      // No checkbox property
+    };
+
+    autocomplete.items = [testItem];
+    autocomplete['selectionOrder'] = ['regular'];
+    await page.waitForChanges();
+
+    // Attempt to deselect the regular item by re-selecting it
+    autocomplete['handleItemSelect'](testItem);
+    await page.waitForChanges();
+
+    // The item should REMAIN selected because it doesn't have checkbox property
+    expect(autocomplete.items[0].selected).toBe(true);
+    expect(autocomplete['selectionOrder']).toEqual(['regular']);
   });
 
   it('should handle undefined filtered items', async () => {
@@ -5731,9 +5762,27 @@ it('should correctly toggle selected state for each item when selecting in multi
 
   const autocomplete = page.rootInstance as ModusWcAutocomplete;
   const items: IAutocompleteItem[] = [
-    { label: 'Item 1', value: 'item1', visibleInMenu: true, selected: false },
-    { label: 'Item 2', value: 'item2', visibleInMenu: true, selected: true },
-    { label: 'Item 3', value: 'item3', visibleInMenu: true, selected: false },
+    {
+      label: 'Item 1',
+      value: 'item1',
+      visibleInMenu: true,
+      selected: false,
+      checkbox: true,
+    },
+    {
+      label: 'Item 2',
+      value: 'item2',
+      visibleInMenu: true,
+      selected: true,
+      checkbox: true,
+    },
+    {
+      label: 'Item 3',
+      value: 'item3',
+      visibleInMenu: true,
+      selected: false,
+      checkbox: true,
+    },
   ];
 
   autocomplete.items = items;
@@ -5790,6 +5839,101 @@ it('should set selected=true only for the selected item in single-select mode', 
   expect(autocomplete.value).toBe('Item 3');
 });
 
+// Test to verify non-checkbox items cannot be deselected in multi-select mode
+it('should not allow deselection of non-checkbox items in multi-select mode', async () => {
+  const page = await newSpecPage({
+    components: [ModusWcAutocomplete, ModusWcTextInput],
+    html: `<modus-wc-autocomplete aria-label="Non-checkbox deselection test" multi-select="true"></modus-wc-autocomplete>`,
+  });
+
+  const autocomplete = page.rootInstance as ModusWcAutocomplete;
+  const items: IAutocompleteItem[] = [
+    // Item with checkbox=true can be deselected
+    {
+      label: 'Checkbox Item',
+      value: 'checkbox-item',
+      visibleInMenu: true,
+      selected: true,
+      checkbox: true,
+    },
+    // Item without checkbox property cannot be deselected
+    {
+      label: 'Non-Checkbox Item',
+      value: 'non-checkbox-item',
+      visibleInMenu: true,
+      selected: true,
+    },
+  ];
+
+  autocomplete.items = items;
+  autocomplete['selectionOrder'] = ['checkbox-item', 'non-checkbox-item'];
+  await page.waitForChanges();
+
+  // Try to deselect the checkbox item (should succeed)
+  autocomplete['handleItemSelect'](items[0]);
+  await page.waitForChanges();
+
+  // Try to deselect the non-checkbox item (should fail)
+  autocomplete['handleItemSelect'](items[1]);
+  await page.waitForChanges();
+
+  // Verify checkbox item was deselected
+  expect(autocomplete.items[0].selected).toBe(false);
+  // Verify non-checkbox item remains selected
+  expect(autocomplete.items[1].selected).toBe(true);
+
+  // Selection order should only have non-checkbox-item now
+  expect(autocomplete['selectionOrder']).toEqual(['non-checkbox-item']);
+});
+
+// Test for menu closing behavior when trying to deselect non-checkbox items with different leaveMenuOpen values
+it('should properly handle menu visibility when trying to deselect non-checkbox items', async () => {
+  const page = await newSpecPage({
+    components: [ModusWcAutocomplete, ModusWcTextInput],
+    html: `<modus-wc-autocomplete aria-label="Menu closing test" multi-select="true"></modus-wc-autocomplete>`,
+  });
+
+  const autocomplete = page.rootInstance as ModusWcAutocomplete;
+  const items: IAutocompleteItem[] = [
+    {
+      label: 'Non-Checkbox Item',
+      value: 'non-checkbox-item',
+      visibleInMenu: true,
+      selected: true,
+    },
+  ];
+
+  autocomplete.items = items;
+  autocomplete['selectionOrder'] = ['non-checkbox-item'];
+  autocomplete['menuVisible'] = true;
+  await page.waitForChanges();
+
+  // Case 1: With leaveMenuOpen = false (default), menu should close when trying to deselect non-checkbox item
+  autocomplete.leaveMenuOpen = false;
+  await page.waitForChanges();
+
+  // Try to deselect the non-checkbox item
+  autocomplete['handleItemSelect'](items[0]);
+  await page.waitForChanges();
+
+  // Verify menu is closed and item is still selected
+  expect(autocomplete['menuVisible']).toBe(false);
+  expect(autocomplete.items[0].selected).toBe(true);
+
+  // Case 2: With leaveMenuOpen = true, menu should stay open when trying to deselect non-checkbox item
+  autocomplete.leaveMenuOpen = true;
+  autocomplete['menuVisible'] = true;
+  await page.waitForChanges();
+
+  // Try to deselect the non-checkbox item again
+  autocomplete['handleItemSelect'](items[0]);
+  await page.waitForChanges();
+
+  // Verify menu is still open and item is still selected
+  expect(autocomplete['menuVisible']).toBe(true);
+  expect(autocomplete.items[0].selected).toBe(true);
+});
+
 // Test for menuItem.selected in processChipRemoval
 it('should update menuItem.selected to false when removing a chip', async () => {
   const page = await newSpecPage({
@@ -5799,9 +5943,27 @@ it('should update menuItem.selected to false when removing a chip', async () => 
 
   const autocomplete = page.rootInstance as ModusWcAutocomplete;
   const items: IAutocompleteItem[] = [
-    { label: 'Item 1', value: 'item1', visibleInMenu: true, selected: true },
-    { label: 'Item 2', value: 'item2', visibleInMenu: true, selected: true },
-    { label: 'Item 3', value: 'item3', visibleInMenu: true, selected: false },
+    {
+      label: 'Item 1',
+      value: 'item1',
+      visibleInMenu: true,
+      selected: true,
+      checkbox: true,
+    },
+    {
+      label: 'Item 2',
+      value: 'item2',
+      visibleInMenu: true,
+      selected: true,
+      checkbox: true,
+    },
+    {
+      label: 'Item 3',
+      value: 'item3',
+      visibleInMenu: true,
+      selected: false,
+      checkbox: true,
+    },
   ];
 
   autocomplete.items = items;
