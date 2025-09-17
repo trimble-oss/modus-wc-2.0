@@ -13,6 +13,7 @@ const items: IAutocompleteItem[] = [
     visibleInMenu: true,
     focused: false,
     disabled: false,
+    checkbox: false,
   },
   {
     label: 'Banana',
@@ -20,31 +21,65 @@ const items: IAutocompleteItem[] = [
     visibleInMenu: true,
     focused: false,
     disabled: false,
+    checkbox: false,
   },
   {
     label: 'Blueberry',
     value: 'blueberry',
     visibleInMenu: true,
     focused: false,
+    checkbox: false,
   },
-  { label: 'Cherry', value: 'cherry', visibleInMenu: true, focused: false },
-  { label: 'Grape', value: 'grape', visibleInMenu: true, focused: false },
-  { label: 'Lemon', value: 'lemon', visibleInMenu: true, focused: false },
+  {
+    label: 'Cherry',
+    value: 'cherry',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Grape',
+    value: 'grape',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Lemon',
+    value: 'lemon',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
   {
     label: 'Orange',
     value: 'orange',
     visibleInMenu: true,
     focused: false,
     disabled: false,
+    checkbox: false,
   },
-  { label: 'Peach', value: 'peach', visibleInMenu: true, focused: false },
-  { label: 'Pear', value: 'pear', visibleInMenu: true, focused: false },
+  {
+    label: 'Peach',
+    value: 'peach',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Pear',
+    value: 'pear',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
   {
     label: 'Strawberry',
     value: 'strawberry',
     visibleInMenu: true,
     focused: false,
     disabled: false,
+    checkbox: false,
   },
   {
     label: 'Watermelon',
@@ -52,28 +87,56 @@ const items: IAutocompleteItem[] = [
     visibleInMenu: true,
     focused: false,
     disabled: false,
+    checkbox: false,
   },
   {
     label: 'Pineapple',
     value: 'pineapple',
     visibleInMenu: true,
     focused: false,
+    checkbox: false,
   },
-  { label: 'Kiwi', value: 'kiwi', visibleInMenu: true, focused: false },
-  { label: 'Mango', value: 'mango', visibleInMenu: true, focused: false },
-  { label: 'Papaya', value: 'papaya', visibleInMenu: true, focused: false },
-  { label: 'Plum', value: 'plum', visibleInMenu: true, focused: false },
+  {
+    label: 'Kiwi',
+    value: 'kiwi',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Mango',
+    value: 'mango',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Papaya',
+    value: 'papaya',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Plum',
+    value: 'plum',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
   {
     label: 'Raspberry',
     value: 'raspberry',
     visibleInMenu: true,
     focused: false,
+    checkbox: false,
   },
   {
     label: 'Tangerine',
     value: 'tangerine',
     visibleInMenu: true,
     focused: false,
+    checkbox: false,
   },
 ];
 
@@ -390,12 +453,12 @@ const tooltipItems = [
 
 export const MultiSelect: Story = {
   render: (args) => {
-    // Initialize args.items if empty
-    if (!args.items || args.items.length === 0) {
+    // Ensure args.items is initialized
+    if (!args.items) {
       args.items = [...items];
     }
     // If multi-select, set selected state for some items
-    args.items = items.map((item) => {
+    args.items = args.items.map((item) => {
       if (item.value === 'apple' || item.value === 'banana') {
         return { ...item, selected: true };
       }
@@ -809,7 +872,7 @@ const handleCustomKeyDown = (e: KeyboardEvent) => {
       let prevIndex = currentIndex - 1;
       // Stop at the first item instead of wrapping
       if (prevIndex < 0) return;
-      
+
       buttons[prevIndex]?.focus();
       break;
     }
@@ -846,14 +909,14 @@ const handleInputChange = (e: CustomEvent<Event>) => {
       e.detail.target as HTMLInputElement
     ).value.toLowerCase();
     const menuItems = autocomplete?.querySelectorAll('modus-wc-menu-item');
-    
+
     // Clear selected state when input is empty
     if (searchText === '') {
       menuItems?.forEach((item) => {
         item.removeAttribute('selected');
       });
     }
-    
+
     let hiddenCount = 0;
     Array.from(menuItems ?? []).forEach((menuItem) => {
       const label = menuItem.getAttribute('label')?.toLowerCase() || '';
@@ -870,7 +933,7 @@ const handleInputChange = (e: CustomEvent<Event>) => {
       hiddenCount === menuItems?.length
         ? originalNoResults
         : { ariaLabel: '', label: '', subLabel: '' };
-        
+
     // Show/hide the no results element
     const noResultsElement = autocomplete.querySelector('.no-results-item') as HTMLElement;
     if (noResultsElement) {
