@@ -72,7 +72,6 @@ export class ModusWcTooltip {
         // When forceOpen is true, Escape should NOT dismiss it
         if (this.isVisible && !this.forceOpen) {
           this.escapeDismissed = true;
-          this.isVisible = false;
           this.dismissEscape.emit();
           this.hideTooltip();
         }
@@ -248,29 +247,23 @@ export class ModusWcTooltip {
   }
 
   @Watch('forceOpen')
-  handleForceOpenChange(newForceOpen: boolean) {
-    if (newForceOpen && !this.disabled && !this.escapeDismissed) {
+  handleForceOpenChange(forceOpen: boolean) {
+    if (forceOpen && !this.disabled) {
       this.showTooltip();
-    } else if (!newForceOpen) {
+    } else {
       this.hideTooltip();
     }
   }
 
   @Listen('mouseenter')
   handleMouseEnter() {
-    // If escapeDismissed is true, reset it on mouseenter
-    if (this.escapeDismissed) {
-      this.escapeDismissed = false;
-    }
-    this.isVisible = true;
+    this.escapeDismissed = false;
     this.showTooltip();
   }
 
   @Listen('mouseleave')
   handleMouseLeave() {
-    // Clear visibility state only if not forced open
     if (!this.forceOpen) {
-      this.isVisible = false;
       this.hideTooltip();
     }
   }
