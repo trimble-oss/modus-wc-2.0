@@ -30,7 +30,7 @@ const meta: Meta<TypographyArgs> = {
   argTypes: {
     hierarchy: {
       control: { type: 'select' },
-      options: ['body', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
+      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
     },
     size: {
       control: { type: 'select' },
@@ -91,12 +91,6 @@ export const Default: Story = {
       weight=${ifDefined(args.weight)}
     ></modus-wc-typography>
   `,
-};
-
-export const Body: Story = {
-  args: {
-    hierarchy: 'body',
-  },
 };
 
 export const Heading1: Story = {
