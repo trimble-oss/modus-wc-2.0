@@ -1733,7 +1733,7 @@ export namespace Components {
     /**
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
      */
     interface ModusWcTooltip {
         /**
@@ -2674,7 +2674,7 @@ declare global {
     /**
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
      */
     interface HTMLModusWcTooltipElement extends Components.ModusWcTooltip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTooltipElementEventMap>(type: K, listener: (this: HTMLModusWcTooltipElement, ev: ModusWcTooltipCustomEvent<HTMLModusWcTooltipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4748,7 +4748,7 @@ declare namespace LocalJSX {
     /**
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
      */
     interface ModusWcTooltip {
         /**
@@ -5060,7 +5060,7 @@ declare module "@stencil/core" {
             /**
              * A customizable tooltip component used to create tooltips with different content.
              * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-             * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+             * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**
