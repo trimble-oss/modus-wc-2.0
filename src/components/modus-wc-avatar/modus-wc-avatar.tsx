@@ -63,7 +63,7 @@ export class ModusWcAvatar {
       .trim()
       .split(/\s+/)
       .filter(Boolean)
-      .map((part) => part[0] || '')
+      .map((part) => part.charAt(0))
       .join('')
       .substring(0, 3)
       .toUpperCase();
