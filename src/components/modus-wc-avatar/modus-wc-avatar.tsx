@@ -38,10 +38,6 @@ export class ModusWcAvatar {
   @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {
-    if (!this.alt && !this.initials) {
-      this.alt = 'Avatar image';
-    }
-
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
@@ -72,14 +68,17 @@ export class ModusWcAvatar {
   }
 
   render() {
+    const altText =
+      this.alt || (this.initials ? this.initials : 'Avatar image');
+
     return (
       <Host>
         <div class="modus-wc-avatar" {...this.inheritedAttributes}>
           <div class={this.getClasses()}>
             {this.imgSrc ? (
-              <img src={this.imgSrc} alt={this.alt} />
+              <img src={this.imgSrc} alt={altText} />
             ) : this.initials ? (
-              <span class="initials" aria-label={this.alt || this.initials}>
+              <span class="initials" aria-label={altText}>
                 {this.getUserInitials()}
               </span>
             ) : null}
