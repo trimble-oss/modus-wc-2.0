@@ -60,8 +60,10 @@ export class ModusWcAvatar {
     if (!this.initials) return '';
 
     return this.initials
-      .split(' ')
-      .map((part) => part.charAt(0))
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((part) => part[0] || '')
       .join('')
       .substring(0, 3)
       .toUpperCase();
