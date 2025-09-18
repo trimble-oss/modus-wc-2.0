@@ -239,6 +239,10 @@ export namespace Components {
          */
         "imgSrc": string;
         /**
+          * The initials to display when no image is provided.
+         */
+        "initials"?: string;
+        /**
           * The shape of the avatar.
          */
         "shape"?: 'circle' | 'square';
@@ -750,7 +754,7 @@ export namespace Components {
     interface ModusWcMenuItem {
         "bordered"?: boolean;
         /**
-          * If true, renders a checkbox slot at the start of the menu item.
+          * If true, renders a checkbox at the start of the menu item.
          */
         "checkbox"?: boolean;
         /**
@@ -2981,6 +2985,10 @@ declare namespace LocalJSX {
          */
         "imgSrc"?: string;
         /**
+          * The initials to display when no image is provided.
+         */
+        "initials"?: string;
+        /**
           * The shape of the avatar.
          */
         "shape"?: 'circle' | 'square';
@@ -3544,7 +3552,7 @@ declare namespace LocalJSX {
     interface ModusWcMenuItem {
         "bordered"?: boolean;
         /**
-          * If true, renders a checkbox slot at the start of the menu item.
+          * If true, renders a checkbox at the start of the menu item.
          */
         "checkbox"?: boolean;
         /**

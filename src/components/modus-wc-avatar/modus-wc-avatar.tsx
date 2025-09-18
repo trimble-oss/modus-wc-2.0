@@ -26,6 +26,9 @@ export class ModusWcAvatar {
   /** The location of the image. */
   @Prop() imgSrc: string = '';
 
+  /** The initials to display when no image is provided. */
+  @Prop() initials?: string = '';
+
   // TODO - add placeholder support (need UX logic)
 
   /** The shape of the avatar. */
@@ -35,7 +38,7 @@ export class ModusWcAvatar {
   @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {
-    if (!this.alt) {
+    if (!this.alt && !this.initials) {
       this.alt = 'Avatar image';
     }
 
@@ -57,12 +60,29 @@ export class ModusWcAvatar {
     return classList.join(' ');
   }
 
+  private getUserInitials(): string {
+    if (!this.initials) return '';
+
+    return this.initials
+      .split(' ')
+      .map((part) => part.charAt(0))
+      .join('')
+      .substring(0, 3)
+      .toUpperCase();
+  }
+
   render() {
     return (
       <Host>
         <div class="modus-wc-avatar" {...this.inheritedAttributes}>
           <div class={this.getClasses()}>
-            <img src={this.imgSrc} alt={this.alt} />
+            {this.imgSrc ? (
+              <img src={this.imgSrc} alt={this.alt} />
+            ) : this.initials ? (
+              <span class="initials" aria-label={this.alt || this.initials}>
+                {this.getUserInitials()}
+              </span>
+            ) : null}
           </div>
         </div>
       </Host>
