@@ -4,7 +4,9 @@ import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable avatar component used to create avatars with different images.
+ * A customizable avatar component used to create avatars with different images or user initials.
+ * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+ * The component will extract the first letter of each word in the initials string.
  */
 @Component({
   tag: 'modus-wc-avatar',
