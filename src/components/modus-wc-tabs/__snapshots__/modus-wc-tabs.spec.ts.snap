@@ -1,5 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-tabs should render tabs with custom content 1`] = `
+<modus-wc-tabs>
+  <!---->
+  <div aria-label="Custom Content Tab Group" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist">
+    <button class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
+      <span>
+        <span class="test-content">
+          Custom Content
+        </span>
+      </span>
+    </button>
+    <button class="modus-wc-tab" id="tab-1" role="tab">
+      <span>
+        <span style="display: inline-flex; align-items: center; gap: 8px;">
+          Tab with
+          <strong>
+            HTML
+          </strong>
+        </span>
+      </span>
+    </button>
+    <button class="modus-wc-tab" id="tab-2" role="tab">
+      <span>
+        <span class="empty-custom-content"></span>
+      </span>
+    </button>
+    <button class="modus-wc-tab" id="tab-3" role="tab">
+      <span>
+        <span style="display: inline-flex; align-items: center; gap: 8px;">
+          Tab with Badge
+          <modus-wc-badge color="primary" size="md" variant="counter">
+            5
+          </modus-wc-badge>
+        </span>
+      </span>
+    </button>
+  </div>
+  <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0">
+    <div class="modus-wc-tab-active"></div>
+    <div hidden=""></div>
+    <div hidden=""></div>
+    <div hidden=""></div>
+  </div>
+</modus-wc-tabs>
+`;
+
 exports[`modus-wc-tabs should render with custom props 1`] = `
 <modus-wc-tabs custom-class="test-class" size="sm" tab-style="boxed">
   <!---->

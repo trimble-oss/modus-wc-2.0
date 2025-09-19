@@ -92,6 +92,48 @@ ActiveAndDisabled.args = {
   ],
 };
 
+export const CustomContent: Story = {
+  render: (args) => {
+    args.tabs = [
+      {
+        icon: 'home',
+        iconPosition: 'left',
+        label: 'Home',
+        customContent: `<span style="display: inline-flex; align-items: center; gap: 8px;">
+         <modus-wc-chip aria-label="Chip example" show-remove="false" size="md" variant="filled">
+          <modus-wc-avatar img-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK7LFGf7yRFAGYKTX6KrxHNzsByE8NPZfCrfGkSIytbxkFEY9AYJZESTPIE0tOpfSsEE4&usqp=CAU" alt="Doge the dog"></modus-wc-avatar>profile<modus-wc-icon name="swap" size="xs"></modus-wc-icon>
+</modus-wc-chip>
+        </span>`,
+      },
+      {
+        icon: 'clipboard',
+        iconPosition: 'right',
+        label: 'Tasks',
+      },
+      {
+        customContent: `<span style="display: inline-flex; align-items: center; gap: 8px;">Actions<modus-wc-icon name="warning" variant="solid" color="red" custom-class="warning-icon"></modus-wc-icon><style>
+  .warning-icon {
+    color: red;
+  }</style></span>`,
+      },
+      {
+        customContent: `<span style="display: inline-flex; align-items: center; gap: 8px;">Notifications<modus-wc-badge color="primary" size="md" variant="counter">5</modus-wc-badge></span>`,
+      },
+    ];
+    // prettier-ignore
+    return html`
+<modus-wc-tabs
+  .tabs="${args.tabs}"
+  size="${ifDefined(args.size)}"
+  tab-style="${ifDefined(args['tab-style'])}"
+  active-tab-index="${ifDefined(args.activeTabIndex)}"
+  aria-label="Tab group"
+>
+</modus-wc-tabs>
+    `;
+  },
+};
+
 export const Icons: Story = {
   ...Template,
   args: {
