@@ -54,6 +54,7 @@ export class ModusWcAvatar {
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
+    if (!this.imgSrc && !this.initials) classList.push('no-image');
 
     return classList.join(' ');
   }
@@ -85,7 +86,14 @@ export class ModusWcAvatar {
               <span class="initials" aria-label={altText}>
                 {this.getUserInitials()}
               </span>
-            ) : null}
+            ) : (
+              <modus-wc-icon
+                aria-label={altText}
+                name="person"
+                size={this.size}
+                variant="solid"
+              ></modus-wc-icon>
+            )}
           </div>
         </div>
       </Host>

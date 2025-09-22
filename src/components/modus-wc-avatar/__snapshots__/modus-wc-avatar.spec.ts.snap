@@ -13,7 +13,9 @@ exports[`modus-wc-avatar should render with custom props 1`] = `
 exports[`modus-wc-avatar should render with default props 1`] = `
 <modus-wc-avatar alt="Default avatar">
   <div aria-label="Default avatar" class="modus-wc-avatar">
-    <div class="modus-wc-rounded-full modus-wc-w-16"></div>
+    <div class="modus-wc-rounded-full modus-wc-w-16 no-image">
+      <modus-wc-icon aria-label="Default avatar" name="person" size="md" variant="solid"></modus-wc-icon>
+    </div>
   </div>
 </modus-wc-avatar>
 `;
@@ -45,7 +47,9 @@ exports[`modus-wc-avatar should render with initials when imgSrc is not provided
 exports[`modus-wc-avatar should render with no props 1`] = `
 <modus-wc-avatar>
   <div class="modus-wc-avatar">
-    <div class="modus-wc-rounded-full modus-wc-w-16"></div>
+    <div class="modus-wc-rounded-full modus-wc-w-16 no-image">
+      <modus-wc-icon aria-label="Avatar image" name="person" size="md" variant="solid"></modus-wc-icon>
+    </div>
   </div>
 </modus-wc-avatar>
 `;

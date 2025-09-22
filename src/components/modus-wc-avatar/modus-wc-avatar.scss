@@ -16,6 +16,14 @@ modus-wc-avatar .modus-wc-avatar {
     width: 100%;
   }
 
+  .no-image {
+    align-items: center;
+    background-color: var(--modus-wc-color-gray-2);
+    color: var(--modus-wc-color-white);
+    display: flex;
+    justify-content: center;
+  }
+
   // Size-specific styling for the text based on the Tailwind classes
   .modus-wc-w-8 .initials {
     font-size: var(--modus-wc-font-size-xs, 0.75rem);

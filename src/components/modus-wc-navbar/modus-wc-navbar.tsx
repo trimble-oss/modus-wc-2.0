@@ -299,16 +299,6 @@ export class ModusWcNavbar {
     return classList.join(' ');
   }
 
-  private getUserInitials(): string {
-    if (!this.userCard?.name) return '';
-
-    return this.userCard.name
-      .split(' ')
-      .map((part) => part.charAt(0))
-      .join('')
-      .toUpperCase();
-  }
-
   private handleAiClick = (event?: CustomEvent<MouseEvent | KeyboardEvent>) => {
     this.aiClick.emit(event?.detail);
   };
@@ -619,15 +609,12 @@ export class ModusWcNavbar {
                   size="sm"
                   variant="borderless"
                 >
-                  {this.userCard?.avatarSrc ? (
-                    <modus-wc-avatar
-                      alt={this.userCard.avatarAlt || 'User avatar'}
-                      imgSrc={this.userCard.avatarSrc}
-                      size="xs"
-                    />
-                  ) : (
-                    this.getUserInitials()
-                  )}
+                  <modus-wc-avatar
+                    alt={this.userCard?.avatarAlt || 'User avatar'}
+                    imgSrc={this.userCard?.avatarSrc}
+                    initials={this.userCard?.name}
+                    size="xs"
+                  />
                 </modus-wc-button>
                 <div
                   class={`user ${this.userMenuOpen ? 'visible' : 'hidden'}`}
@@ -635,14 +622,11 @@ export class ModusWcNavbar {
                 >
                   <modus-wc-card>
                     <div slot="header">
-                      {this.userCard?.avatarSrc ? (
-                        <modus-wc-avatar
-                          alt={this.userCard.avatarAlt || 'User avatar'}
-                          imgSrc={this.userCard.avatarSrc}
-                        />
-                      ) : (
-                        <div class="initials">{this.getUserInitials()}</div>
-                      )}
+                      <modus-wc-avatar
+                        alt={this.userCard?.avatarAlt || 'User avatar'}
+                        imgSrc={this.userCard?.avatarSrc}
+                        initials={this.userCard?.name}
+                      />
                     </div>
                     <div slot="title">{this.userCard?.name}</div>
                     <div>{this.userCard?.email}</div>
