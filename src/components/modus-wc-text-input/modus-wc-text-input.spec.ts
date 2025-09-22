@@ -262,4 +262,106 @@ describe('modus-wc-text-input', () => {
     clearContainer = page.root!.querySelector('.modus-wc-clear-icon-container');
     expect(clearContainer).toHaveClass('modus-wc-clear-icon-hidden');
   });
+
+  it('should render with custom icon slot', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput],
+      html: `<modus-wc-text-input aria-label="Custom icon test">
+        <modus-wc-icon slot="custom-icon" name="home" size="16px"></modus-wc-icon>
+      </modus-wc-text-input>`,
+    });
+
+    // Should have custom icon wrapper
+    const customIconWrapper = page.root!.querySelector(
+      '.modus-wc-text-input-icon-custom'
+    );
+    expect(customIconWrapper).not.toBeNull();
+
+    // Should have the slotted icon
+    const slottedIcon = page.root!.querySelector('[slot="custom-icon"]');
+    expect(slottedIcon).not.toBeNull();
+    expect(slottedIcon!.getAttribute('name')).toBe('home');
+  });
+
+  it('should prioritize custom icon over includeSearch', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput],
+      html: `<modus-wc-text-input include-search="true" aria-label="Priority test">
+        <modus-wc-icon slot="custom-icon" name="settings" size="16px"></modus-wc-icon>
+      </modus-wc-text-input>`,
+    });
+
+    // Should have custom icon wrapper, not search icon
+    const customIconWrapper = page.root!.querySelector(
+      '.modus-wc-text-input-icon-custom'
+    );
+    expect(customIconWrapper).not.toBeNull();
+
+    // Should NOT have search icon when custom icon is present
+    const searchIcon = page.root!.querySelector(
+      '.modus-wc-text-input-icon-search'
+    );
+    expect(searchIcon).toBeNull();
+
+    // Should have the slotted custom icon
+    const slottedIcon = page.root!.querySelector('[slot="custom-icon"]');
+    expect(slottedIcon).not.toBeNull();
+    expect(slottedIcon!.getAttribute('name')).toBe('settings');
+  });
+
+  it('should show search icon when includeSearch is true and no custom icon', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input include-search="true" aria-label="Search icon test"></modus-wc-text-input>',
+    });
+
+    // Should have search icon
+    const searchIcon = page.root!.querySelector(
+      '.modus-wc-text-input-icon-search'
+    );
+    expect(searchIcon).not.toBeNull();
+
+    // Should NOT have custom icon wrapper
+    const customIconWrapper = page.root!.querySelector(
+      '.modus-wc-text-input-icon-custom'
+    );
+    expect(customIconWrapper).toBeNull();
+  });
+
+  it('should work with custom icon and clear button together', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput],
+      html: `<modus-wc-text-input include-clear="true" value="Test Value" aria-label="Custom icon with clear test">
+        <modus-wc-icon slot="custom-icon" name="heart" size="16px"></modus-wc-icon>
+      </modus-wc-text-input>`,
+    });
+
+    // Should have both custom icon and clear button
+    const customIconWrapper = page.root!.querySelector(
+      '.modus-wc-text-input-icon-custom'
+    );
+    expect(customIconWrapper).not.toBeNull();
+
+    const clearContainer = page.root!.querySelector(
+      '.modus-wc-clear-icon-container'
+    );
+    expect(clearContainer).not.toBeNull();
+    expect(clearContainer).toHaveClass('modus-wc-clear-icon-visible');
+
+    // Test clearing still works
+    const component = page.rootInstance as ModusWcTextInput;
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    const clearButton = page.root!.querySelector(
+      '.modus-wc-text-input-icon-clear'
+    );
+    expect(clearButton).not.toBeNull();
+    clearButton!.dispatchEvent(new MouseEvent('click'));
+
+    await page.waitForChanges();
+
+    expect(component.value).toBe('');
+    expect(changeSpy).toHaveBeenCalled();
+  });
 });
