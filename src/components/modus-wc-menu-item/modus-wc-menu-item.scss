@@ -20,7 +20,11 @@ modus-wc-menu-item .modus-wc-menu-item {
       width: 100%;
 
       [slot='start-icon'] {
-        padding-inline-end: var(--modus-wc-spacing-lg);
+        padding-inline-end: var(--modus-wc-spacing-sm);
+      }
+
+      modus-wc-checkbox {
+        padding-inline-end: var(--modus-wc-spacing-sm);
       }
 
       .modus-wc-menu-item-labels {

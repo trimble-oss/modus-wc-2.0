@@ -106,6 +106,41 @@ export const ButtonShapes: Story = {
   },
 };
 
+export const DynamicTextUpdate: Story = {
+  render: () => {
+    const updateButtonText = () => {
+      const btnText = document.getElementById('btn-text') as HTMLSpanElement;
+      const input = document.getElementById(
+        'btn-text-input'
+      ) as HTMLInputElement;
+
+      btnText.textContent = input.value;
+    };
+
+    // prettier-ignore
+    return html`
+<script>
+  function updateButtonText() {
+    const btnText = document.getElementById('btn-text');
+    const input = document.getElementById('btn-text-input');
+    btnText.textContent = input.value;
+  }
+</script>
+
+<div>
+  <modus-wc-button id="text-update-btn" color="primary" variant="filled" @buttonClick=${updateButtonText}>
+    <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon><span id="btn-text">Press button to update content</span>
+    <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
+  </modus-wc-button>
+
+  <div style="margin-top: 8px; display: flex; gap: 8px; align-items: center;">
+    <modus-wc-text-input id="btn-text-input" type="text" value="Updated Text" style="padding: 4px 8px;" />
+  </div>
+</div>
+    `;
+  },
+};
+
 export const IconOnlyButton: Story = {
   render: () => {
     // prettier-ignore
