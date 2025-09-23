@@ -1,0 +1,160 @@
+:host {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  font-family: 'Open Sans', system-ui, sans-serif;
+}
+
+.chat-container {
+  position: relative;
+}
+
+.chat-trigger {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.chat-window {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 400px;
+  height: 500px;
+  transform: scale(0.95) translateY(10px);
+  opacity: 0;
+  transition: all 0.2s ease-out;
+  pointer-events: none;
+  z-index: 10000;
+
+  &.open {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+.chat-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--modus-wc-color-gray-3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--modus-wc-color-gray-9);
+  margin: 0;
+}
+
+.chat-subtitle {
+  font-size: 12px;
+  color: var(--modus-wc-color-gray-6);
+  margin: 2px 0 0 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--modus-wc-color-gray-6);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: var(--modus-wc-color-gray-2);
+    color: var(--modus-wc-color-gray-8);
+  }
+}
+
+.chat-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 350px;
+}
+
+.welcome-message {
+  background: var(--modus-wc-color-gray-1);
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid var(--modus-wc-color-primary);
+}
+
+.welcome-title {
+  font-weight: 600;
+  color: var(--modus-wc-color-gray-9);
+  margin: 0 0 8px 0;
+  font-size: 14px;
+}
+
+.welcome-text {
+  color: var(--modus-wc-color-gray-6);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.chat-input-area {
+  padding: 16px 20px;
+  border-top: 1px solid var(--modus-wc-color-gray-3);
+}
+
+.chat-input-container {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid var(--modus-wc-color-gray-4);
+  border-radius: 20px;
+  font-size: 14px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+
+  &:focus {
+    border-color: var(--modus-wc-color-primary);
+  }
+}
+
+.send-btn {
+  background: var(--modus-wc-color-primary);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: var(--modus-wc-color-primary-dark);
+  }
+
+  &:disabled {
+    background: var(--modus-wc-color-gray-5);
+    cursor: not-allowed;
+  }
+}
+
+// DaisyUI Chat Integration
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
