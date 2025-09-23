@@ -94,18 +94,13 @@ ActiveAndDisabled.args = {
 };
 
 export const CustomContent: Story = {
-  ...Template,
   args: {
     tabs: [
       {
         icon: 'home',
         iconPosition: 'left',
         label: 'Home',
-        customContent: `<span style="display: inline-flex; align-items: center; gap: 8px; margin: 3px;">
-         <modus-wc-chip aria-label="Chip example" show-remove="false" size="md" variant="filled">
-          <modus-wc-avatar img-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK7LFGf7yRFAGYKTX6KrxHNzsByE8NPZfCrfGkSIytbxkFEY9AYJZESTPIE0tOpfSsEE4&usqp=CAU" size="sm" alt="Doge the dog"></modus-wc-avatar>profile<modus-wc-icon name="swap" size="xs"></modus-wc-icon>
-</modus-wc-chip>
-        </span>`,
+        slotName: 'profile-tab-content',
       },
       {
         icon: 'clipboard',
@@ -113,54 +108,46 @@ export const CustomContent: Story = {
         label: 'Tasks',
       },
       {
-        customContent: `<span style="display: inline-flex; align-items: center; gap: 8px;">Actions<modus-wc-icon name="warning" variant="solid" color="red" custom-class="warning-icon"></modus-wc-icon><style>
-  .warning-icon {
-    color: red;
-  }</style></span>`,
+        slotName: 'actions-tab-content',
       },
       {
-        customContent: `<span style="display: inline-flex; align-items: center; gap: 8px;">Notifications<modus-wc-badge color="primary" size="md" variant="counter">5</modus-wc-badge></span>`,
+        slotName: 'notifications-tab-content',
       },
     ],
   },
   parameters: {
     docs: {
       description: {
-        story: `Tabs now include slots, offering a flexible approach for users to add relevant components within the tab for more complex use cases. While our original Tabs component was limited to only labels and icons, the addition of slots provides the freedom to integrate feasible components of choice, such as a status indicator or a notification badge, as a natural part of the tab itself.`,
+        story:
+          'Tabs now include slots, offering a flexible approach for users to add relevant components within the tab for more complex use cases. While our original Tabs component was limited to only labels and icons, the addition of slots provides the freedom to integrate feasible components of choice, such as a status indicator or a notification badge, as a natural part of the tab itself.',
       },
     },
   },
 
-  //prettier-ignore
+  //pretty-ignore
   render: (args) => html`
     <script>
-          args: {
-          tabs: [
-            {
-              icon: 'home',
-              iconPosition: 'left',
-              label: 'Home',
-              customContent: \`<span style="display: inline-flex; align-items: center; gap: 8px; margin: 3px;">
-               <modus-wc-chip aria-label="Chip example" show-remove="false" size="md" variant="filled">
-                <modus-wc-avatar img-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK7LFGf7yRFAGYKTX6KrxHNzsByE8NPZfCrfGkSIytbxkFEY9AYJZESTPIE0tOpfSsEE4&usqp=CAU" alt="Doge the dog"></modus-wc-avatar>profile<modus-wc-icon name="swap" size="xs"></modus-wc-icon>
-      </modus-wc-chip>
-              </span>\`,
-            },
-            {
-              icon: 'clipboard',
-              iconPosition: 'right',
-              label: 'Tasks',
-            },
-            {
-              customContent: \`<span style="display: inline-flex; align-items: center; gap: 8px;">Actions<modus-wc-icon name="warning" variant="solid" color="red" custom-class="warning-icon"></modus-wc-icon><style>
-        .warning-icon {
-          color: red;
-        }</style></span>\`,
-            },
-            {
-              customContent: \`<span style="display: inline-flex; align-items: center; gap: 8px;">Notifications<modus-wc-badge color="primary" size="md" variant="counter">5</modus-wc-badge></span>\`,
-            },
-          ];
+       args: {
+        tabs: [
+          {
+            icon: 'home',
+            iconPosition: 'left',
+            label: 'Home',
+            slotName: 'profile-tab-content',
+          },
+          {
+            icon: 'clipboard',
+            iconPosition: 'right',
+            label: 'Tasks',
+          },
+          {
+            slotName: 'actions-tab-content',
+          },
+          {
+            slotName: 'notifications-tab-content',
+          },
+        ],
+      },
     </script>
     <modus-wc-tabs
       .tabs="${args.tabs}"
@@ -169,6 +156,50 @@ export const CustomContent: Story = {
       active-tab-index="${ifDefined(args.activeTabIndex)}"
       aria-label="Custom tab group"
     >
+      <span
+        slot="profile-tab-content"
+        style="display: inline-flex; align-items: center; gap: 8px; margin: 3px;"
+      >
+        <modus-wc-chip
+          aria-label="Chip example"
+          show-remove="false"
+          size="md"
+          variant="filled"
+        >
+          <modus-wc-avatar
+            img-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK7LFGf7yRFAGYKTX6KrxHNzsByE8NPZfCrfGkSIytbxkFEY9AYJZESTPIE0tOpfSsEE4&usqp=CAU"
+            size="sm"
+            alt="Doge the dog"
+          ></modus-wc-avatar>
+          profile
+          <modus-wc-icon name="swap" size="xs"></modus-wc-icon>
+        </modus-wc-chip>
+      </span>
+      <span
+        slot="actions-tab-content"
+        style="display: inline-flex; align-items: center; gap: 8px;"
+      >
+        Actions
+        <style>
+          .red-icon {
+            color: red;
+          }
+        </style>
+        <modus-wc-icon
+          name="warning"
+          variant="solid"
+          class="red-icon"
+        ></modus-wc-icon>
+      </span>
+      <span
+        slot="notifications-tab-content"
+        style="display: inline-flex; align-items: center; gap: 8px;"
+      >
+        Notifications
+        <modus-wc-badge color="primary" size="md" variant="counter"
+          >5</modus-wc-badge
+        >
+      </span>
     </modus-wc-tabs>
   `,
 };

@@ -33,6 +33,9 @@ export interface ITab {
 
   /** Custom HTML content for the tab header. */
   customContent?: string;
+
+  /** The slot name for custom tab content. */
+  slotName?: string;
 }
 
 /**
@@ -144,8 +147,8 @@ export class ModusWcTabs {
         id={`tab-${index}`}
         onClick={() => this.handleClick(tab, index)}
       >
-        {tab.customContent ? (
-          <span innerHTML={tab.customContent}></span>
+        {tab.slotName ? (
+          <slot name={tab.slotName}></slot>
         ) : (
           renderTabContent(tab)
         )}
