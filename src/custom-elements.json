@@ -3026,7 +3026,7 @@
             {
               "name": "checkbox",
               "fieldName": "checkbox",
-              "description": "If true, renders a checkbox slot at the start of the menu item.",
+              "description": "If true, renders a checkbox at the start of the menu item.",
               "type": {
                 "text": "boolean"
               }
