@@ -48,7 +48,7 @@ exports[`modus-wc-avatar should render with no props 1`] = `
 <modus-wc-avatar>
   <div class="modus-wc-avatar">
     <div class="modus-wc-rounded-full modus-wc-w-16 no-image">
-      <modus-wc-icon aria-label="Avatar image" name="person" size="md" variant="solid"></modus-wc-icon>
+      <modus-wc-icon aria-label="User avatar" name="person" size="md" variant="solid"></modus-wc-icon>
     </div>
   </div>
 </modus-wc-avatar>

@@ -57,13 +57,13 @@ exports[`modus-wc-navbar should render with custom props and slots 1`] = `
           <modus-wc-button>
             <!---->
             <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-circle modus-wc-btn-primary modus-wc-btn-sm user-button" tabindex="0" type="button">
-              <modus-wc-avatar alt="" size="xs"></modus-wc-avatar>
+              <modus-wc-avatar alt="User avatar" size="xs"></modus-wc-avatar>
             </button>
           </modus-wc-button>
           <div class="hidden user">
             <modus-wc-card>
               <div slot="header">
-                <modus-wc-avatar alt=""></modus-wc-avatar>
+                <modus-wc-avatar alt="User avatar"></modus-wc-avatar>
               </div>
               <div slot="title"></div>
               <div></div>
@@ -139,13 +139,13 @@ exports[`modus-wc-navbar should render with no props 1`] = `
           <modus-wc-button>
             <!---->
             <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-circle modus-wc-btn-primary modus-wc-btn-sm user-button" tabindex="0" type="button">
-              <modus-wc-avatar alt="" size="xs"></modus-wc-avatar>
+              <modus-wc-avatar alt="User avatar" size="xs"></modus-wc-avatar>
             </button>
           </modus-wc-button>
           <div class="hidden user">
             <modus-wc-card>
               <div slot="header">
-                <modus-wc-avatar alt=""></modus-wc-avatar>
+                <modus-wc-avatar alt="User avatar"></modus-wc-avatar>
               </div>
               <div slot="title"></div>
               <div></div>

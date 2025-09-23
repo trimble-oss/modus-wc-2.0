@@ -73,8 +73,8 @@ export class ModusWcAvatar {
   }
 
   render() {
-    const altText =
-      this.alt || (this.initials ? this.initials : 'Avatar image');
+    const altText = this.alt || 'User avatar';
+    const initialsAltText = (this.alt || this.initials) ?? 'User avatar';
 
     return (
       <Host>
@@ -83,7 +83,7 @@ export class ModusWcAvatar {
             {this.imgSrc ? (
               <img src={this.imgSrc} alt={altText} />
             ) : this.initials ? (
-              <span class="initials" aria-label={altText}>
+              <span class="initials" aria-label={initialsAltText}>
                 {this.getUserInitials()}
               </span>
             ) : (

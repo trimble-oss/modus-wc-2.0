@@ -610,7 +610,7 @@ export class ModusWcNavbar {
                   variant="borderless"
                 >
                   <modus-wc-avatar
-                    alt={this.userCard?.avatarAlt || ''}
+                    alt={this.userCard?.avatarAlt || 'User avatar'}
                     imgSrc={this.userCard?.avatarSrc}
                     initials={this.userCard?.name}
                     size="xs"
@@ -623,7 +623,7 @@ export class ModusWcNavbar {
                   <modus-wc-card>
                     <div slot="header">
                       <modus-wc-avatar
-                        alt={this.userCard?.avatarAlt || ''}
+                        alt={this.userCard?.avatarAlt || 'User avatar'}
                         imgSrc={this.userCard?.avatarSrc}
                         initials={this.userCard?.name}
                       />
