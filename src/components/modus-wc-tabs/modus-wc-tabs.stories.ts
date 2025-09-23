@@ -35,6 +35,7 @@ const meta: Meta<TabsArgs> = {
             Interface: ITab
             Properties:
             - customClass (string, optional): Custom CSS class for the inner button
+            - customContent (string, optional): Custom HTML content for the tab header
             - disabled (boolean, optional): Whether the tab is disabled
             - icon (string, optional): A Modus Icon name to display
             - iconPosition ('left' | 'right', optional): The position of the icon
@@ -93,15 +94,16 @@ ActiveAndDisabled.args = {
 };
 
 export const CustomContent: Story = {
-  render: (args) => {
-    args.tabs = [
+  ...Template,
+  args: {
+    tabs: [
       {
         icon: 'home',
         iconPosition: 'left',
         label: 'Home',
-        customContent: `<span style="display: inline-flex; align-items: center; gap: 8px;">
+        customContent: `<span style="display: inline-flex; align-items: center; gap: 8px; margin: 3px;">
          <modus-wc-chip aria-label="Chip example" show-remove="false" size="md" variant="filled">
-          <modus-wc-avatar img-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK7LFGf7yRFAGYKTX6KrxHNzsByE8NPZfCrfGkSIytbxkFEY9AYJZESTPIE0tOpfSsEE4&usqp=CAU" alt="Doge the dog"></modus-wc-avatar>profile<modus-wc-icon name="swap" size="xs"></modus-wc-icon>
+          <modus-wc-avatar img-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK7LFGf7yRFAGYKTX6KrxHNzsByE8NPZfCrfGkSIytbxkFEY9AYJZESTPIE0tOpfSsEE4&usqp=CAU" size="sm" alt="Doge the dog"></modus-wc-avatar>profile<modus-wc-icon name="swap" size="xs"></modus-wc-icon>
 </modus-wc-chip>
         </span>`,
       },
@@ -119,19 +121,56 @@ export const CustomContent: Story = {
       {
         customContent: `<span style="display: inline-flex; align-items: center; gap: 8px;">Notifications<modus-wc-badge color="primary" size="md" variant="counter">5</modus-wc-badge></span>`,
       },
-    ];
-    // prettier-ignore
-    return html`
-<modus-wc-tabs
-  .tabs="${args.tabs}"
-  size="${ifDefined(args.size)}"
-  tab-style="${ifDefined(args['tab-style'])}"
-  active-tab-index="${ifDefined(args.activeTabIndex)}"
-  aria-label="Tab group"
->
-</modus-wc-tabs>
-    `;
+    ],
   },
+  parameters: {
+    docs: {
+      description: {
+        story: `Tabs now include slots, offering a flexible approach for users to add relevant components within the tab for more complex use cases. While our original Tabs component was limited to only labels and icons, the addition of slots provides the freedom to integrate feasible components of choice, such as a status indicator or a notification badge, as a natural part of the tab itself.`,
+      },
+    },
+  },
+
+  //prettier-ignore
+  render: (args) => html`
+    <script>
+          args: {
+          tabs: [
+            {
+              icon: 'home',
+              iconPosition: 'left',
+              label: 'Home',
+              customContent: \`<span style="display: inline-flex; align-items: center; gap: 8px; margin: 3px;">
+               <modus-wc-chip aria-label="Chip example" show-remove="false" size="md" variant="filled">
+                <modus-wc-avatar img-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK7LFGf7yRFAGYKTX6KrxHNzsByE8NPZfCrfGkSIytbxkFEY9AYJZESTPIE0tOpfSsEE4&usqp=CAU" alt="Doge the dog"></modus-wc-avatar>profile<modus-wc-icon name="swap" size="xs"></modus-wc-icon>
+      </modus-wc-chip>
+              </span>\`,
+            },
+            {
+              icon: 'clipboard',
+              iconPosition: 'right',
+              label: 'Tasks',
+            },
+            {
+              customContent: \`<span style="display: inline-flex; align-items: center; gap: 8px;">Actions<modus-wc-icon name="warning" variant="solid" color="red" custom-class="warning-icon"></modus-wc-icon><style>
+        .warning-icon {
+          color: red;
+        }</style></span>\`,
+            },
+            {
+              customContent: \`<span style="display: inline-flex; align-items: center; gap: 8px;">Notifications<modus-wc-badge color="primary" size="md" variant="counter">5</modus-wc-badge></span>\`,
+            },
+          ];
+    </script>
+    <modus-wc-tabs
+      .tabs="${args.tabs}"
+      size="${ifDefined(args.size)}"
+      tab-style="${ifDefined(args['tab-style'])}"
+      active-tab-index="${ifDefined(args.activeTabIndex)}"
+      aria-label="Custom tab group"
+    >
+    </modus-wc-tabs>
+  `,
 };
 
 export const Icons: Story = {
@@ -225,6 +264,7 @@ export interface Tab {
 \`\`\`typescript
 export interface ITab {
   customClass?: string;
+  customContent?: string;
   disabled?: boolean;
   icon?: string;
   iconPosition?: 'left' | 'right';
