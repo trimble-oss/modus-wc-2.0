@@ -189,15 +189,13 @@ describe('modus-wc-tabs', () => {
 
     await page.waitForChanges();
 
-    // Instead of checking for the specific slot element, verify that
-    // the button was rendered and has the correct structure
+    // Instead of checking for the specific slot element, verify that the button was rendered and has the correct structure
     const firstTab = page.root!.querySelector(
       'div[role="tablist"] > button[role="tab"]:first-child'
     );
     expect(firstTab).not.toBeNull();
 
     // Check that the innerHTML of the first tab contains a slot element
-    // This is more reliable than looking for the exact DOM structure
     const tabHtml = page.root?.innerHTML;
     expect(tabHtml).toContain('custom-tab-slot-1');
 
