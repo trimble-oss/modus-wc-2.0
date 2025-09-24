@@ -147,8 +147,13 @@ export const CustomContent: Story = {
             slotName: 'notifications-tab-content',
           },
         ],
-      },
+      };
     </script>
+    <style>
+      .red-icon {
+        color: red;
+      }
+    </style>
     <modus-wc-tabs
       .tabs="${args.tabs}"
       size="${ifDefined(args.size)}"
@@ -180,15 +185,10 @@ export const CustomContent: Story = {
         style="display: inline-flex; align-items: center; gap: 8px;"
       >
         Actions
-        <style>
-          .red-icon {
-            color: red;
-          }
-        </style>
         <modus-wc-icon
           name="warning"
           variant="solid"
-          class="red-icon"
+          custom-class="red-icon"
         ></modus-wc-icon>
       </span>
       <span
@@ -295,7 +295,6 @@ export interface Tab {
 \`\`\`typescript
 export interface ITab {
   customClass?: string;
-  customContent?: string;
   disabled?: boolean;
   icon?: string;
   iconPosition?: 'left' | 'right';

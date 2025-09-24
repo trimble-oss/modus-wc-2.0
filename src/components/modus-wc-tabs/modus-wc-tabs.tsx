@@ -31,9 +31,6 @@ export interface ITab {
   /** The content to display in the tab. */
   label?: string;
 
-  /** Custom HTML content for the tab header. */
-  customContent?: string;
-
   /** The slot name for custom tab content. */
   slotName?: string;
 }
