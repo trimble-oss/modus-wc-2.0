@@ -35,7 +35,6 @@ const meta: Meta<TabsArgs> = {
             Interface: ITab
             Properties:
             - customClass (string, optional): Custom CSS class for the inner button
-            - customContent (string, optional): Custom HTML content for the tab header
             - disabled (boolean, optional): Whether the tab is disabled
             - icon (string, optional): A Modus Icon name to display
             - iconPosition ('left' | 'right', optional): The position of the icon
