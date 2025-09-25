@@ -49,10 +49,8 @@ modus-wc-date {
   }
 
   .calendar-container {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
+    position: fixed;
+    z-index: 9999;
     background: var(--modus-wc-color-white);
     border: 1px solid var(--modus-wc-color-gray-4);
     border-radius: var(--modus-wc-border-radius-md);
@@ -157,9 +155,27 @@ modus-wc-date {
             }
           }
 
-          &.blank {
-            cursor: default;
-            pointer-events: none;
+          &.other-month {
+            color: var(--modus-wc-color-gray-4);
+            
+            &:hover {
+              background-color: var(--modus-wc-color-gray-2);
+              color: var(--modus-wc-color-gray-6);
+            }
+          }
+
+          &.disabled {
+            color: var(--modus-wc-color-gray-4);
+            cursor: not-allowed;
+
+            &:hover {
+              background-color: transparent;
+              color: var(--modus-wc-color-gray-4);
+            }
+
+            &:focus {
+              border: none;
+            }
           }
         }
       }

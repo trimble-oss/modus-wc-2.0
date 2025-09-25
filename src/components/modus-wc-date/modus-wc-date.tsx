@@ -9,11 +9,27 @@ import {
   Prop,
   State,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-date.tailwind';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import DatePickerCalendar from './utils/calendar';
+
+const MONTH_SHORT_NAMES = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
 
 /**
  * A customizable date picker component used to create date inputs.
@@ -30,6 +46,8 @@ export class ModusWcDate {
   private popperInstance: PopperInstance | null = null;
   private inputRef?: HTMLInputElement;
   private calendarRef?: HTMLElement;
+  private minDate?: Date;
+  private maxDate?: Date;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -91,26 +109,78 @@ export class ModusWcDate {
   /** Event emitted when the input gains focus. */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
+  @Watch('min')
+  handleMinChange(newValue?: string) {
+    this.minDate = this.parseISODate(newValue);
+    if (this.maxDate && this.minDate && this.minDate > this.maxDate) {
+      this.maxDate = this.cloneDate(this.minDate);
+    }
+    this.ensureValueWithinBounds();
+
+    this.ensureCalendarWithinBounds();
+  }
+
+  @Watch('max')
+  handleMaxChange(newValue?: string) {
+    this.maxDate = this.parseISODate(newValue);
+    if (this.minDate && this.maxDate && this.maxDate < this.minDate) {
+      this.minDate = this.cloneDate(this.maxDate);
+    }
+    this.ensureValueWithinBounds();
+    this.ensureCalendarWithinBounds();
+  }
+
+  @Watch('value')
+  handleValueChange(newValue?: string) {
+    if (newValue === undefined) {
+      return;
+    }
+
+    if (!newValue) {
+      if (this.inputRef) {
+        this.inputRef.value = '';
+      }
+      return;
+    }
+
+    const parsed = this.parseISODate(newValue);
+    if (!parsed) {
+      if (this.value) {
+        this.value = '';
+      }
+      return;
+    }
+
+    const clamped = this.clampDate(parsed);
+    const formatted = this.formatISODate(clamped);
+
+    if (newValue !== formatted) {
+      this.value = formatted;
+      return;
+    }
+
+    if (this.inputRef) {
+      this.inputRef.value = formatted;
+    }
+
+    this.ensureCalendarWithinBounds(clamped);
+  }
+
   componentWillLoad() {
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Date input';
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+
+    this.handleMinChange(this.min);
+    this.handleMaxChange(this.max);
+    this.handleValueChange(this.value);
+    this.ensureCalendarWithinBounds();
   }
 
   componentDidUpdate() {
     if (this.showCalendar && this.inputRef && this.calendarRef) {
       this.setupPopper();
-      // Navigate calendar to the selected date if one exists
-      if (this.value) {
-        const selectedDate = new Date(this.value);
-        if (!isNaN(selectedDate.getTime())) {
-          this.calendar.gotoDate(
-            selectedDate.getFullYear(),
-            selectedDate.getMonth()
-          );
-        }
-      }
     } else if (this.popperInstance) {
       this.popperInstance.destroy();
       this.popperInstance = null;
@@ -145,6 +215,7 @@ export class ModusWcDate {
   }
 
   private handleBlur = (event: FocusEvent) => {
+    this.syncValueFromInput();
     this.inputBlur.emit(event);
   };
 
@@ -163,6 +234,7 @@ export class ModusWcDate {
 
     this.popperInstance = createPopper(this.inputRef!, this.calendarRef!, {
       placement: 'bottom-start',
+      strategy: 'fixed',
       modifiers: [
         {
           name: 'offset',
@@ -182,18 +254,37 @@ export class ModusWcDate {
 
   private toggleCalendar = () => {
     this.showCalendar = !this.showCalendar;
-  };
 
-  private handleCalendarIconClick = () => {
-    this.toggleCalendar();
+    // If opening the calendar and there's a selected date, navigate to it
+    if (this.showCalendar) {
+      const selectedDate = this.parseISODate(this.value);
+      this.ensureCalendarWithinBounds(
+        selectedDate || this.minDate || this.maxDate
+      );
+    }
   };
 
   private handleDateSelect = (date: Date) => {
+    if (this.isDateDisabled(date)) {
+      return;
+    }
+
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
 
     this.value = `${year}-${month}-${day}`;
+
+    // If the selected date is from a different month, navigate to that month
+    if (
+      date.getMonth() !== this.calendar.selectedMonth ||
+      date.getFullYear() !== this.calendar.selectedYear
+    ) {
+      const newCalendar = new DatePickerCalendar();
+      newCalendar.gotoDate(date.getFullYear(), date.getMonth());
+      this.calendar = newCalendar;
+    }
+
     this.showCalendar = false;
 
     // Emit change event
@@ -204,12 +295,12 @@ export class ModusWcDate {
   };
 
   private addMonthOffset = (offset: number) => {
-    const newCalendar = new DatePickerCalendar();
-    newCalendar.gotoDate(
+    const target = new Date(
       this.calendar.selectedYear,
-      this.calendar.selectedMonth + offset
+      this.calendar.selectedMonth + offset,
+      1
     );
-    this.calendar = newCalendar;
+    this.setCalendarMonth(target.getFullYear(), target.getMonth());
   };
 
   private handleMonthChange = (event: CustomEvent<InputEvent>) => {
@@ -227,10 +318,11 @@ export class ModusWcDate {
       ? parseInt(yearSelect.value || '0', 10)
       : this.calendar.selectedYear;
 
-    // Create new calendar and immediately set the correct date
-    const newCalendar = new DatePickerCalendar();
-    newCalendar.gotoDate(currentYear, newMonth);
-    this.calendar = newCalendar;
+    if (Number.isNaN(newMonth)) {
+      return;
+    }
+
+    this.setCalendarMonth(currentYear, newMonth);
   };
 
   private handleYearChange = (event: CustomEvent<InputEvent>) => {
@@ -248,13 +340,18 @@ export class ModusWcDate {
       ? parseInt(monthSelect.value || '0', 10)
       : this.calendar.selectedMonth;
 
-    // Create new calendar and immediately set the correct date
-    const newCalendar = new DatePickerCalendar();
-    newCalendar.gotoDate(newYear, currentMonth);
-    this.calendar = newCalendar;
+    if (Number.isNaN(newYear)) {
+      return;
+    }
+
+    this.setCalendarMonth(newYear, currentMonth);
   };
 
   private handleDateKeyDown = (event: KeyboardEvent, date: Date) => {
+    if (this.isDateDisabled(date)) {
+      return;
+    }
+
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       this.handleDateSelect(date);
@@ -281,20 +378,10 @@ export class ModusWcDate {
     }
 
     // Generate month options
-    const monthOptions = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ].map((month, index) => ({ value: index.toString(), label: month }));
+    const monthOptions = MONTH_SHORT_NAMES.map((month, index) => ({
+      value: index.toString(),
+      label: month,
+    }));
 
     return (
       <div class="calendar-header">
@@ -312,7 +399,7 @@ export class ModusWcDate {
 
         <div class="calendar-selects">
           <modus-wc-select
-            key={`month-${currentMonth}`}
+            key={`month-${currentYear}-${currentMonth}`}
             class="month-select"
             value={currentMonth.toString()}
             options={monthOptions}
@@ -349,13 +436,7 @@ export class ModusWcDate {
   private renderCalendarBody() {
     const today = new Date();
     const selectedDate = this.value ? new Date(this.value) : null;
-
-    // Get day of the week and prepare blank cells to render the calendar dates properly
-    const firstDay = new Date(
-      this.calendar.selectedYear,
-      this.calendar.selectedMonth
-    )?.getDay();
-    const blankDatesArr = new Array(firstDay).fill(0);
+    const currentMonth = this.calendar.selectedMonth;
 
     return (
       <div class="calendar-body">
@@ -365,11 +446,6 @@ export class ModusWcDate {
           })}
         </div>
         <div class="calendar-dates">
-          {blankDatesArr &&
-            blankDatesArr.length > 0 &&
-            blankDatesArr.map(() => {
-              return <div class="calendar-day blank"></div>;
-            })}
           {this.calendar.dates.map((date) => {
             if (!date) {
               return null;
@@ -379,6 +455,8 @@ export class ModusWcDate {
             const isSelected =
               (selectedDate && this.compareDate(date, selectedDate) === 0) ||
               false;
+            const isCurrentMonth = date.getMonth() === currentMonth;
+            const isDisabled = this.isDateDisabled(date);
 
             return (
               <button
@@ -387,10 +465,14 @@ export class ModusWcDate {
                   'calendar-day': true,
                   'current-day': isToday,
                   selected: isSelected,
+                  'current-month': isCurrentMonth,
+                  'other-month': !isCurrentMonth,
+                  disabled: isDisabled,
                 }}
+                disabled={isDisabled}
                 onClick={() => this.handleDateSelect(date)}
                 onKeyDown={(e) => this.handleDateKeyDown(e, date)}
-                tabIndex={0}
+                tabIndex={isDisabled ? -1 : 0}
               >
                 {date.getDate()}
               </button>
@@ -423,6 +505,170 @@ export class ModusWcDate {
     }
 
     return date1.getDate() - date2.getDate();
+  }
+
+  private parseISODate(value?: string): Date | undefined {
+    if (!value) {
+      return undefined;
+    }
+
+    const [yearStr, monthStr, dayStr] = value.split('-');
+    if (!yearStr || !monthStr || !dayStr) {
+      return undefined;
+    }
+
+    const year = Number(yearStr);
+    const month = Number(monthStr) - 1;
+    const day = Number(dayStr);
+
+    if (Number.isNaN(year) || Number.isNaN(month) || Number.isNaN(day)) {
+      return undefined;
+    }
+
+    const date = new Date(year, month, day);
+
+    if (
+      date.getFullYear() !== year ||
+      date.getMonth() !== month ||
+      date.getDate() !== day
+    ) {
+      return undefined;
+    }
+
+    return this.cloneDate(date);
+  }
+
+  private formatISODate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  private cloneDate(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  private clampDate(date: Date): Date {
+    let result = this.cloneDate(date);
+
+    if (this.minDate && result < this.minDate) {
+      result = this.cloneDate(this.minDate);
+    }
+
+    if (this.maxDate && result > this.maxDate) {
+      result = this.cloneDate(this.maxDate);
+    }
+
+    return result;
+  }
+
+  private isDateDisabled(date: Date): boolean {
+    if (this.minDate && date < this.minDate) {
+      return true;
+    }
+
+    if (this.maxDate && date > this.maxDate) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private ensureValueWithinBounds() {
+    if (!this.value) {
+      return;
+    }
+
+    const parsed = this.parseISODate(this.value);
+    if (!parsed) {
+      this.value = '';
+      return;
+    }
+
+    const clamped = this.clampDate(parsed);
+    const formatted = this.formatISODate(clamped);
+
+    if (formatted !== this.value) {
+      this.value = formatted;
+    }
+  }
+
+  private ensureCalendarWithinBounds(referenceDate?: Date) {
+    const target = referenceDate
+      ? new Date(referenceDate.getFullYear(), referenceDate.getMonth(), 1)
+      : new Date(this.calendar.selectedYear, this.calendar.selectedMonth, 1);
+
+    const clamped = this.clampMonth(target);
+
+    if (
+      clamped.getFullYear() !== this.calendar.selectedYear ||
+      clamped.getMonth() !== this.calendar.selectedMonth
+    ) {
+      this.setCalendarMonth(clamped.getFullYear(), clamped.getMonth());
+    }
+  }
+
+  private clampMonth(date: Date): Date {
+    let result = new Date(date.getFullYear(), date.getMonth(), 1);
+    const minMonth = this.getMinMonthDate();
+    const maxMonth = this.getMaxMonthDate();
+
+    if (minMonth && result < minMonth) {
+      result = new Date(minMonth.getFullYear(), minMonth.getMonth(), 1);
+    }
+
+    if (maxMonth && result > maxMonth) {
+      result = new Date(maxMonth.getFullYear(), maxMonth.getMonth(), 1);
+    }
+
+    return result;
+  }
+
+  private getMinMonthDate(): Date | undefined {
+    return this.minDate
+      ? new Date(this.minDate.getFullYear(), this.minDate.getMonth(), 1)
+      : undefined;
+  }
+
+  private getMaxMonthDate(): Date | undefined {
+    return this.maxDate
+      ? new Date(this.maxDate.getFullYear(), this.maxDate.getMonth(), 1)
+      : undefined;
+  }
+
+  private setCalendarMonth(year: number, month: number) {
+    const clamped = this.clampMonth(new Date(year, month, 1));
+    const newCalendar = new DatePickerCalendar();
+    newCalendar.gotoDate(clamped.getFullYear(), clamped.getMonth());
+    this.calendar = newCalendar;
+  }
+
+  private syncValueFromInput() {
+    if (!this.inputRef) {
+      return;
+    }
+
+    const value = this.inputRef.value.trim();
+
+    if (!value) {
+      if (this.value) {
+        this.value = '';
+      }
+      return;
+    }
+
+    const parsed = this.parseISODate(value);
+
+    if (!parsed) {
+      this.inputRef.value = this.value || '';
+      return;
+    }
+
+    const clamped = this.clampDate(parsed);
+    const formatted = this.formatISODate(clamped);
+    this.value = formatted;
+    this.inputRef.value = formatted;
   }
 
   render() {
@@ -458,7 +704,7 @@ export class ModusWcDate {
           <button
             type="button"
             class="calendar-icon-button"
-            onClick={this.handleCalendarIconClick}
+            onClick={() => this.toggleCalendar()}
             aria-label="Open calendar"
           >
             <modus-wc-icon name="calendar" size="sm" />

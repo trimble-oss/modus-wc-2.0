@@ -638,12 +638,62 @@ export const InlineEditing: Story = {
           return span;
         },
       },
+      {
+        id: 'dueDate',
+        header: 'Due Date',
+        accessor: 'dueDate',
+        editor: 'custom',
+        customEditorRenderer: (value, onCommit) => {
+          const container = document.createElement('div');
+          container.style.width = '100%';
+
+          const datePicker = document.createElement('modus-wc-date');
+          datePicker.value = value as string;
+          datePicker.style.width = '100%';
+          datePicker.bordered = false;
+
+          const handleChange = (e: Event) => {
+            const target = e.target as HTMLInputElement;
+            onCommit(target.value);
+          };
+
+          datePicker.addEventListener('change', handleChange);
+          container.appendChild(datePicker);
+
+          setTimeout(() => {
+            const input = datePicker.querySelector('input');
+            input?.focus();
+          }, 0);
+
+          return container;
+        },
+        cellRenderer: (value) => {
+          if (!value) return '-';
+          const date = new Date(value as string);
+          return date.toLocaleDateString();
+        },
+      },
     ];
 
     const data = [
-      { id: '1', name: 'John Doe', status: 'Active' },
-      { id: '2', name: 'Jane Smith', status: 'Inactive' },
-      { id: '3', name: 'Bob Johnson', status: 'Pending' },
+      {
+        id: '1',
+        name: 'John Doe',
+        status: 'Active',
+        dueDate: '2025-10-15',
+      },
+      {
+        id: '2',
+        name: 'Jane Smith',
+        status: 'Inactive',
+        dueDate: '2025-11-20',
+      },
+      {
+        id: '3',
+        name: 'Bob Johnson',
+        status: 'Pending',
+        dueDate: '2025-12-05',
+      },
     ];
 
     return html`
@@ -748,12 +798,62 @@ export const InlineEditing: Story = {
               return span;
             },
           },
+          {
+            id: 'dueDate',
+            header: 'Due Date',
+            accessor: 'dueDate',
+            editor: 'custom',
+            customEditorRenderer: (value, onCommit) => {
+              const container = document.createElement('div');
+              container.style.width = '100%';
+
+              const datePicker = document.createElement('modus-wc-date');
+              datePicker.value = value as string;
+              datePicker.style.width = '100%';
+              datePicker.bordered = false;
+
+              const handleChange = (e: Event) => {
+                const target = e.target as HTMLInputElement;
+                onCommit(target.value);
+              };
+
+              datePicker.addEventListener('change', handleChange);
+              container.appendChild(datePicker);
+
+              setTimeout(() => {
+                const input = datePicker.querySelector('input');
+                input?.focus();
+              }, 0);
+
+              return container;
+            },
+            cellRenderer: (value) => {
+              if (!value) return '-';
+              const date = new Date(value as string);
+              return date.toLocaleDateString();
+            },
+          },
         ];
 
         const data = [
-          { id: '1', name: 'John Doe', status: 'Active' },
-          { id: '2', name: 'Jane Smith', status: 'Inactive' },
-          { id: '3', name: 'Bob Johnson', status: 'Pending' },
+          {
+            id: '1',
+            name: 'John Doe',
+            status: 'Active',
+            dueDate: '2025-10-15',
+          },
+          {
+            id: '2',
+            name: 'Jane Smith',
+            status: 'Inactive',
+            dueDate: '2025-11-20',
+          },
+          {
+            id: '3',
+            name: 'Bob Johnson',
+            status: 'Pending',
+            dueDate: '2025-12-05',
+          },
         ];
       </script>
       <modus-wc-table

@@ -1,18 +1,3 @@
-const MONTH_NAMES = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
 export default class DatePickerCalendar {
   private currentDate: Date = new Date();
   private currentMonthDates: Array<Date> = [];
@@ -27,14 +12,6 @@ export default class DatePickerCalendar {
       const today = new Date();
       this.gotoDate(today.getFullYear(), today.getMonth());
     }
-  }
-
-  get year(): string {
-    return this.currentDate.getFullYear().toString();
-  }
-
-  get month(): string {
-    return MONTH_NAMES[this.currentDate.getMonth()];
   }
 
   get selectedYear(): number {
@@ -53,14 +30,6 @@ export default class DatePickerCalendar {
     this.gotoDate(
       this.currentDate.getFullYear(),
       this.currentDate.getMonth() + offset
-    );
-    return this;
-  }
-
-  addYearOffset(offset: number): DatePickerCalendar {
-    this.gotoDate(
-      this.currentDate.getFullYear() + offset,
-      this.currentDate.getMonth()
     );
     return this;
   }
@@ -99,10 +68,18 @@ export default class DatePickerCalendar {
     const year = this.currentDate.getFullYear();
     const month = this.currentDate.getMonth();
 
-    const date = new Date(year, month, 1);
-    while (date.getMonth() === month) {
-      dates.push(new Date(date));
-      date.setDate(date.getDate() + 1);
+    // Get first day of current month and calculate starting date
+    const firstDayOfMonth = new Date(year, month, 1);
+    const firstDayOfWeek = firstDayOfMonth.getDay();
+
+    // Start from the previous month's dates to fill the first week
+    const startDate = new Date(year, month, 1 - firstDayOfWeek);
+
+    // Generate 42 dates (6 weeks * 7 days) to ensure consistent 6-row layout
+    for (let i = 0; i < 42; i++) {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
+      dates.push(date);
     }
 
     this.currentMonthDates = dates;
