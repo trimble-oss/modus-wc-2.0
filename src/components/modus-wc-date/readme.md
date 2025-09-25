@@ -44,14 +44,22 @@ Adheres to WCAG 2.2 standards.
 
 ### Depends on
 
+- [modus-wc-button](../modus-wc-button)
+- [modus-wc-icon](../modus-wc-icon)
+- [modus-wc-select](../modus-wc-select)
 - [modus-wc-input-label](../modus-wc-input-label)
 - [modus-wc-input-feedback](../modus-wc-input-feedback)
 
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-date --> modus-wc-button
+  modus-wc-date --> modus-wc-icon
+  modus-wc-date --> modus-wc-select
   modus-wc-date --> modus-wc-input-label
   modus-wc-date --> modus-wc-input-feedback
+  modus-wc-select --> modus-wc-input-label
+  modus-wc-select --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon
   style modus-wc-date fill:#f9f,stroke:#333,stroke-width:4px
 ```
