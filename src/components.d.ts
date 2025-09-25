@@ -429,6 +429,10 @@ export namespace Components {
          */
         "label"?: string;
         /**
+          * The shape of the chip: 'rounded' (default) or 'circular'.
+         */
+        "shape"?: 'rounded' | 'circular';
+        /**
           * Whether to show the close icon on right side of the chip.
          */
         "showRemove"?: boolean;
@@ -750,7 +754,7 @@ export namespace Components {
     interface ModusWcMenuItem {
         "bordered"?: boolean;
         /**
-          * If true, renders a checkbox slot at the start of the menu item.
+          * If true, renders a checkbox at the start of the menu item.
          */
         "checkbox"?: boolean;
         /**
@@ -3199,6 +3203,10 @@ declare namespace LocalJSX {
          */
         "onChipRemove"?: (event: ModusWcChipCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * The shape of the chip: 'rounded' (default) or 'circular'.
+         */
+        "shape"?: 'rounded' | 'circular';
+        /**
           * Whether to show the close icon on right side of the chip.
          */
         "showRemove"?: boolean;
@@ -3544,7 +3552,7 @@ declare namespace LocalJSX {
     interface ModusWcMenuItem {
         "bordered"?: boolean;
         /**
-          * If true, renders a checkbox slot at the start of the menu item.
+          * If true, renders a checkbox at the start of the menu item.
          */
         "checkbox"?: boolean;
         /**

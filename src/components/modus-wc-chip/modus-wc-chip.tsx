@@ -44,6 +44,9 @@ export class ModusWcChip {
   /** Whether to show the close icon on right side of the chip. */
   @Prop() showRemove?: boolean = false;
 
+  /** The shape of the chip: 'rounded' (default) or 'circular'. */
+  @Prop() shape?: 'rounded' | 'circular' = 'rounded';
+
   /** The size of the chip. */
   @Prop() size?: ModusSize = 'md';
 
@@ -100,6 +103,7 @@ export class ModusWcChip {
       active: this.active,
       disabled: this.disabled,
       hasError: this.hasError,
+      shape: this.shape,
       size: this.size,
       variant: this.variant,
     });

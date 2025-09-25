@@ -4,12 +4,14 @@ export const convertPropsToClasses = ({
   active,
   disabled,
   hasError,
+  shape,
   size,
   variant,
 }: {
   active?: boolean;
   disabled?: boolean;
   hasError?: boolean;
+  shape?: 'rounded' | 'circular';
   size?: ModusSize;
   variant?: 'filled' | 'outline';
 }): string => {
@@ -35,6 +37,14 @@ export const convertPropsToClasses = ({
     switch (variant) {
       case 'outline':
         classes = `${classes} modus-wc-chip--outline`;
+        break;
+    }
+  }
+
+  if (shape) {
+    switch (shape) {
+      case 'circular':
+        classes = `${classes} modus-wc-chip--circular`;
         break;
     }
   }

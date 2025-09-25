@@ -12,6 +12,11 @@ modus-wc-chip .modus-wc-chip {
 
     --rounded-btn: #{var(--modus-wc-border-radius-chip)};
 
+    // Circular shape - fully rounded corners
+    &.modus-wc-chip--circular {
+      --rounded-btn: var(--modus-wc-border-radius-3xl);
+    }
+
     @include common-states;
     @include sizing-tokens;
 
