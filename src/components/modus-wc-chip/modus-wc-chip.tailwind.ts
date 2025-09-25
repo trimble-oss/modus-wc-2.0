@@ -11,7 +11,7 @@ export const convertPropsToClasses = ({
   active?: boolean;
   disabled?: boolean;
   hasError?: boolean;
-  shape?: 'rounded' | 'circular';
+  shape?: 'rectangle' | 'circle';
   size?: ModusSize;
   variant?: 'filled' | 'outline';
 }): string => {
@@ -33,8 +33,8 @@ export const convertPropsToClasses = ({
     classes = `${classes} modus-wc-btn-${size}`;
   }
 
-  if (shape === 'circular') {
-    classes = `${classes} modus-wc-chip--circular`;
+  if (shape === 'circle') {
+    classes = `${classes} modus-wc-chip--circle`;
   }
 
   if (variant) {

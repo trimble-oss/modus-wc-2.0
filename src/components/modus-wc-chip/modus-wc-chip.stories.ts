@@ -10,7 +10,7 @@ interface ChipArgs {
   disabled?: boolean;
   'has-error'?: boolean;
   label: string;
-  shape?: 'rounded' | 'circular';
+  shape?: 'rectangle' | 'circle';
   'show-remove'?: boolean;
   size: ModusSize;
   variant: 'filled' | 'outline';
@@ -22,14 +22,14 @@ const meta: Meta<ChipArgs> = {
   args: {
     label: 'Chip',
     'show-remove': true,
-    shape: 'rounded',
+    shape: 'rectangle',
     size: 'md',
     variant: 'filled',
   },
   argTypes: {
     shape: {
       control: { type: 'select' },
-      options: ['rounded', 'circular'],
+      options: ['rectangle', 'circle'],
     },
     size: {
       control: { type: 'select' },
@@ -163,6 +163,29 @@ export const Composable: Story = {
   },
 };
 
+export const ShapeVariants: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+      <div style="display: flex; gap: 16px;">
+        <modus-wc-chip
+          aria-label="Rectangle chip"
+          label="Rectangle"
+          shape="rectangle"
+          show-remove
+        ></modus-wc-chip>
+
+        <modus-wc-chip
+          aria-label="Circle chip"
+          label="Circle"
+          shape="circle"
+          show-remove
+        ></modus-wc-chip>
+      </div>
+    `;
+  },
+};
+
 export const Migration: Story = {
   parameters: {
     docs: {
@@ -192,7 +215,7 @@ export const Migration: Story = {
 | show-close     | show-remove |                                                   |
 | size           | size        | \`medium\` → \`md\`, \`small\` → \`sm\`           |
 | value          | label       |                                                   |
-|                | shape       | New in 2.0: \`rounded\` (default), \`circular\` |
+|                | shape       | New in 2.0: \`rectangle\` (default), \`circle\` |
 
 #### Event Mapping
 
