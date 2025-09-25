@@ -33,18 +33,14 @@ export const convertPropsToClasses = ({
     classes = `${classes} modus-wc-btn-${size}`;
   }
 
+  if (shape === 'circular') {
+    classes = `${classes} modus-wc-chip--circular`;
+  }
+
   if (variant) {
     switch (variant) {
       case 'outline':
         classes = `${classes} modus-wc-chip--outline`;
-        break;
-    }
-  }
-
-  if (shape) {
-    switch (shape) {
-      case 'circular':
-        classes = `${classes} modus-wc-chip--circular`;
         break;
     }
   }
