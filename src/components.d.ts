@@ -223,7 +223,9 @@ export namespace Components {
         "value": string;
     }
     /**
-     * A customizable avatar component used to create avatars with different images.
+     * A customizable avatar component used to create avatars with different images or user initials.
+     * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+     * The component will extract the first letter of each word in the initials string.
      */
     interface ModusWcAvatar {
         /**
@@ -238,6 +240,10 @@ export namespace Components {
           * The location of the image.
          */
         "imgSrc": string;
+        /**
+          * The initials to display when no image is provided.
+         */
+        "initials"?: string;
         /**
           * The shape of the avatar.
          */
@@ -1991,7 +1997,9 @@ declare global {
         new (): HTMLModusWcAutocompleteElement;
     };
     /**
-     * A customizable avatar component used to create avatars with different images.
+     * A customizable avatar component used to create avatars with different images or user initials.
+     * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+     * The component will extract the first letter of each word in the initials string.
      */
     interface HTMLModusWcAvatarElement extends Components.ModusWcAvatar, HTMLStencilElement {
     }
@@ -2969,7 +2977,9 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
-     * A customizable avatar component used to create avatars with different images.
+     * A customizable avatar component used to create avatars with different images or user initials.
+     * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+     * The component will extract the first letter of each word in the initials string.
      */
     interface ModusWcAvatar {
         /**
@@ -2984,6 +2994,10 @@ declare namespace LocalJSX {
           * The location of the image.
          */
         "imgSrc"?: string;
+        /**
+          * The initials to display when no image is provided.
+         */
+        "initials"?: string;
         /**
           * The shape of the avatar.
          */
@@ -4900,7 +4914,9 @@ declare module "@stencil/core" {
              */
             "modus-wc-autocomplete": LocalJSX.ModusWcAutocomplete & JSXBase.HTMLAttributes<HTMLModusWcAutocompleteElement>;
             /**
-             * A customizable avatar component used to create avatars with different images.
+             * A customizable avatar component used to create avatars with different images or user initials.
+             * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+             * The component will extract the first letter of each word in the initials string.
              */
             "modus-wc-avatar": LocalJSX.ModusWcAvatar & JSXBase.HTMLAttributes<HTMLModusWcAvatarElement>;
             /**
