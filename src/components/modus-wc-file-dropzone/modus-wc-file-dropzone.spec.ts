@@ -17,20 +17,4 @@ describe('modus-wc-file-dropzone', () => {
     });
     expect(page.root).toMatchSnapshot();
   });
-
-  it('should render with multiple prop', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcFileDropzone],
-      html: '<modus-wc-file-dropzone multiple></modus-wc-file-dropzone>',
-    });
-    expect(page.root).toMatchSnapshot();
-  });
-
-  it('should render with label prop', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcFileDropzone],
-      html: '<modus-wc-file-dropzone label="Choose file"></modus-wc-file-dropzone>',
-    });
-    expect(page.root).toMatchSnapshot();
-  });
 });

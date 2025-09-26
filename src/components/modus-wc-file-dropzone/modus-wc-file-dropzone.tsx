@@ -1,12 +1,12 @@
 import {
   Component,
   Element,
-  Event,
   EventEmitter,
   h,
   Host,
   Prop,
   State,
+  Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-file-dropzone.tailwind';
 
@@ -29,17 +29,13 @@ export class ModusWcFileDropzone {
   /** Disable the file input */
   @Prop() disabled?: boolean;
 
-  /** Allow multiple file selection */
-  @Prop() multiple?: boolean;
-
-  /** Label to display for the file input */
-  @Prop() label?: string;
-
   /** Event emitted when files are selected */
-  @Event() fileSelect!: EventEmitter<FileList>;
+  @StencilEvent() fileSelect!: EventEmitter<FileList>;
 
   handleFileChange(event: Event) {
     const files = (event.target as HTMLInputElement).files;
+
+    console.log('Files selected:', files);
     if (files) {
       this.fileSelect.emit(files);
     }
@@ -50,7 +46,6 @@ export class ModusWcFileDropzone {
 
     const propClasses = convertPropsToClasses({
       disabled: this.disabled,
-      multiple: this.multiple,
     });
 
     // The order CSS classes are added matters to CSS specificity
@@ -113,7 +108,6 @@ export class ModusWcFileDropzone {
             type="file"
             class={this.getClasses()}
             disabled={this.disabled}
-            multiple={this.multiple}
             onChange={(event) => this.handleFileChange(event)}
           />
           <div

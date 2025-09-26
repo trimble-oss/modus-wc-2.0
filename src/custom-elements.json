@@ -2666,6 +2666,15 @@
               ]
             },
             {
+              "kind": "field",
+              "name": "isDraggingOver",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tracks if files are being dragged over the dropzone"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -2678,27 +2687,12 @@
               "type": {
                 "text": "boolean"
               }
-            },
-            {
-              "name": "label",
-              "fieldName": "label",
-              "description": "Label to display for the file input",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "name": "multiple",
-              "fieldName": "multiple",
-              "description": "Allow multiple file selection",
-              "type": {
-                "text": "boolean"
-              }
             }
           ],
           "tagName": "modus-wc-file-dropzone",
           "events": [
             {
+              "kind": "field",
               "name": "fileSelect",
               "type": {
                 "text": "EventEmitter<FileList>"

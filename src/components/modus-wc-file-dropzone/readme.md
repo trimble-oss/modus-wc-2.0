@@ -11,11 +11,9 @@ File dropzone component that allows users to drag and drop files for upload.
 
 ## Properties
 
-| Property   | Attribute  | Description                         | Type                   | Default     |
-| ---------- | ---------- | ----------------------------------- | ---------------------- | ----------- |
-| `disabled` | `disabled` | Disable the file input              | `boolean \| undefined` | `undefined` |
-| `label`    | `label`    | Label to display for the file input | `string \| undefined`  | `undefined` |
-| `multiple` | `multiple` | Allow multiple file selection       | `boolean \| undefined` | `undefined` |
+| Property   | Attribute  | Description            | Type                   | Default     |
+| ---------- | ---------- | ---------------------- | ---------------------- | ----------- |
+| `disabled` | `disabled` | Disable the file input | `boolean \| undefined` | `undefined` |
 
 
 ## Events

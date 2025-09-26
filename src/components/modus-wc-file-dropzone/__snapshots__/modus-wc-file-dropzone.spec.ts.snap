@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-file-dropzone should render with default props 1`] = `
+<modus-wc-file-dropzone>
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" aria-label="Upload files" class="dropzone-content" role="button" tabindex="0">
+      <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+      <span>
+        Drop files here or click to select files
+      </span>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should render with disabled prop 1`] = `
+<modus-wc-file-dropzone disabled="">
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input file-input-disabled modus-wc-file-input" disabled="" type="file">
+    <div aria-disabled="true" aria-label="Upload files" class="dropzone-content" role="button" tabindex="-1">
+      <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+      <span>
+        Drop files here or click to select files
+      </span>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should render with label prop 1`] = `
+<modus-wc-file-dropzone label="Choose file">
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" aria-label="Upload files" class="dropzone-content" role="button" tabindex="0">
+      <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+      <span>
+        Drop files here or click to select files
+      </span>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should render with multiple prop 1`] = `
+<modus-wc-file-dropzone multiple="">
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" multiple="" type="file">
+    <div aria-disabled="false" aria-label="Upload files" class="dropzone-content" role="button" tabindex="0">
+      <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+      <span>
+        Drop files here or click to select files
+      </span>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;

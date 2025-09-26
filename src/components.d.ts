@@ -633,14 +633,6 @@ export namespace Components {
           * Disable the file input
          */
         "disabled"?: boolean;
-        /**
-          * Label to display for the file input
-         */
-        "label"?: string;
-        /**
-          * Allow multiple file selection
-         */
-        "multiple"?: boolean;
     }
     /**
      * A customizable icon component used to render Modus icons.
@@ -3473,14 +3465,6 @@ declare namespace LocalJSX {
           * Disable the file input
          */
         "disabled"?: boolean;
-        /**
-          * Label to display for the file input
-         */
-        "label"?: string;
-        /**
-          * Allow multiple file selection
-         */
-        "multiple"?: boolean;
         /**
           * Event emitted when files are selected
          */

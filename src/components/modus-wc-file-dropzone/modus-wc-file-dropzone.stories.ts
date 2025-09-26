@@ -1,3 +1,4 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -5,10 +6,10 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 const meta: Meta = {
   title: 'Components/File Dropzone',
   component: 'modus-wc-file-dropzone',
-  parameters: {
-    actions: {
-      handles: ['fileSelect'],
-    },
+  args: {
+    disabled: false,
+    multiple: false,
+    label: 'Choose file',
   },
   argTypes: {
     disabled: {
@@ -18,22 +19,12 @@ const meta: Meta = {
         defaultValue: { summary: 'false' },
       },
     },
-    multiple: {
-      control: 'boolean',
-      description: 'Allow multiple file selection',
-      table: {
-        defaultValue: { summary: 'false' },
-      },
-    },
-    label: {
-      control: 'text',
-      description: 'Label to display for the file input',
-    },
   },
-  args: {
-    disabled: false,
-    multiple: false,
-    label: 'Choose file',
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['fileSelect'],
+    },
   },
 };
 
@@ -53,12 +44,5 @@ export const Default: Story = {
 export const Disabled: Story = {
   args: {
     disabled: true,
-  },
-};
-
-export const MultipleFiles: Story = {
-  args: {
-    multiple: true,
-    label: 'Choose multiple files',
   },
 };
