@@ -707,7 +707,7 @@ export class ModusWcDate {
             onClick={() => this.toggleCalendar()}
             aria-label="Open calendar"
           >
-            <modus-wc-icon name="calendar" size="sm" />
+            <modus-wc-icon name="calendar_blank" size="sm" />
           </button>
         </div>
 
