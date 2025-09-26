@@ -130,7 +130,7 @@ modus-wc-chip .modus-wc-chip {
   }
 
   &.modus-wc-chip--disabled {
-    opacity: 0.3;
+    opacity: 0.9;
 
     .modus-wc-avatar {
       filter: grayscale(100%);
@@ -283,7 +283,7 @@ modus-wc-chip .modus-wc-chip {
   }
 
   &.modus-wc-chip--disabled {
-    opacity: 0.3;
+    opacity: 0.6;
 
     .modus-wc-avatar {
       filter: grayscale(100%);
@@ -377,6 +377,6 @@ modus-wc-chip .modus-wc-chip {
   }
 
   &.modus-wc-chip--disabled {
-    opacity: 0.6;
+    opacity: 0.9;
   }
 }
