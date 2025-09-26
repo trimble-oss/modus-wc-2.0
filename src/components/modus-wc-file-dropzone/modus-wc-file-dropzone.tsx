@@ -6,6 +6,7 @@ import {
   h,
   Host,
   Prop,
+  State,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-file-dropzone.tailwind';
 
@@ -21,6 +22,9 @@ import { convertPropsToClasses } from './modus-wc-file-dropzone.tailwind';
 export class ModusWcFileDropzone {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
+
+  /** Tracks if files are being dragged over the dropzone */
+  @State() isDraggingOver = false;
 
   /** Disable the file input */
   @Prop() disabled?: boolean;
@@ -60,6 +64,7 @@ export class ModusWcFileDropzone {
   private handleDropzoneDrop = (event: DragEvent): void => {
     event.preventDefault();
     event.stopPropagation();
+    this.isDraggingOver = false;
 
     if (this.disabled) return;
 
@@ -72,11 +77,31 @@ export class ModusWcFileDropzone {
   private handleDropzoneDragOver = (event: DragEvent): void => {
     event.preventDefault();
     event.stopPropagation();
+
+    if (!this.isDraggingOver) {
+      this.isDraggingOver = true;
+    }
+  };
+
+  private handleDropzoneDragLeave = (event: DragEvent): void => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.isDraggingOver = false;
   };
 
   private handleDropzoneClick = (): void => {
     if (this.disabled) return;
     this.inputRef?.click();
+  };
+
+  private handleDropzoneKeyDown = (event: KeyboardEvent): void => {
+    // Handle Space or Enter key to activate the dropzone
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.preventDefault();
+      if (this.disabled) return;
+      this.inputRef?.click();
+    }
   };
 
   render() {
@@ -92,10 +117,17 @@ export class ModusWcFileDropzone {
             onChange={(event) => this.handleFileChange(event)}
           />
           <div
-            class="dropzone-content"
+            class={`dropzone-content ${this.isDraggingOver ? 'dragging-over' : ''}`}
+            role="button"
+            tabindex={this.disabled ? -1 : 0}
+            aria-label="Upload files"
+            aria-disabled={this.disabled ? 'true' : 'false'}
             onClick={this.handleDropzoneClick}
+            onKeyDown={this.handleDropzoneKeyDown}
             onDrop={this.handleDropzoneDrop}
             onDragOver={this.handleDropzoneDragOver}
+            onDragLeave={this.handleDropzoneDragLeave}
+            onDragExit={this.handleDropzoneDragLeave}
           >
             <modus-wc-icon
               name="cloud_upload"

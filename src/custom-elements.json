@@ -2672,14 +2672,6 @@
           ],
           "attributes": [
             {
-              "name": "bordered",
-              "fieldName": "bordered",
-              "description": "Apply a border to the file input",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
               "name": "disabled",
               "fieldName": "disabled",
               "description": "Disable the file input",
@@ -2701,14 +2693,6 @@
               "description": "Allow multiple file selection",
               "type": {
                 "text": "boolean"
-              }
-            },
-            {
-              "name": "size",
-              "fieldName": "size",
-              "description": "Set the size of the file input",
-              "type": {
-                "text": "'xs' | 'sm' | 'md' | 'lg'"
               }
             }
           ],

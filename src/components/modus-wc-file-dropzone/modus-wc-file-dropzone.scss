@@ -16,11 +16,11 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    height: 175px;
+    height: 201px;
     justify-content: center;
     padding: 0.75rem 1rem;
     transition: background-color 0.2s ease;
-    width: 400px;
+    width: 431px;
 
     &:hover {
       background-color: var(
@@ -34,6 +34,15 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
         --modus-file-upload-dropzone-active-bg,
         rgba(220, 220, 225, 1)
       );
+    }
+
+    &.dragging-over {
+      background-color: var(--modus-file-upload-dropzone-dragover-bg, #dcedf9);
+      border-color: var(
+        --modus-file-upload-dropzone-dragover-border-color,
+        #0063a3
+      );
+      color: var(--modus-file-upload-dropzone-dragover-color, #0063a3);
     }
 
     span {
@@ -50,6 +59,15 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
       );
       cursor: not-allowed;
       opacity: 0.6;
+
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: var(
+          --modus-file-upload-dropzone-bg,
+          rgba(241, 241, 246, 0.8)
+        );
+      }
     }
   }
 }
