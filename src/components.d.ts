@@ -620,6 +620,23 @@ export namespace Components {
         "menuVisible": boolean;
     }
     /**
+     * File dropzone component that allows users to drag and drop files for upload.
+     */
+    interface ModusWcFileDropzone {
+        /**
+          * Disable the file input
+         */
+        "disabled"?: boolean;
+        /**
+          * Label to display for the file input
+         */
+        "label"?: string;
+        /**
+          * Allow multiple file selection
+         */
+        "multiple"?: boolean;
+    }
+    /**
      * A customizable icon component used to render Modus icons.
      * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      */
@@ -750,7 +767,7 @@ export namespace Components {
     interface ModusWcMenuItem {
         "bordered"?: boolean;
         /**
-          * If true, renders a checkbox slot at the start of the menu item.
+          * If true, renders a checkbox at the start of the menu item.
          */
         "checkbox"?: boolean;
         /**
@@ -1840,6 +1857,10 @@ export interface ModusWcDropdownMenuCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDropdownMenuElement;
 }
+export interface ModusWcFileDropzoneCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcFileDropzoneElement;
+}
 export interface ModusWcMenuCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcMenuElement;
@@ -2172,6 +2193,26 @@ declare global {
     var HTMLModusWcDropdownMenuElement: {
         prototype: HTMLModusWcDropdownMenuElement;
         new (): HTMLModusWcDropdownMenuElement;
+    };
+    interface HTMLModusWcFileDropzoneElementEventMap {
+        "fileSelect": FileList;
+    }
+    /**
+     * File dropzone component that allows users to drag and drop files for upload.
+     */
+    interface HTMLModusWcFileDropzoneElement extends Components.ModusWcFileDropzone, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcFileDropzoneElementEventMap>(type: K, listener: (this: HTMLModusWcFileDropzoneElement, ev: ModusWcFileDropzoneCustomEvent<HTMLModusWcFileDropzoneElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcFileDropzoneElementEventMap>(type: K, listener: (this: HTMLModusWcFileDropzoneElement, ev: ModusWcFileDropzoneCustomEvent<HTMLModusWcFileDropzoneElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcFileDropzoneElement: {
+        prototype: HTMLModusWcFileDropzoneElement;
+        new (): HTMLModusWcFileDropzoneElement;
     };
     /**
      * A customizable icon component used to render Modus icons.
@@ -2735,6 +2776,7 @@ declare global {
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-dropdown-menu": HTMLModusWcDropdownMenuElement;
+        "modus-wc-file-dropzone": HTMLModusWcFileDropzoneElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
@@ -3410,6 +3452,27 @@ declare namespace LocalJSX {
         "onMenuVisibilityChange"?: (event: ModusWcDropdownMenuCustomEvent<{ isVisible: boolean }>) => void;
     }
     /**
+     * File dropzone component that allows users to drag and drop files for upload.
+     */
+    interface ModusWcFileDropzone {
+        /**
+          * Disable the file input
+         */
+        "disabled"?: boolean;
+        /**
+          * Label to display for the file input
+         */
+        "label"?: string;
+        /**
+          * Allow multiple file selection
+         */
+        "multiple"?: boolean;
+        /**
+          * Event emitted when files are selected
+         */
+        "onFileSelect"?: (event: ModusWcFileDropzoneCustomEvent<FileList>) => void;
+    }
+    /**
      * A customizable icon component used to render Modus icons.
      * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      */
@@ -3544,7 +3607,7 @@ declare namespace LocalJSX {
     interface ModusWcMenuItem {
         "bordered"?: boolean;
         /**
-          * If true, renders a checkbox slot at the start of the menu item.
+          * If true, renders a checkbox at the start of the menu item.
          */
         "checkbox"?: boolean;
         /**
@@ -4841,6 +4904,7 @@ declare namespace LocalJSX {
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-dropdown-menu": ModusWcDropdownMenu;
+        "modus-wc-file-dropzone": ModusWcFileDropzone;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-feedback": ModusWcInputFeedback;
         "modus-wc-input-label": ModusWcInputLabel;
@@ -4941,6 +5005,10 @@ declare module "@stencil/core" {
              * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
              */
             "modus-wc-dropdown-menu": LocalJSX.ModusWcDropdownMenu & JSXBase.HTMLAttributes<HTMLModusWcDropdownMenuElement>;
+            /**
+             * File dropzone component that allows users to drag and drop files for upload.
+             */
+            "modus-wc-file-dropzone": LocalJSX.ModusWcFileDropzone & JSXBase.HTMLAttributes<HTMLModusWcFileDropzoneElement>;
             /**
              * A customizable icon component used to render Modus icons.
              * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>

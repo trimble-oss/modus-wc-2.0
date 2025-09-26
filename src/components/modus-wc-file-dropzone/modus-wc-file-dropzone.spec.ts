@@ -10,22 +10,6 @@ describe('modus-wc-file-dropzone', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should render with bordered prop', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcFileDropzone],
-      html: '<modus-wc-file-dropzone bordered></modus-wc-file-dropzone>',
-    });
-    expect(page.root).toMatchSnapshot();
-  });
-
-  it('should render with size prop', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcFileDropzone],
-      html: '<modus-wc-file-dropzone size="sm"></modus-wc-file-dropzone>',
-    });
-    expect(page.root).toMatchSnapshot();
-  });
-
   it('should render with disabled prop', async () => {
     const page = await newSpecPage({
       components: [ModusWcFileDropzone],

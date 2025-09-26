@@ -1,1 +1,55 @@
+modus-wc-file-dropzone .modus-wc-file-dropzone {
+  .modus-wc-file-input {
+    display: none;
+  }
 
+  .dropzone-content {
+    align-items: center;
+    background-color: var(
+      --modus-file-upload-dropzone-bg,
+      rgba(241, 241, 246, 0.8)
+    );
+    border: 0.125rem dashed
+      var(--modus-file-upload-dropzone-border-color, #6a6e79);
+    border-radius: 0.25rem;
+    color: var(--modus-file-upload-dropzone-color, #6a6e79);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 175px;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    transition: background-color 0.2s ease;
+    width: 400px;
+
+    &:hover {
+      background-color: var(
+        --modus-file-upload-dropzone-hover-bg,
+        rgba(230, 230, 235, 0.9)
+      );
+    }
+
+    &:active {
+      background-color: var(
+        --modus-file-upload-dropzone-active-bg,
+        rgba(220, 220, 225, 1)
+      );
+    }
+
+    span {
+      text-align: center;
+    }
+  }
+
+  // Style for disabled state
+  &:has(input:disabled) {
+    .dropzone-content {
+      border-color: var(
+        --modus-file-upload-dropzone-disabled-border-color,
+        #c2c4cb
+      );
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+}
