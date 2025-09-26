@@ -101,12 +101,6 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     .modus-wc-autocomplete-content modus-wc-chip {
       align-self: center;
       flex-shrink: 0; // Chips never shrink - they maintain their natural size
-
-      .modus-wc-chip {
-        height: 100%;
-        margin-bottom: 1px;
-        margin-top: 0;
-      }
     }
 
     // Text input - intelligent flexible sizing (inside content container)
