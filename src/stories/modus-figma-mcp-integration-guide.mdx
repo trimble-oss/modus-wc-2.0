@@ -18,7 +18,7 @@ This guide explains how to use the Modus Figma tools to convert Figma designs in
 3. [Implementation Workflows](#implementation-workflows)
    - [Workflow 1: Complete Page Analysis](#workflow-1-complete-page-analysis)
    - [Workflow 2: Component-Specific Analysis](#workflow-2-component-specific-analysis)
-4. [Using the Specification File](#using-the-specification-file) 
+4. [Using the Specification File](#using-the-specification-file)
 
 ## Workflow Setup
 
@@ -69,6 +69,7 @@ To access the MCP webhook, you need to create a Trimble Cloud application and ge
 **Purpose**: Enhanced Figma page analysis with advanced layout reconstruction and component mapping.
 
 **Parameters**:
+
 - `figma_url` (required): The Figma file URL
 - `node_id` (optional): Specific node ID to analyze, defaults to entire page
 
@@ -138,6 +139,7 @@ To access the MCP webhook, you need to create a Trimble Cloud application and ge
 **Purpose**: Retrieves comprehensive documentation for Modus Web Components.
 
 **Parameters**:
+
 - `component_name` (required): The Modus component name (e.g., 'modus-wc-table')
 
 **Returns** (example response structure):
@@ -195,6 +197,7 @@ To access the MCP webhook, you need to create a Trimble Cloud application and ge
 ```
 
 **Steps**:
+
 1. **Initial Analysis**: Call analyze_figma with full page URL
 2. **Component Documentation**: For each unique component type found, call get_modus_component_data
 3. **Deep Dive Analysis**: For complex components, call analyze_figma with specific node IDs
@@ -214,6 +217,7 @@ To access the MCP webhook, you need to create a Trimble Cloud application and ge
 ```
 
 **Steps**:
+
 1. **Targeted Analysis**: Call analyze_figma with specific node ID
 2. **Component Mapping**: Extract component types from analysis
 3. **Documentation Fetch**: Call get_modus_component_data for each component
@@ -231,8 +235,9 @@ To implement automated Figma-to-code conversion using these tools, attach the sp
 4. **Follow the automated workflow**: The AI will use the spec file instructions to systematically analyze your design and generate implementation code
 
 **Example prompt:**
+
 ```
-I want to convert my Figma design into Modus Web Components code. 
+I want to convert my Figma design into Modus Web Components code.
 
 Figma URL: https://www.figma.com/design/your-figma-url-here
 Figma API Token: your-figma-api-token-here
