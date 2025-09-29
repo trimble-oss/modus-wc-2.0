@@ -80,18 +80,6 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = { ...Template };
-
-export const ActiveAndDisabled: Story = { ...Template };
-ActiveAndDisabled.args = {
-  activeTabIndex: 1,
-  tabs: [
-    { label: 'Normal' },
-    { label: 'Active' },
-    { label: 'Disabled', disabled: true },
-  ],
-};
-
 export const CustomContent: Story = {
   args: {
     tabs: [
@@ -129,8 +117,11 @@ export const CustomContent: Story = {
       .red-icon {
         color: red;
       }
-      modus-wc-icon[disabled],modus-wc-badge[disabled] {
+      /* Style for disabled badge and icon components */
+      modus-wc-badge[disabled="true"],
+      modus-wc-icon[disabled="true"] {
         opacity: 0.3;
+        pointer-events: none;
       }
     </style>
     <modus-wc-tabs
@@ -142,13 +133,13 @@ export const CustomContent: Story = {
     >
       <span
         slot="home-tab-content"
-        style="display: inline-flex; align-items: center;"
+        style="display: inline-flex; align-items: center;padding-top: 6px"
       >
         <modus-wc-badge
-          color="primary"
-          ?disabled="${!!args.tabs[0]?.disabled}"
+          color="warning"
           size="${ifDefined(args.size)}"
-          variant="outlined"
+          variant="filled"
+          disabled="${args.tabs[0]?.disabled === true}"
         >
           <modus-wc-icon decorative="" name="home" size="xs"></modus-wc-icon>
           Home
@@ -157,15 +148,14 @@ export const CustomContent: Story = {
       <span
         slot="actions-tab-content"
         style="display: inline-flex; align-items: center; gap: 8px;"
-
       >
         Actions
         <modus-wc-icon
           name="warning"
           variant="solid"
-          ?disabled="${!!args.tabs[2]?.disabled}"
           size="${ifDefined(args.size)}"
           custom-class="red-icon"
+          disabled="${args.tabs[2]?.disabled === true}"
         ></modus-wc-icon>
       </span>
       <span
@@ -175,14 +165,26 @@ export const CustomContent: Story = {
         Notifications
         <modus-wc-badge
           color="primary"
-          disabled="${!!args.tabs[3]?.disabled}"
           size="${ifDefined(args.size)}"
           variant="counter"
+          disabled="${args.tabs[3]?.disabled === true}"
           >5</modus-wc-badge
         >
       </span>
     </modus-wc-tabs>
   `,
+};
+
+export const Default: Story = { ...Template };
+
+export const ActiveAndDisabled: Story = { ...Template };
+ActiveAndDisabled.args = {
+  activeTabIndex: 1,
+  tabs: [
+    { label: 'Normal' },
+    { label: 'Active' },
+    { label: 'Disabled', disabled: true },
+  ],
 };
 
 export const Icons: Story = {

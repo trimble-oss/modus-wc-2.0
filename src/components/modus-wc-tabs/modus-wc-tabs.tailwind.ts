@@ -58,7 +58,7 @@ export const convertPropsToClassesTab = ({
     classes = `${classes} modus-wc-tab-active`;
   }
 
-  if (disabled) {
+  if (disabled === true) {
     classes = `${classes} modus-wc-tab-disabled`;
   }
 
