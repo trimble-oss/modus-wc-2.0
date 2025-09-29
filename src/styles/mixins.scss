@@ -219,7 +219,10 @@
 @mixin connect-input-styles {
   border-bottom-width: var(--input-bottom-border-width);
   outline-width: 0 !important;
-  padding: 0 var(--modus-wc-spacing-sm);
+
+  &:not(.modus-wc-select, .modus-wc-number-input) {
+    padding: 0 var(--modus-wc-spacing-sm);
+  }
 
   &:hover {
     border-bottom-color: var(--modus-wc-color-primary);
