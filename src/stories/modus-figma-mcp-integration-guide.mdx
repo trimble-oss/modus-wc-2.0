@@ -1,0 +1,250 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/Modus Figma MCP Integration Guide" />
+
+# Modus Figma MCP Integration Guide
+
+## Overview
+
+This guide explains how to use the Modus Figma tools to convert Figma designs into Modus Web Components.
+
+1. [Workflow Setup](#workflow-setup)
+   - [MCP Server Configuration](#mcp-server-configuration)
+   - [JSON Configuration for MCP Setup](#json-configuration-for-mcp-setup)
+   - [Authentication Setup](#authentication-setup)
+2. [Available MCP Tools](#available-mcp-tools)
+   - [1. analyze_figma](#1-analyze_figma)
+   - [2. get_modus_component_data](#2-get_modus_component_data)
+3. [Implementation Workflows](#implementation-workflows)
+   - [Workflow 1: Complete Page Analysis](#workflow-1-complete-page-analysis)
+   - [Workflow 2: Component-Specific Analysis](#workflow-2-component-specific-analysis)
+4. [Using the Specification File](#using-the-specification-file)
+
+## Workflow Setup
+
+### MCP Server Configuration
+
+The MCP server is accessible at:
+
+```
+https://flows-webhook.stage.trimble-ai.com/mcp/agentic/n8n-server/v1/modus
+```
+
+### JSON Configuration for MCP Setup
+
+Add the following JSON code to your AI environment's MCP configuration file (e.g., mcp.json in Cursor/VS Code) for access:
+
+```json
+"modus_n8n_webhook": {
+  "command": "npx",
+  "args": [
+    "mcp-remote",
+    "https://flows-webhook.stage.trimble-ai.com/mcp/agentic/n8n-server/v1/modus",
+    "--header",
+    "Authorization: Bearer ${AUTH_TOKEN}"
+  ],
+  "env": {
+    "AUTH_TOKEN": ""
+  }
+}
+```
+
+### Authentication Setup
+
+To access the MCP webhook, you need to create a Trimble Cloud application and generate an access token:
+
+1. **Subscribe to or Create an Application**: Follow the steps in the [Webhook Access Documentation](https://docs.trimblecloud.com/agentic-ai-platform/prototyping/how-tos/webhook-access/) to subscribe to an existing application or create a new one.
+
+2. **Generate Access Token**: Use the client ID and client secret from your application to generate an access token by following the [Access Token Generation Guide](https://docs.trimblecloud.com/profiles/docs/content/how-to-guides/prof-qstart-get-access-token/).
+
+3. **Configure Environment**: Use the generated access token as your AUTH_TOKEN in the MCP configuration:
+   ```
+   AUTH_TOKEN=your_generated_access_token_here
+   ```
+
+## Available MCP Tools
+
+### 1. analyze_figma
+
+**Purpose**: Enhanced Figma page analysis with advanced layout reconstruction and component mapping.
+
+**Parameters**:
+
+- `figma_url` (required): The Figma file URL
+- `node_id` (optional): Specific node ID to analyze, defaults to entire page
+
+**Returns** (example response structure):
+
+```json
+{
+  "success": true,
+  "file_key": "figma-file-key",
+  "node_id": "2100:41706",
+  "page_summary": {
+    "name": "Dashboard",
+    "layout_type": "dashboard",
+    "component_count": 156,
+    "has_navigation": true,
+    "has_sidebar": true,
+    "has_table": true,
+    "has_form": true,
+    "complexity": "high"
+  },
+  "key_components": [
+    {
+      "figma_name": "Navbar",
+      "figma_id": "I2100:41706;1:27669",
+      "modus_component": "modus-wc-navbar",
+      "component_type": "navbar",
+      "confidence": 0.95,
+      "detection_method": "pattern_match",
+      "properties": {},
+      "pattern": "navigation"
+    }
+  ],
+  "component_summary": {
+    "modus-wc-navbar": 2,
+    "modus-wc-button": 15,
+    "modus-wc-table": 1
+  },
+  "undetected_components": {
+    "count": 12,
+    "examples": [
+      {
+        "figma_name": "Custom Header",
+        "figma_id": "2100:123",
+        "reason": "Layout container"
+      }
+    ]
+  },
+  "implementation": {
+    "required_imports": ["ModusNavbar", "ModusButton", "ModusTable"],
+    "layout_approach": "dashboard",
+    "implementation_notes": [
+      "This is a dashboard layout with navigation",
+      "Include form validation for input elements",
+      "Consider lazy loading for complex components"
+    ]
+  },
+  "analysis_metadata": {
+    "detection_rate": "89.2%",
+    "total_mappings_available": 98,
+    "pipeline_nodes": 5
+  }
+}
+```
+
+### 2. get_modus_component_data
+
+**Purpose**: Retrieves comprehensive documentation for Modus Web Components.
+
+**Parameters**:
+
+- `component_name` (required): The Modus component name (e.g., 'modus-wc-table')
+
+**Returns** (example response structure):
+
+```json
+{
+  "success": true,
+  "component_documentation": {
+    "name": "modus-wc-table",
+    "properties": [
+      {
+        "name": "columns",
+        "type": "ModusTableColumn[]",
+        "required": true,
+        "description": "Array of column definitions"
+      }
+    ],
+    "events": [
+      {
+        "name": "cellClick",
+        "type": "CustomEvent<ModusTableCellClickEventDetails>",
+        "description": "Fires when a cell is clicked"
+      }
+    ],
+    "methods": [
+      {
+        "name": "sort",
+        "signature": "sort(columnId: string, direction: 'asc' | 'desc') => Promise<void>",
+        "description": "Sorts the table by specified column"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "The table content"
+      }
+    ]
+  }
+}
+```
+
+## Implementation Workflows
+
+### Workflow 1: Complete Page Analysis
+
+**Purpose**: Analyze an entire Figma page and get comprehensive component mapping.
+
+**Input**:
+
+```json
+{
+  "figma_url": "https://www.figma.com/design/abc123/MyDesign?node-id=1-2",
+  "analyze_children": true
+}
+```
+
+**Steps**:
+
+1. **Initial Analysis**: Call analyze_figma with full page URL
+2. **Component Documentation**: For each unique component type found, call get_modus_component_data
+3. **Deep Dive Analysis**: For complex components, call analyze_figma with specific node IDs
+4. **Result Compilation**: Combine all analysis data into implementation guide
+
+### Workflow 2: Component-Specific Analysis
+
+**Purpose**: Deep dive into a specific component or section.
+
+**Input**:
+
+```json
+{
+  "figma_url": "https://www.figma.com/design/abc123/MyDesign",
+  "node_id": "2100:41706"
+}
+```
+
+**Steps**:
+
+1. **Targeted Analysis**: Call analyze_figma with specific node ID
+2. **Component Mapping**: Extract component types from analysis
+3. **Documentation Fetch**: Call get_modus_component_data for each component
+4. **Implementation Guide**: Generate specific implementation instructions
+
+## Using the Specification File
+
+To implement automated Figma-to-code conversion using these tools, attach the specification file to your AI conversation. This spec file contains detailed instructions for the AI on how to analyze Figma designs and generate Modus Web Components code.
+
+**How to use the spec file:**
+
+1. **Download the specification**: Get the [FIGMA_CODE_SPEC](https://docs.google.com/document/d/1OII7Yc0k2TIAtrUxYsYwPXtXNaO62wb2tU4-jYDnSnI/edit?tab=t.6m9dyidc3or1) file
+2. **Attach to your AI conversation**: Include the spec file when starting a new Figma analysis task
+3. **Provide your Figma URL**: Give the AI your Figma design URL
+4. **Follow the automated workflow**: The AI will use the spec file instructions to systematically analyze your design and generate implementation code
+
+**Example prompt:**
+
+```
+I want to convert my Figma design into Modus Web Components code.
+
+Figma URL: https://www.figma.com/design/your-figma-url-here
+Figma API Token: your-figma-api-token-here
+
+Please follow the attached specification file to analyze this design and generate the corresponding code with proper Modus components.
+```
+
+**Note**: You'll need to provide your Figma API token for the tools to access your Figma designs. You can generate a Figma API token from your Figma account settings.
+
+The AI will then use the Modus Figma tools through the specification's step-by-step process to deliver accurate, implementation-ready code.
