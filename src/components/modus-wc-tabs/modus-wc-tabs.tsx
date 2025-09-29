@@ -141,6 +141,7 @@ export class ModusWcTabs {
         aria-disabled={tab.disabled}
         aria-label={tab.label ?? tab.icon}
         class={this.getTabClasses(tab, index)}
+        disabled={tab.disabled}
         id={`tab-${index}`}
         onClick={() => this.handleClick(tab, index)}
       >

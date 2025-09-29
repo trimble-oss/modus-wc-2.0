@@ -35,7 +35,7 @@ exports[`modus-wc-tabs should render with custom props 1`] = `
         Tab 1
       </span>
     </button>
-    <button aria-disabled="" aria-label="Tab 2" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
+    <button aria-disabled="" aria-label="Tab 2" class="modus-wc-tab modus-wc-tab-disabled" disabled="" id="tab-1" role="tab">
       <span>
         Tab 2
       </span>
@@ -89,7 +89,7 @@ exports[`modus-wc-tabs should render with default props (with tab data) 1`] = `
         Tab 1
       </span>
     </button>
-    <button aria-disabled="" aria-label="Tab 2" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
+    <button aria-disabled="" aria-label="Tab 2" class="modus-wc-tab modus-wc-tab-disabled" disabled="" id="tab-1" role="tab">
       <span>
         Tab 2
       </span>
@@ -135,7 +135,7 @@ exports[`modus-wc-tabs should render with default props (with tab panel) 1`] = `
         Tab 1
       </span>
     </button>
-    <button aria-disabled="" aria-label="Tab 2" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
+    <button aria-disabled="" aria-label="Tab 2" class="modus-wc-tab modus-wc-tab-disabled" disabled="" id="tab-1" role="tab">
       <span>
         Tab 2
       </span>

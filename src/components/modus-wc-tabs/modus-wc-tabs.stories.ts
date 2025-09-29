@@ -99,7 +99,7 @@ export const CustomContent: Story = {
         icon: 'home',
         iconPosition: 'left',
         label: 'Home',
-        slotName: 'profile-tab-content',
+        slotName: 'home-tab-content',
       },
       {
         icon: 'clipboard',
@@ -123,34 +123,14 @@ export const CustomContent: Story = {
     },
   },
 
-  //pretty-ignore
+  // prettier-ignore
   render: (args) => html`
-    <script>
-       args: {
-        tabs: [
-          {
-            icon: 'home',
-            iconPosition: 'left',
-            label: 'Home',
-            slotName: 'profile-tab-content',
-          },
-          {
-            icon: 'clipboard',
-            iconPosition: 'right',
-            label: 'Tasks',
-          },
-          {
-            slotName: 'actions-tab-content',
-          },
-          {
-            slotName: 'notifications-tab-content',
-          },
-        ],
-      };
-    </script>
     <style>
       .red-icon {
         color: red;
+      }
+      modus-wc-icon[disabled],modus-wc-badge[disabled] {
+        opacity: 0.3;
       }
     </style>
     <modus-wc-tabs
@@ -161,32 +141,30 @@ export const CustomContent: Story = {
       aria-label="Custom tab group"
     >
       <span
-        slot="profile-tab-content"
-        style="display: inline-flex; align-items: center; gap: 8px; margin: 3px;"
+        slot="home-tab-content"
+        style="display: inline-flex; align-items: center;"
       >
-        <modus-wc-chip
-          aria-label="Chip example"
-          show-remove="false"
-          size="md"
-          variant="filled"
+        <modus-wc-badge
+          color="primary"
+          ?disabled="${!!args.tabs[0]?.disabled}"
+          size="${ifDefined(args.size)}"
+          variant="outlined"
         >
-          <modus-wc-avatar
-            img-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK7LFGf7yRFAGYKTX6KrxHNzsByE8NPZfCrfGkSIytbxkFEY9AYJZESTPIE0tOpfSsEE4&usqp=CAU"
-            size="sm"
-            alt="Doge the dog"
-          ></modus-wc-avatar>
-          profile
-          <modus-wc-icon name="swap" size="xs"></modus-wc-icon>
-        </modus-wc-chip>
+          <modus-wc-icon decorative="" name="home" size="xs"></modus-wc-icon>
+          Home
+        </modus-wc-badge>
       </span>
       <span
         slot="actions-tab-content"
         style="display: inline-flex; align-items: center; gap: 8px;"
+
       >
         Actions
         <modus-wc-icon
           name="warning"
           variant="solid"
+          ?disabled="${!!args.tabs[2]?.disabled}"
+          size="${ifDefined(args.size)}"
           custom-class="red-icon"
         ></modus-wc-icon>
       </span>
@@ -195,7 +173,11 @@ export const CustomContent: Story = {
         style="display: inline-flex; align-items: center; gap: 8px;"
       >
         Notifications
-        <modus-wc-badge color="primary" size="md" variant="counter"
+        <modus-wc-badge
+          color="primary"
+          disabled="${!!args.tabs[3]?.disabled}"
+          size="${ifDefined(args.size)}"
+          variant="counter"
           >5</modus-wc-badge
         >
       </span>
