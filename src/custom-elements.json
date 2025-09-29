@@ -1945,10 +1945,10 @@
             {
               "name": "shape",
               "fieldName": "shape",
-              "default": "'rounded'",
-              "description": "The shape of the chip: 'rounded' (default) or 'circular'.",
+              "default": "'rectangle'",
+              "description": "The shape of the chip: 'rectangle' (default) or 'circle'.",
               "type": {
-                "text": "'rounded' | 'circular'"
+                "text": "'rectangle' | 'circle'"
               }
             },
             {
@@ -2641,6 +2641,116 @@
           "declaration": {
             "name": "ModusWcDropdownMenu",
             "module": "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "File dropzone component that allows users to drag and drop files for upload.",
+          "name": "ModusWcFileDropzone",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleFileChange",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "isDraggingOver",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tracks if files are being dragged over the dropzone"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "accept",
+              "fieldName": "accept",
+              "description": "Accepted file types for the file input (e.g. '.jpg,.png' or 'image/*')",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "description": "Disable the file input",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "dropzone-height",
+              "fieldName": "dropzoneHeight",
+              "description": "Custom height of the dropzone in pixels or CSS units (e.g. '300px', 'auto')",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "dropzone-width",
+              "fieldName": "dropzoneWidth",
+              "description": "Custom width of the dropzone in pixels or CSS units (e.g. '500px', '100%')",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-file-dropzone",
+          "events": [
+            {
+              "kind": "field",
+              "name": "fileSelect",
+              "type": {
+                "text": "EventEmitter<File[]>"
+              },
+              "description": "Event emitted when files are selected"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcFileDropzone",
+          "declaration": {
+            "name": "ModusWcFileDropzone",
+            "module": "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-file-dropzone",
+          "declaration": {
+            "name": "ModusWcFileDropzone",
+            "module": "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.tsx"
           }
         }
       ]

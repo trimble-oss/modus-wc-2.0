@@ -163,29 +163,6 @@ export const Composable: Story = {
   },
 };
 
-export const ShapeVariants: Story = {
-  render: () => {
-    // prettier-ignore
-    return html`
-      <div style="display: flex; gap: 16px;">
-        <modus-wc-chip
-          aria-label="Rectangle chip"
-          label="Rectangle"
-          shape="rectangle"
-          show-remove
-        ></modus-wc-chip>
-
-        <modus-wc-chip
-          aria-label="Circle chip"
-          label="Circle"
-          shape="circle"
-          show-remove
-        ></modus-wc-chip>
-      </div>
-    `;
-  },
-};
-
 export const Migration: Story = {
   parameters: {
     docs: {

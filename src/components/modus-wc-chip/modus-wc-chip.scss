@@ -161,8 +161,6 @@ modus-wc-chip .modus-wc-chip {
     color: var(--modus-wc-color-base-content);
     font-size: var(--modus-wc-font-size-md);
 
-    --rounded-btn: #{var(--modus-wc-border-radius-xl)};
-
     // Sizes
     &.modus-wc-btn-sm {
       font-size: var(--modus-wc-font-size-md);
@@ -187,8 +185,6 @@ modus-wc-chip .modus-wc-chip {
       min-height: var(--modus-wc-spacing-2xl);
       padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
 
-      --rounded-btn: #{var(--modus-wc-border-radius-2xl)};
-
       .modus-wc-avatar {
         height: var(--modus-wc-spacing-lg);
         width: var(--modus-wc-spacing-lg);
@@ -205,8 +201,6 @@ modus-wc-chip .modus-wc-chip {
       height: var(--modus-wc-spacing-3xl);
       min-height: var(--modus-wc-spacing-3xl);
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
-
-      --rounded-btn: #{var(--modus-wc-border-radius-3xl)};
 
       .modus-wc-avatar {
         height: var(--modus-wc-spacing-xl);
