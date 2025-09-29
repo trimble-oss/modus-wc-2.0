@@ -106,7 +106,7 @@ export const CustomContent: Story = {
     docs: {
       description: {
         story:
-          'Tabs now include slots, offering a flexible approach for users to add relevant components within the tab for more complex use cases. While our original Tabs component was limited to only labels and icons, the addition of slots provides the freedom to integrate feasible components of choice, such as a status indicator or a notification badge, as a natural part of the tab itself.',
+          'Tabs now include slots, offering a flexible approach for users to add relevant components within the tab for more complex use cases.',
       },
     },
   },
