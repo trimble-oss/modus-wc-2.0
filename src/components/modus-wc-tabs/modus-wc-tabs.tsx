@@ -83,7 +83,7 @@ export class ModusWcTabs {
   }
 
   private handleClick(tab: ITab, index: number) {
-    if (tab.disabled === true) return;
+    if (tab.disabled) return;
 
     this.tabChange.emit({ previousTab: this.activeTabIndex, newTab: index });
     this.activeTabIndex = index;
@@ -138,10 +138,10 @@ export class ModusWcTabs {
     const tabs = this.tabs.map((tab, index) => (
       <button
         role="tab"
-        aria-disabled={tab.disabled === true ? 'true' : undefined}
+        aria-disabled={tab.disabled}
         aria-label={tab.label ?? tab.icon}
         class={this.getTabClasses(tab, index)}
-        disabled={tab.disabled === true}
+        disabled={tab.disabled}
         id={`tab-${index}`}
         onClick={() => this.handleClick(tab, index)}
       >
