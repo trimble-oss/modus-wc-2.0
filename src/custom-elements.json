@@ -411,7 +411,7 @@
           "name": "processItemSelection",
           "return": {
             "type": {
-              "text": "{\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  updatedValue: string | undefined;\r\n  updatedSelectionOrder: string[];\r\n  shouldExpandChips: boolean;\r\n  shouldCloseMenu: boolean;\r\n  isDeselecting?: boolean;\r\n}"
+              "text": "{\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  updatedValue: string | undefined;\r\n  updatedSelectionOrder: string[];\r\n  shouldExpandChips: boolean;\r\n  shouldCloseMenu: boolean;\r\n}"
             }
           },
           "parameters": [
@@ -952,7 +952,7 @@
               "name": "debounce-ms",
               "fieldName": "debounceMs",
               "default": "300",
-              "description": "The debounce timeout in milliseconds.\nSet to 0 to disable debouncing.",
+              "description": "The debounce timeout in milliseconds.\r\nSet to 0 to disable debouncing.",
               "type": {
                 "text": "number"
               }
@@ -1004,7 +1004,7 @@
               "name": "items",
               "fieldName": "items",
               "default": "[]",
-              "description": "The items to display in the menu.\nCreating a new array of items will ensure proper component re-render.",
+              "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render.",
               "type": {
                 "text": "IAutocompleteItem[]"
               }
@@ -1175,7 +1175,7 @@
               "type": {
                 "text": "EventEmitter<Event>"
               },
-              "description": "Event emitted when the input value changes.\nThis event is debounced based on the debounceMs prop."
+              "description": "Event emitted when the input value changes.\r\nThis event is debounced based on the debounceMs prop."
             },
             {
               "kind": "field",
@@ -1222,7 +1222,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable avatar component used to create avatars with different images.",
+          "description": "A customizable avatar component used to create avatars with different images or user initials.\r\nWhen no image is provided, the component can display initials (up to 3 characters) from the initials prop.\r\nThe component will extract the first letter of each word in the initials string.",
           "name": "ModusWcAvatar",
           "members": [
             {
@@ -1261,6 +1261,15 @@
               "fieldName": "imgSrc",
               "default": "''",
               "description": "The location of the image.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "initials",
+              "fieldName": "initials",
+              "default": "''",
+              "description": "The initials to display when no image is provided.",
               "type": {
                 "text": "string"
               }
@@ -1931,6 +1940,15 @@
               "description": "The label to display in the chip.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "shape",
+              "fieldName": "shape",
+              "default": "'rectangle'",
+              "description": "The shape of the chip: 'rectangle' (default) or 'circle'.",
+              "type": {
+                "text": "'rectangle' | 'circle'"
               }
             },
             {
@@ -3026,7 +3044,7 @@
             {
               "name": "checkbox",
               "fieldName": "checkbox",
-              "description": "If true, renders a checkbox slot at the start of the menu item.",
+              "description": "If true, renders a checkbox at the start of the menu item.",
               "type": {
                 "text": "boolean"
               }
@@ -6578,7 +6596,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.\r\n\r\nThe tooltip can be dismissed by pressing the Escape key when hovering over it.\r\nWhen forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\r\n\r\nThe tooltip can be dismissed by pressing the Escape key when hovering over it.\r\nWhen forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -6614,6 +6632,18 @@
                   "name": "newContent",
                   "type": {
                     "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleForceOpenChange",
+              "parameters": [
+                {
+                  "name": "forceOpen",
+                  "type": {
+                    "text": "boolean"
                   }
                 }
               ]
