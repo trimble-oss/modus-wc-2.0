@@ -439,3 +439,53 @@ export const CollapsibleMenu: Story = {
     `;
   },
 };
+
+export const WithSubmenu: Story = {
+  render: () => {
+    return html`
+      <style>
+        .menu-width {
+          width: 400px;
+        }
+        .modus-wc-menu-dropdown {
+          display: none;
+        }
+        .modus-wc-menu-dropdown-show {
+          display: block;
+        }
+      </style>
+      <modus-wc-menu custom-class="menu-width">
+        <modus-wc-menu-item label="Charts" .hasSubmenu=${true} value="charts">
+          <modus-wc-menu .isSubMenu=${true}>
+            <modus-wc-menu-item
+              label="Bar Chart"
+              value="bar-chart"
+            ></modus-wc-menu-item>
+            <modus-wc-menu-item
+              label="Line Chart"
+              value="line-chart"
+            ></modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+
+        <modus-wc-menu-item
+          label="Calendar"
+          value="calendar"
+        ></modus-wc-menu-item>
+
+        <modus-wc-menu-item label="Reports" .hasSubmenu=${true} value="reports">
+          <modus-wc-menu .isSubMenu=${true}>
+            <modus-wc-menu-item
+              label="Monthly Report"
+              value="monthly-report"
+            ></modus-wc-menu-item>
+            <modus-wc-menu-item
+              label="Annual Report"
+              value="annual-report"
+            ></modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+      </modus-wc-menu>
+    `;
+  },
+};
