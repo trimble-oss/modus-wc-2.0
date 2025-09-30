@@ -30,6 +30,9 @@ export interface ITab {
 
   /** The content to display in the tab. */
   label?: string;
+
+  /** The slot name for custom tab content. */
+  slotName?: string;
 }
 
 /**
@@ -138,10 +141,15 @@ export class ModusWcTabs {
         aria-disabled={tab.disabled}
         aria-label={tab.label ?? tab.icon}
         class={this.getTabClasses(tab, index)}
+        disabled={tab.disabled}
         id={`tab-${index}`}
         onClick={() => this.handleClick(tab, index)}
       >
-        {renderTabContent(tab)}
+        {tab.slotName ? (
+          <slot name={tab.slotName}></slot>
+        ) : (
+          renderTabContent(tab)
+        )}
       </button>
     ));
 
