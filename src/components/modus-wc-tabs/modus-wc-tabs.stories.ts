@@ -82,6 +82,101 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
+export const CustomContent: Story = {
+  args: {
+    tabs: [
+      {
+        icon: 'home',
+        iconPosition: 'left',
+        label: 'Home',
+        slotName: 'home-tab-content',
+      },
+      {
+        icon: 'clipboard',
+        iconPosition: 'right',
+        label: 'Tasks',
+      },
+      {
+        slotName: 'actions-tab-content',
+      },
+      {
+        slotName: 'notifications-tab-content',
+      },
+    ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Tabs now include slots, offering a flexible approach for users to add relevant components within the tab for more complex use cases.',
+      },
+    },
+  },
+
+  // prettier-ignore
+  render: (args) => html`
+    <style>
+      .red-icon {
+        color: red;
+      }
+      /* Style for disabled badge and icon components */
+      modus-wc-badge[disabled="true"],
+      modus-wc-icon[disabled="true"] {
+        opacity: 0.3;
+        pointer-events: none;
+      }
+    </style>
+    <modus-wc-tabs
+      .tabs="${args.tabs}"
+      size="${ifDefined(args.size)}"
+      tab-style="${ifDefined(args['tab-style'])}"
+      active-tab-index="${ifDefined(args.activeTabIndex)}"
+      aria-label="Custom tab group"
+    >
+      <span
+        slot="home-tab-content"
+        style="display: inline-flex; align-items: center;padding-top: 6px"
+      >
+        <modus-wc-badge
+          color="warning"
+          size="${ifDefined(args.size)}"
+          variant="filled"
+          disabled="${args.tabs[0]?.disabled === true}"
+        >
+          <modus-wc-icon decorative="" name="home" size="xs"></modus-wc-icon>
+          Home
+        </modus-wc-badge>
+      </span>
+      <span
+        slot="actions-tab-content"
+        style="display: inline-flex; align-items: center; gap: 8px;"
+      >
+        Actions
+        <modus-wc-icon
+          name="warning"
+          variant="solid"
+          size="${ifDefined(args.size)}"
+          custom-class="red-icon"
+          disabled="${args.tabs[2]?.disabled === true}"
+        ></modus-wc-icon>
+      </span>
+      <span
+        slot="notifications-tab-content"
+        style="display: inline-flex; align-items: center; gap: 8px;"
+      >
+        Notifications
+        <modus-wc-badge
+          color="primary"
+          size="${ifDefined(args.size)}"
+          variant="counter"
+          disabled="${args.tabs[3]?.disabled === true}"
+          >5</modus-wc-badge
+        >
+      </span>
+    </modus-wc-tabs>
+  `,
+};
+
 export const ActiveAndDisabled: Story = { ...Template };
 ActiveAndDisabled.args = {
   activeTabIndex: 1,

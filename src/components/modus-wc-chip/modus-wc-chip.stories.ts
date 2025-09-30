@@ -10,6 +10,7 @@ interface ChipArgs {
   disabled?: boolean;
   'has-error'?: boolean;
   label: string;
+  shape?: 'rectangle' | 'circle';
   'show-remove'?: boolean;
   size: ModusSize;
   variant: 'filled' | 'outline';
@@ -21,10 +22,15 @@ const meta: Meta<ChipArgs> = {
   args: {
     label: 'Chip',
     'show-remove': true,
+    shape: 'rectangle',
     size: 'md',
     variant: 'filled',
   },
   argTypes: {
+    shape: {
+      control: { type: 'select' },
+      options: ['rectangle', 'circle'],
+    },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
@@ -54,6 +60,7 @@ const Template: Story = {
       disabled=${ifDefined(args.disabled)}
       has-error=${ifDefined(args['has-error'])}
       label=${args.label}
+      shape=${args.shape}
       show-remove=${ifDefined(args['show-remove'])}
       size=${args.size}
       variant=${args.variant}
@@ -73,6 +80,7 @@ export const AvatarChip: Story = {
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
   label=${args.label}
+  shape=${args.shape}
   show-remove=${ifDefined(args['show-remove'])}
   size=${args.size}
   variant=${args.variant}
@@ -96,6 +104,7 @@ export const CheckIconChip: Story = {
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
   label=${args.label}
+  shape=${args.shape}
   show-remove=${ifDefined(args['show-remove'])}
   size=${args.size}
   variant=${args.variant}
@@ -115,6 +124,7 @@ export const Composable: Story = {
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
+  shape=${args.shape}
   size=${args.size}
   variant=${args.variant}
 >
@@ -127,6 +137,7 @@ export const Composable: Story = {
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
+  shape=${args.shape}
   show-remove="true"
   size=${args.size}
   variant=${args.variant}
@@ -140,6 +151,7 @@ export const Composable: Story = {
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
+  shape=${args.shape}
   size=${args.size}
   variant=${args.variant}
 >
@@ -180,6 +192,7 @@ export const Migration: Story = {
 | show-close     | show-remove |                                                   |
 | size           | size        | \`medium\` → \`md\`, \`small\` → \`sm\`           |
 | value          | label       |                                                   |
+|                | shape       | New in 2.0: \`rectangle\` (default), \`circle\` |
 
 #### Event Mapping
 
