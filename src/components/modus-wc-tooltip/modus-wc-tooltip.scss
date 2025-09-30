@@ -11,10 +11,14 @@
   font-size: 0.875rem;
   font-weight: var(--modus-wc-font-weight-regular);
   max-width: 20rem;
+  overflow-wrap: break-word;
   padding: 0.25rem 0.5rem;
   pointer-events: none;
   position: relative;
+  text-align: center;
+  white-space: normal;
   width: max-content;
+  word-break: break-word;
   z-index: 1000;
 }
 
@@ -28,6 +32,7 @@
 }
 
 .modus-wc-tooltip-arrow {
+  text-align: initial;
   visibility: hidden;
 }
 

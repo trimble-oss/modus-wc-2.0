@@ -44,12 +44,17 @@ modus-wc-text-input .modus-wc-text-input,
 modus-wc-select,
 modus-wc-textarea .modus-wc-textarea,
 modus-wc-time-input .modus-wc-time-input,
-modus-wc-number-input .modus-wc-number-input,
 modus-wc-date .modus-wc-date {
   --fallback-b1: transparent;
 
   background: transparent;
   padding: 0 var(--modus-wc-spacing-sm);
+}
+
+modus-wc-number-input .modus-wc-number-input {
+  --fallback-b1: transparent;
+
+  background: transparent;
 }
 
 /* Utility Panel Content Push Classes */

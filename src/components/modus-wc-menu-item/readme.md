@@ -14,6 +14,7 @@ A customizable menu item component used to display the item portion of a menu
 | Property          | Attribute          | Description                                                   | Type                                                            | Default     |
 | ----------------- | ------------------ | ------------------------------------------------------------- | --------------------------------------------------------------- | ----------- |
 | `bordered`        | `bordered`         |                                                               | `boolean \| undefined`                                          | `undefined` |
+| `checkbox`        | `checkbox`         | If true, renders a checkbox at the start of the menu item.    | `boolean \| undefined`                                          | `undefined` |
 | `customClass`     | `custom-class`     | Custom CSS class to apply to the li element.                  | `string \| undefined`                                           | `''`        |
 | `disabled`        | `disabled`         | The disabled state of the menu item.                          | `boolean \| undefined`                                          | `undefined` |
 | `focused`         | `focused`          | The focused state of the menu item.                           | `boolean \| undefined`                                          | `undefined` |
@@ -43,14 +44,17 @@ A customizable menu item component used to display the item portion of a menu
 
 ### Depends on
 
+- [modus-wc-checkbox](../modus-wc-checkbox)
 - [modus-wc-tooltip](../modus-wc-tooltip)
 - [modus-wc-icon](../modus-wc-icon)
 
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-menu-item --> modus-wc-checkbox
   modus-wc-menu-item --> modus-wc-tooltip
   modus-wc-menu-item --> modus-wc-icon
+  modus-wc-checkbox --> modus-wc-input-label
   modus-wc-autocomplete --> modus-wc-menu-item
   modus-wc-navbar --> modus-wc-menu-item
   style modus-wc-menu-item fill:#f9f,stroke:#333,stroke-width:4px

@@ -10,6 +10,111 @@ describe('modus-wc-tooltip', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  describe('forceOpen watcher', () => {
+    it('should show the tooltip when forceOpen changes from false to true', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test"></modus-wc-tooltip>',
+      });
+
+      // Spy on the showTooltip method
+      const showTooltipSpy = jest.spyOn(page.rootInstance, 'showTooltip');
+
+      // Change forceOpen to true
+      if (page.root) {
+        page.root.forceOpen = true;
+      }
+      await page.waitForChanges();
+
+      // Should call showTooltip method
+      expect(showTooltipSpy).toHaveBeenCalled();
+    });
+
+    it('should hide the tooltip when forceOpen changes from true to false', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test" force-open="true"></modus-wc-tooltip>',
+      });
+
+      // Spy on the hideTooltip method
+      const hideTooltipSpy = jest.spyOn(page.rootInstance, 'hideTooltip');
+
+      // Change forceOpen to false
+      if (page.root) {
+        page.root.forceOpen = false;
+      }
+      await page.waitForChanges();
+
+      // Should call hideTooltip method
+      expect(hideTooltipSpy).toHaveBeenCalled();
+    });
+
+    it('should not show the tooltip when forceOpen is true but disabled is also true', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test" disabled="true"></modus-wc-tooltip>',
+      });
+
+      // Spy on the showTooltip method
+      const showTooltipSpy = jest.spyOn(page.rootInstance, 'showTooltip');
+
+      // Change forceOpen to true
+      if (page.root) {
+        page.root.forceOpen = true;
+      }
+      await page.waitForChanges();
+
+      // Should not call showTooltip method due to disabled state
+      expect(showTooltipSpy).not.toHaveBeenCalled();
+    });
+
+    it('should only hide the tooltip opened by forceOpen when forceOpen is set to false', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test" force-open="true"></modus-wc-tooltip>',
+      });
+
+      if (page.root) {
+        await page.waitForChanges();
+      }
+
+      const hideTooltipSpy = jest.spyOn(page.rootInstance, 'hideTooltip');
+      const showTooltipSpy = jest.spyOn(page.rootInstance, 'showTooltip');
+
+      expect(page.rootInstance.isVisible).toBe(true);
+
+      const escapeEvent = new KeyboardEvent('keyup', { code: 'Escape' });
+      document.dispatchEvent(escapeEvent);
+      await page.waitForChanges();
+
+      expect(hideTooltipSpy).not.toHaveBeenCalled();
+      expect(page.rootInstance.isVisible).toBe(true);
+
+      // Reset spies
+      hideTooltipSpy.mockClear();
+      showTooltipSpy.mockClear();
+
+      if (page.root) {
+        page.root.forceOpen = false;
+        await page.waitForChanges();
+      }
+      expect(hideTooltipSpy).toHaveBeenCalled();
+
+      hideTooltipSpy.mockClear();
+      showTooltipSpy.mockClear();
+
+      if (page.root) {
+        page.root.forceOpen = true;
+        await page.waitForChanges();
+      }
+
+      const leaveEvent = new MouseEvent('mouseleave');
+      page.root?.dispatchEvent(leaveEvent);
+      await page.waitForChanges();
+      expect(hideTooltipSpy).not.toHaveBeenCalled();
+    });
+  });
+
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTooltip],

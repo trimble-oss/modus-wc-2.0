@@ -1222,7 +1222,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable avatar component used to create avatars with different images.",
+          "description": "A customizable avatar component used to create avatars with different images or user initials.\r\nWhen no image is provided, the component can display initials (up to 3 characters) from the initials prop.\r\nThe component will extract the first letter of each word in the initials string.",
           "name": "ModusWcAvatar",
           "members": [
             {
@@ -1261,6 +1261,15 @@
               "fieldName": "imgSrc",
               "default": "''",
               "description": "The location of the image.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "initials",
+              "fieldName": "initials",
+              "default": "''",
+              "description": "The initials to display when no image is provided.",
               "type": {
                 "text": "string"
               }
@@ -1931,6 +1940,15 @@
               "description": "The label to display in the chip.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "shape",
+              "fieldName": "shape",
+              "default": "'rectangle'",
+              "description": "The shape of the chip: 'rectangle' (default) or 'circle'.",
+              "type": {
+                "text": "'rectangle' | 'circle'"
               }
             },
             {
@@ -3019,6 +3037,14 @@
             {
               "name": "bordered",
               "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "checkbox",
+              "fieldName": "checkbox",
+              "description": "If true, renders a checkbox at the start of the menu item.",
               "type": {
                 "text": "boolean"
               }
@@ -5991,6 +6017,14 @@
               }
             },
             {
+              "name": "min-length",
+              "fieldName": "minLength",
+              "description": "The minimum number of characters required in the textarea.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
               "name": "name",
               "fieldName": "name",
               "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
@@ -6562,7 +6596,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.\r\n\r\nThe tooltip can be dismissed by pressing the Escape key when hovering over it.\r\nWhen forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\r\n\r\nThe tooltip can be dismissed by pressing the Escape key when hovering over it.\r\nWhen forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -6598,6 +6632,18 @@
                   "name": "newContent",
                   "type": {
                     "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleForceOpenChange",
+              "parameters": [
+                {
+                  "name": "forceOpen",
+                  "type": {
+                    "text": "boolean"
                   }
                 }
               ]
