@@ -80,6 +80,8 @@ const Template: Story = {
   },
 };
 
+export const Default: Story = { ...Template };
+
 export const CustomContent: Story = {
   args: {
     tabs: [
@@ -174,8 +176,6 @@ export const CustomContent: Story = {
     </modus-wc-tabs>
   `,
 };
-
-export const Default: Story = { ...Template };
 
 export const ActiveAndDisabled: Story = { ...Template };
 ActiveAndDisabled.args = {
