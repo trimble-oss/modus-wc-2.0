@@ -601,7 +601,7 @@ export function renderClearButton(
     <modus-wc-button
       onClick={params.onClearAll}
       variant="borderless"
-      color="tertiary"
+      custom-class="modus-wc-autocomplete-clear-button"
       aria-label="Clear all"
       disabled={params.disabled || params.readOnly}
       size="xs"
@@ -643,7 +643,6 @@ export function renderExpandCollapseButton(
       custom-class={`modus-wc-autocomplete-expand-button ${params.isChipsExpanded ? 'expanded' : ''}`}
       onClick={params.onToggleExpansion}
       variant="borderless"
-      color="tertiary"
       aria-label={
         params.isChipsExpanded
           ? 'Collapse chips'
