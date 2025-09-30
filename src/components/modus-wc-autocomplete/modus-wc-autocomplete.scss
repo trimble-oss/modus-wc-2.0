@@ -24,16 +24,6 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     min-height: fit-content;
     padding: var(--modus-wc-spacing-xs);
 
-    .modus-wc-autocomplete-clear-button {
-      background-color: unset;
-      color: var(--modus-wc-color-gray-6);
-    }
-
-    .modus-wc-autocomplete-expand-button {
-      background-color: unset;
-      color: var(--modus-wc-color-gray-6);
-    }
-
     .modus-wc-autocomplete-search-icon {
       align-self: center;
       flex-shrink: 0;
@@ -243,14 +233,6 @@ modus-wc-autocomplete.modus-wc-autocomplete {
   // Light theme background
   .modus-wc-autocomplete-multi-select {
     background-color: var(--modus-wc-color-white);
-
-    .modus-wc-autocomplete-clear-button {
-      color: var(--modus-wc-color-gray-6);
-    }
-
-    .modus-wc-autocomplete-expand-button {
-      color: var(--modus-wc-color-gray-6);
-    }
   }
 
   .modus-wc-autocomplete-multi-select--disabled,
@@ -276,14 +258,6 @@ modus-wc-autocomplete.modus-wc-autocomplete {
   // Dark theme background
   .modus-wc-autocomplete-multi-select {
     background-color: var(--modus-wc-color-gray-10);
-
-    .modus-wc-autocomplete-clear-button {
-      color: var(--modus-wc-color-gray-4);
-    }
-
-    .modus-wc-autocomplete-expand-button {
-      color: var(--modus-wc-color-gray-4);
-    }
   }
 
   .modus-wc-autocomplete-no-results {
