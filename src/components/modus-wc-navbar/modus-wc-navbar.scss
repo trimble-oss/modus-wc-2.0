@@ -177,16 +177,6 @@ modus-wc-navbar .modus-wc-navbar {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-navbar .modus-wc-navbar {
-  background-color: var(--modus-wc-color-white);
-
-  // Common button styles
-  &:not(.trimble-logo)
-    .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
-    background: transparent;
-  }
-}
-
 [data-theme='modus-classic-dark'] modus-wc-navbar .modus-wc-navbar {
   background-color: var(--modus-wc-color-gray-10);
 

@@ -305,10 +305,35 @@ export function processItemSelection(
     const isInSelectionOrder = params.selectionOrder.includes(item.value);
 
     if (isCurrentlySelected || isInSelectionOrder) {
+      // Only allow deselection if item has checkbox enabled
+      if (!item.checkbox) {
+        // Don't deselect non-checkbox items, keep them selected
+        return {
+          updatedItems: params.items,
+          updatedValue: undefined,
+          updatedSelectionOrder: params.selectionOrder,
+          shouldExpandChips: false,
+          shouldCloseMenu: params.leaveMenuOpen ? false : true,
+        };
+      }
+
+      updatedItems = [
+        ...params.items.map((menuItem) => ({
+          ...menuItem,
+          selected: menuItem.value === item.value ? false : menuItem.selected,
+          focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
+        })),
+      ];
+
+      // Remove from selection order
+      updatedSelectionOrder = params.selectionOrder.filter(
+        (value) => value !== item.value
+      );
+
       return {
-        updatedItems: params.items,
+        updatedItems,
         updatedValue: '',
-        updatedSelectionOrder: params.selectionOrder,
+        updatedSelectionOrder,
         shouldExpandChips: false,
         shouldCloseMenu: !params.leaveMenuOpen,
       };
@@ -742,6 +767,7 @@ export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
       {menuItems.length > 0 || !noResults || params.hasSlottedContent
         ? menuItems.map((item) => (
             <modus-wc-menu-item
+              checkbox={item.checkbox}
               disabled={item.disabled}
               focused={item.focused}
               label={item.label}
@@ -751,6 +777,8 @@ export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
               }}
               onMouseDown={(e) => e.preventDefault()}
               selected={item.selected}
+              tooltip-content={item.tooltipContent}
+              tooltip-position={item.tooltipPosition}
               value={item.value}
             />
           ))

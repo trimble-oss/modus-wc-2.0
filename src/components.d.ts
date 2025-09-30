@@ -223,7 +223,9 @@ export namespace Components {
         "value": string;
     }
     /**
-     * A customizable avatar component used to create avatars with different images.
+     * A customizable avatar component used to create avatars with different images or user initials.
+     * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+     * The component will extract the first letter of each word in the initials string.
      */
     interface ModusWcAvatar {
         /**
@@ -238,6 +240,10 @@ export namespace Components {
           * The location of the image.
          */
         "imgSrc": string;
+        /**
+          * The initials to display when no image is provided.
+         */
+        "initials"?: string;
         /**
           * The shape of the avatar.
          */
@@ -428,6 +434,10 @@ export namespace Components {
           * The label to display in the chip.
          */
         "label"?: string;
+        /**
+          * The shape of the chip: 'rectangle' (default) or 'circle'.
+         */
+        "shape"?: 'rectangle' | 'circle';
         /**
           * Whether to show the close icon on right side of the chip.
          */
@@ -750,6 +760,10 @@ export namespace Components {
     interface ModusWcMenuItem {
         "bordered"?: boolean;
         /**
+          * If true, renders a checkbox at the start of the menu item.
+         */
+        "checkbox"?: boolean;
+        /**
           * Custom CSS class to apply to the li element.
          */
         "customClass"?: string;
@@ -781,6 +795,14 @@ export namespace Components {
           * The text rendered beneath the label.
          */
         "subLabel"?: string;
+        /**
+          * The tooltip text to display when hovering over the menu item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the menu item.
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
           * The unique identifying value of the menu item.
          */
@@ -1565,6 +1587,10 @@ export namespace Components {
          */
         "maxLength"?: number;
         /**
+          * The minimum number of characters required in the textarea.
+         */
+        "minLength"?: number;
+        /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
@@ -1717,7 +1743,7 @@ export namespace Components {
     /**
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
      */
     interface ModusWcTooltip {
         /**
@@ -1971,7 +1997,9 @@ declare global {
         new (): HTMLModusWcAutocompleteElement;
     };
     /**
-     * A customizable avatar component used to create avatars with different images.
+     * A customizable avatar component used to create avatars with different images or user initials.
+     * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+     * The component will extract the first letter of each word in the initials string.
      */
     interface HTMLModusWcAvatarElement extends Components.ModusWcAvatar, HTMLStencilElement {
     }
@@ -2658,7 +2686,7 @@ declare global {
     /**
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
      */
     interface HTMLModusWcTooltipElement extends Components.ModusWcTooltip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTooltipElementEventMap>(type: K, listener: (this: HTMLModusWcTooltipElement, ev: ModusWcTooltipCustomEvent<HTMLModusWcTooltipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2949,7 +2977,9 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
-     * A customizable avatar component used to create avatars with different images.
+     * A customizable avatar component used to create avatars with different images or user initials.
+     * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+     * The component will extract the first letter of each word in the initials string.
      */
     interface ModusWcAvatar {
         /**
@@ -2964,6 +2994,10 @@ declare namespace LocalJSX {
           * The location of the image.
          */
         "imgSrc"?: string;
+        /**
+          * The initials to display when no image is provided.
+         */
+        "initials"?: string;
         /**
           * The shape of the avatar.
          */
@@ -3182,6 +3216,10 @@ declare namespace LocalJSX {
           * Event emitted when the close chip icon button is clicked.
          */
         "onChipRemove"?: (event: ModusWcChipCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * The shape of the chip: 'rectangle' (default) or 'circle'.
+         */
+        "shape"?: 'rectangle' | 'circle';
         /**
           * Whether to show the close icon on right side of the chip.
          */
@@ -3528,6 +3566,10 @@ declare namespace LocalJSX {
     interface ModusWcMenuItem {
         "bordered"?: boolean;
         /**
+          * If true, renders a checkbox at the start of the menu item.
+         */
+        "checkbox"?: boolean;
+        /**
           * Custom CSS class to apply to the li element.
          */
         "customClass"?: string;
@@ -3563,6 +3605,14 @@ declare namespace LocalJSX {
           * The text rendered beneath the label.
          */
         "subLabel"?: string;
+        /**
+          * The tooltip text to display when hovering over the menu item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the menu item.
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
           * The unique identifying value of the menu item.
          */
@@ -4536,6 +4586,10 @@ declare namespace LocalJSX {
          */
         "maxLength"?: number;
         /**
+          * The minimum number of characters required in the textarea.
+         */
+        "minLength"?: number;
+        /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
@@ -4716,7 +4770,7 @@ declare namespace LocalJSX {
     /**
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
      */
     interface ModusWcTooltip {
         /**
@@ -4860,7 +4914,9 @@ declare module "@stencil/core" {
              */
             "modus-wc-autocomplete": LocalJSX.ModusWcAutocomplete & JSXBase.HTMLAttributes<HTMLModusWcAutocompleteElement>;
             /**
-             * A customizable avatar component used to create avatars with different images.
+             * A customizable avatar component used to create avatars with different images or user initials.
+             * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+             * The component will extract the first letter of each word in the initials string.
              */
             "modus-wc-avatar": LocalJSX.ModusWcAvatar & JSXBase.HTMLAttributes<HTMLModusWcAvatarElement>;
             /**
@@ -5028,7 +5084,7 @@ declare module "@stencil/core" {
             /**
              * A customizable tooltip component used to create tooltips with different content.
              * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-             * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+             * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**

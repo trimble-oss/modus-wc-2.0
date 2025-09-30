@@ -23,6 +23,10 @@ modus-wc-menu-item .modus-wc-menu-item {
         padding-inline-end: var(--modus-wc-spacing-lg);
       }
 
+      modus-wc-checkbox {
+        padding-inline-end: var(--modus-wc-spacing-lg);
+      }
+
       .modus-wc-menu-item-labels {
         padding-inline-end: var(--modus-wc-spacing-xs);
         padding-inline-start: var(--modus-wc-spacing-xs);
@@ -161,4 +165,9 @@ modus-wc-menu-item
   &.modus-wc-menu-item-focused {
     background-color: var(--modus-wc-color-gray-8);
   }
+}
+
+.modus-wc-menu-item-tooltip {
+  display: inline-block;
+  width: auto;
 }
