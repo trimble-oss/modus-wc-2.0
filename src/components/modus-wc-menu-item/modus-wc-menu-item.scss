@@ -71,21 +71,9 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 
   &.modus-wc-menu-item-selected {
+    background-color: var(--modus-wc-color-primary-pale);
     border-radius: inherit;
     color: var(--modus-wc-color-primary);
-
-    > button {
-      background-color: var(--modus-wc-color-primary-pale);
-    }
-  }
-
-  &.modus-wc-menu-item-expanded {
-    border-radius: inherit;
-    color: var(--modus-wc-color-primary);
-
-    > button {
-      background-color: var(--modus-wc-color-primary-pale);
-    }
   }
 
   &.modus-wc-menu-item-disabled {
