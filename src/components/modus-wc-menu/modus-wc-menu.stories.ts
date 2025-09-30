@@ -447,12 +447,6 @@ export const WithSubmenu: Story = {
         .menu-width {
           width: 400px;
         }
-        .modus-wc-menu-dropdown {
-          display: none;
-        }
-        .modus-wc-menu-dropdown-show {
-          display: block;
-        }
       </style>
       <modus-wc-menu custom-class="menu-width">
         <modus-wc-menu-item label="Charts" .hasSubmenu=${true} value="charts">

@@ -22,8 +22,17 @@ modus-wc-menu .modus-wc-menu {
   }
 }
 
-modus-wc-menu .modus-wc-menu-dropdown {
+modus-wc-menu {
+
+.modus-wc-menu-dropdown {
   list-style: none;
+}
+.modus-wc-menu-dropdown {
+  display: none;
+}
+.modus-wc-menu-dropdown-show {
+  display: block;
+}
 }
 
 [data-theme='modus-classic-light'] modus-wc-menu .modus-wc-menu {
