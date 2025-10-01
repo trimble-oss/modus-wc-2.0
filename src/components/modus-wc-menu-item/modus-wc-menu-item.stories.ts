@@ -6,12 +6,15 @@ import { ModusSize } from '../types';
 
 interface MenuItemArgs {
   bordered?: boolean;
+  checkbox?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
   label: string;
   selected?: boolean;
   size?: ModusSize;
   'sub-label'?: string;
+  'tooltip-content'?: string;
+  'tooltip-position'?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
   value: string;
 }
 
@@ -27,6 +30,10 @@ const meta: Meta<MenuItemArgs> = {
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
+    },
+    'tooltip-position': {
+      control: { type: 'select' },
+      options: ['auto', 'top', 'right', 'bottom', 'left'],
     },
   },
   decorators: [withActions],
@@ -48,12 +55,15 @@ const Template: Story = {
 <modus-wc-menu>
   <modus-wc-menu-item
     ?bordered=${args.bordered}
+    ?checkbox=${args.checkbox}
     custom-class=${ifDefined(args['custom-class'])}
     ?disabled=${args.disabled}
     label=${args.label}
     ?selected=${args.selected}
     size=${args.size}
     sub-label=${ifDefined(args['sub-label'])}
+    tooltip-content=${ifDefined(args['tooltip-content'])}
+    tooltip-position=${ifDefined(args['tooltip-position'])}
     value=${args.value}
   ></modus-wc-menu-item>
 </modus-wc-menu>
@@ -70,12 +80,15 @@ export const WithIcon: Story = {
 <modus-wc-menu>
   <modus-wc-menu-item
     ?bordered=${args.bordered}
+    ?checkbox=${args.checkbox}
     custom-class=${ifDefined(args['custom-class'])}
     ?disabled=${args.disabled}
     label=${args.label}
     ?selected=${args.selected}
     size=${args.size}
     sub-label=${ifDefined(args['sub-label'])}
+    tooltip-content=${ifDefined(args['tooltip-content'])}
+    tooltip-position=${ifDefined(args['tooltip-position'])}
     value=${args.value}
   >
     <modus-wc-icon
@@ -84,6 +97,55 @@ export const WithIcon: Story = {
       size="sm"
     ></modus-wc-icon>
   </modus-wc-menu-item>
+</modus-wc-menu>
+    `;
+  },
+};
+export const WithCheckbox: Story = {
+  args: {
+    checkbox: true,
+  },
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-menu>
+  <modus-wc-menu-item
+    ?bordered=${args.bordered}
+    ?checkbox=${args.checkbox}
+    custom-class=${ifDefined(args['custom-class'])}
+    ?disabled=${args.disabled}
+    label=${args.label}
+    ?selected=${args.selected}
+    size=${args.size}
+    sub-label=${ifDefined(args['sub-label'])}
+    value=${args.value}
+ ></modus-wc-menu-item>
+</modus-wc-menu>
+    `;
+  },
+};
+
+export const WithTooltip: Story = {
+  args: {
+    'tooltip-content': 'This is a tooltip for the menu item',
+    'tooltip-position': 'top',
+  },
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-menu>
+  <modus-wc-menu-item
+    ?bordered=${args.bordered}
+    custom-class=${ifDefined(args['custom-class'])}
+    ?disabled=${args.disabled}
+    label=${args.label}
+    ?selected=${args.selected}
+    size=${args.size}
+    sub-label=${ifDefined(args['sub-label'])}
+    tooltip-content=${ifDefined((args['tooltip-content']))}
+    tooltip-position=${ifDefined(args['tooltip-position'])}
+    value=${args.value}
+  ></modus-wc-menu-item>
 </modus-wc-menu>
     `;
   },

@@ -25,4 +25,20 @@ describe('modus-wc-icon', () => {
     });
     expect(page.root).toMatchSnapshot();
   });
+
+  it('should render with outlined variant', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcIcon],
+      html: '<modus-wc-icon aria-label="Outlined icon" variant="outlined"></modus-wc-icon>',
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with solid variant', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcIcon],
+      html: '<modus-wc-icon aria-label="Solid icon" variant="solid"></modus-wc-icon>',
+    });
+    expect(page.root).toMatchSnapshot();
+  });
 });

@@ -8,6 +8,7 @@ interface IconArgs {
   decorative: boolean;
   name: string;
   size: DaisySize;
+  variant?: 'outlined' | 'solid';
 }
 
 const meta: Meta<IconArgs> = {
@@ -23,6 +24,10 @@ const meta: Meta<IconArgs> = {
     size: {
       control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
+    },
+    variant: {
+      control: { type: 'select' },
+      options: ['outlined', 'solid'],
     },
   },
 };
@@ -41,6 +46,7 @@ const Template: Story = {
   ?decorative="${args.decorative}"
   name="${args.name}"
   size="${args.size}"
+  variant="${ifDefined(args.variant)}"
 >
 </modus-wc-icon>
     `;

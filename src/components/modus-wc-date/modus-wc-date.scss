@@ -1,10 +1,17 @@
 .modus-wc-input {
   @include feedback-levels;
+  @include sizing-tokens;
 }
 
-modus-wc-date {
+modus-wc-date .modus-wc-date-input {
+  background-color: inherit;
+
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
+  }
+
+  &--readonly {
+    background-color: var(--modus-wc-color-base-200);
   }
 }
 
@@ -60,4 +67,9 @@ modus-wc-date {
   &.modus-wc-input:focus {
     border-color: var(--modus-wc-color-highlight-blue);
   }
+}
+
+[data-theme='connect-light'] modus-wc-date .modus-wc-date-input,
+[data-theme='connect-dark'] modus-wc-date .modus-wc-date-input {
+  @include connect-input-styles;
 }

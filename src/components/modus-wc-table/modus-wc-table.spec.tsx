@@ -3063,4 +3063,56 @@ describe('modus-wc-table', () => {
     expect(caption?.textContent).toBe('This is a table caption');
     expect(caption).not.toBeNull();
   });
+
+  it('should initialize internalRowSelection from selectedRowIds on first render', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Selected on load" selectable="multi"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+
+    // Set all required props before componentWillLoad
+    component.columns = [
+      { id: 'id', header: 'ID', accessor: 'id' },
+      { id: 'name', header: 'Name', accessor: 'name' },
+    ];
+    component.data = [
+      { id: 0, name: 'Name 0' },
+      { id: 1, name: 'Name 1' },
+      { id: 2, name: 'Name 2' },
+    ];
+    component.selectedRowIds = ['0', '2'];
+
+    // Manually trigger componentWillLoad to test initialization
+    component.componentWillLoad();
+
+    expect(component['internalRowSelection']).toEqual({ '0': true, '2': true });
+  });
+
+  it('should not initialize internalRowSelection when selectedRowIds is undefined or empty', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="No selection on load" selectable="multi"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [
+      { id: 'id', header: 'ID', accessor: 'id' },
+      { id: 'name', header: 'Name', accessor: 'name' },
+    ];
+    component.data = [
+      { id: 0, name: 'Name 0' },
+      { id: 1, name: 'Name 1' },
+    ];
+
+    // Case 1: undefined (default)
+    component.componentWillLoad();
+    expect(component['internalRowSelection']).toEqual({});
+
+    // Case 2: empty array
+    component.selectedRowIds = [];
+    component.componentWillLoad();
+    expect(component['internalRowSelection']).toEqual({});
+  });
 });

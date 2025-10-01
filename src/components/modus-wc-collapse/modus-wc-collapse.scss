@@ -3,6 +3,10 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+modus-wc-collapse details.modus-wc-collapse > summary {
+  display: inline-flex;
+}
+
 modus-wc-collapse .modus-wc-collapse {
   background-color: var(--modus-wc-color-base-100);
   border-color: transparent;
@@ -11,10 +15,6 @@ modus-wc-collapse .modus-wc-collapse {
   margin-bottom: var(--modus-wc-spacing-md);
   transition: none;
 
-  summary {
-    display: flex;
-  }
-
   .modus-wc-collapse-title {
     font-size: var(--modus-wc-font-size-md);
     font-weight: var(--modus-wc-font-weight-semibold);
@@ -22,6 +22,8 @@ modus-wc-collapse .modus-wc-collapse {
     padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-3xl)
       var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
     width: auto;
+
+    @include common-states;
   }
 
   .description {
@@ -45,7 +47,8 @@ modus-wc-collapse .modus-wc-collapse {
     }
 
     .modus-wc-collapse-title {
-      background-color: var(--modus-wc-color-base-200);
+      background-color: var(--modus-wc-color-primary-pale);
+      color: var(--modus-wc-color-primary);
     }
   }
 
@@ -113,4 +116,9 @@ modus-wc-collapse .modus-wc-collapse {
       padding-inline-start: var(--modus-wc-spacing-md);
     }
   }
+}
+
+[data-theme='connect-light'] modus-wc-collapse .modus-wc-collapse,
+[data-theme='connect-dark'] modus-wc-collapse .modus-wc-collapse {
+  @include outline-styles;
 }

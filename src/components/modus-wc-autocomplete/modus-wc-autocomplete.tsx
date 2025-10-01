@@ -713,6 +713,11 @@ export class ModusWcAutocomplete {
       customItemSelect: this.customItemSelect,
     });
 
+    const isSelected = item.selected;
+    if (this.multiSelect && isSelected && item.checkbox) {
+      this.handleChipRemove(item);
+    }
+
     if (result.updatedItems && result.updatedItems !== this.items) {
       this.items = result.updatedItems;
     }

@@ -27,6 +27,7 @@
   --modus-wc-color-blue-light: #217cbb;
   --modus-wc-color-trimble-blue: #0063a3;
   --modus-wc-color-blue-dark: #0e416c;
+  --modus-wc-color-highlight-blue-pale: rgba(1, 154, 235, 0.5);
 
   /* Yellow Progression */
   --modus-wc-color-yellow-pale: #fff5e4;
@@ -79,10 +80,14 @@
   --modus-wc-line-height-lg: 2rem;
   --modus-wc-line-height-xl: 3rem;
 
-  --modus-wc-line-height-h6: 1.125rem; /* 18px */
-  --modus-wc-line-height-h3: 1.6875rem; /* 27px */
-  --modus-wc-line-height-h2: 1.875rem; /* 30px */
-  --modus-wc-line-height-h1: 2.25rem; /* 36px */
+  --modus-wc-line-height-h6: 1.125rem;
+  /* 18px */
+  --modus-wc-line-height-h3: 1.6875rem;
+  /* 27px */
+  --modus-wc-line-height-h2: 1.875rem;
+  /* 30px */
+  --modus-wc-line-height-h1: 2.25rem;
+  /* 36px */
 
   /* Font Family */
   --modus-wc-font-family:
@@ -90,14 +95,24 @@
     sans-serif;
 
   /* Font Sizes */
-  --modus-wc-font-size-2xs: 0.5rem; /* 8px */
-  --modus-wc-font-size-xs: 0.625rem; /* 10px */
-  --modus-wc-font-size-sm: 0.75rem; /* 12px */
-  --modus-wc-font-size-md: 0.875rem; /* 14px */
-  --modus-wc-font-size-lg: 1rem; /* 16px */
-  --modus-wc-font-size-xl: 1.125rem; /* 18px */
-  --modus-wc-font-size-2xl: 1.25rem; /* 20px */
-  --modus-wc-font-size-3xl: 1.5rem; /* 24px */
+  --modus-wc-font-size-2xs: 0.5rem;
+  /* 8px */
+  --modus-wc-font-size-xs: 0.625rem;
+  /* 10px */
+  --modus-wc-font-size-sm: 0.75rem;
+  /* 12px */
+  --modus-wc-font-size-md: 0.875rem;
+  /* 14px */
+  --modus-wc-font-size-lg: 1rem;
+  /* 16px */
+  --modus-wc-font-size-xl: 1.125rem;
+  /* 18px */
+  --modus-wc-font-size-2xl: 1.25rem;
+  /* 20px */
+  --modus-wc-font-size-3xl: 1.5rem;
+  /* 24px */
+  --modus-wc-font-size-4xl: 1.875rem;
+  /* 30px */
 
   /* Font Weights */
   --modus-wc-font-weight-light: 300;
@@ -105,20 +120,47 @@
   --modus-wc-font-weight-semibold: 600;
   --modus-wc-font-weight-bold: 700;
 
+  /* Sizes */
+  --modus-wc-size-xxs: 0.75rem;
+  /* 12px */
+  --modus-wc-size-xs: 1.5rem;
+  /* 24px */
+  --modus-wc-size-sm: 2rem;
+  /* 32px */
+  --modus-wc-size-md: 2.5rem;
+  /* 40px */
+  --modus-wc-size-lg: 3rem;
+  /* 48px */
+  --modus-wc-size-xl: 3.5rem;
+  /* 56px */
+  --modus-wc-size-xxl: 4.5rem;
+  /* 72px */
+
   /* Spacing */
-  --modus-wc-spacing-2xs: 0.125rem; /* 2px */
-  --modus-wc-spacing-xs: 0.25rem; /* 4px */
-  --modus-wc-spacing-sm: 0.5rem; /* 8px */
-  --modus-wc-spacing-md: 0.75rem; /* 12px */
-  --modus-wc-spacing-lg: 1rem; /* 16px */
-  --modus-wc-spacing-xl: 1.5rem; /* 24px */
-  --modus-wc-spacing-2xl: 2rem; /* 32px */
-  --modus-wc-spacing-3xl: 3rem; /* 48px */
+  --modus-wc-spacing-2xs: 0.125rem;
+  /* 2px */
+  --modus-wc-spacing-xs: 0.25rem;
+  /* 4px */
+  --modus-wc-spacing-sm: 0.5rem;
+  /* 8px */
+  --modus-wc-spacing-md: 0.75rem;
+  /* 12px */
+  --modus-wc-spacing-lg: 1rem;
+  /* 16px */
+  --modus-wc-spacing-xl: 1.5rem;
+  /* 24px */
+  --modus-wc-spacing-2xl: 2rem;
+  /* 32px */
+  --modus-wc-spacing-3xl: 3rem;
+  /* 48px */
 
   /* Inputs */
-  --modus-wc-input-height-sm: 1.5rem; /* 24px */
-  --modus-wc-input-height-md: 2rem; /* 32px */
-  --modus-wc-input-height-lg: 3rem; /* 48px */
+  --modus-wc-input-height-sm: 1.5rem;
+  /* 24px */
+  --modus-wc-input-height-md: 2rem;
+  /* 32px */
+  --modus-wc-input-height-lg: 3rem;
+  /* 48px */
 
   /* Border Variables */
   --modus-wc-border-radius-badge: var(--modus-wc-border-radius-md);
@@ -151,6 +193,14 @@
     var(--modus-wc-color-gray-10),
     var(--modus-wc-color-gray-1)
   );
+  --modus-wc-color-base-content-low-contrast: light-dark(
+    var(--modus-wc-color-gray-8),
+    var(--modus-wc-color-gray-3)
+  );
+  --modus-wc-color-base-content-hight-contrast: light-dark(
+    var(--modus-wc-color-black),
+    var(--modus-wc-color-white)
+  );
 
   /**
   * The following variables are applied to themes for applications to override.
@@ -165,6 +215,10 @@
     var(--modus-wc-color-white),
     var(--modus-wc-color-black)
   );
+  --modus-wc-color-primary-pale: light-dark(
+    var(--modus-wc-color-blue-pale),
+    var(--modus-wc-color-highlight-blue-pale)
+  );
 
   /* Secondary Colors */
   --modus-wc-color-secondary: light-dark(
@@ -174,6 +228,10 @@
   --modus-wc-color-secondary-content: light-dark(
     var(--modus-wc-color-black),
     var(--modus-wc-color-black)
+  );
+  --modus-wc-color-secondary-pale: light-dark(
+    var(--modus-wc-color-yellow-pale),
+    var(--modus-wc-color-yellow-pale)
   );
 
   /* Accent Colors */
@@ -185,6 +243,10 @@
     var(--modus-wc-color-white),
     var(--modus-wc-color-black)
   );
+  --modus-wc-color-accent-pale: light-dark(
+    var(--modus-wc-color-gray-6),
+    var(--modus-wc-color-gray-4)
+  );
 
   /* Neutral Colors */
   --modus-wc-color-neutral: light-dark(
@@ -194,6 +256,10 @@
   --modus-wc-color-neutral-content: light-dark(
     var(--modus-wc-color-base-content),
     var(--modus-wc-color-base-content)
+  );
+  --modus-wc-color-neutral-pale: light-dark(
+    var(--modus-wc-color-base-100),
+    var(--modus-wc-color-base-100)
   );
 
   /* Info Colors */
@@ -205,6 +271,10 @@
     var(--modus-wc-color-white),
     var(--modus-wc-color-white)
   );
+  --modus-wc-color-info-pale: light-dark(
+    var(--modus-wc-color-blue-pale),
+    var(--modus-wc-color-blue-pale)
+  );
 
   /* Success Colors */
   --modus-wc-color-success: light-dark(
@@ -214,6 +284,10 @@
   --modus-wc-color-success-content: light-dark(
     var(--modus-wc-color-white),
     var(--modus-wc-color-black)
+  );
+  --modus-wc-color-success-pale: light-dark(
+    var(--modus-wc-color-green-pale),
+    var(--modus-wc-color-green-pale)
   );
 
   /* Warning Colors */
@@ -225,6 +299,10 @@
     var(--modus-wc-color-black),
     var(--modus-wc-color-black)
   );
+  --modus-wc-color-warning-pale: light-dark(
+    var(--modus-wc-color-yellow-pale),
+    var(--modus-wc-color-yellow-pale)
+  );
 
   /* Error Colors */
   --modus-wc-color-error: light-dark(
@@ -234,5 +312,9 @@
   --modus-wc-color-error-content: light-dark(
     var(--modus-wc-color-white),
     var(--modus-wc-color-black)
+  );
+  --modus-wc-color-error-pale: light-dark(
+    var(--modus-wc-color-red-pale),
+    var(--modus-wc-color-red-pale)
   );
 }
