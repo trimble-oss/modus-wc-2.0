@@ -74,40 +74,442 @@ export class AiChatbot extends HTMLElement {
     
     this.updateSendButton();
     this.renderMessages();
+    this.scrollToBottom();
 
-    // TODO: Add AI response logic here
-    // For now, just add a placeholder response
+    // Send message to n8n backend
+    this.sendToN8N(currentValue);
+  };
+
+  private sendToN8N = async (message: string) => {
+    const payload = {
+      message: message,
+      timestamp: new Date().toISOString(),
+      sessionId: this.getSessionId(),
+      source: 'modus-storybook-chat'
+    };
+
+    // Try proxy server first (for development)
+    try {
+      const proxyResponse = await fetch('http://localhost:3001/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      // Handle both successful (200) and error (500) responses from proxy
+      if (proxyResponse.status === 200) {
+        const data = await proxyResponse.json();
+        
+        // Check if it's a fallback response from proxy server
+        if (data.fallback || (data.error && data.error.includes('Unknown operation'))) {
+          console.log('n8n workflow issue, using mock responses');
+          this.addMockAIResponse(message);
+          return;
+        }
+        
+        // Check if n8n just echoed back the input (no real AI response)
+        if (data.message === message || (!data.response && !data.output && data.message)) {
+          console.log('n8n echoed input, using mock responses');
+          this.addMockAIResponse(message);
+          return;
+        }
+        
+        // Add AI response with streaming effect
+        const aiResponseText = data.response || data.output || data.message || "I received your message but couldn't generate a response.";
+        this.addStreamingAIResponse(aiResponseText);
+        return;
+      } else if (proxyResponse.status === 500) {
+        // 500 error from proxy (n8n workflow issue), use fallback
+        console.log('Proxy returned 500 (n8n workflow issue), using mock responses');
+        this.addMockAIResponse(message);
+        return;
+      } else {
+        // Other error status from proxy, use fallback
+        console.log(`Proxy returned ${proxyResponse.status}, using mock responses`);
+        this.addMockAIResponse(message);
+        return;
+      }
+    } catch (proxyError) {
+      console.log('Proxy server not available, trying direct connection...');
+    }
+
+    // Try direct connection (for production)
+    try {
+      const response = await fetch('https://flows-webhook.stage.trimble-ai.com/agentic/workflows/v1/webhook/13c9af66-ae24-4a28-8bd7-589637f05b23/modus-chat/chat', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        
+        // Add AI response with streaming effect
+        const aiResponseText = data.response || data.message || data.output || "I received your message but couldn't generate a response.";
+        this.addStreamingAIResponse(aiResponseText);
+        return;
+      }
+    } catch (corsError) {
+      console.log('Direct connection blocked by CORS, using mock responses');
+    }
+
+    // Fallback to mock responses
+    this.addMockAIResponse(message);
+  };
+
+  private addMockAIResponse = (userMessage: string) => {
+    // Mock AI responses for development when backend is not accessible
+    const mockResponses = this.generateMockResponse(userMessage);
+    
     setTimeout(() => {
-      const aiResponse: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        content: "Thanks for your message! I'm a UI shell for now, but soon I'll be able to help you with Modus Web Components questions.",
-        isUser: false,
-        timestamp: new Date(),
-      };
-      this.messages = [...this.messages, aiResponse];
-      this.renderMessages();
-      this.scrollToBottom();
-    }, 1000);
+      this.addStreamingAIResponse(mockResponses);
+    }, 500); // Simulate network delay
+  };
+
+  private addStreamingAIResponse = (fullText: string) => {
+    // Add typing indicator first
+    this.addTypingIndicator();
+
+    // Wait a bit, then start streaming the response
+    setTimeout(() => {
+      this.removeTypingIndicator();
+      this.startTextStreaming(fullText);
+    }, 800);
+  };
+
+  private addTypingIndicator = () => {
+    const typingMessage: ChatMessage = {
+      id: 'typing-indicator',
+      content: '●●●',
+      isUser: false,
+      timestamp: new Date(),
+    };
+
+    this.messages = [...this.messages, typingMessage];
+    this.renderMessages();
+    this.scrollToBottom();
+  };
+
+  private removeTypingIndicator = () => {
+    this.messages = this.messages.filter(msg => msg.id !== 'typing-indicator');
+    this.renderMessages();
+  };
+
+  private startTextStreaming = (fullText: string) => {
+    const messageId = (Date.now() + 1).toString();
+    
+    // Add empty message that we'll populate
+    const streamingMessage: ChatMessage = {
+      id: messageId,
+      content: '',
+      isUser: false,
+      timestamp: new Date(),
+    };
+
+    this.messages = [...this.messages, streamingMessage];
+    this.streamingMessageIds.add(messageId);
+    this.renderMessages();
+
+    // Split text into chunks (words or small phrases)
+    const chunks = this.splitIntoChunks(fullText);
+    let currentIndex = 0;
+
+    const streamInterval = setInterval(() => {
+      if (currentIndex >= chunks.length) {
+        clearInterval(streamInterval);
+        this.streamingMessageIds.delete(messageId);
+        this.renderMessages(); // Re-render to remove cursor
+        
+        // Apply syntax highlighting after streaming is complete
+        setTimeout(() => {
+          this.applySyntaxHighlighting();
+        }, 100);
+        return;
+      }
+
+      // Update the message content
+      const messageIndex = this.messages.findIndex(msg => msg.id === messageId);
+      if (messageIndex !== -1) {
+        this.messages[messageIndex].content += chunks[currentIndex];
+        this.renderMessages();
+        this.scrollToBottom();
+      }
+
+      currentIndex++;
+    }, 60); // Slightly slower for better readability
+  };
+
+  private splitIntoChunks = (text: string): string[] => {
+    // Split by words but keep some punctuation together
+    const words = text.split(' ');
+    const chunks: string[] = [];
+    
+    for (let i = 0; i < words.length; i++) {
+      const word = words[i];
+      
+      // Add space before word (except first word)
+      const chunk = i === 0 ? word : ' ' + word;
+      
+      // For longer words or code blocks, split them further
+      if (word.length > 15 && !word.includes('`')) {
+        // Split long words into smaller chunks
+        const subChunks = word.match(/.{1,8}/g) || [word];
+        chunks.push(i === 0 ? subChunks[0] : ' ' + subChunks[0]);
+        for (let j = 1; j < subChunks.length; j++) {
+          chunks.push(subChunks[j]);
+        }
+      } else {
+        chunks.push(chunk);
+      }
+    }
+    
+    return chunks;
+  };
+
+  private generateMockResponse = (userMessage: string): string => {
+    const message = userMessage.toLowerCase();
+    
+    // Context-aware mock responses for Modus Web Components
+    if (message.includes('button')) {
+      return "I can help you with Modus buttons! The modus-wc-button component supports various styles like 'fill', 'outline', and 'borderless'. You can also set different colors like 'primary', 'secondary', and shapes like 'circle'. Would you like to know more about button properties?";
+    }
+    
+    if (message.includes('input') || message.includes('text')) {
+      return "For text inputs, we have modus-wc-text-input which supports various properties like placeholder, disabled state, and validation. It's fully accessible and follows our design system. What specific aspect of text inputs would you like to learn about?";
+    }
+    
+    if (message.includes('card')) {
+      return "The modus-wc-card component is great for containing content! It provides a clean, elevated surface with proper spacing and shadows. You can use it to group related information together. Are you looking for specific card styling options?";
+    }
+    
+    if (message.includes('icon')) {
+      return "Modus Web Components include a comprehensive icon library! You can use modus-wc-icon with various icon names. The icons are scalable and follow our design system. Which specific icon are you looking for?";
+    }
+    
+    if (message.includes('theme') || message.includes('color')) {
+      return "Modus supports multiple themes including light, dark, and custom themes! You can use CSS variables like --modus-wc-color-primary to customize colors. The theme system ensures consistency across all components.";
+    }
+    
+    if (message.includes('accessibility') || message.includes('a11y')) {
+      return "All Modus Web Components are built with accessibility in mind! They include proper ARIA attributes, keyboard navigation, and screen reader support. Each component follows WCAG 2.2 guidelines.";
+    }
+    
+    if (message.includes('storybook')) {
+      return "You're currently using Storybook to explore Modus Web Components! Each component has interactive examples, documentation, and controls to test different properties. Navigate through the sidebar to explore all available components.";
+    }
+    
+    // Default responses
+    const defaultResponses = [
+      "I'm here to help you with Modus Web Components! You can ask me about buttons, inputs, cards, icons, theming, accessibility, or any other component. What would you like to know?",
+      "Thanks for your question about Modus Web Components! I can provide information about component properties, usage examples, and best practices. What specific component are you working with?",
+      "I'd be happy to help you with the Modus Web Components library! Whether you need help with implementation, styling, or accessibility, I'm here to assist. What can I help you with today?",
+      "Great question! The Modus Web Components library offers a comprehensive set of UI components. You can explore them in this Storybook or ask me specific questions about implementation. What would you like to learn about?"
+    ];
+    
+    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+  };
+
+  private getSessionId = (): string => {
+    // Get or create a session ID for this chat session
+    let sessionId = sessionStorage.getItem('modus-chat-session-id');
+    if (!sessionId) {
+      sessionId = 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+      sessionStorage.setItem('modus-chat-session-id', sessionId);
+    }
+    return sessionId;
   };
 
   private createChatMessage = (message: ChatMessage): HTMLDivElement => {
     const chatDiv = document.createElement('div');
     chatDiv.className = message.isUser ? 'chat chat-end' : 'chat chat-start';
 
+    const imageWrapper = document.createElement('div');
+    imageWrapper.className = 'chat-image avatar';
+
     const avatarDiv = document.createElement('div');
-    avatarDiv.className = message.isUser ? 'chat-image bg-primary' : 'chat-image bg-secondary';
+    avatarDiv.className = `chat-avatar ${message.isUser ? 'bg-primary' : 'bg-secondary'} w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold text-primary-content`;
+    if (!message.isUser) {
+      avatarDiv.classList.add('text-secondary-content');
+    }
     avatarDiv.textContent = message.isUser ? 'U' : 'AI';
+    imageWrapper.appendChild(avatarDiv);
 
     const bubbleDiv = document.createElement('div');
     bubbleDiv.className = message.isUser 
       ? 'chat-bubble chat-bubble-primary' 
       : 'chat-bubble chat-bubble-secondary';
-    bubbleDiv.textContent = message.content;
+    
+    // Handle special cases
+    if (message.id === 'typing-indicator') {
+      bubbleDiv.innerHTML = '<span class="typing-indicator">●●●</span>';
+    } else {
+      // Format the content (preserve line breaks, code blocks, etc.)
+      bubbleDiv.innerHTML = this.formatMessageContent(message.content);
+      
+      // Add blinking cursor for streaming messages
+      if (this.isMessageStreaming(message.id)) {
+        bubbleDiv.innerHTML += '<span class="streaming-cursor"></span>';
+      }
+    }
 
-    chatDiv.appendChild(avatarDiv);
+    chatDiv.appendChild(imageWrapper);
     chatDiv.appendChild(bubbleDiv);
 
     return chatDiv;
+  };
+
+  private formatMessageContent = (content: string): string => {
+    // Format the content to handle markdown-like formatting
+    let formatted = content;
+    
+    // Format code blocks with language detection (```language\ncode```)
+    formatted = formatted.replace(/```(\w+)?\n?([\s\S]*?)```/g, (match, language, code) => {
+      const lang = language || 'javascript'; // Default to JavaScript
+      const escapedCode = this.escapeHtml(code.trim());
+      return `<pre class="code-block language-${lang}" style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 12px; margin: 8px 0; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.4; overflow-x: auto; white-space: pre;"><code class="language-${lang}">${escapedCode}</code></pre>`;
+    });
+    
+    // Format code blocks without language (```code```)
+    formatted = formatted.replace(/```([\s\S]*?)```/g, (match, code) => {
+      const escapedCode = this.escapeHtml(code.trim());
+      return `<pre class="code-block" style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 12px; margin: 8px 0; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.4; overflow-x: auto; white-space: pre;"><code>${escapedCode}</code></pre>`;
+    });
+    
+    // Format inline code (`code`)
+    formatted = formatted.replace(/`([^`]+)`/g, '<code style="background: #f1f3f4; padding: 2px 6px; border-radius: 4px; font-family: \'Consolas\', \'Monaco\', \'Courier New\', monospace; font-size: 0.9em; color: #d63384; display: inline; width: auto;">$1</code>');
+    
+    // Format bold text (**text**)
+    formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    
+    // Format headers (### Header)
+    formatted = formatted.replace(/^### (.*$)/gm, '<h4 style="font-size: 1em; font-weight: 600; margin: 12px 0 6px 0; color: #374151;">$1</h4>');
+    formatted = formatted.replace(/^## (.*$)/gm, '<h3 style="font-size: 1.1em; font-weight: 600; margin: 14px 0 8px 0; color: #374151;">$1</h3>');
+    
+    // Format numbered lists
+    formatted = formatted.replace(/^\d+\.\s+(.*)$/gm, '<div class="inline-list-item" style="margin: 4px 0; padding-left: 16px; display: inline-flex; gap: 8px; align-items: flex-start; width: fit-content;">•<span>$1</span></div>');
+    
+    // Format bullet lists
+    formatted = formatted.replace(/^\*\s+(.*)$/gm, '<div class="inline-list-item" style="margin: 4px 0; padding-left: 16px; display: inline-flex; gap: 8px; align-items: flex-start; width: fit-content;">•<span>$1</span></div>');
+    
+    // Format tables
+    formatted = this.formatTables(formatted);
+    
+    // Format links [text](url)
+    formatted = formatted.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #0066cc; text-decoration: underline;">$1</a>');
+    
+    // Convert line breaks (but preserve those in code blocks and tables)
+    formatted = formatted.replace(/\n(?![^<]*<\/(pre|table)>)/g, '<br>');
+    
+    return formatted;
+  };
+
+  private escapeHtml = (text: string): string => {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  };
+
+  private formatTables = (text: string): string => {
+    // Match markdown tables
+    const tableRegex = /(\|.*\|[\r\n]+\|[-:\s|]*\|[\r\n]+((\|.*\|[\r\n]*)+))/gm;
+    
+    return text.replace(tableRegex, (match) => {
+      const lines = match.trim().split('\n');
+      if (lines.length < 3) return match; // Need at least header, separator, and one row
+      
+      const headerLine = lines[0];
+      const separatorLine = lines[1];
+      const dataLines = lines.slice(2);
+      
+      // Parse header
+      const headers = headerLine.split('|').map(h => h.trim()).filter(h => h);
+      
+      // Parse alignment from separator line
+      const alignments = separatorLine.split('|').map(sep => {
+        const trimmed = sep.trim();
+        if (trimmed.startsWith(':') && trimmed.endsWith(':')) return 'center';
+        if (trimmed.endsWith(':')) return 'right';
+        return 'left';
+      }).filter((_, i) => i > 0 && i <= headers.length);
+      
+      // Parse data rows
+      const rows = dataLines.map(line => 
+        line.split('|').map(cell => cell.trim()).filter(cell => cell)
+      ).filter(row => row.length > 0);
+      
+      // Generate HTML table
+      let tableHtml = `
+        <table style="
+          border-collapse: collapse; 
+          width: 100%; 
+          margin: 12px 0; 
+          font-size: 13px;
+          border: 1px solid #e1e5e9;
+          border-radius: 6px;
+          overflow: hidden;
+        ">
+          <thead style="background: #f6f8fa;">
+            <tr>`;
+      
+      headers.forEach((header, i) => {
+        const align = alignments[i] || 'left';
+        tableHtml += `
+          <th style="
+            padding: 8px 12px; 
+            text-align: ${align}; 
+            font-weight: 600; 
+            border-bottom: 2px solid #e1e5e9;
+            color: #24292f;
+          ">${header}</th>`;
+      });
+      
+      tableHtml += `
+            </tr>
+          </thead>
+          <tbody>`;
+      
+      rows.forEach(row => {
+        tableHtml += '<tr>';
+        row.forEach((cell, i) => {
+          const align = alignments[i] || 'left';
+          tableHtml += `
+            <td style="
+              padding: 8px 12px; 
+              text-align: ${align}; 
+              border-bottom: 1px solid #e1e5e9;
+              color: #24292f;
+            ">${cell}</td>`;
+        });
+        tableHtml += '</tr>';
+      });
+      
+      tableHtml += `
+          </tbody>
+        </table>`;
+      
+      return tableHtml;
+    });
+  };
+
+  private streamingMessageIds = new Set<string>();
+
+  private isMessageStreaming = (messageId: string): boolean => {
+    return this.streamingMessageIds.has(messageId);
+  };
+
+  private applySyntaxHighlighting = () => {
+    // Apply Prism.js syntax highlighting to all code blocks
+    if (typeof window !== 'undefined' && (window as any).Prism) {
+      const codeBlocks = this.querySelectorAll('pre code[class*="language-"]');
+      codeBlocks.forEach((block) => {
+        (window as any).Prism.highlightElement(block);
+      });
+    }
   };
 
   private renderMessages = () => {
@@ -164,6 +566,9 @@ export class AiChatbot extends HTMLElement {
 
   private render() {
     this.innerHTML = `
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
       <style>
         :host {
           position: fixed;
@@ -228,11 +633,14 @@ export class AiChatbot extends HTMLElement {
 
         .chat-body {
           flex: 1;
-          padding: 20px;
+          padding: 16px;
           overflow-y: auto;
+          overflow-x: hidden;
           display: flex;
           flex-direction: column;
           gap: 12px;
+          max-height: 350px;
+          min-height: 200px;
         }
 
         .welcome-message {
@@ -268,41 +676,115 @@ export class AiChatbot extends HTMLElement {
           gap: 12px;
         }
 
-        /* Simple Chat Layout */
+        /* Chat Layout leveraging DaisyUI defaults */
         .chat {
           display: flex;
-          align-items: flex-start;
+          width: 100%;
           gap: 12px;
           margin-bottom: 16px;
         }
 
-        .chat-start {
+        .chat.chat-start {
           flex-direction: row;
+          justify-content: flex-start;
         }
 
-        .chat-end {
+        .chat.chat-end {
           flex-direction: row-reverse;
+          justify-content: flex-start;
         }
 
         .chat-image {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .chat-avatar {
           width: 32px;
           height: 32px;
-          border-radius: 50%;
+          border-radius: 9999px;
           display: flex;
           align-items: center;
           justify-content: center;
           font-size: 12px;
           font-weight: 600;
-          flex-shrink: 0;
         }
 
         .chat-bubble {
-          max-width: 250px;
+          max-width: min(var(--chat-bubble-max, 360px), calc(100% - 60px));
           padding: 12px 16px;
           border-radius: 18px;
           font-size: 14px;
-          line-height: 1.4;
-          word-wrap: break-word;
+          line-height: 1.5;
+          word-break: break-word;
+          overflow-wrap: break-word;
+          hyphens: auto;
+          display: inline-flex;
+          flex-direction: column;
+          gap: 8px;
+          box-sizing: border-box;
+        }
+
+        /* Code block styling within chat bubbles */
+        .chat-bubble pre {
+          display: inline-block;
+          width: max-content;
+          max-width: min(var(--chat-code-max, 220px), 100%);
+          overflow-x: auto;
+          margin: 8px 0;
+          font-size: 12px;
+          border-radius: 6px;
+        }
+
+        .chat-bubble pre code {
+          display: inline-block;
+          white-space: pre;
+          min-width: 0;
+          max-width: 100%;
+        }
+
+        /* Inline code (not in pre blocks) */
+        .chat-bubble code:not(pre code) {
+          display: inline;
+          width: auto;
+          max-width: none;
+          word-break: normal;
+        }
+
+        /* Table styling within chat bubbles */
+        .chat-bubble table {
+          display: block;
+          width: 100%;
+          max-width: var(--chat-code-max, 220px);
+          overflow-x: auto;
+          white-space: nowrap;
+        }
+
+        .chat-bubble table thead,
+        .chat-bubble table tbody,
+        .chat-bubble table tr {
+          width: 100%;
+          table-layout: auto;
+        }
+
+        /* Custom scrollbar for chat body */
+        .chat-body::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .chat-body::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 3px;
+        }
+
+        .chat-body::-webkit-scrollbar-thumb {
+          background: #c1c1c1;
+          border-radius: 3px;
+        }
+
+        .chat-body::-webkit-scrollbar-thumb:hover {
+          background: #a1a1a1;
         }
 
         .chat-bubble-primary {
@@ -385,6 +867,40 @@ export class AiChatbot extends HTMLElement {
           opacity: 0.5;
           color: #6b7280;
           margin-bottom: 4px;
+        }
+
+        /* Typing Indicator Animation */
+        .typing-indicator {
+          display: inline-block;
+          animation: typing 1.4s infinite ease-in-out;
+        }
+
+        @keyframes typing {
+          0%, 80%, 100% {
+            opacity: 0.3;
+          }
+          40% {
+            opacity: 1;
+          }
+        }
+
+        /* Streaming Text Cursor */
+        .streaming-cursor {
+          display: inline-block;
+          width: 2px;
+          height: 1em;
+          background-color: currentColor;
+          animation: blink 1s infinite;
+          margin-left: 2px;
+        }
+
+        @keyframes blink {
+          0%, 50% {
+            opacity: 1;
+          }
+          51%, 100% {
+            opacity: 0;
+          }
         }
 
         .chat-input-container {

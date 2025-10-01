@@ -63,7 +63,10 @@
   "dependencies": {
     "@floating-ui/dom": "^1.7.1",
     "@popperjs/core": "^2.11.8",
-    "@tanstack/table-core": "^8.21.3"
+    "@tanstack/table-core": "^8.21.3",
+    "axios": "^1.12.2",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
