@@ -709,6 +709,7 @@ interface RenderInputParams {
   size?: ModusSize;
   value: string;
   inheritedAttributes: Attributes;
+  customIconSlot?: boolean;
   onBlur: (event: CustomEvent<FocusEvent>) => void;
   onChange: (event: CustomEvent<Event>) => void;
   onFocus: (event: CustomEvent<FocusEvent>) => void;
@@ -733,7 +734,9 @@ export function renderInput(params: RenderInputParams): JSX.Element {
       size={params.size}
       value={params.value}
       {...params.inheritedAttributes}
-    />
+    >
+      {params.customIconSlot ? <slot name="custom-icon" /> : undefined}
+    </modus-wc-text-input>
   );
 }
 

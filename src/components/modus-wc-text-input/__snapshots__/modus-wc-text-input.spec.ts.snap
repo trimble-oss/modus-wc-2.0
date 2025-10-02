@@ -2,6 +2,7 @@
 
 exports[`modus-wc-text-input should render with custom props 1`] = `
 <modus-wc-text-input auto-capitalize="words" auto-complete="on" auto-focus="true" clear-aria-label="Clear input" custom-class="test-class" disabled="true" include-clear="true" include-search="true" input-aria-invalid="grammar" input-id="test-id" input-mode="numeric" input-spellcheck="true" input-tab-index="1" inputmode="text" label="Test label" max-length="50" min-length="5" name="test-name" pattern="[A-Za-z]{3}" placeholder="Test placeholder" readonly="true" required="true" size="lg" type="email" value="test@example.com">
+  <!---->
   <modus-wc-input-label forid="test-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
   <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-disabled modus-wc-input-lg modus-wc-items-center modus-wc-text-input modus-wc-w-full test-class">
     <svg aria-hidden="true" class="modus-wc-text-input-icon modus-wc-text-input-icon-search" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -19,6 +20,7 @@ exports[`modus-wc-text-input should render with custom props 1`] = `
 
 exports[`modus-wc-text-input should render with default props 1`] = `
 <modus-wc-text-input inputmode="text" value="">
+  <!---->
   <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
     <input aria-label="Default input" class="modus-wc-grow" id="mwc_id_0" placeholder="" type="text" value="">
   </label>
@@ -27,6 +29,7 @@ exports[`modus-wc-text-input should render with default props 1`] = `
 
 exports[`modus-wc-text-input should render with error feedback 1`] = `
 <modus-wc-text-input inputmode="text" value="">
+  <!---->
   <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
     <input aria-label="Error input" class="modus-wc-grow" id="mwc_id_2" placeholder="" type="text" value="">
   </label>
