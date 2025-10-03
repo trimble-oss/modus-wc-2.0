@@ -67,11 +67,11 @@ modus-wc-date {
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-xl);
 
       .nav-btn {
-        i{
+        i {
           color: var(--modus-wc-color-white);
         }
         &:hover {
-          i{
+          i {
             color: var(--modus-wc-color-blue-dark);
           }
         }
@@ -86,7 +86,8 @@ modus-wc-date {
           color: var(--modus-wc-color-gray-9);
         }
         .month-select {
-          min-width: 105px;    }
+          min-width: 105px;
+        }
 
         .year-select {
           min-width: 110px;
@@ -157,7 +158,7 @@ modus-wc-date {
 
           &.other-month {
             color: var(--modus-wc-color-gray-4);
-            
+
             &:hover {
               background-color: var(--modus-wc-color-gray-2);
               color: var(--modus-wc-color-gray-6);
