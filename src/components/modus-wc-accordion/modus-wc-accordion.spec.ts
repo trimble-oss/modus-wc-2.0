@@ -1,32 +1,8 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcAccordion } from './modus-wc-accordion';
-import {
-  ICollapseOptions,
-  ModusWcCollapse,
-} from '../modus-wc-collapse/modus-wc-collapse';
+import { ModusWcCollapse } from '../modus-wc-collapse/modus-wc-collapse';
 
 describe('modus-wc-accordion', () => {
-  const options: ICollapseOptions[] = [
-    {
-      description: 'Item one description',
-      icon: 'alert',
-      iconAriaLabel: 'Alert',
-      title: 'Item One',
-    },
-    {
-      description: 'Item two description',
-      icon: 'alert',
-      iconAriaLabel: 'Alert',
-      title: 'Item Two',
-    },
-    {
-      description: 'Item three description',
-      icon: 'alert',
-      iconAriaLabel: 'Alert',
-      title: 'Item Three',
-    },
-  ];
-
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcAccordion],
