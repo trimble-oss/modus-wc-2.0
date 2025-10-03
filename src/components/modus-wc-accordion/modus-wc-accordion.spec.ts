@@ -52,7 +52,6 @@ describe('modus-wc-accordion', () => {
                 <modus-wc-collapse collapse-id="123" options={options[2]} />
             </modus-wc-accordion>`,
     });
-    console.log(options);
     expect(page.root).toMatchSnapshot();
   });
 });

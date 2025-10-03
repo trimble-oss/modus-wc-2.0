@@ -2,20 +2,35 @@
 
 exports[`modus-wc-date renders with default props 1`] = `
 <modus-wc-date value="">
-  <input aria-label="Default date" class="modus-wc-date-input modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" type="date" value="">
+  <div class="date-input-container">
+    <input aria-label="Default date" class="modus-wc-date-input modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" placeholder="yyyy-mm-dd" type="text" value="">
+    <button aria-label="Open calendar" class="calendar-icon-button" type="button">
+      <modus-wc-icon name="calendar_blank" size="sm"></modus-wc-icon>
+    </button>
+  </div>
 </modus-wc-date>
 `;
 
 exports[`modus-wc-date should render with custom props 1`] = `
-<modus-wc-date auto-focus="true" bordered="false" custom-class="test-class" disabled="true" input-id="custom-id" input-tab-index="1" label="Test label" max="11/25/2024" min="11/20/2024" name="test-name" readonly="true" required="true" size="lg" value="Test value">
+<modus-wc-date auto-focus="true" bordered="false" custom-class="test-class" disabled="true" input-id="custom-id" input-tab-index="1" label="Test label" max="11/25/2024" min="11/20/2024" name="test-name" readonly="true" required="true" size="lg" value="">
   <modus-wc-input-label forid="custom-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
-  <input aria-describedby="description" aria-disabled="" aria-label="Test date" aria-labelledby="Another element" class="modus-wc-date-input modus-wc-input modus-wc-input-lg modus-wc-w-full test-class" disabled="" id="custom-id" max="11/25/2024" min="11/20/2024" name="test-name" required="" tabindex="1" type="date" value="Test value">
+  <div class="date-input-container">
+    <input aria-describedby="description" aria-disabled="" aria-label="Test date" aria-labelledby="Another element" class="modus-wc-date-input modus-wc-input modus-wc-input-lg modus-wc-w-full test-class" disabled="" id="custom-id" name="test-name" placeholder="yyyy-mm-dd" required="" tabindex="1" type="text" value="">
+    <button aria-label="Open calendar" class="calendar-icon-button" type="button">
+      <modus-wc-icon name="calendar_blank" size="sm"></modus-wc-icon>
+    </button>
+  </div>
 </modus-wc-date>
 `;
 
 exports[`modus-wc-date should render with error feedback 1`] = `
 <modus-wc-date value="">
-  <input aria-label="Error input" class="modus-wc-date-input modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" type="date" value="">
+  <div class="date-input-container">
+    <input aria-label="Error input" class="modus-wc-date-input modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" placeholder="yyyy-mm-dd" type="text" value="">
+    <button aria-label="Open calendar" class="calendar-icon-button" type="button">
+      <modus-wc-icon name="calendar_blank" size="sm"></modus-wc-icon>
+    </button>
+  </div>
   <modus-wc-input-feedback>
     <div class="modus-wc-input-feedback modus-wc-input-feedback--error modus-wc-input-feedback--md">
       <svg class="mi-outline mi-warning modus-wc-input-feedback-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

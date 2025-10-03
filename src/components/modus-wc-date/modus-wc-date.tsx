@@ -367,6 +367,18 @@ export class ModusWcDate {
     }
   }
 
+  @Listen('keydown', { target: 'document' })
+  handleEscapeKey(event: KeyboardEvent) {
+    if (event.key === 'Escape' && this.showCalendar) {
+      this.showCalendar = false;
+      event.preventDefault();
+
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    }
+  }
+
   private renderCalendarHeader() {
     const currentYear = this.calendar.selectedYear;
     const currentMonth = this.calendar.selectedMonth;
