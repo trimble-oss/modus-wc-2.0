@@ -14,28 +14,30 @@ modus-wc-date .modus-wc-date-input {
     background-color: var(--modus-wc-color-base-200);
   }
 }
+
 // Calendar styles
 modus-wc-date {
   --calendar-grid-columns: repeat(7, 1fr);
+
   position: relative;
 
   .date-input-container {
-    position: relative;
-    display: inline-flex;
     align-items: center;
+    display: inline-flex;
+    position: relative;
     width: 100%;
 
     .calendar-icon-button {
-      position: absolute;
-      right: var(--modus-wc-spacing-sm);
+      align-items: center;
       background: none;
       border: none;
-      cursor: pointer;
-      padding: var(--modus-wc-spacing-xs);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       color: var(--modus-wc-color-gray-6);
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      padding: var(--modus-wc-spacing-xs);
+      position: absolute;
+      right: var(--modus-wc-spacing-sm);
 
       &:hover {
         color: var(--modus-wc-color-blue-light);
@@ -49,27 +51,28 @@ modus-wc-date {
   }
 
   .calendar-container {
-    position: fixed;
-    z-index: 9999;
     background: var(--modus-wc-color-white);
     border: 1px solid var(--modus-wc-color-gray-4);
     border-radius: var(--modus-wc-border-radius-md);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     min-width: 280px;
     overflow: hidden;
+    position: fixed;
+    z-index: 9999;
 
     .calendar-header {
-      display: flex;
       align-items: center;
-      justify-content: space-between;
       background-color: var(--modus-wc-color-blue-light);
       color: var(--modus-wc-color-white);
+      display: flex;
+      justify-content: space-between;
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-xl);
 
       .nav-btn {
         i {
           color: var(--modus-wc-color-white);
         }
+
         &:hover {
           i {
             color: var(--modus-wc-color-blue-dark);
@@ -78,13 +81,15 @@ modus-wc-date {
       }
 
       .calendar-selects {
-        display: flex;
         align-items: center;
+        display: flex;
         gap: var(--modus-wc-spacing-xs);
+
         select {
           background-color: var(--modus-wc-color-white);
           color: var(--modus-wc-color-gray-9);
         }
+
         .month-select {
           min-width: 105px;
         }
@@ -96,22 +101,20 @@ modus-wc-date {
     }
 
     .calendar-body {
-      padding: var(--modus-wc-spacing-2xl);
       font-size: var(--modus-wc-font-size-md);
+      padding: var(--modus-wc-spacing-2xl);
 
       .calendar-days-week {
         display: grid;
-        grid-template-columns: var(--calendar-grid-columns);
         gap: var(--modus-wc-spacing-xs);
-
+        grid-template-columns: var(--calendar-grid-columns);
         margin-bottom: var(--modus-wc-spacing-sm);
 
         .day-header {
-          text-align: center;
-
-          font-weight: var(--modus-wc-font-weight-bold);
           color: var(--modus-wc-color-gray-6);
+          font-weight: var(--modus-wc-font-weight-bold);
           padding: var(--modus-wc-spacing-xs);
+          text-align: center;
         }
       }
 
@@ -120,16 +123,16 @@ modus-wc-date {
         grid-template-columns: var(--calendar-grid-columns);
 
         .calendar-day {
-          width: 32px;
-          height: 32px;
-          border: none;
-          background: none;
-          cursor: pointer;
-          display: flex;
           align-items: center;
-          justify-content: center;
+          background: none;
+          border: none;
           border-radius: 50%;
           color: var(--modus-wc-color-gray-8);
+          cursor: pointer;
+          display: flex;
+          height: 32px;
+          justify-content: center;
+          width: 32px;
 
           &:hover {
             background-color: var(--modus-wc-color-blue-light);
@@ -137,8 +140,8 @@ modus-wc-date {
           }
 
           &:focus {
-            outline: none;
             border: 2px solid var(--modus-wc-color-blue-light);
+            outline: none;
           }
 
           &.current-day {
