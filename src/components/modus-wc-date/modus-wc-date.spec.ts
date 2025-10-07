@@ -1694,4 +1694,96 @@ describe('modus-wc-date', () => {
       Object.defineProperty(document, 'activeElement', originalActiveElement);
     }
   });
+
+  // Tests for dd-mm-yyyy format
+  describe('dd-mm-yyyy format', () => {
+    it('should render with dd-mm-yyyy format', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="DD-MM-YYYY format" format="dd-mm-yyyy"></modus-wc-date>',
+      });
+      const input = page.root?.querySelector('input');
+      expect(input?.placeholder).toBe('dd-mm-yyyy');
+    });
+
+    it('should parse dd-mm-yyyy format correctly', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Parse DD-MM-YYYY" format="dd-mm-yyyy" value="15-10-2025"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      expect(component.value).toBe('15-10-2025');
+    });
+
+    it('should format selected date as dd-mm-yyyy', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Format DD-MM-YYYY" format="dd-mm-yyyy"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component.showCalendar = true;
+      await page.waitForChanges();
+
+      const testDate = new Date(2025, 9, 15);
+      component['handleDateSelect'](testDate);
+      await page.waitForChanges();
+
+      expect(component.value).toBe('15-10-2025');
+    });
+
+    it('should handle min/max with dd-mm-yyyy format', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Min/Max DD-MM-YYYY" format="dd-mm-yyyy" min="10-10-2025" max="20-10-2025"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      // Test date within range
+      component.value = '15-10-2025';
+      await page.waitForChanges();
+      expect(component.value).toBe('15-10-2025');
+
+      // Test date below min - should clamp to min
+      component.value = '05-10-2025';
+      await page.waitForChanges();
+      expect(component.value).toBe('10-10-2025');
+
+      // Test date above max - should clamp to max
+      component.value = '25-10-2025';
+      await page.waitForChanges();
+      expect(component.value).toBe('20-10-2025');
+    });
+
+    it('should handle invalid dd-mm-yyyy format', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Invalid DD-MM-YYYY" format="dd-mm-yyyy"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      // Test invalid format (missing parts)
+      component.value = '15-10';
+      await page.waitForChanges();
+      expect(component.value).toBe('');
+
+      // Test invalid format (empty parts)
+      component.value = '--';
+      await page.waitForChanges();
+      expect(component.value).toBe('');
+    });
+
+    it('should handle invalid yyyy-mm-dd format', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Invalid YYYY-MM-DD"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      // Test invalid format (missing parts)
+      component.value = '2025-10';
+      await page.waitForChanges();
+      expect(component.value).toBe('');
+    });
+  });
 });

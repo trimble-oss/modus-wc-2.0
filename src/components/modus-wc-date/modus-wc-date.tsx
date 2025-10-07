@@ -97,7 +97,10 @@ export class ModusWcDate {
   /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
 
-  /** The value of the control (yyyy-mm-dd). */
+  /** The date format for display and input. */
+  @Prop() format?: 'yyyy-mm-dd' | 'dd-mm-yyyy' = 'yyyy-mm-dd';
+
+  /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
   /** Event emitted when the input loses focus. */
@@ -269,11 +272,7 @@ export class ModusWcDate {
       return;
     }
 
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-
-    this.value = `${year}-${month}-${day}`;
+    this.value = this.formatISODate(date);
 
     // If the selected date is from a different month, navigate to that month
     // istanbul ignore next (unreachable code)
@@ -532,7 +531,20 @@ export class ModusWcDate {
       return undefined;
     }
 
-    const [yearStr, monthStr, dayStr] = value.split('-');
+    let yearStr: string, monthStr: string, dayStr: string;
+
+    const parts = value.split('-');
+    if (parts.length !== 3) {
+      return undefined;
+    }
+
+    if (this.format === 'dd-mm-yyyy') {
+      [dayStr, monthStr, yearStr] = parts;
+    } else {
+      // yyyy-mm-dd
+      [yearStr, monthStr, dayStr] = parts;
+    }
+
     if (!yearStr || !monthStr || !dayStr) {
       return undefined;
     }
@@ -562,7 +574,12 @@ export class ModusWcDate {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
+
+    if (this.format === 'dd-mm-yyyy') {
+      return `${day}-${month}-${year}`;
+    } else {
+      return `${year}-${month}-${day}`;
+    }
   }
 
   private cloneDate(date: Date): Date {
@@ -713,7 +730,7 @@ export class ModusWcDate {
             onBlur={this.handleBlur}
             onFocus={this.handleFocus}
             onInput={this.handleInput}
-            placeholder="yyyy-mm-dd"
+            placeholder={this.format}
             readonly={this.readOnly}
             required={this.required}
             tabIndex={this.inputTabIndex}

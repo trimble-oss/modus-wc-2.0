@@ -13,22 +13,23 @@ Adheres to WCAG 2.2 standards.
 
 ## Properties
 
-| Property        | Attribute         | Description                                                                                             | Type                                | Default     |
-| --------------- | ----------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------- | ----------- |
-| `bordered`      | `bordered`        | Indicates that the input should have a border.                                                          | `boolean \| undefined`              | `true`      |
-| `customClass`   | `custom-class`    | Custom CSS class to apply to the input.                                                                 | `string \| undefined`               | `''`        |
-| `disabled`      | `disabled`        | Whether the form control is disabled.                                                                   | `boolean \| undefined`              | `false`     |
-| `feedback`      | `feedback`        | Feedback to render below the input.                                                                     | `IInputFeedbackProp \| undefined`   | `undefined` |
-| `inputId`       | `input-id`        | The ID of the input element.                                                                            | `string \| undefined`               | `undefined` |
-| `inputTabIndex` | `input-tab-index` | Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). | `number \| undefined`               | `undefined` |
-| `label`         | `label`           | The text to display within the label.                                                                   | `string \| undefined`               | `undefined` |
-| `max`           | `max`             | Maximum date value.                                                                                     | `string \| undefined`               | `undefined` |
-| `min`           | `min`             | Minimum date value.                                                                                     | `string \| undefined`               | `undefined` |
-| `name`          | `name`            | Name of the form control. Submitted with the form as part of a name/value pair.                         | `string \| undefined`               | `undefined` |
-| `readOnly`      | `read-only`       | Whether the value is editable.                                                                          | `boolean \| undefined`              | `false`     |
-| `required`      | `required`        | A value is required or must be checked for the form to be submittable.                                  | `boolean \| undefined`              | `false`     |
-| `size`          | `size`            | The size of the input.                                                                                  | `"lg" \| "md" \| "sm" \| undefined` | `'md'`      |
-| `value`         | `value`           | The value of the control (yyyy-mm-dd).                                                                  | `string`                            | `''`        |
+| Property        | Attribute         | Description                                                                                             | Type                                        | Default        |
+| --------------- | ----------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------- | -------------- |
+| `bordered`      | `bordered`        | Indicates that the input should have a border.                                                          | `boolean \| undefined`                      | `true`         |
+| `customClass`   | `custom-class`    | Custom CSS class to apply to the input.                                                                 | `string \| undefined`                       | `''`           |
+| `disabled`      | `disabled`        | Whether the form control is disabled.                                                                   | `boolean \| undefined`                      | `false`        |
+| `feedback`      | `feedback`        | Feedback to render below the input.                                                                     | `IInputFeedbackProp \| undefined`           | `undefined`    |
+| `format`        | `format`          | The date format for display and input.                                                                  | `"dd-mm-yyyy" \| "yyyy-mm-dd" \| undefined` | `'yyyy-mm-dd'` |
+| `inputId`       | `input-id`        | The ID of the input element.                                                                            | `string \| undefined`                       | `undefined`    |
+| `inputTabIndex` | `input-tab-index` | Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). | `number \| undefined`                       | `undefined`    |
+| `label`         | `label`           | The text to display within the label.                                                                   | `string \| undefined`                       | `undefined`    |
+| `max`           | `max`             | Maximum date value.                                                                                     | `string \| undefined`                       | `undefined`    |
+| `min`           | `min`             | Minimum date value.                                                                                     | `string \| undefined`                       | `undefined`    |
+| `name`          | `name`            | Name of the form control. Submitted with the form as part of a name/value pair.                         | `string \| undefined`                       | `undefined`    |
+| `readOnly`      | `read-only`       | Whether the value is editable.                                                                          | `boolean \| undefined`                      | `false`        |
+| `required`      | `required`        | A value is required or must be checked for the form to be submittable.                                  | `boolean \| undefined`                      | `false`        |
+| `size`          | `size`            | The size of the input.                                                                                  | `"lg" \| "md" \| "sm" \| undefined`         | `'md'`         |
+| `value`         | `value`           | The value of the control.                                                                               | `string`                                    | `''`           |
 
 
 ## Events

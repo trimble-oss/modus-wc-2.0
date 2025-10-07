@@ -9,6 +9,7 @@ interface DateArgs {
   'custom-class'?: string;
   disabled?: boolean;
   feedback?: IInputFeedbackProp;
+  format?: 'yyyy-mm-dd' | 'dd-mm-yyyy';
   'input-id'?: string;
   'input-tab-index'?: number;
   label?: string;
@@ -53,6 +54,10 @@ const meta: Meta<DateArgs> = {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
+    format: {
+      control: { type: 'select' },
+      options: ['yyyy-mm-dd', 'dd-mm-yyyy'],
+    },
   },
   decorators: [withActions],
   parameters: {
@@ -75,6 +80,7 @@ export const Default: Story = {
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
         .feedback=${args.feedback}
+        format=${ifDefined(args.format)}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         label=${ifDefined(args.label)}
