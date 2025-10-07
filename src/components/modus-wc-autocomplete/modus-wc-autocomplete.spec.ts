@@ -91,6 +91,26 @@ describe('modus-wc-autocomplete', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should render with custom icon slot', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcIcon],
+      html: `<modus-wc-autocomplete aria-label="Custom icon test">
+        <modus-wc-icon slot="custom-icon" name="heart" size="sm"></modus-wc-icon>
+      </modus-wc-autocomplete>`,
+    });
+
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render without custom icon slot', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="No custom icon test"></modus-wc-autocomplete>',
+    });
+
+    expect(page.root).toMatchSnapshot();
+  });
+
   it('should emit blur event', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
@@ -124,7 +144,7 @@ describe('modus-wc-autocomplete', () => {
   it('should emit change event', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
-      html: '<modus-wc-autocomplete aria-label="Change test"></modus-wc-autocomplete>',
+      html: '<modus-wc-autocomplete aria-label="Change test" debounce-ms="0"></modus-wc-autocomplete>',
     });
 
     const input = page.root!.querySelector('input');
@@ -147,7 +167,7 @@ describe('modus-wc-autocomplete', () => {
   it('should emit change event when menu is visible on focus', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
-      html: '<modus-wc-autocomplete aria-label="Change test" show-menu-on-focus="true"></modus-wc-autocomplete>',
+      html: '<modus-wc-autocomplete aria-label="Change test" show-menu-on-focus="true" debounce-ms="0"></modus-wc-autocomplete>',
     });
 
     const input = page.root!.querySelector('input');
@@ -1204,6 +1224,69 @@ describe('modus-wc-autocomplete', () => {
     expect(itemSelectSpy).not.toHaveBeenCalled();
   });
 
+  it('should call handleChipRemove when selecting an item with checkbox in multiSelect mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Checkbox test" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    // Get component instance
+    const component = page.rootInstance as ModusWcAutocomplete;
+
+    // Create items with checkbox property
+    const checkboxItems = [
+      {
+        label: 'Item 1',
+        value: '1',
+        visibleInMenu: true,
+        selected: true,
+        checkbox: true,
+      },
+      { label: 'Item 2', value: '2', visibleInMenu: true, checkbox: true },
+      { label: 'Item 3', value: '3', visibleInMenu: true, checkbox: true },
+    ];
+
+    component.items = checkboxItems;
+    await page.waitForChanges();
+
+    // Spy on handleChipRemove method
+    const handleChipRemoveSpy = jest.spyOn(
+      component as unknown as {
+        handleChipRemove: (item: IAutocompleteItem) => void;
+      },
+      'handleChipRemove'
+    );
+
+    // Call handleItemSelect with a selected item that has checkbox=true
+    component['handleItemSelect'](checkboxItems[0]);
+
+    // Verify handleChipRemove was called with the correct item
+    expect(handleChipRemoveSpy).toHaveBeenCalledWith(checkboxItems[0]);
+
+    // Reset the spy and test with an unselected item
+    handleChipRemoveSpy.mockClear();
+    component['handleItemSelect'](checkboxItems[1]);
+
+    // handleChipRemove should not be called since the item is not selected yet
+    expect(handleChipRemoveSpy).not.toHaveBeenCalled();
+
+    // Test with an item without checkbox property
+    const regularItem = {
+      label: 'Regular Item',
+      value: '4',
+      visibleInMenu: true,
+      selected: true,
+    };
+    component.items = [...checkboxItems, regularItem];
+    await page.waitForChanges();
+
+    handleChipRemoveSpy.mockClear();
+    component['handleItemSelect'](regularItem);
+
+    // handleChipRemove should not be called since the item doesn't have checkbox=true
+    expect(handleChipRemoveSpy).not.toHaveBeenCalled();
+  });
+
   it('should not render any chips when items is undefined', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
@@ -1668,10 +1751,10 @@ describe('modus-wc-autocomplete', () => {
   });
 
   // Test multi-select deselection
-  it('should not deselect an item on re-selection in multi-select mode', async () => {
+  it('should deselect an item on re-selection in multi-select mode and close the menu when it has checkbox property', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
-      html: `<modus-wc-autocomplete aria-label="Multi-select no-deselection test" multi-select="true"></modus-wc-autocomplete>`,
+      html: `<modus-wc-autocomplete aria-label="Multi-select deselection test" multi-select="true" leave-menu-open="false"></modus-wc-autocomplete>`,
     });
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
@@ -1680,6 +1763,8 @@ describe('modus-wc-autocomplete', () => {
       value: 'test',
       visibleInMenu: true,
       selected: true,
+      focused: false,
+      checkbox: true, // Added checkbox property to allow deselection
     };
 
     autocomplete.items = [testItem];
@@ -1690,11 +1775,84 @@ describe('modus-wc-autocomplete', () => {
     autocomplete['handleItemSelect'](testItem);
     await page.waitForChanges();
 
-    // Expect the item to remain selected
-    expect(autocomplete.items[0].selected).toBe(true);
-    expect(autocomplete['selectionOrder']).toEqual(['test']);
+    // When leaveMenuOpen is false, both selected and focused should be false
+    expect(autocomplete.items[0].selected).toBe(false);
+    expect(autocomplete.items[0].focused).toBe(false);
+    expect(autocomplete['selectionOrder']).toEqual([]);
   });
 
+  it('should deselect an item and set focused state when leaveMenuOpen is true and it has checkbox property', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Multi-select deselection test" multi-select="true" leave-menu-open="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const testItem: IAutocompleteItem = {
+      label: 'Test Item',
+      value: 'test',
+      visibleInMenu: true,
+      selected: true,
+      focused: false,
+      checkbox: true, // Added checkbox property to allow deselection
+    };
+
+    autocomplete.items = [testItem];
+    autocomplete['selectionOrder'] = ['test'];
+    await page.waitForChanges();
+
+    // Attempt to deselect the item by re-selecting it
+    autocomplete['handleItemSelect'](testItem);
+    await page.waitForChanges();
+
+    // When leaveMenuOpen is true, selected should be false and focused should be true
+    expect(autocomplete.items[0].selected).toBe(false);
+    expect(autocomplete.items[0].focused).toBe(true); // Updated to expect true instead of false
+    expect(autocomplete['selectionOrder']).toEqual([]);
+  });
+
+  it('should NOT deselect a regular item (without checkbox property) on re-selection in multi-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Multi-select non-checkbox test" multi-select="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const testItem: IAutocompleteItem = {
+      label: 'Regular Item',
+      value: 'regular',
+      visibleInMenu: true,
+      selected: true,
+      focused: false,
+      // No checkbox property
+    };
+
+    autocomplete.items = [testItem];
+    autocomplete['selectionOrder'] = ['regular'];
+    await page.waitForChanges();
+
+    // Attempt to deselect the regular item by re-selecting it
+    autocomplete['handleItemSelect'](testItem);
+    await page.waitForChanges();
+
+    // The item should REMAIN selected because it doesn't have checkbox property
+    expect(autocomplete.items[0].selected).toBe(true);
+    expect(autocomplete['selectionOrder']).toEqual(['regular']);
+  });
+
+  it('should handle undefined filtered items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Undefined items test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['filteredItems'] = undefined!;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
+  });
   // Test ArrowUp key with initialNavigation set to true
   it('should handle ArrowUp key with initialNavigation true', async () => {
     const page = await newSpecPage({
@@ -5044,9 +5202,9 @@ describe('modus-wc-autocomplete', () => {
         ModusWcChip,
         ModusWcButton,
       ],
-      html: `<modus-wc-autocomplete 
-        aria-label="Chip collapse test" 
-        multi-select="true" 
+      html: `<modus-wc-autocomplete
+        aria-label="Chip collapse test"
+        multi-select="true"
         leave-menu-open="true"
         max-chips="2"
       ></modus-wc-autocomplete>`,
@@ -5083,9 +5241,9 @@ describe('modus-wc-autocomplete', () => {
         ModusWcChip,
         ModusWcButton,
       ],
-      html: `<modus-wc-autocomplete 
-        aria-label="Chip expand test" 
-        multi-select="true" 
+      html: `<modus-wc-autocomplete
+        aria-label="Chip expand test"
+        multi-select="true"
         leave-menu-open="true"
         max-chips="2"
       ></modus-wc-autocomplete>`,
@@ -5122,8 +5280,8 @@ describe('modus-wc-autocomplete', () => {
         ModusWcChip,
         ModusWcButton,
       ],
-      html: `<modus-wc-autocomplete 
-        aria-label="Blur chip test" 
+      html: `<modus-wc-autocomplete
+        aria-label="Blur chip test"
         multi-select="true"
         max-chips="2"
       ></modus-wc-autocomplete>`,
@@ -5290,4 +5448,556 @@ describe('modus-wc-autocomplete', () => {
     ]);
     expect(autocomplete['initialNavigation']).toBe(false); // Should be reset after first navigation
   });
+
+  it('should call scrollToOptionSelected when arrow down is pressed and menu is open', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Scroll test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const scrollSpy = jest.spyOn(
+      autocomplete as ModusWcAutocomplete & {
+        scrollToOptionSelected: () => void;
+      },
+      'scrollToOptionSelected'
+    );
+
+    // Mock scrollIntoView for the DOM element that would be targeted
+    const mockScrollIntoView = jest.fn();
+    const originalQuerySelector = autocomplete.el.querySelector.bind(
+      autocomplete.el
+    );
+
+    jest
+      .spyOn(autocomplete.el, 'querySelector')
+      .mockImplementation((selector: string) => {
+        if (
+          selector === '.modus-wc-menu-item-focused' ||
+          selector === '.modus-wc-menu-item-selected'
+        ) {
+          return {
+            scrollIntoView: mockScrollIntoView,
+          } as unknown as Element;
+        }
+        return originalQuerySelector.call(autocomplete.el, selector);
+      });
+
+    // Set up items and mark one as selected
+    const items: IAutocompleteItem[] = [
+      { value: 'apple', label: 'Apple', visibleInMenu: true, selected: true },
+      {
+        value: 'banana',
+        label: 'Banana',
+        visibleInMenu: true,
+        selected: false,
+      },
+      {
+        value: 'cherry',
+        label: 'Cherry',
+        visibleInMenu: true,
+        selected: false,
+      },
+    ];
+    autocomplete.items = items;
+    autocomplete.minChars = 0;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    // Press arrow down to trigger scrollToOptionSelected
+    const arrowDownEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+    const input = page.root?.querySelector('input');
+    Object.defineProperty(arrowDownEvent, 'target', {
+      value: input,
+      enumerable: true,
+    });
+
+    autocomplete.handleKeyDown(arrowDownEvent);
+    await page.waitForChanges();
+    expect(scrollSpy).toHaveBeenCalled();
+
+    // Allow time for requestAnimationFrame to complete
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    scrollSpy.mockClear();
+    mockScrollIntoView.mockClear();
+    autocomplete.multiSelect = true;
+    await page.waitForChanges();
+
+    autocomplete.handleKeyDown(arrowDownEvent);
+    await page.waitForChanges();
+    expect(scrollSpy).toHaveBeenCalled();
+    expect(mockScrollIntoView).not.toHaveBeenCalled();
+    jest.restoreAllMocks();
+  });
+
+  it('should call scrollToOptionSelected when handleFocus is triggered with showMenuOnFocus true', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Focus scroll test" show-menu-on-focus="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const scrollSpy = jest.spyOn(
+      autocomplete as ModusWcAutocomplete & {
+        scrollToOptionSelected: () => void;
+      },
+      'scrollToOptionSelected'
+    );
+
+    const mockScrollIntoView = jest.fn();
+    const originalQuerySelector = autocomplete.el.querySelector.bind(
+      autocomplete.el
+    );
+
+    jest
+      .spyOn(autocomplete.el, 'querySelector')
+      .mockImplementation((selector: string) => {
+        if (selector === '.modus-wc-menu-item-selected') {
+          return {
+            scrollIntoView: mockScrollIntoView,
+          } as unknown as Element;
+        }
+        return originalQuerySelector.call(autocomplete.el, selector);
+      });
+
+    const items: IAutocompleteItem[] = [
+      { value: 'apple', label: 'Apple', visibleInMenu: true, selected: true },
+      {
+        value: 'banana',
+        label: 'Banana',
+        visibleInMenu: true,
+        selected: false,
+      },
+      {
+        value: 'cherry',
+        label: 'Cherry',
+        visibleInMenu: true,
+        selected: false,
+      },
+    ];
+    autocomplete.items = items;
+    await page.waitForChanges();
+    const focusEvent = new CustomEvent('inputFocus', {
+      detail: new FocusEvent('focus'),
+    });
+
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+    expect(autocomplete['menuVisible']).toBe(true);
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(scrollSpy).toHaveBeenCalled();
+    jest.restoreAllMocks();
+  });
+
+  it('should call scrollToOptionSelected after item selection when leaveMenuOpen is true', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Item selection scroll test" leave-menu-open="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete['menuVisible'] = true; // Ensure menu is visible
+
+    const scrollSpy = jest.spyOn(
+      autocomplete as ModusWcAutocomplete & {
+        scrollToOptionSelected: () => void;
+      },
+      'scrollToOptionSelected'
+    );
+
+    const mockScrollIntoView = jest.fn();
+    jest
+      .spyOn(autocomplete.el, 'querySelector')
+      .mockImplementation((selector: string) => {
+        if (selector === '.modus-wc-menu-item-selected') {
+          return {
+            scrollIntoView: mockScrollIntoView,
+          } as unknown as Element;
+        }
+        return null;
+      });
+
+    const items: IAutocompleteItem[] = [
+      { value: 'apple', label: 'Apple', visibleInMenu: true, selected: false },
+      {
+        value: 'banana',
+        label: 'Banana',
+        visibleInMenu: true,
+        selected: false,
+      },
+      {
+        value: 'cherry',
+        label: 'Cherry',
+        visibleInMenu: true,
+        selected: false,
+      },
+    ];
+    autocomplete.items = items;
+    await page.waitForChanges();
+
+    autocomplete['handleItemSelect'](items[1]); // Select banana
+    await page.waitForChanges();
+    expect(autocomplete['menuVisible']).toBe(true);
+    expect(scrollSpy).toHaveBeenCalled();
+    expect(autocomplete.multiSelect).toBe(false);
+    jest.restoreAllMocks();
+  });
+
+  it('should not call scrollToOptionSelected when items array is empty', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Empty items test" show-menu-on-focus="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const scrollSpy = jest.spyOn(
+      autocomplete as ModusWcAutocomplete & {
+        scrollToOptionSelected: () => void;
+      },
+      'scrollToOptionSelected'
+    );
+    autocomplete.items = [];
+    await page.waitForChanges();
+    const focusEvent = new CustomEvent('inputFocus', {
+      detail: new FocusEvent('focus'),
+    });
+
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+    expect(autocomplete['menuVisible']).toBe(true);
+    expect(scrollSpy).not.toHaveBeenCalled();
+
+    autocomplete.items = null as unknown as IAutocompleteItem[];
+    await page.waitForChanges();
+    scrollSpy.mockClear();
+
+    // Trigger focus again
+    autocomplete['handleFocus'](focusEvent);
+    await page.waitForChanges();
+
+    // scrollToOptionSelected should still not be called
+    expect(scrollSpy).not.toHaveBeenCalled();
+    jest.restoreAllMocks();
+  });
+
+  it('should evaluate targetItem.offsetTop in scrollToOptionSelected', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: '<modus-wc-autocomplete></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const menuEl = document.createElement('div');
+    menuEl.classList.add('modus-wc-menu');
+
+    const targetItem = document.createElement('div');
+    targetItem.classList.add('modus-wc-menu-item-selected');
+
+    (menuEl as HTMLElement).getBoundingClientRect = () =>
+      ({
+        top: 0,
+        bottom: 50,
+        left: 0,
+        right: 0,
+        height: 50,
+        width: 0,
+        x: 0,
+        y: 0,
+        toJSON: () => {},
+      }) as DOMRect;
+    (targetItem as HTMLElement).getBoundingClientRect = () =>
+      ({
+        top: 60,
+        bottom: 70,
+        left: 0,
+        right: 0,
+        height: 10,
+        width: 0,
+        x: 0,
+        y: 60,
+        toJSON: () => {},
+      }) as DOMRect;
+
+    Object.defineProperty(targetItem, 'offsetTop', {
+      get: () => 42,
+      configurable: true,
+    });
+    (menuEl as HTMLElement).scrollTo = jest.fn();
+    menuEl.appendChild(targetItem);
+    jest
+      .spyOn(autocomplete.el, 'querySelector')
+      .mockImplementation((selector: string) => {
+        if (selector === 'modus-wc-menu') return menuEl as HTMLElement;
+        return null;
+      });
+
+    jest.spyOn(menuEl, 'querySelector').mockImplementation(function (
+      selector: string
+    ) {
+      if (selector === '.modus-wc-menu-item-selected') return targetItem;
+      if (selector === '.modus-wc-menu') return menuEl as HTMLElement;
+      return null;
+    });
+    autocomplete['scrollToOptionSelected']();
+    await new Promise(requestAnimationFrame);
+    const scrollSpy = jest.spyOn(menuEl, 'scrollTo');
+    expect(scrollSpy).toHaveBeenCalledWith({
+      top: 42,
+      behavior: 'smooth',
+    });
+  });
+});
+
+// Test for explicitly testing the menuItem.selected logic in processItemSelection for multi-select
+it('should correctly toggle selected state for each item when selecting in multi-select mode', async () => {
+  const page = await newSpecPage({
+    components: [ModusWcAutocomplete, ModusWcTextInput],
+    html: `<modus-wc-autocomplete aria-label="Multi-select toggle test" multi-select="true"></modus-wc-autocomplete>`,
+  });
+
+  const autocomplete = page.rootInstance as ModusWcAutocomplete;
+  const items: IAutocompleteItem[] = [
+    {
+      label: 'Item 1',
+      value: 'item1',
+      visibleInMenu: true,
+      selected: false,
+      checkbox: true,
+    },
+    {
+      label: 'Item 2',
+      value: 'item2',
+      visibleInMenu: true,
+      selected: true,
+      checkbox: true,
+    },
+    {
+      label: 'Item 3',
+      value: 'item3',
+      visibleInMenu: true,
+      selected: false,
+      checkbox: true,
+    },
+  ];
+
+  autocomplete.items = items;
+  autocomplete['selectionOrder'] = ['item2']; // Item 2 is already selected
+  await page.waitForChanges();
+
+  // Select item1 (should become selected=true)
+  const item1 = items[0];
+  autocomplete['handleItemSelect'](item1);
+  await page.waitForChanges();
+
+  // Deselect item2 (should become selected=false)
+  const item2 = items[1];
+  autocomplete['handleItemSelect'](item2);
+  await page.waitForChanges();
+
+  // Verify item1 is now selected and item2 is now deselected
+  expect(autocomplete.items[0].selected).toBe(true); // item1 should be selected
+  expect(autocomplete.items[1].selected).toBe(false); // item2 should be deselected
+  expect(autocomplete.items[2].selected).toBe(false); // item3 should remain deselected
+
+  // Selection order should have item1 only
+  expect(autocomplete['selectionOrder']).toEqual(['item1']);
+});
+
+// Test for single-select mode where only the selected item should have selected=true
+it('should set selected=true only for the selected item in single-select mode', async () => {
+  const page = await newSpecPage({
+    components: [ModusWcAutocomplete, ModusWcTextInput],
+    html: `<modus-wc-autocomplete aria-label="Single-select test"></modus-wc-autocomplete>`,
+  });
+
+  const autocomplete = page.rootInstance as ModusWcAutocomplete;
+  const items: IAutocompleteItem[] = [
+    { label: 'Item 1', value: 'item1', visibleInMenu: true, selected: false },
+    { label: 'Item 2', value: 'item2', visibleInMenu: true, selected: true },
+    { label: 'Item 3', value: 'item3', visibleInMenu: true, selected: false },
+  ];
+
+  autocomplete.items = items;
+  await page.waitForChanges();
+
+  // Select item3
+  const item3 = items[2];
+  autocomplete['handleItemSelect'](item3);
+  await page.waitForChanges();
+
+  // In single-select mode, only item3 should be selected
+  expect(autocomplete.items[0].selected).toBe(false); // item1 should not be selected
+  expect(autocomplete.items[1].selected).toBe(false); // item2 should now be deselected
+  expect(autocomplete.items[2].selected).toBe(true); // item3 should be selected
+
+  // The input value should be set to the label of item3
+  expect(autocomplete.value).toBe('Item 3');
+});
+
+// Test to verify non-checkbox items cannot be deselected in multi-select mode
+it('should not allow deselection of non-checkbox items in multi-select mode', async () => {
+  const page = await newSpecPage({
+    components: [ModusWcAutocomplete, ModusWcTextInput],
+    html: `<modus-wc-autocomplete aria-label="Non-checkbox deselection test" multi-select="true"></modus-wc-autocomplete>`,
+  });
+
+  const autocomplete = page.rootInstance as ModusWcAutocomplete;
+  const items: IAutocompleteItem[] = [
+    // Item with checkbox=true can be deselected
+    {
+      label: 'Checkbox Item',
+      value: 'checkbox-item',
+      visibleInMenu: true,
+      selected: true,
+      checkbox: true,
+    },
+    // Item without checkbox property cannot be deselected
+    {
+      label: 'Non-Checkbox Item',
+      value: 'non-checkbox-item',
+      visibleInMenu: true,
+      selected: true,
+    },
+  ];
+
+  autocomplete.items = items;
+  autocomplete['selectionOrder'] = ['checkbox-item', 'non-checkbox-item'];
+  await page.waitForChanges();
+
+  // Try to deselect the checkbox item (should succeed)
+  autocomplete['handleItemSelect'](items[0]);
+  await page.waitForChanges();
+
+  // Try to deselect the non-checkbox item (should fail)
+  autocomplete['handleItemSelect'](items[1]);
+  await page.waitForChanges();
+
+  // Verify checkbox item was deselected
+  expect(autocomplete.items[0].selected).toBe(false);
+  // Verify non-checkbox item remains selected
+  expect(autocomplete.items[1].selected).toBe(true);
+
+  // Selection order should only have non-checkbox-item now
+  expect(autocomplete['selectionOrder']).toEqual(['non-checkbox-item']);
+});
+
+// Test for menu closing behavior when trying to deselect non-checkbox items with different leaveMenuOpen values
+it('should properly handle menu visibility when trying to deselect non-checkbox items', async () => {
+  const page = await newSpecPage({
+    components: [ModusWcAutocomplete, ModusWcTextInput],
+    html: `<modus-wc-autocomplete aria-label="Menu closing test" multi-select="true"></modus-wc-autocomplete>`,
+  });
+
+  const autocomplete = page.rootInstance as ModusWcAutocomplete;
+  const items: IAutocompleteItem[] = [
+    {
+      label: 'Non-Checkbox Item',
+      value: 'non-checkbox-item',
+      visibleInMenu: true,
+      selected: true,
+    },
+  ];
+
+  autocomplete.items = items;
+  autocomplete['selectionOrder'] = ['non-checkbox-item'];
+  autocomplete['menuVisible'] = true;
+  await page.waitForChanges();
+
+  // Case 1: With leaveMenuOpen = false (default), menu should close when trying to deselect non-checkbox item
+  autocomplete.leaveMenuOpen = false;
+  await page.waitForChanges();
+
+  // Try to deselect the non-checkbox item
+  autocomplete['handleItemSelect'](items[0]);
+  await page.waitForChanges();
+
+  // Verify menu is closed and item is still selected
+  expect(autocomplete['menuVisible']).toBe(false);
+  expect(autocomplete.items[0].selected).toBe(true);
+
+  // Case 2: With leaveMenuOpen = true, menu should stay open when trying to deselect non-checkbox item
+  autocomplete.leaveMenuOpen = true;
+  autocomplete['menuVisible'] = true;
+  await page.waitForChanges();
+
+  // Try to deselect the non-checkbox item again
+  autocomplete['handleItemSelect'](items[0]);
+  await page.waitForChanges();
+
+  // Verify menu is still open and item is still selected
+  expect(autocomplete['menuVisible']).toBe(true);
+  expect(autocomplete.items[0].selected).toBe(true);
+});
+
+// Test for menuItem.selected in processChipRemoval
+it('should update menuItem.selected to false when removing a chip', async () => {
+  const page = await newSpecPage({
+    components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcChip],
+    html: `<modus-wc-autocomplete aria-label="Chip removal test" multi-select="true"></modus-wc-autocomplete>`,
+  });
+
+  const autocomplete = page.rootInstance as ModusWcAutocomplete;
+  const items: IAutocompleteItem[] = [
+    {
+      label: 'Item 1',
+      value: 'item1',
+      visibleInMenu: true,
+      selected: true,
+      checkbox: true,
+    },
+    {
+      label: 'Item 2',
+      value: 'item2',
+      visibleInMenu: true,
+      selected: true,
+      checkbox: true,
+    },
+    {
+      label: 'Item 3',
+      value: 'item3',
+      visibleInMenu: true,
+      selected: false,
+      checkbox: true,
+    },
+  ];
+
+  autocomplete.items = items;
+  autocomplete['selectionOrder'] = ['item1', 'item2'];
+  await page.waitForChanges();
+
+  // Remove Item 1 chip
+  autocomplete['handleChipRemove'](items[0]);
+  await page.waitForChanges();
+
+  // Check that Item 1's selected state is now false
+  expect(autocomplete.items[0].selected).toBe(false); // item1 should be deselected
+  expect(autocomplete.items[1].selected).toBe(true); // item2 should still be selected
+  expect(autocomplete.items[2].selected).toBe(false); // item3 should remain not selected
+
+  expect(autocomplete['selectionOrder']).toEqual(['item2']);
 });

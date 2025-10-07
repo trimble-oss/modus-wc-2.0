@@ -12,8 +12,20 @@ exports[`modus-wc-icon should render with default props 1`] = `
 </modus-wc-icon>
 `;
 
+exports[`modus-wc-icon should render with outlined variant 1`] = `
+<modus-wc-icon class="modus-wc-flex modus-wc-items-center" variant="outlined">
+  <i aria-hidden="true" aria-label="Outlined icon" class="modus-icons-outlined modus-wc-icon modus-wc-icon--md" tabindex="-1"></i>
+</modus-wc-icon>
+`;
+
 exports[`modus-wc-icon should render with size prop lg 1`] = `
 <modus-wc-icon class="modus-wc-flex modus-wc-items-center" size="lg">
   <i aria-hidden="true" aria-label="Custom icon" class="modus-icons modus-wc-icon modus-wc-icon--lg" tabindex="-1"></i>
+</modus-wc-icon>
+`;
+
+exports[`modus-wc-icon should render with solid variant 1`] = `
+<modus-wc-icon class="modus-wc-flex modus-wc-items-center" variant="solid">
+  <i aria-hidden="true" aria-label="Solid icon" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1"></i>
 </modus-wc-icon>
 `;

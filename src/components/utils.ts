@@ -57,6 +57,16 @@ export const inheritAttributes = (
 };
 
 /**
+ * Generates a unique element ID.
+ * @param prefix Optional prefix for the ID
+ * @returns A unique ID string
+ */
+let counter = 0;
+export function generateElementId(): string {
+  return `mwc_id_${counter++}`;
+}
+
+/**
  * List of available ARIA attributes + `role`.
  * Removed deprecated attributes.
  * https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes

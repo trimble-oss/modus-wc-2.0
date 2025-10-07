@@ -5,6 +5,44 @@
 
 modus-wc-button .modus-wc-btn {
   --fallback-sc: var(--modus-wc-color-neutral);
+<<<<<<< HEAD
+=======
+
+  @include sizing-tokens;
+}
+
+modus-wc-button .modus-wc-btn-outline {
+  @include btn-state-colors;
+}
+
+modus-wc-button .modus-wc-btn-borderless {
+  @include btn-state-colors;
+
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+
+  &.modus-wc-btn-primary {
+    color: var(--modus-wc-color-primary);
+  }
+
+  &.modus-wc-btn-secondary {
+    color: var(--modus-wc-color-secondary);
+  }
+
+  &.modus-wc-btn-neutral {
+    color: var(--modus-wc-color-content);
+  }
+
+  &.modus-wc-btn-warning {
+    color: var(--modus-wc-color-warning);
+  }
+
+  &.modus-wc-btn-error {
+    color: var(--modus-wc-color-error);
+  }
+}
+>>>>>>> origin/main
 
   /* Use semantic button variables that cascade through shadow DOM */
 
@@ -19,9 +57,13 @@ modus-wc-button .modus-wc-btn {
     font-size: var(--modus-wc-font-size-xs);
 
     &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+<<<<<<< HEAD
       height: var(--modus-btn-min-height-xs);
       min-height: var(--modus-btn-min-height-xs);
       padding: var(--modus-btn-padding-xs);
+=======
+      padding: var(--modus-wc-spacing-2xs) var(--modus-wc-spacing-sm);
+>>>>>>> origin/main
     }
   }
 
@@ -29,9 +71,13 @@ modus-wc-button .modus-wc-btn {
     font-size: var(--modus-wc-font-size-sm);
 
     &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+<<<<<<< HEAD
       height: var(--modus-btn-min-height-sm);
       min-height: var(--modus-btn-min-height-sm);
       padding: var(--modus-btn-padding-sm);
+=======
+      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-md);
+>>>>>>> origin/main
     }
   }
 
@@ -39,9 +85,13 @@ modus-wc-button .modus-wc-btn {
     font-size: var(--modus-wc-font-size-md);
 
     &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+<<<<<<< HEAD
       height: var(--modus-btn-min-height-md);
       min-height: var(--modus-btn-min-height-md);
       padding: var(--modus-btn-padding-md);
+=======
+      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-lg);
+>>>>>>> origin/main
     }
   }
 
@@ -49,9 +99,13 @@ modus-wc-button .modus-wc-btn {
     font-size: var(--modus-wc-font-size-lg);
 
     &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+<<<<<<< HEAD
       height: var(--modus-btn-min-height-lg);
       min-height: var(--modus-btn-min-height-lg);
       padding: var(--modus-btn-padding-lg);
+=======
+      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-xl);
+>>>>>>> origin/main
     }
   }
 
@@ -308,7 +362,371 @@ modus-wc-button .modus-wc-btn {
     }
 
     &.modus-wc-btn-error:focus-visible {
+<<<<<<< HEAD
       box-shadow: var(--modus-btn-error-focus-shadow);
+=======
+      box-shadow: 0 0 0 0.25rem rgba(224, 66, 76, 0.5);
+    }
+  }
+}
+
+[data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn {
+  &.modus-wc-btn-disabled {
+    opacity: 0.3;
+  }
+
+  // Variants
+  &.modus-wc-btn-borderless {
+    &:focus-visible {
+      border: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-black);
+    }
+
+    // Colors
+    &.modus-wc-btn-primary {
+      color: var(--modus-wc-color-trimble-blue);
+    }
+
+    &.modus-wc-btn-secondary {
+      color: var(--modus-wc-color-gray-6);
+    }
+
+    // tertiary
+    &.modus-wc-btn-neutral {
+      color: var(--modus-wc-color-gray-6);
+    }
+
+    &.modus-wc-btn-warning {
+      color: var(--modus-wc-color-yellow);
+    }
+
+    &.modus-wc-btn-error {
+      color: var(--modus-wc-color-red);
+    }
+  }
+
+  &.modus-wc-btn-filled {
+    // Colors
+    &.modus-wc-btn-primary {
+      background-color: var(--modus-wc-color-trimble-blue);
+      color: var(--modus-wc-color-white);
+
+      &:hover {
+        background-color: var(--modus-wc-color-blue-light);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-blue-dark);
+      }
+    }
+
+    &.modus-wc-btn-secondary {
+      background-color: var(--modus-wc-color-gray-6);
+      color: var(--modus-wc-color-white);
+
+      &:hover {
+        background-color: var(--modus-wc-color-gray-5);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-gray-7);
+      }
+    }
+
+    // tertiary
+    &.modus-wc-btn-neutral {
+      background-color: var(--modus-wc-color-gray-1);
+      color: var(--modus-wc-color-trimble-gray);
+
+      &:hover {
+        background-color: var(--modus-wc-color-gray-0);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-gray-2);
+      }
+    }
+
+    &.modus-wc-btn-warning {
+      background-color: var(--modus-wc-color-yellow);
+      border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-red);
+      color: var(--modus-wc-color-trimble-gray);
+
+      &:hover {
+        background-color: var(--modus-wc-color-yellow-light);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-yellow-dark);
+      }
+    }
+
+    &.modus-wc-btn-error {
+      background-color: var(--modus-wc-color-red);
+      color: var(--modus-wc-color-white);
+
+      &:hover {
+        background-color: var(--modus-wc-color-red-light);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-red-dark);
+      }
+    }
+  }
+
+  &.modus-wc-btn-outline {
+    // Colors
+    &.modus-wc-btn-primary {
+      border-color: var(--modus-wc-color-trimble-blue);
+      color: var(--modus-wc-color-trimble-blue);
+
+      &:hover {
+        background-color: var(--modus-wc-color-blue-pale);
+        border-color: var(--modus-wc-color-blue-light);
+        color: var(--modus-wc-color-blue-light);
+      }
+
+      &:active {
+        background-color: rgba(0, 99, 163, 0.18);
+        border-color: var(--modus-wc-color-blue-dark);
+        color: var(--modus-wc-color-blue-dark);
+      }
+    }
+
+    &.modus-wc-btn-secondary {
+      border-color: var(--modus-wc-color-trimble-gray);
+      color: var(--modus-wc-color-trimble-gray);
+
+      &:hover {
+        background-color: var(--modus-wc-color-gray-0);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-gray-1);
+      }
+    }
+
+    // tertiary
+    &.modus-wc-btn-neutral {
+      border-color: var(--modus-wc-color-trimble-gray);
+      color: var(--modus-wc-color-trimble-gray);
+
+      &:hover {
+        background-color: var(--modus-wc-color-gray-1);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-gray-2);
+      }
+    }
+
+    &.modus-wc-btn-warning {
+      border-color: var(--modus-wc-color-yellow);
+      color: var(--modus-wc-color-yellow);
+
+      &:hover {
+        border-color: var(--modus-wc-color-yellow-light);
+        color: var(--modus-wc-color-yellow-light);
+      }
+
+      &:active {
+        border-color: var(--modus-wc-color-yellow-dark);
+        color: var(--modus-wc-color-yellow-dark);
+      }
+    }
+
+    &.modus-wc-btn-error {
+      border-color: var(--modus-wc-color-red);
+      color: var(--modus-wc-color-red);
+
+      &:hover {
+        border-color: var(--modus-wc-color-red-light);
+        color: var(--modus-wc-color-red-light);
+      }
+
+      &:active {
+        border-color: var(--modus-wc-color-red-dark);
+        color: var(--modus-wc-color-red-dark);
+      }
+    }
+  }
+}
+
+[data-theme='modus-classic-dark'] modus-wc-button .modus-wc-btn {
+  &.modus-wc-btn-disabled {
+    opacity: 0.4;
+  }
+
+  // Variants
+  &.modus-wc-btn-borderless {
+    &:focus-visible {
+      border: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-white);
+    }
+
+    // Colors
+    &.modus-wc-btn-primary {
+      color: var(--modus-wc-color-highlight-blue);
+    }
+
+    &.modus-wc-btn-secondary {
+      color: var(--modus-wc-color-gray-6);
+    }
+
+    // tertiary
+    &.modus-wc-btn-neutral {
+      color: var(--modus-wc-color-gray-1);
+    }
+
+    &.modus-wc-btn-warning {
+      color: var(--modus-wc-color-yellow);
+    }
+
+    &.modus-wc-btn-error {
+      color: var(--modus-wc-color-red);
+    }
+  }
+
+  &.modus-wc-btn-filled {
+    // Colors
+    &.modus-wc-btn-primary {
+      background-color: var(--modus-wc-color-highlight-blue);
+      color: var(--modus-wc-color-gray-10);
+
+      &:hover {
+        background-color: var(--modus-wc-color-blue-light);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-blue-dark);
+      }
+    }
+
+    &.modus-wc-btn-secondary {
+      background-color: var(--modus-wc-color-gray-6);
+      color: var(--modus-wc-color-white);
+
+      &:hover {
+        background-color: var(--modus-wc-color-gray-5);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-gray-7);
+      }
+    }
+
+    // tertiary
+    &.modus-wc-btn-neutral {
+      background-color: var(--modus-wc-color-gray-1);
+      color: var(--modus-wc-color-trimble-gray);
+
+      &:hover {
+        background-color: var(--modus-wc-color-gray-0);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-gray-4);
+      }
+    }
+
+    &.modus-wc-btn-warning {
+      background-color: var(--modus-wc-color-yellow);
+      border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-red);
+      color: var(--modus-wc-color-trimble-gray);
+
+      &:hover {
+        background-color: var(--modus-wc-color-yellow-light);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-yellow-dark);
+      }
+    }
+
+    &.modus-wc-btn-error {
+      background-color: var(--modus-wc-color-red);
+      color: var(--modus-wc-color-white);
+
+      &:hover {
+        background-color: var(--modus-wc-color-red-light);
+      }
+
+      &:active {
+        background-color: var(--modus-wc-color-red-dark);
+      }
+    }
+  }
+
+  &.modus-wc-btn-outline {
+    // Colors
+    &.modus-wc-btn-primary {
+      border-color: var(--modus-wc-color-highlight-blue);
+      color: var(--modus-wc-color-highlight-blue);
+
+      &:hover {
+        background-color: rgba(1, 154, 235, 0.12);
+      }
+
+      &:active {
+        background-color: rgba(1, 154, 235, 0.3);
+      }
+    }
+
+    &.modus-wc-btn-secondary {
+      border-color: var(--modus-wc-color-gray-1);
+      color: var(--modus-wc-color-gray-1);
+
+      &:hover {
+        background-color: rgba(203, 205, 214, 0.12);
+      }
+
+      &:active {
+        background-color: rgba(203, 205, 214, 0.3);
+      }
+    }
+
+    // tertiary
+    &.modus-wc-btn-neutral {
+      border-color: var(--modus-wc-color-gray-2);
+      color: var(--modus-wc-color-gray-2);
+
+      &:hover {
+        background-color: rgba(203, 205, 214, 0.12);
+      }
+
+      &:active {
+        background-color: rgba(203, 205, 214, 0.3);
+      }
+    }
+
+    &.modus-wc-btn-warning {
+      border-color: var(--modus-wc-color-yellow);
+      color: var(--modus-wc-color-yellow);
+
+      &:hover {
+        border-color: var(--modus-wc-color-yellow-light);
+        color: var(--modus-wc-color-yellow-light);
+      }
+
+      &:active {
+        border-color: var(--modus-wc-color-yellow-dark);
+        color: var(--modus-wc-color-yellow-dark);
+      }
+    }
+
+    &.modus-wc-btn-error {
+      border-color: var(--modus-wc-color-red);
+      color: var(--modus-wc-color-red);
+
+      &:hover {
+        border-color: var(--modus-wc-color-red-light);
+        color: var(--modus-wc-color-red-light);
+      }
+
+      &:active {
+        border-color: var(--modus-wc-color-red-dark);
+        color: var(--modus-wc-color-red-dark);
+      }
+>>>>>>> origin/main
     }
   }
 }

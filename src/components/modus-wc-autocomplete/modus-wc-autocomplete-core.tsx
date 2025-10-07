@@ -305,10 +305,35 @@ export function processItemSelection(
     const isInSelectionOrder = params.selectionOrder.includes(item.value);
 
     if (isCurrentlySelected || isInSelectionOrder) {
+      // Only allow deselection if item has checkbox enabled
+      if (!item.checkbox) {
+        // Don't deselect non-checkbox items, keep them selected
+        return {
+          updatedItems: params.items,
+          updatedValue: undefined,
+          updatedSelectionOrder: params.selectionOrder,
+          shouldExpandChips: false,
+          shouldCloseMenu: params.leaveMenuOpen ? false : true,
+        };
+      }
+
+      updatedItems = [
+        ...params.items.map((menuItem) => ({
+          ...menuItem,
+          selected: menuItem.value === item.value ? false : menuItem.selected,
+          focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
+        })),
+      ];
+
+      // Remove from selection order
+      updatedSelectionOrder = params.selectionOrder.filter(
+        (value) => value !== item.value
+      );
+
       return {
-        updatedItems: params.items,
+        updatedItems,
         updatedValue: '',
-        updatedSelectionOrder: params.selectionOrder,
+        updatedSelectionOrder,
         shouldExpandChips: false,
         shouldCloseMenu: !params.leaveMenuOpen,
       };
@@ -576,7 +601,7 @@ export function renderClearButton(
     <modus-wc-button
       onClick={params.onClearAll}
       variant="borderless"
-      color="secondary"
+      color="tertiary"
       aria-label="Clear all"
       disabled={params.disabled || params.readOnly}
       size="xs"
@@ -618,7 +643,7 @@ export function renderExpandCollapseButton(
       custom-class={`modus-wc-autocomplete-expand-button ${params.isChipsExpanded ? 'expanded' : ''}`}
       onClick={params.onToggleExpansion}
       variant="borderless"
-      color="secondary"
+      color="tertiary"
       aria-label={
         params.isChipsExpanded
           ? 'Collapse chips'
@@ -684,6 +709,7 @@ interface RenderInputParams {
   size?: ModusSize;
   value: string;
   inheritedAttributes: Attributes;
+  customIconSlot?: boolean;
   onBlur: (event: CustomEvent<FocusEvent>) => void;
   onChange: (event: CustomEvent<Event>) => void;
   onFocus: (event: CustomEvent<FocusEvent>) => void;
@@ -708,7 +734,9 @@ export function renderInput(params: RenderInputParams): JSX.Element {
       size={params.size}
       value={params.value}
       {...params.inheritedAttributes}
-    />
+    >
+      {params.customIconSlot ? <slot name="custom-icon" /> : undefined}
+    </modus-wc-text-input>
   );
 }
 
@@ -742,12 +770,18 @@ export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
       {menuItems.length > 0 || !noResults || params.hasSlottedContent
         ? menuItems.map((item) => (
             <modus-wc-menu-item
+              checkbox={item.checkbox}
               disabled={item.disabled}
               focused={item.focused}
               label={item.label}
-              onItemSelect={() => params.onItemSelect(item.value)}
+              onItemSelect={(e: CustomEvent) => {
+                e.stopPropagation();
+                params.onItemSelect(item.value);
+              }}
               onMouseDown={(e) => e.preventDefault()}
               selected={item.selected}
+              tooltip-content={item.tooltipContent}
+              tooltip-position={item.tooltipPosition}
               value={item.value}
             />
           ))

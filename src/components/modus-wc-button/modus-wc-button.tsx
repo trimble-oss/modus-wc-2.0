@@ -61,10 +61,6 @@ export class ModusWcButton {
   @Event() buttonClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   componentWillLoad() {
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Button';
-    }
-
     this.inheritedAttributes = inheritAriaAttributes(this.el);
 
     // Ensure DaisyUI/Tailwind CSS is available when rendered inside a shadow root

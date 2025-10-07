@@ -309,6 +309,37 @@ export class ModusWcAutocomplete {
     }
   }
 
+  private scrollToOptionSelected(): void {
+    if (this.multiSelect) return;
+
+    requestAnimationFrame(() => {
+      const menuEl = this.el.querySelector('modus-wc-menu') as HTMLElement;
+      if (menuEl) {
+        const targetItem = menuEl.querySelector(
+          '.modus-wc-menu-item-selected'
+        ) as HTMLElement;
+
+        const scrollContainer = menuEl.querySelector(
+          '.modus-wc-menu'
+        ) as HTMLElement;
+
+        const containerRect = scrollContainer.getBoundingClientRect();
+        const itemRect = targetItem.getBoundingClientRect();
+
+        const isAboveView = itemRect.top < containerRect.top;
+        const isBelowView = itemRect.bottom > containerRect.bottom;
+
+        if (isAboveView || isBelowView) {
+          const scrollTop = targetItem.offsetTop;
+          scrollContainer.scrollTo({
+            top: Math.max(0, scrollTop),
+            behavior: 'smooth',
+          });
+        }
+      }
+    });
+  }
+
   private handleArrowDown(): void {
     const input = this.el.querySelector('input');
     if (!input) return;
@@ -339,7 +370,13 @@ export class ModusWcAutocomplete {
           this.filteredItems = this.items.filter((item) => item.visibleInMenu);
         }
       },
-      onSetMenuVisible: (visible) => (this.menuVisible = visible),
+      onSetMenuVisible: (visible) => {
+        this.menuVisible = visible;
+        // Only scroll if menu is becoming visible and there's a selected item
+        if (visible && this.items?.some((item) => item.selected)) {
+          this.scrollToOptionSelected();
+        }
+      },
       onSetInitialNavigation: (value) => (this.initialNavigation = value),
     });
   }
@@ -445,6 +482,9 @@ export class ModusWcAutocomplete {
   };
 
   private handleChange = (event: CustomEvent<Event>) => {
+    // Prevent the child text-input's immediate inputChange event
+    event.stopPropagation();
+
     const result = processInputChange(event, {
       disabled: this.disabled,
       readOnly: this.readOnly,
@@ -529,6 +569,9 @@ export class ModusWcAutocomplete {
   }
 
   private handleFocus = (event: CustomEvent<FocusEvent>) => {
+    // Prevent the child text-input's immediate inputFocus event
+    event.stopPropagation();
+
     if (!this.disabled && !this.readOnly) {
       // When focusing, clear searchText if value matches a selected item
       // This prevents treating the display value as a search query
@@ -547,6 +590,13 @@ export class ModusWcAutocomplete {
 
       if (this.showMenuOnFocus) {
         this.menuVisible = true;
+
+        // Scroll to selected item when menu opens via mouse focus
+        if (this.items?.some((item) => item.selected)) {
+          requestAnimationFrame(() => {
+            this.scrollToOptionSelected();
+          });
+        }
       }
     }
 
@@ -663,6 +713,11 @@ export class ModusWcAutocomplete {
       customItemSelect: this.customItemSelect,
     });
 
+    const isSelected = item.selected;
+    if (this.multiSelect && isSelected && item.checkbox) {
+      this.handleChipRemove(item);
+    }
+
     if (result.updatedItems && result.updatedItems !== this.items) {
       this.items = result.updatedItems;
     }
@@ -695,6 +750,11 @@ export class ModusWcAutocomplete {
     if (!this.disabled && !this.readOnly && this.items) {
       this.initialNavigation = true;
       this.itemSelect.emit(item);
+
+      // Scroll to selected option after selection
+      if (!this.multiSelect && this.menuVisible) {
+        this.scrollToOptionSelected();
+      }
     }
   };
 
@@ -752,7 +812,10 @@ export class ModusWcAutocomplete {
     };
 
     // Check if we have slotted content
-    const hasSlottedContent = !!this.el.querySelector('[slot="menu-items"]');
+    const hasSlottedMenuItems = !!this.el.querySelector('[slot="menu-items"]');
+    const hasSlottedCustomIcon = !!this.el.querySelector(
+      '[slot="custom-icon"]'
+    );
 
     return (
       <Host class={this.getClasses()} style={cssVariables}>
@@ -799,6 +862,7 @@ export class ModusWcAutocomplete {
                 size: this.size,
                 value: this.value,
                 inheritedAttributes: this.inheritedAttributes,
+                customIconSlot: hasSlottedCustomIcon,
                 onBlur: this.handleBlur,
                 onChange: this.handleChange,
                 onFocus: this.handleFocus,
@@ -840,13 +904,14 @@ export class ModusWcAutocomplete {
               size: this.size,
               value: this.value,
               inheritedAttributes: this.inheritedAttributes,
+              customIconSlot: hasSlottedCustomIcon,
               onBlur: this.handleBlur,
               onChange: this.handleChange,
               onFocus: this.handleFocus,
             })}
           </Fragment>
         )}
-        {hasSlottedContent ? (
+        {hasSlottedMenuItems ? (
           // When using custom slots, keep menu in DOM and use CSS to hide/show
           <modus-wc-menu
             aria-label="Autocomplete menu"
@@ -862,7 +927,7 @@ export class ModusWcAutocomplete {
               filteredItems: this.filteredItems,
               items: this.items,
               noResults: this.noResults,
-              hasSlottedContent: hasSlottedContent,
+              hasSlottedContent: hasSlottedMenuItems,
               onItemSelect: this.handleItemSelectByValue,
             })}
             <slot name="menu-items"></slot>
@@ -884,7 +949,7 @@ export class ModusWcAutocomplete {
                 filteredItems: this.filteredItems,
                 items: this.items,
                 noResults: this.noResults,
-                hasSlottedContent: hasSlottedContent,
+                hasSlottedContent: hasSlottedMenuItems,
                 onItemSelect: this.handleItemSelectByValue,
               })}
               <slot name="menu-items"></slot>

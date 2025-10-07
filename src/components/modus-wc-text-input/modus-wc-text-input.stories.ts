@@ -30,7 +30,7 @@ interface TextInputArgs {
   'include-clear'?: boolean;
   'include-search'?: boolean;
   'input-id'?: string;
-  'input-mode':
+  inputmode?:
     | 'decimal'
     | 'email'
     | 'none'
@@ -62,7 +62,7 @@ const meta: Meta<TextInputArgs> = {
     disabled: false,
     'include-clear': false,
     'include-search': false,
-    'input-mode': 'text',
+    inputmode: 'text',
     label: 'Label',
     size: 'md',
     spellcheck: false,
@@ -95,7 +95,8 @@ const meta: Meta<TextInputArgs> = {
         },
       },
     },
-    'input-mode': {
+    inputmode: {
+      control: { type: 'select' },
       options: [
         'decimal',
         'email',
@@ -134,7 +135,7 @@ export default meta;
 
 type Story = StoryObj<TextInputArgs>;
 
-export const Default: Story = {
+const Template: Story = {
   render: (args) => html`
     <modus-wc-text-input
       aria-label="Text input"
@@ -151,7 +152,7 @@ export const Default: Story = {
       include-search=${ifDefined(args['include-search'])}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-id=${ifDefined(args['input-id'])}
-      input-mode=${args['input-mode']}
+      inputmode=${ifDefined(args.inputmode)}
       input-tab-index=${ifDefined(args['input-tab-index'])}
       label=${ifDefined(args.label)}
       max-length=${ifDefined(args['max-length'])}
@@ -169,21 +170,56 @@ export const Default: Story = {
   `,
 };
 
+export const Default: Story = { ...Template };
+
 const errorFeedback: IInputFeedbackProp = {
   level: 'error',
   message: 'Value is required.',
 };
 
 export const WithErrorFeedback: Story = {
+  ...Template,
+  args: { feedback: errorFeedback, required: true },
+};
+
+export const WithCustomIconSlot: Story = {
+  // prettier-ignore
   render: (args) => html`
-    <modus-wc-text-input
-      aria-label="Text input"
-      .feedback=${errorFeedback}
-      label=${ifDefined(args.label)}
-      ?required=${true}
-      .value=${args.value}
-    ></modus-wc-text-input>
+<modus-wc-text-input
+  aria-label="Text input with custom icon"
+  auto-capitalize=${ifDefined(args['auto-capitalize'])}
+  auto-complete=${ifDefined(args['auto-complete'])}
+  auto-correct=${ifDefined(args['auto-correct'])}
+  ?bordered=${args.bordered}
+  clear-aria-label=${ifDefined(args['clear-aria-label'])}
+  custom-class=${ifDefined(args['custom-class'])}
+  ?disabled=${args.disabled}
+  enterkeyhint=${ifDefined(args.enterkeyhint)}
+  .feedback=${args.feedback}
+  include-clear=${ifDefined(args['include-clear'])}
+  include-search=${ifDefined(args['include-search'])}
+  input-id=${ifDefined(args['input-id'])}
+  inputmode=${ifDefined(args.inputmode)}
+  input-tab-index=${ifDefined(args['input-tab-index'])}
+  label=${ifDefined(args.label)}
+  max-length=${ifDefined(args['max-length'])}
+  min-length=${ifDefined(args['min-length'])}
+  name=${ifDefined(args.name)}
+  pattern=${ifDefined(args.pattern)}
+  placeholder=${ifDefined(args.placeholder)}
+  ?read-only=${args['read-only']}
+  ?required=${args.required}
+  size=${ifDefined(args.size)}
+  spellcheck=${ifDefined(args.spellcheck)}
+  type=${ifDefined(args.type)}
+  .value=${args.value}
+>
+  <modus-wc-icon slot="custom-icon" name="heart" size="sm"></modus-wc-icon>
+</modus-wc-text-input>
   `,
+  args: {
+    placeholder: 'Enter text here...',
+  },
 };
 
 export const Migration: Story = {
@@ -215,7 +251,7 @@ export const Migration: Story = {
 | include-error-icon           |                     | Not carried over                                            |
 | include-search-icon          | include-search      |                                                             |
 | include-password-text-toggle |                     | Not carried over                                            |
-| inputmode                    | input-mode          |                                                             |
+| inputmode                    | inputmode          |                                                             |
 | label                        | label               |                                                             |
 | max-length                   | max-length          |                                                             |
 | pattern                      | pattern             |                                                             |

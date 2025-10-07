@@ -13,6 +13,7 @@ interface TableStoryArgs {
   'page-size-options'?: number[];
   'selected-row-ids'?: string[];
   'show-page-size-selector'?: boolean;
+  caption?: string;
   columns?: ITableColumn[];
   data?: Record<string, unknown>[];
   density?: Density;
@@ -100,6 +101,11 @@ const meta: Meta<TableStoryArgs> = {
       control: 'boolean',
       description: 'Show/hide the page size selector in pagination.',
       defaultValue: true,
+    },
+    caption: {
+      control: 'text',
+      description:
+        'Accessibility caption for the table that is visually hidden but available to screen readers.',
     },
     'custom-class': {
       control: 'text',
@@ -252,6 +258,7 @@ export const Default: Story = {
         .pageSizeOptions=${args['page-size-options']}
         .selectedRowIds=${args['selected-row-ids']}
         .editable=${args.editable}
+        .caption=${args.caption}
         @rowClick=${action('rowClick')}
         @sortChange=${action('sortChange')}
         @paginationChange=${action('paginationChange')}
