@@ -7,6 +7,7 @@ interface AvatarArgs {
   alt: string;
   'custom-class'?: string;
   'img-src': string;
+  initials: string;
   shape: string;
   size: DaisySize;
 }
@@ -19,6 +20,7 @@ const meta: Meta<AvatarArgs> = {
     'img-src':
       'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',
     shape: 'circle',
+    initials: '',
     size: 'md',
   },
   argTypes: {
@@ -44,6 +46,7 @@ const Template: Story = {
         alt="${args.alt}"
         custom-class="${ifDefined(args['custom-class'])}"
         img-src="${args['img-src']}"
+        initials="${args.initials}"
         shape="${args.shape}"
         size="${args.size}"
       ></modus-wc-avatar>

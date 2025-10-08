@@ -4,7 +4,9 @@ import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable avatar component used to create avatars with different images.
+ * A customizable avatar component used to create avatars with different images or user initials.
+ * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+ * The component will extract the first letter of each word in the initials string.
  */
 @Component({
   tag: 'modus-wc-avatar',
@@ -26,6 +28,9 @@ export class ModusWcAvatar {
   /** The location of the image. */
   @Prop() imgSrc: string = '';
 
+  /** The initials to display when no image is provided. */
+  @Prop() initials?: string = '';
+
   // TODO - add placeholder support (need UX logic)
 
   /** The shape of the avatar. */
@@ -35,10 +40,6 @@ export class ModusWcAvatar {
   @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {
-    if (!this.alt) {
-      this.alt = 'Avatar image';
-    }
-
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
@@ -53,16 +54,45 @@ export class ModusWcAvatar {
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
+    if (!this.imgSrc && !this.initials) classList.push('no-image');
 
     return classList.join(' ');
   }
 
+  private getUserInitials(): string {
+    if (!this.initials) return '';
+
+    return this.initials
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((part) => part.charAt(0))
+      .join('')
+      .substring(0, 3)
+      .toUpperCase();
+  }
+
   render() {
+    const altText = this.alt || 'User avatar';
+
     return (
       <Host>
         <div class="modus-wc-avatar" {...this.inheritedAttributes}>
           <div class={this.getClasses()}>
-            <img src={this.imgSrc} alt={this.alt} />
+            {this.imgSrc ? (
+              <img src={this.imgSrc} alt={altText} />
+            ) : this.initials ? (
+              <span class="initials" aria-label={this.alt || this.initials}>
+                {this.getUserInitials()}
+              </span>
+            ) : (
+              <modus-wc-icon
+                aria-label={altText}
+                name="person"
+                size={this.size}
+                variant="solid"
+              ></modus-wc-icon>
+            )}
           </div>
         </div>
       </Host>

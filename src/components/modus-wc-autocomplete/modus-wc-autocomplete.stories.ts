@@ -325,6 +325,48 @@ export const Default: Story = {
   ...Template,
 };
 
+export const WithCustomIconSlot: Story = {
+  // prettier-ignore
+  render: (args) => html`
+<style>
+  div[id^='story--components-forms-autocomplete--with-custom-icon-slot'] {
+    height: 400px;
+  }
+</style>
+<modus-wc-autocomplete
+  aria-label="Autocomplete with custom icon"
+  ?bordered=${args.bordered}
+  custom-class=${ifDefined(args['custom-class'])}
+  debounce-ms=${ifDefined(args['debounce-ms'])}
+  ?disabled=${args.disabled}
+  ?include-clear=${args['include-clear']}
+  ?include-search=${args['include-search']}
+  input-id=${ifDefined(args['input-id'])}
+  input-tab-index=${ifDefined(args['input-tab-index'])}
+  .items=${args.items}
+  label=${ifDefined(args.label)}
+  ?leave-menu-open=${args['leave-menu-open']}
+  min-chars=${args['min-chars']}
+  min-input-width=${ifDefined(args['min-input-width'])}
+  ?multi-select=${false}
+  name=${ifDefined(args.name)}
+  .noResults=${args['no-results']}
+  placeholder=${ifDefined(args.placeholder)}
+  ?read-only=${args['read-only']}
+  ?required=${args.required}
+  ?show-menu-on-focus=${args['show-menu-on-focus']}
+  ?show-spinner=${args['show-spinner']}
+  size=${ifDefined(args.size)}
+  value=${args.value}
+>
+  <modus-wc-icon slot="custom-icon" name="heart" size="sm"></modus-wc-icon>
+</modus-wc-autocomplete>
+  `,
+  args: {
+    placeholder: 'Search fruits...',
+  },
+};
+
 export const WithTooltips: Story = {
   name: 'With Tooltips',
   parameters: {
