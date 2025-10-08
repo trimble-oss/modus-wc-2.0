@@ -8,6 +8,9 @@ modus-wc-alert .modus-wc-alert {
   border-width: var(--alert-border-width);
   border-left-width: var(--alert-border-left-width);
   border-radius: var(--alert-border-radius);
+  background-color: var(--modus-wc-color-gray-light);
+  border-color: var(--modus-wc-color-gray-0);
+  color: var(--modus-wc-color-gray-10);
 
   .title {
     font-size: var(--modus-wc-font-size-md);
@@ -74,7 +77,9 @@ modus-wc-alert .modus-wc-alert {
 [data-theme='modus-modern-dark'] modus-wc-alert .modus-wc-alert,
 [data-theme='modus-classic-dark'] modus-wc-alert .modus-wc-alert,
 [data-theme='modus-connect-dark'] modus-wc-alert .modus-wc-alert {
-  color: var(--modus-wc-color-gray-10);
+  color: var(--modus-wc-color-gray-light);
+  background: var(--modus-wc-color-gray-10);
+  border: var(--modus-wc-color-gray-9);
   &.modus-wc-alert-info {
     background-color: color-mix(
       in sRGB,
@@ -82,6 +87,7 @@ modus-wc-alert .modus-wc-alert {
       var(--modus-wc-color-gray-light)
     );
     border-color: var(--modus-wc-color-blue-light);
+    color: var(--modus-wc-color-gray-10);
   }
 
   &.modus-wc-alert-error {
@@ -91,6 +97,7 @@ modus-wc-alert .modus-wc-alert {
       var(--modus-wc-color-gray-light)
     );
     border-color: var(--modus-wc-color-red-light);
+    color: var(--modus-wc-color-gray-10);
   }
 
   &.modus-wc-alert-success {
@@ -100,6 +107,7 @@ modus-wc-alert .modus-wc-alert {
       var(--modus-wc-color-gray-light)
     );
     border-color: var(--modus-wc-color-green-light);
+    color: var(--modus-wc-color-gray-10);
   }
 
   &.modus-wc-alert-warning {
@@ -109,5 +117,6 @@ modus-wc-alert .modus-wc-alert {
       var(--modus-wc-color-gray-light)
     );
     border-color: var(--modus-wc-color-yellow-light);
+    color: var(--modus-wc-color-gray-10);
   }
 }
