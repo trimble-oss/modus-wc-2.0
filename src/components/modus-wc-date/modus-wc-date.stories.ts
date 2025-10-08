@@ -114,40 +114,6 @@ export const WithErrorFeedback: Story = {
   `,
 };
 
-export const DDMMYYYYFormat: Story = {
-  render: () => html`
-    <modus-wc-date
-      aria-label="Date input with DD-MM-YYYY format"
-      label="Date (DD-MM-YYYY)"
-      format="dd-mm-yyyy"
-      value="15-10-2025"
-    ></modus-wc-date>
-  `,
-};
-
-export const MMMDDYYYYFormat: Story = {
-  render: () => html`
-    <modus-wc-date
-      aria-label="Date input with MMM DD, YYYY format"
-      label="Date (MMM DD, YYYY)"
-      format="MMM DD, YYYY"
-      value="Oct 15, 2025"
-    ></modus-wc-date>
-  `,
-};
-
-export const WithMinMax: Story = {
-  render: () => html`
-    <modus-wc-date
-      aria-label="Date input with min/max"
-      label="Select a date (Oct 10 - Oct 20, 2025)"
-      min="2025-10-10"
-      max="2025-10-20"
-      value="2025-10-15"
-    ></modus-wc-date>
-  `,
-};
-
 export const Migration: Story = {
   parameters: {
     docs: {
