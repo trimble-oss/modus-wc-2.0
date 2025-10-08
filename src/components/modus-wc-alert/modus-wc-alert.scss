@@ -19,42 +19,38 @@ modus-wc-alert .modus-wc-alert {
   }
 
   &.modus-wc-alert-info {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-primary-pale) 90%,
-      transparent
-    );
-    border-color: var(--modus-wc-color-primary);
+    background-color: var(--modus-wc-color-blue-pale);
+    border-color: var(--modus-wc-color-info-blue);
     color: var(--modus-wc-color-base-content);
   }
 
   &.modus-wc-alert-error {
     background-color: color-mix(
       in sRGB,
-      var(--modus-wc-color-error-pale) 90%,
+      var(--modus-wc-color-red-pale) 80%,
       transparent
     );
-    border-color: var(--modus-wc-color-error);
+    border-color: var(--modus-wc-color-red-dark);
     color: var(--modus-wc-error-content);
   }
 
   &.modus-wc-alert-success {
     background-color: color-mix(
       in sRGB,
-      var(--modus-wc-color-success-pale) 90%,
+      var(--modus-wc-color-success-pale) 80%,
       transparent
     );
-    border-color: var(--modus-wc-color-success);
+    border-color: var(--modus-wc-color-green-dark);
     color: var(--modus-wc-success-content);
   }
 
   &.modus-wc-alert-warning {
     background-color: color-mix(
       in sRGB,
-      var(--modus-wc-color-warning-pale) 90%,
+      var(--modus-wc-color-yellow-pale) 60%,
       transparent
     );
-    border-color: var(--modus-wc-color-warning);
+    border-color: var(--modus-wc-color-yellow-dark);
     color: var(--modus-wc-color-base-content);
   }
 
