@@ -29,23 +29,17 @@ modus-wc-date {
 
     .calendar-icon-button {
       align-items: center;
-      background: none;
-      border: none;
-      color: var(--modus-wc-color-gray-6);
-      cursor: pointer;
       display: flex;
       justify-content: center;
-      padding: var(--modus-wc-spacing-xs);
       position: absolute;
-      right: var(--modus-wc-spacing-sm);
+      right: var(--modus-wc-spacing-xs);
 
-      &:hover {
+      :hover {
         color: var(--modus-wc-color-blue-light);
       }
 
-      &:disabled {
+      :disabled {
         cursor: not-allowed;
-        opacity: 0.5;
       }
     }
   }
@@ -170,7 +164,6 @@ modus-wc-date {
 
           &.disabled {
             color: var(--modus-wc-color-gray-4);
-            cursor: not-allowed;
 
             &:hover {
               background-color: transparent;

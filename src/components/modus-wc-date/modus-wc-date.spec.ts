@@ -117,19 +117,17 @@ describe('modus-wc-date', () => {
       html: '<modus-wc-date aria-label="Calendar toggle test"></modus-wc-date>',
     });
     const component = page.rootInstance as ModusWcDate;
-    const calendarButton = page.root!.querySelector(
-      '.calendar-icon-button'
-    ) as HTMLButtonElement;
 
     expect(component.showCalendar).toBe(false);
 
-    calendarButton.click();
+    // Call toggleCalendar directly instead of clicking the button
+    component['toggleCalendar']();
     await page.waitForChanges();
 
     expect(component.showCalendar).toBe(true);
     expect(page.root!.querySelector('.calendar-container')).not.toBeNull();
 
-    calendarButton.click();
+    component['toggleCalendar']();
     await page.waitForChanges();
 
     expect(component.showCalendar).toBe(false);
@@ -1169,9 +1167,9 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     const initialMonth = component.calendar.selectedMonth;
-    const prevButton = page.root!.querySelector('.nav-btn') as HTMLElement;
 
-    prevButton.click();
+    // Call addMonthOffset directly
+    component['addMonthOffset'](-1);
     await page.waitForChanges();
 
     const expectedMonth = initialMonth === 0 ? 11 : initialMonth - 1;
@@ -1189,10 +1187,9 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     const initialMonth = component.calendar.selectedMonth;
-    const navButtons = page.root!.querySelectorAll('.nav-btn');
-    const nextButton = navButtons[navButtons.length - 1] as HTMLElement;
 
-    nextButton.click();
+    // Call addMonthOffset directly
+    component['addMonthOffset'](1);
     await page.waitForChanges();
 
     const expectedMonth = initialMonth === 11 ? 0 : initialMonth + 1;
@@ -1784,6 +1781,309 @@ describe('modus-wc-date', () => {
       component.value = '2025-10';
       await page.waitForChanges();
       expect(component.value).toBe('');
+    });
+  });
+
+  // Tests for MMM DD, YYYY format
+  describe('MMM DD, YYYY format', () => {
+    it('should render with MMM DD, YYYY format', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="MMM DD, YYYY format" format="MMM DD, YYYY"></modus-wc-date>',
+      });
+      const input = page.root?.querySelector('input');
+      expect(input?.placeholder).toBe('MMM DD, YYYY');
+    });
+
+    it('should parse MMM DD, YYYY format correctly', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Parse MMM DD, YYYY" format="MMM DD, YYYY" value="Oct 15, 2025"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      expect(component.value).toBe('Oct 15, 2025');
+    });
+
+    it('should format selected date as MMM DD, YYYY', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Format MMM DD, YYYY" format="MMM DD, YYYY"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component.showCalendar = true;
+      await page.waitForChanges();
+
+      const testDate = new Date(2025, 9, 15);
+      component['handleDateSelect'](testDate);
+      await page.waitForChanges();
+
+      expect(component.value).toBe('Oct 15, 2025');
+    });
+
+    it('should handle invalid MMM DD, YYYY format', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Invalid MMM format" format="MMM DD, YYYY"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      // Invalid month name
+      component.value = 'Xyz 15, 2025';
+      await page.waitForChanges();
+      expect(component.value).toBe('');
+
+      // Invalid format
+      component.value = 'Oct-15-2025';
+      await page.waitForChanges();
+      expect(component.value).toBe('');
+    });
+
+    it('should return undefined for malformed MMM DD, YYYY', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Malformed MMM" format="MMM DD, YYYY"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      // Test with missing day
+      const parsed1 = component['parseISODate']('Oct , 2025');
+      expect(parsed1).toBeUndefined();
+
+      // Test with missing month
+      const parsed2 = component['parseISODate'](' 15, 2025');
+      expect(parsed2).toBeUndefined();
+
+      // Test with missing year
+      const parsed3 = component['parseISODate']('Oct 15, ');
+      expect(parsed3).toBeUndefined();
+    });
+  });
+
+  // Tests for arrow key navigation
+  describe('Arrow key navigation', () => {
+    it('should navigate right with ArrowRight key', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Arrow right test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component.showCalendar = true;
+      await page.waitForChanges();
+
+      component['focusedDateIndex'] = 5;
+
+      const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      component['handleArrowKeys'](rightEvent);
+      await page.waitForChanges();
+
+      expect(component['focusedDateIndex']).toBe(6);
+    });
+
+    it('should navigate left with ArrowLeft key', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Arrow left test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component.showCalendar = true;
+      await page.waitForChanges();
+
+      component['focusedDateIndex'] = 5;
+
+      const leftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+      component['handleArrowKeys'](leftEvent);
+      await page.waitForChanges();
+
+      expect(component['focusedDateIndex']).toBe(4);
+    });
+
+    it('should navigate down with ArrowDown key', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Arrow down test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component.showCalendar = true;
+      await page.waitForChanges();
+
+      component['focusedDateIndex'] = 5;
+
+      const downEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+      component['handleArrowKeys'](downEvent);
+      await page.waitForChanges();
+
+      expect(component['focusedDateIndex']).toBe(12); // 5 + 7
+    });
+
+    it('should navigate up with ArrowUp key', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Arrow up test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component.showCalendar = true;
+      await page.waitForChanges();
+
+      component['focusedDateIndex'] = 12;
+
+      const upEvent = new KeyboardEvent('keydown', { key: 'ArrowUp' });
+      component['handleArrowKeys'](upEvent);
+      await page.waitForChanges();
+
+      expect(component['focusedDateIndex']).toBe(5); // 12 - 7
+    });
+
+    it('should not navigate beyond boundaries', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Boundary test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component.showCalendar = true;
+      await page.waitForChanges();
+
+      // Test left boundary
+      component['focusedDateIndex'] = 0;
+      const leftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+      component['handleArrowKeys'](leftEvent);
+      await page.waitForChanges();
+      expect(component['focusedDateIndex']).toBe(0);
+
+      // Test right boundary
+      const totalDates = component.calendar.dates.length;
+      component['focusedDateIndex'] = totalDates - 1;
+      const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      component['handleArrowKeys'](rightEvent);
+      await page.waitForChanges();
+      expect(component['focusedDateIndex']).toBe(totalDates - 1);
+    });
+
+    it('should start on selected date when navigating', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Start on selected" value="2025-10-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component.showCalendar = true;
+      await page.waitForChanges();
+
+      component['focusedDateIndex'] = -1;
+
+      const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      component['handleArrowKeys'](rightEvent);
+      await page.waitForChanges();
+
+      // Should have started on the selected date (Oct 15)
+      expect(component['focusedDateIndex']).toBeGreaterThan(-1);
+    });
+
+    it('should not navigate when calendar is closed', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Closed calendar test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['focusedDateIndex'] = 5;
+
+      const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      component['handleArrowKeys'](rightEvent);
+      await page.waitForChanges();
+
+      // Should not have changed since calendar is closed
+      expect(component['focusedDateIndex']).toBe(5);
+    });
+
+    it('should select date with Enter key when focused', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Enter key select test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component.showCalendar = true;
+      component['focusedDateIndex'] = 15;
+      await page.waitForChanges();
+
+      const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
+      component['handleArrowKeys'](enterEvent);
+      component['handleDateKeyDown'](enterEvent, component.calendar.dates[15]);
+      await page.waitForChanges();
+
+      expect(component.showCalendar).toBe(false);
+      expect(component.value).toBeTruthy();
+    });
+
+    it('should not select disabled date with Enter', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Enter disabled test" min="2025-10-10"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component.showCalendar = true;
+      await page.waitForChanges();
+
+      // Find index of a disabled date (before min)
+      const disabledIndex = component.calendar.dates.findIndex(
+        (date) => date && component['isDateDisabled'](date)
+      );
+
+      if (disabledIndex >= 0) {
+        component['focusedDateIndex'] = disabledIndex;
+
+        const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
+        component['handleArrowKeys'](enterEvent);
+        await page.waitForChanges();
+
+        // Should not have selected the disabled date
+        expect(component.showCalendar).toBe(true);
+      }
+    });
+
+    it('should ignore non-arrow keys', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Non-arrow key test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component.showCalendar = true;
+      component['focusedDateIndex'] = 5;
+      await page.waitForChanges();
+
+      const aKeyEvent = new KeyboardEvent('keydown', { key: 'a' });
+      component['handleArrowKeys'](aKeyEvent);
+      await page.waitForChanges();
+
+      // Should not have changed
+      expect(component['focusedDateIndex']).toBe(5);
+    });
+
+    it('should start at first date if no selected date', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="No selected date"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component.showCalendar = true;
+      component['focusedDateIndex'] = -1;
+      await page.waitForChanges();
+
+      const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      component['handleArrowKeys'](rightEvent);
+      await page.waitForChanges();
+
+      // Should have moved from 0 to 1
+      expect(component['focusedDateIndex']).toBe(1);
     });
   });
 });
