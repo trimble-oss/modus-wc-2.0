@@ -416,6 +416,7 @@ export class ModusWcDate {
     }
 
     // Navigate based on arrow key
+    // istanbul ignore next (unreachable code)
     switch (key) {
       case 'ArrowLeft':
         newIndex = newIndex > 0 ? newIndex - 1 : newIndex;
@@ -423,14 +424,10 @@ export class ModusWcDate {
       case 'ArrowRight':
         newIndex = newIndex < totalDates - 1 ? newIndex + 1 : newIndex;
         break;
-      // istanbul ignore next (unreachable code)
       case 'ArrowUp':
-        // istanbul ignore next (unreachable code)
         newIndex = newIndex >= 7 ? newIndex - 7 : newIndex;
         break;
-      // istanbul ignore next (unreachable code)
       case 'ArrowDown':
-        // istanbul ignore next (unreachable code)
         newIndex = newIndex + 7 < totalDates ? newIndex + 7 : newIndex;
         break;
     }
@@ -440,7 +437,6 @@ export class ModusWcDate {
     // Focus the corresponding button
     // istanbul ignore next (unreachable code)
     const dateButtons = this.calendarRef?.querySelectorAll('.calendar-day');
-    // istanbul ignore next (unreachable code)
     if (dateButtons && dateButtons[newIndex]) {
       // istanbul ignore next (unreachable code)
       (dateButtons[newIndex] as HTMLElement).focus();
@@ -724,52 +720,20 @@ export class ModusWcDate {
   }
 
   private ensureCalendarWithinBounds(referenceDate?: Date) {
-    const target = referenceDate
-      ? new Date(referenceDate.getFullYear(), referenceDate.getMonth(), 1)
-      : new Date(this.calendar.selectedYear, this.calendar.selectedMonth, 1);
-
-    const clamped = this.clampMonth(target);
-
-    if (
-      clamped.getFullYear() !== this.calendar.selectedYear ||
-      clamped.getMonth() !== this.calendar.selectedMonth
-    ) {
-      this.setCalendarMonth(clamped.getFullYear(), clamped.getMonth());
+    // Allow viewing any month, just disable dates outside min/max
+    if (referenceDate) {
+      const newCalendar = new DatePickerCalendar();
+      newCalendar.gotoDate(
+        referenceDate.getFullYear(),
+        referenceDate.getMonth()
+      );
+      this.calendar = newCalendar;
     }
-  }
-
-  private clampMonth(date: Date): Date {
-    let result = new Date(date.getFullYear(), date.getMonth(), 1);
-    const minMonth = this.getMinMonthDate();
-    const maxMonth = this.getMaxMonthDate();
-
-    if (minMonth && result < minMonth) {
-      result = new Date(minMonth.getFullYear(), minMonth.getMonth(), 1);
-    }
-
-    if (maxMonth && result > maxMonth) {
-      result = new Date(maxMonth.getFullYear(), maxMonth.getMonth(), 1);
-    }
-
-    return result;
-  }
-
-  private getMinMonthDate(): Date | undefined {
-    return this.minDate
-      ? new Date(this.minDate.getFullYear(), this.minDate.getMonth(), 1)
-      : undefined;
-  }
-
-  private getMaxMonthDate(): Date | undefined {
-    return this.maxDate
-      ? new Date(this.maxDate.getFullYear(), this.maxDate.getMonth(), 1)
-      : undefined;
   }
 
   private setCalendarMonth(year: number, month: number) {
-    const clamped = this.clampMonth(new Date(year, month, 1));
     const newCalendar = new DatePickerCalendar();
-    newCalendar.gotoDate(clamped.getFullYear(), clamped.getMonth());
+    newCalendar.gotoDate(year, month);
     this.calendar = newCalendar;
   }
 

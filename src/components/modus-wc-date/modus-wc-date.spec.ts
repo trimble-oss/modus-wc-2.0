@@ -532,32 +532,42 @@ describe('modus-wc-date', () => {
     expect(component['compareDate'](date, null as unknown as Date)).toBe(1);
   });
 
-  it('should clamp calendar month to min boundary', async () => {
+  it('should allow viewing months before min date', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Min month test" min="2025-10-15"></modus-wc-date>',
+      html: '<modus-wc-date aria-label="View before min test" min="2025-10-15"></modus-wc-date>',
     });
     const component = page.rootInstance as ModusWcDate;
 
-    const beforeMinMonth = new Date(2025, 8, 1);
-    const clamped = component['clampMonth'](beforeMinMonth);
+    // Should be able to navigate to September (before min)
+    component['setCalendarMonth'](2025, 8);
+    await page.waitForChanges();
 
-    expect(clamped.getFullYear()).toBe(2025);
-    expect(clamped.getMonth()).toBe(9);
+    expect(component.calendar.selectedMonth).toBe(8);
+    expect(component.calendar.selectedYear).toBe(2025);
+
+    // But dates before Oct 15 should be disabled
+    const septemberDate = new Date(2025, 8, 30);
+    expect(component['isDateDisabled'](septemberDate)).toBe(true);
   });
 
-  it('should clamp calendar month to max boundary', async () => {
+  it('should allow viewing months after max date', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Max month test" max="2025-10-20"></modus-wc-date>',
+      html: '<modus-wc-date aria-label="View after max test" max="2025-10-20"></modus-wc-date>',
     });
     const component = page.rootInstance as ModusWcDate;
 
-    const afterMaxMonth = new Date(2025, 11, 1);
-    const clamped = component['clampMonth'](afterMaxMonth);
+    // Should be able to navigate to November (after max)
+    component['setCalendarMonth'](2025, 10);
+    await page.waitForChanges();
 
-    expect(clamped.getFullYear()).toBe(2025);
-    expect(clamped.getMonth()).toBe(9);
+    expect(component.calendar.selectedMonth).toBe(10);
+    expect(component.calendar.selectedYear).toBe(2025);
+
+    // But dates after Oct 20 should be disabled
+    const novemberDate = new Date(2025, 10, 1);
+    expect(component['isDateDisabled'](novemberDate)).toBe(true);
   });
 
   it('should prevent keyboard selection of disabled dates', async () => {
@@ -631,38 +641,24 @@ describe('modus-wc-date', () => {
     expect(component.value).toBe('');
   });
 
-  it('should ensure calendar stays within bounds when navigating', async () => {
+  it('should allow navigation to any month regardless of min/max', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Calendar bounds test" min="2025-10-01" max="2025-11-30"></modus-wc-date>',
+      html: '<modus-wc-date aria-label="Free navigation test" min="2025-10-01" max="2025-11-30"></modus-wc-date>',
     });
     const component = page.rootInstance as ModusWcDate;
 
+    // Should be able to navigate to September (before min)
     component['setCalendarMonth'](2025, 8);
     await page.waitForChanges();
 
-    expect(component.calendar.selectedMonth).toBe(9);
+    expect(component.calendar.selectedMonth).toBe(8);
 
-    component['setCalendarMonth'](2025, 12);
+    // Should be able to navigate to December (after max)
+    component['setCalendarMonth'](2025, 11);
     await page.waitForChanges();
 
-    expect(component.calendar.selectedMonth).toBe(10);
-  });
-
-  it('should return month date boundaries for min/max', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Month boundaries test" min="2025-10-15" max="2025-11-20"></modus-wc-date>',
-    });
-    const component = page.rootInstance as ModusWcDate;
-
-    const minMonth = component['getMinMonthDate']();
-    const maxMonth = component['getMaxMonthDate']();
-
-    expect(minMonth?.getMonth()).toBe(9);
-    expect(minMonth?.getDate()).toBe(1);
-    expect(maxMonth?.getMonth()).toBe(10);
-    expect(maxMonth?.getDate()).toBe(1);
+    expect(component.calendar.selectedMonth).toBe(11);
   });
 
   it('should handle undefined value in handleValueChange', async () => {
@@ -708,21 +704,22 @@ describe('modus-wc-date', () => {
     expect(component.calendar.selectedMonth).toBe(4);
   });
 
-  it('should not update calendar if already at correct month', async () => {
+  it('should navigate calendar when ensuring bounds with reference date', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Calendar update test"></modus-wc-date>',
+      html: '<modus-wc-date aria-label="Calendar bounds test"></modus-wc-date>',
     });
     const component = page.rootInstance as ModusWcDate;
 
     component.calendar.gotoDate(2025, 9);
     await page.waitForChanges();
 
-    const calendarBefore = component.calendar;
-    component['ensureCalendarWithinBounds'](new Date(2025, 9, 15));
+    // ensureCalendarWithinBounds should navigate to the reference date's month
+    component['ensureCalendarWithinBounds'](new Date(2024, 5, 15));
     await page.waitForChanges();
 
-    expect(component.calendar).toBe(calendarBefore);
+    expect(component.calendar.selectedMonth).toBe(5);
+    expect(component.calendar.selectedYear).toBe(2024);
   });
 
   it('should parse date with leading zeros', async () => {
@@ -852,28 +849,6 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     expect(component.value).toBe('2025-10-10');
-  });
-
-  it('should return undefined for getMinMonthDate when no min', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="No min month test"></modus-wc-date>',
-    });
-    const component = page.rootInstance as ModusWcDate;
-
-    const minMonth = component['getMinMonthDate']();
-    expect(minMonth).toBeUndefined();
-  });
-
-  it('should return undefined for getMaxMonthDate when no max', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="No max month test"></modus-wc-date>',
-    });
-    const component = page.rootInstance as ModusWcDate;
-
-    const maxMonth = component['getMaxMonthDate']();
-    expect(maxMonth).toBeUndefined();
   });
 
   it('should close calendar when Escape is pressed with active element', async () => {
@@ -1305,15 +1280,19 @@ describe('modus-wc-date', () => {
     const component = page.rootInstance as ModusWcDate;
 
     component.calendar.gotoDate(2025, 9);
-    const initialCalendar = component.calendar;
     await page.waitForChanges();
+
+    const initialMonth = component.calendar.selectedMonth;
+    const initialYear = component.calendar.selectedYear;
 
     const sameMonthDate = new Date(2025, 9, 15);
     component['handleDateSelect'](sameMonthDate);
     await page.waitForChanges();
 
     expect(component.value).toBe('2025-10-15');
-    expect(component.calendar).toBe(initialCalendar);
+    // Calendar should not have navigated
+    expect(component.calendar.selectedMonth).toBe(initialMonth);
+    expect(component.calendar.selectedYear).toBe(initialYear);
   });
 
   it('should create new calendar when selecting date from different month ONLY', async () => {
