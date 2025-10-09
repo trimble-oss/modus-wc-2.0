@@ -796,7 +796,7 @@ export class ModusWcDate {
           />
           <modus-wc-button
             aria-label="Open calendar"
-            disabled={this.disabled}
+            disabled={this.disabled || this.readOnly}
             variant="borderless"
             shape="circle"
             size="xs"
