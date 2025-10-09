@@ -118,19 +118,19 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    expect(component.showCalendar).toBe(false);
+    expect(component['showCalendar']).toBe(false);
 
     // Call toggleCalendar directly instead of clicking the button
     component['toggleCalendar']();
     await page.waitForChanges();
 
-    expect(component.showCalendar).toBe(true);
+    expect(component['showCalendar']).toBe(true);
     expect(page.root!.querySelector('.calendar-container')).not.toBeNull();
 
     component['toggleCalendar']();
     await page.waitForChanges();
 
-    expect(component.showCalendar).toBe(false);
+    expect(component['showCalendar']).toBe(false);
   });
 
   it('should close calendar on Escape key', async () => {
@@ -140,14 +140,14 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
     document.dispatchEvent(escapeEvent);
     await page.waitForChanges();
 
-    expect(component.showCalendar).toBe(false);
+    expect(component['showCalendar']).toBe(false);
   });
 
   it('should handle date selection from calendar', async () => {
@@ -157,7 +157,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const testDate = new Date(2025, 9, 15);
@@ -165,7 +165,7 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     expect(component.value).toBe('2025-10-15');
-    expect(component.showCalendar).toBe(false);
+    expect(component['showCalendar']).toBe(false);
   });
 
   it('should enforce min date constraint', async () => {
@@ -199,7 +199,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const beforeMinDate = new Date(2025, 9, 5);
@@ -218,8 +218,8 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    const initialMonth = component.calendar.selectedMonth;
-    const initialYear = component.calendar.selectedYear;
+    const initialMonth = component['calendar'].selectedMonth;
+    const initialYear = component['calendar'].selectedYear;
 
     component['addMonthOffset'](1);
     await page.waitForChanges();
@@ -227,8 +227,8 @@ describe('modus-wc-date', () => {
     const expectedMonth = initialMonth === 11 ? 0 : initialMonth + 1;
     const expectedYear = initialMonth === 11 ? initialYear + 1 : initialYear;
 
-    expect(component.calendar.selectedMonth).toBe(expectedMonth);
-    expect(component.calendar.selectedYear).toBe(expectedYear);
+    expect(component['calendar'].selectedMonth).toBe(expectedMonth);
+    expect(component['calendar'].selectedYear).toBe(expectedYear);
   });
 
   it('should navigate to previous month when prev button is clicked', async () => {
@@ -238,8 +238,8 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    const initialMonth = component.calendar.selectedMonth;
-    const initialYear = component.calendar.selectedYear;
+    const initialMonth = component['calendar'].selectedMonth;
+    const initialYear = component['calendar'].selectedYear;
 
     component['addMonthOffset'](-1);
     await page.waitForChanges();
@@ -247,8 +247,8 @@ describe('modus-wc-date', () => {
     const expectedMonth = initialMonth === 0 ? 11 : initialMonth - 1;
     const expectedYear = initialMonth === 0 ? initialYear - 1 : initialYear;
 
-    expect(component.calendar.selectedMonth).toBe(expectedMonth);
-    expect(component.calendar.selectedYear).toBe(expectedYear);
+    expect(component['calendar'].selectedMonth).toBe(expectedMonth);
+    expect(component['calendar'].selectedYear).toBe(expectedYear);
   });
 
   it('should render 42 dates (6 weeks) in calendar', async () => {
@@ -258,10 +258,10 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
-    expect(component.calendar.dates.length).toBe(42);
+    expect(component['calendar'].dates.length).toBe(42);
   });
 
   it('should handle keyboard navigation with Enter key', async () => {
@@ -271,7 +271,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const testDate = new Date(2025, 9, 15);
@@ -281,7 +281,7 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     expect(component.value).toBe('2025-10-15');
-    expect(component.showCalendar).toBe(false);
+    expect(component['showCalendar']).toBe(false);
   });
 
   it('should handle keyboard navigation with Space key', async () => {
@@ -291,7 +291,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const testDate = new Date(2025, 9, 15);
@@ -301,7 +301,7 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     expect(component.value).toBe('2025-10-15');
-    expect(component.showCalendar).toBe(false);
+    expect(component['showCalendar']).toBe(false);
   });
 
   it('should sync value from input on blur', async () => {
@@ -329,9 +329,9 @@ describe('modus-wc-date', () => {
     component['toggleCalendar']();
     await page.waitForChanges();
 
-    expect(component.showCalendar).toBe(true);
-    expect(component.calendar.selectedYear).toBe(2023);
-    expect(component.calendar.selectedMonth).toBe(4);
+    expect(component['showCalendar']).toBe(true);
+    expect(component['calendar'].selectedYear).toBe(2023);
+    expect(component['calendar'].selectedMonth).toBe(4);
   });
 
   it('should show other-month dates', async () => {
@@ -341,11 +341,11 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
-    const currentMonth = component.calendar.selectedMonth;
-    const dates = component.calendar.dates;
+    const currentMonth = component['calendar'].selectedMonth;
+    const dates = component['calendar'].dates;
 
     const hasOtherMonthDates = dates.some(
       (date) => date.getMonth() !== currentMonth
@@ -376,7 +376,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const clickEvent = new MouseEvent('click', { bubbles: true });
@@ -387,7 +387,7 @@ describe('modus-wc-date', () => {
     component['handleClickOutside'](clickEvent);
     await page.waitForChanges();
 
-    expect(component.showCalendar).toBe(false);
+    expect(component['showCalendar']).toBe(false);
   });
 
   it('should parse ISO date correctly', async () => {
@@ -456,7 +456,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.calendar.gotoDate(2025, 9);
+    component['calendar'].gotoDate(2025, 9);
     await page.waitForChanges();
 
     const nextMonthDate = new Date(2025, 10, 1);
@@ -464,7 +464,7 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     expect(component.value).toBe('2025-11-01');
-    expect(component.calendar.selectedMonth).toBe(10);
+    expect(component['calendar'].selectedMonth).toBe(10);
   });
 
   it('should compare dates correctly', async () => {
@@ -543,8 +543,8 @@ describe('modus-wc-date', () => {
     component['setCalendarMonth'](2025, 8);
     await page.waitForChanges();
 
-    expect(component.calendar.selectedMonth).toBe(8);
-    expect(component.calendar.selectedYear).toBe(2025);
+    expect(component['calendar'].selectedMonth).toBe(8);
+    expect(component['calendar'].selectedYear).toBe(2025);
 
     // But dates before Oct 15 should be disabled
     const septemberDate = new Date(2025, 8, 30);
@@ -562,8 +562,8 @@ describe('modus-wc-date', () => {
     component['setCalendarMonth'](2025, 10);
     await page.waitForChanges();
 
-    expect(component.calendar.selectedMonth).toBe(10);
-    expect(component.calendar.selectedYear).toBe(2025);
+    expect(component['calendar'].selectedMonth).toBe(10);
+    expect(component['calendar'].selectedYear).toBe(2025);
 
     // But dates after Oct 20 should be disabled
     const novemberDate = new Date(2025, 10, 1);
@@ -652,13 +652,13 @@ describe('modus-wc-date', () => {
     component['setCalendarMonth'](2025, 8);
     await page.waitForChanges();
 
-    expect(component.calendar.selectedMonth).toBe(8);
+    expect(component['calendar'].selectedMonth).toBe(8);
 
     // Should be able to navigate to December (after max)
     component['setCalendarMonth'](2025, 11);
     await page.waitForChanges();
 
-    expect(component.calendar.selectedMonth).toBe(11);
+    expect(component['calendar'].selectedMonth).toBe(11);
   });
 
   it('should handle undefined value in handleValueChange', async () => {
@@ -699,9 +699,9 @@ describe('modus-wc-date', () => {
     component['toggleCalendar']();
     await page.waitForChanges();
 
-    expect(component.showCalendar).toBe(true);
-    expect(component.calendar.selectedYear).toBe(2023);
-    expect(component.calendar.selectedMonth).toBe(4);
+    expect(component['showCalendar']).toBe(true);
+    expect(component['calendar'].selectedYear).toBe(2023);
+    expect(component['calendar'].selectedMonth).toBe(4);
   });
 
   it('should navigate calendar when ensuring bounds with reference date', async () => {
@@ -711,15 +711,15 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.calendar.gotoDate(2025, 9);
+    component['calendar'].gotoDate(2025, 9);
     await page.waitForChanges();
 
     // ensureCalendarWithinBounds should navigate to the reference date's month
     component['ensureCalendarWithinBounds'](new Date(2024, 5, 15));
     await page.waitForChanges();
 
-    expect(component.calendar.selectedMonth).toBe(5);
-    expect(component.calendar.selectedYear).toBe(2024);
+    expect(component['calendar'].selectedMonth).toBe(5);
+    expect(component['calendar'].selectedYear).toBe(2024);
   });
 
   it('should parse date with leading zeros', async () => {
@@ -799,12 +799,12 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     expect(component['popperInstance']).toBeTruthy();
 
-    component.showCalendar = false;
+    component['showCalendar'] = false;
     await page.waitForChanges();
 
     expect(component['popperInstance']).toBeNull();
@@ -858,14 +858,14 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
     component['handleEscapeKey'](escapeEvent);
     await page.waitForChanges();
 
-    expect(component.showCalendar).toBe(false);
+    expect(component['showCalendar']).toBe(false);
   });
 
   it('should call disconnectedCallback and cleanup popper', async () => {
@@ -875,7 +875,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     expect(component['popperInstance']).toBeTruthy();
@@ -892,7 +892,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const mockSelectElement = document.createElement('select');
@@ -909,7 +909,7 @@ describe('modus-wc-date', () => {
     );
     await page.waitForChanges();
 
-    expect(component.calendar.selectedMonth).toBe(5);
+    expect(component['calendar'].selectedMonth).toBe(5);
   });
 
   it('should handle year change via select component event', async () => {
@@ -919,7 +919,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const mockSelectElement = document.createElement('select');
@@ -936,7 +936,7 @@ describe('modus-wc-date', () => {
     );
     await page.waitForChanges();
 
-    expect(component.calendar.selectedYear).toBe(2023);
+    expect(component['calendar'].selectedYear).toBe(2023);
   });
 
   it('should handle NaN value in month change', async () => {
@@ -946,7 +946,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const mockSelectElement = document.createElement('select');
@@ -958,13 +958,13 @@ describe('modus-wc-date', () => {
       } as unknown as InputEvent,
     });
 
-    const beforeMonth = component.calendar.selectedMonth;
+    const beforeMonth = component['calendar'].selectedMonth;
     component['handleMonthChange'](
       mockEvent as unknown as CustomEvent<InputEvent>
     );
     await page.waitForChanges();
 
-    expect(component.calendar.selectedMonth).toBe(beforeMonth);
+    expect(component['calendar'].selectedMonth).toBe(beforeMonth);
   });
 
   it('should handle NaN value in year change', async () => {
@@ -974,7 +974,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const mockSelectElement = document.createElement('select');
@@ -986,13 +986,13 @@ describe('modus-wc-date', () => {
       } as unknown as InputEvent,
     });
 
-    const beforeYear = component.calendar.selectedYear;
+    const beforeYear = component['calendar'].selectedYear;
     component['handleYearChange'](
       mockEvent as unknown as CustomEvent<InputEvent>
     );
     await page.waitForChanges();
 
-    expect(component.calendar.selectedYear).toBe(beforeYear);
+    expect(component['calendar'].selectedYear).toBe(beforeYear);
   });
 
   it('should handle calendar dates with null date entry', async () => {
@@ -1002,7 +1002,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const calendarDates = page.root!.querySelectorAll('.calendar-day');
@@ -1016,7 +1016,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.calendar.gotoDate(2025, 9);
+    component['calendar'].gotoDate(2025, 9);
     await page.waitForChanges();
 
     const differentYearDate = new Date(2024, 9, 15);
@@ -1024,7 +1024,7 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     expect(component.value).toBe('2024-10-15');
-    expect(component.calendar.selectedYear).toBe(2024);
+    expect(component['calendar'].selectedYear).toBe(2024);
   });
 
   it('should navigate calendar when selecting date from different month and year', async () => {
@@ -1034,7 +1034,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.calendar.gotoDate(2025, 5);
+    component['calendar'].gotoDate(2025, 5);
     await page.waitForChanges();
 
     const differentDate = new Date(2024, 11, 25);
@@ -1042,8 +1042,8 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     expect(component.value).toBe('2024-12-25');
-    expect(component.calendar.selectedYear).toBe(2024);
-    expect(component.calendar.selectedMonth).toBe(11);
+    expect(component['calendar'].selectedYear).toBe(2024);
+    expect(component['calendar'].selectedMonth).toBe(11);
   });
 
   it('should handle syncValueFromInput with no inputRef', async () => {
@@ -1067,7 +1067,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const prevButton = page.root!.querySelector('.nav-btn');
@@ -1090,7 +1090,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const dateButtons = page.root!.querySelectorAll(
@@ -1102,7 +1102,7 @@ describe('modus-wc-date', () => {
     firstDateButton.click();
     await page.waitForChanges();
 
-    expect(component.showCalendar).toBe(false);
+    expect(component['showCalendar']).toBe(false);
     expect(component.value).toBeTruthy();
   });
 
@@ -1113,7 +1113,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const dateButtons = page.root!.querySelectorAll(
@@ -1128,7 +1128,7 @@ describe('modus-wc-date', () => {
     firstDateButton.dispatchEvent(enterEvent);
     await page.waitForChanges();
 
-    expect(component.showCalendar).toBe(false);
+    expect(component['showCalendar']).toBe(false);
   });
 
   it('should handle clicking prev month button', async () => {
@@ -1138,17 +1138,17 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
-    const initialMonth = component.calendar.selectedMonth;
+    const initialMonth = component['calendar'].selectedMonth;
 
     // Call addMonthOffset directly
     component['addMonthOffset'](-1);
     await page.waitForChanges();
 
     const expectedMonth = initialMonth === 0 ? 11 : initialMonth - 1;
-    expect(component.calendar.selectedMonth).toBe(expectedMonth);
+    expect(component['calendar'].selectedMonth).toBe(expectedMonth);
   });
 
   it('should handle clicking next month button', async () => {
@@ -1158,17 +1158,17 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
-    const initialMonth = component.calendar.selectedMonth;
+    const initialMonth = component['calendar'].selectedMonth;
 
     // Call addMonthOffset directly
     component['addMonthOffset'](1);
     await page.waitForChanges();
 
     const expectedMonth = initialMonth === 11 ? 0 : initialMonth + 1;
-    expect(component.calendar.selectedMonth).toBe(expectedMonth);
+    expect(component['calendar'].selectedMonth).toBe(expectedMonth);
   });
 
   it('should verify calendar renders with select components', async () => {
@@ -1178,7 +1178,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const monthSelect = page.root!.querySelector('.month-select');
@@ -1195,8 +1195,8 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
-    component.calendar.gotoDate(2025, 9);
+    component['showCalendar'] = true;
+    component['calendar'].gotoDate(2025, 9);
     await page.waitForChanges();
 
     const prevMonthDate = new Date(2025, 8, 28);
@@ -1204,8 +1204,8 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     expect(component.value).toBe('2025-09-28');
-    expect(component.calendar.selectedMonth).toBe(8);
-    expect(component.calendar.selectedYear).toBe(2025);
+    expect(component['calendar'].selectedMonth).toBe(8);
+    expect(component['calendar'].selectedYear).toBe(2025);
   });
 
   it('should properly handle null dates in calendar.dates array', async () => {
@@ -1215,8 +1215,8 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
-    component.calendar['currentMonthDates'] = [
+    component['showCalendar'] = true;
+    component['calendar']['currentMonthDates'] = [
       null as unknown as Date,
       new Date(2025, 9, 1),
     ];
@@ -1233,7 +1233,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.calendar.gotoDate(2025, 0);
+    component['calendar'].gotoDate(2025, 0);
     await page.waitForChanges();
 
     const previousYearDate = new Date(2024, 11, 30);
@@ -1241,8 +1241,8 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     expect(component.value).toBe('2024-12-30');
-    expect(component.calendar.selectedYear).toBe(2024);
-    expect(component.calendar.selectedMonth).toBe(11);
+    expect(component['calendar'].selectedYear).toBe(2024);
+    expect(component['calendar'].selectedMonth).toBe(11);
   });
 
   it('should blur document.activeElement when it is an HTMLElement on Escape', async () => {
@@ -1252,7 +1252,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const button = document.createElement('button');
@@ -1266,7 +1266,7 @@ describe('modus-wc-date', () => {
     document.dispatchEvent(escapeEvent);
     await page.waitForChanges();
 
-    expect(component.showCalendar).toBe(false);
+    expect(component['showCalendar']).toBe(false);
     expect(document.activeElement).not.toBe(button);
 
     document.body.removeChild(button);
@@ -1279,11 +1279,11 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.calendar.gotoDate(2025, 9);
+    component['calendar'].gotoDate(2025, 9);
     await page.waitForChanges();
 
-    const initialMonth = component.calendar.selectedMonth;
-    const initialYear = component.calendar.selectedYear;
+    const initialMonth = component['calendar'].selectedMonth;
+    const initialYear = component['calendar'].selectedYear;
 
     const sameMonthDate = new Date(2025, 9, 15);
     component['handleDateSelect'](sameMonthDate);
@@ -1291,8 +1291,8 @@ describe('modus-wc-date', () => {
 
     expect(component.value).toBe('2025-10-15');
     // Calendar should not have navigated
-    expect(component.calendar.selectedMonth).toBe(initialMonth);
-    expect(component.calendar.selectedYear).toBe(initialYear);
+    expect(component['calendar'].selectedMonth).toBe(initialMonth);
+    expect(component['calendar'].selectedYear).toBe(initialYear);
   });
 
   it('should create new calendar when selecting date from different month ONLY', async () => {
@@ -1302,18 +1302,18 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.calendar.gotoDate(2025, 9);
+    component['calendar'].gotoDate(2025, 9);
     await page.waitForChanges();
 
     const differentMonthDate = new Date(2025, 10, 5);
 
-    const calendarBefore = component.calendar.selectedMonth;
+    const calendarBefore = component['calendar'].selectedMonth;
     component['handleDateSelect'](differentMonthDate);
     await page.waitForChanges();
 
     expect(component.value).toBe('2025-11-05');
-    expect(component.calendar.selectedMonth).toBe(10);
-    expect(component.calendar.selectedMonth).not.toBe(calendarBefore);
+    expect(component['calendar'].selectedMonth).toBe(10);
+    expect(component['calendar'].selectedMonth).not.toBe(calendarBefore);
   });
 
   it('should create new calendar when selecting date from different year', async () => {
@@ -1323,8 +1323,8 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.calendar.gotoDate(2025, 9);
-    const initialCalendar = component.calendar;
+    component['calendar'].gotoDate(2025, 9);
+    const initialCalendar = component['calendar'];
     await page.waitForChanges();
 
     const differentYearDate = new Date(2026, 9, 15);
@@ -1332,8 +1332,8 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     expect(component.value).toBe('2026-10-15');
-    expect(component.calendar).not.toBe(initialCalendar);
-    expect(component.calendar.selectedYear).toBe(2026);
+    expect(component['calendar']).not.toBe(initialCalendar);
+    expect(component['calendar'].selectedYear).toBe(2026);
   });
 
   it('should use empty string fallback when value is falsy in syncValueFromInput', async () => {
@@ -1359,7 +1359,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const mockEvent = new CustomEvent('inputChange', {
@@ -1374,7 +1374,7 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     // When value is undefined, it uses '0' fallback: parseInt('0', 10) = 0 (January)
-    expect(component.calendar.selectedMonth).toBe(0);
+    expect(component['calendar'].selectedMonth).toBe(0);
   });
 
   it('should use 0 fallback when yearValue is undefined in handleYearChange', async () => {
@@ -1384,7 +1384,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const mockEvent = new CustomEvent('inputChange', {
@@ -1400,7 +1400,7 @@ describe('modus-wc-date', () => {
 
     // parseInt(undefined || '0', 10) = parseInt('0', 10) = 0
     // new Date(0, month, day) creates year 1900 in JavaScript
-    expect(component.calendar.selectedYear).toBe(1900);
+    expect(component['calendar'].selectedYear).toBe(1900);
   });
 
   it('should use calendar.selectedYear fallback when yearSelect is not found', async () => {
@@ -1410,7 +1410,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     component['calendarRef'] = document.createElement('div');
     await page.waitForChanges();
 
@@ -1431,7 +1431,7 @@ describe('modus-wc-date', () => {
     // When querySelector returns null, yearSelect is undefined, so it uses fallback
     // But the fallback is this.calendar.selectedYear, which uses the OLD calendar
     // After gotoDate, a new calendar is created, so we should check it worked
-    expect(component.calendar.selectedMonth).toBe(5);
+    expect(component['calendar'].selectedMonth).toBe(5);
   });
 
   it('should use calendar.selectedMonth fallback when monthSelect is not found', async () => {
@@ -1441,7 +1441,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     component['calendarRef'] = document.createElement('div');
     await page.waitForChanges();
 
@@ -1461,7 +1461,7 @@ describe('modus-wc-date', () => {
 
     // When querySelector returns null, monthSelect is undefined, so it uses fallback
     // After gotoDate, a new calendar is created
-    expect(component.calendar.selectedYear).toBe(2024);
+    expect(component['calendar'].selectedYear).toBe(2024);
   });
 
   it('should handle event with null detail in handleMonthChange', async () => {
@@ -1471,7 +1471,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const mockEvent = new CustomEvent('inputChange', {
@@ -1485,7 +1485,7 @@ describe('modus-wc-date', () => {
 
     // When detail is null, inputEvent?.target is undefined, selectTarget?.value is undefined
     // parseInt(undefined || '0', 10) = 0
-    expect(component.calendar.selectedMonth).toBe(0);
+    expect(component['calendar'].selectedMonth).toBe(0);
   });
 
   it('should handle event with null detail in handleYearChange', async () => {
@@ -1495,7 +1495,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     const mockEvent = new CustomEvent('inputChange', {
@@ -1506,7 +1506,7 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     // When detail is null, yearValue is undefined, parseInt(undefined || '0', 10) = 0 (year 1900)
-    expect(component.calendar.selectedYear).toBe(1900);
+    expect(component['calendar'].selectedYear).toBe(1900);
   });
 
   it('should handle null calendarRef in handleMonthChange', async () => {
@@ -1533,7 +1533,7 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     // When calendarRef is null, querySelector returns undefined, uses calendar.selectedYear fallback
-    expect(component.calendar.selectedMonth).toBe(7);
+    expect(component['calendar'].selectedMonth).toBe(7);
   });
 
   it('should handle null calendarRef in handleYearChange', async () => {
@@ -1560,7 +1560,7 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     // When calendarRef is null, querySelector returns undefined, uses calendar.selectedMonth fallback
-    expect(component.calendar.selectedYear).toBe(2022);
+    expect(component['calendar'].selectedYear).toBe(2022);
   });
 
   it('should navigate to previous year when selecting date from it', async () => {
@@ -1571,7 +1571,7 @@ describe('modus-wc-date', () => {
     const component = page.rootInstance as ModusWcDate;
 
     // Set calendar to January 2025
-    component.calendar.gotoDate(2025, 0);
+    component['calendar'].gotoDate(2025, 0);
     await page.waitForChanges();
 
     // Select a date from December 2024 (different year)
@@ -1582,8 +1582,8 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     expect(component.value).toBe('2024-12-31');
-    expect(component.calendar.selectedMonth).toBe(11); // December
-    expect(component.calendar.selectedYear).toBe(2024);
+    expect(component['calendar'].selectedMonth).toBe(11); // December
+    expect(component['calendar'].selectedYear).toBe(2024);
   });
 
   it('should render calendar with month/year select handlers', async () => {
@@ -1594,7 +1594,7 @@ describe('modus-wc-date', () => {
     const component = page.rootInstance as ModusWcDate;
 
     // Open calendar to render the selects
-    component.showCalendar = true;
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
     // Find the rendered selects
@@ -1617,8 +1617,8 @@ describe('modus-wc-date', () => {
     const component = page.rootInstance as ModusWcDate;
 
     // Start in October 2025
-    component.calendar.gotoDate(2025, 9);
-    const initialMonth = component.calendar.selectedMonth;
+    component['calendar'].gotoDate(2025, 9);
+    const initialMonth = component['calendar'].selectedMonth;
 
     // Select a date from December 2025
     const decemberDate = new Date(2025, 11, 15);
@@ -1629,9 +1629,9 @@ describe('modus-wc-date', () => {
 
     // Verify navigation occurred
     expect(component.value).toBe('2025-12-15');
-    expect(component.calendar.selectedMonth).toBe(11);
-    expect(component.calendar.selectedYear).toBe(2025);
-    expect(component.calendar.selectedMonth).not.toBe(initialMonth);
+    expect(component['calendar'].selectedMonth).toBe(11);
+    expect(component['calendar'].selectedYear).toBe(2025);
+    expect(component['calendar'].selectedMonth).not.toBe(initialMonth);
   });
 
   it('should test document.activeElement blur path', async () => {
@@ -1641,7 +1641,7 @@ describe('modus-wc-date', () => {
     });
     const component = page.rootInstance as ModusWcDate;
 
-    component.showCalendar = true;
+    component['showCalendar'] = true;
 
     // Create a test to ensure the instanceof check works
     const mockActiveElement = {
@@ -1663,7 +1663,7 @@ describe('modus-wc-date', () => {
       new KeyboardEvent('keydown', { key: 'Escape' })
     );
 
-    expect(component.showCalendar).toBe(false);
+    expect(component['showCalendar']).toBe(false);
 
     // Restore
     if (originalActiveElement) {
@@ -1698,7 +1698,7 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
-      component.showCalendar = true;
+      component['showCalendar'] = true;
       await page.waitForChanges();
 
       const testDate = new Date(2025, 9, 15);
@@ -1790,7 +1790,7 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
-      component.showCalendar = true;
+      component['showCalendar'] = true;
       await page.waitForChanges();
 
       const testDate = new Date(2025, 9, 15);
@@ -1848,7 +1848,7 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
-      component.showCalendar = true;
+      component['showCalendar'] = true;
       await page.waitForChanges();
 
       component['focusedDateIndex'] = 5;
@@ -1867,7 +1867,7 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
-      component.showCalendar = true;
+      component['showCalendar'] = true;
       await page.waitForChanges();
 
       component['focusedDateIndex'] = 5;
@@ -1886,7 +1886,7 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
-      component.showCalendar = true;
+      component['showCalendar'] = true;
       await page.waitForChanges();
 
       component['focusedDateIndex'] = 5;
@@ -1905,7 +1905,7 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
-      component.showCalendar = true;
+      component['showCalendar'] = true;
       await page.waitForChanges();
 
       component['focusedDateIndex'] = 12;
@@ -1924,7 +1924,7 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
-      component.showCalendar = true;
+      component['showCalendar'] = true;
       await page.waitForChanges();
 
       // Test left boundary
@@ -1935,7 +1935,7 @@ describe('modus-wc-date', () => {
       expect(component['focusedDateIndex']).toBe(0);
 
       // Test right boundary
-      const totalDates = component.calendar.dates.length;
+      const totalDates = component['calendar'].dates.length;
       component['focusedDateIndex'] = totalDates - 1;
       const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
       component['handleArrowKeys'](rightEvent);
@@ -1950,7 +1950,7 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
-      component.showCalendar = true;
+      component['showCalendar'] = true;
       await page.waitForChanges();
 
       component['focusedDateIndex'] = -1;
@@ -1987,16 +1987,19 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
-      component.showCalendar = true;
+      component['showCalendar'] = true;
       component['focusedDateIndex'] = 15;
       await page.waitForChanges();
 
       const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
       component['handleArrowKeys'](enterEvent);
-      component['handleDateKeyDown'](enterEvent, component.calendar.dates[15]);
+      component['handleDateKeyDown'](
+        enterEvent,
+        component['calendar'].dates[15]
+      );
       await page.waitForChanges();
 
-      expect(component.showCalendar).toBe(false);
+      expect(component['showCalendar']).toBe(false);
       expect(component.value).toBeTruthy();
     });
 
@@ -2007,11 +2010,11 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
-      component.showCalendar = true;
+      component['showCalendar'] = true;
       await page.waitForChanges();
 
       // Find index of a disabled date (before min)
-      const disabledIndex = component.calendar.dates.findIndex(
+      const disabledIndex = component['calendar'].dates.findIndex(
         (date) => date && component['isDateDisabled'](date)
       );
 
@@ -2023,7 +2026,7 @@ describe('modus-wc-date', () => {
         await page.waitForChanges();
 
         // Should not have selected the disabled date
-        expect(component.showCalendar).toBe(true);
+        expect(component['showCalendar']).toBe(true);
       }
     });
 
@@ -2034,7 +2037,7 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
-      component.showCalendar = true;
+      component['showCalendar'] = true;
       component['focusedDateIndex'] = 5;
       await page.waitForChanges();
 
@@ -2053,7 +2056,7 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
-      component.showCalendar = true;
+      component['showCalendar'] = true;
       component['focusedDateIndex'] = -1;
       await page.waitForChanges();
 

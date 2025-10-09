@@ -53,13 +53,13 @@ export class ModusWcDate {
   @Element() el!: HTMLElement;
 
   /** Show the calendar dropdown */
-  @State() showCalendar = false;
+  @State() private showCalendar = false;
 
   /** Calendar state object */
-  @State() calendar: DatePickerCalendar = new DatePickerCalendar();
+  @State() private calendar: DatePickerCalendar = new DatePickerCalendar();
 
   /** Currently focused date index in calendar */
-  @State() focusedDateIndex: number = -1;
+  @State() private focusedDateIndex: number = -1;
 
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
