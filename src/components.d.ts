@@ -638,9 +638,21 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * Custom instructions shown when files are dragged over the dropzone
+         */
+        "fileDraggedOverInstructions"?: string;
+        /**
+          * Custom instructions shown as the default dropzone message
+         */
+        "instructions"?: string;
+        /**
           * Custom error message displayed when an invalid file type is selected
          */
         "invalidFileTypeMessage"?: string;
+        /**
+          * Success message displayed when files are uploaded successfully
+         */
+        "successMessage"?: string;
     }
     /**
      * A customizable icon component used to render Modus icons.
@@ -3478,6 +3490,14 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Custom instructions shown when files are dragged over the dropzone
+         */
+        "fileDraggedOverInstructions"?: string;
+        /**
+          * Custom instructions shown as the default dropzone message
+         */
+        "instructions"?: string;
+        /**
           * Custom error message displayed when an invalid file type is selected
          */
         "invalidFileTypeMessage"?: string;
@@ -3485,6 +3505,10 @@ declare namespace LocalJSX {
           * Event emitted when files are selected
          */
         "onFileSelect"?: (event: ModusWcFileDropzoneCustomEvent<FileList>) => void;
+        /**
+          * Success message displayed when files are uploaded successfully
+         */
+        "successMessage"?: string;
     }
     /**
      * A customizable icon component used to render Modus icons.

@@ -34,6 +34,20 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
       border-color: var(--modus-wc-color-red-dark);
       color: var(--modus-wc-color-gray-10);
     }
+
+    &.upload-success {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-green-pale) 80%,
+        transparent
+      );
+      border-color: var(--modus-wc-color-green-dark);
+      color: var(--modus-wc-color-gray-10);
+    }
+
+    .success-icon {
+      // color: var(--modus-wc-color-green-dark);
+    }
   }
 
   &:has(input:disabled) {
@@ -46,7 +60,9 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-file-dropzone .modus-wc-file-dropzone,
+[data-theme='modus-classic-dark']
+  modus-wc-file-dropzone
+  .modus-wc-file-dropzone,
 [data-theme='modus-modern-dark'] modus-wc-file-dropzone .modus-wc-file-dropzone,
 [data-theme='connect-dark'] modus-wc-file-dropzone .modus-wc-file-dropzone {
   .dropzone-content {

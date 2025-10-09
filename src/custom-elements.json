@@ -2688,9 +2688,33 @@
               }
             },
             {
+              "name": "file-dragged-over-instructions",
+              "fieldName": "fileDraggedOverInstructions",
+              "description": "Custom instructions shown when files are dragged over the dropzone",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "instructions",
+              "fieldName": "instructions",
+              "description": "Custom instructions shown as the default dropzone message",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "invalid-file-type-message",
               "fieldName": "invalidFileTypeMessage",
               "description": "Custom error message displayed when an invalid file type is selected",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "success-message",
+              "fieldName": "successMessage",
+              "description": "Success message displayed when files are uploaded successfully",
               "type": {
                 "text": "string"
               }

@@ -7,6 +7,9 @@ interface FileDropzoneArgs {
   'accept-file-types'?: string;
   disabled?: boolean;
   'invalid-file-type-message'?: string;
+  'success-message'?: string;
+  'file-dragged-over-instructions'?: string;
+  instructions?: string;
 }
 
 const meta: Meta<FileDropzoneArgs> = {
@@ -15,15 +18,12 @@ const meta: Meta<FileDropzoneArgs> = {
   args: {
     'accept-file-types': '.doc, .docx, .pdf',
     disabled: false,
-    'invalid-file-type-message': '',
+    instructions: 'Drop files here or click to select files',
   },
   argTypes: {
     'accept-file-types': {
       control: 'text',
       description: "Accepted file types (e.g. '.jpg,.png' or 'image/*')",
-      table: {
-        defaultValue: { summary: '' },
-      },
     },
     disabled: {
       control: 'boolean',
@@ -31,6 +31,10 @@ const meta: Meta<FileDropzoneArgs> = {
       table: {
         defaultValue: { summary: 'false' },
       },
+    },
+    instructions: {
+      control: 'text',
+      description: 'Default instructions displayed in the dropzone',
     },
   },
   decorators: [withActions],
@@ -50,6 +54,11 @@ export const Default: Story = {
       accept-file-types=${ifDefined(args['accept-file-types'])}
       ?disabled=${args.disabled}
       invalid-file-type-message=${ifDefined(args['invalid-file-type-message'])}
+      success-message=${ifDefined(args['success-message'])}
+      file-dragged-over-instructions=${ifDefined(
+        args['file-dragged-over-instructions']
+      )}
+      instructions=${ifDefined(args['instructions'])}
     ></modus-wc-file-dropzone>
   `,
 };

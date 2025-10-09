@@ -29,6 +29,9 @@ export class ModusWcFileDropzone {
   /** Tracks if an invalid file type was selected */
   @State() private hasInvalidFileType = false;
 
+  /** Tracks if files were successfully uploaded */
+  @State() private uploadSuccess = false;
+
   /** Disable the file input */
   @Prop() disabled?: boolean;
 
@@ -37,6 +40,15 @@ export class ModusWcFileDropzone {
 
   /** Custom error message displayed when an invalid file type is selected */
   @Prop() invalidFileTypeMessage?: string;
+
+  /** Success message displayed when files are uploaded successfully */
+  @Prop() successMessage?: string;
+
+  /** Custom instructions shown when files are dragged over the dropzone */
+  @Prop() fileDraggedOverInstructions?: string;
+
+  /** Custom instructions shown as the default dropzone message */
+  @Prop() instructions?: string;
 
   /** Event emitted when files are selected */
   @StencilEvent() fileSelect!: EventEmitter<FileList>;
@@ -65,6 +77,7 @@ export class ModusWcFileDropzone {
   handleFileChange(event: Event) {
     const files = (event.target as HTMLInputElement).files;
     this.hasInvalidFileType = false;
+    this.uploadSuccess = false;
 
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
@@ -76,6 +89,7 @@ export class ModusWcFileDropzone {
       }
 
       this.fileSelect.emit(files);
+      this.uploadSuccess = true;
     }
   }
 
@@ -104,6 +118,7 @@ export class ModusWcFileDropzone {
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
       this.hasInvalidFileType = false;
+      this.uploadSuccess = false;
 
       for (let i = 0; i < files.length; i++) {
         if (!this.isValidFileType(files[i])) {
@@ -113,6 +128,7 @@ export class ModusWcFileDropzone {
       }
 
       this.fileSelect.emit(files);
+      this.uploadSuccess = true;
     }
   };
 
@@ -148,6 +164,9 @@ export class ModusWcFileDropzone {
   render() {
     const invalidFileMessage =
       this.invalidFileTypeMessage || 'File format not accepted';
+    const successMessage = this.successMessage || 'Successfully uploaded';
+    const dragOverInstructions =
+      this.fileDraggedOverInstructions || 'Drop files here';
 
     return (
       <Host>
@@ -161,7 +180,7 @@ export class ModusWcFileDropzone {
             onChange={(event) => this.handleFileChange(event)}
           />
           <div
-            class={`dropzone-content ${this.isDraggingOver ? 'dragging-over' : ''} ${this.hasInvalidFileType ? 'invalid-file-type' : ''}`}
+            class={`dropzone-content ${this.isDraggingOver ? 'dragging-over' : ''} ${this.hasInvalidFileType ? 'invalid-file-type' : ''} ${this.uploadSuccess ? 'upload-success' : ''}`}
             role="button"
             tabindex={this.disabled ? -1 : 0}
             aria-label="Upload files"
@@ -174,17 +193,31 @@ export class ModusWcFileDropzone {
             onDragExit={this.handleDropzoneDragLeave}
           >
             <modus-wc-icon
-              name={this.hasInvalidFileType ? 'alert' : 'cloud_upload'}
+              name={
+                this.hasInvalidFileType
+                  ? 'alert'
+                  : this.uploadSuccess
+                    ? 'check_circle'
+                    : 'cloud_upload'
+              }
               size="lg"
-              class={`${this.hasInvalidFileType ? 'error-icon' : 'upload-icon'}`}
+              class={`${
+                this.hasInvalidFileType
+                  ? 'error-icon'
+                  : this.uploadSuccess
+                    ? 'success-icon'
+                    : 'upload-icon'
+              }`}
               variant="solid"
             ></modus-wc-icon>
             <span>
               {this.hasInvalidFileType
                 ? invalidFileMessage
-                : this.isDraggingOver
-                  ? 'Drag files here'
-                  : 'Drop files here or click to select files'}
+                : this.uploadSuccess
+                  ? successMessage
+                  : this.isDraggingOver
+                    ? dragOverInstructions
+                    : this.instructions}
             </span>
           </div>
         </div>
