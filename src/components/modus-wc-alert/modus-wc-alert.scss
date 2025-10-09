@@ -7,9 +7,9 @@ modus-wc-alert .modus-wc-alert {
   align-content: center;
   background-color: var(--modus-wc-color-gray-light);
   border-color: var(--modus-wc-color-gray-0);
+  border-width: var(--alert-border-width);
   border-left-width: var(--alert-border-left-width);
   border-radius: var(--alert-border-radius);
-  border-width: var(--alert-border-width);
   color: var(--modus-wc-color-gray-10);
 
   .title {
