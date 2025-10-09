@@ -630,9 +630,17 @@ export namespace Components {
      */
     interface ModusWcFileDropzone {
         /**
+          * Accepted file types (e.g. '.jpg,.png' or 'image/*')
+         */
+        "acceptFileTypes"?: string;
+        /**
           * Disable the file input
          */
         "disabled"?: boolean;
+        /**
+          * Custom error message displayed when an invalid file type is selected
+         */
+        "invalidFileTypeMessage"?: string;
     }
     /**
      * A customizable icon component used to render Modus icons.
@@ -3462,9 +3470,17 @@ declare namespace LocalJSX {
      */
     interface ModusWcFileDropzone {
         /**
+          * Accepted file types (e.g. '.jpg,.png' or 'image/*')
+         */
+        "acceptFileTypes"?: string;
+        /**
           * Disable the file input
          */
         "disabled"?: boolean;
+        /**
+          * Custom error message displayed when an invalid file type is selected
+         */
+        "invalidFileTypeMessage"?: string;
         /**
           * Event emitted when files are selected
          */

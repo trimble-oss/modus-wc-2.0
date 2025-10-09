@@ -24,19 +24,57 @@ export class ModusWcFileDropzone {
   @Element() el!: HTMLElement;
 
   /** Tracks if files are being dragged over the dropzone */
-  @State() isDraggingOver = false;
+  @State() private isDraggingOver = false;
+
+  /** Tracks if an invalid file type was selected */
+  @State() private hasInvalidFileType = false;
 
   /** Disable the file input */
   @Prop() disabled?: boolean;
 
+  /** Accepted file types (e.g. '.jpg,.png' or 'image/*') */
+  @Prop() acceptFileTypes?: string;
+
+  /** Custom error message displayed when an invalid file type is selected */
+  @Prop() invalidFileTypeMessage?: string;
+
   /** Event emitted when files are selected */
   @StencilEvent() fileSelect!: EventEmitter<FileList>;
 
+  private isValidFileType(file: File): boolean {
+    if (!this.acceptFileTypes) return true;
+
+    const acceptedTypes = this.acceptFileTypes
+      .split(',')
+      .map((type) => type.trim().toLowerCase());
+    const fileName = file.name.toLowerCase();
+    const fileType = file.type.toLowerCase();
+
+    return acceptedTypes.some((acceptedType) => {
+      if (acceptedType.includes('/*')) {
+        const mainType = acceptedType.split('/')[0];
+        return fileType.startsWith(mainType + '/');
+      } else if (acceptedType.startsWith('.')) {
+        return fileName.endsWith(acceptedType);
+      } else {
+        return fileType === acceptedType;
+      }
+    });
+  }
+
   handleFileChange(event: Event) {
     const files = (event.target as HTMLInputElement).files;
+    this.hasInvalidFileType = false;
 
-    console.log('Files selected:', files);
-    if (files) {
+    if (files && files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        if (!this.isValidFileType(files[i])) {
+          this.hasInvalidFileType = true;
+          (event.target as HTMLInputElement).value = '';
+          return;
+        }
+      }
+
       this.fileSelect.emit(files);
     }
   }
@@ -65,6 +103,15 @@ export class ModusWcFileDropzone {
 
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
+      this.hasInvalidFileType = false;
+
+      for (let i = 0; i < files.length; i++) {
+        if (!this.isValidFileType(files[i])) {
+          this.hasInvalidFileType = true;
+          return;
+        }
+      }
+
       this.fileSelect.emit(files);
     }
   };
@@ -91,7 +138,6 @@ export class ModusWcFileDropzone {
   };
 
   private handleDropzoneKeyDown = (event: KeyboardEvent): void => {
-    // Handle Space or Enter key to activate the dropzone
     if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault();
       if (this.disabled) return;
@@ -100,6 +146,9 @@ export class ModusWcFileDropzone {
   };
 
   render() {
+    const invalidFileMessage =
+      this.invalidFileTypeMessage || 'File format not accepted';
+
     return (
       <Host>
         <div class="modus-wc-file-dropzone">
@@ -108,10 +157,11 @@ export class ModusWcFileDropzone {
             type="file"
             class={this.getClasses()}
             disabled={this.disabled}
+            accept={this.acceptFileTypes}
             onChange={(event) => this.handleFileChange(event)}
           />
           <div
-            class={`dropzone-content ${this.isDraggingOver ? 'dragging-over' : ''}`}
+            class={`dropzone-content ${this.isDraggingOver ? 'dragging-over' : ''} ${this.hasInvalidFileType ? 'invalid-file-type' : ''}`}
             role="button"
             tabindex={this.disabled ? -1 : 0}
             aria-label="Upload files"
@@ -124,12 +174,18 @@ export class ModusWcFileDropzone {
             onDragExit={this.handleDropzoneDragLeave}
           >
             <modus-wc-icon
-              name="cloud_upload"
+              name={this.hasInvalidFileType ? 'alert' : 'cloud_upload'}
               size="lg"
-              class="upload-icon"
+              class={`${this.hasInvalidFileType ? 'error-icon' : 'upload-icon'}`}
               variant="solid"
             ></modus-wc-icon>
-            <span>Drop files here or click to select files</span>
+            <span>
+              {this.hasInvalidFileType
+                ? invalidFileMessage
+                : this.isDraggingOver
+                  ? 'Drag files here'
+                  : 'Drop files here or click to select files'}
+            </span>
           </div>
         </div>
       </Host>

@@ -5,69 +5,72 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
 
   .dropzone-content {
     align-items: center;
-    background-color: var(
-      --modus-file-upload-dropzone-bg,
-      rgba(241, 241, 246, 0.8)
-    );
-    border: 0.125rem dashed
-      var(--modus-file-upload-dropzone-border-color, #6a6e79);
+    background-color: #f1f1f6;
+    border: 0.125rem dashed var(--modus-wc-color-gray-6);
     border-radius: 0.25rem;
-    color: var(--modus-file-upload-dropzone-color, #6a6e79);
+    color: var(--modus-wc-color-gray-6);
     cursor: pointer;
     display: flex;
     flex-direction: column;
+    font-weight: 600;
     height: 201px;
     justify-content: center;
     padding: 0.75rem 1rem;
     transition: background-color 0.2s ease;
     width: 431px;
 
-    &:hover {
-      background-color: var(
-        --modus-file-upload-dropzone-hover-bg,
-        rgba(230, 230, 235, 0.9)
-      );
-    }
-
-    &:active {
-      background-color: var(
-        --modus-file-upload-dropzone-active-bg,
-        rgba(220, 220, 225, 1)
-      );
-    }
-
     &.dragging-over {
-      background-color: var(--modus-file-upload-dropzone-dragover-bg, #dcedf9);
-      border-color: var(
-        --modus-file-upload-dropzone-dragover-border-color,
-        #0063a3
-      );
-      color: var(--modus-file-upload-dropzone-dragover-color, #0063a3);
+      background-color: var(--modus-wc-color-blue-pale);
+      border-color: var(--modus-wc-color-trimble-blue);
+      color: var(--modus-wc-color-gray-10);
     }
 
-    span {
-      text-align: center;
+    &.invalid-file-type {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-red-pale) 80%,
+        transparent
+      );
+      border-color: var(--modus-wc-color-red-dark);
+      color: var(--modus-wc-color-gray-10);
     }
   }
 
-  // Style for disabled state
   &:has(input:disabled) {
     .dropzone-content {
-      border-color: var(
-        --modus-file-upload-dropzone-disabled-border-color,
-        #c2c4cb
-      );
+      background-color: var(--modus-wc-color-base-200);
+      border-color: var(--modus-wc-color-gray-6);
+      color: var(--modus-wc-color-gray-6);
       cursor: not-allowed;
-      opacity: 0.6;
+    }
+  }
+}
 
-      &:hover,
-      &:active,
-      &:focus {
-        background-color: var(
-          --modus-file-upload-dropzone-bg,
-          rgba(241, 241, 246, 0.8)
-        );
-      }
+[data-theme='modus-classic-dark'] modus-wc-file-dropzone .modus-wc-file-dropzone,
+[data-theme='modus-modern-dark'] modus-wc-file-dropzone .modus-wc-file-dropzone,
+[data-theme='connect-dark'] modus-wc-file-dropzone .modus-wc-file-dropzone {
+  .dropzone-content {
+    background-color: var(--modus-wc-color-gray-10);
+    color: var(--modus-wc-color-gray-3);
+
+    &.dragging-over {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-highlight-blue) 30%,
+        transparent
+      );
+      border-color: var(--modus-wc-color-highlight-blue);
+      color: var(--modus-wc-color-gray-light);
+    }
+
+    &.invalid-file-type {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-red) 50%,
+        transparent
+      );
+      border-color: var(--modus-wc-color-red);
+      color: var(--modus-wc-color-gray-light);
     }
   }
 }

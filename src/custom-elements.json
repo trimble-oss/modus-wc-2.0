@@ -2666,26 +2666,33 @@
               ]
             },
             {
-              "kind": "field",
-              "name": "isDraggingOver",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tracks if files are being dragged over the dropzone"
-            },
-            {
               "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
             {
+              "name": "accept-file-types",
+              "fieldName": "acceptFileTypes",
+              "description": "Accepted file types (e.g. '.jpg,.png' or 'image/*')",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "disabled",
               "fieldName": "disabled",
               "description": "Disable the file input",
               "type": {
                 "text": "boolean"
+              }
+            },
+            {
+              "name": "invalid-file-type-message",
+              "fieldName": "invalidFileTypeMessage",
+              "description": "Custom error message displayed when an invalid file type is selected",
+              "type": {
+                "text": "string"
               }
             }
           ],

@@ -11,9 +11,11 @@ File dropzone component that allows users to drag and drop files for upload.
 
 ## Properties
 
-| Property   | Attribute  | Description            | Type                   | Default     |
-| ---------- | ---------- | ---------------------- | ---------------------- | ----------- |
-| `disabled` | `disabled` | Disable the file input | `boolean \| undefined` | `undefined` |
+| Property                 | Attribute                   | Description                                                          | Type                   | Default     |
+| ------------------------ | --------------------------- | -------------------------------------------------------------------- | ---------------------- | ----------- |
+| `acceptFileTypes`        | `accept-file-types`         | Accepted file types (e.g. '.jpg,.png' or 'image/*')                  | `string \| undefined`  | `undefined` |
+| `disabled`               | `disabled`                  | Disable the file input                                               | `boolean \| undefined` | `undefined` |
+| `invalidFileTypeMessage` | `invalid-file-type-message` | Custom error message displayed when an invalid file type is selected | `string \| undefined`  | `undefined` |
 
 
 ## Events
