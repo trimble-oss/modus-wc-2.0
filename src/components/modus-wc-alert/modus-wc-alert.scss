@@ -6,10 +6,10 @@
 modus-wc-alert .modus-wc-alert {
   align-content: center;
   background-color: var(--modus-wc-color-gray-light);
-  border-width: var(--alert-border-width);
   border-left-width: var(--alert-border-left-width);
-  border-radius: var(--alert-border-radius);
   border-color: var(--modus-wc-color-gray-0);
+  border-radius: var(--alert-border-radius);
+  border-width: var(--alert-border-width);
   color: var(--modus-wc-color-gray-10);
 
   .title {
@@ -74,13 +74,12 @@ modus-wc-alert .modus-wc-alert {
   padding-top: var(--modus-wc-spacing-sm);
 }
 
-[data-theme='modus-modern-dark'] modus-wc-alert .modus-wc-alert,
 [data-theme='modus-classic-dark'] modus-wc-alert .modus-wc-alert,
-[data-theme='modus-connect-dark'] modus-wc-alert .modus-wc-alert {
+[data-theme='modus-connect-dark'] modus-wc-alert .modus-wc-alert,
+[data-theme='modus-modern-dark'] modus-wc-alert .modus-wc-alert {
   background: var(--modus-wc-color-gray-10);
-  border: var(--modus-wc-color-gray-9);
+  border-color: var(--modus-wc-color-gray-9);
   color: var(--modus-wc-color-gray-light);
-
   &.modus-wc-alert-info {
     background-color: color-mix(
       in sRGB,
