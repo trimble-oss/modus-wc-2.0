@@ -800,7 +800,7 @@ export class ModusWcDate {
             variant="borderless"
             shape="circle"
             size="xs"
-            color="secondary"
+            color="tertiary"
             class="calendar-icon-button"
             onButtonClick={
               // istanbul ignore next (unreachable code)

@@ -4,7 +4,7 @@ exports[`modus-wc-date renders with default props 1`] = `
 <modus-wc-date value="">
   <div class="date-input-container">
     <input aria-label="Default date" class="modus-wc-date-input modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" placeholder="yyyy-mm-dd" type="text" value="">
-    <modus-wc-button aria-label="Open calendar" class="calendar-icon-button" color="secondary" shape="circle" size="xs" variant="borderless">
+    <modus-wc-button aria-label="Open calendar" class="calendar-icon-button" color="tertiary" shape="circle" size="xs" variant="borderless">
       <modus-wc-icon name="calendar_blank" size="sm"></modus-wc-icon>
     </modus-wc-button>
   </div>
@@ -16,7 +16,7 @@ exports[`modus-wc-date should render with custom props 1`] = `
   <modus-wc-input-label forid="custom-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
   <div class="date-input-container">
     <input aria-describedby="description" aria-disabled="" aria-label="Test date" aria-labelledby="Another element" class="modus-wc-date-input modus-wc-input modus-wc-input-lg modus-wc-w-full test-class" disabled="" id="custom-id" name="test-name" placeholder="yyyy-mm-dd" required="" tabindex="1" type="text" value="">
-    <modus-wc-button aria-label="Open calendar" class="calendar-icon-button" color="secondary" disabled="" shape="circle" size="xs" variant="borderless">
+    <modus-wc-button aria-label="Open calendar" class="calendar-icon-button" color="tertiary" disabled="" shape="circle" size="xs" variant="borderless">
       <modus-wc-icon name="calendar_blank" size="sm"></modus-wc-icon>
     </modus-wc-button>
   </div>
@@ -27,7 +27,7 @@ exports[`modus-wc-date should render with error feedback 1`] = `
 <modus-wc-date value="">
   <div class="date-input-container">
     <input aria-label="Error input" class="modus-wc-date-input modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" placeholder="yyyy-mm-dd" type="text" value="">
-    <modus-wc-button aria-label="Open calendar" class="calendar-icon-button" color="secondary" shape="circle" size="xs" variant="borderless">
+    <modus-wc-button aria-label="Open calendar" class="calendar-icon-button" color="tertiary" shape="circle" size="xs" variant="borderless">
       <modus-wc-icon name="calendar_blank" size="sm"></modus-wc-icon>
     </modus-wc-button>
   </div>
