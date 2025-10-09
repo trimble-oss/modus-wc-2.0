@@ -6,8 +6,8 @@
 modus-wc-alert .modus-wc-alert {
   align-content: center;
   background-color: var(--modus-wc-color-gray-light);
-  border-left-width: var(--alert-border-left-width);
   border-color: var(--modus-wc-color-gray-0);
+  border-left-width: var(--alert-border-left-width);
   border-radius: var(--alert-border-radius);
   border-width: var(--alert-border-width);
   color: var(--modus-wc-color-gray-10);
@@ -80,6 +80,7 @@ modus-wc-alert .modus-wc-alert {
   background: var(--modus-wc-color-gray-10);
   border-color: var(--modus-wc-color-gray-9);
   color: var(--modus-wc-color-gray-light);
+
   &.modus-wc-alert-info {
     background-color: color-mix(
       in sRGB,
