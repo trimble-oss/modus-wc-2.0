@@ -292,7 +292,7 @@ export class ModusWcDate {
 
     // Emit change event
     if (this.inputRef) {
-      const changeEvent = new Event('change', { bubbles: true });
+      const changeEvent = new Event('inputChange', { bubbles: true });
       this.inputRef.dispatchEvent(changeEvent);
     }
   };
@@ -447,9 +447,9 @@ export class ModusWcDate {
     const currentYear = this.calendar.selectedYear;
     const currentMonth = this.calendar.selectedMonth;
 
-    // Generate year options (current year ± 10 years)
+    // Generate year options (current year ± 100 years)
     const yearOptions: { value: string; label: string }[] = [];
-    for (let i = currentYear - 10; i <= currentYear + 10; i++) {
+    for (let i = currentYear - 100; i <= currentYear + 100; i++) {
       yearOptions.push({ value: i.toString(), label: i.toString() });
     }
 

@@ -649,15 +649,50 @@ export class ModusWcTable {
         column.editorSetup(cellNode, row, handleCommit);
       }
 
-      const blurHandler = (event: FocusEvent) => {
+      // Track deferred blur events (e.g., from select/dropdown interactions)
+      let hasDeferredBlur = false;
+
+      const cleanup = () => {
+        el.removeEventListener('focusout', handleBlur);
+        document.removeEventListener('mousedown', handleGlobalClick, true);
+        hasDeferredBlur = false;
+      };
+
+      const handleBlur = (event: FocusEvent) => {
         const relatedTarget = event.relatedTarget as Node | null;
+
+        // Null relatedTarget occurs with select/dropdown interactions
+        // Defer the decision to close until we know where user clicks
+        if (!relatedTarget) {
+          hasDeferredBlur = true;
+          return;
+        }
+
+        // Standard blur: if focus moved outside cell, close editor
         if (!el.contains(relatedTarget)) {
           this.activeEditor = null;
-          el.removeEventListener('focusout', blurHandler);
+          cleanup();
         }
       };
 
-      el.addEventListener('focusout', blurHandler, { capture: true });
+      const handleGlobalClick = (event: MouseEvent) => {
+        // Process deferred blur: close editor only if click is outside cell
+        if (hasDeferredBlur) {
+          hasDeferredBlur = false;
+          const target = event.target as Node;
+
+          if (!el.contains(target)) {
+            this.activeEditor = null;
+            cleanup();
+          }
+        }
+      };
+
+      // Monitor blur events on the cell
+      el.addEventListener('focusout', handleBlur, { capture: true });
+
+      // Monitor global clicks to handle deferred blur scenarios
+      document.addEventListener('mousedown', handleGlobalClick, true);
     } else {
       el.textContent = String(cellNode);
     }

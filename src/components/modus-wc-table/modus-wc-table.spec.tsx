@@ -2271,6 +2271,127 @@ describe('modus-wc-table', () => {
     cellNode.dispatchEvent(blurEvent);
     expect(component['activeEditor']).toBeNull();
   });
+
+  it('should handle deferred blur when relatedTarget is null', async () => {
+    const mockCommit = jest.fn();
+    const column: ITableColumn = {
+      id: 'date',
+      accessor: 'date',
+      header: 'Date',
+      editor: 'custom',
+      customEditorRenderer: () => {
+        const div = document.createElement('div');
+        div.innerHTML = '<input type="text" />';
+        return div;
+      },
+    };
+
+    const row = { id: '1', date: '2025-01-01' };
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+
+    // Create editor cell
+    const td = document.createElement('td');
+    const cellNode = column.customEditorRenderer!(
+      row.date,
+      mockCommit,
+      row
+    ) as HTMLElement;
+
+    // Setup editor cell
+    component['setupEditorCell'](td, cellNode, column, row, mockCommit);
+    component['activeEditor'] = { rowIndex: 0, colId: 'date' };
+
+    // Simulate blur with null relatedTarget (select interaction)
+    const blurEvent = new FocusEvent('focusout', {
+      relatedTarget: null,
+      bubbles: true,
+    });
+    td.dispatchEvent(blurEvent);
+
+    // Editor should still be active (deferred blur)
+    expect(component['activeEditor']).toEqual({ rowIndex: 0, colId: 'date' });
+
+    // Simulate click outside the cell
+    const clickEvent = new MouseEvent('mousedown', {
+      bubbles: true,
+    });
+    Object.defineProperty(clickEvent, 'target', {
+      value: document.body,
+      enumerable: true,
+    });
+    document.dispatchEvent(clickEvent);
+
+    // Now editor should be closed
+    expect(component['activeEditor']).toBeNull();
+  });
+
+  it('should cleanup event listeners when editor closes normally', async () => {
+    const mockCommit = jest.fn();
+    const column: ITableColumn = {
+      id: 'text',
+      accessor: 'text',
+      header: 'Text',
+      editor: 'text',
+    };
+
+    const row = { id: '1', text: 'Test' };
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+
+    // Create editor cell
+    const td = document.createElement('td');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = row.text;
+
+    // Mock removeEventListener to track cleanup
+    const removeEventListenerSpy = jest.spyOn(td, 'removeEventListener');
+    const docRemoveEventListenerSpy = jest.spyOn(
+      document,
+      'removeEventListener'
+    );
+
+    // Setup editor cell
+    component['setupEditorCell'](td, input, column, row, mockCommit);
+    component['activeEditor'] = { rowIndex: 0, colId: 'text' };
+
+    // Create another element to blur to
+    const otherElement = document.createElement('div');
+    document.body.appendChild(otherElement);
+
+    // Simulate blur to element outside cell
+    const blurEvent = new FocusEvent('focusout', {
+      relatedTarget: otherElement,
+      bubbles: true,
+    });
+    td.dispatchEvent(blurEvent);
+
+    // Editor should be closed
+    expect(component['activeEditor']).toBeNull();
+
+    // Cleanup should have been called
+    expect(removeEventListenerSpy).toHaveBeenCalledWith(
+      'focusout',
+      expect.any(Function)
+    );
+    expect(docRemoveEventListenerSpy).toHaveBeenCalledWith(
+      'mousedown',
+      expect.any(Function),
+      true
+    );
+
+    // Clean up
+    document.body.removeChild(otherElement);
+  });
   it('should call handlePageChange when pagination emits page change event', async () => {
     const columns: ITableColumn[] = [
       { id: 'name', accessor: 'name', header: 'Name' },

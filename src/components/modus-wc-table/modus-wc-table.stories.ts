@@ -653,11 +653,23 @@ export const InlineEditing: Story = {
           datePicker.bordered = false;
 
           const handleChange = (e: Event) => {
-            const target = e.target as HTMLInputElement;
-            onCommit(target.value);
+            // Only commit when it's NOT a CustomEvent (date selection, not select change)
+            if (!(e instanceof CustomEvent)) {
+              const target = e.target as HTMLInputElement;
+              // Wait a bit to see if calendar is still open
+              setTimeout(() => {
+                const calendar = datePicker.querySelector(
+                  '.calendar-container'
+                );
+                // Only commit if calendar is closed (date was selected)
+                if (!calendar) {
+                  onCommit(target.value);
+                }
+              }, 100);
+            }
           };
 
-          datePicker.addEventListener('change', handleChange);
+          datePicker.addEventListener('inputChange', handleChange);
           container.appendChild(datePicker);
 
           setTimeout(() => {
@@ -807,18 +819,30 @@ export const InlineEditing: Story = {
               const container = document.createElement('div');
               container.style.width = '100%';
 
-              const datePicker = document.createElement('modus-wc-date');
-              datePicker.value = value as string;
-              datePicker.style.width = '100%';
-              datePicker.bordered = false;
+          const datePicker = document.createElement('modus-wc-date');
+          datePicker.value = value as string;
+          datePicker.style.width = '100%';
+          datePicker.bordered = false;
 
-              const handleChange = (e: Event) => {
-                const target = e.target as HTMLInputElement;
-                onCommit(target.value);
-              };
+          const handleChange = (e: Event) => {
+            // Only commit when it's NOT a CustomEvent (date selection, not select change)
+            if (!(e instanceof CustomEvent)) {
+              const target = e.target as HTMLInputElement;
+              // Wait a bit to see if calendar is still open
+              setTimeout(() => {
+                const calendar = datePicker.querySelector(
+                  '.calendar-container'
+                );
+                // Only commit if calendar is closed (date was selected)
+                if (!calendar) {
+                  onCommit(target.value);
+                }
+              }, 100);
+            }
+          };
 
-              datePicker.addEventListener('change', handleChange);
-              container.appendChild(datePicker);
+          datePicker.addEventListener('inputChange', handleChange);
+          container.appendChild(datePicker);
 
               setTimeout(() => {
                 const input = datePicker.querySelector('input');
