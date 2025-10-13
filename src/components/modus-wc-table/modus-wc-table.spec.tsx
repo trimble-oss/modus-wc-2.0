@@ -2293,9 +2293,12 @@ describe('modus-wc-table', () => {
     });
 
     const component = page.rootInstance as ModusWcTable;
+    component.columns = [column];
+    component.data = [row];
 
     // Create editor cell
     const td = document.createElement('td');
+    page.root?.appendChild(td); // Add to DOM
     const cellNode = column.customEditorRenderer!(
       row.date,
       mockCommit,
@@ -2313,21 +2316,28 @@ describe('modus-wc-table', () => {
     });
     td.dispatchEvent(blurEvent);
 
-    // Editor should still be active (deferred blur)
+    // Editor should still be active
     expect(component['activeEditor']).toEqual({ rowIndex: 0, colId: 'date' });
 
-    // Simulate click outside the cell
-    const clickEvent = new MouseEvent('mousedown', {
+    // Create an element outside the table
+    const outsideElement = document.createElement('div');
+    document.body.appendChild(outsideElement);
+
+    // Simulate click outside the table
+    const clickEvent = new MouseEvent('click', {
       bubbles: true,
     });
     Object.defineProperty(clickEvent, 'target', {
-      value: document.body,
+      value: outsideElement,
       enumerable: true,
     });
     document.dispatchEvent(clickEvent);
 
     // Now editor should be closed
     expect(component['activeEditor']).toBeNull();
+
+    // Clean up
+    document.body.removeChild(outsideElement);
   });
 
   it('should cleanup event listeners when editor closes normally', async () => {
@@ -2378,20 +2388,143 @@ describe('modus-wc-table', () => {
     // Editor should be closed
     expect(component['activeEditor']).toBeNull();
 
-    // Cleanup should have been called
+    // Cleanup should have been called for blur handler only
     expect(removeEventListenerSpy).toHaveBeenCalledWith(
       'focusout',
       expect.any(Function)
     );
-    expect(docRemoveEventListenerSpy).toHaveBeenCalledWith(
-      'mousedown',
-      expect.any(Function),
-      true
-    );
+    // Global click handler should NOT be removed (it stays active)
+    expect(docRemoveEventListenerSpy).not.toHaveBeenCalled();
 
     // Clean up
     document.body.removeChild(otherElement);
   });
+
+  it('should handle global click when clicking outside table', async () => {
+    const mockCommit = jest.fn();
+    const column: ITableColumn = {
+      id: 'text',
+      accessor: 'text',
+      header: 'Text',
+      editor: 'text',
+    };
+
+    const row = { id: '1', text: 'Test' };
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [column];
+    component.data = [row];
+
+    // Create editor cell
+    const td = document.createElement('td');
+    page.root?.appendChild(td);
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = row.text;
+
+    // Setup editor cell
+    component['setupEditorCell'](td, input, column, row, mockCommit);
+    component['activeEditor'] = { rowIndex: 0, colId: 'text' };
+
+    // Create element outside table
+    const outsideElement = document.createElement('div');
+    document.body.appendChild(outsideElement);
+
+    // Simulate click outside table using the global handler
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+    });
+    Object.defineProperty(clickEvent, 'target', {
+      value: outsideElement,
+      enumerable: true,
+    });
+
+    // Trigger the global click handler
+    component['globalClickHandler']?.(clickEvent);
+
+    // Editor should be closed
+    expect(component['activeEditor']).toBeNull();
+
+    // Clean up
+    document.body.removeChild(outsideElement);
+  });
+
+  it('should ignore global click when no active editor', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [{ id: 'test', accessor: 'test', header: 'Test' }];
+    component.data = [{ id: '1', test: 'value' }];
+
+    // Ensure globalClickHandler exists by setting up and cleaning an editor
+    const td = document.createElement('td');
+    const input = document.createElement('input');
+    component['setupEditorCell'](
+      td,
+      input,
+      component.columns[0],
+      component.data[0],
+      jest.fn()
+    );
+
+    // Clear active editor
+    component['activeEditor'] = null;
+    component['activeEditorElement'] = undefined;
+
+    // Simulate click with no active editor
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+    });
+
+    // This should return early without doing anything
+    component['globalClickHandler']?.(clickEvent);
+
+    // Verify nothing changed
+    expect(component['activeEditor']).toBeNull();
+  });
+
+  it('should cleanup on disconnectedCallback', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [{ id: 'test', accessor: 'test', header: 'Test' }];
+    component.data = [{ id: '1', test: 'value' }];
+
+    // Mock the global handler and cleanup
+    const mockGlobalHandler = jest.fn();
+    const mockActiveEditorCleanup = jest.fn();
+    component['globalClickHandler'] = mockGlobalHandler;
+    component['activeEditorCleanup'] = mockActiveEditorCleanup;
+
+    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
+
+    // Call disconnectedCallback
+    component.disconnectedCallback();
+
+    // Verify cleanup
+    expect(removeEventListenerSpy).toHaveBeenCalledWith(
+      'click',
+      mockGlobalHandler,
+      true
+    );
+    expect(mockActiveEditorCleanup).toHaveBeenCalled();
+    expect(component['globalClickHandler']).toBeUndefined();
+    expect(component['activeEditorCleanup']).toBeUndefined();
+
+    removeEventListenerSpy.mockRestore();
+  });
+
   it('should call handlePageChange when pagination emits page change event', async () => {
     const columns: ITableColumn[] = [
       { id: 'name', accessor: 'name', header: 'Name' },

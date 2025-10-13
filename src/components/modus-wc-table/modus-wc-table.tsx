@@ -84,6 +84,9 @@ export class ModusWcTable {
   private inheritedAttributes: Attributes = {};
   private table: Table<Record<string, unknown>> | null = null;
   private tanStackColumns: ColumnDef<Record<string, unknown>, unknown>[] = [];
+  private globalClickHandler?: (event: MouseEvent) => void;
+  private activeEditorCleanup?: () => void;
+  private activeEditorElement?: HTMLElement;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -274,6 +277,18 @@ export class ModusWcTable {
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
     this.initializeTable();
+  }
+
+  disconnectedCallback() {
+    // Clean up global listener on component disconnect
+    if (this.globalClickHandler) {
+      document.removeEventListener('click', this.globalClickHandler, true);
+      this.globalClickHandler = undefined;
+    }
+    if (this.activeEditorCleanup) {
+      this.activeEditorCleanup();
+      this.activeEditorCleanup = undefined;
+    }
   }
 
   // Handle sorting changes from TanStack
@@ -649,50 +664,68 @@ export class ModusWcTable {
         column.editorSetup(cellNode, row, handleCommit);
       }
 
-      // Track deferred blur events (e.g., from select/dropdown interactions)
-      let hasDeferredBlur = false;
+      // Clean up any previous editor listeners
+      if (this.activeEditorCleanup) {
+        this.activeEditorCleanup();
+      }
 
       const cleanup = () => {
         el.removeEventListener('focusout', handleBlur);
-        document.removeEventListener('mousedown', handleGlobalClick, true);
-        hasDeferredBlur = false;
+
+        // Only clear instance variables if this is the active editor being cleaned up
+        if (this.activeEditorElement === el) {
+          this.activeEditorElement = undefined;
+          this.activeEditorCleanup = undefined;
+        }
+
+        // Note: We keep the global click handler active at all times
       };
 
       const handleBlur = (event: FocusEvent) => {
         const relatedTarget = event.relatedTarget as Node | null;
 
-        // Null relatedTarget occurs with select/dropdown interactions
-        // Defer the decision to close until we know where user clicks
-        if (!relatedTarget) {
-          hasDeferredBlur = true;
+        // If blur to null (dropdown interaction) or within cell, keep editor open
+        if (!relatedTarget || el.contains(relatedTarget)) {
           return;
         }
 
-        // Standard blur: if focus moved outside cell, close editor
-        if (!el.contains(relatedTarget)) {
-          this.activeEditor = null;
-          cleanup();
-        }
+        // Focus moved outside cell - close editor
+        this.activeEditor = null;
+        cleanup();
       };
 
-      const handleGlobalClick = (event: MouseEvent) => {
-        // Process deferred blur: close editor only if click is outside cell
-        if (hasDeferredBlur) {
-          hasDeferredBlur = false;
-          const target = event.target as Node;
+      // Store reference to active editor element
+      this.activeEditorElement = el;
 
-          if (!el.contains(target)) {
-            this.activeEditor = null;
-            cleanup();
+      // Create and keep global click handler active
+      if (!this.globalClickHandler) {
+        this.globalClickHandler = (event: MouseEvent) => {
+          // Only process clicks when we have an active editor
+          if (!this.activeEditor || !this.activeEditorElement) {
+            return;
           }
-        }
-      };
+
+          const target = event.target as Node;
+          const outsideTable = !this.el.contains(target);
+
+          // Use a simple approach: if click is outside the table, close editor
+          if (outsideTable) {
+            this.activeEditor = null;
+            if (this.activeEditorCleanup) {
+              this.activeEditorCleanup();
+            }
+          }
+        };
+
+        // Register once and keep it active
+        document.addEventListener('click', this.globalClickHandler, true);
+      }
 
       // Monitor blur events on the cell
       el.addEventListener('focusout', handleBlur, { capture: true });
 
-      // Monitor global clicks to handle deferred blur scenarios
-      document.addEventListener('mousedown', handleGlobalClick, true);
+      // Store cleanup function for later use
+      this.activeEditorCleanup = cleanup;
     } else {
       el.textContent = String(cellNode);
     }
@@ -871,9 +904,24 @@ export class ModusWcTable {
                                 editing,
                               }}
                               data-col={column.id}
-                              onDblClick={() =>
-                                this.enterEdit(index, column.id)
-                              }
+                              onDblClick={(e) => {
+                                // Don't enter edit mode if already editing this cell
+                                if (
+                                  this.activeEditor?.rowIndex === index &&
+                                  this.activeEditor?.colId === column.id
+                                ) {
+                                  return;
+                                }
+                                // Don't enter edit mode if clicking inside an active editor
+                                if (
+                                  this.activeEditorElement?.contains(
+                                    e.target as Node
+                                  )
+                                ) {
+                                  return;
+                                }
+                                this.enterEdit(index, column.id);
+                              }}
                               ref={(el) => {
                                 if (!el) return;
                                 this.setupEditorCell(
