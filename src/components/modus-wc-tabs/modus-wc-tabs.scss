@@ -73,6 +73,12 @@ modus-wc-tabs .modus-wc-tab {
     background-color: var(--modus-wc-color-base-page);
     color: inherit;
   }
+
+  &:disabled,
+  &[disabled],
+  &[aria-disabled='true'] {
+    pointer-events: none;
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-tabs .modus-wc-tab {
