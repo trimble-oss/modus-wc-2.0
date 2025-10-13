@@ -1943,6 +1943,15 @@
               }
             },
             {
+              "name": "shape",
+              "fieldName": "shape",
+              "default": "'rectangle'",
+              "description": "The shape of the chip: 'rectangle' (default) or 'circle'.",
+              "type": {
+                "text": "'rectangle' | 'circle'"
+              }
+            },
+            {
               "name": "show-remove",
               "fieldName": "showRemove",
               "default": "false",

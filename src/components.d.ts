@@ -435,6 +435,10 @@ export namespace Components {
          */
         "label"?: string;
         /**
+          * The shape of the chip: 'rectangle' (default) or 'circle'.
+         */
+        "shape"?: 'rectangle' | 'circle';
+        /**
           * Whether to show the close icon on right side of the chip.
          */
         "showRemove"?: boolean;
@@ -3286,6 +3290,10 @@ declare namespace LocalJSX {
           * Event emitted when the close chip icon button is clicked.
          */
         "onChipRemove"?: (event: ModusWcChipCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * The shape of the chip: 'rectangle' (default) or 'circle'.
+         */
+        "shape"?: 'rectangle' | 'circle';
         /**
           * Whether to show the close icon on right side of the chip.
          */
