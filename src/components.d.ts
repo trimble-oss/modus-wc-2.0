@@ -654,6 +654,22 @@ export namespace Components {
          */
         "invalidFileTypeMessage"?: string;
         /**
+          * Maximum number of files allowed, will show error if exceeded
+         */
+        "maxFileCount"?: number;
+        /**
+          * Maximum allowed length of filename, will show error if exceeded
+         */
+        "maxFileNameLength"?: number;
+        /**
+          * Maximum total file size in bytes allowed, will show error if exceeded
+         */
+        "maxTotalFileSizeBytes"?: number;
+        /**
+          * Allow multiple file selection
+         */
+        "multiple"?: boolean;
+        /**
           * Success message displayed when files are uploaded successfully
          */
         "successMessage"?: string;
@@ -3509,6 +3525,22 @@ declare namespace LocalJSX {
           * Custom error message displayed when an invalid file type is selected
          */
         "invalidFileTypeMessage"?: string;
+        /**
+          * Maximum number of files allowed, will show error if exceeded
+         */
+        "maxFileCount"?: number;
+        /**
+          * Maximum allowed length of filename, will show error if exceeded
+         */
+        "maxFileNameLength"?: number;
+        /**
+          * Maximum total file size in bytes allowed, will show error if exceeded
+         */
+        "maxTotalFileSizeBytes"?: number;
+        /**
+          * Allow multiple file selection
+         */
+        "multiple"?: boolean;
         /**
           * Event emitted when files are selected
          */

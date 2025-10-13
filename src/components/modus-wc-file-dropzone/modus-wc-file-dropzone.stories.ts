@@ -10,6 +10,10 @@ interface FileDropzoneArgs {
   'include-state-icon'?: boolean;
   instructions?: string;
   'invalid-file-type-message'?: string;
+  'max-file-name-length'?: number;
+  'max-file-count'?: number;
+  'max-total-file-size-bytes'?: number;
+  multiple?: boolean;
   'success-message'?: string;
 }
 
@@ -38,6 +42,33 @@ const meta: Meta<FileDropzoneArgs> = {
       control: 'text',
       description: 'Default instructions displayed in the dropzone',
     },
+    'invalid-file-type-message': {
+      control: 'text',
+      description:
+        'Custom error message displayed when an invalid file type is selected',
+    },
+    'max-file-name-length': {
+      control: 'number',
+      description:
+        'Maximum allowed length of filename, will show error if exceeded',
+    },
+    'max-file-count': {
+      control: 'number',
+      description:
+        'Maximum number of files allowed, will show error if exceeded',
+    },
+    'max-total-file-size-bytes': {
+      control: 'number',
+      description:
+        'Maximum total file size in bytes allowed, will show error if exceeded',
+    },
+    multiple: {
+      control: 'boolean',
+      description: 'Allow multiple file selection',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+    },
   },
   decorators: [withActions],
   parameters: {
@@ -61,6 +92,10 @@ export const Default: Story = {
       ?include-state-icon=${args['include-state-icon']}
       instructions=${ifDefined(args['instructions'])}
       invalid-file-type-message=${ifDefined(args['invalid-file-type-message'])}
+      max-file-name-length=${ifDefined(args['max-file-name-length'])}
+      max-file-count=${ifDefined(args['max-file-count'])}
+      max-total-file-size-bytes=${ifDefined(args['max-total-file-size-bytes'])}
+      ?multiple=${args.multiple}
       success-message=${ifDefined(args['success-message'])}
     ></modus-wc-file-dropzone>
   `,
@@ -142,5 +177,39 @@ export const WithIndeterminateProgress: Story = {
         </div>
       </div>
     </modus-wc-file-dropzone>
+  `,
+};
+
+export const WithFileValidations: Story = {
+  args: {
+    'max-file-name-length': 20,
+    'max-file-count': 3,
+    'max-total-file-size-bytes': 10485760, // 10MB
+    'invalid-file-type-message':
+      'Invalid file format. Please upload correct file type.',
+  },
+  render: (args) => html`
+    <modus-wc-file-dropzone
+      accept-file-types=${ifDefined(args['accept-file-types'])}
+      invalid-file-type-message=${ifDefined(args['invalid-file-type-message'])}
+      max-file-name-length=${ifDefined(args['max-file-name-length'])}
+      max-file-count=${ifDefined(args['max-file-count'])}
+      max-total-file-size-bytes=${ifDefined(args['max-total-file-size-bytes'])}
+      instructions="Upload files (max 3 files, 10MB total, filename ≤ 20 chars)"
+    ></modus-wc-file-dropzone>
+  `,
+};
+
+export const WithMultipleFiles: Story = {
+  args: {
+    multiple: true,
+    'accept-file-types': 'image/*',
+  },
+  render: (args) => html`
+    <modus-wc-file-dropzone
+      accept-file-types=${ifDefined(args['accept-file-types'])}
+      ?multiple=${args.multiple}
+      instructions="Select multiple image files"
+    ></modus-wc-file-dropzone>
   `,
 };

@@ -2721,6 +2721,38 @@
               }
             },
             {
+              "name": "max-file-count",
+              "fieldName": "maxFileCount",
+              "description": "Maximum number of files allowed, will show error if exceeded",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "max-file-name-length",
+              "fieldName": "maxFileNameLength",
+              "description": "Maximum allowed length of filename, will show error if exceeded",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "max-total-file-size-bytes",
+              "fieldName": "maxTotalFileSizeBytes",
+              "description": "Maximum total file size in bytes allowed, will show error if exceeded",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "multiple",
+              "fieldName": "multiple",
+              "description": "Allow multiple file selection",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "success-message",
               "fieldName": "successMessage",
               "description": "Success message displayed when files are uploaded successfully",

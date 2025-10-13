@@ -26,8 +26,9 @@ export class ModusWcFileDropzone {
   /** Tracks if files are being dragged over the dropzone */
   @State() private isDraggingOver = false;
 
-  /** Tracks if an invalid file type was selected */
-  @State() private hasInvalidFileType = false;
+  /** Tracks if file has any validation error and the type of error */
+  @State() private invalidFile: 'none' | 'type' | 'name' | 'count' | 'size' =
+    'none';
 
   /** Tracks if files were successfully uploaded */
   @State() private uploadSuccess = false;
@@ -49,6 +50,18 @@ export class ModusWcFileDropzone {
 
   /** Custom error message displayed when an invalid file type is selected */
   @Prop() invalidFileTypeMessage?: string;
+
+  /** Maximum allowed length of filename, will show error if exceeded */
+  @Prop() maxFileNameLength?: number;
+
+  /** Maximum number of files allowed, will show error if exceeded */
+  @Prop() maxFileCount?: number;
+
+  /** Maximum total file size in bytes allowed, will show error if exceeded */
+  @Prop() maxTotalFileSizeBytes?: number;
+
+  /** Allow multiple file selection */
+  @Prop() multiple?: boolean;
 
   /** Success message displayed when files are uploaded successfully */
   @Prop() successMessage?: string;
@@ -77,15 +90,58 @@ export class ModusWcFileDropzone {
     });
   }
 
+  private isValidFileName(file: File): boolean {
+    if (!this.maxFileNameLength) return true;
+    return file.name.length <= this.maxFileNameLength;
+  }
+
+  private isValidFileCount(fileCount: number): boolean {
+    if (!this.maxFileCount) return true;
+    return fileCount <= this.maxFileCount;
+  }
+
+  private isValidFileSize(files: FileList): boolean {
+    if (!this.maxTotalFileSizeBytes) return true;
+    let totalSize = 0;
+    for (let i = 0; i < files.length; i++) {
+      totalSize += files[i].size;
+    }
+    return totalSize <= this.maxTotalFileSizeBytes;
+  }
+
   handleFileChange(event: Event) {
     const files = (event.target as HTMLInputElement).files;
-    this.hasInvalidFileType = false;
+    // Reset validation state
+    this.invalidFile = 'none';
     this.uploadSuccess = false;
 
     if (files && files.length > 0) {
+      // Check file count
+      if (!this.isValidFileCount(files.length)) {
+        this.invalidFile = 'count';
+        (event.target as HTMLInputElement).value = '';
+        return;
+      }
+
+      // Check total file size
+      if (!this.isValidFileSize(files)) {
+        this.invalidFile = 'size';
+        (event.target as HTMLInputElement).value = '';
+        return;
+      }
+
+      // Check each file
       for (let i = 0; i < files.length; i++) {
+        // Check file type
         if (!this.isValidFileType(files[i])) {
-          this.hasInvalidFileType = true;
+          this.invalidFile = 'type';
+          (event.target as HTMLInputElement).value = '';
+          return;
+        }
+
+        // Check file name length
+        if (!this.isValidFileName(files[i])) {
+          this.invalidFile = 'name';
           (event.target as HTMLInputElement).value = '';
           return;
         }
@@ -120,12 +176,33 @@ export class ModusWcFileDropzone {
 
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
-      this.hasInvalidFileType = false;
+      // Reset validation state
+      this.invalidFile = 'none';
       this.uploadSuccess = false;
 
+      // Check file count
+      if (!this.isValidFileCount(files.length)) {
+        this.invalidFile = 'count';
+        return;
+      }
+
+      // Check total file size
+      if (!this.isValidFileSize(files)) {
+        this.invalidFile = 'size';
+        return;
+      }
+
+      // Check each file
       for (let i = 0; i < files.length; i++) {
+        // Check file type
         if (!this.isValidFileType(files[i])) {
-          this.hasInvalidFileType = true;
+          this.invalidFile = 'type';
+          return;
+        }
+
+        // Check file name length
+        if (!this.isValidFileName(files[i])) {
+          this.invalidFile = 'name';
           return;
         }
       }
@@ -138,6 +215,8 @@ export class ModusWcFileDropzone {
   private handleDropzoneDragOver = (event: DragEvent): void => {
     event.preventDefault();
     event.stopPropagation();
+
+    if (this.disabled) return;
 
     if (!this.isDraggingOver) {
       this.isDraggingOver = true;
@@ -164,9 +243,23 @@ export class ModusWcFileDropzone {
     }
   };
 
+  // Helper method to format file size in human-readable format
+  private formatFileSize(bytes?: number): string {
+    if (!bytes) return '0 Bytes';
+
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
   render() {
     const invalidFileMessage =
       this.invalidFileTypeMessage || 'File format not accepted';
+    const fileNameTooLongMessage = `Filename exceeds maximum length of ${this.maxFileNameLength} characters`;
+    const tooManyFilesMessage = `Maximum number of files allowed is ${this.maxFileCount}`;
+    const fileSizeTooLargeMessage = `Total file size exceeds the maximum of ${this.formatFileSize(this.maxTotalFileSizeBytes)}`;
     const successMessage = this.successMessage || 'Successfully uploaded';
     const dragOverInstructions =
       this.fileDraggedOverInstructions || 'Drop files here';
@@ -180,10 +273,14 @@ export class ModusWcFileDropzone {
             class={this.getClasses()}
             disabled={this.disabled}
             accept={this.acceptFileTypes}
+            multiple={this.multiple}
             onChange={(event) => this.handleFileChange(event)}
           />
           <div
-            class={`dropzone-content ${this.isDraggingOver ? 'dragging-over' : ''} ${this.hasInvalidFileType ? 'invalid-file-type' : ''} ${this.uploadSuccess ? 'upload-success' : ''}`}
+            class={`dropzone-content 
+              ${this.isDraggingOver ? 'dragging-over' : ''} 
+              ${!this.isDraggingOver && this.invalidFile !== 'none' ? 'invalid-file-type' : ''} 
+              ${!this.isDraggingOver && this.uploadSuccess ? 'upload-success' : ''}`}
             role="button"
             tabindex={this.disabled ? -1 : 0}
             aria-label="Upload files"
@@ -195,44 +292,54 @@ export class ModusWcFileDropzone {
             onDragLeave={this.handleDropzoneDragLeave}
           >
             <div class="default-content">
-              {(this.hasInvalidFileType ||
+              {(this.invalidFile !== 'none' ||
                 this.uploadSuccess ||
                 this.isDraggingOver ||
                 this.includeStateIcon) && (
                 <modus-wc-icon
                   name={
-                    this.hasInvalidFileType
-                      ? 'alert'
-                      : this.uploadSuccess
-                        ? 'check_circle'
-                        : 'cloud_upload'
+                    this.isDraggingOver
+                      ? 'cloud_upload'
+                      : this.invalidFile !== 'none'
+                        ? 'alert'
+                        : this.uploadSuccess
+                          ? 'check_circle'
+                          : 'cloud_upload'
                   }
                   size="lg"
                   class={`${
-                    this.hasInvalidFileType
-                      ? 'error-icon'
-                      : this.uploadSuccess
-                        ? 'success-icon'
-                        : 'upload-icon'
+                    this.isDraggingOver
+                      ? 'upload-icon'
+                      : this.invalidFile !== 'none'
+                        ? 'error-icon'
+                        : this.uploadSuccess
+                          ? 'success-icon'
+                          : 'upload-icon'
                   }`}
                   variant="solid"
                 ></modus-wc-icon>
               )}
               <span>
-                {this.hasInvalidFileType
-                  ? invalidFileMessage
-                  : this.uploadSuccess
-                    ? successMessage
-                    : this.isDraggingOver
-                      ? dragOverInstructions
-                      : this.instructions}
+                {this.isDraggingOver
+                  ? dragOverInstructions
+                  : this.invalidFile === 'type'
+                    ? invalidFileMessage
+                    : this.invalidFile === 'name'
+                      ? fileNameTooLongMessage
+                      : this.invalidFile === 'count'
+                        ? tooManyFilesMessage
+                        : this.invalidFile === 'size'
+                          ? fileSizeTooLargeMessage
+                          : this.uploadSuccess
+                            ? successMessage
+                            : this.instructions}
               </span>
               <div
                 style={{
                   display:
-                    this.uploadSuccess ||
-                    this.hasInvalidFileType ||
                     this.isDraggingOver ||
+                    this.uploadSuccess ||
+                    this.invalidFile !== 'none' ||
                     this.disabled
                       ? 'none'
                       : 'block',

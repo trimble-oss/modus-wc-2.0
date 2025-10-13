@@ -11,15 +11,19 @@ File dropzone component that allows users to drag and drop files for upload.
 
 ## Properties
 
-| Property                      | Attribute                        | Description                                                          | Type                   | Default     |
-| ----------------------------- | -------------------------------- | -------------------------------------------------------------------- | ---------------------- | ----------- |
-| `acceptFileTypes`             | `accept-file-types`              | Accepted file types (e.g. '.jpg,.png' or 'image/*')                  | `string \| undefined`  | `undefined` |
-| `disabled`                    | `disabled`                       | Disable the file input                                               | `boolean \| undefined` | `undefined` |
-| `fileDraggedOverInstructions` | `file-dragged-over-instructions` | Custom instructions shown when files are dragged over the dropzone   | `string \| undefined`  | `undefined` |
-| `includeStateIcon`            | `include-state-icon`             | Include state icon (upload, success, error)                          | `boolean \| undefined` | `true`      |
-| `instructions`                | `instructions`                   | Custom instructions shown as the default dropzone message            | `string \| undefined`  | `undefined` |
-| `invalidFileTypeMessage`      | `invalid-file-type-message`      | Custom error message displayed when an invalid file type is selected | `string \| undefined`  | `undefined` |
-| `successMessage`              | `success-message`                | Success message displayed when files are uploaded successfully       | `string \| undefined`  | `undefined` |
+| Property                      | Attribute                        | Description                                                           | Type                   | Default     |
+| ----------------------------- | -------------------------------- | --------------------------------------------------------------------- | ---------------------- | ----------- |
+| `acceptFileTypes`             | `accept-file-types`              | Accepted file types (e.g. '.jpg,.png' or 'image/*')                   | `string \| undefined`  | `undefined` |
+| `disabled`                    | `disabled`                       | Disable the file input                                                | `boolean \| undefined` | `undefined` |
+| `fileDraggedOverInstructions` | `file-dragged-over-instructions` | Custom instructions shown when files are dragged over the dropzone    | `string \| undefined`  | `undefined` |
+| `includeStateIcon`            | `include-state-icon`             | Include state icon (upload, success, error)                           | `boolean \| undefined` | `true`      |
+| `instructions`                | `instructions`                   | Custom instructions shown as the default dropzone message             | `string \| undefined`  | `undefined` |
+| `invalidFileTypeMessage`      | `invalid-file-type-message`      | Custom error message displayed when an invalid file type is selected  | `string \| undefined`  | `undefined` |
+| `maxFileCount`                | `max-file-count`                 | Maximum number of files allowed, will show error if exceeded          | `number \| undefined`  | `undefined` |
+| `maxFileNameLength`           | `max-file-name-length`           | Maximum allowed length of filename, will show error if exceeded       | `number \| undefined`  | `undefined` |
+| `maxTotalFileSizeBytes`       | `max-total-file-size-bytes`      | Maximum total file size in bytes allowed, will show error if exceeded | `number \| undefined`  | `undefined` |
+| `multiple`                    | `multiple`                       | Allow multiple file selection                                         | `boolean \| undefined` | `undefined` |
+| `successMessage`              | `success-message`                | Success message displayed when files are uploaded successfully        | `string \| undefined`  | `undefined` |
 
 
 ## Events
