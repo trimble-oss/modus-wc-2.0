@@ -46,7 +46,14 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
     }
 
     .success-icon {
-      // color: var(--modus-wc-color-green-dark);
+      color: var(--modus-wc-color-green-dark);
+    }
+
+    .default-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
   }
 

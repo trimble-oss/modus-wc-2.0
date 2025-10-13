@@ -32,23 +32,26 @@ export class ModusWcFileDropzone {
   /** Tracks if files were successfully uploaded */
   @State() private uploadSuccess = false;
 
+  /** Accepted file types (e.g. '.jpg,.png' or 'image/*') */
+  @Prop() acceptFileTypes?: string;
+
   /** Disable the file input */
   @Prop() disabled?: boolean;
 
-  /** Accepted file types (e.g. '.jpg,.png' or 'image/*') */
-  @Prop() acceptFileTypes?: string;
+  /** Custom instructions shown when files are dragged over the dropzone */
+  @Prop() fileDraggedOverInstructions?: string;
+
+  /** Include state icon (upload, success, error) */
+  @Prop() includeStateIcon?: boolean = true;
+
+  /** Custom instructions shown as the default dropzone message */
+  @Prop() instructions?: string;
 
   /** Custom error message displayed when an invalid file type is selected */
   @Prop() invalidFileTypeMessage?: string;
 
   /** Success message displayed when files are uploaded successfully */
   @Prop() successMessage?: string;
-
-  /** Custom instructions shown when files are dragged over the dropzone */
-  @Prop() fileDraggedOverInstructions?: string;
-
-  /** Custom instructions shown as the default dropzone message */
-  @Prop() instructions?: string;
 
   /** Event emitted when files are selected */
   @StencilEvent() fileSelect!: EventEmitter<FileList>;
@@ -190,35 +193,54 @@ export class ModusWcFileDropzone {
             onDrop={this.handleDropzoneDrop}
             onDragOver={this.handleDropzoneDragOver}
             onDragLeave={this.handleDropzoneDragLeave}
-            onDragExit={this.handleDropzoneDragLeave}
           >
-            <modus-wc-icon
-              name={
-                this.hasInvalidFileType
-                  ? 'alert'
+            <div class="default-content">
+              {(this.hasInvalidFileType ||
+                this.uploadSuccess ||
+                this.isDraggingOver ||
+                this.includeStateIcon) && (
+                <modus-wc-icon
+                  name={
+                    this.hasInvalidFileType
+                      ? 'alert'
+                      : this.uploadSuccess
+                        ? 'check_circle'
+                        : 'cloud_upload'
+                  }
+                  size="lg"
+                  class={`${
+                    this.hasInvalidFileType
+                      ? 'error-icon'
+                      : this.uploadSuccess
+                        ? 'success-icon'
+                        : 'upload-icon'
+                  }`}
+                  variant="solid"
+                ></modus-wc-icon>
+              )}
+              <span>
+                {this.hasInvalidFileType
+                  ? invalidFileMessage
                   : this.uploadSuccess
-                    ? 'check_circle'
-                    : 'cloud_upload'
-              }
-              size="lg"
-              class={`${
-                this.hasInvalidFileType
-                  ? 'error-icon'
-                  : this.uploadSuccess
-                    ? 'success-icon'
-                    : 'upload-icon'
-              }`}
-              variant="solid"
-            ></modus-wc-icon>
-            <span>
-              {this.hasInvalidFileType
-                ? invalidFileMessage
-                : this.uploadSuccess
-                  ? successMessage
-                  : this.isDraggingOver
-                    ? dragOverInstructions
-                    : this.instructions}
-            </span>
+                    ? successMessage
+                    : this.isDraggingOver
+                      ? dragOverInstructions
+                      : this.instructions}
+              </span>
+              <div
+                style={{
+                  display:
+                    this.uploadSuccess ||
+                    this.hasInvalidFileType ||
+                    this.isDraggingOver ||
+                    this.disabled
+                      ? 'none'
+                      : 'block',
+                }}
+              >
+                <slot name="dropzone"></slot>
+              </div>
+            </div>
           </div>
         </div>
       </Host>

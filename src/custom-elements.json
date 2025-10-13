@@ -2696,6 +2696,15 @@
               }
             },
             {
+              "name": "include-state-icon",
+              "fieldName": "includeStateIcon",
+              "default": "true",
+              "description": "Include state icon (upload, success, error)",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "instructions",
               "fieldName": "instructions",
               "description": "Custom instructions shown as the default dropzone message",

@@ -6,10 +6,11 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 interface FileDropzoneArgs {
   'accept-file-types'?: string;
   disabled?: boolean;
+  'file-dragged-over-instructions'?: string;
+  'include-state-icon'?: boolean;
+  instructions?: string;
   'invalid-file-type-message'?: string;
   'success-message'?: string;
-  'file-dragged-over-instructions'?: string;
-  instructions?: string;
 }
 
 const meta: Meta<FileDropzoneArgs> = {
@@ -18,6 +19,7 @@ const meta: Meta<FileDropzoneArgs> = {
   args: {
     'accept-file-types': '.doc, .docx, .pdf',
     disabled: false,
+    'include-state-icon': true,
     instructions: 'Drop files here or click to select files',
   },
   argTypes: {
@@ -53,12 +55,13 @@ export const Default: Story = {
     <modus-wc-file-dropzone
       accept-file-types=${ifDefined(args['accept-file-types'])}
       ?disabled=${args.disabled}
-      invalid-file-type-message=${ifDefined(args['invalid-file-type-message'])}
-      success-message=${ifDefined(args['success-message'])}
       file-dragged-over-instructions=${ifDefined(
         args['file-dragged-over-instructions']
       )}
+      ?include-state-icon=${args['include-state-icon']}
       instructions=${ifDefined(args['instructions'])}
+      invalid-file-type-message=${ifDefined(args['invalid-file-type-message'])}
+      success-message=${ifDefined(args['success-message'])}
     ></modus-wc-file-dropzone>
   `,
 };
@@ -67,4 +70,77 @@ export const Disabled: Story = {
   args: {
     disabled: true,
   },
+};
+
+export const WithCustomContent: Story = {
+  render: () => html`
+    <modus-wc-file-dropzone
+      accept-file-types=".jpg,.png,.gif"
+      instructions="Drop files here or click to select files"
+    >
+      <div slot="dropzone" style="width: 300px; margin-top: 1rem;">
+        <modus-wc-progress value="70" label="70% Uploaded"></modus-wc-progress>
+      </div>
+    </modus-wc-file-dropzone>
+  `,
+};
+
+export const WithRadialProgress: Story = {
+  render: () => html`
+    <modus-wc-file-dropzone
+      accept-file-types=".jpg,.png,.gif"
+      include-state-icon="false"
+    >
+      <div
+        slot="dropzone"
+        style="display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: center;"
+      >
+        <modus-wc-progress variant="radial" value="85">
+          <div
+            style="display: flex; flex-direction: column; align-items: center; padding: 1rem;"
+          >
+            <div
+              style="font-size: 1.25rem; font-weight: bold; margin-top: 0.25rem;"
+            >
+              85%
+            </div>
+          </div>
+        </modus-wc-progress>
+        <div style="margin-top: 1rem; text-align: center;">
+          <p style="margin: 0; color: #0063a3; font-weight: 600;">
+            Uploading 2 of 3 files
+          </p>
+          <p style="margin: 0.25rem 0 0; color: #6a6e79; font-size: 0.875rem;">
+            image1.jpg, image2.jpg
+          </p>
+        </div>
+      </div>
+    </modus-wc-file-dropzone>
+  `,
+};
+
+export const WithIndeterminateProgress: Story = {
+  render: () => html`
+    <modus-wc-file-dropzone
+      accept-file-types=".pdf,.docx"
+      include-state-icon="false"
+    >
+      <div
+        slot="dropzone"
+        style="display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: center;"
+      >
+        <div style="width: 80%; max-width: 300px;">
+          <modus-wc-progress indeterminate></modus-wc-progress>
+        </div>
+        <div style="margin-top: 1rem; text-align: center;">
+          <p style="margin: 0; color: #0063a3; font-weight: 600;">
+            Processing Documents
+          </p>
+          <p style="margin: 0.25rem 0 0; color: #6a6e79; font-size: 0.875rem;">
+            Checking file integrity and scanning for viruses...
+          </p>
+        </div>
+      </div>
+    </modus-wc-file-dropzone>
+  `,
 };

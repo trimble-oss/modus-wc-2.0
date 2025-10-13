@@ -642,6 +642,10 @@ export namespace Components {
          */
         "fileDraggedOverInstructions"?: string;
         /**
+          * Include state icon (upload, success, error)
+         */
+        "includeStateIcon"?: boolean;
+        /**
           * Custom instructions shown as the default dropzone message
          */
         "instructions"?: string;
@@ -3493,6 +3497,10 @@ declare namespace LocalJSX {
           * Custom instructions shown when files are dragged over the dropzone
          */
         "fileDraggedOverInstructions"?: string;
+        /**
+          * Include state icon (upload, success, error)
+         */
+        "includeStateIcon"?: boolean;
         /**
           * Custom instructions shown as the default dropzone message
          */
