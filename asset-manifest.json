@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/modus-wc-comparison/static/css/main.9f69d352.css",
+    "main.js": "/modus-wc-comparison/static/js/main.74f402b4.js",
+    "static/js/674.550a3067.chunk.js": "/modus-wc-comparison/static/js/674.550a3067.chunk.js",
+    "static/js/453.5af23168.chunk.js": "/modus-wc-comparison/static/js/453.5af23168.chunk.js",
+    "static/js/229.14dffe5a.chunk.js": "/modus-wc-comparison/static/js/229.14dffe5a.chunk.js",
+    "index.html": "/modus-wc-comparison/index.html",
+    "main.9f69d352.css.map": "/modus-wc-comparison/static/css/main.9f69d352.css.map",
+    "main.74f402b4.js.map": "/modus-wc-comparison/static/js/main.74f402b4.js.map",
+    "674.550a3067.chunk.js.map": "/modus-wc-comparison/static/js/674.550a3067.chunk.js.map",
+    "453.5af23168.chunk.js.map": "/modus-wc-comparison/static/js/453.5af23168.chunk.js.map",
+    "229.14dffe5a.chunk.js.map": "/modus-wc-comparison/static/js/229.14dffe5a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9f69d352.css",
+    "static/js/main.74f402b4.js"
+  ]
+}
