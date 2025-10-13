@@ -74,9 +74,7 @@ modus-wc-tabs .modus-wc-tab {
     color: inherit;
   }
 
-  &:disabled,
-  &[disabled],
-  &[aria-disabled='true'] {
+  &:disabled {
     pointer-events: none;
   }
 }
