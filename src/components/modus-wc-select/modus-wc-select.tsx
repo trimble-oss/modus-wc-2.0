@@ -113,6 +113,7 @@ export class ModusWcSelect {
   };
 
   private handleInput = (event: InputEvent) => {
+    this.value = (event.target as HTMLInputElement).value;
     this.inputChange.emit(event);
   };
 
