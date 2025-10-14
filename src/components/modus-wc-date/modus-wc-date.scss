@@ -57,7 +57,7 @@ modus-wc-date {
 
     .calendar-header {
       align-items: center;
-      background-color: var(--modus-wc-color-blue-light);
+      background-color: var(--modus-wc-color-primary);
       color: var(--modus-wc-color-white);
       display: flex;
       justify-content: space-between;
@@ -98,6 +98,7 @@ modus-wc-date {
     .calendar-body {
       font-size: var(--modus-wc-font-size-md);
       padding: var(--modus-wc-spacing-2xl);
+      background-color: var(--modus-wc-color-base-page);
 
       .calendar-days-week {
         display: grid;
@@ -106,7 +107,7 @@ modus-wc-date {
         margin-bottom: var(--modus-wc-spacing-sm);
 
         .day-header {
-          color: var(--modus-wc-color-gray-6);
+          color: var(--modus-wc-color-base-content-hight-contrast);
           font-weight: var(--modus-wc-font-weight-bold);
           padding: var(--modus-wc-spacing-xs);
           text-align: center;
@@ -122,7 +123,7 @@ modus-wc-date {
           background: none;
           border: none;
           border-radius: 50%;
-          color: var(--modus-wc-color-gray-8);
+          color: var(--modus-wc-color-base-content-hight-contrast);
           cursor: pointer;
           display: flex;
           height: 32px;
@@ -140,22 +141,19 @@ modus-wc-date {
           }
 
           &.current-day {
-            background-color: var(--modus-wc-color-blue-dark);
-            color: var(--modus-wc-color-white);
+            border: 2px solid var(--modus-wc-color-blue-light);
+            outline: none;
           }
 
           &.selected {
             background-color: var(--modus-wc-color-blue-light);
             color: var(--modus-wc-color-white);
             font-weight: var(--modus-wc-font-weight-semibold);
-
-            &:hover {
-              background-color: var(--modus-wc-color-blue-dark);
-            }
           }
 
           &.other-month {
-            color: var(--modus-wc-color-gray-4);
+            color: var(--modus-wc-color-base-content-high-contrast);
+            opacity: 0.5;
 
             &:hover {
               background-color: var(--modus-wc-color-gray-2);
