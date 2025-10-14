@@ -207,8 +207,8 @@ export class ModusWcFileDropzone {
         }
       }
 
-      this.fileSelect.emit(files);
       this.uploadSuccess = true;
+      this.fileSelect.emit(files);
     }
   };
 
@@ -266,7 +266,7 @@ export class ModusWcFileDropzone {
 
     const hasState =
       this.isDraggingOver || this.invalidFile !== 'none' || this.uploadSuccess;
-    const showIcon = this.includeStateIcon && hasState;
+    const showIcon = this.includeStateIcon !== false;
 
     const iconMap = {
       dragging: 'cloud_upload',

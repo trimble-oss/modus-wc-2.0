@@ -101,13 +101,13 @@ export const Default: Story = {
   `,
 };
 
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-  },
-};
+// export const Disabled: Story = {
+//   args: {
+//     disabled: true,
+//   },
+// };
 
-export const WithCustomContent: Story = {
+export const customContent: Story = {
   render: () => html`
     <modus-wc-file-dropzone
       accept-file-types=".jpg,.png,.gif"
@@ -120,67 +120,7 @@ export const WithCustomContent: Story = {
   `,
 };
 
-export const WithRadialProgress: Story = {
-  render: () => html`
-    <modus-wc-file-dropzone
-      accept-file-types=".jpg,.png,.gif"
-      include-state-icon="false"
-    >
-      <div
-        slot="dropzone"
-        style="display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: center;"
-      >
-        <modus-wc-progress variant="radial" value="85">
-          <div
-            style="display: flex; flex-direction: column; align-items: center; padding: 1rem;"
-          >
-            <div
-              style="font-size: 1.25rem; font-weight: bold; margin-top: 0.25rem;"
-            >
-              85%
-            </div>
-          </div>
-        </modus-wc-progress>
-        <div style="margin-top: 1rem; text-align: center;">
-          <p style="margin: 0; color: #0063a3; font-weight: 600;">
-            Uploading 2 of 3 files
-          </p>
-          <p style="margin: 0.25rem 0 0; color: #6a6e79; font-size: 0.875rem;">
-            image1.jpg, image2.jpg
-          </p>
-        </div>
-      </div>
-    </modus-wc-file-dropzone>
-  `,
-};
-
-export const WithIndeterminateProgress: Story = {
-  render: () => html`
-    <modus-wc-file-dropzone
-      accept-file-types=".pdf,.docx"
-      include-state-icon="false"
-    >
-      <div
-        slot="dropzone"
-        style="display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: center;"
-      >
-        <div style="width: 80%; max-width: 300px;">
-          <modus-wc-progress indeterminate></modus-wc-progress>
-        </div>
-        <div style="margin-top: 1rem; text-align: center;">
-          <p style="margin: 0; color: #0063a3; font-weight: 600;">
-            Processing Documents
-          </p>
-          <p style="margin: 0.25rem 0 0; color: #6a6e79; font-size: 0.875rem;">
-            Checking file integrity and scanning for viruses...
-          </p>
-        </div>
-      </div>
-    </modus-wc-file-dropzone>
-  `,
-};
-
-export const WithFileValidations: Story = {
+export const fileValidations: Story = {
   args: {
     'max-file-name-length': 20,
     'max-file-count': 3,
@@ -200,7 +140,7 @@ export const WithFileValidations: Story = {
   `,
 };
 
-export const WithMultipleFiles: Story = {
+export const multipleFiles: Story = {
   args: {
     multiple: true,
     'accept-file-types': 'image/*',
