@@ -255,14 +255,51 @@ export class ModusWcFileDropzone {
   }
 
   render() {
-    const invalidFileMessage =
-      this.invalidFileTypeMessage || 'File format not accepted';
-    const fileNameTooLongMessage = `Filename exceeds maximum length of ${this.maxFileNameLength} characters`;
-    const tooManyFilesMessage = `Maximum number of files allowed is ${this.maxFileCount}`;
-    const fileSizeTooLargeMessage = `Total file size exceeds the maximum of ${this.formatFileSize(this.maxTotalFileSizeBytes)}`;
-    const successMessage = this.successMessage || 'Successfully uploaded';
-    const dragOverInstructions =
-      this.fileDraggedOverInstructions || 'Drop files here';
+    const messages = {
+      type: this.invalidFileTypeMessage || 'File format not accepted',
+      name: `Filename exceeds maximum length of ${this.maxFileNameLength} characters`,
+      count: `Maximum number of files allowed is ${this.maxFileCount}`,
+      size: `Total file size exceeds ${this.formatFileSize(this.maxTotalFileSizeBytes)}`,
+      success: this.successMessage || 'Successfully uploaded',
+      dragOver: this.fileDraggedOverInstructions || 'Drop files here',
+    };
+
+    const hasState =
+      this.isDraggingOver || this.invalidFile !== 'none' || this.uploadSuccess;
+    const showIcon = this.includeStateIcon && hasState;
+
+    const iconMap = {
+      dragging: 'cloud_upload',
+      invalid: 'alert',
+      success: 'check_circle',
+      default: 'cloud_upload',
+    };
+
+    const iconState = this.isDraggingOver
+      ? iconMap.dragging
+      : this.invalidFile !== 'none'
+        ? iconMap.invalid
+        : this.uploadSuccess
+          ? iconMap.success
+          : iconMap.default;
+
+    const iconClass = this.isDraggingOver
+      ? 'upload-icon'
+      : this.invalidFile !== 'none'
+        ? 'error-icon'
+        : this.uploadSuccess
+          ? 'success-icon'
+          : 'upload-icon';
+
+    const message = this.isDraggingOver
+      ? messages.dragOver
+      : this.invalidFile !== 'none'
+        ? messages[this.invalidFile]
+        : this.uploadSuccess
+          ? messages.success
+          : this.instructions;
+
+    const showDropzoneSlot = hasState || this.disabled ? 'none' : 'block';
 
     return (
       <Host>
@@ -292,59 +329,16 @@ export class ModusWcFileDropzone {
             onDragLeave={this.handleDropzoneDragLeave}
           >
             <div class="default-content">
-              {(this.invalidFile !== 'none' ||
-                this.uploadSuccess ||
-                this.isDraggingOver ||
-                this.includeStateIcon) && (
+              {showIcon && (
                 <modus-wc-icon
-                  name={
-                    this.isDraggingOver
-                      ? 'cloud_upload'
-                      : this.invalidFile !== 'none'
-                        ? 'alert'
-                        : this.uploadSuccess
-                          ? 'check_circle'
-                          : 'cloud_upload'
-                  }
+                  name={iconState}
                   size="lg"
-                  class={`${
-                    this.isDraggingOver
-                      ? 'upload-icon'
-                      : this.invalidFile !== 'none'
-                        ? 'error-icon'
-                        : this.uploadSuccess
-                          ? 'success-icon'
-                          : 'upload-icon'
-                  }`}
+                  class={iconClass}
                   variant="solid"
                 ></modus-wc-icon>
               )}
-              <span>
-                {this.isDraggingOver
-                  ? dragOverInstructions
-                  : this.invalidFile === 'type'
-                    ? invalidFileMessage
-                    : this.invalidFile === 'name'
-                      ? fileNameTooLongMessage
-                      : this.invalidFile === 'count'
-                        ? tooManyFilesMessage
-                        : this.invalidFile === 'size'
-                          ? fileSizeTooLargeMessage
-                          : this.uploadSuccess
-                            ? successMessage
-                            : this.instructions}
-              </span>
-              <div
-                style={{
-                  display:
-                    this.isDraggingOver ||
-                    this.uploadSuccess ||
-                    this.invalidFile !== 'none' ||
-                    this.disabled
-                      ? 'none'
-                      : 'block',
-                }}
-              >
+              <span>{message}</span>
+              <div style={{ display: showDropzoneSlot }}>
                 <slot name="dropzone"></slot>
               </div>
             </div>
