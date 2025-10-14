@@ -128,6 +128,7 @@ modus-wc-date {
           display: flex;
           height: 32px;
           justify-content: center;
+          margin: var(--modus-wc-spacing-xs);
           width: 32px;
 
           &:hover {
@@ -138,6 +139,7 @@ modus-wc-date {
           &:focus {
             background-color: var(--modus-wc-color-blue-light);
             color: var(--modus-wc-color-white);
+            outline: none;
           }
 
           &.current-day {

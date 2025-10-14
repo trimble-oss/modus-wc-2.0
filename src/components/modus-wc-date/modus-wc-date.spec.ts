@@ -2183,5 +2183,119 @@ describe('modus-wc-date', () => {
       // Restore
       component['calendar'].dates.findIndex = originalFindIndex;
     });
+
+    it('should not navigate when all dates in direction are disabled', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date min="2025-03-15" max="2025-03-20" aria-label="Disabled dates test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['showCalendar'] = true;
+      component['calendar'].gotoDate(2025, 2); // March 2025
+      await page.waitForChanges();
+
+      // Set focus on March 15
+      component['focusedDateIndex'] = component['calendar'].dates.findIndex(
+        (date) => date && date.getDate() === 15 && date.getMonth() === 2
+      );
+      const initialIndex = component['focusedDateIndex'];
+
+      // Try to navigate left (all dates before 15 are disabled)
+      const leftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+      component['handleArrowKeys'](leftEvent);
+      await page.waitForChanges();
+
+      // Should stay at same position
+      expect(component['focusedDateIndex']).toBe(initialIndex);
+    });
+
+    it('should not navigate to previous month when ArrowLeft and previous month is disabled', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date min="2025-03-01" aria-label="ArrowLeft disabled test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['showCalendar'] = true;
+      component['calendar'].gotoDate(2025, 2); // March 2025
+      await page.waitForChanges();
+
+      component['focusedDateIndex'] = 0; // First position
+      const initialMonth = component['calendar'].selectedMonth;
+
+      const leftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+      component['handleArrowKeys'](leftEvent);
+      await page.waitForChanges();
+
+      // Should stay in March
+      expect(component['calendar'].selectedMonth).toBe(initialMonth);
+    });
+
+    it('should not navigate to next month when ArrowRight and next month is disabled', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date max="2025-03-31" aria-label="ArrowRight disabled test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['showCalendar'] = true;
+      component['calendar'].gotoDate(2025, 2); // March 2025
+      await page.waitForChanges();
+
+      component['focusedDateIndex'] = 41; // Last position
+      const initialMonth = component['calendar'].selectedMonth;
+
+      const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      component['handleArrowKeys'](rightEvent);
+      await page.waitForChanges();
+
+      // Should stay in March
+      expect(component['calendar'].selectedMonth).toBe(initialMonth);
+    });
+
+    it('should not navigate to previous month when ArrowUp and previous month is disabled', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date min="2025-03-01" aria-label="ArrowUp disabled test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['showCalendar'] = true;
+      component['calendar'].gotoDate(2025, 2); // March 2025
+      await page.waitForChanges();
+
+      component['focusedDateIndex'] = 3; // First week
+      const initialMonth = component['calendar'].selectedMonth;
+
+      const upEvent = new KeyboardEvent('keydown', { key: 'ArrowUp' });
+      component['handleArrowKeys'](upEvent);
+      await page.waitForChanges();
+
+      // Should stay in March
+      expect(component['calendar'].selectedMonth).toBe(initialMonth);
+    });
+
+    it('should not navigate to next month when ArrowDown and next month is disabled', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date max="2025-03-31" aria-label="ArrowDown disabled test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['showCalendar'] = true;
+      component['calendar'].gotoDate(2025, 2); // March 2025
+      await page.waitForChanges();
+
+      component['focusedDateIndex'] = 38; // Last week
+      const initialMonth = component['calendar'].selectedMonth;
+
+      const downEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+      component['handleArrowKeys'](downEvent);
+      await page.waitForChanges();
+
+      // Should stay in March
+      expect(component['calendar'].selectedMonth).toBe(initialMonth);
+    });
   });
 });

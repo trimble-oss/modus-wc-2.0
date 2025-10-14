@@ -483,6 +483,38 @@ export class ModusWcDate {
       targetDate = this.calendar.dates[targetIndex];
 
       if (targetDate) {
+        // Skip disabled dates - keep moving in the same direction until we find a valid date
+        let searchIndex = targetIndex;
+        const direction =
+          key === 'ArrowLeft'
+            ? -1
+            : key === 'ArrowRight'
+              ? 1
+              : key === 'ArrowUp'
+                ? -7
+                : 7;
+
+        while (
+          searchIndex >= 0 &&
+          searchIndex < totalDates &&
+          this.isDateDisabled(this.calendar.dates[searchIndex])
+        ) {
+          searchIndex += direction;
+        }
+
+        // If we found a valid date within bounds
+        if (
+          searchIndex >= 0 &&
+          searchIndex < totalDates &&
+          this.calendar.dates[searchIndex]
+        ) {
+          targetDate = this.calendar.dates[searchIndex];
+          targetIndex = searchIndex;
+        } else {
+          // No valid date found in this direction, don't move
+          return;
+        }
+
         // If target date is from a different month, navigate to that month
         // istanbul ignore next (optional chaining)
         if (targetDate.getMonth() !== this.calendar.selectedMonth) {
@@ -495,11 +527,27 @@ export class ModusWcDate {
       shouldChangeMonth = true;
 
       if (key === 'ArrowUp') {
-        this.navigateToAdjacentMonth(newIndex, true);
-        shouldChangeMonth = false; // Already handled in helper
+        // Check if we can navigate to previous month
+        const prevMonthDate = new Date(
+          this.calendar.selectedYear,
+          this.calendar.selectedMonth - 1,
+          1
+        );
+        if (!this.isDateDisabled(prevMonthDate)) {
+          this.navigateToAdjacentMonth(newIndex, true);
+          shouldChangeMonth = false; // Already handled in helper
+        }
       } else if (key === 'ArrowDown') {
-        this.navigateToAdjacentMonth(newIndex, false);
-        shouldChangeMonth = false; // Already handled in helper
+        // Check if we can navigate to next month
+        const nextMonthDate = new Date(
+          this.calendar.selectedYear,
+          this.calendar.selectedMonth + 1,
+          1
+        );
+        if (!this.isDateDisabled(nextMonthDate)) {
+          this.navigateToAdjacentMonth(newIndex, false);
+          shouldChangeMonth = false; // Already handled in helper
+        }
       } else if (key === 'ArrowLeft') {
         // Go to previous month's last day
         const prevMonthDate = new Date(
@@ -512,6 +560,11 @@ export class ModusWcDate {
           prevMonthDate.getMonth() + 1,
           0
         ); // Last day of previous month
+
+        // Only navigate if not disabled
+        if (this.isDateDisabled(targetDate)) {
+          return;
+        }
       } else {
         // Go to next month's first day
         targetDate = new Date(
@@ -519,6 +572,11 @@ export class ModusWcDate {
           this.calendar.selectedMonth + 1,
           1
         ); // First day of next month
+
+        // Only navigate if not disabled
+        if (this.isDateDisabled(targetDate)) {
+          return;
+        }
       }
     }
 

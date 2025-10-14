@@ -2340,66 +2340,6 @@ describe('modus-wc-table', () => {
     document.body.removeChild(outsideElement);
   });
 
-  it('should cleanup event listeners when editor closes normally', async () => {
-    const mockCommit = jest.fn();
-    const column: ITableColumn = {
-      id: 'text',
-      accessor: 'text',
-      header: 'Text',
-      editor: 'text',
-    };
-
-    const row = { id: '1', text: 'Test' };
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-
-    // Create editor cell
-    const td = document.createElement('td');
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.value = row.text;
-
-    // Mock removeEventListener to track cleanup
-    const removeEventListenerSpy = jest.spyOn(td, 'removeEventListener');
-    const docRemoveEventListenerSpy = jest.spyOn(
-      document,
-      'removeEventListener'
-    );
-
-    // Setup editor cell
-    component['setupEditorCell'](td, input, column, row, mockCommit);
-    component['activeEditor'] = { rowIndex: 0, colId: 'text' };
-
-    // Create another element to blur to
-    const otherElement = document.createElement('div');
-    document.body.appendChild(otherElement);
-
-    // Simulate blur to element outside cell
-    const blurEvent = new FocusEvent('focusout', {
-      relatedTarget: otherElement,
-      bubbles: true,
-    });
-    td.dispatchEvent(blurEvent);
-
-    // Editor should be closed
-    expect(component['activeEditor']).toBeNull();
-
-    // Cleanup should have been called for blur handler only
-    expect(removeEventListenerSpy).toHaveBeenCalledWith(
-      'focusout',
-      expect.any(Function)
-    );
-    // Global click handler should NOT be removed (it stays active)
-    expect(docRemoveEventListenerSpy).not.toHaveBeenCalled();
-
-    // Clean up
-    document.body.removeChild(otherElement);
-  });
-
   it('should handle global click when clicking outside table', async () => {
     const mockCommit = jest.fn();
     const column: ITableColumn = {
@@ -2523,6 +2463,123 @@ describe('modus-wc-table', () => {
     expect(component['activeEditorCleanup']).toBeUndefined();
 
     removeEventListenerSpy.mockRestore();
+  });
+
+  it('should cleanup global blur handler on disconnectedCallback', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [{ id: 'test', accessor: 'test', header: 'Test' }];
+    component.data = [{ id: '1', test: 'value' }];
+
+    // Mock the global blur handler
+    const mockGlobalBlurHandler = jest.fn();
+    component['globalBlurHandler'] = mockGlobalBlurHandler;
+
+    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
+
+    // Call disconnectedCallback
+    component.disconnectedCallback();
+
+    // Verify cleanup
+    expect(removeEventListenerSpy).toHaveBeenCalledWith(
+      'focusout',
+      mockGlobalBlurHandler,
+      true
+    );
+    expect(component['globalBlurHandler']).toBeUndefined();
+
+    removeEventListenerSpy.mockRestore();
+  });
+
+  it('should ignore global blur when no active editor', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [{ id: 'test', accessor: 'test', header: 'Test' }];
+    component.data = [{ id: '1', test: 'value' }];
+
+    // Ensure globalBlurHandler exists by setting up an editor first
+    const td = document.createElement('td');
+    const input = document.createElement('input');
+    component['setupEditorCell'](
+      td,
+      input,
+      component.columns[0],
+      component.data[0],
+      jest.fn()
+    );
+
+    // Clear active editor
+    component['activeEditor'] = null;
+    component['activeEditorElement'] = undefined;
+
+    // Simulate blur with no active editor
+    const blurEvent = new FocusEvent('focusout', {
+      bubbles: true,
+    });
+
+    // This should return early without doing anything
+    component['globalBlurHandler']?.(blurEvent);
+
+    // Verify nothing changed
+    expect(component['activeEditor']).toBeNull();
+  });
+
+  it('should handle global blur when focus moves outside editor cell', async () => {
+    const mockCommit = jest.fn();
+    const column = {
+      id: 'text',
+      accessor: 'text',
+      header: 'Text',
+      editor: 'text' as const,
+    };
+
+    const row = { id: '1', text: 'Test' };
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [column];
+    component.data = [row];
+
+    // Create editor cell
+    const td = document.createElement('td');
+    page.root?.appendChild(td);
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = row.text;
+
+    // Setup editor cell
+    component['setupEditorCell'](td, input, column, row, mockCommit);
+    component['activeEditor'] = { rowIndex: 0, colId: 'text' };
+
+    // Create element outside the cell
+    const outsideElement = document.createElement('div');
+    document.body.appendChild(outsideElement);
+
+    // Simulate blur to outside element
+    const blurEvent = new FocusEvent('focusout', {
+      relatedTarget: outsideElement,
+      bubbles: true,
+    });
+
+    // Trigger the global blur handler
+    component['globalBlurHandler']?.(blurEvent);
+
+    // Editor should be closed
+    expect(component['activeEditor']).toBeNull();
+
+    // Clean up
+    document.body.removeChild(outsideElement);
   });
 
   it('should call handlePageChange when pagination emits page change event', async () => {

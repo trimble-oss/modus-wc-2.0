@@ -85,6 +85,7 @@ export class ModusWcTable {
   private table: Table<Record<string, unknown>> | null = null;
   private tanStackColumns: ColumnDef<Record<string, unknown>, unknown>[] = [];
   private globalClickHandler?: (event: MouseEvent) => void;
+  private globalBlurHandler?: (event: FocusEvent) => void;
   private activeEditorCleanup?: () => void;
   private activeEditorElement?: HTMLElement;
 
@@ -280,10 +281,14 @@ export class ModusWcTable {
   }
 
   disconnectedCallback() {
-    // Clean up global listener on component disconnect
+    // Clean up global listeners on component disconnect
     if (this.globalClickHandler) {
       document.removeEventListener('click', this.globalClickHandler, true);
       this.globalClickHandler = undefined;
+    }
+    if (this.globalBlurHandler) {
+      document.removeEventListener('focusout', this.globalBlurHandler, true);
+      this.globalBlurHandler = undefined;
     }
     if (this.activeEditorCleanup) {
       this.activeEditorCleanup();
@@ -670,28 +675,13 @@ export class ModusWcTable {
       }
 
       const cleanup = () => {
-        el.removeEventListener('focusout', handleBlur);
-
         // Only clear instance variables if this is the active editor being cleaned up
         if (this.activeEditorElement === el) {
           this.activeEditorElement = undefined;
           this.activeEditorCleanup = undefined;
         }
 
-        // Note: We keep the global click handler active at all times
-      };
-
-      const handleBlur = (event: FocusEvent) => {
-        const relatedTarget = event.relatedTarget as Node | null;
-
-        // If blur to null (dropdown interaction) or within cell, keep editor open
-        if (!relatedTarget || el.contains(relatedTarget)) {
-          return;
-        }
-
-        // Focus moved outside cell - close editor
-        this.activeEditor = null;
-        cleanup();
+        // Note: We keep the global handlers active at all times
       };
 
       // Store reference to active editor element
@@ -721,8 +711,34 @@ export class ModusWcTable {
         document.addEventListener('click', this.globalClickHandler, true);
       }
 
-      // Monitor blur events on the cell
-      el.addEventListener('focusout', handleBlur, { capture: true });
+      // Create and keep global blur handler active
+      if (!this.globalBlurHandler) {
+        this.globalBlurHandler = (event: FocusEvent) => {
+          // Only process blur events when we have an active editor
+          if (!this.activeEditor || !this.activeEditorElement) {
+            return;
+          }
+
+          const relatedTarget = event.relatedTarget as Node | null;
+
+          // If blur to null (dropdown interaction) or within cell, keep editor open
+          if (
+            !relatedTarget ||
+            this.activeEditorElement.contains(relatedTarget)
+          ) {
+            return;
+          }
+
+          // Focus moved outside cell - close editor
+          this.activeEditor = null;
+          if (this.activeEditorCleanup) {
+            this.activeEditorCleanup();
+          }
+        };
+
+        // Register once and keep it active
+        document.addEventListener('focusout', this.globalBlurHandler, true);
+      }
 
       // Store cleanup function for later use
       this.activeEditorCleanup = cleanup;
