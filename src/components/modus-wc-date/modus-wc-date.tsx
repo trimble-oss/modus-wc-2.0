@@ -383,6 +383,43 @@ export class ModusWcDate {
     }
   }
 
+  private navigateToAdjacentMonth(currentIndex: number, isUp: boolean): void {
+    const currentColumn = currentIndex % 7;
+
+    // Navigate to previous/next month
+    this.calendar.gotoDate(
+      this.calendar.selectedYear,
+      this.calendar.selectedMonth + (isUp ? -1 : 1)
+    );
+
+    // Find target date in same column
+    const weekRange = isUp ? [5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5];
+
+    for (const week of weekRange) {
+      const indexInWeek = week * 7 + currentColumn;
+      if (
+        indexInWeek < this.calendar.dates.length &&
+        this.calendar.dates[indexInWeek]?.getMonth() ===
+          this.calendar.selectedMonth
+      ) {
+        this.focusedDateIndex = indexInWeek;
+        return;
+      }
+    }
+
+    // Fallback to first/last current-month date
+    const currentMonthIndices = this.calendar.dates
+      .map((date, index) =>
+        date?.getMonth() === this.calendar.selectedMonth ? index : -1
+      )
+      .filter((index) => index !== -1);
+
+    this.focusedDateIndex = isUp
+      ? (currentMonthIndices[currentMonthIndices.length - 1] ??
+        this.calendar.dates.length - 1)
+      : (currentMonthIndices[0] ?? 0);
+  }
+
   @Listen('keydown')
   handleArrowKeys(event: KeyboardEvent) {
     if (!this.showCalendar) {
@@ -415,31 +452,113 @@ export class ModusWcDate {
       }
     }
 
+    // Calculate target position for each arrow key
+    let targetIndex = newIndex;
+    let shouldChangeMonth = false;
+    let targetDate: Date | null = null;
+
     // Navigate based on arrow key
     // istanbul ignore next (unreachable code)
     switch (key) {
       case 'ArrowLeft':
-        newIndex = newIndex > 0 ? newIndex - 1 : newIndex;
+        targetIndex = newIndex - 1;
         break;
       case 'ArrowRight':
-        newIndex = newIndex < totalDates - 1 ? newIndex + 1 : newIndex;
+        targetIndex = newIndex + 1;
         break;
       case 'ArrowUp':
-        newIndex = newIndex >= 7 ? newIndex - 7 : newIndex;
+        targetIndex = newIndex - 7;
         break;
       case 'ArrowDown':
-        newIndex = newIndex + 7 < totalDates ? newIndex + 7 : newIndex;
+        targetIndex = newIndex + 7;
         break;
     }
 
-    this.focusedDateIndex = newIndex;
+    // Check if target index is valid and get the target date
+    if (targetIndex >= 0 && targetIndex < totalDates) {
+      targetDate = this.calendar.dates[targetIndex];
+
+      if (targetDate) {
+        // If target date is from a different month, navigate to that month
+        if (targetDate.getMonth() !== this.calendar.selectedMonth) {
+          shouldChangeMonth = true;
+        }
+        this.focusedDateIndex = targetIndex;
+      }
+    } else {
+      // Target is outside current calendar, navigate to appropriate month
+      shouldChangeMonth = true;
+
+      if (key === 'ArrowUp') {
+        this.navigateToAdjacentMonth(newIndex, true);
+        shouldChangeMonth = false; // Already handled in helper
+      } else if (key === 'ArrowDown') {
+        this.navigateToAdjacentMonth(newIndex, false);
+        shouldChangeMonth = false; // Already handled in helper
+      } else if (key === 'ArrowLeft') {
+        // Go to previous month's last day
+        const prevMonthDate = new Date(
+          this.calendar.selectedYear,
+          this.calendar.selectedMonth - 1,
+          1
+        );
+        targetDate = new Date(
+          prevMonthDate.getFullYear(),
+          prevMonthDate.getMonth() + 1,
+          0
+        ); // Last day of previous month
+      } else {
+        // Go to next month's first day
+        targetDate = new Date(
+          this.calendar.selectedYear,
+          this.calendar.selectedMonth + 1,
+          1
+        ); // First day of next month
+      }
+    }
+
+    // Handle month change if needed
+    if (shouldChangeMonth && targetDate) {
+      this.calendar.gotoDate(targetDate.getFullYear(), targetDate.getMonth());
+
+      // Find the target date in the new calendar
+      const newTargetIndex = this.calendar.dates.findIndex(
+        (date) => date && this.compareDate(date, targetDate) === 0
+      );
+
+      if (newTargetIndex !== -1) {
+        this.focusedDateIndex = newTargetIndex;
+      } else {
+        // Fallback positioning
+        if (key === 'ArrowLeft' || key === 'ArrowUp') {
+          // Focus on last current-month date
+          const lastCurrentMonthIndex = this.calendar.dates
+            .map((date, index) =>
+              date && date.getMonth() === targetDate.getMonth() ? index : -1
+            )
+            .filter((index) => index !== -1)
+            .pop();
+          this.focusedDateIndex =
+            lastCurrentMonthIndex !== undefined
+              ? lastCurrentMonthIndex
+              : this.calendar.dates.length - 1;
+        } else {
+          // Focus on first current-month date
+          const firstCurrentMonthIndex = this.calendar.dates.findIndex(
+            (date) => date && date.getMonth() === targetDate.getMonth()
+          );
+          this.focusedDateIndex =
+            firstCurrentMonthIndex !== -1 ? firstCurrentMonthIndex : 0;
+        }
+      }
+    }
 
     // Focus the corresponding button
     // istanbul ignore next (unreachable code)
     const dateButtons = this.calendarRef?.querySelectorAll('.calendar-day');
-    if (dateButtons && dateButtons[newIndex]) {
+    if (dateButtons && dateButtons[this.focusedDateIndex]) {
       // istanbul ignore next (unreachable code)
-      (dateButtons[newIndex] as HTMLElement).focus();
+      (dateButtons[this.focusedDateIndex] as HTMLElement).focus();
     }
   }
 

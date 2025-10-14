@@ -136,8 +136,8 @@ modus-wc-date {
           }
 
           &:focus {
-            border: 2px solid var(--modus-wc-color-blue-light);
-            outline: none;
+            background-color: var(--modus-wc-color-blue-light);
+            color: var(--modus-wc-color-white);
           }
 
           &.current-day {
