@@ -96,9 +96,9 @@ modus-wc-date {
     }
 
     .calendar-body {
+      background-color: var(--modus-wc-color-base-page);
       font-size: var(--modus-wc-font-size-md);
       padding: var(--modus-wc-spacing-2xl);
-      background-color: var(--modus-wc-color-base-page);
 
       .calendar-days-week {
         display: grid;

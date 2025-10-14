@@ -1917,32 +1917,6 @@ describe('modus-wc-date', () => {
       expect(component['focusedDateIndex']).toBe(5); // 12 - 7
     });
 
-    it('should not navigate beyond boundaries', async () => {
-      const page = await newSpecPage({
-        components: [ModusWcDate],
-        html: '<modus-wc-date aria-label="Boundary test"></modus-wc-date>',
-      });
-      const component = page.rootInstance as ModusWcDate;
-
-      component['showCalendar'] = true;
-      await page.waitForChanges();
-
-      // Test left boundary
-      component['focusedDateIndex'] = 0;
-      const leftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
-      component['handleArrowKeys'](leftEvent);
-      await page.waitForChanges();
-      expect(component['focusedDateIndex']).toBe(0);
-
-      // Test right boundary
-      const totalDates = component['calendar'].dates.length;
-      component['focusedDateIndex'] = totalDates - 1;
-      const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
-      component['handleArrowKeys'](rightEvent);
-      await page.waitForChanges();
-      expect(component['focusedDateIndex']).toBe(totalDates - 1);
-    });
-
     it('should start on selected date when navigating', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
@@ -2049,23 +2023,165 @@ describe('modus-wc-date', () => {
       expect(component['focusedDateIndex']).toBe(5);
     });
 
-    it('should start at first date if no selected date', async () => {
+    it('should navigate to previous month when ArrowUp at top boundary', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
-        html: '<modus-wc-date aria-label="No selected date"></modus-wc-date>',
+        html: '<modus-wc-date aria-label="Arrow up boundary test"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
 
       component['showCalendar'] = true;
-      component['focusedDateIndex'] = -1;
+      component['calendar'].gotoDate(2025, 2); // March 2025
       await page.waitForChanges();
+
+      component['focusedDateIndex'] = 3; // First week, Thursday
+
+      const upEvent = new KeyboardEvent('keydown', { key: 'ArrowUp' });
+      component['handleArrowKeys'](upEvent);
+      await page.waitForChanges();
+
+      expect(component['calendar'].selectedMonth).toBe(1); // February
+    });
+
+    it('should navigate to next month when ArrowDown at bottom boundary', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Arrow down boundary test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['showCalendar'] = true;
+      component['calendar'].gotoDate(2025, 2); // March 2025
+      await page.waitForChanges();
+
+      component['focusedDateIndex'] = 38; // Last week
+
+      const downEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+      component['handleArrowKeys'](downEvent);
+      await page.waitForChanges();
+
+      expect(component['calendar'].selectedMonth).toBe(3); // April
+    });
+
+    it('should navigate to previous month when ArrowLeft at left boundary', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Arrow left boundary test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['showCalendar'] = true;
+      component['calendar'].gotoDate(2025, 2); // March 2025
+      await page.waitForChanges();
+
+      component['focusedDateIndex'] = 0; // First position
+
+      const leftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+      component['handleArrowKeys'](leftEvent);
+      await page.waitForChanges();
+
+      expect(component['calendar'].selectedMonth).toBe(1); // February
+    });
+
+    it('should navigate to next month when ArrowRight at right boundary', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Arrow right boundary test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['showCalendar'] = true;
+      component['calendar'].gotoDate(2025, 2); // March 2025
+      await page.waitForChanges();
+
+      component['focusedDateIndex'] = 41; // Last position
 
       const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
       component['handleArrowKeys'](rightEvent);
       await page.waitForChanges();
 
-      // Should have moved from 0 to 1
-      expect(component['focusedDateIndex']).toBe(1);
+      expect(component['calendar'].selectedMonth).toBe(3); // April
+    });
+
+    it('should use fallback positioning when target date not found in new month', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Fallback test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['showCalendar'] = true;
+      component['calendar'].gotoDate(2025, 2); // March 2025
+      await page.waitForChanges();
+
+      // Mock a scenario where target date is not found
+      const originalFindIndex = component['calendar'].dates.findIndex;
+      component['calendar'].dates.findIndex = jest.fn().mockReturnValue(-1);
+
+      component['focusedDateIndex'] = 0;
+
+      const leftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+      component['handleArrowKeys'](leftEvent);
+      await page.waitForChanges();
+
+      expect(component['focusedDateIndex']).toBeGreaterThanOrEqual(0);
+
+      // Restore original method
+      component['calendar'].dates.findIndex = originalFindIndex;
+    });
+
+    it('should handle month change fallback positioning for ArrowLeft', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Month change fallback left test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['showCalendar'] = true;
+      component['calendar'].gotoDate(2025, 2); // March 2025
+      await page.waitForChanges();
+
+      // Mock findIndex to return -1 to trigger fallback
+      const originalFindIndex = component['calendar'].dates.findIndex;
+      component['calendar'].dates.findIndex = jest.fn().mockReturnValue(-1);
+
+      component['focusedDateIndex'] = 0;
+
+      const leftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+      component['handleArrowKeys'](leftEvent);
+      await page.waitForChanges();
+
+      expect(component['focusedDateIndex']).toBeGreaterThanOrEqual(0);
+
+      // Restore
+      component['calendar'].dates.findIndex = originalFindIndex;
+    });
+
+    it('should handle month change fallback positioning for ArrowRight', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Month change fallback right test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['showCalendar'] = true;
+      component['calendar'].gotoDate(2025, 2); // March 2025
+      await page.waitForChanges();
+
+      // Mock findIndex to return -1 to trigger fallback
+      const originalFindIndex = component['calendar'].dates.findIndex;
+      component['calendar'].dates.findIndex = jest.fn().mockReturnValue(-1);
+
+      component['focusedDateIndex'] = 41;
+
+      const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      component['handleArrowKeys'](rightEvent);
+      await page.waitForChanges();
+
+      expect(component['focusedDateIndex']).toBeGreaterThanOrEqual(0);
+
+      // Restore
+      component['calendar'].dates.findIndex = originalFindIndex;
     });
   });
 });
