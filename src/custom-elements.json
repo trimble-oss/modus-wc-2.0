@@ -2141,29 +2141,11 @@
           "members": [
             {
               "kind": "field",
-              "name": "calendar",
-              "type": {
-                "text": "DatePickerCalendar"
-              },
-              "default": "new DatePickerCalendar()",
-              "description": "Calendar state object"
-            },
-            {
-              "kind": "field",
               "name": "el",
               "type": {
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
-            },
-            {
-              "kind": "field",
-              "name": "focusedDateIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "-1",
-              "description": "Currently focused date index in calendar"
             },
             {
               "kind": "method",
@@ -2243,15 +2225,6 @@
             {
               "kind": "method",
               "name": "render"
-            },
-            {
-              "kind": "field",
-              "name": "showCalendar",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Show the calendar dropdown"
             }
           ],
           "attributes": [

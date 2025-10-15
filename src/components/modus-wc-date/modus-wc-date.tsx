@@ -676,7 +676,7 @@ export class ModusWcDate {
               (e) => this.handleMonthChange(e)
             }
             bordered={false}
-            size="md"
+            size="sm"
           />
           <modus-wc-select
             key={`year-${currentYear}`}
@@ -688,7 +688,7 @@ export class ModusWcDate {
               (e) => this.handleYearChange(e)
             }
             bordered={false}
-            size="md"
+            size="sm"
           />
         </div>
 

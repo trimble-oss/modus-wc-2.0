@@ -50,7 +50,8 @@ modus-wc-date {
     border: 1px solid var(--modus-wc-color-gray-4);
     border-radius: var(--modus-wc-border-radius-md);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    min-width: 280px;
+    width: 272px;
+    height: 327px;
     overflow: hidden;
     position: fixed;
     z-index: 9999;
@@ -84,21 +85,14 @@ modus-wc-date {
           background-color: var(--modus-wc-color-white);
           color: var(--modus-wc-color-gray-9);
         }
-
-        .month-select {
-          min-width: 105px;
-        }
-
-        .year-select {
-          min-width: 110px;
-        }
       }
     }
 
     .calendar-body {
       background-color: var(--modus-wc-color-base-page);
       font-size: var(--modus-wc-font-size-md);
-      padding: var(--modus-wc-spacing-2xl);
+      padding: var(--modus-wc-spacing-xl);
+      height: 272px;
 
       .calendar-days-week {
         display: grid;
@@ -128,7 +122,6 @@ modus-wc-date {
           display: flex;
           height: 32px;
           justify-content: center;
-          margin: var(--modus-wc-spacing-xs);
           width: 32px;
 
           &:hover {
