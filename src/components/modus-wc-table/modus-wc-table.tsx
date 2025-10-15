@@ -85,8 +85,6 @@ export class ModusWcTable {
   private table: Table<Record<string, unknown>> | null = null;
   private tanStackColumns: ColumnDef<Record<string, unknown>, unknown>[] = [];
   private globalClickHandler?: (event: MouseEvent) => void;
-  private globalBlurHandler?: (event: FocusEvent) => void;
-  private activeEditorCleanup?: () => void;
   private activeEditorElement?: HTMLElement;
 
   /** Reference to the host element */
@@ -281,19 +279,13 @@ export class ModusWcTable {
   }
 
   disconnectedCallback() {
-    // Clean up global listeners on component disconnect
+    // Clean up global listener on component disconnect
     if (this.globalClickHandler) {
       document.removeEventListener('click', this.globalClickHandler, true);
       this.globalClickHandler = undefined;
     }
-    if (this.globalBlurHandler) {
-      document.removeEventListener('focusout', this.globalBlurHandler, true);
-      this.globalBlurHandler = undefined;
-    }
-    if (this.activeEditorCleanup) {
-      this.activeEditorCleanup();
-      this.activeEditorCleanup = undefined;
-    }
+    // Clear active editor reference
+    this.activeEditorElement = undefined;
   }
 
   // Handle sorting changes from TanStack
@@ -669,21 +661,6 @@ export class ModusWcTable {
         column.editorSetup(cellNode, row, handleCommit);
       }
 
-      // Clean up any previous editor listeners
-      if (this.activeEditorCleanup) {
-        this.activeEditorCleanup();
-      }
-
-      const cleanup = () => {
-        // Only clear instance variables if this is the active editor being cleaned up
-        if (this.activeEditorElement === el) {
-          this.activeEditorElement = undefined;
-          this.activeEditorCleanup = undefined;
-        }
-
-        // Note: We keep the global handlers active at all times
-      };
-
       // Store reference to active editor element
       this.activeEditorElement = el;
 
@@ -698,50 +675,16 @@ export class ModusWcTable {
           const target = event.target as Node;
           const outsideTable = !this.el.contains(target);
 
-          // Use a simple approach: if click is outside the table, close editor
+          // Check if click is outside table
           if (outsideTable) {
             this.activeEditor = null;
-            if (this.activeEditorCleanup) {
-              this.activeEditorCleanup();
-            }
+            this.activeEditorElement = undefined;
           }
         };
 
         // Register once and keep it active
         document.addEventListener('click', this.globalClickHandler, true);
       }
-
-      // Create and keep global blur handler active
-      if (!this.globalBlurHandler) {
-        this.globalBlurHandler = (event: FocusEvent) => {
-          // Only process blur events when we have an active editor
-          if (!this.activeEditor || !this.activeEditorElement) {
-            return;
-          }
-
-          const relatedTarget = event.relatedTarget as Node | null;
-
-          // If blur to null (dropdown interaction) or within cell, keep editor open
-          if (
-            !relatedTarget ||
-            this.activeEditorElement.contains(relatedTarget)
-          ) {
-            return;
-          }
-
-          // Focus moved outside cell - close editor
-          this.activeEditor = null;
-          if (this.activeEditorCleanup) {
-            this.activeEditorCleanup();
-          }
-        };
-
-        // Register once and keep it active
-        document.addEventListener('focusout', this.globalBlurHandler, true);
-      }
-
-      // Store cleanup function for later use
-      this.activeEditorCleanup = cleanup;
     } else {
       el.textContent = String(cellNode);
     }

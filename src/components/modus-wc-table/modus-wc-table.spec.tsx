@@ -2443,9 +2443,7 @@ describe('modus-wc-table', () => {
 
     // Mock the global handler and cleanup
     const mockGlobalHandler = jest.fn();
-    const mockActiveEditorCleanup = jest.fn();
     component['globalClickHandler'] = mockGlobalHandler;
-    component['activeEditorCleanup'] = mockActiveEditorCleanup;
 
     const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
 
@@ -2458,128 +2456,10 @@ describe('modus-wc-table', () => {
       mockGlobalHandler,
       true
     );
-    expect(mockActiveEditorCleanup).toHaveBeenCalled();
     expect(component['globalClickHandler']).toBeUndefined();
-    expect(component['activeEditorCleanup']).toBeUndefined();
+    expect(component['activeEditorElement']).toBeUndefined();
 
     removeEventListenerSpy.mockRestore();
-  });
-
-  it('should cleanup global blur handler on disconnectedCallback', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-    component.columns = [{ id: 'test', accessor: 'test', header: 'Test' }];
-    component.data = [{ id: '1', test: 'value' }];
-
-    // Mock the global blur handler
-    const mockGlobalBlurHandler = jest.fn();
-    component['globalBlurHandler'] = mockGlobalBlurHandler;
-
-    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
-
-    // Call disconnectedCallback
-    component.disconnectedCallback();
-
-    // Verify cleanup
-    expect(removeEventListenerSpy).toHaveBeenCalledWith(
-      'focusout',
-      mockGlobalBlurHandler,
-      true
-    );
-    expect(component['globalBlurHandler']).toBeUndefined();
-
-    removeEventListenerSpy.mockRestore();
-  });
-
-  it('should ignore global blur when no active editor', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-    component.columns = [{ id: 'test', accessor: 'test', header: 'Test' }];
-    component.data = [{ id: '1', test: 'value' }];
-
-    // Ensure globalBlurHandler exists by setting up an editor first
-    const td = document.createElement('td');
-    const input = document.createElement('input');
-    component['setupEditorCell'](
-      td,
-      input,
-      component.columns[0],
-      component.data[0],
-      jest.fn()
-    );
-
-    // Clear active editor
-    component['activeEditor'] = null;
-    component['activeEditorElement'] = undefined;
-
-    // Simulate blur with no active editor
-    const blurEvent = new FocusEvent('focusout', {
-      bubbles: true,
-    });
-
-    // This should return early without doing anything
-    component['globalBlurHandler']?.(blurEvent);
-
-    // Verify nothing changed
-    expect(component['activeEditor']).toBeNull();
-  });
-
-  it('should handle global blur when focus moves outside editor cell', async () => {
-    const mockCommit = jest.fn();
-    const column = {
-      id: 'text',
-      accessor: 'text',
-      header: 'Text',
-      editor: 'text' as const,
-    };
-
-    const row = { id: '1', text: 'Test' };
-    const page = await newSpecPage({
-      components: [ModusWcTable],
-      html: `<modus-wc-table></modus-wc-table>`,
-    });
-
-    const component = page.rootInstance as ModusWcTable;
-    component.columns = [column];
-    component.data = [row];
-
-    // Create editor cell
-    const td = document.createElement('td');
-    page.root?.appendChild(td);
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.value = row.text;
-
-    // Setup editor cell
-    component['setupEditorCell'](td, input, column, row, mockCommit);
-    component['activeEditor'] = { rowIndex: 0, colId: 'text' };
-
-    // Create element outside the cell
-    const outsideElement = document.createElement('div');
-    document.body.appendChild(outsideElement);
-
-    // Simulate blur to outside element
-    const blurEvent = new FocusEvent('focusout', {
-      relatedTarget: outsideElement,
-      bubbles: true,
-    });
-
-    // Trigger the global blur handler
-    component['globalBlurHandler']?.(blurEvent);
-
-    // Editor should be closed
-    expect(component['activeEditor']).toBeNull();
-
-    // Clean up
-    document.body.removeChild(outsideElement);
   });
 
   it('should call handlePageChange when pagination emits page change event', async () => {
