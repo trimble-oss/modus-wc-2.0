@@ -50,10 +50,10 @@ modus-wc-date {
     border: 1px solid var(--modus-wc-color-gray-4);
     border-radius: var(--modus-wc-border-radius-md);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    width: 272px;
     height: 327px;
     overflow: hidden;
     position: fixed;
+    width: 272px;
     z-index: 9999;
 
     .calendar-header {
@@ -91,8 +91,8 @@ modus-wc-date {
     .calendar-body {
       background-color: var(--modus-wc-color-base-page);
       font-size: var(--modus-wc-font-size-md);
-      padding: var(--modus-wc-spacing-xl);
       height: 272px;
+      padding: var(--modus-wc-spacing-xl);
 
       .calendar-days-week {
         display: grid;
