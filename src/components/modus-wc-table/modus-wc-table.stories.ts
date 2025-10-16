@@ -669,13 +669,6 @@ export const InlineEditing: Story = {
             }
           };
 
-          const handleBlur = () => {
-            const input = datePicker.querySelector('input');
-            if (input && input.value) {
-              onCommit(input.value);
-            }
-          };
-
           const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Enter') {
               const input = datePicker.querySelector('input');
@@ -687,7 +680,6 @@ export const InlineEditing: Story = {
           };
 
           datePicker.addEventListener('inputChange', handleChange);
-          datePicker.addEventListener('inputBlur', handleBlur as EventListener);
           container.addEventListener('keydown', handleKeyDown);
           container.appendChild(datePicker);
 
