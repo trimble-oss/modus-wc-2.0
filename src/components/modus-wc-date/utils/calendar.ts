@@ -2,16 +2,9 @@ export default class DatePickerCalendar {
   private currentDate: Date = new Date();
   private currentMonthDates: Array<Date> = [];
 
-  constructor(calendar?: DatePickerCalendar) {
-    if (calendar) {
-      this.gotoDate(
-        calendar.currentDate.getFullYear(),
-        calendar.currentDate.getMonth()
-      );
-    } else {
-      const today = new Date();
-      this.gotoDate(today.getFullYear(), today.getMonth());
-    }
+  constructor() {
+    const today = new Date();
+    this.gotoDate(today.getFullYear(), today.getMonth());
   }
 
   get selectedYear(): number {

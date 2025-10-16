@@ -122,8 +122,6 @@ export class ModusWcDate {
       this.maxDate = this.cloneDate(this.minDate);
     }
     this.ensureValueWithinBounds();
-
-    this.ensureCalendarWithinBounds();
   }
 
   @Watch('max')
@@ -133,7 +131,6 @@ export class ModusWcDate {
       this.minDate = this.cloneDate(this.maxDate);
     }
     this.ensureValueWithinBounds();
-    this.ensureCalendarWithinBounds();
   }
 
   @Watch('value')
@@ -181,7 +178,6 @@ export class ModusWcDate {
     this.handleMinChange(this.min);
     this.handleMaxChange(this.max);
     this.handleValueChange(this.value);
-    this.ensureCalendarWithinBounds();
   }
 
   componentDidUpdate() {
@@ -313,13 +309,7 @@ export class ModusWcDate {
     const monthValue = selectTarget?.value;
     const newMonth = parseInt(monthValue || '0', 10);
 
-    // Get the current year from the year select element, not from calendar state
-    const yearSelect = this.calendarRef?.querySelector(
-      '.year-select'
-    ) as HTMLSelectElement;
-    const currentYear = yearSelect
-      ? parseInt(yearSelect.value || '0', 10)
-      : this.calendar.selectedYear;
+    const currentYear = this.calendar.selectedYear;
 
     if (Number.isNaN(newMonth)) {
       return;
@@ -335,13 +325,7 @@ export class ModusWcDate {
     const yearValue = selectTarget?.value;
     const newYear = parseInt(yearValue || '0', 10);
 
-    // Get the current month from the month select element, not from calendar state
-    const monthSelect = this.calendarRef?.querySelector(
-      '.month-select'
-    ) as HTMLSelectElement;
-    const currentMonth = monthSelect
-      ? parseInt(monthSelect.value || '0', 10)
-      : this.calendar.selectedMonth;
+    const currentMonth = this.calendar.selectedMonth;
 
     if (Number.isNaN(newYear)) {
       return;
@@ -798,7 +782,10 @@ export class ModusWcDate {
         return undefined;
       }
       const [, monthName, day, year] = match;
-      monthStr = MONTH_SHORT_NAMES.indexOf(monthName);
+      // Case-insensitive month name lookup
+      monthStr = MONTH_SHORT_NAMES.findIndex(
+        (m) => m.toLowerCase() === monthName.toLowerCase()
+      );
       if (monthStr === -1) {
         return undefined;
       }
@@ -818,7 +805,8 @@ export class ModusWcDate {
       }
     }
 
-    if (!yearStr || !monthStr || !dayStr) {
+    // istanbul ignore next (unreachable code)
+    if (yearStr == null || monthStr == null || dayStr == null) {
       return undefined;
     }
 
