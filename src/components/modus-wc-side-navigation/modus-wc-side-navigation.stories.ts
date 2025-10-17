@@ -327,6 +327,22 @@ export const collapsibleMenu: Story = {
           position: relative;
         }
 
+        .flex-right {
+          float: right;
+          display: flex;
+          justify-content: end;
+          margin-left: 50px;
+        }
+
+        .menu-icon {
+          margin-left: 0.5rem;
+          width: 2rem;
+          height: 2rem !important;
+          background-color: #f1f1f6;
+          margin: unset;
+          min-height: unset !important;
+        }
+
         ul {
           list-style: none;
           margin: 0;
@@ -456,6 +472,34 @@ export const collapsibleMenu: Story = {
             @expandedChange=${handleExpandChange}
           >
             <modus-wc-menu aria-label="Custom menu" custom-class="menu-width">
+              <li>
+                <div class="flex-right">
+                  <modus-wc-button custom-class="menu-icon" color="neutral">
+                    <modus-wc-icon
+                      decorative=""
+                      name="filter"
+                      size="sm"
+                      variant="solid"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
+                  <modus-wc-button custom-class="menu-icon" color="neutral">
+                    <modus-wc-icon
+                      decorative=""
+                      name="settings"
+                      size="sm"
+                      variant="solid"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
+                  <modus-wc-button custom-class="menu-icon" color="neutral">
+                    <modus-wc-icon
+                      decorative=""
+                      name="more_vertical"
+                      size="sm"
+                      variant="solid"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
+                </div>
+              </li>
               <li>
                 <div class="flex-row" onClick="handleCollapseToggle(event)">
                   <modus-wc-icon
