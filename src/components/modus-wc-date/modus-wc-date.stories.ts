@@ -85,6 +85,11 @@ type Story = StoryObj<DateArgs>;
 export const Default: Story = {
   render: (args) => {
     return html`
+      <style>
+        div[id^='story--components-forms-date--default--primary'] {
+          min-height: 400px;
+        }
+      </style>
       <modus-wc-date
         aria-label="Date input"
         ?bordered=${args.bordered}
