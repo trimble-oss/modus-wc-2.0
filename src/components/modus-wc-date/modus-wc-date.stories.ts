@@ -9,7 +9,12 @@ interface DateArgs {
   'custom-class'?: string;
   disabled?: boolean;
   feedback?: IInputFeedbackProp;
-  format?: 'yyyy-mm-dd' | 'dd-mm-yyyy' | 'MMM DD, YYYY';
+  format?:
+    | 'yyyy-mm-dd'
+    | 'dd-mm-yyyy'
+    | 'MMM DD, YYYY'
+    | 'yyyy/mm/dd'
+    | 'dd/mm/yyyy';
   'input-id'?: string;
   'input-tab-index'?: number;
   label?: string;
@@ -56,7 +61,13 @@ const meta: Meta<DateArgs> = {
     },
     format: {
       control: { type: 'select' },
-      options: ['yyyy-mm-dd', 'dd-mm-yyyy', 'MMM DD, YYYY'],
+      options: [
+        'yyyy-mm-dd',
+        'dd-mm-yyyy',
+        'MMM DD, YYYY',
+        'yyyy/mm/dd',
+        'dd/mm/yyyy',
+      ],
     },
   },
   decorators: [withActions],
@@ -124,7 +135,7 @@ export const Migration: Story = {
   - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
   input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
   additional info and examples.
-  - Format handling is no longer supported. The component now uses the standard HTML date input format (ISO 8601 \`yyyy-mm-dd\`).
+  - Format handling is no longer supported. The component now uses the standard HTML date input format (ISO 8601 \`yyyy-mm-dd\`, \`dd-mm-yyyy\`, \`MMM DD, YYYY\`, \`yyyy/mm/dd\`, \`dd/mm/yyyy\`).
   - Size values have changed from verbose names (\`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
 
 #### Prop Mapping
