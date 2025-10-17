@@ -116,6 +116,16 @@ export class ModusWcFileDropzone {
     return totalSize <= this.maxTotalFileSizeBytes;
   }
 
+  private setInputValue(
+    val: 'none' | 'type' | 'name' | 'count' | 'size',
+    inputElement?: HTMLInputElement
+  ): boolean {
+    this.invalidFile = val;
+    const input = inputElement || this.inputRef;
+    if (input) input.value = '';
+    return false;
+  }
+
   handleFileChange(event: Event) {
     const files = (event.target as HTMLInputElement).files;
 
@@ -130,32 +140,24 @@ export class ModusWcFileDropzone {
 
     // Check file count
     if (!this.isValidFileCount(files.length)) {
-      this.invalidFile = 'count';
-      (event.target as HTMLInputElement).value = '';
-      return;
+      return this.setInputValue('count', event.target as HTMLInputElement);
     }
 
     // Check total file size
     if (!this.isValidFileSize(files)) {
-      this.invalidFile = 'size';
-      (event.target as HTMLInputElement).value = '';
-      return;
+      return this.setInputValue('size', event.target as HTMLInputElement);
     }
 
     // Check each file
     for (let i = 0; i < files.length; i++) {
       // Check file type
       if (!this.isValidFileType(files[i])) {
-        this.invalidFile = 'type';
-        (event.target as HTMLInputElement).value = '';
-        return;
+        return this.setInputValue('type', event.target as HTMLInputElement);
       }
 
       // Check file name length
       if (!this.isValidFileName(files[i])) {
-        this.invalidFile = 'name';
-        (event.target as HTMLInputElement).value = '';
-        return;
+        return this.setInputValue('name', event.target as HTMLInputElement);
       }
     }
 
@@ -193,13 +195,13 @@ export class ModusWcFileDropzone {
 
       // Check file count
       if (!this.isValidFileCount(files.length)) {
-        this.invalidFile = 'count';
+        this.setInputValue('count');
         return;
       }
 
       // Check total file size
       if (!this.isValidFileSize(files)) {
-        this.invalidFile = 'size';
+        this.setInputValue('size');
         return;
       }
 
@@ -207,13 +209,13 @@ export class ModusWcFileDropzone {
       for (let i = 0; i < files.length; i++) {
         // Check file type
         if (!this.isValidFileType(files[i])) {
-          this.invalidFile = 'type';
+          this.setInputValue('type');
           return;
         }
 
         // Check file name length
         if (!this.isValidFileName(files[i])) {
-          this.invalidFile = 'name';
+          this.setInputValue('name');
           return;
         }
       }

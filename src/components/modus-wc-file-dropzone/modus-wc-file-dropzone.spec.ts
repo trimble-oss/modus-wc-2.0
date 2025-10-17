@@ -76,6 +76,48 @@ describe('modus-wc-file-dropzone', () => {
     expect(component.uploadSuccess).toBe(true);
   });
 
+  it('should handle early return when no files are present', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+    });
+
+    const component = page.rootInstance;
+    const fileSelectSpy = jest.spyOn(component.fileSelect, 'emit');
+
+    // Initialize component state
+    component.uploadSuccess = true;
+    component.invalidFile = 'none';
+
+    // Case 1: files is null
+    const nullFilesEvent = {
+      target: {
+        files: null,
+      },
+    } as unknown as Event;
+
+    component.handleFileChange(nullFilesEvent);
+
+    // Verify state wasn't changed and event wasn't emitted
+    expect(fileSelectSpy).not.toHaveBeenCalled();
+    expect(component.uploadSuccess).toBe(true); // Should remain unchanged
+
+    // Case 2: files is empty
+    const emptyFilesEvent = {
+      target: {
+        files: {
+          length: 0,
+        } as unknown as FileList,
+      },
+    } as unknown as Event;
+
+    component.handleFileChange(emptyFilesEvent);
+
+    // Verify state wasn't changed and event wasn't emitted
+    expect(fileSelectSpy).not.toHaveBeenCalled();
+    expect(component.uploadSuccess).toBe(true); // Should remain unchanged
+  });
+
   it('should validate file types based on file extension in accept-file-types', async () => {
     const page = await newSpecPage({
       components: [ModusWcFileDropzone],
