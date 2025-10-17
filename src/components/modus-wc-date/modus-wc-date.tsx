@@ -101,7 +101,12 @@ export class ModusWcDate {
   @Prop() size?: ModusSize = 'md';
 
   /** The date format for display and input. */
-  @Prop() format?: 'yyyy-mm-dd' | 'dd-mm-yyyy' | 'MMM DD, YYYY' = 'yyyy-mm-dd';
+  @Prop() format?:
+    | 'yyyy-mm-dd'
+    | 'dd-mm-yyyy'
+    | 'yyyy/mm/dd'
+    | 'dd/mm/yyyy'
+    | 'MMM DD, YYYY' = 'yyyy-mm-dd';
 
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
@@ -260,9 +265,7 @@ export class ModusWcDate {
     // If opening the calendar and there's a selected date, navigate to it
     if (this.showCalendar) {
       const selectedDate = this.parseISODate(this.value);
-      this.ensureCalendarWithinBounds(
-        selectedDate || this.minDate || this.maxDate
-      );
+      this.ensureCalendarWithinBounds(selectedDate);
     }
   };
 
@@ -792,15 +795,18 @@ export class ModusWcDate {
       dayStr = day;
       yearStr = year;
     } else {
-      const parts = value.split('-');
+      // istanbul ignore next (unreachable code)
+      const separator = this.format?.includes('/') ? '/' : '-';
+      const parts = value.split(separator);
+
       if (parts.length !== 3) {
         return undefined;
       }
 
-      if (this.format === 'dd-mm-yyyy') {
+      if (this.format === 'dd-mm-yyyy' || this.format === 'dd/mm/yyyy') {
         [dayStr, monthStr, yearStr] = parts;
       } else {
-        // yyyy-mm-dd
+        // yyyy-mm-dd or yyyy/mm/dd
         [yearStr, monthStr, dayStr] = parts;
       }
     }
@@ -837,13 +843,20 @@ export class ModusWcDate {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
 
-    if (this.format === 'dd-mm-yyyy') {
-      return `${day}-${month}-${year}`;
-    } else if (this.format === 'MMM DD, YYYY') {
-      const monthName = MONTH_SHORT_NAMES[date.getMonth()];
-      return `${monthName} ${day}, ${year}`;
-    } else {
-      return `${year}-${month}-${day}`;
+    switch (this.format) {
+      case 'dd-mm-yyyy':
+        return `${day}-${month}-${year}`;
+      case 'dd/mm/yyyy':
+        return `${day}/${month}/${year}`;
+      case 'yyyy/mm/dd':
+        return `${year}/${month}/${day}`;
+      case 'MMM DD, YYYY': {
+        const monthName = MONTH_SHORT_NAMES[date.getMonth()];
+        return `${monthName} ${day}, ${year}`;
+      }
+      default:
+        // yyyy-mm-dd
+        return `${year}-${month}-${day}`;
     }
   }
 

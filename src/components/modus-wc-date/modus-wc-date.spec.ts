@@ -689,10 +689,10 @@ describe('modus-wc-date', () => {
     expect(component.value).toBe('');
   });
 
-  it('should navigate to min/max date when opening calendar without value', async () => {
+  it('should navigate to selected date when opening calendar with value', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Navigate to min test" min="2023-05-15"></modus-wc-date>',
+      html: '<modus-wc-date aria-label="Navigate to value test" value="2023-05-15"></modus-wc-date>',
     });
     const component = page.rootInstance as ModusWcDate;
 
@@ -702,6 +702,24 @@ describe('modus-wc-date', () => {
     expect(component['showCalendar']).toBe(true);
     expect(component['calendar'].selectedYear).toBe(2023);
     expect(component['calendar'].selectedMonth).toBe(4);
+  });
+
+  it('should stay at current month when opening calendar without value', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Navigate without value test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    const today = new Date();
+
+    component['toggleCalendar']();
+    await page.waitForChanges();
+
+    expect(component['showCalendar']).toBe(true);
+    // When no value, calendar stays at today's month/year
+    expect(component['calendar'].selectedYear).toBe(today.getFullYear());
+    expect(component['calendar'].selectedMonth).toBe(today.getMonth());
   });
 
   it('should navigate calendar when ensuring bounds with reference date', async () => {
@@ -2298,4 +2316,79 @@ describe('modus-wc-date', () => {
       expect(component['calendar'].selectedMonth).toBe(initialMonth);
     });
   });
+
+  it('should format date to ISO string in all format variants', async () => {
+    const date = new Date(2025, 9, 15);
+
+    // Test yyyy-mm-dd (default)
+    const page1 = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Format yyyy-mm-dd"></modus-wc-date>',
+    });
+    const component1 = page1.rootInstance as ModusWcDate;
+    expect(component1['formatISODate'](date)).toBe('2025-10-15');
+
+    // Test dd-mm-yyyy
+    const page2 = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Format dd-mm-yyyy" format="dd-mm-yyyy"></modus-wc-date>',
+    });
+    const component2 = page2.rootInstance as ModusWcDate;
+    expect(component2['formatISODate'](date)).toBe('15-10-2025');
+
+    // Test yyyy/mm/dd
+    const page3 = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Format yyyy/mm/dd" format="yyyy/mm/dd"></modus-wc-date>',
+    });
+    const component3 = page3.rootInstance as ModusWcDate;
+    expect(component3['formatISODate'](date)).toBe('2025/10/15');
+
+    // Test dd/mm/yyyy
+    const page4 = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Format dd/mm/yyyy" format="dd/mm/yyyy"></modus-wc-date>',
+    });
+    const component4 = page4.rootInstance as ModusWcDate;
+    expect(component4['formatISODate'](date)).toBe('15/10/2025');
+
+    // Test MMM DD, YYYY
+    const page5 = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Format MMM DD, YYYY" format="MMM DD, YYYY"></modus-wc-date>',
+    });
+    const component5 = page5.rootInstance as ModusWcDate;
+    expect(component5['formatISODate'](date)).toBe('Oct 15, 2025');
+  });
+
+  it('should parse date with hyphen separator when format is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Parse with undefined format"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    // When format is undefined, should default to hyphen separator
+    const parsed = component['parseISODate']('2025-10-15');
+    expect(parsed).toBeDefined();
+    expect(parsed?.getFullYear()).toBe(2025);
+    expect(parsed?.getMonth()).toBe(9); // October (0-indexed)
+    expect(parsed?.getDate()).toBe(15);
+  });
+
+  it('should parse date with slash separator when format includes slash', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Parse with slash format" format="yyyy/mm/dd"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    // When format includes '/', should use slash separator
+    const parsed = component['parseISODate']('2025/10/15');
+    expect(parsed).toBeDefined();
+    expect(parsed?.getFullYear()).toBe(2025);
+    expect(parsed?.getMonth()).toBe(9); // October (0-indexed)
+    expect(parsed?.getDate()).toBe(15);
+  });
+
 });
