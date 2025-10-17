@@ -154,7 +154,7 @@ export const Migration: Story = {
 | disable-validation |                  | Not carried over                        |
 | error-text         | feedback.message | Use \`feedback\` level                  |
 | filler-date        |                  | Not carried over                        |
-| format             |                  | Not carried over                        |
+| format             | format           |                                         |
 | helper-text        |                  | Not carried over                        |
 | label              | label            |                                         |
 | max                | max              |                                         |
