@@ -746,6 +746,10 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * Indicates that this menu is a submenu (dropdown).
+         */
+        "isSubMenu"?: boolean;
+        /**
           * The orientation of the menu.
          */
         "orientation"?: Orientation;
@@ -775,6 +779,10 @@ export namespace Components {
           * The focused state of the menu item.
          */
         "focused"?: boolean;
+        /**
+          * Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.
+         */
+        "hasSubmenu"?: boolean;
         /**
           * The text rendered in the menu item.
          */
@@ -3548,6 +3556,10 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
+          * Indicates that this menu is a submenu (dropdown).
+         */
+        "isSubMenu"?: boolean;
+        /**
           * Event emitted when the menu loses focus.
          */
         "onMenuFocusout"?: (event: ModusWcMenuCustomEvent<FocusEvent>) => void;
@@ -3581,6 +3593,10 @@ declare namespace LocalJSX {
           * The focused state of the menu item.
          */
         "focused"?: boolean;
+        /**
+          * Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.
+         */
+        "hasSubmenu"?: boolean;
         /**
           * The text rendered in the menu item.
          */

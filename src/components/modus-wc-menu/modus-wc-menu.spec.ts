@@ -53,4 +53,23 @@ describe('modus-wc-menu', () => {
 
     expect(emitSpy).toHaveBeenCalledWith(focusoutEvent);
   });
+
+  it('should add customClass to classList in submenu mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu],
+      html: `<modus-wc-menu
+        is-sub-menu="true"
+        custom-class="test-submenu-class"
+        aria-label="Submenu test"
+      ></modus-wc-menu>`,
+    });
+
+    await page.waitForChanges();
+
+    const menu = page.root!.querySelector('ul');
+    expect(menu).not.toBeNull();
+    expect(menu!.className).toContain('modus-wc-menu-dropdown');
+    expect(menu!.className).toContain('test-submenu-class');
+    expect(page.root).toMatchSnapshot();
+  });
 });

@@ -201,4 +201,59 @@ describe('modus-wc-menu-item', () => {
     ).toBeFalsy();
     expect(checkbox.getAttribute('value')).toBe('false');
   });
+
+  it('should toggle submenu visibility when a menu item with submenu is clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: `
+        <modus-wc-menu-item label="Parent Menu" value="parent" has-submenu="true">
+          <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown">
+            <modus-wc-menu-item label="Submenu Item" value="child"></modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+      `,
+    });
+
+    // Get elements
+    const menuItem = page.root as HTMLElement;
+    const button = menuItem.querySelector('button') as HTMLButtonElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+    const submenu = menuItem.querySelector(
+      '.modus-wc-menu-dropdown'
+    ) as HTMLElement;
+
+    // Initial state - submenu should be hidden
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeFalsy();
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-expanded')
+    ).toBeFalsy();
+
+    // Click to expand
+    button.click();
+    await page.waitForChanges();
+
+    // After click, submenu should be visible and li should have expanded class
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeTruthy();
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-expanded')
+    ).toBeTruthy();
+    expect(page.rootInstance.isExpanded).toBeTruthy();
+
+    // Click again to collapse
+    button.click();
+    await page.waitForChanges();
+
+    // After second click, submenu should be hidden again
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeFalsy();
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-expanded')
+    ).toBeFalsy();
+    expect(page.rootInstance.isExpanded).toBeFalsy();
+  });
 });

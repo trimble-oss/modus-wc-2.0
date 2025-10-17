@@ -13,12 +13,13 @@ The component supports a `<slot>` for injecting custom li elements inside the ul
 
 ## Properties
 
-| Property      | Attribute      | Description                                   | Type                                      | Default      |
-| ------------- | -------------- | --------------------------------------------- | ----------------------------------------- | ------------ |
-| `bordered`    | `bordered`     | Indicates that the menu should have a border. | `boolean \| undefined`                    | `undefined`  |
-| `customClass` | `custom-class` | Custom CSS class to apply to the ul element.  | `string \| undefined`                     | `''`         |
-| `orientation` | `orientation`  | The orientation of the menu.                  | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
-| `size`        | `size`         | The size of the menu.                         | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
+| Property      | Attribute      | Description                                       | Type                                      | Default      |
+| ------------- | -------------- | ------------------------------------------------- | ----------------------------------------- | ------------ |
+| `bordered`    | `bordered`     | Indicates that the menu should have a border.     | `boolean \| undefined`                    | `undefined`  |
+| `customClass` | `custom-class` | Custom CSS class to apply to the ul element.      | `string \| undefined`                     | `''`         |
+| `isSubMenu`   | `is-sub-menu`  | Indicates that this menu is a submenu (dropdown). | `boolean \| undefined`                    | `undefined`  |
+| `orientation` | `orientation`  | The orientation of the menu.                      | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
+| `size`        | `size`         | The size of the menu.                             | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
 
 
 ## Events
