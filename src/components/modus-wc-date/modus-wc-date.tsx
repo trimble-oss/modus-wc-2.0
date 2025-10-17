@@ -699,7 +699,7 @@ export class ModusWcDate {
 
   private renderCalendarBody() {
     const today = new Date();
-    const selectedDate = this.value ? new Date(this.value) : null;
+    const selectedDate = this.parseISODate(this.value);
     const currentMonth = this.calendar.selectedMonth;
 
     return (
