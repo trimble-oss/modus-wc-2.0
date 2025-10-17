@@ -9,6 +9,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-file-dropzone.tailwind';
+import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * File dropzone component that allows users to drag and drop files for upload.
@@ -20,6 +21,8 @@ import { convertPropsToClasses } from './modus-wc-file-dropzone.tailwind';
   shadow: false,
 })
 export class ModusWcFileDropzone {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -69,6 +72,10 @@ export class ModusWcFileDropzone {
   /** Event emitted when files are selected */
   @StencilEvent() fileSelect!: EventEmitter<FileList>;
 
+  componentWillLoad() {
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
   private isValidFileType(file: File): boolean {
     if (!this.acceptFileTypes) return true;
 
@@ -111,45 +118,49 @@ export class ModusWcFileDropzone {
 
   handleFileChange(event: Event) {
     const files = (event.target as HTMLInputElement).files;
+
+    // Early return if no files
+    if (!files || files.length === 0) {
+      return;
+    }
+
     // Reset validation state
     this.invalidFile = 'none';
     this.uploadSuccess = false;
 
-    if (files && files.length > 0) {
-      // Check file count
-      if (!this.isValidFileCount(files.length)) {
-        this.invalidFile = 'count';
-        (event.target as HTMLInputElement).value = '';
-        return;
-      }
-
-      // Check total file size
-      if (!this.isValidFileSize(files)) {
-        this.invalidFile = 'size';
-        (event.target as HTMLInputElement).value = '';
-        return;
-      }
-
-      // Check each file
-      for (let i = 0; i < files.length; i++) {
-        // Check file type
-        if (!this.isValidFileType(files[i])) {
-          this.invalidFile = 'type';
-          (event.target as HTMLInputElement).value = '';
-          return;
-        }
-
-        // Check file name length
-        if (!this.isValidFileName(files[i])) {
-          this.invalidFile = 'name';
-          (event.target as HTMLInputElement).value = '';
-          return;
-        }
-      }
-
-      this.fileSelect.emit(files);
-      this.uploadSuccess = true;
+    // Check file count
+    if (!this.isValidFileCount(files.length)) {
+      this.invalidFile = 'count';
+      (event.target as HTMLInputElement).value = '';
+      return;
     }
+
+    // Check total file size
+    if (!this.isValidFileSize(files)) {
+      this.invalidFile = 'size';
+      (event.target as HTMLInputElement).value = '';
+      return;
+    }
+
+    // Check each file
+    for (let i = 0; i < files.length; i++) {
+      // Check file type
+      if (!this.isValidFileType(files[i])) {
+        this.invalidFile = 'type';
+        (event.target as HTMLInputElement).value = '';
+        return;
+      }
+
+      // Check file name length
+      if (!this.isValidFileName(files[i])) {
+        this.invalidFile = 'name';
+        (event.target as HTMLInputElement).value = '';
+        return;
+      }
+    }
+
+    this.fileSelect.emit(files);
+    this.uploadSuccess = true;
   }
 
   private getClasses(): string {
@@ -305,35 +316,35 @@ export class ModusWcFileDropzone {
       <Host>
         <div class="modus-wc-file-dropzone">
           <input
-            ref={(el) => (this.inputRef = el as HTMLInputElement)}
-            type="file"
+            accept={this.acceptFileTypes}
             class={this.getClasses()}
             disabled={this.disabled}
-            accept={this.acceptFileTypes}
             multiple={this.multiple}
             onChange={(event) => this.handleFileChange(event)}
+            ref={(el) => (this.inputRef = el as HTMLInputElement)}
+            type="file"
           />
           <div
+            aria-disabled={this.disabled ? 'true' : 'false'}
             class={`dropzone-content 
               ${this.isDraggingOver ? 'dragging-over' : ''} 
               ${!this.isDraggingOver && this.invalidFile !== 'none' ? 'invalid-file-type' : ''} 
               ${!this.isDraggingOver && this.uploadSuccess ? 'upload-success' : ''}`}
+            onClick={this.handleDropzoneClick}
+            onDragLeave={this.handleDropzoneDragLeave}
+            onDragOver={this.handleDropzoneDragOver}
+            onDrop={this.handleDropzoneDrop}
+            onKeyDown={this.handleDropzoneKeyDown}
             role="button"
             tabindex={this.disabled ? -1 : 0}
-            aria-label="Upload files"
-            aria-disabled={this.disabled ? 'true' : 'false'}
-            onClick={this.handleDropzoneClick}
-            onKeyDown={this.handleDropzoneKeyDown}
-            onDrop={this.handleDropzoneDrop}
-            onDragOver={this.handleDropzoneDragOver}
-            onDragLeave={this.handleDropzoneDragLeave}
+            {...this.inheritedAttributes}
           >
             <div class="default-content">
               {showIcon && (
                 <modus-wc-icon
+                  class={iconClass}
                   name={iconState}
                   size="lg"
-                  class={iconClass}
                   variant="solid"
                 ></modus-wc-icon>
               )}

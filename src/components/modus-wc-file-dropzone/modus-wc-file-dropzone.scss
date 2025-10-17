@@ -5,7 +5,7 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
 
   .dropzone-content {
     align-items: center;
-    background-color: #f1f1f6;
+    background-color: var(--modus-wc-color-gray-light);
     border: 0.125rem dashed var(--modus-wc-color-gray-6);
     border-radius: 0.25rem;
     color: var(--modus-wc-color-gray-6);

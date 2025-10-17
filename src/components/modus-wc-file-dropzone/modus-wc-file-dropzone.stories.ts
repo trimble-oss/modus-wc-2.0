@@ -101,12 +101,6 @@ export const Default: Story = {
   `,
 };
 
-// export const Disabled: Story = {
-//   args: {
-//     disabled: true,
-//   },
-// };
-
 export const customContent: Story = {
   render: () => html`
     <modus-wc-file-dropzone
