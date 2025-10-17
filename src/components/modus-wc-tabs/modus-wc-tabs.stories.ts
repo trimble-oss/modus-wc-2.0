@@ -65,14 +65,20 @@ export default meta;
 type Story = StoryObj<TabsArgs>;
 
 const Template: Story = {
+  // Normalize tabs to ensure disabled is strictly boolean (true/false only)
   render: (args) => {
+    const normalizedTabs = args.tabs.map((tab) => ({
+      ...tab,
+      disabled: tab.disabled === true,
+    }));
+
     // prettier-ignore
     return html`
 <modus-wc-tabs
   active-tab-index="${ifDefined(args.activeTabIndex)}"
   aria-label="Tab group"
   tab-style="${ifDefined(args['tab-style'])}"
-  .tabs="${args.tabs}"
+  .tabs="${normalizedTabs}"
   size="${ifDefined(args.size)}"
 >
 </modus-wc-tabs>
