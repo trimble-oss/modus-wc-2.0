@@ -2390,5 +2390,4 @@ describe('modus-wc-date', () => {
     expect(parsed?.getMonth()).toBe(9); // October (0-indexed)
     expect(parsed?.getDate()).toBe(15);
   });
-
 });
