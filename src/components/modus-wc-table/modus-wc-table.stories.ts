@@ -690,9 +690,30 @@ export const InlineEditing: Story = {
 
           return container;
         },
-        cellRenderer: (value) => {
+        cellRenderer: (value): string => {
           if (!value) return '-';
-          const date = new Date(value as string);
+
+          // Parse dd-mm-yyyy format from date picker
+          const dateString = value as string;
+          const parts = dateString.split(/[-/]/);
+
+          let date: Date;
+          if (parts.length === 3 && parts[0].length <= 2) {
+            // Assume dd-mm-yyyy or dd/mm/yyyy format
+            const day = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+            const year = parseInt(parts[2], 10);
+            date = new Date(year, month, day);
+          } else {
+            // Fallback to default parsing
+            date = new Date(dateString);
+          }
+
+          // Check if date is valid
+          if (isNaN(date.getTime())) {
+            return dateString; // Return original value if parsing fails
+          }
+
           return date.toLocaleDateString();
         },
       },
@@ -703,19 +724,19 @@ export const InlineEditing: Story = {
         id: '1',
         name: 'John Doe',
         status: 'Active',
-        dueDate: '2025-10-15',
+        dueDate: '15-10-2025',
       },
       {
         id: '2',
         name: 'Jane Smith',
         status: 'Inactive',
-        dueDate: '2025-11-20',
+        dueDate: '20-11-2025',
       },
       {
         id: '3',
         name: 'Bob Johnson',
         status: 'Pending',
-        dueDate: '2025-12-05',
+        dueDate: '05-12-2025',
       },
     ];
 
@@ -894,19 +915,19 @@ export const InlineEditing: Story = {
             id: '1',
             name: 'John Doe',
             status: 'Active',
-            dueDate: '2025-10-15',
+            dueDate: '15-10-2025',
           },
           {
             id: '2',
             name: 'Jane Smith',
             status: 'Inactive',
-            dueDate: '2025-11-20',
+            dueDate: '20-11-2025',
           },
           {
             id: '3',
             name: 'Bob Johnson',
             status: 'Pending',
-            dueDate: '2025-12-05',
+            dueDate: '05-12-2025',
           },
         ];
       </script>
