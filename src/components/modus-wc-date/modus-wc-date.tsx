@@ -425,6 +425,7 @@ export class ModusWcDate {
       // istanbul ignore next (unreachable code)
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
+        this.inputBlur.emit(new FocusEvent('blur'));
       }
     }
   }
