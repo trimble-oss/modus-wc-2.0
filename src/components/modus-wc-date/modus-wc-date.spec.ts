@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcDate } from './modus-wc-date';
 import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
-import { IInputFeedbackProp } from '../types';
+import { IInputFeedbackProp, WeekStartDay } from '../types';
 
 describe('modus-wc-date', () => {
   it('renders with default props', async () => {
@@ -2389,5 +2389,109 @@ describe('modus-wc-date', () => {
     expect(parsed?.getFullYear()).toBe(2025);
     expect(parsed?.getMonth()).toBe(9); // October (0-indexed)
     expect(parsed?.getDate()).toBe(15);
+  });
+
+  it('should reinitialize calendar when weekStartDay changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Week start day test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    // Spy on calendar creation
+    const originalCalendar = component['calendar'];
+
+    // Change weekStartDay from default (sunday) to monday
+    component.weekStartDay = 'monday';
+    await page.waitForChanges();
+
+    // Calendar should be recreated
+    expect(component['calendar']).not.toBe(originalCalendar);
+  });
+
+  it('should create calendar with correct firstDayOfWeek value', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Week start day test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    // Test different week start days
+    const testCases = [
+      { day: 'sunday', expectedValue: 0 },
+      { day: 'monday', expectedValue: 1 },
+      { day: 'tuesday', expectedValue: 2 },
+      { day: 'wednesday', expectedValue: 3 },
+      { day: 'thursday', expectedValue: 4 },
+      { day: 'friday', expectedValue: 5 },
+      { day: 'saturday', expectedValue: 6 },
+    ];
+
+    for (const testCase of testCases) {
+      component.weekStartDay = testCase.day as WeekStartDay;
+      await page.waitForChanges();
+
+      // Check that calendar was created with correct firstDayOfWeek
+      const calendarFirstDay = component['calendar']['firstDayOfWeek'];
+      expect(calendarFirstDay).toBe(testCase.expectedValue);
+    }
+  });
+
+  it('should not navigate when weekStartDay changes and no value exists', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Week start day test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    // Set value to empty string explicitly
+    component.value = '';
+    await page.waitForChanges();
+
+    // Change weekStartDay
+    component.weekStartDay = 'monday';
+    await page.waitForChanges();
+
+    // gotoDate should not be called after the weekStartDay change
+    // since the calendar is recreated, check that the new calendar's gotoDate wasn't called
+    expect(component['calendar'].selectedYear).toBe(new Date().getFullYear());
+    expect(component['calendar'].selectedMonth).toBe(new Date().getMonth());
+  });
+
+  it('should handle weekStartDay change with invalid value format', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Week start day test" value="invalid-date"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    // Change weekStartDay
+    component.weekStartDay = 'monday';
+    await page.waitForChanges();
+
+    // Calendar should still be created with monday as first day
+    const calendarFirstDay = component['calendar']['firstDayOfWeek'];
+    expect(calendarFirstDay).toBe(1);
+
+    // Should use current date since value is invalid
+    expect(component['calendar'].selectedYear).toBe(new Date().getFullYear());
+    expect(component['calendar'].selectedMonth).toBe(new Date().getMonth());
+  });
+
+  it('should handle weekStartDay change with different date formats', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Week start day test" format="dd/mm/yyyy" value="15/10/2025"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    // Change weekStartDay
+    component.weekStartDay = 'wednesday';
+    await page.waitForChanges();
+
+    // Should still navigate to correct date
+    expect(component['calendar'].selectedYear).toBe(2025);
+    expect(component['calendar'].selectedMonth).toBe(9); // October
+    expect(component['calendar']['firstDayOfWeek']).toBe(3); // Wednesday
   });
 });

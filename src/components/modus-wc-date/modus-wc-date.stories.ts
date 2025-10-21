@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { IInputFeedbackProp, ModusSize } from '../types';
+import { WeekStartDay } from '../types';
 
 interface DateArgs {
   bordered?: boolean;
@@ -26,6 +27,7 @@ interface DateArgs {
   required?: boolean;
   size?: ModusSize;
   value: string;
+  'week-start-day'?: WeekStartDay;
 }
 
 const meta: Meta<DateArgs> = {
@@ -40,6 +42,7 @@ const meta: Meta<DateArgs> = {
     required: false,
     size: 'md',
     value: '',
+    'week-start-day': 'sunday',
   },
   argTypes: {
     feedback: {
@@ -67,6 +70,18 @@ const meta: Meta<DateArgs> = {
         'MMM DD, YYYY',
         'yyyy/mm/dd',
         'dd/mm/yyyy',
+      ],
+    },
+    'week-start-day': {
+      control: { type: 'select' },
+      options: [
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
       ],
     },
   },
@@ -108,6 +123,7 @@ export const Default: Story = {
         ?required=${args.required}
         size=${ifDefined(args.size)}
         .value=${args.value}
+        week-start-day=${ifDefined(args['week-start-day'])}
       ></modus-wc-date>
     `;
   },
@@ -126,6 +142,7 @@ export const WithErrorFeedback: Story = {
       label=${ifDefined(args.label)}
       ?required=${true}
       .value=${args.value}
+      week-start-day=${ifDefined(args['week-start-day'])}
     ></modus-wc-date>
   `,
 };

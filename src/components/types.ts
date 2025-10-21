@@ -9,6 +9,15 @@ export type ModusSize = Extract<DaisySize, 'sm' | 'md' | 'lg'>;
 
 export type Orientation = 'horizontal' | 'vertical';
 
+export type WeekStartDay =
+  | 'sunday'
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday';
+
 // -- Web Types -- //
 
 /** For `autocomplete`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete */

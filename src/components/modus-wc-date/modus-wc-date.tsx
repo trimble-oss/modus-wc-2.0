@@ -12,7 +12,7 @@ import {
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-date.tailwind';
-import { IInputFeedbackProp, ModusSize } from '../types';
+import { IInputFeedbackProp, ModusSize, WeekStartDay } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import DatePickerCalendar from './utils/calendar';
 
@@ -30,6 +30,16 @@ const MONTH_SHORT_NAMES = [
   'Nov',
   'Dec',
 ];
+
+const WEEK_START_DAY_MAP: Record<WeekStartDay, number> = {
+  sunday: 0,
+  monday: 1,
+  tuesday: 2,
+  wednesday: 3,
+  thursday: 4,
+  friday: 5,
+  saturday: 6,
+};
 
 /**
  * A customizable date picker component used to create date inputs.
@@ -111,6 +121,9 @@ export class ModusWcDate {
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
+  /** The first day of the week for the calendar display */
+  @Prop() weekStartDay?: WeekStartDay = 'sunday';
+
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
@@ -174,11 +187,33 @@ export class ModusWcDate {
     this.ensureCalendarWithinBounds(clamped);
   }
 
+  @Watch('weekStartDay')
+  handleWeekStartDayChange() {
+    // Reinitialize calendar with new first day of week
+    const firstDayOfWeek =
+      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
+    this.calendar = new DatePickerCalendar(firstDayOfWeek);
+
+    // Navigate to currently selected date if exists
+    const selectedDate = this.parseISODate(this.value);
+    if (selectedDate) {
+      this.calendar.gotoDate(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth()
+      );
+    }
+  }
+
   componentWillLoad() {
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Date input';
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+
+    // Initialize calendar with the correct first day of week
+    const firstDayOfWeek =
+      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
+    this.calendar = new DatePickerCalendar(firstDayOfWeek);
 
     this.handleMinChange(this.min);
     this.handleMaxChange(this.max);
@@ -282,7 +317,8 @@ export class ModusWcDate {
       date.getMonth() !== this.calendar.selectedMonth ||
       date.getFullYear() !== this.calendar.selectedYear
     ) {
-      const newCalendar = new DatePickerCalendar();
+      const firstDayOfWeek = WEEK_START_DAY_MAP[this.weekStartDay || 'sunday'];
+      const newCalendar = new DatePickerCalendar(firstDayOfWeek);
       newCalendar.gotoDate(date.getFullYear(), date.getMonth());
       this.calendar = newCalendar;
     }
@@ -660,7 +696,7 @@ export class ModusWcDate {
             options={monthOptions}
             onInputChange={
               // istanbul ignore next (unreachable code)
-              (e) => this.handleMonthChange(e)
+              (e) => this.handleMonthChange(e as CustomEvent<InputEvent>)
             }
             bordered={false}
             size="sm"
@@ -672,7 +708,7 @@ export class ModusWcDate {
             options={yearOptions}
             onInputChange={
               // istanbul ignore next (unreachable code)
-              (e) => this.handleYearChange(e)
+              (e) => this.handleYearChange(e as CustomEvent<InputEvent>)
             }
             bordered={false}
             size="sm"
@@ -705,9 +741,14 @@ export class ModusWcDate {
     return (
       <div class="calendar-body">
         <div class="calendar-days-week">
-          {this.calendar.getDaysOfWeek('default').map((d) => {
-            return <div class="day-header">{d}</div>;
-          })}
+          {this.calendar
+            .getDaysOfWeek(
+              'default',
+              WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay]
+            )
+            .map((d) => {
+              return <div class="day-header">{d}</div>;
+            })}
         </div>
         <div class="calendar-dates">
           {this.calendar.dates.map((date) => {
