@@ -5,6 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface FileDropzoneArgs {
   'accept-file-types'?: string;
+  'custom-class'?: string;
   disabled?: boolean;
   'file-dragged-over-instructions'?: string;
   'include-state-icon'?: boolean;
@@ -30,6 +31,10 @@ const meta: Meta<FileDropzoneArgs> = {
     'accept-file-types': {
       control: 'text',
       description: "Accepted file types (e.g. '.jpg,.png' or 'image/*')",
+    },
+    'custom-class': {
+      control: 'text',
+      description: 'Custom CSS class to apply to the file dropzone element',
     },
     disabled: {
       control: 'boolean',
@@ -85,6 +90,7 @@ export const Default: Story = {
   render: (args) => html`
     <modus-wc-file-dropzone
       accept-file-types=${ifDefined(args['accept-file-types'])}
+      custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       file-dragged-over-instructions=${ifDefined(
         args['file-dragged-over-instructions']
@@ -142,7 +148,7 @@ export const multipleFiles: Story = {
   render: (args) => html`
     <modus-wc-file-dropzone
       accept-file-types=${ifDefined(args['accept-file-types'])}
-      ?multiple=${args.multiple}
+      multiple=${args.multiple}
       instructions="Select multiple image files"
     ></modus-wc-file-dropzone>
   `,

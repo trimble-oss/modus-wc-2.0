@@ -14,6 +14,7 @@ File dropzone component that allows users to drag and drop files for upload.
 | Property                      | Attribute                        | Description                                                           | Type                   | Default     |
 | ----------------------------- | -------------------------------- | --------------------------------------------------------------------- | ---------------------- | ----------- |
 | `acceptFileTypes`             | `accept-file-types`              | Accepted file types (e.g. '.jpg,.png' or 'image/*')                   | `string \| undefined`  | `undefined` |
+| `customClass`                 | `custom-class`                   | Custom CSS class to apply to the file dropzone element                | `string \| undefined`  | `''`        |
 | `disabled`                    | `disabled`                       | Disable the file input                                                | `boolean \| undefined` | `undefined` |
 | `fileDraggedOverInstructions` | `file-dragged-over-instructions` | Custom instructions shown when files are dragged over the dropzone    | `string \| undefined`  | `undefined` |
 | `includeStateIcon`            | `include-state-icon`             | Include state icon (upload, success, error)                           | `boolean \| undefined` | `true`      |

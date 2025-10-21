@@ -638,6 +638,10 @@ export namespace Components {
          */
         "acceptFileTypes"?: string;
         /**
+          * Custom CSS class to apply to the file dropzone element
+         */
+        "customClass"?: string;
+        /**
           * Disable the file input
          */
         "disabled"?: boolean;
@@ -3513,6 +3517,10 @@ declare namespace LocalJSX {
           * Accepted file types (e.g. '.jpg,.png' or 'image/*')
          */
         "acceptFileTypes"?: string;
+        /**
+          * Custom CSS class to apply to the file dropzone element
+         */
+        "customClass"?: string;
         /**
           * Disable the file input
          */

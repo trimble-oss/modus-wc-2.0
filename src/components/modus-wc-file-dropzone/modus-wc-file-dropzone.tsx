@@ -39,6 +39,9 @@ export class ModusWcFileDropzone {
   /** Accepted file types (e.g. '.jpg,.png' or 'image/*') */
   @Prop() acceptFileTypes?: string;
 
+  /** Custom CSS class to apply to the file dropzone element */
+  @Prop() customClass?: string = '';
+
   /** Disable the file input */
   @Prop() disabled?: boolean;
 
@@ -331,7 +334,8 @@ export class ModusWcFileDropzone {
             class={`dropzone-content 
               ${this.isDraggingOver ? 'dragging-over' : ''} 
               ${!this.isDraggingOver && this.invalidFile !== 'none' ? 'invalid-file-type' : ''} 
-              ${!this.isDraggingOver && this.uploadSuccess ? 'upload-success' : ''}`}
+              ${!this.isDraggingOver && this.uploadSuccess ? 'upload-success' : ''} 
+              ${this.customClass || ''}`}
             onClick={this.handleDropzoneClick}
             onDragLeave={this.handleDropzoneDragLeave}
             onDragOver={this.handleDropzoneDragOver}

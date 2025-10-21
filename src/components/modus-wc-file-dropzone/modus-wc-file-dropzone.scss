@@ -45,15 +45,15 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
       color: var(--modus-wc-color-gray-10);
     }
 
-    .success-icon {
-      color: var(--modus-wc-color-green-dark);
-    }
-
     .default-content {
       align-items: center;
       display: flex;
       flex-direction: column;
       justify-content: center;
+
+      span {
+        text-align: center;
+      }
     }
   }
 
@@ -93,6 +93,16 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
         transparent
       );
       border-color: var(--modus-wc-color-red);
+      color: var(--modus-wc-color-gray-light);
+    }
+
+    &.upload-success {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-green) 50%,
+        transparent
+      );
+      border-color: var(--modus-wc-color-green);
       color: var(--modus-wc-color-gray-light);
     }
   }

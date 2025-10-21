@@ -2689,6 +2689,15 @@
               }
             },
             {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the file dropzone element",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "disabled",
               "fieldName": "disabled",
               "description": "Disable the file input",
