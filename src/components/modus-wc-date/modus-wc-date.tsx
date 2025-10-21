@@ -311,8 +311,6 @@ export class ModusWcDate {
       this.ensureCalendarWithinBounds(selectedDate);
       const event = new Event('focus', { bubbles: true });
       this.inputRef?.dispatchEvent(event);
-    } else {
-      this.inputBlur.emit(new FocusEvent('blur'));
     }
   };
 
