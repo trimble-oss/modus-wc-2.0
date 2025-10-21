@@ -88,7 +88,13 @@ const meta: Meta<DateArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['inputBlur', 'inputChange', 'inputFocus'],
+      handles: [
+        'inputBlur',
+        'inputChange',
+        'inputFocus',
+        'calendarMonthChange',
+        'calendarYearChange',
+      ],
     },
   },
 };
@@ -101,7 +107,7 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <style>
-        div[id^='story--components-forms-date--default--primary'] {
+        div[id^='story--components-forms-date--default'] {
           min-height: 400px;
         }
       </style>
@@ -136,6 +142,11 @@ const errorFeedback: IInputFeedbackProp = {
 
 export const WithErrorFeedback: Story = {
   render: (args) => html`
+    <style>
+      div[id^='story--components-forms-date--with-error-feedback'] {
+        min-height: 400px;
+      }
+    </style>
     <modus-wc-date
       aria-label="Date input"
       .feedback=${errorFeedback}

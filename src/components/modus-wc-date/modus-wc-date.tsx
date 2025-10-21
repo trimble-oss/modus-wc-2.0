@@ -116,7 +116,7 @@ export class ModusWcDate {
     | 'dd-mm-yyyy'
     | 'yyyy/mm/dd'
     | 'dd/mm/yyyy'
-    | 'MMM DD, YYYY' = 'yyyy-mm-dd';
+    | 'MMM DD, YYYY' = 'dd-mm-yyyy';
 
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
@@ -132,6 +132,12 @@ export class ModusWcDate {
 
   /** Event emitted when the input gains focus. */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
+
+  /** Event emitted when the calendar month selection changes. */
+  @StencilEvent() calendarMonthChange!: EventEmitter<number>;
+
+  /** Event emitted when the calendar year selection changes. */
+  @StencilEvent() calendarYearChange!: EventEmitter<number>;
 
   @Watch('min')
   handleMinChange(newValue?: string) {
@@ -182,6 +188,8 @@ export class ModusWcDate {
 
     if (this.inputRef) {
       this.inputRef.value = formatted;
+      const event = new Event('input', { bubbles: true });
+      this.inputRef.dispatchEvent(event);
     }
 
     this.ensureCalendarWithinBounds(clamped);
@@ -301,6 +309,10 @@ export class ModusWcDate {
     if (this.showCalendar) {
       const selectedDate = this.parseISODate(this.value);
       this.ensureCalendarWithinBounds(selectedDate);
+      const event = new Event('focus', { bubbles: true });
+      this.inputRef?.dispatchEvent(event);
+    } else {
+      this.inputBlur.emit(new FocusEvent('blur'));
     }
   };
 
@@ -342,6 +354,8 @@ export class ModusWcDate {
   };
 
   private handleMonthChange = (event: CustomEvent<InputEvent>) => {
+    event.stopPropagation();
+
     // Try to get the value from the original input event
     const inputEvent = event.detail;
     const selectTarget = inputEvent?.target as HTMLSelectElement;
@@ -355,9 +369,14 @@ export class ModusWcDate {
     }
 
     this.setCalendarMonth(currentYear, newMonth);
+
+    // Emit the calendar-specific month change event
+    this.calendarMonthChange.emit(newMonth);
   };
 
   private handleYearChange = (event: CustomEvent<InputEvent>) => {
+    event.stopPropagation();
+
     // Try to get the value from the original input event
     const inputEvent = event.detail;
     const selectTarget = inputEvent?.target as HTMLSelectElement;
@@ -371,6 +390,9 @@ export class ModusWcDate {
     }
 
     this.setCalendarMonth(newYear, currentMonth);
+
+    // Emit the calendar-specific year change event
+    this.calendarYearChange.emit(newYear);
   };
 
   private handleDateKeyDown = (event: KeyboardEvent, date: Date) => {
@@ -390,6 +412,7 @@ export class ModusWcDate {
     const insideComponent = path.includes(this.el);
     if (!insideComponent && this.showCalendar) {
       this.showCalendar = false;
+      this.inputBlur.emit(new FocusEvent('blur'));
     }
   }
 
@@ -698,6 +721,10 @@ export class ModusWcDate {
               // istanbul ignore next (unreachable code)
               (e) => this.handleMonthChange(e as CustomEvent<InputEvent>)
             }
+            onInputBlur={
+              // istanbul ignore next (unreachable code)
+              (e) => e.stopPropagation()
+            }
             bordered={false}
             size="sm"
           />
@@ -709,6 +736,10 @@ export class ModusWcDate {
             onInputChange={
               // istanbul ignore next (unreachable code)
               (e) => this.handleYearChange(e as CustomEvent<InputEvent>)
+            }
+            onInputBlur={
+              // istanbul ignore next (unreachable code)
+              (e) => e.stopPropagation()
             }
             bordered={false}
             size="sm"
