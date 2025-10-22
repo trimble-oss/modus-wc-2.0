@@ -275,7 +275,7 @@ export class ModusWcFileDropzone {
   render() {
     const messages = {
       type: this.invalidFileTypeMessage || 'File format not accepted',
-      name: `Filename exceeds maximum length`,                                                                                 
+      name: `Filename exceeds maximum length`,
       count: `Maximum number of files allowed is ${this.maxFileCount}`,
       size: `Total file size exceeds ${this.formatFileSize(this.maxTotalFileSizeBytes)}`,
       success: this.successMessage || 'Successfully uploaded',
