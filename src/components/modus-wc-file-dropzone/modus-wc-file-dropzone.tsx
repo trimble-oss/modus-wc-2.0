@@ -37,40 +37,40 @@ export class ModusWcFileDropzone {
   @State() private uploadSuccess = false;
 
   /** Accepted file types (e.g. '.jpg,.png' or 'image/*') */
-  @Prop() acceptFileTypes?: string;
+  @Prop({ mutable: false }) acceptFileTypes?: string;
 
   /** Custom CSS class to apply to the file dropzone element */
-  @Prop() customClass?: string = '';
+  @Prop({ mutable: false }) customClass?: string = '';
 
   /** Disable the file input */
   @Prop() disabled?: boolean;
 
   /** Custom instructions shown when files are dragged over the dropzone */
-  @Prop() fileDraggedOverInstructions?: string;
+  @Prop({ mutable: false }) fileDraggedOverInstructions?: string;
 
   /** Include state icon (upload, success, error) */
-  @Prop() includeStateIcon?: boolean = true;
+  @Prop({ mutable: false }) includeStateIcon?: boolean = true;
 
   /** Custom instructions shown as the default dropzone message */
-  @Prop() instructions?: string;
+  @Prop({ mutable: false }) instructions?: string;
 
   /** Custom error message displayed when an invalid file type is selected */
-  @Prop() invalidFileTypeMessage?: string;
+  @Prop({ mutable: false }) invalidFileTypeMessage?: string;
 
   /** Maximum allowed length of filename, will show error if exceeded */
-  @Prop() maxFileNameLength?: number;
+  @Prop({ mutable: false }) maxFileNameLength?: number;
 
   /** Maximum number of files allowed, will show error if exceeded */
-  @Prop() maxFileCount?: number;
+  @Prop({ mutable: false }) maxFileCount?: number;
 
   /** Maximum total file size in bytes allowed, will show error if exceeded */
-  @Prop() maxTotalFileSizeBytes?: number;
+  @Prop({ mutable: false }) maxTotalFileSizeBytes?: number;
 
   /** Allow multiple file selection */
-  @Prop() multiple?: boolean;
+  @Prop({ mutable: false }) multiple?: boolean;
 
   /** Success message displayed when files are uploaded successfully */
-  @Prop() successMessage?: string;
+  @Prop({ mutable: false }) successMessage?: string;
 
   /** Event emitted when files are selected */
   @StencilEvent() fileSelect!: EventEmitter<FileList>;
@@ -102,7 +102,9 @@ export class ModusWcFileDropzone {
 
   private isValidFileName(file: File): boolean {
     if (!this.maxFileNameLength) return true;
-    return file.name.length <= this.maxFileNameLength;
+
+    const fileNameWithoutExtension = file.name.replace(/\.[^/.]+$/, '');
+    return fileNameWithoutExtension.length <= this.maxFileNameLength;
   }
 
   private isValidFileCount(fileCount: number): boolean {
@@ -273,7 +275,7 @@ export class ModusWcFileDropzone {
   render() {
     const messages = {
       type: this.invalidFileTypeMessage || 'File format not accepted',
-      name: `Filename exceeds maximum length of ${this.maxFileNameLength} characters`,
+      name: `Filename exceeds maximum length`,                                                                                 
       count: `Maximum number of files allowed is ${this.maxFileCount}`,
       size: `Total file size exceeds ${this.formatFileSize(this.maxTotalFileSizeBytes)}`,
       success: this.successMessage || 'Successfully uploaded',
