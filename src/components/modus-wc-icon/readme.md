@@ -19,6 +19,7 @@ A customizable icon component used to render Modus icons.
 | `decorative`        | `decorative`   | Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.                 | `boolean \| undefined`                      | `true`      |
 | `name` _(required)_ | `name`         | The icon name, should match the CSS class in the icon font.                                                              | `string`                                    | `undefined` |
 | `size`              | `size`         | The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon. | `"lg" \| "md" \| "sm" \| "xs" \| undefined` | `'md'`      |
+| `variant`           | `variant`      | The icon variant, can be "outlined" or "solid".                                                                          | `"outlined" \| "solid" \| undefined`        | `undefined` |
 
 
 ## Dependencies
@@ -27,7 +28,9 @@ A customizable icon component used to render Modus icons.
 
  - [modus-wc-alert](../modus-wc-alert)
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
+ - [modus-wc-avatar](../modus-wc-avatar)
  - [modus-wc-collapse](../modus-wc-collapse)
+ - [modus-wc-date](../modus-wc-date)
  - [modus-wc-input-feedback](../modus-wc-input-feedback)
  - [modus-wc-menu-item](../modus-wc-menu-item)
  - [modus-wc-table](../modus-wc-table)
@@ -38,7 +41,9 @@ A customizable icon component used to render Modus icons.
 graph TD;
   modus-wc-alert --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-icon
+  modus-wc-avatar --> modus-wc-icon
   modus-wc-collapse --> modus-wc-icon
+  modus-wc-date --> modus-wc-icon
   modus-wc-input-feedback --> modus-wc-icon
   modus-wc-menu-item --> modus-wc-icon
   modus-wc-table --> modus-wc-icon

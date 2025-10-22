@@ -84,6 +84,8 @@ export class ModusWcTable {
   private inheritedAttributes: Attributes = {};
   private table: Table<Record<string, unknown>> | null = null;
   private tanStackColumns: ColumnDef<Record<string, unknown>, unknown>[] = [];
+  private globalClickHandler?: (event: MouseEvent) => void;
+  private activeEditorElement?: HTMLElement;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -265,9 +267,25 @@ export class ModusWcTable {
       pageIndex: this.currentPage - 1,
       pageSize: this.pageSizeOptions[0],
     };
-
+    // Initialize row selection from selectedRowIds prop
+    const rowSelection: RowSelectionState = Object.fromEntries(
+      this.selectedRowIds?.map((id) => [id, true]) ?? []
+    );
+    if (rowSelection && Object.keys(rowSelection).length > 0) {
+      this.internalRowSelection = rowSelection;
+    }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
     this.initializeTable();
+  }
+
+  disconnectedCallback() {
+    // Clean up global listener on component disconnect
+    if (this.globalClickHandler) {
+      document.removeEventListener('click', this.globalClickHandler, true);
+      this.globalClickHandler = undefined;
+    }
+    // Clear active editor reference
+    this.activeEditorElement = undefined;
   }
 
   // Handle sorting changes from TanStack
@@ -643,15 +661,30 @@ export class ModusWcTable {
         column.editorSetup(cellNode, row, handleCommit);
       }
 
-      const blurHandler = (event: FocusEvent) => {
-        const relatedTarget = event.relatedTarget as Node | null;
-        if (!el.contains(relatedTarget)) {
-          this.activeEditor = null;
-          el.removeEventListener('focusout', blurHandler);
-        }
-      };
+      // Store reference to active editor element
+      this.activeEditorElement = el;
 
-      el.addEventListener('focusout', blurHandler, { capture: true });
+      // Create and keep global click handler active
+      if (!this.globalClickHandler) {
+        this.globalClickHandler = (event: MouseEvent) => {
+          // Only process clicks when we have an active editor
+          if (!this.activeEditor || !this.activeEditorElement) {
+            return;
+          }
+
+          const target = event.target as Node;
+          const outsideTable = !this.el.contains(target);
+
+          // Check if click is outside table
+          if (outsideTable) {
+            this.activeEditor = null;
+            this.activeEditorElement = undefined;
+          }
+        };
+
+        // Register once and keep it active
+        document.addEventListener('click', this.globalClickHandler, true);
+      }
     } else {
       el.textContent = String(cellNode);
     }
@@ -830,9 +863,24 @@ export class ModusWcTable {
                                 editing,
                               }}
                               data-col={column.id}
-                              onDblClick={() =>
-                                this.enterEdit(index, column.id)
-                              }
+                              onDblClick={(e) => {
+                                // Don't enter edit mode if already editing this cell
+                                if (
+                                  this.activeEditor?.rowIndex === index &&
+                                  this.activeEditor?.colId === column.id
+                                ) {
+                                  return;
+                                }
+                                // Don't enter edit mode if clicking inside an active editor
+                                if (
+                                  this.activeEditorElement?.contains(
+                                    e.target as Node
+                                  )
+                                ) {
+                                  return;
+                                }
+                                this.enterEdit(index, column.id);
+                              }}
                               ref={(el) => {
                                 if (!el) return;
                                 this.setupEditorCell(
