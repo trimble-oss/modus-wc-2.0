@@ -2421,7 +2421,7 @@ describe('modus-wc-date', () => {
     expect(mockEvent['stopPropagation']).toHaveBeenCalled();
   });
 
-  it('should dispatch focus event on input when calendar opens', async () => {
+  it('should not dispatch focus event on input when calendar opens', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
       html: '<modus-wc-date aria-label="Focus dispatch test"></modus-wc-date>',
@@ -2441,10 +2441,7 @@ describe('modus-wc-date', () => {
     expect(component['showCalendar']).toBe(true);
 
     // Verify focus event was dispatched
-    expect(dispatchEventSpy).toHaveBeenCalled();
-    const dispatchedEvent = dispatchEventSpy.mock.calls[0][0];
-    expect(dispatchedEvent.type).toBe('focus');
-    expect(dispatchedEvent.bubbles).toBe(true);
+    expect(dispatchEventSpy).not.toHaveBeenCalled();
   });
 
   it('should handle case when inputRef is null when toggling calendar', async () => {

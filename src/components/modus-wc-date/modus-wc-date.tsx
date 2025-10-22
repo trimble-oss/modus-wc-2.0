@@ -71,6 +71,9 @@ export class ModusWcDate {
   /** Currently focused date index in calendar */
   @State() private focusedDateIndex: number = -1;
 
+  /** Tracks whether the component currently has focus */
+  private hasFocus = false;
+
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
@@ -265,12 +268,26 @@ export class ModusWcDate {
   }
 
   private handleBlur = (event: FocusEvent) => {
+    // Check if focus is moving to an element within the component
+    const relatedTarget = event.relatedTarget as HTMLElement;
+    // istanbul ignore next (unreachable code)
+    if (relatedTarget && this.el.contains(relatedTarget)) {
+      // Focus is moving within the component, don't emit blur
+      return;
+    }
+
+    // Focus is leaving the component
+    this.hasFocus = false;
     this.syncValueFromInput();
     this.inputBlur.emit(event);
   };
 
   private handleFocus = (event: FocusEvent) => {
-    this.inputFocus.emit(event);
+    // Only emit focus if component didn't already have focus
+    if (!this.hasFocus) {
+      this.hasFocus = true;
+      this.inputFocus.emit(event);
+    }
   };
 
   private handleInput = (event: InputEvent) => {
@@ -309,8 +326,10 @@ export class ModusWcDate {
     if (this.showCalendar) {
       const selectedDate = this.parseISODate(this.value);
       this.ensureCalendarWithinBounds(selectedDate);
-      const event = new Event('focus', { bubbles: true });
-      this.inputRef?.dispatchEvent(event);
+    }
+    // Always ensure input is focused when toggling calendar (opening or closing)
+    if (this.inputRef) {
+      this.inputRef.focus();
     }
   };
 
@@ -334,12 +353,6 @@ export class ModusWcDate {
     }
 
     this.showCalendar = false;
-
-    // Emit change event
-    if (this.inputRef) {
-      const changeEvent = new Event('inputChange', { bubbles: true });
-      this.inputRef.dispatchEvent(changeEvent);
-    }
   };
 
   private addMonthOffset = (offset: number) => {
@@ -404,7 +417,7 @@ export class ModusWcDate {
     const insideComponent = path.includes(this.el);
     if (!insideComponent && this.showCalendar) {
       this.showCalendar = false;
-      this.inputBlur.emit(new FocusEvent('blur'));
+      this.hasFocus = false;
     }
   }
 
@@ -413,12 +426,6 @@ export class ModusWcDate {
     if (event.key === 'Escape' && this.showCalendar) {
       this.showCalendar = false;
       event.preventDefault();
-
-      // istanbul ignore next (unreachable code)
-      if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-        this.inputBlur.emit(new FocusEvent('blur'));
-      }
     }
   }
 
@@ -981,7 +988,9 @@ export class ModusWcDate {
   private ensureCalendarWithinBounds(referenceDate?: Date) {
     // Allow viewing any month, just disable dates outside min/max
     if (referenceDate) {
-      const newCalendar = new DatePickerCalendar();
+      const firstDayOfWeek =
+        WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
+      const newCalendar = new DatePickerCalendar(firstDayOfWeek);
       newCalendar.gotoDate(
         referenceDate.getFullYear(),
         referenceDate.getMonth()
@@ -991,7 +1000,9 @@ export class ModusWcDate {
   }
 
   private setCalendarMonth(year: number, month: number) {
-    const newCalendar = new DatePickerCalendar();
+    const firstDayOfWeek =
+      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
+    const newCalendar = new DatePickerCalendar(firstDayOfWeek);
     newCalendar.gotoDate(year, month);
     this.calendar = newCalendar;
   }
