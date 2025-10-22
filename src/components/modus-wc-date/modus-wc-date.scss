@@ -15,6 +15,165 @@ modus-wc-date .modus-wc-date-input {
   }
 }
 
+// Calendar styles
+modus-wc-date {
+  --calendar-grid-columns: repeat(7, 1fr);
+
+  position: relative;
+
+  .date-input-container {
+    align-items: center;
+    display: inline-flex;
+    position: relative;
+    width: 100%;
+
+    .calendar-icon-button {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      right: var(--modus-wc-spacing-xs);
+
+      :hover {
+        color: var(--modus-wc-color-blue-light);
+      }
+
+      :disabled {
+        background-color: transparent;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .calendar-container {
+    background: var(--modus-wc-color-white);
+    border: 1px solid var(--modus-wc-color-gray-4);
+    border-radius: var(--modus-wc-border-radius-md);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    height: 327px;
+    overflow: hidden;
+    position: fixed;
+    width: 272px;
+    z-index: 9999;
+
+    .calendar-header {
+      align-items: center;
+      background-color: var(--modus-wc-color-primary);
+      color: var(--modus-wc-color-white);
+      display: flex;
+      justify-content: space-between;
+      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-xl);
+
+      .nav-btn {
+        i {
+          color: var(--modus-wc-color-white);
+        }
+
+        &:hover {
+          i {
+            color: var(--modus-wc-color-blue-dark);
+          }
+        }
+      }
+
+      .calendar-selects {
+        align-items: center;
+        display: flex;
+        gap: var(--modus-wc-spacing-xs);
+
+        select {
+          background-color: var(--modus-wc-color-white);
+          color: var(--modus-wc-color-gray-9);
+        }
+      }
+    }
+
+    .calendar-body {
+      background-color: var(--modus-wc-color-base-page);
+      font-size: var(--modus-wc-font-size-md);
+      height: 272px;
+      padding: var(--modus-wc-spacing-xl);
+
+      .calendar-days-week {
+        display: grid;
+        gap: var(--modus-wc-spacing-xs);
+        grid-template-columns: var(--calendar-grid-columns);
+        margin-bottom: var(--modus-wc-spacing-sm);
+
+        .day-header {
+          color: var(--modus-wc-color-base-content-hight-contrast);
+          font-weight: var(--modus-wc-font-weight-bold);
+          padding: var(--modus-wc-spacing-xs);
+          text-align: center;
+        }
+      }
+
+      .calendar-dates {
+        display: grid;
+        grid-template-columns: var(--calendar-grid-columns);
+
+        .calendar-day {
+          align-items: center;
+          background: none;
+          border: none;
+          border-radius: 50%;
+          color: var(--modus-wc-color-base-content-hight-contrast);
+          cursor: pointer;
+          display: flex;
+          height: 32px;
+          justify-content: center;
+          width: 32px;
+
+          &:hover {
+            background-color: var(--modus-wc-color-blue-light);
+            color: var(--modus-wc-color-white);
+          }
+
+          &:focus {
+            background-color: var(--modus-wc-color-blue-light);
+            color: var(--modus-wc-color-white);
+            outline: none;
+          }
+
+          &.current-day {
+            border: 2px solid var(--modus-wc-color-blue-light);
+            outline: none;
+          }
+
+          &.selected {
+            background-color: var(--modus-wc-color-blue-light);
+            color: var(--modus-wc-color-white);
+            font-weight: var(--modus-wc-font-weight-semibold);
+          }
+
+          &.other-month {
+            color: var(--modus-wc-color-base-content-high-contrast);
+            opacity: 0.5;
+
+            &:hover {
+              background-color: var(--modus-wc-color-gray-2);
+              color: var(--modus-wc-color-gray-6);
+            }
+          }
+
+          &.disabled {
+            color: var(--modus-wc-color-gray-4);
+
+            &:hover {
+              background-color: transparent;
+              color: var(--modus-wc-color-gray-4);
+            }
+
+            &:focus {
+              border: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 [data-theme='modus-classic-light'] modus-wc-date .modus-wc-date-input,
 [data-theme='modus-classic-dark'] modus-wc-date .modus-wc-date-input {
   &.modus-wc-input {
@@ -43,8 +202,6 @@ modus-wc-date .modus-wc-date-input {
     &:focus {
       border-color: var(--modus-wc-color-blue-light);
       border-width: var(--modus-wc-border-width-sm);
-      box-shadow: none; // Removes the Tailwind ring effect
-      outline: none; // Ensures there's no outline on focus
     }
 
     &.modus-wc-date-input--readonly {

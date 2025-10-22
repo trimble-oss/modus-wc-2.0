@@ -3,12 +3,19 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { IInputFeedbackProp, ModusSize } from '../types';
+import { WeekStartDay } from '../types';
 
 interface DateArgs {
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
   feedback?: IInputFeedbackProp;
+  format?:
+    | 'yyyy-mm-dd'
+    | 'dd-mm-yyyy'
+    | 'MMM DD, YYYY'
+    | 'yyyy/mm/dd'
+    | 'dd/mm/yyyy';
   'input-id'?: string;
   'input-tab-index'?: number;
   label?: string;
@@ -20,6 +27,7 @@ interface DateArgs {
   required?: boolean;
   size?: ModusSize;
   value: string;
+  'week-start-day'?: WeekStartDay;
 }
 
 const meta: Meta<DateArgs> = {
@@ -34,6 +42,7 @@ const meta: Meta<DateArgs> = {
     required: false,
     size: 'md',
     value: '',
+    'week-start-day': 'sunday',
   },
   argTypes: {
     feedback: {
@@ -53,11 +62,39 @@ const meta: Meta<DateArgs> = {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
+    format: {
+      control: { type: 'select' },
+      options: [
+        'yyyy-mm-dd',
+        'dd-mm-yyyy',
+        'MMM DD, YYYY',
+        'yyyy/mm/dd',
+        'dd/mm/yyyy',
+      ],
+    },
+    'week-start-day': {
+      control: { type: 'select' },
+      options: [
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+      ],
+    },
   },
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['inputBlur', 'inputChange', 'inputFocus'],
+      handles: [
+        'inputBlur',
+        'inputChange',
+        'inputFocus',
+        'calendarMonthChange',
+        'calendarYearChange',
+      ],
     },
   },
 };
@@ -69,12 +106,18 @@ type Story = StoryObj<DateArgs>;
 export const Default: Story = {
   render: (args) => {
     return html`
+      <style>
+        div[id^='story--components-forms-date--default'] {
+          min-height: 400px;
+        }
+      </style>
       <modus-wc-date
         aria-label="Date input"
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
         .feedback=${args.feedback}
+        format=${ifDefined(args.format)}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         label=${ifDefined(args.label)}
@@ -86,6 +129,7 @@ export const Default: Story = {
         ?required=${args.required}
         size=${ifDefined(args.size)}
         .value=${args.value}
+        week-start-day=${ifDefined(args['week-start-day'])}
       ></modus-wc-date>
     `;
   },
@@ -98,12 +142,18 @@ const errorFeedback: IInputFeedbackProp = {
 
 export const WithErrorFeedback: Story = {
   render: (args) => html`
+    <style>
+      div[id^='story--components-forms-date--with-error-feedback'] {
+        min-height: 400px;
+      }
+    </style>
     <modus-wc-date
       aria-label="Date input"
       .feedback=${errorFeedback}
       label=${ifDefined(args.label)}
       ?required=${true}
       .value=${args.value}
+      week-start-day=${ifDefined(args['week-start-day'])}
     ></modus-wc-date>
   `,
 };
@@ -118,7 +168,6 @@ export const Migration: Story = {
   - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
   input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
   additional info and examples.
-  - Format handling is no longer supported. The component now uses the standard HTML date input format (ISO 8601 \`yyyy-mm-dd\`).
   - Size values have changed from verbose names (\`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
 
 #### Prop Mapping
@@ -133,7 +182,7 @@ export const Migration: Story = {
 | disable-validation |                  | Not carried over                        |
 | error-text         | feedback.message | Use \`feedback\` level                  |
 | filler-date        |                  | Not carried over                        |
-| format             |                  | Not carried over                        |
+| format             | format           |                                         |
 | helper-text        |                  | Not carried over                        |
 | label              | label            |                                         |
 | max                | max              |                                         |
