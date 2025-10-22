@@ -348,7 +348,7 @@ export class ModusWcDate {
       this.calendar.selectedMonth + offset,
       1
     );
-    this.setCalendarMonth(target.getFullYear(), target.getMonth());
+    this.updateCalendarAndEmitEvents(target.getFullYear(), target.getMonth());
   };
 
   private handleMonthChange = (event: CustomEvent<InputEvent>) => {
@@ -366,10 +366,7 @@ export class ModusWcDate {
       return;
     }
 
-    this.setCalendarMonth(currentYear, newMonth);
-
-    // Emit the calendar-specific month change event
-    this.calendarMonthChange.emit(newMonth);
+    this.updateCalendarAndEmitEvents(currentYear, newMonth);
   };
 
   private handleYearChange = (event: CustomEvent<InputEvent>) => {
@@ -387,10 +384,7 @@ export class ModusWcDate {
       return;
     }
 
-    this.setCalendarMonth(newYear, currentMonth);
-
-    // Emit the calendar-specific year change event
-    this.calendarYearChange.emit(newYear);
+    this.updateCalendarAndEmitEvents(newYear, currentMonth);
   };
 
   private handleDateKeyDown = (event: KeyboardEvent, date: Date) => {
@@ -432,7 +426,8 @@ export class ModusWcDate {
     const currentColumn = currentIndex % 7;
 
     // Navigate to previous/next month
-    this.calendar.gotoDate(
+    // Date constructor will normalize out-of-bounds months (e.g., -1 → Dec of prev year, 12 → Jan of next year)
+    this.updateCalendarAndEmitEvents(
       this.calendar.selectedYear,
       this.calendar.selectedMonth + (isUp ? -1 : 1)
     );
@@ -627,7 +622,10 @@ export class ModusWcDate {
 
     // Handle month change if needed
     if (shouldChangeMonth && targetDate) {
-      this.calendar.gotoDate(targetDate.getFullYear(), targetDate.getMonth());
+      this.updateCalendarAndEmitEvents(
+        targetDate.getFullYear(),
+        targetDate.getMonth()
+      );
 
       // Find the target date in the new calendar
       const newTargetIndex = this.calendar.dates.findIndex(
@@ -996,6 +994,22 @@ export class ModusWcDate {
     const newCalendar = new DatePickerCalendar();
     newCalendar.gotoDate(year, month);
     this.calendar = newCalendar;
+  }
+
+  private updateCalendarAndEmitEvents(year: number, month: number) {
+    const oldYear = this.calendar.selectedYear;
+    const oldMonth = this.calendar.selectedMonth;
+
+    this.setCalendarMonth(year, month);
+
+    // Emit events only if the values actually changed
+    if (month !== oldMonth) {
+      this.calendarMonthChange.emit(month);
+    }
+
+    if (year !== oldYear) {
+      this.calendarYearChange.emit(year);
+    }
   }
 
   private syncValueFromInput() {
