@@ -25,7 +25,7 @@ const meta: Meta<FileDropzoneArgs> = {
     'accept-file-types': '.doc, .docx, .pdf',
     disabled: false,
     'include-state-icon': true,
-    instructions: 'Drop files here or click to select files',
+    instructions: 'Drag files here or browse to upload',
   },
   argTypes: {
     'accept-file-types': {
@@ -111,7 +111,7 @@ export const customContent: Story = {
   render: () => html`
     <modus-wc-file-dropzone
       accept-file-types=".jpg,.png,.gif"
-      instructions="Drop files here or click to select files"
+      instructions="Drag files here or browse to upload"
     >
       <div slot="dropzone" style="width: 300px; margin-top: 1rem;">
         <modus-wc-progress value="70" label="70% Uploaded"></modus-wc-progress>

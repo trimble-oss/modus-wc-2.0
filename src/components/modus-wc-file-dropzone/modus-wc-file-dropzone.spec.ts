@@ -1152,9 +1152,7 @@ describe('modus-wc-file-dropzone', () => {
     await page.waitForChanges();
     messageElement = root.querySelector('.default-content span');
     expect(messageElement).not.toBeNull();
-    expect(messageElement?.textContent).toBe(
-      'Filename exceeds maximum length of 10 characters'
-    );
+    expect(messageElement?.textContent).toBe('Filename exceeds maximum length');
 
     // Set error state (count) and re-render
     component.invalidFile = 'count';

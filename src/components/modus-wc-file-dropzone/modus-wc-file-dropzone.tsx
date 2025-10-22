@@ -101,19 +101,25 @@ export class ModusWcFileDropzone {
   }
 
   private isValidFileName(file: File): boolean {
-    if (!this.maxFileNameLength) return true;
+    if (this.maxFileNameLength === undefined || this.maxFileNameLength === null)
+      return true;
 
     const fileNameWithoutExtension = file.name.replace(/\.[^/.]+$/, '');
     return fileNameWithoutExtension.length <= this.maxFileNameLength;
   }
 
   private isValidFileCount(fileCount: number): boolean {
-    if (!this.maxFileCount) return true;
+    if (this.maxFileCount === undefined || this.maxFileCount === null)
+      return true;
     return fileCount <= this.maxFileCount;
   }
 
   private isValidFileSize(files: FileList): boolean {
-    if (!this.maxTotalFileSizeBytes) return true;
+    if (
+      this.maxTotalFileSizeBytes === undefined ||
+      this.maxTotalFileSizeBytes === null
+    )
+      return true;
     let totalSize = 0;
     for (let i = 0; i < files.length; i++) {
       totalSize += files[i].size;
