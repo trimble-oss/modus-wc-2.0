@@ -500,6 +500,10 @@ export namespace Components {
          */
         "feedback"?: IInputFeedbackProp;
         /**
+          * The date format for display and input.
+         */
+        "format"?: 'yyyy-mm-dd' | 'dd-mm-yyyy' | 'MMM DD, YYYY';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -536,7 +540,7 @@ export namespace Components {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control (yyyy-mm-dd).
+          * The value of the control.
          */
         "value": string;
     }
@@ -3286,6 +3290,10 @@ declare namespace LocalJSX {
          */
         "feedback"?: IInputFeedbackProp;
         /**
+          * The date format for display and input.
+         */
+        "format"?: 'yyyy-mm-dd' | 'dd-mm-yyyy' | 'MMM DD, YYYY';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -3334,7 +3342,7 @@ declare namespace LocalJSX {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control (yyyy-mm-dd).
+          * The value of the control.
          */
         "value"?: string;
     }
