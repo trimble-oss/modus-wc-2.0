@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
+import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, WeekStartDay } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -21,7 +21,7 @@ import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 import { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
-export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
+export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, WeekStartDay } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -502,7 +502,11 @@ export namespace Components {
         /**
           * The date format for display and input.
          */
-        "format"?: 'yyyy-mm-dd' | 'dd-mm-yyyy' | 'MMM DD, YYYY';
+        "format"?: | 'yyyy-mm-dd'
+    | 'dd-mm-yyyy'
+    | 'yyyy/mm/dd'
+    | 'dd/mm/yyyy'
+    | 'MMM DD, YYYY';
         /**
           * The ID of the input element.
          */
@@ -543,6 +547,10 @@ export namespace Components {
           * The value of the control.
          */
         "value": string;
+        /**
+          * The first day of the week for the calendar display
+         */
+        "weekStartDay"?: WeekStartDay;
     }
     /**
      * A customizable divider component used to separate content horizontally or vertically
@@ -2197,6 +2205,8 @@ declare global {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
         "inputFocus": FocusEvent;
+        "calendarMonthChange": number;
+        "calendarYearChange": number;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -3370,7 +3380,11 @@ declare namespace LocalJSX {
         /**
           * The date format for display and input.
          */
-        "format"?: 'yyyy-mm-dd' | 'dd-mm-yyyy' | 'MMM DD, YYYY';
+        "format"?: | 'yyyy-mm-dd'
+    | 'dd-mm-yyyy'
+    | 'yyyy/mm/dd'
+    | 'dd/mm/yyyy'
+    | 'MMM DD, YYYY';
         /**
           * The ID of the input element.
          */
@@ -3395,6 +3409,14 @@ declare namespace LocalJSX {
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
+        /**
+          * Event emitted when the calendar month selection changes.
+         */
+        "onCalendarMonthChange"?: (event: ModusWcDateCustomEvent<number>) => void;
+        /**
+          * Event emitted when the calendar year selection changes.
+         */
+        "onCalendarYearChange"?: (event: ModusWcDateCustomEvent<number>) => void;
         /**
           * Event emitted when the input loses focus.
          */
@@ -3423,6 +3445,10 @@ declare namespace LocalJSX {
           * The value of the control.
          */
         "value"?: string;
+        /**
+          * The first day of the week for the calendar display
+         */
+        "weekStartDay"?: WeekStartDay;
     }
     /**
      * A customizable divider component used to separate content horizontally or vertically

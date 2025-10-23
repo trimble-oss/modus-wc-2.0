@@ -37,40 +37,40 @@ export class ModusWcFileDropzone {
   @State() private uploadSuccess = false;
 
   /** Accepted file types (e.g. '.jpg,.png' or 'image/*') */
-  @Prop({ mutable: false }) acceptFileTypes?: string;
+  @Prop() acceptFileTypes?: string;
 
   /** Custom CSS class to apply to the file dropzone element */
-  @Prop({ mutable: false }) customClass?: string = '';
+  @Prop() customClass?: string = '';
 
   /** Disable the file input */
   @Prop() disabled?: boolean;
 
   /** Custom instructions shown when files are dragged over the dropzone */
-  @Prop({ mutable: false }) fileDraggedOverInstructions?: string;
+  @Prop() fileDraggedOverInstructions?: string;
 
   /** Include state icon (upload, success, error) */
-  @Prop({ mutable: false }) includeStateIcon?: boolean = true;
+  @Prop() includeStateIcon?: boolean = true;
 
   /** Custom instructions shown as the default dropzone message */
-  @Prop({ mutable: false }) instructions?: string;
+  @Prop() instructions?: string;
 
   /** Custom error message displayed when an invalid file type is selected */
-  @Prop({ mutable: false }) invalidFileTypeMessage?: string;
+  @Prop() invalidFileTypeMessage?: string;
 
   /** Maximum allowed length of filename, will show error if exceeded */
-  @Prop({ mutable: false }) maxFileNameLength?: number;
+  @Prop() maxFileNameLength?: number;
 
   /** Maximum number of files allowed, will show error if exceeded */
-  @Prop({ mutable: false }) maxFileCount?: number;
+  @Prop() maxFileCount?: number;
 
   /** Maximum total file size in bytes allowed, will show error if exceeded */
-  @Prop({ mutable: false }) maxTotalFileSizeBytes?: number;
+  @Prop() maxTotalFileSizeBytes?: number;
 
   /** Allow multiple file selection */
-  @Prop({ mutable: false }) multiple?: boolean;
+  @Prop() multiple?: boolean;
 
   /** Success message displayed when files are uploaded successfully */
-  @Prop({ mutable: false }) successMessage?: string;
+  @Prop() successMessage?: string;
 
   /** Event emitted when files are selected */
   @StencilEvent() fileSelect!: EventEmitter<FileList>;

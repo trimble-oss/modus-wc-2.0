@@ -58,7 +58,7 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
 
   &:has(input:disabled) {
     .dropzone-content {
-      background-color: var(--modus-wc-color-gray-9);
+      background-color: var(--modus-wc-color-gray-0);
       border-color: var(--modus-wc-color-gray-6);
       color: var(--modus-wc-color-gray-6);
       cursor: not-allowed;
@@ -103,6 +103,15 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
       );
       border-color: var(--modus-wc-color-green);
       color: var(--modus-wc-color-gray-light);
+    }
+  }
+
+  &:has(input:disabled) {
+    .dropzone-content {
+      background-color: var(--modus-wc-color-gray-9);
+      border-color: var(--modus-wc-color-gray-3);
+      color: var(--modus-wc-color-gray-6);
+      cursor: not-allowed;
     }
   }
 }
