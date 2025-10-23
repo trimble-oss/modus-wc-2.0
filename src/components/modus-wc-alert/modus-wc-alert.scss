@@ -77,6 +77,7 @@ modus-wc-alert .modus-wc-alert {
 [data-theme='connect-dark'] modus-wc-alert .modus-wc-alert,
 [data-theme='modus-classic-dark'] modus-wc-alert .modus-wc-alert,
 [data-theme='modus-modern-dark'] modus-wc-alert .modus-wc-alert {
+  background-color: var(--modus-wc-color-gray-10);
   border-color: var(--modus-wc-color-gray-9);
   color: var(--modus-wc-color-gray-light);
 
