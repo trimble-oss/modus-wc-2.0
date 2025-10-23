@@ -33,6 +33,9 @@ export class ModusWcFileDropzone {
   @State() private invalidFile: 'none' | 'type' | 'name' | 'count' | 'size' =
     'none';
 
+  /** Stores the error message when validation fails */
+  @State() private errorMessage = '';
+
   /** Tracks if files were successfully uploaded */
   @State() private uploadSuccess = false;
 
@@ -77,6 +80,24 @@ export class ModusWcFileDropzone {
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  // Generate error message based on validation type - called only when validation fails
+  private getErrorMessage(
+    errorType: 'type' | 'name' | 'count' | 'size'
+  ): string {
+    switch (errorType) {
+      case 'type':
+        return this.invalidFileTypeMessage || 'File format not accepted';
+      case 'name':
+        return 'Filename exceeds maximum length';
+      case 'count':
+        return `Maximum number of files allowed is ${this.maxFileCount}`;
+      case 'size':
+        return `Total file size exceeds ${this.formatFileSize(this.maxTotalFileSizeBytes)}`;
+      default:
+        return 'Validation error';
+    }
   }
 
   private isValidFileType(file: File): boolean {
@@ -147,28 +168,37 @@ export class ModusWcFileDropzone {
 
     // Reset validation state
     this.invalidFile = 'none';
+    this.errorMessage = '';
     this.uploadSuccess = false;
 
     // Check file count
     if (!this.isValidFileCount(files.length)) {
-      return this.setInputValue('count', event.target as HTMLInputElement);
+      this.setInputValue('count', event.target as HTMLInputElement);
+      this.errorMessage = this.getErrorMessage('count');
+      return;
     }
 
     // Check total file size
     if (!this.isValidFileSize(files)) {
-      return this.setInputValue('size', event.target as HTMLInputElement);
+      this.setInputValue('size', event.target as HTMLInputElement);
+      this.errorMessage = this.getErrorMessage('size');
+      return;
     }
 
     // Check each file
     for (let i = 0; i < files.length; i++) {
       // Check file type
       if (!this.isValidFileType(files[i])) {
-        return this.setInputValue('type', event.target as HTMLInputElement);
+        this.setInputValue('type', event.target as HTMLInputElement);
+        this.errorMessage = this.getErrorMessage('type');
+        return;
       }
 
       // Check file name length
       if (!this.isValidFileName(files[i])) {
-        return this.setInputValue('name', event.target as HTMLInputElement);
+        this.setInputValue('name', event.target as HTMLInputElement);
+        this.errorMessage = this.getErrorMessage('name');
+        return;
       }
     }
 
@@ -202,17 +232,20 @@ export class ModusWcFileDropzone {
     if (files && files.length > 0) {
       // Reset validation state
       this.invalidFile = 'none';
+      this.errorMessage = '';
       this.uploadSuccess = false;
 
       // Check file count
       if (!this.isValidFileCount(files.length)) {
         this.setInputValue('count');
+        this.errorMessage = this.getErrorMessage('count');
         return;
       }
 
       // Check total file size
       if (!this.isValidFileSize(files)) {
         this.setInputValue('size');
+        this.errorMessage = this.getErrorMessage('size');
         return;
       }
 
@@ -221,12 +254,14 @@ export class ModusWcFileDropzone {
         // Check file type
         if (!this.isValidFileType(files[i])) {
           this.setInputValue('type');
+          this.errorMessage = this.getErrorMessage('type');
           return;
         }
 
         // Check file name length
         if (!this.isValidFileName(files[i])) {
           this.setInputValue('name');
+          this.errorMessage = this.getErrorMessage('name');
           return;
         }
       }
@@ -280,10 +315,6 @@ export class ModusWcFileDropzone {
 
   render() {
     const messages = {
-      type: this.invalidFileTypeMessage || 'File format not accepted',
-      name: `Filename exceeds maximum length`,
-      count: `Maximum number of files allowed is ${this.maxFileCount}`,
-      size: `Total file size exceeds ${this.formatFileSize(this.maxTotalFileSizeBytes)}`,
       success: this.successMessage || 'Successfully uploaded',
       dragOver: this.fileDraggedOverInstructions || 'Drop files here',
     };
@@ -318,7 +349,7 @@ export class ModusWcFileDropzone {
     const message = this.isDraggingOver
       ? messages.dragOver
       : this.invalidFile !== 'none'
-        ? messages[this.invalidFile]
+        ? this.errorMessage
         : this.uploadSuccess
           ? messages.success
           : this.instructions;

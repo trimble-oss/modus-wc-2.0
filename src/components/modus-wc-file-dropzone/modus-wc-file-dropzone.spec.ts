@@ -1087,6 +1087,7 @@ describe('modus-wc-file-dropzone', () => {
     // Set error state and re-render
     component.isDraggingOver = false;
     component.invalidFile = 'type';
+    component.errorMessage = 'Invalid file type';
     await page.waitForChanges();
     iconElement = root.querySelector('modus-wc-icon');
     expect(iconElement).not.toBeNull();
@@ -1142,6 +1143,7 @@ describe('modus-wc-file-dropzone', () => {
     // Set error state (type) and re-render
     component.isDraggingOver = false;
     component.invalidFile = 'type';
+    component.errorMessage = 'Invalid file type';
     await page.waitForChanges();
     messageElement = root.querySelector('.default-content span');
     expect(messageElement).not.toBeNull();
@@ -1149,6 +1151,7 @@ describe('modus-wc-file-dropzone', () => {
 
     // Set error state (name) and re-render
     component.invalidFile = 'name';
+    component.errorMessage = 'Filename exceeds maximum length';
     await page.waitForChanges();
     messageElement = root.querySelector('.default-content span');
     expect(messageElement).not.toBeNull();
@@ -1156,6 +1159,7 @@ describe('modus-wc-file-dropzone', () => {
 
     // Set error state (count) and re-render
     component.invalidFile = 'count';
+    component.errorMessage = 'Maximum number of files allowed is 2';
     await page.waitForChanges();
     messageElement = root.querySelector('.default-content span');
     expect(messageElement).not.toBeNull();
@@ -1165,6 +1169,7 @@ describe('modus-wc-file-dropzone', () => {
 
     // Set error state (size) and re-render
     component.invalidFile = 'size';
+    component.errorMessage = 'Total file size exceeds 50 Bytes';
     await page.waitForChanges();
     messageElement = root.querySelector('.default-content span');
     expect(messageElement).not.toBeNull();
@@ -1307,5 +1312,41 @@ describe('modus-wc-file-dropzone', () => {
       // Restore the original method
       ModusWcFileDropzone.prototype.handleFileChange = originalHandleFileChange;
     }
+  });
+
+  it('should return default error message for unknown error types in getErrorMessage', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+    });
+
+    const component = page.rootInstance;
+
+    // Test the default case by calling getErrorMessage with an invalid error type
+    // We need to cast to 'any' to test the default case since TypeScript won't allow invalid types
+    const errorMessage = (component as any).getErrorMessage('invalid' as any);
+
+    expect(errorMessage).toBe('Validation error');
+  });
+
+  it('should return "0 Bytes" for zero or undefined bytes in formatFileSize', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+    });
+
+    const component = page.rootInstance;
+
+    // Test with 0 bytes
+    const zeroResult = (component as any).formatFileSize(0);
+    expect(zeroResult).toBe('0 Bytes');
+
+    // Test with undefined
+    const undefinedResult = (component as any).formatFileSize(undefined);
+    expect(undefinedResult).toBe('0 Bytes');
+
+    // Test with null (falsy value)
+    const nullResult = (component as any).formatFileSize(null);
+    expect(nullResult).toBe('0 Bytes');
   });
 });
