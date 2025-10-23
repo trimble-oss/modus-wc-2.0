@@ -1322,9 +1322,17 @@ describe('modus-wc-file-dropzone', () => {
 
     const component = page.rootInstance;
 
+    // Use type assertion with more specific interface
+    type PrivateMethods = {
+      getErrorMessage: (type: string) => string;
+      formatFileSize: (bytes?: number | null) => string;
+    };
+
     // Test the default case by calling getErrorMessage with an invalid error type
-    // We need to cast to 'any' to test the default case since TypeScript won't allow invalid types
-    const errorMessage = (component as any).getErrorMessage('invalid' as any);
+    // Access the private method using type casting and bracket notation
+    const errorMessage = (component as unknown as PrivateMethods)[
+      'getErrorMessage'
+    ]('invalid');
 
     expect(errorMessage).toBe('Validation error');
   });
@@ -1337,16 +1345,27 @@ describe('modus-wc-file-dropzone', () => {
 
     const component = page.rootInstance;
 
+    // Access the private method with a more specific type
+    type PrivateMethods = {
+      formatFileSize: (bytes?: number | null) => string;
+    };
+
     // Test with 0 bytes
-    const zeroResult = (component as any).formatFileSize(0);
+    const zeroResult = (component as unknown as PrivateMethods)[
+      'formatFileSize'
+    ](0);
     expect(zeroResult).toBe('0 Bytes');
 
     // Test with undefined
-    const undefinedResult = (component as any).formatFileSize(undefined);
+    const undefinedResult = (component as unknown as PrivateMethods)[
+      'formatFileSize'
+    ](undefined);
     expect(undefinedResult).toBe('0 Bytes');
 
     // Test with null (falsy value)
-    const nullResult = (component as any).formatFileSize(null);
+    const nullResult = (component as unknown as PrivateMethods)[
+      'formatFileSize'
+    ](null);
     expect(nullResult).toBe('0 Bytes');
   });
 });
