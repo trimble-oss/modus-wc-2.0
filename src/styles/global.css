@@ -41,7 +41,6 @@ body {
 }
 
 modus-wc-text-input .modus-wc-text-input,
-modus-wc-select,
 modus-wc-textarea .modus-wc-textarea,
 modus-wc-time-input .modus-wc-time-input,
 modus-wc-date .modus-wc-date {
@@ -49,6 +48,12 @@ modus-wc-date .modus-wc-date {
 
   background: transparent;
   padding: 0 var(--modus-wc-spacing-sm);
+}
+
+modus-wc-select {
+  --fallback-b1: transparent;
+
+  background: transparent;
 }
 
 modus-wc-number-input .modus-wc-number-input {
