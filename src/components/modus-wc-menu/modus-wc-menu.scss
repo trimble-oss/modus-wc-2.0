@@ -26,7 +26,9 @@ modus-wc-menu {
   .modus-wc-menu-dropdown {
     list-style: none;
   }
-
+  .modus-wc-menu-dropdown {
+    display: none;
+  }
   .modus-wc-menu-dropdown-show {
     display: block;
   }

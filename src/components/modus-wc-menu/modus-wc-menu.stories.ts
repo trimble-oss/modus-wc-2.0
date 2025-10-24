@@ -450,33 +450,38 @@ export const WithSubmenu: Story = {
       </style>
       <modus-wc-menu custom-class="menu-width">
         <modus-wc-menu-item label="Charts" .hasSubmenu=${true} value="charts">
+          <modus-wc-icon
+            slot="start-icon"
+            decorative="true"
+            name="bar_graph"
+          ></modus-wc-icon>
           <modus-wc-menu .isSubMenu=${true}>
-            <modus-wc-menu-item
-              label="Bar Chart"
-              value="bar-chart"
-            ></modus-wc-menu-item>
-            <modus-wc-menu-item
-              label="Line Chart"
-              value="line-chart"
-            ></modus-wc-menu-item>
+            <modus-wc-menu-item label="Bar Chart" value="bar-chart">
+            </modus-wc-menu-item>
+            <modus-wc-menu-item label="Line Chart" value="line-chart">
+            </modus-wc-menu-item>
           </modus-wc-menu>
         </modus-wc-menu-item>
 
-        <modus-wc-menu-item
-          label="Calendar"
-          value="calendar"
-        ></modus-wc-menu-item>
+        <modus-wc-menu-item label="Calendar" value="calendar">
+          <modus-wc-icon
+            slot="start-icon"
+            decorative="true"
+            name="calendar"
+          ></modus-wc-icon>
+        </modus-wc-menu-item>
 
         <modus-wc-menu-item label="Reports" .hasSubmenu=${true} value="reports">
+          <modus-wc-icon
+            slot="start-icon"
+            decorative="true"
+            name="master_data"
+          ></modus-wc-icon>
           <modus-wc-menu .isSubMenu=${true}>
-            <modus-wc-menu-item
-              label="Monthly Report"
-              value="monthly-report"
-            ></modus-wc-menu-item>
-            <modus-wc-menu-item
-              label="Annual Report"
-              value="annual-report"
-            ></modus-wc-menu-item>
+            <modus-wc-menu-item label="Monthly Report" value="monthly-report">
+            </modus-wc-menu-item>
+            <modus-wc-menu-item label="Annual Report" value="annual-report">
+            </modus-wc-menu-item>
           </modus-wc-menu>
         </modus-wc-menu-item>
       </modus-wc-menu>
