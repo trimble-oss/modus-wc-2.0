@@ -56,11 +56,35 @@ modus-wc-alert .modus-wc-alert {
     border-color: var(--modus-wc-color-yellow-dark);
     color: var(--modus-wc-color-black);
   }
+}
 
-  .modus-wc-alert-close-icon,
+[data-theme='modus-classic-light'] modus-wc-alert .modus-wc-alert {
   .modus-wc-alert-icon {
-    height: 1.5rem;
-    width: 1.5rem;
+    color: var(--modus-wc-color-gray-5);
+  }
+
+  &.modus-wc-alert-info {
+    .modus-wc-alert-icon {
+      color: var(--modus-wc-color-info-blue);
+    }
+  }
+
+  &.modus-wc-alert-error {
+    .modus-wc-alert-icon {
+      color: var(--modus-wc-color-red-dark);
+    }
+  }
+
+  &.modus-wc-alert-success {
+    .modus-wc-alert-icon {
+      color: var(--modus-wc-color-green-dark);
+    }
+  }
+
+  &.modus-wc-alert-warning {
+    .modus-wc-alert-icon {
+      color: var(--modus-wc-color-yellow-dark);
+    }
   }
 }
 
@@ -87,7 +111,7 @@ modus-wc-alert .modus-wc-alert {
       var(--modus-wc-color-highlight-blue) 30%,
       transparent
     );
-    border-color: var(--modus-wc-color-blue-light);
+    border-color: var(--modus-wc-color-highlight-blue);
   }
 
   &.modus-wc-alert-error {
