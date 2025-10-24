@@ -76,7 +76,7 @@ exports[`modus-wc-alert should render with custom props 1`] = `
 <modus-wc-alert alert-description="Custom description" alert-title="Custom title" custom-class="test-class" icon="help" variant="info">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-info test-class" role="status">
-    <modus-wc-icon custom-class="modus-wc-alert-icon" name="help"></modus-wc-icon>
+    <modus-wc-icon custom-class="modus-wc-alert-icon" name="help" variant="outlined"></modus-wc-icon>
     <div>
       <div class="title">
         Custom title
