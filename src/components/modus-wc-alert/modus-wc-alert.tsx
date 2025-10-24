@@ -98,7 +98,7 @@ export class ModusWcAlert {
         return (
           <modus-wc-icon
             custom-class="modus-wc-alert-icon"
-            name="check-circle"
+            name="check_circle"
           />
         );
       case 'warning':

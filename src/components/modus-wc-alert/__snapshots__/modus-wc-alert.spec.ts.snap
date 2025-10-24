@@ -42,7 +42,7 @@ exports[`modus-wc-alert should render success variant with check_circle icon 1`]
   <div class="modus-wc-alert modus-wc-alert-success" role="status">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
       <i aria-hidden="true" class="modus-icons modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
-        check-circle
+        check_circle
       </i>
     </modus-wc-icon>
     <div>
