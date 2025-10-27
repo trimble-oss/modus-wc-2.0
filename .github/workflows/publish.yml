@@ -58,7 +58,7 @@ jobs:
         id: npm_pack
 
       - name: Upload tarball as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: npm-tarball
           path: 'dist/*.tgz'
