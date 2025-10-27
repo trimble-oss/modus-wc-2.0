@@ -85,7 +85,7 @@ export const CustomButton: Story = {
 >
   <modus-wc-button
     aria-label="View messages"
-    color="secondary"
+    color="tertiary"
     slot="button"
     variant="outlined"
   >View Messages</modus-wc-button>
