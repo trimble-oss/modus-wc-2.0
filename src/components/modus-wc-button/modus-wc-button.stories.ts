@@ -128,7 +128,7 @@ export const DynamicTextUpdate: Story = {
 </script>
 
 <div>
-  <modus-wc-button id="text-update-btn" color="primary" variant="filled" @buttonClick=${updateButtonText}>
+  <modus-wc-button id="text-update-btn" color="primary" variant="filled" onclick="updateButtonText()" @buttonClick=${updateButtonText}>
     <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon><span id="btn-text">Press button to update content</span>
     <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
   </modus-wc-button>
