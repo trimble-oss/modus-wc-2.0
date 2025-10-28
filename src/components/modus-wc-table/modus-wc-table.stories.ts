@@ -638,12 +638,106 @@ export const InlineEditing: Story = {
           return span;
         },
       },
+      {
+        id: 'dueDate',
+        header: 'Due Date',
+        accessor: 'dueDate',
+        editor: 'custom',
+        customEditorRenderer: (value, onCommit) => {
+          const container = document.createElement('div');
+          container.style.width = '100%';
+
+          const datePicker = document.createElement('modus-wc-date');
+          datePicker.value = value as string;
+          datePicker.style.width = '100%';
+          datePicker.bordered = false;
+
+          const handleChange = (e: Event) => {
+            // Only commit when it's NOT a CustomEvent (date selection, not select change)
+            if (!(e instanceof CustomEvent)) {
+              const target = e.target as HTMLInputElement;
+              // Wait a bit to see if calendar is still open
+              setTimeout(() => {
+                const calendar = datePicker.querySelector(
+                  '.calendar-container'
+                );
+                // Only commit if calendar is closed (date was selected)
+                if (!calendar) {
+                  onCommit(target.value);
+                }
+              }, 100);
+            }
+          };
+
+          const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Enter') {
+              const input = datePicker.querySelector('input');
+              if (input && input.value) {
+                onCommit(input.value);
+                e.preventDefault();
+              }
+            }
+          };
+
+          datePicker.addEventListener('inputChange', handleChange);
+          container.addEventListener('keydown', handleKeyDown);
+          container.appendChild(datePicker);
+
+          setTimeout(() => {
+            const input = datePicker.querySelector('input');
+            input?.focus();
+          }, 0);
+
+          return container;
+        },
+        cellRenderer: (value): string => {
+          if (!value) return '-';
+
+          // Parse dd-mm-yyyy format from date picker
+          const dateString = value as string;
+          const parts = dateString.split(/[-/]/);
+
+          let date: Date;
+          if (parts.length === 3 && parts[0].length <= 2) {
+            // Assume dd-mm-yyyy or dd/mm/yyyy format
+            const day = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+            const year = parseInt(parts[2], 10);
+            date = new Date(year, month, day);
+          } else {
+            // Fallback to default parsing
+            date = new Date(dateString);
+          }
+
+          // Check if date is valid
+          if (isNaN(date.getTime())) {
+            return dateString; // Return original value if parsing fails
+          }
+
+          return date.toLocaleDateString();
+        },
+      },
     ];
 
     const data = [
-      { id: '1', name: 'John Doe', status: 'Active' },
-      { id: '2', name: 'Jane Smith', status: 'Inactive' },
-      { id: '3', name: 'Bob Johnson', status: 'Pending' },
+      {
+        id: '1',
+        name: 'John Doe',
+        status: 'Active',
+        dueDate: '15-10-2025',
+      },
+      {
+        id: '2',
+        name: 'Jane Smith',
+        status: 'Inactive',
+        dueDate: '20-11-2025',
+      },
+      {
+        id: '3',
+        name: 'Bob Johnson',
+        status: 'Pending',
+        dueDate: '05-12-2025',
+      },
     ];
 
     return html`
@@ -748,12 +842,93 @@ export const InlineEditing: Story = {
               return span;
             },
           },
+          {
+            id: 'dueDate',
+            header: 'Due Date',
+            accessor: 'dueDate',
+            editor: 'custom',
+            customEditorRenderer: (value, onCommit) => {
+              const container = document.createElement('div');
+              container.style.width = '100%';
+
+          const datePicker = document.createElement('modus-wc-date');
+          datePicker.value = value as string;
+          datePicker.style.width = '100%';
+          datePicker.bordered = false;
+
+          const handleChange = (e: Event) => {
+            // Only commit when it's NOT a CustomEvent (date selection, not select change)
+            if (!(e instanceof CustomEvent)) {
+              const target = e.target as HTMLInputElement;
+              // Wait a bit to see if calendar is still open
+              setTimeout(() => {
+                const calendar = datePicker.querySelector(
+                  '.calendar-container'
+                );
+                // Only commit if calendar is closed (date was selected)
+                if (!calendar) {
+                  onCommit(target.value);
+                }
+              }, 100);
+            }
+          };
+
+          const handleBlur = (e: FocusEvent) => {
+            const input = datePicker.querySelector('input');
+            if (input && input.value) {
+              onCommit(input.value);
+            }
+          };
+
+          const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Enter') {
+              const input = datePicker.querySelector('input');
+              if (input && input.value) {
+                onCommit(input.value);
+                e.preventDefault();
+              }
+            }
+          };
+
+          datePicker.addEventListener('inputChange', handleChange);
+          datePicker.addEventListener('inputBlur', handleBlur);
+          container.addEventListener('keydown', handleKeyDown);
+          container.appendChild(datePicker);
+
+              setTimeout(() => {
+                const input = datePicker.querySelector('input');
+                input?.focus();
+              }, 0);
+
+              return container;
+            },
+            cellRenderer: (value) => {
+              if (!value) return '-';
+              const date = new Date(value as string);
+              return date.toLocaleDateString();
+            },
+          },
         ];
 
         const data = [
-          { id: '1', name: 'John Doe', status: 'Active' },
-          { id: '2', name: 'Jane Smith', status: 'Inactive' },
-          { id: '3', name: 'Bob Johnson', status: 'Pending' },
+          {
+            id: '1',
+            name: 'John Doe',
+            status: 'Active',
+            dueDate: '15-10-2025',
+          },
+          {
+            id: '2',
+            name: 'Jane Smith',
+            status: 'Inactive',
+            dueDate: '20-11-2025',
+          },
+          {
+            id: '3',
+            name: 'Bob Johnson',
+            status: 'Pending',
+            dueDate: '05-12-2025',
+          },
         ];
       </script>
       <modus-wc-table

@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-file-dropzone should render with accept-file-types prop 1`] = `
+<modus-wc-file-dropzone accept-file-types=".jpg,.png,image/*">
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input accept=".jpg,.png,image/*" class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+        <span></span>
+        <div style="display: block;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should render with custom drag-over instructions 1`] = `
+<modus-wc-file-dropzone file-dragged-over-instructions="Release to upload">
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+        <span></span>
+        <div style="display: block;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should render with custom instructions 1`] = `
+<modus-wc-file-dropzone instructions="Upload documents here">
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+        <span>
+          Upload documents here
+        </span>
+        <div style="display: block;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should render with default props 1`] = `
+<modus-wc-file-dropzone>
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+        <span></span>
+        <div style="display: block;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should render with disabled prop 1`] = `
+<modus-wc-file-dropzone disabled="">
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input file-input-disabled modus-wc-file-input" disabled="" type="file">
+    <div aria-disabled="true" class="dropzone-content" role="button" tabindex="-1">
+      <div class="default-content">
+        <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+        <span></span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
