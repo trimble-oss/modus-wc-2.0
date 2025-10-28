@@ -86,10 +86,10 @@ const Template: Story = {
     },
   ];
  // Adding this block to show how to set options via JS 
-  const items = document.querySelectorAll('modus-wc-collapse');
-  items.forEach((item, index) => {
-   item.options = collapseOptions[index];
-  });
+  // const items = document.querySelectorAll('modus-wc-collapse');
+  // items.forEach((item, index) => {
+  //  item.options = collapseOptions[index];
+  // });
 </script>
     `;
   },

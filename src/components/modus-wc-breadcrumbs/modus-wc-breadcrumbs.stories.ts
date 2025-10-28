@@ -92,8 +92,8 @@ const Template: Story = {
     },
   ];
   // Adding this block to show how to set options via JS 
-  const breadcrumbs = document.querySelector('modus-wc-breadcrumbs');
-  breadcrumbs.items = items;
+  // const breadcrumbs = document.querySelector('modus-wc-breadcrumbs');
+  // breadcrumbs.items = items;
 </script>
     `;
   },
@@ -131,8 +131,8 @@ export const UnderlineLinks: Story = {
     },
   ];
   // Adding this block to show how to set options via JS 
-  const breadcrumbs = document.querySelector('modus-wc-breadcrumbs');
-  breadcrumbs.items = items;
+  // const breadcrumbs = document.querySelector('modus-wc-breadcrumbs');
+  // breadcrumbs.items = items;
 </script>
     `;
   },
