@@ -162,7 +162,7 @@ export const DynamicTextUpdate: Story = {
   </modus-wc-button>
 
   <div style="margin-top: 8px; display: flex; gap: 8px; align-items: center;">
-    <modus-wc-text-input id="btn-text-input" type="text" value="Updated Text" style="padding: 4px 8px;"></modus-wc-text-input>
+    <modus-wc-text-input id="btn-text-input" type="text" value="Updated Text" style="padding: 4px 8px;" />
   </div>
 </div>`,
       },
