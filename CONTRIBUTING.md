@@ -51,7 +51,7 @@ Stencil web component implementation details can be found in their [Framework In
 ## Submitting Issues
 
 Whether you're contributing directly to the code or have suggestions, submitting an issue through GitHub is needed
-for referencing changes. Please submit change items as an Issue [here](https://github.com/trimble-oss/modus-web-components/issues).
+for referencing changes. Please submit change items as an Issue [here](https://github.com/trimble-oss/modus-wc-2.0/issues).
 
 If the issue's considered a bug, add the 'bug' label to the issue.
 
