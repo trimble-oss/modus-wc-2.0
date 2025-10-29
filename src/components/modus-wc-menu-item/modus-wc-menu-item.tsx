@@ -88,7 +88,7 @@ export class ModusWcMenuItem {
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       disabled: this.disabled,
-      selected: this.selected,
+      selected: this.hasSubmenu ? false : this.selected,
       focused: this.focused,
       size: this.size,
     });
