@@ -105,6 +105,16 @@ export const Default: Story = {
       size=${ifDefined(args.size)}
       .value=${args.value}
     ></modus-wc-select>
+    <script>
+      const options = [
+        { label: 'Option 1', value: '1' },
+        { label: 'Option 2', value: '2' },
+        { label: 'Option 3', value: '3' },
+      ];
+      // Set options via JavaScript
+      // const select = document.querySelector('modus-wc-select');
+      // select.options = options;
+    </script>
   `,
 };
 
@@ -118,11 +128,18 @@ export const WithErrorFeedback: Story = {
     <modus-wc-select
       aria-label="Select input"
       .feedback=${errorFeedback}
+      id="error-select"
       label=${ifDefined(args.label)}
       .options=${[]}
       ?required=${true}
       .value=${args.value}
     ></modus-wc-select>
+    <script>
+      // Set feedback via JavaScript
+      // feedback = { level: 'error', message: 'Value is required.' };
+      // const select = document.getElementById('error-select');
+      // select.feedback = feedback;
+    </script>
   `,
 };
 
