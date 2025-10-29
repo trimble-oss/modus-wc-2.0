@@ -136,9 +136,8 @@ export const WithErrorFeedback: Story = {
     ></modus-wc-select>
     <script>
       // Set feedback via JavaScript
-      // feedback = { level: 'error', message: 'Value is required.' };
       // const select = document.getElementById('error-select');
-      // select.feedback = feedback;
+      // select.feedback = { level: 'error', message: 'Value is required.' };
     </script>
   `,
 };
