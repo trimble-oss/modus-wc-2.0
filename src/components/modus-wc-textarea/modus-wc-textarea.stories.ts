@@ -145,7 +145,7 @@ export const WithErrorFeedback: Story = {
       .value=${args.value}
     ></modus-wc-textarea>
     <script>
-      // Set feedback via JavaScript
+      // Adding this block to show how to set feedback via JS
       //const input = document.getElementById('error-input');
       //input.feedback = { level: 'error', message: 'Value is required.' };
     </script>

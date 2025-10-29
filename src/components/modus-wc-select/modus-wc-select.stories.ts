@@ -111,7 +111,7 @@ export const Default: Story = {
         { label: 'Option 2', value: '2' },
         { label: 'Option 3', value: '3' },
       ];
-      // Set options via JavaScript
+      // Adding this block to show how to set options via JS
       // const select = document.querySelector('modus-wc-select');
       // select.options = options;
     </script>
@@ -135,7 +135,7 @@ export const WithErrorFeedback: Story = {
       .value=${args.value}
     ></modus-wc-select>
     <script>
-      // Set feedback via JavaScript
+      // Adding this block to show how to set feedback via JS
       // const select = document.getElementById('error-select');
       // select.feedback = { level: 'error', message: 'Value is required.' };
     </script>
