@@ -215,19 +215,10 @@ export const collapsibleMenu: Story = {
         const container = eventSource?.closest('.layout-with-navbar');
 
         if (container) {
-          const childrenContainers = container.querySelectorAll(
-            '.children-container'
-          );
-          childrenContainers.forEach((container) => {
-            container.classList.add('hidden');
-            container.setAttribute('aria-hidden', 'true');
-          });
-
-          const collapseIcons = container.querySelectorAll('.dropdown-toggle');
-          collapseIcons.forEach((icon) => {
-            if (icon.getAttribute('name') === 'expand_less') {
-              icon.setAttribute('name', 'expand_more');
-            }
+          const menuItems = container.querySelectorAll('modus-wc-menu-item');
+          menuItems.forEach((item) => {
+            // Trigger the prop-based collapse
+            (item as HTMLElement & { collapseAll: boolean }).collapseAll = true;
           });
         }
       }
@@ -266,20 +257,50 @@ export const collapsibleMenu: Story = {
         .flex-right {
           float: right;
           display: flex;
-          justify-content: end;
           margin-left: 50px;
         }
 
+        .flex-right:hover {
+          background-color: unset;
+        }
+
         .menu-icon {
-          margin-left: 0.5rem;
-          margin-right: 1rem;
-          width: 2rem;
-          height: 2rem !important;
-          background-color: #f1f1f6;
-          margin: unset;
+          padding: 0.5rem !important;
           min-height: unset !important;
+          height: unset !important;
         }
       </style>
+      <script>
+        const handleMenuOpenChange = (e: CustomEvent) => {
+           const eventSource = e.target as HTMLElement;
+           const storyContainer = eventSource?.closest('.layout-with-navbar');
+           let sideNav: Element | null;
+
+           if (storyContainer) {
+             sideNav = storyContainer.querySelector('modus-wc-side-navigation');
+           } else {
+             sideNav = document.querySelector('modus-wc-side-navigation');
+           }
+
+           if (sideNav) {
+             (sideNav as HTMLElement & { expanded: boolean }).expanded = e.detail;
+           }
+         };
+
+         const handleExpandChange = async (e: CustomEvent) => {
+           if (!e.detail) {
+             const eventSource = e.target as HTMLElement;
+             const container = eventSource?.closest('.layout-with-navbar');
+
+             if (container) {
+               const menuItems = container.querySelectorAll('modus-wc-menu-item');
+               for (let i = 0; i < menuItems.length; i++) {
+                 await (menuItems[i] as any).collapseSubmenu();
+               }
+             }
+           }
+         };
+      </script>
 
       <div class="layout-with-navbar">
         <modus-wc-navbar
@@ -320,27 +341,24 @@ export const collapsibleMenu: Story = {
             <modus-wc-menu checkbox="false">
               <li>
                 <div class="flex-right">
-                  <modus-wc-button custom-class="menu-icon" color="neutral">
+                  <modus-wc-button custom-class="menu-icon" color="tertiary">
                     <modus-wc-icon
-                      decorative=""
                       name="filter"
-                      size="sm"
+                      size="xs"
                       variant="solid"
                     ></modus-wc-icon>
                   </modus-wc-button>
-                  <modus-wc-button custom-class="menu-icon" color="neutral">
+                  <modus-wc-button custom-class="menu-icon" color="tertiary">
                     <modus-wc-icon
-                      decorative=""
                       name="settings"
-                      size="sm"
+                      size="xs"
                       variant="solid"
                     ></modus-wc-icon>
                   </modus-wc-button>
-                  <modus-wc-button custom-class="menu-icon" color="neutral">
+                  <modus-wc-button custom-class="menu-icon" color="tertiary">
                     <modus-wc-icon
-                      decorative=""
                       name="more_vertical"
-                      size="sm"
+                      size="xs"
                       variant="solid"
                     ></modus-wc-icon>
                   </modus-wc-button>

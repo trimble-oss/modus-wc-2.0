@@ -7,6 +7,7 @@ import {
   Prop,
   State,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu-item.tailwind';
 import { DaisySize, ModusSize } from '../types';
@@ -33,6 +34,9 @@ export class ModusWcMenuItem {
 
   /** Custom CSS class to apply to the li element. */
   @Prop() customClass?: string = '';
+
+  /** Collapse all submenus when set to true */
+  @Prop({ reflect: true }) collapseAll?: boolean;
 
   /** The disabled state of the menu item. */
   @Prop() disabled?: boolean;
@@ -163,6 +167,26 @@ export class ModusWcMenuItem {
     // Always emit the event - let the parent decide whether to handle deselection
     this.itemSelect.emit({ value: this.value });
   };
+
+  private collapseAllSubmenus() {
+    const openSubmenus = this.el.querySelectorAll(
+      '.modus-wc-menu-dropdown-show'
+    );
+    openSubmenus.forEach((submenu) => {
+      submenu.classList.remove('modus-wc-menu-dropdown-show');
+      const parentLi = submenu.closest('li');
+      if (parentLi) parentLi.classList.remove('modus-wc-menu-item-expanded');
+    });
+    this.isExpanded = false;
+  }
+
+  @Watch('collapseAll')
+  handleCollapseAllChange(newValue: boolean) {
+    if (newValue) {
+      this.collapseAllSubmenus();
+      this.collapseAll = false;
+    }
+  }
 
   render() {
     return (

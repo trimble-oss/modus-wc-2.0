@@ -768,6 +768,10 @@ export namespace Components {
          */
         "checkbox"?: boolean;
         /**
+          * Collapse all submenus when set to true
+         */
+        "collapseAll"?: boolean;
+        /**
           * Custom CSS class to apply to the li element.
          */
         "customClass"?: string;
@@ -3581,6 +3585,10 @@ declare namespace LocalJSX {
           * If true, renders a checkbox at the start of the menu item.
          */
         "checkbox"?: boolean;
+        /**
+          * Collapse all submenus when set to true
+         */
+        "collapseAll"?: boolean;
         /**
           * Custom CSS class to apply to the li element.
          */

@@ -7,8 +7,10 @@ import { ModusSize } from '../types';
 interface MenuItemArgs {
   bordered?: boolean;
   checkbox?: boolean;
+  'collapse-all'?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
+  'has-submenu'?: boolean;
   label: string;
   selected?: boolean;
   size?: ModusSize;
@@ -56,6 +58,7 @@ const Template: Story = {
   <modus-wc-menu-item
     ?bordered=${args.bordered}
     ?checkbox=${args.checkbox}
+    ?collapse-all=${args['collapse-all']}
     custom-class=${ifDefined(args['custom-class'])}
     ?disabled=${args.disabled}
     label=${args.label}

@@ -3021,6 +3021,16 @@
           "name": "ModusWcMenuItem",
           "members": [
             {
+              "kind": "method",
+              "name": "collapseSubmenu",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Collapses any expanded submenus within this menu item."
+            },
+            {
               "kind": "field",
               "name": "el",
               "type": {
