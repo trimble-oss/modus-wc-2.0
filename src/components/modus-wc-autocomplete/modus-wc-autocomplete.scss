@@ -275,10 +275,26 @@ modus-wc-autocomplete.modus-wc-autocomplete {
   .modus-wc-menu {
     background-color: var(--modus-wc-color-white);
   }
+
+  .modus-wc-autocomplete-multi-select .modus-wc-autocomplete-content {
+    .modus-wc-text-input {
+      &:focus-within {
+        outline: unset;
+      }
+    }
+  }
 }
 
 [data-theme='modus-modern-dark'] modus-wc-autocomplete.modus-wc-autocomplete {
   .modus-wc-menu {
     background-color: var(--modus-wc-color-gray-10);
+  }
+
+  .modus-wc-autocomplete-multi-select .modus-wc-autocomplete-content {
+    .modus-wc-text-input {
+      &:focus-within {
+        outline: unset;
+      }
+    }
   }
 }

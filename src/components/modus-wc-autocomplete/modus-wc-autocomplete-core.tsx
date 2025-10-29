@@ -601,7 +601,7 @@ export function renderClearButton(
     <modus-wc-button
       onClick={params.onClearAll}
       variant="borderless"
-      color="secondary"
+      color="tertiary"
       aria-label="Clear all"
       disabled={params.disabled || params.readOnly}
       size="xs"
@@ -643,7 +643,7 @@ export function renderExpandCollapseButton(
       custom-class={`modus-wc-autocomplete-expand-button ${params.isChipsExpanded ? 'expanded' : ''}`}
       onClick={params.onToggleExpansion}
       variant="borderless"
-      color="secondary"
+      color="tertiary"
       aria-label={
         params.isChipsExpanded
           ? 'Collapse chips'
@@ -709,6 +709,7 @@ interface RenderInputParams {
   size?: ModusSize;
   value: string;
   inheritedAttributes: Attributes;
+  customIconSlot?: boolean;
   onBlur: (event: CustomEvent<FocusEvent>) => void;
   onChange: (event: CustomEvent<Event>) => void;
   onFocus: (event: CustomEvent<FocusEvent>) => void;
@@ -733,7 +734,9 @@ export function renderInput(params: RenderInputParams): JSX.Element {
       size={params.size}
       value={params.value}
       {...params.inheritedAttributes}
-    />
+    >
+      {params.customIconSlot ? <slot name="custom-icon" /> : undefined}
+    </modus-wc-text-input>
   );
 }
 

@@ -91,6 +91,26 @@ describe('modus-wc-autocomplete', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should render with custom icon slot', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcIcon],
+      html: `<modus-wc-autocomplete aria-label="Custom icon test">
+        <modus-wc-icon slot="custom-icon" name="heart" size="sm"></modus-wc-icon>
+      </modus-wc-autocomplete>`,
+    });
+
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render without custom icon slot', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="No custom icon test"></modus-wc-autocomplete>',
+    });
+
+    expect(page.root).toMatchSnapshot();
+  });
+
   it('should emit blur event', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
