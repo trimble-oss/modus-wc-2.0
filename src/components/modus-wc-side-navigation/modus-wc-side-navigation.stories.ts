@@ -279,7 +279,7 @@ export const collapsibleMenu: Story = {
           margin-left: 50px;
         }
         .flex-right:hover {
-          background-color: unset;
+          background-color: unset !important;
         }
         .menu-icon {
           padding: 0.5rem !important;
@@ -403,12 +403,12 @@ export const collapsibleMenu: Story = {
                   <modus-wc-menu-item label="Line Chart"></modus-wc-menu-item>
                 </ul>
               </li>
-              <li>
-                <div class="menu-container">
-                  <modus-wc-icon name="calendar"></modus-wc-icon>
-                  <span class="label">Calendar</span>
-                </div>
-              </li>
+              <modus-wc-menu-item label="calendar">
+                <modus-wc-icon
+                  slot="start-icon"
+                  name="calendar"
+                ></modus-wc-icon>
+              </modus-wc-menu-item>
               <li>
                 <div
                   class="menu-container modus-wc-menu-dropdown-toggle"
