@@ -178,8 +178,22 @@ const errorFeedback: IInputFeedbackProp = {
 };
 
 export const WithErrorFeedback: Story = {
-  ...Template,
-  args: { feedback: errorFeedback, required: true },
+  // prettier-ignore
+  render: (args) => html`
+    <modus-wc-text-input
+      aria-label="Text input with error feedback"
+      .feedback=${errorFeedback}
+      id="error-input"
+      label=${ifDefined(args.label)}
+      ?required=${true}
+      .value=${args.value}
+    ></modus-wc-text-input>
+    <script>
+      // Adding this block to show how to set feedback via JS
+      //const input = document.getElementById('error-input');
+      //input.feedback = { level: 'error', message: 'Value is required.' };
+    </script>
+  `,
 };
 
 export const WithCustomIconSlot: Story = {
