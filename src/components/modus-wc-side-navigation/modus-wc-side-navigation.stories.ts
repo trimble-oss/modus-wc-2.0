@@ -251,36 +251,40 @@ export const collapsibleMenu: Story = {
         .layout-with-navbar {
           box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
         }
-
+        .side-navigation {
+          height: 500px;
+        }
         .main-content-row {
           display: flex;
           overflow: hidden;
         }
-
         .panel-content {
           margin-left: 4rem;
           padding: 10px;
         }
-
-        .side-navigation {
-          height: 500px;
+        .label {
+          margin-left: 15px;
         }
-
         .modus-wc-menu-dropdown {
           list-style: none;
           margin-inline-start: 1.8rem;
         }
-
-        .label {
-          margin: 0px 15px;
-        }
-
         .menu-container {
           padding: 15px;
+          padding-left: 20px;
         }
-
-        .collapse-icon {
-          margin: 0px 5px;
+        .flex-right {
+          float: right;
+          display: flex;
+          margin-left: 50px;
+        }
+        .flex-right:hover {
+          background-color: unset;
+        }
+        .menu-icon {
+          padding: 0.5rem !important;
+          min-height: unset !important;
+          height: unset !important;
         }
       </style>
       <script>
@@ -362,16 +366,37 @@ export const collapsibleMenu: Story = {
           >
             <modus-wc-menu custom-class="menu-width">
               <li>
+                <div class="flex-right">
+                  <modus-wc-button custom-class="menu-icon" color="tertiary">
+                    <modus-wc-icon
+                      name="filter"
+                      size="xs"
+                      variant="solid"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
+                  <modus-wc-button custom-class="menu-icon" color="tertiary">
+                    <modus-wc-icon
+                      name="settings"
+                      size="xs"
+                      variant="solid"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
+                  <modus-wc-button custom-class="menu-icon" color="tertiary">
+                    <modus-wc-icon
+                      name="more_vertical"
+                      size="xs"
+                      variant="solid"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
+                </div>
+              </li>
+              <li>
                 <div
                   class="menu-container modus-wc-menu-dropdown-toggle"
                   @click=${handleCollapseToggle}
                 >
-                  <modus-wc-icon
-                    decorative="true"
-                    name="bar_graph"
-                    class="collapse-icon icon-left"
-                  ></modus-wc-icon>
-                  <span class="label">Charts </span>
+                  <modus-wc-icon name="bar_graph"></modus-wc-icon>
+                  <span class="label">Charts</span>
                 </div>
                 <ul class="modus-wc-menu-dropdown">
                   <modus-wc-menu-item label="Bar Chart"> </modus-wc-menu-item>
@@ -380,11 +405,7 @@ export const collapsibleMenu: Story = {
               </li>
               <li>
                 <div class="menu-container">
-                  <modus-wc-icon
-                    decorative="true"
-                    name="calendar"
-                    class="collapse-icon icon-left"
-                  ></modus-wc-icon>
+                  <modus-wc-icon name="calendar"></modus-wc-icon>
                   <span class="label">Calendar</span>
                 </div>
               </li>
@@ -393,11 +414,7 @@ export const collapsibleMenu: Story = {
                   class="menu-container modus-wc-menu-dropdown-toggle"
                   @click=${handleCollapseToggle}
                 >
-                  <modus-wc-icon
-                    decorative="true"
-                    name="master_data"
-                    class="collapse-icon icon-left"
-                  ></modus-wc-icon>
+                  <modus-wc-icon name="master_data"></modus-wc-icon>
                   <span class="label">Reports</span>
                 </div>
                 <ul class="modus-wc-menu-dropdown">
