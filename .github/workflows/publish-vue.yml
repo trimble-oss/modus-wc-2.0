@@ -118,7 +118,7 @@ jobs:
 
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: vue-distribution-v${{ github.event.inputs.version }}-vue
           path: .
