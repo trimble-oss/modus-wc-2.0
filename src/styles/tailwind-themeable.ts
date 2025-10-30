@@ -26,6 +26,11 @@ const themeable = [
   'modus-wc-checkbox-sm',
   'modus-wc-checkbox-md',
   'modus-wc-checkbox-lg',
+  //File Input
+  'modus-wc-file-input-xs',
+  'modus-wc-file-input-sm',
+  'modus-wc-file-input-md',
+  'modus-wc-file-input-lg',
   // Font
   'modus-wc-font-bold',
   'modus-wc-font-light',
