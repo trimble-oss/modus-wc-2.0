@@ -126,7 +126,7 @@ jobs:
 
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: react-${{ matrix.react-version }}-distribution-v${{ github.event.inputs.version }}-react${{ matrix.react-version }}
           path: .
