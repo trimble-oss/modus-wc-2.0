@@ -125,6 +125,8 @@ export const DynamicTextUpdate: Story = {
     const input = document.getElementById('btn-text-input');
     btnText.textContent = input.value;
   }
+  // Call updateButtonText function using the button's click event
+  // Example:  <modus-wc-button color="primary" variant="filled" buttonClick="updateButtonText()"></modus-wc-button>
 </script>
 
 <div>
@@ -140,7 +142,6 @@ export const DynamicTextUpdate: Story = {
     `;
   },
 };
-
 export const IconOnlyButton: Story = {
   render: () => {
     // prettier-ignore
