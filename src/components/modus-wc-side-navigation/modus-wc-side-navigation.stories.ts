@@ -145,7 +145,6 @@ export const Default: Story = {
             searchInput: false,
             user: true,
           }}
-          style="z-index: 2;"
         ></modus-wc-navbar>
         <div class="main-content-row">
           <modus-wc-side-navigation
@@ -236,34 +235,26 @@ export const collapsibleMenu: Story = {
       // Only toggle submenu if side navigation is expanded
       if (sideNav?.expanded) {
         const parentLi = clickedEl.closest('li');
+        const childrenContainer = parentLi?.querySelector(
+          '.modus-wc-menu-dropdown-toggle'
+        );
         const submenu = parentLi?.querySelector('.modus-wc-menu-dropdown');
-        if (submenu) {
+        if (submenu && childrenContainer) {
           submenu.classList.toggle('modus-wc-menu-dropdown-show');
+          childrenContainer.classList.toggle('modus-wc-menu-dropdown-show');
         }
       }
     };
 
     return html`
       <style>
-        .children-container {
-          transition: height 0.2s ease-out;
-        }
-
         .layout-with-navbar {
           box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
-          display: flex;
-          flex-direction: column;
-          height: 100%;
         }
 
         .main-content-row {
           display: flex;
-          flex: 1;
           overflow: hidden;
-        }
-
-        .menu-width {
-          width: 100%;
         }
 
         .panel-content {
@@ -272,15 +263,7 @@ export const collapsibleMenu: Story = {
         }
 
         .side-navigation {
-          align-self: flex-start;
           height: 500px;
-          position: relative;
-        }
-
-        ul {
-          list-style: none;
-          margin: 0;
-          padding: 0;
         }
 
         .modus-wc-menu-dropdown {
@@ -300,31 +283,71 @@ export const collapsibleMenu: Story = {
           margin: 0px 5px;
         }
       </style>
-      <script></script>
+      <script>
+          const handleMenuOpenChange = (e: CustomEvent) => {
+          const eventSource = e.target as HTMLElement;
+          const storyContainer = eventSource?.closest('.layout-with-navbar');
+          let sideNav: Element | null;
+
+          if (storyContainer) {
+            sideNav = storyContainer.querySelector('modus-wc-side-navigation');
+          } else {
+            sideNav = document.querySelector('modus-wc-side-navigation');
+          }
+
+          if (sideNav) {
+            (sideNav as HTMLElement & { expanded: boolean }).expanded = e.detail;
+          }
+        };
+
+        const handleExpandChange = (e: CustomEvent) => {
+          if (!e.detail) {
+            const eventSource = e.target as HTMLElement;
+            const container = eventSource?.closest('.layout-with-navbar');
+
+            if (container) {
+              // Collapse all open dropdown menus when side navigation is collapsed
+              const openMenus = container.querySelectorAll(
+                '.modus-wc-menu-dropdown-show'
+              );
+              openMenus.forEach((menu) => {
+                menu.classList.remove('modus-wc-menu-dropdown-show');
+              });
+            }
+          }
+        };
+
+        const handleCollapseToggle = (e: Event) => {
+          const clickedEl = e.currentTarget as HTMLElement;
+          const parentContainer = clickedEl.closest('.layout-with-navbar');
+          const sideNav = parentContainer?.querySelector(
+            'modus-wc-side-navigation'
+          ) as HTMLElement & { expanded: boolean };
+
+          // Only toggle submenu if side navigation is expanded
+          if (sideNav?.expanded) {
+            const parentLi = clickedEl.closest('li');
+            const childrenContainer = parentLi?.querySelector(
+              '.modus-wc-menu-dropdown-toggle'
+            );
+            const submenu = parentLi?.querySelector('.modus-wc-menu-dropdown');
+            if (submenu && childrenContainer) {
+              submenu.classList.toggle('modus-wc-menu-dropdown-show');
+              childrenContainer.classList.toggle('modus-wc-menu-dropdown-show');
+            }
+          }
+        };
+      </script>
       <div class="layout-with-navbar">
         <modus-wc-navbar
-          app-title="Modus App"
           class="navbar"
-          logo="/assets/logo.svg"
           @mainMenuOpenChange=${handleMenuOpenChange}
-          .userCard=${{
-            avatarAlt: 'User Avatar',
-            avatarSrc:
-              'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
-            email: 'user@trimble.com',
-            name: 'Sonic the Hedgehog',
-          }}
           .visibility=${{
             ai: true,
             apps: true,
             help: true,
             mainMenu: true,
-            notifications: true,
-            search: true,
-            searchInput: false,
-            user: true,
           }}
-          style="z-index: 2;"
         ></modus-wc-navbar>
         <div class="main-content-row">
           <modus-wc-side-navigation
