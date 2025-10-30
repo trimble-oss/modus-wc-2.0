@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
+import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, WeekStartDay } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -20,8 +20,8 @@ import { SortingState } from "@tanstack/table-core";
 import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-import { TypographySize, TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
-export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
+import { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
+export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, WeekStartDay } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -36,7 +36,7 @@ export { SortingState } from "@tanstack/table-core";
 export { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-export { TypographySize, TypographyVariant, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
+export { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
@@ -223,7 +223,9 @@ export namespace Components {
         "value": string;
     }
     /**
-     * A customizable avatar component used to create avatars with different images.
+     * A customizable avatar component used to create avatars with different images or user initials.
+     * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+     * The component will extract the first letter of each word in the initials string.
      */
     interface ModusWcAvatar {
         /**
@@ -238,6 +240,10 @@ export namespace Components {
           * The location of the image.
          */
         "imgSrc": string;
+        /**
+          * The initials to display when no image is provided.
+         */
+        "initials"?: string;
         /**
           * The shape of the avatar.
          */
@@ -429,6 +435,10 @@ export namespace Components {
          */
         "label"?: string;
         /**
+          * The shape of the chip: 'rectangle' (default) or 'circle'.
+         */
+        "shape"?: 'rectangle' | 'circle';
+        /**
           * Whether to show the close icon on right side of the chip.
          */
         "showRemove"?: boolean;
@@ -490,6 +500,14 @@ export namespace Components {
          */
         "feedback"?: IInputFeedbackProp;
         /**
+          * The date format for display and input.
+         */
+        "format"?: | 'yyyy-mm-dd'
+    | 'dd-mm-yyyy'
+    | 'yyyy/mm/dd'
+    | 'dd/mm/yyyy'
+    | 'MMM DD, YYYY';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -526,9 +544,13 @@ export namespace Components {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control (yyyy-mm-dd).
+          * The value of the control.
          */
         "value": string;
+        /**
+          * The first day of the week for the calendar display
+         */
+        "weekStartDay"?: WeekStartDay;
     }
     /**
      * A customizable divider component used to separate content horizontally or vertically
@@ -620,6 +642,59 @@ export namespace Components {
         "menuVisible": boolean;
     }
     /**
+     * File dropzone component that allows users to drag and drop files for upload.
+     */
+    interface ModusWcFileDropzone {
+        /**
+          * Accepted file types (e.g. '.jpg,.png' or 'image/*')
+         */
+        "acceptFileTypes"?: string;
+        /**
+          * Custom CSS class to apply to the file dropzone element
+         */
+        "customClass"?: string;
+        /**
+          * Disable the file input
+         */
+        "disabled"?: boolean;
+        /**
+          * Custom instructions shown when files are dragged over the dropzone
+         */
+        "fileDraggedOverInstructions"?: string;
+        /**
+          * Include state icon (upload, success, error)
+         */
+        "includeStateIcon"?: boolean;
+        /**
+          * Custom instructions shown as the default dropzone message
+         */
+        "instructions"?: string;
+        /**
+          * Custom error message displayed when an invalid file type is selected
+         */
+        "invalidFileTypeMessage"?: string;
+        /**
+          * Maximum number of files allowed, will show error if exceeded
+         */
+        "maxFileCount"?: number;
+        /**
+          * Maximum allowed length of filename, will show error if exceeded
+         */
+        "maxFileNameLength"?: number;
+        /**
+          * Maximum total file size in bytes allowed, will show error if exceeded
+         */
+        "maxTotalFileSizeBytes"?: number;
+        /**
+          * Allow multiple file selection
+         */
+        "multiple"?: boolean;
+        /**
+          * Success message displayed when files are uploaded successfully
+         */
+        "successMessage"?: string;
+    }
+    /**
      * A customizable icon component used to render Modus icons.
      * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      */
@@ -640,6 +715,10 @@ export namespace Components {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: DaisySize;
+        /**
+          * The icon variant, can be "outlined" or "solid".
+         */
+        "variant"?: 'outlined' | 'solid';
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
@@ -746,6 +825,10 @@ export namespace Components {
     interface ModusWcMenuItem {
         "bordered"?: boolean;
         /**
+          * If true, renders a checkbox at the start of the menu item.
+         */
+        "checkbox"?: boolean;
+        /**
           * Custom CSS class to apply to the li element.
          */
         "customClass"?: string;
@@ -777,6 +860,14 @@ export namespace Components {
           * The text rendered beneath the label.
          */
         "subLabel"?: string;
+        /**
+          * The tooltip text to display when hovering over the menu item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the menu item.
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
           * The unique identifying value of the menu item.
          */
@@ -1561,6 +1652,10 @@ export namespace Components {
          */
         "maxLength"?: number;
         /**
+          * The minimum number of characters required in the textarea.
+         */
+        "minLength"?: number;
+        /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
@@ -1713,7 +1808,7 @@ export namespace Components {
     /**
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
      */
     interface ModusWcTooltip {
         /**
@@ -1742,7 +1837,10 @@ export namespace Components {
         "tooltipId"?: string;
     }
     /**
-     * A customizable typography component used to render text with different sizes, variants, and weights.
+     * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+     * Note: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
+     * the default size (size="md") and weight (weight="normal") properties. Default styling can be overridden by
+     * providing your own custom values for the size or weight properties from the available options.
      */
     interface ModusWcTypography {
         /**
@@ -1750,17 +1848,31 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * The hierarchy of the typography component.
+         */
+        "hierarchy": TypographyHierarchy;
+        /**
           * The size of the font.
          */
         "size"?: TypographySize;
         /**
-          * The variant of the typography component.
-         */
-        "variant": TypographyVariant;
-        /**
           * The weight of the text.
          */
         "weight"?: TypographyWeight;
+    }
+    interface ModusWcUtilityPanel {
+        /**
+          * The panel is expanded or closed
+         */
+        "expanded": boolean;
+        /**
+          * Determines if the panel pushes content or displays an overlay.
+         */
+        "pushContent": boolean;
+        /**
+          * Target element reference to push content when panel opens
+         */
+        "targetElement"?: HTMLElement;
     }
 }
 export interface ModusWcAccordionCustomEvent<T> extends CustomEvent<T> {
@@ -1802,6 +1914,10 @@ export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcDropdownMenuCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDropdownMenuElement;
+}
+export interface ModusWcFileDropzoneCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcFileDropzoneElement;
 }
 export interface ModusWcMenuCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1875,6 +1991,10 @@ export interface ModusWcTooltipCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTooltipElement;
 }
+export interface ModusWcUtilityPanelCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcUtilityPanelElement;
+}
 declare global {
     interface HTMLModusWcAccordionElementEventMap {
         "expandedChange": {
@@ -1946,7 +2066,9 @@ declare global {
         new (): HTMLModusWcAutocompleteElement;
     };
     /**
-     * A customizable avatar component used to create avatars with different images.
+     * A customizable avatar component used to create avatars with different images or user initials.
+     * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+     * The component will extract the first letter of each word in the initials string.
      */
     interface HTMLModusWcAvatarElement extends Components.ModusWcAvatar, HTMLStencilElement {
     }
@@ -2083,6 +2205,8 @@ declare global {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
         "inputFocus": FocusEvent;
+        "calendarMonthChange": number;
+        "calendarYearChange": number;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -2131,6 +2255,26 @@ declare global {
     var HTMLModusWcDropdownMenuElement: {
         prototype: HTMLModusWcDropdownMenuElement;
         new (): HTMLModusWcDropdownMenuElement;
+    };
+    interface HTMLModusWcFileDropzoneElementEventMap {
+        "fileSelect": FileList;
+    }
+    /**
+     * File dropzone component that allows users to drag and drop files for upload.
+     */
+    interface HTMLModusWcFileDropzoneElement extends Components.ModusWcFileDropzone, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcFileDropzoneElementEventMap>(type: K, listener: (this: HTMLModusWcFileDropzoneElement, ev: ModusWcFileDropzoneCustomEvent<HTMLModusWcFileDropzoneElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcFileDropzoneElementEventMap>(type: K, listener: (this: HTMLModusWcFileDropzoneElement, ev: ModusWcFileDropzoneCustomEvent<HTMLModusWcFileDropzoneElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcFileDropzoneElement: {
+        prototype: HTMLModusWcFileDropzoneElement;
+        new (): HTMLModusWcFileDropzoneElement;
     };
     /**
      * A customizable icon component used to render Modus icons.
@@ -2633,7 +2777,7 @@ declare global {
     /**
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
      */
     interface HTMLModusWcTooltipElement extends Components.ModusWcTooltip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTooltipElementEventMap>(type: K, listener: (this: HTMLModusWcTooltipElement, ev: ModusWcTooltipCustomEvent<HTMLModusWcTooltipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2650,13 +2794,34 @@ declare global {
         new (): HTMLModusWcTooltipElement;
     };
     /**
-     * A customizable typography component used to render text with different sizes, variants, and weights.
+     * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+     * Note: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
+     * the default size (size="md") and weight (weight="normal") properties. Default styling can be overridden by
+     * providing your own custom values for the size or weight properties from the available options.
      */
     interface HTMLModusWcTypographyElement extends Components.ModusWcTypography, HTMLStencilElement {
     }
     var HTMLModusWcTypographyElement: {
         prototype: HTMLModusWcTypographyElement;
         new (): HTMLModusWcTypographyElement;
+    };
+    interface HTMLModusWcUtilityPanelElementEventMap {
+        "panelOpened": void;
+        "panelClosed": void;
+    }
+    interface HTMLModusWcUtilityPanelElement extends Components.ModusWcUtilityPanel, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcUtilityPanelElementEventMap>(type: K, listener: (this: HTMLModusWcUtilityPanelElement, ev: ModusWcUtilityPanelCustomEvent<HTMLModusWcUtilityPanelElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcUtilityPanelElementEventMap>(type: K, listener: (this: HTMLModusWcUtilityPanelElement, ev: ModusWcUtilityPanelCustomEvent<HTMLModusWcUtilityPanelElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcUtilityPanelElement: {
+        prototype: HTMLModusWcUtilityPanelElement;
+        new (): HTMLModusWcUtilityPanelElement;
     };
     interface HTMLElementTagNameMap {
         "modus-wc-accordion": HTMLModusWcAccordionElement;
@@ -2673,6 +2838,7 @@ declare global {
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-dropdown-menu": HTMLModusWcDropdownMenuElement;
+        "modus-wc-file-dropzone": HTMLModusWcFileDropzoneElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
@@ -2703,6 +2869,7 @@ declare global {
         "modus-wc-toolbar": HTMLModusWcToolbarElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
+        "modus-wc-utility-panel": HTMLModusWcUtilityPanelElement;
     }
 }
 declare namespace LocalJSX {
@@ -2902,7 +3069,9 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
-     * A customizable avatar component used to create avatars with different images.
+     * A customizable avatar component used to create avatars with different images or user initials.
+     * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+     * The component will extract the first letter of each word in the initials string.
      */
     interface ModusWcAvatar {
         /**
@@ -2917,6 +3086,10 @@ declare namespace LocalJSX {
           * The location of the image.
          */
         "imgSrc"?: string;
+        /**
+          * The initials to display when no image is provided.
+         */
+        "initials"?: string;
         /**
           * The shape of the avatar.
          */
@@ -3136,6 +3309,10 @@ declare namespace LocalJSX {
          */
         "onChipRemove"?: (event: ModusWcChipCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
+          * The shape of the chip: 'rectangle' (default) or 'circle'.
+         */
+        "shape"?: 'rectangle' | 'circle';
+        /**
           * Whether to show the close icon on right side of the chip.
          */
         "showRemove"?: boolean;
@@ -3201,6 +3378,14 @@ declare namespace LocalJSX {
          */
         "feedback"?: IInputFeedbackProp;
         /**
+          * The date format for display and input.
+         */
+        "format"?: | 'yyyy-mm-dd'
+    | 'dd-mm-yyyy'
+    | 'yyyy/mm/dd'
+    | 'dd/mm/yyyy'
+    | 'MMM DD, YYYY';
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
@@ -3224,6 +3409,14 @@ declare namespace LocalJSX {
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
+        /**
+          * Event emitted when the calendar month selection changes.
+         */
+        "onCalendarMonthChange"?: (event: ModusWcDateCustomEvent<number>) => void;
+        /**
+          * Event emitted when the calendar year selection changes.
+         */
+        "onCalendarYearChange"?: (event: ModusWcDateCustomEvent<number>) => void;
         /**
           * Event emitted when the input loses focus.
          */
@@ -3249,9 +3442,13 @@ declare namespace LocalJSX {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control (yyyy-mm-dd).
+          * The value of the control.
          */
         "value"?: string;
+        /**
+          * The first day of the week for the calendar display
+         */
+        "weekStartDay"?: WeekStartDay;
     }
     /**
      * A customizable divider component used to separate content horizontally or vertically
@@ -3347,6 +3544,63 @@ declare namespace LocalJSX {
         "onMenuVisibilityChange"?: (event: ModusWcDropdownMenuCustomEvent<{ isVisible: boolean }>) => void;
     }
     /**
+     * File dropzone component that allows users to drag and drop files for upload.
+     */
+    interface ModusWcFileDropzone {
+        /**
+          * Accepted file types (e.g. '.jpg,.png' or 'image/*')
+         */
+        "acceptFileTypes"?: string;
+        /**
+          * Custom CSS class to apply to the file dropzone element
+         */
+        "customClass"?: string;
+        /**
+          * Disable the file input
+         */
+        "disabled"?: boolean;
+        /**
+          * Custom instructions shown when files are dragged over the dropzone
+         */
+        "fileDraggedOverInstructions"?: string;
+        /**
+          * Include state icon (upload, success, error)
+         */
+        "includeStateIcon"?: boolean;
+        /**
+          * Custom instructions shown as the default dropzone message
+         */
+        "instructions"?: string;
+        /**
+          * Custom error message displayed when an invalid file type is selected
+         */
+        "invalidFileTypeMessage"?: string;
+        /**
+          * Maximum number of files allowed, will show error if exceeded
+         */
+        "maxFileCount"?: number;
+        /**
+          * Maximum allowed length of filename, will show error if exceeded
+         */
+        "maxFileNameLength"?: number;
+        /**
+          * Maximum total file size in bytes allowed, will show error if exceeded
+         */
+        "maxTotalFileSizeBytes"?: number;
+        /**
+          * Allow multiple file selection
+         */
+        "multiple"?: boolean;
+        /**
+          * Event emitted when files are selected
+         */
+        "onFileSelect"?: (event: ModusWcFileDropzoneCustomEvent<FileList>) => void;
+        /**
+          * Success message displayed when files are uploaded successfully
+         */
+        "successMessage"?: string;
+    }
+    /**
      * A customizable icon component used to render Modus icons.
      * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      */
@@ -3367,6 +3621,10 @@ declare namespace LocalJSX {
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
          */
         "size"?: DaisySize;
+        /**
+          * The icon variant, can be "outlined" or "solid".
+         */
+        "variant"?: 'outlined' | 'solid';
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
@@ -3477,6 +3735,10 @@ declare namespace LocalJSX {
     interface ModusWcMenuItem {
         "bordered"?: boolean;
         /**
+          * If true, renders a checkbox at the start of the menu item.
+         */
+        "checkbox"?: boolean;
+        /**
           * Custom CSS class to apply to the li element.
          */
         "customClass"?: string;
@@ -3512,6 +3774,14 @@ declare namespace LocalJSX {
           * The text rendered beneath the label.
          */
         "subLabel"?: string;
+        /**
+          * The tooltip text to display when hovering over the menu item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the menu item.
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
           * The unique identifying value of the menu item.
          */
@@ -4485,6 +4755,10 @@ declare namespace LocalJSX {
          */
         "maxLength"?: number;
         /**
+          * The minimum number of characters required in the textarea.
+         */
+        "minLength"?: number;
+        /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
@@ -4665,7 +4939,7 @@ declare namespace LocalJSX {
     /**
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
      */
     interface ModusWcTooltip {
         /**
@@ -4698,7 +4972,10 @@ declare namespace LocalJSX {
         "tooltipId"?: string;
     }
     /**
-     * A customizable typography component used to render text with different sizes, variants, and weights.
+     * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+     * Note: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
+     * the default size (size="md") and weight (weight="normal") properties. Default styling can be overridden by
+     * providing your own custom values for the size or weight properties from the available options.
      */
     interface ModusWcTypography {
         /**
@@ -4706,17 +4983,39 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
+          * The hierarchy of the typography component.
+         */
+        "hierarchy"?: TypographyHierarchy;
+        /**
           * The size of the font.
          */
         "size"?: TypographySize;
         /**
-          * The variant of the typography component.
-         */
-        "variant"?: TypographyVariant;
-        /**
           * The weight of the text.
          */
         "weight"?: TypographyWeight;
+    }
+    interface ModusWcUtilityPanel {
+        /**
+          * The panel is expanded or closed
+         */
+        "expanded"?: boolean;
+        /**
+          * An event that fires when the panel is closed.
+         */
+        "onPanelClosed"?: (event: ModusWcUtilityPanelCustomEvent<void>) => void;
+        /**
+          * An event that fires when the panel is opened.
+         */
+        "onPanelOpened"?: (event: ModusWcUtilityPanelCustomEvent<void>) => void;
+        /**
+          * Determines if the panel pushes content or displays an overlay.
+         */
+        "pushContent"?: boolean;
+        /**
+          * Target element reference to push content when panel opens
+         */
+        "targetElement"?: HTMLElement;
     }
     interface IntrinsicElements {
         "modus-wc-accordion": ModusWcAccordion;
@@ -4733,6 +5032,7 @@ declare namespace LocalJSX {
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-dropdown-menu": ModusWcDropdownMenu;
+        "modus-wc-file-dropzone": ModusWcFileDropzone;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-feedback": ModusWcInputFeedback;
         "modus-wc-input-label": ModusWcInputLabel;
@@ -4763,6 +5063,7 @@ declare namespace LocalJSX {
         "modus-wc-toolbar": ModusWcToolbar;
         "modus-wc-tooltip": ModusWcTooltip;
         "modus-wc-typography": ModusWcTypography;
+        "modus-wc-utility-panel": ModusWcUtilityPanel;
     }
 }
 export { LocalJSX as JSX };
@@ -4783,7 +5084,9 @@ declare module "@stencil/core" {
              */
             "modus-wc-autocomplete": LocalJSX.ModusWcAutocomplete & JSXBase.HTMLAttributes<HTMLModusWcAutocompleteElement>;
             /**
-             * A customizable avatar component used to create avatars with different images.
+             * A customizable avatar component used to create avatars with different images or user initials.
+             * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
+             * The component will extract the first letter of each word in the initials string.
              */
             "modus-wc-avatar": LocalJSX.ModusWcAvatar & JSXBase.HTMLAttributes<HTMLModusWcAvatarElement>;
             /**
@@ -4832,6 +5135,10 @@ declare module "@stencil/core" {
              * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
              */
             "modus-wc-dropdown-menu": LocalJSX.ModusWcDropdownMenu & JSXBase.HTMLAttributes<HTMLModusWcDropdownMenuElement>;
+            /**
+             * File dropzone component that allows users to drag and drop files for upload.
+             */
+            "modus-wc-file-dropzone": LocalJSX.ModusWcFileDropzone & JSXBase.HTMLAttributes<HTMLModusWcFileDropzoneElement>;
             /**
              * A customizable icon component used to render Modus icons.
              * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
@@ -4951,13 +5258,17 @@ declare module "@stencil/core" {
             /**
              * A customizable tooltip component used to create tooltips with different content.
              * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-             * When forceOpen is enabled, the tooltip will remain open unless dismissed via Escape while hovering.
+             * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**
-             * A customizable typography component used to render text with different sizes, variants, and weights.
+             * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+             * Note: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
+             * the default size (size="md") and weight (weight="normal") properties. Default styling can be overridden by
+             * providing your own custom values for the size or weight properties from the available options.
              */
             "modus-wc-typography": LocalJSX.ModusWcTypography & JSXBase.HTMLAttributes<HTMLModusWcTypographyElement>;
+            "modus-wc-utility-panel": LocalJSX.ModusWcUtilityPanel & JSXBase.HTMLAttributes<HTMLModusWcUtilityPanelElement>;
         }
     }
 }

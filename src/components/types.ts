@@ -9,6 +9,15 @@ export type ModusSize = Extract<DaisySize, 'sm' | 'md' | 'lg'>;
 
 export type Orientation = 'horizontal' | 'vertical';
 
+export type WeekStartDay =
+  | 'sunday'
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday';
+
 // -- Web Types -- //
 
 /** For `autocomplete`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete */
@@ -103,6 +112,8 @@ export type PopoverPlacement =
   | 'right-end';
 
 export interface IAutocompleteItem {
+  /** Whether the item should display a checkbox. Optional. */
+  checkbox?: boolean;
   /** Whether the item is disabled */
   disabled?: boolean;
   /** Whether the item is currently focused */
@@ -111,6 +122,12 @@ export interface IAutocompleteItem {
   label: string;
   /** Whether the item is currently selected */
   selected?: boolean;
+  /** The tooltip text to display when hovering over the menu item */
+  tooltip?: string;
+  /** The tooltip text to display when hovering over the menu item (preferred over tooltip) */
+  tooltipContent?: string;
+  /** The position of the tooltip relative to the menu item */
+  tooltipPosition?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
   /** The unique value identifier for the item */
   value: string;
   /** Whether the item should be shown in the dropdown menu */

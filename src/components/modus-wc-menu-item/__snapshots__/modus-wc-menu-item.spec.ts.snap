@@ -39,6 +39,42 @@ exports[`modus-wc-menu-item should render with a start-icon slot 1`] = `
 </modus-wc-menu-item>
 `;
 
+exports[`modus-wc-menu-item should render with checkbox 1`] = `
+<modus-wc-menu-item checkbox="true" label="Test label" value="Test value">
+  <!---->
+  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
+    <button type="button">
+      <div class="modus-wc-menu-item-content">
+        <modus-wc-checkbox aria-label="Checkbox" size="md"></modus-wc-checkbox>
+        <div class="modus-wc-menu-item-labels">
+          <div>
+            Test label
+          </div>
+        </div>
+      </div>
+    </button>
+  </li>
+</modus-wc-menu-item>
+`;
+
+exports[`modus-wc-menu-item should render with checkbox and selected 1`] = `
+<modus-wc-menu-item checkbox="true" label="Test label" selected="true" value="Test value">
+  <!---->
+  <li aria-current="" class="modus-wc-menu-item modus-wc-menu-item-md modus-wc-menu-item-selected" role="menuitem">
+    <button type="button">
+      <div class="modus-wc-menu-item-content">
+        <modus-wc-checkbox aria-label="Checkbox" size="md" value=""></modus-wc-checkbox>
+        <div class="modus-wc-menu-item-labels">
+          <div>
+            Test label
+          </div>
+        </div>
+      </div>
+    </button>
+  </li>
+</modus-wc-menu-item>
+`;
+
 exports[`modus-wc-menu-item should render with custom props 1`] = `
 <modus-wc-menu-item bordered="true" custom-class="test-class" disabled="true" label="Test label" selected="true" size="lg" sub-label="Test sub-label" value="Test value">
   <!---->
@@ -119,6 +155,25 @@ exports[`modus-wc-menu-item should render with size sm 1`] = `
         </div>
         <div class="modus-wc-menu-item-selected-icon">
           <modus-wc-icon decorative="" name="check" size="xs"></modus-wc-icon>
+        </div>
+      </div>
+    </button>
+  </li>
+</modus-wc-menu-item>
+`;
+
+exports[`modus-wc-menu-item should render with tooltip 1`] = `
+<modus-wc-menu-item label="Test label" tooltip-content="Test tooltip" value="Test value">
+  <!---->
+  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
+    <button type="button">
+      <div class="modus-wc-menu-item-content">
+        <div class="modus-wc-menu-item-labels">
+          <modus-wc-tooltip content="Test tooltip" customclass="modus-wc-menu-item-tooltip" position="auto">
+            <div>
+              Test label
+            </div>
+          </modus-wc-tooltip>
         </div>
       </div>
     </button>

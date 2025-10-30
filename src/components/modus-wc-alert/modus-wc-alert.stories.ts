@@ -1,3 +1,4 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -34,8 +35,12 @@ const meta: Meta<AlertArgs> = {
       options: ['', 'error', 'info', 'success', 'warning'],
     },
   },
+  decorators: [withActions],
   parameters: {
     layout: 'padded',
+    actions: {
+      handles: ['dismissClick'],
+    },
   },
 };
 
@@ -80,7 +85,7 @@ export const CustomButton: Story = {
 >
   <modus-wc-button
     aria-label="View messages"
-    color="secondary"
+    color="tertiary"
     slot="button"
     variant="outlined"
   >View Messages</modus-wc-button>
