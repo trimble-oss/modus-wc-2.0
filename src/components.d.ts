@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
+import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, WeekStartDay } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -21,7 +21,7 @@ import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 import { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
-export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes } from "./components/types";
+export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, WeekStartDay } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -502,7 +502,11 @@ export namespace Components {
         /**
           * The date format for display and input.
          */
-        "format"?: 'yyyy-mm-dd' | 'dd-mm-yyyy' | 'MMM DD, YYYY';
+        "format"?: | 'yyyy-mm-dd'
+    | 'dd-mm-yyyy'
+    | 'yyyy/mm/dd'
+    | 'dd/mm/yyyy'
+    | 'MMM DD, YYYY';
         /**
           * The ID of the input element.
          */
@@ -543,6 +547,10 @@ export namespace Components {
           * The value of the control.
          */
         "value": string;
+        /**
+          * The first day of the week for the calendar display
+         */
+        "weekStartDay"?: WeekStartDay;
     }
     /**
      * A customizable divider component used to separate content horizontally or vertically
@@ -632,6 +640,59 @@ export namespace Components {
           * Indicates that the menu is visible.
          */
         "menuVisible": boolean;
+    }
+    /**
+     * File dropzone component that allows users to drag and drop files for upload.
+     */
+    interface ModusWcFileDropzone {
+        /**
+          * Accepted file types (e.g. '.jpg,.png' or 'image/*')
+         */
+        "acceptFileTypes"?: string;
+        /**
+          * Custom CSS class to apply to the file dropzone element
+         */
+        "customClass"?: string;
+        /**
+          * Disable the file input
+         */
+        "disabled"?: boolean;
+        /**
+          * Custom instructions shown when files are dragged over the dropzone
+         */
+        "fileDraggedOverInstructions"?: string;
+        /**
+          * Include state icon (upload, success, error)
+         */
+        "includeStateIcon"?: boolean;
+        /**
+          * Custom instructions shown as the default dropzone message
+         */
+        "instructions"?: string;
+        /**
+          * Custom error message displayed when an invalid file type is selected
+         */
+        "invalidFileTypeMessage"?: string;
+        /**
+          * Maximum number of files allowed, will show error if exceeded
+         */
+        "maxFileCount"?: number;
+        /**
+          * Maximum allowed length of filename, will show error if exceeded
+         */
+        "maxFileNameLength"?: number;
+        /**
+          * Maximum total file size in bytes allowed, will show error if exceeded
+         */
+        "maxTotalFileSizeBytes"?: number;
+        /**
+          * Allow multiple file selection
+         */
+        "multiple"?: boolean;
+        /**
+          * Success message displayed when files are uploaded successfully
+         */
+        "successMessage"?: string;
     }
     /**
      * A customizable icon component used to render Modus icons.
@@ -1854,6 +1915,10 @@ export interface ModusWcDropdownMenuCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDropdownMenuElement;
 }
+export interface ModusWcFileDropzoneCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcFileDropzoneElement;
+}
 export interface ModusWcMenuCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcMenuElement;
@@ -2140,6 +2205,8 @@ declare global {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
         "inputFocus": FocusEvent;
+        "calendarMonthChange": number;
+        "calendarYearChange": number;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -2188,6 +2255,26 @@ declare global {
     var HTMLModusWcDropdownMenuElement: {
         prototype: HTMLModusWcDropdownMenuElement;
         new (): HTMLModusWcDropdownMenuElement;
+    };
+    interface HTMLModusWcFileDropzoneElementEventMap {
+        "fileSelect": FileList;
+    }
+    /**
+     * File dropzone component that allows users to drag and drop files for upload.
+     */
+    interface HTMLModusWcFileDropzoneElement extends Components.ModusWcFileDropzone, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcFileDropzoneElementEventMap>(type: K, listener: (this: HTMLModusWcFileDropzoneElement, ev: ModusWcFileDropzoneCustomEvent<HTMLModusWcFileDropzoneElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcFileDropzoneElementEventMap>(type: K, listener: (this: HTMLModusWcFileDropzoneElement, ev: ModusWcFileDropzoneCustomEvent<HTMLModusWcFileDropzoneElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcFileDropzoneElement: {
+        prototype: HTMLModusWcFileDropzoneElement;
+        new (): HTMLModusWcFileDropzoneElement;
     };
     /**
      * A customizable icon component used to render Modus icons.
@@ -2751,6 +2838,7 @@ declare global {
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-dropdown-menu": HTMLModusWcDropdownMenuElement;
+        "modus-wc-file-dropzone": HTMLModusWcFileDropzoneElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
@@ -3292,7 +3380,11 @@ declare namespace LocalJSX {
         /**
           * The date format for display and input.
          */
-        "format"?: 'yyyy-mm-dd' | 'dd-mm-yyyy' | 'MMM DD, YYYY';
+        "format"?: | 'yyyy-mm-dd'
+    | 'dd-mm-yyyy'
+    | 'yyyy/mm/dd'
+    | 'dd/mm/yyyy'
+    | 'MMM DD, YYYY';
         /**
           * The ID of the input element.
          */
@@ -3317,6 +3409,14 @@ declare namespace LocalJSX {
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
+        /**
+          * Event emitted when the calendar month selection changes.
+         */
+        "onCalendarMonthChange"?: (event: ModusWcDateCustomEvent<number>) => void;
+        /**
+          * Event emitted when the calendar year selection changes.
+         */
+        "onCalendarYearChange"?: (event: ModusWcDateCustomEvent<number>) => void;
         /**
           * Event emitted when the input loses focus.
          */
@@ -3345,6 +3445,10 @@ declare namespace LocalJSX {
           * The value of the control.
          */
         "value"?: string;
+        /**
+          * The first day of the week for the calendar display
+         */
+        "weekStartDay"?: WeekStartDay;
     }
     /**
      * A customizable divider component used to separate content horizontally or vertically
@@ -3438,6 +3542,63 @@ declare namespace LocalJSX {
           * Event emitted when the menuVisible prop changes.
          */
         "onMenuVisibilityChange"?: (event: ModusWcDropdownMenuCustomEvent<{ isVisible: boolean }>) => void;
+    }
+    /**
+     * File dropzone component that allows users to drag and drop files for upload.
+     */
+    interface ModusWcFileDropzone {
+        /**
+          * Accepted file types (e.g. '.jpg,.png' or 'image/*')
+         */
+        "acceptFileTypes"?: string;
+        /**
+          * Custom CSS class to apply to the file dropzone element
+         */
+        "customClass"?: string;
+        /**
+          * Disable the file input
+         */
+        "disabled"?: boolean;
+        /**
+          * Custom instructions shown when files are dragged over the dropzone
+         */
+        "fileDraggedOverInstructions"?: string;
+        /**
+          * Include state icon (upload, success, error)
+         */
+        "includeStateIcon"?: boolean;
+        /**
+          * Custom instructions shown as the default dropzone message
+         */
+        "instructions"?: string;
+        /**
+          * Custom error message displayed when an invalid file type is selected
+         */
+        "invalidFileTypeMessage"?: string;
+        /**
+          * Maximum number of files allowed, will show error if exceeded
+         */
+        "maxFileCount"?: number;
+        /**
+          * Maximum allowed length of filename, will show error if exceeded
+         */
+        "maxFileNameLength"?: number;
+        /**
+          * Maximum total file size in bytes allowed, will show error if exceeded
+         */
+        "maxTotalFileSizeBytes"?: number;
+        /**
+          * Allow multiple file selection
+         */
+        "multiple"?: boolean;
+        /**
+          * Event emitted when files are selected
+         */
+        "onFileSelect"?: (event: ModusWcFileDropzoneCustomEvent<FileList>) => void;
+        /**
+          * Success message displayed when files are uploaded successfully
+         */
+        "successMessage"?: string;
     }
     /**
      * A customizable icon component used to render Modus icons.
@@ -4871,6 +5032,7 @@ declare namespace LocalJSX {
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-dropdown-menu": ModusWcDropdownMenu;
+        "modus-wc-file-dropzone": ModusWcFileDropzone;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-feedback": ModusWcInputFeedback;
         "modus-wc-input-label": ModusWcInputLabel;
@@ -4973,6 +5135,10 @@ declare module "@stencil/core" {
              * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
              */
             "modus-wc-dropdown-menu": LocalJSX.ModusWcDropdownMenu & JSXBase.HTMLAttributes<HTMLModusWcDropdownMenuElement>;
+            /**
+             * File dropzone component that allows users to drag and drop files for upload.
+             */
+            "modus-wc-file-dropzone": LocalJSX.ModusWcFileDropzone & JSXBase.HTMLAttributes<HTMLModusWcFileDropzoneElement>;
             /**
              * A customizable icon component used to render Modus icons.
              * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
