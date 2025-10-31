@@ -94,42 +94,98 @@ export const Default: Story = {
 };
 
 export const Heading1: Story = {
+  render: (args) => html`
+    <modus-wc-typography
+      custom-class=${ifDefined(args['custom-class'])}
+      hierarchy=${args.hierarchy}
+      size=${ifDefined(args.size)}
+      weight=${ifDefined(args.weight)}
+    ></modus-wc-typography>
+  `,
   args: {
     hierarchy: 'h1',
   },
 };
 
 export const Heading2: Story = {
+  render: (args) => html`
+    <modus-wc-typography
+      custom-class=${ifDefined(args['custom-class'])}
+      hierarchy=${args.hierarchy}
+      size=${ifDefined(args.size)}
+      weight=${ifDefined(args.weight)}
+    ></modus-wc-typography>
+  `,
   args: {
     hierarchy: 'h2',
   },
 };
 
 export const Heading3: Story = {
+  render: (args) => html`
+    <modus-wc-typography
+      custom-class=${ifDefined(args['custom-class'])}
+      hierarchy=${args.hierarchy}
+      size=${ifDefined(args.size)}
+      weight=${ifDefined(args.weight)}
+    ></modus-wc-typography>
+  `,
   args: {
     hierarchy: 'h3',
   },
 };
 
 export const Heading4: Story = {
+  render: (args) => html`
+    <modus-wc-typography
+      custom-class=${ifDefined(args['custom-class'])}
+      hierarchy=${args.hierarchy}
+      size=${ifDefined(args.size)}
+      weight=${ifDefined(args.weight)}
+    ></modus-wc-typography>
+  `,
   args: {
     hierarchy: 'h4',
   },
 };
 
 export const Heading5: Story = {
+  render: (args) => html`
+    <modus-wc-typography
+      custom-class=${ifDefined(args['custom-class'])}
+      hierarchy=${args.hierarchy}
+      size=${ifDefined(args.size)}
+      weight=${ifDefined(args.weight)}
+    ></modus-wc-typography>
+  `,
   args: {
     hierarchy: 'h5',
   },
 };
 
 export const Heading6: Story = {
+  render: (args) => html`
+    <modus-wc-typography
+      custom-class=${ifDefined(args['custom-class'])}
+      hierarchy=${args.hierarchy}
+      size=${ifDefined(args.size)}
+      weight=${ifDefined(args.weight)}
+    ></modus-wc-typography>
+  `,
   args: {
     hierarchy: 'h6',
   },
 };
 
 export const Paragraph: Story = {
+  render: (args) => html`
+    <modus-wc-typography
+      custom-class=${ifDefined(args['custom-class'])}
+      hierarchy=${args.hierarchy}
+      size=${ifDefined(args.size)}
+      weight=${ifDefined(args.weight)}
+    ></modus-wc-typography>
+  `,
   args: {
     hierarchy: 'p',
   },
