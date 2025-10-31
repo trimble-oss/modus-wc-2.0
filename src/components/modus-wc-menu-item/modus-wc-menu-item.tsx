@@ -4,6 +4,7 @@ import {
   EventEmitter,
   h,
   Host,
+  Method,
   Prop,
   State,
   Event as StencilEvent,
@@ -82,6 +83,26 @@ export class ModusWcMenuItem {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
+  /**
+   * Public method to collapse the submenu if it's expanded
+   */
+  @Method()
+  async collapseSubmenu(): Promise<void> {
+    if (this.hasSubmenu && this.isExpanded) {
+      const submenu = this.el.querySelector(
+        '.modus-wc-menu-dropdown'
+      ) as HTMLElement;
+      const liElement = this.el.querySelector('li');
+
+      if (submenu && liElement) {
+        submenu.classList.remove('modus-wc-menu-dropdown-show');
+        liElement.classList.remove('modus-wc-menu-item-expanded');
+        this.isExpanded = false;
+      }
+    }
+    return Promise.resolve();
+  }
+
   private getClasses(): string {
     const classList: string[] = ['modus-wc-menu-item'];
 
@@ -121,6 +142,16 @@ export class ModusWcMenuItem {
   private handleItemSelect = () => {
     // For submenu items, handle the toggle
     if (this.hasSubmenu) {
+      // Check if side nav is expanded (if this menu is inside a side nav)
+      const sideNav = this.el.closest('modus-wc-side-navigation');
+      if (
+        sideNav &&
+        !(sideNav as HTMLElement & { expanded: boolean }).expanded
+      ) {
+        // Don't allow submenu expansion when side nav is collapsed
+        return;
+      }
+
       // The submenu should be inside this menu-item element (slotted content)
       const submenu = this.el.querySelector(
         '.modus-wc-menu-dropdown'

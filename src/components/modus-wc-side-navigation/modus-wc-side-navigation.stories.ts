@@ -191,6 +191,218 @@ export const Default: Story = {
   },
 };
 
+export const CollapsibleMenuWithAPI: Story = {
+  render: (args) => {
+    const handleMenuOpenChange = (e: CustomEvent) => {
+      const eventSource = e.target as HTMLElement;
+      const storyContainer = eventSource?.closest('.layout-with-navbar');
+      let sideNav: HTMLElement | null;
+
+      if (storyContainer) {
+        sideNav = storyContainer.querySelector(
+          'modus-wc-side-navigation'
+        ) as HTMLElement;
+
+        if (sideNav) {
+          // Toggle the side nav state (navbar and side nav can be out of sync)
+          const sideNavEl = sideNav as HTMLElement & { expanded: boolean };
+          sideNavEl.expanded = e.detail;
+        }
+      }
+    };
+
+    const handleExpandedChange = (e: CustomEvent) => {
+      // Collapse all menu items when side nav closes
+      if (!e.detail) {
+        const eventSource = e.target as HTMLElement;
+        const menuItems = eventSource.querySelectorAll('modus-wc-menu-item');
+        menuItems.forEach((menuItem) => {
+          const item = menuItem as unknown as {
+            hasSubmenu?: boolean;
+            collapseSubmenu?: () => Promise<void>;
+          };
+          if (item.hasSubmenu && typeof item.collapseSubmenu === 'function') {
+            void item.collapseSubmenu();
+          }
+        });
+      }
+    };
+
+    return html`
+      <style>
+        .layout-with-navbar {
+          box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
+
+        .main-content-row {
+          display: flex;
+          flex: 1;
+          overflow: hidden;
+        }
+
+        .panel-content {
+          margin-left: 4rem;
+          padding: 10px;
+        }
+
+        .side-navigation {
+          align-self: flex-start;
+          height: 500px;
+          position: relative;
+        }
+      </style>
+
+      <div class="layout-with-navbar">
+        <modus-wc-navbar
+          app-title="Modus App"
+          class="navbar"
+          logo="/assets/logo.svg"
+          @mainMenuOpenChange=${handleMenuOpenChange}
+          .userCard=${{
+            avatarAlt: 'User Avatar',
+            avatarSrc:
+              'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+            email: 'user@trimble.com',
+            name: 'Sonic the Hedgehog',
+          }}
+          .visibility=${{
+            ai: true,
+            apps: true,
+            help: true,
+            mainMenu: true,
+            notifications: true,
+            search: true,
+            searchInput: false,
+            user: true,
+          }}
+          style="z-index: 2;"
+        ></modus-wc-navbar>
+        <div class="main-content-row">
+          <modus-wc-side-navigation
+            class="side-navigation"
+            collapse-on-click-outside=${args['collapse-on-click-outside']}
+            custom-class=${ifDefined(args['custom-class'])}
+            expanded=${args.expanded}
+            max-width=${args['max-width']}
+            mode=${ifDefined(args.mode)}
+            target-content=${ifDefined(args['target-content'])}
+            @expandedChange=${handleExpandedChange}
+          >
+            <modus-wc-menu>
+              <modus-wc-menu-item
+                label="Charts"
+                .hasSubmenu=${true}
+                value="charts"
+              >
+                <modus-wc-icon
+                  slot="start-icon"
+                  decorative="true"
+                  name="bar_graph"
+                ></modus-wc-icon>
+                <modus-wc-menu .isSubMenu=${true}>
+                  <modus-wc-menu-item label="Bar Chart" value="bar-chart">
+                  </modus-wc-menu-item>
+                  <modus-wc-menu-item label="Line Chart" value="line-chart">
+                  </modus-wc-menu-item>
+                </modus-wc-menu>
+              </modus-wc-menu-item>
+
+              <modus-wc-menu-item label="Calendar" value="calendar">
+                <modus-wc-icon
+                  slot="start-icon"
+                  decorative="true"
+                  name="calendar"
+                ></modus-wc-icon>
+              </modus-wc-menu-item>
+
+              <modus-wc-menu-item
+                label="Reports"
+                .hasSubmenu=${true}
+                value="reports"
+              >
+                <modus-wc-icon
+                  slot="start-icon"
+                  decorative="true"
+                  name="master_data"
+                ></modus-wc-icon>
+                <modus-wc-menu .isSubMenu=${true}>
+                  <modus-wc-menu-item
+                    label="Monthly Report"
+                    value="monthly-report"
+                  >
+                  </modus-wc-menu-item>
+                  <modus-wc-menu-item
+                    label="Annual Report"
+                    value="annual-report"
+                  >
+                  </modus-wc-menu-item>
+                </modus-wc-menu>
+              </modus-wc-menu-item>
+
+              <modus-wc-menu-item label="Dashboard" value="dashboard">
+                <modus-wc-icon
+                  slot="start-icon"
+                  decorative="true"
+                  name="dashboard"
+                ></modus-wc-icon>
+              </modus-wc-menu-item>
+
+              <modus-wc-menu-item
+                label="Settings"
+                .hasSubmenu=${true}
+                value="settings"
+              >
+                <modus-wc-icon
+                  slot="start-icon"
+                  decorative="true"
+                  name="settings"
+                ></modus-wc-icon>
+                <modus-wc-menu .isSubMenu=${true}>
+                  <modus-wc-menu-item
+                    label="User Preferences"
+                    value="user-preferences"
+                  >
+                  </modus-wc-menu-item>
+                  <modus-wc-menu-item
+                    label="System Settings"
+                    value="system-settings"
+                  >
+                  </modus-wc-menu-item>
+                  <modus-wc-menu-item label="Privacy" value="privacy">
+                  </modus-wc-menu-item>
+                </modus-wc-menu>
+              </modus-wc-menu-item>
+            </modus-wc-menu>
+          </modus-wc-side-navigation>
+          <div class="panel-content">
+            <div id="overview">
+              <h3>Collapsible Menu with API</h3>
+              <p>
+                This example demonstrates the collapsible menu API where menu
+                items handle their own collapse/expand behavior through the
+                hasSubmenu prop.
+              </p>
+              <p>
+                When the side navigation closes, the expandedChange event is
+                used to call the collapseSubmenu() method on each menu item.
+                This keeps the side navigation component generic while allowing
+                the story to coordinate behavior between components.
+              </p>
+              <p>
+                Menu items inside a collapsed side nav cannot expand their
+                submenus, ensuring a consistent user experience.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+};
+
 export const collapsibleMenu: Story = {
   render: (args) => {
     const handleMenuOpenChange = (e: CustomEvent) => {

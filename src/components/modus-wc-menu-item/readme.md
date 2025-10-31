@@ -37,6 +37,19 @@ A customizable menu item component used to display the item portion of a menu
 | `itemSelect` | Event emitted when a menu item is selected. | `CustomEvent<{ value: string; }>` |
 
 
+## Methods
+
+### `collapseSubmenu() => Promise<void>`
+
+Public method to collapse the submenu if it's expanded
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Dependencies
 
 ### Used by
