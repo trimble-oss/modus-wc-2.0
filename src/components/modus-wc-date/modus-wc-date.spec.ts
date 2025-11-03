@@ -1882,7 +1882,8 @@ describe('modus-wc-date', () => {
       await page.waitForChanges();
 
       // Should move to March 11
-      const march11 = component['calendar'].dates[component['focusedDateIndex']];
+      const march11 =
+        component['calendar'].dates[component['focusedDateIndex']];
       expect(march11?.getDate()).toBe(11);
       expect(march11?.getMonth()).toBe(2);
     });
@@ -1938,7 +1939,8 @@ describe('modus-wc-date', () => {
       await page.waitForChanges();
 
       // Should move to March 17 (one week down)
-      const march17 = component['calendar'].dates[component['focusedDateIndex']];
+      const march17 =
+        component['calendar'].dates[component['focusedDateIndex']];
       expect(march17?.getDate()).toBe(17);
       expect(march17?.getMonth()).toBe(2);
     });
@@ -1966,7 +1968,8 @@ describe('modus-wc-date', () => {
       await page.waitForChanges();
 
       // Should move to March 10 (one week up)
-      const march10 = component['calendar'].dates[component['focusedDateIndex']];
+      const march10 =
+        component['calendar'].dates[component['focusedDateIndex']];
       expect(march10?.getDate()).toBe(10);
       expect(march10?.getMonth()).toBe(2);
     });
