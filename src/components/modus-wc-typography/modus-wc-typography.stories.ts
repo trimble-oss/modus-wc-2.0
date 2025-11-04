@@ -90,8 +90,8 @@ const Template: Story = {
   custom-class=${ifDefined(args['custom-class'])}
   hierarchy=${args.hierarchy}
   size=${ifDefined(args.size)}
-  weight=${ifDefined(args.weight)}>
-</modus-wc-typography>
+  weight=${ifDefined(args.weight)}
+  ></modus-wc-typography>
    `;
   },
 };
