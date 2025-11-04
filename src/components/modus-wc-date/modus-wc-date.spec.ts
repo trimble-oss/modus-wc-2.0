@@ -1866,16 +1866,26 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
+      // Set to March 2025 for consistent testing
+      component['calendar'].gotoDate(2025, 2);
       component['showCalendar'] = true;
       await page.waitForChanges();
 
-      component['focusedDateIndex'] = 5;
+      // Find index of March 10, 2025 (a mid-month date)
+      const march10Index = component['calendar'].dates.findIndex(
+        (date) => date && date.getMonth() === 2 && date.getDate() === 10
+      );
+      component['focusedDateIndex'] = march10Index;
 
       const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
       component['handleArrowKeys'](rightEvent);
       await page.waitForChanges();
 
-      expect(component['focusedDateIndex']).toBe(6);
+      // Should move to March 11
+      const march11 =
+        component['calendar'].dates[component['focusedDateIndex']];
+      expect(march11?.getDate()).toBe(11);
+      expect(march11?.getMonth()).toBe(2);
     });
 
     it('should navigate left with ArrowLeft key', async () => {
@@ -1885,16 +1895,25 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
+      // Set to March 2025 for consistent testing
+      component['calendar'].gotoDate(2025, 2);
       component['showCalendar'] = true;
       await page.waitForChanges();
 
-      component['focusedDateIndex'] = 5;
+      // Find index of March 10, 2025
+      const march10Index = component['calendar'].dates.findIndex(
+        (date) => date && date.getMonth() === 2 && date.getDate() === 10
+      );
+      component['focusedDateIndex'] = march10Index;
 
       const leftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
       component['handleArrowKeys'](leftEvent);
       await page.waitForChanges();
 
-      expect(component['focusedDateIndex']).toBe(4);
+      // Should move to March 9
+      const march9 = component['calendar'].dates[component['focusedDateIndex']];
+      expect(march9?.getDate()).toBe(9);
+      expect(march9?.getMonth()).toBe(2);
     });
 
     it('should navigate down with ArrowDown key', async () => {
@@ -1904,16 +1923,26 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
+      // Set to March 2025 for consistent testing
+      component['calendar'].gotoDate(2025, 2);
       component['showCalendar'] = true;
       await page.waitForChanges();
 
-      component['focusedDateIndex'] = 5;
+      // Find index of March 10, 2025
+      const march10Index = component['calendar'].dates.findIndex(
+        (date) => date && date.getMonth() === 2 && date.getDate() === 10
+      );
+      component['focusedDateIndex'] = march10Index;
 
       const downEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
       component['handleArrowKeys'](downEvent);
       await page.waitForChanges();
 
-      expect(component['focusedDateIndex']).toBe(12); // 5 + 7
+      // Should move to March 17 (one week down)
+      const march17 =
+        component['calendar'].dates[component['focusedDateIndex']];
+      expect(march17?.getDate()).toBe(17);
+      expect(march17?.getMonth()).toBe(2);
     });
 
     it('should navigate up with ArrowUp key', async () => {
@@ -1923,16 +1952,26 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
+      // Set to March 2025 for consistent testing
+      component['calendar'].gotoDate(2025, 2);
       component['showCalendar'] = true;
       await page.waitForChanges();
 
-      component['focusedDateIndex'] = 12;
+      // Find index of March 17, 2025
+      const march17Index = component['calendar'].dates.findIndex(
+        (date) => date && date.getMonth() === 2 && date.getDate() === 17
+      );
+      component['focusedDateIndex'] = march17Index;
 
       const upEvent = new KeyboardEvent('keydown', { key: 'ArrowUp' });
       component['handleArrowKeys'](upEvent);
       await page.waitForChanges();
 
-      expect(component['focusedDateIndex']).toBe(5); // 12 - 7
+      // Should move to March 10 (one week up)
+      const march10 =
+        component['calendar'].dates[component['focusedDateIndex']];
+      expect(march10?.getDate()).toBe(10);
+      expect(march10?.getMonth()).toBe(2);
     });
 
     it('should start on selected date when navigating', async () => {
@@ -1951,7 +1990,6 @@ describe('modus-wc-date', () => {
       component['handleArrowKeys'](rightEvent);
       await page.waitForChanges();
 
-      // Should have started on the selected date (Oct 15)
       expect(component['focusedDateIndex']).toBeGreaterThan(-1);
     });
 

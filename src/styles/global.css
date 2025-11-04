@@ -34,6 +34,24 @@ body {
   background-color: var(--modus-wc-color-base-page);
 }
 
+/*
+  Modal Scrollbar Behavior Override
+  Tailwind/DaisyUI applies `scrollbar-gutter: stable` to :root when a modal is open
+  (e.g., `:root:has(.modus-wc-modal-open, ...)`). This reserves space for the
+  scrollbar, leaving a visible empty gutter beside the content. We override it to
+  `auto` so the layout reflows naturally and the gutter disappears.
+*/
+:root:has(
+    :is(
+      .modus-wc-modal-open,
+      .modus-wc-modal:target,
+      .modus-wc-modal-toggle:checked + .modus-wc-modal,
+      .modus-wc-modal[open]
+    )
+  ) {
+  scrollbar-gutter: auto !important;
+}
+
 .modus-wc-border {
   border-color: var(--modus-wc-color-base-200);
   border-radius: 1px;
