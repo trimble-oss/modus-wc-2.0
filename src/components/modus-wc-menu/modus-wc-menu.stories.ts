@@ -98,17 +98,17 @@ export const CustomMenu: Story = {
     // prettier-ignore
     return html`
 <style>
-  .menu-width {
+  .custom-menu-width {
     width: 400px;
   }
-  .flex-row {
+  .custom-flex-row {
     display: flex;
     align-items: center;
   }
-  .nested-row {
+  .custom-nested-row {
     padding-inline-start: 3rem;
   }
-  .justify-end {
+  .custom-justify-end {
     margin-left: auto;
   }
   .green-square {
@@ -124,16 +124,16 @@ export const CustomMenu: Story = {
 </style>
 <modus-wc-menu
   aria-label="Custom menu"
-  custom-class="menu-width"
+  custom-class="custom-menu-width"
 >
   <li>
-    <div class="flex-row">
+    <div class="custom-flex-row">
       <modus-wc-icon decorative="true" name="expand_more"></modus-wc-icon>
       <modus-wc-button aria-label="Visible button" size="sm" shape="circle" variant="borderless">
         <modus-wc-icon aria-label="Visible icon" name="visibility_on"></modus-wc-icon>
       </modus-wc-button>
       <div>Parent</div>
-      <div class="justify-end">
+      <div class="custom-justify-end">
         <modus-wc-button aria-label="Actions button" size="sm" shape="circle" variant="borderless">
           <modus-wc-icon aria-label="Actions icon" name="more_vertical"></modus-wc-icon>
         </modus-wc-button>
@@ -141,13 +141,13 @@ export const CustomMenu: Story = {
     </div>
   </li>
   <li>
-    <div class="flex-row nested-row">
+    <div class="custom-flex-row custom-nested-row">
       <modus-wc-button aria-label="Visible button" size="sm" shape="circle" variant="borderless">
         <modus-wc-icon aria-label="Visible icon" name="visibility_on"></modus-wc-icon>
       </modus-wc-button>
       <div class="green-square"></div>
       <div>Child</div>
-      <div class="justify-end">
+      <div class="custom-justify-end">
         <modus-wc-button aria-label="Actions button" size="sm" shape="circle" variant="borderless">
           <modus-wc-icon aria-label="Actions icon" name="more_vertical"></modus-wc-icon>
         </modus-wc-button>
@@ -155,13 +155,13 @@ export const CustomMenu: Story = {
     </div>
   </li>
   <li>
-    <div class="flex-row nested-row">
+    <div class="custom-flex-row custom-nested-row">
       <modus-wc-button aria-label="Visible button" size="sm" shape="circle" variant="borderless">
         <modus-wc-icon aria-label="Invisible icon" name="visibility_off"></modus-wc-icon>
       </modus-wc-button>
       <div class="red-square"></div>
       <div>Child</div>
-      <div class="justify-end">
+      <div class="custom-justify-end">
         <modus-wc-button aria-label="Actions button" size="sm" shape="circle" variant="borderless">
           <modus-wc-icon aria-label="Actions icon" name="more_vertical"></modus-wc-icon>
         </modus-wc-button>
@@ -169,13 +169,13 @@ export const CustomMenu: Story = {
     </div>
   </li>
   <li>
-    <div class="flex-row">
+    <div class="custom-flex-row">
       <modus-wc-icon decorative="true" name="chevron_right"></modus-wc-icon>
       <modus-wc-button aria-label="Visible button" size="sm" shape="circle" variant="borderless">
         <modus-wc-icon aria-label="Visible icon" name="visibility_on"></modus-wc-icon>
       </modus-wc-button>
       <div>Parent</div>
-      <div class="justify-end">
+      <div class="custom-justify-end">
         <modus-wc-button aria-label="Actions button" size="sm" shape="circle" variant="borderless">
           <modus-wc-icon aria-label="Actions icon" name="more_vertical"></modus-wc-icon>
         </modus-wc-button>
