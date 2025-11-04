@@ -191,7 +191,7 @@ export const Default: Story = {
   },
 };
 
-export const CollapsibleMenuWithAPI: Story = {
+export const SideNavWithSubmenu: Story = {
   render: (args) => {
     const handleMenuOpenChange = (e: CustomEvent) => {
       const eventSource = e.target as HTMLElement;
@@ -271,6 +271,7 @@ export const CollapsibleMenuWithAPI: Story = {
         <modus-wc-navbar
           app-title="Modus App"
           class="navbar"
+          id="main-navbar"
           logo="/assets/logo.svg"
           @mainMenuOpenChange=${handleMenuOpenChange}
           .userCard=${{
@@ -298,6 +299,7 @@ export const CollapsibleMenuWithAPI: Story = {
             collapse-on-click-outside=${args['collapse-on-click-outside']}
             custom-class=${ifDefined(args['custom-class'])}
             expanded=${args.expanded}
+            id="main-side-nav"
             max-width=${args['max-width']}
             mode=${ifDefined(args.mode)}
             target-content=${ifDefined(args['target-content'])}
@@ -331,6 +333,7 @@ export const CollapsibleMenuWithAPI: Story = {
               </li>
               <modus-wc-menu-item
                 label="Charts"
+                id="charts-menu"
                 .hasSubmenu=${true}
                 value="charts"
               >
@@ -339,7 +342,10 @@ export const CollapsibleMenuWithAPI: Story = {
                   decorative="true"
                   name="bar_graph"
                 ></modus-wc-icon>
-                <modus-wc-menu .isSubMenu=${true}>
+                <modus-wc-menu
+                  .isSubMenu=${true}
+                  class="modus-wc-menu-dropdown"
+                >
                   <modus-wc-menu-item label="Bar Chart" value="bar-chart">
                   </modus-wc-menu-item>
                   <modus-wc-menu-item label="Line Chart" value="line-chart">
@@ -358,6 +364,7 @@ export const CollapsibleMenuWithAPI: Story = {
               <modus-wc-menu-item
                 label="Reports"
                 .hasSubmenu=${true}
+                id="reports-menu"
                 value="reports"
               >
                 <modus-wc-icon
@@ -365,7 +372,10 @@ export const CollapsibleMenuWithAPI: Story = {
                   decorative="true"
                   name="master_data"
                 ></modus-wc-icon>
-                <modus-wc-menu .isSubMenu=${true}>
+                <modus-wc-menu
+                  .isSubMenu=${true}
+                  class="modus-wc-menu-dropdown"
+                >
                   <modus-wc-menu-item
                     label="Monthly Report"
                     value="monthly-report"
@@ -378,49 +388,15 @@ export const CollapsibleMenuWithAPI: Story = {
                   </modus-wc-menu-item>
                 </modus-wc-menu>
               </modus-wc-menu-item>
-
-              <modus-wc-menu-item label="Dashboard" value="dashboard">
-                <modus-wc-icon
-                  slot="start-icon"
-                  decorative="true"
-                  name="dashboard"
-                ></modus-wc-icon>
-              </modus-wc-menu-item>
-
-              <modus-wc-menu-item
-                label="Settings"
-                .hasSubmenu=${true}
-                value="settings"
-              >
-                <modus-wc-icon
-                  slot="start-icon"
-                  decorative="true"
-                  name="settings"
-                ></modus-wc-icon>
-                <modus-wc-menu .isSubMenu=${true}>
-                  <modus-wc-menu-item
-                    label="User Preferences"
-                    value="user-preferences"
-                  >
-                  </modus-wc-menu-item>
-                  <modus-wc-menu-item
-                    label="System Settings"
-                    value="system-settings"
-                  >
-                  </modus-wc-menu-item>
-                  <modus-wc-menu-item label="Privacy" value="privacy">
-                  </modus-wc-menu-item>
-                </modus-wc-menu>
-              </modus-wc-menu-item>
             </modus-wc-menu>
           </modus-wc-side-navigation>
           <div class="panel-content">
             <div id="overview">
-              <h3>Collapsible Menu with API</h3>
+              <h3>Side Navigation with Submenu</h3>
               <p>
-                This example demonstrates the collapsible menu API where menu
-                items handle their own collapse/expand behavior through the
-                hasSubmenu prop.
+                This example demonstrates the side navigation component with
+                submenus, allowing for a more organized and hierarchical
+                navigation structure.
               </p>
               <p>
                 When the side navigation closes, the expandedChange event is
@@ -436,6 +412,83 @@ export const CollapsibleMenuWithAPI: Story = {
           </div>
         </div>
       </div>
+      <script>
+        const handleMenuOpenChange = (e) => {
+          const eventSource = e.target;
+          const storyContainer = eventSource?.closest('.layout-with-navbar');
+          let sideNav;
+
+          if (storyContainer) {
+            sideNav = storyContainer.querySelector('modus-wc-side-navigation');
+
+            if (sideNav) {
+              // Toggle the side nav state (navbar and side nav can be out of sync)
+              sideNav.expanded = e.detail;
+            }
+          }
+        };
+
+        const handleExpandedChange = (e) => {
+          // Collapse all menu items when side nav closes
+          if (!e.detail) {
+            const eventSource = e.target;
+            const menuItems =
+              eventSource.querySelectorAll('modus-wc-menu-item');
+            menuItems.forEach((menuItem) => {
+              if (
+                menuItem.hasSubmenu &&
+                typeof menuItem.collapseSubmenu === 'function'
+              ) {
+                menuItem.collapseSubmenu();
+              }
+            });
+          }
+        };
+        // Adding event listeners and setting properties here as the storybook initially does not load them
+        // document.addEventListener('DOMContentLoaded', () => {
+        //   const navbar = document.querySelector('#main-navbar');
+        //   const sideNav = document.querySelector('#main-side-nav');
+        //   const chartsMenu = document.querySelector('#charts-menu');
+        //   const reportsMenu = document.querySelector('#reports-menu');
+
+          if (navbar) {
+            // Set navbar properties
+            navbar.userCard = {
+              avatarAlt: 'User Avatar',
+              avatarSrc:
+                'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+              email: 'user@trimble.com',
+              name: 'Sonic the Hedgehog',
+            };
+
+            navbar.visibility = {
+              ai: true,
+              apps: true,
+              help: true,
+              mainMenu: true,
+              notifications: true,
+              search: true,
+              searchInput: false,
+              user: true,
+            };
+
+            navbar.addEventListener('mainMenuOpenChange', handleMenuOpenChange);
+          }
+
+          if (sideNav) {
+            sideNav.addEventListener('expandedChange', handleExpandedChange);
+          }
+
+          // Set hasSubmenu property for menu items with submenus
+          if (chartsMenu) {
+            chartsMenu.hasSubmenu = true;
+          }
+
+          if (reportsMenu) {
+            reportsMenu.hasSubmenu = true;
+          }
+        });
+      </script>
     `;
   },
 };
