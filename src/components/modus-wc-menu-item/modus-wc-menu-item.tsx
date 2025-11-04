@@ -148,7 +148,7 @@ export class ModusWcMenuItem {
         sideNav &&
         !(sideNav as HTMLElement & { expanded: boolean }).expanded
       ) {
-     // Don't allow submenu expansion when side nav is collapsed
+        // Don't allow submenu expansion when side nav is collapsed
         // Still emit the event for consistency
         this.itemSelect.emit({ value: this.value });
         return;
