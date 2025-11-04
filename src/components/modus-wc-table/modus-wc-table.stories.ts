@@ -836,7 +836,6 @@ export const InlineEditing: Story = {
               const container = document.createElement('div');
               container.style.width = '100%';
 
-
               const autocomplete = document.createElement('modus-wc-autocomplete');
               autocomplete.items = [
                 { label: 'Active', value: 'Active', visibleInMenu: true },
@@ -846,11 +845,9 @@ export const InlineEditing: Story = {
               autocomplete.value = value as string;
               autocomplete.style.width = '100%';
 
-
               const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
                 onCommit(e.detail.value);
               };
-
 
               autocomplete.addEventListener(
                 'itemSelect',
@@ -858,12 +855,10 @@ export const InlineEditing: Story = {
               );
               container.appendChild(autocomplete);
 
-
               setTimeout(() => {
                 const input = autocomplete.querySelector('input');
                 input?.focus();
               }, 0);
-
 
               return container;
             },
@@ -889,7 +884,6 @@ export const InlineEditing: Story = {
             customEditorRenderer: (value, onCommit) => {
               const container = document.createElement('div');
               container.style.width = '100%';
-
 
           const datePicker = document.createElement('modus-wc-date');
           datePicker.value = value;
@@ -944,23 +938,19 @@ export const InlineEditing: Story = {
           container.addEventListener('focusout', handleContainerBlur);
           container.appendChild(datePicker);
 
-
               setTimeout(() => {
                 const input = datePicker.querySelector('input');
                 input?.focus();
               }, 0);
-
 
               return container;
             },
             cellRenderer: (value) => {
               if (!value) return '-';
 
-
               // Parse dd-mm-yyyy format from date picker
               const dateString = value as string;
               const parts = dateString.split(/[-/]/);
-
 
               let date: Date;
               if (parts.length === 3 && parts[0].length <= 2) {
@@ -974,24 +964,20 @@ export const InlineEditing: Story = {
                 date = new Date(dateString);
               }
 
-
               // Check if date is valid
               if (isNaN(date.getTime())) {
                 return dateString; // Return original value if parsing fails
               }
-
 
               // Format date with dashes: dd-mm-yyyy
               const formattedDay = date.getDate().toString().padStart(2, '0');
               const formattedMonth = (date.getMonth() + 1).toString().padStart(2, '0');
               const formattedYear = date.getFullYear();
 
-
               return \`\${formattedDay}-\${formattedMonth}-\${formattedYear}\`;
             },
           },
         ];
-
 
         const data = [
           {
