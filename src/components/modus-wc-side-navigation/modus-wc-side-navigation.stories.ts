@@ -191,7 +191,7 @@ export const Default: Story = {
   },
 };
 
-export const SideNavWithSubmenu: Story = {
+export const WithSubmenu: Story = {
   render: (args) => {
     const handleMenuOpenChange = (e: CustomEvent) => {
       const eventSource = e.target as HTMLElement;
