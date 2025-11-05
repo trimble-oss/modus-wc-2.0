@@ -82,55 +82,32 @@ export default meta;
 
 type Story = StoryObj<TypographyArgs>;
 
-export const Default: Story = {
-  render: (args) => html`
-    <modus-wc-typography
-      custom-class=${ifDefined(args['custom-class'])}
-      hierarchy=${args.hierarchy}
-      size=${ifDefined(args.size)}
-      weight=${ifDefined(args.weight)}
-    ></modus-wc-typography>
-  `,
-};
-
-export const Heading1: Story = {
-  args: {
-    hierarchy: 'h1',
+const Template: Story = {
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-typography
+  custom-class=${ifDefined(args['custom-class'])}
+  hierarchy=${args.hierarchy}
+  size=${ifDefined(args.size)}
+  weight=${ifDefined(args.weight)}
+  ></modus-wc-typography>
+   `;
   },
 };
 
-export const Heading2: Story = {
-  args: {
-    hierarchy: 'h2',
-  },
-};
+export const Default: Story = { ...Template };
 
-export const Heading3: Story = {
-  args: {
-    hierarchy: 'h3',
-  },
-};
+export const Heading1: Story = { ...Template, args: { hierarchy: 'h1' } };
 
-export const Heading4: Story = {
-  args: {
-    hierarchy: 'h4',
-  },
-};
+export const Heading2: Story = { ...Template, args: { hierarchy: 'h2' } };
 
-export const Heading5: Story = {
-  args: {
-    hierarchy: 'h5',
-  },
-};
+export const Heading3: Story = { ...Template, args: { hierarchy: 'h3' } };
 
-export const Heading6: Story = {
-  args: {
-    hierarchy: 'h6',
-  },
-};
+export const Heading4: Story = { ...Template, args: { hierarchy: 'h4' } };
 
-export const Paragraph: Story = {
-  args: {
-    hierarchy: 'p',
-  },
-};
+export const Heading5: Story = { ...Template, args: { hierarchy: 'h5' } };
+
+export const Heading6: Story = { ...Template, args: { hierarchy: 'h6' } };
+
+export const Paragraph: Story = { ...Template, args: { hierarchy: 'p' } };
