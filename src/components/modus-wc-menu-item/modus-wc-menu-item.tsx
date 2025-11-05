@@ -155,6 +155,7 @@ export class ModusWcMenuItem {
         '.modus-wc-menu-dropdown'
       ) as HTMLElement;
       const liElement = this.el.querySelector('li');
+      const buttonElement = this.el.querySelector('button');
 
       if (submenu && liElement) {
         submenu.classList.toggle('modus-wc-menu-dropdown-show');
@@ -166,8 +167,14 @@ export class ModusWcMenuItem {
 
         if (this.isExpanded) {
           liElement.classList.add('modus-wc-menu-item-expanded');
+          if (buttonElement) {
+            buttonElement.classList.add('modus-wc-menu-dropdown-show');
+          }
         } else {
           liElement.classList.remove('modus-wc-menu-item-expanded');
+          if (buttonElement) {
+            buttonElement.classList.remove('modus-wc-menu-dropdown-show');
+          }
         }
       }
     }
