@@ -342,10 +342,7 @@ export const SideNavWithSubmenu: Story = {
                   decorative="true"
                   name="bar_graph"
                 ></modus-wc-icon>
-                <modus-wc-menu
-                  .isSubMenu=${true}
-                  class="modus-wc-menu-dropdown"
-                >
+                <modus-wc-menu .isSubMenu=${true} id="charts-submenu">
                   <modus-wc-menu-item label="Bar Chart" value="bar-chart">
                   </modus-wc-menu-item>
                   <modus-wc-menu-item label="Line Chart" value="line-chart">
@@ -372,10 +369,7 @@ export const SideNavWithSubmenu: Story = {
                   decorative="true"
                   name="master_data"
                 ></modus-wc-icon>
-                <modus-wc-menu
-                  .isSubMenu=${true}
-                  class="modus-wc-menu-dropdown"
-                >
+                <modus-wc-menu .isSubMenu=${true} id="reports-submenu">
                   <modus-wc-menu-item
                     label="Monthly Report"
                     value="monthly-report"
@@ -413,81 +407,58 @@ export const SideNavWithSubmenu: Story = {
         </div>
       </div>
       <script>
-        const handleMenuOpenChange = (e) => {
-          const eventSource = e.target;
-          const storyContainer = eventSource?.closest('.layout-with-navbar');
-          let sideNav;
-
-          if (storyContainer) {
-            sideNav = storyContainer.querySelector('modus-wc-side-navigation');
-
-            if (sideNav) {
-              // Toggle the side nav state (navbar and side nav can be out of sync)
-              sideNav.expanded = e.detail;
-            }
-          }
-        };
-
-        const handleExpandedChange = (e) => {
-          // Collapse all menu items when side nav closes
-          if (!e.detail) {
-            const eventSource = e.target;
-            const menuItems =
-              eventSource.querySelectorAll('modus-wc-menu-item');
-            menuItems.forEach((menuItem) => {
-              if (
-                menuItem.hasSubmenu &&
-                typeof menuItem.collapseSubmenu === 'function'
-              ) {
-                menuItem.collapseSubmenu();
-              }
-            });
-          }
-        };
         // Adding event listeners and setting properties here as the storybook initially does not load them
-        // document.addEventListener('DOMContentLoaded', () => {
-        //   const navbar = document.querySelector('#main-navbar');
-        //   const sideNav = document.querySelector('#main-side-nav');
-        //   const chartsMenu = document.querySelector('#charts-menu');
-        //   const reportsMenu = document.querySelector('#reports-menu');
+        //  document.addEventListener('DOMContentLoaded', () => {
+        //     const navbar = document.querySelector('#main-navbar');
+        //     const sideNav = document.querySelector('#main-side-nav');
+        //     const chartsMenu = document.querySelector('#charts-menu');
+        //     const reportsMenu = document.querySelector('#reports-menu');
+        //     const chartsSubMenu = document.querySelector('#charts-submenu');
+        //     const reportsSubMenu = document.querySelector('#reports-submenu');
 
-          if (navbar) {
-            // Set navbar properties
-            navbar.userCard = {
-              avatarAlt: 'User Avatar',
-              avatarSrc:
-                'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
-              email: 'user@trimble.com',
-              name: 'Sonic the Hedgehog',
-            };
+        //     if (navbar) {
+        //       // Set navbar properties
+        //       navbar.userCard = {
+        //         avatarAlt: 'User Avatar',
+        //         avatarSrc:
+        //           'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+        //         email: 'user@trimble.com',
+        //         name: 'Sonic the Hedgehog',
+        //       };
 
-            navbar.visibility = {
-              ai: true,
-              apps: true,
-              help: true,
-              mainMenu: true,
-              notifications: true,
-              search: true,
-              searchInput: false,
-              user: true,
-            };
+        //       navbar.visibility = {
+        //         ai: true,
+        //         apps: true,
+        //         help: true,
+        //         mainMenu: true,
+        //         notifications: true,
+        //         search: true,
+        //         searchInput: false,
+        //         user: true,
+        //       };
 
-            navbar.addEventListener('mainMenuOpenChange', handleMenuOpenChange);
-          }
+        //       navbar.addEventListener('mainMenuOpenChange', handleMenuOpenChange);
+        //     }
 
-          if (sideNav) {
-            sideNav.addEventListener('expandedChange', handleExpandedChange);
-          }
+        //     if (sideNav) {
+        //       sideNav.addEventListener('expandedChange', handleExpandedChange);
+        //     }
 
-          // Set hasSubmenu property for menu items with submenus
-          if (chartsMenu) {
-            chartsMenu.hasSubmenu = true;
-          }
+        //     // Set hasSubmenu property for menu items with submenus
+        //     [chartsMenu, reportsMenu].forEach((menuItem) => {
+        //       if (menuItem) {
+        //         menuItem.hasSubmenu = true;
+        //       }
+        //     });
 
-          if (reportsMenu) {
-            reportsMenu.hasSubmenu = true;
-          }
-        });
+        //     // Set isSubMenu for all submenu elements
+        //     [chartsSubMenu, reportsSubMenu].forEach((submenu) => {
+        //       if (submenu) {
+        //         submenu.isSubMenu = true;
+        //       }
+        //     });
+        //   });
+        //
       </script>
     `;
   },
