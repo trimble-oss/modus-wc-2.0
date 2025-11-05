@@ -407,7 +407,39 @@ export const WithSubmenu: Story = {
         </div>
       </div>
       <script>
-        // Adding event listeners and setting properties here as the storybook initially does not load them
+        // const handleMenuOpenChange = (e) => {
+        //   const eventSource = e.target;
+        //   const storyContainer = eventSource?.closest('.layout-with-navbar');
+        //   let sideNav;
+
+        //   if (storyContainer) {
+        //     sideNav = storyContainer.querySelector('modus-wc-side-navigation');
+        //   } else {
+        //     sideNav = document.querySelector('modus-wc-side-navigation');
+        //   }
+
+        //   if (sideNav) {
+        //     sideNav.expanded = e.detail;
+        //   }
+        // };
+
+        // const handleExpandedChange = (e) => {
+        //   // Collapse all menu items when side nav closes
+        //   if (!e.detail) {
+        //     const eventSource = e.target;
+        //     const menuItems =
+        //       eventSource.querySelectorAll('modus-wc-menu-item');
+        //     menuItems.forEach((menuItem) => {
+        //       if (
+        //         menuItem.hasSubmenu &&
+        //         typeof menuItem.collapseSubmenu === 'function'
+        //       ) {
+        //         menuItem.collapseSubmenu();
+        //       }
+        //     });
+        //   }
+        // };
+        //  // Adding event listeners and setting properties here as the storybook initially does not load them
         //  document.addEventListener('DOMContentLoaded', () => {
         //     const navbar = document.querySelector('#main-navbar');
         //     const sideNav = document.querySelector('#main-side-nav');

@@ -155,10 +155,10 @@ export class ModusWcMenuItem {
         '.modus-wc-menu-dropdown'
       ) as HTMLElement;
       const liElement = this.el.querySelector('li');
-      const buttonElement = this.el.querySelector('button');
 
       if (submenu && liElement) {
         submenu.classList.toggle('modus-wc-menu-dropdown-show');
+        const buttonElement = liElement.querySelector('button');
 
         // Update internal expanded state and add/remove class
         this.isExpanded = submenu.classList.contains(
