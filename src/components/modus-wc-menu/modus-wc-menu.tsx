@@ -81,6 +81,11 @@ export class ModusWcMenu {
     if (!this.el.contains(e.relatedTarget as Node)) {
       // Focus has left the menu entirely
       this.menuFocusout.emit(e);
+
+      // Stop propagation for submenus to prevent double emission
+      if (this.isSubMenu) {
+        e.stopPropagation();
+      }
     }
   };
 

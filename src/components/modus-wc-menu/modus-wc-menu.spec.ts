@@ -72,4 +72,44 @@ describe('modus-wc-menu', () => {
     expect(menu!.className).toContain('test-submenu-class');
     expect(page.root).toMatchSnapshot();
   });
+
+  it('should stop propagation when focusout occurs on submenu', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `<modus-wc-menu is-sub-menu="true">
+        <modus-wc-menu-item label="Submenu Item" value="submenu-item" />
+      </modus-wc-menu>`,
+    });
+
+    await page.waitForChanges();
+
+    const component = page.rootInstance;
+    const emitSpy = jest.spyOn(component.menuFocusout, 'emit');
+
+    const menu = page.root!.querySelector('ul');
+
+    // Create a mock stopPropagation function
+    const stopPropagationSpy = jest.fn();
+
+    // Simulate focusout event with focus moving outside the submenu
+    const focusoutEvent = new FocusEvent('focusout', {
+      relatedTarget: document.body,
+      bubbles: true,
+    });
+
+    // Override stopPropagation for testing
+    Object.defineProperty(focusoutEvent, 'stopPropagation', {
+      value: stopPropagationSpy,
+      writable: true,
+    });
+
+    menu?.dispatchEvent(focusoutEvent);
+    await page.waitForChanges();
+
+    // Verify event was emitted
+    expect(emitSpy).toHaveBeenCalledWith(focusoutEvent);
+
+    // Verify stopPropagation was called for submenu
+    expect(stopPropagationSpy).toHaveBeenCalled();
+  });
 });
