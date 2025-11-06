@@ -78,8 +78,7 @@ const Template: Story = {
 >
 </modus-wc-stepper>
 <script>
-// Adding this block to show how to set stepper steps via JS
-       
+// Adding this block to show how to set stepper steps via JS.    
 // const steps = [
 //   { label: 'Scale', color: 'primary' },
 //   { label: 'Belong', color: 'primary' },

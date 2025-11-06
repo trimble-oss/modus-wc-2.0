@@ -189,18 +189,16 @@ const Template: Story = {
 //     searchInput: true,
 //     user: true,
 //     };
-         
-//  const userCard= {
+//  const userCard = {
 //   avatarAlt: 'Sonic',
 //   avatarSrc: 'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
 //   email: 'sonic@trimble.com',
 //   name: 'Sonic the Hedgehog',
-// };
-       
-  // const navbar = document.querySelector('modus-wc-navbar');
-  // navbar.visibility = visibility;
-  // navbar.userCard = userCard;
-  </script>
+// };   
+// const navbar = document.querySelector('modus-wc-navbar');
+// navbar.visibility = visibility;
+// navbar.userCard = userCard;
+</script>
 
     `;
   },
