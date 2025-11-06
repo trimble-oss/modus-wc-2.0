@@ -374,8 +374,7 @@ export const CustomMenuAndSlots: Story = {
         // Added this block to demonstrate how to toggle a custom user menu and manage navbar visibility settings using JavaScript.
         // const toggleCustomUserMenu = (e) => {
         //    const customIcon = e.currentTarget;
-        //    const menu =
-        //    customIcon.parentElement?.querySelector('#custom-user-menu');
+        //    const menu = customIcon.parentElement?.querySelector('#custom-user-menu');
         //    menu?.classList.toggle('hidden');
         // };
         //  const navbar = document.querySelector('modus-wc-navbar');
