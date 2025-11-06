@@ -154,10 +154,6 @@ modus-wc-menu-item
     color: var(--modus-wc-color-white);
   }
 
-  &:hover {
-    background-color: var(--modus-wc-color-gray-8);
-  }
-
   &.modus-wc-menu-item-focused {
     background-color: var(--modus-wc-color-gray-8);
   }
