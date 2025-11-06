@@ -326,6 +326,19 @@ export class ModusWcDate {
     if (this.showCalendar) {
       const selectedDate = this.parseISODate(this.value);
       this.ensureCalendarWithinBounds(selectedDate);
+
+      // Set focus to the selected date if it exists
+      if (selectedDate) {
+        const selectedIndex = this.calendar.dates.findIndex(
+          (date) => date && this.compareDate(date, selectedDate) === 0
+        );
+        if (selectedIndex !== -1) {
+          this.focusedDateIndex = selectedIndex;
+        }
+      }
+    } else {
+      // Reset focus when closing
+      this.focusedDateIndex = -1;
     }
     // Always ensure input is focused when toggling calendar (opening or closing)
     if (this.inputRef) {

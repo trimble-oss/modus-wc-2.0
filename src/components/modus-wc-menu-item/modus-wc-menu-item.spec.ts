@@ -201,4 +201,297 @@ describe('modus-wc-menu-item', () => {
     ).toBeFalsy();
     expect(checkbox.getAttribute('value')).toBe('false');
   });
+
+  it('should toggle submenu visibility when a menu item with submenu is clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: `
+        <modus-wc-menu-item label="Parent Menu" value="parent" has-submenu="true">
+          <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown">
+            <modus-wc-menu-item label="Submenu Item" value="child"></modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+      `,
+    });
+
+    // Get elements
+    const menuItem = page.root as HTMLElement;
+    const button = menuItem.querySelector('button') as HTMLButtonElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+    const submenu = menuItem.querySelector(
+      '.modus-wc-menu-dropdown'
+    ) as HTMLElement;
+
+    // Initial state - submenu should be hidden
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeFalsy();
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-expanded')
+    ).toBeFalsy();
+
+    // Click to expand
+    button.click();
+    await page.waitForChanges();
+
+    // After click, submenu should be visible and li should have expanded class
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeTruthy();
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-expanded')
+    ).toBeTruthy();
+    expect(page.rootInstance.isExpanded).toBeTruthy();
+
+    // Click again to collapse
+    button.click();
+    await page.waitForChanges();
+
+    // After second click, submenu should be hidden again
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeFalsy();
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-expanded')
+    ).toBeFalsy();
+    expect(page.rootInstance.isExpanded).toBeFalsy();
+  });
+
+  it('should collapse submenu when collapseSubmenu method is called', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: `
+        <modus-wc-menu-item label="Parent Menu" value="parent" has-submenu="true">
+          <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown modus-wc-menu-dropdown-show">
+            <modus-wc-menu-item label="Submenu Item" value="child"></modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+      `,
+    });
+
+    // Get elements
+    const menuItem = page.root as HTMLElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+    const submenu = menuItem.querySelector(
+      '.modus-wc-menu-dropdown'
+    ) as HTMLElement;
+
+    // Set up initial expanded state
+    liElement.classList.add('modus-wc-menu-item-expanded');
+    page.rootInstance.isExpanded = true;
+
+    // Verify initial state - submenu is expanded
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeTruthy();
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-expanded')
+    ).toBeTruthy();
+    expect(page.rootInstance.isExpanded).toBeTruthy();
+
+    // Call the collapseSubmenu method
+    await page.rootInstance.collapseSubmenu();
+    await page.waitForChanges();
+
+    // After calling collapseSubmenu, submenu should be collapsed
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeFalsy();
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-expanded')
+    ).toBeFalsy();
+    expect(page.rootInstance.isExpanded).toBeFalsy();
+  });
+
+  it('should not collapse submenu when collapseSubmenu is called but submenu is not expanded', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: `
+        <modus-wc-menu-item label="Parent Menu" value="parent" has-submenu="true">
+          <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown">
+            <modus-wc-menu-item label="Submenu Item" value="child"></modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+      `,
+    });
+
+    // Get elements
+    const menuItem = page.root as HTMLElement;
+    const submenu = menuItem.querySelector(
+      '.modus-wc-menu-dropdown'
+    ) as HTMLElement;
+
+    // Verify initial state - submenu is not expanded
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeFalsy();
+    expect(page.rootInstance.isExpanded).toBeFalsy();
+
+    // Call the collapseSubmenu method
+    await page.rootInstance.collapseSubmenu();
+    await page.waitForChanges();
+
+    // State should remain unchanged
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeFalsy();
+    expect(page.rootInstance.isExpanded).toBeFalsy();
+  });
+
+  it('should do nothing when collapseSubmenu is called on a menu item without submenu', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Test label" value="Test value"></modus-wc-menu-item>',
+    });
+
+    // Verify there is no submenu
+    expect(page.rootInstance.hasSubmenu).toBeFalsy();
+    expect(page.rootInstance.isExpanded).toBeFalsy();
+
+    // Call the collapseSubmenu method
+    await page.rootInstance.collapseSubmenu();
+    await page.waitForChanges();
+
+    // Should remain in the same state
+    expect(page.rootInstance.isExpanded).toBeFalsy();
+  });
+
+  it('should handle collapseSubmenu when submenu element is missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Parent Menu" value="parent" has-submenu="true"></modus-wc-menu-item>',
+    });
+
+    // Set isExpanded to true even though there's no submenu element
+    page.rootInstance.isExpanded = true;
+
+    // Call the collapseSubmenu method
+    await page.rootInstance.collapseSubmenu();
+    await page.waitForChanges();
+
+    // Should not throw an error and state should remain as is
+    expect(page.rootInstance.isExpanded).toBeTruthy();
+  });
+
+  it('should handle submenu toggle when submenu or li element is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Parent Menu" value="parent" has-submenu="true"></modus-wc-menu-item>',
+    });
+
+    // Get elements
+    const menuItem = page.root as HTMLElement;
+    const button = menuItem.querySelector('button') as HTMLButtonElement;
+
+    // Set up event listener to capture itemSelect event
+    const selectSpy = jest.fn();
+    menuItem.addEventListener('itemSelect', selectSpy);
+
+    // Click the menu item when there's no submenu element
+    button.click();
+    await page.waitForChanges();
+
+    // Should not throw an error
+    // Event should still be emitted
+    expect(selectSpy).toHaveBeenCalledTimes(1);
+    expect(selectSpy.mock.calls[0][0].detail).toEqual({ value: 'parent' });
+  });
+
+  it('should not expand submenu when inside a collapsed side navigation', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: `
+        <modus-wc-menu-item label="Parent Menu" value="parent" has-submenu="true">
+          <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown">
+            <modus-wc-menu-item label="Submenu Item" value="child"></modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+      `,
+    });
+
+    const menuItem = page.root as HTMLElement;
+    const button = menuItem.querySelector('button') as HTMLButtonElement;
+    const submenu = menuItem.querySelector(
+      '.modus-wc-menu-dropdown'
+    ) as HTMLElement;
+
+    // Mock the closest method to return a fake side navigation element
+    const mockSideNav = { expanded: false };
+    const originalClosest = menuItem.closest.bind(menuItem);
+    menuItem.closest = jest.fn((selector: string) => {
+      if (selector === 'modus-wc-side-navigation') {
+        return mockSideNav as unknown as Element;
+      }
+      return originalClosest(selector);
+    });
+
+    // Set up event listener to capture itemSelect event
+    const selectSpy = jest.fn();
+    menuItem.addEventListener('itemSelect', selectSpy);
+
+    // Verify initial state
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeFalsy();
+
+    // Click the menu item
+    button.click();
+    await page.waitForChanges();
+
+    // Submenu should NOT expand because side nav is collapsed
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeFalsy();
+
+    // Event should still be emitted (line 153)
+    expect(selectSpy).toHaveBeenCalledTimes(1);
+    expect(selectSpy.mock.calls[0][0].detail).toEqual({ value: 'parent' });
+  });
+
+  it('should expand submenu when inside an expanded side navigation', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: `
+        <modus-wc-menu-item label="Parent Menu" value="parent" has-submenu="true">
+          <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown">
+            <modus-wc-menu-item label="Submenu Item" value="child"></modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+      `,
+    });
+
+    const menuItem = page.root as HTMLElement;
+    const button = menuItem.querySelector('button') as HTMLButtonElement;
+    const submenu = menuItem.querySelector(
+      '.modus-wc-menu-dropdown'
+    ) as HTMLElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+
+    // Mock the closest method to return a fake side navigation element with expanded: true
+    const mockSideNav = { expanded: true };
+    const originalClosest = menuItem.closest.bind(menuItem);
+    menuItem.closest = jest.fn((selector: string) => {
+      if (selector === 'modus-wc-side-navigation') {
+        return mockSideNav as unknown as Element;
+      }
+      return originalClosest(selector);
+    });
+
+    // Verify initial state
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeFalsy();
+
+    // Click the menu item
+    button.click();
+    await page.waitForChanges();
+
+    // Submenu SHOULD expand because side nav is expanded
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeTruthy();
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-expanded')
+    ).toBeTruthy();
+  });
 });
