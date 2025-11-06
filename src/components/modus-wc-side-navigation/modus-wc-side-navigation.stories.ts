@@ -160,17 +160,13 @@ export const Default: Story = {
       </div>
       <script>
         // Added this block to demonstrate how to handle menu selection, side navigation toggle, and navbar visibility settings using JavaScript.
-        // document.addEventListener('DOMContentLoaded', () => {
-        //   const menuItems = document.querySelectorAll('modus-wc-menu-item');
-
-        //   menuItems.forEach((item) => {
-        //     item.addEventListener('itemSelect', () => {
-        //       menuItems.forEach((i) => i.removeAttribute('selected'));
-        //       item.setAttribute('selected', '');
-        //     });
+        // const menuItems = document.querySelectorAll('modus-wc-menu-item');
+        // menuItems.forEach((item) => {
+        //   item.addEventListener('itemSelect', () => {
+        //     menuItems.forEach((i) => i.removeAttribute('selected'));
+        //     item.setAttribute('selected', '');
         //   });
         // });
-
         // const handleMenuOpenChange = (e) => {
         //   const eventSource = e.target;
         //   const storyContainer = eventSource?.closest('.layout-with-navbar');
