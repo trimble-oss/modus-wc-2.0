@@ -202,6 +202,7 @@ export class ModusWcTextInput {
   render() {
     const showClear = this.shouldIncludeClear();
     const effectiveId = this.inputId || this.generatedId;
+    const hasCustomIcon = !!this.el.querySelector('[slot="custom-icon"]');
 
     return (
       <Host>
@@ -214,8 +215,14 @@ export class ModusWcTextInput {
           />
         )}
         <label class={this.getClasses()}>
-          {this.includeSearch && (
-            <SearchSolidIcon className="modus-wc-text-input-icon modus-wc-text-input-icon-search" />
+          {hasCustomIcon ? (
+            <div class="modus-wc-text-input-icon modus-wc-text-input-icon-custom">
+              <slot name="custom-icon" />
+            </div>
+          ) : (
+            this.includeSearch && (
+              <SearchSolidIcon className="modus-wc-text-input-icon modus-wc-text-input-icon-search" />
+            )
           )}
           <input
             aria-required={this.required}

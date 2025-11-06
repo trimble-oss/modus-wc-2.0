@@ -2149,6 +2149,85 @@
             },
             {
               "kind": "method",
+              "name": "handleArrowKeys",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleClickOutside",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "MouseEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleEscapeKey",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleMaxChange",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "optional": true,
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleMinChange",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "optional": true,
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleValueChange",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "optional": true,
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleWeekStartDayChange"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -2186,6 +2265,15 @@
               "description": "Feedback to render below the input.",
               "type": {
                 "text": "IInputFeedbackProp"
+              }
+            },
+            {
+              "name": "format",
+              "fieldName": "format",
+              "default": "'dd-mm-yyyy'",
+              "description": "The date format for display and input.",
+              "type": {
+                "text": "| 'yyyy-mm-dd'\r\n    | 'dd-mm-yyyy'\r\n    | 'yyyy/mm/dd'\r\n    | 'dd/mm/yyyy'\r\n    | 'MMM DD, YYYY'"
               }
             },
             {
@@ -2267,14 +2355,39 @@
               "name": "value",
               "fieldName": "value",
               "default": "''",
-              "description": "The value of the control (yyyy-mm-dd).",
+              "description": "The value of the control.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "week-start-day",
+              "fieldName": "weekStartDay",
+              "default": "'sunday'",
+              "description": "The first day of the week for the calendar display",
+              "type": {
+                "text": "WeekStartDay"
               }
             }
           ],
           "tagName": "modus-wc-date",
           "events": [
+            {
+              "kind": "field",
+              "name": "calendarMonthChange",
+              "type": {
+                "text": "EventEmitter<number>"
+              },
+              "description": "Event emitted when the calendar month selection changes."
+            },
+            {
+              "kind": "field",
+              "name": "calendarYearChange",
+              "type": {
+                "text": "EventEmitter<number>"
+              },
+              "description": "Event emitted when the calendar year selection changes."
+            },
             {
               "kind": "field",
               "name": "inputBlur",
@@ -2641,6 +2754,173 @@
           "declaration": {
             "name": "ModusWcDropdownMenu",
             "module": "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "File dropzone component that allows users to drag and drop files for upload.",
+          "name": "ModusWcFileDropzone",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleFileChange",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "accept-file-types",
+              "fieldName": "acceptFileTypes",
+              "description": "Accepted file types (e.g. '.jpg,.png' or 'image/*')",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the file dropzone element",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "description": "Disable the file input",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "file-dragged-over-instructions",
+              "fieldName": "fileDraggedOverInstructions",
+              "description": "Custom instructions shown when files are dragged over the dropzone",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "include-state-icon",
+              "fieldName": "includeStateIcon",
+              "default": "true",
+              "description": "Include state icon (upload, success, error)",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "instructions",
+              "fieldName": "instructions",
+              "description": "Custom instructions shown as the default dropzone message",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "invalid-file-type-message",
+              "fieldName": "invalidFileTypeMessage",
+              "description": "Custom error message displayed when an invalid file type is selected",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "max-file-count",
+              "fieldName": "maxFileCount",
+              "description": "Maximum number of files allowed, will show error if exceeded",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "max-file-name-length",
+              "fieldName": "maxFileNameLength",
+              "description": "Maximum allowed length of filename, will show error if exceeded",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "max-total-file-size-bytes",
+              "fieldName": "maxTotalFileSizeBytes",
+              "description": "Maximum total file size in bytes allowed, will show error if exceeded",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "multiple",
+              "fieldName": "multiple",
+              "description": "Allow multiple file selection",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "success-message",
+              "fieldName": "successMessage",
+              "description": "Success message displayed when files are uploaded successfully",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-file-dropzone",
+          "events": [
+            {
+              "kind": "field",
+              "name": "fileSelect",
+              "type": {
+                "text": "EventEmitter<FileList>"
+              },
+              "description": "Event emitted when files are selected"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcFileDropzone",
+          "declaration": {
+            "name": "ModusWcFileDropzone",
+            "module": "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-file-dropzone",
+          "declaration": {
+            "name": "ModusWcFileDropzone",
+            "module": "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.tsx"
           }
         }
       ]
@@ -3030,6 +3310,27 @@
             },
             {
               "kind": "method",
+              "name": "handleCollapseAllChange",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "isExpanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Internal state to track if submenu is expanded"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -3045,6 +3346,14 @@
               "name": "checkbox",
               "fieldName": "checkbox",
               "description": "If true, renders a checkbox at the start of the menu item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "collapse-all",
+              "fieldName": "collapseAll",
+              "description": "Collapse all submenus when set to true",
               "type": {
                 "text": "boolean"
               }
@@ -3070,6 +3379,14 @@
               "name": "focused",
               "fieldName": "focused",
               "description": "The focused state of the menu item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "has-submenu",
+              "fieldName": "hasSubmenu",
+              "description": "Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.",
               "type": {
                 "text": "boolean"
               }
@@ -3214,6 +3531,14 @@
               "description": "Custom CSS class to apply to the ul element.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "is-sub-menu",
+              "fieldName": "isSubMenu",
+              "description": "Indicates that this menu is a submenu (dropdown).",
+              "type": {
+                "text": "boolean"
               }
             },
             {

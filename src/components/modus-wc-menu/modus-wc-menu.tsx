@@ -39,6 +39,9 @@ export class ModusWcMenu {
   /** The size of the menu. */
   @Prop() size?: ModusSize = 'md';
 
+  /** Indicates that this menu is a submenu (dropdown). */
+  @Prop() isSubMenu?: boolean;
+
   /** Event emitted when the menu loses focus. */
   @StencilEvent() menuFocusout!: EventEmitter<FocusEvent>;
 
@@ -50,6 +53,14 @@ export class ModusWcMenu {
   }
 
   private getClasses(): string {
+    // For submenus, only add the dropdown class
+    if (this.isSubMenu) {
+      const classList: string[] = ['modus-wc-menu-dropdown'];
+      if (this.customClass) classList.push(this.customClass);
+      return classList.join(' ');
+    }
+
+    // For regular menus, add all the standard classes
     const classList: string[] = ['modus-wc-menu modus-wc-w-full'];
 
     const propClasses = convertPropsToClasses({
@@ -70,6 +81,11 @@ export class ModusWcMenu {
     if (!this.el.contains(e.relatedTarget as Node)) {
       // Focus has left the menu entirely
       this.menuFocusout.emit(e);
+
+      // Stop propagation for submenus to prevent double emission
+      if (this.isSubMenu) {
+        e.stopPropagation();
+      }
     }
   };
 
@@ -78,7 +94,7 @@ export class ModusWcMenu {
 
   render() {
     return (
-      <Host>
+      <Host class={this.isSubMenu ? 'modus-wc-menu-submenu' : undefined}>
         <ul
           aria-orientation={this.orientation}
           class={this.getClasses()}

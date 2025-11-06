@@ -139,10 +139,16 @@ export const WithErrorFeedback: Story = {
     <modus-wc-textarea
       aria-label="Textarea input"
       .feedback=${errorFeedback}
+      id="error-input"
       label=${ifDefined(args.label)}
       ?required=${true}
       .value=${args.value}
     ></modus-wc-textarea>
+    <script>
+      // Adding this block to show how to set feedback via JS
+      //const input = document.getElementById('error-input');
+      //input.feedback = { level: 'error', message: 'Value is required.' };
+    </script>
   `,
 };
 
