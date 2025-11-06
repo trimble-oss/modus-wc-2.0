@@ -131,10 +131,6 @@ modus-wc-menu-item
     color: var(--modus-wc-color-gray-10);
   }
 
-  &:hover {
-    background-color: var(--modus-wc-color-gray-0);
-  }
-
   &.modus-wc-menu-item-focused {
     background-color: var(--modus-wc-color-gray-0);
   }
@@ -156,10 +152,6 @@ modus-wc-menu-item
     background-color: #019aeb4d;
     background-color: var(--modus-wc-color-primary);
     color: var(--modus-wc-color-white);
-  }
-
-  &:hover {
-    background-color: var(--modus-wc-color-gray-8);
   }
 
   &.modus-wc-menu-item-focused {
