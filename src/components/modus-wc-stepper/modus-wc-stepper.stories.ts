@@ -84,7 +84,7 @@ const Template: Story = {
 //   { label: 'Belong', color: 'primary' },
 //   { label: 'Grow', color: 'warning' },
 //   { label: 'Innovate', content: '🚀' }
-//   ];          
+//   ];      
 // const stepper = document.querySelector('modus-wc-stepper');  
 // stepper.steps = steps;
 </script>

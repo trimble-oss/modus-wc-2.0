@@ -194,7 +194,7 @@ const Template: Story = {
 //   avatarSrc: 'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
 //   email: 'sonic@trimble.com',
 //   name: 'Sonic the Hedgehog',
-// };   
+// };
 // const navbar = document.querySelector('modus-wc-navbar');
 // navbar.visibility = visibility;
 // navbar.userCard = userCard;
