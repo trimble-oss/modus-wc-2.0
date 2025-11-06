@@ -93,35 +93,6 @@ export const Default: Story = {
           position: relative;
         }
       </style>
-      <script>
-        document.addEventListener('DOMContentLoaded', () => {
-          const menuItems = document.querySelectorAll('modus-wc-menu-item');
-
-          menuItems.forEach((item) => {
-            item.addEventListener('itemSelect', () => {
-              menuItems.forEach((i) => i.removeAttribute('selected'));
-              item.setAttribute('selected', '');
-            });
-          });
-        });
-
-        function handleMenuOpenChange(e) {
-          const eventSource = e.target;
-          const storyContainer = eventSource?.closest('.layout-with-navbar');
-
-          let sideNav;
-
-          if (storyContainer) {
-            sideNav = storyContainer.querySelector('modus-wc-side-navigation');
-          } else {
-            sideNav = document.querySelector('modus-wc-side-navigation');
-          }
-
-          if (sideNav) {
-            sideNav.expanded = e.detail;
-          }
-        }
-      </script>
       <div class="layout-with-navbar">
         <modus-wc-navbar
           app-title="Modus App"
@@ -187,6 +158,61 @@ export const Default: Story = {
           </div>
         </div>
       </div>
+      <script>
+        // Added this block to demonstrate how to handle menu selection, side navigation toggle, and navbar visibility settings using JavaScript.
+        // document.addEventListener('DOMContentLoaded', () => {
+        //   const menuItems = document.querySelectorAll('modus-wc-menu-item');
+
+        //   menuItems.forEach((item) => {
+        //     item.addEventListener('itemSelect', () => {
+        //       menuItems.forEach((i) => i.removeAttribute('selected'));
+        //       item.setAttribute('selected', '');
+        //     });
+        //   });
+        // });
+
+        // const handleMenuOpenChange = (e) => {
+        //   const eventSource = e.target;
+        //   const storyContainer = eventSource?.closest('.layout-with-navbar');
+
+        //   let sideNav;
+
+        //   if (storyContainer) {
+        //     sideNav = storyContainer.querySelector('modus-wc-side-navigation');
+        //   } else {
+        //     sideNav = document.querySelector('modus-wc-side-navigation');
+        //   }
+
+        //   if (sideNav) {
+        //     sideNav.expanded = e.detail;
+        //   }
+        // };
+
+        // const visibility = {
+        //   ai: true,
+        //   apps: true,
+        //   help: true,
+        //   mainMenu: true,
+        //   notifications: true,
+        //   search: true,
+        //   searchInput: false,
+        //   user: true,
+        // };
+
+        // const userCard = {
+        //   avatarAlt: 'User Avatar',
+        //   avatarSrc:
+        //     'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+        //   email: 'user@trimble.com',
+        //   name: 'Sonic the Hedgehog',
+        // };
+
+        // const navbar = document.querySelector('modus-wc-navbar');
+        // const sideNav = document.querySelector('modus-wc-side-navigation');
+        // navbar.visibility = visibility;
+        // navbar.userCard = userCard;
+        // navbar.addEventListener('mainMenuOpenChange', handleMenuOpenChange);
+      </script>
     `;
   },
 };
