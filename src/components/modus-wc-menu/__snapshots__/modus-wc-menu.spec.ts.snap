@@ -7,6 +7,13 @@ exports[`modus-wc-menu renders with default props 1`] = `
 </modus-wc-menu>
 `;
 
+exports[`modus-wc-menu should add customClass to classList in submenu mode 1`] = `
+<modus-wc-menu class="modus-wc-menu-submenu" custom-class="test-submenu-class" is-sub-menu="true">
+  <!---->
+  <ul aria-label="Submenu test" aria-orientation="vertical" class="modus-wc-menu-dropdown test-submenu-class" role="menu"></ul>
+</modus-wc-menu>
+`;
+
 exports[`modus-wc-menu should render with custom props 1`] = `
 <modus-wc-menu bordered="true" custom-class="test-class" orientation="horizontal" size="lg">
   <!---->

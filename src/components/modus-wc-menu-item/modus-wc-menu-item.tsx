@@ -4,7 +4,9 @@ import {
   EventEmitter,
   h,
   Host,
+  Method,
   Prop,
+  State,
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu-item.tailwind';
@@ -64,11 +66,37 @@ export class ModusWcMenuItem {
   /** The unique identifying value of the menu item. */
   @Prop() value: string = '';
 
+  /** Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior. */
+  @Prop() hasSubmenu?: boolean;
+
+  /** Internal state to track if submenu is expanded */
+  @State() isExpanded: boolean = false;
+
   /** Event emitted when a menu item is selected. */
   @StencilEvent() itemSelect!: EventEmitter<{ value: string }>;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  /**
+   * Public method to collapse the submenu if it's expanded
+   */
+  @Method()
+  async collapseSubmenu(): Promise<void> {
+    if (this.hasSubmenu && this.isExpanded) {
+      const submenu = this.el.querySelector(
+        '.modus-wc-menu-dropdown'
+      ) as HTMLElement;
+      const liElement = this.el.querySelector('li');
+
+      if (submenu && liElement) {
+        submenu.classList.remove('modus-wc-menu-dropdown-show');
+        liElement.classList.remove('modus-wc-menu-item-expanded');
+        this.isExpanded = false;
+      }
+    }
+    return Promise.resolve();
   }
 
   private getClasses(): string {
@@ -77,7 +105,7 @@ export class ModusWcMenuItem {
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       disabled: this.disabled,
-      selected: this.selected,
+      selected: this.hasSubmenu ? false : this.selected,
       focused: this.focused,
       size: this.size,
     });
@@ -87,6 +115,10 @@ export class ModusWcMenuItem {
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
+  }
+
+  private getButtonClasses(): string {
+    return this.hasSubmenu ? 'modus-wc-menu-dropdown-toggle' : '';
   }
 
   private getIconSize(): DaisySize {
@@ -104,8 +136,50 @@ export class ModusWcMenuItem {
   }
 
   private handleItemSelect = () => {
+    // For submenu items, handle the toggle
+    if (this.hasSubmenu) {
+      // Check if side nav is expanded (if this menu is inside a side nav)
+      const sideNav = this.el.closest('modus-wc-side-navigation');
+      if (
+        sideNav &&
+        !(sideNav as HTMLElement & { expanded: boolean }).expanded
+      ) {
+        // Don't allow submenu expansion when side nav is collapsed
+        // Still emit the event for consistency
+        this.itemSelect.emit({ value: this.value });
+        return;
+      }
+
+      // The submenu should be inside this menu-item element (slotted content)
+      const submenu = this.el.querySelector(
+        '.modus-wc-menu-dropdown'
+      ) as HTMLElement;
+      const liElement = this.el.querySelector('li');
+
+      if (submenu && liElement) {
+        submenu.classList.toggle('modus-wc-menu-dropdown-show');
+        const buttonElement = liElement.querySelector('button');
+
+        // Update internal expanded state and add/remove class
+        this.isExpanded = submenu.classList.contains(
+          'modus-wc-menu-dropdown-show'
+        );
+
+        if (this.isExpanded) {
+          liElement.classList.add('modus-wc-menu-item-expanded');
+          if (buttonElement) {
+            buttonElement.classList.add('modus-wc-menu-dropdown-show');
+          }
+        } else {
+          liElement.classList.remove('modus-wc-menu-item-expanded');
+          if (buttonElement) {
+            buttonElement.classList.remove('modus-wc-menu-dropdown-show');
+          }
+        }
+      }
+    }
     // For checkbox items, provide immediate visual feedback
-    if (this.checkbox) {
+    else if (this.checkbox) {
       const liElement = this.el.querySelector('li');
       const checkboxElement = this.el.querySelector('modus-wc-checkbox');
 
@@ -141,6 +215,7 @@ export class ModusWcMenuItem {
           {...this.inheritedAttributes}
         >
           <button
+            class={this.getButtonClasses()}
             disabled={this.disabled}
             onClick={this.handleItemSelect}
             type="button"
@@ -171,7 +246,7 @@ export class ModusWcMenuItem {
                   <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
                 )}
               </div>
-              {this.selected && this.checkbox !== true && (
+              {this.selected && this.checkbox !== true && !this.hasSubmenu && (
                 <div class="modus-wc-menu-item-selected-icon">
                   <modus-wc-icon
                     decorative={true}
@@ -182,6 +257,7 @@ export class ModusWcMenuItem {
               )}
             </div>
           </button>
+          <slot></slot>
         </li>
       </Host>
     );
