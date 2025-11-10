@@ -1,24 +1,24 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: "/"
+    directory: '/'
     groups:
       all-dependencies:
         patterns:
-          - "*"
+          - '*'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
     schedule:
       interval: monthly
     versioning-strategy: increase
 
   - package-ecosystem: github-actions
-    directory: "/"
+    directory: '/'
     schedule:
       interval: monthly
     groups:
       github-actions:
         patterns:
-          - "*"
+          - '*'
     open-pull-requests-limit: 2
