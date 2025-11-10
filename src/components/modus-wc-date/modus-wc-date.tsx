@@ -225,7 +225,6 @@ export class ModusWcDate {
     const firstDayOfWeek =
       WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
     this.calendar = new DatePickerCalendar(firstDayOfWeek);
-
     this.handleMinChange(this.min);
     this.handleMaxChange(this.max);
     this.handleValueChange(this.value);
@@ -335,6 +334,13 @@ export class ModusWcDate {
         if (selectedIndex !== -1) {
           this.focusedDateIndex = selectedIndex;
         }
+      }
+      // set focus to today
+      else {
+        this.ensureCalendarWithinBounds(new Date());
+        this.focusedDateIndex = this.calendar.dates.findIndex(
+          (date) => date && this.compareDate(date, new Date()) === 0
+        );
       }
     } else {
       // Reset focus when closing
