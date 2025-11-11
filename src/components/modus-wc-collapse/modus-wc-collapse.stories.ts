@@ -62,6 +62,17 @@ const Template: Story = {
 >
   <div slot="content">Collapse content</div>
 </modus-wc-collapse>
+<script>
+const options = {
+  title: 'Collapse Title',
+  description: 'Collapse description',
+  icon: 'alert',
+  iconAriaLabel: 'Alert',
+};
+// Adding this block to show how to set options via JS.
+//   const collapse = document.querySelector('modus-wc-collapse');
+//   collapse.options = options;
+</script>
     `;
   },
 };
