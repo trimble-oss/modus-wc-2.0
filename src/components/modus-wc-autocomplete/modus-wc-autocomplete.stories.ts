@@ -1715,7 +1715,7 @@ export const CustomEventHandlers: Story = {
     // Custom keydown handler with skip navigation and escape animation
     const customKeyDown = (e: KeyboardEvent) => {
       const autocomplete = document.getElementById(
-        'custom-event-handlers'
+        'autocomplete-custom-event-handlers'
       ) as AutocompleteElement;
       if (!autocomplete) return;
 
@@ -1806,7 +1806,7 @@ export const CustomEventHandlers: Story = {
     // Custom input change handler with fuzzy character matching
     const customInputChange = (value: string) => {
       const autocomplete = document.getElementById(
-        'custom-event-handlers'
+        'autocomplete-custom-event-handlers'
       ) as AutocompleteElement;
       if (!autocomplete) return;
 
@@ -1885,7 +1885,7 @@ export const CustomEventHandlers: Story = {
     // Custom item select handler
     const customItemSelect = (item: IAutocompleteItem) => {
       const autocomplete = document.getElementById(
-        'custom-event-handlers'
+        'autocomplete-custom-event-handlers'
       ) as AutocompleteElement;
       if (!autocomplete) return;
 
@@ -1926,7 +1926,7 @@ export const CustomEventHandlers: Story = {
         custom-class=${ifDefined(args['custom-class'])}
         debounce-ms=${0}
         ?disabled=${args.disabled}
-        id="custom-event-handlers"
+        id="autocomplete-custom-event-handlers"
         ?include-clear=${args['include-clear']}
         ?include-search=${args['include-search']}
         input-id=${ifDefined(args['input-id'])}
@@ -2083,12 +2083,12 @@ export const CustomEventHandlers: Story = {
             checkbox: false,
           },
         ];
-        // const autocomplete = document.getElementById('custom-event-handlers');
+        // const autocomplete = document.getElementById('autocomplete-custom-event-handlers');
         // autocomplete.items = autocompleteItems;
 
         // Custom keydown handler with skip navigation and escape animation
         const customKeyDown = (e) => {
-          const autocomplete = document.getElementById('custom-event-handlers');
+          const autocomplete = document.getElementById('autocomplete-custom-event-handlers');
           if (!autocomplete) return;
 
           // Prevent default for navigation keys
@@ -2178,7 +2178,7 @@ export const CustomEventHandlers: Story = {
 
         // Custom input change handler with fuzzy character matching
         const customInputChange = (value) => {
-          const autocomplete = document.getElementById('custom-event-handlers');
+          const autocomplete = document.getElementById('autocomplete-custom-event-handlers');
           if (!autocomplete) return;
 
           const searchChars = value.toLowerCase().split('');
@@ -2253,7 +2253,7 @@ export const CustomEventHandlers: Story = {
 
         // Custom item select handler
         const customItemSelect = (item) => {
-          const autocomplete = document.getElementById('custom-event-handlers');
+          const autocomplete = document.getElementById('autocomplete-custom-event-handlers');
           if (!autocomplete) return;
 
           // Clear previous selections for single select
