@@ -63,13 +63,13 @@ const Template: Story = {
   <div slot="content">Collapse content</div>
 </modus-wc-collapse>
 <script>
+// Adding this block to show how to set options via JS.
 // const options = {
 //   title: 'Collapse Title',
 //   description: 'Collapse description',
 //   icon: 'alert',
 //   iconAriaLabel: 'Alert',
 // };
-// Adding this block to show how to set options via JS.
 //   const collapse = document.querySelector('modus-wc-collapse');
 //   collapse.options = options;
 </script>
@@ -109,7 +109,8 @@ export const WithCustomClickableHeader = {
   <div slot="content">Collapse content</div>
 </modus-wc-collapse>
 <script>
-//     function handleButtonClick() {
+// Adding this block to show how to add clickable buttons in the collapse header via JS.
+// function handleButtonClick() {
 //   window.alert('Button was clicked!');
 // }
 // const button1 = document.getElementById('button1');
