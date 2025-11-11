@@ -2418,8 +2418,7 @@ export const WithProgrammaticControl: Story = {
 
     return html`
       <style>
-        <style
-          > div[id^='story--components-forms-autocomplete--with-programmatic-control'] {
+        div[id^='story--components-forms-autocomplete--with-programmatic-control'] {
           height: 500px;
         }
 
@@ -2846,10 +2845,9 @@ export const DynamicOptions: Story = {
 
           if (autocomplete) {
             const input = e.detail.target;
-            console.log('input', input);
             const searchText = input.value.toLowerCase();
 
-            // // If empty, show default fruits again
+            // If empty, show default fruits again
             if (searchText === '') {
               autocomplete.items = [...defaultFruits];
               autocomplete.value = input.value;
