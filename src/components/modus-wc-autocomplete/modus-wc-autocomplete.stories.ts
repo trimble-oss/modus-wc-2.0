@@ -279,45 +279,8 @@ const meta: Meta<AutocompleteArgs> = {
 };
 
 export default meta;
-
-type Story = StoryObj<AutocompleteArgs>;
-
-const Template: Story = {
-  render: (args) => {
-    // prettier-ignore
-    return html`
-<style>
-  div[id^='story--components-forms-autocomplete--default'] {
-    height: 400px;
-  }
-</style>
-<modus-wc-autocomplete
-  aria-label="Fruit autocomplete"
-  ?bordered=${args.bordered}
-  custom-class=${ifDefined(args['custom-class'])}
-  debounce-ms=${ifDefined(args['debounce-ms'])}
-  ?disabled=${args.disabled}
-  ?include-clear=${args['include-clear']}
-  ?include-search=${args['include-search']}
-  input-id=${ifDefined(args['input-id'])}
-  input-tab-index=${ifDefined(args['input-tab-index'])}
-  .items=${args.items}
-  label=${ifDefined(args.label)}
-  ?leave-menu-open=${args['leave-menu-open']}
-  min-chars=${args['min-chars']}
-  min-input-width=${ifDefined(args['min-input-width'])}
-  ?multi-select=${false}
-  name=${ifDefined(args.name)}
-  .noResults=${args['no-results']}
-  placeholder=${ifDefined(args.placeholder)}
-  ?read-only=${args['read-only']}
-  ?required=${args.required}
-  ?show-menu-on-focus=${args['show-menu-on-focus']}
-  ?show-spinner=${args['show-spinner']}
-  size=${ifDefined(args.size)}
-  value=${args.value}
-></modus-wc-autocomplete>
-<script>
+//prettier-ignore
+const Items = html`
 const autocompleteItems = [
   {
     label: 'Apple',
@@ -451,6 +414,47 @@ const autocompleteItems = [
     checkbox: false,
   },
 ];
+`;
+type Story = StoryObj<AutocompleteArgs>;
+
+const Template: Story = {
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<style>
+  div[id^='story--components-forms-autocomplete--default'] {
+    height: 400px;
+  }
+</style>
+<modus-wc-autocomplete
+  aria-label="Fruit autocomplete"
+  ?bordered=${args.bordered}
+  custom-class=${ifDefined(args['custom-class'])}
+  debounce-ms=${ifDefined(args['debounce-ms'])}
+  ?disabled=${args.disabled}
+  ?include-clear=${args['include-clear']}
+  ?include-search=${args['include-search']}
+  input-id=${ifDefined(args['input-id'])}
+  input-tab-index=${ifDefined(args['input-tab-index'])}
+  .items=${args.items}
+  label=${ifDefined(args.label)}
+  ?leave-menu-open=${args['leave-menu-open']}
+  min-chars=${args['min-chars']}
+  min-input-width=${ifDefined(args['min-input-width'])}
+  ?multi-select=${false}
+  name=${ifDefined(args.name)}
+  .noResults=${args['no-results']}
+  placeholder=${ifDefined(args.placeholder)}
+  ?read-only=${args['read-only']}
+  ?required=${args.required}
+  ?show-menu-on-focus=${args['show-menu-on-focus']}
+  ?show-spinner=${args['show-spinner']}
+  size=${ifDefined(args.size)}
+  value=${args.value}
+></modus-wc-autocomplete>
+<script>
+// Add Autocomplete items
+${Items}
 // Adding this block to show how to set items via JS  
 // const autocomplete = document.querySelector('modus-wc-autocomplete');
 // autocomplete.items = autocompleteItems;
@@ -500,139 +504,8 @@ export const WithCustomIconSlot: Story = {
   <modus-wc-icon slot="custom-icon" name="heart" size="sm"></modus-wc-icon>
 </modus-wc-autocomplete>
 <script>
-const autocompleteItems = [
-  {
-    label: 'Apple',
-    value: 'apple',
-    visibleInMenu: true,
-    focused: false,
-    disabled: false,
-    checkbox: false,
-  },
-  {
-    label: 'Banana',
-    value: 'banana',
-    visibleInMenu: true,
-    focused: false,
-    disabled: false,
-    checkbox: false,
-  },
-  {
-    label: 'Blueberry',
-    value: 'blueberry',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Cherry',
-    value: 'cherry',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Grape',
-    value: 'grape',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Lemon',
-    value: 'lemon',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Orange',
-    value: 'orange',
-    visibleInMenu: true,
-    focused: false,
-    disabled: false,
-    checkbox: false,
-  },
-  {
-    label: 'Peach',
-    value: 'peach',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Pear',
-    value: 'pear',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Strawberry',
-    value: 'strawberry',
-    visibleInMenu: true,
-    focused: false,
-    disabled: false,
-    checkbox: false,
-  },
-  {
-    label: 'Watermelon',
-    value: 'watermelon',
-    visibleInMenu: true,
-    focused: false,
-    disabled: false,
-    checkbox: false,
-  },
-  {
-    label: 'Pineapple',
-    value: 'pineapple',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Kiwi',
-    value: 'kiwi',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Mango',
-    value: 'mango',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Papaya',
-    value: 'papaya',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Plum',
-    value: 'plum',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Raspberry',
-    value: 'raspberry',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Tangerine',
-    value: 'tangerine',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-];
+// Add Autocomplete items
+${Items}
 // Adding this block to show how to set items via JS  
 // const autocomplete = document.querySelector('modus-wc-autocomplete');
 // autocomplete.items = autocompleteItems;
@@ -825,155 +698,20 @@ export const MultiSelect: Story = {
         value=${args.value}
       ></modus-wc-autocomplete>
       <script>
-        // Initialize args.items if empty
-        if (!args.items || args.items.length === 0) {
-          args.items = [...items];
-        }
-        const autocompleteItems = [
-          {
-            label: 'Apple',
-            value: 'apple',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Banana',
-            value: 'banana',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Blueberry',
-            value: 'blueberry',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Cherry',
-            value: 'cherry',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Grape',
-            value: 'grape',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Lemon',
-            value: 'lemon',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Orange',
-            value: 'orange',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Peach',
-            value: 'peach',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Pear',
-            value: 'pear',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Strawberry',
-            value: 'strawberry',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Watermelon',
-            value: 'watermelon',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Pineapple',
-            value: 'pineapple',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Kiwi',
-            value: 'kiwi',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Mango',
-            value: 'mango',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Papaya',
-            value: 'papaya',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Plum',
-            value: 'plum',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Raspberry',
-            value: 'raspberry',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Tangerine',
-            value: 'tangerine',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-        ];
-
+        // Add Autocomplete items
+        ${Items}
         // If multi-select, set selected state for some items
-        const itemsWithSelection = autocompleteItems.map((item) => {
-          if (item.value === 'apple' || item.value === 'banana') {
-            return { ...item, selected: true };
-          }
-          return item;
-        });
-        // Adding this block to show how to set items and pre-selected values via JS
-        //  const autocomplete = document.querySelector('modus-wc-autocomplete');
-        //  autocomplete.items = itemsWithSelection;
-      </script>
+          const itemsWithSelection = autocompleteItems.map((item) => {
+            if (item.value === 'apple' || item.value === 'banana') {
+              return { ...item, selected: true };
+            }
+            return item;
+          });
+          // Adding this block to show how to set items and pre-selected values via JS
+          const autocomplete = document.getElementById('fruit-autocomplete');
+          if (autocomplete) {
+            autocomplete.items = itemsWithSelection;
+          } 
     `;
   },
 };
@@ -1049,140 +787,9 @@ export const WithSpinner: Story = {
   @inputChange=${handleInputChange}
 ></modus-wc-autocomplete>
 <script>
-        const autocompleteItems = [
-          {
-            label: 'Apple',
-            value: 'apple',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Banana',
-            value: 'banana',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Blueberry',
-            value: 'blueberry',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Cherry',
-            value: 'cherry',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Grape',
-            value: 'grape',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Lemon',
-            value: 'lemon',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Orange',
-            value: 'orange',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Peach',
-            value: 'peach',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Pear',
-            value: 'pear',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Strawberry',
-            value: 'strawberry',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Watermelon',
-            value: 'watermelon',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Pineapple',
-            value: 'pineapple',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Kiwi',
-            value: 'kiwi',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Mango',
-            value: 'mango',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Papaya',
-            value: 'papaya',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Plum',
-            value: 'plum',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Raspberry',
-            value: 'raspberry',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Tangerine',
-            value: 'tangerine',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-        ];
-        // Adding this block to show how to set items via JS
+// Add Autocomplete items
+  ${Items}
+// Adding this block to show how to set items via JS
         const autocomplete = document.querySelector('modus-wc-autocomplete');
         autocomplete.items = autocompleteItems;
         autocomplete.showSpinner = true;
@@ -1950,139 +1557,8 @@ export const CustomEventHandlers: Story = {
         .customItemSelect=${customItemSelect}
       ></modus-wc-autocomplete>
       <script>
-        const autocompleteItems = [
-          {
-            label: 'Apple',
-            value: 'apple',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Banana',
-            value: 'banana',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Blueberry',
-            value: 'blueberry',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Cherry',
-            value: 'cherry',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Grape',
-            value: 'grape',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Lemon',
-            value: 'lemon',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Orange',
-            value: 'orange',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Peach',
-            value: 'peach',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Pear',
-            value: 'pear',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Strawberry',
-            value: 'strawberry',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Watermelon',
-            value: 'watermelon',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Pineapple',
-            value: 'pineapple',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Kiwi',
-            value: 'kiwi',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Mango',
-            value: 'mango',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Papaya',
-            value: 'papaya',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Plum',
-            value: 'plum',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Raspberry',
-            value: 'raspberry',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-          {
-            label: 'Tangerine',
-            value: 'tangerine',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-        ];
+        // Add Autocomplete items
+        ${Items};
         // const autocomplete = document.getElementById('autocomplete-custom-event-handlers');
         // autocomplete.items = autocompleteItems;
 
@@ -2623,31 +2099,8 @@ export const WithProgrammaticControl: Story = {
         value=${args.value}
       ></modus-wc-autocomplete>
       <script>
-        const autocompleteItems = [
-          {
-            label: 'Apple',
-            value: 'apple',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Banana',
-            value: 'banana',
-            visibleInMenu: true,
-            focused: false,
-            disabled: false,
-            checkbox: false,
-          },
-          {
-            label: 'Blueberry',
-            value: 'blueberry',
-            visibleInMenu: true,
-            focused: false,
-            checkbox: false,
-          },
-        ];
+        // Add Autocomplete items
+        ${Items};
         const autocomplete = document.getElementById(
           'programmatic-autocomplete'
         );
