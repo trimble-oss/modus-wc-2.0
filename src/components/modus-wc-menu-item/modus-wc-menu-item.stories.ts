@@ -9,6 +9,7 @@ interface MenuItemArgs {
   checkbox?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
+  'has-submenu'?: boolean;
   label: string;
   selected?: boolean;
   size?: ModusSize;
