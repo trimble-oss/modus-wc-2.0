@@ -317,6 +317,144 @@ const Template: Story = {
   size=${ifDefined(args.size)}
   value=${args.value}
 ></modus-wc-autocomplete>
+<script>
+const autocompleteItems = [
+  {
+    label: 'Apple',
+    value: 'apple',
+    visibleInMenu: true,
+    focused: false,
+    disabled: false,
+    checkbox: false,
+  },
+  {
+    label: 'Banana',
+    value: 'banana',
+    visibleInMenu: true,
+    focused: false,
+    disabled: false,
+    checkbox: false,
+  },
+  {
+    label: 'Blueberry',
+    value: 'blueberry',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Cherry',
+    value: 'cherry',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Grape',
+    value: 'grape',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Lemon',
+    value: 'lemon',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Orange',
+    value: 'orange',
+    visibleInMenu: true,
+    focused: false,
+    disabled: false,
+    checkbox: false,
+  },
+  {
+    label: 'Peach',
+    value: 'peach',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Pear',
+    value: 'pear',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Strawberry',
+    value: 'strawberry',
+    visibleInMenu: true,
+    focused: false,
+    disabled: false,
+    checkbox: false,
+  },
+  {
+    label: 'Watermelon',
+    value: 'watermelon',
+    visibleInMenu: true,
+    focused: false,
+    disabled: false,
+    checkbox: false,
+  },
+  {
+    label: 'Pineapple',
+    value: 'pineapple',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Kiwi',
+    value: 'kiwi',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Mango',
+    value: 'mango',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Papaya',
+    value: 'papaya',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Plum',
+    value: 'plum',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Raspberry',
+    value: 'raspberry',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Tangerine',
+    value: 'tangerine',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+];
+// Adding this block to show how to set items via JS  
+// const autocomplete = document.querySelector('modus-wc-autocomplete');
+// autocomplete.items = autocompleteItems;
+</script>
     `;
   },
 };
@@ -361,6 +499,144 @@ export const WithCustomIconSlot: Story = {
 >
   <modus-wc-icon slot="custom-icon" name="heart" size="sm"></modus-wc-icon>
 </modus-wc-autocomplete>
+<script>
+const autocompleteItems = [
+  {
+    label: 'Apple',
+    value: 'apple',
+    visibleInMenu: true,
+    focused: false,
+    disabled: false,
+    checkbox: false,
+  },
+  {
+    label: 'Banana',
+    value: 'banana',
+    visibleInMenu: true,
+    focused: false,
+    disabled: false,
+    checkbox: false,
+  },
+  {
+    label: 'Blueberry',
+    value: 'blueberry',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Cherry',
+    value: 'cherry',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Grape',
+    value: 'grape',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Lemon',
+    value: 'lemon',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Orange',
+    value: 'orange',
+    visibleInMenu: true,
+    focused: false,
+    disabled: false,
+    checkbox: false,
+  },
+  {
+    label: 'Peach',
+    value: 'peach',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Pear',
+    value: 'pear',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Strawberry',
+    value: 'strawberry',
+    visibleInMenu: true,
+    focused: false,
+    disabled: false,
+    checkbox: false,
+  },
+  {
+    label: 'Watermelon',
+    value: 'watermelon',
+    visibleInMenu: true,
+    focused: false,
+    disabled: false,
+    checkbox: false,
+  },
+  {
+    label: 'Pineapple',
+    value: 'pineapple',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Kiwi',
+    value: 'kiwi',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Mango',
+    value: 'mango',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Papaya',
+    value: 'papaya',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Plum',
+    value: 'plum',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Raspberry',
+    value: 'raspberry',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+  {
+    label: 'Tangerine',
+    value: 'tangerine',
+    visibleInMenu: true,
+    focused: false,
+    checkbox: false,
+  },
+];
+// Adding this block to show how to set items via JS  
+// const autocomplete = document.querySelector('modus-wc-autocomplete');
+// autocomplete.items = autocompleteItems;
+</script>
   `,
   args: {
     placeholder: 'Search fruits...',
@@ -377,6 +653,7 @@ export const WithTooltips: Story = {
       },
       source: {
         code: `
+        <script>
 const tooltipItems = [
   {
     label: 'Apple',
@@ -419,13 +696,18 @@ const tooltipItems = [
     focused: false,
   },
 ];
+</script>
 <modus-wc-autocomplete
   aria-label="Fruits with tooltips"
   leave-menu-open="true"
   placeholder="Search fruits"
-  .items={tooltipItems}
   min-chars="0"
 ></modus-wc-autocomplete>
+
+ <script>
+// const autocomplete = document.querySelector('modus-wc-autocomplete');
+// autocomplete.items = tooltipItems;
+</script>
 `,
       },
     },
@@ -508,53 +790,190 @@ export const MultiSelect: Story = {
     });
     // prettier-ignore
     return html`
-<script>
-  // Initialize args.items if empty
-  if (!args.items || args.items.length === 0) {
-    args.items = [...items];
-  }
-  // If multi-select, set selected state for some items
-  args.items = items.map((item) => {
-    if (item.value === 'apple' || item.value === 'banana') {
-      return { ...item, selected: true };
-    }
-    return item;
-  });
-</script>
-<style>
-div[id^='story--components-forms-autocomplete--multi-select'] {
-    height: 400px;
-  }
-  .modus-wc-autocomplete-multi-select {
-    width: 480px !important;
-  }
-</style>
-<modus-wc-autocomplete
-  aria-label="Fruit autocomplete"
-  ?bordered=${args.bordered}
-  custom-class=${ifDefined(args['custom-class'])}
-  debounce-ms=${ifDefined(args['debounce-ms'])}
-  ?disabled=${args.disabled}
-  ?include-clear=${args['include-clear']}
-  ?include-search=${args['include-search']}
-  input-id=${ifDefined(args['input-id'])}
-  input-tab-index=${ifDefined(args['input-tab-index'])}
-  .items=${args.items}
-  label=${ifDefined(args.label)}
-  ?leave-menu-open=${args['leave-menu-open']}
-  max-chips=${args['max-chips'] ?? 4}
-  min-chars=${args['min-chars']}
-  min-input-width=${ifDefined(args['min-input-width'])}
-  ?multi-select=${true}
-  name=${ifDefined(args.name)}
-  .noResults=${args['no-results']}
-  placeholder=${ifDefined(args.placeholder)}
-  ?read-only=${args['read-only']}
-  ?required=${args.required}
-  ?show-menu-on-focus=${args['show-menu-on-focus']}
-  size=${ifDefined(args.size)}
-  value=${args.value}
-></modus-wc-autocomplete>
+      <style>
+        div[id^='story--components-forms-autocomplete--multi-select'] {
+          height: 400px;
+        }
+        .modus-wc-autocomplete-multi-select {
+          width: 480px !important;
+        }
+      </style>
+      <modus-wc-autocomplete
+        aria-label="Fruit autocomplete"
+        ?bordered=${args.bordered}
+        custom-class=${ifDefined(args['custom-class'])}
+        debounce-ms=${ifDefined(args['debounce-ms'])}
+        ?disabled=${args.disabled}
+        ?include-clear=${args['include-clear']}
+        ?include-search=${args['include-search']}
+        input-id=${ifDefined(args['input-id'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
+        .items=${args.items}
+        label=${ifDefined(args.label)}
+        ?leave-menu-open=${args['leave-menu-open']}
+        max-chips=${args['max-chips'] ?? 4}
+        min-chars=${args['min-chars']}
+        min-input-width=${ifDefined(args['min-input-width'])}
+        ?multi-select=${true}
+        name=${ifDefined(args.name)}
+        .noResults=${args['no-results']}
+        placeholder=${ifDefined(args.placeholder)}
+        ?read-only=${args['read-only']}
+        ?required=${args.required}
+        ?show-menu-on-focus=${args['show-menu-on-focus']}
+        size=${ifDefined(args.size)}
+        value=${args.value}
+      ></modus-wc-autocomplete>
+      <script>
+        // Initialize args.items if empty
+        if (!args.items || args.items.length === 0) {
+          args.items = [...items];
+        }
+        const autocompleteItems = [
+          {
+            label: 'Apple',
+            value: 'apple',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Banana',
+            value: 'banana',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Blueberry',
+            value: 'blueberry',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Cherry',
+            value: 'cherry',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Grape',
+            value: 'grape',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Lemon',
+            value: 'lemon',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Orange',
+            value: 'orange',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Peach',
+            value: 'peach',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Pear',
+            value: 'pear',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Strawberry',
+            value: 'strawberry',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Watermelon',
+            value: 'watermelon',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Pineapple',
+            value: 'pineapple',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Kiwi',
+            value: 'kiwi',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Mango',
+            value: 'mango',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Papaya',
+            value: 'papaya',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Plum',
+            value: 'plum',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Raspberry',
+            value: 'raspberry',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Tangerine',
+            value: 'tangerine',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+        ];
+
+        // If multi-select, set selected state for some items
+        const itemsWithSelection = autocompleteItems.map((item) => {
+          if (item.value === 'apple' || item.value === 'banana') {
+            return { ...item, selected: true };
+          }
+          return item;
+        });
+        // Adding this block to show how to set items and pre-selected values via JS
+        //  const autocomplete = document.querySelector('modus-wc-autocomplete');
+        //  autocomplete.items = itemsWithSelection;
+      </script>
     `;
   },
 };
@@ -601,46 +1020,6 @@ export const WithSpinner: Story = {
     };
     // prettier-ignore
     return html`
-<script>
-        let debounceTimer: number;
-
-  const handleInputChange = (e: CustomEvent<Event>) => {
-    if (!e.detail?.target) return;
-
-    const autocomplete = (e.target as HTMLInputElement).closest(
-      'modus-wc-autocomplete'
-    ) as Element & {
-      items: IAutocompleteItem[];
-      showSpinner: boolean;
-      value: string;
-    };
-
-    if (autocomplete) {
-      const input = e.detail.target as HTMLInputElement;
-      const searchText = input.value.toLowerCase();
-
-      // Clear previous timeout to avoid multiple API calls
-      if (debounceTimer) {
-        window.clearTimeout(debounceTimer);
-      }
-
-      // Show spinner immediately and update input value
-      autocomplete.showSpinner = true;
-
-      // Simulate an API call with a 2-second delay
-      debounceTimer = window.setTimeout(() => {
-        // Filter the master list of items to get the new results
-        const filteredItems = items.filter((item) =>
-          item.label.toLowerCase().includes(searchText)
-        );
-
-        // Update the component with the new filtered list and hide the spinner
-        autocomplete.items = filteredItems;
-        autocomplete.showSpinner = false;
-      }, 2000);
-    }
-  };
-</script>
 <style>
   div[id^='story--components-forms-autocomplete--with-spinner'] {
     height: 400px;
@@ -669,6 +1048,191 @@ export const WithSpinner: Story = {
   value=${args.value}
   @inputChange=${handleInputChange}
 ></modus-wc-autocomplete>
+<script>
+        const autocompleteItems = [
+          {
+            label: 'Apple',
+            value: 'apple',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Banana',
+            value: 'banana',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Blueberry',
+            value: 'blueberry',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Cherry',
+            value: 'cherry',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Grape',
+            value: 'grape',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Lemon',
+            value: 'lemon',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Orange',
+            value: 'orange',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Peach',
+            value: 'peach',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Pear',
+            value: 'pear',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Strawberry',
+            value: 'strawberry',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Watermelon',
+            value: 'watermelon',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Pineapple',
+            value: 'pineapple',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Kiwi',
+            value: 'kiwi',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Mango',
+            value: 'mango',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Papaya',
+            value: 'papaya',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Plum',
+            value: 'plum',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Raspberry',
+            value: 'raspberry',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Tangerine',
+            value: 'tangerine',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+        ];
+        // Adding this block to show how to set items via JS
+        const autocomplete = document.querySelector('modus-wc-autocomplete');
+        autocomplete.items = autocompleteItems;
+        autocomplete.showSpinner = true;
+
+        // Debounce timer id
+        let debounceTimer;
+
+        // Input change handler for the component's custom event
+        const handleInputChange = (e) => {
+          // Stencil event detail wraps the native event; guard against missing target
+          if (!e.detail?.target) return;
+          const comp = e.target.closest('modus-wc-autocomplete');
+          if (!comp) return;
+
+          const inputEl = e.detail.target; // native input element
+          const query = (inputEl.value || '').toLowerCase();
+
+          // Clear pending debounce
+          if (debounceTimer) {
+            clearTimeout(debounceTimer);
+          }
+
+          // If query empty restore full list immediately and stop spinner
+          if (query === '') {
+            comp.items = [...autocompleteItems];
+            comp.showSpinner = false;
+            return;
+          }
+
+          // Start spinner
+          comp.showSpinner = true;
+
+          // Simulated async fetch (2s)
+          debounceTimer = setTimeout(() => {
+            // Filter original dataset (do NOT mutate source array)
+            const filtered = autocompleteItems.filter((item) =>
+              item.label.toLowerCase().includes(query)
+            );
+            // Apply results
+            comp.items = filtered;
+            comp.showSpinner = false;
+          }, 2000);
+        };
+
+        // Attach listener once (avoid duplicates if script re-executes)
+        if (autocomplete) {
+          autocomplete.removeEventListener('inputChange', handleInputChange);
+          autocomplete.addEventListener('inputChange', handleInputChange);
+        }
+      </script>
     `;
   },
 };
@@ -1150,8 +1714,8 @@ export const CustomEventHandlers: Story = {
 
     // Custom keydown handler with skip navigation and escape animation
     const customKeyDown = (e: KeyboardEvent) => {
-      const autocomplete = (e.target as HTMLInputElement).closest(
-        'modus-wc-autocomplete'
+      const autocomplete = document.getElementById(
+        'custom-event-handlers'
       ) as AutocompleteElement;
       if (!autocomplete) return;
 
@@ -1241,8 +1805,8 @@ export const CustomEventHandlers: Story = {
 
     // Custom input change handler with fuzzy character matching
     const customInputChange = (value: string) => {
-      const autocomplete = document.querySelector(
-        'modus-wc-autocomplete'
+      const autocomplete = document.getElementById(
+        'custom-event-handlers'
       ) as AutocompleteElement;
       if (!autocomplete) return;
 
@@ -1320,8 +1884,8 @@ export const CustomEventHandlers: Story = {
 
     // Custom item select handler
     const customItemSelect = (item: IAutocompleteItem) => {
-      const autocomplete = document.querySelector(
-        'modus-wc-autocomplete'
+      const autocomplete = document.getElementById(
+        'custom-event-handlers'
       ) as AutocompleteElement;
       if (!autocomplete) return;
 
@@ -1362,6 +1926,7 @@ export const CustomEventHandlers: Story = {
         custom-class=${ifDefined(args['custom-class'])}
         debounce-ms=${0}
         ?disabled=${args.disabled}
+        id="custom-event-handlers"
         ?include-clear=${args['include-clear']}
         ?include-search=${args['include-search']}
         input-id=${ifDefined(args['input-id'])}
@@ -1384,6 +1949,329 @@ export const CustomEventHandlers: Story = {
         .customInputChange=${customInputChange}
         .customItemSelect=${customItemSelect}
       ></modus-wc-autocomplete>
+      <script>
+        const autocompleteItems = [
+          {
+            label: 'Apple',
+            value: 'apple',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Banana',
+            value: 'banana',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Blueberry',
+            value: 'blueberry',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Cherry',
+            value: 'cherry',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Grape',
+            value: 'grape',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Lemon',
+            value: 'lemon',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Orange',
+            value: 'orange',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Peach',
+            value: 'peach',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Pear',
+            value: 'pear',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Strawberry',
+            value: 'strawberry',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Watermelon',
+            value: 'watermelon',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Pineapple',
+            value: 'pineapple',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Kiwi',
+            value: 'kiwi',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Mango',
+            value: 'mango',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Papaya',
+            value: 'papaya',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Plum',
+            value: 'plum',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Raspberry',
+            value: 'raspberry',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+          {
+            label: 'Tangerine',
+            value: 'tangerine',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+        ];
+        // const autocomplete = document.getElementById('custom-event-handlers');
+        // autocomplete.items = autocompleteItems;
+
+        // Custom keydown handler with skip navigation and escape animation
+        const customKeyDown = (e) => {
+          const autocomplete = document.getElementById('custom-event-handlers');
+          if (!autocomplete) return;
+
+          // Prevent default for navigation keys
+          if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
+            e.preventDefault();
+          }
+
+          const visibleItems = autocomplete.items.filter(
+            (item) => item.visibleInMenu && !item.disabled
+          );
+
+          switch (e.key) {
+            case 'Escape':
+              autocomplete.items = autocomplete.items.map((item) => ({
+                ...item,
+                focused: false,
+              }));
+              void autocomplete.closeMenu();
+              // Custom: Show escape animation
+              autocomplete.style.transform = 'scale(0.98)';
+              setTimeout(() => {
+                autocomplete.style.transform = '';
+              }, 200);
+              break;
+
+            case 'ArrowDown': {
+              // Open menu if not already open
+              void autocomplete.openMenu();
+
+              const currentIndex = visibleItems.findIndex(
+                (item) => item.focused
+              );
+              const nextIndex =
+                currentIndex < 0
+                  ? 0
+                  : Math.min(currentIndex + 1, visibleItems.length - 1);
+
+              // Custom: Skip every other item for faster navigation
+              const skipIndex =
+                nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
+
+              autocomplete.items = autocomplete.items.map((item) => ({
+                ...item,
+                focused: visibleItems[skipIndex]?.value === item.value,
+              }));
+              break;
+            }
+
+            case 'ArrowUp': {
+              const currentIndex = visibleItems.findIndex(
+                (item) => item.focused
+              );
+              const prevIndex =
+                currentIndex < 0
+                  ? visibleItems.length - 1
+                  : Math.max(currentIndex - 1, 0);
+
+              // Custom: Skip every other item for faster navigation
+              const skipIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
+
+              autocomplete.items = autocomplete.items.map((item) => ({
+                ...item,
+                focused: visibleItems[skipIndex]?.value === item.value,
+              }));
+              break;
+            }
+
+            case 'Enter': {
+              const focusedItem = visibleItems.find((item) => item.focused);
+              if (focusedItem) {
+                // For single select, clear previous selection
+                autocomplete.items = autocomplete.items.map((item) => ({
+                  ...item,
+                  selected: item.value === focusedItem.value,
+                  focused: false,
+                }));
+                autocomplete.value = focusedItem.label;
+                void autocomplete.closeMenu();
+              }
+              break;
+            }
+
+            default:
+              return;
+          }
+        };
+
+        // Custom input change handler with fuzzy character matching
+        const customInputChange = (value) => {
+          const autocomplete = document.getElementById('custom-event-handlers');
+          if (!autocomplete) return;
+
+          const searchChars = value.toLowerCase().split('');
+
+          // Custom fuzzy search: Match items that contain ALL typed characters (in any order)
+          if (value.length > 0) {
+            // Calculate match score for each item
+            const scoredItems = autocomplete.items.map((item) => {
+              const itemLower = item.label.toLowerCase();
+              let score = 0;
+              let allCharsFound = true;
+
+              // Check if all search characters exist in the item
+              for (const char of searchChars) {
+                if (itemLower.includes(char)) {
+                  // Bonus points for consecutive characters
+                  const charIndex = itemLower.indexOf(char);
+                  if (charIndex === 0)
+                    score += 3; // Start of word bonus
+                  else if (itemLower[charIndex - 1] === ' ')
+                    score += 2; // Start of any word
+                  else score += 1;
+                } else {
+                  allCharsFound = false;
+                  break;
+                }
+              }
+
+              // Additional bonus for exact substring match
+              if (allCharsFound && itemLower.includes(value.toLowerCase())) {
+                score += 10;
+              }
+
+              return {
+                item,
+                score: allCharsFound ? score : -1,
+                visible: allCharsFound,
+              };
+            });
+
+            // Sort by score (highest first) and update items
+            scoredItems.sort((a, b) => b.score - a.score);
+            autocomplete.items = scoredItems.map(({ item, visible }) => ({
+              ...item,
+              visibleInMenu: visible,
+              focused: false,
+              selected: item.selected && visible,
+              // Add score as part of label for demonstration (you can remove this in production)
+              label: item.label,
+            }));
+          } else {
+            // No search text, show all items
+            autocomplete.items = autocomplete.items.map((item) => ({
+              ...item,
+              visibleInMenu: true,
+              focused: false,
+            }));
+          }
+
+          autocomplete.value = value;
+
+          // Show menu if there are visible items
+          const hasVisibleItems = autocomplete.items.some(
+            (item) => item.visibleInMenu
+          );
+          if (hasVisibleItems && value.length >= 0) {
+            void autocomplete.openMenu();
+          } else {
+            void autocomplete.closeMenu();
+          }
+        };
+
+        // Custom item select handler
+        const customItemSelect = (item) => {
+          const autocomplete = document.getElementById('custom-event-handlers');
+          if (!autocomplete) return;
+
+          // Clear previous selections for single select
+          autocomplete.items = autocomplete.items.map((menuItem) => ({
+            ...menuItem,
+            selected: menuItem.value === item.value,
+            focused: false,
+          }));
+
+          autocomplete.value = item.label;
+          void autocomplete.closeMenu();
+        };
+
+        // Attach the custom handlers to the autocomplete component
+        // autocomplete.customKeyDown = customKeyDown;
+        // autocomplete.customInputChange = customInputChange;
+        // autocomplete.customItemSelect = customItemSelect;
+      </script>
     `;
   },
   args: {
@@ -1400,6 +2288,7 @@ export const CustomEventHandlers: Story = {
       subLabel: 'Try different characters',
     },
     placeholder: 'Search fruits...',
+    'input-id': 'custom-handlers-input',
     'read-only': false,
     required: false,
     'show-menu-on-focus': true,
@@ -1529,7 +2418,8 @@ export const WithProgrammaticControl: Story = {
 
     return html`
       <style>
-        div[id^='story--components-forms-autocomplete--with-programmatic-control'] {
+        <style
+          > div[id^='story--components-forms-autocomplete--with-programmatic-control'] {
           height: 500px;
         }
 
@@ -1625,6 +2515,79 @@ export const WithProgrammaticControl: Story = {
           </div>
         </div>
       </modus-wc-card>
+      <script type="module">
+        const handleSelectApple = async () => {
+          const autocomplete = document.getElementById(
+            'programmatic-autocomplete'
+          );
+          if (autocomplete) {
+            const appleItem =
+              autocompleteItems.find((item) => item.value === 'apple') || null;
+            await autocomplete.selectItem(appleItem);
+          }
+        };
+
+        const handleSelectNull = async () => {
+          const autocomplete = document.getElementById(
+            'programmatic-autocomplete'
+          );
+          if (autocomplete) {
+            await autocomplete.selectItem(null);
+          }
+        };
+
+        const handleOpenMenu = async () => {
+          const autocomplete = document.getElementById(
+            'programmatic-autocomplete'
+          );
+          if (autocomplete) {
+            await autocomplete.openMenu();
+          }
+        };
+
+        const handleCloseMenu = async () => {
+          const autocomplete = document.getElementById(
+            'programmatic-autocomplete'
+          );
+          if (autocomplete) {
+            await autocomplete.closeMenu();
+          }
+        };
+
+        const handleToggleMenu = async () => {
+          const autocomplete = document.getElementById(
+            'programmatic-autocomplete'
+          );
+          if (autocomplete) {
+            await autocomplete.toggleMenu();
+          }
+        };
+
+        const handleFocusInput = async () => {
+          const autocomplete = document.getElementById(
+            'programmatic-autocomplete'
+          );
+          if (autocomplete) {
+            await autocomplete.focusInput();
+          }
+        };
+
+        const handleClearInput = async () => {
+          const autocomplete = document.getElementById(
+            'programmatic-autocomplete'
+          );
+          if (autocomplete) {
+            await autocomplete.clearInput();
+          }
+        };
+        window.handleSelectApple = handleSelectApple;
+        window.handleSelectNull = handleSelectNull;
+        window.handleOpenMenu = handleOpenMenu;
+        window.handleCloseMenu = handleCloseMenu;
+        window.handleToggleMenu = handleToggleMenu;
+        window.handleFocusInput = handleFocusInput;
+        window.handleClearInput = handleClearInput;
+      </script>
 
       <modus-wc-autocomplete
         id="programmatic-autocomplete"
@@ -1654,6 +2617,37 @@ export const WithProgrammaticControl: Story = {
         size=${ifDefined(args.size)}
         value=${args.value}
       ></modus-wc-autocomplete>
+      <script>
+        const autocompleteItems = [
+          {
+            label: 'Apple',
+            value: 'apple',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Banana',
+            value: 'banana',
+            visibleInMenu: true,
+            focused: false,
+            disabled: false,
+            checkbox: false,
+          },
+          {
+            label: 'Blueberry',
+            value: 'blueberry',
+            visibleInMenu: true,
+            focused: false,
+            checkbox: false,
+          },
+        ];
+        const autocomplete = document.getElementById(
+          'programmatic-autocomplete'
+        );
+        autocomplete.items = autocompleteItems;
+      </script>
     `;
   },
   parameters: {
@@ -1793,8 +2787,32 @@ export const DynamicOptions: Story = {
           height: 400px;
         }
       </style>
+      <modus-wc-autocomplete
+        aria-label="Dynamic fruits autocomplete"
+        ?bordered=${args.bordered}
+        custom-class=${ifDefined(args['custom-class'])}
+        debounce-ms=${ifDefined(args['debounce-ms'])}
+        ?disabled=${args.disabled}
+        input-id=${ifDefined(args['input-id'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
+        .items=${defaultFruits}
+        label=${ifDefined(args.label)}
+        ?leave-menu-open=${args['leave-menu-open']}
+        min-chars=${0}
+        ?multi-select=${false}
+        name=${ifDefined(args.name)}
+        .noResults=${args['no-results']}
+        placeholder="Type to search fruits..."
+        ?read-only=${args['read-only']}
+        ?required=${args.required}
+        ?show-menu-on-focus=${true}
+        size=${ifDefined(args.size)}
+        value=${args.value}
+        @inputChange=${handleInputChange}
+        @itemSelect=${handleItemSelect}
+      ></modus-wc-autocomplete>
       <script>
-          const defaultFruits = [
+        const defaultFruits = [
           { label: 'Apple', value: 'apple', visibleInMenu: true },
           { label: 'Banana', value: 'banana', visibleInMenu: true },
           { label: 'Orange', value: 'orange', visibleInMenu: true },
@@ -1821,15 +2839,14 @@ export const DynamicOptions: Story = {
           { label: 'Watermelon', value: 'watermelon', visibleInMenu: true },
         ];
 
-        const handleInputChange = (e: CustomEvent<Event>) => {
+        const handleInputChange = (e) => {
           if (!e.detail?.target) return;
 
-          const autocomplete = (e.target as HTMLInputElement).closest(
-            'modus-wc-autocomplete'
-          );
+          const autocomplete = e.target.closest('modus-wc-autocomplete');
 
           if (autocomplete) {
-            const input = e.detail.target as HTMLInputElement;
+            const input = e.detail.target;
+            console.log('input', input);
             const searchText = input.value.toLowerCase();
 
             // // If empty, show default fruits again
@@ -1859,10 +2876,8 @@ export const DynamicOptions: Story = {
           }
         };
 
-        const handleItemSelect = (e: CustomEvent<IAutocompleteItem>) => {
-          const autocomplete = (e.target as HTMLInputElement).closest(
-            'modus-wc-autocomplete'
-          );
+        const handleItemSelect = (e) => {
+          const autocomplete = e.target.closest('modus-wc-autocomplete');
 
           if (autocomplete) {
             const label = e.detail.label;
@@ -1871,31 +2886,19 @@ export const DynamicOptions: Story = {
             }
           }
         };
+
+        // Adding this block to show how to set Autocomplete items and attching event listeners via JS
+        // const autocomplete = document.querySelector('modus-wc-autocomplete');
+
+        if (autocomplete) {
+          // Set initial items
+          // autocomplete.items = [...defaultFruits];
+
+          // Attach event listeners
+          autocomplete.addEventListener('inputChange', handleInputChange);
+          autocomplete.addEventListener('itemSelect', handleItemSelect);
+        }
       </script>
-      <modus-wc-autocomplete
-        aria-label="Dynamic fruits autocomplete"
-        ?bordered=${args.bordered}
-        custom-class=${ifDefined(args['custom-class'])}
-        debounce-ms=${ifDefined(args['debounce-ms'])}
-        ?disabled=${args.disabled}
-        input-id=${ifDefined(args['input-id'])}
-        input-tab-index=${ifDefined(args['input-tab-index'])}
-        .items=${defaultFruits}
-        label=${ifDefined(args.label)}
-        ?leave-menu-open=${args['leave-menu-open']}
-        min-chars=${0}
-        ?multi-select=${false}
-        name=${ifDefined(args.name)}
-        .noResults=${args['no-results']}
-        placeholder="Type to search fruits..."
-        ?read-only=${args['read-only']}
-        ?required=${args.required}
-        ?show-menu-on-focus=${true}
-        size=${ifDefined(args.size)}
-        value=${args.value}
-        @inputChange=${handleInputChange}
-        @itemSelect=${handleItemSelect}
-      ></modus-wc-autocomplete>
     `;
   },
 };
