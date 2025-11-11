@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-utility-panel should render with default props 1`] = `
+<modus-wc-utility-panel>
+  <!---->
+  <div class="modus-wc-utility-panel">
+    <div class="modus-wc-utility-panel-content">
+      <div class="modus-wc-utility-panel-body"></div>
+    </div>
+  </div>
+</modus-wc-utility-panel>
+`;
+
+exports[`modus-wc-utility-panel should render with expanded prop 1`] = `
+<modus-wc-utility-panel expanded="true">
+  <!---->
+  <div class="modus-wc-utility-panel open">
+    <div class="modus-wc-utility-panel-content">
+      <div class="modus-wc-utility-panel-body"></div>
+    </div>
+  </div>
+</modus-wc-utility-panel>
+`;
+
+exports[`modus-wc-utility-panel should render with footer slot 1`] = `
+<modus-wc-utility-panel>
+  <!---->
+  <div class="modus-wc-utility-panel">
+    <div class="modus-wc-utility-panel-content">
+      <div class="modus-wc-utility-panel-body">
+        <div slot="body">
+          Panel Body
+        </div>
+      </div>
+      <hr>
+      <div class="modus-wc-utility-panel-footer">
+        <div slot="footer">
+          Panel Footer
+        </div>
+      </div>
+    </div>
+  </div>
+</modus-wc-utility-panel>
+`;
+
+exports[`modus-wc-utility-panel should render with header slot 1`] = `
+<modus-wc-utility-panel>
+  <!---->
+  <div class="modus-wc-utility-panel">
+    <div class="modus-wc-utility-panel-content">
+      <div class="modus-wc-utility-panel-header">
+        <div slot="header">
+          Panel Header
+        </div>
+      </div>
+      <hr>
+      <div class="modus-wc-utility-panel-body">
+        <div slot="body">
+          Panel Body
+        </div>
+      </div>
+    </div>
+  </div>
+</modus-wc-utility-panel>
+`;
+
+exports[`modus-wc-utility-panel should render with pushContent prop 1`] = `
+<modus-wc-utility-panel expanded="true" push-content="false">
+  <!---->
+  <div class="modus-wc-utility-panel open">
+    <div class="modus-wc-utility-panel-content">
+      <div class="modus-wc-utility-panel-body"></div>
+    </div>
+  </div>
+</modus-wc-utility-panel>
+`;

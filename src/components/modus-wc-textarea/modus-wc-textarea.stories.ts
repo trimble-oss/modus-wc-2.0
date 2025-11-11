@@ -23,6 +23,7 @@ interface TextAreaArgs {
   'input-tab-index'?: number;
   label?: string;
   'max-length'?: number;
+  'min-length'?: number;
   name?: string;
   placeholder?: string;
   readonly?: boolean;
@@ -114,6 +115,7 @@ export const Default: Story = {
         input-tab-index=${ifDefined(args['input-tab-index'])}
         label=${ifDefined(args.label)}
         max-length=${ifDefined(args['max-length'])}
+        min-length=${ifDefined(args['min-length'])}
         name=${ifDefined(args.name)}
         placeholder=${ifDefined(args.placeholder)}
         ?readonly=${args.readonly}
@@ -137,10 +139,16 @@ export const WithErrorFeedback: Story = {
     <modus-wc-textarea
       aria-label="Textarea input"
       .feedback=${errorFeedback}
+      id="error-input"
       label=${ifDefined(args.label)}
       ?required=${true}
       .value=${args.value}
     ></modus-wc-textarea>
+    <script>
+      // Adding this block to show how to set feedback via JS
+      //const input = document.getElementById('error-input');
+      //input.feedback = { level: 'error', message: 'Value is required.' };
+    </script>
   `,
 };
 
@@ -170,7 +178,7 @@ export const Migration: Story = {
 | helper-text                  |                     | Not carried over                                            |
 | label                        | label               |                                                             |
 | max-length                   | max-length          |                                                             |
-| min-length                   |                     | Not carried over                                            |
+| min-length                   | min-length          |                                                             |
 | placeholder                  | placeholder         |                                                             |
 | read-only                    | readonly            |                                                             |
 | rows                         | rows                |                                                             |

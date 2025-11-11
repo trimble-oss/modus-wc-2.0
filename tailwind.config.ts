@@ -3,6 +3,7 @@ import daisyui from 'daisyui';
 import type { Config } from 'tailwindcss';
 import { modusClassic } from './src/styles/themes/modus-classic';
 import { modusModern } from './src/styles/themes/modus-modern';
+import { connect } from './src/styles/themes/connect';
 
 export default {
   content: [
@@ -24,6 +25,8 @@ export default {
       { 'modus-classic-dark': modusClassic.dark },
       { 'modus-modern-light': modusModern.light },
       { 'modus-modern-dark': modusModern.dark },
+      { 'connect-light': connect.light },
+      { 'connect-dark': connect.dark },
     ],
   },
   plugins: [typography, daisyui],

@@ -3,11 +3,10 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-input {
+modus-wc-select .modus-wc-select {
+  @include sizing-tokens;
   @include feedback-levels;
-}
 
-modus-wc-select {
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
   }
@@ -59,6 +58,12 @@ modus-wc-select {
 }
 
 [data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select,
-[data-theme='modus-modern-dark'] modus-wc-select .modus-wc-select {
+[data-theme='modus-modern-dark'] modus-wc-select .modus-wc-select,
+[data-theme='connect-dark'] modus-wc-select .modus-wc-select {
   background-color: var(--modus-wc-color-gray-10);
+}
+
+[data-theme='connect-light'] modus-wc-select .modus-wc-select,
+[data-theme='connect-dark'] modus-wc-select .modus-wc-select {
+  @include connect-input-styles;
 }

@@ -2,8 +2,8 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import {
+  TypographyHierarchy,
   TypographySize,
-  TypographyVariant,
   TypographyWeight,
 } from './modus-wc-typography';
 
@@ -14,8 +14,8 @@ const content = 'The quick brown fox jumps over the lazy dog';
 
 interface TypographyArgs {
   'custom-class'?: string;
+  hierarchy: TypographyHierarchy;
   size?: TypographySize;
-  variant: TypographyVariant;
   weight?: TypographyWeight;
 }
 
@@ -23,11 +23,15 @@ const meta: Meta<TypographyArgs> = {
   title: 'Components/Typography',
   component: 'modus-wc-typography',
   args: {
+    hierarchy: 'p',
     size: 'md',
-    variant: 'p',
     weight: 'normal',
   },
   argTypes: {
+    hierarchy: {
+      control: { type: 'select' },
+      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
+    },
     size: {
       control: { type: 'select' },
       options: [
@@ -45,10 +49,6 @@ const meta: Meta<TypographyArgs> = {
         '8xl',
         '9xl',
       ],
-    },
-    variant: {
-      control: { type: 'select' },
-      options: ['body', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
     },
     weight: {
       control: { type: 'select' },
@@ -82,61 +82,32 @@ export default meta;
 
 type Story = StoryObj<TypographyArgs>;
 
-export const Default: Story = {
-  render: (args) => html`
-    <modus-wc-typography
-      custom-class=${ifDefined(args['custom-class'])}
-      size=${ifDefined(args.size)}
-      variant=${args.variant}
-      weight=${ifDefined(args.weight)}
-    ></modus-wc-typography>
-  `,
-};
-
-export const Body: Story = {
-  args: {
-    variant: 'body',
+const Template: Story = {
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-typography
+  custom-class=${ifDefined(args['custom-class'])}
+  hierarchy=${args.hierarchy}
+  size=${ifDefined(args.size)}
+  weight=${ifDefined(args.weight)}
+  ></modus-wc-typography>
+   `;
   },
 };
 
-export const Heading1: Story = {
-  args: {
-    variant: 'h1',
-  },
-};
+export const Default: Story = { ...Template };
 
-export const Heading2: Story = {
-  args: {
-    variant: 'h2',
-  },
-};
+export const Heading1: Story = { ...Template, args: { hierarchy: 'h1' } };
 
-export const Heading3: Story = {
-  args: {
-    variant: 'h3',
-  },
-};
+export const Heading2: Story = { ...Template, args: { hierarchy: 'h2' } };
 
-export const Heading4: Story = {
-  args: {
-    variant: 'h4',
-  },
-};
+export const Heading3: Story = { ...Template, args: { hierarchy: 'h3' } };
 
-export const Heading5: Story = {
-  args: {
-    variant: 'h5',
-  },
-};
+export const Heading4: Story = { ...Template, args: { hierarchy: 'h4' } };
 
-export const Heading6: Story = {
-  args: {
-    variant: 'h6',
-  },
-};
+export const Heading5: Story = { ...Template, args: { hierarchy: 'h5' } };
 
-export const Paragraph: Story = {
-  args: {
-    variant: 'p',
-  },
-};
+export const Heading6: Story = { ...Template, args: { hierarchy: 'h6' } };
+
+export const Paragraph: Story = { ...Template, args: { hierarchy: 'p' } };

@@ -4,8 +4,9 @@ exports[`modus-wc-autocomplete should close the menu when clicking outside if le
 <modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input inputmode="text" value="">
+    <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_13" placeholder="" type="text" value="">
+      <input aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_15" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -15,8 +16,9 @@ exports[`modus-wc-autocomplete should close the menu when clicking outside if le
 <modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input inputmode="text" value="">
+    <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_26" placeholder="" type="text" value="">
+      <input aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_28" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -26,8 +28,9 @@ exports[`modus-wc-autocomplete should display no results ui when no items are av
 <modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input inputmode="text" value="">
+    <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="No results test" class="modus-wc-grow" id="mwc_id_12" placeholder="" type="text" value="">
+      <input aria-label="No results test" class="modus-wc-grow" id="mwc_id_14" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -37,8 +40,9 @@ exports[`modus-wc-autocomplete should display no results ui when no items are av
 <modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input inputmode="text" value="">
+    <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="No results test" class="modus-wc-grow" id="mwc_id_25" placeholder="" type="text" value="">
+      <input aria-label="No results test" class="modus-wc-grow" id="mwc_id_27" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -48,8 +52,9 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 1`
 <modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input inputmode="text" value="">
+    <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_16" placeholder="" type="text" value="">
+      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_18" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -59,8 +64,9 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 2`
 <modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input inputmode="text" value="">
+    <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-disabled modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Leave menu open test" class="modus-wc-grow" disabled="" id="mwc_id_16" placeholder="" type="text" value="">
+      <input aria-label="Leave menu open test" class="modus-wc-grow" disabled="" id="mwc_id_18" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -70,8 +76,9 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 3`
 <modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input inputmode="text" value="">
+    <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-text-input--readonly modus-wc-w-full">
-      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_16" placeholder="" readonly="" type="text" value="">
+      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_18" placeholder="" readonly="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -81,8 +88,9 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 4`
 <modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input inputmode="text" value="">
+    <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_29" placeholder="" type="text" value="">
+      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_31" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -92,8 +100,9 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 5`
 <modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input inputmode="text" value="">
+    <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-disabled modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Leave menu open test" class="modus-wc-grow" disabled="" id="mwc_id_29" placeholder="" type="text" value="">
+      <input aria-label="Leave menu open test" class="modus-wc-grow" disabled="" id="mwc_id_31" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -103,8 +112,9 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 6`
 <modus-wc-autocomplete class="modus-wc-autocomplete" leave-menu-open="true" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input inputmode="text" value="">
+    <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-text-input--readonly modus-wc-w-full">
-      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_29" placeholder="" readonly="" type="text" value="">
+      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_31" placeholder="" readonly="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
@@ -114,8 +124,39 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 1`] = `
 <modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input inputmode="text" value="">
+    <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_77" placeholder="" type="text" value="">
+      <input aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_73" placeholder="" type="text" value="">
+    </label>
+  </modus-wc-text-input>
+  <modus-wc-menu class="menu-visible">
+    <!---->
+    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
+      <div class="modus-wc-autocomplete-no-results">
+        <div aria-label="No results found" class="icon-label">
+          <svg aria-hidden="true" class="modus-wc-autocomplete-search-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
+          </svg>
+          <div class="label">
+            No results found
+          </div>
+        </div>
+        <div class="sub-label">
+          Check spelling or try a different keyword
+        </div>
+      </div>
+    </ul>
+  </modus-wc-menu>
+</modus-wc-autocomplete>
+`;
+
+exports[`modus-wc-autocomplete should handle undefined filtered items 2`] = `
+<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 10px;">
+  <!---->
+  <modus-wc-text-input inputmode="text" value="">
+    <!---->
+    <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
+      <input aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_83" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
   <modus-wc-menu class="menu-visible">
@@ -167,8 +208,9 @@ exports[`modus-wc-autocomplete should render chips for selected items in multi-s
         </button>
       </modus-wc-chip>
       <modus-wc-text-input inputmode="text" value="">
+        <!---->
         <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-          <input aria-label="MultiSelect Chip Test" class="modus-wc-grow" id="mwc_id_38" placeholder="" type="text" value="">
+          <input aria-label="MultiSelect Chip Test" class="modus-wc-grow" id="mwc_id_40" placeholder="" type="text" value="">
         </label>
       </modus-wc-text-input>
     </div>
@@ -349,6 +391,7 @@ exports[`modus-wc-autocomplete should render multi select without border 1`] = `
   <div class="modus-wc-autocomplete-multi-select modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-w-full">
     <div class="modus-wc-autocomplete-content">
       <modus-wc-text-input inputmode="text" value="">
+        <!---->
         <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
           <input aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_2" placeholder="" type="text" value="">
         </label>
@@ -359,11 +402,31 @@ exports[`modus-wc-autocomplete should render multi select without border 1`] = `
 </modus-wc-autocomplete>
 `;
 
+exports[`modus-wc-autocomplete should render with custom icon slot 1`] = `
+<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 10px;">
+  <!---->
+  <modus-wc-text-input inputmode="text" value="">
+    <!---->
+    <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
+      <div class="modus-wc-text-input-icon modus-wc-text-input-icon-custom">
+        <modus-wc-icon class="modus-wc-flex modus-wc-items-center" name="heart" size="sm" slot="custom-icon">
+          <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
+            heart
+          </i>
+        </modus-wc-icon>
+      </div>
+      <input aria-label="Custom icon test" class="modus-wc-grow" id="mwc_id_3" placeholder="" type="text" value="">
+    </label>
+  </modus-wc-text-input>
+</modus-wc-autocomplete>
+`;
+
 exports[`modus-wc-autocomplete should render with custom props 1`] = `
 <modus-wc-autocomplete active-item-value="1" bordered="false" class="modus-wc-autocomplete test-class" custom-class="test-class" debounce-ms="500" disabled="true" include-clear="true" include-search="true" input-id="test-id" input-tab-index="1" label="Test label" min-chars="2" name="test-name" placeholder="Test placeholder" readonly="true" required="true" size="lg" value="Item 1" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-input-label forid="test-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
   <modus-wc-text-input inputmode="text" value="Item 1">
+    <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-disabled modus-wc-input-lg modus-wc-items-center modus-wc-text-input modus-wc-w-full">
       <svg aria-hidden="true" class="modus-wc-text-input-icon modus-wc-text-input-icon-search" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
@@ -383,8 +446,21 @@ exports[`modus-wc-autocomplete should render with default props 1`] = `
 <modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 10px;">
   <!---->
   <modus-wc-text-input inputmode="text" value="">
+    <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
       <input aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_0" placeholder="" type="text" value="">
+    </label>
+  </modus-wc-text-input>
+</modus-wc-autocomplete>
+`;
+
+exports[`modus-wc-autocomplete should render without custom icon slot 1`] = `
+<modus-wc-autocomplete class="modus-wc-autocomplete" value="" style="--modus-autocomplete-min-input-width: 10px;">
+  <!---->
+  <modus-wc-text-input inputmode="text" value="">
+    <!---->
+    <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
+      <input aria-label="No custom icon test" class="modus-wc-grow" id="mwc_id_4" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>

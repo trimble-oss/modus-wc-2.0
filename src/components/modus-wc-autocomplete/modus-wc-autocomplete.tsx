@@ -713,6 +713,11 @@ export class ModusWcAutocomplete {
       customItemSelect: this.customItemSelect,
     });
 
+    const isSelected = item.selected;
+    if (this.multiSelect && isSelected && item.checkbox) {
+      this.handleChipRemove(item);
+    }
+
     if (result.updatedItems && result.updatedItems !== this.items) {
       this.items = result.updatedItems;
     }
@@ -807,7 +812,10 @@ export class ModusWcAutocomplete {
     };
 
     // Check if we have slotted content
-    const hasSlottedContent = !!this.el.querySelector('[slot="menu-items"]');
+    const hasSlottedMenuItems = !!this.el.querySelector('[slot="menu-items"]');
+    const hasSlottedCustomIcon = !!this.el.querySelector(
+      '[slot="custom-icon"]'
+    );
 
     return (
       <Host class={this.getClasses()} style={cssVariables}>
@@ -854,6 +862,7 @@ export class ModusWcAutocomplete {
                 size: this.size,
                 value: this.value,
                 inheritedAttributes: this.inheritedAttributes,
+                customIconSlot: hasSlottedCustomIcon,
                 onBlur: this.handleBlur,
                 onChange: this.handleChange,
                 onFocus: this.handleFocus,
@@ -895,13 +904,14 @@ export class ModusWcAutocomplete {
               size: this.size,
               value: this.value,
               inheritedAttributes: this.inheritedAttributes,
+              customIconSlot: hasSlottedCustomIcon,
               onBlur: this.handleBlur,
               onChange: this.handleChange,
               onFocus: this.handleFocus,
             })}
           </Fragment>
         )}
-        {hasSlottedContent ? (
+        {hasSlottedMenuItems ? (
           // When using custom slots, keep menu in DOM and use CSS to hide/show
           <modus-wc-menu
             aria-label="Autocomplete menu"
@@ -917,7 +927,7 @@ export class ModusWcAutocomplete {
               filteredItems: this.filteredItems,
               items: this.items,
               noResults: this.noResults,
-              hasSlottedContent: hasSlottedContent,
+              hasSlottedContent: hasSlottedMenuItems,
               onItemSelect: this.handleItemSelectByValue,
             })}
             <slot name="menu-items"></slot>
@@ -939,7 +949,7 @@ export class ModusWcAutocomplete {
                 filteredItems: this.filteredItems,
                 items: this.items,
                 noResults: this.noResults,
-                hasSlottedContent: hasSlottedContent,
+                hasSlottedContent: hasSlottedMenuItems,
                 onItemSelect: this.handleItemSelectByValue,
               })}
               <slot name="menu-items"></slot>

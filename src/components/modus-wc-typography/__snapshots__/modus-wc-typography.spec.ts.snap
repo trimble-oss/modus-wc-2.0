@@ -1,20 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-typography should render headings 1`] = `
-<modus-wc-typography variant="h1">
+<modus-wc-typography hierarchy="h1">
   <!---->
-  <h1 class="modus-wc-typography">
+  <h1 class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
     Test content
   </h1>
 </modus-wc-typography>
 `;
 
 exports[`modus-wc-typography should render with custom props 1`] = `
-<modus-wc-typography custom-class="test-class" size="sm" variant="body" weight="bold">
+<modus-wc-typography custom-class="test-class" hierarchy="p" size="sm" weight="bold">
   <!---->
-  <body class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-bold test-class">
+  <p class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-bold test-class">
     Test content
-  </body>
+  </p>
 </modus-wc-typography>
 `;
 

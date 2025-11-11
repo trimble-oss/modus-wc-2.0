@@ -11,11 +11,6 @@ import {
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
-import { AlertSolidIcon } from '../../icons/alert-solid.icon';
-import { CheckCircleSolidIcon } from '../../icons/check-circle-solid.icon';
-import { CloseSolidIcon } from '../../icons/close-solid.icon';
-import { InfoSolidIcon } from '../../icons/info-solid.icon';
-import { WarningSolidIcon } from '../../icons/warning-solid.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -82,20 +77,47 @@ export class ModusWcAlert {
   private getLeadingIcon(): FunctionalComponent {
     if (this.icon) {
       return (
-        <modus-wc-icon custom-class="modus-wc-alert-icon" name={this.icon} />
+        <modus-wc-icon
+          custom-class="modus-wc-alert-icon"
+          name={this.icon}
+          variant="outlined"
+        />
       );
     }
 
     switch (this.variant) {
       case 'error':
-        return <AlertSolidIcon className="modus-wc-alert-icon" />;
+        return (
+          <modus-wc-icon
+            custom-class="modus-wc-alert-icon"
+            name="alert"
+            variant="outlined"
+          />
+        );
       case 'success':
-        return <CheckCircleSolidIcon className="modus-wc-alert-icon" />;
+        return (
+          <modus-wc-icon
+            custom-class="modus-wc-alert-icon"
+            name="check_circle"
+          />
+        );
       case 'warning':
-        return <WarningSolidIcon className="modus-wc-alert-icon" />;
+        return (
+          <modus-wc-icon
+            custom-class="modus-wc-alert-icon"
+            name="warning"
+            variant="outlined"
+          />
+        );
       case 'info':
       default:
-        return <InfoSolidIcon className="modus-wc-alert-icon" />;
+        return (
+          <modus-wc-icon
+            custom-class="modus-wc-alert-icon"
+            name="info"
+            variant="outlined"
+          />
+        );
     }
   }
 
@@ -158,13 +180,17 @@ export class ModusWcAlert {
           {this.dismissible && (
             <modus-wc-button
               aria-label="notification button"
-              color="secondary"
+              color="tertiary"
               size="sm"
               slot="button"
               variant="borderless"
               onButtonClick={() => this.dismissElement()}
             >
-              <CloseSolidIcon className="modus-wc-alert-close-icon" />
+              <modus-wc-icon
+                custom-class="modus-wc-alert-close-icon"
+                name="close"
+                variant="outlined"
+              />
             </modus-wc-button>
           )}
         </div>

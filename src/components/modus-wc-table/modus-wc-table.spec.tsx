@@ -2271,6 +2271,197 @@ describe('modus-wc-table', () => {
     cellNode.dispatchEvent(blurEvent);
     expect(component['activeEditor']).toBeNull();
   });
+
+  it('should handle deferred blur when relatedTarget is null', async () => {
+    const mockCommit = jest.fn();
+    const column: ITableColumn = {
+      id: 'date',
+      accessor: 'date',
+      header: 'Date',
+      editor: 'custom',
+      customEditorRenderer: () => {
+        const div = document.createElement('div');
+        div.innerHTML = '<input type="text" />';
+        return div;
+      },
+    };
+
+    const row = { id: '1', date: '2025-01-01' };
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [column];
+    component.data = [row];
+
+    // Create editor cell
+    const td = document.createElement('td');
+    page.root?.appendChild(td); // Add to DOM
+    const cellNode = column.customEditorRenderer!(
+      row.date,
+      mockCommit,
+      row
+    ) as HTMLElement;
+
+    // Setup editor cell
+    component['setupEditorCell'](td, cellNode, column, row, mockCommit);
+    component['activeEditor'] = { rowIndex: 0, colId: 'date' };
+
+    // Simulate blur with null relatedTarget (select interaction)
+    const blurEvent = new FocusEvent('focusout', {
+      relatedTarget: null,
+      bubbles: true,
+    });
+    td.dispatchEvent(blurEvent);
+
+    // Editor should still be active
+    expect(component['activeEditor']).toEqual({ rowIndex: 0, colId: 'date' });
+
+    // Create an element outside the table
+    const outsideElement = document.createElement('div');
+    document.body.appendChild(outsideElement);
+
+    // Simulate click outside the table
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+    });
+    Object.defineProperty(clickEvent, 'target', {
+      value: outsideElement,
+      enumerable: true,
+    });
+    document.dispatchEvent(clickEvent);
+
+    // Now editor should be closed
+    expect(component['activeEditor']).toBeNull();
+
+    // Clean up
+    document.body.removeChild(outsideElement);
+  });
+
+  it('should handle global click when clicking outside table', async () => {
+    const mockCommit = jest.fn();
+    const column: ITableColumn = {
+      id: 'text',
+      accessor: 'text',
+      header: 'Text',
+      editor: 'text',
+    };
+
+    const row = { id: '1', text: 'Test' };
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [column];
+    component.data = [row];
+
+    // Create editor cell
+    const td = document.createElement('td');
+    page.root?.appendChild(td);
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = row.text;
+
+    // Setup editor cell
+    component['setupEditorCell'](td, input, column, row, mockCommit);
+    component['activeEditor'] = { rowIndex: 0, colId: 'text' };
+
+    // Create element outside table
+    const outsideElement = document.createElement('div');
+    document.body.appendChild(outsideElement);
+
+    // Simulate click outside table using the global handler
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+    });
+    Object.defineProperty(clickEvent, 'target', {
+      value: outsideElement,
+      enumerable: true,
+    });
+
+    // Trigger the global click handler
+    component['globalClickHandler']?.(clickEvent);
+
+    // Editor should be closed
+    expect(component['activeEditor']).toBeNull();
+
+    // Clean up
+    document.body.removeChild(outsideElement);
+  });
+
+  it('should ignore global click when no active editor', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [{ id: 'test', accessor: 'test', header: 'Test' }];
+    component.data = [{ id: '1', test: 'value' }];
+
+    // Ensure globalClickHandler exists by setting up and cleaning an editor
+    const td = document.createElement('td');
+    const input = document.createElement('input');
+    component['setupEditorCell'](
+      td,
+      input,
+      component.columns[0],
+      component.data[0],
+      jest.fn()
+    );
+
+    // Clear active editor
+    component['activeEditor'] = null;
+    component['activeEditorElement'] = undefined;
+
+    // Simulate click with no active editor
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+    });
+
+    // This should return early without doing anything
+    component['globalClickHandler']?.(clickEvent);
+
+    // Verify nothing changed
+    expect(component['activeEditor']).toBeNull();
+  });
+
+  it('should cleanup on disconnectedCallback', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [{ id: 'test', accessor: 'test', header: 'Test' }];
+    component.data = [{ id: '1', test: 'value' }];
+
+    // Mock the global handler and cleanup
+    const mockGlobalHandler = jest.fn();
+    component['globalClickHandler'] = mockGlobalHandler;
+
+    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
+
+    // Call disconnectedCallback
+    component.disconnectedCallback();
+
+    // Verify cleanup
+    expect(removeEventListenerSpy).toHaveBeenCalledWith(
+      'click',
+      mockGlobalHandler,
+      true
+    );
+    expect(component['globalClickHandler']).toBeUndefined();
+    expect(component['activeEditorElement']).toBeUndefined();
+
+    removeEventListenerSpy.mockRestore();
+  });
+
   it('should call handlePageChange when pagination emits page change event', async () => {
     const columns: ITableColumn[] = [
       { id: 'name', accessor: 'name', header: 'Name' },
@@ -3062,5 +3253,57 @@ describe('modus-wc-table', () => {
 
     expect(caption?.textContent).toBe('This is a table caption');
     expect(caption).not.toBeNull();
+  });
+
+  it('should initialize internalRowSelection from selectedRowIds on first render', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Selected on load" selectable="multi"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+
+    // Set all required props before componentWillLoad
+    component.columns = [
+      { id: 'id', header: 'ID', accessor: 'id' },
+      { id: 'name', header: 'Name', accessor: 'name' },
+    ];
+    component.data = [
+      { id: 0, name: 'Name 0' },
+      { id: 1, name: 'Name 1' },
+      { id: 2, name: 'Name 2' },
+    ];
+    component.selectedRowIds = ['0', '2'];
+
+    // Manually trigger componentWillLoad to test initialization
+    component.componentWillLoad();
+
+    expect(component['internalRowSelection']).toEqual({ '0': true, '2': true });
+  });
+
+  it('should not initialize internalRowSelection when selectedRowIds is undefined or empty', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="No selection on load" selectable="multi"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [
+      { id: 'id', header: 'ID', accessor: 'id' },
+      { id: 'name', header: 'Name', accessor: 'name' },
+    ];
+    component.data = [
+      { id: 0, name: 'Name 0' },
+      { id: 1, name: 'Name 1' },
+    ];
+
+    // Case 1: undefined (default)
+    component.componentWillLoad();
+    expect(component['internalRowSelection']).toEqual({});
+
+    // Case 2: empty array
+    component.selectedRowIds = [];
+    component.componentWillLoad();
+    expect(component['internalRowSelection']).toEqual({});
   });
 });

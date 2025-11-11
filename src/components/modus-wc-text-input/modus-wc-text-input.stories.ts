@@ -135,7 +135,7 @@ export default meta;
 
 type Story = StoryObj<TextInputArgs>;
 
-export const Default: Story = {
+const Template: Story = {
   render: (args) => html`
     <modus-wc-text-input
       aria-label="Text input"
@@ -170,21 +170,70 @@ export const Default: Story = {
   `,
 };
 
+export const Default: Story = { ...Template };
+
 const errorFeedback: IInputFeedbackProp = {
   level: 'error',
   message: 'Value is required.',
 };
 
 export const WithErrorFeedback: Story = {
+  // prettier-ignore
   render: (args) => html`
     <modus-wc-text-input
-      aria-label="Text input"
+      aria-label="Text input with error feedback"
       .feedback=${errorFeedback}
+      id="error-input"
       label=${ifDefined(args.label)}
       ?required=${true}
       .value=${args.value}
     ></modus-wc-text-input>
+    <script>
+      // Adding this block to show how to set feedback via JS
+      //const input = document.getElementById('error-input');
+      //input.feedback = { level: 'error', message: 'Value is required.' };
+    </script>
   `,
+};
+
+export const WithCustomIconSlot: Story = {
+  // prettier-ignore
+  render: (args) => html`
+<modus-wc-text-input
+  aria-label="Text input with custom icon"
+  auto-capitalize=${ifDefined(args['auto-capitalize'])}
+  auto-complete=${ifDefined(args['auto-complete'])}
+  auto-correct=${ifDefined(args['auto-correct'])}
+  ?bordered=${args.bordered}
+  clear-aria-label=${ifDefined(args['clear-aria-label'])}
+  custom-class=${ifDefined(args['custom-class'])}
+  ?disabled=${args.disabled}
+  enterkeyhint=${ifDefined(args.enterkeyhint)}
+  .feedback=${args.feedback}
+  include-clear=${ifDefined(args['include-clear'])}
+  include-search=${ifDefined(args['include-search'])}
+  input-id=${ifDefined(args['input-id'])}
+  inputmode=${ifDefined(args.inputmode)}
+  input-tab-index=${ifDefined(args['input-tab-index'])}
+  label=${ifDefined(args.label)}
+  max-length=${ifDefined(args['max-length'])}
+  min-length=${ifDefined(args['min-length'])}
+  name=${ifDefined(args.name)}
+  pattern=${ifDefined(args.pattern)}
+  placeholder=${ifDefined(args.placeholder)}
+  ?read-only=${args['read-only']}
+  ?required=${args.required}
+  size=${ifDefined(args.size)}
+  spellcheck=${ifDefined(args.spellcheck)}
+  type=${ifDefined(args.type)}
+  .value=${args.value}
+>
+  <modus-wc-icon slot="custom-icon" name="heart" size="sm"></modus-wc-icon>
+</modus-wc-text-input>
+  `,
+  args: {
+    placeholder: 'Enter text here...',
+  },
 };
 
 export const Migration: Story = {

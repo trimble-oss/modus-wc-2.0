@@ -5,6 +5,7 @@
 
 .modus-wc-input {
   @include feedback-levels;
+  @include sizing-tokens;
 }
 
 modus-wc-time-input {
@@ -66,4 +67,9 @@ modus-wc-time-input {
       border-color: var(--modus-wc-color-highlight-blue);
     }
   }
+}
+
+[data-theme='connect-light'] modus-wc-time-input .modus-wc-time-input,
+[data-theme='connect-dark'] modus-wc-time-input .modus-wc-time-input {
+  @include connect-input-styles;
 }

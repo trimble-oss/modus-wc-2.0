@@ -638,55 +638,183 @@ export const InlineEditing: Story = {
           return span;
         },
       },
+      {
+        id: 'dueDate',
+        header: 'Due Date',
+        accessor: 'dueDate',
+        editor: 'custom',
+        customEditorRenderer: (value, onCommit) => {
+          const container = document.createElement('div');
+          container.style.width = '100%';
+
+          const datePicker = document.createElement('modus-wc-date');
+          datePicker.value = value as string;
+          datePicker.style.width = '100%';
+          datePicker.bordered = false;
+
+          let isCommitting = false;
+
+          const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              const input = datePicker.querySelector('input');
+              if (input && input.value && !isCommitting) {
+                isCommitting = true;
+                onCommit(input.value);
+              }
+            } else if (e.key === 'Escape') {
+              e.preventDefault();
+              if (!isCommitting) {
+                isCommitting = true;
+                onCommit(value || '');
+              }
+            } else if (e.key === 'Tab') {
+              // Allow Tab to commit and move to next cell
+              const input = datePicker.querySelector('input');
+              if (input && input.value && !isCommitting) {
+                isCommitting = true;
+                onCommit(input.value);
+              }
+            }
+          };
+
+          // Only commit when focus leaves the entire container (not just the input)
+          const handleContainerBlur = (e: FocusEvent) => {
+            const relatedTarget = e.relatedTarget as HTMLElement;
+
+            // If focus is moving within the container or date picker, don't commit
+            if (
+              relatedTarget &&
+              (container.contains(relatedTarget) ||
+                datePicker.shadowRoot?.contains(relatedTarget))
+            ) {
+              return;
+            }
+
+            const calendar = datePicker.shadowRoot?.querySelector(
+              '[class*="calendar"]'
+            );
+            if (calendar) {
+              return;
+            }
+
+            const input = datePicker.querySelector('input');
+            if (input && input.value && !isCommitting) {
+              isCommitting = true;
+              setTimeout(() => onCommit(input.value), 50);
+            }
+          };
+
+          container.addEventListener('keydown', handleKeyDown);
+          container.addEventListener('focusout', handleContainerBlur);
+          container.appendChild(datePicker);
+
+          setTimeout(() => {
+            const input = datePicker.querySelector('input');
+            input?.focus();
+          }, 0);
+
+          return container;
+        },
+        cellRenderer: (value): string => {
+          if (!value) return '-';
+
+          // Parse dd-mm-yyyy format from date picker
+          const dateString = value as string;
+          const parts = dateString.split(/[-/]/);
+
+          let date: Date;
+          if (parts.length === 3 && parts[0].length <= 2) {
+            // Assume dd-mm-yyyy or dd/mm/yyyy format
+            const day = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+            const year = parseInt(parts[2], 10);
+            date = new Date(year, month, day);
+          } else {
+            // Fallback to default parsing
+            date = new Date(dateString);
+          }
+
+          // Check if date is valid
+          if (isNaN(date.getTime())) {
+            return dateString; // Return original value if parsing fails
+          }
+
+          // Format date with dashes: dd-mm-yyyy
+          const formattedDay = date.getDate().toString().padStart(2, '0');
+          const formattedMonth = (date.getMonth() + 1)
+            .toString()
+            .padStart(2, '0');
+          const formattedYear = date.getFullYear();
+
+          return `${formattedDay}-${formattedMonth}-${formattedYear}`;
+        },
+      },
     ];
 
     const data = [
-      { id: '1', name: 'John Doe', status: 'Active' },
-      { id: '2', name: 'Jane Smith', status: 'Inactive' },
-      { id: '3', name: 'Bob Johnson', status: 'Pending' },
+      {
+        id: '1',
+        name: 'John Doe',
+        status: 'Active',
+        dueDate: '15-10-2025',
+      },
+      {
+        id: '2',
+        name: 'Jane Smith',
+        status: 'Inactive',
+        dueDate: '20-11-2025',
+      },
+      {
+        id: '3',
+        name: 'Bob Johnson',
+        status: 'Pending',
+        dueDate: '05-12-2025',
+      },
     ];
 
     return html`
       <script>
-                // Helper functions
-                const createDemoColumns = (): ITableColumn[] => [
-                  {
-                    id: 'id',
-                    header: 'ID',
-                    accessor: 'id',
-                    width: '60px',
-                  },
-                  {
-                    id: 'name',
-                    header: 'Name',
-                    accessor: 'name',
-                    width: '100px',
-                  },
-                  {
-                    id: 'email',
-                    header: 'Email',
-                    accessor: 'email',
-                  },
-                  {
-                    id: 'role',
-                    header: 'Role',
-                    accessor: 'role',
-                  },
-                ];
+        // Helper functions
+        const createDemoColumns = () => [
+          {
+            id: 'id',
+            header: 'ID',
+            accessor: 'id',
+            width: '60px',
+          },
+          {
+            id: 'name',
+            header: 'Name',
+            accessor: 'name',
+            width: '100px',
+          },
+          {
+            id: 'email',
+            header: 'Email',
+            accessor: 'email',
+          },
+          {
+            id: 'role',
+            header: 'Role',
+            accessor: 'role',
+          },
+        ];
 
-                const createDemoData = (count = 5): Record<string, any>[] => {
-                  const data: Record<string, any>[] = [];
-                  for (let i = 1; i <= count; i++) {
-                    data.push({
-                      id: i.toString(),
-                      name: \`User \${i}\`,
-                      email: \`user\${i}@example.com\`,
-                      role: i % 2 === 0 ? 'Admin' : 'User',
-                    });
-                  }
-                  return data;
-                };
-                    const columns: ITableColumn[] = [
+        const createDemoData = (count = 5) => {
+          const data = [];
+          for (let i = 1; i <= count; i++) {
+            data.push({
+              id: i.toString(),
+              name: \`User \${i}\`,
+              email: \`user\${i}@example.com\`,
+              role: i % 2 === 0 ? 'Admin' : 'User',
+            });
+          }
+          return data;
+        };
+
+        const columns = [
           {
             id: 'id',
             header: 'ID',
@@ -748,12 +876,128 @@ export const InlineEditing: Story = {
               return span;
             },
           },
+          {
+            id: 'dueDate',
+            header: 'Due Date',
+            accessor: 'dueDate',
+            editor: 'custom',
+            customEditorRenderer: (value, onCommit) => {
+              const container = document.createElement('div');
+              container.style.width = '100%';
+
+          const datePicker = document.createElement('modus-wc-date');
+          datePicker.value = value;
+          datePicker.style.width = '100%';
+          datePicker.bordered = false;
+
+          let isCommitting = false;
+
+          const handleKeyDown = (e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              const input = datePicker.querySelector('input');
+              if (input && input.value && !isCommitting) {
+                isCommitting = true;
+                onCommit(input.value);
+              }
+            } else if (e.key === 'Escape') {
+              e.preventDefault();
+              if (!isCommitting) {
+                isCommitting = true;
+                onCommit(value || '');
+              }
+            } else if (e.key === 'Tab') {
+              const input = datePicker.querySelector('input');
+              if (input && input.value && !isCommitting) {
+                isCommitting = true;
+                onCommit(input.value);
+              }
+            }
+          };
+
+          const handleContainerBlur = (e) => {
+            const relatedTarget = e.relatedTarget;
+
+            if (relatedTarget && (container.contains(relatedTarget) || datePicker.shadowRoot?.contains(relatedTarget))) {
+              return;
+            }
+
+            const calendar = datePicker.shadowRoot?.querySelector('[class*="calendar"]');
+            if (calendar) {
+              return;
+            }
+
+            const input = datePicker.querySelector('input');
+            if (input && input.value && !isCommitting) {
+              isCommitting = true;
+              setTimeout(() => onCommit(input.value), 50);
+            }
+          };
+
+          container.addEventListener('keydown', handleKeyDown);
+          container.addEventListener('focusout', handleContainerBlur);
+          container.appendChild(datePicker);
+
+              setTimeout(() => {
+                const input = datePicker.querySelector('input');
+                input?.focus();
+              }, 0);
+
+              return container;
+            },
+            cellRenderer: (value) => {
+              if (!value) return '-';
+
+              // Parse dd-mm-yyyy format from date picker
+              const dateString = value as string;
+              const parts = dateString.split(/[-/]/);
+
+              let date: Date;
+              if (parts.length === 3 && parts[0].length <= 2) {
+                // Assume dd-mm-yyyy or dd/mm/yyyy format
+                const day = parseInt(parts[0], 10);
+                const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+                const year = parseInt(parts[2], 10);
+                date = new Date(year, month, day);
+              } else {
+                // Fallback to default parsing
+                date = new Date(dateString);
+              }
+
+              // Check if date is valid
+              if (isNaN(date.getTime())) {
+                return dateString; // Return original value if parsing fails
+              }
+
+              // Format date with dashes: dd-mm-yyyy
+              const formattedDay = date.getDate().toString().padStart(2, '0');
+              const formattedMonth = (date.getMonth() + 1).toString().padStart(2, '0');
+              const formattedYear = date.getFullYear();
+
+              return \`\${formattedDay}-\${formattedMonth}-\${formattedYear}\`;
+            },
+          },
         ];
 
         const data = [
-          { id: '1', name: 'John Doe', status: 'Active' },
-          { id: '2', name: 'Jane Smith', status: 'Inactive' },
-          { id: '3', name: 'Bob Johnson', status: 'Pending' },
+          {
+            id: '1',
+            name: 'John Doe',
+            status: 'Active',
+            dueDate: '15-10-2025',
+          },
+          {
+            id: '2',
+            name: 'Jane Smith',
+            status: 'Inactive',
+            dueDate: '20-11-2025',
+          },
+          {
+            id: '3',
+            name: 'Bob Johnson',
+            status: 'Pending',
+            dueDate: '05-12-2025',
+          },
         ];
       </script>
       <modus-wc-table

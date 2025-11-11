@@ -51,6 +51,19 @@ const Template: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
+<div style="padding: 20px;">
+  <modus-wc-accordion custom-class=${ifDefined(args['custom-class'])}>
+    <modus-wc-collapse .options=${collapseOptions[0]}>
+      <div slot="content">Collapse content</div>
+    </modus-wc-collapse>
+    <modus-wc-collapse .options=${collapseOptions[1]}>
+      <div slot="content">Collapse content</div>
+    </modus-wc-collapse>
+    <modus-wc-collapse .options=${collapseOptions[2]}>
+      <div slot="content">Collapse content</div>
+    </modus-wc-collapse>
+  </modus-wc-accordion>
+</div>
 <script>
   const collapseOptions = [
     {
@@ -72,20 +85,12 @@ const Template: Story = {
       title: 'Item Three',
     },
   ];
+ // Adding this block to show how to set options via JS 
+  // const items = document.querySelectorAll('modus-wc-collapse');
+  // items.forEach((item, index) => {
+  //  item.options = collapseOptions[index];
+  // });
 </script>
-<div style="padding: 20px;">
-  <modus-wc-accordion custom-class=${ifDefined(args['custom-class'])}>
-    <modus-wc-collapse .options=${collapseOptions[0]}>
-      <div slot="content">Collapse content</div>
-    </modus-wc-collapse>
-    <modus-wc-collapse .options=${collapseOptions[1]}>
-      <div slot="content">Collapse content</div>
-    </modus-wc-collapse>
-    <modus-wc-collapse .options=${collapseOptions[2]}>
-      <div slot="content">Collapse content</div>
-    </modus-wc-collapse>
-  </modus-wc-accordion>
-</div>
     `;
   },
 };
