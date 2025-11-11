@@ -8,7 +8,7 @@ import {
   Listen,
   Prop,
 } from '@stencil/core';
-import { ensureDaisyUIInShadow } from '../../providers/theme/inject-daisyui';
+import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 import { convertPropsToClasses } from './modus-wc-button.tailwind';
@@ -61,13 +61,10 @@ export class ModusWcButton {
   @Event() buttonClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
-
-    // Ensure DaisyUI/Tailwind CSS is available when rendered inside a shadow root
-    const root = this.el.getRootNode();
-    // Fire and forget; safe if not a ShadowRoot
-
-    void ensureDaisyUIInShadow(root as Document | ShadowRoot);
   }
 
   private getClasses(): string {

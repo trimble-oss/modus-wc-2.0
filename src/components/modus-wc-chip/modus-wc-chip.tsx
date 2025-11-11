@@ -9,6 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-chip.tailwind';
 import { CancelCircleSolidIcon } from '../../icons/cancel-circle-solid.icon';
+import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 
@@ -65,6 +66,7 @@ export class ModusWcChip {
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    handleShadowDOMStyles(this.el);
   }
 
   private handleKeyDown = (event: KeyboardEvent) => {

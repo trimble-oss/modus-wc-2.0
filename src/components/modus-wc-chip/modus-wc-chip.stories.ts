@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
 
 interface ChipArgs {
@@ -160,6 +161,44 @@ export const Composable: Story = {
   <modus-wc-icon name="heart" size="xs"></modus-wc-icon>
 </modus-wc-chip>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for chip component
+    if (!customElements.get('chip-shadow-host')) {
+      const ChipShadowHost = createShadowHostClass<ChipArgs>({
+        componentTag: 'modus-wc-chip',
+        propsMapper: (v: ChipArgs, el: HTMLElement) => {
+          const chipEl = el as unknown as {
+            ariaLabel: string;
+            active: boolean;
+            customClass: string;
+            disabled: boolean;
+            hasError: boolean;
+            label: string;
+            shape: string;
+            showRemove: boolean;
+            size: string;
+            variant: string;
+          };
+          chipEl.ariaLabel = 'Click me chip';
+          chipEl.active = Boolean(v.active);
+          chipEl.shape = v.shape || 'rectangle';
+          chipEl.size = v.size;
+          chipEl.variant = v.variant;
+          chipEl.customClass = v['custom-class'] || '';
+          chipEl.disabled = Boolean(v.disabled);
+          chipEl.hasError = Boolean(v['has-error']);
+          chipEl.label = v.label;
+          chipEl.showRemove = Boolean(v['show-remove']);
+        },
+      });
+      customElements.define('chip-shadow-host', ChipShadowHost);
+    }
+
+    return html`<chip-shadow-host .props=${{ ...args }}></chip-shadow-host>`;
   },
 };
 

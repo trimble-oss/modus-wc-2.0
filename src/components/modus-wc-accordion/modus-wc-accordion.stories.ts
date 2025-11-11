@@ -97,6 +97,39 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
+export const ShadowDomParent: Story = {
+  render: () => {
+    // Create a unique shadow host for accordion component
+    if (!customElements.get('accordion-shadow-host')) {
+      class AccordionShadowHost extends HTMLElement {
+        constructor() {
+          super();
+
+          // Create shadow root
+          const shadowRoot = this.attachShadow({ mode: 'open' });
+
+          // Write HTML structure directly (no whitespace between elements to avoid gaps)
+          shadowRoot.innerHTML = `
+            <div style="padding: 20px;">
+              <modus-wc-accordion><modus-wc-collapse><div slot="content">Collapse content</div></modus-wc-collapse><modus-wc-collapse><div slot="content">Collapse content</div></modus-wc-collapse><modus-wc-collapse><div slot="content">Collapse content</div></modus-wc-collapse></modus-wc-accordion>
+            </div>
+          `;
+
+          // Set options for each collapse element
+          const collapses = shadowRoot.querySelectorAll('modus-wc-collapse');
+          collapses.forEach((collapse, index) => {
+            (collapse as unknown as { options: ICollapseOptions }).options =
+              collapseOptions[index];
+          });
+        }
+      }
+      customElements.define('accordion-shadow-host', AccordionShadowHost);
+    }
+
+    return html`<accordion-shadow-host></accordion-shadow-host>`;
+  },
+};
+
 export const Migration: Story = {
   parameters: {
     docs: {

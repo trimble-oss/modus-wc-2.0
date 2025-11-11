@@ -72,6 +72,21 @@
   --modus-wc-border-radius-2xl: 16px;
   --modus-wc-border-radius-3xl: 24px;
 
+  /* Accordion borders (theme-specific, defaults to transparent) */
+  --modus-accordion-border: transparent;
+
+  /* Collapse theme-specific properties (defaults for modern/connect themes) */
+  --modus-collapse-margin-bottom: var(--modus-wc-spacing-md);
+  --modus-collapse-border-radius: var(--modus-wc-border-radius-lg);
+  --modus-collapse-background: var(--modus-wc-color-base-100);
+  --modus-collapse-border-left-open: transparent;
+  --modus-collapse-title-bg-open: var(--modus-wc-color-primary-pale);
+  --modus-collapse-title-color-open: var(--modus-wc-color-primary);
+  --modus-collapse-title-font-weight: var(--modus-wc-font-weight-semibold);
+  --modus-collapse-title-padding-inline-start: var(--modus-wc-spacing-lg);
+  --modus-collapse-title-padding-inline-start-open: var(--modus-wc-spacing-lg);
+  --modus-collapse-description-color: inherit;
+
   /* Line heights */
   --modus-wc-line-height-xs: 0.5rem;
   --modus-wc-line-height-sm: 1rem;
@@ -400,6 +415,23 @@
 
 /* Modus Classic - Light */
 [data-theme='modus-classic-light'] {
+  /* Accordion borders for classic theme */
+  --modus-accordion-border: var(--modus-wc-border-width-xs) solid
+    var(--modus-wc-color-gray-2);
+
+  /* Collapse overrides for classic theme */
+  --modus-collapse-margin-bottom: -1px;
+  --modus-collapse-border-radius: var(--modus-wc-border-radius-md);
+  --modus-collapse-background: var(--modus-wc-color-white);
+  --modus-collapse-border-left-open: var(--modus-wc-spacing-xs) solid
+    var(--modus-wc-color-trimble-blue);
+  --modus-collapse-title-bg-open: var(--modus-wc-color-blue-pale);
+  --modus-collapse-title-color-open: inherit;
+  --modus-collapse-title-font-weight: var(--modus-wc-font-weight-normal);
+  --modus-collapse-title-padding-inline-start: var(--modus-wc-spacing-lg);
+  --modus-collapse-title-padding-inline-start-open: var(--modus-wc-spacing-md);
+  --modus-collapse-description-color: var(--modus-wc-color-gray-6);
+
   /* Classic theme size overrides */
   --modus-btn-padding-xs: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
   --modus-btn-padding-sm: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
@@ -443,6 +475,27 @@
 
 /* Modus Classic - Dark */
 [data-theme='modus-classic-dark'] {
+  /* Accordion borders for classic theme */
+  --modus-accordion-border: var(--modus-wc-border-width-xs) solid
+    var(--modus-wc-color-gray-8);
+
+  /* Collapse overrides for classic theme */
+  --modus-collapse-margin-bottom: -1px;
+  --modus-collapse-border-radius: var(--modus-wc-border-radius-md);
+  /* background uses default base-100 */
+  --modus-collapse-border-left-open: var(--modus-wc-spacing-xs) solid
+    var(--modus-wc-color-highlight-blue);
+  --modus-collapse-title-bg-open: color-mix(
+    in sRGB,
+    var(--modus-wc-color-highlight-blue) 30%,
+    transparent
+  );
+  --modus-collapse-title-color-open: inherit;
+  --modus-collapse-title-font-weight: var(--modus-wc-font-weight-normal);
+  --modus-collapse-title-padding-inline-start: var(--modus-wc-spacing-lg);
+  --modus-collapse-title-padding-inline-start-open: var(--modus-wc-spacing-md);
+  --modus-collapse-description-color: var(--modus-wc-color-gray-light);
+
   /* Classic theme size overrides (same as light) */
   --modus-btn-padding-xs: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
   --modus-btn-padding-sm: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
