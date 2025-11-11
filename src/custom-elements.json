@@ -3310,6 +3310,27 @@
             },
             {
               "kind": "method",
+              "name": "handleCollapseAllChange",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "isExpanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Internal state to track if submenu is expanded"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -3325,6 +3346,14 @@
               "name": "checkbox",
               "fieldName": "checkbox",
               "description": "If true, renders a checkbox at the start of the menu item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "collapse-all",
+              "fieldName": "collapseAll",
+              "description": "Collapse all submenus when set to true",
               "type": {
                 "text": "boolean"
               }
@@ -3350,6 +3379,14 @@
               "name": "focused",
               "fieldName": "focused",
               "description": "The focused state of the menu item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "has-submenu",
+              "fieldName": "hasSubmenu",
+              "description": "Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.",
               "type": {
                 "text": "boolean"
               }
@@ -3494,6 +3531,14 @@
               "description": "Custom CSS class to apply to the ul element.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "is-sub-menu",
+              "fieldName": "isSubMenu",
+              "description": "Indicates that this menu is a submenu (dropdown).",
+              "type": {
+                "text": "boolean"
               }
             },
             {

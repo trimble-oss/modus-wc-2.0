@@ -38,7 +38,7 @@ const meta: Meta<SideNavigationArgs> = {
   parameters: {
     layout: 'padded',
     actions: {
-      handles: ['expandedChange'],
+      handles: ['expandedChange', 'itemSelect'],
     },
   },
 };
@@ -93,35 +93,6 @@ export const Default: Story = {
           position: relative;
         }
       </style>
-      <script>
-        document.addEventListener('DOMContentLoaded', () => {
-          const menuItems = document.querySelectorAll('modus-wc-menu-item');
-
-          menuItems.forEach((item) => {
-            item.addEventListener('itemSelect', () => {
-              menuItems.forEach((i) => i.removeAttribute('selected'));
-              item.setAttribute('selected', '');
-            });
-          });
-        });
-
-        function handleMenuOpenChange(e) {
-          const eventSource = e.target;
-          const storyContainer = eventSource?.closest('.layout-with-navbar');
-
-          let sideNav;
-
-          if (storyContainer) {
-            sideNav = storyContainer.querySelector('modus-wc-side-navigation');
-          } else {
-            sideNav = document.querySelector('modus-wc-side-navigation');
-          }
-
-          if (sideNav) {
-            sideNav.expanded = e.detail;
-          }
-        }
-      </script>
       <div class="layout-with-navbar">
         <modus-wc-navbar
           app-title="Modus App"
@@ -187,85 +158,100 @@ export const Default: Story = {
           </div>
         </div>
       </div>
+      <script>
+        // Added this block to demonstrate how to handle menu selection, side navigation toggle, and navbar visibility settings using JavaScript.
+        // const menuItems = document.querySelectorAll('modus-wc-menu-item');
+        // menuItems.forEach((item) => {
+        //   item.addEventListener('itemSelect', () => {
+        //     menuItems.forEach((i) => i.removeAttribute('selected'));
+        //     item.setAttribute('selected', '');
+        //   });
+        // });
+        // const handleMenuOpenChange = (e) => {
+        //   const eventSource = e.target;
+        //   const storyContainer = eventSource?.closest('.layout-with-navbar');
+
+        //   let sideNav;
+
+        //   if (storyContainer) {
+        //     sideNav = storyContainer.querySelector('modus-wc-side-navigation');
+        //   } else {
+        //     sideNav = document.querySelector('modus-wc-side-navigation');
+        //   }
+
+        //   if (sideNav) {
+        //     sideNav.expanded = e.detail;
+        //   }
+        // };
+
+        // const visibility = {
+        //   ai: true,
+        //   apps: true,
+        //   help: true,
+        //   mainMenu: true,
+        //   notifications: true,
+        //   search: true,
+        //   searchInput: false,
+        //   user: true,
+        // };
+
+        // const userCard = {
+        //   avatarAlt: 'User Avatar',
+        //   avatarSrc:
+        //     'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+        //   email: 'user@trimble.com',
+        //   name: 'Sonic the Hedgehog',
+        // };
+
+        // const navbar = document.querySelector('modus-wc-navbar');
+        // const sideNav = document.querySelector('modus-wc-side-navigation');
+        // navbar.visibility = visibility;
+        // navbar.userCard = userCard;
+        // navbar.addEventListener('mainMenuOpenChange', handleMenuOpenChange);
+      </script>
     `;
   },
 };
 
-export const collapsibleMenu: Story = {
+export const WithSubmenu: Story = {
   render: (args) => {
     const handleMenuOpenChange = (e: CustomEvent) => {
       const eventSource = e.target as HTMLElement;
       const storyContainer = eventSource?.closest('.layout-with-navbar');
-      let sideNav: Element | null;
+      let sideNav: HTMLElement | null;
 
       if (storyContainer) {
-        sideNav = storyContainer.querySelector('modus-wc-side-navigation');
-      } else {
-        sideNav = document.querySelector('modus-wc-side-navigation');
-      }
+        sideNav = storyContainer.querySelector(
+          'modus-wc-side-navigation'
+        ) as HTMLElement;
 
-      if (sideNav) {
-        (sideNav as HTMLElement & { expanded: boolean }).expanded = e.detail;
+        if (sideNav) {
+          // Toggle the side nav state (navbar and side nav can be out of sync)
+          const sideNavEl = sideNav as HTMLElement & { expanded: boolean };
+          sideNavEl.expanded = e.detail;
+        }
       }
     };
 
-    const handleExpandChange = (e: CustomEvent) => {
+    const handleExpandedChange = (e: CustomEvent) => {
+      // Collapse all menu items when side nav closes
       if (!e.detail) {
         const eventSource = e.target as HTMLElement;
-        const container = eventSource?.closest('.layout-with-navbar');
-
-        if (container) {
-          const childrenContainers = container.querySelectorAll(
-            '.children-container'
-          );
-          childrenContainers.forEach((container) => {
-            container.classList.add('hidden');
-            container.setAttribute('aria-hidden', 'true');
-          });
-
-          const collapseIcons = container.querySelectorAll('.dropdown-toggle');
-          collapseIcons.forEach((icon) => {
-            if (icon.getAttribute('name') === 'expand_less') {
-              icon.setAttribute('name', 'expand_more');
-            }
-          });
-        }
+        const menuItems = eventSource.querySelectorAll('modus-wc-menu-item');
+        menuItems.forEach((menuItem) => {
+          const item = menuItem as unknown as {
+            hasSubmenu?: boolean;
+            collapseSubmenu?: () => Promise<void>;
+          };
+          if (item.hasSubmenu && typeof item.collapseSubmenu === 'function') {
+            void item.collapseSubmenu();
+          }
+        });
       }
     };
 
     return html`
       <style>
-        .children-container {
-          transition: height 0.2s ease-out;
-        }
-
-        .collapse-icon {
-          min-width: 24px;
-          padding-inline-start: 0.2rem;
-        }
-
-        .dropdown-menu {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .flex-row {
-          align-items: center;
-          display: flex;
-          gap: 1.3rem;
-          padding: 0.8rem 0.25rem;
-          padding-inline-start: 1rem;
-        }
-
-        .hidden {
-          display: none;
-        }
-
-        .justify-end {
-          margin-left: auto;
-        }
-
         .layout-with-navbar {
           box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
           display: flex;
@@ -279,43 +265,6 @@ export const collapsibleMenu: Story = {
           overflow: hidden;
         }
 
-        .menu-icon {
-          margin-right: 1rem;
-        }
-
-        .menu-item {
-          color: var(--modus-wc-color-gray-9);
-          display: block;
-          font-size: 16px;
-          line-height: 1.5;
-          padding: 0.5rem 1rem;
-          text-decoration: none;
-        }
-
-        .menu-width {
-          width: 100%;
-        }
-
-        .modus-wc-menu li ul {
-          margin-inline-start: 1.8rem;
-        }
-
-        .modus-wc-menu-dropdown {
-          padding-left: 1rem;
-        }
-
-        .modus-wc-menu-dropdown-toggle {
-          align-items: center;
-          cursor: pointer;
-          font-size: 16px;
-          line-height: 1.5;
-          padding: 0.7rem 1.25rem;
-        }
-
-        .nested-row {
-          padding-inline-start: 2.5rem;
-        }
-
         .panel-content {
           margin-left: 4rem;
           padding: 10px;
@@ -326,103 +275,25 @@ export const collapsibleMenu: Story = {
           height: 500px;
           position: relative;
         }
+        .flex-right {
+          float: right;
+          display: flex;
+          margin-left: 50px;
+        }
 
-        ul {
-          list-style: none;
-          margin: 0;
-          padding: 0;
+        .flex-right:hover {
+          background-color: unset;
+        }
+        .flex-right:active {
+          background-color: unset !important;
         }
       </style>
-      <script>
-        function handleMenuOpenChange(e) {
-          const eventSource = e.target;
-          const storyContainer = eventSource?.closest('.layout-with-navbar');
 
-          let sideNav;
-
-          if (storyContainer) {
-            sideNav = storyContainer.querySelector('modus-wc-side-navigation');
-          } else {
-            sideNav = document.querySelector('modus-wc-side-navigation');
-          }
-
-          if (sideNav) {
-            sideNav.expanded = e.detail;
-          }
-        }
-
-        function handleCollapseToggle(e) {
-          const clickedEl = e.currentTarget;
-          const parentLi = clickedEl.closest('li');
-          if (!parentLi) return;
-
-          // Find the icon element that needs to be toggled using the dropdown-toggle class
-          const iconEl = clickedEl.querySelector('.dropdown-toggle');
-          if (!iconEl) return;
-
-          // Find the parent side nav element
-          const parentContainer = clickedEl.closest('.layout-with-navbar');
-          const sideNav = parentContainer?.querySelector(
-            'modus-wc-side-navigation'
-          );
-
-          // Toggle between expand_more and expand_less icons only if side nav is expanded
-          const isExpanded = iconEl.getAttribute('name') === 'expand_more';
-          if (sideNav?.expanded) {
-            iconEl.setAttribute(
-              'name',
-              isExpanded ? 'expand_less' : 'expand_more'
-            );
-          }
-
-          // Find and toggle children visibility
-          const childContainer =
-            parentLi.nextElementSibling?.classList.contains(
-              'children-container'
-            )
-              ? parentLi.nextElementSibling
-              : null;
-
-          if (childContainer && sideNav?.expanded) {
-            childContainer.classList.toggle('hidden');
-            childContainer.setAttribute(
-              'aria-hidden',
-              !isExpanded ? 'true' : 'false'
-            );
-          }
-        }
-
-        function handleExpandChange(e) {
-          if (!e.detail) {
-            const eventSource = e.target;
-            const container = eventSource?.closest('.layout-with-navbar');
-
-            if (container) {
-              // Collapse all child containers if the side navigation is collapsed
-              const childrenContainers = container.querySelectorAll(
-                '.children-container'
-              );
-              childrenContainers.forEach((container) => {
-                container.classList.add('hidden');
-                container.setAttribute('aria-hidden', 'true');
-              });
-
-              // Reset all collapse icons to expand_more
-              const collapseIcons =
-                container.querySelectorAll('.dropdown-toggle');
-              collapseIcons.forEach((icon) => {
-                if (icon.getAttribute('name') === 'expand_less') {
-                  icon.setAttribute('name', 'expand_more');
-                }
-              });
-            }
-          }
-        }
-      </script>
       <div class="layout-with-navbar">
         <modus-wc-navbar
           app-title="Modus App"
           class="navbar"
+          id="main-navbar"
           logo="/assets/logo.svg"
           @mainMenuOpenChange=${handleMenuOpenChange}
           .userCard=${{
@@ -450,142 +321,199 @@ export const collapsibleMenu: Story = {
             collapse-on-click-outside=${args['collapse-on-click-outside']}
             custom-class=${ifDefined(args['custom-class'])}
             expanded=${args.expanded}
+            id="main-side-nav"
             max-width=${args['max-width']}
             mode=${ifDefined(args.mode)}
             target-content=${ifDefined(args['target-content'])}
-            @expandedChange=${handleExpandChange}
+            @expandedChange=${handleExpandedChange}
           >
-            <modus-wc-menu aria-label="Custom menu" custom-class="menu-width">
+            <modus-wc-menu>
               <li>
-                <div class="flex-row" onClick="handleCollapseToggle(event)">
-                  <modus-wc-icon
-                    decorative="true"
-                    name="bar_graph"
-                    class="collapse-icon icon-left"
-                  ></modus-wc-icon>
-                  <div class="dropdown-menu">Charts</div>
-                  <div class="justify-end">
+                <div class="flex-right">
+                  <modus-wc-button custom-class="menu-icon" color="tertiary">
                     <modus-wc-icon
-                      decorative="true"
-                      name="expand_more"
-                      class="collapse-icon dropdown-toggle"
+                      name="filter"
+                      size="xs"
+                      variant="solid"
                     ></modus-wc-icon>
-                  </div>
+                  </modus-wc-button>
+                  <modus-wc-button custom-class="menu-icon" color="tertiary">
+                    <modus-wc-icon
+                      name="settings"
+                      size="xs"
+                      variant="solid"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
+                  <modus-wc-button custom-class="menu-icon" color="tertiary">
+                    <modus-wc-icon
+                      name="more_vertical"
+                      size="xs"
+                      variant="solid"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
                 </div>
               </li>
-              <li class="children-container hidden" aria-hidden="true">
-                <ul>
-                  <li>
-                    <div class="flex-row nested-row">
-                      <div>Bar Chart</div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="flex-row nested-row">
-                      <div>Line Chart</div>
-                    </div>
-                  </li>
-                </ul>
-              </li>
+              <modus-wc-menu-item
+                label="Charts"
+                id="charts-menu"
+                .hasSubmenu=${true}
+                value="charts"
+              >
+                <modus-wc-icon
+                  slot="start-icon"
+                  decorative="true"
+                  name="bar_graph"
+                ></modus-wc-icon>
+                <modus-wc-menu .isSubMenu=${true} id="charts-submenu">
+                  <modus-wc-menu-item label="Bar Chart" value="bar-chart">
+                  </modus-wc-menu-item>
+                  <modus-wc-menu-item label="Line Chart" value="line-chart">
+                  </modus-wc-menu-item>
+                </modus-wc-menu>
+              </modus-wc-menu-item>
 
-              <!-- Item without children -->
-              <li>
-                <div class="flex-row">
-                  <modus-wc-icon
-                    decorative="true"
-                    name="calendar"
-                    class="collapse-icon icon-left"
-                  ></modus-wc-icon>
-                  <div class="dropdown-menu">Calendar</div>
-                </div>
-              </li>
-              <!-- Second parent group (collapsed) -->
-              <li>
-                <div class="flex-row" onClick="handleCollapseToggle(event)">
-                  <modus-wc-icon
-                    decorative="true"
-                    name="compass"
-                    class="collapse-icon icon-left"
-                  ></modus-wc-icon>
-                  <div class="dropdown-menu">Maps</div>
-                  <div class="justify-end">
-                    <modus-wc-icon
-                      decorative="true"
-                      name="expand_more"
-                      class="collapse-icon dropdown-toggle"
-                    ></modus-wc-icon>
-                  </div>
-                </div>
-              </li>
-              <li class="children-container hidden" aria-hidden="true">
-                <ul>
-                  <li>
-                    <div class="flex-row nested-row">
-                      <div>Map 1</div>
-                    </div>
-                  </li>
-                  <li>
-                    <div
-                      class="flex-row nested-row"
-                      onClick="handleCollapseToggle(event)"
-                    >
-                      <div>Map 2</div>
-                      <div class="justify-end">
-                        <modus-wc-icon
-                          decorative="true"
-                          name="expand_more"
-                          class="collapse-icon dropdown-toggle"
-                        ></modus-wc-icon>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="children-container hidden" aria-hidden="true">
-                    <ul>
-                      <li>
-                        <div
-                          class="flex-row"
-                          style="padding-inline-start: 2rem;"
-                        >
-                          <div>Map 1</div>
-                        </div>
-                      </li>
-                      <li>
-                        <div
-                          class="flex-row"
-                          style="padding-inline-start: 2rem;"
-                        >
-                          <div>Map 2</div>
-                        </div>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <div class="flex-row nested-row">
-                      <div>Map 3</div>
-                    </div>
-                  </li>
-                </ul>
-              </li>
+              <modus-wc-menu-item label="Calendar" value="calendar">
+                <modus-wc-icon
+                  slot="start-icon"
+                  decorative="true"
+                  name="calendar"
+                ></modus-wc-icon>
+              </modus-wc-menu-item>
+
+              <modus-wc-menu-item
+                label="Reports"
+                .hasSubmenu=${true}
+                id="reports-menu"
+                value="reports"
+              >
+                <modus-wc-icon
+                  slot="start-icon"
+                  decorative="true"
+                  name="master_data"
+                ></modus-wc-icon>
+                <modus-wc-menu .isSubMenu=${true} id="reports-submenu">
+                  <modus-wc-menu-item
+                    label="Monthly Report"
+                    value="monthly-report"
+                  >
+                  </modus-wc-menu-item>
+                  <modus-wc-menu-item
+                    label="Annual Report"
+                    value="annual-report"
+                  >
+                  </modus-wc-menu-item>
+                </modus-wc-menu>
+              </modus-wc-menu-item>
             </modus-wc-menu>
           </modus-wc-side-navigation>
           <div class="panel-content">
             <div id="overview">
+              <h3>Side Navigation with Submenu</h3>
               <p>
-                The side navigation of an application provides context through
-                accessible menu options and positions a consistent component to
-                connect to various pages in the application.
+                This example demonstrates the side navigation component with
+                submenus, allowing for a more organized and hierarchical
+                navigation structure.
               </p>
               <p>
-                The side navigation is a collapsible side content of the site's
-                pages. It is located alongside the page's primary content. The
-                component is designed to add side content to a fullscreen
-                application. It is activated through the "hamburger" menu in the
-                Navbar.
+                When the side navigation closes, the expandedChange event is
+                used to call the collapseSubmenu() method on each menu item.
+                This keeps the side navigation component generic while allowing
+                the story to coordinate behavior between components.
+              </p>
+              <p>
+                Menu items inside a collapsed side nav cannot expand their
+                submenus, ensuring a consistent user experience.
               </p>
             </div>
           </div>
         </div>
       </div>
+      <script>
+        // const handleMenuOpenChange = (e) => {
+        //   const eventSource = e.target;
+        //   const storyContainer = eventSource?.closest('.layout-with-navbar');
+        //   let sideNav;
+
+        //   if (storyContainer) {
+        //     sideNav = storyContainer.querySelector('modus-wc-side-navigation');
+        //   } else {
+        //     sideNav = document.querySelector('modus-wc-side-navigation');
+        //   }
+
+        //   if (sideNav) {
+        //     sideNav.expanded = e.detail;
+        //   }
+        // };
+
+        // const handleExpandedChange = (e) => {
+        //   // Collapse all menu items when side nav closes
+        //   if (!e.detail) {
+        //     const eventSource = e.target;
+        //     const menuItems =
+        //       eventSource.querySelectorAll('modus-wc-menu-item');
+        //     menuItems.forEach((menuItem) => {
+        //       if (
+        //         menuItem.hasSubmenu &&
+        //         typeof menuItem.collapseSubmenu === 'function'
+        //       ) {
+        //         menuItem.collapseSubmenu();
+        //       }
+        //     });
+        //   }
+        // };
+        //  // Adding event listeners and setting properties here as the storybook initially does not load them
+        //  document.addEventListener('DOMContentLoaded', () => {
+        //     const navbar = document.querySelector('#main-navbar');
+        //     const sideNav = document.querySelector('#main-side-nav');
+        //     const chartsMenu = document.querySelector('#charts-menu');
+        //     const reportsMenu = document.querySelector('#reports-menu');
+        //     const chartsSubMenu = document.querySelector('#charts-submenu');
+        //     const reportsSubMenu = document.querySelector('#reports-submenu');
+
+        //     if (navbar) {
+        //       // Set navbar properties
+        //       navbar.userCard = {
+        //         avatarAlt: 'User Avatar',
+        //         avatarSrc:
+        //           'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+        //         email: 'user@trimble.com',
+        //         name: 'Sonic the Hedgehog',
+        //       };
+
+        //       navbar.visibility = {
+        //         ai: true,
+        //         apps: true,
+        //         help: true,
+        //         mainMenu: true,
+        //         notifications: true,
+        //         search: true,
+        //         searchInput: false,
+        //         user: true,
+        //       };
+
+        //       navbar.addEventListener('mainMenuOpenChange', handleMenuOpenChange);
+        //     }
+
+        //     if (sideNav) {
+        //       sideNav.addEventListener('expandedChange', handleExpandedChange);
+        //     }
+
+        //     // Set hasSubmenu property for menu items with submenus
+        //     [chartsMenu, reportsMenu].forEach((menuItem) => {
+        //       if (menuItem) {
+        //         menuItem.hasSubmenu = true;
+        //       }
+        //     });
+
+        //     // Set isSubMenu for all submenu elements
+        //     [chartsSubMenu, reportsSubMenu].forEach((submenu) => {
+        //       if (submenu) {
+        //         submenu.isSubMenu = true;
+        //       }
+        //     });
+        //   });
+        //
+      </script>
     `;
   },
 };

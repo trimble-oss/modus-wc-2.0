@@ -98,17 +98,17 @@ export const CustomMenu: Story = {
     // prettier-ignore
     return html`
 <style>
-  .menu-width {
+  .custom-menu-width {
     width: 400px;
   }
-  .flex-row {
+  .custom-flex-row {
     display: flex;
     align-items: center;
   }
-  .nested-row {
+  .custom-nested-row {
     padding-inline-start: 3rem;
   }
-  .justify-end {
+  .custom-justify-end {
     margin-left: auto;
   }
   .green-square {
@@ -124,16 +124,16 @@ export const CustomMenu: Story = {
 </style>
 <modus-wc-menu
   aria-label="Custom menu"
-  custom-class="menu-width"
+  custom-class="custom-menu-width"
 >
   <li>
-    <div class="flex-row">
+    <div class="custom-flex-row">
       <modus-wc-icon decorative="true" name="expand_more"></modus-wc-icon>
       <modus-wc-button aria-label="Visible button" size="sm" shape="circle" variant="borderless">
         <modus-wc-icon aria-label="Visible icon" name="visibility_on"></modus-wc-icon>
       </modus-wc-button>
       <div>Parent</div>
-      <div class="justify-end">
+      <div class="custom-justify-end">
         <modus-wc-button aria-label="Actions button" size="sm" shape="circle" variant="borderless">
           <modus-wc-icon aria-label="Actions icon" name="more_vertical"></modus-wc-icon>
         </modus-wc-button>
@@ -141,13 +141,13 @@ export const CustomMenu: Story = {
     </div>
   </li>
   <li>
-    <div class="flex-row nested-row">
+    <div class="custom-flex-row custom-nested-row">
       <modus-wc-button aria-label="Visible button" size="sm" shape="circle" variant="borderless">
         <modus-wc-icon aria-label="Visible icon" name="visibility_on"></modus-wc-icon>
       </modus-wc-button>
       <div class="green-square"></div>
       <div>Child</div>
-      <div class="justify-end">
+      <div class="custom-justify-end">
         <modus-wc-button aria-label="Actions button" size="sm" shape="circle" variant="borderless">
           <modus-wc-icon aria-label="Actions icon" name="more_vertical"></modus-wc-icon>
         </modus-wc-button>
@@ -155,13 +155,13 @@ export const CustomMenu: Story = {
     </div>
   </li>
   <li>
-    <div class="flex-row nested-row">
+    <div class="custom-flex-row custom-nested-row">
       <modus-wc-button aria-label="Visible button" size="sm" shape="circle" variant="borderless">
         <modus-wc-icon aria-label="Invisible icon" name="visibility_off"></modus-wc-icon>
       </modus-wc-button>
       <div class="red-square"></div>
       <div>Child</div>
-      <div class="justify-end">
+      <div class="custom-justify-end">
         <modus-wc-button aria-label="Actions button" size="sm" shape="circle" variant="borderless">
           <modus-wc-icon aria-label="Actions icon" name="more_vertical"></modus-wc-icon>
         </modus-wc-button>
@@ -169,13 +169,13 @@ export const CustomMenu: Story = {
     </div>
   </li>
   <li>
-    <div class="flex-row">
+    <div class="custom-flex-row">
       <modus-wc-icon decorative="true" name="chevron_right"></modus-wc-icon>
       <modus-wc-button aria-label="Visible button" size="sm" shape="circle" variant="borderless">
         <modus-wc-icon aria-label="Visible icon" name="visibility_on"></modus-wc-icon>
       </modus-wc-button>
       <div>Parent</div>
-      <div class="justify-end">
+      <div class="custom-justify-end">
         <modus-wc-button aria-label="Actions button" size="sm" shape="circle" variant="borderless">
           <modus-wc-icon aria-label="Actions icon" name="more_vertical"></modus-wc-icon>
         </modus-wc-button>
@@ -189,253 +189,83 @@ export const CustomMenu: Story = {
 
 export const CollapsibleMenu: Story = {
   render: () => {
-    const handleCollapseToggle = (e: MouseEvent) => {
-      const clickedEl = e.currentTarget as HTMLElement;
-      const parentLi = clickedEl.closest('li');
-      if (!parentLi) return;
-
-      // Find the icon element that needs to be toggled
-      const iconEl = clickedEl.querySelector('.dropdown-toggle') as HTMLElement;
-      if (!iconEl) return;
-
-      // Toggle between expand_more and expand_less icons
-      const isExpanded = iconEl.getAttribute('name') === 'expand_more';
-      iconEl.setAttribute('name', isExpanded ? 'expand_less' : 'expand_more');
-
-      // Find and toggle children visibility
-      const childContainer = parentLi.nextElementSibling?.classList.contains(
-        'children-container'
-      )
-        ? (parentLi.nextElementSibling as HTMLElement)
-        : null;
-
-      if (childContainer) {
-        childContainer.classList.toggle('hidden');
-        childContainer.setAttribute(
-          'aria-hidden',
-          !isExpanded ? 'true' : 'false'
-        );
-      }
-    };
-
     return html`
       <style>
-        .children-container {
-          transition: height 0.2s ease-out;
-          padding-inline-start: 1rem;
-        }
-        .collapse-icon {
-          min-width: 24px;
-          padding-inline-start: 0.2rem;
-        }
-        .dropdown-menu {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-        .flex-row {
-          align-items: center;
-          display: flex;
-          gap: 1.3rem;
-          padding: 0.8rem 0.25rem;
-          padding-inline-start: 1rem;
-          cursor: pointer;
-        }
-        .hidden {
-          display: none;
-        }
-        .justify-end {
-          margin-left: auto;
-        }
         .menu-width {
           width: 400px;
         }
-        .nested-row {
-          padding-inline-start: 2.5rem;
-        }
-        ul {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-        }
       </style>
-      <script>
-        function handleCollapseToggle(e) {
-          const clickedEl = e.currentTarget;
-          const parentLi = clickedEl.closest('li');
-          if (!parentLi) return;
+      <modus-wc-menu custom-class="menu-width">
+        <modus-wc-menu-item
+          label="Charts"
+          .hasSubmenu=${true}
+          id="charts-menu"
+          value="charts"
+        >
+          <modus-wc-icon
+            slot="start-icon"
+            decorative="true"
+            name="bar_graph"
+          ></modus-wc-icon>
+          <modus-wc-menu .isSubMenu=${true} id="charts-submenu">
+            <modus-wc-menu-item label="Bar Chart" value="bar-chart">
+            </modus-wc-menu-item>
+            <modus-wc-menu-item label="Line Chart" value="line-chart">
+            </modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
 
-          // Find the icon element that needs to be toggled
-          const iconEl = clickedEl.querySelector('.dropdown-toggle');
-          if (!iconEl) return;
+        <modus-wc-menu-item label="Calendar" value="calendar">
+          <modus-wc-icon
+            slot="start-icon"
+            decorative="true"
+            name="calendar"
+          ></modus-wc-icon>
+        </modus-wc-menu-item>
 
-          // Toggle between expand_more and expand_less icons
-          const isExpanded = iconEl.getAttribute('name') === 'expand_more';
-          iconEl.setAttribute(
-            'name',
-            isExpanded ? 'expand_less' : 'expand_more'
-          );
-
-          // Find and toggle children visibility
-          const childContainer =
-            parentLi.nextElementSibling?.classList.contains(
-              'children-container'
-            )
-              ? parentLi.nextElementSibling
-              : null;
-
-          if (childContainer) {
-            childContainer.classList.toggle('hidden');
-            childContainer.setAttribute(
-              'aria-hidden',
-              !isExpanded ? 'true' : 'false'
-            );
-          }
-        }
-      </script>
-      <modus-wc-menu aria-label="Collapsible menu" custom-class="menu-width">
-        <!-- Charts group -->
-        <li>
-          <div class="flex-row" @click=${handleCollapseToggle}>
-            <modus-wc-icon
-              decorative="true"
-              name="bar_graph"
-              class="collapse-icon icon-left"
-            ></modus-wc-icon>
-            <div class="dropdown-menu">Charts</div>
-            <div class="justify-end">
-              <modus-wc-icon
-                decorative="true"
-                name="expand_more"
-                class="collapse-icon dropdown-toggle"
-              ></modus-wc-icon>
-            </div>
-          </div>
-        </li>
-        <li class="children-container hidden" aria-hidden="true">
-          <ul>
-            <li>
-              <div class="flex-row nested-row">
-                <div>Bar Chart</div>
-              </div>
-            </li>
-            <li>
-              <div class="flex-row nested-row">
-                <div>Line Chart</div>
-              </div>
-            </li>
-          </ul>
-        </li>
-
-        <!-- Calendar item (no children) -->
-        <li>
-          <div class="flex-row">
-            <modus-wc-icon
-              decorative="true"
-              name="calendar"
-              class="collapse-icon icon-left"
-            ></modus-wc-icon>
-            <div class="dropdown-menu">Calendar</div>
-          </div>
-        </li>
-
-        <!-- Maps group -->
-        <li>
-          <div class="flex-row" @click=${handleCollapseToggle}>
-            <modus-wc-icon
-              decorative="true"
-              name="compass"
-              class="collapse-icon icon-left"
-            ></modus-wc-icon>
-            <div class="dropdown-menu">Maps</div>
-            <div class="justify-end">
-              <modus-wc-icon
-                decorative="true"
-                name="expand_more"
-                class="collapse-icon dropdown-toggle"
-              ></modus-wc-icon>
-            </div>
-          </div>
-        </li>
-        <li class="children-container hidden" aria-hidden="true">
-          <ul>
-            <li>
-              <div class="flex-row nested-row">
-                <div>Map 1</div>
-              </div>
-            </li>
-            <li>
-              <div class="flex-row nested-row" @click=${handleCollapseToggle}>
-                <div>Map 2</div>
-                <div class="justify-end">
-                  <modus-wc-icon
-                    decorative="true"
-                    name="expand_more"
-                    class="collapse-icon dropdown-toggle"
-                  ></modus-wc-icon>
-                </div>
-              </div>
-            </li>
-            <li class="children-container hidden" aria-hidden="true">
-              <ul>
-                <li>
-                  <div class="flex-row" style="padding-inline-start: 4rem;">
-                    <div>Map 2.1</div>
-                  </div>
-                </li>
-                <li>
-                  <div class="flex-row" style="padding-inline-start: 4rem;">
-                    <div>Map 2.2</div>
-                  </div>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <div class="flex-row nested-row">
-                <div>Map 3</div>
-              </div>
-            </li>
-          </ul>
-        </li>
-
-        <!-- Reports group -->
-        <li>
-          <div class="flex-row" @click=${handleCollapseToggle}>
-            <modus-wc-icon
-              decorative="true"
-              name="master_data"
-              class="collapse-icon icon-left"
-            ></modus-wc-icon>
-            <div class="dropdown-menu">Reports</div>
-            <div class="justify-end">
-              <modus-wc-icon
-                decorative="true"
-                name="expand_more"
-                class="collapse-icon dropdown-toggle"
-              ></modus-wc-icon>
-            </div>
-          </div>
-        </li>
-        <li class="children-container hidden" aria-hidden="true">
-          <ul>
-            <li>
-              <div class="flex-row nested-row">
-                <div>Daily Report</div>
-              </div>
-            </li>
-            <li>
-              <div class="flex-row nested-row">
-                <div>Weekly Report</div>
-              </div>
-            </li>
-            <li>
-              <div class="flex-row nested-row">
-                <div>Monthly Report</div>
-              </div>
-            </li>
-          </ul>
-        </li>
+        <modus-wc-menu-item
+          label="Reports"
+          .hasSubmenu=${true}
+          id="reports-menu"
+          value="reports"
+        >
+          <modus-wc-icon
+            slot="start-icon"
+            decorative="true"
+            name="master_data"
+          ></modus-wc-icon>
+          <modus-wc-menu .isSubMenu=${true} id="reports-submenu">
+            <modus-wc-menu-item label="Monthly Report" value="monthly-report">
+            </modus-wc-menu-item>
+            <modus-wc-menu-item label="Annual Report" value="annual-report">
+            </modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
       </modus-wc-menu>
+
+      <script>
+        // Adding this block to show how to set submenu properties via JS
+        // document.addEventListener('DOMContentLoaded', () => {
+        //   const chartsMenu = document.querySelector('#charts-menu');
+        //   const reportsMenu = document.querySelector('#reports-menu');
+        //   const chartsSubMenu = document.querySelector('#charts-submenu');
+        //   const reportsSubMenu = document.querySelector('#reports-submenu');
+
+        //   // Set hasSubmenu property for menu items with submenus
+        //   [chartsMenu, reportsMenu].forEach((menuItem) => {
+        //     if (menuItem) {
+        //       menuItem.hasSubmenu = true;
+        //     }
+        //   });
+
+        //   // Set isSubMenu for all submenu elements
+        //   [chartsSubMenu, reportsSubMenu].forEach((submenu) => {
+        //     if (submenu) {
+        //       submenu.isSubMenu = true;
+        //     }
+        //   });
+        // });
+      </script>
     `;
   },
 };
