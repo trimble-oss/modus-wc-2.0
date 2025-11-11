@@ -2088,7 +2088,9 @@ export const CustomEventHandlers: Story = {
 
         // Custom keydown handler with skip navigation and escape animation
         const customKeyDown = (e) => {
-          const autocomplete = document.getElementById('autocomplete-custom-event-handlers');
+          const autocomplete = document.getElementById(
+            'autocomplete-custom-event-handlers'
+          );
           if (!autocomplete) return;
 
           // Prevent default for navigation keys
@@ -2178,7 +2180,9 @@ export const CustomEventHandlers: Story = {
 
         // Custom input change handler with fuzzy character matching
         const customInputChange = (value) => {
-          const autocomplete = document.getElementById('autocomplete-custom-event-handlers');
+          const autocomplete = document.getElementById(
+            'autocomplete-custom-event-handlers'
+          );
           if (!autocomplete) return;
 
           const searchChars = value.toLowerCase().split('');
@@ -2253,7 +2257,9 @@ export const CustomEventHandlers: Story = {
 
         // Custom item select handler
         const customItemSelect = (item) => {
-          const autocomplete = document.getElementById('autocomplete-custom-event-handlers');
+          const autocomplete = document.getElementById(
+            'autocomplete-custom-event-handlers'
+          );
           if (!autocomplete) return;
 
           // Clear previous selections for single select
