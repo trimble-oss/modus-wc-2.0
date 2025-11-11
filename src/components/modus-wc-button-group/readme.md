@@ -5,11 +5,20 @@
 <!-- Auto Generated Below -->
 
 
+## Overview
+
+A customizable buttongroup component that groups multiple Modus buttons together.
+
+The component supports a `<slot>` for injecting content within the buttongroup.
+
 ## Properties
 
-| Property      | Attribute     | Description                                             | Type                         | Default        |
-| ------------- | ------------- | ------------------------------------------------------- | ---------------------------- | -------------- |
-| `orientation` | `orientation` | Orientation of the button group: horizontal or vertical | `"horizontal" \| "vertical"` | `'horizontal'` |
+| Property      | Attribute      | Description                                             | Type                                                                           | Default        |
+| ------------- | -------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------ | -------------- |
+| `buttonStyle` | `button-style` | Style to apply to all buttons within the button group   | `"borderless" \| "fill" \| "outlined"`                                         | `'outlined'`   |
+| `color`       | `color`        | Color to apply to all buttons within the button group   | `"danger" \| "primary" \| "secondary" \| "tertiary" \| "warning" \| undefined` | `undefined`    |
+| `disabled`    | `disabled`     | Disables all buttons within the button group            | `boolean`                                                                      | `false`        |
+| `orientation` | `orientation`  | Orientation of the button group: horizontal or vertical | `"horizontal" \| "vertical"`                                                   | `'horizontal'` |
 
 
 ----------------------------------------------

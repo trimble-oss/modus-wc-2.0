@@ -1490,7 +1490,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
+          "description": "A customizable buttongroup component that groups multiple Modus buttons together.\r\n\r\nThe component supports a `<slot>` for injecting content within the buttongroup.",
           "name": "ModusWcButtonGroup",
           "members": [
             {
@@ -1503,10 +1503,87 @@
             },
             {
               "kind": "method",
+              "name": "handleButtonStyleChange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "'borderless' | 'fill' | 'outlined'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleColorChange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleDisabledChange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
+            {
+              "name": "button-style",
+              "fieldName": "buttonStyle",
+              "default": "'outlined'",
+              "description": "Style to apply to all buttons within the button group",
+              "type": {
+                "text": "'borderless' | 'fill' | 'outlined'"
+              }
+            },
+            {
+              "name": "color",
+              "fieldName": "color",
+              "description": "Color to apply to all buttons within the button group",
+              "type": {
+                "text": "'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger'"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "default": "false",
+              "description": "Disables all buttons within the button group",
+              "type": {
+                "text": "boolean"
+              }
+            },
             {
               "name": "orientation",
               "fieldName": "orientation",
@@ -3358,12 +3435,31 @@
           "name": "ModusWcMenuItem",
           "members": [
             {
+              "kind": "method",
+              "name": "collapseSubmenu",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Public method to collapse the submenu if it's expanded"
+            },
+            {
               "kind": "field",
               "name": "el",
               "type": {
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "field",
+              "name": "isExpanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Internal state to track if submenu is expanded"
             },
             {
               "kind": "method",
@@ -3407,6 +3503,14 @@
               "name": "focused",
               "fieldName": "focused",
               "description": "The focused state of the menu item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "has-submenu",
+              "fieldName": "hasSubmenu",
+              "description": "Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.",
               "type": {
                 "text": "boolean"
               }

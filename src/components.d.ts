@@ -340,7 +340,23 @@ export namespace Components {
          */
         "variant": 'borderless' | 'filled' | 'outlined';
     }
+    /**
+     * A customizable buttongroup component that groups multiple Modus buttons together.
+     * The component supports a `<slot>` for injecting content within the buttongroup.
+     */
     interface ModusWcButtonGroup {
+        /**
+          * Style to apply to all buttons within the button group
+         */
+        "buttonStyle": 'borderless' | 'fill' | 'outlined';
+        /**
+          * Color to apply to all buttons within the button group
+         */
+        "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+        /**
+          * Disables all buttons within the button group
+         */
+        "disabled": boolean;
         /**
           * Orientation of the button group: horizontal or vertical
          */
@@ -2145,6 +2161,10 @@ declare global {
         prototype: HTMLModusWcButtonElement;
         new (): HTMLModusWcButtonElement;
     };
+    /**
+     * A customizable buttongroup component that groups multiple Modus buttons together.
+     * The component supports a `<slot>` for injecting content within the buttongroup.
+     */
     interface HTMLModusWcButtonGroupElement extends Components.ModusWcButtonGroup, HTMLStencilElement {
     }
     var HTMLModusWcButtonGroupElement: {
@@ -3219,7 +3239,23 @@ declare namespace LocalJSX {
          */
         "variant"?: 'borderless' | 'filled' | 'outlined';
     }
+    /**
+     * A customizable buttongroup component that groups multiple Modus buttons together.
+     * The component supports a `<slot>` for injecting content within the buttongroup.
+     */
     interface ModusWcButtonGroup {
+        /**
+          * Style to apply to all buttons within the button group
+         */
+        "buttonStyle"?: 'borderless' | 'fill' | 'outlined';
+        /**
+          * Color to apply to all buttons within the button group
+         */
+        "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+        /**
+          * Disables all buttons within the button group
+         */
+        "disabled"?: boolean;
         /**
           * Orientation of the button group: horizontal or vertical
          */
@@ -5143,6 +5179,10 @@ declare module "@stencil/core" {
              * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
+            /**
+             * A customizable buttongroup component that groups multiple Modus buttons together.
+             * The component supports a `<slot>` for injecting content within the buttongroup.
+             */
             "modus-wc-button-group": LocalJSX.ModusWcButtonGroup & JSXBase.HTMLAttributes<HTMLModusWcButtonGroupElement>;
             /**
              * A customizable card component used to group and display content in a way that is easily readable
