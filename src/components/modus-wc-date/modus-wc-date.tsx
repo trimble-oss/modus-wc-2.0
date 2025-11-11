@@ -299,7 +299,7 @@ export class ModusWcDate {
     }
 
     this.popperInstance = createPopper(this.inputRef!, this.calendarRef!, {
-      placement: 'bottom-end',
+      placement: 'bottom-start',
       strategy: 'fixed',
       modifiers: [
         {
@@ -311,7 +311,7 @@ export class ModusWcDate {
         {
           name: 'flip',
           options: {
-            fallbackPlacements: ['top-start', 'bottom-start', 'top-end'],
+            fallbackPlacements: ['top-start', 'bottom-end', 'top-end'],
           },
         },
       ],
