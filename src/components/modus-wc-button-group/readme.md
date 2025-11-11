@@ -17,8 +17,8 @@ The component supports a `<slot>` for injecting content within the buttongroup.
 | ------------- | -------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------ | -------------- |
 | `buttonStyle` | `button-style` | Style to apply to all buttons within the button group   | `"borderless" \| "fill" \| "outlined"`                                         | `'outlined'`   |
 | `color`       | `color`        | Color to apply to all buttons within the button group   | `"danger" \| "primary" \| "secondary" \| "tertiary" \| "warning" \| undefined` | `undefined`    |
-| `disabled`    | `disabled`     | Disables all buttons within the button group            | `boolean`                                                                      | `false`        |
-| `orientation` | `orientation`  | Orientation of the button group: horizontal or vertical | `"horizontal" \| "vertical"`                                                   | `'horizontal'` |
+| `disabled`    | `disabled`     | Disables all buttons within the button group            | `boolean \| undefined`                                                         | `false`        |
+| `orientation` | `orientation`  | Orientation of the button group: horizontal or vertical | `"horizontal" \| "vertical" \| undefined`                                      | `'horizontal'` |
 
 
 ----------------------------------------------

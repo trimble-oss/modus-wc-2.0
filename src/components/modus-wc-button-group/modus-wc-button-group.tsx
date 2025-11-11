@@ -1,6 +1,7 @@
 import { Component, Element, h, Host, Prop, Watch } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-button-group.tailwind';
 import { Attributes, inheritAriaAttributes } from '../utils';
+import { Orientation } from '../types';
 
 /**
  * A customizable buttongroup component that groups multiple Modus buttons together.
@@ -27,10 +28,10 @@ export class ModusWcButtonGroup {
   @Prop() color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
 
   /** Disables all buttons within the button group */
-  @Prop() disabled = false;
+  @Prop() disabled?: boolean = false;
 
   /** Orientation of the button group: horizontal or vertical */
-  @Prop() orientation: 'horizontal' | 'vertical' = 'horizontal';
+  @Prop() orientation?: Orientation = 'horizontal';
 
   @Watch('disabled')
   handleDisabledChange(newValue: boolean): void {

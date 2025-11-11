@@ -356,11 +356,11 @@ export namespace Components {
         /**
           * Disables all buttons within the button group
          */
-        "disabled": boolean;
+        "disabled"?: boolean;
         /**
           * Orientation of the button group: horizontal or vertical
          */
-        "orientation": 'horizontal' | 'vertical';
+        "orientation"?: Orientation;
     }
     /**
      * A customizable card component used to group and display content in a way that is easily readable
@@ -3259,7 +3259,7 @@ declare namespace LocalJSX {
         /**
           * Orientation of the button group: horizontal or vertical
          */
-        "orientation"?: 'horizontal' | 'vertical';
+        "orientation"?: Orientation;
     }
     /**
      * A customizable card component used to group and display content in a way that is easily readable
