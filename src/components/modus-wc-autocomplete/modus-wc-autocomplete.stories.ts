@@ -708,9 +708,9 @@ export const MultiSelect: Story = {
             return item;
           });
           // Adding this block to show how to set items and pre-selected values via JS
-          const autocomplete = document.getElementById('fruit-autocomplete');
-          if (autocomplete) {
-            autocomplete.items = itemsWithSelection;
+          // const autocomplete = document.getElementById('fruit-autocomplete');
+          // if (autocomplete) {
+          //   autocomplete.items = itemsWithSelection;
           } 
     `;
   },
@@ -758,41 +758,41 @@ export const WithSpinner: Story = {
     };
     // prettier-ignore
     return html`
-<style>
-  div[id^='story--components-forms-autocomplete--with-spinner'] {
-    height: 400px;
-  }
-</style>
-<modus-wc-autocomplete
-  aria-label="Fruit autocomplete with spinner"
-  ?bordered=${args.bordered}
-  custom-class=${ifDefined(args['custom-class'])}
-  debounce-ms=${ifDefined(args['debounce-ms'])}
-  ?disabled=${args.disabled}
-  input-id=${ifDefined(args['input-id'])}
-  input-tab-index=${ifDefined(args['input-tab-index'])}
-  .items=${args.items}
-  label=${ifDefined(args.label)}
-  ?leave-menu-open=${args['leave-menu-open']}
-  min-chars=${args['min-chars']}
-  ?multi-select=${false}
-  name=${ifDefined(args.name)}
-  placeholder=${ifDefined(args.placeholder)}
-  ?read-only=${args['read-only']}
-  ?required=${args.required}
-  ?show-menu-on-focus=${args['show-menu-on-focus']}
-  ?show-spinner=${args['show-spinner']}
-  size=${ifDefined(args.size)}
-  value=${args.value}
-  @inputChange=${handleInputChange}
-></modus-wc-autocomplete>
-<script>
-// Add Autocomplete items
-  ${Items}
-// Adding this block to show how to set items via JS
-        const autocomplete = document.querySelector('modus-wc-autocomplete');
-        autocomplete.items = autocompleteItems;
-        autocomplete.showSpinner = true;
+      <style>
+        div[id^='story--components-forms-autocomplete--with-spinner'] {
+          height: 400px;
+        }
+      </style>
+      <modus-wc-autocomplete
+        aria-label="Fruit autocomplete with spinner"
+        ?bordered=${args.bordered}
+        custom-class=${ifDefined(args['custom-class'])}
+        debounce-ms=${ifDefined(args['debounce-ms'])}
+        ?disabled=${args.disabled}
+        input-id=${ifDefined(args['input-id'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
+        .items=${args.items}
+        label=${ifDefined(args.label)}
+        ?leave-menu-open=${args['leave-menu-open']}
+        min-chars=${args['min-chars']}
+        ?multi-select=${false}
+        name=${ifDefined(args.name)}
+        placeholder=${ifDefined(args.placeholder)}
+        ?read-only=${args['read-only']}
+        ?required=${args.required}
+        ?show-menu-on-focus=${args['show-menu-on-focus']}
+        ?show-spinner=${args['show-spinner']}
+        size=${ifDefined(args.size)}
+        value=${args.value}
+        @inputChange=${handleInputChange}
+      ></modus-wc-autocomplete>
+      <script>
+        // Add Autocomplete items
+        ${Items};
+        // Adding this block to show how to set items via JS
+        // const autocomplete = document.querySelector('modus-wc-autocomplete');
+        // autocomplete.items = autocompleteItems;
+        // autocomplete.showSpinner = true;
 
         // Debounce timer id
         let debounceTimer;
@@ -2101,10 +2101,11 @@ export const WithProgrammaticControl: Story = {
       <script>
         // Add Autocomplete items
         ${Items};
-        const autocomplete = document.getElementById(
-          'programmatic-autocomplete'
-        );
-        autocomplete.items = autocompleteItems;
+        // Adding this block to show how to set options using JS
+        // const autocomplete = document.getElementById(
+        //   'programmatic-autocomplete'
+        // );
+        // autocomplete.items = autocompleteItems;
       </script>
     `;
   },
