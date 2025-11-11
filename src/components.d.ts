@@ -340,6 +340,12 @@ export namespace Components {
          */
         "variant": 'borderless' | 'filled' | 'outlined';
     }
+    interface ModusWcButtonGroup {
+        /**
+          * Orientation of the button group: horizontal or vertical
+         */
+        "orientation": 'horizontal' | 'vertical';
+    }
     /**
      * A customizable card component used to group and display content in a way that is easily readable
      */
@@ -833,9 +839,9 @@ export namespace Components {
          */
         "checkbox"?: boolean;
         /**
-          * Collapse all submenus when set to true
+          * Public method to collapse the submenu if it's expanded
          */
-        "collapseAll"?: boolean;
+        "collapseSubmenu": () => Promise<void>;
         /**
           * Custom CSS class to apply to the li element.
          */
@@ -2139,6 +2145,12 @@ declare global {
         prototype: HTMLModusWcButtonElement;
         new (): HTMLModusWcButtonElement;
     };
+    interface HTMLModusWcButtonGroupElement extends Components.ModusWcButtonGroup, HTMLStencilElement {
+    }
+    var HTMLModusWcButtonGroupElement: {
+        prototype: HTMLModusWcButtonGroupElement;
+        new (): HTMLModusWcButtonGroupElement;
+    };
     /**
      * A customizable card component used to group and display content in a way that is easily readable
      */
@@ -2843,6 +2855,7 @@ declare global {
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-breadcrumbs": HTMLModusWcBreadcrumbsElement;
         "modus-wc-button": HTMLModusWcButtonElement;
+        "modus-wc-button-group": HTMLModusWcButtonGroupElement;
         "modus-wc-card": HTMLModusWcCardElement;
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
         "modus-wc-chip": HTMLModusWcChipElement;
@@ -3205,6 +3218,12 @@ declare namespace LocalJSX {
           * The variant of the button.
          */
         "variant"?: 'borderless' | 'filled' | 'outlined';
+    }
+    interface ModusWcButtonGroup {
+        /**
+          * Orientation of the button group: horizontal or vertical
+         */
+        "orientation"?: 'horizontal' | 'vertical';
     }
     /**
      * A customizable card component used to group and display content in a way that is easily readable
@@ -3754,10 +3773,6 @@ declare namespace LocalJSX {
           * If true, renders a checkbox at the start of the menu item.
          */
         "checkbox"?: boolean;
-        /**
-          * Collapse all submenus when set to true
-         */
-        "collapseAll"?: boolean;
         /**
           * Custom CSS class to apply to the li element.
          */
@@ -5049,6 +5064,7 @@ declare namespace LocalJSX {
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-breadcrumbs": ModusWcBreadcrumbs;
         "modus-wc-button": ModusWcButton;
+        "modus-wc-button-group": ModusWcButtonGroup;
         "modus-wc-card": ModusWcCard;
         "modus-wc-checkbox": ModusWcCheckbox;
         "modus-wc-chip": ModusWcChip;
@@ -5127,6 +5143,7 @@ declare module "@stencil/core" {
              * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
+            "modus-wc-button-group": LocalJSX.ModusWcButtonGroup & JSXBase.HTMLAttributes<HTMLModusWcButtonGroupElement>;
             /**
              * A customizable card component used to group and display content in a way that is easily readable
              */
