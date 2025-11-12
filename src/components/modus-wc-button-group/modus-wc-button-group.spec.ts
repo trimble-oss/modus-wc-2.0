@@ -312,4 +312,64 @@ describe('modus-wc-button-group', () => {
     expect(buttons[0].getAttribute('disabled')).toBeNull();
     expect(buttons[1].getAttribute('disabled')).toBeNull();
   });
+
+  it('should handle slot change when buttons are added dynamically', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group color="primary" button-style="fill">
+        <modus-wc-button>Button 1</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    await page.waitForChanges();
+
+    // Verify initial button has the correct attributes
+    let buttons = buttonGroup.querySelectorAll('modus-wc-button');
+    expect(buttons.length).toBe(1);
+    expect(buttons[0].getAttribute('color')).toBe('primary');
+    expect(buttons[0].getAttribute('variant')).toBe('fill');
+
+    // Add a new button dynamically
+    const newButton = page.doc.createElement('modus-wc-button');
+    newButton.textContent = 'Button 2';
+    buttonGroup.appendChild(newButton);
+
+    // Trigger slot change manually (since we can't rely on native slotchange in tests)
+    const instance = page.rootInstance as unknown as {
+      handleSlotChange: () => void;
+    };
+    instance.handleSlotChange();
+    await page.waitForChanges();
+
+    // Verify both buttons now have the correct attributes
+    buttons = buttonGroup.querySelectorAll('modus-wc-button');
+    expect(buttons.length).toBe(2);
+    expect(buttons[0].getAttribute('color')).toBe('primary');
+    expect(buttons[0].getAttribute('variant')).toBe('fill');
+    expect(buttons[1].getAttribute('color')).toBe('primary');
+    expect(buttons[1].getAttribute('variant')).toBe('fill');
+  });
+
+  it('should handle syncButtonStates when buttonElements is empty', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group color="primary">
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    await page.waitForChanges();
+
+    // Verify no buttons exist
+    const buttons = buttonGroup.querySelectorAll('modus-wc-button');
+    expect(buttons.length).toBe(0);
+
+    // Change color prop - should not throw error even with no buttons
+    buttonGroup.color = 'danger';
+    await page.waitForChanges();
+
+    // Should complete successfully without errors
+    expect(buttonGroup.color).toBe('danger');
+  });
 });

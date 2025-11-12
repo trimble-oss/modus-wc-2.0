@@ -1515,54 +1515,12 @@
             },
             {
               "kind": "method",
-              "name": "handleButtonStyleChange",
+              "name": "handlePropChange",
               "return": {
                 "type": {
                   "text": "void"
                 }
-              },
-              "parameters": [
-                {
-                  "name": "newValue",
-                  "type": {
-                    "text": "'borderless' | 'fill' | 'outlined'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleColorChange",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "newValue",
-                  "type": {
-                    "text": "'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleDisabledChange",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "newValue",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
+              }
             },
             {
               "kind": "method",
@@ -1572,6 +1530,10 @@
                   "text": "Promise<void>"
                 }
               }
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange"
             },
             {
               "kind": "method",

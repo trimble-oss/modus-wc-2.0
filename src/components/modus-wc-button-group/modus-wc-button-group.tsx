@@ -62,20 +62,10 @@ export class ModusWcButtonGroup {
   }>;
 
   @Watch('disabled')
-  handleDisabledChange(newValue: boolean): void {
-    this.setButtonAttribute('disabled', newValue ? 'true' : null);
-  }
-
   @Watch('buttonStyle')
-  handleButtonStyleChange(newValue: 'borderless' | 'fill' | 'outlined'): void {
-    this.setButtonAttribute('variant', newValue);
-  }
-
   @Watch('color')
-  handleColorChange(
-    newValue: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger'
-  ): void {
-    this.setButtonAttribute('color', newValue || null);
+  handlePropChange(): void {
+    this.syncButtonStates();
   }
 
   @Watch('selectionType')
@@ -88,6 +78,13 @@ export class ModusWcButtonGroup {
   }
 
   componentDidLoad() {
+    this.buttonElements = this.el.querySelectorAll('modus-wc-button');
+    this.applyCustomClasses();
+    this.syncButtonStates();
+  }
+
+  @Listen('slotchange')
+  handleSlotChange() {
     this.buttonElements = this.el.querySelectorAll('modus-wc-button');
     this.applyCustomClasses();
     this.syncButtonStates();
@@ -115,26 +112,28 @@ export class ModusWcButtonGroup {
     }
   }
 
-  /** Applies 'modus-wc-join-item' class to each button's custom-class prop */
   private applyCustomClasses(): void {
     this.buttonElements.forEach((button) => {
-      const currentClasses = button.getAttribute('custom-class') || '';
-      const updated = `${currentClasses} modus-wc-join-item`.trim();
-      button.setAttribute('custom-class', updated);
+      const current = button.getAttribute('custom-class') || '';
+      if (!current.includes('modus-wc-join-item')) {
+        button.setAttribute(
+          'custom-class',
+          `${current} modus-wc-join-item`.trim()
+        );
+      }
     });
   }
 
-  /** Syncs all button props to current group props */
   private syncButtonStates(): void {
+    if (!this.buttonElements || !this.buttonElements.length) return;
     this.setButtonAttribute('variant', this.buttonStyle);
-    if (this.color) this.setButtonAttribute('color', this.color);
-    if (this.disabled) this.setButtonAttribute('disabled', 'true');
+    this.setButtonAttribute('color', this.color || null);
+    this.setButtonAttribute('disabled', this.disabled ? 'true' : null);
   }
 
-  /** Generic helper to set or remove a given attribute on all buttons */
   private setButtonAttribute(name: string, value: string | null): void {
     this.buttonElements.forEach((button) => {
-      if (value !== null) {
+      if (value !== null && value !== undefined) {
         button.setAttribute(name, value);
       } else {
         button.removeAttribute(name);
@@ -142,7 +141,6 @@ export class ModusWcButtonGroup {
     });
   }
 
-  /** Toggle single selection - only one button can be active at a time */
   private async toggleSingleSelect(
     clickedButton: IButtonElement
   ): Promise<void> {
@@ -150,33 +148,34 @@ export class ModusWcButtonGroup {
 
     // Deactivate all buttons
     await Promise.all(
-      Array.from(this.buttonElements).map((button) =>
-        (button as IButtonElement).setActive(false)
-      )
+      Array.from(this.buttonElements).map(async (button) => {
+        const buttonElement = button as IButtonElement;
+        if (typeof buttonElement.setActive === 'function') {
+          await buttonElement.setActive(false);
+        }
+      })
     );
 
-    // Clear selection array
     this.selectedButtons = [];
 
     // If the clicked button wasn't selected, activate it
     if (!isCurrentlySelected) {
-      await clickedButton.setActive(true);
-      this.selectedButtons = [clickedButton];
+      if (typeof clickedButton.setActive === 'function') {
+        await clickedButton.setActive(true);
+        this.selectedButtons = [clickedButton];
+      }
     }
 
-    // Emit buttonGroupClick event with updated selection state
     this.buttonGroupClick.emit({
       button: clickedButton,
       isSelected: !isCurrentlySelected,
     });
 
-    // Emit selection change event
     this.buttonSelectionChange.emit({
       selectedButtons: this.selectedButtons,
     });
   }
 
-  /** Toggle multiple selection - multiple buttons can be active */
   private async toggleMultiSelect(
     clickedButton: IButtonElement
   ): Promise<void> {
@@ -184,36 +183,40 @@ export class ModusWcButtonGroup {
 
     if (isCurrentlySelected) {
       // Deactivate and remove from selection
-      await clickedButton.setActive(false);
+      if (typeof clickedButton.setActive === 'function') {
+        await clickedButton.setActive(false);
+      }
       this.selectedButtons = this.selectedButtons.filter(
         (btn) => btn !== clickedButton
       );
     } else {
       // Activate and add to selection
-      await clickedButton.setActive(true);
-      this.selectedButtons = [...this.selectedButtons, clickedButton];
+      if (typeof clickedButton.setActive === 'function') {
+        await clickedButton.setActive(true);
+        this.selectedButtons = [...this.selectedButtons, clickedButton];
+      }
     }
 
-    // Emit buttonGroupClick event with updated selection state
     this.buttonGroupClick.emit({
       button: clickedButton,
       isSelected: !isCurrentlySelected,
     });
 
-    // Emit selection change event
     this.buttonSelectionChange.emit({
       selectedButtons: this.selectedButtons,
     });
   }
 
-  /** Reset all button selections */
   private async resetAllSelections(): Promise<void> {
     if (!this.buttonElements) return;
 
     await Promise.all(
-      Array.from(this.buttonElements).map((button) =>
-        (button as IButtonElement).setActive(false)
-      )
+      Array.from(this.buttonElements).map(async (button) => {
+        const buttonElement = button as IButtonElement;
+        if (typeof buttonElement.setActive === 'function') {
+          await buttonElement.setActive(false);
+        }
+      })
     );
     this.selectedButtons = [];
   }
@@ -233,10 +236,12 @@ export class ModusWcButtonGroup {
 
   render() {
     return (
-      <Host>
-        <div class={this.getClasses()} {...this.inheritedAttributes}>
-          <slot></slot>
-        </div>
+      <Host
+        {...this.inheritedAttributes}
+        role="group"
+        class={this.getClasses()}
+      >
+        <slot></slot>
       </Host>
     );
   }

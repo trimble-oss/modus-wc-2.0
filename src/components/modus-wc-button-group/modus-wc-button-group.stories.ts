@@ -60,7 +60,7 @@ const Template: Story = {
 <modus-wc-button-group
   button-style=${ifDefined(args['button-style'])}
   color=${ifDefined(args.color)}
-  disabled=${ifDefined(args.disabled)}
+  ?disabled=${(args.disabled)}
   orientation=${ifDefined(args.orientation)}
   selection-type=${ifDefined(args['selection-type'])}
 >
@@ -72,16 +72,7 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = {
-  ...Template,
-  args: {
-    'button-style': 'outlined',
-    color: 'primary',
-    disabled: false,
-    orientation: 'horizontal',
-    'selection-type': 'default',
-  },
-};
+export const Default: Story = { ...Template };
 
 export const Vertical: Story = {
   ...Template,
@@ -235,9 +226,6 @@ export const SelectionEvent: Story = {
             ? buttonTexts.join(', ') 
             : 'None';
         }
-        
-        // Log to console
-        console.log('Selected buttons:', buttonTexts);
       });
     }
   });
