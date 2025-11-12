@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { Orientation } from '../types';
 
-interface buttonGroupArgs {
+interface ButtonGroupArgs {
   'button-style': 'borderless' | 'fill' | 'outlined';
   color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   disabled: boolean;
@@ -12,7 +12,7 @@ interface buttonGroupArgs {
   'selection-type': 'default' | 'single' | 'multiple';
 }
 
-const meta: Meta<buttonGroupArgs> = {
+const meta: Meta<ButtonGroupArgs> = {
   title: 'Components/Button Group',
   component: 'modus-wc-button-group',
   args: {
@@ -35,10 +35,6 @@ const meta: Meta<buttonGroupArgs> = {
     orientation: {
       control: { type: 'select' },
       options: ['horizontal', 'vertical'],
-    },
-    'selection-type': {
-      control: { type: 'select' },
-      options: ['default', 'single', 'multiple'],
     },
   },
   decorators: [withActions],
