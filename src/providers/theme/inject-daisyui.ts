@@ -1,6 +1,7 @@
 import { globalCSS, iconsCSS, outputCSS } from './css-content';
 
 const injectedRoots = new WeakSet<ShadowRoot>();
+let sharedStyleSheet: CSSStyleSheet | null = null;
 
 /**
  * Injects DaisyUI/Tailwind CSS into a shadow root.
@@ -9,8 +10,9 @@ const injectedRoots = new WeakSet<ShadowRoot>();
  *
  * For theming to work properly in shadow DOM:
  * - CSS variables (--modus-wc-*) inherit from the document :root
- * - Theme changes via data-theme attribute work automatically
- * - No need to re-inject CSS on theme change
+ * - Theme changes via data-theme attribute work automatically globally
+ *
+ * Creates a single shared CSSStyleSheet that is reused across all shadow roots
  */
 export async function ensureDaisyUIInShadow(
   root: Document | ShadowRoot
@@ -36,10 +38,18 @@ export async function ensureDaisyUIInShadow(
 
   if (supportsAdopted) {
     try {
-      const sheet = new CSSStyleSheet();
-      await sheet.replace(cssContent);
+      // Create the shared stylesheet once and reuse it across all shadow roots
+      if (!sharedStyleSheet) {
+        sharedStyleSheet = new CSSStyleSheet();
+        await sharedStyleSheet.replace(cssContent);
+      }
+
+      // Adopt the shared stylesheet into this shadow root
       const r = root as unknown as { adoptedStyleSheets?: CSSStyleSheet[] };
-      r.adoptedStyleSheets = [...(r.adoptedStyleSheets || []), sheet];
+      r.adoptedStyleSheets = [
+        ...(r.adoptedStyleSheets || []),
+        sharedStyleSheet,
+      ];
     } catch (error) {
       // Fallback if adoptedStyleSheets fails
       console.warn(
@@ -51,7 +61,7 @@ export async function ensureDaisyUIInShadow(
       root.appendChild(styleEl);
     }
   } else {
-    // Legacy fallback for older browsers
+    // Legacy fallback for older browsers (still requires duplication)
     const styleEl = document.createElement('style');
     styleEl.textContent = cssContent;
     root.appendChild(styleEl);
