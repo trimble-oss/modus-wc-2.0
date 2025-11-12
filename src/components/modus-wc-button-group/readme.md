@@ -22,6 +22,14 @@ The component supports a `<slot>` for injecting content within the buttongroup.
 | `selectionType` | `selection-type` | Selection type for button group                         | `"default" \| "multiple" \| "single" \| undefined`                             | `'default'`    |
 
 
+## Events
+
+| Event                   | Description                                           | Type                                                         |
+| ----------------------- | ----------------------------------------------------- | ------------------------------------------------------------ |
+| `buttonGroupClick`      | Event emitted when any button in the group is clicked | `CustomEvent<{ button: HTMLElement; isSelected: boolean; }>` |
+| `buttonSelectionChange` | Event emitted when button selection changes           | `CustomEvent<{ selectedButtons: HTMLElement[]; }>`           |
+
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

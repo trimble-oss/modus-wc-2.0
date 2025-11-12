@@ -1,6 +1,8 @@
 import {
   Component,
   Element,
+  Event,
+  EventEmitter,
   h,
   Host,
   Listen,
@@ -49,6 +51,17 @@ export class ModusWcButtonGroup {
   /** Selection type for button group */
   @Prop() selectionType?: 'default' | 'single' | 'multiple' = 'default';
 
+  /** Event emitted when any button in the group is clicked */
+  @Event() buttonGroupClick!: EventEmitter<{
+    button: HTMLElement;
+    isSelected: boolean;
+  }>;
+
+  /** Event emitted when button selection changes */
+  @Event() buttonSelectionChange!: EventEmitter<{
+    selectedButtons: HTMLElement[];
+  }>;
+
   @Watch('disabled')
   handleDisabledChange(newValue: boolean): void {
     this.setButtonAttribute('disabled', newValue ? 'true' : null);
@@ -84,7 +97,12 @@ export class ModusWcButtonGroup {
   @Listen('buttonClick')
   handleButtonClick(event: CustomEvent) {
     const clickedButton = event.target as HTMLModusWcButtonElement;
+
     if (this.selectionType === 'default') {
+      this.buttonGroupClick.emit({
+        button: clickedButton,
+        isSelected: false,
+      });
       return;
     }
 
@@ -146,6 +164,17 @@ export class ModusWcButtonGroup {
       await clickedButton.setActive(true);
       this.selectedButtons = [clickedButton];
     }
+
+    // Emit buttonGroupClick event with updated selection state
+    this.buttonGroupClick.emit({
+      button: clickedButton,
+      isSelected: !isCurrentlySelected,
+    });
+
+    // Emit selection change event
+    this.buttonSelectionChange.emit({
+      selectedButtons: this.selectedButtons,
+    });
   }
 
   /** Toggle multiple selection - multiple buttons can be active */
@@ -165,6 +194,17 @@ export class ModusWcButtonGroup {
       await clickedButton.setActive(true);
       this.selectedButtons = [...this.selectedButtons, clickedButton];
     }
+
+    // Emit buttonGroupClick event with updated selection state
+    this.buttonGroupClick.emit({
+      button: clickedButton,
+      isSelected: !isCurrentlySelected,
+    });
+
+    // Emit selection change event
+    this.buttonSelectionChange.emit({
+      selectedButtons: this.selectedButtons,
+    });
   }
 
   /** Reset all button selections */

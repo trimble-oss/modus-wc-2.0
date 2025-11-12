@@ -38,7 +38,7 @@ const meta: Meta<ButtonGroupArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['buttonClick'],
+      handles: ['buttonSelectionChange', 'buttonGroupClick'],
     },
   },
 };
@@ -106,7 +106,7 @@ export const SplitButton: Story = {
   });
 </script>
 
-<div style="min-height: 300px;">
+<div style="display: flex; flex-direction: column; gap: 16px; min-height: 300px;">
   <modus-wc-button-group button-style="outlined">
     <modus-wc-button>Save Document</modus-wc-button>
     <modus-wc-dropdown-menu 
@@ -125,10 +125,10 @@ export const SplitButton: Story = {
     </modus-wc-dropdown-menu>
   </modus-wc-button-group>
 
-<div style="margin-top: 16px;">
-  Selected:
-  <span id="selected-value"></span>
-</div>
+  <div style="padding: 12px; background-color: #f5f5f5; border-radius: 4px;">
+    <strong>Selected Option:</strong> 
+    <span id="selected-value">None</span>
+  </div>
 </div>
     `;
   },
@@ -182,20 +182,71 @@ export const MultipleSelection: Story = {
     <h4 style="margin-bottom: 8px;">Multiple Selection with Icons</h4>
     <modus-wc-button-group selection-type="multiple" button-style="outlined" color="primary">
       <modus-wc-button icon-only aria-label="Align left">
-        <modus-wc-icon name="format_align_left" size="16"></modus-wc-icon>
+        <modus-wc-icon name="align_left" size="16"></modus-wc-icon>
       </modus-wc-button>
       <modus-wc-button icon-only aria-label="Align center">
-        <modus-wc-icon name="format_align_center" size="16"></modus-wc-icon>
+        <modus-wc-icon name="align_top" size="16"></modus-wc-icon>
       </modus-wc-button>
       <modus-wc-button icon-only aria-label="Align right">
-        <modus-wc-icon name="format_align_right" size="16"></modus-wc-icon>
+        <modus-wc-icon name="align_right" size="16"></modus-wc-icon>
       </modus-wc-button>
       <modus-wc-button icon-only aria-label="Align justify">
-        <modus-wc-icon name="format_align_justify" size="16"></modus-wc-icon>
+        <modus-wc-icon name="align_bottom" size="16"></modus-wc-icon>
       </modus-wc-button>
     </modus-wc-button-group>
   </div>
 </div>
+    `;
+  },
+};
+
+export const SelectionEvent: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const buttonGroup = document.querySelector('#event-demo-group');
+    if (buttonGroup) {
+      buttonGroup.addEventListener('buttonSelectionChange', (event) => {
+        const selectedButtons = event.detail.selectedButtons;
+        const buttonTexts = selectedButtons.map(btn => btn.textContent.trim());
+        
+        // Update the display
+        const displayElement = document.querySelector('#selected-buttons-display');
+        if (displayElement) {
+          displayElement.textContent = buttonTexts.length > 0 
+            ? buttonTexts.join(', ') 
+            : 'None';
+        }
+        
+        // Log to console
+        console.log('Selected buttons:', buttonTexts);
+      });
+    }
+  });
+</script>
+
+<div style="display: flex; flex-direction: column; gap: 16px;">
+  <div>
+    <modus-wc-button-group 
+      id="event-demo-group"
+      selection-type="single" 
+      button-style="outlined"
+      color="primary"
+    >
+      <modus-wc-button>Apple</modus-wc-button>
+      <modus-wc-button>Banana</modus-wc-button>
+      <modus-wc-button>Cherry</modus-wc-button>
+      <modus-wc-button>Date</modus-wc-button>
+    </modus-wc-button-group>
+  </div>
+  
+  <div style="padding: 12px; background-color: #f5f5f5; border-radius: 4px;">
+    <strong>Selected Button(s):</strong> 
+    <span id="selected-buttons-display">None</span>
+  </div>
+
     `;
   },
 };

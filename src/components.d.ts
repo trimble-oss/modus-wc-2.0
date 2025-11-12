@@ -622,7 +622,6 @@ export namespace Components {
      * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
      */
     interface ModusWcDropdownMenu {
-        "anchorSelector"?: string;
         /**
           * The aria-label for the dropdown button.
          */
@@ -1938,6 +1937,10 @@ export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcButtonElement;
 }
+export interface ModusWcButtonGroupCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcButtonGroupElement;
+}
 export interface ModusWcCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcCheckboxElement;
@@ -2170,11 +2173,28 @@ declare global {
         prototype: HTMLModusWcButtonElement;
         new (): HTMLModusWcButtonElement;
     };
+    interface HTMLModusWcButtonGroupElementEventMap {
+        "buttonGroupClick": {
+    button: HTMLElement;
+    isSelected: boolean;
+  };
+        "buttonSelectionChange": {
+    selectedButtons: HTMLElement[];
+  };
+    }
     /**
      * A customizable buttongroup component that groups multiple Modus buttons together.
      * The component supports a `<slot>` for injecting content within the buttongroup.
      */
     interface HTMLModusWcButtonGroupElement extends Components.ModusWcButtonGroup, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcButtonGroupElementEventMap>(type: K, listener: (this: HTMLModusWcButtonGroupElement, ev: ModusWcButtonGroupCustomEvent<HTMLModusWcButtonGroupElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcButtonGroupElementEventMap>(type: K, listener: (this: HTMLModusWcButtonGroupElement, ev: ModusWcButtonGroupCustomEvent<HTMLModusWcButtonGroupElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcButtonGroupElement: {
         prototype: HTMLModusWcButtonGroupElement;
@@ -3266,6 +3286,19 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Event emitted when any button in the group is clicked
+         */
+        "onButtonGroupClick"?: (event: ModusWcButtonGroupCustomEvent<{
+    button: HTMLElement;
+    isSelected: boolean;
+  }>) => void;
+        /**
+          * Event emitted when button selection changes
+         */
+        "onButtonSelectionChange"?: (event: ModusWcButtonGroupCustomEvent<{
+    selectedButtons: HTMLElement[];
+  }>) => void;
+        /**
           * Orientation of the button group: horizontal or vertical
          */
         "orientation"?: Orientation;
@@ -3570,7 +3603,6 @@ declare namespace LocalJSX {
      * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
      */
     interface ModusWcDropdownMenu {
-        "anchorSelector"?: string;
         /**
           * The aria-label for the dropdown button.
          */

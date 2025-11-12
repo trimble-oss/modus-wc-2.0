@@ -1625,7 +1625,22 @@
             }
           ],
           "tagName": "modus-wc-button-group",
-          "events": [],
+          "events": [
+            {
+              "name": "buttonGroupClick",
+              "type": {
+                "text": "EventEmitter<{\r\n    button: HTMLElement;\r\n    isSelected: boolean;\r\n  }>"
+              },
+              "description": "Event emitted when any button in the group is clicked"
+            },
+            {
+              "name": "buttonSelectionChange",
+              "type": {
+                "text": "EventEmitter<{\r\n    selectedButtons: HTMLElement[];\r\n  }>"
+              },
+              "description": "Event emitted when button selection changes"
+            }
+          ],
           "customElement": true
         }
       ],
@@ -1729,7 +1744,7 @@
               "name": "pressed",
               "fieldName": "pressed",
               "default": "false",
-              "description": "If true, the button will be in a pressed state (for toggle buttons).",
+              "description": "If true, the button will be in a pressed state.",
               "type": {
                 "text": "boolean"
               }
