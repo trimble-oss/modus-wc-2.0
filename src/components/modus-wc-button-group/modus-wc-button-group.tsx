@@ -13,9 +13,9 @@ import { convertPropsToClasses } from './modus-wc-button-group.tailwind';
 import { Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-type HTMLModusWcButtonElement = HTMLElement & {
+interface IButtonElement extends HTMLElement {
   setActive: (isActive: boolean) => Promise<void>;
-};
+}
 
 /**
  * A customizable buttongroup component that groups multiple Modus buttons together.
@@ -30,7 +30,7 @@ type HTMLModusWcButtonElement = HTMLElement & {
 export class ModusWcButtonGroup {
   private inheritedAttributes: Attributes = {};
   private buttonElements!: NodeListOf<HTMLElement>;
-  private selectedButtons: HTMLModusWcButtonElement[] = [];
+  private selectedButtons: IButtonElement[] = [];
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -95,7 +95,7 @@ export class ModusWcButtonGroup {
 
   @Listen('buttonClick')
   handleButtonClick(event: CustomEvent) {
-    const clickedButton = event.target as HTMLModusWcButtonElement;
+    const clickedButton = event.target as IButtonElement;
 
     if (this.selectionType === 'default') {
       this.buttonGroupClick.emit({
@@ -144,14 +144,14 @@ export class ModusWcButtonGroup {
 
   /** Toggle single selection - only one button can be active at a time */
   private async toggleSingleSelect(
-    clickedButton: HTMLModusWcButtonElement
+    clickedButton: IButtonElement
   ): Promise<void> {
     const isCurrentlySelected = this.selectedButtons.includes(clickedButton);
 
     // Deactivate all buttons
     await Promise.all(
       Array.from(this.buttonElements).map((button) =>
-        (button as HTMLModusWcButtonElement).setActive(false)
+        (button as IButtonElement).setActive(false)
       )
     );
 
@@ -178,7 +178,7 @@ export class ModusWcButtonGroup {
 
   /** Toggle multiple selection - multiple buttons can be active */
   private async toggleMultiSelect(
-    clickedButton: HTMLModusWcButtonElement
+    clickedButton: IButtonElement
   ): Promise<void> {
     const isCurrentlySelected = this.selectedButtons.includes(clickedButton);
 
@@ -212,7 +212,7 @@ export class ModusWcButtonGroup {
 
     await Promise.all(
       Array.from(this.buttonElements).map((button) =>
-        (button as HTMLModusWcButtonElement).setActive(false)
+        (button as IButtonElement).setActive(false)
       )
     );
     this.selectedButtons = [];

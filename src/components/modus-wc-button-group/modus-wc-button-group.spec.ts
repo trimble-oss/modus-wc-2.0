@@ -2,6 +2,14 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcButtonGroup } from './modus-wc-button-group';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 
+// Type declaration for the button group element
+interface HTMLModusWcButtonGroupElement extends HTMLElement {
+  disabled?: boolean;
+  buttonStyle?: 'borderless' | 'fill' | 'outlined';
+  color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  selectionType?: 'default' | 'single' | 'multiple';
+}
+
 describe('modus-wc-button-group', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
@@ -215,7 +223,10 @@ describe('modus-wc-button-group', () => {
     });
 
     const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
-    const instance = page.rootInstance as any;
+    // Access private property for testing purposes
+    const instance = page.rootInstance as unknown as {
+      buttonElements: NodeListOf<HTMLElement> | null;
+    };
 
     // Clear buttonElements to simulate early call before componentDidLoad
     instance.buttonElements = null;
