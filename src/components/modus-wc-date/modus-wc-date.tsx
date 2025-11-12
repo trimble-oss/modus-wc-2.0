@@ -293,6 +293,13 @@ export class ModusWcDate {
     this.inputChange.emit(event);
   };
 
+  private handleInputKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.syncValueFromInput();
+    }
+  };
+
   private setupPopper = () => {
     if (this.popperInstance) {
       this.popperInstance.destroy();
@@ -372,6 +379,7 @@ export class ModusWcDate {
     }
 
     this.showCalendar = false;
+    this.inputBlur.emit(new FocusEvent('blur', { bubbles: true }));
   };
 
   private addMonthOffset = (offset: number) => {
@@ -1091,6 +1099,7 @@ export class ModusWcDate {
             onBlur={this.handleBlur}
             onFocus={this.handleFocus}
             onInput={this.handleInput}
+            onKeyDown={this.handleInputKeyDown}
             placeholder={this.format}
             readonly={this.readOnly}
             required={this.required}
