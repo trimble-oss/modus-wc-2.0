@@ -36,6 +36,10 @@ const meta: Meta<ButtonGroupArgs> = {
       control: { type: 'select' },
       options: ['horizontal', 'vertical'],
     },
+    'selection-type': {
+      control: { type: 'select' },
+      options: ['default', 'single', 'multiple'],
+    },
   },
   decorators: [withActions],
   parameters: {
