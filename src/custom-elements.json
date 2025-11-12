@@ -1503,6 +1503,18 @@
             },
             {
               "kind": "method",
+              "name": "handleButtonClick",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "handleButtonStyleChange",
               "return": {
                 "type": {
@@ -1554,6 +1566,15 @@
             },
             {
               "kind": "method",
+              "name": "handleSelectionTypeChange",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              }
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -1590,7 +1611,16 @@
               "default": "'horizontal'",
               "description": "Orientation of the button group: horizontal or vertical",
               "type": {
-                "text": "'horizontal' | 'vertical'"
+                "text": "Orientation"
+              }
+            },
+            {
+              "name": "selection-type",
+              "fieldName": "selectionType",
+              "default": "'default'",
+              "description": "Selection type for button group",
+              "type": {
+                "text": "'default' | 'single' | 'multiple'"
               }
             }
           ],
@@ -1638,6 +1668,24 @@
             {
               "kind": "method",
               "name": "render"
+            },
+            {
+              "kind": "method",
+              "name": "setActive",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "isActive",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "description": "Set the button to active or inactive"
             }
           ],
           "attributes": [

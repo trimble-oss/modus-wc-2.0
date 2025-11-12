@@ -320,9 +320,13 @@ export namespace Components {
          */
         "fullWidth"?: boolean;
         /**
-          * If true, the button will be in a pressed state (for toggle buttons).
+          * If true, the button will be in a pressed state.
          */
         "pressed"?: boolean;
+        /**
+          * Set the button to active or inactive
+         */
+        "setActive": (isActive: boolean) => Promise<void>;
         /**
           * The shape of the button.
          */
@@ -361,6 +365,10 @@ export namespace Components {
           * Orientation of the button group: horizontal or vertical
          */
         "orientation"?: Orientation;
+        /**
+          * Selection type for button group
+         */
+        "selectionType"?: 'default' | 'single' | 'multiple';
     }
     /**
      * A customizable card component used to group and display content in a way that is easily readable
@@ -614,6 +622,7 @@ export namespace Components {
      * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
      */
     interface ModusWcDropdownMenu {
+        "anchorSelector"?: string;
         /**
           * The aria-label for the dropdown button.
          */
@@ -3219,7 +3228,7 @@ declare namespace LocalJSX {
          */
         "onButtonClick"?: (event: ModusWcButtonCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
-          * If true, the button will be in a pressed state (for toggle buttons).
+          * If true, the button will be in a pressed state.
          */
         "pressed"?: boolean;
         /**
@@ -3260,6 +3269,10 @@ declare namespace LocalJSX {
           * Orientation of the button group: horizontal or vertical
          */
         "orientation"?: Orientation;
+        /**
+          * Selection type for button group
+         */
+        "selectionType"?: 'default' | 'single' | 'multiple';
     }
     /**
      * A customizable card component used to group and display content in a way that is easily readable
@@ -3557,6 +3570,7 @@ declare namespace LocalJSX {
      * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
      */
     interface ModusWcDropdownMenu {
+        "anchorSelector"?: string;
         /**
           * The aria-label for the dropdown button.
          */

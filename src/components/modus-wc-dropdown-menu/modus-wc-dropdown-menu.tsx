@@ -70,6 +70,9 @@ export class ModusWcDropdownMenu {
   /** Indicates that the menu is visible. */
   @Prop({ mutable: true }) menuVisible: boolean = false;
 
+
+  @Prop() anchorSelector?: string;
+
   /** Event emitted when the menuVisible prop changes. */
   @StencilEvent() menuVisibilityChange!: EventEmitter<{ isVisible: boolean }>;
 

@@ -1,7 +1,19 @@
-import { Component, Element, h, Host, Prop, Watch } from '@stencil/core';
+import {
+  Component,
+  Element,
+  h,
+  Host,
+  Listen,
+  Prop,
+  Watch,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-button-group.tailwind';
-import { Attributes, inheritAriaAttributes } from '../utils';
 import { Orientation } from '../types';
+import { Attributes, inheritAriaAttributes } from '../utils';
+
+type HTMLModusWcButtonElement = HTMLElement & {
+  setActive: (isActive: boolean) => Promise<void>;
+};
 
 /**
  * A customizable buttongroup component that groups multiple Modus buttons together.
@@ -16,7 +28,8 @@ import { Orientation } from '../types';
 })
 export class ModusWcButtonGroup {
   private inheritedAttributes: Attributes = {};
-  private buttonElements: NodeListOf<HTMLElement> = [] as any;
+  private buttonElements!: NodeListOf<HTMLElement>;
+  private selectedButtons: HTMLModusWcButtonElement[] = [];
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -32,6 +45,9 @@ export class ModusWcButtonGroup {
 
   /** Orientation of the button group: horizontal or vertical */
   @Prop() orientation?: Orientation = 'horizontal';
+
+  /** Selection type for button group */
+  @Prop() selectionType?: 'default' | 'single' | 'multiple' = 'default';
 
   @Watch('disabled')
   handleDisabledChange(newValue: boolean): void {
@@ -50,6 +66,11 @@ export class ModusWcButtonGroup {
     this.setButtonAttribute('color', newValue);
   }
 
+  @Watch('selectionType')
+  async handleSelectionTypeChange(): Promise<void> {
+    await this.resetAllSelections();
+  }
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -60,7 +81,24 @@ export class ModusWcButtonGroup {
     this.syncButtonStates();
   }
 
-  /** Applies 'modus-wc-join-item' class to each button’s custom-class prop */
+  @Listen('buttonClick')
+  handleButtonClick(event: CustomEvent) {
+    const clickedButton = event.target as HTMLModusWcButtonElement;
+    if (this.selectionType === 'default') {
+      return;
+    }
+
+    switch (this.selectionType) {
+      case 'single':
+        void this.toggleSingleSelect(clickedButton);
+        break;
+      case 'multiple':
+        void this.toggleMultiSelect(clickedButton);
+        break;
+    }
+  }
+
+  /** Applies 'modus-wc-join-item' class to each button's custom-class prop */
   private applyCustomClasses(): void {
     this.buttonElements.forEach((button) => {
       const currentClasses = button.getAttribute('custom-class') || '';
@@ -85,6 +123,60 @@ export class ModusWcButtonGroup {
         button.removeAttribute(name);
       }
     });
+  }
+
+  /** Toggle single selection - only one button can be active at a time */
+  private async toggleSingleSelect(
+    clickedButton: HTMLModusWcButtonElement
+  ): Promise<void> {
+    const isCurrentlySelected = this.selectedButtons.includes(clickedButton);
+
+    // Deactivate all buttons
+    await Promise.all(
+      Array.from(this.buttonElements).map((button) =>
+        (button as HTMLModusWcButtonElement).setActive(false)
+      )
+    );
+
+    // Clear selection array
+    this.selectedButtons = [];
+
+    // If the clicked button wasn't selected, activate it
+    if (!isCurrentlySelected) {
+      await clickedButton.setActive(true);
+      this.selectedButtons = [clickedButton];
+    }
+  }
+
+  /** Toggle multiple selection - multiple buttons can be active */
+  private async toggleMultiSelect(
+    clickedButton: HTMLModusWcButtonElement
+  ): Promise<void> {
+    const isCurrentlySelected = this.selectedButtons.includes(clickedButton);
+
+    if (isCurrentlySelected) {
+      // Deactivate and remove from selection
+      await clickedButton.setActive(false);
+      this.selectedButtons = this.selectedButtons.filter(
+        (btn) => btn !== clickedButton
+      );
+    } else {
+      // Activate and add to selection
+      await clickedButton.setActive(true);
+      this.selectedButtons = [...this.selectedButtons, clickedButton];
+    }
+  }
+
+  /** Reset all button selections */
+  private async resetAllSelections(): Promise<void> {
+    if (!this.buttonElements) return;
+
+    await Promise.all(
+      Array.from(this.buttonElements).map((button) =>
+        (button as HTMLModusWcButtonElement).setActive(false)
+      )
+    );
+    this.selectedButtons = [];
   }
 
   private getClasses(): string {
