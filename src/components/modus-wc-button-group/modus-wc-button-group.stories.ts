@@ -66,11 +66,21 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = { ...Template };
+export const Default: Story = {
+  ...Template,
+  args: {
+    'button-style': 'outlined',
+    color: 'primary',
+    disabled: false,
+    orientation: 'horizontal',
+    'selection-type': 'default',
+  },
+};
 
 export const Vertical: Story = {
   ...Template,
   args: {
+    'button-style': 'outlined',
     orientation: 'vertical',
   },
 };
@@ -249,4 +259,43 @@ export const SelectionEvent: Story = {
 
     `;
   },
+};
+
+export const Migration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Breaking Changes
+
+- The \`size\` prop has been removed. Button sizes are now controlled individually on each button within the group.
+- Selection state is now managed internally - the \`selected\` attribute on individual buttons is no longer used.
+- Shadow DOM has been removed (\`shadow: false\`) for better composability.
+
+#### Prop Mapping
+
+| 1.0 Prop        | 2.0 Prop        | Notes                                                                    |
+|-----------------|-----------------|--------------------------------------------------------------------------|
+| aria-label      | aria-label      | Unchanged                                                                |
+| aria-disabled   | -               | Removed. Use \`disabled\` prop instead                                   |
+| button-style    | button-style    | Values changed: \`fill\` → \`fill\`, \`outline\` → \`outlined\`          |
+| color           | color           | \`special\` color removed. Other values unchanged                        |
+| disabled        | disabled        | Unchanged                                                                |
+| orientation     | orientation     | New in 2.0. Controls horizontal/vertical layout                          |
+| selection-type  | selection-type  | Values changed: \`none\` → \`default\`, \`single\` and \`multiple\` unchanged |
+| size            | -               | Removed. Control size on individual buttons                              |
+
+#### Event Mapping
+
+| 1.0 Event              | 2.0 Event              | Notes                                                      |
+|------------------------|------------------------|------------------------------------------------------------|
+| buttonGroupClick       | buttonGroupClick       | Event detail changed: now includes \`{ button, isSelected }\` |
+| buttonSelectionChange  | buttonSelectionChange  | Unchanged. Returns array of selected buttons               |
+   `,
+      },
+    },
+    controls: { disable: true },
+    canvas: { disable: true },
+  },
+  render: () => html`<div></div>`,
 };

@@ -25,7 +25,6 @@ type HTMLModusWcButtonElement = HTMLElement & {
 
 @Component({
   tag: 'modus-wc-button-group',
-  styleUrl: 'modus-wc-button-group.scss',
   shadow: false,
 })
 export class ModusWcButtonGroup {
@@ -76,7 +75,7 @@ export class ModusWcButtonGroup {
   handleColorChange(
     newValue: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger'
   ): void {
-    this.setButtonAttribute('color', newValue);
+    this.setButtonAttribute('color', newValue || null);
   }
 
   @Watch('selectionType')

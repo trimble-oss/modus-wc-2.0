@@ -3,7 +3,7 @@
 exports[`modus-wc-button should render with custom props 1`] = `
 <modus-wc-button color="secondary" custom-class="test-class" full-width="true" pressed="true" size="lg" type="submit" variant="outlined">
   <!---->
-  <button aria-pressed="true" class="modus-wc-btn modus-wc-btn-block modus-wc-btn-lg modus-wc-btn-outline modus-wc-btn-secondary test-class" tabindex="0" type="submit">
+  <button aria-pressed="true" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-block modus-wc-btn-lg modus-wc-btn-outline modus-wc-btn-secondary test-class" tabindex="0" type="submit">
     Test
   </button>
 </modus-wc-button>
