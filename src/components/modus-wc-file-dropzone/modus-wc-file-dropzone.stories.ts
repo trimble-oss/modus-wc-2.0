@@ -153,3 +153,31 @@ export const multipleFiles: Story = {
     ></modus-wc-file-dropzone>
   `,
 };
+
+export const withReset: Story = {
+  args: {
+    'accept-file-types': '.pdf, .doc, .docx',
+    'success-message': 'Files uploaded successfully!',
+  },
+  render: (args) => html`
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <modus-wc-file-dropzone
+        id="resetable-dropzone"
+        accept-file-types=${ifDefined(args['accept-file-types'])}
+        success-message=${ifDefined(args['success-message'])}
+        instructions="Upload files and use the reset button below"
+      ></modus-wc-file-dropzone>
+      <modus-wc-button
+        variant="secondary"
+        @click=${() => {
+          const dropzone = document.getElementById('resetable-dropzone');
+          if (dropzone) {
+            (dropzone as any).reset();
+          }
+        }}
+      >
+        Reset Dropzone
+      </modus-wc-button>
+    </div>
+  `,
+};

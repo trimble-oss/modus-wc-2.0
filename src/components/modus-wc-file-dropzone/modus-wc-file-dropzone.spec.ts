@@ -1368,4 +1368,77 @@ describe('modus-wc-file-dropzone', () => {
     ](null);
     expect(nullResult).toBe('0 Bytes');
   });
+
+  it('should reset the component state when reset method is called', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+    });
+
+    const component = page.rootInstance;
+
+    // Set component to error state
+    component.invalidFile = 'type';
+    component.errorMessage = 'File format not accepted';
+    component.uploadSuccess = false;
+    component.isDraggingOver = false;
+
+    // Call reset method
+    await component.reset();
+
+    // Verify state is reset
+    expect(component.invalidFile).toBe('none');
+    expect(component.errorMessage).toBe('');
+    expect(component.uploadSuccess).toBe(false);
+    expect(component.isDraggingOver).toBe(false);
+  });
+
+  it('should reset the component state from success state', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+    });
+
+    const component = page.rootInstance;
+
+    // Set component to success state
+    component.invalidFile = 'none';
+    component.errorMessage = '';
+    component.uploadSuccess = true;
+    component.isDraggingOver = false;
+
+    // Call reset method
+    await component.reset();
+
+    // Verify state is reset
+    expect(component.invalidFile).toBe('none');
+    expect(component.errorMessage).toBe('');
+    expect(component.uploadSuccess).toBe(false);
+    expect(component.isDraggingOver).toBe(false);
+  });
+
+  it('should clear input value when reset method is called', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+    });
+
+    const component = page.rootInstance;
+
+    // Mock input ref
+    const mockInput = {
+      value: 'test-file.txt',
+    } as HTMLInputElement;
+    component['inputRef'] = mockInput;
+
+    // Set component to success state
+    component.uploadSuccess = true;
+
+    // Call reset method
+    await component.reset();
+
+    // Verify input value is cleared
+    expect(mockInput.value).toBe('');
+    expect(component.uploadSuccess).toBe(false);
+  });
 });
