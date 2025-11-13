@@ -2790,6 +2790,11 @@
             {
               "kind": "method",
               "name": "render"
+            },
+            {
+              "kind": "method",
+              "name": "reset",
+              "description": "Reset the dropzone to its initial state, clearing all error and success states"
             }
           ],
           "attributes": [
@@ -3301,24 +3306,22 @@
           "name": "ModusWcMenuItem",
           "members": [
             {
+              "kind": "method",
+              "name": "collapseSubmenu",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Public method to collapse the submenu if it's expanded"
+            },
+            {
               "kind": "field",
               "name": "el",
               "type": {
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "handleCollapseAllChange",
-              "parameters": [
-                {
-                  "name": "newValue",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "field",
@@ -3346,14 +3349,6 @@
               "name": "checkbox",
               "fieldName": "checkbox",
               "description": "If true, renders a checkbox at the start of the menu item.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
-              "name": "collapse-all",
-              "fieldName": "collapseAll",
-              "description": "Collapse all submenus when set to true",
               "type": {
                 "text": "boolean"
               }
