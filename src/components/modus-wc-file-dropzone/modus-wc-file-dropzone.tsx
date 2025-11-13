@@ -96,8 +96,6 @@ export class ModusWcFileDropzone {
     if (this.inputRef) {
       this.inputRef.value = '';
     }
-
-    return Promise.resolve();
   }
 
   // Generate error message based on validation type - called only when validation fails
