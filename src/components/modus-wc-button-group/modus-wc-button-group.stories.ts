@@ -132,9 +132,9 @@ export const SplitButton: Story = {
     </modus-wc-dropdown-menu>
   </modus-wc-button-group>
 
-  <div style="padding: 12px; background-color: #f5f5f5; border-radius: 4px;">
-    <strong>Selected Option:</strong> 
-    <span id="selected-value">None</span>
+    <div style="display: flex; gap: 8px;">
+    <modus-wc-typography hierarchy="h4">Selected Option:</modus-wc-typography> 
+    <modus-wc-typography id="selected-value"></modus-wc-typography>
   </div>
 </div>
     `;
@@ -150,7 +150,7 @@ export const SingleSelection: Story = {
     <h4 style="margin-bottom: 8px;">Single Selection (Only one button can be active at a time)</h4>
     <modus-wc-button-group selection-type="single" button-style="outlined">
       <modus-wc-button>Option 1</modus-wc-button>
-      <modus-wc-button>Option 2</modus-wc-button>
+      <modus-wc-button pressed>Option 2</modus-wc-button>
       <modus-wc-button>Option 3</modus-wc-button>
       <modus-wc-button>Option 4</modus-wc-button>
     </modus-wc-button-group>
@@ -159,10 +159,10 @@ export const SingleSelection: Story = {
   <div>
     <h4 style="margin-bottom: 8px;">Vertical Single Selection</h4>
     <modus-wc-button-group selection-type="single" orientation="vertical" button-style="outlined">
-      <modus-wc-button>Small</modus-wc-button>
-      <modus-wc-button>Medium</modus-wc-button>
-      <modus-wc-button>Large</modus-wc-button>
-      <modus-wc-button>X-Large</modus-wc-button>
+      <modus-wc-button pressed>Option 1</modus-wc-button>
+      <modus-wc-button>Option 2</modus-wc-button>
+      <modus-wc-button>Option 3</modus-wc-button>
+      <modus-wc-button>Option 4</modus-wc-button>
     </modus-wc-button-group>
   </div>
 </div>
@@ -178,9 +178,9 @@ export const MultipleSelection: Story = {
   <div>
     <h4 style="margin-bottom: 8px;">Multiple Selection (Multiple buttons can be active)</h4>
     <modus-wc-button-group selection-type="multiple" button-style="outlined">
-      <modus-wc-button>Bold</modus-wc-button>
+      <modus-wc-button pressed>Bold</modus-wc-button>
       <modus-wc-button>Italic</modus-wc-button>
-      <modus-wc-button>Underline</modus-wc-button>
+      <modus-wc-button pressed>Underline</modus-wc-button>
       <modus-wc-button>Strikethrough</modus-wc-button>
     </modus-wc-button-group>
   </div>
@@ -188,10 +188,10 @@ export const MultipleSelection: Story = {
   <div>
     <h4 style="margin-bottom: 8px;">Multiple Selection with Icons</h4>
     <modus-wc-button-group selection-type="multiple" button-style="outlined" color="primary">
-      <modus-wc-button icon-only aria-label="Align left">
+      <modus-wc-button pressed icon-only aria-label="Align left">
         <modus-wc-icon name="align_left" size="16"></modus-wc-icon>
       </modus-wc-button>
-      <modus-wc-button icon-only aria-label="Align center">
+      <modus-wc-button pressed icon-only aria-label="Align center">
         <modus-wc-icon name="align_top" size="16"></modus-wc-icon>
       </modus-wc-button>
       <modus-wc-button icon-only aria-label="Align right">
@@ -246,9 +246,9 @@ export const SelectionEvent: Story = {
     </modus-wc-button-group>
   </div>
   
-  <div style="padding: 12px; background-color: #f5f5f5; border-radius: 4px;">
-    <strong>Selected Button(s):</strong> 
-    <span id="selected-buttons-display">None</span>
+  <div style="display: flex; gap: 8px;">
+    <modus-wc-typography hierarchy="h4">Selected Button(s):</modus-wc-typography> 
+    <modus-wc-typography id="selected-buttons-display"></modus-wc-typography>
   </div>
 
     `;
