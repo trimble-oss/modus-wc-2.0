@@ -253,7 +253,6 @@ export const Default: Story = {
         //   },
         // ];
 
-
         // const createDemoData = (count = 5) => {
         //   const data = [];
         //   for (let i = 1; i <= count; i++) {
@@ -339,7 +338,6 @@ export const Hover: Story = {
         //   },
         // ];
 
-
         // const createDemoData = (count = 5) => {
         //   const data = [];
         //   for (let i = 1; i <= count; i++) {
@@ -413,12 +411,10 @@ export const Sorting: Story = {
         //   },
         // ];
 
-
         // const createSortableColumns = () => {
         //   const columns = createDemoColumns();
         //   return columns.map((col) => ({ ...col, sortable: true }));
         // };
-
 
         // const createDemoData = (count = 5) => {
         //   const data = [];
@@ -437,7 +433,6 @@ export const Sorting: Story = {
         // table.columns = createSortableColumns();
         // table.data = createDemoData();
       </script>
-
     `;
   },
   args: {
@@ -495,7 +490,6 @@ export const Pagination: Story = {
         //   },
         // ];
 
-
         // const createDemoData = (count = 5) => {
         //   const data = [];
         //   for (let i = 1; i <= count; i++) {
@@ -514,7 +508,6 @@ export const Pagination: Story = {
         // table.data = createDemoData(15);
         // table.paginated = true;
       </script>
-
     `;
   },
   args: {
@@ -547,7 +540,7 @@ export const CheckBoxRowSelection: Story = {
         @rowSelectionChange=${action('rowSelectionChange')}
       ></modus-wc-table>
       <script>
-        // // This script provides sample data and configuration for the modus-wc-table demonstration.
+        // This script provides sample data and configuration for the modus-wc-table demonstration.
         // const createDemoColumns = () => [
         //   {
         //     id: 'id',
@@ -573,7 +566,6 @@ export const CheckBoxRowSelection: Story = {
         //   },
         // ];
 
-
         // const createDemoData = (count = 5) => {
         //   const data = [];
         //   for (let i = 1; i <= count; i++) {
@@ -592,7 +584,6 @@ export const CheckBoxRowSelection: Story = {
         // table.data = createDemoData();
         // table.selectable = 'multi';
       </script>
-
     `;
   },
   args: {
@@ -821,218 +812,196 @@ export const InlineEditing: Story = {
       ></modus-wc-table>
       <script>
         // This script provides sample data and configuration for the modus-wc-table demonstration.
-      //  const columns = [
-      //     {
-      //       id: 'id',
-      //       header: 'ID',
-      //       accessor: 'id',
-      //       width: '20px',
-      //     },
-      //     {
-      //       id: 'name',
-      //       header: 'Name',
-      //       accessor: 'name',
-      //       editor: 'text',
-      //     },
-      //     {
-      //       id: 'status',
-      //       header: 'Status',
-      //       accessor: 'status',
-      //       editor: 'custom',
-      //       customEditorRenderer: (value, onCommit) => {
-      //         const container = document.createElement('div');
-      //         container.style.width = '100%';
+        // const columns = [
+        //     {
+        //       id: 'id',
+        //       header: 'ID',
+        //       accessor: 'id',
+        //       width: '20px',
+        //     },
+        //     {
+        //       id: 'name',
+        //       header: 'Name',
+        //       accessor: 'name',
+        //       editor: 'text',
+        //     },
+        //     {
+        //       id: 'status',
+        //       header: 'Status',
+        //       accessor: 'status',
+        //       editor: 'custom',
+        //       customEditorRenderer: (value, onCommit) => {
+        //         const container = document.createElement('div');
+        //         container.style.width = '100%';
 
+        //         const autocomplete = document.createElement('modus-wc-autocomplete');
+        //         autocomplete.items = [
+        //           { label: 'Active', value: 'Active', visibleInMenu: true },
+        //           { label: 'Inactive', value: 'Inactive', visibleInMenu: true },
+        //           { label: 'Pending', value: 'Pending', visibleInMenu: true },
+        //         ];
+        //         autocomplete.value = value;
+        //         autocomplete.style.width = '100%';
 
-      //         const autocomplete = document.createElement('modus-wc-autocomplete');
-      //         autocomplete.items = [
-      //           { label: 'Active', value: 'Active', visibleInMenu: true },
-      //           { label: 'Inactive', value: 'Inactive', visibleInMenu: true },
-      //           { label: 'Pending', value: 'Pending', visibleInMenu: true },
-      //         ];
-      //         autocomplete.value = value;
-      //         autocomplete.style.width = '100%';
+        //         const handleItemSelect = (e) => {
+        //           onCommit(e.detail.value);
+        //         };
 
+        //         autocomplete.addEventListener(
+        //           'itemSelect',
+        //           handleItemSelect
+        //         );
+        //         container.appendChild(autocomplete);
 
-      //         const handleItemSelect = (e) => {
-      //           onCommit(e.detail.value);
-      //         };
+        //         setTimeout(() => {
+        //           const input = autocomplete.querySelector('input');
+        //           input?.focus();
+        //         }, 0);
 
+        //         return container;
+        //       },
+        //       cellRenderer: (value) => {
+        //         const statusColors = {
+        //           Active: 'green',
+        //           Inactive: 'gray',
+        //           Pending: 'blue',
+        //         };
+        //         const color = statusColors[value] || 'black';
+        //         const span = document.createElement('span');
+        //         span.textContent = value;
+        //         span.style.color = color;
+        //         span.style.fontWeight = 'bold';
+        //         return span;
+        //       },
+        //     },
+        //     {
+        //       id: 'dueDate',
+        //       header: 'Due Date',
+        //       accessor: 'dueDate',
+        //       editor: 'custom',
+        //       customEditorRenderer: (value, onCommit) => {
+        //         const container = document.createElement('div');
+        //         container.style.width = '100%';
 
-      //         autocomplete.addEventListener(
-      //           'itemSelect',
-      //           handleItemSelect
-      //         );
-      //         container.appendChild(autocomplete);
+        //     const datePicker = document.createElement('modus-wc-date');
+        //     datePicker.value = value;
+        //     datePicker.style.width = '100%';
+        //     datePicker.bordered = false;
 
+        //     let isCommitting = false;
 
-      //         setTimeout(() => {
-      //           const input = autocomplete.querySelector('input');
-      //           input?.focus();
-      //         }, 0);
+        //     const handleKeyDown = (e) => {
+        //       if (e.key === 'Enter') {
+        //         e.preventDefault();
+        //         const input = datePicker.querySelector('input');
+        //         if (input && input.value && !isCommitting) {
+        //           isCommitting = true;
+        //           onCommit(input.value);
+        //         }
+        //       } else if (e.key === 'Escape') {
+        //         e.preventDefault();
+        //         if (!isCommitting) {
+        //           isCommitting = true;
+        //           onCommit(value || '');
+        //         }
+        //       } else if (e.key === 'Tab') {
+        //         const input = datePicker.querySelector('input');
+        //         if (input && input.value && !isCommitting) {
+        //           isCommitting = true;
+        //           onCommit(input.value);
+        //         }
+        //       }
+        //     };
 
+        //     const handleContainerBlur = (e) => {
+        //       const relatedTarget = e.relatedTarget;
 
-      //         return container;
-      //       },
-      //       cellRenderer: (value) => {
-      //         const statusColors = {
-      //           Active: 'green',
-      //           Inactive: 'gray',
-      //           Pending: 'blue',
-      //         };
-      //         const color = statusColors[value] || 'black';
-      //         const span = document.createElement('span');
-      //         span.textContent = value;
-      //         span.style.color = color;
-      //         span.style.fontWeight = 'bold';
-      //         return span;
-      //       },
-      //     },
-      //     {
-      //       id: 'dueDate',
-      //       header: 'Due Date',
-      //       accessor: 'dueDate',
-      //       editor: 'custom',
-      //       customEditorRenderer: (value, onCommit) => {
-      //         const container = document.createElement('div');
-      //         container.style.width = '100%';
+        //       if (relatedTarget && (container.contains(relatedTarget) || datePicker.shadowRoot?.contains(relatedTarget))) {
+        //         return;
+        //       }
 
+        //       const calendar = datePicker.shadowRoot?.querySelector('[class*="calendar"]');
+        //       if (calendar) {
+        //         return;
+        //       }
 
-      //     const datePicker = document.createElement('modus-wc-date');
-      //     datePicker.value = value;
-      //     datePicker.style.width = '100%';
-      //     datePicker.bordered = false;
+        //       const input = datePicker.querySelector('input');
+        //       if (input && input.value && !isCommitting) {
+        //         isCommitting = true;
+        //         setTimeout(() => onCommit(input.value), 50);
+        //       }
+        //     };
 
+        //     container.addEventListener('keydown', handleKeyDown);
+        //     container.addEventListener('focusout', handleContainerBlur);
+        //     container.appendChild(datePicker);
 
-      //     let isCommitting = false;
+        //         setTimeout(() => {
+        //           const input = datePicker.querySelector('input');
+        //           input?.focus();
+        //         }, 0);
 
+        //         return container;
+        //       },
+        //       cellRenderer: (value) => {
+        //         if (!value) return '-';
 
-      //     const handleKeyDown = (e) => {
-      //       if (e.key === 'Enter') {
-      //         e.preventDefault();
-      //         const input = datePicker.querySelector('input');
-      //         if (input && input.value && !isCommitting) {
-      //           isCommitting = true;
-      //           onCommit(input.value);
-      //         }
-      //       } else if (e.key === 'Escape') {
-      //         e.preventDefault();
-      //         if (!isCommitting) {
-      //           isCommitting = true;
-      //           onCommit(value || '');
-      //         }
-      //       } else if (e.key === 'Tab') {
-      //         const input = datePicker.querySelector('input');
-      //         if (input && input.value && !isCommitting) {
-      //           isCommitting = true;
-      //           onCommit(input.value);
-      //         }
-      //       }
-      //     };
+        //         // Parse dd-mm-yyyy format from date picker
+        //         const dateString = value;
+        //         const parts = dateString.split(/[-/]/);
 
+        //         let date;
+        //         if (parts.length === 3 && parts[0].length <= 2) {
+        //           // Assume dd-mm-yyyy or dd/mm/yyyy format
+        //           const day = parseInt(parts[0], 10);
+        //           const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+        //           const year = parseInt(parts[2], 10);
+        //           date = new Date(year, month, day);
+        //         } else {
+        //           // Fallback to default parsing
+        //           date = new Date(dateString);
+        //         }
 
-      //     const handleContainerBlur = (e) => {
-      //       const relatedTarget = e.relatedTarget;
+        //         // Check if date is valid
+        //         if (isNaN(date.getTime())) {
+        //           return dateString; // Return original value if parsing fails
+        //         }
 
+        //         // Format date with dashes: dd-mm-yyyy
+        //         const formattedDay = date.getDate().toString().padStart(2, '0');
+        //         const formattedMonth = (date.getMonth() + 1).toString().padStart(2, '0');
+        //         const formattedYear = date.getFullYear();
 
-      //       if (relatedTarget && (container.contains(relatedTarget) || datePicker.shadowRoot?.contains(relatedTarget))) {
-      //         return;
-      //       }
+        //         return \`\${formattedDay}-\${formattedMonth}-\${formattedYear}\`;
+        //       },
+        //     },
+        //   ];
 
-
-      //       const calendar = datePicker.shadowRoot?.querySelector('[class*="calendar"]');
-      //       if (calendar) {
-      //         return;
-      //       }
-
-
-      //       const input = datePicker.querySelector('input');
-      //       if (input && input.value && !isCommitting) {
-      //         isCommitting = true;
-      //         setTimeout(() => onCommit(input.value), 50);
-      //       }
-      //     };
-
-
-      //     container.addEventListener('keydown', handleKeyDown);
-      //     container.addEventListener('focusout', handleContainerBlur);
-      //     container.appendChild(datePicker);
-
-
-      //         setTimeout(() => {
-      //           const input = datePicker.querySelector('input');
-      //           input?.focus();
-      //         }, 0);
-
-
-      //         return container;
-      //       },
-      //       cellRenderer: (value) => {
-      //         if (!value) return '-';
-
-
-      //         // Parse dd-mm-yyyy format from date picker
-      //         const dateString = value;
-      //         const parts = dateString.split(/[-/]/);
-
-
-      //         let date;
-      //         if (parts.length === 3 && parts[0].length <= 2) {
-      //           // Assume dd-mm-yyyy or dd/mm/yyyy format
-      //           const day = parseInt(parts[0], 10);
-      //           const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
-      //           const year = parseInt(parts[2], 10);
-      //           date = new Date(year, month, day);
-      //         } else {
-      //           // Fallback to default parsing
-      //           date = new Date(dateString);
-      //         }
-
-
-      //         // Check if date is valid
-      //         if (isNaN(date.getTime())) {
-      //           return dateString; // Return original value if parsing fails
-      //         }
-
-
-      //         // Format date with dashes: dd-mm-yyyy
-      //         const formattedDay = date.getDate().toString().padStart(2, '0');
-      //         const formattedMonth = (date.getMonth() + 1).toString().padStart(2, '0');
-      //         const formattedYear = date.getFullYear();
-
-
-      //         return \`\${formattedDay}-\${formattedMonth}-\${formattedYear}\`;
-      //       },
-      //     },
-      //   ];
-
-
-      //   const data = [
-      //     {
-      //       id: '1',
-      //       name: 'John Doe',
-      //       status: 'Active',
-      //       dueDate: '15-10-2025',
-      //     },
-      //     {
-      //       id: '2',
-      //       name: 'Jane Smith',
-      //       status: 'Inactive',
-      //       dueDate: '20-11-2025',
-      //     },
-      //     {
-      //       id: '3',
-      //       name: 'Bob Johnson',
-      //       status: 'Pending',
-      //       dueDate: '05-12-2025',
-      //     },
-      //   ];
-      //   const table = document.querySelector('modus-wc-table');
-      //   table.columns = columns;
-      //   table.data = data;
-      //   table.editable = true;
+        //   const data = [
+        //     {
+        //       id: '1',
+        //       name: 'John Doe',
+        //       status: 'Active',
+        //       dueDate: '15-10-2025',
+        //     },
+        //     {
+        //       id: '2',
+        //       name: 'Jane Smith',
+        //       status: 'Inactive',
+        //       dueDate: '20-11-2025',
+        //     },
+        //     {
+        //       id: '3',
+        //       name: 'Bob Johnson',
+        //       status: 'Pending',
+        //       dueDate: '05-12-2025',
+        //     },
+        //   ];
+        //   const table = document.querySelector('modus-wc-table');
+        //   table.columns = columns;
+        //   table.data = data;
+        //   table.editable = true;
       </script>
-
     `;
   },
   args: {
