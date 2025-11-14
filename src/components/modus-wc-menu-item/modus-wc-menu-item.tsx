@@ -73,7 +73,10 @@ export class ModusWcMenuItem {
   @State() isExpanded: boolean = false;
 
   /** Event emitted when a menu item is selected. */
-  @StencilEvent() itemSelect!: EventEmitter<{ value: string }>;
+  @StencilEvent() itemSelect!: EventEmitter<{
+    value: string;
+    selected?: boolean;
+  }>;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -199,9 +202,24 @@ export class ModusWcMenuItem {
         }
       }
     }
+    // For regular menu items, toggle selection state
+    else {
+      const liElement = this.el.querySelector('li');
 
-    // Always emit the event - let the parent decide whether to handle deselection
-    this.itemSelect.emit({ value: this.value });
+      if (liElement) {
+        // Toggle based on current selected prop state
+        if (this.selected) {
+          liElement.classList.remove('modus-wc-menu-item-selected');
+          this.selected = false;
+        } else {
+          liElement.classList.add('modus-wc-menu-item-selected');
+          this.selected = true;
+        }
+      }
+    }
+
+    // Always emit the event with current selection state
+    this.itemSelect.emit({ value: this.value, selected: this.selected });
   };
 
   render() {

@@ -75,7 +75,7 @@ describe('modus-wc-menu-item', () => {
     await page.waitForChanges();
 
     expect(clickSpy).toHaveBeenCalledTimes(1);
-    expect(clickSpy.mock.calls[0][0].detail).toEqual({ value: 'test-value' });
+    expect(clickSpy.mock.calls[0][0].detail).toEqual({ value: 'test-value', selected: true });
   });
 
   it('should render with checkbox', async () => {
