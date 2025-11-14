@@ -698,6 +698,7 @@ export const MultiSelect: Story = {
         value=${args.value}
       ></modus-wc-autocomplete>
       <script>
+        //Commnenting out the scripts to avoid duplicate declaration in storybook code
         // Add Autocomplete items
         ${Items}
         // If multi-select, set selected state for some items
@@ -787,6 +788,7 @@ export const WithSpinner: Story = {
         @inputChange=${handleInputChange}
       ></modus-wc-autocomplete>
       <script>
+        //Commenting out the scripts to avoid duplicate declaration in storybook code
         // Add Autocomplete items
         ${Items};
         // Adding this block to show how to set items via JS
@@ -1019,6 +1021,7 @@ export const CustomMenuItems: Story = {
     // prettier-ignore
     return html`
 <script>
+//  //Commenting out the scripts to avoid duplicate declaration in storybook code
 // const originalNoResults = args['no-results'];
 // if (args['leave-menu-open'] == true) {
 //   args['no-results'] = {
@@ -1558,6 +1561,7 @@ export const CustomEventHandlers: Story = {
         .customItemSelect=${customItemSelect}
       ></modus-wc-autocomplete>
       <script>
+        //Commenting out the scripts to avoid duplicate declaration in storybook code
         // Add Autocomplete items
         ${Items};
         // const autocomplete = document.getElementById('autocomplete-custom-event-handlers');
@@ -1998,77 +2002,78 @@ export const WithProgrammaticControl: Story = {
         </div>
       </modus-wc-card>
       <script type="module">
-      //   const handleSelectApple = async () => {
-      //     const autocomplete = document.getElementById(
-      //       'programmatic-autocomplete'
-      //     );
-      //     if (autocomplete) {
-      //       const appleItem =
-      //         autocompleteItems.find((item) => item.value === 'apple') || null;
-      //       await autocomplete.selectItem(appleItem);
-      //     }
-      //   };
+        //  //Commenting out the scripts to avoid duplicate declaration in storybook code
+        //   const handleSelectApple = async () => {
+        //     const autocomplete = document.getElementById(
+        //       'programmatic-autocomplete'
+        //     );
+        //     if (autocomplete) {
+        //       const appleItem =
+        //         autocompleteItems.find((item) => item.value === 'apple') || null;
+        //       await autocomplete.selectItem(appleItem);
+        //     }
+        //   };
 
-      //   const handleSelectNull = async () => {
-      //     const autocomplete = document.getElementById(
-      //       'programmatic-autocomplete'
-      //     );
-      //     if (autocomplete) {
-      //       await autocomplete.selectItem(null);
-      //     }
-      //   };
+        //   const handleSelectNull = async () => {
+        //     const autocomplete = document.getElementById(
+        //       'programmatic-autocomplete'
+        //     );
+        //     if (autocomplete) {
+        //       await autocomplete.selectItem(null);
+        //     }
+        //   };
 
-      //   const handleOpenMenu = async () => {
-      //     const autocomplete = document.getElementById(
-      //       'programmatic-autocomplete'
-      //     );
-      //     if (autocomplete) {
-      //       await autocomplete.openMenu();
-      //     }
-      //   };
+        //   const handleOpenMenu = async () => {
+        //     const autocomplete = document.getElementById(
+        //       'programmatic-autocomplete'
+        //     );
+        //     if (autocomplete) {
+        //       await autocomplete.openMenu();
+        //     }
+        //   };
 
-      //   const handleCloseMenu = async () => {
-      //     const autocomplete = document.getElementById(
-      //       'programmatic-autocomplete'
-      //     );
-      //     if (autocomplete) {
-      //       await autocomplete.closeMenu();
-      //     }
-      //   };
+        //   const handleCloseMenu = async () => {
+        //     const autocomplete = document.getElementById(
+        //       'programmatic-autocomplete'
+        //     );
+        //     if (autocomplete) {
+        //       await autocomplete.closeMenu();
+        //     }
+        //   };
 
-      //   const handleToggleMenu = async () => {
-      //     const autocomplete = document.getElementById(
-      //       'programmatic-autocomplete'
-      //     );
-      //     if (autocomplete) {
-      //       await autocomplete.toggleMenu();
-      //     }
-      //   };
+        //   const handleToggleMenu = async () => {
+        //     const autocomplete = document.getElementById(
+        //       'programmatic-autocomplete'
+        //     );
+        //     if (autocomplete) {
+        //       await autocomplete.toggleMenu();
+        //     }
+        //   };
 
-      //   const handleFocusInput = async () => {
-      //     const autocomplete = document.getElementById(
-      //       'programmatic-autocomplete'
-      //     );
-      //     if (autocomplete) {
-      //       await autocomplete.focusInput();
-      //     }
-      //   };
+        //   const handleFocusInput = async () => {
+        //     const autocomplete = document.getElementById(
+        //       'programmatic-autocomplete'
+        //     );
+        //     if (autocomplete) {
+        //       await autocomplete.focusInput();
+        //     }
+        //   };
 
-      //   const handleClearInput = async () => {
-      //     const autocomplete = document.getElementById(
-      //       'programmatic-autocomplete'
-      //     );
-      //     if (autocomplete) {
-      //       await autocomplete.clearInput();
-      //     }
-      //   };
-      //   window.handleSelectApple = handleSelectApple;
-      //   window.handleSelectNull = handleSelectNull;
-      //   window.handleOpenMenu = handleOpenMenu;
-      //   window.handleCloseMenu = handleCloseMenu;
-      //   window.handleToggleMenu = handleToggleMenu;
-      //   window.handleFocusInput = handleFocusInput;
-      //   window.handleClearInput = handleClearInput;
+        //   const handleClearInput = async () => {
+        //     const autocomplete = document.getElementById(
+        //       'programmatic-autocomplete'
+        //     );
+        //     if (autocomplete) {
+        //       await autocomplete.clearInput();
+        //     }
+        //   };
+        //   window.handleSelectApple = handleSelectApple;
+        //   window.handleSelectNull = handleSelectNull;
+        //   window.handleOpenMenu = handleOpenMenu;
+        //   window.handleCloseMenu = handleCloseMenu;
+        //   window.handleToggleMenu = handleToggleMenu;
+        //   window.handleFocusInput = handleFocusInput;
+        //   window.handleClearInput = handleClearInput;
       </script>
 
       <modus-wc-autocomplete
@@ -2352,7 +2357,6 @@ export const DynamicOptions: Story = {
         if (autocomplete) {
           // Set initial items
           // autocomplete.items = [...defaultFruits];
-
           // Attach event listeners
           // autocomplete.addEventListener('inputChange', handleInputChange);
           // autocomplete.addEventListener('itemSelect', handleItemSelect);
