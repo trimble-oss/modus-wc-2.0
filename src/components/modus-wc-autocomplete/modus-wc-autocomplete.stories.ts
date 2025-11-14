@@ -281,139 +281,139 @@ const meta: Meta<AutocompleteArgs> = {
 export default meta;
 //prettier-ignore
 const Items = html`
-const autocompleteItems = [
-  {
-    label: 'Apple',
-    value: 'apple',
-    visibleInMenu: true,
-    focused: false,
-    disabled: false,
-    checkbox: false,
-  },
-  {
-    label: 'Banana',
-    value: 'banana',
-    visibleInMenu: true,
-    focused: false,
-    disabled: false,
-    checkbox: false,
-  },
-  {
-    label: 'Blueberry',
-    value: 'blueberry',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Cherry',
-    value: 'cherry',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Grape',
-    value: 'grape',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Lemon',
-    value: 'lemon',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Orange',
-    value: 'orange',
-    visibleInMenu: true,
-    focused: false,
-    disabled: false,
-    checkbox: false,
-  },
-  {
-    label: 'Peach',
-    value: 'peach',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Pear',
-    value: 'pear',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Strawberry',
-    value: 'strawberry',
-    visibleInMenu: true,
-    focused: false,
-    disabled: false,
-    checkbox: false,
-  },
-  {
-    label: 'Watermelon',
-    value: 'watermelon',
-    visibleInMenu: true,
-    focused: false,
-    disabled: false,
-    checkbox: false,
-  },
-  {
-    label: 'Pineapple',
-    value: 'pineapple',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Kiwi',
-    value: 'kiwi',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Mango',
-    value: 'mango',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Papaya',
-    value: 'papaya',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Plum',
-    value: 'plum',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Raspberry',
-    value: 'raspberry',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-  {
-    label: 'Tangerine',
-    value: 'tangerine',
-    visibleInMenu: true,
-    focused: false,
-    checkbox: false,
-  },
-];
+// const autocompleteItems = [
+//   {
+//     label: 'Apple',
+//     value: 'apple',
+//     visibleInMenu: true,
+//     focused: false,
+//     disabled: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Banana',
+//     value: 'banana',
+//     visibleInMenu: true,
+//     focused: false,
+//     disabled: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Blueberry',
+//     value: 'blueberry',
+//     visibleInMenu: true,
+//     focused: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Cherry',
+//     value: 'cherry',
+//     visibleInMenu: true,
+//     focused: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Grape',
+//     value: 'grape',
+//     visibleInMenu: true,
+//     focused: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Lemon',
+//     value: 'lemon',
+//     visibleInMenu: true,
+//     focused: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Orange',
+//     value: 'orange',
+//     visibleInMenu: true,
+//     focused: false,
+//     disabled: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Peach',
+//     value: 'peach',
+//     visibleInMenu: true,
+//     focused: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Pear',
+//     value: 'pear',
+//     visibleInMenu: true,
+//     focused: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Strawberry',
+//     value: 'strawberry',
+//     visibleInMenu: true,
+//     focused: false,
+//     disabled: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Watermelon',
+//     value: 'watermelon',
+//     visibleInMenu: true,
+//     focused: false,
+//     disabled: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Pineapple',
+//     value: 'pineapple',
+//     visibleInMenu: true,
+//     focused: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Kiwi',
+//     value: 'kiwi',
+//     visibleInMenu: true,
+//     focused: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Mango',
+//     value: 'mango',
+//     visibleInMenu: true,
+//     focused: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Papaya',
+//     value: 'papaya',
+//     visibleInMenu: true,
+//     focused: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Plum',
+//     value: 'plum',
+//     visibleInMenu: true,
+//     focused: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Raspberry',
+//     value: 'raspberry',
+//     visibleInMenu: true,
+//     focused: false,
+//     checkbox: false,
+//   },
+//   {
+//     label: 'Tangerine',
+//     value: 'tangerine',
+//     visibleInMenu: true,
+//     focused: false,
+//     checkbox: false,
+//   },
+// ];
 `;
 type Story = StoryObj<AutocompleteArgs>;
 
@@ -701,12 +701,12 @@ export const MultiSelect: Story = {
         // Add Autocomplete items
         ${Items}
         // If multi-select, set selected state for some items
-          const itemsWithSelection = autocompleteItems.map((item) => {
-            if (item.value === 'apple' || item.value === 'banana') {
-              return { ...item, selected: true };
-            }
-            return item;
-          });
+          // const itemsWithSelection = autocompleteItems.map((item) => {
+          //   if (item.value === 'apple' || item.value === 'banana') {
+          //     return { ...item, selected: true };
+          //   }
+          //   return item;
+          // });
           // Adding this block to show how to set items and pre-selected values via JS
           // const autocomplete = document.getElementById('fruit-autocomplete');
           // if (autocomplete) {
@@ -794,51 +794,52 @@ export const WithSpinner: Story = {
         // autocomplete.items = autocompleteItems;
         // autocomplete.showSpinner = true;
 
-        // Debounce timer id
-        let debounceTimer;
+        // // Debounce timer id
+        // let debounceTimer;
 
-        // Input change handler for the component's custom event
-        const handleInputChange = (e) => {
-          // Stencil event detail wraps the native event; guard against missing target
-          if (!e.detail?.target) return;
-          const comp = e.target.closest('modus-wc-autocomplete');
-          if (!comp) return;
+        // // Input change handler for the component's custom event
+        // const handleInputChange = (e) => {
+        //   // Stencil event detail wraps the native event; guard against missing target
+        //   if (!e.detail?.target) return;
+        //   const comp = e.target.closest('modus-wc-autocomplete');
+        //   if (!comp) return;
 
-          const inputEl = e.detail.target; // native input element
-          const query = (inputEl.value || '').toLowerCase();
+        //   const inputEl = e.detail.target; //op native input element
+        //   const query = (inputEl.value || '').toLowerCase();
 
-          // Clear pending debounce
-          if (debounceTimer) {
-            clearTimeout(debounceTimer);
-          }
+        //   // Clear pending debounce
+        //   if (debounceTimer) {
+        //     clearTimeout(debounceTimer);
+        //   }
 
-          // If query empty restore full list immediately and stop spinner
-          if (query === '') {
-            comp.items = [...autocompleteItems];
-            comp.showSpinner = false;
-            return;
-          }
+        //   // If query empty restore full list immediately and stop spinner
+        //   if (query === '') {
+        //     comp.items = [...autocompleteItems];
+        //     comp.showSpinner = false;
+        //     return;
+        //   }
 
-          // Start spinner
-          comp.showSpinner = true;
+        //   // Start spinner
+        //   comp.showSpinner = true;
 
-          // Simulated async fetch (2s)
-          debounceTimer = setTimeout(() => {
-            // Filter original dataset (do NOT mutate source array)
-            const filtered = autocompleteItems.filter((item) =>
-              item.label.toLowerCase().includes(query)
-            );
-            // Apply results
-            comp.items = filtered;
-            comp.showSpinner = false;
-          }, 2000);
-        };
+        //   // Simulated async fetch (2s)
+        //   debounceTimer = setTimeout(() => {
+        //     // Filter original dataset (do NOT mutate source array)
+        //     const filtered = autocompleteItems.filter((item) =>
+        //       item.label.toLowerCase().includes(query)
+        //     );
+        //     // Apply results
+        //     comp.items = filtered;
+        //     comp.showSpinner = false;
+        //   }, 2000);
+        // };
 
-        // Attach listener once (avoid duplicates if script re-executes)
-        if (autocomplete) {
-          autocomplete.removeEventListener('inputChange', handleInputChange);
-          autocomplete.addEventListener('inputChange', handleInputChange);
-        }
+        // // Attach listener once (avoid duplicates if script re-executes)
+        // if (autocomplete) {
+        //   autocomplete.removeEventListener('inputChange', handleInputChange);
+        //   autocomplete.addEventListener('inputChange', handleInputChange);
+        // }
+        
       </script>
     `;
   },
@@ -1018,170 +1019,170 @@ export const CustomMenuItems: Story = {
     // prettier-ignore
     return html`
 <script>
-const originalNoResults = args['no-results'];
-if (args['leave-menu-open'] == true) {
-  args['no-results'] = {
-    ariaLabel: '',
-    label: '',
-    subLabel: '',
-  };
-}
+// const originalNoResults = args['no-results'];
+// if (args['leave-menu-open'] == true) {
+//   args['no-results'] = {
+//     ariaLabel: '',
+//     label: '',
+//     subLabel: '',
+//   };
+// }
 
-const getVisibleItems = (autocomplete: Element): HTMLElement[] => {
-  const menuItems = autocomplete.querySelectorAll(
-    'modus-wc-menu-item:not([disabled])'
-  );
-  return Array.from(menuItems).filter(
-    (item: Element): item is HTMLElement => {
-      const style = window.getComputedStyle(item);
-      return style.display !== 'none' && !item.classList.contains('hidden');
-    }
-  );
-};
+// const getVisibleItems = (autocomplete: Element): HTMLElement[] => {
+//   const menuItems = autocomplete.querySelectorAll(
+//     'modus-wc-menu-item:not([disabled])'
+//   );
+//   return Array.from(menuItems).filter(
+//     (item: Element): item is HTMLElement => {
+//       const style = window.getComputedStyle(item);
+//       return style.display !== 'none' && !item.classList.contains('hidden');
+//     }
+//   );
+// };
 
-const handleCustomKeyDown = (e: KeyboardEvent) => {
-  const autocomplete = (e.target as HTMLInputElement).closest(
-    'modus-wc-autocomplete'
-  ) as Element & {
-    openMenu: () => Promise<void>;
-    closeMenu: () => Promise<void>;
-    readOnly?: boolean;
-    disabled?: boolean;
-  };
-  if (!autocomplete) return;
+// const handleCustomKeyDown = (e: KeyboardEvent) => {
+//   const autocomplete = (e.target as HTMLInputElement).closest(
+//     'modus-wc-autocomplete'
+//   ) as Element & {
+//     openMenu: () => Promise<void>;
+//     closeMenu: () => Promise<void>;
+//     readOnly?: boolean;
+//     disabled?: boolean;
+//   };
+//   if (!autocomplete) return;
 
-  // Don't process keyboard events when disabled or readOnly
-  if (autocomplete.disabled || autocomplete.readOnly) return;
+//   // Don't process keyboard events when disabled or readOnly
+//   if (autocomplete.disabled || autocomplete.readOnly) return;
 
-  const visibleItems = getVisibleItems(autocomplete);
+//   const visibleItems = getVisibleItems(autocomplete);
 
-  // Get all button elements within visible menu items
-  const buttons = visibleItems
-    .map((item) => item.querySelector('button'))
-    .filter(Boolean) as HTMLButtonElement[];
-  const currentFocusedButton = document.activeElement as HTMLButtonElement;
-  const currentIndex = buttons.indexOf(currentFocusedButton);
+//   // Get all button elements within visible menu items
+//   const buttons = visibleItems
+//     .map((item) => item.querySelector('button'))
+//     .filter(Boolean) as HTMLButtonElement[];
+//   const currentFocusedButton = document.activeElement as HTMLButtonElement;
+//   const currentIndex = buttons.indexOf(currentFocusedButton);
 
-  switch (e.key) {
-    case 'ArrowDown': {
-      e.preventDefault();
-      // Open menu when arrow key is pressed
-      void autocomplete.openMenu();
+//   switch (e.key) {
+//     case 'ArrowDown': {
+//       e.preventDefault();
+//       // Open menu when arrow key is pressed
+//       void autocomplete.openMenu();
 
-      let nextIndex = currentIndex + 1;
-      // Stop at the last item instead of wrapping
-      if (nextIndex >= buttons.length) return;
-      if (nextIndex < 0) nextIndex = 0;
+//       let nextIndex = currentIndex + 1;
+//       // Stop at the last item instead of wrapping
+//       if (nextIndex >= buttons.length) return;
+//       if (nextIndex < 0) nextIndex = 0;
 
-      buttons[nextIndex]?.focus();
-      break;
-    }
+//       buttons[nextIndex]?.focus();
+//       break;
+//     }
 
-    case 'ArrowUp': {
-      e.preventDefault();
-      // Open menu when arrow key is pressed
-      void autocomplete.openMenu();
+//     case 'ArrowUp': {
+//       e.preventDefault();
+//       // Open menu when arrow key is pressed
+//       void autocomplete.openMenu();
 
-      let prevIndex = currentIndex - 1;
-      // Stop at the first item instead of wrapping
-      if (prevIndex < 0) return;
+//       let prevIndex = currentIndex - 1;
+//       // Stop at the first item instead of wrapping
+//       if (prevIndex < 0) return;
 
-      buttons[prevIndex]?.focus();
-      break;
-    }
+//       buttons[prevIndex]?.focus();
+//       break;
+//     }
 
-    case 'Enter': {
-      e.preventDefault();
-      // If a button is focused, click it
-      if (buttons.includes(currentFocusedButton)) {
-        currentFocusedButton.click();
-      }
-      break;
-    }
+//     case 'Enter': {
+//       e.preventDefault();
+//       // If a button is focused, click it
+//       if (buttons.includes(currentFocusedButton)) {
+//         currentFocusedButton.click();
+//       }
+//       break;
+//     }
 
-    case 'Escape': {
-      e.preventDefault();
-      void autocomplete.closeMenu();
-      // Return focus to input
-      const input = autocomplete.querySelector('input');
-      input?.focus();
-      break;
-    }
-  }
-};
+//     case 'Escape': {
+//       e.preventDefault();
+//       void autocomplete.closeMenu();
+//       // Return focus to input
+//       const input = autocomplete.querySelector('input');
+//       input?.focus();
+//       break;
+//     }
+//   }
+// };
 
-const handleInputChange = (e: CustomEvent<Event>) => {
-  if (!e.detail?.target) return;
+// const handleInputChange = (e: CustomEvent<Event>) => {
+//   if (!e.detail?.target) return;
 
-  const autocomplete = (e.target as HTMLInputElement).closest(
-    'modus-wc-autocomplete'
-  ) as Element & { noResults: IAutocompleteNoResults };
+//   const autocomplete = (e.target as HTMLInputElement).closest(
+//     'modus-wc-autocomplete'
+//   ) as Element & { noResults: IAutocompleteNoResults };
 
-  if (autocomplete) {
-    const searchText = (
-      e.detail.target as HTMLInputElement
-    ).value.toLowerCase();
-    const menuItems = autocomplete?.querySelectorAll('modus-wc-menu-item');
+//   if (autocomplete) {
+//     const searchText = (
+//       e.detail.target as HTMLInputElement
+//     ).value.toLowerCase();
+//     const menuItems = autocomplete?.querySelectorAll('modus-wc-menu-item');
 
-    // Clear selected state when input is empty
-    if (searchText === '') {
-      menuItems?.forEach((item) => {
-        item.removeAttribute('selected');
-      });
-    }
+//     // Clear selected state when input is empty
+//     if (searchText === '') {
+//       menuItems?.forEach((item) => {
+//         item.removeAttribute('selected');
+//       });
+//     }
 
-    let hiddenCount = 0;
-    Array.from(menuItems ?? []).forEach((menuItem) => {
-      const label = menuItem.getAttribute('label')?.toLowerCase() || '';
-      if (!label.includes(searchText)) {
-        menuItem.classList.add('hidden');
-        hiddenCount++;
-      } else {
-        menuItem.classList.remove('hidden');
-      }
-    });
+//     let hiddenCount = 0;
+//     Array.from(menuItems ?? []).forEach((menuItem) => {
+//       const label = menuItem.getAttribute('label')?.toLowerCase() || '';
+//       if (!label.includes(searchText)) {
+//         menuItem.classList.add('hidden');
+//         hiddenCount++;
+//       } else {
+//         menuItem.classList.remove('hidden');
+//       }
+//     });
 
-    // Show no results if all items are hidden
-    autocomplete.noResults =
-      hiddenCount === menuItems?.length
-        ? originalNoResults
-        : { ariaLabel: '', label: '', subLabel: '' };
+//     // Show no results if all items are hidden
+//     autocomplete.noResults =
+//       hiddenCount === menuItems?.length
+//         ? originalNoResults
+//         : { ariaLabel: '', label: '', subLabel: '' };
 
-    // Show/hide the no results element
-    const noResultsElement = autocomplete.querySelector('.no-results-item') as HTMLElement;
-    if (noResultsElement) {
-      if (hiddenCount === menuItems?.length) {
-        noResultsElement.classList.add('visible');
-      } else {
-        noResultsElement.classList.remove('visible');
-      }
-    }
-  }
-};
+//     // Show/hide the no results element
+//     const noResultsElement = autocomplete.querySelector('.no-results-item') as HTMLElement;
+//     if (noResultsElement) {
+//       if (hiddenCount === menuItems?.length) {
+//         noResultsElement.classList.add('visible');
+//       } else {
+//         noResultsElement.classList.remove('visible');
+//       }
+//     }
+//   }
+// };
 
-const handleItemSelect = (e: CustomEvent<{ value: string }>) => {
-  const autocomplete = (e.target as HTMLInputElement).closest(
-    'modus-wc-autocomplete'
-  ) as HTMLElement & { value: string; closeMenu: () => Promise<void> };
+// const handleItemSelect = (e: CustomEvent<{ value: string }>) => {
+//   const autocomplete = (e.target as HTMLInputElement).closest(
+//     'modus-wc-autocomplete'
+//   ) as HTMLElement & { value: string; closeMenu: () => Promise<void> };
 
-  if (autocomplete) {
-    const selectedValue = e.detail.value;
-    autocomplete.value = selectedValue;
-    // Update selected state on menu items
-    const menuItems = autocomplete.querySelectorAll('modus-wc-menu-item');
-    menuItems.forEach((item) => {
-      if (item.getAttribute('value') === selectedValue) {
-        item.setAttribute('selected', 'true');
-      } else {
-        item.removeAttribute('selected');
-      }
-    });
-    // Close menu after selection unless leaveMenuOpen is true
-    if (!args['leave-menu-open']) {
-      void autocomplete.closeMenu();
-    }
-  }
-};
+//   if (autocomplete) {
+//     const selectedValue = e.detail.value;
+//     autocomplete.value = selectedValue;
+//     // Update selected state on menu items
+//     const menuItems = autocomplete.querySelectorAll('modus-wc-menu-item');
+//     menuItems.forEach((item) => {
+//       if (item.getAttribute('value') === selectedValue) {
+//         item.setAttribute('selected', 'true');
+//       } else {
+//         item.removeAttribute('selected');
+//       }
+//     });
+//     // Close menu after selection unless leaveMenuOpen is true
+//     if (!args['leave-menu-open']) {
+//       void autocomplete.closeMenu();
+//     }
+//   }
+// };
 </script>
 <style>
 div[id^='story--components-forms-autocomplete--custom-menu-items'] {
@@ -1563,191 +1564,191 @@ export const CustomEventHandlers: Story = {
         // autocomplete.items = autocompleteItems;
 
         // Custom keydown handler with skip navigation and escape animation
-        const customKeyDown = (e) => {
-          const autocomplete = document.getElementById(
-            'autocomplete-custom-event-handlers'
-          );
-          if (!autocomplete) return;
+        // const customKeyDown = (e) => {
+        //   const autocomplete = document.getElementById(
+        //     'autocomplete-custom-event-handlers'
+        //   );
+        //   if (!autocomplete) return;
 
-          // Prevent default for navigation keys
-          if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
-            e.preventDefault();
-          }
+        //   // Prevent default for navigation keys
+        //   if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
+        //     e.preventDefault();
+        //   }
 
-          const visibleItems = autocomplete.items.filter(
-            (item) => item.visibleInMenu && !item.disabled
-          );
+        //   const visibleItems = autocomplete.items.filter(
+        //     (item) => item.visibleInMenu && !item.disabled
+        //   );
 
-          switch (e.key) {
-            case 'Escape':
-              autocomplete.items = autocomplete.items.map((item) => ({
-                ...item,
-                focused: false,
-              }));
-              void autocomplete.closeMenu();
-              // Custom: Show escape animation
-              autocomplete.style.transform = 'scale(0.98)';
-              setTimeout(() => {
-                autocomplete.style.transform = '';
-              }, 200);
-              break;
+        //   switch (e.key) {
+        //     case 'Escape':
+        //       autocomplete.items = autocomplete.items.map((item) => ({
+        //         ...item,
+        //         focused: false,
+        //       }));
+        //       void autocomplete.closeMenu();
+        //       // Custom: Show escape animation
+        //       autocomplete.style.transform = 'scale(0.98)';
+        //       setTimeout(() => {
+        //         autocomplete.style.transform = '';
+        //       }, 200);
+        //       break;
 
-            case 'ArrowDown': {
-              // Open menu if not already open
-              void autocomplete.openMenu();
+        //     case 'ArrowDown': {
+        //       // Open menu if not already open
+        //       void autocomplete.openMenu();
 
-              const currentIndex = visibleItems.findIndex(
-                (item) => item.focused
-              );
-              const nextIndex =
-                currentIndex < 0
-                  ? 0
-                  : Math.min(currentIndex + 1, visibleItems.length - 1);
+        //       const currentIndex = visibleItems.findIndex(
+        //         (item) => item.focused
+        //       );
+        //       const nextIndex =
+        //         currentIndex < 0
+        //           ? 0
+        //           : Math.min(currentIndex + 1, visibleItems.length - 1);
 
-              // Custom: Skip every other item for faster navigation
-              const skipIndex =
-                nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
+        //       // Custom: Skip every other item for faster navigation
+        //       const skipIndex =
+        //         nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
 
-              autocomplete.items = autocomplete.items.map((item) => ({
-                ...item,
-                focused: visibleItems[skipIndex]?.value === item.value,
-              }));
-              break;
-            }
+        //       autocomplete.items = autocomplete.items.map((item) => ({
+        //         ...item,
+        //         focused: visibleItems[skipIndex]?.value === item.value,
+        //       }));
+        //       break;
+        //     }
 
-            case 'ArrowUp': {
-              const currentIndex = visibleItems.findIndex(
-                (item) => item.focused
-              );
-              const prevIndex =
-                currentIndex < 0
-                  ? visibleItems.length - 1
-                  : Math.max(currentIndex - 1, 0);
+        //     case 'ArrowUp': {
+        //       const currentIndex = visibleItems.findIndex(
+        //         (item) => item.focused
+        //       );
+        //       const prevIndex =
+        //         currentIndex < 0
+        //           ? visibleItems.length - 1
+        //           : Math.max(currentIndex - 1, 0);
 
-              // Custom: Skip every other item for faster navigation
-              const skipIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
+        //       // Custom: Skip every other item for faster navigation
+        //       const skipIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
 
-              autocomplete.items = autocomplete.items.map((item) => ({
-                ...item,
-                focused: visibleItems[skipIndex]?.value === item.value,
-              }));
-              break;
-            }
+        //       autocomplete.items = autocomplete.items.map((item) => ({
+        //         ...item,
+        //         focused: visibleItems[skipIndex]?.value === item.value,
+        //       }));
+        //       break;
+        //     }
 
-            case 'Enter': {
-              const focusedItem = visibleItems.find((item) => item.focused);
-              if (focusedItem) {
-                // For single select, clear previous selection
-                autocomplete.items = autocomplete.items.map((item) => ({
-                  ...item,
-                  selected: item.value === focusedItem.value,
-                  focused: false,
-                }));
-                autocomplete.value = focusedItem.label;
-                void autocomplete.closeMenu();
-              }
-              break;
-            }
+        //     case 'Enter': {
+        //       const focusedItem = visibleItems.find((item) => item.focused);
+        //       if (focusedItem) {
+        //         // For single select, clear previous selection
+        //         autocomplete.items = autocomplete.items.map((item) => ({
+        //           ...item,
+        //           selected: item.value === focusedItem.value,
+        //           focused: false,
+        //         }));
+        //         autocomplete.value = focusedItem.label;
+        //         void autocomplete.closeMenu();
+        //       }
+        //       break;
+        //     }
 
-            default:
-              return;
-          }
-        };
+        //     default:
+        //       return;
+        //   }
+        // };
 
-        // Custom input change handler with fuzzy character matching
-        const customInputChange = (value) => {
-          const autocomplete = document.getElementById(
-            'autocomplete-custom-event-handlers'
-          );
-          if (!autocomplete) return;
+        // // Custom input change handler with fuzzy character matching
+        // const customInputChange = (value) => {
+        //   const autocomplete = document.getElementById(
+        //     'autocomplete-custom-event-handlers'
+        //   );
+        //   if (!autocomplete) return;
 
-          const searchChars = value.toLowerCase().split('');
+        //   const searchChars = value.toLowerCase().split('');
 
-          // Custom fuzzy search: Match items that contain ALL typed characters (in any order)
-          if (value.length > 0) {
-            // Calculate match score for each item
-            const scoredItems = autocomplete.items.map((item) => {
-              const itemLower = item.label.toLowerCase();
-              let score = 0;
-              let allCharsFound = true;
+        //   // Custom fuzzy search: Match items that contain ALL typed characters (in any order)
+        //   if (value.length > 0) {
+        //     // Calculate match score for each item
+        //     const scoredItems = autocomplete.items.map((item) => {
+        //       const itemLower = item.label.toLowerCase();
+        //       let score = 0;
+        //       let allCharsFound = true;
 
-              // Check if all search characters exist in the item
-              for (const char of searchChars) {
-                if (itemLower.includes(char)) {
-                  // Bonus points for consecutive characters
-                  const charIndex = itemLower.indexOf(char);
-                  if (charIndex === 0)
-                    score += 3; // Start of word bonus
-                  else if (itemLower[charIndex - 1] === ' ')
-                    score += 2; // Start of any word
-                  else score += 1;
-                } else {
-                  allCharsFound = false;
-                  break;
-                }
-              }
+        //       // Check if all search characters exist in the item
+        //       for (const char of searchChars) {
+        //         if (itemLower.includes(char)) {
+        //           // Bonus points for consecutive characters
+        //           const charIndex = itemLower.indexOf(char);
+        //           if (charIndex === 0)
+        //             score += 3; // Start of word bonus
+        //           else if (itemLower[charIndex - 1] === ' ')
+        //             score += 2; // Start of any word
+        //           else score += 1;
+        //         } else {
+        //           allCharsFound = false;
+        //           break;
+        //         }
+        //       }
 
-              // Additional bonus for exact substring match
-              if (allCharsFound && itemLower.includes(value.toLowerCase())) {
-                score += 10;
-              }
+        //       // Additional bonus for exact substring match
+        //       if (allCharsFound && itemLower.includes(value.toLowerCase())) {
+        //         score += 10;
+        //       }
 
-              return {
-                item,
-                score: allCharsFound ? score : -1,
-                visible: allCharsFound,
-              };
-            });
+        //       return {
+        //         item,
+        //         score: allCharsFound ? score : -1,
+        //         visible: allCharsFound,
+        //       };
+        //     });
 
-            // Sort by score (highest first) and update items
-            scoredItems.sort((a, b) => b.score - a.score);
-            autocomplete.items = scoredItems.map(({ item, visible }) => ({
-              ...item,
-              visibleInMenu: visible,
-              focused: false,
-              selected: item.selected && visible,
-              // Add score as part of label for demonstration (you can remove this in production)
-              label: item.label,
-            }));
-          } else {
-            // No search text, show all items
-            autocomplete.items = autocomplete.items.map((item) => ({
-              ...item,
-              visibleInMenu: true,
-              focused: false,
-            }));
-          }
+        //     // Sort by score (highest first) and update items
+        //     scoredItems.sort((a, b) => b.score - a.score);
+        //     autocomplete.items = scoredItems.map(({ item, visible }) => ({
+        //       ...item,
+        //       visibleInMenu: visible,
+        //       focused: false,
+        //       selected: item.selected && visible,
+        //       // Add score as part of label for demonstration (you can remove this in production)
+        //       label: item.label,
+        //     }));
+        //   } else {
+        //     // No search text, show all items
+        //     autocomplete.items = autocomplete.items.map((item) => ({
+        //       ...item,
+        //       visibleInMenu: true,
+        //       focused: false,
+        //     }));
+        //   }
 
-          autocomplete.value = value;
+        //   autocomplete.value = value;
 
-          // Show menu if there are visible items
-          const hasVisibleItems = autocomplete.items.some(
-            (item) => item.visibleInMenu
-          );
-          if (hasVisibleItems && value.length >= 0) {
-            void autocomplete.openMenu();
-          } else {
-            void autocomplete.closeMenu();
-          }
-        };
+        //   // Show menu if there are visible items
+        //   const hasVisibleItems = autocomplete.items.some(
+        //     (item) => item.visibleInMenu
+        //   );
+        //   if (hasVisibleItems && value.length >= 0) {
+        //     void autocomplete.openMenu();
+        //   } else {
+        //     void autocomplete.closeMenu();
+        //   }
+        // };
 
-        // Custom item select handler
-        const customItemSelect = (item) => {
-          const autocomplete = document.getElementById(
-            'autocomplete-custom-event-handlers'
-          );
-          if (!autocomplete) return;
+        // // Custom item select handler
+        // const customItemSelect = (item) => {
+        //   const autocomplete = document.getElementById(
+        //     'autocomplete-custom-event-handlers'
+        //   );
+        //   if (!autocomplete) return;
 
-          // Clear previous selections for single select
-          autocomplete.items = autocomplete.items.map((menuItem) => ({
-            ...menuItem,
-            selected: menuItem.value === item.value,
-            focused: false,
-          }));
+        //   // Clear previous selections for single select
+        //   autocomplete.items = autocomplete.items.map((menuItem) => ({
+        //     ...menuItem,
+        //     selected: menuItem.value === item.value,
+        //     focused: false,
+        //   }));
 
-          autocomplete.value = item.label;
-          void autocomplete.closeMenu();
-        };
+        //   autocomplete.value = item.label;
+        //   void autocomplete.closeMenu();
+        // };
 
         // Attach the custom handlers to the autocomplete component
         // autocomplete.customKeyDown = customKeyDown;
@@ -1997,77 +1998,77 @@ export const WithProgrammaticControl: Story = {
         </div>
       </modus-wc-card>
       <script type="module">
-        const handleSelectApple = async () => {
-          const autocomplete = document.getElementById(
-            'programmatic-autocomplete'
-          );
-          if (autocomplete) {
-            const appleItem =
-              autocompleteItems.find((item) => item.value === 'apple') || null;
-            await autocomplete.selectItem(appleItem);
-          }
-        };
+      //   const handleSelectApple = async () => {
+      //     const autocomplete = document.getElementById(
+      //       'programmatic-autocomplete'
+      //     );
+      //     if (autocomplete) {
+      //       const appleItem =
+      //         autocompleteItems.find((item) => item.value === 'apple') || null;
+      //       await autocomplete.selectItem(appleItem);
+      //     }
+      //   };
 
-        const handleSelectNull = async () => {
-          const autocomplete = document.getElementById(
-            'programmatic-autocomplete'
-          );
-          if (autocomplete) {
-            await autocomplete.selectItem(null);
-          }
-        };
+      //   const handleSelectNull = async () => {
+      //     const autocomplete = document.getElementById(
+      //       'programmatic-autocomplete'
+      //     );
+      //     if (autocomplete) {
+      //       await autocomplete.selectItem(null);
+      //     }
+      //   };
 
-        const handleOpenMenu = async () => {
-          const autocomplete = document.getElementById(
-            'programmatic-autocomplete'
-          );
-          if (autocomplete) {
-            await autocomplete.openMenu();
-          }
-        };
+      //   const handleOpenMenu = async () => {
+      //     const autocomplete = document.getElementById(
+      //       'programmatic-autocomplete'
+      //     );
+      //     if (autocomplete) {
+      //       await autocomplete.openMenu();
+      //     }
+      //   };
 
-        const handleCloseMenu = async () => {
-          const autocomplete = document.getElementById(
-            'programmatic-autocomplete'
-          );
-          if (autocomplete) {
-            await autocomplete.closeMenu();
-          }
-        };
+      //   const handleCloseMenu = async () => {
+      //     const autocomplete = document.getElementById(
+      //       'programmatic-autocomplete'
+      //     );
+      //     if (autocomplete) {
+      //       await autocomplete.closeMenu();
+      //     }
+      //   };
 
-        const handleToggleMenu = async () => {
-          const autocomplete = document.getElementById(
-            'programmatic-autocomplete'
-          );
-          if (autocomplete) {
-            await autocomplete.toggleMenu();
-          }
-        };
+      //   const handleToggleMenu = async () => {
+      //     const autocomplete = document.getElementById(
+      //       'programmatic-autocomplete'
+      //     );
+      //     if (autocomplete) {
+      //       await autocomplete.toggleMenu();
+      //     }
+      //   };
 
-        const handleFocusInput = async () => {
-          const autocomplete = document.getElementById(
-            'programmatic-autocomplete'
-          );
-          if (autocomplete) {
-            await autocomplete.focusInput();
-          }
-        };
+      //   const handleFocusInput = async () => {
+      //     const autocomplete = document.getElementById(
+      //       'programmatic-autocomplete'
+      //     );
+      //     if (autocomplete) {
+      //       await autocomplete.focusInput();
+      //     }
+      //   };
 
-        const handleClearInput = async () => {
-          const autocomplete = document.getElementById(
-            'programmatic-autocomplete'
-          );
-          if (autocomplete) {
-            await autocomplete.clearInput();
-          }
-        };
-        window.handleSelectApple = handleSelectApple;
-        window.handleSelectNull = handleSelectNull;
-        window.handleOpenMenu = handleOpenMenu;
-        window.handleCloseMenu = handleCloseMenu;
-        window.handleToggleMenu = handleToggleMenu;
-        window.handleFocusInput = handleFocusInput;
-        window.handleClearInput = handleClearInput;
+      //   const handleClearInput = async () => {
+      //     const autocomplete = document.getElementById(
+      //       'programmatic-autocomplete'
+      //     );
+      //     if (autocomplete) {
+      //       await autocomplete.clearInput();
+      //     }
+      //   };
+      //   window.handleSelectApple = handleSelectApple;
+      //   window.handleSelectNull = handleSelectNull;
+      //   window.handleOpenMenu = handleOpenMenu;
+      //   window.handleCloseMenu = handleCloseMenu;
+      //   window.handleToggleMenu = handleToggleMenu;
+      //   window.handleFocusInput = handleFocusInput;
+      //   window.handleClearInput = handleClearInput;
       </script>
 
       <modus-wc-autocomplete
@@ -2353,8 +2354,8 @@ export const DynamicOptions: Story = {
           // autocomplete.items = [...defaultFruits];
 
           // Attach event listeners
-          autocomplete.addEventListener('inputChange', handleInputChange);
-          autocomplete.addEventListener('itemSelect', handleItemSelect);
+          // autocomplete.addEventListener('inputChange', handleInputChange);
+          // autocomplete.addEventListener('itemSelect', handleItemSelect);
         }
       </script>
     `;
