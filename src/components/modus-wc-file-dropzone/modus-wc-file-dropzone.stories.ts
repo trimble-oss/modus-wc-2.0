@@ -170,19 +170,30 @@ export const withReset: Story = {
       }
     };
 
+    //prettier-ignore
     return html`
-      <div style="display: flex; flex-direction: column; gap: 1rem;">
-        <modus-wc-file-dropzone
-          id="resetable-dropzone"
-          accept-file-types=${ifDefined(args['accept-file-types'])}
-          success-message=${ifDefined(args['success-message'])}
-          instructions="Upload files and use the reset button below"
-        ></modus-wc-file-dropzone>
+<script>
+  const resetDropzone = () => {
+      const dropzone = document.getElementById(
+        'resetable-dropzone'
+      ) as HTMLElement & { reset?: () => void };
+      if (dropzone?.reset) {
+        dropzone.reset();
+      }
+    };
+</script>
 
-        <modus-wc-button variant="secondary" @buttonClick=${resetDropzone}>
-          Reset Dropzone
-        </modus-wc-button>
-      </div>
+<div style="display: flex; flex-direction: column; gap: 1rem;">
+<modus-wc-file-dropzone
+id="resetable-dropzone"
+accept-file-types=${ifDefined(args['accept-file-types'])}
+success-message=${ifDefined(args['success-message'])}
+instructions="Upload files and use the reset button below"
+></modus-wc-file-dropzone>
+<modus-wc-button variant="secondary" @buttonClick=${resetDropzone}>
+  Reset Dropzone
+</modus-wc-button>
+</div>
     `;
   },
 };
