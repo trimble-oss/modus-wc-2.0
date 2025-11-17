@@ -679,6 +679,7 @@ export const MultiSelect: Story = {
         ?disabled=${args.disabled}
         ?include-clear=${args['include-clear']}
         ?include-search=${args['include-search']}
+        id="fruit-autocomplete"
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         .items=${args.items}
@@ -1020,173 +1021,6 @@ export const CustomMenuItems: Story = {
     };
     // prettier-ignore
     return html`
-<script>
-//  //Commenting out the scripts to avoid duplicate declaration in storybook code
-// const originalNoResults = args['no-results'];
-// if (args['leave-menu-open'] == true) {
-//   args['no-results'] = {
-//     ariaLabel: '',
-//     label: '',
-//     subLabel: '',
-//   };
-// }
-
-// const getVisibleItems = (autocomplete: Element): HTMLElement[] => {
-//   const menuItems = autocomplete.querySelectorAll(
-//     'modus-wc-menu-item:not([disabled])'
-//   );
-//   return Array.from(menuItems).filter(
-//     (item: Element): item is HTMLElement => {
-//       const style = window.getComputedStyle(item);
-//       return style.display !== 'none' && !item.classList.contains('hidden');
-//     }
-//   );
-// };
-
-// const handleCustomKeyDown = (e: KeyboardEvent) => {
-//   const autocomplete = (e.target as HTMLInputElement).closest(
-//     'modus-wc-autocomplete'
-//   ) as Element & {
-//     openMenu: () => Promise<void>;
-//     closeMenu: () => Promise<void>;
-//     readOnly?: boolean;
-//     disabled?: boolean;
-//   };
-//   if (!autocomplete) return;
-
-//   // Don't process keyboard events when disabled or readOnly
-//   if (autocomplete.disabled || autocomplete.readOnly) return;
-
-//   const visibleItems = getVisibleItems(autocomplete);
-
-//   // Get all button elements within visible menu items
-//   const buttons = visibleItems
-//     .map((item) => item.querySelector('button'))
-//     .filter(Boolean) as HTMLButtonElement[];
-//   const currentFocusedButton = document.activeElement as HTMLButtonElement;
-//   const currentIndex = buttons.indexOf(currentFocusedButton);
-
-//   switch (e.key) {
-//     case 'ArrowDown': {
-//       e.preventDefault();
-//       // Open menu when arrow key is pressed
-//       void autocomplete.openMenu();
-
-//       let nextIndex = currentIndex + 1;
-//       // Stop at the last item instead of wrapping
-//       if (nextIndex >= buttons.length) return;
-//       if (nextIndex < 0) nextIndex = 0;
-
-//       buttons[nextIndex]?.focus();
-//       break;
-//     }
-
-//     case 'ArrowUp': {
-//       e.preventDefault();
-//       // Open menu when arrow key is pressed
-//       void autocomplete.openMenu();
-
-//       let prevIndex = currentIndex - 1;
-//       // Stop at the first item instead of wrapping
-//       if (prevIndex < 0) return;
-
-//       buttons[prevIndex]?.focus();
-//       break;
-//     }
-
-//     case 'Enter': {
-//       e.preventDefault();
-//       // If a button is focused, click it
-//       if (buttons.includes(currentFocusedButton)) {
-//         currentFocusedButton.click();
-//       }
-//       break;
-//     }
-
-//     case 'Escape': {
-//       e.preventDefault();
-//       void autocomplete.closeMenu();
-//       // Return focus to input
-//       const input = autocomplete.querySelector('input');
-//       input?.focus();
-//       break;
-//     }
-//   }
-// };
-
-// const handleInputChange = (e: CustomEvent<Event>) => {
-//   if (!e.detail?.target) return;
-
-//   const autocomplete = (e.target as HTMLInputElement).closest(
-//     'modus-wc-autocomplete'
-//   ) as Element & { noResults: IAutocompleteNoResults };
-
-//   if (autocomplete) {
-//     const searchText = (
-//       e.detail.target as HTMLInputElement
-//     ).value.toLowerCase();
-//     const menuItems = autocomplete?.querySelectorAll('modus-wc-menu-item');
-
-//     // Clear selected state when input is empty
-//     if (searchText === '') {
-//       menuItems?.forEach((item) => {
-//         item.removeAttribute('selected');
-//       });
-//     }
-
-//     let hiddenCount = 0;
-//     Array.from(menuItems ?? []).forEach((menuItem) => {
-//       const label = menuItem.getAttribute('label')?.toLowerCase() || '';
-//       if (!label.includes(searchText)) {
-//         menuItem.classList.add('hidden');
-//         hiddenCount++;
-//       } else {
-//         menuItem.classList.remove('hidden');
-//       }
-//     });
-
-//     // Show no results if all items are hidden
-//     autocomplete.noResults =
-//       hiddenCount === menuItems?.length
-//         ? originalNoResults
-//         : { ariaLabel: '', label: '', subLabel: '' };
-
-//     // Show/hide the no results element
-//     const noResultsElement = autocomplete.querySelector('.no-results-item') as HTMLElement;
-//     if (noResultsElement) {
-//       if (hiddenCount === menuItems?.length) {
-//         noResultsElement.classList.add('visible');
-//       } else {
-//         noResultsElement.classList.remove('visible');
-//       }
-//     }
-//   }
-// };
-
-// const handleItemSelect = (e: CustomEvent<{ value: string }>) => {
-//   const autocomplete = (e.target as HTMLInputElement).closest(
-//     'modus-wc-autocomplete'
-//   ) as HTMLElement & { value: string; closeMenu: () => Promise<void> };
-
-//   if (autocomplete) {
-//     const selectedValue = e.detail.value;
-//     autocomplete.value = selectedValue;
-//     // Update selected state on menu items
-//     const menuItems = autocomplete.querySelectorAll('modus-wc-menu-item');
-//     menuItems.forEach((item) => {
-//       if (item.getAttribute('value') === selectedValue) {
-//         item.setAttribute('selected', 'true');
-//       } else {
-//         item.removeAttribute('selected');
-//       }
-//     });
-//     // Close menu after selection unless leaveMenuOpen is true
-//     if (!args['leave-menu-open']) {
-//       void autocomplete.closeMenu();
-//     }
-//   }
-// };
-</script>
 <style>
 div[id^='story--components-forms-autocomplete--custom-menu-items'] {
   height: 400px;
@@ -2385,16 +2219,16 @@ export const Migration: Story = {
 | 1.0 Prop                      | 2.0 Prop            | Notes                                                       |
 |-------------------------------|---------------------|-------------------------------------------------------------|
 | aria-label                    | aria-label          |                                                             |
-| clearable                     |                     | Upcoming feature                                            |
+| clearable                     | include-clear       |                                                    |
 | disabled                      | disabled            |                                                             |
 | disable-close-on-select       | leave-menu-open     |                                                             |
 | dropdown-max-height           |                     | Not carried over, use CSS instead                           |
 | dropdown-z-index              |                     | Not carried over, use CSS instead                           |
 | error-text                    | feedback.message    | Use feedback level                                          |
 | filter-options                |                     | Rebind options                                              |
-| include-search-icon           |                     | Coming soon                                                 |
+| include-search-icon           | include-search      |                                                             |
 | label                         | label               |                                                             |
-| loading                       |                     | Upcoming feature                                            |
+| loading                       | show-spinner        |                                                             |
 | multiple                      | multi-select        |                                                             |
 | no-results-found-text         | no-results.label    |                                                             |
 | no-results-found-subtext      | no-results.subLabel |                                                             |
@@ -2403,7 +2237,7 @@ export const Migration: Story = {
 | read-only                     | read-only           |                                                             |
 | required                      | required            |                                                             |
 | show-no-results-found-message |                     | Not carried over, use \`no-results\` prop                   |
-| show-options-on-focus         |                     | Not carried over                                            |
+| show-options-on-focus         | show-menu-on-focus  |                                                             |
 | size                          | size                | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
 | value                         | value               |                                                             |
 
