@@ -174,7 +174,6 @@ const Template: Story = {
   //   menuItems.forEach(item => {
   //     item.addEventListener('itemSelect', handleItemSelect);
   //   });
-  
 </script>
 
 <div class="value">
