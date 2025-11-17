@@ -379,6 +379,7 @@ export class ModusWcDate {
     }
 
     this.showCalendar = false;
+    this.hasFocus = false;
     this.inputBlur.emit(new FocusEvent('blur', { bubbles: true }));
   };
 
