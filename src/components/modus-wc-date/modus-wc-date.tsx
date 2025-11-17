@@ -127,6 +127,9 @@ export class ModusWcDate {
   /** The first day of the week for the calendar display */
   @Prop() weekStartDay?: WeekStartDay = 'sunday';
 
+  /** Show week numbers in the calendar */
+  @Prop() showWeekNumbers?: boolean = false;
+
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
@@ -788,7 +791,13 @@ export class ModusWcDate {
 
     return (
       <div class="calendar-body">
-        <div class="calendar-days-week">
+        <div
+          class={{
+            'calendar-days-week': true,
+            'has-week-numbers': this.showWeekNumbers || false,
+          }}
+        >
+          {this.showWeekNumbers && <div class="week-number-header"></div>}
           {this.calendar
             .getDaysOfWeek(
               'default',
@@ -798,10 +807,26 @@ export class ModusWcDate {
               return <div class="day-header">{d}</div>;
             })}
         </div>
-        <div class="calendar-dates">
-          {this.calendar.dates.map((date) => {
+        <div
+          class={{
+            'calendar-dates': true,
+            'has-week-numbers': this.showWeekNumbers || false,
+          }}
+        >
+          {this.calendar.dates.map((date, index) => {
+            // Add week number at the start of each row (every 7 days)
+            const weekNumberElement =
+              this.showWeekNumbers && index % 7 === 0 ? (
+                <div
+                  class="week-number"
+                  aria-label={`Week ${this.calendar.getWeekNumber(date)}`}
+                >
+                  {this.calendar.getWeekNumber(date)}
+                </div>
+              ) : null;
+
             if (!date) {
-              return null;
+              return weekNumberElement;
             }
 
             const isToday = this.compareDate(date, today) === 0;
@@ -811,7 +836,8 @@ export class ModusWcDate {
             const isCurrentMonth = date.getMonth() === currentMonth;
             const isDisabled = this.isDateDisabled(date);
 
-            return (
+            return [
+              weekNumberElement,
               <button
                 type="button"
                 class={{
@@ -828,8 +854,8 @@ export class ModusWcDate {
                 tabIndex={isDisabled ? -1 : 0}
               >
                 {date.getDate()}
-              </button>
-            );
+              </button>,
+            ];
           })}
         </div>
       </div>
@@ -1111,7 +1137,13 @@ export class ModusWcDate {
         </div>
 
         {this.showCalendar && (
-          <div ref={(el) => (this.calendarRef = el)} class="calendar-container">
+          <div
+            ref={(el) => (this.calendarRef = el)}
+            class={{
+              'calendar-container': true,
+              'has-week-numbers': this.showWeekNumbers || false,
+            }}
+          >
             {this.renderCalendarHeader()}
             {this.renderCalendarBody()}
           </div>

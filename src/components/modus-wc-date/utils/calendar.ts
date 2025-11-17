@@ -58,6 +58,22 @@ export default class DatePickerCalendar {
     return daysOfWeek;
   }
 
+  /**
+   * Get ISO week number for a given date
+   * ISO 8601: Week 1 is the week with the year's first Thursday
+   */
+  getWeekNumber(date: Date): number {
+    const temp = new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+    );
+    const day = temp.getUTCDay() || 7; // Sunday → 7
+    temp.setUTCDate(temp.getUTCDate() + 4 - day);
+    const yearStart = new Date(Date.UTC(temp.getUTCFullYear(), 0, 1));
+    return Math.ceil(
+      ((temp.getTime() - yearStart.getTime()) / 86400000 + 1) / 7
+    );
+  }
+
   private calculateDates(): void {
     const dates: Date[] = [];
     const year = this.currentDate.getFullYear();

@@ -540,6 +540,10 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
+          * Show week numbers in the calendar
+         */
+        "showWeekNumbers"?: boolean;
+        /**
           * The size of the input.
          */
         "size"?: ModusSize;
@@ -833,9 +837,9 @@ export namespace Components {
          */
         "checkbox"?: boolean;
         /**
-          * Collapse all submenus when set to true
+          * Public method to collapse the submenu if it's expanded
          */
-        "collapseAll"?: boolean;
+        "collapseSubmenu": () => Promise<void>;
         /**
           * Custom CSS class to apply to the li element.
          */
@@ -3450,6 +3454,10 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
+          * Show week numbers in the calendar
+         */
+        "showWeekNumbers"?: boolean;
+        /**
           * The size of the input.
          */
         "size"?: ModusSize;
@@ -3754,10 +3762,6 @@ declare namespace LocalJSX {
           * If true, renders a checkbox at the start of the menu item.
          */
         "checkbox"?: boolean;
-        /**
-          * Collapse all submenus when set to true
-         */
-        "collapseAll"?: boolean;
         /**
           * Custom CSS class to apply to the li element.
          */

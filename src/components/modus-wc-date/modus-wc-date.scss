@@ -18,6 +18,7 @@ modus-wc-date .modus-wc-date-input {
 // Calendar styles
 modus-wc-date {
   --calendar-grid-columns: repeat(7, 1fr);
+  --calendar-grid-columns-with-week-numbers: auto repeat(7, 1fr);
 
   position: relative;
 
@@ -55,6 +56,10 @@ modus-wc-date {
     position: fixed;
     width: 272px;
     z-index: 9999;
+
+    &.has-week-numbers {
+      width: 320px;
+    }
 
     .calendar-header {
       align-items: center;
@@ -100,6 +105,18 @@ modus-wc-date {
         grid-template-columns: var(--calendar-grid-columns);
         margin-bottom: var(--modus-wc-spacing-sm);
 
+        &.has-week-numbers {
+          grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
+        }
+
+        .week-number-header {
+          color: var(--modus-wc-color-base-content-hight-contrast);
+          font-weight: var(--modus-wc-font-weight-bold);
+          margin-inline-end: var(--modus-wc-spacing-md);
+          padding: var(--modus-wc-spacing-xs);
+          text-align: center;
+        }
+
         .day-header {
           color: var(--modus-wc-color-base-content-hight-contrast);
           font-weight: var(--modus-wc-font-weight-bold);
@@ -111,6 +128,22 @@ modus-wc-date {
       .calendar-dates {
         display: grid;
         grid-template-columns: var(--calendar-grid-columns);
+
+        &.has-week-numbers {
+          grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
+        }
+
+        .week-number {
+          align-items: center;
+          border-inline-end: 1px solid var(--modus-wc-color-gray-4);
+          color: var(--modus-wc-color-base-content-hight-contrast);
+          display: flex;
+          font-size: var(--modus-wc-font-size-sm);
+          font-weight: var(--modus-wc-font-weight-bold);
+          height: 32px;
+          justify-content: center;
+          padding-inline-end: var(--modus-wc-spacing-sm);
+        }
 
         .calendar-day {
           align-items: center;
