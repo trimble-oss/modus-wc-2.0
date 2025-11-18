@@ -38,14 +38,8 @@ const Template: Story = {
       height: 100%; /* fill height */
       background: #d9d9d969;
     }
-    .modus-wc-navbar-start {
-      justify-content: flex-start;
-    }
     .modus-wc-navbar-center {
       justify-content: center;
-    }
-    .modus-wc-navbar-end {
-      justify-content: flex-end;
     }
 </style>
 <modus-wc-toolbar custom-class="${ifDefined(args['custom-class'])}">
