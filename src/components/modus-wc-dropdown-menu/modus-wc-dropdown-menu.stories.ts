@@ -150,18 +150,18 @@ const Template: Story = {
   </div>
 </modus-wc-dropdown-menu>
 <script>
-  // Adding this block to handle menu item selection to update a label and close the dropdown via JS.
+  // //  Adding this block to handle menu item selection to update a label and close the dropdown via JS.
   // let selectedValue = '';
 
-  // const handleItemSelect = (event) {
-  //  Update the "Selected Value" label
+  // const handleItemSelect = (event) => {
+  // //  Update the "Selected Value" label
   //   selectedValue = event.detail.value;
   //   const displayElement = document.querySelector('#selected-value');
   //   if (displayElement) {
   //     displayElement.textContent = selectedValue;
   //   }
 
-  //   Close the dropdown menu when an item is selected
+  //   // Close the dropdown menu when an item is selected
   //   const dropdownMenu = event.target;
   //   const dropdownMenuElement = dropdownMenu.closest(
   //     'modus-wc-dropdown-menu'
