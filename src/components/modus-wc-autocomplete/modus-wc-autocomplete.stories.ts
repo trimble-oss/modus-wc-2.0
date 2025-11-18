@@ -699,21 +699,22 @@ export const MultiSelect: Story = {
         value=${args.value}
       ></modus-wc-autocomplete>
       <script>
-        //Commnenting out the scripts to avoid duplicate declaration in storybook code
+        //Commenting out the scripts to avoid duplicate declaration in storybook code
         // Add Autocomplete items
         ${Items}
-        // If multi-select, set selected state for some items
+          // // If multi-select, set selected state for some items
           // const itemsWithSelection = autocompleteItems.map((item) => {
           //   if (item.value === 'apple' || item.value === 'banana') {
           //     return { ...item, selected: true };
           //   }
           //   return item;
           // });
-          // Adding this block to show how to set items and pre-selected values via JS
+          //  // Adding this block to show how to set items and pre-selected values via JS
           // const autocomplete = document.getElementById('fruit-autocomplete');
           // if (autocomplete) {
           //   autocomplete.items = itemsWithSelection;
-          } 
+          // } 
+        </script>
     `;
   },
 };
@@ -791,8 +792,8 @@ export const WithSpinner: Story = {
       <script>
         //Commenting out the scripts to avoid duplicate declaration in storybook code
         // Add Autocomplete items
-        ${Items};
-        // Adding this block to show how to set items via JS
+         ${Items}
+        // // Adding this block to show how to set items via JS
         // const autocomplete = document.querySelector('modus-wc-autocomplete');
         // autocomplete.items = autocompleteItems;
         // autocomplete.showSpinner = true;
@@ -1401,7 +1402,7 @@ export const CustomEventHandlers: Story = {
         // const autocomplete = document.getElementById('autocomplete-custom-event-handlers');
         // autocomplete.items = autocompleteItems;
 
-        // Custom keydown handler with skip navigation and escape animation
+        // // Custom keydown handler with skip navigation and escape animation
         // const customKeyDown = (e) => {
         //   const autocomplete = document.getElementById(
         //     'autocomplete-custom-event-handlers'
@@ -1835,6 +1836,34 @@ export const WithProgrammaticControl: Story = {
           </div>
         </div>
       </modus-wc-card>
+      <modus-wc-autocomplete
+        id="programmatic-autocomplete"
+        aria-label="Programmatic control demo"
+        ?bordered=${args.bordered}
+        custom-class=${ifDefined(args['custom-class'])}
+        debounce-ms=${ifDefined(args['debounce-ms'])}
+        ?disabled=${args.disabled}
+        ?include-clear=${args['include-clear']}
+        ?include-search=${args['include-search']}
+        input-id=${ifDefined(args['input-id'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
+        .items=${args.items}
+        label="Try the control buttons above"
+        ?leave-menu-open=${args['leave-menu-open']}
+        max-chips=${args['max-chips'] ?? 4}
+        min-chars=${args['min-chars']}
+        min-input-width=${ifDefined(args['min-input-width'])}
+        ?multi-select=${args['multi-select']}
+        name=${ifDefined(args.name)}
+        .noResults=${args['no-results']}
+        placeholder="Use buttons above to control"
+        ?read-only=${args['read-only']}
+        ?required=${args.required}
+        ?show-menu-on-focus=${args['show-menu-on-focus']}
+        ?show-spinner=${args['show-spinner']}
+        size=${ifDefined(args.size)}
+        value=${args.value}
+      ></modus-wc-autocomplete>
       <script type="module">
         //  //Commenting out the scripts to avoid duplicate declaration in storybook code
         //   const handleSelectApple = async () => {
@@ -1908,40 +1937,10 @@ export const WithProgrammaticControl: Story = {
         //   window.handleToggleMenu = handleToggleMenu;
         //   window.handleFocusInput = handleFocusInput;
         //   window.handleClearInput = handleClearInput;
-      </script>
 
-      <modus-wc-autocomplete
-        id="programmatic-autocomplete"
-        aria-label="Programmatic control demo"
-        ?bordered=${args.bordered}
-        custom-class=${ifDefined(args['custom-class'])}
-        debounce-ms=${ifDefined(args['debounce-ms'])}
-        ?disabled=${args.disabled}
-        ?include-clear=${args['include-clear']}
-        ?include-search=${args['include-search']}
-        input-id=${ifDefined(args['input-id'])}
-        input-tab-index=${ifDefined(args['input-tab-index'])}
-        .items=${args.items}
-        label="Try the control buttons above"
-        ?leave-menu-open=${args['leave-menu-open']}
-        max-chips=${args['max-chips'] ?? 4}
-        min-chars=${args['min-chars']}
-        min-input-width=${ifDefined(args['min-input-width'])}
-        ?multi-select=${args['multi-select']}
-        name=${ifDefined(args.name)}
-        .noResults=${args['no-results']}
-        placeholder="Use buttons above to control"
-        ?read-only=${args['read-only']}
-        ?required=${args.required}
-        ?show-menu-on-focus=${args['show-menu-on-focus']}
-        ?show-spinner=${args['show-spinner']}
-        size=${ifDefined(args.size)}
-        value=${args.value}
-      ></modus-wc-autocomplete>
-      <script>
-        // Add Autocomplete items
+        // // Add Autocomplete items
         ${Items};
-        // Adding this block to show how to set options using JS
+        // // Adding this block to show how to set options using JS
         // const autocomplete = document.getElementById(
         //   'programmatic-autocomplete'
         // );
@@ -2189,9 +2188,9 @@ export const DynamicOptions: Story = {
         // const autocomplete = document.querySelector('modus-wc-autocomplete');
 
         if (autocomplete) {
-          // Set initial items
+          // // Set initial items
           // autocomplete.items = [...defaultFruits];
-          // Attach event listeners
+          // // Attach event listeners
           // autocomplete.addEventListener('inputChange', handleInputChange);
           // autocomplete.addEventListener('itemSelect', handleItemSelect);
         }
