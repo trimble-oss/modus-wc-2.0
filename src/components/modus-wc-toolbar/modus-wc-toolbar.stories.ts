@@ -23,26 +23,26 @@ const Template: Story = {
     // prettier-ignore
     return html`
 <style>
-    .modus-wc-navbar {
+    #toolbar-demo .modus-wc-navbar {
       gap: 0.2rem;
       height: 60px; /* toolbar height */
       border-radius: 8px;
       border: 1px dashed black;
     }
-    .modus-wc-navbar-center,
-    .modus-wc-navbar-end,
-    .modus-wc-navbar-start {
+    #toolbar-demo .modus-wc-navbar-center,
+    #toolbar-demo .modus-wc-navbar-end,
+    #toolbar-demo .modus-wc-navbar-start {
       display: flex;
       flex: 1;
       padding-inline: 10px;
       height: 100%; /* fill height */
       background: #d9d9d969;
     }
-    .modus-wc-navbar-center {
+    #toolbar-demo .modus-wc-navbar-center {
       justify-content: center;
     }
 </style>
-<modus-wc-toolbar custom-class="${ifDefined(args['custom-class'])}">
+<modus-wc-toolbar id="toolbar-demo" custom-class="${ifDefined(args['custom-class'])}">
   <div slot="start">Start</div>
   <div slot="center">Center</div>
   <div slot="end">End</div>
