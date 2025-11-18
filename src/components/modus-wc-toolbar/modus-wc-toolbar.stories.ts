@@ -34,7 +34,7 @@ const Template: Story = {
     .modus-wc-navbar-start {
       display: flex;
       flex: 1;
-      padding: 0 10px;
+      padding-inline: 10px;
       height: 100%; /* fill height */
       background: #d9d9d969;
     }
