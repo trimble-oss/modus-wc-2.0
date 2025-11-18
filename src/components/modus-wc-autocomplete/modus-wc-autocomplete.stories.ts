@@ -1147,154 +1147,154 @@ modus-wc-menu-item.hidden {
   </div>
 </modus-wc-autocomplete>
 <script>
-        // Get the autocomplete element
-        const autocomplete = document.getElementById('custom-autocomplete');
+        // // Get the autocomplete element
+        // const autocomplete = document.getElementById('custom-autocomplete');
 
-        const getVisibleItems = (autocompleteElement) => {
-          const menuItems = autocompleteElement.querySelectorAll(
-            'modus-wc-menu-item:not([disabled])'
-          );
-          return Array.from(menuItems).filter((item) => {
-            const style = window.getComputedStyle(item);
-            return (
-              style.display !== 'none' && !item.classList.contains('hidden')
-            );
-          });
-        };
+        // const getVisibleItems = (autocompleteElement) => {
+        //   const menuItems = autocompleteElement.querySelectorAll(
+        //     'modus-wc-menu-item:not([disabled])'
+        //   );
+        //   return Array.from(menuItems).filter((item) => {
+        //     const style = window.getComputedStyle(item);
+        //     return (
+        //       style.display !== 'none' && !item.classList.contains('hidden')
+        //     );
+        //   });
+        // };
 
-        const handleCustomKeyDown = (e) => {
-          const autocompleteElement = e.target.closest('modus-wc-autocomplete');
-          if (!autocompleteElement) return;
+        // const handleCustomKeyDown = (e) => {
+        //   const autocompleteElement = e.target.closest('modus-wc-autocomplete');
+        //   if (!autocompleteElement) return;
 
-          // Don't process keyboard events when disabled or readOnly
-          if (autocompleteElement.disabled || autocompleteElement.readOnly)
-            return;
+        //   // Don't process keyboard events when disabled or readOnly
+        //   if (autocompleteElement.disabled || autocompleteElement.readOnly)
+        //     return;
 
-          const visibleItems = getVisibleItems(autocompleteElement);
+        //   const visibleItems = getVisibleItems(autocompleteElement);
 
-          // Get all button elements within visible menu items
-          const buttons = visibleItems
-            .map((item) => item.querySelector('button'))
-            .filter(Boolean);
-          const currentFocusedButton = document.activeElement;
-          const currentIndex = buttons.indexOf(currentFocusedButton);
+        //   // Get all button elements within visible menu items
+        //   const buttons = visibleItems
+        //     .map((item) => item.querySelector('button'))
+        //     .filter(Boolean);
+        //   const currentFocusedButton = document.activeElement;
+        //   const currentIndex = buttons.indexOf(currentFocusedButton);
 
-          switch (e.key) {
-            case 'ArrowDown': {
-              e.preventDefault();
-              // Open menu when arrow key is pressed
-              autocompleteElement.openMenu();
+        //   switch (e.key) {
+        //     case 'ArrowDown': {
+        //       e.preventDefault();
+        //       // Open menu when arrow key is pressed
+        //       autocompleteElement.openMenu();
 
-              let nextIndex = currentIndex + 1;
-              // Stop at the last item instead of wrapping
-              if (nextIndex >= buttons.length) return;
-              if (nextIndex < 0) nextIndex = 0;
+        //       let nextIndex = currentIndex + 1;
+        //       // Stop at the last item instead of wrapping
+        //       if (nextIndex >= buttons.length) return;
+        //       if (nextIndex < 0) nextIndex = 0;
 
-              buttons[nextIndex]?.focus();
-              break;
-            }
+        //       buttons[nextIndex]?.focus();
+        //       break;
+        //     }
 
-            case 'ArrowUp': {
-              e.preventDefault();
-              // Open menu when arrow key is pressed
-              autocompleteElement.openMenu();
+        //     case 'ArrowUp': {
+        //       e.preventDefault();
+        //       // Open menu when arrow key is pressed
+        //       autocompleteElement.openMenu();
 
-              let prevIndex = currentIndex - 1;
-              // Stop at the first item instead of wrapping
-              if (prevIndex < 0) return;
+        //       let prevIndex = currentIndex - 1;
+        //       // Stop at the first item instead of wrapping
+        //       if (prevIndex < 0) return;
 
-              buttons[prevIndex]?.focus();
-              break;
-            }
+        //       buttons[prevIndex]?.focus();
+        //       break;
+        //     }
 
-            case 'Enter': {
-              e.preventDefault();
-              // If a button is focused, click it
-              if (buttons.includes(currentFocusedButton)) {
-                currentFocusedButton.click();
-              }
-              break;
-            }
+        //     case 'Enter': {
+        //       e.preventDefault();
+        //       // If a button is focused, click it
+        //       if (buttons.includes(currentFocusedButton)) {
+        //         currentFocusedButton.click();
+        //       }
+        //       break;
+        //     }
 
-            case 'Escape': {
-              e.preventDefault();
-              autocompleteElement.closeMenu();
-              // Return focus to input
-              const input = autocompleteElement.querySelector('input');
-              input?.focus();
-              break;
-            }
-          }
-        };
+        //     case 'Escape': {
+        //       e.preventDefault();
+        //       autocompleteElement.closeMenu();
+        //       // Return focus to input
+        //       const input = autocompleteElement.querySelector('input');
+        //       input?.focus();
+        //       break;
+        //     }
+        //   }
+        // };
 
-        const handleInputChange = (e) => {
-          if (!e.detail?.target) return;
+        // const handleInputChange = (e) => {
+        //   if (!e.detail?.target) return;
 
-          const autocompleteElement = e.target.closest('modus-wc-autocomplete');
+        //   const autocompleteElement = e.target.closest('modus-wc-autocomplete');
 
-          if (autocompleteElement) {
-            const searchText = e.detail.target.value.toLowerCase();
-            const menuItems =
-              autocompleteElement.querySelectorAll('modus-wc-menu-item');
+        //   if (autocompleteElement) {
+        //     const searchText = e.detail.target.value.toLowerCase();
+        //     const menuItems =
+        //       autocompleteElement.querySelectorAll('modus-wc-menu-item');
 
-            // Clear selected state when input is empty
-            if (searchText === '') {
-              menuItems?.forEach((item) => {
-                item.removeAttribute('selected');
-              });
-            }
+        //     // Clear selected state when input is empty
+        //     if (searchText === '') {
+        //       menuItems?.forEach((item) => {
+        //         item.removeAttribute('selected');
+        //       });
+        //     }
 
-            let hiddenCount = 0;
-            Array.from(menuItems ?? []).forEach((menuItem) => {
-              const label = menuItem.getAttribute('label')?.toLowerCase() || '';
-              if (!label.includes(searchText)) {
-                menuItem.classList.add('hidden');
-                hiddenCount++;
-              } else {
-                menuItem.classList.remove('hidden');
-              }
-            });
+        //     let hiddenCount = 0;
+        //     Array.from(menuItems ?? []).forEach((menuItem) => {
+        //       const label = menuItem.getAttribute('label')?.toLowerCase() || '';
+        //       if (!label.includes(searchText)) {
+        //         menuItem.classList.add('hidden');
+        //         hiddenCount++;
+        //       } else {
+        //         menuItem.classList.remove('hidden');
+        //       }
+        //     });
 
-            // Show/hide the no results element
-            const noResultsElement =
-              autocompleteElement.querySelector('.no-results-item');
-            if (noResultsElement) {
-              if (hiddenCount === menuItems?.length) {
-                noResultsElement.classList.add('visible');
-              } else {
-                noResultsElement.classList.remove('visible');
-              }
-            }
-          }
-        };
+        //     // Show/hide the no results element
+        //     const noResultsElement =
+        //       autocompleteElement.querySelector('.no-results-item');
+        //     if (noResultsElement) {
+        //       if (hiddenCount === menuItems?.length) {
+        //         noResultsElement.classList.add('visible');
+        //       } else {
+        //         noResultsElement.classList.remove('visible');
+        //       }
+        //     }
+        //   }
+        // };
 
-        const handleItemSelect = (e) => {
-          const autocompleteElement = e.target.closest('modus-wc-autocomplete');
+        // const handleItemSelect = (e) => {
+        //   const autocompleteElement = e.target.closest('modus-wc-autocomplete');
 
-          if (autocompleteElement) {
-            const selectedValue = e.detail.value;
-            autocompleteElement.value = selectedValue;
-            // Update selected state on menu items
-            const menuItems =
-              autocompleteElement.querySelectorAll('modus-wc-menu-item');
-            menuItems.forEach((item) => {
-              if (item.getAttribute('value') === selectedValue) {
-                item.setAttribute('selected', 'true');
-              } else {
-                item.removeAttribute('selected');
-              }
-            });
-            // Close menu after selection
-            autocompleteElement.closeMenu();
-          }
-        };
+        //   if (autocompleteElement) {
+        //     const selectedValue = e.detail.value;
+        //     autocompleteElement.value = selectedValue;
+        //     // Update selected state on menu items
+        //     const menuItems =
+        //       autocompleteElement.querySelectorAll('modus-wc-menu-item');
+        //     menuItems.forEach((item) => {
+        //       if (item.getAttribute('value') === selectedValue) {
+        //         item.setAttribute('selected', 'true');
+        //       } else {
+        //         item.removeAttribute('selected');
+        //       }
+        //     });
+        //     // Close menu after selection
+        //     autocompleteElement.closeMenu();
+        //   }
+        // };
 
-        // Attach event listeners to the autocomplete component
-        if (autocomplete) {
-          autocomplete.addEventListener('keydown', handleCustomKeyDown);
-          autocomplete.addEventListener('inputChange', handleInputChange);
-          autocomplete.addEventListener('itemSelect', handleItemSelect);
-        }
+        // // Attach event listeners to the autocomplete component
+        // if (autocomplete) {
+        //   autocomplete.addEventListener('keydown', handleCustomKeyDown);
+        //   autocomplete.addEventListener('inputChange', handleInputChange);
+        //   autocomplete.addEventListener('itemSelect', handleItemSelect);
+        // }
       </script>
     `;
   },
@@ -1497,7 +1497,7 @@ export const CustomEventHandlers: Story = {
       autocomplete.value = item.label;
       void autocomplete.closeMenu();
     };
-
+    // prettier-ignore
     return html`
       <style>
         div[id^='story--components-forms-autocomplete--custom-event-handlers'] {
@@ -1889,6 +1889,7 @@ export const WithProgrammaticControl: Story = {
     windowWithHandlers.handleFocusInput = handleFocusInput;
     windowWithHandlers.handleClearInput = handleClearInput;
 
+    // prettier-ignore
     return html`
       <style>
         div[id^='story--components-forms-autocomplete--with-programmatic-control'] {
@@ -2261,90 +2262,90 @@ export const DynamicOptions: Story = {
         @itemSelect=${handleItemSelect}
       ></modus-wc-autocomplete>
       <script>
-        const defaultFruits = [
-          { label: 'Apple', value: 'apple', visibleInMenu: true },
-          { label: 'Banana', value: 'banana', visibleInMenu: true },
-          { label: 'Orange', value: 'orange', visibleInMenu: true },
-          { label: 'Strawberry', value: 'strawberry', visibleInMenu: true },
-        ];
+        // const defaultFruits = [
+        //   { label: 'Apple', value: 'apple', visibleInMenu: true },
+        //   { label: 'Banana', value: 'banana', visibleInMenu: true },
+        //   { label: 'Orange', value: 'orange', visibleInMenu: true },
+        //   { label: 'Strawberry', value: 'strawberry', visibleInMenu: true },
+        // ];
 
-        // Extended dataset that will be searched when typing
-        const allFruits = [
-          ...defaultFruits,
-          { label: 'Blackberry', value: 'blackberry', visibleInMenu: true },
-          { label: 'Blueberry', value: 'blueberry', visibleInMenu: true },
-          { label: 'Cherry', value: 'cherry', visibleInMenu: true },
-          { label: 'Cranberry', value: 'cranberry', visibleInMenu: true },
-          { label: 'Fig', value: 'fig', visibleInMenu: true },
-          { label: 'Grape', value: 'grape', visibleInMenu: true },
-          { label: 'Kiwi', value: 'kiwi', visibleInMenu: true },
-          { label: 'Lemon', value: 'lemon', visibleInMenu: true },
-          { label: 'Lime', value: 'lime', visibleInMenu: true },
-          { label: 'Mango', value: 'mango', visibleInMenu: true },
-          { label: 'Melon', value: 'melon', visibleInMenu: true },
-          { label: 'Peach', value: 'peach', visibleInMenu: true },
-          { label: 'Pineapple', value: 'pineapple', visibleInMenu: true },
-          { label: 'Raspberry', value: 'raspberry', visibleInMenu: true },
-          { label: 'Watermelon', value: 'watermelon', visibleInMenu: true },
-        ];
+        // // Extended dataset that will be searched when typing
+        // const allFruits = [
+        //   ...defaultFruits,
+        //   { label: 'Blackberry', value: 'blackberry', visibleInMenu: true },
+        //   { label: 'Blueberry', value: 'blueberry', visibleInMenu: true },
+        //   { label: 'Cherry', value: 'cherry', visibleInMenu: true },
+        //   { label: 'Cranberry', value: 'cranberry', visibleInMenu: true },
+        //   { label: 'Fig', value: 'fig', visibleInMenu: true },
+        //   { label: 'Grape', value: 'grape', visibleInMenu: true },
+        //   { label: 'Kiwi', value: 'kiwi', visibleInMenu: true },
+        //   { label: 'Lemon', value: 'lemon', visibleInMenu: true },
+        //   { label: 'Lime', value: 'lime', visibleInMenu: true },
+        //   { label: 'Mango', value: 'mango', visibleInMenu: true },
+        //   { label: 'Melon', value: 'melon', visibleInMenu: true },
+        //   { label: 'Peach', value: 'peach', visibleInMenu: true },
+        //   { label: 'Pineapple', value: 'pineapple', visibleInMenu: true },
+        //   { label: 'Raspberry', value: 'raspberry', visibleInMenu: true },
+        //   { label: 'Watermelon', value: 'watermelon', visibleInMenu: true },
+        // ];
 
-        const handleInputChange = (e) => {
-          if (!e.detail?.target) return;
+        // const handleInputChange = (e) => {
+        //   if (!e.detail?.target) return;
 
-          const autocomplete = e.target.closest('modus-wc-autocomplete');
+        //   const autocomplete = e.target.closest('modus-wc-autocomplete');
 
-          if (autocomplete) {
-            const input = e.detail.target;
-            const searchText = input.value.toLowerCase();
+        //   if (autocomplete) {
+        //     const input = e.detail.target;
+        //     const searchText = input.value.toLowerCase();
 
-            // If empty, show default fruits again
-            if (searchText === '') {
-              autocomplete.items = [...defaultFruits];
-              autocomplete.value = input.value;
-              return;
-            }
+        //     // If empty, show default fruits again
+        //     if (searchText === '') {
+        //       autocomplete.items = [...defaultFruits];
+        //       autocomplete.value = input.value;
+        //       return;
+        //     }
 
-            // Show spinner while "loading" data
-            autocomplete.showSpinner = true;
+        //     // Show spinner while "loading" data
+        //     autocomplete.showSpinner = true;
 
-            // Simulate API call delay with setTimeout
-            setTimeout(() => {
-              const filteredFruits = allFruits.filter((fruit) =>
-                fruit.label.toLowerCase().includes(searchText)
-              );
+        //     // Simulate API call delay with setTimeout
+        //     setTimeout(() => {
+        //       const filteredFruits = allFruits.filter((fruit) =>
+        //         fruit.label.toLowerCase().includes(searchText)
+        //       );
 
-              // Update the items with the "API response"
-              autocomplete.items = filteredFruits;
+        //       // Update the items with the "API response"
+        //       autocomplete.items = filteredFruits;
 
-              // Hide spinner after "loading" completes
-              autocomplete.showSpinner = false;
-            }, 1000);
+        //       // Hide spinner after "loading" completes
+        //       autocomplete.showSpinner = false;
+        //     }, 1000);
 
-            autocomplete.value = input.value;
-          }
-        };
+        //     autocomplete.value = input.value;
+        //   }
+        // };
 
-        const handleItemSelect = (e) => {
-          const autocomplete = e.target.closest('modus-wc-autocomplete');
+        // const handleItemSelect = (e) => {
+        //   const autocomplete = e.target.closest('modus-wc-autocomplete');
 
-          if (autocomplete) {
-            const label = e.detail.label;
-            if (label) {
-              autocomplete.value = label;
-            }
-          }
-        };
+        //   if (autocomplete) {
+        //     const label = e.detail.label;
+        //     if (label) {
+        //       autocomplete.value = label;
+        //     }
+        //   }
+        // };
 
-        // Adding this block to show how to set Autocomplete items and attching event listeners via JS
-        // const autocomplete = document.querySelector('modus-wc-autocomplete');
+        // // Adding this block to show how to set Autocomplete items and attching event listeners via JS
+        // // const autocomplete = document.querySelector('modus-wc-autocomplete');
 
-        if (autocomplete) {
-          // // Set initial items
-          // autocomplete.items = [...defaultFruits];
-          // // Attach event listeners
-          // autocomplete.addEventListener('inputChange', handleInputChange);
-          // autocomplete.addEventListener('itemSelect', handleItemSelect);
-        }
+        // if (autocomplete) {
+        //   // // Set initial items
+        //   // autocomplete.items = [...defaultFruits];
+        //   // // Attach event listeners
+        //   // autocomplete.addEventListener('inputChange', handleInputChange);
+        //   // autocomplete.addEventListener('itemSelect', handleItemSelect);
+        // }
       </script>
     `;
   },
