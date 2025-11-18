@@ -2340,11 +2340,11 @@ export const DynamicOptions: Story = {
         // // const autocomplete = document.querySelector('modus-wc-autocomplete');
 
         // if (autocomplete) {
-        //   // // Set initial items
-        //   // autocomplete.items = [...defaultFruits];
-        //   // // Attach event listeners
-        //   // autocomplete.addEventListener('inputChange', handleInputChange);
-        //   // autocomplete.addEventListener('itemSelect', handleItemSelect);
+        // // Set initial items
+        // autocomplete.items = [...defaultFruits];
+        // // Attach event listeners
+        // autocomplete.addEventListener('inputChange', handleInputChange);
+        // autocomplete.addEventListener('itemSelect', handleItemSelect);
         // }
       </script>
     `;
