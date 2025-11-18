@@ -123,27 +123,7 @@ const Template: Story = {
   }
 </style>
 
-<script>
-  let selectedValue = '';
 
-  const handleItemSelect = (event: CustomEvent) => {
-    // Update the "Selected Value" label
-    selectedValue = event.detail.value;
-    const displayElement = document.querySelector('#selected-value');
-    if (displayElement) {
-      displayElement.textContent = selectedValue;
-    }
-
-    // Close the dropdown menu when an item is selected
-    const dropdownMenu = event.target as HTMLElement;
-    const dropdownMenuElement = dropdownMenu.closest(
-      'modus-wc-dropdown-menu'
-    );
-    if (dropdownMenuElement) {
-      dropdownMenuElement.menuVisible = false;
-    }
-  };
-</script>
 
 <modus-wc-dropdown-menu
   button-aria-label=${ifDefined(args['button-aria-label'])}
@@ -169,6 +149,32 @@ const Template: Story = {
     <modus-wc-menu-item label="Item Three" value="3" @itemSelect=${handleItemSelect} /></modus-wc-menu-item>
   </div>
 </modus-wc-dropdown-menu>
+<script>
+  // //  Adding this block to handle menu item selection to update a label and close the dropdown via JS.
+  // let selectedValue = '';
+
+  // const handleItemSelect = (event) => {
+  // //  Update the "Selected Value" label
+  //   selectedValue = event.detail.value;
+  //   const displayElement = document.querySelector('#selected-value');
+  //   if (displayElement) {
+  //     displayElement.textContent = selectedValue;
+  //   }
+
+  //   // Close the dropdown menu when an item is selected
+  //   const dropdownMenu = event.target;
+  //   const dropdownMenuElement = dropdownMenu.closest(
+  //     'modus-wc-dropdown-menu'
+  //   );
+  //   if (dropdownMenuElement) {
+  //     dropdownMenuElement.menuVisible = false;
+  //   }
+  // };
+  //  const menuItems = document.querySelectorAll('modus-wc-menu-item');
+  //   menuItems.forEach(item => {
+  //     item.addEventListener('itemSelect', handleItemSelect);
+  //   });
+</script>
 
 <div class="value">
   Selected Value:
