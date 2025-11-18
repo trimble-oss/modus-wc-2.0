@@ -2337,7 +2337,7 @@ export const DynamicOptions: Story = {
         // };
 
         // // Adding this block to show how to set Autocomplete items and attching event listeners via JS
-        // // const autocomplete = document.querySelector('modus-wc-autocomplete');
+        // const autocomplete = document.querySelector('modus-wc-autocomplete');
 
         // if (autocomplete) {
         // // Set initial items
