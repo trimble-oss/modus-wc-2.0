@@ -792,7 +792,7 @@ export const WithSpinner: Story = {
       <script>
         //Commenting out the scripts to avoid duplicate declaration in storybook code
         // Add Autocomplete items
-         ${Items}
+        ${Items}
         // // Adding this block to show how to set items via JS
         // const autocomplete = document.querySelector('modus-wc-autocomplete');
         // autocomplete.items = autocompleteItems;
@@ -1077,6 +1077,7 @@ modus-wc-menu-item.hidden {
   custom-class=${ifDefined(args['custom-class'])}
   debounce-ms=${ifDefined(args['debounce-ms'])}
   ?disabled=${args.disabled}
+  id="custom-autocomplete"
   input-id=${ifDefined(args['input-id'])}
   input-tab-index=${ifDefined(args['input-tab-index'])}
   label=${ifDefined(args.label)}
@@ -1145,6 +1146,156 @@ modus-wc-menu-item.hidden {
     </li>
   </div>
 </modus-wc-autocomplete>
+<script>
+        // Get the autocomplete element
+        const autocomplete = document.getElementById('custom-autocomplete');
+
+        const getVisibleItems = (autocompleteElement) => {
+          const menuItems = autocompleteElement.querySelectorAll(
+            'modus-wc-menu-item:not([disabled])'
+          );
+          return Array.from(menuItems).filter((item) => {
+            const style = window.getComputedStyle(item);
+            return (
+              style.display !== 'none' && !item.classList.contains('hidden')
+            );
+          });
+        };
+
+        const handleCustomKeyDown = (e) => {
+          const autocompleteElement = e.target.closest('modus-wc-autocomplete');
+          if (!autocompleteElement) return;
+
+          // Don't process keyboard events when disabled or readOnly
+          if (autocompleteElement.disabled || autocompleteElement.readOnly)
+            return;
+
+          const visibleItems = getVisibleItems(autocompleteElement);
+
+          // Get all button elements within visible menu items
+          const buttons = visibleItems
+            .map((item) => item.querySelector('button'))
+            .filter(Boolean);
+          const currentFocusedButton = document.activeElement;
+          const currentIndex = buttons.indexOf(currentFocusedButton);
+
+          switch (e.key) {
+            case 'ArrowDown': {
+              e.preventDefault();
+              // Open menu when arrow key is pressed
+              autocompleteElement.openMenu();
+
+              let nextIndex = currentIndex + 1;
+              // Stop at the last item instead of wrapping
+              if (nextIndex >= buttons.length) return;
+              if (nextIndex < 0) nextIndex = 0;
+
+              buttons[nextIndex]?.focus();
+              break;
+            }
+
+            case 'ArrowUp': {
+              e.preventDefault();
+              // Open menu when arrow key is pressed
+              autocompleteElement.openMenu();
+
+              let prevIndex = currentIndex - 1;
+              // Stop at the first item instead of wrapping
+              if (prevIndex < 0) return;
+
+              buttons[prevIndex]?.focus();
+              break;
+            }
+
+            case 'Enter': {
+              e.preventDefault();
+              // If a button is focused, click it
+              if (buttons.includes(currentFocusedButton)) {
+                currentFocusedButton.click();
+              }
+              break;
+            }
+
+            case 'Escape': {
+              e.preventDefault();
+              autocompleteElement.closeMenu();
+              // Return focus to input
+              const input = autocompleteElement.querySelector('input');
+              input?.focus();
+              break;
+            }
+          }
+        };
+
+        const handleInputChange = (e) => {
+          if (!e.detail?.target) return;
+
+          const autocompleteElement = e.target.closest('modus-wc-autocomplete');
+
+          if (autocompleteElement) {
+            const searchText = e.detail.target.value.toLowerCase();
+            const menuItems =
+              autocompleteElement.querySelectorAll('modus-wc-menu-item');
+
+            // Clear selected state when input is empty
+            if (searchText === '') {
+              menuItems?.forEach((item) => {
+                item.removeAttribute('selected');
+              });
+            }
+
+            let hiddenCount = 0;
+            Array.from(menuItems ?? []).forEach((menuItem) => {
+              const label = menuItem.getAttribute('label')?.toLowerCase() || '';
+              if (!label.includes(searchText)) {
+                menuItem.classList.add('hidden');
+                hiddenCount++;
+              } else {
+                menuItem.classList.remove('hidden');
+              }
+            });
+
+            // Show/hide the no results element
+            const noResultsElement =
+              autocompleteElement.querySelector('.no-results-item');
+            if (noResultsElement) {
+              if (hiddenCount === menuItems?.length) {
+                noResultsElement.classList.add('visible');
+              } else {
+                noResultsElement.classList.remove('visible');
+              }
+            }
+          }
+        };
+
+        const handleItemSelect = (e) => {
+          const autocompleteElement = e.target.closest('modus-wc-autocomplete');
+
+          if (autocompleteElement) {
+            const selectedValue = e.detail.value;
+            autocompleteElement.value = selectedValue;
+            // Update selected state on menu items
+            const menuItems =
+              autocompleteElement.querySelectorAll('modus-wc-menu-item');
+            menuItems.forEach((item) => {
+              if (item.getAttribute('value') === selectedValue) {
+                item.setAttribute('selected', 'true');
+              } else {
+                item.removeAttribute('selected');
+              }
+            });
+            // Close menu after selection
+            autocompleteElement.closeMenu();
+          }
+        };
+
+        // Attach event listeners to the autocomplete component
+        if (autocomplete) {
+          autocomplete.addEventListener('keydown', handleCustomKeyDown);
+          autocomplete.addEventListener('inputChange', handleInputChange);
+          autocomplete.addEventListener('itemSelect', handleItemSelect);
+        }
+      </script>
     `;
   },
 };
@@ -1398,7 +1549,7 @@ export const CustomEventHandlers: Story = {
       <script>
         //Commenting out the scripts to avoid duplicate declaration in storybook code
         // Add Autocomplete items
-        ${Items};
+        ${Items}
         // const autocomplete = document.getElementById('autocomplete-custom-event-handlers');
         // autocomplete.items = autocompleteItems;
 
@@ -1939,7 +2090,7 @@ export const WithProgrammaticControl: Story = {
         //   window.handleClearInput = handleClearInput;
 
         // // Add Autocomplete items
-        ${Items};
+        ${Items}
         // // Adding this block to show how to set options using JS
         // const autocomplete = document.getElementById(
         //   'programmatic-autocomplete'
