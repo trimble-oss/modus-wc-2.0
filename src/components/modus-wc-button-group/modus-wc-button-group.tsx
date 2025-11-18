@@ -13,10 +13,6 @@ import { convertPropsToClasses } from './modus-wc-button-group.tailwind';
 import { Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-interface IButtonElement extends HTMLElement {
-  setActive: (isActive: boolean) => Promise<void>;
-}
-
 /**
  * A customizable buttongroup component that groups multiple Modus buttons together.
  *
@@ -30,7 +26,7 @@ interface IButtonElement extends HTMLElement {
 export class ModusWcButtonGroup {
   private inheritedAttributes: Attributes = {};
   private buttonElements!: NodeListOf<HTMLElement>;
-  private selectedButtons: IButtonElement[] = [];
+  private selectedButtons: HTMLElement[] = [];
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -69,8 +65,8 @@ export class ModusWcButtonGroup {
   }
 
   @Watch('selectionType')
-  async handleSelectionTypeChange(): Promise<void> {
-    await this.resetAllSelections();
+  handleSelectionTypeChange(): void {
+    this.resetAllSelections();
   }
 
   componentWillLoad() {
@@ -92,7 +88,7 @@ export class ModusWcButtonGroup {
 
   @Listen('buttonClick')
   handleButtonClick(event: CustomEvent) {
-    const clickedButton = event.target as IButtonElement;
+    const clickedButton = event.target as HTMLElement;
 
     if (this.selectionType === 'default') {
       this.buttonGroupClick.emit({
@@ -141,29 +137,20 @@ export class ModusWcButtonGroup {
     });
   }
 
-  private async toggleSingleSelect(
-    clickedButton: IButtonElement
-  ): Promise<void> {
+  private toggleSingleSelect(clickedButton: HTMLElement): void {
     const isCurrentlySelected = this.selectedButtons.includes(clickedButton);
 
     // Deactivate all buttons
-    await Promise.all(
-      Array.from(this.buttonElements).map(async (button) => {
-        const buttonElement = button as IButtonElement;
-        if (typeof buttonElement.setActive === 'function') {
-          await buttonElement.setActive(false);
-        }
-      })
-    );
+    Array.from(this.buttonElements).forEach((button) => {
+      button.removeAttribute('pressed');
+    });
 
     this.selectedButtons = [];
 
     // If the clicked button wasn't selected, activate it
     if (!isCurrentlySelected) {
-      if (typeof clickedButton.setActive === 'function') {
-        await clickedButton.setActive(true);
-        this.selectedButtons = [clickedButton];
-      }
+      clickedButton.setAttribute('pressed', 'true');
+      this.selectedButtons = [clickedButton];
     }
 
     this.buttonGroupClick.emit({
@@ -176,25 +163,19 @@ export class ModusWcButtonGroup {
     });
   }
 
-  private async toggleMultiSelect(
-    clickedButton: IButtonElement
-  ): Promise<void> {
+  private toggleMultiSelect(clickedButton: HTMLElement): void {
     const isCurrentlySelected = this.selectedButtons.includes(clickedButton);
 
     if (isCurrentlySelected) {
       // Deactivate and remove from selection
-      if (typeof clickedButton.setActive === 'function') {
-        await clickedButton.setActive(false);
-      }
+      clickedButton.removeAttribute('pressed');
       this.selectedButtons = this.selectedButtons.filter(
         (btn) => btn !== clickedButton
       );
     } else {
       // Activate and add to selection
-      if (typeof clickedButton.setActive === 'function') {
-        await clickedButton.setActive(true);
-        this.selectedButtons = [...this.selectedButtons, clickedButton];
-      }
+      clickedButton.setAttribute('pressed', 'true');
+      this.selectedButtons = [...this.selectedButtons, clickedButton];
     }
 
     this.buttonGroupClick.emit({
@@ -207,17 +188,12 @@ export class ModusWcButtonGroup {
     });
   }
 
-  private async resetAllSelections(): Promise<void> {
+  private resetAllSelections(): void {
     if (!this.buttonElements) return;
 
-    await Promise.all(
-      Array.from(this.buttonElements).map(async (button) => {
-        const buttonElement = button as IButtonElement;
-        if (typeof buttonElement.setActive === 'function') {
-          await buttonElement.setActive(false);
-        }
-      })
-    );
+    Array.from(this.buttonElements).forEach((button) => {
+      button.removeAttribute('pressed');
+    });
     this.selectedButtons = [];
   }
 

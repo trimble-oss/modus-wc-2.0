@@ -320,13 +320,9 @@ export namespace Components {
          */
         "fullWidth"?: boolean;
         /**
-          * If true, the button will be in a pressed state.
+          * If true, the button will be in a pressed state (for toggle buttons).
          */
         "pressed"?: boolean;
-        /**
-          * Set the button to active or inactive
-         */
-        "setActive": (isActive: boolean) => Promise<void>;
         /**
           * The shape of the button.
          */
@@ -3248,7 +3244,7 @@ declare namespace LocalJSX {
          */
         "onButtonClick"?: (event: ModusWcButtonCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
-          * If true, the button will be in a pressed state.
+          * If true, the button will be in a pressed state (for toggle buttons).
          */
         "pressed"?: boolean;
         /**

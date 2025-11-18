@@ -6,7 +6,6 @@ import {
   h,
   Host,
   Listen,
-  Method,
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-button.tailwind';
@@ -42,8 +41,8 @@ export class ModusWcButton {
   /** If true, the button will take the full width of its container. */
   @Prop() fullWidth?: boolean = false;
 
-  /** If true, the button will be in a pressed state. */
-  @Prop({ mutable: true }) pressed?: boolean = false;
+  /** If true, the button will be in a pressed state (for toggle buttons). */
+  @Prop() pressed?: boolean = false;
 
   /** The shape of the button. */
   @Prop() shape: 'circle' | 'rectangle' | 'square' = 'rectangle';
@@ -62,14 +61,6 @@ export class ModusWcButton {
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
-  }
-
-  /** Set the button to active or inactive */
-  @Method()
-  async setActive(isActive: boolean): Promise<void> {
-    return Promise.resolve().then(() => {
-      this.pressed = isActive;
-    });
   }
 
   private getClasses(): string {

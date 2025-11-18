@@ -11,17 +11,17 @@ The component supports a `<slot>` for injecting content within the button, simil
 
 ## Properties
 
-| Property      | Attribute      | Description                                                    | Type                                                              | Default       |
-| ------------- | -------------- | -------------------------------------------------------------- | ----------------------------------------------------------------- | ------------- |
-| `color`       | `color`        | The color variant of the button.                               | `"danger" \| "primary" \| "secondary" \| "tertiary" \| "warning"` | `'primary'`   |
-| `customClass` | `custom-class` | Custom CSS class to apply to the button element.               | `string \| undefined`                                             | `''`          |
-| `disabled`    | `disabled`     | If true, the button will be disabled.                          | `boolean \| undefined`                                            | `false`       |
-| `fullWidth`   | `full-width`   | If true, the button will take the full width of its container. | `boolean \| undefined`                                            | `false`       |
-| `pressed`     | `pressed`      | If true, the button will be in a pressed state.                | `boolean \| undefined`                                            | `false`       |
-| `shape`       | `shape`        | The shape of the button.                                       | `"circle" \| "rectangle" \| "square"`                             | `'rectangle'` |
-| `size`        | `size`         | The size of the button.                                        | `"lg" \| "md" \| "sm" \| "xs"`                                    | `'md'`        |
-| `type`        | `type`         | The type of the button.                                        | `"button" \| "reset" \| "submit"`                                 | `'button'`    |
-| `variant`     | `variant`      | The variant of the button.                                     | `"borderless" \| "filled" \| "outlined"`                          | `'filled'`    |
+| Property      | Attribute      | Description                                                          | Type                                                              | Default       |
+| ------------- | -------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------- |
+| `color`       | `color`        | The color variant of the button.                                     | `"danger" \| "primary" \| "secondary" \| "tertiary" \| "warning"` | `'primary'`   |
+| `customClass` | `custom-class` | Custom CSS class to apply to the button element.                     | `string \| undefined`                                             | `''`          |
+| `disabled`    | `disabled`     | If true, the button will be disabled.                                | `boolean \| undefined`                                            | `false`       |
+| `fullWidth`   | `full-width`   | If true, the button will take the full width of its container.       | `boolean \| undefined`                                            | `false`       |
+| `pressed`     | `pressed`      | If true, the button will be in a pressed state (for toggle buttons). | `boolean \| undefined`                                            | `false`       |
+| `shape`       | `shape`        | The shape of the button.                                             | `"circle" \| "rectangle" \| "square"`                             | `'rectangle'` |
+| `size`        | `size`         | The size of the button.                                              | `"lg" \| "md" \| "sm" \| "xs"`                                    | `'md'`        |
+| `type`        | `type`         | The type of the button.                                              | `"button" \| "reset" \| "submit"`                                 | `'button'`    |
+| `variant`     | `variant`      | The variant of the button.                                           | `"borderless" \| "filled" \| "outlined"`                          | `'filled'`    |
 
 
 ## Events
@@ -29,25 +29,6 @@ The component supports a `<slot>` for injecting content within the button, simil
 | Event         | Description                                                         | Type                                       |
 | ------------- | ------------------------------------------------------------------- | ------------------------------------------ |
 | `buttonClick` | Event emitted when the button is clicked or activated via keyboard. | `CustomEvent<KeyboardEvent \| MouseEvent>` |
-
-
-## Methods
-
-### `setActive(isActive: boolean) => Promise<void>`
-
-Set the button to active or inactive
-
-#### Parameters
-
-| Name       | Type      | Description |
-| ---------- | --------- | ----------- |
-| `isActive` | `boolean` |             |
-
-#### Returns
-
-Type: `Promise<void>`
-
-
 
 
 ## Dependencies

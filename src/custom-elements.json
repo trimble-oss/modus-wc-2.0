@@ -1527,7 +1527,7 @@
               "name": "handleSelectionTypeChange",
               "return": {
                 "type": {
-                  "text": "Promise<void>"
+                  "text": "void"
                 }
               }
             },
@@ -1645,24 +1645,6 @@
             {
               "kind": "method",
               "name": "render"
-            },
-            {
-              "kind": "method",
-              "name": "setActive",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "isActive",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ],
-              "description": "Set the button to active or inactive"
             }
           ],
           "attributes": [
@@ -1706,7 +1688,7 @@
               "name": "pressed",
               "fieldName": "pressed",
               "default": "false",
-              "description": "If true, the button will be in a pressed state.",
+              "description": "If true, the button will be in a pressed state (for toggle buttons).",
               "type": {
                 "text": "boolean"
               }
