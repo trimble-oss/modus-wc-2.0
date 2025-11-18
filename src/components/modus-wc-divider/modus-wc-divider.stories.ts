@@ -23,7 +23,7 @@ const meta: Meta<DividerArgs> = {
   title: 'Components/Divider',
   component: 'modus-wc-divider',
   args: {
-    color: 'high-contrast',
+    color: 'tertiary',
     content: '',
     'custom-class': '',
     orientation: 'vertical',

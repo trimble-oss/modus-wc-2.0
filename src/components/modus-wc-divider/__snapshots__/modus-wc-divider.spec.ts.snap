@@ -10,6 +10,6 @@ exports[`modus-wc-divider should render with custom props 1`] = `
 
 exports[`modus-wc-divider should render with default props 1`] = `
 <modus-wc-divider>
-  <div aria-label="Divider" class="flex-grow modus-wc-divider modus-wc-divider-accent modus-wc-divider-vertical place-items-center" tabindex="-1"></div>
+  <div aria-label="Divider" class="flex-grow modus-wc-divider modus-wc-divider-neutral modus-wc-divider-vertical place-items-center" tabindex="-1"></div>
 </modus-wc-divider>
 `;

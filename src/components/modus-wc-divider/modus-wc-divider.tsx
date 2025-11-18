@@ -25,7 +25,7 @@ export class ModusWcDivider {
     | 'high-contrast'
     | 'success'
     | 'warning'
-    | 'danger' = 'high-contrast';
+    | 'danger' = 'tertiary';
 
   /** The content to display in the divider. */
   @Prop() content?: string = '';
