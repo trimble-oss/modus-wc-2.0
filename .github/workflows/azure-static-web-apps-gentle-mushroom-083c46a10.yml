@@ -1,6 +1,9 @@
 name: Azure Static Web Apps CI/CD
 
 on:
+  push:
+    branches:
+      - '**' # Temporary: test deployment from any branch
   release:
     types:
       - published
