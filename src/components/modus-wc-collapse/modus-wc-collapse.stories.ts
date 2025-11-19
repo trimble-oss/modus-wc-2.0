@@ -62,6 +62,17 @@ const Template: Story = {
 >
   <div slot="content">Collapse content</div>
 </modus-wc-collapse>
+<script>
+// Adding this block to show how to set options via JS.
+// const options = {
+//   title: 'Collapse Title',
+//   description: 'Collapse description',
+//   icon: 'alert',
+//   iconAriaLabel: 'Alert',
+// };
+//   const collapse = document.querySelector('modus-wc-collapse');
+//   collapse.options = options;
+</script>
     `;
   },
 };
@@ -91,12 +102,22 @@ export const WithCustomClickableHeader = {
 >
   <div slot="header" class="modus-wc-collapse-title" id="123">
     <div class="clickable-div">
-      <modus-wc-button @buttonClick=${handleButtonClick}>Alert 1</modus-wc-button>
-      <modus-wc-button @buttonClick=${handleButtonClick}>Alert 2</modus-wc-button>
+      <modus-wc-button id="button1" @buttonClick=${handleButtonClick}>Alert 1</modus-wc-button>
+      <modus-wc-button id="button2" @buttonClick=${handleButtonClick}>Alert 2</modus-wc-button>
     </div>
   </div>
   <div slot="content">Collapse content</div>
 </modus-wc-collapse>
+<script>
+// Adding this block to show how to add clickable buttons in the collapse header via JS.
+// function handleButtonClick() {
+//   window.alert('Button was clicked!');
+// }
+// const button1 = document.getElementById('button1');
+// const button2 = document.getElementById('button2');
+// button1.addEventListener('click', handleButtonClick);
+// button2.addEventListener('click', handleButtonClick);
+</script>
     `;
   },
 };
