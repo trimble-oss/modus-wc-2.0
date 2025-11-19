@@ -225,7 +225,6 @@ export class ModusWcDate {
     const firstDayOfWeek =
       WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
     this.calendar = new DatePickerCalendar(firstDayOfWeek);
-
     this.handleMinChange(this.min);
     this.handleMaxChange(this.max);
     this.handleValueChange(this.value);
@@ -294,6 +293,13 @@ export class ModusWcDate {
     this.inputChange.emit(event);
   };
 
+  private handleInputKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.syncValueFromInput();
+    }
+  };
+
   private setupPopper = () => {
     if (this.popperInstance) {
       this.popperInstance.destroy();
@@ -336,6 +342,13 @@ export class ModusWcDate {
           this.focusedDateIndex = selectedIndex;
         }
       }
+      // set focus to today
+      else {
+        this.ensureCalendarWithinBounds(new Date());
+        this.focusedDateIndex = this.calendar.dates.findIndex(
+          (date) => date && this.compareDate(date, new Date()) === 0
+        );
+      }
     } else {
       // Reset focus when closing
       this.focusedDateIndex = -1;
@@ -366,6 +379,8 @@ export class ModusWcDate {
     }
 
     this.showCalendar = false;
+    this.hasFocus = false;
+    this.inputBlur.emit(new FocusEvent('blur', { bubbles: true }));
   };
 
   private addMonthOffset = (offset: number) => {
@@ -1085,6 +1100,7 @@ export class ModusWcDate {
             onBlur={this.handleBlur}
             onFocus={this.handleFocus}
             onInput={this.handleInput}
+            onKeyDown={this.handleInputKeyDown}
             placeholder={this.format}
             readonly={this.readOnly}
             required={this.required}
