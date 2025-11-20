@@ -1,10 +1,10 @@
 modus-wc-navbar .modus-wc-navbar {
   background-color: var(--modus-wc-color-base-page);
+  border-radius: 0;
   box-shadow: none;
   height: 56px;
   min-height: 0;
   padding: 0 var(--modus-wc-spacing-md);
-  border-radius: 0;
 
   // Common button styles
   modus-wc-button {
