@@ -44,7 +44,7 @@ const meta: Meta<ButtonGroupArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['buttonSelectionChange', 'buttonGroupClick'],
+      handles: ['selectionChange', 'buttonGroupClick'],
     },
   },
 };
@@ -215,7 +215,7 @@ export const SelectionEvent: Story = {
   window.addEventListener('DOMContentLoaded', () => {
     const buttonGroup = document.querySelector('#event-demo-group');
     if (buttonGroup) {
-      buttonGroup.addEventListener('buttonSelectionChange', (event) => {
+      buttonGroup.addEventListener('selectionChange', (event) => {
         const selectedButtons = event.detail.selectedButtons;
         const buttonTexts = selectedButtons.map(btn => btn.textContent.trim());
         
@@ -284,7 +284,7 @@ export const Migration: Story = {
 | 1.0 Event              | 2.0 Event              | Notes                                                      |
 |------------------------|------------------------|------------------------------------------------------------|
 | buttonGroupClick       | buttonGroupClick       | Event detail changed: now includes \`{ button, isSelected }\` |
-| buttonSelectionChange  | buttonSelectionChange  | Unchanged. Returns array of selected buttons               |
+| selectionChange        | selectionChange        | Unchanged. Returns array of selected buttons               |
    `,
       },
     },

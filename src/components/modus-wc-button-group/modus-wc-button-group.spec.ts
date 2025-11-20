@@ -89,6 +89,67 @@ describe('modus-wc-button-group', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should initialize selected buttons with pressed attribute in single-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group selection-type="single">
+        <modus-wc-button pressed>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    await page.waitForChanges();
+
+    const buttons = buttonGroup.querySelectorAll('modus-wc-button');
+
+    // Button 1 should remain pressed
+    expect(buttons[0].getAttribute('pressed')).toBe('');
+    expect(buttons[1].getAttribute('pressed')).toBeFalsy();
+  });
+
+  it('should initialize only first pressed button when multiple buttons have pressed attribute in single-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group selection-type="single">
+        <modus-wc-button pressed>Button 1</modus-wc-button>
+        <modus-wc-button pressed>Button 2</modus-wc-button>
+        <modus-wc-button>Button 3</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    await page.waitForChanges();
+
+    const buttons = buttonGroup.querySelectorAll('modus-wc-button');
+
+    // Only first pressed button should remain pressed
+    expect(buttons[0].getAttribute('pressed')).toBe('');
+    expect(buttons[1].getAttribute('pressed')).toBeFalsy();
+    expect(buttons[2].getAttribute('pressed')).toBeFalsy();
+  });
+
+  it('should initialize multiple selected buttons with pressed attribute in multiple-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group selection-type="multiple">
+        <modus-wc-button pressed>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+        <modus-wc-button pressed>Button 3</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    await page.waitForChanges();
+
+    const buttons = buttonGroup.querySelectorAll('modus-wc-button');
+
+    // Both pressed buttons should remain pressed
+    expect(buttons[0].getAttribute('pressed')).toBe('');
+    expect(buttons[1].getAttribute('pressed')).toBeFalsy();
+    expect(buttons[2].getAttribute('pressed')).toBe('');
+  });
+
   it('should update the disabled state of child buttons when disabled prop changes', async () => {
     const page = await newSpecPage({
       components: [ModusWcButtonGroup, ModusWcButton],
@@ -176,7 +237,7 @@ describe('modus-wc-button-group', () => {
     expect(buttonGroupClickSpy).toHaveBeenCalled();
   });
 
-  it('should emit buttonSelectionChange event when selection changes', async () => {
+  it('should emit selectionChange event when selection changes', async () => {
     const page = await newSpecPage({
       components: [ModusWcButtonGroup, ModusWcButton],
       html: `<modus-wc-button-group>
@@ -187,11 +248,8 @@ describe('modus-wc-button-group', () => {
 
     const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
 
-    const buttonSelectionChangeSpy = jest.fn();
-    buttonGroup.addEventListener(
-      'buttonSelectionChange',
-      buttonSelectionChangeSpy
-    );
+    const selectionChangeSpy = jest.fn();
+    buttonGroup.addEventListener('selectionChange', selectionChangeSpy);
     await page.waitForChanges();
 
     buttonGroup.selectionType = 'multiple';
@@ -210,7 +268,45 @@ describe('modus-wc-button-group', () => {
     );
     await page.waitForChanges();
 
-    expect(buttonSelectionChangeSpy).toHaveBeenCalled();
+    expect(selectionChangeSpy).toHaveBeenCalled();
+  });
+
+  it('should not deselect button when clicking already selected button in single-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    buttonGroup.selectionType = 'single';
+    await page.waitForChanges();
+
+    const selectionChangeSpy = jest.fn();
+    buttonGroup.addEventListener('selectionChange', selectionChangeSpy);
+
+    const button1 = buttonGroup.querySelectorAll('modus-wc-button')[0];
+
+    // First click - select button 1
+    button1.dispatchEvent(
+      new CustomEvent('buttonClick', { bubbles: true, composed: true })
+    );
+    await page.waitForChanges();
+
+    expect(selectionChangeSpy).toHaveBeenCalledTimes(1);
+    expect(button1.getAttribute('pressed')).toBe('');
+
+    // Second click on same button - should NOT deselect (early return)
+    button1.dispatchEvent(
+      new CustomEvent('buttonClick', { bubbles: true, composed: true })
+    );
+    await page.waitForChanges();
+
+    // selectionChangeSpy should still be called only once (no second event)
+    expect(selectionChangeSpy).toHaveBeenCalledTimes(1);
+    expect(button1.getAttribute('pressed')).toBe('');
   });
 
   it('should handle resetAllSelections when buttonElements is not initialized', async () => {

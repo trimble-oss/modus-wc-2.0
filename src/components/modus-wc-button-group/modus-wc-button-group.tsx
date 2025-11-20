@@ -24,8 +24,8 @@ import { Attributes, inheritAriaAttributes } from '../utils';
   shadow: false,
 })
 export class ModusWcButtonGroup {
-  private inheritedAttributes: Attributes = {};
   private buttonElements!: NodeListOf<HTMLElement>;
+  private inheritedAttributes: Attributes = {};
   private selectedButtons: HTMLElement[] = [];
 
   /** Reference to the host element */
@@ -53,21 +53,9 @@ export class ModusWcButtonGroup {
   }>;
 
   /** Event emitted when button selection changes */
-  @Event() buttonSelectionChange!: EventEmitter<{
+  @Event() selectionChange!: EventEmitter<{
     selectedButtons: HTMLElement[];
   }>;
-
-  @Watch('disabled')
-  @Watch('buttonStyle')
-  @Watch('color')
-  handlePropChange(): void {
-    this.syncButtonStates();
-  }
-
-  @Watch('selectionType')
-  handleSelectionTypeChange(): void {
-    this.resetAllSelections();
-  }
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -77,13 +65,19 @@ export class ModusWcButtonGroup {
     this.buttonElements = this.el.querySelectorAll('modus-wc-button');
     this.applyCustomClasses();
     this.syncButtonStates();
+    this.initializeSelectedButtons();
   }
 
-  @Listen('slotchange')
-  handleSlotChange() {
-    this.buttonElements = this.el.querySelectorAll('modus-wc-button');
-    this.applyCustomClasses();
+  @Watch('buttonStyle')
+  @Watch('color')
+  @Watch('disabled')
+  handlePropChange(): void {
     this.syncButtonStates();
+  }
+
+  @Watch('selectionType')
+  handleSelectionTypeChange(): void {
+    this.resetAllSelections();
   }
 
   @Listen('buttonClick')
@@ -108,6 +102,14 @@ export class ModusWcButtonGroup {
     }
   }
 
+  @Listen('slotchange')
+  handleSlotChange() {
+    this.buttonElements = this.el.querySelectorAll('modus-wc-button');
+    this.applyCustomClasses();
+    this.syncButtonStates();
+    this.initializeSelectedButtons();
+  }
+
   private applyCustomClasses(): void {
     this.buttonElements.forEach((button) => {
       const current = button.getAttribute('custom-class') || '';
@@ -118,6 +120,31 @@ export class ModusWcButtonGroup {
         );
       }
     });
+  }
+
+  private initializeSelectedButtons(): void {
+    if (!this.buttonElements || !this.buttonElements.length) return;
+    this.selectedButtons = [];
+    const pressedButtons: HTMLElement[] = [];
+
+    Array.from(this.buttonElements).forEach((button) => {
+      if (button.hasAttribute('pressed')) {
+        pressedButtons.push(button);
+      }
+    });
+
+    if (this.selectionType === 'single' && pressedButtons.length > 0) {
+      const firstSelected = pressedButtons[0];
+      this.selectedButtons = [firstSelected];
+
+      // Remove pressed attribute from other buttons
+      pressedButtons.slice(1).forEach((button) => {
+        button.removeAttribute('pressed');
+      });
+    } else if (this.selectionType === 'multiple') {
+      // For multiple selection, keep all pressed buttons
+      this.selectedButtons = pressedButtons;
+    }
   }
 
   private syncButtonStates(): void {
@@ -140,25 +167,26 @@ export class ModusWcButtonGroup {
   private toggleSingleSelect(clickedButton: HTMLElement): void {
     const isCurrentlySelected = this.selectedButtons.includes(clickedButton);
 
+    // In single selection mode, clicking an already selected button does nothing
+    if (isCurrentlySelected) {
+      return;
+    }
+
     // Deactivate all buttons
     Array.from(this.buttonElements).forEach((button) => {
       button.removeAttribute('pressed');
     });
 
-    this.selectedButtons = [];
-
-    // If the clicked button wasn't selected, activate it
-    if (!isCurrentlySelected) {
-      clickedButton.setAttribute('pressed', 'true');
-      this.selectedButtons = [clickedButton];
-    }
+    // Activate the clicked button
+    clickedButton.setAttribute('pressed', '');
+    this.selectedButtons = [clickedButton];
 
     this.buttonGroupClick.emit({
       button: clickedButton,
-      isSelected: !isCurrentlySelected,
+      isSelected: true,
     });
 
-    this.buttonSelectionChange.emit({
+    this.selectionChange.emit({
       selectedButtons: this.selectedButtons,
     });
   }
@@ -174,7 +202,7 @@ export class ModusWcButtonGroup {
       );
     } else {
       // Activate and add to selection
-      clickedButton.setAttribute('pressed', 'true');
+      clickedButton.setAttribute('pressed', '');
       this.selectedButtons = [...this.selectedButtons, clickedButton];
     }
 
@@ -183,7 +211,7 @@ export class ModusWcButtonGroup {
       isSelected: !isCurrentlySelected,
     });
 
-    this.buttonSelectionChange.emit({
+    this.selectionChange.emit({
       selectedButtons: this.selectedButtons,
     });
   }
