@@ -27,7 +27,6 @@ const Template: Story = {
       gap: 0.2rem;
       height: 60px; /* toolbar height */
       border-radius: 8px;
-      border: 1px dashed black;
     }
     #toolbar-demo .modus-wc-navbar-center,
     #toolbar-demo .modus-wc-navbar-end,

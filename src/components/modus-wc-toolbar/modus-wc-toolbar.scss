@@ -2,3 +2,9 @@
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
+.modus-wc-navbar {
+  box-shadow:
+    0 1px 2px -1px
+      color-mix(in srgb, var(--modus-wc-color-black) 10%, transparent),
+    0 1px 3px 0 color-mix(in srgb, var(--modus-wc-color-black) 10%, transparent);
+}
