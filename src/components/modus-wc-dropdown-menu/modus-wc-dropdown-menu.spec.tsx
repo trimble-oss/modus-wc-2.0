@@ -80,7 +80,9 @@ describe('modus-wc-dropdown-menu', () => {
     });
 
     // Open the menu
-    const button = page.root!.querySelector('button');
+    const button = page.root!.querySelector(
+      'modus-wc-button button'
+    ) as HTMLButtonElement;
     expect(button?.textContent).toBe('Button');
     button?.click();
 
@@ -115,7 +117,9 @@ describe('modus-wc-dropdown-menu', () => {
     });
 
     // Open the menu
-    const button = page.root!.querySelector('button');
+    const button = page.root!.querySelector(
+      'modus-wc-button button'
+    ) as HTMLButtonElement;
     expect(button?.textContent).toBe('Button');
     button?.click();
 
@@ -156,7 +160,9 @@ describe('modus-wc-dropdown-menu', () => {
     const dropdownMenu = page.root!.querySelector('modus-wc-dropdown-menu')!;
     expect(dropdownMenu.menuVisible).toBe(false);
 
-    const button = page.root!.querySelector('button')!;
+    const button = dropdownMenu.querySelector(
+      'modus-wc-button button'
+    ) as HTMLButtonElement;
 
     button.click();
     await page.waitForChanges();

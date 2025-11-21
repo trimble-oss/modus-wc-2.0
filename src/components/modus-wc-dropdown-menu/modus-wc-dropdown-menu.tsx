@@ -139,19 +139,6 @@ export class ModusWcDropdownMenu {
   render() {
     return (
       <Host class={this.getClasses()} {...this.inheritedAttributes}>
-        <modus-wc-button
-          aria-expanded={this.menuVisible.toString()}
-          aria-haspopup="true"
-          aria-label={this.buttonAriaLabel}
-          color={this.buttonColor}
-          disabled={this.disabled}
-          onButtonClick={this.handleButtonClick}
-          size={this.buttonSize}
-          variant={this.buttonVariant}
-        >
-          <slot name="button" />
-        </modus-wc-button>
-
         <div
           aria-hidden={!this.menuVisible}
           class="menu-wrapper"
@@ -172,6 +159,19 @@ export class ModusWcDropdownMenu {
             <slot name="menu" />
           </modus-wc-menu>
         </div>
+
+        <modus-wc-button
+          aria-expanded={this.menuVisible.toString()}
+          aria-haspopup="true"
+          aria-label={this.buttonAriaLabel}
+          color={this.buttonColor}
+          disabled={this.disabled}
+          onButtonClick={this.handleButtonClick}
+          size={this.buttonSize}
+          variant={this.buttonVariant}
+        >
+          <slot name="button" />
+        </modus-wc-button>
       </Host>
     );
   }

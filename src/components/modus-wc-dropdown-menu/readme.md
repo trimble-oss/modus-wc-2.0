@@ -39,14 +39,14 @@ The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML 
 
 ### Depends on
 
-- [modus-wc-button](../modus-wc-button)
 - [modus-wc-menu](../modus-wc-menu)
+- [modus-wc-button](../modus-wc-button)
 
 ### Graph
 ```mermaid
 graph TD;
-  modus-wc-dropdown-menu --> modus-wc-button
   modus-wc-dropdown-menu --> modus-wc-menu
+  modus-wc-dropdown-menu --> modus-wc-button
   style modus-wc-dropdown-menu fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
