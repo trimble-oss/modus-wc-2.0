@@ -53,7 +53,7 @@ export class ModusWcButtonGroup {
   }>;
 
   /** Event emitted when button selection changes */
-  @Event() selectionChange!: EventEmitter<{
+  @Event() buttonSelectionChange!: EventEmitter<{
     selectedButtons: HTMLElement[];
   }>;
 
@@ -186,7 +186,7 @@ export class ModusWcButtonGroup {
       isSelected: true,
     });
 
-    this.selectionChange.emit({
+    this.buttonSelectionChange.emit({
       selectedButtons: this.selectedButtons,
     });
   }
@@ -211,7 +211,7 @@ export class ModusWcButtonGroup {
       isSelected: !isCurrentlySelected,
     });
 
-    this.selectionChange.emit({
+    this.buttonSelectionChange.emit({
       selectedButtons: this.selectedButtons,
     });
   }

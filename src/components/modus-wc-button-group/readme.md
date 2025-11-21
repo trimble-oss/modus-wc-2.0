@@ -24,10 +24,10 @@ The component supports a `<slot>` for injecting content within the buttongroup.
 
 ## Events
 
-| Event              | Description                                           | Type                                                         |
-| ------------------ | ----------------------------------------------------- | ------------------------------------------------------------ |
-| `buttonGroupClick` | Event emitted when any button in the group is clicked | `CustomEvent<{ button: HTMLElement; isSelected: boolean; }>` |
-| `selectionChange`  | Event emitted when button selection changes           | `CustomEvent<{ selectedButtons: HTMLElement[]; }>`           |
+| Event                   | Description                                           | Type                                                         |
+| ----------------------- | ----------------------------------------------------- | ------------------------------------------------------------ |
+| `buttonGroupClick`      | Event emitted when any button in the group is clicked | `CustomEvent<{ button: HTMLElement; isSelected: boolean; }>` |
+| `buttonSelectionChange` | Event emitted when button selection changes           | `CustomEvent<{ selectedButtons: HTMLElement[]; }>`           |
 
 
 ----------------------------------------------

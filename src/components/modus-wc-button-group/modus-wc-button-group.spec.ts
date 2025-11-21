@@ -237,7 +237,7 @@ describe('modus-wc-button-group', () => {
     expect(buttonGroupClickSpy).toHaveBeenCalled();
   });
 
-  it('should emit selectionChange event when selection changes', async () => {
+  it('should emit buttonSelectionChange event when selection changes', async () => {
     const page = await newSpecPage({
       components: [ModusWcButtonGroup, ModusWcButton],
       html: `<modus-wc-button-group>
@@ -248,8 +248,11 @@ describe('modus-wc-button-group', () => {
 
     const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
 
-    const selectionChangeSpy = jest.fn();
-    buttonGroup.addEventListener('selectionChange', selectionChangeSpy);
+    const buttonSelectionChangeSpy = jest.fn();
+    buttonGroup.addEventListener(
+      'buttonSelectionChange',
+      buttonSelectionChangeSpy
+    );
     await page.waitForChanges();
 
     buttonGroup.selectionType = 'multiple';
@@ -268,7 +271,7 @@ describe('modus-wc-button-group', () => {
     );
     await page.waitForChanges();
 
-    expect(selectionChangeSpy).toHaveBeenCalled();
+    expect(buttonSelectionChangeSpy).toHaveBeenCalled();
   });
 
   it('should not deselect button when clicking already selected button in single-select mode', async () => {
@@ -284,8 +287,11 @@ describe('modus-wc-button-group', () => {
     buttonGroup.selectionType = 'single';
     await page.waitForChanges();
 
-    const selectionChangeSpy = jest.fn();
-    buttonGroup.addEventListener('selectionChange', selectionChangeSpy);
+    const buttonSelectionChangeSpy = jest.fn();
+    buttonGroup.addEventListener(
+      'buttonSelectionChange',
+      buttonSelectionChangeSpy
+    );
 
     const button1 = buttonGroup.querySelectorAll('modus-wc-button')[0];
 
@@ -295,7 +301,7 @@ describe('modus-wc-button-group', () => {
     );
     await page.waitForChanges();
 
-    expect(selectionChangeSpy).toHaveBeenCalledTimes(1);
+    expect(buttonSelectionChangeSpy).toHaveBeenCalledTimes(1);
     expect(button1.getAttribute('pressed')).toBe('');
 
     // Second click on same button - should NOT deselect (early return)
@@ -304,8 +310,8 @@ describe('modus-wc-button-group', () => {
     );
     await page.waitForChanges();
 
-    // selectionChangeSpy should still be called only once (no second event)
-    expect(selectionChangeSpy).toHaveBeenCalledTimes(1);
+    // buttonSelectionChangeSpy should still be called only once (no second event)
+    expect(buttonSelectionChangeSpy).toHaveBeenCalledTimes(1);
     expect(button1.getAttribute('pressed')).toBe('');
   });
 

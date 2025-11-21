@@ -44,7 +44,7 @@ const meta: Meta<ButtonGroupArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['selectionChange', 'buttonGroupClick'],
+      handles: ['buttonSelectionChange', 'buttonGroupClick'],
     },
   },
 };
@@ -215,7 +215,7 @@ export const SelectionEvent: Story = {
   window.addEventListener('DOMContentLoaded', () => {
     const buttonGroup = document.querySelector('#event-demo-group');
     if (buttonGroup) {
-      buttonGroup.addEventListener('selectionChange', (event) => {
+      buttonGroup.addEventListener('buttonSelectionChange', (event) => {
         const selectedButtons = event.detail.selectedButtons;
         const buttonTexts = selectedButtons.map(btn => btn.textContent.trim());
         
@@ -275,7 +275,7 @@ export const Migration: Story = {
 | button-style    | button-style    | Values changed: \`fill\` → \`fill\`, \`outline\` → \`outlined\`          |
 | color           | color           | \`special\` color removed. Other values unchanged                        |
 | disabled        | disabled        | Unchanged                                                                |
-| orientation     | orientation     | New in 2.0. Controls horizontal/vertical layout                          |
+| -               | orientation     | New in 2.0. Controls horizontal/vertical layout                          |
 | selection-type  | selection-type  | Values changed: \`none\` → \`default\`, \`single\` and \`multiple\` unchanged |
 | size            | -               | Removed. Control size on individual buttons                              |
 
@@ -284,7 +284,7 @@ export const Migration: Story = {
 | 1.0 Event              | 2.0 Event              | Notes                                                      |
 |------------------------|------------------------|------------------------------------------------------------|
 | buttonGroupClick       | buttonGroupClick       | Event detail changed: now includes \`{ button, isSelected }\` |
-| selectionChange        | selectionChange        | Unchanged. Returns array of selected buttons               |
+| selectionChange        | buttonSelectionChange  | Renamed from \`selectionChange\`. Returns array of selected buttons |
    `,
       },
     },

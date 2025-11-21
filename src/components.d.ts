@@ -2174,7 +2174,7 @@ declare global {
     button: HTMLElement;
     isSelected: boolean;
   };
-        "selectionChange": {
+        "buttonSelectionChange": {
     selectedButtons: HTMLElement[];
   };
     }
@@ -3291,7 +3291,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when button selection changes
          */
-        "onSelectionChange"?: (event: ModusWcButtonGroupCustomEvent<{
+        "onButtonSelectionChange"?: (event: ModusWcButtonGroupCustomEvent<{
     selectedButtons: HTMLElement[];
   }>) => void;
         /**
