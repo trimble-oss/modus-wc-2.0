@@ -2713,4 +2713,19 @@ describe('modus-wc-date', () => {
     expect(component['calendar'].selectedMonth).toBe(9); // October
     expect(component['calendar']['firstDayOfWeek']).toBe(3); // Wednesday
   });
+
+  it('should render weeknumber column when showWeekNumbers is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Week numbers test" show-week-numbers="true"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    // Open calendar to render week numbers
+    component['showCalendar'] = true;
+    await page.waitForChanges();
+
+    const weekNumbers = page.root!.querySelectorAll('.week-number');
+    expect(weekNumbers.length).toBeGreaterThan(0);
+  });
 });
