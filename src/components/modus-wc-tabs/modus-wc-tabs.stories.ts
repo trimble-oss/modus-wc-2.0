@@ -65,24 +65,27 @@ export default meta;
 
 type Story = StoryObj<TabsArgs>;
 
+const getTabsScript = (tabs: ITab[]) => html`
+  <script>
+    //   // This is to show how to set tabs via script
+    //  const tabElement = document.querySelector('modus-wc-tabs');
+    //  tabElement.tabs = ${JSON.stringify(tabs)};
+  </script>
+`;
+
 const Template: Story = {
   render: (args) => {
-    // Normalize tabs to ensure disabled is strictly boolean (true/false only)
-    const normalizedTabs = args.tabs.map((tab) => ({
-      ...tab,
-      disabled: tab.disabled === true,
-    }));
-
     // prettier-ignore
     return html`
 <modus-wc-tabs
   active-tab-index="${ifDefined(args.activeTabIndex)}"
   aria-label="Tab group"
   tab-style="${ifDefined(args['tab-style'])}"
-  .tabs="${normalizedTabs}"
+  .tabs=${args.tabs}
   size="${ifDefined(args.size)}"
 >
 </modus-wc-tabs>
+${getTabsScript(args.tabs)}
     `;
   },
 };
@@ -122,11 +125,6 @@ export const CustomContent: Story = {
 
   // prettier-ignore
   render: (args) => {
-    // Normalize tabs to ensure disabled is strictly boolean (true/false only)
-    const normalizedTabs = args.tabs.map((tab) => ({
-      ...tab,
-      disabled: tab.disabled === true,
-    }));
 
     return html`
     <style>
@@ -141,7 +139,7 @@ export const CustomContent: Story = {
       }
     </style>
     <modus-wc-tabs
-      .tabs="${normalizedTabs}"
+      .tabs=${args.tabs}
       size="${ifDefined(args.size)}"
       tab-style="${ifDefined(args['tab-style'])}"
       active-tab-index="${ifDefined(args.activeTabIndex)}"
@@ -188,18 +186,21 @@ export const CustomContent: Story = {
         >
       </span>
     </modus-wc-tabs>
+    ${getTabsScript(args.tabs)}
   `;
   },
 };
 
-export const ActiveAndDisabled: Story = { ...Template };
-ActiveAndDisabled.args = {
-  activeTabIndex: 1,
-  tabs: [
-    { label: 'Normal' },
-    { label: 'Active' },
-    { label: 'Disabled', disabled: true },
-  ],
+export const ActiveAndDisabled: Story = {
+  ...Template,
+  args: {
+    activeTabIndex: 1,
+    tabs: [
+      { label: 'Normal' },
+      { label: 'Active' },
+      { label: 'Disabled', disabled: true },
+    ],
+  },
 };
 
 export const Icons: Story = {
@@ -219,12 +220,6 @@ export const Icons: Story = {
 
 export const TabsWithPanel: Story = {
   render: (args) => {
-    // Normalize tabs to ensure disabled is strictly boolean (true/false only)
-    const normalizedTabs = args.tabs.map((tab) => ({
-      ...tab,
-      disabled: tab.disabled === true,
-    }));
-
     // prettier-ignore
     return html`
 <modus-wc-tabs
@@ -233,7 +228,7 @@ export const TabsWithPanel: Story = {
   custom-class="${ifDefined(args['custom-class'])}"
   ?img-src="${args['img-src']}"
   tab-style="${ifDefined(args['tab-style'])}"
-  .tabs="${normalizedTabs}"
+  .tabs="${args.tabs}"
   size="${ifDefined(args.size)}"
 >
   <p slot="tab-0">
@@ -249,6 +244,7 @@ export const TabsWithPanel: Story = {
     snapshot (noun) : an impression or view of something brief or transitory
   </p>
 </modus-wc-tabs>
+${getTabsScript(args.tabs)}
     `;
   },
 };
