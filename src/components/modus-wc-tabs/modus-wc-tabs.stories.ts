@@ -67,10 +67,11 @@ type Story = StoryObj<TabsArgs>;
 
 const getTabsScript = (tabs: ITab[]) => html`
   <script>
-    //   // This is to show how to set tabs via script
-    //  const tabElement = document.querySelector('modus-wc-tabs');
-    //  tabElement.tabs = ${JSON.stringify(tabs)};
-  </script>
+   
+    // // This is to show how to set tabs via script
+    // const tabElement = document.querySelector('modus-wc-tabs');
+    // tabElement.tabs = ${JSON.stringify(tabs)};
+    
 `;
 
 const Template: Story = {
@@ -228,7 +229,7 @@ export const TabsWithPanel: Story = {
   custom-class="${ifDefined(args['custom-class'])}"
   ?img-src="${args['img-src']}"
   tab-style="${ifDefined(args['tab-style'])}"
-  .tabs="${args.tabs}"
+  .tabs=${args.tabs}
   size="${ifDefined(args.size)}"
 >
   <p slot="tab-0">
