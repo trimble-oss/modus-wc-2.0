@@ -139,6 +139,11 @@ export class ModusWcDropdownMenu {
   render() {
     return (
       <Host class={this.getClasses()} {...this.inheritedAttributes}>
+        {/* 
+          NOTE: menu-wrapper is rendered before modus-wc-button to ensure proper 
+          :last-child CSS selector behavior when used in modus-wc-button-group.
+          The absolutely positioned menu-wrapper should not interfere with join styling.
+        */}
         <div
           aria-hidden={!this.menuVisible}
           class="menu-wrapper"
