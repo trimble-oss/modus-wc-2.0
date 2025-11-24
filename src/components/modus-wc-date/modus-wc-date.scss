@@ -86,7 +86,7 @@ modus-wc-date {
         display: flex;
         gap: var(--modus-wc-spacing-xs);
 
-        select {
+        select option {
           background-color: var(--modus-wc-color-white);
           color: var(--modus-wc-color-gray-9);
         }
@@ -110,11 +110,8 @@ modus-wc-date {
         }
 
         .week-number-header {
-          color: var(--modus-wc-color-base-content-hight-contrast);
-          font-weight: var(--modus-wc-font-weight-bold);
           margin-inline-end: var(--modus-wc-spacing-md);
           padding: var(--modus-wc-spacing-xs);
-          text-align: center;
         }
 
         .day-header {
@@ -135,12 +132,10 @@ modus-wc-date {
 
         .week-number {
           align-items: center;
-          border-inline-end: 1px solid var(--modus-wc-color-gray-4);
-          color: var(--modus-wc-color-base-content-hight-contrast);
+          border-inline-end: 1px solid var(--modus-wc-color-gray-0);
           display: flex;
           font-size: var(--modus-wc-font-size-sm);
           font-weight: var(--modus-wc-font-weight-bold);
-          height: 32px;
           justify-content: center;
           padding-inline-end: var(--modus-wc-spacing-sm);
         }
@@ -262,4 +257,12 @@ modus-wc-date {
 [data-theme='connect-light'] modus-wc-date .modus-wc-date-input,
 [data-theme='connect-dark'] modus-wc-date .modus-wc-date-input {
   @include connect-input-styles;
+}
+
+[data-theme='connect-dark'] modus-wc-date .calendar-selects,
+[data-theme='modus-modern-dark'] modus-wc-date .calendar-selects,
+[data-theme='modus-classic-dark'] modus-wc-date .calendar-selects {
+  modus-wc-select select {
+    background-color: unset;
+  }
 }

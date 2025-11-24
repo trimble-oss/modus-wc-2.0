@@ -2343,6 +2343,15 @@
               }
             },
             {
+              "name": "show-week-numbers",
+              "fieldName": "showWeekNumbers",
+              "default": "false",
+              "description": "Show week numbers in the calendar",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "size",
               "fieldName": "size",
               "default": "'md'",
