@@ -112,17 +112,6 @@ modus-wc-menu-item .modus-wc-menu-item {
     outline: 2px solid var(--modus-wc-color-trimble-blue);
     outline-offset: -2px;
   }
-
-  &.modus-wc-menu-item-selected {
-    background-color: var(--modus-wc-color-primary-pale);
-    border-radius: inherit;
-    color: var(--modus-wc-color-primary);
-
-    button:focus {
-      background-color: transparent;
-      color: inherit;
-    }
-  }
 }
 
 [data-theme='modus-classic-dark'],
