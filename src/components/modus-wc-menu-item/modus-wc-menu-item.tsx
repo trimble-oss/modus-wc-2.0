@@ -10,7 +10,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu-item.tailwind';
-import { DaisySize, ModusSize } from '../types';
+import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -124,20 +124,6 @@ export class ModusWcMenuItem {
     return this.hasSubmenu ? 'modus-wc-menu-dropdown-toggle' : '';
   }
 
-  private getIconSize(): DaisySize {
-    switch (this.size) {
-      case 'sm':
-        return 'xs';
-      case 'md':
-        return 'sm';
-      case 'lg':
-        return 'md';
-      // istanbul ignore next (unreachable code)
-      default:
-        return 'sm';
-    }
-  }
-
   private handleItemSelect = () => {
     // For submenu items, handle the toggle
     if (this.hasSubmenu) {
@@ -202,22 +188,6 @@ export class ModusWcMenuItem {
         }
       }
     }
-    // For regular menu items, toggle selection state
-    else {
-      const liElement = this.el.querySelector('li');
-
-      if (liElement) {
-        // Toggle based on current selected prop state
-        if (this.selected) {
-          liElement.classList.remove('modus-wc-menu-item-selected');
-          this.selected = false;
-        } else {
-          liElement.classList.add('modus-wc-menu-item-selected');
-          this.selected = true;
-        }
-      }
-    }
-
     // Always emit the event with current selection state
     this.itemSelect.emit({ value: this.value, selected: this.selected });
   };
@@ -264,15 +234,6 @@ export class ModusWcMenuItem {
                   <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
                 )}
               </div>
-              {this.selected && this.checkbox !== true && !this.hasSubmenu && (
-                <div class="modus-wc-menu-item-selected-icon">
-                  <modus-wc-icon
-                    decorative={true}
-                    name="check"
-                    size={this.getIconSize()}
-                  />
-                </div>
-              )}
             </div>
           </button>
           <slot></slot>

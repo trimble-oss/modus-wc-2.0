@@ -75,7 +75,10 @@ describe('modus-wc-menu-item', () => {
     await page.waitForChanges();
 
     expect(clickSpy).toHaveBeenCalledTimes(1);
-    expect(clickSpy.mock.calls[0][0].detail).toEqual({ value: 'test-value', selected: true });
+    expect(clickSpy.mock.calls[0][0].detail).toEqual({
+      value: 'test-value',
+      selected: true,
+    });
   });
 
   it('should render with checkbox', async () => {
@@ -145,25 +148,32 @@ describe('modus-wc-menu-item', () => {
     // Get elements
     const menuItem = page.root as HTMLElement;
     const button = menuItem.querySelector('button') as HTMLButtonElement;
-    const checkbox = menuItem.querySelector('modus-wc-checkbox') as HTMLElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
 
-    // Get initial state
-    const initialValue = checkbox.getAttribute('value') || 'false';
-    expect(initialValue).toBe('false');
+    // Initially the item should not have the selected class
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-selected')
+    ).toBeFalsy();
 
     // Click the menu item
     button.click();
     await page.waitForChanges();
 
-    // After click, the checkbox value should be "true"
-    expect(checkbox.getAttribute('value')).toBe('true');
+    // After click, it should have the selected class and selected prop should be true
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-selected')
+    ).toBeTruthy();
+    expect(page.rootInstance.selected).toBe(true);
 
     // Click again
     button.click();
     await page.waitForChanges();
 
-    // Value should be back to "false"
-    expect(checkbox.getAttribute('value')).toBe('false');
+    // After second click, should not have the selected class but selected prop remains true
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-selected')
+    ).toBeFalsy();
+    expect(page.rootInstance.selected).toBe(true);
   });
 
   it('should handle checkbox items that are initially selected', async () => {

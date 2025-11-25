@@ -36,27 +36,6 @@ modus-wc-menu-item .modus-wc-menu-item {
         margin-left: auto;
       }
     }
-
-    // Reset button hover states (override DaisyUI base styles)
-    &:hover,
-    &:focus-visible {
-      background-color: transparent;
-    }
-  }
-
-  // Prevent hover and focus color changes on selected menu items
-  &.modus-wc-menu-item-selected {
-    button:hover {
-      background-color: inherit;
-      color: inherit;
-    }
-  }
-
-  &.modus-wc-menu-item-disabled {
-    color: var(--modus-wc-color-gray-2);
-    button {
-      pointer-events: none;
-    }
   }
 
   &.modus-wc-menu-item-sm {
@@ -96,26 +75,49 @@ modus-wc-menu-item .modus-wc-menu-item {
     border-top: var(--modus-wc-border-width-xs) solid
       var(--modus-wc-color-base-100);
   }
-  // Hover and focus states for non-selected menu items
-  &:hover:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled) {
-    background-color: var(--modus-wc-color-gray-0);
-    color: inherit;
+
+  &.modus-wc-menu-item-selected {
+    background-color: var(--modus-wc-color-primary-pale);
+    border-radius: inherit;
+    color: var(--modus-wc-color-primary);
+
+    button {
+      &:hover,
+      &:focus {
+        background-color: transparent;
+        color: inherit;
+      }
+    }
+  }
+
+  &.modus-wc-menu-item-disabled {
+    opacity: 0.4;
+
+    button {
+      pointer-events: none;
+    }
+  }
+
+  // Hover states for non-selected menu items (on button only, not li)
+  &:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled) {
+    button:hover,
+    button:focus:not(:focus-visible) {
+      background-color: var(--modus-wc-color-gray-0);
+      color: inherit;
+    }
   }
 
   button:focus-visible {
+    background-color: transparent;
     outline: 2px solid var(--modus-wc-color-trimble-blue);
     outline-offset: -2px;
-  }
-
-  button:focus {
-    background-color: var(--modus-wc-color-gray-0);
-    outline: none;
   }
 
   &.modus-wc-menu-item-selected {
     background-color: var(--modus-wc-color-primary-pale);
     border-radius: inherit;
     color: var(--modus-wc-color-primary);
+
     button:focus {
       background-color: transparent;
       color: inherit;
@@ -127,40 +129,17 @@ modus-wc-menu-item .modus-wc-menu-item {
 [data-theme='modus-modern-dark'],
 [data-theme='connect-dark'] {
   modus-wc-menu-item .modus-wc-menu-item {
-    // Prevent hover and focus color changes on selected Fmenu items
-    &.modus-wc-menu-item-selected {
-      button:hover {
-        background-color: inherit;
+    // Hover states for non-selected menu items (on button only, not li)
+    &:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled) {
+      button:hover,
+      button:focus:not(:focus-visible) {
+        background-color: var(--modus-wc-color-gray-9);
         color: inherit;
       }
     }
 
-    // Hover and focus states for non-selected menu items
-    &:hover:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled) {
-      background-color: var(--modus-wc-color-gray-6);
-      color: inherit;
-    }
-
     button:focus-visible {
       outline: 2px solid var(--modus-wc-color-highlight-blue);
-    }
-
-    button:focus {
-      background-color: var(--modus-wc-color-gray-6);
-      outline: none;
-    }
-
-    &.modus-wc-menu-item-selected {
-      background-color: var(--modus-wc-color-primary-pale);
-      border-radius: inherit;
-      color: var(--modus-wc-color-primary);
-
-      button:hover,
-      button:focus,
-      button:focus-visible {
-        background-color: transparent;
-        color: var(--modus-wc-color-primary);
-      }
     }
   }
 }

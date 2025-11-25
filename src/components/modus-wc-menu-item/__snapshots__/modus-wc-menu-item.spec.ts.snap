@@ -89,13 +89,6 @@ exports[`modus-wc-menu-item should render with custom props 1`] = `
             Test sub-label
           </div>
         </div>
-        <div class="modus-wc-menu-item-selected-icon">
-          <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-            <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
-              check
-            </i>
-          </modus-wc-icon>
-        </div>
       </div>
     </button>
   </li>
@@ -112,9 +105,6 @@ exports[`modus-wc-menu-item should render with size lg 1`] = `
           <div>
             Test label
           </div>
-        </div>
-        <div class="modus-wc-menu-item-selected-icon">
-          <modus-wc-icon decorative="" name="check" size="md"></modus-wc-icon>
         </div>
       </div>
     </button>
@@ -133,9 +123,6 @@ exports[`modus-wc-menu-item should render with size md 1`] = `
             Test label
           </div>
         </div>
-        <div class="modus-wc-menu-item-selected-icon">
-          <modus-wc-icon decorative="" name="check" size="sm"></modus-wc-icon>
-        </div>
       </div>
     </button>
   </li>
@@ -152,9 +139,6 @@ exports[`modus-wc-menu-item should render with size sm 1`] = `
           <div>
             Test label
           </div>
-        </div>
-        <div class="modus-wc-menu-item-selected-icon">
-          <modus-wc-icon decorative="" name="check" size="xs"></modus-wc-icon>
         </div>
       </div>
     </button>
