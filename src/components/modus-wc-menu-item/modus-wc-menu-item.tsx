@@ -186,8 +186,15 @@ export class ModusWcMenuItem {
         if (checkboxElement) {
           checkboxElement.setAttribute('value', (!isSelected).toString());
         }
+
+        this.selected = true;
       }
     }
+    // For regular menu items, set selected to true
+    else {
+      this.selected = true;
+    }
+
     // Always emit the event with current selection state
     this.itemSelect.emit({ value: this.value, selected: this.selected });
   };
