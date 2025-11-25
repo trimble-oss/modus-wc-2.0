@@ -319,6 +319,40 @@ describe('modus-wc-date', () => {
     expect(component.value).toBe('15-10-2025');
   });
 
+  it('should sync value from input on Enter key press', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Enter key test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+
+    input.value = '20-11-2025';
+    const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
+    component['handleInputKeyDown'](enterEvent);
+    await page.waitForChanges();
+
+    expect(component.value).toBe('20-11-2025');
+  });
+
+  it('should not sync value from input on non-Enter key press', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Non-enter key test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+
+    component.value = '10-10-2025';
+    input.value = '20-11-2025';
+    const tabEvent = new KeyboardEvent('keydown', { key: 'Tab' });
+    component['handleInputKeyDown'](tabEvent);
+    await page.waitForChanges();
+
+    // Value should not be synced on Tab key
+    expect(component.value).toBe('10-10-2025');
+  });
+
   it('should navigate calendar to selected date when opening', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
