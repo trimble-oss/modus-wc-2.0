@@ -540,7 +540,7 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
-          * Show week numbers in the calendar
+          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
          */
         "showWeekNumbers"?: boolean;
         /**
@@ -3454,7 +3454,7 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
-          * Show week numbers in the calendar
+          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
          */
         "showWeekNumbers"?: boolean;
         /**

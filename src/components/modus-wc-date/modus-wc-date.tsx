@@ -127,7 +127,7 @@ export class ModusWcDate {
   /** The first day of the week for the calendar display */
   @Prop() weekStartDay?: WeekStartDay = 'sunday';
 
-  /** Show week numbers in the calendar */
+  /** Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.*/
   @Prop() showWeekNumbers?: boolean = false;
 
   /** Event emitted when the input loses focus. */

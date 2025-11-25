@@ -2346,7 +2346,7 @@
               "name": "show-week-numbers",
               "fieldName": "showWeekNumbers",
               "default": "false",
-              "description": "Show week numbers in the calendar",
+              "description": "Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.",
               "type": {
                 "text": "boolean"
               }
