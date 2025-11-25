@@ -46,6 +46,10 @@ modus-wc-typography {
     line-height: 18px;
   }
 
+  p.modus-wc-typography {
+    margin-bottom: 0;
+  }
+
   .modus-wc-typography-weight-light {
     font-weight: var(--modus-wc-font-weight-light);
   }
