@@ -99,7 +99,7 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 
   // Hover states for non-selected menu items (on button only, not li)
-  &:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled) {
+  &:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled):not(:has(.modus-wc-menu-dropdown)) {
     button:hover,
     button:focus:not(:focus-visible) {
       background-color: var(--modus-wc-color-gray-0);
@@ -119,7 +119,7 @@ modus-wc-menu-item .modus-wc-menu-item {
 [data-theme='connect-dark'] {
   modus-wc-menu-item .modus-wc-menu-item {
     // Hover states for non-selected menu items (on button only, not li)
-    &:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled) {
+    &:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled):not(:has(.modus-wc-menu-dropdown)) {
       button:hover,
       button:focus:not(:focus-visible) {
         background-color: var(--modus-wc-color-gray-9);
