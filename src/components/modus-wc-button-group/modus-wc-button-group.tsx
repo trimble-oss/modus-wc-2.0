@@ -21,6 +21,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 
 @Component({
   tag: 'modus-wc-button-group',
+  styleUrl: 'modus-wc-button-group.scss',
   shadow: false,
 })
 export class ModusWcButtonGroup {

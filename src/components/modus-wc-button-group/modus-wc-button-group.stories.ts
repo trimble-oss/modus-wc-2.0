@@ -86,12 +86,6 @@ export const SplitButton: Story = {
   render: () => {
     // prettier-ignore
     return html`
-<style>
-  .modus-wc-dropdown-menu .modus-wc-join-item {
-    border-end-end-radius: inherit !important;
-    border-start-end-radius: inherit !important;
-  }
-</style>
 <script>
   const handleItemSelect = (event) => {
     // Update the "Selected Value" label
