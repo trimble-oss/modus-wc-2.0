@@ -86,6 +86,12 @@ export const SplitButton: Story = {
   render: () => {
     // prettier-ignore
     return html`
+<style>
+  .modus-wc-dropdown-menu .modus-wc-join-item {
+    border-end-end-radius: inherit !important;
+    border-start-end-radius: inherit !important;
+  }
+</style>
 <script>
   const handleItemSelect = (event) => {
     // Update the "Selected Value" label
@@ -211,13 +217,6 @@ export const SelectionEvent: Story = {
   render: () => {
     // prettier-ignore
     return html`
-<style>
-  .modus-wc-dropdown-menu-icon-button .modus-wc-join-item {
-    border-end-end-radius: inherit !important;
-    border-start-end-radius: inherit !important;
-  }
-}
-</style> 
 <script>
   window.addEventListener('DOMContentLoaded', () => {
     const buttonGroup = document.querySelector('#event-demo-group');
