@@ -62,16 +62,49 @@ export default class DatePickerCalendar {
    * Get ISO week number for a given date
    * ISO 8601: Week 1 is the week with the year's first Thursday
    */
-  getWeekNumber(date: Date): number {
-    const temp = new Date(
-      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
-    );
-    const day = temp.getUTCDay() || 7; // Sunday → 7
-    temp.setUTCDate(temp.getUTCDate() + 4 - day);
-    const yearStart = new Date(Date.UTC(temp.getUTCFullYear(), 0, 1));
-    return Math.ceil(
-      ((temp.getTime() - yearStart.getTime()) / 86400000 + 1) / 7
-    );
+  getWeekNumber(date: Date, weekStart: number = 1): string {
+    function isoWeek(d: Date): number {
+      const temp = new Date(
+        Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())
+      );
+      const day = temp.getUTCDay() || 7; 
+      temp.setUTCDate(temp.getUTCDate() + 4 - day);
+      const yearStart = new Date(Date.UTC(temp.getUTCFullYear(), 0, 1));
+      return Math.ceil(
+        ((temp.getTime() - yearStart.getTime()) / 86400000 + 1) / 7
+      );
+    }
+
+    // --- FIND START OF WEEK ---
+    const day = date.getDay();
+    const diff = (day - weekStart + 7) % 7;
+    const weekStartDate = new Date(date);
+    weekStartDate.setDate(date.getDate() - diff);
+
+    // --- COLLECT ALL WEEK NUMBERS ---
+    const weekCounts: Record<number, number> = {};
+
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(weekStartDate);
+      d.setDate(weekStartDate.getDate() + i);
+      const w = isoWeek(d);
+      weekCounts[w] = (weekCounts[w] || 0) + 1;
+    }
+
+    // --- PICK WEEK WITH MOST OCCURRENCES ---
+    let majorityWeek = 0;
+    let max = 0;
+
+    for (const [weekStr, count] of Object.entries(weekCounts)) {
+      const week = Number(weekStr);
+      if (count > max) {
+        max = count;
+        majorityWeek = week;
+      }
+    }
+
+    // Return double-digit week number
+    return majorityWeek.toString().padStart(2, '0');
   }
 
   private calculateDates(): void {

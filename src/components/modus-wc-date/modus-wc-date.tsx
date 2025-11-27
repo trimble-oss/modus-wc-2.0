@@ -834,9 +834,12 @@ export class ModusWcDate {
               this.showWeekNumbers && index % 7 === 0 ? (
                 <div
                   class="week-number"
-                  aria-label={`Week ${this.calendar.getWeekNumber(date)}`}
+                  aria-label={`Week ${this.calendar.getWeekNumber(date, WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay])}`}
                 >
-                  {this.calendar.getWeekNumber(date)}
+                  {this.calendar.getWeekNumber(
+                    date,
+                    WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay]
+                  )}
                 </div>
               ) : null;
 
