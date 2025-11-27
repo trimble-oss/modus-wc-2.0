@@ -2794,7 +2794,6 @@
             {
               "kind": "method",
               "name": "reset",
-              "privacy": "public",
               "description": "Reset the dropzone to its initial state, clearing all error and success states"
             }
           ],
