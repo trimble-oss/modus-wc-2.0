@@ -67,7 +67,7 @@ export default class DatePickerCalendar {
       const temp = new Date(
         Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())
       );
-      const day = temp.getUTCDay() || 7; 
+      const day = temp.getUTCDay() || 7;
       temp.setUTCDate(temp.getUTCDate() + 4 - day);
       const yearStart = new Date(Date.UTC(temp.getUTCFullYear(), 0, 1));
       return Math.ceil(
