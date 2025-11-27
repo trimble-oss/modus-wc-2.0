@@ -5,7 +5,7 @@ import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 // Type declaration for the button group element
 interface HTMLModusWcButtonGroupElement extends HTMLElement {
   disabled?: boolean;
-  buttonStyle?: 'borderless' | 'fill' | 'outlined';
+  variant?: 'borderless' | 'filled' | 'outlined';
   color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   selectionType?: 'default' | 'single' | 'multiple';
 }
@@ -45,10 +45,10 @@ describe('modus-wc-button-group', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should render with custom button-style', async () => {
+  it('should render with custom variant', async () => {
     const page = await newSpecPage({
       components: [ModusWcButtonGroup],
-      html: `<modus-wc-button-group button-style="fill">
+      html: `<modus-wc-button-group variant="filled">
         <modus-wc-button>Button 1</modus-wc-button>
         <modus-wc-button>Button 2</modus-wc-button>
       </modus-wc-button-group>`,
@@ -165,7 +165,7 @@ describe('modus-wc-button-group', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should update the button-style of child buttons when buttonStyle prop changes', async () => {
+  it('should update the variant of child buttons when variant prop changes', async () => {
     const page = await newSpecPage({
       components: [ModusWcButtonGroup, ModusWcButton],
       html: `<modus-wc-button-group>
@@ -175,7 +175,7 @@ describe('modus-wc-button-group', () => {
     });
 
     const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
-    buttonGroup.buttonStyle = 'fill';
+    buttonGroup.variant = 'filled';
     await page.waitForChanges();
     expect(page.root).toMatchSnapshot();
   });
@@ -418,7 +418,7 @@ describe('modus-wc-button-group', () => {
   it('should handle slot change when buttons are added dynamically', async () => {
     const page = await newSpecPage({
       components: [ModusWcButtonGroup, ModusWcButton],
-      html: `<modus-wc-button-group color="primary" button-style="fill">
+      html: `<modus-wc-button-group color="primary" variant="filled">
         <modus-wc-button>Button 1</modus-wc-button>
       </modus-wc-button-group>`,
     });
@@ -430,7 +430,7 @@ describe('modus-wc-button-group', () => {
     let buttons = buttonGroup.querySelectorAll('modus-wc-button');
     expect(buttons.length).toBe(1);
     expect(buttons[0].getAttribute('color')).toBe('primary');
-    expect(buttons[0].getAttribute('variant')).toBe('fill');
+    expect(buttons[0].getAttribute('variant')).toBe('filled');
 
     // Add a new button dynamically
     const newButton = page.doc.createElement('modus-wc-button');
@@ -448,9 +448,9 @@ describe('modus-wc-button-group', () => {
     buttons = buttonGroup.querySelectorAll('modus-wc-button');
     expect(buttons.length).toBe(2);
     expect(buttons[0].getAttribute('color')).toBe('primary');
-    expect(buttons[0].getAttribute('variant')).toBe('fill');
+    expect(buttons[0].getAttribute('variant')).toBe('filled');
     expect(buttons[1].getAttribute('color')).toBe('primary');
-    expect(buttons[1].getAttribute('variant')).toBe('fill');
+    expect(buttons[1].getAttribute('variant')).toBe('filled');
   });
 
   it('should handle syncButtonStates when buttonElements is empty', async () => {

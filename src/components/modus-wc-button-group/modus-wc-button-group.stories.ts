@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { Orientation } from '../types';
 
 interface ButtonGroupArgs {
-  'button-style': 'borderless' | 'fill' | 'outlined';
+  variant: 'borderless' | 'filled' | 'outlined';
   color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   disabled: boolean;
   orientation: Orientation;
@@ -16,16 +16,16 @@ const meta: Meta<ButtonGroupArgs> = {
   title: 'Components/Button Group',
   component: 'modus-wc-button-group',
   args: {
-    'button-style': 'outlined',
+    variant: 'outlined',
     color: 'primary',
     disabled: false,
     orientation: 'horizontal',
     'selection-type': 'default',
   },
   argTypes: {
-    'button-style': {
+    variant: {
       control: { type: 'select' },
-      options: ['borderless', 'fill', 'outlined'],
+      options: ['borderless', 'filled', 'outlined'],
     },
     color: {
       control: { type: 'select' },
@@ -58,7 +58,7 @@ const Template: Story = {
     // prettier-ignore
     return html`
 <modus-wc-button-group
-  button-style=${ifDefined(args['button-style'])}
+  variant=${ifDefined(args.variant)}
   color=${ifDefined(args.color)}
   ?disabled=${(args.disabled)}
   orientation=${ifDefined(args.orientation)}
@@ -77,7 +77,7 @@ export const Default: Story = { ...Template };
 export const Vertical: Story = {
   ...Template,
   args: {
-    'button-style': 'outlined',
+    variant: 'outlined',
     orientation: 'vertical',
   },
 };
@@ -114,7 +114,7 @@ export const SplitButton: Story = {
 </script>
 
 <div style="display: flex; flex-direction: column; gap: 16px; min-height: 300px;">
-  <modus-wc-button-group button-style="outlined">
+  <modus-wc-button-group variant="outlined">
     <modus-wc-button>Save Document</modus-wc-button>
     <modus-wc-dropdown-menu 
       menu-placement="bottom-end"
@@ -148,7 +148,7 @@ export const SingleSelection: Story = {
 <div style="display: flex; flex-direction: column; gap: 16px;">
   <div>
     <h4 style="margin-bottom: 8px;">Single Selection (Only one button can be active at a time)</h4>
-    <modus-wc-button-group selection-type="single" button-style="outlined">
+    <modus-wc-button-group selection-type="single" variant="outlined">
       <modus-wc-button>Option 1</modus-wc-button>
       <modus-wc-button pressed>Option 2</modus-wc-button>
       <modus-wc-button>Option 3</modus-wc-button>
@@ -158,7 +158,7 @@ export const SingleSelection: Story = {
   
   <div>
     <h4 style="margin-bottom: 8px;">Vertical Single Selection</h4>
-    <modus-wc-button-group selection-type="single" orientation="vertical" button-style="outlined">
+    <modus-wc-button-group selection-type="single" orientation="vertical" variant="outlined">
       <modus-wc-button pressed>Option 1</modus-wc-button>
       <modus-wc-button>Option 2</modus-wc-button>
       <modus-wc-button>Option 3</modus-wc-button>
@@ -177,7 +177,7 @@ export const MultipleSelection: Story = {
 <div style="display: flex; flex-direction: column; gap: 16px;">
   <div>
     <h4 style="margin-bottom: 8px;">Multiple Selection (Multiple buttons can be active)</h4>
-    <modus-wc-button-group selection-type="multiple" button-style="outlined">
+    <modus-wc-button-group selection-type="multiple" variant="outlined">
       <modus-wc-button pressed>Bold</modus-wc-button>
       <modus-wc-button>Italic</modus-wc-button>
       <modus-wc-button pressed>Underline</modus-wc-button>
@@ -187,7 +187,7 @@ export const MultipleSelection: Story = {
   
   <div>
     <h4 style="margin-bottom: 8px;">Multiple Selection with Icons</h4>
-    <modus-wc-button-group selection-type="multiple" button-style="outlined" color="primary">
+    <modus-wc-button-group selection-type="multiple" variant="outlined" color="primary">
       <modus-wc-button pressed icon-only aria-label="Align left">
         <modus-wc-icon name="align_left" size="16"></modus-wc-icon>
       </modus-wc-button>
@@ -236,7 +236,7 @@ export const SelectionEvent: Story = {
     <modus-wc-button-group 
       id="event-demo-group"
       selection-type="single" 
-      button-style="outlined"
+      variant="outlined"
       color="primary"
     >
       <modus-wc-button>Apple</modus-wc-button>
@@ -272,7 +272,7 @@ export const Migration: Story = {
 |-----------------|-----------------|--------------------------------------------------------------------------|
 | aria-label      | aria-label      | Unchanged                                                                |
 | aria-disabled   | -               | Removed. Use \`disabled\` prop instead                                   |
-| button-style    | button-style    | Values changed: \`fill\` → \`fill\`, \`outline\` → \`outlined\`          |
+| button-style    | variant         | Values changed: \`fill\` → \`filled\`, \`outline\` → \`outlined\`        |
 | color           | color           | \`special\` color removed. Other values unchanged                        |
 | disabled        | disabled        | Unchanged                                                                |
 | -               | orientation     | New in 2.0. Controls horizontal/vertical layout                          |
@@ -284,7 +284,7 @@ export const Migration: Story = {
 | 1.0 Event              | 2.0 Event              | Notes                                                      |
 |------------------------|------------------------|------------------------------------------------------------|
 | buttonGroupClick       | buttonGroupClick       | Event detail changed: now includes \`{ button, isSelected }\` |
-| selectionChange        | buttonSelectionChange  | Renamed from \`selectionChange\`. Returns array of selected buttons |
+| buttonSelectionChange  | buttonSelectionChange  | Returns array of selected buttons                             |
    `,
       },
     },

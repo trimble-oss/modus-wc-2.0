@@ -32,8 +32,8 @@ export class ModusWcButtonGroup {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Style to apply to all buttons within the button group */
-  @Prop() buttonStyle: 'borderless' | 'fill' | 'outlined' = 'outlined';
+  /** Style variant to apply to all buttons within the button group */
+  @Prop() variant: 'borderless' | 'filled' | 'outlined' = 'outlined';
 
   /** Color to apply to all buttons within the button group */
   @Prop() color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
@@ -69,7 +69,7 @@ export class ModusWcButtonGroup {
     this.initializeSelectedButtons();
   }
 
-  @Watch('buttonStyle')
+  @Watch('variant')
   @Watch('color')
   @Watch('disabled')
   handlePropChange(): void {
@@ -150,7 +150,7 @@ export class ModusWcButtonGroup {
 
   private syncButtonStates(): void {
     if (!this.buttonElements || !this.buttonElements.length) return;
-    this.setButtonAttribute('variant', this.buttonStyle);
+    this.setButtonAttribute('variant', this.variant);
     this.setButtonAttribute('color', this.color || null);
     this.setButtonAttribute('disabled', this.disabled ? 'true' : null);
   }

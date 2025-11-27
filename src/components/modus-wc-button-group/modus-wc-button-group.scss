@@ -1,8 +1,18 @@
 modus-wc-button-group {
+  // Horizontal orientation - style the right side of last item
   &.modus-wc-join.modus-wc-join.modus-wc-join
     > :last-child
     .modus-wc-join-item {
     border-end-end-radius: inherit;
     border-start-end-radius: inherit;
+  }
+
+  // Vertical orientation - style the bottom side of last item
+  &.modus-wc-join-vertical.modus-wc-join-vertical.modus-wc-join-vertical
+    > :last-child
+    .modus-wc-join-item {
+    border-end-start-radius: inherit;
+    border-end-end-radius: inherit;
+    border-start-end-radius: 0;
   }
 }

@@ -346,10 +346,6 @@ export namespace Components {
      */
     interface ModusWcButtonGroup {
         /**
-          * Style to apply to all buttons within the button group
-         */
-        "buttonStyle": 'borderless' | 'fill' | 'outlined';
-        /**
           * Color to apply to all buttons within the button group
          */
         "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
@@ -365,6 +361,10 @@ export namespace Components {
           * Selection type for button group
          */
         "selectionType"?: 'default' | 'single' | 'multiple';
+        /**
+          * Style variant to apply to all buttons within the button group
+         */
+        "variant": 'borderless' | 'filled' | 'outlined';
     }
     /**
      * A customizable card component used to group and display content in a way that is easily readable
@@ -3270,10 +3270,6 @@ declare namespace LocalJSX {
      */
     interface ModusWcButtonGroup {
         /**
-          * Style to apply to all buttons within the button group
-         */
-        "buttonStyle"?: 'borderless' | 'fill' | 'outlined';
-        /**
           * Color to apply to all buttons within the button group
          */
         "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
@@ -3302,6 +3298,10 @@ declare namespace LocalJSX {
           * Selection type for button group
          */
         "selectionType"?: 'default' | 'single' | 'multiple';
+        /**
+          * Style variant to apply to all buttons within the button group
+         */
+        "variant"?: 'borderless' | 'filled' | 'outlined';
     }
     /**
      * A customizable card component used to group and display content in a way that is easily readable
