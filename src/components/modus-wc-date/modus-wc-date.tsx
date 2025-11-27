@@ -854,8 +854,7 @@ export class ModusWcDate {
             const isCurrentMonth = date.getMonth() === currentMonth;
             const isDisabled = this.isDateDisabled(date);
 
-            return [
-              weekNumberElement,
+            const button = (
               <button
                 type="button"
                 class={{
@@ -872,8 +871,11 @@ export class ModusWcDate {
                 tabIndex={isDisabled ? -1 : 0}
               >
                 {date.getDate()}
-              </button>,
-            ];
+              </button>
+            );
+
+            // Only create array when week number exists
+            return weekNumberElement ? [weekNumberElement, button] : button;
           })}
         </div>
       </div>
