@@ -65,28 +65,50 @@ export default meta;
 
 type Story = StoryObj<TabsArgs>;
 
-const getTabsScript = (tabs: ITab[]) => html`
-  <script>
-   
-    // // This is to show how to set tabs via script
-    // const tabElement = document.querySelector('modus-wc-tabs');
-    // tabElement.tabs = ${JSON.stringify(tabs)};
-    
-`;
+const getSourceCode = (tabs: ITab[]) => {
+  return `
+<script>
+  const tabs = ${JSON.stringify(tabs, null, 2)};
+
+  // Normalize tabs to ensure disabled is strictly boolean
+  const normalizedTabs = tabs.map((tab) => ({
+    ...tab,
+    disabled: tab.disabled === true,
+  }));
+
+  const tabElement = document.querySelector('modus-wc-tabs');
+  tabElement.tabs = normalizedTabs;
+</script>`;
+};
 
 const Template: Story = {
+  parameters: {
+    docs: {
+      source: {
+        transform: (_src, { args }) => `<modus-wc-tabs
+  aria-label="Tab group"
+  tab-style="${ifDefined(args['tab-style'])}"
+  size="${ifDefined(args.size)}">
+</modus-wc-tabs>${getSourceCode(args.tabs as ITab[])}`,
+      },
+    },
+  },
   render: (args) => {
+    // Normalize tabs to ensure disabled is strictly boolean (true/false only)
+    const normalizedTabs = args.tabs.map((tab) => ({
+      ...tab,
+      disabled: tab.disabled === true,
+    }));
     // prettier-ignore
     return html`
 <modus-wc-tabs
   active-tab-index="${ifDefined(args.activeTabIndex)}"
   aria-label="Tab group"
   tab-style="${ifDefined(args['tab-style'])}"
-  .tabs=${args.tabs}
+  .tabs=${normalizedTabs}
   size="${ifDefined(args.size)}"
 >
 </modus-wc-tabs>
-${getTabsScript(args.tabs)}
     `;
   },
 };
@@ -121,11 +143,74 @@ export const CustomContent: Story = {
         story:
           'Tabs now include slots, offering a flexible approach for users to add relevant components within the tab for more complex use cases.',
       },
+      source: {
+        transform: (_src, { args }) => `<style>
+  .red-icon {
+    color: red;
+  }
+  /* Style for disabled badge and icon components */
+  modus-wc-badge[disabled="true"],
+  modus-wc-icon[disabled="true"] ,
+  button[disabled] modus-wc-badge,
+  button[disabled] modus-wc-icon {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+</style>
+<modus-wc-tabs
+  size="md"
+  tab-style="bordered"
+  aria-label="Custom tab group"
+>
+  <span
+    slot="home-tab-content"
+    style="display: inline-flex; align-items: center;padding-top: 6px"
+  >
+    <modus-wc-badge
+      color="warning"
+      size="md"
+      variant="filled"
+    >
+      <modus-wc-icon decorative="" name="home" size="xs"></modus-wc-icon>
+      Home
+    </modus-wc-badge>
+  </span>
+  <span
+    slot="actions-tab-content"
+    style="display: inline-flex; align-items: center; gap: 8px;"
+  >
+    Actions
+    <modus-wc-icon
+      name="warning"
+      variant="solid"
+      size="md"
+      custom-class="red-icon"
+    ></modus-wc-icon>
+  </span>
+  <span
+    slot="notifications-tab-content"
+    style="display: inline-flex; align-items: center; gap: 8px;"
+  >
+    Notifications
+    <modus-wc-badge
+      color="primary"
+      size="md"
+      variant="counter"
+      >5</modus-wc-badge
+    >
+  </span>
+</modus-wc-tabs>${getSourceCode(args.tabs as ITab[])}`,
+      },
     },
   },
 
   // prettier-ignore
   render: (args) => {
+    // Normalize tabs to ensure disabled is strictly boolean (true/false only)
+    const normalizedTabs = args.tabs.map((tab) => ({
+      ...tab,
+      disabled: tab.disabled === true,
+    }));
 
     return html`
     <style>
@@ -134,13 +219,15 @@ export const CustomContent: Story = {
       }
       /* Style for disabled badge and icon components */
       modus-wc-badge[disabled="true"],
-      modus-wc-icon[disabled="true"] {
+      modus-wc-icon[disabled="true"] ,
+      button[disabled] modus-wc-badge,
+      button[disabled] modus-wc-icon {
         opacity: 0.3;
         pointer-events: none;
       }
     </style>
     <modus-wc-tabs
-      .tabs=${args.tabs}
+      .tabs=${normalizedTabs}
       size="${ifDefined(args.size)}"
       tab-style="${ifDefined(args['tab-style'])}"
       active-tab-index="${ifDefined(args.activeTabIndex)}"
@@ -154,7 +241,6 @@ export const CustomContent: Story = {
           color="warning"
           size="${ifDefined(args.size)}"
           variant="filled"
-          disabled="${args.tabs[0]?.disabled === true}"
         >
           <modus-wc-icon decorative="" name="home" size="xs"></modus-wc-icon>
           Home
@@ -170,7 +256,6 @@ export const CustomContent: Story = {
           variant="solid"
           size="${ifDefined(args.size)}"
           custom-class="red-icon"
-          disabled="${args.tabs[2]?.disabled === true}"
         ></modus-wc-icon>
       </span>
       <span
@@ -182,12 +267,11 @@ export const CustomContent: Story = {
           color="primary"
           size="${ifDefined(args.size)}"
           variant="counter"
-          disabled="${args.tabs[3]?.disabled === true}"
           >5</modus-wc-badge
         >
       </span>
     </modus-wc-tabs>
-    ${getTabsScript(args.tabs)}
+    
   `;
   },
 };
@@ -220,7 +304,36 @@ export const Icons: Story = {
 };
 
 export const TabsWithPanel: Story = {
+  parameters: {
+    docs: {
+      source: {
+        transform: (_src, { args }) => `<modus-wc-tabs
+  aria-label="Tab group"
+  tab-style="bordered"
+  size="md"
+>
+  <p slot="tab-0">
+    Modus (noun) : a mode of procedure : a way of doing something
+  </p>
+  <p slot="tab-1">
+    input (noun) : information fed into a data processing system or computer
+  </p>
+  <p slot="tab-2">
+    secret (noun) : kept from knowledge or view : hidden
+  </p>
+  <p slot="tab-3">
+    snapshot (noun) : an impression or view of something brief or transitory
+  </p>
+</modus-wc-tabs>${getSourceCode(args.tabs as ITab[])}`,
+      },
+    },
+  },
   render: (args) => {
+    // Normalize tabs to ensure disabled is strictly boolean (true/false only)
+    const normalizedTabs = args.tabs.map((tab) => ({
+      ...tab,
+      disabled: tab.disabled === true,
+    }));
     // prettier-ignore
     return html`
 <modus-wc-tabs
@@ -229,7 +342,7 @@ export const TabsWithPanel: Story = {
   custom-class="${ifDefined(args['custom-class'])}"
   ?img-src="${args['img-src']}"
   tab-style="${ifDefined(args['tab-style'])}"
-  .tabs=${args.tabs}
+  .tabs=${normalizedTabs}
   size="${ifDefined(args.size)}"
 >
   <p slot="tab-0">
@@ -245,7 +358,6 @@ export const TabsWithPanel: Story = {
     snapshot (noun) : an impression or view of something brief or transitory
   </p>
 </modus-wc-tabs>
-${getTabsScript(args.tabs)}
     `;
   },
 };
