@@ -294,18 +294,4 @@ export const Migration: Story = {
   render: () => html`<div></div>`,
 };
 
-export const NonButtonGroup: Story = {
-  render: () => {
-    // prettier-ignore
-    return html`
-      <div style="display: flex; flex-direction: column; gap: 16px;">
-        <modus-wc-button-group variant="outlined">
-          <modus-wc-button>Button</modus-wc-button>
-           <modus-wc-select  bordered=""  size="md"></modus-wc-select>
 
-          <modus-wc-text-input placeholder="Text input"></modus-wc-text-input>
-        </modus-wc-button-group>
-      </div>
-    `;
-  },
-};
