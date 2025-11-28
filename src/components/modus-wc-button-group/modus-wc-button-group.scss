@@ -1,4 +1,38 @@
 modus-wc-button-group {
+  &.modus-wc-join.modus-wc-join.modus-wc-join {
+    > :where(:not(:first-child)) {
+      margin-bottom: 0;
+      margin-inline-start: 0;
+      margin-top: 0;
+    }
+
+    // Fix border overlapping by removing adjacent borders instead of using negative margins
+    > :where(:not(:first-child)) .modus-wc-join-item {
+      border-inline-start: 0;
+    }
+  }
+
+  &.modus-wc-join-vertical.modus-wc-join-vertical.modus-wc-join-vertical {
+    > :where(:not(:first-child)) {
+      margin-inline-end: 0;
+      margin-inline-start: 0;
+      margin-top: 0;
+    }
+
+    // Fix border overlapping for vertical layout - remove top border to avoid double borders
+    > :where(:not(:first-child)) .modus-wc-join-item {
+      border-top: 0;
+    }
+
+    // Ensure left and right borders are visible for vertical layout
+    .modus-wc-join-item {
+      border-left-style: solid;
+      border-left-width: 1px;
+      border-right-style: solid;
+      border-right-width: 1px;
+    }
+  }
+
   // Horizontal orientation - style the right side of last item
   &.modus-wc-join.modus-wc-join.modus-wc-join
     > :last-child

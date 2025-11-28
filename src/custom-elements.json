@@ -1542,15 +1542,6 @@
           ],
           "attributes": [
             {
-              "name": "button-style",
-              "fieldName": "buttonStyle",
-              "default": "'outlined'",
-              "description": "Style to apply to all buttons within the button group",
-              "type": {
-                "text": "'borderless' | 'fill' | 'outlined'"
-              }
-            },
-            {
               "name": "color",
               "fieldName": "color",
               "description": "Color to apply to all buttons within the button group",
@@ -1583,6 +1574,15 @@
               "description": "Selection type for button group",
               "type": {
                 "text": "'default' | 'single' | 'multiple'"
+              }
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "default": "'outlined'",
+              "description": "Style variant to apply to all buttons within the button group",
+              "type": {
+                "text": "'borderless' | 'filled' | 'outlined'"
               }
             }
           ],
