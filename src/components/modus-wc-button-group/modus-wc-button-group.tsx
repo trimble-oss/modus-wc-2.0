@@ -9,7 +9,6 @@ import {
   Prop,
   Watch,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-button-group.tailwind';
 import { Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -64,7 +63,6 @@ export class ModusWcButtonGroup {
 
   componentDidLoad() {
     this.buttonElements = this.el.querySelectorAll('modus-wc-button');
-    this.applyCustomClasses();
     this.syncButtonStates();
     this.initializeSelectedButtons();
   }
@@ -106,21 +104,8 @@ export class ModusWcButtonGroup {
   @Listen('slotchange')
   handleSlotChange() {
     this.buttonElements = this.el.querySelectorAll('modus-wc-button');
-    this.applyCustomClasses();
     this.syncButtonStates();
     this.initializeSelectedButtons();
-  }
-
-  private applyCustomClasses(): void {
-    this.buttonElements.forEach((button) => {
-      const current = button.getAttribute('custom-class') || '';
-      if (!current.includes('modus-wc-join-item')) {
-        button.setAttribute(
-          'custom-class',
-          `${current} modus-wc-join-item`.trim()
-        );
-      }
-    });
   }
 
   private initializeSelectedButtons(): void {
@@ -227,15 +212,13 @@ export class ModusWcButtonGroup {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-join'];
+    const classList = ['modus-wc-button-group'];
 
-    const propClasses = convertPropsToClasses({
-      orientation: this.orientation,
-    });
-
-    if (propClasses) {
-      classList.push(propClasses);
+    // Add vertical class if needed
+    if (this.orientation === 'vertical') {
+      classList.push('modus-wc-join-vertical');
     }
+
     return classList.join(' ');
   }
 

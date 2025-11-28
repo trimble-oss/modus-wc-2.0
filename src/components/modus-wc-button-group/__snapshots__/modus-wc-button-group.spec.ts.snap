@@ -1,104 +1,104 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-button-group should render with custom color 1`] = `
-<modus-wc-button-group class="modus-wc-join" color="primary" role="group">
+<modus-wc-button-group class="modus-wc-button-group" color="primary" role="group">
   <!---->
-  <modus-wc-button color="primary" custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button color="primary" variant="outlined">
     Button 1
   </modus-wc-button>
-  <modus-wc-button color="primary" custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button color="primary" variant="outlined">
     Button 2
   </modus-wc-button>
 </modus-wc-button-group>
 `;
 
 exports[`modus-wc-button-group should render with custom variant 1`] = `
-<modus-wc-button-group class="modus-wc-join" role="group" variant="filled">
+<modus-wc-button-group class="modus-wc-button-group" role="group" variant="filled">
   <!---->
-  <modus-wc-button custom-class="modus-wc-join-item" variant="filled">
+  <modus-wc-button variant="filled">
     Button 1
   </modus-wc-button>
-  <modus-wc-button custom-class="modus-wc-join-item" variant="filled">
+  <modus-wc-button variant="filled">
     Button 2
   </modus-wc-button>
 </modus-wc-button-group>
 `;
 
 exports[`modus-wc-button-group should render with default props 1`] = `
-<modus-wc-button-group class="modus-wc-join" role="group">
+<modus-wc-button-group class="modus-wc-button-group" role="group">
   <!---->
-  <modus-wc-button custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button variant="outlined">
     Button 1
   </modus-wc-button>
-  <modus-wc-button custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button variant="outlined">
     Button 2
   </modus-wc-button>
-  <modus-wc-button custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button variant="outlined">
     Button 3
   </modus-wc-button>
 </modus-wc-button-group>
 `;
 
 exports[`modus-wc-button-group should render with disabled prop 1`] = `
-<modus-wc-button-group class="modus-wc-join" disabled="" role="group">
+<modus-wc-button-group class="modus-wc-button-group" disabled="" role="group">
   <!---->
-  <modus-wc-button custom-class="modus-wc-join-item" disabled="true" variant="outlined">
+  <modus-wc-button disabled="true" variant="outlined">
     Button 1
   </modus-wc-button>
-  <modus-wc-button custom-class="modus-wc-join-item" disabled="true" variant="outlined">
+  <modus-wc-button disabled="true" variant="outlined">
     Button 2
   </modus-wc-button>
 </modus-wc-button-group>
 `;
 
 exports[`modus-wc-button-group should render with multiple selection type 1`] = `
-<modus-wc-button-group class="modus-wc-join" role="group" selection-type="multiple">
+<modus-wc-button-group class="modus-wc-button-group" role="group" selection-type="multiple">
   <!---->
-  <modus-wc-button custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button variant="outlined">
     Button 1
   </modus-wc-button>
-  <modus-wc-button custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button variant="outlined">
     Button 2
   </modus-wc-button>
 </modus-wc-button-group>
 `;
 
 exports[`modus-wc-button-group should render with single selection type 1`] = `
-<modus-wc-button-group class="modus-wc-join" role="group" selection-type="single">
+<modus-wc-button-group class="modus-wc-button-group" role="group" selection-type="single">
   <!---->
-  <modus-wc-button custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button variant="outlined">
     Button 1
   </modus-wc-button>
-  <modus-wc-button custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button variant="outlined">
     Button 2
   </modus-wc-button>
 </modus-wc-button-group>
 `;
 
 exports[`modus-wc-button-group should render with vertical orientation 1`] = `
-<modus-wc-button-group class="modus-wc-join modus-wc-join-vertical" orientation="vertical" role="group">
+<modus-wc-button-group class="modus-wc-button-group modus-wc-join-vertical" orientation="vertical" role="group">
   <!---->
-  <modus-wc-button custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button variant="outlined">
     Button 1
   </modus-wc-button>
-  <modus-wc-button custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button variant="outlined">
     Button 2
   </modus-wc-button>
 </modus-wc-button-group>
 `;
 
 exports[`modus-wc-button-group should update child buttons selection when selectionType prop changes 1`] = `
-<modus-wc-button-group class="modus-wc-join" role="group">
+<modus-wc-button-group class="modus-wc-button-group" role="group">
   <!---->
-  <modus-wc-button custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary modus-wc-join-item" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" tabindex="0" type="button">
       Button 1
     </button>
   </modus-wc-button>
-  <modus-wc-button custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary modus-wc-join-item" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" tabindex="0" type="button">
       Button 2
     </button>
   </modus-wc-button>
@@ -106,17 +106,17 @@ exports[`modus-wc-button-group should update child buttons selection when select
 `;
 
 exports[`modus-wc-button-group should update the color of child buttons when color prop changes 1`] = `
-<modus-wc-button-group class="modus-wc-join" role="group">
+<modus-wc-button-group class="modus-wc-button-group" role="group">
   <!---->
-  <modus-wc-button color="danger" custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button color="danger" variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-error modus-wc-btn-md modus-wc-btn-outline modus-wc-join-item" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-error modus-wc-btn-md modus-wc-btn-outline" tabindex="0" type="button">
       Button 1
     </button>
   </modus-wc-button>
-  <modus-wc-button color="danger" custom-class="modus-wc-join-item" variant="outlined">
+  <modus-wc-button color="danger" variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-error modus-wc-btn-md modus-wc-btn-outline modus-wc-join-item" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-error modus-wc-btn-md modus-wc-btn-outline" tabindex="0" type="button">
       Button 2
     </button>
   </modus-wc-button>
@@ -124,17 +124,17 @@ exports[`modus-wc-button-group should update the color of child buttons when col
 `;
 
 exports[`modus-wc-button-group should update the disabled state of child buttons when disabled prop changes 1`] = `
-<modus-wc-button-group class="modus-wc-join" role="group">
+<modus-wc-button-group class="modus-wc-button-group" role="group">
   <!---->
-  <modus-wc-button custom-class="modus-wc-join-item" disabled="true" variant="outlined">
+  <modus-wc-button disabled="true" variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-disabled modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary modus-wc-join-item" disabled="" tabindex="-1" type="button">
+    <button class="modus-wc-btn modus-wc-btn-disabled modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" disabled="" tabindex="-1" type="button">
       Button 1
     </button>
   </modus-wc-button>
-  <modus-wc-button custom-class="modus-wc-join-item" disabled="true" variant="outlined">
+  <modus-wc-button disabled="true" variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-disabled modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary modus-wc-join-item" disabled="" tabindex="-1" type="button">
+    <button class="modus-wc-btn modus-wc-btn-disabled modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" disabled="" tabindex="-1" type="button">
       Button 2
     </button>
   </modus-wc-button>
@@ -142,17 +142,17 @@ exports[`modus-wc-button-group should update the disabled state of child buttons
 `;
 
 exports[`modus-wc-button-group should update the variant of child buttons when variant prop changes 1`] = `
-<modus-wc-button-group class="modus-wc-join" role="group">
+<modus-wc-button-group class="modus-wc-button-group" role="group">
   <!---->
-  <modus-wc-button custom-class="modus-wc-join-item" variant="filled">
+  <modus-wc-button variant="filled">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary modus-wc-join-item" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary" tabindex="0" type="button">
       Button 1
     </button>
   </modus-wc-button>
-  <modus-wc-button custom-class="modus-wc-join-item" variant="filled">
+  <modus-wc-button variant="filled">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary modus-wc-join-item" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary" tabindex="0" type="button">
       Button 2
     </button>
   </modus-wc-button>

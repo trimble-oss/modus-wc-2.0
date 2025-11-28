@@ -293,5 +293,3 @@ export const Migration: Story = {
   },
   render: () => html`<div></div>`,
 };
-
-
