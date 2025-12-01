@@ -1,0 +1,77 @@
+modus-wc-button-group.modus-wc-button-group {
+  align-items: stretch;
+  display: inline-flex;
+
+  // All direct children get no border-radius by default
+  > * {
+    border-radius: 0;
+
+    // Target inner elements (button, input, select)
+    .modus-wc-btn {
+      border-radius: 0;
+    }
+  }
+
+  // First child gets rounded start
+  > *:first-child {
+    .modus-wc-btn {
+      border-end-start-radius: var(--modus-wc-rounded-btn, 0.5rem);
+      border-start-start-radius: var(--modus-wc-rounded-btn, 0.5rem);
+    }
+  }
+
+  // Last child gets rounded end
+  > *:last-child {
+    .modus-wc-btn {
+      border-end-end-radius: var(--modus-wc-rounded-btn, 0.5rem);
+      border-start-end-radius: var(--modus-wc-rounded-btn, 0.5rem);
+    }
+  }
+
+  // Horizontal: Remove right border from all except last to prevent double borders
+  > *:not(:last-child) {
+    .modus-wc-btn {
+      border-inline-end-width: 0;
+    }
+  }
+
+  // Vertical orientation
+  &.modus-wc-join-vertical {
+    align-items: stretch;
+    flex-direction: column;
+
+    > * {
+      .modus-wc-btn {
+        border-inline-end-width: 1px;
+        border-radius: 0;
+      }
+    }
+
+    // First child gets rounded top
+    > *:first-child {
+      .modus-wc-btn {
+        border-end-end-radius: 0;
+        border-end-start-radius: 0;
+        border-start-end-radius: var(--modus-wc-rounded-btn, 0.5rem);
+        border-start-start-radius: var(--modus-wc-rounded-btn, 0.5rem);
+      }
+    }
+
+    // Last child gets rounded bottom
+    > *:last-child {
+      .modus-wc-btn {
+        border-end-end-radius: var(--modus-wc-rounded-btn, 0.5rem);
+        border-end-start-radius: var(--modus-wc-rounded-btn, 0.5rem);
+        border-start-end-radius: 0;
+        border-start-start-radius: 0;
+      }
+    }
+
+    // Vertical: Remove bottom border from all except last to prevent double borders
+    > *:not(:last-child) {
+      .modus-wc-btn {
+        border-block-end-width: 0;
+      }
+    }
+  }
+}

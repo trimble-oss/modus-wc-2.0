@@ -4,6 +4,7 @@ export const convertPropsToClasses = ({
   color,
   disabled,
   fullWidth,
+  pressed,
   shape,
   size,
   variant,
@@ -11,6 +12,7 @@ export const convertPropsToClasses = ({
   color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   disabled?: boolean;
   fullWidth?: boolean;
+  pressed?: boolean;
   shape?: 'circle' | 'rectangle' | 'square';
   size?: DaisySize;
   variant?: 'borderless' | 'filled' | 'outlined';
@@ -43,6 +45,10 @@ export const convertPropsToClasses = ({
 
   if (fullWidth) {
     classes = `${classes} modus-wc-btn-block`;
+  }
+
+  if (pressed) {
+    classes = `${classes} modus-wc-btn-active`;
   }
 
   if (shape) {

@@ -109,6 +109,7 @@ export const Default: Story = {
       <style>
         div[id^='story--components-forms-date--default'] {
           min-height: 400px;
+          width: 300px;
         }
       </style>
       <modus-wc-date
@@ -145,6 +146,7 @@ export const WithErrorFeedback: Story = {
     <style>
       div[id^='story--components-forms-date--with-error-feedback'] {
         min-height: 400px;
+        width: 300px;
       }
     </style>
     <modus-wc-date

@@ -43,6 +43,32 @@ const meta: Meta<ModalArgs> = {
 export default meta;
 
 type Story = StoryObj<ModalArgs>;
+const illustrativeScript = html`
+  <script>
+    // This is to illustrate how to implement modal visibility handling
+    // const modalId = document
+    //   .querySelector('modus-wc-modal')
+    //   .getAttribute('modal-id');
+    // const handleModalVisibility = (action) => {
+    //   const modal = document.getElementById(modalId);
+    //   if (modal) {
+    //     if (action === 'show') {
+    //       modal.showModal();
+    //     } else {
+    //       modal.close();
+    //     }
+    //   }
+    // };
+    // const openButton = document.getElementById('open-modal-btn');
+    // const closeButton = document.getElementById('close-modal-btn');
+    // openButton.addEventListener('click', () =>
+    //   handleModalVisibility('show')
+    // );
+    // closeButton.addEventListener('click', () =>
+    //   handleModalVisibility('hide')
+    // );
+  </script>
+`;
 
 export const Default: Story = {
   render: (args) => {
@@ -61,7 +87,7 @@ export const Default: Story = {
 
     // prettier-ignore
     return html`
-<modus-wc-button @buttonClick=${() => handleModalVisibility('show')}>
+<modus-wc-button id="open-modal-btn" @buttonClick=${() => handleModalVisibility('show')}>
   Open modal
 </modus-wc-button>
 <modus-wc-modal
@@ -76,10 +102,11 @@ export const Default: Story = {
 >
   <span slot="header">Modal Title</span>
   <span slot="content"> This is sample modal content. </span>
-  <modus-wc-button slot="footer" @buttonClick=${() => handleModalVisibility('hide')}>
+  <modus-wc-button slot="footer" id="close-modal-btn" @buttonClick=${() => handleModalVisibility('hide')}>
     Close
   </modus-wc-button>
 </modus-wc-modal>
+${illustrativeScript}
     `;
   },
 };
@@ -109,7 +136,7 @@ export const CustomWidthAndHeight: Story = {
     max-height: none;
   }
 </style>
-<modus-wc-button @buttonClick=${() => handleModalVisibility('show')}>
+<modus-wc-button id="open-modal-btn" @buttonClick=${() => handleModalVisibility('show')}>
   Open modal
 </modus-wc-button>
 <modus-wc-modal
@@ -122,10 +149,11 @@ export const CustomWidthAndHeight: Story = {
 >
   <span slot="header">Modal Title</span>
   <p slot="content">Sample modal content.</p>
-  <modus-wc-button slot="footer" @buttonClick=${() => handleModalVisibility('hide')}>
+  <modus-wc-button slot="footer" id="close-modal-btn" @buttonClick=${() => handleModalVisibility('hide')}>
     Close
   </modus-wc-button>
 </modus-wc-modal>
+${illustrativeScript}
     `;
   },
 };

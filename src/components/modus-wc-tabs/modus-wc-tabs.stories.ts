@@ -39,6 +39,7 @@ const meta: Meta<TabsArgs> = {
             - icon (string, optional): A Modus Icon name to display
             - iconPosition ('left' | 'right', optional): The position of the icon
             - label (string, optional): The content to display in the tab
+            - slotName (string, optional): The slot name to use for custom tab header content
           `,
         },
       },
