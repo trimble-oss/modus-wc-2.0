@@ -807,10 +807,7 @@ export class ModusWcDate {
     return (
       <div class="calendar-body">
         <div
-          class={{
-            'calendar-days-week': true,
-            'has-week-numbers': this.showWeekNumbers || false,
-          }}
+          class={`calendar-days-week${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
         >
           {this.showWeekNumbers && <div class="week-number-header"></div>}
           {this.calendar
@@ -823,10 +820,7 @@ export class ModusWcDate {
             })}
         </div>
         <div
-          class={{
-            'calendar-dates': true,
-            'has-week-numbers': this.showWeekNumbers || false,
-          }}
+          class={`calendar-dates${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
         >
           {this.calendar.dates.map((date, index) => {
             // Add week number at the start of each row (every 7 days)
@@ -1160,10 +1154,7 @@ export class ModusWcDate {
         {this.showCalendar && (
           <div
             ref={(el) => (this.calendarRef = el)}
-            class={{
-              'calendar-container': true,
-              'has-week-numbers': this.showWeekNumbers || false,
-            }}
+            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
           >
             {this.renderCalendarHeader()}
             {this.renderCalendarBody()}
