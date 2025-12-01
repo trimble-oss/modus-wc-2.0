@@ -341,6 +341,32 @@ export namespace Components {
         "variant": 'borderless' | 'filled' | 'outlined';
     }
     /**
+     * A customizable buttongroup component that groups multiple Modus buttons together.
+     * The component supports a `<slot>` for injecting content within the buttongroup.
+     */
+    interface ModusWcButtonGroup {
+        /**
+          * Color to apply to all buttons within the button group
+         */
+        "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+        /**
+          * Disables all buttons within the button group
+         */
+        "disabled"?: boolean;
+        /**
+          * Orientation of the button group: horizontal or vertical
+         */
+        "orientation"?: Orientation;
+        /**
+          * Selection type for button group
+         */
+        "selectionType"?: 'default' | 'single' | 'multiple';
+        /**
+          * Style variant to apply to all buttons within the button group
+         */
+        "variant": 'borderless' | 'filled' | 'outlined';
+    }
+    /**
      * A customizable card component used to group and display content in a way that is easily readable
      */
     interface ModusWcCard {
@@ -1911,6 +1937,10 @@ export interface ModusWcButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcButtonElement;
 }
+export interface ModusWcButtonGroupCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcButtonGroupElement;
+}
 export interface ModusWcCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcCheckboxElement;
@@ -2142,6 +2172,33 @@ declare global {
     var HTMLModusWcButtonElement: {
         prototype: HTMLModusWcButtonElement;
         new (): HTMLModusWcButtonElement;
+    };
+    interface HTMLModusWcButtonGroupElementEventMap {
+        "buttonGroupClick": {
+    button: HTMLElement;
+    isSelected: boolean;
+  };
+        "buttonSelectionChange": {
+    selectedButtons: HTMLElement[];
+  };
+    }
+    /**
+     * A customizable buttongroup component that groups multiple Modus buttons together.
+     * The component supports a `<slot>` for injecting content within the buttongroup.
+     */
+    interface HTMLModusWcButtonGroupElement extends Components.ModusWcButtonGroup, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcButtonGroupElementEventMap>(type: K, listener: (this: HTMLModusWcButtonGroupElement, ev: ModusWcButtonGroupCustomEvent<HTMLModusWcButtonGroupElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcButtonGroupElementEventMap>(type: K, listener: (this: HTMLModusWcButtonGroupElement, ev: ModusWcButtonGroupCustomEvent<HTMLModusWcButtonGroupElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcButtonGroupElement: {
+        prototype: HTMLModusWcButtonGroupElement;
+        new (): HTMLModusWcButtonGroupElement;
     };
     /**
      * A customizable card component used to group and display content in a way that is easily readable
@@ -2847,6 +2904,7 @@ declare global {
         "modus-wc-badge": HTMLModusWcBadgeElement;
         "modus-wc-breadcrumbs": HTMLModusWcBreadcrumbsElement;
         "modus-wc-button": HTMLModusWcButtonElement;
+        "modus-wc-button-group": HTMLModusWcButtonGroupElement;
         "modus-wc-card": HTMLModusWcCardElement;
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
         "modus-wc-chip": HTMLModusWcChipElement;
@@ -3207,6 +3265,45 @@ declare namespace LocalJSX {
         "type"?: 'button' | 'submit' | 'reset';
         /**
           * The variant of the button.
+         */
+        "variant"?: 'borderless' | 'filled' | 'outlined';
+    }
+    /**
+     * A customizable buttongroup component that groups multiple Modus buttons together.
+     * The component supports a `<slot>` for injecting content within the buttongroup.
+     */
+    interface ModusWcButtonGroup {
+        /**
+          * Color to apply to all buttons within the button group
+         */
+        "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+        /**
+          * Disables all buttons within the button group
+         */
+        "disabled"?: boolean;
+        /**
+          * Event emitted when any button in the group is clicked
+         */
+        "onButtonGroupClick"?: (event: ModusWcButtonGroupCustomEvent<{
+    button: HTMLElement;
+    isSelected: boolean;
+  }>) => void;
+        /**
+          * Event emitted when button selection changes
+         */
+        "onButtonSelectionChange"?: (event: ModusWcButtonGroupCustomEvent<{
+    selectedButtons: HTMLElement[];
+  }>) => void;
+        /**
+          * Orientation of the button group: horizontal or vertical
+         */
+        "orientation"?: Orientation;
+        /**
+          * Selection type for button group
+         */
+        "selectionType"?: 'default' | 'single' | 'multiple';
+        /**
+          * Style variant to apply to all buttons within the button group
          */
         "variant"?: 'borderless' | 'filled' | 'outlined';
     }
@@ -5053,6 +5150,7 @@ declare namespace LocalJSX {
         "modus-wc-badge": ModusWcBadge;
         "modus-wc-breadcrumbs": ModusWcBreadcrumbs;
         "modus-wc-button": ModusWcButton;
+        "modus-wc-button-group": ModusWcButtonGroup;
         "modus-wc-card": ModusWcCard;
         "modus-wc-checkbox": ModusWcCheckbox;
         "modus-wc-chip": ModusWcChip;
@@ -5131,6 +5229,11 @@ declare module "@stencil/core" {
              * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
+            /**
+             * A customizable buttongroup component that groups multiple Modus buttons together.
+             * The component supports a `<slot>` for injecting content within the buttongroup.
+             */
+            "modus-wc-button-group": LocalJSX.ModusWcButtonGroup & JSXBase.HTMLAttributes<HTMLModusWcButtonGroupElement>;
             /**
              * A customizable card component used to group and display content in a way that is easily readable
              */
