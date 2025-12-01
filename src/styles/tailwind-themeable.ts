@@ -21,6 +21,10 @@ const themeable = [
   'modus-wc-btn-sm',
   'modus-wc-btn-md',
   'modus-wc-btn-lg',
+  //group
+  'modus-wc-join',
+  'modus-wc-join-item',
+  'modus-wc-join-vertical',
   // Checkbox
   'modus-wc-checkbox-xs',
   'modus-wc-checkbox-sm',

@@ -177,6 +177,29 @@ const Template: Story = {
   <div slot="notifications">Notification contents</div>
   <div slot="apps">App drawer contents</div>
 </modus-wc-navbar>
+<script>
+// Added this block to demonstrate how to handle navbar visibility settings using JavaScript.
+//   const visibility = {
+//     ai: true,
+//     apps: true,
+//     help: true,
+//     mainMenu: true,
+//     notifications: true,
+//     search: true,
+//     searchInput: true,
+//     user: true,
+//     };
+//  const userCard = {
+//   avatarAlt: 'Sonic',
+//   avatarSrc: 'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+//   email: 'sonic@trimble.com',
+//   name: 'Sonic the Hedgehog',
+// };
+// const navbar = document.querySelector('modus-wc-navbar');
+// navbar.visibility = visibility;
+// navbar.userCard = userCard;
+</script>
+
     `;
   },
 };
@@ -268,15 +291,6 @@ export const CustomMenuAndSlots: Story = {
             opacity: 0.4;
           }
         </style>
-        <script>
-          /** function to toggle custom user menu */
-          function toggleCustomUserMenu(e) {
-            const customIcon = e.currentTarget;
-            const menu =
-              customIcon.parentElement?.querySelector('#custom-user-menu');
-            menu?.classList.toggle('hidden');
-          }
-        </script>
         <modus-wc-navbar
           ?apps-menu-open=${args['apps-menu-open']}
           ?condensed=${args.condensed}
@@ -356,6 +370,31 @@ export const CustomMenuAndSlots: Story = {
           </div>
         </modus-wc-navbar>
       </div>
+      <script>
+        // Added this block to demonstrate how to toggle a custom user menu and manage navbar visibility settings using JavaScript.
+        // const toggleCustomUserMenu = (e) => {
+        //    const customIcon = e.currentTarget;
+        //    const menu = customIcon.parentElement?.querySelector('#custom-user-menu');
+        //    menu?.classList.toggle('hidden');
+        // };
+        //  const navbar = document.querySelector('modus-wc-navbar');
+        //  const userIcon = document.querySelector('.custom-user-icon');
+        //  if (userIcon) {
+        //     userIcon.addEventListener('click', toggleCustomUserMenu);
+        //   }
+        //  if (navbar) {
+        //   navbar.visibility = {
+        //     ai: false,
+        //     apps: false,
+        //     help: false,
+        //     mainMenu: false,
+        //     notifications: false,
+        //     search: false,
+        //     searchInput: false,
+        //     user: false
+        //   };
+        // }
+      </script>
     `;
   },
 };
