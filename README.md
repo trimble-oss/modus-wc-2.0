@@ -45,7 +45,7 @@ import '@trimble-oss/moduswebcomponents';
 ## Documentation
 
 - [Build Scripts](./docs/build-scripts.md)
-- [Component Documentation](https://trimble-oss.github.io/modus-wc-2.0/main)
+- [Component Documentation](https://gentle-mushroom-083c46a10.3.azurestaticapps.net)
 - [Considerations](./docs/considerations.md)
 - [Custom Themes](./docs/custom-themes.md)
 - [Project Design](./docs/project-design.md)
