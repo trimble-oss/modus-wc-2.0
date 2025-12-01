@@ -92,9 +92,9 @@ modus-wc-menu-item .modus-wc-menu-item {
       &:focus,
       &:focus-visible {
         background-color: none;
+        box-shadow: none;
         color: inherit;
         outline: none;
-        box-shadow: none;
       }
     }
   }
@@ -130,22 +130,16 @@ modus-wc-menu-item .modus-wc-menu-item {
   // Remove all button focus states completely - only li should have focus
   button {
     &:hover,
+    &:focus,
     &:focus-visible,
+    &:focus-within,
     &:active {
       background: none;
       background-color: transparent;
+      border: none;
+      box-shadow: none;
       color: inherit;
       outline: none;
-      box-shadow: none;
-      border: none;
-    }
-
-    // Remove DaisyUI button focus classes
-    &:focus-within {
-      background: none;
-      background-color: transparent;
-      outline: none;
-      box-shadow: none;
     }
   }
 }
