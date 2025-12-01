@@ -128,7 +128,7 @@ export const customContent: Story = {
         'custom-dropzone'
       ) as HTMLElement & { reset?: () => Promise<void> };
       if (dropzone?.reset) {
-        dropzone.reset();
+        void dropzone.reset();
       }
     };
 
@@ -140,7 +140,7 @@ const resetDropzone = () => {
    'custom-dropzone'
     ) as HTMLElement & { reset?: () => Promise<void> };
     if (dropzone?.reset) {
-    dropzone.reset();
+    void dropzone.reset();
     }
   };
 </script>
