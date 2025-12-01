@@ -81,11 +81,20 @@ modus-wc-menu-item .modus-wc-menu-item {
     border-radius: inherit;
     color: var(--modus-wc-color-primary);
 
+    &:hover,
+    &:focus {
+      background-color: var(--modus-wc-color-primary-pale);
+      color: var(--modus-wc-color-primary);
+    }
+
     button {
       &:hover,
-      &:focus {
-        background-color: transparent;
+      &:focus,
+      &:focus-visible {
+        background-color: none;
         color: inherit;
+        outline: none;
+        box-shadow: none;
       }
     }
   }
@@ -98,21 +107,46 @@ modus-wc-menu-item .modus-wc-menu-item {
     }
   }
 
-  // Hover states for non-selected menu items (on button only, not li)
+  // Hover and arrow key navigation focus states (background only)
   &:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled):not(
       :has(.modus-wc-menu-dropdown)
     ) {
-    button:hover,
-    button:focus:not(:focus-visible) {
+    &:hover,
+    &:focus:not(:focus-visible),
+    &.modus-wc-arrow-focused {
       background-color: var(--modus-wc-color-gray-0);
       color: inherit;
+      outline: none;
     }
   }
 
-  button:focus-visible {
+  // Tab navigation focus state (outline only)
+  &:focus-visible {
     background-color: transparent;
     outline: 2px solid var(--modus-wc-color-trimble-blue);
     outline-offset: -2px;
+  }
+
+  // Remove all button focus states completely - only li should have focus
+  button {
+    &:hover,
+    &:focus-visible,
+    &:active {
+      background: none;
+      background-color: transparent;
+      color: inherit;
+      outline: none;
+      box-shadow: none;
+      border: none;
+    }
+
+    // Remove DaisyUI button focus classes
+    &:focus-within {
+      background: none;
+      background-color: transparent;
+      outline: none;
+      box-shadow: none;
+    }
   }
 }
 
@@ -120,19 +154,32 @@ modus-wc-menu-item .modus-wc-menu-item {
 [data-theme='modus-modern-dark'],
 [data-theme='connect-dark'] {
   modus-wc-menu-item .modus-wc-menu-item {
-    // Hover states for non-selected menu items (on button only, not li)
+    // Hover and arrow key navigation focus states (background only)
     &:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled):not(
         :has(.modus-wc-menu-dropdown)
       ) {
-      button:hover,
-      button:focus:not(:focus-visible) {
+      &:hover,
+      &:focus:not(:focus-visible),
+      &.modus-wc-arrow-focused {
         background-color: var(--modus-wc-color-gray-9);
         color: inherit;
+        outline: none;
       }
     }
 
-    button:focus-visible {
+    // Higher specificity override for DaisyUI focus styles
+    &.modus-wc-menu-item:focus:not(.modus-wc-menu-item-selected):not(
+        .modus-wc-menu-item-disabled
+      ) {
+      background-color: var(--modus-wc-color-gray-9);
+      color: inherit;
+    }
+
+    // Tab navigation focus state (outline only)
+    &:focus-visible:not(.modus-wc-arrow-focused) {
+      background-color: none;
       outline: 2px solid var(--modus-wc-color-highlight-blue);
+      outline-offset: -2px;
     }
   }
 }
