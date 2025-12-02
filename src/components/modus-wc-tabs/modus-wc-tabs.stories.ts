@@ -53,7 +53,19 @@ const meta: Meta<TabsArgs> = {
       options: ['xs', 'sm', 'md', 'lg'],
     },
   },
-  decorators: [withActions],
+  decorators: [
+    withActions,
+    (story, context) => {
+      // Normalize tabs before rendering the story
+      const { tabs } = context.args ?? {};
+
+      if (Array.isArray(tabs)) {
+        context.args.tabs = normalizeTabs(tabs);
+      }
+
+      return story();
+    },
+  ],
   parameters: {
     actions: {
       handles: ['tabChange'],
@@ -63,23 +75,29 @@ const meta: Meta<TabsArgs> = {
 
 export default meta;
 
-type Story = StoryObj<TabsArgs>;
+// Shared normalization function used by both decorator and source code
+const normalizeTabs = (tabs: ITab[]) => {
+  return tabs.map((tab) => {
+    const normalized = { ...tab };
+    // Only keep disabled when it is explicitly true
+    if (normalized.disabled !== true) {
+      delete normalized.disabled;
+    }
+    return normalized;
+  });
+};
 
 const getSourceCode = (tabs: ITab[]) => {
+  const normalizedTabs = normalizeTabs(tabs);
   return `
 <script>
-  const tabs = ${JSON.stringify(tabs, null, 2)};
-
-  // Normalize tabs to ensure disabled is strictly boolean
-  const normalizedTabs = tabs.map((tab) => ({
-    ...tab,
-    disabled: tab.disabled === true,
-  }));
-
+  const tabs = ${JSON.stringify(normalizedTabs, null, 2)};
   const tabElement = document.querySelector('modus-wc-tabs');
-  tabElement.tabs = normalizedTabs;
+  tabElement.tabs = tabs;
 </script>`;
 };
+
+type Story = StoryObj<TabsArgs>;
 
 const Template: Story = {
   parameters: {
@@ -94,18 +112,13 @@ const Template: Story = {
     },
   },
   render: (args) => {
-    // Normalize tabs to ensure disabled is strictly boolean (true/false only)
-    const normalizedTabs = args.tabs.map((tab) => ({
-      ...tab,
-      disabled: tab.disabled === true,
-    }));
     // prettier-ignore
     return html`
 <modus-wc-tabs
   active-tab-index="${ifDefined(args.activeTabIndex)}"
   aria-label="Tab group"
   tab-style="${ifDefined(args['tab-style'])}"
-  .tabs=${normalizedTabs}
+  .tabs=${args.tabs}
   size="${ifDefined(args.size)}"
 >
 </modus-wc-tabs>
@@ -206,12 +219,6 @@ export const CustomContent: Story = {
 
   // prettier-ignore
   render: (args) => {
-    // Normalize tabs to ensure disabled is strictly boolean (true/false only)
-    const normalizedTabs = args.tabs.map((tab) => ({
-      ...tab,
-      disabled: tab.disabled === true,
-    }));
-
     return html`
     <style>
       .red-icon {
@@ -227,7 +234,7 @@ export const CustomContent: Story = {
       }
     </style>
     <modus-wc-tabs
-      .tabs=${normalizedTabs}
+      .tabs=${args.tabs}
       size="${ifDefined(args.size)}"
       tab-style="${ifDefined(args['tab-style'])}"
       active-tab-index="${ifDefined(args.activeTabIndex)}"
@@ -329,11 +336,6 @@ export const TabsWithPanel: Story = {
     },
   },
   render: (args) => {
-    // Normalize tabs to ensure disabled is strictly boolean (true/false only)
-    const normalizedTabs = args.tabs.map((tab) => ({
-      ...tab,
-      disabled: tab.disabled === true,
-    }));
     // prettier-ignore
     return html`
 <modus-wc-tabs
@@ -342,7 +344,7 @@ export const TabsWithPanel: Story = {
   custom-class="${ifDefined(args['custom-class'])}"
   ?img-src="${args['img-src']}"
   tab-style="${ifDefined(args['tab-style'])}"
-  .tabs=${normalizedTabs}
+  .tabs=${args.tabs}
   size="${ifDefined(args.size)}"
 >
   <p slot="tab-0">
