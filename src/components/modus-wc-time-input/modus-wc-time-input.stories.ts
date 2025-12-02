@@ -154,7 +154,7 @@ export const WithErrorFeedback: Story = {
   parameters: {
     docs: {
       source: {
-        transform: (src) => `${src} 
+        transform: (src) => `${src}
 <script>
   const timeInputElement = document.querySelector('modus-wc-time-input');
   timeInputElement.feedback = {

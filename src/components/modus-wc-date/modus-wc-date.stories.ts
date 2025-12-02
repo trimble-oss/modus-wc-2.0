@@ -150,7 +150,7 @@ export const WithErrorFeedback: Story = {
     docs: {
       source: {
         transform: (src) => `${src}
-        <script>
+<script>
   const dateInputElement = document.querySelector('modus-wc-date');
   dateInputElement.feedback = {
     level: 'error',
