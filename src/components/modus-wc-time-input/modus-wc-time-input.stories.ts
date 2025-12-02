@@ -71,7 +71,7 @@ export default meta;
 
 type Story = StoryObj<TimeInputArgs>;
 
-export const Template: Story = {
+const Template: Story = {
   render: (args) => html`
     <modus-wc-time-input
       aria-label="Time input"
@@ -98,14 +98,12 @@ export const Template: Story = {
   `,
 };
 
+export const Default: Story = { ...Template };
+
 export const WithSeconds: Story = {
-  render: () => {
-    return html`
-      <modus-wc-time-input
-        aria-label="Example time input"
-        show-seconds="true"
-      ></modus-wc-time-input>
-    `;
+  ...Template,
+  args: {
+    'show-seconds': true,
   },
 };
 
@@ -151,15 +149,22 @@ const errorFeedback: IInputFeedbackProp = {
 };
 
 export const WithErrorFeedback: Story = {
-  render: (args) => html`
-    <modus-wc-time-input
-      aria-label="Time input"
-      .feedback=${errorFeedback}
-      label=${ifDefined(args.label)}
-      ?required=${true}
-      .value=${args.value}
-    ></modus-wc-time-input>
-  `,
+  ...Template,
+  args: { feedback: errorFeedback, required: true },
+  parameters: {
+    docs: {
+      source: {
+        transform: (src) => `${src} 
+<script>
+  const timeInputElement = document.querySelector('modus-wc-time-input');
+  timeInputElement.feedback = {
+    level: 'error',
+    message: 'Value is required.'
+  };
+</script>`,
+      },
+    },
+  },
 };
 
 export const Migration: Story = {

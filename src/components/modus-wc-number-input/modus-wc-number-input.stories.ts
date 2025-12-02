@@ -131,6 +131,20 @@ export const Currency: Story = {
 export const WithErrorFeedback: Story = {
   ...Template,
   args: { feedback: errorFeedback, required: true },
+  parameters: {
+    docs: {
+      source: {
+        transform: (src) => `${src}
+<script>
+  const numberInputElement = document.querySelector('modus-wc-number-input');
+  numberInputElement.feedback = {
+    level: 'error',
+    message: 'Value is required.'
+  };
+</script>`,
+      },
+    },
+  },
 };
 
 export const Migration: Story = {
