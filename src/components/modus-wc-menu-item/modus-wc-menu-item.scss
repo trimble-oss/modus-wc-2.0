@@ -144,6 +144,7 @@ modus-wc-menu-item .modus-wc-menu-item {
         background-color: var(--modus-wc-color-gray-9);
       }
     }
+
     // Hover and arrow key navigation focus states (background only)
     &:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled):not(
         :has(.modus-wc-menu-dropdown)
