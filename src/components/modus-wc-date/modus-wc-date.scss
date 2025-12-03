@@ -66,7 +66,8 @@ modus-wc-date {
       background-color: var(--modus-wc-color-primary);
       color: var(--modus-wc-color-white);
       display: flex;
-      justify-content: space-between;
+      gap: var(--modus-wc-spacing-sm);
+      justify-content: center;
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-xl);
 
       .nav-btn {
@@ -85,6 +86,10 @@ modus-wc-date {
         align-items: center;
         display: flex;
         gap: var(--modus-wc-spacing-xs);
+
+        select {
+          box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+        }
 
         select option {
           background-color: var(--modus-wc-color-white);
