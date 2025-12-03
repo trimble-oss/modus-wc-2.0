@@ -10,5 +10,5 @@ jobs:
     environment: qa-review  # This creates the approval gate
     steps:
       - name: QA Approved
-        run: echo "QA has approved this PR"
+        run: echo "QA has approved this PR - $(date)"
 
