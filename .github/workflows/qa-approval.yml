@@ -2,7 +2,7 @@ name: QA Approval
 
 on:
   pull_request:
-    branches: [test-qa-workflow]  # TODO: Change back to [main] after testing
+    branches: [main]
 
 jobs:
   qa-approval:
