@@ -504,4 +504,90 @@ describe('modus-wc-menu-item', () => {
       liElement.classList.contains('modus-wc-menu-item-expanded')
     ).toBeTruthy();
   });
+
+  it('should emit itemSelect event when Enter key is pressed on li element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Test label" value="test-value"></modus-wc-menu-item>',
+    });
+
+    const menuItem = page.root as HTMLElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+    const selectSpy = jest.fn();
+    menuItem.addEventListener('itemSelect', selectSpy);
+
+    // Create and dispatch Enter key event
+    const enterEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+    const preventDefaultSpy = jest.spyOn(enterEvent, 'preventDefault');
+
+    liElement.dispatchEvent(enterEvent);
+    await page.waitForChanges();
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(selectSpy).toHaveBeenCalledTimes(1);
+    expect(selectSpy.mock.calls[0][0].detail).toEqual({
+      value: 'test-value',
+      selected: true,
+    });
+  });
+
+  it('should emit itemSelect event when Space key is pressed on li element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Test label" value="test-value"></modus-wc-menu-item>',
+    });
+
+    const menuItem = page.root as HTMLElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+    const selectSpy = jest.fn();
+    menuItem.addEventListener('itemSelect', selectSpy);
+
+    // Create and dispatch Space key event
+    const spaceEvent = new KeyboardEvent('keydown', {
+      key: ' ',
+      bubbles: true,
+      cancelable: true,
+    });
+    const preventDefaultSpy = jest.spyOn(spaceEvent, 'preventDefault');
+
+    liElement.dispatchEvent(spaceEvent);
+    await page.waitForChanges();
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(selectSpy).toHaveBeenCalledTimes(1);
+    expect(selectSpy.mock.calls[0][0].detail).toEqual({
+      value: 'test-value',
+      selected: true,
+    });
+  });
+
+  it('should not emit itemSelect event when other keys are pressed on li element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Test label" value="test-value"></modus-wc-menu-item>',
+    });
+
+    const menuItem = page.root as HTMLElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+    const selectSpy = jest.fn();
+    menuItem.addEventListener('itemSelect', selectSpy);
+
+    // Create and dispatch Escape key event (should not trigger)
+    const escapeEvent = new KeyboardEvent('keydown', {
+      key: 'Escape',
+      bubbles: true,
+      cancelable: true,
+    });
+    const preventDefaultSpy = jest.spyOn(escapeEvent, 'preventDefault');
+
+    liElement.dispatchEvent(escapeEvent);
+    await page.waitForChanges();
+
+    expect(preventDefaultSpy).not.toHaveBeenCalled();
+    expect(selectSpy).not.toHaveBeenCalled();
+  });
 });

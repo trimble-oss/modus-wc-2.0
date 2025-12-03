@@ -82,6 +82,13 @@ export class ModusWcMenuItem {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
+  private handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      this.handleItemSelect();
+    }
+  };
+
   /**
    * Public method to collapse the submenu if it's expanded
    */
@@ -206,13 +213,16 @@ export class ModusWcMenuItem {
           aria-current={this.selected}
           aria-disabled={this.disabled}
           class={this.getClasses()}
+          onKeyDown={this.handleKeyDown}
           role="menuitem"
+          tabIndex={this.disabled ? -1 : 0}
           {...this.inheritedAttributes}
         >
           <button
             class={this.getButtonClasses()}
             disabled={this.disabled}
             onClick={this.handleItemSelect}
+            tabIndex={-1}
             type="button"
           >
             <div class="modus-wc-menu-item-content">

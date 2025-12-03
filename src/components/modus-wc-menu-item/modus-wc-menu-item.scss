@@ -10,6 +10,15 @@ modus-wc-menu-item .modus-wc-menu-item {
     display: flex;
     width: 100%;
 
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:focus {
+      background-color: var(--modus-wc-color-gray-0);
+      outline: none;
+    }
+
     .modus-wc-menu-item-content {
       align-items: center;
       display: flex;
@@ -84,17 +93,15 @@ modus-wc-menu-item .modus-wc-menu-item {
     &:hover,
     &:focus {
       background-color: var(--modus-wc-color-primary-pale);
-      color: var(--modus-wc-color-primary);
+      color: none;
     }
 
     button {
       &:hover,
-      &:focus,
-      &:focus-visible {
-        background-color: none;
+      &:focus {
+        background-color: inherit;
         box-shadow: none;
         color: inherit;
-        outline: none;
       }
     }
   }
@@ -126,28 +133,17 @@ modus-wc-menu-item .modus-wc-menu-item {
     outline: 2px solid var(--modus-wc-color-trimble-blue);
     outline-offset: -2px;
   }
-
-  // Remove all button focus states completely - only li should have focus
-  button {
-    &:hover,
-    &:focus,
-    &:focus-visible,
-    &:focus-within,
-    &:active {
-      background: none;
-      background-color: transparent;
-      border: none;
-      box-shadow: none;
-      color: inherit;
-      outline: none;
-    }
-  }
 }
 
 [data-theme='modus-classic-dark'],
 [data-theme='modus-modern-dark'],
 [data-theme='connect-dark'] {
   modus-wc-menu-item .modus-wc-menu-item {
+    button {
+      &:focus {
+        background-color: var(--modus-wc-color-gray-9);
+      }
+    }
     // Hover and arrow key navigation focus states (background only)
     &:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled):not(
         :has(.modus-wc-menu-dropdown)
