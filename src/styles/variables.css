@@ -202,6 +202,10 @@
     var(--modus-wc-color-black),
     var(--modus-wc-color-white)
   );
+  --modus-wc-color-base-inverted: light-dark(
+    var(--modus-wc-color-gray-10),
+    var(--modus-wc-color-gray-light)
+  );
 
   /**
   * The following variables are applied to themes for applications to override.
