@@ -566,6 +566,10 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
+          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
+         */
+        "showWeekNumbers"?: boolean;
+        /**
           * The size of the input.
          */
         "size"?: ModusSize;
@@ -3546,6 +3550,10 @@ declare namespace LocalJSX {
           * A value is required or must be checked for the form to be submittable.
          */
         "required"?: boolean;
+        /**
+          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
+         */
+        "showWeekNumbers"?: boolean;
         /**
           * The size of the input.
          */

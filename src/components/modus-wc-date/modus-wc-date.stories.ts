@@ -25,6 +25,7 @@ interface DateArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
+  'show-week-numbers'?: boolean;
   size?: ModusSize;
   value: string;
   'week-start-day'?: WeekStartDay;
@@ -40,6 +41,7 @@ const meta: Meta<DateArgs> = {
     label: 'Label',
     'read-only': false,
     required: false,
+    'show-week-numbers': false,
     size: 'md',
     value: '',
     'week-start-day': 'sunday',
@@ -128,6 +130,7 @@ export const Default: Story = {
         placeholder=${ifDefined(args.placeholder)}
         ?read-only=${args['read-only']}
         ?required=${args.required}
+        ?show-week-numbers=${args['show-week-numbers']}
         size=${ifDefined(args.size)}
         .value=${args.value}
         week-start-day=${ifDefined(args['week-start-day'])}
@@ -154,6 +157,7 @@ export const WithErrorFeedback: Story = {
       .feedback=${errorFeedback}
       label=${ifDefined(args.label)}
       ?required=${true}
+      ?show-week-numbers=${args['show-week-numbers']}
       .value=${args.value}
       week-start-day=${ifDefined(args['week-start-day'])}
     ></modus-wc-date>
