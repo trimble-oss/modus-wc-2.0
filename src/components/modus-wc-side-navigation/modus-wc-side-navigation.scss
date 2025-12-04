@@ -5,7 +5,9 @@ modus-wc-side-navigation {
 
   .modus-wc-side-navigation {
     background: var(--modus-wc-color-base-page);
-    background-image: url('../../styles/assets/Fingerprint.svg');
+    background-image: url('../../styles/assets/Sidenavpattern.svg');
+    background-position: center;
+    background-size: cover;
     box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
     color: var(--modus-wc-color-base-content);
     display: flex;
@@ -22,7 +24,6 @@ modus-wc-side-navigation {
   }
 
   .side-navigation-content {
-    // background: var(--modus-wc-color-base-page);
     color: var(--modus-wc-color-base-content);
     flex: 1 1 auto;
   }
