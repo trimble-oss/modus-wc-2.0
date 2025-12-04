@@ -93,7 +93,6 @@ modus-wc-menu-item .modus-wc-menu-item {
     &:hover,
     &:focus {
       background-color: var(--modus-wc-color-primary-pale);
-      color: none;
     }
 
     button {
@@ -168,7 +167,7 @@ modus-wc-menu-item .modus-wc-menu-item {
 
     // Tab navigation focus state (outline only)
     &:focus-visible:not(.modus-wc-arrow-focused) {
-      background-color: none;
+      background-color: inherit;
       outline: 2px solid var(--modus-wc-color-highlight-blue);
       outline-offset: -2px;
     }
