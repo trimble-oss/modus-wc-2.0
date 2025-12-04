@@ -18,6 +18,7 @@ modus-wc-date .modus-wc-date-input {
 // Calendar styles
 modus-wc-date {
   --calendar-grid-columns: repeat(7, 1fr);
+  --calendar-grid-columns-with-week-numbers: auto repeat(7, 1fr);
 
   position: relative;
 
@@ -56,12 +57,17 @@ modus-wc-date {
     width: 272px;
     z-index: 9999;
 
+    &.has-week-numbers {
+      width: 320px;
+    }
+
     .calendar-header {
       align-items: center;
       background-color: var(--modus-wc-color-primary);
       color: var(--modus-wc-color-white);
       display: flex;
-      justify-content: space-between;
+      gap: var(--modus-wc-spacing-sm);
+      justify-content: center;
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-xl);
 
       .nav-btn {
@@ -82,6 +88,10 @@ modus-wc-date {
         gap: var(--modus-wc-spacing-xs);
 
         select {
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        select option {
           background-color: var(--modus-wc-color-white);
           color: var(--modus-wc-color-gray-9);
         }
@@ -100,6 +110,15 @@ modus-wc-date {
         grid-template-columns: var(--calendar-grid-columns);
         margin-bottom: var(--modus-wc-spacing-sm);
 
+        &.has-week-numbers {
+          grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
+        }
+
+        .week-number-header {
+          margin-inline-end: var(--modus-wc-spacing-md);
+          padding: var(--modus-wc-spacing-xs);
+        }
+
         .day-header {
           color: var(--modus-wc-color-base-content-hight-contrast);
           font-weight: var(--modus-wc-font-weight-bold);
@@ -111,6 +130,25 @@ modus-wc-date {
       .calendar-dates {
         display: grid;
         grid-template-columns: var(--calendar-grid-columns);
+
+        &.has-week-numbers {
+          grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
+        }
+
+        .week-number {
+          align-items: center;
+          border-inline-end: 1px solid
+            color-mix(
+              in sRGB,
+              var(--modus-wc-color-base-inverted) 10%,
+              transparent
+            );
+          display: flex;
+          font-size: var(--modus-wc-font-size-sm);
+          font-weight: var(--modus-wc-font-weight-bold);
+          justify-content: center;
+          padding-inline-end: var(--modus-wc-spacing-sm);
+        }
 
         .calendar-day {
           align-items: center;
@@ -229,4 +267,27 @@ modus-wc-date {
 [data-theme='connect-light'] modus-wc-date .modus-wc-date-input,
 [data-theme='connect-dark'] modus-wc-date .modus-wc-date-input {
   @include connect-input-styles;
+}
+
+[data-theme='connect-dark'] modus-wc-date,
+[data-theme='modus-modern-dark'] modus-wc-date,
+[data-theme='modus-classic-dark'] modus-wc-date {
+  .calendar-container .calendar-header {
+    .nav-btn {
+      i {
+        color: var(--modus-wc-color-black);
+      }
+    }
+
+    .calendar-selects select {
+      background-color: unset;
+      color: var(--modus-wc-color-black);
+      font-weight: 600;
+
+      option {
+        background-color: var(--modus-wc-color-black);
+        color: var(--modus-wc-color-white);
+      }
+    }
+  }
 }
