@@ -1,0 +1,477 @@
+import { newSpecPage } from '@stencil/core/testing';
+import { ModusWcButtonGroup } from './modus-wc-button-group';
+import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
+
+// Type declaration for the button group element
+interface HTMLModusWcButtonGroupElement extends HTMLElement {
+  disabled?: boolean;
+  variant?: 'borderless' | 'filled' | 'outlined';
+  color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  selectionType?: 'default' | 'single' | 'multiple';
+}
+
+describe('modus-wc-button-group', () => {
+  it('should render with default props', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup],
+      html: `<modus-wc-button-group>
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+        <modus-wc-button>Button 3</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with vertical orientation', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup],
+      html: `<modus-wc-button-group orientation="vertical">
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with disabled prop', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup],
+      html: `<modus-wc-button-group disabled>
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with custom variant', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup],
+      html: `<modus-wc-button-group variant="filled">
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with custom color', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup],
+      html: `<modus-wc-button-group color="primary">
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with single selection type', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup],
+      html: `<modus-wc-button-group selection-type="single">
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with multiple selection type', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup],
+      html: `<modus-wc-button-group selection-type="multiple">
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should initialize selected buttons with pressed attribute in single-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group selection-type="single">
+        <modus-wc-button pressed>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    await page.waitForChanges();
+
+    const buttons = buttonGroup.querySelectorAll('modus-wc-button');
+
+    // Button 1 should remain pressed
+    expect(buttons[0].getAttribute('pressed')).toBe('');
+    expect(buttons[1].getAttribute('pressed')).toBeFalsy();
+  });
+
+  it('should initialize only first pressed button when multiple buttons have pressed attribute in single-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group selection-type="single">
+        <modus-wc-button pressed>Button 1</modus-wc-button>
+        <modus-wc-button pressed>Button 2</modus-wc-button>
+        <modus-wc-button>Button 3</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    await page.waitForChanges();
+
+    const buttons = buttonGroup.querySelectorAll('modus-wc-button');
+
+    // Only first pressed button should remain pressed
+    expect(buttons[0].getAttribute('pressed')).toBe('');
+    expect(buttons[1].getAttribute('pressed')).toBeFalsy();
+    expect(buttons[2].getAttribute('pressed')).toBeFalsy();
+  });
+
+  it('should initialize multiple selected buttons with pressed attribute in multiple-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group selection-type="multiple">
+        <modus-wc-button pressed>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+        <modus-wc-button pressed>Button 3</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    await page.waitForChanges();
+
+    const buttons = buttonGroup.querySelectorAll('modus-wc-button');
+
+    // Both pressed buttons should remain pressed
+    expect(buttons[0].getAttribute('pressed')).toBe('');
+    expect(buttons[1].getAttribute('pressed')).toBeFalsy();
+    expect(buttons[2].getAttribute('pressed')).toBe('');
+  });
+
+  it('should update the disabled state of child buttons when disabled prop changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    buttonGroup.disabled = true;
+    await page.waitForChanges();
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should update the variant of child buttons when variant prop changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    buttonGroup.variant = 'filled';
+    await page.waitForChanges();
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should update the color of child buttons when color prop changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    buttonGroup.color = 'danger';
+    await page.waitForChanges();
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should update child buttons selection when selectionType prop changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    buttonGroup.selectionType = 'single';
+    await page.waitForChanges();
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should emit buttonGroupClick event when a child button is clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    const buttonGroupClickSpy = jest.fn();
+    buttonGroup.addEventListener('buttonGroupClick', buttonGroupClickSpy);
+
+    buttonGroup.selectionType = 'single';
+    await page.waitForChanges();
+
+    const button1 = buttonGroup.querySelectorAll('modus-wc-button')[0];
+    // Simulate the Stencil custom event
+    button1.dispatchEvent(
+      new CustomEvent('buttonClick', { bubbles: true, composed: true })
+    );
+    await page.waitForChanges();
+
+    expect(buttonGroupClickSpy).toHaveBeenCalled();
+  });
+
+  it('should emit buttonSelectionChange event when selection changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+
+    const buttonSelectionChangeSpy = jest.fn();
+    buttonGroup.addEventListener(
+      'buttonSelectionChange',
+      buttonSelectionChangeSpy
+    );
+    await page.waitForChanges();
+
+    buttonGroup.selectionType = 'multiple';
+    await page.waitForChanges();
+
+    const button1 = buttonGroup.querySelectorAll('modus-wc-button')[0];
+    // Simulate the Stencil custom event
+    button1.dispatchEvent(
+      new CustomEvent('buttonClick', { bubbles: true, composed: true })
+    );
+    await page.waitForChanges();
+
+    // Simulate the Stencil custom event again to trigger selection change
+    button1.dispatchEvent(
+      new CustomEvent('buttonClick', { bubbles: true, composed: true })
+    );
+    await page.waitForChanges();
+
+    expect(buttonSelectionChangeSpy).toHaveBeenCalled();
+  });
+
+  it('should not deselect button when clicking already selected button in single-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    buttonGroup.selectionType = 'single';
+    await page.waitForChanges();
+
+    const buttonSelectionChangeSpy = jest.fn();
+    buttonGroup.addEventListener(
+      'buttonSelectionChange',
+      buttonSelectionChangeSpy
+    );
+
+    const button1 = buttonGroup.querySelectorAll('modus-wc-button')[0];
+
+    // First click - select button 1
+    button1.dispatchEvent(
+      new CustomEvent('buttonClick', { bubbles: true, composed: true })
+    );
+    await page.waitForChanges();
+
+    expect(buttonSelectionChangeSpy).toHaveBeenCalledTimes(1);
+    expect(button1.getAttribute('pressed')).toBe('');
+
+    // Second click on same button - should NOT deselect (early return)
+    button1.dispatchEvent(
+      new CustomEvent('buttonClick', { bubbles: true, composed: true })
+    );
+    await page.waitForChanges();
+
+    // buttonSelectionChangeSpy should still be called only once (no second event)
+    expect(buttonSelectionChangeSpy).toHaveBeenCalledTimes(1);
+    expect(button1.getAttribute('pressed')).toBe('');
+  });
+
+  it('should handle resetAllSelections when buttonElements is not initialized', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    // Access private property for testing purposes
+    const instance = page.rootInstance as unknown as {
+      buttonElements: NodeListOf<HTMLElement> | null;
+    };
+
+    // Clear buttonElements to simulate early call before componentDidLoad
+    instance.buttonElements = null;
+
+    // Change selectionType which calls resetAllSelections internally
+    buttonGroup.selectionType = 'single';
+    await page.waitForChanges();
+
+    // Should not throw error and should complete successfully
+    expect(buttonGroup.selectionType).toBe('single');
+  });
+
+  it('should emit buttonGroupClick event when selectionType is default', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group>
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    const buttonGroupClickSpy = jest.fn();
+    buttonGroup.addEventListener('buttonGroupClick', buttonGroupClickSpy);
+
+    const button1 = buttonGroup.querySelectorAll('modus-wc-button')[0];
+    // Simulate the Stencil custom event
+    button1.dispatchEvent(
+      new CustomEvent('buttonClick', { bubbles: true, composed: true })
+    );
+    await page.waitForChanges();
+    expect(buttonGroupClickSpy).toHaveBeenCalled();
+  });
+
+  it('should remove attribute from child buttons when value is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group color="primary">
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    await page.waitForChanges();
+
+    // Verify color attribute is set
+    const buttons = buttonGroup.querySelectorAll('modus-wc-button');
+    expect(buttons[0].getAttribute('color')).toBe('primary');
+    expect(buttons[1].getAttribute('color')).toBe('primary');
+
+    // Set color to undefined which should remove the attribute
+    buttonGroup.color = undefined;
+    await page.waitForChanges();
+
+    // Verify color attribute is removed
+    expect(buttons[0].getAttribute('color')).toBeNull();
+    expect(buttons[1].getAttribute('color')).toBeNull();
+  });
+
+  it('should remove disabled attribute when disabled is set to false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group disabled>
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    await page.waitForChanges();
+
+    // Verify disabled attribute is set
+    const buttons = buttonGroup.querySelectorAll('modus-wc-button');
+    expect(buttons[0].getAttribute('disabled')).toBe('true');
+    expect(buttons[1].getAttribute('disabled')).toBe('true');
+
+    // Set disabled to false which should remove the attribute
+    buttonGroup.disabled = false;
+    await page.waitForChanges();
+
+    // Verify disabled attribute is removed
+    expect(buttons[0].getAttribute('disabled')).toBeNull();
+    expect(buttons[1].getAttribute('disabled')).toBeNull();
+  });
+
+  it('should handle slot change when buttons are added dynamically', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group color="primary" variant="filled">
+        <modus-wc-button>Button 1</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    await page.waitForChanges();
+
+    // Verify initial button has the correct attributes
+    let buttons = buttonGroup.querySelectorAll('modus-wc-button');
+    expect(buttons.length).toBe(1);
+    expect(buttons[0].getAttribute('color')).toBe('primary');
+    expect(buttons[0].getAttribute('variant')).toBe('filled');
+
+    // Add a new button dynamically
+    const newButton = page.doc.createElement('modus-wc-button');
+    newButton.textContent = 'Button 2';
+    buttonGroup.appendChild(newButton);
+
+    // Trigger slot change manually (since we can't rely on native slotchange in tests)
+    const instance = page.rootInstance as unknown as {
+      handleSlotChange: () => void;
+    };
+    instance.handleSlotChange();
+    await page.waitForChanges();
+
+    // Verify both buttons now have the correct attributes
+    buttons = buttonGroup.querySelectorAll('modus-wc-button');
+    expect(buttons.length).toBe(2);
+    expect(buttons[0].getAttribute('color')).toBe('primary');
+    expect(buttons[0].getAttribute('variant')).toBe('filled');
+    expect(buttons[1].getAttribute('color')).toBe('primary');
+    expect(buttons[1].getAttribute('variant')).toBe('filled');
+  });
+
+  it('should handle syncButtonStates when buttonElements is empty', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group color="primary">
+      </modus-wc-button-group>`,
+    });
+
+    const buttonGroup = page.root as HTMLModusWcButtonGroupElement;
+    await page.waitForChanges();
+
+    // Verify no buttons exist
+    const buttons = buttonGroup.querySelectorAll('modus-wc-button');
+    expect(buttons.length).toBe(0);
+
+    // Change color prop - should not throw error even with no buttons
+    buttonGroup.color = 'danger';
+    await page.waitForChanges();
+
+    // Should complete successfully without errors
+    expect(buttonGroup.color).toBe('danger');
+  });
+});
