@@ -166,6 +166,7 @@ const resetDropzone = () => {
 
 export const fileValidations: Story = {
   args: {
+    multiple: true,
     'max-file-name-length': 20,
     'max-file-count': 3,
     'max-total-file-size-bytes': 10485760, // 10MB
@@ -179,6 +180,7 @@ export const fileValidations: Story = {
       max-file-name-length=${ifDefined(args['max-file-name-length'])}
       max-file-count=${ifDefined(args['max-file-count'])}
       max-total-file-size-bytes=${ifDefined(args['max-total-file-size-bytes'])}
+      ?multiple=${args.multiple}
       instructions="Upload files (max 3 files, 10MB total, filename ≤ 20 chars)"
     ></modus-wc-file-dropzone>
   `,
