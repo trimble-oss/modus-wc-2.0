@@ -13,37 +13,6 @@ modus-wc-button .modus-wc-btn-outline {
   @include btn-state-colors;
 }
 
-modus-wc-button .modus-wc-btn-filled {
-  border: none;
-
-  // Overriding secondary and warning colors
-  &.modus-wc-btn-secondary {
-    background-color: var(--modus-wc-color-secondary);
-    color: var(--modus-wc-color-secondary-content);
-
-    &:hover {
-      background-color: color-mix(
-        in sRGB,
-        var(--modus-wc-color-secondary),
-        var(--modus-wc-color-black) 10%
-      );
-    }
-  }
-
-  &.modus-wc-btn-warning {
-    background-color: var(--modus-wc-color-warning);
-    color: var(--modus-wc-color-warning-content);
-
-    &:hover {
-      background-color: color-mix(
-        in sRGB,
-        var(--modus-wc-color-warning),
-        var(--modus-wc-color-black) 10%
-      );
-    }
-  }
-}
-
 modus-wc-button .modus-wc-btn-borderless {
   @include btn-state-colors;
 
