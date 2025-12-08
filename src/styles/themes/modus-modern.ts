@@ -14,7 +14,7 @@ export const modusModern = {
     // Secondary Colors (Yellow Progression)
     secondary: '#FBAD26', // Yellow
     'secondary-focus': '#E49325', // Yellow Dark
-    'secondary-content': '#252A2E', // Trimble Gray
+    'secondary-content': '#000000', // Black
 
     // Tertiary/Accent Colors (Neutral Progression)
     accent: '#6A6E79', // Gray 6
