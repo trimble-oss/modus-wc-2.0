@@ -141,15 +141,6 @@ export const Default: Story = {
 
 <style>
 ${utilityPanelStyles}
-  /* Push-content transition effect */
-  .modus-wc-utility-panel-push-target {
-    transition: margin-right 0.3s ease-out;
-  }
-
-  /* Push-content margin (panel width: 312px) */
-  .modus-wc-utility-panel-pushed {
-    margin-right: 312px;
-  }
 </style>
 
 <div class="demo-container">
@@ -304,16 +295,6 @@ export const Expanded: Story = {
         transform: () => `
 <style>
 ${utilityPanelStyles}
-  /* Push-content transition effect */
-  .modus-wc-utility-panel-push-target {
-    transition: margin-right 0.3s ease-out;
-    }
-
-  /* Push-content margin (panel width: 312px) */
-  .modus-wc-utility-panel-pushed {
-    margin-right: 312px;
-    }
-
   .modus-wc-utility-panel-body {
     background: var(--modus-wc-color-base-100);
     }
@@ -376,7 +357,9 @@ ${scriptBlock}`,
   },
   render: (args) => html`
     <style>
-      ${utilityPanelStyles} .modus-wc-utility-panel-body {
+      // ignore prettier
+      ${utilityPanelStyles} 
+      .modus-wc-utility-panel-body {
         padding: 20px 0;
         background: var(--modus-wc-color-base-100);
       }
