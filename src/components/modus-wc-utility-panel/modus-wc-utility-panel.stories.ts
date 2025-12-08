@@ -355,9 +355,10 @@ ${scriptBlock}`,
       },
     },
   },
-  render: (args) => html`
+  render: (args) =>
+    // prettier-ignore
+    html`
     <style>
-      // ignore prettier
       ${utilityPanelStyles} 
       .modus-wc-utility-panel-body {
         padding: 20px 0;
