@@ -58,7 +58,7 @@ const meta: Meta<UtilityPanelArgs> = {
 };
 
 // Shared CSS styles as string for documentation
-const sharedStyles = `
+const utilityPanelStyles = `
   .demo-container {
     height: 100vh;
     display: flex;
@@ -85,6 +85,11 @@ const sharedStyles = `
     overflow: auto;
   }
 
+  .main-content p,
+  .modus-wc-utility-panel-body p {
+    margin-bottom: var(--modus-wc-spacing-2xl);
+  }
+
   .modus-wc-utility-panel-header {
     font-size: 18px;
     font-weight: 600;
@@ -100,13 +105,6 @@ const sharedStyles = `
     justify-content: flex-end;
   }
 
-  .modus-wc-utility-panel-push-target {
-    transition: margin-right 0.3s ease-out;
-  }
-
-  .modus-wc-utility-panel-pushed {
-    margin-right: 312px; 
-  }
 `;
 
 const scriptBlock = `
@@ -127,7 +125,9 @@ const scriptBlock = `
   }
 });
   const navbar = document.querySelector('modus-wc-navbar');
-  navbar.visibility = { user: false };
+  if (navbar) {
+    navbar.visibility = { user: false };
+  }
 </script>`;
 
 export default meta;
@@ -138,16 +138,19 @@ export const Default: Story = {
     docs: {
       source: {
         transform: () => `
-          <style>
-            ${sharedStyles}
-            .modus-wc-utility-panel-push-target {
-            transition: margin-right 0.3s ease-out;
-            }
 
-            .modus-wc-utility-panel-pushed {
-            margin-right: 312px; 
-            }
-        </style>
+<style>
+${utilityPanelStyles}
+  /* Push-content transition effect */
+  .modus-wc-utility-panel-push-target {
+    transition: margin-right 0.3s ease-out;
+  }
+
+  /* Push-content margin (panel width: 312px) */
+  .modus-wc-utility-panel-pushed {
+    margin-right: 312px;
+  }
+</style>
 
 <div class="demo-container">
   <modus-wc-navbar id="navbar-default">
@@ -222,7 +225,7 @@ ${scriptBlock}`,
   },
   render: (args) => html`
     <style>
-      ${sharedStyles}
+      ${utilityPanelStyles}
     </style>
     <div class="demo-container">
       <modus-wc-navbar id="navbar-default" .visibility=${{ user: false }}>
@@ -299,20 +302,22 @@ export const Expanded: Story = {
     docs: {
       source: {
         transform: () => `
-          <style>
-            ${sharedStyles}
-            .modus-wc-utility-panel-push-target {
-            transition: margin-right 0.3s ease-out;
-            }
+<style>
+${utilityPanelStyles}
+  /* Push-content transition effect */
+  .modus-wc-utility-panel-push-target {
+    transition: margin-right 0.3s ease-out;
+    }
 
-            .modus-wc-utility-panel-pushed {
-            margin-right: 312px; 
-            }
+  /* Push-content margin (panel width: 312px) */
+  .modus-wc-utility-panel-pushed {
+    margin-right: 312px;
+    }
 
-            .modus-wc-utility-panel-body {
-            background: var(--modus-wc-color-base-100);
-            }
-          </style>
+  .modus-wc-utility-panel-body {
+    background: var(--modus-wc-color-base-100);
+    }
+</style>
 
 <div class="demo-container">
   <modus-wc-navbar id="navbar-expanded">
@@ -371,7 +376,7 @@ ${scriptBlock}`,
   },
   render: (args) => html`
     <style>
-      ${sharedStyles} .modus-wc-utility-panel-body {
+      ${utilityPanelStyles} .modus-wc-utility-panel-body {
         padding: 20px 0;
         background: var(--modus-wc-color-base-100);
       }
@@ -436,9 +441,9 @@ export const OverlayMode: Story = {
     docs: {
       source: {
         transform: () => `
-        <style>
-          ${sharedStyles}
-        </style>
+<style>
+${utilityPanelStyles}
+</style>
 
 <div class="demo-container">
   <modus-wc-navbar id="navbar-overlay">
@@ -497,7 +502,7 @@ ${scriptBlock}`,
   },
   render: (args) => html`
     <style>
-      ${sharedStyles}
+      ${utilityPanelStyles}
     </style>
 
     <div class="demo-container">
