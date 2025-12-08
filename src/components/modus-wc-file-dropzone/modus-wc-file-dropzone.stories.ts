@@ -122,33 +122,14 @@ export const customContent: Story = {
     'success-message': 'Files uploaded successfully!',
   },
 
-  render: (args) => {
-    const resetDropzone = () => {
-      const dropzone = document.getElementById(
-        'custom-dropzone'
-      ) as HTMLElement & { reset?: () => Promise<void> };
-      if (dropzone?.reset) {
-        void dropzone.reset();
-      }
-    };
-
-    //prettier-ignore
-    return html`
-<script>
-const resetDropzone = () => {
-  const dropzone = document.getElementById(
-   'custom-dropzone'
-    ) as HTMLElement & { reset?: () => Promise<void> };
-    if (dropzone?.reset) {
-    void dropzone.reset();
-    }
-  };
-</script>
-<div style="display: flex; flex-direction: column; gap: 1rem;">
+  parameters: {
+    docs: {
+      source: {
+        code: `<div style="display: flex; flex-direction: column; gap: 1rem;">
   <modus-wc-file-dropzone
     id="custom-dropzone"
-    accept-file-types=${ifDefined(args['accept-file-types'])}
-    success-message=${ifDefined(args['success-message'])}
+    accept-file-types=".pdf, .doc, .docx"
+    success-message="Files uploaded successfully!"
     instructions="Drag files here or browse to upload"
   >
     <div slot="dropzone" style="width: 300px; margin-top: 1rem;">
@@ -156,12 +137,58 @@ const resetDropzone = () => {
     </div>
   </modus-wc-file-dropzone>
 
-  <modus-wc-button variant="secondary" @buttonClick=${resetDropzone}>
+  <modus-wc-button variant="secondary" id="reset-button">
     Reset Dropzone
   </modus-wc-button>
 </div>
-  `;
+
+<script>
+  const dropzone = document.getElementById('custom-dropzone');
+  const resetButton = document.getElementById('reset-button');
+  
+  resetButton.addEventListener('click', () => {
+    if (dropzone?.reset) {
+      dropzone.reset();
+    }
+  });
+</script>`,
+      },
+    },
   },
+
+  render: (args) => html`
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <modus-wc-file-dropzone
+        id="custom-dropzone"
+        accept-file-types=${ifDefined(args['accept-file-types'])}
+        success-message=${ifDefined(args['success-message'])}
+        instructions="Drag files here or browse to upload"
+      >
+        <div slot="dropzone" style="width: 300px; margin-top: 1rem;">
+          <modus-wc-progress
+            value="70"
+            label="70% Uploaded"
+          ></modus-wc-progress>
+        </div>
+      </modus-wc-file-dropzone>
+
+      <modus-wc-button
+        variant="secondary"
+        @buttonClick=${() => {
+          const dropzone = document.getElementById(
+            'custom-dropzone'
+          ) as HTMLElement & {
+            reset?: () => Promise<void>;
+          };
+          if (dropzone?.reset) {
+            dropzone.reset();
+          }
+        }}
+      >
+        Reset Dropzone
+      </modus-wc-button>
+    </div>
+  `,
 };
 
 export const fileValidations: Story = {
