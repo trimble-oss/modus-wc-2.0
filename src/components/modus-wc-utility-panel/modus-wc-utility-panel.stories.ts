@@ -109,31 +109,6 @@ const sharedStyles = `
   }
 `;
 
-// Shared styles for all stories (rendered in Lit template)
-const baseStyles = html`<style>
-  ${sharedStyles}
-</style>`;
-
-// Shared styles for documentation (plain string)
-const docsStyles = `<style>${sharedStyles}</style>`;
-
-const simpleContainerStyles = html`
-  <style>
-    .demo-container {
-      height: 100vh;
-      position: relative;
-      overflow: hidden;
-      background: var(--modus-wc-color-base-page);
-    }
-
-    .main-content {
-      height: 100%;
-      padding: 20px;
-      background: var(--modus-wc-color-base-page);
-    }
-  </style>
-`;
-
 const scriptBlock = `
 <script>
   requestAnimationFrame(() => {
@@ -162,7 +137,17 @@ export const Default: Story = {
   parameters: {
     docs: {
       source: {
-        transform: () => `${docsStyles}
+        transform: () => `
+          <style>
+            ${sharedStyles}
+            .modus-wc-utility-panel-push-target {
+            transition: margin-right 0.3s ease-out;
+            }
+
+            .modus-wc-utility-panel-pushed {
+            margin-right: 312px; 
+            }
+        </style>
 
 <div class="demo-container">
   <modus-wc-navbar id="navbar-default">
@@ -236,8 +221,9 @@ ${scriptBlock}`,
     },
   },
   render: (args) => html`
-    ${baseStyles}
-
+    <style>
+      ${sharedStyles}
+    </style>
     <div class="demo-container">
       <modus-wc-navbar id="navbar-default" .visibility=${{ user: false }}>
         <div slot="end">
@@ -312,13 +298,21 @@ export const Expanded: Story = {
   parameters: {
     docs: {
       source: {
-        transform: () => `<style>
-  ${sharedStyles}
+        transform: () => `
+          <style>
+            ${sharedStyles}
+            .modus-wc-utility-panel-push-target {
+            transition: margin-right 0.3s ease-out;
+            }
 
-  .modus-wc-utility-panel-body {
-    background: var(--modus-wc-color-base-100);
-  }
-</style>
+            .modus-wc-utility-panel-pushed {
+            margin-right: 312px; 
+            }
+
+            .modus-wc-utility-panel-body {
+            background: var(--modus-wc-color-base-100);
+            }
+          </style>
 
 <div class="demo-container">
   <modus-wc-navbar id="navbar-expanded">
@@ -441,7 +435,10 @@ export const OverlayMode: Story = {
   parameters: {
     docs: {
       source: {
-        transform: () => `${docsStyles}
+        transform: () => `
+        <style>
+          ${sharedStyles}
+        </style>
 
 <div class="demo-container">
   <modus-wc-navbar id="navbar-overlay">
@@ -499,7 +496,9 @@ ${scriptBlock}`,
     },
   },
   render: (args) => html`
-    ${baseStyles}
+    <style>
+      ${sharedStyles}
+    </style>
 
     <div class="demo-container">
       <modus-wc-navbar id="navbar-overlay" .visibility=${{ user: false }}>
@@ -557,7 +556,20 @@ export const WithoutHeaderFooter: Story = {
     'push-content': true,
   },
   render: (args: UtilityPanelArgs) => html`
-    ${simpleContainerStyles}
+    <style>
+      .demo-container {
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+        background: var(--modus-wc-color-base-page);
+      }
+
+      .main-content {
+        height: 100%;
+        padding: 20px;
+        background: var(--modus-wc-color-base-page);
+      }
+    </style>
 
     <div class="demo-container">
       <div id="main-content-2" class="main-content">
