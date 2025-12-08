@@ -181,7 +181,7 @@ export const customContent: Story = {
             reset?: () => Promise<void>;
           };
           if (dropzone?.reset) {
-            dropzone.reset();
+            void dropzone.reset();
           }
         }}
       >
