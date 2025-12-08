@@ -43,6 +43,7 @@ modus-wc-side-navigation {
 [data-theme='modus-classic-dark'] modus-wc-side-navigation {
   .side-navigation-content {
     background: var(--modus-wc-color-gray-10);
+    background-image: url('dist/styles/assets/Sidenavdarkpattern.svg');
     color: var(--modus-wc-color-white);
   }
 

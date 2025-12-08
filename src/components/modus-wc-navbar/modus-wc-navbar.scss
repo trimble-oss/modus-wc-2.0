@@ -182,6 +182,7 @@ modus-wc-navbar .modus-wc-navbar {
 
 [data-theme='modus-classic-dark'] modus-wc-navbar .modus-wc-navbar {
   background-color: var(--modus-wc-color-gray-10);
+  background-image: url('dist/styles/assets/Navabardarkpattern.svg');
 
   // Common button styles
   &:not(.trimble-logo)
