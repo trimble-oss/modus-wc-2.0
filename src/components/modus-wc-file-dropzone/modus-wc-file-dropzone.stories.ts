@@ -137,7 +137,7 @@ export const customContent: Story = {
     </div>
   </modus-wc-file-dropzone>
 
-  <modus-wc-button variant="secondary" id="reset-button">
+  <modus-wc-button id="reset-button">
     Reset Dropzone
   </modus-wc-button>
 </div>
@@ -173,7 +173,6 @@ export const customContent: Story = {
       </modus-wc-file-dropzone>
 
       <modus-wc-button
-        variant="secondary"
         @buttonClick=${() => {
           const dropzone = document.getElementById(
             'custom-dropzone'
