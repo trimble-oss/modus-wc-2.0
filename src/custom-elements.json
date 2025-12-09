@@ -2940,6 +2940,11 @@
             {
               "kind": "method",
               "name": "render"
+            },
+            {
+              "kind": "method",
+              "name": "reset",
+              "description": "Reset the dropzone to its initial state, clearing all error and success states"
             }
           ],
           "attributes": [

@@ -720,6 +720,10 @@ export namespace Components {
          */
         "multiple"?: boolean;
         /**
+          * Reset the dropzone to its initial state, clearing all error and success states
+         */
+        "reset": () => Promise<void>;
+        /**
           * Success message displayed when files are uploaded successfully
          */
         "successMessage"?: string;
