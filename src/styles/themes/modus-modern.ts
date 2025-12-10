@@ -48,12 +48,12 @@ export const modusModern = {
     // Primary Colors (Primary Palette)
     primary: '#019aeb', // Trimble Blue
     'primary-focus': '#004F83', // Trimble Blue Dark
-    'primary-content': '#000000', // White
+    'primary-content': '#000000', // Black
 
     // Secondary Colors (Gray Progression)
-    secondary: '#f1f1f6', // Neutral Gray Light
+    secondary: '#FEC157', // Neutral Gray Light
     'secondary-focus': '#E49325', // Yellow Dark
-    'secondary-content': '#000', // Trimble Black
+    'secondary-content': '#000000', // Trimble Black
 
     // Tertiary/Accent Colors (Neutral Progression)
     accent: '#6A6E79', // Gray 6
