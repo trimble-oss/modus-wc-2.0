@@ -387,9 +387,9 @@ export namespace Components {
          */
         "layout"?: 'vertical' | 'horizontal';
         /**
-          * Determines if the interior padding is compact or not
+          * Determines the interior padding size
          */
-        "padding"?: 'normal' | 'compact';
+        "padding"?: 'compact' | 'comfortable';
     }
     /**
      * A customizable checkbox component
@@ -3324,9 +3324,9 @@ declare namespace LocalJSX {
          */
         "layout"?: 'vertical' | 'horizontal';
         /**
-          * Determines if the interior padding is compact or not
+          * Determines the interior padding size
          */
-        "padding"?: 'normal' | 'compact';
+        "padding"?: 'compact' | 'comfortable';
     }
     /**
      * A customizable checkbox component
