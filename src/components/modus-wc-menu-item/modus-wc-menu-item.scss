@@ -170,9 +170,10 @@ modus-wc-menu-item .modus-wc-menu-item {
         outline: none;
       }
     }
+
     &.modus-wc-menu-item-selected {
       background-color: color-mix(
-        in srgb,
+        in sRGB,
         var(--modus-wc-color-primary) 30%,
         transparent
       );
