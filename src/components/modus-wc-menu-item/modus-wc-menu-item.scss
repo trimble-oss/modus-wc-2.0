@@ -15,8 +15,11 @@ modus-wc-menu-item .modus-wc-menu-item {
     }
 
     &:focus {
-      background-color: var(--modus-wc-color-gray-0);
-      outline: none;
+      background-color: transparent;
+    }
+
+    &.modus-wc-menu-dropdown-toggle::after {
+      color: var(--modus-wc-color-gray-6);
     }
 
     .modus-wc-menu-item-content {
@@ -85,20 +88,23 @@ modus-wc-menu-item .modus-wc-menu-item {
       var(--modus-wc-color-base-100);
   }
 
+  &:not(.modus-wc-menu-item-selected) {
+    color: var(--modus-wc-color-gray-10);
+  }
+
   &.modus-wc-menu-item-selected {
-    background-color: var(--modus-wc-color-primary-pale);
+    background-color: var(--modus-wc-color-blue-pale);
     border-radius: inherit;
     color: var(--modus-wc-color-primary);
 
-    &:hover,
     &:focus {
-      background-color: var(--modus-wc-color-primary-pale);
+      background-color: var(--modus-wc-color-blue-pale);
     }
 
     button {
       &:hover,
       &:focus {
-        background-color: inherit;
+        background-color: transparent;
         box-shadow: none;
         color: inherit;
       }
@@ -113,11 +119,19 @@ modus-wc-menu-item .modus-wc-menu-item {
     }
   }
 
-  // Hover and arrow key navigation focus states (background only)
-  &:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled):not(
+  // Hover state for all items
+  &:not(.modus-wc-menu-item-disabled):not(:has(.modus-wc-menu-dropdown)) {
+    &:hover {
+      background-color: var(--modus-wc-color-gray-0);
+      color: inherit;
+      outline: none;
+    }
+  }
+
+  // Focus states for non-selected items only
+  &:not(.modus-wc-menu-item-selected):not(.modus-wc-menu-item-disabled):not(
       :has(.modus-wc-menu-dropdown)
     ) {
-    &:hover,
     &:focus:not(:focus-visible),
     &.modus-wc-arrow-focused {
       background-color: var(--modus-wc-color-gray-0);
@@ -138,38 +152,40 @@ modus-wc-menu-item .modus-wc-menu-item {
 [data-theme='modus-modern-dark'],
 [data-theme='connect-dark'] {
   modus-wc-menu-item .modus-wc-menu-item {
+    &:not(.modus-wc-menu-item-selected) {
+      color: var(--modus-wc-color-gray-light);
+    }
+
     button {
-      &:focus {
-        background-color: var(--modus-wc-color-gray-9);
+      &.modus-wc-menu-dropdown-toggle::after {
+        color: var(--modus-wc-color-gray-3);
       }
     }
 
-    // Hover and arrow key navigation focus states (background only)
-    &:not(.modus-wc-menu-item-selected, .modus-wc-menu-item-disabled):not(
-        :has(.modus-wc-menu-dropdown)
-      ) {
-      &:hover,
-      &:focus:not(:focus-visible),
-      &.modus-wc-arrow-focused {
+    // Hover state for all items
+    &:not(.modus-wc-menu-item-disabled):not(:has(.modus-wc-menu-dropdown)) {
+      &:hover {
         background-color: var(--modus-wc-color-gray-9);
         color: inherit;
         outline: none;
       }
     }
-
-    // Higher specificity override for DaisyUI focus styles
-    &.modus-wc-menu-item:focus:not(.modus-wc-menu-item-selected):not(
-        .modus-wc-menu-item-disabled
-      ) {
-      background-color: var(--modus-wc-color-gray-9);
-      color: inherit;
+    &.modus-wc-menu-item-selected {
+      background-color: color-mix(
+        in srgb,
+        var(--modus-wc-color-primary) 30%,
+        transparent
+      );
     }
 
-    // Tab navigation focus state (outline only)
-    &:focus-visible:not(.modus-wc-arrow-focused) {
-      background-color: inherit;
-      outline: 2px solid var(--modus-wc-color-highlight-blue);
-      outline-offset: -2px;
+    // Focus states for non-selected items only
+    &:not(.modus-wc-menu-item-selected):not(.modus-wc-menu-item-disabled):not(
+        :has(.modus-wc-menu-dropdown)
+      ) {
+      &:focus:not(:focus-visible),
+      &.modus-wc-arrow-focused {
+        background-color: var(--modus-wc-color-gray-9);
+      }
     }
   }
 }
