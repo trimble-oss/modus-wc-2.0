@@ -7,6 +7,10 @@ modus-wc-card .modus-wc-card {
   background-color: var(--modus-wc-color-base-100);
   color: var(--modus-wc-color-base-content);
 
+  figure {
+    margin-bottom: unset;
+  }
+
   .modus-wc-card-body {
     gap: unset;
   }
