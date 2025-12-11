@@ -3,7 +3,7 @@
 exports[`modus-wc-card renders with default props 1`] = `
 <modus-wc-card>
   <!---->
-  <article class="modus-wc-card modus-wc-rounded-card" tabindex="-1">
+  <article class="modus-wc-card modus-wc-card-compact modus-wc-rounded-card" tabindex="-1">
     <div class="modus-wc-card-body">
       <div class="modus-wc-card-title"></div>
       <div class="modus-wc-card-subtitle"></div>
@@ -16,7 +16,7 @@ exports[`modus-wc-card renders with default props 1`] = `
 exports[`modus-wc-card should render with a hard border 1`] = `
 <modus-wc-card bordered="">
   <!---->
-  <article class="modus-wc-card modus-wc-card-bordered modus-wc-rounded-card" tabindex="-1">
+  <article class="modus-wc-card modus-wc-card-bordered modus-wc-card-compact modus-wc-rounded-card" tabindex="-1">
     <div class="modus-wc-card-body">
       <div class="modus-wc-card-title"></div>
       <div class="modus-wc-card-subtitle"></div>
@@ -55,7 +55,7 @@ exports[`modus-wc-card should render with custom props 1`] = `
 exports[`modus-wc-card should render with horizontal layout 1`] = `
 <modus-wc-card layout="horizontal">
   <!---->
-  <article class="modus-wc-card modus-wc-card-side modus-wc-rounded-card" tabindex="-1">
+  <article class="modus-wc-card modus-wc-card-compact modus-wc-card-side modus-wc-rounded-card" tabindex="-1">
     <div class="modus-wc-card-body">
       <div class="modus-wc-card-title"></div>
       <div class="modus-wc-card-subtitle"></div>
