@@ -16,6 +16,7 @@ interface FileDropzoneArgs {
   'max-total-file-size-bytes'?: number;
   multiple?: boolean;
   'success-message'?: string;
+  reset?: () => Promise<void>;
 }
 
 const meta: Meta<FileDropzoneArgs> = {
@@ -74,6 +75,14 @@ const meta: Meta<FileDropzoneArgs> = {
         defaultValue: { summary: 'false' },
       },
     },
+    reset: {
+      description:
+        'Reset the dropzone to its initial state, clearing all error and success states',
+      table: {
+        category: 'Methods',
+        type: { summary: '() => Promise<void>' },
+      },
+    },
   },
   decorators: [withActions],
   parameters: {
@@ -108,20 +117,82 @@ export const Default: Story = {
 };
 
 export const customContent: Story = {
-  render: () => html`
-    <modus-wc-file-dropzone
-      accept-file-types=".jpg,.png,.gif"
-      instructions="Drag files here or browse to upload"
-    >
-      <div slot="dropzone" style="width: 300px; margin-top: 1rem;">
-        <modus-wc-progress value="70" label="70% Uploaded"></modus-wc-progress>
-      </div>
-    </modus-wc-file-dropzone>
+  args: {
+    'accept-file-types': '.pdf, .doc, .docx',
+    'success-message': 'Files uploaded successfully!',
+  },
+
+  parameters: {
+    docs: {
+      source: {
+        code: `<div style="display: flex; flex-direction: column; gap: 1rem;">
+  <modus-wc-file-dropzone
+    id="custom-dropzone"
+    accept-file-types=".pdf, .doc, .docx"
+    success-message="Files uploaded successfully!"
+    instructions="Drag files here or browse to upload"
+  >
+    <div slot="dropzone" style="width: 300px; margin-top: 1rem;">
+      <modus-wc-progress value="70" label="70% Uploaded"></modus-wc-progress>
+    </div>
+  </modus-wc-file-dropzone>
+
+  <modus-wc-button id="reset-button">
+    Reset Dropzone
+  </modus-wc-button>
+</div>
+
+<script>
+  const dropzone = document.getElementById('custom-dropzone');
+  const resetButton = document.getElementById('reset-button');
+  
+  resetButton.addEventListener('click', () => {
+    if (dropzone?.reset) {
+      dropzone.reset();
+    }
+  });
+</script>`,
+      },
+    },
+  },
+
+  render: (args) => html`
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <modus-wc-file-dropzone
+        id="custom-dropzone"
+        accept-file-types=${ifDefined(args['accept-file-types'])}
+        success-message=${ifDefined(args['success-message'])}
+        instructions="Drag files here or browse to upload"
+      >
+        <div slot="dropzone" style="width: 300px; margin-top: 1rem;">
+          <modus-wc-progress
+            value="70"
+            label="70% Uploaded"
+          ></modus-wc-progress>
+        </div>
+      </modus-wc-file-dropzone>
+
+      <modus-wc-button
+        @buttonClick=${() => {
+          const dropzone = document.getElementById(
+            'custom-dropzone'
+          ) as HTMLElement & {
+            reset?: () => Promise<void>;
+          };
+          if (dropzone?.reset) {
+            void dropzone.reset();
+          }
+        }}
+      >
+        Reset Dropzone
+      </modus-wc-button>
+    </div>
   `,
 };
 
 export const fileValidations: Story = {
   args: {
+    multiple: true,
     'max-file-name-length': 20,
     'max-file-count': 3,
     'max-total-file-size-bytes': 10485760, // 10MB
@@ -135,6 +206,7 @@ export const fileValidations: Story = {
       max-file-name-length=${ifDefined(args['max-file-name-length'])}
       max-file-count=${ifDefined(args['max-file-count'])}
       max-total-file-size-bytes=${ifDefined(args['max-total-file-size-bytes'])}
+      ?multiple=${args.multiple}
       instructions="Upload files (max 3 files, 10MB total, filename ≤ 20 chars)"
     ></modus-wc-file-dropzone>
   `,

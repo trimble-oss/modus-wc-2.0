@@ -105,7 +105,7 @@ export default meta;
 
 type Story = StoryObj<DateArgs>;
 
-export const Default: Story = {
+const Template: Story = {
   render: (args) => {
     return html`
       <style>
@@ -139,29 +139,30 @@ export const Default: Story = {
   },
 };
 
+export const Default: Story = { ...Template };
+
 const errorFeedback: IInputFeedbackProp = {
   level: 'error',
   message: 'Value is required.',
 };
 
 export const WithErrorFeedback: Story = {
-  render: (args) => html`
-    <style>
-      div[id^='story--components-forms-date--with-error-feedback'] {
-        min-height: 400px;
-        width: 300px;
-      }
-    </style>
-    <modus-wc-date
-      aria-label="Date input"
-      .feedback=${errorFeedback}
-      label=${ifDefined(args.label)}
-      ?required=${true}
-      ?show-week-numbers=${args['show-week-numbers']}
-      .value=${args.value}
-      week-start-day=${ifDefined(args['week-start-day'])}
-    ></modus-wc-date>
-  `,
+  ...Template,
+  args: { feedback: errorFeedback, required: true },
+  parameters: {
+    docs: {
+      source: {
+        transform: (src) => `${src}
+<script>
+  const dateInputElement = document.querySelector('modus-wc-date');
+  dateInputElement.feedback = {
+    level: 'error',
+    message: 'Value is required.'
+  };
+</script>`,
+      },
+    },
+  },
 };
 
 export const Migration: Story = {
