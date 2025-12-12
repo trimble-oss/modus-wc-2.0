@@ -5,8 +5,7 @@ modus-wc-side-navigation {
 
   .modus-wc-side-navigation {
     background: var(--modus-wc-color-base-page);
-    background-image: url('dist/styles/assets/Sidenavpattern.svg');
-    background-size: cover;
+    box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
     color: var(--modus-wc-color-base-content);
     display: flex;
     flex-direction: column;
@@ -38,6 +37,21 @@ modus-wc-side-navigation {
   }
 }
 
+[data-theme='modus-modern-light'] modus-wc-side-navigation {
+  .modus-wc-side-navigation {
+    background-image: url('dist/styles/assets/Sidenavpattern.svg');
+    background-size: cover;
+  }
+}
+
+[data-theme='modus-modern-dark'] modus-wc-side-navigation {
+  .modus-wc-side-navigation {
+    background: var(--modus-wc-color-trimble-gray);
+    background-image: url('dist/styles/assets/Sidenavdarkpattern.svg');
+    background-size: cover;
+  }
+}
+
 [data-theme='modus-classic-light'] modus-wc-side-navigation {
   modus-wc-menu .modus-wc-menu {
     background: transparent;
@@ -46,9 +60,7 @@ modus-wc-side-navigation {
 
 [data-theme='modus-classic-dark'] modus-wc-side-navigation {
   .side-navigation-content {
-    background: var(--modus-wc-color-trimble-gray);
-    background-image: url('dist/styles/assets/Sidenavdarkpattern.svg');
-    background-size: cover;
+    background: var(--modus-wc-color-gray-10);
     color: var(--modus-wc-color-white);
   }
 
@@ -67,8 +79,6 @@ modus-wc-side-navigation {
 [data-theme='connect-dark'] modus-wc-side-navigation {
   .modus-wc-side-navigation {
     background: transparent;
-    background-image: url('dist/styles/assets/Sidenavdarkpattern.svg');
-    background-size: cover;
     color: var(--modus-wc-color-primary-content);
 
     &:hover {
