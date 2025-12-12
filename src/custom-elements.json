@@ -1824,10 +1824,10 @@
             {
               "name": "padding",
               "fieldName": "padding",
-              "default": "'normal'",
-              "description": "Determines if the interior padding is compact or not",
+              "default": "'compact'",
+              "description": "Determines the interior padding size",
               "type": {
-                "text": "'normal' | 'compact'"
+                "text": "'compact' | 'comfortable'"
               }
             }
           ],
