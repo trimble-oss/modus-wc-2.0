@@ -4,8 +4,6 @@
 */
 
 modus-wc-button .modus-wc-btn {
-  --fallback-sc: var(--modus-wc-color-neutral);
-
   @include sizing-tokens;
 }
 
