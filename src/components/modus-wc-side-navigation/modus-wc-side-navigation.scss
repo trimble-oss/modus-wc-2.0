@@ -97,10 +97,18 @@ modus-wc-side-navigation {
     }
   }
 
+  modus-wc-menu-item .modus-wc-menu-item {
+    color: var(--modus-wc-color-white);
+  }
+
   modus-wc-menu-item .modus-wc-menu-item button {
     &:hover {
       background: var(--modus-wc-color-trimble-blue);
       color: var(--modus-wc-color-white);
+    }
+
+    &:focus {
+      color: var(--modus-wc-color-white) ;
     }
   }
 
