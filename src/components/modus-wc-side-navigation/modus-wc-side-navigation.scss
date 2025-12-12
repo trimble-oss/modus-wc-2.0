@@ -21,12 +21,13 @@ modus-wc-side-navigation {
   }
 
   .side-navigation-content {
+    background: var(--modus-wc-color-base-page);
     color: var(--modus-wc-color-base-content);
     flex: 1 1 auto;
   }
 
   modus-wc-menu .modus-wc-menu {
-    background-color: transparent;
+    background-color: var(--modus-wc-color-base-page);
     border-radius: 0;
   }
 
@@ -52,12 +53,6 @@ modus-wc-side-navigation {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-side-navigation {
-  modus-wc-menu .modus-wc-menu {
-    background: transparent;
-  }
-}
-
 [data-theme='modus-classic-dark'] modus-wc-side-navigation {
   .side-navigation-content {
     background: var(--modus-wc-color-gray-10);
@@ -79,6 +74,7 @@ modus-wc-side-navigation {
 [data-theme='connect-dark'] modus-wc-side-navigation {
   .modus-wc-side-navigation {
     background: transparent;
+    box-shadow: none;
     color: var(--modus-wc-color-primary-content);
 
     &:hover {
