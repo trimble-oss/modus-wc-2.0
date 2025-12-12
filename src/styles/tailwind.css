@@ -40,11 +40,6 @@
     line-height: var(--modus-wc-line-height-h6);
   }
 
-  /* Paragraphs */
-  p {
-    margin-bottom: var(--modus-wc-spacing-2xl);
-  }
-
   /* Blockquotes */
   blockquote {
     margin-top: var(--modus-wc-spacing-lg);

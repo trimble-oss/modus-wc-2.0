@@ -25,6 +25,7 @@ interface DateArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
+  'show-week-numbers'?: boolean;
   size?: ModusSize;
   value: string;
   'week-start-day'?: WeekStartDay;
@@ -40,6 +41,7 @@ const meta: Meta<DateArgs> = {
     label: 'Label',
     'read-only': false,
     required: false,
+    'show-week-numbers': false,
     size: 'md',
     value: '',
     'week-start-day': 'sunday',
@@ -103,7 +105,7 @@ export default meta;
 
 type Story = StoryObj<DateArgs>;
 
-export const Default: Story = {
+const Template: Story = {
   render: (args) => {
     return html`
       <style>
@@ -128,6 +130,7 @@ export const Default: Story = {
         placeholder=${ifDefined(args.placeholder)}
         ?read-only=${args['read-only']}
         ?required=${args.required}
+        ?show-week-numbers=${args['show-week-numbers']}
         size=${ifDefined(args.size)}
         .value=${args.value}
         week-start-day=${ifDefined(args['week-start-day'])}
@@ -136,28 +139,30 @@ export const Default: Story = {
   },
 };
 
+export const Default: Story = { ...Template };
+
 const errorFeedback: IInputFeedbackProp = {
   level: 'error',
   message: 'Value is required.',
 };
 
 export const WithErrorFeedback: Story = {
-  render: (args) => html`
-    <style>
-      div[id^='story--components-forms-date--with-error-feedback'] {
-        min-height: 400px;
-        width: 300px;
-      }
-    </style>
-    <modus-wc-date
-      aria-label="Date input"
-      .feedback=${errorFeedback}
-      label=${ifDefined(args.label)}
-      ?required=${true}
-      .value=${args.value}
-      week-start-day=${ifDefined(args['week-start-day'])}
-    ></modus-wc-date>
-  `,
+  ...Template,
+  args: { feedback: errorFeedback, required: true },
+  parameters: {
+    docs: {
+      source: {
+        transform: (src) => `${src}
+<script>
+  const dateInputElement = document.querySelector('modus-wc-date');
+  dateInputElement.feedback = {
+    level: 'error',
+    message: 'Value is required.'
+  };
+</script>`,
+      },
+    },
+  },
 };
 
 export const Migration: Story = {

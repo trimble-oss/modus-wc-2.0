@@ -387,9 +387,9 @@ export namespace Components {
          */
         "layout"?: 'vertical' | 'horizontal';
         /**
-          * Determines if the interior padding is compact or not
+          * Determines the interior padding size
          */
-        "padding"?: 'normal' | 'compact';
+        "padding"?: 'compact' | 'comfortable';
     }
     /**
      * A customizable checkbox component
@@ -566,6 +566,10 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
+          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
+         */
+        "showWeekNumbers"?: boolean;
+        /**
           * The size of the input.
          */
         "size"?: ModusSize;
@@ -715,6 +719,10 @@ export namespace Components {
           * Allow multiple file selection
          */
         "multiple"?: boolean;
+        /**
+          * Reset the dropzone to its initial state, clearing all error and success states
+         */
+        "reset": () => Promise<void>;
         /**
           * Success message displayed when files are uploaded successfully
          */
@@ -3324,9 +3332,9 @@ declare namespace LocalJSX {
          */
         "layout"?: 'vertical' | 'horizontal';
         /**
-          * Determines if the interior padding is compact or not
+          * Determines the interior padding size
          */
-        "padding"?: 'normal' | 'compact';
+        "padding"?: 'compact' | 'comfortable';
     }
     /**
      * A customizable checkbox component
@@ -3546,6 +3554,10 @@ declare namespace LocalJSX {
           * A value is required or must be checked for the form to be submittable.
          */
         "required"?: boolean;
+        /**
+          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
+         */
+        "showWeekNumbers"?: boolean;
         /**
           * The size of the input.
          */

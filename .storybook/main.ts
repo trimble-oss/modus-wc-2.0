@@ -19,7 +19,7 @@ const config: StorybookConfig = {
   staticDirs: [
     'public',
     { from: '../dist/modus-wc', to: 'modus-wc' },
-    { from: '../src/styles', to: 'styles' },
+    { from: '../dist/styles', to: 'dist/styles' },
   ],
   async viteFinal(config, { configType }) {
     const { mergeConfig } = await import('vite');

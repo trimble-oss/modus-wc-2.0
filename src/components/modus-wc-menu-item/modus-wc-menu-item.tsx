@@ -10,7 +10,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu-item.tailwind';
-import { DaisySize, ModusSize } from '../types';
+import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -73,11 +73,21 @@ export class ModusWcMenuItem {
   @State() isExpanded: boolean = false;
 
   /** Event emitted when a menu item is selected. */
-  @StencilEvent() itemSelect!: EventEmitter<{ value: string }>;
+  @StencilEvent() itemSelect!: EventEmitter<{
+    value: string;
+    selected?: boolean;
+  }>;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
+
+  private handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      this.handleItemSelect();
+    }
+  };
 
   /**
    * Public method to collapse the submenu if it's expanded
@@ -119,20 +129,6 @@ export class ModusWcMenuItem {
 
   private getButtonClasses(): string {
     return this.hasSubmenu ? 'modus-wc-menu-dropdown-toggle' : '';
-  }
-
-  private getIconSize(): DaisySize {
-    switch (this.size) {
-      case 'sm':
-        return 'xs';
-      case 'md':
-        return 'sm';
-      case 'lg':
-        return 'md';
-      // istanbul ignore next (unreachable code)
-      default:
-        return 'sm';
-    }
   }
 
   private handleItemSelect = () => {
@@ -197,11 +193,17 @@ export class ModusWcMenuItem {
         if (checkboxElement) {
           checkboxElement.setAttribute('value', (!isSelected).toString());
         }
+
+        this.selected = true;
       }
     }
+    // For regular menu items, set selected to true
+    else {
+      this.selected = true;
+    }
 
-    // Always emit the event - let the parent decide whether to handle deselection
-    this.itemSelect.emit({ value: this.value });
+    // Always emit the event with current selection state
+    this.itemSelect.emit({ value: this.value, selected: this.selected });
   };
 
   render() {
@@ -211,13 +213,16 @@ export class ModusWcMenuItem {
           aria-current={this.selected}
           aria-disabled={this.disabled}
           class={this.getClasses()}
+          onKeyDown={this.handleKeyDown}
           role="menuitem"
+          tabIndex={this.disabled ? -1 : 0}
           {...this.inheritedAttributes}
         >
           <button
             class={this.getButtonClasses()}
             disabled={this.disabled}
             onClick={this.handleItemSelect}
+            tabIndex={-1}
             type="button"
           >
             <div class="modus-wc-menu-item-content">
@@ -246,15 +251,6 @@ export class ModusWcMenuItem {
                   <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
                 )}
               </div>
-              {this.selected && this.checkbox !== true && !this.hasSubmenu && (
-                <div class="modus-wc-menu-item-selected-icon">
-                  <modus-wc-icon
-                    decorative={true}
-                    name="check"
-                    size={this.getIconSize()}
-                  />
-                </div>
-              )}
             </div>
           </button>
           <slot></slot>

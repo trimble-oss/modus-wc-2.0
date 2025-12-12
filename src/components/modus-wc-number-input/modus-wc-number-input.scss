@@ -3,7 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-input .modus-wc-input {
+modus-wc-number-input .modus-wc-input {
   @include feedback-levels;
   @include sizing-tokens;
 }

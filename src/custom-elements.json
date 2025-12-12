@@ -1824,10 +1824,10 @@
             {
               "name": "padding",
               "fieldName": "padding",
-              "default": "'normal'",
-              "description": "Determines if the interior padding is compact or not",
+              "default": "'compact'",
+              "description": "Determines the interior padding size",
               "type": {
-                "text": "'normal' | 'compact'"
+                "text": "'compact' | 'comfortable'"
               }
             }
           ],
@@ -2484,6 +2484,15 @@
               }
             },
             {
+              "name": "show-week-numbers",
+              "fieldName": "showWeekNumbers",
+              "default": "false",
+              "description": "Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "size",
               "fieldName": "size",
               "default": "'md'",
@@ -2931,6 +2940,11 @@
             {
               "kind": "method",
               "name": "render"
+            },
+            {
+              "kind": "method",
+              "name": "reset",
+              "description": "Reset the dropzone to its initial state, clearing all error and success states"
             }
           ],
           "attributes": [

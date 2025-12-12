@@ -28,8 +28,8 @@ export class ModusWcCard {
   /** Determines how the card is laid out */
   @Prop() layout?: 'vertical' | 'horizontal' = 'vertical';
 
-  /** Determines if the interior padding is compact or not */
-  @Prop() padding?: 'normal' | 'compact' = 'normal';
+  /** Determines the interior padding size */
+  @Prop() padding?: 'compact' | 'comfortable' = 'compact';
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
