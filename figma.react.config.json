@@ -1,0 +1,17 @@
+{
+  "codeConnect": {
+    "parser": "react",
+    "include": ["src/components/**/*.figma.tsx"],
+    "exclude": ["**/node_modules/**", "**/__snapshots__/**"],
+    "importPaths": {
+      "@trimble-oss/moduswebcomponents": "./src"
+    }
+  },
+  "documentUrlSubstitutions": {
+    "FIGMA_FILE_URL": "https://www.figma.com/design/y9H5ucQKBjzI8JLuVrGcb3/Modus-2.0---Atomic-Design-System"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trimble-oss/modus-wc-2.0"
+  }
+}

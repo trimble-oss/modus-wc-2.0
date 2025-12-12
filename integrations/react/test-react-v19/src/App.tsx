@@ -16,9 +16,10 @@ function App() {
 					<ModusWcThemeSwitcher aria-label="Toggle Theme" />
 				</div>
 				<div className="grid">
-				<ModusReactExamples.Badge />
+				{/* <ModusReactExamples.Badge />
 				<ModusReactExamples.Icon />
-				<ModusReactExamples.Tabs />
+				<ModusReactExamples.Tabs /> */}
+				<ModusReactExamples.CreateAccountForm />
 			 </div>
 			</ModusWcThemeProvider>
 		</>
