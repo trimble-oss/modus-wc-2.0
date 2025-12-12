@@ -21,13 +21,12 @@ modus-wc-side-navigation {
   }
 
   .side-navigation-content {
-    background: var(--modus-wc-color-base-page);
     color: var(--modus-wc-color-base-content);
     flex: 1 1 auto;
   }
 
   modus-wc-menu .modus-wc-menu {
-    background-color: var(--modus-wc-color-base-page);
+    background-color: transparent;
     border-radius: 0;
   }
 
@@ -35,6 +34,21 @@ modus-wc-side-navigation {
     background-color: transparent;
     border-radius: 0;
     padding: var(--modus-wc-spacing-md) 1.25rem;
+  }
+}
+
+[data-theme='modus-modern-light'] modus-wc-side-navigation {
+  .modus-wc-side-navigation {
+    background-image: url('dist/styles/assets/Sidenavpattern.svg');
+    background-size: cover;
+  }
+}
+
+[data-theme='modus-modern-dark'] modus-wc-side-navigation {
+  .modus-wc-side-navigation {
+    background: var(--modus-wc-color-trimble-gray);
+    background-image: url('dist/styles/assets/Sidenavdarkpattern.svg');
+    background-size: cover;
   }
 }
 
