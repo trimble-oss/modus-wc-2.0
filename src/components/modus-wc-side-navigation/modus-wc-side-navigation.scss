@@ -21,13 +21,12 @@ modus-wc-side-navigation {
   }
 
   .side-navigation-content {
-    background: var(--modus-wc-color-base-page);
     color: var(--modus-wc-color-base-content);
     flex: 1 1 auto;
   }
 
   modus-wc-menu .modus-wc-menu {
-    background-color: var(--modus-wc-color-base-page);
+    background-color: transparent;
     border-radius: 0;
   }
 
