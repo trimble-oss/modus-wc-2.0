@@ -39,6 +39,10 @@ modus-wc-button .modus-wc-btn-borderless {
   }
 }
 
+modus-wc-button .modus-wc-btn.modus-wc-btn-ellipse {
+  border-radius: var(--modus-wc-border-radius-3xl);
+}
+
 [data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn,
 [data-theme='modus-classic-dark'] modus-wc-button .modus-wc-btn {
   --rounded-btn: var(--modus-wc-border-radius-md);

@@ -13,7 +13,7 @@ export const convertPropsToClasses = ({
   disabled?: boolean;
   fullWidth?: boolean;
   pressed?: boolean;
-  shape?: 'circle' | 'rectangle' | 'square';
+  shape?: 'circle' | 'ellipse' | 'rectangle' | 'square';
   size?: DaisySize;
   variant?: 'borderless' | 'filled' | 'outlined';
 }): string => {
@@ -55,6 +55,9 @@ export const convertPropsToClasses = ({
     switch (shape) {
       case 'circle':
         classes = `${classes} modus-wc-btn-circle`;
+        break;
+      case 'ellipse':
+        classes = `${classes} modus-wc-btn-ellipse`;
         break;
       case 'square':
         classes = `${classes} modus-wc-btn-square`;

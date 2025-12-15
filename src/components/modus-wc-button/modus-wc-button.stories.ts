@@ -10,7 +10,7 @@ interface ButtonArgs {
   disabled: boolean;
   'full-width': boolean;
   pressed: boolean;
-  shape: 'circle' | 'rectangle' | 'square';
+  shape: 'circle' | 'ellipse' | 'rectangle' | 'square';
   size: DaisySize;
   type: 'button' | 'submit' | 'reset';
   variant: 'borderless' | 'filled' | 'outlined';
@@ -36,7 +36,7 @@ const meta: Meta<ButtonArgs> = {
     },
     shape: {
       control: { type: 'select' },
-      options: ['circle', 'rectangle', 'square'],
+      options: ['circle', 'ellipse', 'rectangle', 'square'],
     },
     size: {
       control: { type: 'select' },
@@ -93,6 +93,11 @@ export const ButtonShapes: Story = {
     // prettier-ignore
     return html`
 <modus-wc-button
+shape="rectangle"
+>
+  Rectangle
+</modus-wc-button>
+<modus-wc-button
   shape="circle"
 >
   Circle
@@ -101,6 +106,11 @@ export const ButtonShapes: Story = {
   shape="square"
 >
   Square
+</modus-wc-button>
+<modus-wc-button
+  shape="ellipse"
+>
+  Ellipse
 </modus-wc-button>
     `;
   },
