@@ -8,11 +8,19 @@ modus-wc-menu-item .modus-wc-menu-item {
     align-items: center;
     border-radius: 0;
     display: flex;
-
-    /* Enforce Tailwind CSS reset */
     width: 100%;
 
-    @include common-states;
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:focus {
+      background-color: transparent;
+    }
+
+    &.modus-wc-menu-dropdown-toggle::after {
+      color: var(--modus-wc-color-gray-6);
+    }
 
     .modus-wc-menu-item-content {
       align-items: center;
@@ -39,48 +47,6 @@ modus-wc-menu-item .modus-wc-menu-item {
       .modus-wc-menu-item-selected-icon {
         margin-left: auto;
       }
-    }
-
-    &:where(
-        .modus-wc-menu
-          li:not(.modus-wc-menu-title, .modus-wc-disabled)
-          > :not(ul, details, .modus-wc-menu-title)
-      ):not(summary, .modus-wc-active, .modus-wc-btn):focus {
-      border-radius: inherit;
-      color: var(--modus-wc-color-primary-content);
-    }
-
-    &:where(
-        .modus-wc-menu
-          li:not(
-            .modus-wc-menu-title,
-            .modus-wc-disabled .modus-wc-menu-item-selected
-          )
-          > :not(ul, details, .modus-wc-menu-title)
-      ):not(summary, .modus-wc-active, .modus-wc-btn):focus {
-      color: var(--modus-wc-color-primary);
-    }
-  }
-
-  &.modus-wc-menu-item-bordered {
-    border-bottom: var(--modus-wc-border-width-xs) solid
-      var(--modus-wc-color-base-100);
-    border-radius: 0;
-    border-top: var(--modus-wc-border-width-xs) solid
-      var(--modus-wc-color-base-100);
-  }
-
-  &.modus-wc-menu-item-selected {
-    background-color: var(--modus-wc-color-primary-pale);
-    border-radius: inherit;
-    color: var(--modus-wc-color-primary);
-  }
-
-  &.modus-wc-menu-item-disabled {
-    color: var(--modus-wc-color-gray-2);
-
-    button {
-      pointer-events: none;
     }
   }
 
@@ -113,49 +79,115 @@ modus-wc-menu-item .modus-wc-menu-item {
       }
     }
   }
-}
 
-modus-wc-menu-item
-  .modus-wc-menu-item.modus-wc-menu-item-selected
-  > button:focus {
-  color: var(--modus-wc-color-primary);
-}
+  &.modus-wc-menu-item-bordered {
+    border-bottom: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-base-100);
+    border-radius: 0;
+    border-top: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-base-100);
+  }
 
-[data-theme='modus-classic-light'] modus-wc-menu-item .modus-wc-menu-item {
-  &.modus-wc-menu-item-disabled {
-    color: var(--modus-wc-color-gray-2);
+  &:not(.modus-wc-menu-item-selected) {
+    color: var(--modus-wc-color-gray-10);
   }
 
   &.modus-wc-menu-item-selected {
     background-color: var(--modus-wc-color-blue-pale);
-    color: var(--modus-wc-color-gray-10);
+    border-radius: inherit;
+    color: var(--modus-wc-color-primary);
+
+    &:focus {
+      background-color: var(--modus-wc-color-blue-pale);
+    }
+
+    button {
+      &:hover,
+      &:focus {
+        background-color: transparent;
+        box-shadow: none;
+        color: inherit;
+      }
+    }
   }
 
-  &.modus-wc-menu-item-focused {
-    background-color: var(--modus-wc-color-gray-0);
+  &.modus-wc-menu-item-disabled {
+    opacity: 0.4;
+
+    button {
+      pointer-events: none;
+    }
   }
 
-  &.modus-wc-menu-item-bordered {
-    border-bottom: var(--modus-wc-border-width-xs) solid
-      var(--modus-wc-color-gray-9);
-    border-top: var(--modus-wc-border-width-xs) solid
-      var(--modus-wc-color-gray-9);
+  // Hover state for all items
+  &:not(.modus-wc-menu-item-disabled):not(:has(.modus-wc-menu-dropdown)) {
+    &:hover {
+      background-color: var(--modus-wc-color-gray-0);
+      color: inherit;
+      outline: none;
+    }
+  }
+
+  // Focus states for non-selected items only
+  &:not(.modus-wc-menu-item-selected):not(.modus-wc-menu-item-disabled):not(
+      :has(.modus-wc-menu-dropdown)
+    ) {
+    &:focus:not(:focus-visible),
+    &.modus-wc-arrow-focused {
+      background-color: var(--modus-wc-color-gray-0);
+      color: inherit;
+      outline: none;
+    }
+  }
+
+  // Tab navigation focus state (outline only)
+  &:focus-visible {
+    background-color: transparent;
+    outline: 2px solid var(--modus-wc-color-trimble-blue);
+    outline-offset: -2px;
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-menu-item .modus-wc-menu-item {
-  &.modus-wc-menu-item-disabled {
-    color: var(--modus-wc-color-gray-6);
-  }
+[data-theme='modus-classic-dark'],
+[data-theme='modus-modern-dark'],
+[data-theme='connect-dark'] {
+  modus-wc-menu-item .modus-wc-menu-item {
+    &:not(.modus-wc-menu-item-selected) {
+      color: var(--modus-wc-color-gray-light);
+    }
 
-  &.modus-wc-menu-item-selected {
-    background-color: #019aeb4d;
-    background-color: var(--modus-wc-color-primary);
-    color: var(--modus-wc-color-white);
-  }
+    button {
+      &.modus-wc-menu-dropdown-toggle::after {
+        color: var(--modus-wc-color-gray-3);
+      }
+    }
 
-  &.modus-wc-menu-item-focused {
-    background-color: var(--modus-wc-color-gray-8);
+    // Hover state for all items
+    &:not(.modus-wc-menu-item-disabled):not(:has(.modus-wc-menu-dropdown)) {
+      &:hover {
+        background-color: var(--modus-wc-color-gray-9);
+        color: inherit;
+        outline: none;
+      }
+    }
+
+    &.modus-wc-menu-item-selected {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-primary) 30%,
+        transparent
+      );
+    }
+
+    // Focus states for non-selected items only
+    &:not(.modus-wc-menu-item-selected):not(.modus-wc-menu-item-disabled):not(
+        :has(.modus-wc-menu-dropdown)
+      ) {
+      &:focus:not(:focus-visible),
+      &.modus-wc-arrow-focused {
+        background-color: var(--modus-wc-color-gray-9);
+      }
+    }
   }
 }
 
