@@ -712,7 +712,7 @@ interface RenderInputParams {
   customIconSlot?: boolean;
   onBlur: (event: CustomEvent<FocusEvent>) => void;
   onChange: (event: CustomEvent<Event>) => void;
-  onClear?: () => void; // The clear button is rendered separately for multiSelect
+  onClear?: () => void; // Optional handler for clear button click; not used in multiSelect mode where clear button is rendered separately
   onFocus: (event: CustomEvent<FocusEvent>) => void;
 }
 

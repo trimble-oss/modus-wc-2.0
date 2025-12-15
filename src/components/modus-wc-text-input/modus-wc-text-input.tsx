@@ -124,7 +124,7 @@ export class ModusWcTextInput {
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
   /** Event emitted when the clear button is clicked. */
-  @StencilEvent() clearClick!: EventEmitter;
+  @StencilEvent() clearClick!: EventEmitter<void>;
 
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
