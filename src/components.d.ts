@@ -2093,6 +2093,7 @@ declare global {
     interface HTMLModusWcAutocompleteElementEventMap {
         "chipRemove": IAutocompleteItem;
         "chipsExpansionChange": { expanded: boolean };
+        "clearClick": any;
         "inputBlur": FocusEvent;
         "inputChange": Event;
         "inputFocus": FocusEvent;
@@ -2414,7 +2415,10 @@ declare global {
         new (): HTMLModusWcMenuElement;
     };
     interface HTMLModusWcMenuItemElementEventMap {
-        "itemSelect": { value: string };
+        "itemSelect": {
+    value: string;
+    selected?: boolean;
+  };
     }
     /**
      * A customizable menu item component used to display the item portion of a menu
@@ -2737,6 +2741,7 @@ declare global {
         new (): HTMLModusWcTabsElement;
     };
     interface HTMLModusWcTextInputElementEventMap {
+        "clearClick": any;
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
         "inputFocus": FocusEvent;
@@ -3101,6 +3106,10 @@ declare namespace LocalJSX {
           * Event emitted when chips expansion state changes.
          */
         "onChipsExpansionChange"?: (event: ModusWcAutocompleteCustomEvent<{ expanded: boolean }>) => void;
+        /**
+          * Event emitted when the clear button is clicked.
+         */
+        "onClearClick"?: (event: ModusWcAutocompleteCustomEvent<any>) => void;
         /**
           * Event emitted when the input loses focus.
          */
@@ -3886,7 +3895,10 @@ declare namespace LocalJSX {
         /**
           * Event emitted when a menu item is selected.
          */
-        "onItemSelect"?: (event: ModusWcMenuItemCustomEvent<{ value: string }>) => void;
+        "onItemSelect"?: (event: ModusWcMenuItemCustomEvent<{
+    value: string;
+    selected?: boolean;
+  }>) => void;
         /**
           * The selected state of the menu item.
          */
@@ -4792,6 +4804,10 @@ declare namespace LocalJSX {
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
+        /**
+          * Event emitted when the clear button is clicked.
+         */
+        "onClearClick"?: (event: ModusWcTextInputCustomEvent<any>) => void;
         /**
           * Event emitted when the input loses focus.
          */

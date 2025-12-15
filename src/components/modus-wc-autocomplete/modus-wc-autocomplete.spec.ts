@@ -2549,11 +2549,14 @@ describe('modus-wc-autocomplete', () => {
     );
     expect(clearButton).toBeTruthy();
 
+    const clearClickSpy = jest.spyOn(autocomplete.clearClick, 'emit');
+
     // Simulate click
     const clickEvent = new MouseEvent('click');
     clearButton?.dispatchEvent(clickEvent);
     await page.waitForChanges();
 
+    expect(clearClickSpy).toHaveBeenCalled();
     expect(autocomplete.value).toBe('');
     expect(autocomplete['selectionOrder']).toEqual([]);
     expect(autocomplete.items[0].selected).toBe(false);

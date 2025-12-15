@@ -49,6 +49,7 @@ A customizable autocomplete component used to create searchable text inputs.
 | ---------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------- |
 | `chipRemove`           | Event emitted when a selected item chip is removed.                                               | `CustomEvent<IAutocompleteItem>`      |
 | `chipsExpansionChange` | Event emitted when chips expansion state changes.                                                 | `CustomEvent<{ expanded: boolean; }>` |
+| `clearClick`           | Event emitted when the clear button is clicked.                                                   | `CustomEvent<any>`                    |
 | `inputBlur`            | Event emitted when the input loses focus.                                                         | `CustomEvent<FocusEvent>`             |
 | `inputChange`          | Event emitted when the input value changes. This event is debounced based on the debounceMs prop. | `CustomEvent<Event>`                  |
 | `inputFocus`           | Event emitted when the input gains focus.                                                         | `CustomEvent<FocusEvent>`             |
@@ -153,7 +154,6 @@ graph TD;
   modus-wc-input-feedback --> modus-wc-icon
   modus-wc-menu-item --> modus-wc-checkbox
   modus-wc-menu-item --> modus-wc-tooltip
-  modus-wc-menu-item --> modus-wc-icon
   modus-wc-checkbox --> modus-wc-input-label
   style modus-wc-autocomplete fill:#f9f,stroke:#333,stroke-width:4px
 ```

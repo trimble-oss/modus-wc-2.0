@@ -31,9 +31,9 @@ A customizable menu item component used to display the item portion of a menu
 
 ## Events
 
-| Event        | Description                                 | Type                              |
-| ------------ | ------------------------------------------- | --------------------------------- |
-| `itemSelect` | Event emitted when a menu item is selected. | `CustomEvent<{ value: string; }>` |
+| Event        | Description                                 | Type                                                               |
+| ------------ | ------------------------------------------- | ------------------------------------------------------------------ |
+| `itemSelect` | Event emitted when a menu item is selected. | `CustomEvent<{ value: string; selected?: boolean \| undefined; }>` |
 
 
 ## Methods
@@ -60,14 +60,12 @@ Type: `Promise<void>`
 
 - [modus-wc-checkbox](../modus-wc-checkbox)
 - [modus-wc-tooltip](../modus-wc-tooltip)
-- [modus-wc-icon](../modus-wc-icon)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-menu-item --> modus-wc-checkbox
   modus-wc-menu-item --> modus-wc-tooltip
-  modus-wc-menu-item --> modus-wc-icon
   modus-wc-checkbox --> modus-wc-input-label
   modus-wc-autocomplete --> modus-wc-menu-item
   modus-wc-navbar --> modus-wc-menu-item
