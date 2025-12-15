@@ -43,6 +43,7 @@ export const config: Config = {
         // This is scoped to /src
         { src: './styles/output.css', dest: 'dist/modus-wc-styles.css' },
         { src: './styles/modus-icons.css', dest: 'dist/modus-icons.css' },
+        { src: './styles/assets', dest: 'dist/styles/assets' },
         { src: '../README.md', dest: 'dist/README.md' },
         { src: '../LICENSE', dest: 'dist/LICENSE' },
         { src: '../package.json', dest: 'dist/package.json' },
