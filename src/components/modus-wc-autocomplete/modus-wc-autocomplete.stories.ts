@@ -1925,14 +1925,12 @@ export const WithProgrammaticControl: Story = {
             <div class="button-row">
               <modus-wc-button
                 onclick="window.handleSelectApple()"
-                variant="primary"
                 size="sm"
               >
                 Select Apple
               </modus-wc-button>
               <modus-wc-button
                 onclick="window.handleSelectNull()"
-                variant="secondary"
                 size="sm"
               >
                 Clear Selection
@@ -1945,21 +1943,18 @@ export const WithProgrammaticControl: Story = {
             <div class="button-row">
               <modus-wc-button
                 onclick="window.handleOpenMenu()"
-                variant="primary"
                 size="sm"
               >
                 Open Menu
               </modus-wc-button>
               <modus-wc-button
                 onclick="window.handleCloseMenu()"
-                variant="primary"
                 size="sm"
               >
                 Close Menu
               </modus-wc-button>
               <modus-wc-button
                 onclick="window.handleToggleMenu()"
-                variant="secondary"
                 size="sm"
               >
                 Toggle Menu
@@ -1972,14 +1967,12 @@ export const WithProgrammaticControl: Story = {
             <div class="button-row">
               <modus-wc-button
                 onclick="window.handleFocusInput()"
-                variant="primary"
                 size="sm"
               >
                 Focus Input
               </modus-wc-button>
               <modus-wc-button
                 onclick="window.handleClearInput()"
-                variant="danger"
                 size="sm"
               >
                 Clear All
