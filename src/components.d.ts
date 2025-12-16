@@ -2093,7 +2093,7 @@ declare global {
     interface HTMLModusWcAutocompleteElementEventMap {
         "chipRemove": IAutocompleteItem;
         "chipsExpansionChange": { expanded: boolean };
-        "clearClick": any;
+        "clearClick": void;
         "inputBlur": FocusEvent;
         "inputChange": Event;
         "inputFocus": FocusEvent;
@@ -2741,7 +2741,7 @@ declare global {
         new (): HTMLModusWcTabsElement;
     };
     interface HTMLModusWcTextInputElementEventMap {
-        "clearClick": any;
+        "clearClick": void;
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
         "inputFocus": FocusEvent;
@@ -3109,7 +3109,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the clear button is clicked.
          */
-        "onClearClick"?: (event: ModusWcAutocompleteCustomEvent<any>) => void;
+        "onClearClick"?: (event: ModusWcAutocompleteCustomEvent<void>) => void;
         /**
           * Event emitted when the input loses focus.
          */
@@ -4807,7 +4807,7 @@ declare namespace LocalJSX {
         /**
           * Event emitted when the clear button is clicked.
          */
-        "onClearClick"?: (event: ModusWcTextInputCustomEvent<any>) => void;
+        "onClearClick"?: (event: ModusWcTextInputCustomEvent<void>) => void;
         /**
           * Event emitted when the input loses focus.
          */

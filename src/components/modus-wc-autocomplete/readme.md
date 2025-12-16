@@ -49,7 +49,7 @@ A customizable autocomplete component used to create searchable text inputs.
 | ---------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------- |
 | `chipRemove`           | Event emitted when a selected item chip is removed.                                               | `CustomEvent<IAutocompleteItem>`      |
 | `chipsExpansionChange` | Event emitted when chips expansion state changes.                                                 | `CustomEvent<{ expanded: boolean; }>` |
-| `clearClick`           | Event emitted when the clear button is clicked.                                                   | `CustomEvent<any>`                    |
+| `clearClick`           | Event emitted when the clear button is clicked.                                                   | `CustomEvent<void>`                   |
 | `inputBlur`            | Event emitted when the input loses focus.                                                         | `CustomEvent<FocusEvent>`             |
 | `inputChange`          | Event emitted when the input value changes. This event is debounced based on the debounceMs prop. | `CustomEvent<Event>`                  |
 | `inputFocus`           | Event emitted when the input gains focus.                                                         | `CustomEvent<FocusEvent>`             |

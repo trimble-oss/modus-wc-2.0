@@ -43,7 +43,7 @@ A customizable input component used to create text inputs with types.
 
 | Event         | Description                                     | Type                      |
 | ------------- | ----------------------------------------------- | ------------------------- |
-| `clearClick`  | Event emitted when the clear button is clicked. | `CustomEvent<any>`        |
+| `clearClick`  | Event emitted when the clear button is clicked. | `CustomEvent<void>`       |
 | `inputBlur`   | Event emitted when the input loses focus.       | `CustomEvent<FocusEvent>` |
 | `inputChange` | Event emitted when the input value changes.     | `CustomEvent<InputEvent>` |
 | `inputFocus`  | Event emitted when the input gains focus.       | `CustomEvent<FocusEvent>` |

@@ -782,11 +782,11 @@ export class ModusWcAutocomplete {
     }
   };
 
-  private handleClear = () => {
-    this.clearClick.emit();
-  };
+  private handleClearAll = (event?: CustomEvent<void>) => {
+    // This method is called by the text input and a button, stop propagation of the text input event
+    // istanbul ignore next
+    event?.stopPropagation();
 
-  private handleClearAll = () => {
     void this.clearInput();
     this.clearClick.emit();
   };
@@ -915,7 +915,7 @@ export class ModusWcAutocomplete {
               customIconSlot: hasSlottedCustomIcon,
               onBlur: this.handleBlur,
               onChange: this.handleChange,
-              onClear: this.handleClear,
+              onClear: this.handleClearAll,
               onFocus: this.handleFocus,
             })}
           </Fragment>

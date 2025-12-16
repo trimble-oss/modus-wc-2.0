@@ -1165,7 +1165,7 @@
               "kind": "field",
               "name": "clearClick",
               "type": {
-                "text": "EventEmitter"
+                "text": "EventEmitter<void>"
               },
               "description": "Event emitted when the clear button is clicked."
             },
@@ -6341,6 +6341,14 @@
           ],
           "tagName": "modus-wc-text-input",
           "events": [
+            {
+              "kind": "field",
+              "name": "clearClick",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "Event emitted when the clear button is clicked."
+            },
             {
               "kind": "field",
               "name": "inputBlur",
