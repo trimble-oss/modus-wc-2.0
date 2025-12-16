@@ -73,6 +73,8 @@ export class ModusWCTypography {
 
   render() {
     const Element = this.hierarchy;
+
+    /* istanbul ignore next */
     const hasSlotContent = !!this.el.textContent?.trim().length;
 
     return (

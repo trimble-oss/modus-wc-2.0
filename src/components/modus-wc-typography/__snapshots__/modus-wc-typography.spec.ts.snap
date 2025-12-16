@@ -1,5 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-typography - label prop should prioritize slot content over label prop 1`] = `
+<modus-wc-typography label="Label text">
+  <!---->
+  <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
+    Slot content
+  </p>
+</modus-wc-typography>
+`;
+
+exports[`modus-wc-typography - label prop should render label when slot content is only whitespace 1`] = `
+<modus-wc-typography label="Label text">
+  <!---->
+  <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
+    Label text
+  </p>
+</modus-wc-typography>
+`;
+
+exports[`modus-wc-typography - label prop should render with label prop when no slot content is provided 1`] = `
+<modus-wc-typography label="Label text">
+  <!---->
+  <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
+    Label text
+  </p>
+</modus-wc-typography>
+`;
+
 exports[`modus-wc-typography should render headings 1`] = `
 <modus-wc-typography hierarchy="h1">
   <!---->

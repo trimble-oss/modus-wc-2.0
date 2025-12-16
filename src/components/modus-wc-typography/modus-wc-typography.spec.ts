@@ -42,6 +42,41 @@ describe('modus-wc-typography - heading override class', () => {
   });
 });
 
+describe('modus-wc-typography - label prop', () => {
+  it('should render with label prop when no slot content is provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWCTypography],
+      html: `<modus-wc-typography label="Label text"></modus-wc-typography>`,
+    });
+    expect(page.root).toMatchSnapshot();
+    const el = page.root && page.root.querySelector('p');
+    expect(el).not.toBeNull();
+    expect(el && el.textContent).toBe('Label text');
+  });
+
+  it('should prioritize slot content over label prop', async () => {
+    const page = await newSpecPage({
+      components: [ModusWCTypography],
+      html: `<modus-wc-typography label="Label text">Slot content</modus-wc-typography>`,
+    });
+    expect(page.root).toMatchSnapshot();
+    const el = page.root && page.root.querySelector('p');
+    expect(el).not.toBeNull();
+    expect(el && el.textContent).toBe('Slot content');
+  });
+
+  it('should render label when slot content is only whitespace', async () => {
+    const page = await newSpecPage({
+      components: [ModusWCTypography],
+      html: `<modus-wc-typography label="Label text">   </modus-wc-typography>`,
+    });
+    expect(page.root).toMatchSnapshot();
+    const el = page.root && page.root.querySelector('p');
+    expect(el).not.toBeNull();
+    expect(el && el.textContent).toBe('Label text');
+  });
+});
+
 describe('modus-wc-typography - convertPropsToClasses', () => {
   it('returns empty string when no props are provided', () => {
     expect(convertPropsToClasses({})).toBe('');
