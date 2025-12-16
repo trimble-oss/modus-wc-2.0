@@ -27,6 +27,8 @@
   --modus-wc-color-blue-light: #217cbb;
   --modus-wc-color-trimble-blue: #0063a3;
   --modus-wc-color-blue-dark: #0e416c;
+  --modus-wc-color-info-blue: #004f83;
+  --modus-wc-color-highlight-blue-pale: rgba(1, 154, 235, 0.5);
 
   /* Yellow Progression */
   --modus-wc-color-yellow-pale: #fff5e4;
@@ -72,21 +74,6 @@
   --modus-wc-border-radius-2xl: 16px;
   --modus-wc-border-radius-3xl: 24px;
 
-  /* Accordion borders (theme-specific, defaults to transparent) */
-  --modus-accordion-border: transparent;
-
-  /* Collapse theme-specific properties (defaults for modern/connect themes) */
-  --modus-collapse-margin-bottom: var(--modus-wc-spacing-md);
-  --modus-collapse-border-radius: var(--modus-wc-border-radius-lg);
-  --modus-collapse-background: var(--modus-wc-color-base-100);
-  --modus-collapse-border-left-open: transparent;
-  --modus-collapse-title-bg-open: var(--modus-wc-color-primary-pale);
-  --modus-collapse-title-color-open: var(--modus-wc-color-primary);
-  --modus-collapse-title-font-weight: var(--modus-wc-font-weight-semibold);
-  --modus-collapse-title-padding-inline-start: var(--modus-wc-spacing-lg);
-  --modus-collapse-title-padding-inline-start-open: var(--modus-wc-spacing-lg);
-  --modus-collapse-description-color: inherit;
-
   /* Line heights */
   --modus-wc-line-height-xs: 0.5rem;
   --modus-wc-line-height-sm: 1rem;
@@ -94,10 +81,14 @@
   --modus-wc-line-height-lg: 2rem;
   --modus-wc-line-height-xl: 3rem;
 
-  --modus-wc-line-height-h6: 1.125rem; /* 18px */
-  --modus-wc-line-height-h3: 1.6875rem; /* 27px */
-  --modus-wc-line-height-h2: 1.875rem; /* 30px */
-  --modus-wc-line-height-h1: 2.25rem; /* 36px */
+  --modus-wc-line-height-h6: 1.125rem;
+  /* 18px */
+  --modus-wc-line-height-h3: 1.6875rem;
+  /* 27px */
+  --modus-wc-line-height-h2: 1.875rem;
+  /* 30px */
+  --modus-wc-line-height-h1: 2.25rem;
+  /* 36px */
 
   /* Font Family */
   --modus-wc-font-family:
@@ -105,14 +96,24 @@
     sans-serif;
 
   /* Font Sizes */
-  --modus-wc-font-size-2xs: 0.5rem; /* 8px */
-  --modus-wc-font-size-xs: 0.625rem; /* 10px */
-  --modus-wc-font-size-sm: 0.75rem; /* 12px */
-  --modus-wc-font-size-md: 0.875rem; /* 14px */
-  --modus-wc-font-size-lg: 1rem; /* 16px */
-  --modus-wc-font-size-xl: 1.125rem; /* 18px */
-  --modus-wc-font-size-2xl: 1.25rem; /* 20px */
-  --modus-wc-font-size-3xl: 1.5rem; /* 24px */
+  --modus-wc-font-size-2xs: 0.5rem;
+  /* 8px */
+  --modus-wc-font-size-xs: 0.625rem;
+  /* 10px */
+  --modus-wc-font-size-sm: 0.75rem;
+  /* 12px */
+  --modus-wc-font-size-md: 0.875rem;
+  /* 14px */
+  --modus-wc-font-size-lg: 1rem;
+  /* 16px */
+  --modus-wc-font-size-xl: 1.125rem;
+  /* 18px */
+  --modus-wc-font-size-2xl: 1.25rem;
+  /* 20px */
+  --modus-wc-font-size-3xl: 1.5rem;
+  /* 24px */
+  --modus-wc-font-size-4xl: 1.875rem;
+  /* 30px */
 
   /* Font Weights */
   --modus-wc-font-weight-light: 300;
@@ -120,20 +121,47 @@
   --modus-wc-font-weight-semibold: 600;
   --modus-wc-font-weight-bold: 700;
 
+  /* Sizes */
+  --modus-wc-size-xxs: 0.75rem;
+  /* 12px */
+  --modus-wc-size-xs: 1.5rem;
+  /* 24px */
+  --modus-wc-size-sm: 2rem;
+  /* 32px */
+  --modus-wc-size-md: 2.5rem;
+  /* 40px */
+  --modus-wc-size-lg: 3rem;
+  /* 48px */
+  --modus-wc-size-xl: 3.5rem;
+  /* 56px */
+  --modus-wc-size-xxl: 4.5rem;
+  /* 72px */
+
   /* Spacing */
-  --modus-wc-spacing-2xs: 0.125rem; /* 2px */
-  --modus-wc-spacing-xs: 0.25rem; /* 4px */
-  --modus-wc-spacing-sm: 0.5rem; /* 8px */
-  --modus-wc-spacing-md: 0.75rem; /* 12px */
-  --modus-wc-spacing-lg: 1rem; /* 16px */
-  --modus-wc-spacing-xl: 1.5rem; /* 24px */
-  --modus-wc-spacing-2xl: 2rem; /* 32px */
-  --modus-wc-spacing-3xl: 3rem; /* 48px */
+  --modus-wc-spacing-2xs: 0.125rem;
+  /* 2px */
+  --modus-wc-spacing-xs: 0.25rem;
+  /* 4px */
+  --modus-wc-spacing-sm: 0.5rem;
+  /* 8px */
+  --modus-wc-spacing-md: 0.75rem;
+  /* 12px */
+  --modus-wc-spacing-lg: 1rem;
+  /* 16px */
+  --modus-wc-spacing-xl: 1.5rem;
+  /* 24px */
+  --modus-wc-spacing-2xl: 2rem;
+  /* 32px */
+  --modus-wc-spacing-3xl: 3rem;
+  /* 48px */
 
   /* Inputs */
-  --modus-wc-input-height-sm: 1.5rem; /* 24px */
-  --modus-wc-input-height-md: 2rem; /* 32px */
-  --modus-wc-input-height-lg: 3rem; /* 48px */
+  --modus-wc-input-height-sm: 1.5rem;
+  /* 24px */
+  --modus-wc-input-height-md: 2rem;
+  /* 32px */
+  --modus-wc-input-height-lg: 3rem;
+  /* 48px */
 
   /* Border Variables */
   --modus-wc-border-radius-badge: var(--modus-wc-border-radius-md);
@@ -166,6 +194,14 @@
     var(--modus-wc-color-gray-10),
     var(--modus-wc-color-gray-1)
   );
+  --modus-wc-color-base-content-low-contrast: light-dark(
+    var(--modus-wc-color-gray-8),
+    var(--modus-wc-color-gray-3)
+  );
+  --modus-wc-color-base-content-hight-contrast: light-dark(
+    var(--modus-wc-color-black),
+    var(--modus-wc-color-white)
+  );
   --modus-wc-color-base-inverted: light-dark(
     var(--modus-wc-color-gray-10),
     var(--modus-wc-color-gray-light)
@@ -184,6 +220,10 @@
     var(--modus-wc-color-white),
     var(--modus-wc-color-black)
   );
+  --modus-wc-color-primary-pale: light-dark(
+    var(--modus-wc-color-blue-pale),
+    var(--modus-wc-color-highlight-blue-pale)
+  );
 
   /* Secondary Colors */
   --modus-wc-color-secondary: light-dark(
@@ -193,6 +233,10 @@
   --modus-wc-color-secondary-content: light-dark(
     var(--modus-wc-color-black),
     var(--modus-wc-color-black)
+  );
+  --modus-wc-color-secondary-pale: light-dark(
+    var(--modus-wc-color-yellow-pale),
+    var(--modus-wc-color-yellow-pale)
   );
 
   /* Accent Colors */
@@ -204,6 +248,10 @@
     var(--modus-wc-color-white),
     var(--modus-wc-color-black)
   );
+  --modus-wc-color-accent-pale: light-dark(
+    var(--modus-wc-color-gray-6),
+    var(--modus-wc-color-gray-4)
+  );
 
   /* Neutral Colors */
   --modus-wc-color-neutral: light-dark(
@@ -213,6 +261,10 @@
   --modus-wc-color-neutral-content: light-dark(
     var(--modus-wc-color-base-content),
     var(--modus-wc-color-base-content)
+  );
+  --modus-wc-color-neutral-pale: light-dark(
+    var(--modus-wc-color-base-100),
+    var(--modus-wc-color-base-100)
   );
 
   /* Info Colors */
@@ -224,6 +276,10 @@
     var(--modus-wc-color-white),
     var(--modus-wc-color-white)
   );
+  --modus-wc-color-info-pale: light-dark(
+    var(--modus-wc-color-blue-pale),
+    var(--modus-wc-color-blue-pale)
+  );
 
   /* Success Colors */
   --modus-wc-color-success: light-dark(
@@ -233,6 +289,10 @@
   --modus-wc-color-success-content: light-dark(
     var(--modus-wc-color-white),
     var(--modus-wc-color-black)
+  );
+  --modus-wc-color-success-pale: light-dark(
+    var(--modus-wc-color-green-pale),
+    var(--modus-wc-color-green-pale)
   );
 
   /* Warning Colors */
@@ -244,6 +304,10 @@
     var(--modus-wc-color-black),
     var(--modus-wc-color-black)
   );
+  --modus-wc-color-warning-pale: light-dark(
+    var(--modus-wc-color-yellow-pale),
+    var(--modus-wc-color-yellow-pale)
+  );
 
   /* Error Colors */
   --modus-wc-color-error: light-dark(
@@ -254,341 +318,8 @@
     var(--modus-wc-color-white),
     var(--modus-wc-color-black)
   );
-
-  /* Button semantic variables - Modern theme defaults (DaisyUI sizing) */
-  /* Sizing */
-  --modus-btn-padding-xs: 0 0.5rem;
-  --modus-btn-padding-sm: 0 0.75rem;
-  --modus-btn-padding-md: 0 1rem;
-  --modus-btn-padding-lg: 0 1.5rem;
-  --modus-btn-min-height-xs: 1.5rem;
-  --modus-btn-min-height-sm: 2rem;
-  --modus-btn-min-height-md: 3rem;
-  --modus-btn-min-height-lg: 4rem;
-  --modus-btn-fit-content: auto;
-
-  /* Border radius */
-  --modus-btn-border-radius: var(--rounded-btn, 0.5rem);
-
-  /* Transitions */
-  --modus-btn-transition:
-    background-color 0.2s ease-in-out, color 0.2s ease-in-out,
-    border-color 0.2s ease-in-out, opacity 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out;
-
-  /* Focus border */
-  --modus-btn-focus-border: var(--modus-wc-color-black);
-
-  /* Primary button colors - Default to classic light theme values */
-  --modus-btn-primary-color: var(--modus-wc-color-trimble-blue);
-  --modus-btn-primary-bg: var(--modus-wc-color-trimble-blue);
-  --modus-btn-primary-bg-hover: var(--modus-wc-color-blue-light);
-  --modus-btn-primary-bg-active: var(--modus-wc-color-blue-dark);
-  --modus-btn-primary-border: var(--modus-wc-color-trimble-blue);
-  --modus-btn-primary-text-filled: var(--modus-wc-color-white);
-  --modus-btn-primary-outline-bg-hover: var(--modus-wc-color-blue-pale);
-  --modus-btn-primary-outline-bg-active: rgba(0, 99, 163, 0.18);
-  --modus-btn-primary-focus-shadow: 0 0 0 0.25rem rgba(38, 122, 177, 0.5);
-
-  /* Secondary button colors */
-  --modus-btn-secondary-color: var(--modus-wc-color-gray-6);
-  --modus-btn-secondary-bg: var(--modus-wc-color-gray-6);
-  --modus-btn-secondary-bg-hover: var(--modus-wc-color-gray-5);
-  --modus-btn-secondary-bg-active: var(--modus-wc-color-gray-7);
-  --modus-btn-secondary-border: var(--modus-wc-color-trimble-gray);
-  --modus-btn-secondary-text-filled: var(--modus-wc-color-white);
-  --modus-btn-secondary-outline-bg-hover: var(--modus-wc-color-gray-pale);
-  --modus-btn-secondary-outline-bg-active: rgba(98, 102, 108, 0.3);
-  --modus-btn-secondary-focus-shadow: 0 0 0 0.25rem rgba(98, 102, 108, 0.5);
-
-  /* Neutral button colors */
-  --modus-btn-neutral-color: var(--modus-wc-color-gray-1);
-  --modus-btn-neutral-bg: var(--modus-wc-color-gray-2);
-  --modus-btn-neutral-bg-hover: var(--modus-wc-color-gray-3);
-  --modus-btn-neutral-bg-active: var(--modus-wc-color-gray-4);
-  --modus-btn-neutral-border: var(--modus-wc-color-gray-1);
-  --modus-btn-neutral-text-filled: var(--modus-wc-color-gray-9);
-  --modus-btn-neutral-outline-bg-hover: var(--modus-wc-color-gray-pale);
-  --modus-btn-neutral-outline-bg-active: rgba(203, 205, 214, 0.3);
-  --modus-btn-neutral-focus-shadow: 0 0 0 0.25rem rgba(98, 102, 108, 0.5);
-
-  /* Warning button colors */
-  --modus-btn-warning-color: var(--modus-wc-color-yellow);
-  --modus-btn-warning-bg: var(--modus-wc-color-yellow);
-  --modus-btn-warning-bg-hover: var(--modus-wc-color-yellow-pale);
-  --modus-btn-warning-bg-active: var(--modus-wc-color-orange);
-  --modus-btn-warning-border: var(--modus-wc-color-yellow);
-  --modus-btn-warning-text-filled: var(--modus-wc-color-gray-9);
-  --modus-btn-warning-outline-bg-hover: var(--modus-wc-color-yellow-pale);
-  --modus-btn-warning-outline-bg-active: rgba(194, 125, 31, 0.3);
-  --modus-btn-warning-focus-shadow: 0 0 0 0.25rem rgba(194, 125, 31, 0.5);
-
-  /* Error button colors */
-  --modus-btn-error-color: var(--modus-wc-color-red);
-  --modus-btn-error-bg: var(--modus-wc-color-red);
-  --modus-btn-error-bg-hover: var(--modus-wc-color-red-pale);
-  --modus-btn-error-bg-active: var(--modus-wc-color-red-dark);
-  --modus-btn-error-border: var(--modus-wc-color-red);
-  --modus-btn-error-text-filled: var(--modus-wc-color-white);
-  --modus-btn-error-outline-bg-hover: var(--modus-wc-color-red-pale);
-  --modus-btn-error-outline-bg-active: rgba(224, 66, 76, 0.3);
-  --modus-btn-error-focus-shadow: 0 0 0 0.25rem rgba(224, 66, 76, 0.5);
-
-  /* Disabled state */
-  --modus-btn-disabled-opacity: 0.3;
-}
-
-/*
- * Theme-scoped Button Tokens
- * These inherit into shadow roots and allow components to theme correctly
- * without relying on global selectors inside the shadow tree.
- */
-
-/* Modus Modern - Light */
-[data-theme='modus-modern-light'] {
-  /* Modern themes use DaisyUI colors - override our defaults to match */
-  /* Primary uses DaisyUI's trimble-blue (#0063A3) with white text */
-  --modus-btn-primary-bg: #0063a3;
-  --modus-btn-primary-text-filled: #ffffff;
-  --modus-btn-primary-bg-hover: #004f83; /* primary-focus */
-  --modus-btn-primary-bg-active: #004f83;
-
-  /* Secondary uses DaisyUI's neutral-gray-10 (#252a2e) with white text */
-  --modus-btn-secondary-bg: #252a2e;
-  --modus-btn-secondary-text-filled: #ffffff;
-  --modus-btn-secondary-bg-hover: #464b52; /* secondary-focus */
-  --modus-btn-secondary-bg-active: #464b52;
-
-  /* Neutral uses DaisyUI's gray-1 (#CBCDD6) with trimble-gray text */
-  --modus-btn-neutral-bg: #cbcdd6;
-  --modus-btn-neutral-text-filled: #252a2e;
-  --modus-btn-neutral-bg-hover: #a3a6b1; /* neutral-focus */
-  --modus-btn-neutral-bg-active: #a3a6b1;
-
-  /* Warning uses DaisyUI's yellow (#FBAD26) with trimble-gray text */
-  --modus-btn-warning-bg: #fbad26;
-  --modus-btn-warning-text-filled: #252a2e;
-  --modus-btn-warning-bg-hover: #e49325; /* Darker yellow */
-  --modus-btn-warning-bg-active: #e49325;
-  --modus-btn-warning-border: transparent; /* No red border in modern */
-
-  /* Error uses DaisyUI's red (#E0424C) with white text */
-  --modus-btn-error-bg: #e0424c;
-  --modus-btn-error-text-filled: #ffffff;
-  --modus-btn-error-bg-hover: #b61e26; /* Darker red */
-  --modus-btn-error-bg-active: #b61e26;
-}
-
-/* Modus Modern - Dark */
-[data-theme='modus-modern-dark'] {
-  /* Modern dark theme adjustments */
-  --modus-btn-focus-border: var(--modus-wc-color-white);
-
-  /* Primary uses DaisyUI's highlight-blue (#019aeb) with BLACK text */
-  --modus-btn-primary-color: var(--modus-wc-color-highlight-blue);
-  --modus-btn-primary-bg: #019aeb;
-  --modus-btn-primary-text-filled: #000000; /* BLACK text, not white! */
-  --modus-btn-primary-bg-hover: #004f83; /* primary-focus */
-  --modus-btn-primary-bg-active: #004f83;
-
-  /* Secondary uses DaisyUI's light gray (#f1f1f6) with black text */
-  --modus-btn-secondary-bg: #f1f1f6;
-  --modus-btn-secondary-text-filled: #000000;
-  --modus-btn-secondary-bg-hover: #e49325; /* secondary-focus */
-  --modus-btn-secondary-bg-active: #e49325;
-
-  /* Neutral uses DaisyUI's gray-9 (#353A40) with white text */
-  --modus-btn-neutral-bg: #353a40;
-  --modus-btn-neutral-text-filled: #ffffff;
-  --modus-btn-neutral-bg-hover: #171c1e; /* neutral-focus */
-  --modus-btn-neutral-bg-active: #171c1e;
-
-  /* Warning uses DaisyUI's lighter yellow (#FEC157) with trimble-gray text */
-  --modus-btn-warning-bg: #fec157;
-  --modus-btn-warning-text-filled: #252a2e;
-  --modus-btn-warning-bg-hover: #e49325; /* Darker yellow */
-  --modus-btn-warning-bg-active: #e49325;
-  --modus-btn-warning-border: transparent; /* No red border in modern */
-
-  /* Error uses DaisyUI's lighter red (#E86363) with BLACK text */
-  --modus-btn-error-bg: #e86363;
-  --modus-btn-error-text-filled: #000000;
-  --modus-btn-error-bg-hover: #b61e26; /* Darker red */
-  --modus-btn-error-bg-active: #b61e26;
-}
-
-/* Modus Classic - Light */
-[data-theme='modus-classic-light'] {
-  /* Accordion borders for classic theme */
-  --modus-accordion-border: var(--modus-wc-border-width-xs) solid
-    var(--modus-wc-color-gray-2);
-
-  /* Collapse overrides for classic theme */
-  --modus-collapse-margin-bottom: -1px;
-  --modus-collapse-border-radius: var(--modus-wc-border-radius-md);
-  --modus-collapse-background: var(--modus-wc-color-white);
-  --modus-collapse-border-left-open: var(--modus-wc-spacing-xs) solid
-    var(--modus-wc-color-trimble-blue);
-  --modus-collapse-title-bg-open: var(--modus-wc-color-blue-pale);
-  --modus-collapse-title-color-open: inherit;
-  --modus-collapse-title-font-weight: var(--modus-wc-font-weight-normal);
-  --modus-collapse-title-padding-inline-start: var(--modus-wc-spacing-lg);
-  --modus-collapse-title-padding-inline-start-open: var(--modus-wc-spacing-md);
-  --modus-collapse-description-color: var(--modus-wc-color-gray-6);
-
-  /* Classic theme size overrides */
-  --modus-btn-padding-xs: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
-  --modus-btn-padding-sm: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
-  --modus-btn-padding-md: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
-  --modus-btn-padding-lg: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
-  --modus-btn-min-height-xs: fit-content;
-  --modus-btn-min-height-sm: fit-content;
-  --modus-btn-min-height-md: fit-content;
-  --modus-btn-min-height-lg: fit-content;
-  --modus-btn-fit-content: fit-content;
-
-  /* Border radius override for classic */
-  --modus-btn-border-radius: var(--modus-wc-border-radius-md);
-  /* Classic theme color overrides - remain the same as before */
-  --modus-btn-primary-text-filled: var(--modus-wc-color-white);
-  --modus-btn-primary-outline-bg-hover: var(--modus-wc-color-gray-0);
-  --modus-btn-primary-outline-bg-active: var(--modus-wc-color-gray-1);
-
-  --modus-btn-secondary-outline-bg-hover: var(--modus-wc-color-gray-0);
-  --modus-btn-secondary-outline-bg-active: var(--modus-wc-color-gray-1);
-
-  --modus-btn-neutral-text-filled: var(--modus-wc-color-trimble-gray);
-  --modus-btn-neutral-bg: var(--modus-wc-color-gray-1);
-  --modus-btn-neutral-bg-hover: var(--modus-wc-color-gray-0);
-  --modus-btn-neutral-bg-active: var(--modus-wc-color-gray-2);
-  --modus-btn-neutral-outline-bg-hover: var(--modus-wc-color-gray-1);
-  --modus-btn-neutral-outline-bg-active: var(--modus-wc-color-gray-2);
-
-  --modus-btn-warning-text-filled: var(--modus-wc-color-trimble-gray);
-  --modus-btn-warning-bg-hover: var(--modus-wc-color-yellow-light);
-  --modus-btn-warning-bg-active: var(--modus-wc-color-yellow-dark);
-  --modus-btn-warning-border: var(
-    --modus-wc-color-red
-  ); /* Red border for warning filled */
-
-  --modus-btn-error-bg-hover: var(--modus-wc-color-red-light);
-  --modus-btn-error-bg-active: var(--modus-wc-color-red-dark);
-
-  --modus-btn-disabled-opacity: 0.3;
-}
-
-/* Modus Classic - Dark */
-[data-theme='modus-classic-dark'] {
-  /* Accordion borders for classic theme */
-  --modus-accordion-border: var(--modus-wc-border-width-xs) solid
-    var(--modus-wc-color-gray-8);
-
-  /* Collapse overrides for classic theme */
-  --modus-collapse-margin-bottom: -1px;
-  --modus-collapse-border-radius: var(--modus-wc-border-radius-md);
-  /* background uses default base-100 */
-  --modus-collapse-border-left-open: var(--modus-wc-spacing-xs) solid
-    var(--modus-wc-color-highlight-blue);
-  --modus-collapse-title-bg-open: color-mix(
-    in sRGB,
-    var(--modus-wc-color-highlight-blue) 30%,
-    transparent
+  --modus-wc-color-error-pale: light-dark(
+    var(--modus-wc-color-red-pale),
+    var(--modus-wc-color-red-pale)
   );
-  --modus-collapse-title-color-open: inherit;
-  --modus-collapse-title-font-weight: var(--modus-wc-font-weight-normal);
-  --modus-collapse-title-padding-inline-start: var(--modus-wc-spacing-lg);
-  --modus-collapse-title-padding-inline-start-open: var(--modus-wc-spacing-md);
-  --modus-collapse-description-color: var(--modus-wc-color-gray-light);
-
-  /* Classic theme size overrides (same as light) */
-  --modus-btn-padding-xs: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
-  --modus-btn-padding-sm: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
-  --modus-btn-padding-md: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
-  --modus-btn-padding-lg: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
-  --modus-btn-min-height-xs: fit-content;
-  --modus-btn-min-height-sm: fit-content;
-  --modus-btn-min-height-md: fit-content;
-  --modus-btn-min-height-lg: fit-content;
-  --modus-btn-fit-content: fit-content;
-
-  /* Border radius override for classic */
-  --modus-btn-border-radius: var(--modus-wc-border-radius-md);
-  /* Classic dark theme color overrides */
-  --modus-btn-focus-border: var(--modus-wc-color-white);
-
-  /* Primary - uses highlight blue in dark mode */
-  --modus-btn-primary-color: var(--modus-wc-color-highlight-blue);
-  --modus-btn-primary-bg: var(--modus-wc-color-highlight-blue);
-  --modus-btn-primary-bg-hover: var(--modus-wc-color-blue-light);
-  --modus-btn-primary-bg-active: var(--modus-wc-color-blue-dark);
-  --modus-btn-primary-text-filled: var(--modus-wc-color-gray-10);
-  --modus-btn-primary-outline-bg-hover: rgba(1, 154, 235, 0.12);
-  --modus-btn-primary-outline-bg-active: rgba(1, 154, 235, 0.3);
-
-  /* Secondary */
-  --modus-btn-secondary-color: var(
-    --modus-wc-color-gray-1
-  ); /* Outline text color */
-  --modus-btn-secondary-bg: var(--modus-wc-color-gray-6);
-  --modus-btn-secondary-bg-hover: var(--modus-wc-color-gray-5);
-  --modus-btn-secondary-bg-active: var(--modus-wc-color-gray-7);
-  --modus-btn-secondary-text-filled: var(--modus-wc-color-white);
-  --modus-btn-secondary-border: var(--modus-wc-color-gray-1);
-  --modus-btn-secondary-outline-bg-hover: rgba(203, 205, 214, 0.12);
-  --modus-btn-secondary-outline-bg-active: rgba(203, 205, 214, 0.3);
-
-  /* Neutral */
-  --modus-btn-neutral-color: var(
-    --modus-wc-color-gray-2
-  ); /* Outline text color */
-  --modus-btn-neutral-text-filled: var(--modus-wc-color-trimble-gray);
-  --modus-btn-neutral-bg: var(--modus-wc-color-gray-1);
-  --modus-btn-neutral-bg-hover: var(--modus-wc-color-gray-0);
-  --modus-btn-neutral-bg-active: var(
-    --modus-wc-color-gray-4
-  ); /* Classic dark uses gray-4 for active */
-  --modus-btn-neutral-border: var(--modus-wc-color-gray-2);
-  --modus-btn-neutral-outline-bg-hover: rgba(203, 205, 214, 0.12);
-  --modus-btn-neutral-outline-bg-active: rgba(203, 205, 214, 0.3);
-
-  /* Warning */
-  --modus-btn-warning-bg: var(--modus-wc-color-yellow);
-  --modus-btn-warning-text-filled: var(--modus-wc-color-trimble-gray);
-  --modus-btn-warning-bg-hover: var(--modus-wc-color-yellow-light);
-  --modus-btn-warning-bg-active: var(--modus-wc-color-yellow-dark);
-  --modus-btn-warning-border: var(
-    --modus-wc-color-red
-  ); /* Red border for warning filled */
-  --modus-btn-warning-border-hover: var(
-    --modus-wc-color-yellow-light
-  ); /* Outline hover */
-  --modus-btn-warning-color-hover: var(
-    --modus-wc-color-yellow-light
-  ); /* Outline hover text */
-  --modus-btn-warning-border-active: var(
-    --modus-wc-color-yellow-dark
-  ); /* Outline active */
-  --modus-btn-warning-color-active: var(
-    --modus-wc-color-yellow-dark
-  ); /* Outline active text */
-
-  /* Error */
-  --modus-btn-error-bg: var(--modus-wc-color-red);
-  --modus-btn-error-text-filled: var(--modus-wc-color-white);
-  --modus-btn-error-bg-hover: var(--modus-wc-color-red-light);
-  --modus-btn-error-bg-active: var(--modus-wc-color-red-dark);
-  --modus-btn-error-border-hover: var(
-    --modus-wc-color-red-light
-  ); /* Outline hover */
-  --modus-btn-error-color-hover: var(
-    --modus-wc-color-red-light
-  ); /* Outline hover text */
-  --modus-btn-error-border-active: var(
-    --modus-wc-color-red-dark
-  ); /* Outline active */
-  --modus-btn-error-color-active: var(
-    --modus-wc-color-red-dark
-  ); /* Outline active text */
-
-  --modus-btn-disabled-opacity: 0.4;
 }
