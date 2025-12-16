@@ -34,6 +34,19 @@ File dropzone component that allows users to drag and drop files for upload.
 | `fileSelect` | Event emitted when files are selected | `CustomEvent<FileList>` |
 
 
+## Methods
+
+### `reset() => Promise<void>`
+
+Reset the dropzone to its initial state, clearing all error and success states
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Dependencies
 
 ### Depends on

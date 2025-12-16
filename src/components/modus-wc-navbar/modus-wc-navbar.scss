@@ -1,5 +1,6 @@
 modus-wc-navbar .modus-wc-navbar {
   background-color: var(--modus-wc-color-base-page);
+  border-radius: 0;
   box-shadow: none;
   height: 56px;
   min-height: 0;
@@ -161,6 +162,17 @@ modus-wc-navbar .modus-wc-navbar {
       }
     }
   }
+}
+
+[data-theme='modus-modern-light'] modus-wc-navbar .modus-wc-navbar {
+  background-image: url('dist/styles/assets/Navbarpattern.svg');
+  background-size: cover;
+}
+
+[data-theme='modus-modern-dark'] modus-wc-navbar .modus-wc-navbar {
+  background: var(--modus-wc-color-trimble-gray);
+  background-image: url('dist/styles/assets/Navabardarkpattern.svg');
+  background-size: cover;
 }
 
 [data-theme='modus-classic-light'] modus-wc-navbar .modus-wc-navbar,

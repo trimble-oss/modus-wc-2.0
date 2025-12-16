@@ -43,7 +43,7 @@ export class ModusWcButton {
   @Prop() fullWidth?: boolean = false;
 
   /** If true, the button will be in a pressed state (for toggle buttons). */
-  @Prop() pressed?: boolean = false;
+  @Prop({ reflect: true }) pressed?: boolean = false;
 
   /** The shape of the button. */
   @Prop() shape: 'circle' | 'rectangle' | 'square' = 'rectangle';
@@ -73,6 +73,7 @@ export class ModusWcButton {
       color: this.color,
       disabled: this.disabled,
       fullWidth: this.fullWidth,
+      pressed: this.pressed,
       shape: this.shape,
       size: this.size,
       variant: this.variant,

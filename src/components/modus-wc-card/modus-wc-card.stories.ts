@@ -7,7 +7,7 @@ interface CardArgs {
   bordered?: boolean;
   'custom-class'?: string;
   layout?: 'vertical' | 'horizontal';
-  padding?: 'normal' | 'compact';
+  padding?: 'compact' | 'comfortable';
 }
 
 const meta: Meta<CardArgs> = {
@@ -17,7 +17,7 @@ const meta: Meta<CardArgs> = {
     'background-figure': false,
     bordered: false,
     layout: 'vertical',
-    padding: 'normal',
+    padding: 'compact',
   },
   argTypes: {
     layout: {
@@ -26,7 +26,7 @@ const meta: Meta<CardArgs> = {
     },
     padding: {
       control: { type: 'select' },
-      options: ['normal', 'compact'],
+      options: ['compact', 'comfortable'],
     },
   },
   parameters: {

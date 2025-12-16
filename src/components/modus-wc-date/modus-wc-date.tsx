@@ -127,6 +127,9 @@ export class ModusWcDate {
   /** The first day of the week for the calendar display */
   @Prop() weekStartDay?: WeekStartDay = 'sunday';
 
+  /** Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.*/
+  @Prop() showWeekNumbers?: boolean = false;
+
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
@@ -225,7 +228,6 @@ export class ModusWcDate {
     const firstDayOfWeek =
       WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
     this.calendar = new DatePickerCalendar(firstDayOfWeek);
-
     this.handleMinChange(this.min);
     this.handleMaxChange(this.max);
     this.handleValueChange(this.value);
@@ -294,6 +296,13 @@ export class ModusWcDate {
     this.inputChange.emit(event);
   };
 
+  private handleInputKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.syncValueFromInput();
+    }
+  };
+
   private setupPopper = () => {
     if (this.popperInstance) {
       this.popperInstance.destroy();
@@ -336,6 +345,13 @@ export class ModusWcDate {
           this.focusedDateIndex = selectedIndex;
         }
       }
+      // set focus to today
+      else {
+        this.ensureCalendarWithinBounds(new Date());
+        this.focusedDateIndex = this.calendar.dates.findIndex(
+          (date) => date && this.compareDate(date, new Date()) === 0
+        );
+      }
     } else {
       // Reset focus when closing
       this.focusedDateIndex = -1;
@@ -366,6 +382,8 @@ export class ModusWcDate {
     }
 
     this.showCalendar = false;
+    this.hasFocus = false;
+    this.inputBlur.emit(new FocusEvent('blur', { bubbles: true }));
   };
 
   private addMonthOffset = (offset: number) => {
@@ -788,7 +806,10 @@ export class ModusWcDate {
 
     return (
       <div class="calendar-body">
-        <div class="calendar-days-week">
+        <div
+          class={`calendar-days-week${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
+        >
+          {this.showWeekNumbers && <div class="week-number-header"></div>}
           {this.calendar
             .getDaysOfWeek(
               'default',
@@ -798,10 +819,26 @@ export class ModusWcDate {
               return <div class="day-header">{d}</div>;
             })}
         </div>
-        <div class="calendar-dates">
-          {this.calendar.dates.map((date) => {
+        <div
+          class={`calendar-dates${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
+        >
+          {this.calendar.dates.map((date, index) => {
+            // Add week number at the start of each row (every 7 days)
+            const weekNumberElement =
+              this.showWeekNumbers && index % 7 === 0 ? (
+                <div
+                  class="week-number"
+                  aria-label={`Week ${this.calendar.getWeekNumber(date, WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay])}`}
+                >
+                  {this.calendar.getWeekNumber(
+                    date,
+                    WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay]
+                  )}
+                </div>
+              ) : null;
+
             if (!date) {
-              return null;
+              return weekNumberElement;
             }
 
             const isToday = this.compareDate(date, today) === 0;
@@ -811,7 +848,7 @@ export class ModusWcDate {
             const isCurrentMonth = date.getMonth() === currentMonth;
             const isDisabled = this.isDateDisabled(date);
 
-            return (
+            const button = (
               <button
                 type="button"
                 class={{
@@ -830,6 +867,9 @@ export class ModusWcDate {
                 {date.getDate()}
               </button>
             );
+
+            // Only create array when week number exists
+            return weekNumberElement ? [weekNumberElement, button] : button;
           })}
         </div>
       </div>
@@ -1085,6 +1125,7 @@ export class ModusWcDate {
             onBlur={this.handleBlur}
             onFocus={this.handleFocus}
             onInput={this.handleInput}
+            onKeyDown={this.handleInputKeyDown}
             placeholder={this.format}
             readonly={this.readOnly}
             required={this.required}
@@ -1111,7 +1152,10 @@ export class ModusWcDate {
         </div>
 
         {this.showCalendar && (
-          <div ref={(el) => (this.calendarRef = el)} class="calendar-container">
+          <div
+            ref={(el) => (this.calendarRef = el)}
+            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
+          >
             {this.renderCalendarHeader()}
             {this.renderCalendarBody()}
           </div>

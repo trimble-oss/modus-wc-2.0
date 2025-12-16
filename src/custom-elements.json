@@ -1486,6 +1486,147 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-button-group/modus-wc-button-group.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable buttongroup component that groups multiple Modus buttons together.\r\n\r\nThe component supports a `<slot>` for injecting content within the buttongroup.",
+          "name": "ModusWcButtonGroup",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleButtonClick",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePropChange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleSelectionTypeChange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "color",
+              "fieldName": "color",
+              "description": "Color to apply to all buttons within the button group",
+              "type": {
+                "text": "'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger'"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "default": "false",
+              "description": "Disables all buttons within the button group",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "orientation",
+              "fieldName": "orientation",
+              "default": "'horizontal'",
+              "description": "Orientation of the button group: horizontal or vertical",
+              "type": {
+                "text": "Orientation"
+              }
+            },
+            {
+              "name": "selection-type",
+              "fieldName": "selectionType",
+              "default": "'default'",
+              "description": "Selection type for button group",
+              "type": {
+                "text": "'default' | 'single' | 'multiple'"
+              }
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "default": "'outlined'",
+              "description": "Style variant to apply to all buttons within the button group",
+              "type": {
+                "text": "'borderless' | 'filled' | 'outlined'"
+              }
+            }
+          ],
+          "tagName": "modus-wc-button-group",
+          "events": [
+            {
+              "name": "buttonGroupClick",
+              "type": {
+                "text": "EventEmitter<{\r\n    button: HTMLElement;\r\n    isSelected: boolean;\r\n  }>"
+              },
+              "description": "Event emitted when any button in the group is clicked"
+            },
+            {
+              "name": "buttonSelectionChange",
+              "type": {
+                "text": "EventEmitter<{\r\n    selectedButtons: HTMLElement[];\r\n  }>"
+              },
+              "description": "Event emitted when button selection changes"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcButtonGroup",
+          "declaration": {
+            "name": "ModusWcButtonGroup",
+            "module": "src/components/modus-wc-button-group/modus-wc-button-group.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-button-group",
+          "declaration": {
+            "name": "ModusWcButtonGroup",
+            "module": "src/components/modus-wc-button-group/modus-wc-button-group.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-button/modus-wc-button.tsx",
       "declarations": [
         {
@@ -1683,10 +1824,10 @@
             {
               "name": "padding",
               "fieldName": "padding",
-              "default": "'normal'",
-              "description": "Determines if the interior padding is compact or not",
+              "default": "'compact'",
+              "description": "Determines the interior padding size",
               "type": {
-                "text": "'normal' | 'compact'"
+                "text": "'compact' | 'comfortable'"
               }
             }
           ],
@@ -2343,6 +2484,15 @@
               }
             },
             {
+              "name": "show-week-numbers",
+              "fieldName": "showWeekNumbers",
+              "default": "false",
+              "description": "Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "size",
               "fieldName": "size",
               "default": "'md'",
@@ -2790,6 +2940,11 @@
             {
               "kind": "method",
               "name": "render"
+            },
+            {
+              "kind": "method",
+              "name": "reset",
+              "description": "Reset the dropzone to its initial state, clearing all error and success states"
             }
           ],
           "attributes": [
@@ -3301,24 +3456,22 @@
           "name": "ModusWcMenuItem",
           "members": [
             {
+              "kind": "method",
+              "name": "collapseSubmenu",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Public method to collapse the submenu if it's expanded"
+            },
+            {
               "kind": "field",
               "name": "el",
               "type": {
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "handleCollapseAllChange",
-              "parameters": [
-                {
-                  "name": "newValue",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
             },
             {
               "kind": "field",
@@ -3346,14 +3499,6 @@
               "name": "checkbox",
               "fieldName": "checkbox",
               "description": "If true, renders a checkbox at the start of the menu item.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
-              "name": "collapse-all",
-              "fieldName": "collapseAll",
-              "description": "Collapse all submenus when set to true",
               "type": {
                 "text": "boolean"
               }

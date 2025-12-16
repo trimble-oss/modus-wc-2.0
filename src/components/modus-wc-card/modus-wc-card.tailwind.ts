@@ -7,7 +7,7 @@ export const convertPropsToClasses = ({
   bordered?: boolean;
   fullImage?: boolean;
   layout?: 'vertical' | 'horizontal';
-  padding?: 'normal' | 'compact';
+  padding?: 'compact' | 'comfortable';
 }): string => {
   let classes = '';
 
@@ -25,6 +25,10 @@ export const convertPropsToClasses = ({
 
   if (padding === 'compact') {
     classes = `${classes} modus-wc-card-compact`;
+  }
+
+  if (padding === 'comfortable') {
+    classes = `${classes} modus-wc-card-comfortable`;
   }
 
   return classes.trim();
