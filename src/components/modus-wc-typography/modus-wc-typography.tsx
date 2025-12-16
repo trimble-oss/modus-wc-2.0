@@ -32,6 +32,9 @@ export class ModusWCTypography {
   /** The hierarchy of the typography component. */
   @Prop() hierarchy: TypographyHierarchy = 'p';
 
+  /** The text label to display if no slot content is provided. */
+  @Prop() label?: string;
+
   /** The size of the font. */
   @Prop() size?: TypographySize = 'md';
 
@@ -70,11 +73,12 @@ export class ModusWCTypography {
 
   render() {
     const Element = this.hierarchy;
+    const hasSlotContent = !!this.el.textContent?.trim().length;
 
     return (
       <Host>
         <Element class={this.getClasses()} {...this.inheritedAttributes}>
-          <slot></slot>
+          {hasSlotContent ? <slot /> : this.label}
         </Element>
       </Host>
     );

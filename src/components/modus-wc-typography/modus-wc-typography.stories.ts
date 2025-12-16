@@ -15,6 +15,7 @@ const content = 'The quick brown fox jumps over the lazy dog';
 interface TypographyArgs {
   'custom-class'?: string;
   hierarchy: TypographyHierarchy;
+  label?: string;
   size?: TypographySize;
   weight?: TypographyWeight;
 }
@@ -67,7 +68,12 @@ const meta: Meta<TypographyArgs> = {
 
         // Ensure slot content is present after render
         const typography = container.querySelector('modus-wc-typography');
-        if (typography && !typography.textContent) {
+        // Only inject slot content if no label prop is provided
+        if (
+          typography &&
+          !typography.textContent &&
+          !typography.hasAttribute('label')
+        ) {
           typography.textContent = template.innerHTML;
         }
       };
@@ -89,6 +95,7 @@ const Template: Story = {
 <modus-wc-typography
   custom-class=${ifDefined(args['custom-class'])}
   hierarchy=${args.hierarchy}
+  label=${ifDefined(args.label)}
   size=${ifDefined(args.size)}
   weight=${ifDefined(args.weight)}
   ></modus-wc-typography>
@@ -111,3 +118,11 @@ export const Heading5: Story = { ...Template, args: { hierarchy: 'h5' } };
 export const Heading6: Story = { ...Template, args: { hierarchy: 'h6' } };
 
 export const Paragraph: Story = { ...Template, args: { hierarchy: 'p' } };
+
+export const WithLabel: Story = {
+  ...Template,
+  args: {
+    hierarchy: 'p',
+    label: 'This text is set via the label prop',
+  },
+};

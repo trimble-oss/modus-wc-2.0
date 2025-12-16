@@ -1898,6 +1898,10 @@ export namespace Components {
          */
         "hierarchy": TypographyHierarchy;
         /**
+          * The text label to display if no slot content is provided.
+         */
+        "label"?: string;
+        /**
           * The size of the font.
          */
         "size"?: TypographySize;
@@ -2414,7 +2418,10 @@ declare global {
         new (): HTMLModusWcMenuElement;
     };
     interface HTMLModusWcMenuItemElementEventMap {
-        "itemSelect": { value: string };
+        "itemSelect": {
+    value: string;
+    selected?: boolean;
+  };
     }
     /**
      * A customizable menu item component used to display the item portion of a menu
@@ -3886,7 +3893,10 @@ declare namespace LocalJSX {
         /**
           * Event emitted when a menu item is selected.
          */
-        "onItemSelect"?: (event: ModusWcMenuItemCustomEvent<{ value: string }>) => void;
+        "onItemSelect"?: (event: ModusWcMenuItemCustomEvent<{
+    value: string;
+    selected?: boolean;
+  }>) => void;
         /**
           * The selected state of the menu item.
          */
@@ -5115,6 +5125,10 @@ declare namespace LocalJSX {
           * The hierarchy of the typography component.
          */
         "hierarchy"?: TypographyHierarchy;
+        /**
+          * The text label to display if no slot content is provided.
+         */
+        "label"?: string;
         /**
           * The size of the font.
          */
