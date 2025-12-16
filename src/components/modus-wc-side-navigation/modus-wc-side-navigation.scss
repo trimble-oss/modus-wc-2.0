@@ -41,6 +41,7 @@ modus-wc-side-navigation {
   .modus-wc-side-navigation {
     background-image: url('dist/styles/assets/Sidenavpattern.svg');
     background-size: cover;
+    box-shadow: none;
   }
 }
 
@@ -49,6 +50,7 @@ modus-wc-side-navigation {
     background: var(--modus-wc-color-trimble-gray);
     background-image: url('dist/styles/assets/Sidenavdarkpattern.svg');
     background-size: cover;
+    box-shadow: none;
   }
 }
 
