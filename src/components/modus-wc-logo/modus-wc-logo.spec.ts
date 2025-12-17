@@ -1,6 +1,24 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcLogo } from './modus-wc-logo';
 
+// Mock the logo-constants module
+let mockLogoVariants: Record<
+  string,
+  { displayName: string; path: string; emblemPath?: string; category: string }
+>;
+
+jest.mock('./logo-constants', () => {
+  const actual =
+    jest.requireActual<typeof import('./logo-constants')>('./logo-constants');
+  mockLogoVariants = { ...actual.LOGO_VARIANTS };
+  return {
+    ...actual,
+    get LOGO_VARIANTS() {
+      return mockLogoVariants;
+    },
+  };
+});
+
 describe('modus-wc-logo', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
@@ -128,7 +146,7 @@ describe('modus-wc-logo', () => {
 
     // Manually set dark mode state and trigger re-render
     const component = page.rootInstance as ModusWcLogo;
-    (component as any).isLight = false;
+    (component as unknown as { isLight: boolean }).isLight = false;
     await page.waitForChanges();
 
     const img = page.root?.querySelector('img');
@@ -143,7 +161,7 @@ describe('modus-wc-logo', () => {
 
     // Manually set dark mode state and trigger re-render
     const component = page.rootInstance as ModusWcLogo;
-    (component as any).isLight = false;
+    (component as unknown as { isLight: boolean }).isLight = false;
     await page.waitForChanges();
 
     const img = page.root?.querySelector('img');
@@ -164,7 +182,8 @@ describe('modus-wc-logo', () => {
       };
     });
 
-    global.MutationObserver = MockedMutationObserver as any;
+    globalThis.MutationObserver =
+      MockedMutationObserver as unknown as typeof MutationObserver;
 
     const page = await newSpecPage({
       components: [ModusWcLogo],
@@ -184,32 +203,37 @@ describe('modus-wc-logo', () => {
     // Trigger the callback to cover line 44
     if (savedCallback) {
       document.documentElement.setAttribute('data-theme', 'modus-modern-dark');
-      savedCallback();
+      (savedCallback as () => void)();
       expect(page.rootInstance.isLight).toBe(false);
     }
 
     // Verify disconnection on cleanup
     const component = page.rootInstance as ModusWcLogo;
-    (component as any).disconnectedCallback();
+    if (component.disconnectedCallback) {
+      component.disconnectedCallback();
+    }
     expect(mockDisconnect).toHaveBeenCalled();
 
     // Cleanup
     document.documentElement.removeAttribute('data-theme');
-    delete (global as any).MutationObserver;
+    delete (globalThis as { MutationObserver?: typeof MutationObserver })
+      .MutationObserver;
   });
 
   it('should warn when path is missing for light theme', async () => {
     const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+    const actual =
+      jest.requireActual<typeof import('./logo-constants')>('./logo-constants');
 
     // Create a mock logo variant without paths
-    const originalVariants = { ...require('./logo-constants').LOGO_VARIANTS };
-    require('./logo-constants').LOGO_VARIANTS.test_logo = {
+    const originalVariants = { ...actual.LOGO_VARIANTS };
+    mockLogoVariants.test_logo = {
       displayName: 'Test Logo',
       path: '',
       category: 'trimble',
     };
 
-    const page = await newSpecPage({
+    await newSpecPage({
       components: [ModusWcLogo],
       html: '<modus-wc-logo name="test_logo"></modus-wc-logo>',
     });
@@ -219,22 +243,24 @@ describe('modus-wc-logo', () => {
     );
 
     // Restore
-    require('./logo-constants').LOGO_VARIANTS = originalVariants;
+    mockLogoVariants = { ...originalVariants };
     consoleSpy.mockRestore();
   });
 
   it('should warn when emblem path is missing', async () => {
     const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+    const actual =
+      jest.requireActual<typeof import('./logo-constants')>('./logo-constants');
 
     // Create a mock logo variant without emblem path
-    const originalVariants = { ...require('./logo-constants').LOGO_VARIANTS };
-    require('./logo-constants').LOGO_VARIANTS.test_logo = {
+    const originalVariants = { ...actual.LOGO_VARIANTS };
+    mockLogoVariants.test_logo = {
       displayName: 'Test Logo',
       path: 'test.svg',
       category: 'trimble',
     };
 
-    const page = await newSpecPage({
+    await newSpecPage({
       components: [ModusWcLogo],
       html: '<modus-wc-logo name="test_logo" emblem></modus-wc-logo>',
     });
@@ -244,16 +270,18 @@ describe('modus-wc-logo', () => {
     );
 
     // Restore
-    require('./logo-constants').LOGO_VARIANTS = originalVariants;
+    mockLogoVariants = { ...originalVariants };
     consoleSpy.mockRestore();
   });
 
   it('should warn when path is missing in dark theme', async () => {
     const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+    const actual =
+      jest.requireActual<typeof import('./logo-constants')>('./logo-constants');
 
     // Create a mock logo variant without dark path
-    const originalVariants = { ...require('./logo-constants').LOGO_VARIANTS };
-    require('./logo-constants').LOGO_VARIANTS.test_logo = {
+    const originalVariants = { ...actual.LOGO_VARIANTS };
+    mockLogoVariants.test_logo = {
       displayName: 'Test Logo',
       path: 'test.svg',
       emblemPath: '',
@@ -267,7 +295,11 @@ describe('modus-wc-logo', () => {
 
     // Set to dark mode
     const component = page.rootInstance as ModusWcLogo;
-    (component as any).isLight = false;
+    // Access private property for testing purposes
+    Object.defineProperty(component, 'isLight', {
+      writable: true,
+      value: false,
+    });
     await page.waitForChanges();
 
     expect(consoleSpy).toHaveBeenCalledWith(
@@ -275,7 +307,7 @@ describe('modus-wc-logo', () => {
     );
 
     // Restore
-    require('./logo-constants').LOGO_VARIANTS = originalVariants;
+    mockLogoVariants = { ...originalVariants };
     consoleSpy.mockRestore();
   });
 });
