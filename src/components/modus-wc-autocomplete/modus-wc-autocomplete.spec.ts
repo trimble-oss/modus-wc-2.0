@@ -2523,6 +2523,37 @@ describe('modus-wc-autocomplete', () => {
   });
 
   // Test clear button click
+  it('should clear selection when clear button is clicked', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcButton,
+        ModusWcChip,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Clear test" include-clear="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.value = 'test';
+    await page.waitForChanges();
+
+    // Find and click the clear button
+    const clearButton = page.root?.querySelector(
+      'svg.modus-wc-text-input-icon-clear'
+    );
+    expect(clearButton).toBeTruthy();
+
+    const clearClickSpy = jest.spyOn(autocomplete.clearClick, 'emit');
+
+    // Simulate click
+    const clickEvent = new MouseEvent('click');
+    clearButton?.dispatchEvent(clickEvent);
+    await page.waitForChanges();
+
+    expect(clearClickSpy).toHaveBeenCalled();
+  });
+
   it('should clear all selections when clear button is clicked', async () => {
     const page = await newSpecPage({
       components: [
@@ -2549,11 +2580,14 @@ describe('modus-wc-autocomplete', () => {
     );
     expect(clearButton).toBeTruthy();
 
+    const clearClickSpy = jest.spyOn(autocomplete.clearClick, 'emit');
+
     // Simulate click
     const clickEvent = new MouseEvent('click');
     clearButton?.dispatchEvent(clickEvent);
     await page.waitForChanges();
 
+    expect(clearClickSpy).toHaveBeenCalled();
     expect(autocomplete.value).toBe('');
     expect(autocomplete['selectionOrder']).toEqual([]);
     expect(autocomplete.items[0].selected).toBe(false);
