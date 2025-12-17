@@ -43,6 +43,16 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-ellipse {
   border-radius: var(--modus-wc-border-radius-3xl);
 }
 
+modus-wc-button .modus-wc-btn-circle.modus-wc-btn-md,
+modus-wc-button .modus-wc-btn-square.modus-wc-btn-md {
+  width: var(--modus-wc-size-md);
+}
+
+modus-wc-button .modus-wc-btn-circle.modus-wc-btn-lg,
+modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
+  width: var(--modus-wc-size-lg);
+}
+
 [data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn,
 [data-theme='modus-classic-dark'] modus-wc-button .modus-wc-btn {
   --rounded-btn: var(--modus-wc-border-radius-md);
