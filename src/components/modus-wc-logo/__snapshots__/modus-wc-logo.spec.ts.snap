@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-logo should render viewpoint logo 1`] = `
+<modus-wc-logo name="viewpoint_field_view" size="lg" type="scalable">
+  <span aria-label="viewpoint field view" class="logo-full modus-wc-logo" role="img">
+    <img alt="viewpoint field view" src="/assets/logos/viewpoint/viewpoint-field-view.svg">
+  </span>
+</modus-wc-logo>
+`;
+
+exports[`modus-wc-logo should render with default props 1`] = `
+<modus-wc-logo name="trimble">
+  <span aria-label="trimble" class="logo-full modus-wc-logo" role="img">
+    <img alt="trimble" src="/assets/logos/trimble/trimble.svg">
+  </span>
+</modus-wc-logo>
+`;
+
+exports[`modus-wc-logo should render with fixed type 1`] = `
+<modus-wc-logo name="modus_2_0" type="fixed">
+  <span aria-label="modus 2 0" class="logo-full modus-wc-logo" role="img">
+    <img alt="modus 2 0" src="">
+  </span>
+</modus-wc-logo>
+`;
+
+exports[`modus-wc-logo should render with scalable type 1`] = `
+<modus-wc-logo name="trimble" size="md" type="scalable">
+  <span aria-label="trimble" class="logo-full modus-wc-logo" role="img">
+    <img alt="trimble" src="/assets/logos/trimble/trimble.svg">
+  </span>
+</modus-wc-logo>
+`;
