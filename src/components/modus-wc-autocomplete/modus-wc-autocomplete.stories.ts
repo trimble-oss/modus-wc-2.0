@@ -269,6 +269,7 @@ const meta: Meta<AutocompleteArgs> = {
       handles: [
         'chipRemove',
         'chipsExpansionChange',
+        'clearClick',
         'inputBlur',
         'inputChange',
         'inputFocus',
@@ -455,7 +456,7 @@ const Template: Story = {
 <script>
 // Add Autocomplete items
 ${Items}
-// Adding this block to show how to set items via JS  
+// Adding this block to show how to set items via JS
 // const autocomplete = document.querySelector('modus-wc-autocomplete');
 // autocomplete.items = autocompleteItems;
 </script>
@@ -506,7 +507,7 @@ export const WithCustomIconSlot: Story = {
 <script>
 // Add Autocomplete items
 ${Items}
-// Adding this block to show how to set items via JS  
+// Adding this block to show how to set items via JS
 // const autocomplete = document.querySelector('modus-wc-autocomplete');
 // autocomplete.items = autocompleteItems;
 </script>
@@ -713,7 +714,7 @@ export const MultiSelect: Story = {
           // const autocomplete = document.getElementById('fruit-autocomplete');
           // if (autocomplete) {
           //   autocomplete.items = itemsWithSelection;
-          // } 
+          // }
         </script>
     `;
   },
@@ -843,7 +844,7 @@ export const WithSpinner: Story = {
         //   autocomplete.removeEventListener('inputChange', handleInputChange);
         //   autocomplete.addEventListener('inputChange', handleInputChange);
         // }
-        
+
       </script>
     `;
   },

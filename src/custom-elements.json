@@ -1163,6 +1163,14 @@
             },
             {
               "kind": "field",
+              "name": "clearClick",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "Event emitted when the clear button is clicked."
+            },
+            {
+              "kind": "field",
               "name": "inputBlur",
               "type": {
                 "text": "EventEmitter<FocusEvent>"
@@ -3693,7 +3701,7 @@
               "kind": "field",
               "name": "itemSelect",
               "type": {
-                "text": "EventEmitter<{\n    value: string;\n    selected?: boolean;\n  }>"
+                "text": "EventEmitter<{\r\n    value: string;\r\n    selected?: boolean;\r\n  }>"
               },
               "description": "Event emitted when a menu item is selected."
             }
@@ -6415,6 +6423,14 @@
           ],
           "tagName": "modus-wc-text-input",
           "events": [
+            {
+              "kind": "field",
+              "name": "clearClick",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "Event emitted when the clear button is clicked."
+            },
             {
               "kind": "field",
               "name": "inputBlur",
