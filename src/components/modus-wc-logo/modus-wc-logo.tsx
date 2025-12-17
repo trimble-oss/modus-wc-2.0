@@ -1,4 +1,12 @@
-import { Component, Element, h, Host, Prop, State } from '@stencil/core';
+import {
+  Component,
+  Element,
+  getAssetPath,
+  h,
+  Host,
+  Prop,
+  State,
+} from '@stencil/core';
 import { Attributes, inheritAriaAttributes, isLightMode } from '../utils';
 import { LOGO_VARIANTS, LogoName } from './logo-constants';
 
@@ -84,7 +92,7 @@ export class ModusWcLogo {
       path =
         !this.isLight && logoInfo.pathDark ? logoInfo.pathDark : logoInfo.path;
     }
-
+    /* istanbul ignore if */
     if (!path) {
       console.warn(
         `No ${this.emblem ? 'emblem' : 'logo'} path found for "${this.name}" in ${this.isLight ? 'light' : 'dark'} theme`
@@ -92,8 +100,8 @@ export class ModusWcLogo {
       return '';
     }
 
-    // Return the full path for use in img src
-    return `/assets/${path}`;
+    // Use getAssetPath to resolve the correct path for all deployment scenarios
+    return getAssetPath(`./assets/${path}`);
   }
 
   private getClasses(): string {

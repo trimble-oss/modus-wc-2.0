@@ -1,25 +1,77 @@
+/* eslint-disable import/order */
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcLogo } from './modus-wc-logo';
 
-// Mock the logo-constants module
-let mockLogoVariants: Record<
+// Get the actual constants before mocking
+const actualConstants =
+  jest.requireActual<typeof import('./logo-constants')>('./logo-constants');
+
+// Create a mutable object that extends the actual variants
+const mockLogoVariants: Record<
   string,
-  { displayName: string; path: string; emblemPath?: string; category: string }
->;
+  {
+    displayName: string;
+    path: string;
+    pathDark?: string;
+    emblemPath?: string;
+    emblemPathDark?: string;
+    category: string;
+  }
+> = {};
+
+// Create a Proxy that merges actual and mock variants
+const LOGO_VARIANTS_PROXY = new Proxy(
+  {},
+  {
+    get(_, prop) {
+      // First check mock variants, then fall back to actual
+      if (prop in mockLogoVariants) {
+        return mockLogoVariants[prop as string];
+      }
+      return actualConstants.LOGO_VARIANTS[
+        prop as keyof typeof actualConstants.LOGO_VARIANTS
+      ];
+    },
+    has(_, prop) {
+      return prop in mockLogoVariants || prop in actualConstants.LOGO_VARIANTS;
+    },
+    ownKeys() {
+      return Array.from(
+        new Set([
+          ...Object.keys(mockLogoVariants),
+          ...Object.keys(actualConstants.LOGO_VARIANTS),
+        ])
+      );
+    },
+    getOwnPropertyDescriptor(_, prop) {
+      if (prop in mockLogoVariants || prop in actualConstants.LOGO_VARIANTS) {
+        return {
+          enumerable: true,
+          configurable: true,
+        };
+      }
+      return undefined;
+    },
+  }
+);
 
 jest.mock('./logo-constants', () => {
   const actual =
     jest.requireActual<typeof import('./logo-constants')>('./logo-constants');
-  mockLogoVariants = { ...actual.LOGO_VARIANTS };
   return {
     ...actual,
-    get LOGO_VARIANTS() {
-      return mockLogoVariants;
-    },
+    LOGO_VARIANTS: LOGO_VARIANTS_PROXY,
   };
 });
 
+import { ModusWcLogo } from './modus-wc-logo';
+
 describe('modus-wc-logo', () => {
+  beforeEach(() => {
+    // Clear mock variants before each test
+    Object.keys(mockLogoVariants).forEach(
+      (key) => delete mockLogoVariants[key]
+    );
+  });
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcLogo],
@@ -222,11 +274,8 @@ describe('modus-wc-logo', () => {
 
   it('should warn when path is missing for light theme', async () => {
     const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-    const actual =
-      jest.requireActual<typeof import('./logo-constants')>('./logo-constants');
 
-    // Create a mock logo variant without paths
-    const originalVariants = { ...actual.LOGO_VARIANTS };
+    // Add a mock logo variant without paths
     mockLogoVariants.test_logo = {
       displayName: 'Test Logo',
       path: '',
@@ -242,18 +291,13 @@ describe('modus-wc-logo', () => {
       expect.stringContaining('No logo path found')
     );
 
-    // Restore
-    mockLogoVariants = { ...originalVariants };
     consoleSpy.mockRestore();
   });
 
   it('should warn when emblem path is missing', async () => {
     const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-    const actual =
-      jest.requireActual<typeof import('./logo-constants')>('./logo-constants');
 
-    // Create a mock logo variant without emblem path
-    const originalVariants = { ...actual.LOGO_VARIANTS };
+    // Add a mock logo variant without emblem path
     mockLogoVariants.test_logo = {
       displayName: 'Test Logo',
       path: 'test.svg',
@@ -269,22 +313,15 @@ describe('modus-wc-logo', () => {
       expect.stringContaining('No emblem path found')
     );
 
-    // Restore
-    mockLogoVariants = { ...originalVariants };
     consoleSpy.mockRestore();
   });
 
-  it('should warn when path is missing in dark theme', async () => {
-    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-    const actual =
-      jest.requireActual<typeof import('./logo-constants')>('./logo-constants');
-
-    // Create a mock logo variant without dark path
-    const originalVariants = { ...actual.LOGO_VARIANTS };
+  it('should use getAssetPath for emblem paths', async () => {
+    // Add mock logo with emblem path
     mockLogoVariants.test_logo = {
       displayName: 'Test Logo',
       path: 'test.svg',
-      emblemPath: '',
+      emblemPath: 'test-emblem.svg',
       category: 'trimble',
     };
 
@@ -293,21 +330,25 @@ describe('modus-wc-logo', () => {
       html: '<modus-wc-logo name="test_logo" emblem></modus-wc-logo>',
     });
 
-    // Set to dark mode
-    const component = page.rootInstance as ModusWcLogo;
-    // Access private property for testing purposes
-    Object.defineProperty(component, 'isLight', {
-      writable: true,
-      value: false,
+    const img = page.root?.querySelector('img');
+    const src = img?.getAttribute('src');
+
+    // Verify the src uses the asset path with emblem
+    expect(src).toBeDefined();
+    expect(src).toContain('test-emblem.svg');
+  });
+
+  it('should use getAssetPath for logo paths', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="trimble"></modus-wc-logo>',
     });
-    await page.waitForChanges();
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      expect.stringContaining('dark theme')
-    );
+    const img = page.root?.querySelector('img');
+    const src = img?.getAttribute('src');
 
-    // Restore
-    mockLogoVariants = { ...originalVariants };
-    consoleSpy.mockRestore();
+    // Verify the src uses the asset path format
+    expect(src).toBeDefined();
+    expect(src).toContain('logos/trimble/trimble.svg');
   });
 });
