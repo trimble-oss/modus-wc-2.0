@@ -126,7 +126,7 @@ const meta: Meta<TextInputArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['inputBlur', 'inputChange', 'inputFocus'],
+      handles: ['clearClick', 'inputBlur', 'inputChange', 'inputFocus'],
     },
   },
 };

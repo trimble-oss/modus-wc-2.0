@@ -162,6 +162,9 @@ export class ModusWcAutocomplete {
   /** Event emitted when chips expansion state changes. */
   @StencilEvent() chipsExpansionChange!: EventEmitter<{ expanded: boolean }>;
 
+  /** Event emitted when the clear button is clicked. */
+  @StencilEvent() clearClick!: EventEmitter<void>;
+
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
@@ -779,8 +782,13 @@ export class ModusWcAutocomplete {
     }
   };
 
-  private handleClearAll = () => {
+  private handleClearAll = (event?: CustomEvent<void>) => {
+    // This method is called by the text input and a button, stop propagation of the text input event
+    // istanbul ignore next
+    event?.stopPropagation();
+
     void this.clearInput();
+    this.clearClick.emit();
   };
 
   private toggleChipsExpansion = () => {
@@ -907,6 +915,7 @@ export class ModusWcAutocomplete {
               customIconSlot: hasSlottedCustomIcon,
               onBlur: this.handleBlur,
               onChange: this.handleChange,
+              onClear: this.handleClearAll,
               onFocus: this.handleFocus,
             })}
           </Fragment>
