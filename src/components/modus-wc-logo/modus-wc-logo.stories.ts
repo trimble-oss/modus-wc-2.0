@@ -47,62 +47,6 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
-export const DarkThemeDemo: Story = {
-  render: () => {
-    return html`
-      <div style="display: flex; flex-direction: column; gap: 3rem;">
-        <div>
-          <h4>Light Theme</h4>
-          <div
-            style="background: #ffffff; padding: 2rem; display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;"
-            data-theme="modus-modern-light"
-          >
-            <modus-wc-logo name="trimble"></modus-wc-logo>
-            <modus-wc-logo name="siteworks"></modus-wc-logo>
-            <modus-wc-logo name="viewpoint"></modus-wc-logo>
-          </div>
-        </div>
-
-        <div>
-          <h4>Dark Theme</h4>
-          <div
-            style="background: #252a2e; padding: 2rem; display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;"
-            data-theme="modus-modern-dark"
-          >
-            <modus-wc-logo name="trimble"></modus-wc-logo>
-            <modus-wc-logo name="siteworks"></modus-wc-logo>
-            <modus-wc-logo name="viewpoint"></modus-wc-logo>
-          </div>
-        </div>
-
-        <div>
-          <h4>Emblems - Light Theme</h4>
-          <div
-            style="background: #ffffff; padding: 2rem; display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;"
-            data-theme="modus-modern-light"
-          >
-            <modus-wc-logo name="trimble" emblem></modus-wc-logo>
-            <modus-wc-logo name="connect" emblem></modus-wc-logo>
-            <modus-wc-logo name="viewpoint" emblem></modus-wc-logo>
-          </div>
-        </div>
-
-        <div>
-          <h4>Emblems - Dark Theme</h4>
-          <div
-            style="background: #252a2e; padding: 2rem; display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;"
-            data-theme="modus-modern-dark"
-          >
-            <modus-wc-logo name="trimble" emblem></modus-wc-logo>
-            <modus-wc-logo name="connect" emblem></modus-wc-logo>
-            <modus-wc-logo name="viewpoint" emblem></modus-wc-logo>
-          </div>
-        </div>
-      </div>
-    `;
-  },
-};
-
 export const CustomSizeWithClass: Story = {
   render: () => {
     return html`
