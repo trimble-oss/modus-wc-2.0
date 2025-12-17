@@ -3701,7 +3701,7 @@
               "kind": "field",
               "name": "itemSelect",
               "type": {
-                "text": "EventEmitter<{\r\n    value: string;\r\n    selected?: boolean;\r\n  }>"
+                "text": "EventEmitter<{\n    value: string;\n    selected?: boolean;\n  }>"
               },
               "description": "Event emitted when a menu item is selected."
             }
