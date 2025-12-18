@@ -9,11 +9,6 @@ interface ThemeSwitcherArgs {
   'initial-theme'?: Partial<IThemeConfig>;
 }
 
-interface ThemeTestArgs {
-  theme: 'modus-modern' | 'modus-classic';
-  mode: 'light' | 'dark';
-}
-
 const meta: Meta<ThemeSwitcherArgs> = {
   title: 'Components/ThemeSwitcher',
   component: 'modus-wc-theme-switcher',
@@ -59,9 +54,7 @@ const Template: Story = {
 export const Default: Story = { ...Template };
 
 // New story for testing theme configurations
-type ThemeTestStory = StoryObj<ThemeTestArgs>;
-
-const ThemeTestTemplate: ThemeTestStory = {
+const ThemeTestTemplate: Story = {
   render: () => {
     const currentTheme = getCurrentTheme();
 
@@ -103,13 +96,13 @@ const ThemeTestTemplate: ThemeTestStory = {
   },
 };
 
-export const ThemeTest: ThemeTestStory = {
+export const ThemeTest: Story = {
   ...ThemeTestTemplate,
   parameters: {
     docs: {
       description: {
         story:
-          'This example syncs with the active Storybook theme. Toggle between light and dark modes using the toolbar theme switcher to see the components adapt accordingly.',
+          'This example syncs with the active Storybook theme. Toggle between light and dark modes using the theme switcher on the default story to see the components adapt accordingly.',
       },
     },
   },
