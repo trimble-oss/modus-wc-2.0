@@ -5,6 +5,7 @@ export type LogoName =
   | 'trimble'
   | 'siteworks'
   | 'earthworks'
+  | 'financials'
   | 'worksmanager'
   | 'connect'
   | 'unity_construct'
@@ -84,6 +85,14 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     pathDark: 'logos/trimble/earthworks-dark.svg',
     emblemPath: 'logos/emblems/earthworks-emblem.svg',
     emblemPathDark: 'logos/emblems/earthworks-emblem-dark.svg',
+    category: 'trimble',
+  },
+  financials: {
+    displayName: 'Trimble Financials',
+    path: 'logos/trimble/financials.svg',
+    pathDark: 'logos/trimble/financials-dark.svg',
+    emblemPath: 'logos/emblems/financials-emblem.svg',
+    emblemPathDark: 'logos/emblems/financials-emblem-dark.svg',
     category: 'trimble',
   },
   worksmanager: {
