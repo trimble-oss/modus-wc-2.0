@@ -35,7 +35,8 @@ type Story = StoryObj<ThemeSwitcherArgs>;
 // When no data-theme is set on the root element, default to the design system's base theme "modus-modern-light"
 const getCurrentTheme = () => {
   const dataTheme =
-    document.documentElement.getAttribute('data-theme') || 'modus-modern-light';
+    document.documentElement.getAttribute('data-theme') ||
+    'modus-modern-light';
   const mode = dataTheme.endsWith('-dark') ? 'dark' : 'light';
   const theme = dataTheme.replace(`-${mode}`, '');
   return { theme, mode };
