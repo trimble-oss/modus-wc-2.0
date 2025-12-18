@@ -45,7 +45,7 @@ export class ModusWcButton {
   @Prop({ reflect: true }) pressed?: boolean = false;
 
   /** The shape of the button. */
-  @Prop() shape: 'circle' | 'rectangle' | 'square' = 'rectangle';
+  @Prop() shape: 'circle' | 'ellipse' | 'rectangle' | 'square' = 'rectangle';
 
   /** The size of the button. */
   @Prop() size: DaisySize = 'md';
