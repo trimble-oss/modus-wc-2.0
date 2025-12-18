@@ -73,6 +73,7 @@
   --modus-wc-border-radius-xl: 12px;
   --modus-wc-border-radius-2xl: 16px;
   --modus-wc-border-radius-3xl: 24px;
+  --modus-wc-border-radius-rounded: 1000px;
 
   /* Line heights */
   --modus-wc-line-height-xs: 0.5rem;
