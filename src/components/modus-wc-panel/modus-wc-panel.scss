@@ -3,10 +3,10 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 .modus-wc-panel {
-  display: flex;
-  flex-direction: column;
   border: 1px solid var(--modus-wc-color-neutral-200, #e0e0e0);
   border-radius: var(--rounded-box, 1rem);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -32,8 +32,8 @@
 
 .modus-wc-panel-body {
   flex: 1 1 auto;
-  overflow-y: auto;
   min-height: 0;
+  overflow-y: auto;
 }
 
 .modus-wc-panel-footer {
