@@ -2097,6 +2097,7 @@ declare global {
     interface HTMLModusWcAutocompleteElementEventMap {
         "chipRemove": IAutocompleteItem;
         "chipsExpansionChange": { expanded: boolean };
+        "clearClick": void;
         "inputBlur": FocusEvent;
         "inputChange": Event;
         "inputFocus": FocusEvent;
@@ -2744,6 +2745,7 @@ declare global {
         new (): HTMLModusWcTabsElement;
     };
     interface HTMLModusWcTextInputElementEventMap {
+        "clearClick": void;
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
         "inputFocus": FocusEvent;
@@ -3108,6 +3110,10 @@ declare namespace LocalJSX {
           * Event emitted when chips expansion state changes.
          */
         "onChipsExpansionChange"?: (event: ModusWcAutocompleteCustomEvent<{ expanded: boolean }>) => void;
+        /**
+          * Event emitted when the clear button is clicked.
+         */
+        "onClearClick"?: (event: ModusWcAutocompleteCustomEvent<void>) => void;
         /**
           * Event emitted when the input loses focus.
          */
@@ -4802,6 +4808,10 @@ declare namespace LocalJSX {
           * Name of the form control. Submitted with the form as part of a name/value pair.
          */
         "name"?: string;
+        /**
+          * Event emitted when the clear button is clicked.
+         */
+        "onClearClick"?: (event: ModusWcTextInputCustomEvent<void>) => void;
         /**
           * Event emitted when the input loses focus.
          */
