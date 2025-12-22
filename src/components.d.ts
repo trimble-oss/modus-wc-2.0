@@ -1898,9 +1898,9 @@ export namespace Components {
          */
         "hierarchy": TypographyHierarchy;
         /**
-          * The text label to display if no slot content is provided.
+          * The text label to display.
          */
-        "label"?: string;
+        "label": string;
         /**
           * The size of the font.
          */
@@ -5126,9 +5126,9 @@ declare namespace LocalJSX {
          */
         "hierarchy"?: TypographyHierarchy;
         /**
-          * The text label to display if no slot content is provided.
+          * The text label to display.
          */
-        "label"?: string;
+        "label": string;
         /**
           * The size of the font.
          */

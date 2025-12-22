@@ -1,26 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`modus-wc-typography - label prop should prioritize slot content over label prop 1`] = `
+exports[`modus-wc-typography - label prop should render with label prop 1`] = `
 <modus-wc-typography label="Label text">
-  <!---->
-  <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
-    Slot content
-  </p>
-</modus-wc-typography>
-`;
-
-exports[`modus-wc-typography - label prop should render label when slot content is only whitespace 1`] = `
-<modus-wc-typography label="Label text">
-  <!---->
-  <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
-    Label text
-  </p>
-</modus-wc-typography>
-`;
-
-exports[`modus-wc-typography - label prop should render with label prop when no slot content is provided 1`] = `
-<modus-wc-typography label="Label text">
-  <!---->
   <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
     Label text
   </p>
@@ -28,8 +9,7 @@ exports[`modus-wc-typography - label prop should render with label prop when no 
 `;
 
 exports[`modus-wc-typography should render headings 1`] = `
-<modus-wc-typography hierarchy="h1">
-  <!---->
+<modus-wc-typography hierarchy="h1" label="Test content">
   <h1 class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
     Test content
   </h1>
@@ -37,8 +17,7 @@ exports[`modus-wc-typography should render headings 1`] = `
 `;
 
 exports[`modus-wc-typography should render with custom props 1`] = `
-<modus-wc-typography custom-class="test-class" hierarchy="p" size="sm" weight="bold">
-  <!---->
+<modus-wc-typography custom-class="test-class" hierarchy="p" label="Test content" size="sm" weight="bold">
   <p class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-bold test-class">
     Test content
   </p>
@@ -46,8 +25,7 @@ exports[`modus-wc-typography should render with custom props 1`] = `
 `;
 
 exports[`modus-wc-typography should render with default props 1`] = `
-<modus-wc-typography>
-  <!---->
+<modus-wc-typography label="Test content">
   <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
     Test content
   </p>

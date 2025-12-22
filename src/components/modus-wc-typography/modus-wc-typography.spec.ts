@@ -7,7 +7,7 @@ describe('modus-wc-typography', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWCTypography],
-      html: `<modus-wc-typography>Test content</modus-wc-typography>`,
+      html: `<modus-wc-typography label="Test content"></modus-wc-typography>`,
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -15,7 +15,7 @@ describe('modus-wc-typography', () => {
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWCTypography],
-      html: `<modus-wc-typography custom-class="test-class" size="sm" hierarchy="p" weight="bold">Test content</modus-wc-typography>`,
+      html: `<modus-wc-typography custom-class="test-class" size="sm" hierarchy="p" weight="bold" label="Test content"></modus-wc-typography>`,
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -23,7 +23,7 @@ describe('modus-wc-typography', () => {
   it('should render headings', async () => {
     const page = await newSpecPage({
       components: [ModusWCTypography],
-      html: `<modus-wc-typography hierarchy="h1">Test content</modus-wc-typography>`,
+      html: `<modus-wc-typography hierarchy="h1" label="Test content"></modus-wc-typography>`,
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -33,7 +33,7 @@ describe('modus-wc-typography - heading override class', () => {
   it('should add override class for heading with size/weight overrides', async () => {
     const page = await newSpecPage({
       components: [ModusWCTypography],
-      html: `<modus-wc-typography hierarchy="h2" size="lg" weight="bold">Heading</modus-wc-typography>`,
+      html: `<modus-wc-typography hierarchy="h2" size="lg" weight="bold" label="Heading"></modus-wc-typography>`,
     });
     expect(page.root).toBeDefined();
     const el = page.root && page.root.querySelector('h2');
@@ -43,32 +43,10 @@ describe('modus-wc-typography - heading override class', () => {
 });
 
 describe('modus-wc-typography - label prop', () => {
-  it('should render with label prop when no slot content is provided', async () => {
+  it('should render with label prop', async () => {
     const page = await newSpecPage({
       components: [ModusWCTypography],
       html: `<modus-wc-typography label="Label text"></modus-wc-typography>`,
-    });
-    expect(page.root).toMatchSnapshot();
-    const el = page.root && page.root.querySelector('p');
-    expect(el).not.toBeNull();
-    expect(el && el.textContent).toBe('Label text');
-  });
-
-  it('should prioritize slot content over label prop', async () => {
-    const page = await newSpecPage({
-      components: [ModusWCTypography],
-      html: `<modus-wc-typography label="Label text">Slot content</modus-wc-typography>`,
-    });
-    expect(page.root).toMatchSnapshot();
-    const el = page.root && page.root.querySelector('p');
-    expect(el).not.toBeNull();
-    expect(el && el.textContent).toBe('Slot content');
-  });
-
-  it('should render label when slot content is only whitespace', async () => {
-    const page = await newSpecPage({
-      components: [ModusWCTypography],
-      html: `<modus-wc-typography label="Label text">   </modus-wc-typography>`,
     });
     expect(page.root).toMatchSnapshot();
     const el = page.root && page.root.querySelector('p');

@@ -3611,7 +3611,7 @@
               "kind": "field",
               "name": "itemSelect",
               "type": {
-                "text": "EventEmitter<{ value: string }>"
+                "text": "EventEmitter<{\r\n    value: string;\r\n    selected?: boolean;\r\n  }>"
               },
               "description": "Event emitted when a menu item is selected."
             }
@@ -7260,6 +7260,14 @@
               "description": "The hierarchy of the typography component.",
               "type": {
                 "text": "TypographyHierarchy"
+              }
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "description": "The text label to display if no slot content is provided.",
+              "type": {
+                "text": "string"
               }
             },
             {
