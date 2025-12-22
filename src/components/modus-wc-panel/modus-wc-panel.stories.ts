@@ -29,49 +29,36 @@ type Story = StoryObj<PanelArgs>;
 export const Default: Story = {
   args: {
     width: '250px',
-    height: '400px',
+    height: '500px',
     floating: false,
   },
   render: (args) => {
     // prettier-ignore
     return html`
 <style>
-  .panel-header {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    gap: 8px;
-    padding: 12px;
-  }
-  .panel-item {
-    cursor: pointer;
-    padding: 12px;
-  }
-  .panel-footer {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    gap: 8px;
+  .panel-section {
     padding: 12px;
   }
 </style>
 <modus-wc-panel custom-class="${ifDefined(args['custom-class'])}" width="${ifDefined(args.width)}" height="${ifDefined(args.height)}" ?floating="${args.floating}">
-  <div slot="header" class="panel-header">
-    <modus-wc-icon name="home"></modus-wc-icon>
-    <strong>Home</strong>
-  </div>
-  <div slot="body" class="panel-item">Dashboard</div>
-  <div slot="body" class="panel-item">Projects</div>
-  <div slot="body" class="panel-item">Team</div>
-  <div slot="body" class="panel-item">Calendar</div>
-  <div slot="body" class="panel-item">Documents</div>
-  <div slot="body" class="panel-item">Reports</div>
-  <div slot="body" class="panel-item">Analytics</div>
-  <div slot="body" class="panel-item">Messages</div>
-  <div slot="footer" class="panel-footer">
-    <modus-wc-icon name="settings"></modus-wc-icon>
-    Settings
-  </div>
+  <modus-wc-menu-item label="Home" slot="header" custom-class="panel-section">
+    <modus-wc-icon slot="start-icon" name="home"></modus-wc-icon>
+  </modus-wc-menu-item>
+
+  <modus-wc-menu size="lg" slot="body">
+    <modus-wc-menu-item label="Dashboard" value="dashboard"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Projects" value="projects"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Team" value="team"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Calendar" value="calendar"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Documents" value="documents"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Reports" value="reports"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Analytics" value="analytics"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Messages" value="messages"></modus-wc-menu-item>
+  </modus-wc-menu>
+  
+  <modus-wc-menu-item label="Settings" slot="footer" custom-class="panel-section">
+   <modus-wc-icon slot="start-icon" name="settings"></modus-wc-icon>
+  </modus-wc-menu-item>
 </modus-wc-panel>
     `;
   },
@@ -87,40 +74,27 @@ export const Floating: Story = {
     // prettier-ignore
     return html`
 <style>
-  .panel-header {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    gap: 8px;
-    padding: 12px;
-  }
-  .panel-item {
-    cursor: pointer;
-    padding: 12px;
-  }
-  .panel-footer {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    gap: 8px;
+  .panel-section {
     padding: 12px;
   }
 </style>
 <modus-wc-panel custom-class="${ifDefined(args['custom-class'])}" width="${ifDefined(args.width)}" height="${ifDefined(args.height)}" ?floating="${args.floating}">
-  <div slot="header" class="panel-header">
-    <modus-wc-icon name="menu"></modus-wc-icon>
-    <strong>Menu</strong>
-  </div>
-  <div slot="body" class="panel-item">Files</div>
-  <div slot="body" class="panel-item">Inbox</div>
-  <div slot="body" class="panel-item">Starred</div>
-  <div slot="body" class="panel-item">Recent</div>
-  <div slot="body" class="panel-item">Shared</div>
-  <div slot="body" class="panel-item">Archive</div>
-  <div slot="footer" class="panel-footer">
-    <modus-wc-icon name="help"></modus-wc-icon>
-    Help
-  </div>
+  <modus-wc-menu-item label="Menu" slot="header" custom-class="panel-section">
+    <modus-wc-icon slot="start-icon" name="menu"></modus-wc-icon>
+  </modus-wc-menu-item>
+
+  <modus-wc-menu size="lg" slot="body">
+    <modus-wc-menu-item label="Files" value="files"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Inbox" value="inbox"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Starred" value="starred"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Recent" value="recent"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Shared" value="shared"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Archive" value="archive"></modus-wc-menu-item>
+  </modus-wc-menu>
+
+  <modus-wc-menu-item label="Help" slot="footer" custom-class="panel-section">
+    <modus-wc-icon slot="start-icon" name="help"></modus-wc-icon>
+  </modus-wc-menu-item>  
 </modus-wc-panel>
     `;
   },
@@ -134,23 +108,18 @@ export const BodyOnly: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-<style>
-  .panel-item {
-    cursor: pointer;
-    padding: 12px;
-  }
-</style>
 <modus-wc-panel custom-class="${ifDefined(args['custom-class'])}" width="${ifDefined(args.width)}" height="${ifDefined(args.height)}" ?floating="${args.floating}">
-  <div slot="body" class="panel-item">Dashboard</div>
-  <div slot="body" class="panel-item">Projects</div>
-  <div slot="body" class="panel-item">Team</div>
-  <div slot="body" class="panel-item">Calendar</div>
-  <div slot="body" class="panel-item">Documents</div>
-  <div slot="body" class="panel-item">Reports</div>
-  <div slot="body" class="panel-item">Analytics</div>
-  <div slot="body" class="panel-item">Messages</div>
-  <div slot="body" class="panel-item">Tasks</div>
-  <div slot="body" class="panel-item">Notifications</div>
+  <modus-wc-menu size="lg" slot="body">
+    <modus-wc-menu-item label="Dashboard" value="dashboard"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Projects" value="projects"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Team" value="team"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Calendar" value="calendar"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Documents" value="documents"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Reports" value="reports"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Analytics" value="analytics"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Messages" value="messages"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Tasks" value="tasks"></modus-wc-menu-item>
+  </modus-wc-menu>
 </modus-wc-panel>
     `;
   },

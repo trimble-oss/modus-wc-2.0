@@ -1707,7 +1707,7 @@
               "default": "'rectangle'",
               "description": "The shape of the button.",
               "type": {
-                "text": "'circle' | 'rectangle' | 'square'"
+                "text": "'circle' | 'ellipse' | 'rectangle' | 'square'"
               }
             },
             {
@@ -4494,6 +4494,90 @@
           "declaration": {
             "name": "ModusWcPagination",
             "module": "src/components/modus-wc-pagination/modus-wc-pagination.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-panel/modus-wc-panel.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable panel component used to organize content in a structured layout.",
+          "name": "ModusWcPanel",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the outer div.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "floating",
+              "fieldName": "floating",
+              "default": "false",
+              "description": "Enable floating mode with elevated shadow.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "height",
+              "fieldName": "height",
+              "default": "'700px'",
+              "description": "Height of the panel in pixels.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "width",
+              "fieldName": "width",
+              "default": "'350px'",
+              "description": "Width of the panel in pixels.",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-panel",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcPanel",
+          "declaration": {
+            "name": "ModusWcPanel",
+            "module": "src/components/modus-wc-panel/modus-wc-panel.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-panel",
+          "declaration": {
+            "name": "ModusWcPanel",
+            "module": "src/components/modus-wc-panel/modus-wc-panel.tsx"
           }
         }
       ]

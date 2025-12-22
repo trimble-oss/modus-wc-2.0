@@ -326,7 +326,7 @@ export namespace Components {
         /**
           * The shape of the button.
          */
-        "shape": 'circle' | 'rectangle' | 'square';
+        "shape": 'circle' | 'ellipse' | 'rectangle' | 'square';
         /**
           * The size of the button.
          */
@@ -1121,6 +1121,27 @@ export namespace Components {
           * Size of the pagination buttons
          */
         "size": ModusSize;
+    }
+    /**
+     * A customizable panel component used to organize content in a structured layout.
+     */
+    interface ModusWcPanel {
+        /**
+          * Custom CSS class to apply to the outer div.
+         */
+        "customClass"?: string;
+        /**
+          * Enable floating mode with elevated shadow.
+         */
+        "floating"?: boolean;
+        /**
+          * Height of the panel in pixels.
+         */
+        "height"?: string;
+        /**
+          * Width of the panel in pixels.
+         */
+        "width"?: string;
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -2526,6 +2547,15 @@ declare global {
         new (): HTMLModusWcPaginationElement;
     };
     /**
+     * A customizable panel component used to organize content in a structured layout.
+     */
+    interface HTMLModusWcPanelElement extends Components.ModusWcPanel, HTMLStencilElement {
+    }
+    var HTMLModusWcPanelElement: {
+        prototype: HTMLModusWcPanelElement;
+        new (): HTMLModusWcPanelElement;
+    };
+    /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
      * The radial variant supports slotting in custom HTML to be displayed within the progress circle
      */
@@ -2932,6 +2962,7 @@ declare global {
         "modus-wc-navbar": HTMLModusWcNavbarElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-pagination": HTMLModusWcPaginationElement;
+        "modus-wc-panel": HTMLModusWcPanelElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
         "modus-wc-rating": HTMLModusWcRatingElement;
@@ -3267,7 +3298,7 @@ declare namespace LocalJSX {
         /**
           * The shape of the button.
          */
-        "shape"?: 'circle' | 'rectangle' | 'square';
+        "shape"?: 'circle' | 'ellipse' | 'rectangle' | 'square';
         /**
           * The size of the button.
          */
@@ -4206,6 +4237,27 @@ declare namespace LocalJSX {
           * Size of the pagination buttons
          */
         "size"?: ModusSize;
+    }
+    /**
+     * A customizable panel component used to organize content in a structured layout.
+     */
+    interface ModusWcPanel {
+        /**
+          * Custom CSS class to apply to the outer div.
+         */
+        "customClass"?: string;
+        /**
+          * Enable floating mode with elevated shadow.
+         */
+        "floating"?: boolean;
+        /**
+          * Height of the panel in pixels.
+         */
+        "height"?: string;
+        /**
+          * Width of the panel in pixels.
+         */
+        "width"?: string;
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -5189,6 +5241,7 @@ declare namespace LocalJSX {
         "modus-wc-navbar": ModusWcNavbar;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-pagination": ModusWcPagination;
+        "modus-wc-panel": ModusWcPanel;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
         "modus-wc-rating": ModusWcRating;
@@ -5337,6 +5390,10 @@ declare module "@stencil/core" {
              * Pagination component to navigate through pages of content
              */
             "modus-wc-pagination": LocalJSX.ModusWcPagination & JSXBase.HTMLAttributes<HTMLModusWcPaginationElement>;
+            /**
+             * A customizable panel component used to organize content in a structured layout.
+             */
+            "modus-wc-panel": LocalJSX.ModusWcPanel & JSXBase.HTMLAttributes<HTMLModusWcPanelElement>;
             /**
              * A customizable progress component used to show the progress of a task or show the passing of time.
              * The radial variant supports slotting in custom HTML to be displayed within the progress circle
