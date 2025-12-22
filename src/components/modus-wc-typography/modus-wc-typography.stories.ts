@@ -77,19 +77,40 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
-export const Heading1: Story = { ...Template, args: { hierarchy: 'h1' } };
+export const Heading1: Story = {
+  ...Template,
+  args: { hierarchy: 'h1', label: content },
+};
 
-export const Heading2: Story = { ...Template, args: { hierarchy: 'h2' } };
+export const Heading2: Story = {
+  ...Template,
+  args: { hierarchy: 'h2', label: content },
+};
 
-export const Heading3: Story = { ...Template, args: { hierarchy: 'h3' } };
+export const Heading3: Story = {
+  ...Template,
+  args: { hierarchy: 'h3', label: content },
+};
 
-export const Heading4: Story = { ...Template, args: { hierarchy: 'h4' } };
+export const Heading4: Story = {
+  ...Template,
+  args: { hierarchy: 'h4', label: content },
+};
 
-export const Heading5: Story = { ...Template, args: { hierarchy: 'h5' } };
+export const Heading5: Story = {
+  ...Template,
+  args: { hierarchy: 'h5', label: content },
+};
 
-export const Heading6: Story = { ...Template, args: { hierarchy: 'h6' } };
+export const Heading6: Story = {
+  ...Template,
+  args: { hierarchy: 'h6', label: content },
+};
 
-export const Paragraph: Story = { ...Template, args: { hierarchy: 'p' } };
+export const Paragraph: Story = {
+  ...Template,
+  args: { hierarchy: 'p', label: content },
+};
 
 export const WithLabel: Story = {
   ...Template,
