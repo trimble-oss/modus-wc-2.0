@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-panel should render with custom class 1`] = `
+<modus-wc-panel custom-class="custom-panel-class">
+  <!---->
+  <div class="custom-panel-class modus-wc-panel" style="width: 350px; height: 700px;">
+    <div class="modus-wc-panel-header"></div>
+    <div class="modus-wc-panel-body"></div>
+    <div class="modus-wc-panel-footer"></div>
+  </div>
+</modus-wc-panel>
+`;
+
+exports[`modus-wc-panel should render with custom width and height 1`] = `
+<modus-wc-panel height="600px" width="300px">
+  <!---->
+  <div class="modus-wc-panel" style="width: 300px; height: 600px;">
+    <div class="modus-wc-panel-header"></div>
+    <div class="modus-wc-panel-body"></div>
+    <div class="modus-wc-panel-footer"></div>
+  </div>
+</modus-wc-panel>
+`;
+
+exports[`modus-wc-panel should render with default props 1`] = `
+<modus-wc-panel>
+  <!---->
+  <div class="modus-wc-panel" style="width: 350px; height: 700px;">
+    <div class="modus-wc-panel-header"></div>
+    <div class="modus-wc-panel-body"></div>
+    <div class="modus-wc-panel-footer"></div>
+  </div>
+</modus-wc-panel>
+`;
+
+exports[`modus-wc-panel should render with floating prop 1`] = `
+<modus-wc-panel floating="">
+  <!---->
+  <div class="modus-wc-panel modus-wc-panel-floating" style="width: 350px; height: 700px;">
+    <div class="modus-wc-panel-header"></div>
+    <div class="modus-wc-panel-body"></div>
+    <div class="modus-wc-panel-footer"></div>
+  </div>
+</modus-wc-panel>
+`;
+
+exports[`modus-wc-panel should render with header, body, and footer slots 1`] = `
+<modus-wc-panel>
+  <!---->
+  <div class="modus-wc-panel" style="width: 350px; height: 700px;">
+    <div class="modus-wc-panel-header">
+      <div slot="header">
+        Header Content
+      </div>
+    </div>
+    <div class="modus-wc-panel-body">
+      <div slot="body">
+        Body Content
+      </div>
+    </div>
+    <div class="modus-wc-panel-footer">
+      <div slot="footer">
+        Footer Content
+      </div>
+    </div>
+  </div>
+</modus-wc-panel>
+`;
+
+exports[`modus-wc-panel should render with only body and footer slots 1`] = `
+<modus-wc-panel>
+  <!---->
+  <div class="modus-wc-panel" style="width: 350px; height: 700px;">
+    <div class="modus-wc-panel-header"></div>
+    <div class="modus-wc-panel-body">
+      <div slot="body">
+        Body Content
+      </div>
+    </div>
+    <div class="modus-wc-panel-footer">
+      <div slot="footer">
+        Footer Content
+      </div>
+    </div>
+  </div>
+</modus-wc-panel>
+`;
+
+exports[`modus-wc-panel should render with only body slot 1`] = `
+<modus-wc-panel>
+  <!---->
+  <div class="modus-wc-panel" style="width: 350px; height: 700px;">
+    <div class="modus-wc-panel-header"></div>
+    <div class="modus-wc-panel-body">
+      <div slot="body">
+        Body Only Content
+      </div>
+    </div>
+    <div class="modus-wc-panel-footer"></div>
+  </div>
+</modus-wc-panel>
+`;
+
+exports[`modus-wc-panel should render with only header and body slots 1`] = `
+<modus-wc-panel>
+  <!---->
+  <div class="modus-wc-panel" style="width: 350px; height: 700px;">
+    <div class="modus-wc-panel-header">
+      <div slot="header">
+        Header Content
+      </div>
+    </div>
+    <div class="modus-wc-panel-body">
+      <div slot="body">
+        Body Content
+      </div>
+    </div>
+    <div class="modus-wc-panel-footer"></div>
+  </div>
+</modus-wc-panel>
+`;
