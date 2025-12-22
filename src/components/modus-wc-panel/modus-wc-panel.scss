@@ -43,8 +43,3 @@
 .modus-wc-panel-footer:empty {
   display: none;
 }
-
-[data-theme='modus-classic-light'] .modus-wc-panel,
-[data-theme='modus-classic-dark'] .modus-wc-panel {
-  border-radius: var(--modus-wc-border-radius-lg);
-}

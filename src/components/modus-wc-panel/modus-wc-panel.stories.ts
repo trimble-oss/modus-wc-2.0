@@ -41,9 +41,11 @@ export const Default: Story = {
   }
 </style>
 <modus-wc-panel custom-class="${ifDefined(args['custom-class'])}" width="${ifDefined(args.width)}" height="${ifDefined(args.height)}" ?floating="${args.floating}">
-  <modus-wc-menu-item label="Home" slot="header" custom-class="panel-section">
-    <modus-wc-icon slot="start-icon" name="home"></modus-wc-icon>
-  </modus-wc-menu-item>
+  <modus-wc-menu slot="header">  
+    <modus-wc-menu-item label="Home" custom-class="panel-section">
+      <modus-wc-icon slot="start-icon" name="home"></modus-wc-icon>
+    </modus-wc-menu-item>
+  </modus-wc-menu>
 
   <modus-wc-menu size="lg" slot="body">
     <modus-wc-menu-item label="Dashboard" value="dashboard"></modus-wc-menu-item>
@@ -55,10 +57,12 @@ export const Default: Story = {
     <modus-wc-menu-item label="Analytics" value="analytics"></modus-wc-menu-item>
     <modus-wc-menu-item label="Messages" value="messages"></modus-wc-menu-item>
   </modus-wc-menu>
-  
-  <modus-wc-menu-item label="Settings" slot="footer" custom-class="panel-section">
-   <modus-wc-icon slot="start-icon" name="settings"></modus-wc-icon>
-  </modus-wc-menu-item>
+
+  <modus-wc-menu slot="footer">   
+    <modus-wc-menu-item label="Settings" custom-class="panel-section">
+      <modus-wc-icon slot="start-icon" name="settings"></modus-wc-icon>
+    </modus-wc-menu-item>
+  </modus-wc-menu>
 </modus-wc-panel>
     `;
   },
@@ -79,9 +83,11 @@ export const Floating: Story = {
   }
 </style>
 <modus-wc-panel custom-class="${ifDefined(args['custom-class'])}" width="${ifDefined(args.width)}" height="${ifDefined(args.height)}" ?floating="${args.floating}">
-  <modus-wc-menu-item label="Menu" slot="header" custom-class="panel-section">
-    <modus-wc-icon slot="start-icon" name="menu"></modus-wc-icon>
-  </modus-wc-menu-item>
+  <modus-wc-menu slot="header">
+    <modus-wc-menu-item label="Menu" custom-class="panel-section">
+      <modus-wc-icon slot="start-icon" name="menu"></modus-wc-icon>
+    </modus-wc-menu-item>
+  </modus-wc-menu>
 
   <modus-wc-menu size="lg" slot="body">
     <modus-wc-menu-item label="Files" value="files"></modus-wc-menu-item>
@@ -90,11 +96,15 @@ export const Floating: Story = {
     <modus-wc-menu-item label="Recent" value="recent"></modus-wc-menu-item>
     <modus-wc-menu-item label="Shared" value="shared"></modus-wc-menu-item>
     <modus-wc-menu-item label="Archive" value="archive"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Trash" value="trash"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Settings" value="settings"></modus-wc-menu-item>
   </modus-wc-menu>
 
-  <modus-wc-menu-item label="Help" slot="footer" custom-class="panel-section">
-    <modus-wc-icon slot="start-icon" name="help"></modus-wc-icon>
-  </modus-wc-menu-item>  
+  <modus-wc-menu slot="footer">
+    <modus-wc-menu-item label="Help" custom-class="panel-section">
+      <modus-wc-icon slot="start-icon" name="help"></modus-wc-icon>
+    </modus-wc-menu-item>
+  </modus-wc-menu>
 </modus-wc-panel>
     `;
   },
@@ -103,7 +113,7 @@ export const Floating: Story = {
 export const BodyOnly: Story = {
   args: {
     width: '250px',
-    height: '500px',
+    height: 'auto',
   },
   render: (args) => {
     // prettier-ignore
