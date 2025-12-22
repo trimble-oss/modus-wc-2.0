@@ -35,20 +35,40 @@ export const Default: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
+<style>
+  .panel-header {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+  }
+  .panel-item {
+    cursor: pointer;
+    padding: 12px;
+  }
+  .panel-footer {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+  }
+</style>
 <modus-wc-panel custom-class="${ifDefined(args['custom-class'])}" width="${ifDefined(args.width)}" height="${ifDefined(args.height)}" ?floating="${args.floating}">
-  <div slot="header" style="padding: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+  <div slot="header" class="panel-header">
     <modus-wc-icon name="home"></modus-wc-icon>
     <strong>Home</strong>
   </div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Dashboard</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Projects</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Team</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Calendar</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Documents</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Reports</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Analytics</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Messages</div>
-  <div slot="footer" style="padding: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+  <div slot="body" class="panel-item">Dashboard</div>
+  <div slot="body" class="panel-item">Projects</div>
+  <div slot="body" class="panel-item">Team</div>
+  <div slot="body" class="panel-item">Calendar</div>
+  <div slot="body" class="panel-item">Documents</div>
+  <div slot="body" class="panel-item">Reports</div>
+  <div slot="body" class="panel-item">Analytics</div>
+  <div slot="body" class="panel-item">Messages</div>
+  <div slot="footer" class="panel-footer">
     <modus-wc-icon name="settings"></modus-wc-icon>
     Settings
   </div>
@@ -66,18 +86,38 @@ export const Floating: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
+<style>
+  .panel-header {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+  }
+  .panel-item {
+    cursor: pointer;
+    padding: 12px;
+  }
+  .panel-footer {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+  }
+</style>
 <modus-wc-panel custom-class="${ifDefined(args['custom-class'])}" width="${ifDefined(args.width)}" height="${ifDefined(args.height)}" ?floating="${args.floating}">
-  <div slot="header" style="padding: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+  <div slot="header" class="panel-header">
     <modus-wc-icon name="menu"></modus-wc-icon>
     <strong>Menu</strong>
   </div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Files</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Inbox</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Starred</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Recent</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Shared</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Archive</div>
-  <div slot="footer" style="padding: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+  <div slot="body" class="panel-item">Files</div>
+  <div slot="body" class="panel-item">Inbox</div>
+  <div slot="body" class="panel-item">Starred</div>
+  <div slot="body" class="panel-item">Recent</div>
+  <div slot="body" class="panel-item">Shared</div>
+  <div slot="body" class="panel-item">Archive</div>
+  <div slot="footer" class="panel-footer">
     <modus-wc-icon name="help"></modus-wc-icon>
     Help
   </div>
@@ -94,17 +134,23 @@ export const BodyOnly: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
+<style>
+  .panel-item {
+    cursor: pointer;
+    padding: 12px;
+  }
+</style>
 <modus-wc-panel custom-class="${ifDefined(args['custom-class'])}" width="${ifDefined(args.width)}" height="${ifDefined(args.height)}" ?floating="${args.floating}">
-  <div slot="body" style="padding: 12px; cursor: pointer;">Dashboard</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Projects</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Team</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Calendar</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Documents</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Reports</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Analytics</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Messages</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Tasks</div>
-  <div slot="body" style="padding: 12px; cursor: pointer;">Notifications</div>
+  <div slot="body" class="panel-item">Dashboard</div>
+  <div slot="body" class="panel-item">Projects</div>
+  <div slot="body" class="panel-item">Team</div>
+  <div slot="body" class="panel-item">Calendar</div>
+  <div slot="body" class="panel-item">Documents</div>
+  <div slot="body" class="panel-item">Reports</div>
+  <div slot="body" class="panel-item">Analytics</div>
+  <div slot="body" class="panel-item">Messages</div>
+  <div slot="body" class="panel-item">Tasks</div>
+  <div slot="body" class="panel-item">Notifications</div>
 </modus-wc-panel>
     `;
   },

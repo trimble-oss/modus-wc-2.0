@@ -3,7 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 .modus-wc-panel {
-  border: 1px solid var(--modus-wc-color-neutral-200, #e0e0e0);
+  border: 1px solid var(--modus-wc-color-gray-0);
   border-radius: var(--rounded-box, 1rem);
   display: flex;
   flex-direction: column;
@@ -46,5 +46,5 @@
 
 [data-theme='modus-classic-light'] .modus-wc-panel,
 [data-theme='modus-classic-dark'] .modus-wc-panel {
-  border-radius: 0.5rem;
+  border-radius: var(--modus-wc-border-radius-lg);
 }
