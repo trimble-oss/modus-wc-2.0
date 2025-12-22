@@ -1898,6 +1898,10 @@ export namespace Components {
          */
         "hierarchy": TypographyHierarchy;
         /**
+          * The text label to display.
+         */
+        "label": string;
+        /**
           * The size of the font.
          */
         "size"?: TypographySize;
@@ -5131,6 +5135,10 @@ declare namespace LocalJSX {
           * The hierarchy of the typography component.
          */
         "hierarchy"?: TypographyHierarchy;
+        /**
+          * The text label to display.
+         */
+        "label": string;
         /**
           * The size of the font.
          */
