@@ -30,7 +30,7 @@ modus-wc-collapse .modus-wc-collapse {
     font-size: var(--modus-wc-font-size-sm);
   }
 
-  modus-wc-icon {
+  summary .modus-wc-inline-flex.modus-wc-items-center modus-wc-icon {
     height: 24px;
     margin-inline-end: var(--modus-wc-spacing-sm);
   }
