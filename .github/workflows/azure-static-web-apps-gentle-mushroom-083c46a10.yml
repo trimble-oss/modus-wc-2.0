@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-22.04
     name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcb5dd907a8 # v5.0.0
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           lfs: false
           persist-credentials: false
@@ -45,4 +45,3 @@ jobs:
           app_location: 'storybook-static' # App source code path (Storybook build output)
           api_location: '' # Api source code path - optional
           output_location: '' # Built app content directory - optional
-
