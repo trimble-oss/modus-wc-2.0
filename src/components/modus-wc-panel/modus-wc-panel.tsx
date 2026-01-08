@@ -4,6 +4,8 @@ import { convertPropsToClasses } from './modus-wc-panel.tailwind';
 
 /**
  * A customizable panel component used to organize content in a structured layout.
+ *
+ * The component supports `<slot>` called 'header', 'body', and 'footer' for injecting custom HTML.
  */
 @Component({
   tag: 'modus-wc-panel',

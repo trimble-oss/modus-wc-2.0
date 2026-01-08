@@ -7,7 +7,7 @@
 
 A customizable button component used to create buttons with different sizes, variants, and types.
 
-The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
+The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
 
 ## Properties
 
@@ -18,7 +18,7 @@ The component supports a `<slot>` for injecting content within the button, simil
 | `disabled`    | `disabled`     | If true, the button will be disabled.                                | `boolean \| undefined`                                            | `false`       |
 | `fullWidth`   | `full-width`   | If true, the button will take the full width of its container.       | `boolean \| undefined`                                            | `false`       |
 | `pressed`     | `pressed`      | If true, the button will be in a pressed state (for toggle buttons). | `boolean \| undefined`                                            | `false`       |
-| `shape`       | `shape`        | The shape of the button.                                             | `"circle" \| "rectangle" \| "square"`                             | `'rectangle'` |
+| `shape`       | `shape`        | The shape of the button.                                             | `"circle" \| "ellipse" \| "rectangle" \| "square"`                | `'rectangle'` |
 | `size`        | `size`         | The size of the button.                                              | `"lg" \| "md" \| "sm" \| "xs"`                                    | `'md'`        |
 | `type`        | `type`         | The type of the button.                                              | `"button" \| "reset" \| "submit"`                                 | `'button'`    |
 | `variant`     | `variant`      | The variant of the button.                                           | `"borderless" \| "filled" \| "outlined"`                          | `'filled'`    |

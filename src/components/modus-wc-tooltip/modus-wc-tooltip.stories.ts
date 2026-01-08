@@ -29,6 +29,7 @@ const meta: Meta<TooltipArgs> = {
       description: {
         component: `
 A customizable tooltip component used to create tooltips with different content.
+\nThe component supports a \`<slot>\` for injecting custom tooltip content.
 
 ### Features
 - **Escape Key Dismissal**: Tooltips can be dismissed by pressing the Escape key
@@ -38,6 +39,8 @@ A customizable tooltip component used to create tooltips with different content.
 ### Keyboard Interaction
 - Press **Escape** to dismiss the tooltip while it's visible
 - The tooltip will automatically re-enable on mouse enter
+
+
         `,
       },
     },
