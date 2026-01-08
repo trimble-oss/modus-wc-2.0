@@ -1,7 +1,6 @@
 @font-face {
   font-family: 'modus-icons';
-  src: url('https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-outlined/fonts/modus-icons.woff2')
-    format('woff2');
+  src: url('./assets/fonts/modus-icons-outlined.woff2') format('woff2');
   font-style: normal;
   font-weight: normal;
   font-display: swap;
@@ -9,8 +8,7 @@
 
 @font-face {
   font-family: 'modus-icons-outlined';
-  src: url('https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-outlined/fonts/modus-icons.woff2')
-    format('woff2');
+  src: url('./assets/fonts/modus-icons-outlined.woff2') format('woff2');
   font-style: normal;
   font-weight: normal;
   font-display: swap;
@@ -18,8 +16,7 @@
 
 @font-face {
   font-family: 'modus-icons-solid';
-  src: url('https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-solid/fonts/modus-icons.woff2')
-    format('woff2');
+  src: url('./assets/fonts/modus-icons-solid.woff2') format('woff2');
   font-style: normal;
   font-weight: normal;
   font-display: swap;
