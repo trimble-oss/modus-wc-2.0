@@ -39,8 +39,6 @@ A customizable tooltip component used to create tooltips with different content.
 ### Keyboard Interaction
 - Press **Escape** to dismiss the tooltip while it's visible
 - The tooltip will automatically re-enable on mouse enter
-
-
         `,
       },
     },
