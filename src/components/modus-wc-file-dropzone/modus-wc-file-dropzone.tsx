@@ -408,7 +408,7 @@ export class ModusWcFileDropzone {
                   class={iconClass}
                   name={iconState}
                   size="lg"
-                  variant="solid"
+                  // variant="solid"
                 ></modus-wc-icon>
               )}
               <span>{message}</span>

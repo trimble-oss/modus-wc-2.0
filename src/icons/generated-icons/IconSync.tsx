@@ -1,0 +1,20 @@
+/**********************************************************************
+  THIS IS AN AUTOMATICALLY GENERATED FILE, DO NOT EDIT DIRECTLY.
+***********************************************************************/
+
+import { FunctionalComponent, h } from '@stencil/core';
+import { IconProps } from '../ModusIconMap';
+
+export const IconSync: FunctionalComponent<IconProps> = (props: IconProps) => (
+  <svg
+    class={props.pressed ? 'icon-sync pressed' : 'icon-sync'}
+    height={props.size ?? '16'}
+    width={props.size ?? '16'}
+    viewBox="0 0 24 24"
+    fill={props.color ?? 'currentColor'}
+    xmlns="http://www.w3.org/2000/svg"
+    onClick={props.onClick ? (event) => props.onClick!(event) : undefined}
+  >
+    <path d="M11.99 4V2.21c0-.45-.54-.67-.85-.35l-2.8 2.79c-.2.2-.2.51 0 .71l2.79 2.79c.32.31.86.09.86-.36V6c3.31 0 6 2.69 6 6 0 .79-.15 1.56-.44 2.25-.15.36-.04.77.23 1.04.51.51 1.37.33 1.64-.34.37-.91.57-1.91.57-2.95 0-4.42-3.58-8-8-8m0 14c-3.31 0-6-2.69-6-6 0-.79.15-1.56.44-2.25.15-.36.04-.77-.23-1.04-.51-.51-1.37-.33-1.64.34-.37.91-.57 1.91-.57 2.95 0 4.42 3.58 8 8 8v1.79c0 .45.54.67.85.35l2.79-2.79c.2-.2.2-.51 0-.71l-2.79-2.79a.5.5 0 0 0-.85.36z"></path>
+  </svg>
+);

@@ -1,33 +1,36 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DaisySize } from '../types';
+import { MODUS_ICON_NAMES } from '../../icons/ModusIconUtilities';
 
 interface IconArgs {
+  color?: string;
   'custom-class'?: string;
   decorative: boolean;
+  'image-options'?: { [key: string]: string };
   name: string;
-  size: DaisySize;
-  variant?: 'outlined' | 'solid';
+  pressed?: boolean;
+  size: string;
 }
 
 const meta: Meta<IconArgs> = {
   title: 'Components/Icon',
   component: 'modus-wc-icon',
   args: {
+    color: '',
     'custom-class': '',
     decorative: false,
     name: 'alert',
-    size: 'md',
+    pressed: false,
+    size: '24',
   },
   argTypes: {
-    size: {
+    name: {
       control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: MODUS_ICON_NAMES,
     },
-    variant: {
-      control: { type: 'select' },
-      options: ['outlined', 'solid'],
+    size: {
+      control: { type: 'text' },
     },
   },
 };
@@ -42,11 +45,12 @@ const Template: Story = {
     return html`
 <modus-wc-icon
   aria-label="Alert icon"
+  color="${ifDefined(args.color)}"
   custom-class="${ifDefined(args['custom-class'])}"
   ?decorative="${args.decorative}"
   name="${args.name}"
+  ?pressed="${args.pressed}"
   size="${args.size}"
-  variant="${ifDefined(args.variant)}"
 >
 </modus-wc-icon>
     `;
@@ -59,14 +63,9 @@ export const CustomColor: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-<style>
-  .red-icon {
-    color: red;
-  }
-</style>
 <modus-wc-icon
   aria-label="Red alert icon"
-  custom-class="red-icon"
+  color="red"
   name="alert"
   size="${args.size}"
 >
@@ -75,31 +74,29 @@ export const CustomColor: Story = {
   },
 };
 
-export const CustomIcons: Story = {
-  args: {
-    'custom-class': 'icon-font tc-icon-cloud-queue',
-    decorative: false,
-    name: '',
-    size: 'lg',
-  },
-  decorators: [
-    (story) => html`
-      <link
-        rel="stylesheet"
-        href="https://resources.connect.trimble.com/1.12.0/fonts/icon-font.min.css"
-      />
-      ${story()}
-    `,
-  ],
-  render: (args) => {
+export const PressedState: Story = {
+  render: () => {
     // prettier-ignore
     return html`
 <modus-wc-icon
-  aria-label="Cloud Queue icon"
-  custom-class="${ifDefined(args['custom-class'])}"
-  ?decorative="${args.decorative}"
-  name="${args.name}"
-  size="${args.size}"
+  aria-label="Pressed icon"
+  name="check_circle"
+  pressed
+  size="24"
+>
+</modus-wc-icon>
+    `;
+  },
+};
+
+export const CustomImage: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<modus-wc-icon
+  aria-label="Custom image icon"
+  name="https://via.placeholder.com/24"
+  size="24"
 >
 </modus-wc-icon>
     `;
@@ -113,25 +110,22 @@ export const Migration: Story = {
         story: `
 #### Breaking Changes
 
-  - Requires <b>Modus Icons</b> to be installed in the host application see [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs).
-  - The \`color\` property has been removed in favor of using CSS for styling.
-  - The \`iconClick\` event has been removed. Use the \`click\` event on the host element instead.
-  - In 1.0 the \`size\` prop accepted any numeric string (e.g., \`'16'\`, \`'24'\`, \`'32'\`) to set the icon's
-  width and height. 2.0 uses preset sizes: \`sm\`, \`md\`, \`lg\`, and can use CSS for custom sizes.
+  - Icons are now bundled with the component library - no external icon font installation required.
+  - The \`variant\` property has been removed. All icons use the solid variant from @trimble-oss/modus-icons.
+  - The \`size\` property now accepts string values representing pixels (e.g., \`'16'\`, \`'24'\`, \`'32'\`) instead of preset sizes.
+  - Added \`color\` property for direct color customization.
+  - Added \`pressed\` property for pressed state styling.
+  - Added support for custom image URLs via the \`name\` property.
 
 #### Prop Mapping
 
 | 1.0 Prop | 2.0 Prop | Notes                                                |
 |----------|----------|------------------------------------------------------|
-| color    |          | Not carried over, use CSS instead                    |
-| name     | name     |                                                      |
-| size     | size     | Numeric values changed to \`sm\`, \`md\`, \`lg\`, use CSS for custom sizes |
-
-#### Event Mapping
-
-| 1.0 Event | 2.0 Event | Notes                                                         |
-|-----------|-----------|---------------------------------------------------------------|
-| iconClick |           | Not carried over, use \`click\` event on host element instead |
+| name     | name     | Now accepts icon names or custom image URLs          |
+| size     | size     | Changed from preset sizes to pixel values (string)   |
+| variant  |          | Removed - all icons are solid variant                |
+|          | color    | New - direct color control                           |
+|          | pressed  | New - adds pressed state styling                     |
         `,
       },
     },

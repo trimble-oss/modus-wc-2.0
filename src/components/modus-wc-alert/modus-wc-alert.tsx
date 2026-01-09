@@ -77,22 +77,14 @@ export class ModusWcAlert {
   private getLeadingIcon(): FunctionalComponent {
     if (this.icon) {
       return (
-        <modus-wc-icon
-          custom-class="modus-wc-alert-icon"
-          name={this.icon}
-          variant="outlined"
-        />
+        <modus-wc-icon custom-class="modus-wc-alert-icon" name={this.icon} />
       );
     }
 
     switch (this.variant) {
       case 'error':
         return (
-          <modus-wc-icon
-            custom-class="modus-wc-alert-icon"
-            name="alert"
-            variant="outlined"
-          />
+          <modus-wc-icon custom-class="modus-wc-alert-icon" name="alert" />
         );
       case 'success':
         return (
@@ -103,21 +95,11 @@ export class ModusWcAlert {
         );
       case 'warning':
         return (
-          <modus-wc-icon
-            custom-class="modus-wc-alert-icon"
-            name="warning"
-            variant="outlined"
-          />
+          <modus-wc-icon custom-class="modus-wc-alert-icon" name="warning" />
         );
       case 'info':
       default:
-        return (
-          <modus-wc-icon
-            custom-class="modus-wc-alert-icon"
-            name="info"
-            variant="outlined"
-          />
-        );
+        return <modus-wc-icon custom-class="modus-wc-alert-icon" name="info" />;
     }
   }
 
@@ -189,7 +171,6 @@ export class ModusWcAlert {
               <modus-wc-icon
                 custom-class="modus-wc-alert-close-icon"
                 name="close"
-                variant="outlined"
               />
             </modus-wc-button>
           )}

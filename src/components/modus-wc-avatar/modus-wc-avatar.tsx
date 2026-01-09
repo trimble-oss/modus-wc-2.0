@@ -90,7 +90,7 @@ export class ModusWcAvatar {
                 aria-label={altText}
                 name="person"
                 size={this.size}
-                variant="solid"
+                // variant="solid"
               ></modus-wc-icon>
             )}
           </div>
