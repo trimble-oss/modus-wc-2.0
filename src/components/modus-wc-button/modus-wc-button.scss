@@ -104,7 +104,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
     background-color: transparent;
     box-shadow: none;
 
-    &:active {
+    &:active,
+    &[aria-pressed='true'] {
       background-color: transparent;
     }
 
@@ -118,7 +119,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
     border: var(--modus-wc-border-width-xs) solid
       var(--modus-wc-color-trimble-gray);
 
-    &:active {
+    &:active,
+    &[aria-pressed='true'] {
       background-color: transparent;
     }
 
@@ -167,6 +169,14 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
     // Colors
     &.modus-wc-btn-primary {
       color: var(--modus-wc-color-trimble-blue);
+      &:hover {
+        background-color: var(--modus-wc-color-blue-pale);
+        color: var(--modus-wc-color-highlight-blue);
+      }
+      &:active,
+      &[aria-pressed='true'] {
+        color: var(--modus-wc-color-info-blue);
+      }
     }
 
     &.modus-wc-btn-secondary {
@@ -175,7 +185,14 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
 
     // tertiary
     &.modus-wc-btn-neutral {
-      color: var(--modus-wc-color-gray-6);
+      color: var(--modus-wc-color-gray-10);
+      &:hover {
+        background-color: var(--modus-wc-color-gray-0);
+      }
+      &:active,
+      &[aria-pressed='true'] {
+        background-color: var(--modus-wc-color-gray-1);
+      }
     }
 
     &.modus-wc-btn-warning {
@@ -197,7 +214,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: var(--modus-wc-color-blue-light);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: var(--modus-wc-color-blue-dark);
       }
     }
@@ -210,7 +228,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: var(--modus-wc-color-gray-5);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: var(--modus-wc-color-gray-7);
       }
     }
@@ -224,7 +243,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: var(--modus-wc-color-gray-0);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: var(--modus-wc-color-gray-2);
       }
     }
@@ -238,7 +258,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: var(--modus-wc-color-yellow-light);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: var(--modus-wc-color-yellow-dark);
       }
     }
@@ -251,7 +272,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: var(--modus-wc-color-red-light);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: var(--modus-wc-color-red-dark);
       }
     }
@@ -269,7 +291,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         color: var(--modus-wc-color-blue-light);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: rgba(0, 99, 163, 0.18);
         border-color: var(--modus-wc-color-blue-dark);
         color: var(--modus-wc-color-blue-dark);
@@ -284,7 +307,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: var(--modus-wc-color-gray-0);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: var(--modus-wc-color-gray-1);
       }
     }
@@ -298,7 +322,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: var(--modus-wc-color-gray-1);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: var(--modus-wc-color-gray-2);
       }
     }
@@ -312,7 +337,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         color: var(--modus-wc-color-yellow-light);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         border-color: var(--modus-wc-color-yellow-dark);
         color: var(--modus-wc-color-yellow-dark);
       }
@@ -327,7 +353,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         color: var(--modus-wc-color-red-light);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         border-color: var(--modus-wc-color-red-dark);
         color: var(--modus-wc-color-red-dark);
       }
@@ -349,6 +376,21 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
     // Colors
     &.modus-wc-btn-primary {
       color: var(--modus-wc-color-highlight-blue);
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--modus-wc-color-trimble-blue) 20%,
+          transparent
+        );
+      }
+      &:active,
+      &[aria-pressed='true'] {
+        background-color: color-mix(
+          in srgb,
+          var(--modus-wc-color-highlight-blue) 30%,
+          transparent
+        );
+      }
     }
 
     &.modus-wc-btn-secondary {
@@ -358,6 +400,13 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
     // tertiary
     &.modus-wc-btn-neutral {
       color: var(--modus-wc-color-gray-1);
+      &:hover {
+        background-color: var(--modus-wc-color-secondary-gray);
+      }
+      &:active,
+      &[aria-pressed='true'] {
+        background-color: var(--modus-wc-color-gray-6);
+      }
     }
 
     &.modus-wc-btn-warning {
@@ -379,7 +428,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: var(--modus-wc-color-blue-light);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: var(--modus-wc-color-blue-dark);
       }
     }
@@ -392,7 +442,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: var(--modus-wc-color-gray-5);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: var(--modus-wc-color-gray-7);
       }
     }
@@ -406,7 +457,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: var(--modus-wc-color-gray-0);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: var(--modus-wc-color-gray-4);
       }
     }
@@ -420,7 +472,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: var(--modus-wc-color-yellow-light);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: var(--modus-wc-color-yellow-dark);
       }
     }
@@ -433,7 +486,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: var(--modus-wc-color-red-light);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: var(--modus-wc-color-red-dark);
       }
     }
@@ -449,7 +503,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: rgba(1, 154, 235, 0.12);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: rgba(1, 154, 235, 0.3);
       }
     }
@@ -462,7 +517,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: rgba(203, 205, 214, 0.12);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: rgba(203, 205, 214, 0.3);
       }
     }
@@ -476,7 +532,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         background-color: rgba(203, 205, 214, 0.12);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         background-color: rgba(203, 205, 214, 0.3);
       }
     }
@@ -490,7 +547,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         color: var(--modus-wc-color-yellow-light);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         border-color: var(--modus-wc-color-yellow-dark);
         color: var(--modus-wc-color-yellow-dark);
       }
@@ -505,7 +563,8 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
         color: var(--modus-wc-color-red-light);
       }
 
-      &:active {
+      &:active,
+      &[aria-pressed='true'] {
         border-color: var(--modus-wc-color-red-dark);
         color: var(--modus-wc-color-red-dark);
       }
