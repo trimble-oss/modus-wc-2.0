@@ -14,7 +14,9 @@ import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable menu item component used to display the item portion of a menu
+ * A customizable menu item component used to display the item portion of a menu.
+ *
+ * This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
  */
 @Component({
   tag: 'modus-wc-menu-item',

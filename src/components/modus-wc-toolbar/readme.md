@@ -9,6 +9,8 @@
 
 A customizable toolbar component used to organize content across the entire page.
 
+The component supports `<slot>` called `start`, `center`, and `end` for injecting custom HTML.
+
 ## Properties
 
 | Property      | Attribute      | Description                                 | Type                  | Default |
