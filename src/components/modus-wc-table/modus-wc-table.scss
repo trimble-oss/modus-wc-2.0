@@ -45,9 +45,8 @@ modus-wc-table .modus-wc-table {
 }
 
 modus-wc-table .modus-wc-overflow-x-auto {
-  border: var(--modus-wc-border-width-sm);
   border-radius: var(--modus-wc-border-radius-table);
-  overflow-x: unset;
+  overflow-x: visible;
 }
 
 [data-theme='modus-classic-light'] modus-wc-table,
