@@ -16,7 +16,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 /**
  * A customizable menu item component used to display the item portion of a menu.
  *
- * The component supports a `<slot>` called 'start-icon' for custom icons at the start of the item.
+ * This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
  */
 @Component({
   tag: 'modus-wc-menu-item',
