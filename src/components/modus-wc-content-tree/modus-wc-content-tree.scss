@@ -1,0 +1,31 @@
+/**
+ * This component uses menu items for the tree structure.
+ * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+ */
+
+modus-wc-content-tree {
+  display: block;
+  width: 100%;
+
+  .modus-wc-content-tree-search {
+    margin-bottom: var(--modus-wc-spacing-md, 1rem);
+  }
+
+  .modus-wc-content-tree-actions {
+    align-items: center;
+    border-bottom: 1px solid var(--modus-wc-color-gray-2, #e0e1e9);
+    display: flex;
+    gap: var(--modus-wc-spacing-xs, 0.5rem);
+    margin-bottom: var(--modus-wc-spacing-md, 1rem);
+    padding-bottom: var(--modus-wc-spacing-sm, 0.75rem);
+  }
+
+  .modus-wc-content-tree-content {
+    display: block;
+  }
+
+  .modus-wc-menu-dropdown {
+    // border-inline-start: 2px solid var(--modus-wc-color-primary, #0063a3);
+    margin-inline-start: var(--modus-wc-spacing-md, 1rem);
+  }
+}
