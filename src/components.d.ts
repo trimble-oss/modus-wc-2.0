@@ -10,6 +10,7 @@ import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+import { LogoName } from "./components/modus-wc-logo/logo-constants";
 import { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 import { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
@@ -26,6 +27,7 @@ export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
+export { LogoName } from "./components/modus-wc-logo/logo-constants";
 export { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 export { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
@@ -505,6 +507,28 @@ export namespace Components {
         "options"?: ICollapseOptions;
     }
     /**
+     * A customizable content tree component used to display hierarchical data in a tree structure.
+     * Uses menu items to create the tree structure with support for expanding/collapsing nodes and selection.
+     */
+    interface ModusWcContentTree {
+        /**
+          * Custom CSS class to apply to the component.
+         */
+        "customClass"?: string;
+        /**
+          * Placeholder text for the search input.
+         */
+        "searchPlaceholder"?: string;
+        /**
+          * Whether to show the action bar with add, delete, and collapse all buttons.
+         */
+        "showActions"?: boolean;
+        /**
+          * Whether to show the search input.
+         */
+        "showSearch"?: boolean;
+    }
+    /**
      * A customizable date picker component used to create date inputs.
      * Adheres to WCAG 2.2 standards.
      */
@@ -830,6 +854,28 @@ export namespace Components {
           * The variant of the loader.
          */
         "variant": LoaderVariant;
+    }
+    /**
+     * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
+     * Provides consistent branding across applications with various product logo options.
+     */
+    interface ModusWcLogo {
+        /**
+          * The alt text for accessibility. If not provided, defaults to the logo name.
+         */
+        "alt"?: string;
+        /**
+          * Custom CSS class to apply to the logo container.
+         */
+        "customClass"?: string;
+        /**
+          * Show emblem version (icon only) instead of full logo
+         */
+        "emblem"?: boolean;
+        /**
+          * The name of the logo to display. Accepts values like 'trimble', 'viewpoint_field_view', etc.
+         */
+        "name": LogoName;
     }
     /**
      * A customizable menu component used to display a list of li elements vertically or horizontally.
@@ -2304,6 +2350,16 @@ declare global {
         prototype: HTMLModusWcCollapseElement;
         new (): HTMLModusWcCollapseElement;
     };
+    /**
+     * A customizable content tree component used to display hierarchical data in a tree structure.
+     * Uses menu items to create the tree structure with support for expanding/collapsing nodes and selection.
+     */
+    interface HTMLModusWcContentTreeElement extends Components.ModusWcContentTree, HTMLStencilElement {
+    }
+    var HTMLModusWcContentTreeElement: {
+        prototype: HTMLModusWcContentTreeElement;
+        new (): HTMLModusWcContentTreeElement;
+    };
     interface HTMLModusWcDateElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
@@ -2417,6 +2473,16 @@ declare global {
     var HTMLModusWcLoaderElement: {
         prototype: HTMLModusWcLoaderElement;
         new (): HTMLModusWcLoaderElement;
+    };
+    /**
+     * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
+     * Provides consistent branding across applications with various product logo options.
+     */
+    interface HTMLModusWcLogoElement extends Components.ModusWcLogo, HTMLStencilElement {
+    }
+    var HTMLModusWcLogoElement: {
+        prototype: HTMLModusWcLogoElement;
+        new (): HTMLModusWcLogoElement;
     };
     interface HTMLModusWcMenuElementEventMap {
         "menuFocusout": FocusEvent;
@@ -2952,6 +3018,7 @@ declare global {
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
         "modus-wc-chip": HTMLModusWcChipElement;
         "modus-wc-collapse": HTMLModusWcCollapseElement;
+        "modus-wc-content-tree": HTMLModusWcContentTreeElement;
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-dropdown-menu": HTMLModusWcDropdownMenuElement;
@@ -2960,6 +3027,7 @@ declare global {
         "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
         "modus-wc-loader": HTMLModusWcLoaderElement;
+        "modus-wc-logo": HTMLModusWcLogoElement;
         "modus-wc-menu": HTMLModusWcMenuElement;
         "modus-wc-menu-item": HTMLModusWcMenuItemElement;
         "modus-wc-modal": HTMLModusWcModalElement;
@@ -3518,6 +3586,28 @@ declare namespace LocalJSX {
         "options"?: ICollapseOptions;
     }
     /**
+     * A customizable content tree component used to display hierarchical data in a tree structure.
+     * Uses menu items to create the tree structure with support for expanding/collapsing nodes and selection.
+     */
+    interface ModusWcContentTree {
+        /**
+          * Custom CSS class to apply to the component.
+         */
+        "customClass"?: string;
+        /**
+          * Placeholder text for the search input.
+         */
+        "searchPlaceholder"?: string;
+        /**
+          * Whether to show the action bar with add, delete, and collapse all buttons.
+         */
+        "showActions"?: boolean;
+        /**
+          * Whether to show the search input.
+         */
+        "showSearch"?: boolean;
+    }
+    /**
      * A customizable date picker component used to create date inputs.
      * Adheres to WCAG 2.2 standards.
      */
@@ -3867,6 +3957,28 @@ declare namespace LocalJSX {
           * The variant of the loader.
          */
         "variant"?: LoaderVariant;
+    }
+    /**
+     * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
+     * Provides consistent branding across applications with various product logo options.
+     */
+    interface ModusWcLogo {
+        /**
+          * The alt text for accessibility. If not provided, defaults to the logo name.
+         */
+        "alt"?: string;
+        /**
+          * Custom CSS class to apply to the logo container.
+         */
+        "customClass"?: string;
+        /**
+          * Show emblem version (icon only) instead of full logo
+         */
+        "emblem"?: boolean;
+        /**
+          * The name of the logo to display. Accepts values like 'trimble', 'viewpoint_field_view', etc.
+         */
+        "name": LogoName;
     }
     /**
      * A customizable menu component used to display a list of li elements vertically or horizontally.
@@ -5235,6 +5347,7 @@ declare namespace LocalJSX {
         "modus-wc-checkbox": ModusWcCheckbox;
         "modus-wc-chip": ModusWcChip;
         "modus-wc-collapse": ModusWcCollapse;
+        "modus-wc-content-tree": ModusWcContentTree;
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-dropdown-menu": ModusWcDropdownMenu;
@@ -5243,6 +5356,7 @@ declare namespace LocalJSX {
         "modus-wc-input-feedback": ModusWcInputFeedback;
         "modus-wc-input-label": ModusWcInputLabel;
         "modus-wc-loader": ModusWcLoader;
+        "modus-wc-logo": ModusWcLogo;
         "modus-wc-menu": ModusWcMenu;
         "modus-wc-menu-item": ModusWcMenuItem;
         "modus-wc-modal": ModusWcModal;
@@ -5334,6 +5448,11 @@ declare module "@stencil/core" {
              */
             "modus-wc-collapse": LocalJSX.ModusWcCollapse & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;
             /**
+             * A customizable content tree component used to display hierarchical data in a tree structure.
+             * Uses menu items to create the tree structure with support for expanding/collapsing nodes and selection.
+             */
+            "modus-wc-content-tree": LocalJSX.ModusWcContentTree & JSXBase.HTMLAttributes<HTMLModusWcContentTreeElement>;
+            /**
              * A customizable date picker component used to create date inputs.
              * Adheres to WCAG 2.2 standards.
              */
@@ -5370,6 +5489,11 @@ declare module "@stencil/core" {
              * A customizable loader component used to indicate the loading of content
              */
             "modus-wc-loader": LocalJSX.ModusWcLoader & JSXBase.HTMLAttributes<HTMLModusWcLoaderElement>;
+            /**
+             * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
+             * Provides consistent branding across applications with various product logo options.
+             */
+            "modus-wc-logo": LocalJSX.ModusWcLogo & JSXBase.HTMLAttributes<HTMLModusWcLogoElement>;
             /**
              * A customizable menu component used to display a list of li elements vertically or horizontally.
              * The component supports a `<slot>` for injecting custom li elements inside the ul

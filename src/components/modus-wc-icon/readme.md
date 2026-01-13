@@ -30,6 +30,7 @@ A customizable icon component used to render Modus icons.
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-avatar](../modus-wc-avatar)
  - [modus-wc-collapse](../modus-wc-collapse)
+ - [modus-wc-content-tree](../modus-wc-content-tree)
  - [modus-wc-date](../modus-wc-date)
  - [modus-wc-file-dropzone](../modus-wc-file-dropzone)
  - [modus-wc-input-feedback](../modus-wc-input-feedback)
@@ -43,6 +44,7 @@ graph TD;
   modus-wc-autocomplete --> modus-wc-icon
   modus-wc-avatar --> modus-wc-icon
   modus-wc-collapse --> modus-wc-icon
+  modus-wc-content-tree --> modus-wc-icon
   modus-wc-date --> modus-wc-icon
   modus-wc-file-dropzone --> modus-wc-icon
   modus-wc-input-feedback --> modus-wc-icon

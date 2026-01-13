@@ -46,6 +46,7 @@ export const Default: Story = {
         class=${ifDefined(args['custom-class'])}
         multi-select="true"
         show-search="true"
+        show-actions="true"
       >
       </modus-wc-content-tree>
     `;
@@ -165,53 +166,5 @@ export const SingleLevel: Story = {
         </modus-wc-menu>
       </modus-wc-content-tree>
     `;
-  },
-};
-
-export const WithSearchAndActions: Story = {
-  args: {
-    'show-search': true,
-    'show-actions': true,
-  },
-  render: (args) => {
-    const multiSelect = args['multi-select'];
-    const tree = document.createElement('modus-wc-content-tree');
-    tree.showSearch = args['show-search'];
-    tree.showActions = args['show-actions'];
-    tree.searchPlaceholder = args['search-placeholder'];
-
-    tree.innerHTML = `
-      <modus-wc-menu>
-        <modus-wc-menu-item
-          label="Tree Item"
-          value="item1"
-          has-submenu="true"
-          size="md"
-          ${multiSelect ? 'checkbox' : ''}
-        >
-          <modus-wc-icon slot="start-icon" name="folder" variant="solid" size="sm"></modus-wc-icon>
-        </modus-wc-menu-item>
-        <modus-wc-menu-item
-          label="Tree Item"
-          value="item2"
-          has-submenu="true"
-          size="md"
-          ${multiSelect ? 'checkbox' : ''}
-        >
-          <modus-wc-icon slot="start-icon" name="folder" variant="solid" size="sm"></modus-wc-icon>
-        </modus-wc-menu-item>
-        <modus-wc-menu-item
-          label="Tree Item"
-          value="item3"
-          has-submenu="true"
-          size="md"
-          ${multiSelect ? 'checkbox' : ''}
-        >
-          <modus-wc-icon slot="start-icon" name="folder" variant="solid" size="sm"></modus-wc-icon>
-        </modus-wc-menu-item>
-      </modus-wc-menu>
-    `;
-
-    return tree;
   },
 };

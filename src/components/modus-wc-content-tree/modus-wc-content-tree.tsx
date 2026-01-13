@@ -29,15 +29,31 @@ export class ModusWcContentTree {
   @Prop() searchPlaceholder?: string = 'Search...';
 
   @State() private searchValue: string = '';
+  @State() private hasSlotContent: boolean = true;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
+  componentDidLoad() {
+    this.checkSlotContent();
+  }
+
+  private checkSlotContent() {
+    // Since shadow: false, check direct children (excluding the wrapper div)
+    const children = Array.from(this.el.children).filter(
+      (child) => !child.classList.contains('modus-wc-content-tree-wrapper')
+    );
+    this.hasSlotContent = children.length > 0;
+  }
+
   render() {
     return (
       <Host>
-        <div class={this.customClass} {...this.inheritedAttributes}>
+        <div
+          class={`modus-wc-content-tree-wrapper ${this.customClass}`}
+          {...this.inheritedAttributes}
+        >
           {this.showSearch && (
             <div class="modus-wc-content-tree-search">
               <modus-wc-text-input
@@ -50,42 +66,44 @@ export class ModusWcContentTree {
             </div>
           )}
 
-          {this.showActions && (
+          {this.showActions && this.hasSlotContent && (
             <div class="modus-wc-content-tree-actions">
-              <modus-wc-button variant="borderless" size="sm" aria-label="Add">
-                <modus-wc-icon
-                  decorative={true}
-                  name="add"
-                  size="sm"
-                ></modus-wc-icon>
-              </modus-wc-button>
-              <modus-wc-button
-                variant="borderless"
+              <modus-wc-icon
+                decorative={true}
+                name="delete"
                 size="sm"
-                aria-label="Delete"
-              >
-                <modus-wc-icon
-                  decorative={true}
-                  name="delete"
-                  size="sm"
-                ></modus-wc-icon>
-              </modus-wc-button>
-              <modus-wc-button
-                variant="borderless"
+              ></modus-wc-icon>
+
+              <modus-wc-icon
+                decorative={true}
+                name="unfold_less"
                 size="sm"
-                aria-label="Collapse All"
-              >
-                <modus-wc-icon
-                  decorative={true}
-                  name="unfold_less"
-                  size="sm"
-                ></modus-wc-icon>
-              </modus-wc-button>
+              ></modus-wc-icon>
             </div>
           )}
 
           <div class="modus-wc-content-tree-content" role="tree">
             <slot></slot>
+            {!this.hasSlotContent && (
+              <div class="modus-wc-content-tree-empty">
+                <modus-wc-icon name="folder_open"></modus-wc-icon>
+                <modus-wc-typography
+                  hierarchy="p"
+                  label="Empty Content Tree"
+                  size="lg"
+                  weight="normal"
+                ></modus-wc-typography>
+                <modus-wc-button
+                  color="primary"
+                  shape="rectangle"
+                  size="md"
+                  type="button"
+                  variant="filled"
+                >
+                  Create Node
+                </modus-wc-button>
+              </div>
+            )}
           </div>
         </div>
       </Host>
