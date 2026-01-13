@@ -20,6 +20,7 @@ const config: StorybookConfig = {
     { from: 'public', to: 'public' },
     { from: '../dist/modus-wc', to: 'modus-wc' },
     { from: '../dist/styles', to: 'dist/styles' },
+    { from: '../src/styles/assets', to: 'assets' },
     { from: '../src/components/modus-wc-logo/assets', to: 'assets' },
   ],
   async viteFinal(config, { configType }) {
