@@ -50,7 +50,7 @@ const meta: Meta<UtilityPanelArgs> = {
     docs: {
       description: {
         component:
-          'A utility panel component that slides in from the right side of the screen. It can either push content or display as an overlay.',
+          "A utility panel component that slides in from the right side of the screen. It can either push content or display as an overlay.\n\nThe component supports `<slot>` called 'header' for panel title content, 'body' for main content area, and 'footer' for action buttons or additional controls.",
       },
     },
     layout: 'fullscreen',

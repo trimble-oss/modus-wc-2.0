@@ -10,7 +10,6 @@
 A customizable collapse component used for showing and hiding content.
 
 The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
-Do not set
 
 ## Properties
 

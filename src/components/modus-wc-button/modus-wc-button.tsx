@@ -16,7 +16,7 @@ import { convertPropsToClasses } from './modus-wc-button.tailwind';
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
  *
- * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
+ * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
  */
 @Component({
   tag: 'modus-wc-button',
@@ -46,7 +46,7 @@ export class ModusWcButton {
   @Prop({ reflect: true }) pressed?: boolean = false;
 
   /** The shape of the button. */
-  @Prop() shape: 'circle' | 'rectangle' | 'square' = 'rectangle';
+  @Prop() shape: 'circle' | 'ellipse' | 'rectangle' | 'square' = 'rectangle';
 
   /** The size of the button. */
   @Prop() size: DaisySize = 'md';

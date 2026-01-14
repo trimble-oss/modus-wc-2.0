@@ -10,7 +10,7 @@ exports[`modus-wc-navbar should render with custom props and slots 1`] = `
         <div slot="start">
           <modus-wc-button>
             <!---->
-            <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm trimble-logo" tabindex="0" type="button">
+            <button aria-label="Trimble logo" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm trimble-logo" tabindex="0" type="button">
               <svg data-name="Art Black" id="Art_Black" viewBox="0 0 444.68 100" xmlns="http://www.w3.org/2000/svg">
                 <path d="M115.85,87.13v-62H93V11.21h62.57v14h-23v62Z" fill="#0063a3"></path>
                 <path d="M141.9,87.13V32.74h16.52v8.84h.1c3-4.62,8.21-10.26,18.47-10.26h.51V46c-.61-.11-3.49-.31-4.51-.31a18.27,18.27,0,0,0-14.57,7.49v34Z" fill="#0063a3"></path>
@@ -56,7 +56,7 @@ exports[`modus-wc-navbar should render with custom props and slots 1`] = `
           </div>
           <modus-wc-button>
             <!---->
-            <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-circle modus-wc-btn-primary modus-wc-btn-sm user-button" tabindex="0" type="button">
+            <button aria-label="User profile" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-circle modus-wc-btn-primary modus-wc-btn-sm user-button" tabindex="0" type="button">
               <modus-wc-avatar alt="" size="xs"></modus-wc-avatar>
             </button>
           </modus-wc-button>
@@ -102,7 +102,7 @@ exports[`modus-wc-navbar should render with no props 1`] = `
         <div slot="start">
           <modus-wc-button>
             <!---->
-            <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm trimble-logo" tabindex="0" type="button">
+            <button aria-label="Trimble logo" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm trimble-logo" tabindex="0" type="button">
               <svg data-name="Art Black" id="Art_Black" viewBox="0 0 444.68 100" xmlns="http://www.w3.org/2000/svg">
                 <path d="M115.85,87.13v-62H93V11.21h62.57v14h-23v62Z" fill="#0063a3"></path>
                 <path d="M141.9,87.13V32.74h16.52v8.84h.1c3-4.62,8.21-10.26,18.47-10.26h.51V46c-.61-.11-3.49-.31-4.51-.31a18.27,18.27,0,0,0-14.57,7.49v34Z" fill="#0063a3"></path>
@@ -138,7 +138,7 @@ exports[`modus-wc-navbar should render with no props 1`] = `
         <div slot="end">
           <modus-wc-button>
             <!---->
-            <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-circle modus-wc-btn-primary modus-wc-btn-sm user-button" tabindex="0" type="button">
+            <button aria-label="User profile" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-circle modus-wc-btn-primary modus-wc-btn-sm user-button" tabindex="0" type="button">
               <modus-wc-avatar alt="" size="xs"></modus-wc-avatar>
             </button>
           </modus-wc-button>

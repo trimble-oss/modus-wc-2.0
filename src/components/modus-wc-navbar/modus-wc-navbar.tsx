@@ -73,8 +73,7 @@ export interface INavbarUserCard {
 /**
  * A customizable navbar component used for top level navigation of all Trimble applications.
  *
- * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
- * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML
+ *The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
  */
 @Component({
   tag: 'modus-wc-navbar',
@@ -424,6 +423,7 @@ export class ModusWcNavbar {
             {this.visibility?.mainMenu && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="Main menu"
                   onButtonClick={this.toggleMainMenu}
                   shape="square"
                   size="sm"
@@ -441,6 +441,7 @@ export class ModusWcNavbar {
             )}
 
             <modus-wc-button
+              aria-label="Trimble logo"
               customClass="trimble-logo"
               onButtonClick={this.handleTrimbleLogoClick}
               size="sm"
@@ -466,6 +467,7 @@ export class ModusWcNavbar {
             {this.visibility?.ai && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="AI assistant"
                   customClass="ai"
                   onButtonClick={this.handleAiClick}
                   shape="square"
@@ -480,6 +482,7 @@ export class ModusWcNavbar {
             {this.condensed && condensedHasItems && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="More options"
                   onButtonClick={this.toggleCondensedMenu}
                   shape="square"
                   size="sm"
@@ -541,6 +544,7 @@ export class ModusWcNavbar {
                   />
                 )}
                 <modus-wc-button
+                  aria-label="Search"
                   onButtonClick={this.handleSearchClick}
                   shape="square"
                   size="sm"
@@ -554,6 +558,7 @@ export class ModusWcNavbar {
             {this.visibility?.notifications && !this.condensed && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="Notifications"
                   onButtonClick={this.handleNotificationsClick}
                   shape="square"
                   size="sm"
@@ -572,6 +577,7 @@ export class ModusWcNavbar {
 
             {this.visibility?.help && !this.condensed && (
               <modus-wc-button
+                aria-label="Help"
                 onButtonClick={this.handleHelpClick}
                 shape="square"
                 size="sm"
@@ -584,6 +590,7 @@ export class ModusWcNavbar {
             {this.visibility?.apps && !this.condensed && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="Apps"
                   onButtonClick={this.handleAppsClick}
                   shape="square"
                   size="sm"
@@ -603,6 +610,7 @@ export class ModusWcNavbar {
             {this.visibility?.user && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="User profile"
                   customClass="user-button"
                   onButtonClick={this.toggleUser}
                   shape="circle"
