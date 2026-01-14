@@ -5,7 +5,8 @@
   font-weight: 300 800;
   font-stretch: 100%;
   font-display: swap;
-  src: url('assets/fonts/open-sans/OpenSans-VariableFont.woff2') format('woff2');
+  src: url('./assets/fonts/open-sans/OpenSans-VariableFont.woff2')
+    format('woff2');
 }
 
 /* Open Sans Variable Font - Italic */
@@ -15,6 +16,6 @@
   font-weight: 300 800;
   font-stretch: 100%;
   font-display: swap;
-  src: url('assets/fonts/open-sans/OpenSans-Italic-VariableFont.woff2')
+  src: url('./assets/fonts/open-sans/OpenSans-Italic-VariableFont.woff2')
     format('woff2');
 }
