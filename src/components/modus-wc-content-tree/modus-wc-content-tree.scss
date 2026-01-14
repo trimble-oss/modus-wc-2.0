@@ -4,11 +4,11 @@
  */
 
 modus-wc-content-tree {
-  background: white;
+  background-color: var(--modus-wc-color-base-page);
   border: 1px solid var(--modus-wc-color-border-default, #d1d5db);
   display: block;
-  padding: var(--modus-wc-spacing-md, 1rem);
   width: 100%;
+  min-width: 320px;
 
   .modus-wc-content-tree-actions {
     align-items: center;
@@ -19,11 +19,19 @@ modus-wc-content-tree {
     padding-bottom: var(--modus-wc-spacing-sm, 0.75rem);
   }
 
+  .modus-wc-content-tree-add-node {
+    margin-bottom: var(--modus-wc-spacing-md, 1rem);
+  }
+
   .modus-wc-content-tree-content {
     align-items: center;
-    display: flex;
+    display: block;
     height: 600px;
     justify-content: center;
+  }
+
+  .modus-wc-content-tree-header {
+    padding: var(--modus-wc-spacing-md, 1rem);
   }
 
   .modus-wc-content-tree-empty {

@@ -53,58 +53,144 @@ export const Default: Story = {
   },
 };
 
-export const Collapsed: Story = {
+export const UsingSlot: Story = {
   render: (args) => {
-    const multiSelect = args['multi-select'];
     return html`
       <modus-wc-content-tree
         class=${ifDefined(args['custom-class'])}
-        ?multi-select=${multiSelect}
+        multi-select="true"
+        show-search="true"
+        show-actions="true"
       >
         <modus-wc-menu>
           <modus-wc-menu-item
-            label="Tree Item"
+            label="Tree Item 1"
             value="item1"
             has-submenu="true"
             size="md"
-            ?checkbox=${multiSelect}
+            checkbox
           >
             <modus-wc-icon
               slot="start-icon"
-              name="folder"
+              name="folder_closed"
               variant="solid"
               size="sm"
             ></modus-wc-icon>
+            <modus-wc-menu .isSubMenu=${true}>
+              <modus-wc-menu-item
+                label="Submenu Item 1.1"
+                value="item1-1"
+                size="md"
+                checkbox
+              >
+                <modus-wc-icon
+                  slot="start-icon"
+                  name="description"
+                  variant="solid"
+                  size="sm"
+                ></modus-wc-icon>
+              </modus-wc-menu-item>
+              <modus-wc-menu-item
+                label="Submenu Item 1.2"
+                value="item1-2"
+                size="md"
+                checkbox
+              >
+                <modus-wc-icon
+                  slot="start-icon"
+                  name="description"
+                  variant="solid"
+                  size="sm"
+                ></modus-wc-icon>
+              </modus-wc-menu-item>
+            </modus-wc-menu>
           </modus-wc-menu-item>
-
           <modus-wc-menu-item
-            label="Tree Item"
+            label="Tree Item 2"
             value="item2"
             has-submenu="true"
             size="md"
-            ?checkbox=${multiSelect}
+            checkbox
           >
             <modus-wc-icon
               slot="start-icon"
-              name="folder"
+              name="folder_closed"
               variant="solid"
               size="sm"
             ></modus-wc-icon>
+            <modus-wc-menu .isSubMenu=${true}>
+              <modus-wc-menu-item
+                label="Submenu Item 2.1"
+                value="item2-1"
+                size="md"
+                checkbox
+              >
+                <modus-wc-icon
+                  slot="start-icon"
+                  name="description"
+                  variant="solid"
+                  size="sm"
+                ></modus-wc-icon>
+              </modus-wc-menu-item>
+              <modus-wc-menu-item
+                label="Submenu Item 2.2"
+                value="item2-2"
+                has-submenu="true"
+                size="md"
+                checkbox
+              >
+                <modus-wc-icon
+                  slot="start-icon"
+                  name="folder_closed"
+                  variant="solid"
+                  size="sm"
+                ></modus-wc-icon>
+                <modus-wc-menu .isSubMenu=${true}>
+                  <modus-wc-menu-item
+                    label="Nested Item 2.2.1"
+                    value="item2-2-1"
+                    size="md"
+                    checkbox
+                  >
+                    <modus-wc-icon
+                      slot="start-icon"
+                      name="description"
+                      variant="solid"
+                      size="sm"
+                    ></modus-wc-icon>
+                  </modus-wc-menu-item>
+                </modus-wc-menu>
+              </modus-wc-menu-item>
+            </modus-wc-menu>
           </modus-wc-menu-item>
-
           <modus-wc-menu-item
-            label="Tree Item"
+            label="Tree Item 3"
             value="item3"
             has-submenu="true"
             size="md"
-            ?checkbox=${multiSelect}
+            checkbox
           >
             <modus-wc-icon
               slot="start-icon"
-              name="folder"
+              name="folder_closed"
               variant="solid"
               size="sm"
             ></modus-wc-icon>
+            <modus-wc-menu .isSubMenu=${true}>
+              <modus-wc-menu-item
+                label="Submenu Item 3.1"
+                value="item3-1"
+                size="md"
+                checkbox
+              >
+                <modus-wc-icon
+                  slot="start-icon"
+                  name="description"
+                  variant="solid"
+                  size="sm"
+                ></modus-wc-icon>
+              </modus-wc-menu-item>
+            </modus-wc-menu>
           </modus-wc-menu-item>
         </modus-wc-menu>
       </modus-wc-content-tree>
