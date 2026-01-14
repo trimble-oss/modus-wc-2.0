@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import { WeekStartDay } from '../types';
 
@@ -162,6 +163,59 @@ export const WithErrorFeedback: Story = {
 </script>`,
       },
     },
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for date component
+    if (!customElements.get('date-shadow-host')) {
+      const DateShadowHost = createShadowHostClass<DateArgs>({
+        componentTag: 'modus-wc-date',
+        propsMapper: (v: DateArgs, el: HTMLElement) => {
+          const dateEl = el as unknown as {
+            bordered: boolean;
+            customClass: string;
+            disabled: boolean;
+            feedback: IInputFeedbackProp;
+            format: string;
+            inputId: string;
+            inputTabIndex: number;
+            label: string;
+            max: string;
+            min: string;
+            name: string;
+            placeholder: string;
+            readOnly: boolean;
+            required: boolean;
+            showWeekNumbers: boolean;
+            size: string;
+            value: string;
+            weekStartDay: string;
+          };
+          dateEl.bordered = Boolean(v.bordered);
+          dateEl.customClass = v['custom-class'] || '';
+          dateEl.disabled = Boolean(v.disabled);
+          dateEl.format = v.format ?? '';
+          dateEl.inputId = v['input-id'] ?? '';
+          dateEl.inputTabIndex = v['input-tab-index'] ?? -1;
+          dateEl.label = v.label ?? '';
+          dateEl.max = v.max ?? '';
+          dateEl.min = v.min ?? '';
+          dateEl.name = v.name ?? '';
+          dateEl.placeholder = v.placeholder ?? '';
+          dateEl.readOnly = Boolean(v['read-only']);
+          dateEl.required = Boolean(v.required);
+          dateEl.showWeekNumbers = Boolean(v['show-week-numbers']);
+          dateEl.size = v.size ?? '';
+          dateEl.value = v.value ?? '';
+          dateEl.weekStartDay = v['week-start-day'] ?? '';
+        },
+      });
+      customElements.define('date-shadow-host', DateShadowHost);
+    }
+
+    return html`<date-shadow-host .props=${{ ...args }}></date-shadow-host>`;
   },
 };
 

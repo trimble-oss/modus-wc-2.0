@@ -36,6 +36,7 @@ export class ModusWcIcon {
   @Prop() variant?: 'outlined' | 'solid';
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
 
     if (!this.decorative && !this.el.ariaLabel) {

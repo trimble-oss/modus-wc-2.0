@@ -13,6 +13,7 @@ import {
   Watch,
 } from '@stencil/core';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
+import { handleShadowDOMStyles } from '../base-component';
 import { IAutocompleteItem, IAutocompleteNoResults, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 import {
@@ -236,6 +237,9 @@ export class ModusWcAutocomplete {
   }
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Autocomplete input';
     }

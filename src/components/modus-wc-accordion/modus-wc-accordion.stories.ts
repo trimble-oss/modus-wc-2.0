@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ICollapseOptions } from '../modus-wc-collapse/modus-wc-collapse';
 
 interface AccordionArgs {
@@ -101,32 +102,32 @@ export const ShadowDomParent: Story = {
   render: () => {
     // Create a unique shadow host for accordion component
     if (!customElements.get('accordion-shadow-host')) {
-      class AccordionShadowHost extends HTMLElement {
-        constructor() {
-          super();
+      const AccordionShadowHost = createShadowHostClass<AccordionArgs>({
+        componentTag: 'modus-wc-accordion',
+        propsMapper: (v: AccordionArgs, el: HTMLElement) => {
+          const accordionEl = el as unknown as {
+            customClass: string;
+          };
+          accordionEl.customClass = v['custom-class'] || '';
 
-          // Create shadow root
-          const shadowRoot = this.attachShadow({ mode: 'open' });
-
-          // Write HTML structure directly (no whitespace between elements to avoid gaps)
-          shadowRoot.innerHTML = `
-            <div style="padding: 20px;">
-              <modus-wc-accordion><modus-wc-collapse><div slot="content">Collapse content</div></modus-wc-collapse><modus-wc-collapse><div slot="content">Collapse content</div></modus-wc-collapse><modus-wc-collapse><div slot="content">Collapse content</div></modus-wc-collapse></modus-wc-accordion>
-            </div>
-          `;
-
-          // Set options for each collapse element
-          const collapses = shadowRoot.querySelectorAll('modus-wc-collapse');
-          collapses.forEach((collapse, index) => {
+          // Create and append collapse elements (no whitespace between to avoid gaps)
+          el.innerHTML = '';
+          collapseOptions.forEach((options) => {
+            const collapse = document.createElement('modus-wc-collapse');
             (collapse as unknown as { options: ICollapseOptions }).options =
-              collapseOptions[index];
+              options;
+            const contentDiv = document.createElement('div');
+            contentDiv.setAttribute('slot', 'content');
+            contentDiv.textContent = 'Collapse content';
+            collapse.appendChild(contentDiv);
+            el.appendChild(collapse);
           });
-        }
-      }
+        },
+      });
       customElements.define('accordion-shadow-host', AccordionShadowHost);
     }
 
-    return html`<accordion-shadow-host></accordion-shadow-host>`;
+    return html`<accordion-shadow-host .props=${{}}></accordion-shadow-host>`;
   },
 };
 

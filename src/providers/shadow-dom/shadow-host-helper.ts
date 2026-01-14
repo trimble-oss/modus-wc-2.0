@@ -59,6 +59,26 @@ export function createShadowHostClass<T = unknown>(
 
       // Create wrapper and component
       const wrapper = document.createElement('div');
+
+      // Make wrapper invisible in layout but keep it for data-theme attribute
+      wrapper.style.display = 'contents';
+
+      // Sync data-theme attribute from document so CSS selectors work
+      const syncTheme = () => {
+        const theme = document.documentElement.getAttribute('data-theme');
+        if (theme) {
+          wrapper.setAttribute('data-theme', theme);
+        }
+      };
+      syncTheme();
+
+      // Watch for theme changes
+      const observer = new MutationObserver(syncTheme);
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+
       this.componentEl = document.createElement(config.componentTag);
 
       // Add default content if provided

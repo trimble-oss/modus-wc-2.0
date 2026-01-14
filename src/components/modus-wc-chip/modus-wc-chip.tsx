@@ -63,12 +63,14 @@ export class ModusWcChip {
   @Event() chipRemove!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = this.label || 'Chip';
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
-    handleShadowDOMStyles(this.el);
   }
 
   private handleKeyDown = (event: KeyboardEvent) => {

@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ICollapseOptions } from './modus-wc-collapse';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface CollapseArgs {
   bordered?: boolean;
@@ -119,6 +120,42 @@ export const WithCustomClickableHeader = {
 // button2.addEventListener('click', handleButtonClick);
 </script>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for collapse component
+    if (!customElements.get('collapse-shadow-host')) {
+      const CollapseShadowHost = createShadowHostClass<CollapseArgs>({
+        componentTag: 'modus-wc-collapse',
+        propsMapper: (v: CollapseArgs, el: HTMLElement) => {
+          const collapseEl = el as unknown as {
+            bordered: boolean;
+            customClass: string;
+            expanded: boolean;
+            id: string;
+            options: ICollapseOptions;
+          };
+          el.innerHTML = '<div slot="content">Collapse content</div>';
+          collapseEl.bordered = Boolean(v.bordered);
+          collapseEl.customClass = v['custom-class'] || '';
+          collapseEl.expanded = Boolean(v.expanded);
+          collapseEl.id = v.id ?? '';
+          collapseEl.options = v.options ?? {
+            title: 'Collapse Title',
+            description: 'Collapse description',
+            icon: 'alert',
+            iconAriaLabel: 'Alert',
+          };
+        },
+      });
+      customElements.define('collapse-shadow-host', CollapseShadowHost);
+    }
+
+    return html`<collapse-shadow-host
+      .props=${{ ...args }}
+    ></collapse-shadow-host>`;
   },
 };
 

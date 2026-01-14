@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
 
 interface CheckboxArgs {
@@ -65,6 +66,46 @@ export const Default: Story = {
         .value=${args.value}
       ></modus-wc-checkbox>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for checkbox component
+    if (!customElements.get('checkbox-shadow-host')) {
+      const CheckboxShadowHost = createShadowHostClass<CheckboxArgs>({
+        componentTag: 'modus-wc-checkbox',
+        propsMapper: (v: CheckboxArgs, el: HTMLElement) => {
+          const checkboxEl = el as unknown as {
+            customClass: string;
+            disabled: boolean;
+            indeterminate: boolean;
+            inputId: string;
+            inputTabIndex: number;
+            label: string;
+            name: string;
+            required: boolean;
+            size: string;
+            value: boolean;
+          };
+          checkboxEl.customClass = v['custom-class'] || '';
+          checkboxEl.disabled = Boolean(v.disabled);
+          checkboxEl.indeterminate = Boolean(v.indeterminate);
+          checkboxEl.inputId = v['input-id'] ?? '';
+          checkboxEl.inputTabIndex = v['input-tab-index'] ?? 0;
+          checkboxEl.label = v.label ?? '';
+          checkboxEl.name = v.name ?? '';
+          checkboxEl.required = Boolean(v.required);
+          checkboxEl.size = v.size ?? '';
+          checkboxEl.value = Boolean(v.value);
+        },
+      });
+      customElements.define('checkbox-shadow-host', CheckboxShadowHost);
+    }
+
+    return html`<checkbox-shadow-host
+      .props=${{ ...args }}
+    ></checkbox-shadow-host>`;
   },
 };
 
