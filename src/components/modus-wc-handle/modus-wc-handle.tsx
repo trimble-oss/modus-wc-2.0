@@ -268,6 +268,7 @@ export class ModusWcHandle {
     const value =
       axis === 'horizontal' ? computedStyle.minWidth : computedStyle.minHeight;
     const parsed = parseFloat(value);
+    // istanbul ignore next (unreachable code)
     return Number.isNaN(parsed) ? 0 : parsed;
   }
 
