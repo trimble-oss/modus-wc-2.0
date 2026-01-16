@@ -1,6 +1,27 @@
 import { newSpecPage, SpecPage } from '@stencil/core/testing';
 import { ModusWcHandle } from './modus-wc-handle';
 
+interface HandlePrivateMethods {
+  handleTouchStart: (event: {
+    touches: { clientX: number; clientY: number }[];
+    preventDefault: () => void;
+  }) => void;
+  handleTouchMove: (event: {
+    touches: { clientX: number; clientY: number }[];
+    preventDefault: () => void;
+  }) => void;
+  handleTouchEnd: () => void;
+  endDrag: () => void;
+  getMinSize: (target: HTMLElement, axis: 'horizontal' | 'vertical') => number;
+  clampDelta: (
+    delta: number,
+    leftEl: HTMLElement | null,
+    rightEl: HTMLElement | null,
+    leftSize: number,
+    rightSize: number
+  ) => number;
+}
+
 describe('modus-wc-handle', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
@@ -82,7 +103,7 @@ describe('modus-wc-handle', () => {
       Object.defineProperty(rightPanel, 'offsetWidth', { value: 200 });
     });
 
-    it('should handle mousedown and start drag for bar type', async () => {
+    it('should handle mousedown and start drag for bar type', () => {
       const handle = page.root as HTMLElement;
       const mouseDownEvent = new MouseEvent('mousedown', {
         clientX: 200,
@@ -96,7 +117,7 @@ describe('modus-wc-handle', () => {
       expect(document.body.style.userSelect).toBe('none');
     });
 
-    it('should handle mousemove and drag horizontally', async () => {
+    it('should handle mousemove and drag horizontally', () => {
       const handle = page.root as HTMLElement;
 
       // Start drag
@@ -117,7 +138,7 @@ describe('modus-wc-handle', () => {
       expect(rightPanel.style.width).toBe('150px');
     });
 
-    it('should handle mouseup and end drag', async () => {
+    it('should handle mouseup and end drag', () => {
       const handle = page.root as HTMLElement;
 
       // Store original cursor
@@ -134,7 +155,7 @@ describe('modus-wc-handle', () => {
       expect(document.body.style.cursor).toBe('default');
     });
 
-    it('should restore previous cursor and userSelect on end drag', async () => {
+    it('should restore previous cursor and userSelect on end drag', () => {
       const handle = page.root as HTMLElement;
 
       // Set specific initial cursor and userSelect values
@@ -157,19 +178,19 @@ describe('modus-wc-handle', () => {
       expect(document.body.style.userSelect).toBe('text');
     });
 
-    it('should handle endDrag with null previous values', async () => {
+    it('should handle endDrag with null previous values', () => {
       const instance = page.rootInstance as ModusWcHandle;
 
       // Directly call endDrag without startDrag to test nullish coalescing fallback
       // This tests the case where previousBodyCursor/previousBodyUserSelect are null
-      (instance as any).endDrag();
+      (instance as unknown as HandlePrivateMethods).endDrag();
 
       // Should set empty string when previous values are null
       expect(document.body.style.cursor).toBe('');
       expect(document.body.style.userSelect).toBe('');
     });
 
-    it('should not drag when not in dragging state', async () => {
+    it('should not drag when not in dragging state', () => {
       const initialWidth = leftPanel.style.width;
 
       // Move mouse without starting drag
@@ -209,7 +230,7 @@ describe('modus-wc-handle', () => {
       Object.defineProperty(rightPanel, 'offsetWidth', { value: 200 });
     });
 
-    it('should handle touchstart and start drag for bar type', async () => {
+    it('should handle touchstart and start drag for bar type', () => {
       // Create a mock touch event
       const touchStartEvent = {
         type: 'touchstart',
@@ -221,22 +242,24 @@ describe('modus-wc-handle', () => {
 
       // Manually call the handler
       const instance = page.rootInstance as ModusWcHandle;
-      (instance as any).handleTouchStart(touchStartEvent);
+      (instance as unknown as HandlePrivateMethods).handleTouchStart(
+        touchStartEvent
+      );
 
       expect(document.body.style.cursor).toBe('col-resize');
     });
 
-    it('should handle touchmove and drag', async () => {
+    it('should handle touchmove and drag', () => {
       const instance = page.rootInstance as ModusWcHandle;
 
       // Start touch
-      (instance as any).handleTouchStart({
+      (instance as unknown as HandlePrivateMethods).handleTouchStart({
         touches: [{ clientX: 200, clientY: 100 }],
         preventDefault: jest.fn(),
       });
 
       // Move touch
-      (instance as any).handleTouchMove({
+      (instance as unknown as HandlePrivateMethods).handleTouchMove({
         touches: [{ clientX: 250, clientY: 100 }],
         preventDefault: jest.fn(),
       });
@@ -245,26 +268,26 @@ describe('modus-wc-handle', () => {
       expect(rightPanel.style.width).toBe('150px');
     });
 
-    it('should handle touchend and end drag', async () => {
+    it('should handle touchend and end drag', () => {
       const instance = page.rootInstance as ModusWcHandle;
 
       // Start touch
-      (instance as any).handleTouchStart({
+      (instance as unknown as HandlePrivateMethods).handleTouchStart({
         touches: [{ clientX: 200, clientY: 100 }],
         preventDefault: jest.fn(),
       });
 
       // End touch
-      (instance as any).handleTouchEnd();
+      (instance as unknown as HandlePrivateMethods).handleTouchEnd();
 
       expect(document.body.style.cursor).toBe('');
     });
 
-    it('should not move when not dragging', async () => {
+    it('should not move when not dragging', () => {
       const initialWidth = leftPanel.style.width;
       const instance = page.rootInstance as ModusWcHandle;
 
-      (instance as any).handleTouchMove({
+      (instance as unknown as HandlePrivateMethods).handleTouchMove({
         touches: [{ clientX: 250, clientY: 100 }],
         preventDefault: jest.fn(),
       });
@@ -302,7 +325,7 @@ describe('modus-wc-handle', () => {
       });
     });
 
-    it('should resize on ArrowRight key for horizontal orientation', async () => {
+    it('should resize on ArrowRight key for horizontal orientation', () => {
       const handle = page.root as HTMLElement;
 
       handle.dispatchEvent(
@@ -317,7 +340,7 @@ describe('modus-wc-handle', () => {
       expect(rightPanel.style.width).toBe('195px');
     });
 
-    it('should resize on ArrowLeft key for horizontal orientation', async () => {
+    it('should resize on ArrowLeft key for horizontal orientation', () => {
       const handle = page.root as HTMLElement;
 
       handle.dispatchEvent(
@@ -332,7 +355,7 @@ describe('modus-wc-handle', () => {
       expect(rightPanel.style.width).toBe('205px');
     });
 
-    it('should ignore ArrowUp/Down for horizontal orientation', async () => {
+    it('should ignore ArrowUp/Down for horizontal orientation', () => {
       const handle = page.root as HTMLElement;
       const initialWidth = leftPanel.style.width;
 
@@ -347,7 +370,7 @@ describe('modus-wc-handle', () => {
       expect(leftPanel.style.width).toBe(initialWidth);
     });
 
-    it('should ignore other keys for horizontal orientation', async () => {
+    it('should ignore other keys for horizontal orientation', () => {
       const handle = page.root as HTMLElement;
       const initialWidth = leftPanel.style.width;
 
@@ -392,7 +415,7 @@ describe('modus-wc-handle', () => {
       });
     });
 
-    it('should resize on ArrowDown key for vertical orientation', async () => {
+    it('should resize on ArrowDown key for vertical orientation', () => {
       const handle = page.root as HTMLElement;
 
       handle.dispatchEvent(
@@ -407,7 +430,7 @@ describe('modus-wc-handle', () => {
       expect(bottomPanel.style.height).toBe('195px');
     });
 
-    it('should resize on ArrowUp key for vertical orientation', async () => {
+    it('should resize on ArrowUp key for vertical orientation', () => {
       const handle = page.root as HTMLElement;
 
       handle.dispatchEvent(
@@ -422,7 +445,7 @@ describe('modus-wc-handle', () => {
       expect(bottomPanel.style.height).toBe('205px');
     });
 
-    it('should ignore ArrowLeft/Right for vertical orientation', async () => {
+    it('should ignore ArrowLeft/Right for vertical orientation', () => {
       const handle = page.root as HTMLElement;
       const initialHeight = topPanel.style.height;
 
@@ -437,7 +460,7 @@ describe('modus-wc-handle', () => {
       expect(topPanel.style.height).toBe(initialHeight);
     });
 
-    it('should ignore other keys for vertical orientation', async () => {
+    it('should ignore other keys for vertical orientation', () => {
       const handle = page.root as HTMLElement;
       const initialHeight = topPanel.style.height;
 
@@ -476,7 +499,7 @@ describe('modus-wc-handle', () => {
       Object.defineProperty(bottomPanel, 'offsetHeight', { value: 200 });
     });
 
-    it('should drag vertically', async () => {
+    it('should drag vertically', () => {
       const handle = page.root as HTMLElement;
 
       // Start drag
@@ -591,17 +614,16 @@ describe('modus-wc-handle', () => {
       Object.defineProperty(rightPanel, 'offsetWidth', { value: 200 });
 
       // Test getMinSize method
-      const minSize = (instance as any).getMinSize(leftPanel, 'horizontal');
+      const minSize = (instance as unknown as HandlePrivateMethods).getMinSize(
+        leftPanel,
+        'horizontal'
+      );
       expect(typeof minSize).toBe('number');
 
       // Test clampDelta method
-      const clampedDelta = (instance as any).clampDelta(
-        -300,
-        leftPanel,
-        rightPanel,
-        200,
-        200
-      );
+      const clampedDelta = (
+        instance as unknown as HandlePrivateMethods
+      ).clampDelta(-300, leftPanel, rightPanel, 200, 200);
       expect(typeof clampedDelta).toBe('number');
     });
 
@@ -620,7 +642,10 @@ describe('modus-wc-handle', () => {
       const leftPanel = page.body.querySelector('#left-panel') as HTMLElement;
 
       // Test getMinSize returns 0 for elements without explicit min-width
-      const minSize = (instance as any).getMinSize(leftPanel, 'horizontal');
+      const minSize = (instance as unknown as HandlePrivateMethods).getMinSize(
+        leftPanel,
+        'horizontal'
+      );
       expect(minSize).toBe(0);
     });
 
@@ -646,20 +671,15 @@ describe('modus-wc-handle', () => {
       Object.defineProperty(bottomPanel, 'offsetHeight', { value: 200 });
 
       // Test getMinSize for vertical axis explicitly
-      const minSizeVertical = (instance as any).getMinSize(
-        topPanel,
-        'vertical'
-      );
+      const minSizeVertical = (
+        instance as unknown as HandlePrivateMethods
+      ).getMinSize(topPanel, 'vertical');
       expect(typeof minSizeVertical).toBe('number');
 
       // Also test through clampDelta with vertical orientation to hit the branch
-      const clampedDelta = (instance as any).clampDelta(
-        -300,
-        topPanel,
-        bottomPanel,
-        200,
-        200
-      );
+      const clampedDelta = (
+        instance as unknown as HandlePrivateMethods
+      ).clampDelta(-300, topPanel, bottomPanel, 200, 200);
       expect(typeof clampedDelta).toBe('number');
     });
 
@@ -681,7 +701,10 @@ describe('modus-wc-handle', () => {
       topPanel.style.minHeight = '75px';
 
       // Test getMinSize returns a number for vertical axis
-      const minSize = (instance as any).getMinSize(topPanel, 'vertical');
+      const minSize = (instance as unknown as HandlePrivateMethods).getMinSize(
+        topPanel,
+        'vertical'
+      );
       expect(typeof minSize).toBe('number');
     });
   });
@@ -742,7 +765,7 @@ describe('modus-wc-handle', () => {
       const preventDefaultMock = jest.fn();
 
       // Call handleTouchStart directly with a mock event
-      (instance as any).handleTouchStart({
+      (instance as unknown as HandlePrivateMethods).handleTouchStart({
         touches: [{ clientX: 200, clientY: 100 }],
         preventDefault: preventDefaultMock,
       });
@@ -773,7 +796,7 @@ describe('modus-wc-handle', () => {
       const preventDefaultMock = jest.fn();
 
       // Call handleTouchStart directly with a mock event
-      (instance as any).handleTouchStart({
+      (instance as unknown as HandlePrivateMethods).handleTouchStart({
         touches: [{ clientX: 200, clientY: 100 }],
         preventDefault: preventDefaultMock,
       });
