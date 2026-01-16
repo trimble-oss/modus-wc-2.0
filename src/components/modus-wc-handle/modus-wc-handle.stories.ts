@@ -61,17 +61,19 @@ export default meta;
 
 type Story = StoryObj<HandleArgs>;
 
-const HandleTemplate = (args?: HandleArgs) => html`
-  <modus-wc-handle
-    custom-class="${ifDefined(args?.['custom-class'])}"
-    density="${args?.density}"
-    left-target="${ifDefined(args?.['left-target'])}"
-    orientation="${ifDefined(args?.orientation)}"
-    right-target="${ifDefined(args?.['right-target'])}"
-    size="${args?.size}"
-    type="${args?.type}"
-  ></modus-wc-handle>
-`;
+const HandleTemplate = (args?: HandleArgs) =>
+  // prettier-ignore
+  html`
+<modus-wc-handle
+  custom-class="${ifDefined(args?.['custom-class'])}"
+  density="${args?.density}"
+  left-target="${ifDefined(args?.['left-target'])}"
+  orientation="${ifDefined(args?.orientation)}"
+  right-target="${ifDefined(args?.['right-target'])}"
+  size="${args?.size}"
+  type="${args?.type}"
+></modus-wc-handle>
+  `;
 
 // Helper templates for panels
 const PanelTemplate = (
@@ -79,14 +81,16 @@ const PanelTemplate = (
   title: string,
   content: string,
   style: string
-) => html`
-  <div
-    id="${id}"
-    style="${style}; background-color: var(--modus-wc-color-base-100); padding: 16px; overflow: auto;"
-  >
-    <h3>${title}</h3>
-    <p>${content}</p>
-  </div>
+) =>
+  // prettier-ignore
+  html`
+<div
+  id="${id}"
+  style="${style}; background-color: var(--modus-wc-color-base-100); padding: 16px; overflow: auto;"
+>
+  <h3>${title}</h3>
+  <p>${content}</p>
+</div>
 `;
 
 const PanelWithKeyboardInfo = (
@@ -95,15 +99,17 @@ const PanelWithKeyboardInfo = (
   content: string,
   keyboardInfo: string,
   style: string
-) => html`
-  <div
-    id="${id}"
-    style="${style}; background-color: var(--modus-wc-color-base-100); padding: 16px; overflow: auto;"
-  >
-    <h3>${title}</h3>
-    <p>${content}</p>
-    <p><strong>Keyboard:</strong> ${keyboardInfo}</p>
-  </div>
+) =>
+  // prettier-ignore
+  html`
+<div
+  id="${id}"
+  style="${style}; background-color: var(--modus-wc-color-base-100); padding: 16px; overflow: auto;"
+>
+  <h3>${title}</h3>
+  <p>${content}</p>
+  <p><strong>Keyboard:</strong> ${keyboardInfo}</p>
+</div>
 `;
 
 // Reusable render function for demos
@@ -113,37 +119,37 @@ const Template = (args?: HandleArgs) => {
   const isHorizontal = orientation === 'horizontal';
   const leftId = `panel-left-${type}`;
   const rightId = `panel-right-${type}`;
-
+  // prettier-ignore
   return html`
-    <div
-      style="display: flex; ${isHorizontal
-        ? ''
-        : 'flex-direction: column;'} gap: 0; height: ${isHorizontal
-        ? '300px'
-        : '500px'};"
-    >
-      ${PanelWithKeyboardInfo(
-        leftId,
-        isHorizontal ? 'Left Panel' : 'Top Panel',
-        'Drag the handle to resize this panel.',
-        `Focus the handle and use ${isHorizontal ? 'Left/Right' : 'Up/Down'} arrow keys to resize (5px per press).`,
-        isHorizontal ? 'width: 200px' : 'height: 200px'
-      )}
-      ${HandleTemplate({
-        orientation: orientation,
-        size: args?.size ?? 'default',
-        density: args?.density ?? 'comfortable',
-        type: type,
-        'left-target': `#${leftId}`,
-        'right-target': `#${rightId}`,
-      })}
-      ${PanelTemplate(
-        rightId,
-        isHorizontal ? 'Right Panel' : 'Bottom Panel',
-        'This panel will resize automatically when you drag the handle.',
-        'flex: 1'
-      )}
-    </div>
+<div
+  style="display: flex; ${isHorizontal
+    ? ''
+    : 'flex-direction: column;'} gap: 0; height: ${isHorizontal
+    ? '300px'
+    : '500px'};"
+>
+  ${PanelWithKeyboardInfo(
+    leftId,
+    isHorizontal ? 'Left Panel' : 'Top Panel',
+    'Drag the handle to resize this panel.',
+    `Focus the handle and use ${isHorizontal ? 'Left/Right' : 'Up/Down'} arrow keys to resize (5px per press).`,
+    isHorizontal ? 'width: 200px' : 'height: 200px'
+  )}
+  ${HandleTemplate({
+    orientation: orientation,
+    size: args?.size ?? 'default',
+    density: args?.density ?? 'comfortable',
+    type: type,
+    'left-target': `#${leftId}`,
+    'right-target': `#${rightId}`,
+  })}
+  ${PanelTemplate(
+    rightId,
+    isHorizontal ? 'Right Panel' : 'Bottom Panel',
+    'This panel will resize automatically when you drag the handle.',
+    'flex: 1'
+  )}
+</div>
   `;
 };
 
