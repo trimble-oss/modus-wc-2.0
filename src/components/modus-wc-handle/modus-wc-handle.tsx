@@ -1,4 +1,4 @@
-import { Component, Element, h, Host, Prop, State } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-handle.tailwind';
 import { Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
@@ -16,6 +16,11 @@ export class ModusWcHandle {
   private startPos = 0;
   private startLeftSize = 0;
   private startRightSize = 0;
+  private previousBodyCursor: string | null = null;
+  private previousBodyUserSelect: string | null = null;
+  private readonly nonPassiveListenerOptions: AddEventListenerOptions = {
+    passive: false,
+  };
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -42,135 +47,45 @@ export class ModusWcHandle {
   @Prop() type?: 'bar' | 'button' = 'bar';
 
   /** Internal state for dragging */
-  @State() private isDragging: boolean = false;
+  private isDragging = false;
 
-  componentWillLoad() {
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
-  }
-
-  componentDidLoad() {
-    this.setupDragHandlers();
-  }
-
-  private setupDragHandlers() {
-    // Mouse and touch events
-    this.el.addEventListener(
-      'mousedown',
-      this.handleMouseDown.bind(this) as EventListener
-    );
-    document.addEventListener('mousemove', this.handleMouseMove.bind(this));
-    document.addEventListener('mouseup', this.handleMouseUp.bind(this));
-
-    // Touch events for mobile support
-    this.el.addEventListener(
-      'touchstart',
-      this.handleTouchStart.bind(this) as EventListener
-    );
-    document.addEventListener('touchmove', this.handleTouchMove.bind(this));
-    document.addEventListener('touchend', this.handleTouchEnd.bind(this));
-
-    // Keyboard navigation
-    this.el.addEventListener(
-      'keydown',
-      this.handleKeyDown.bind(this) as EventListener
-    );
-  }
-
-  private getTargetElement(
-    target: string | HTMLElement | undefined
-  ): HTMLElement | null {
-    if (!target) return null;
-    if (typeof target === 'string') {
-      return document.querySelector(target) as HTMLElement;
+  private readonly handleMouseDown = (e: MouseEvent) => {
+    if (this.type === 'bar') {
+      e.preventDefault();
     }
-    return target;
-  }
-
-  private handleMouseDown(e: MouseEvent) {
-    e.preventDefault();
     this.startDrag(e.clientX, e.clientY);
-  }
+  };
 
-  private handleTouchStart(e: TouchEvent) {
-    e.preventDefault();
+  private readonly handleTouchStart = (e: TouchEvent) => {
+    if (this.type === 'bar') {
+      e.preventDefault();
+    }
     const touch = e.touches[0];
     this.startDrag(touch.clientX, touch.clientY);
-  }
+  };
 
-  private startDrag(clientX: number, clientY: number) {
-    this.isDragging = true;
-    this.startPos = this.orientation === 'horizontal' ? clientX : clientY;
-
-    const leftEl = this.getTargetElement(this.leftTarget);
-    const rightEl = this.getTargetElement(this.rightTarget);
-
-    if (leftEl) {
-      this.startLeftSize =
-        this.orientation === 'horizontal'
-          ? leftEl.offsetWidth
-          : leftEl.offsetHeight;
-    }
-
-    if (rightEl) {
-      this.startRightSize =
-        this.orientation === 'horizontal'
-          ? rightEl.offsetWidth
-          : rightEl.offsetHeight;
-    }
-
-    document.body.style.cursor =
-      this.orientation === 'horizontal' ? 'col-resize' : 'row-resize';
-    document.body.style.userSelect = 'none';
-  }
-
-  private handleMouseMove(e: MouseEvent) {
+  private readonly handleMouseMove = (e: MouseEvent) => {
     if (!this.isDragging) return;
     e.preventDefault();
     this.drag(e.clientX, e.clientY);
-  }
+  };
 
-  private handleTouchMove(e: TouchEvent) {
+  private readonly handleTouchMove = (e: TouchEvent) => {
     if (!this.isDragging) return;
     e.preventDefault();
     const touch = e.touches[0];
     this.drag(touch.clientX, touch.clientY);
-  }
+  };
 
-  private drag(clientX: number, clientY: number) {
-    const currentPos = this.orientation === 'horizontal' ? clientX : clientY;
-    const delta = currentPos - this.startPos;
-
-    const leftEl = this.getTargetElement(this.leftTarget);
-    const rightEl = this.getTargetElement(this.rightTarget);
-
-    if (leftEl && this.orientation === 'horizontal') {
-      leftEl.style.width = `${this.startLeftSize + delta}px`;
-    } else if (leftEl && this.orientation === 'vertical') {
-      leftEl.style.height = `${this.startLeftSize + delta}px`;
-    }
-
-    if (rightEl && this.orientation === 'horizontal') {
-      rightEl.style.width = `${this.startRightSize - delta}px`;
-    } else if (rightEl && this.orientation === 'vertical') {
-      rightEl.style.height = `${this.startRightSize - delta}px`;
-    }
-  }
-
-  private handleMouseUp() {
+  private readonly handleMouseUp = () => {
     this.endDrag();
-  }
+  };
 
-  private handleTouchEnd() {
+  private readonly handleTouchEnd = () => {
     this.endDrag();
-  }
+  };
 
-  private endDrag() {
-    this.isDragging = false;
-    document.body.style.cursor = '';
-    document.body.style.userSelect = '';
-  }
-
-  private handleKeyDown(e: KeyboardEvent) {
+  private readonly handleKeyDown = (e: KeyboardEvent) => {
     const moveAmount = 5; // pixels to move per key press
     let delta = 0;
 
@@ -202,43 +117,202 @@ export class ModusWcHandle {
     // Apply the resize
     const leftEl = this.getTargetElement(this.leftTarget);
     const rightEl = this.getTargetElement(this.rightTarget);
+    const leftSize = leftEl
+      ? this.orientation === 'horizontal'
+        ? leftEl.offsetWidth
+        : leftEl.offsetHeight
+      : 0;
+    const rightSize = rightEl
+      ? this.orientation === 'horizontal'
+        ? rightEl.offsetWidth
+        : rightEl.offsetHeight
+      : 0;
+    const clampedDelta = this.clampDelta(
+      delta,
+      leftEl,
+      rightEl,
+      leftSize,
+      rightSize
+    );
 
     if (leftEl && this.orientation === 'vertical') {
-      const newHeight = leftEl.offsetHeight + delta;
+      const newHeight = leftSize + clampedDelta;
       leftEl.style.height = `${newHeight}px`;
     } else if (leftEl && this.orientation === 'horizontal') {
-      const newWidth = leftEl.offsetWidth + delta;
+      const newWidth = leftSize + clampedDelta;
       leftEl.style.width = `${newWidth}px`;
     }
 
     if (rightEl && this.orientation === 'vertical') {
-      const newHeight = rightEl.offsetHeight - delta;
+      const newHeight = rightSize - clampedDelta;
       rightEl.style.height = `${newHeight}px`;
     } else if (rightEl && this.orientation === 'horizontal') {
-      const newWidth = rightEl.offsetWidth - delta;
+      const newWidth = rightSize - clampedDelta;
       rightEl.style.width = `${newWidth}px`;
     }
+  };
+
+  componentWillLoad() {
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  componentDidLoad() {
+    this.setupDragHandlers();
+  }
+
+  private setupDragHandlers() {
+    // Mouse and touch events
+    this.el.addEventListener('mousedown', this.handleMouseDown);
+    document.addEventListener('mousemove', this.handleMouseMove);
+    document.addEventListener('mouseup', this.handleMouseUp);
+
+    // Touch events for mobile support
+    this.el.addEventListener(
+      'touchstart',
+      this.handleTouchStart,
+      this.nonPassiveListenerOptions
+    );
+    document.addEventListener(
+      'touchmove',
+      this.handleTouchMove,
+      this.nonPassiveListenerOptions
+    );
+    document.addEventListener('touchend', this.handleTouchEnd);
+
+    // Keyboard navigation
+    this.el.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  private getTargetElement(
+    target: string | HTMLElement | undefined
+  ): HTMLElement | null {
+    if (!target) return null;
+    if (typeof target === 'string') {
+      return document.querySelector(target) as HTMLElement;
+    }
+    return target;
+  }
+
+  private startDrag(clientX: number, clientY: number) {
+    this.isDragging = true;
+    this.startPos = this.orientation === 'horizontal' ? clientX : clientY;
+
+    const leftEl = this.getTargetElement(this.leftTarget);
+    const rightEl = this.getTargetElement(this.rightTarget);
+
+    if (leftEl) {
+      this.startLeftSize =
+        this.orientation === 'horizontal'
+          ? leftEl.offsetWidth
+          : leftEl.offsetHeight;
+    } else {
+      this.startLeftSize = 0;
+    }
+
+    if (rightEl) {
+      this.startRightSize =
+        this.orientation === 'horizontal'
+          ? rightEl.offsetWidth
+          : rightEl.offsetHeight;
+    } else {
+      this.startRightSize = 0;
+    }
+
+    this.previousBodyCursor = document.body.style.cursor;
+    this.previousBodyUserSelect = document.body.style.userSelect;
+    document.body.style.cursor =
+      this.orientation === 'horizontal' ? 'col-resize' : 'row-resize';
+    document.body.style.userSelect = 'none';
+  }
+
+  private drag(clientX: number, clientY: number) {
+    const currentPos = this.orientation === 'horizontal' ? clientX : clientY;
+    const delta = currentPos - this.startPos;
+
+    const leftEl = this.getTargetElement(this.leftTarget);
+    const rightEl = this.getTargetElement(this.rightTarget);
+    const clampedDelta = this.clampDelta(
+      delta,
+      leftEl,
+      rightEl,
+      this.startLeftSize,
+      this.startRightSize
+    );
+
+    if (leftEl && this.orientation === 'horizontal') {
+      leftEl.style.width = `${this.startLeftSize + clampedDelta}px`;
+    } else if (leftEl && this.orientation === 'vertical') {
+      leftEl.style.height = `${this.startLeftSize + clampedDelta}px`;
+    }
+
+    if (rightEl && this.orientation === 'horizontal') {
+      rightEl.style.width = `${this.startRightSize - clampedDelta}px`;
+    } else if (rightEl && this.orientation === 'vertical') {
+      rightEl.style.height = `${this.startRightSize - clampedDelta}px`;
+    }
+  }
+
+  private endDrag() {
+    this.isDragging = false;
+    document.body.style.cursor = this.previousBodyCursor ?? '';
+    document.body.style.userSelect = this.previousBodyUserSelect ?? '';
+    this.previousBodyCursor = null;
+    this.previousBodyUserSelect = null;
+  }
+
+  private getMinSize(
+    target: HTMLElement,
+    axis: 'horizontal' | 'vertical'
+  ): number {
+    const computedStyle = getComputedStyle(target);
+    const value =
+      axis === 'horizontal' ? computedStyle.minWidth : computedStyle.minHeight;
+    const parsed = parseFloat(value);
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+
+  private clampDelta(
+    delta: number,
+    leftEl: HTMLElement | null,
+    rightEl: HTMLElement | null,
+    leftSize: number,
+    rightSize: number
+  ): number {
+    let minDelta = Number.NEGATIVE_INFINITY;
+    let maxDelta = Number.POSITIVE_INFINITY;
+    const axis = this.orientation === 'vertical' ? 'vertical' : 'horizontal';
+
+    if (leftEl) {
+      const minLeft = this.getMinSize(leftEl, axis);
+      minDelta = Math.max(minDelta, minLeft - leftSize);
+    }
+
+    if (rightEl) {
+      const minRight = this.getMinSize(rightEl, axis);
+      maxDelta = Math.min(maxDelta, rightSize - minRight);
+    }
+
+    return Math.min(Math.max(delta, minDelta), maxDelta);
   }
 
   disconnectedCallback() {
     // Determine the target element for removing event listeners
-    this.el.removeEventListener(
-      'mousedown',
-      this.handleMouseDown.bind(this) as EventListener
-    );
+    this.el.removeEventListener('mousedown', this.handleMouseDown);
     this.el.removeEventListener(
       'touchstart',
-      this.handleTouchStart.bind(this) as EventListener
+      this.handleTouchStart,
+      this.nonPassiveListenerOptions
     );
-    this.el.removeEventListener(
-      'keydown',
-      this.handleKeyDown.bind(this) as EventListener
-    );
+    this.el.removeEventListener('keydown', this.handleKeyDown);
 
-    document.removeEventListener('mousemove', this.handleMouseMove.bind(this));
-    document.removeEventListener('mouseup', this.handleMouseUp.bind(this));
-    document.removeEventListener('touchmove', this.handleTouchMove.bind(this));
-    document.removeEventListener('touchend', this.handleTouchEnd.bind(this));
+    document.removeEventListener('mousemove', this.handleMouseMove);
+    document.removeEventListener('mouseup', this.handleMouseUp);
+    document.removeEventListener(
+      'touchmove',
+      this.handleTouchMove,
+      this.nonPassiveListenerOptions
+    );
+    document.removeEventListener('touchend', this.handleTouchEnd);
   }
 
   private getClasses(): string {
@@ -286,7 +360,7 @@ export class ModusWcHandle {
       <Host
         class={this.getClasses()}
         role={this.type === 'bar' ? 'separator' : undefined}
-        tabIndex={this.type === 'bar' ? 0 : undefined}
+        tabIndex={0}
         aria-orientation={this.type === 'bar' ? this.orientation : undefined}
         {...this.inheritedAttributes}
       >
