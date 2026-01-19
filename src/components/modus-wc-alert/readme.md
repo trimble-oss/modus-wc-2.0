@@ -7,7 +7,9 @@
 
 ## Overview
 
-A customizable alert component used to inform the user about important events
+A customizable alert component used to inform the user about important events.
+
+The component supports `<slot>` elements for injecting custom content and buttons.
 
 ## Properties
 
