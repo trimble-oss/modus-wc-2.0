@@ -13,6 +13,7 @@ interface DateArgs {
   format?:
     | 'yyyy-mm-dd'
     | 'dd-mm-yyyy'
+    | 'mm-dd-yyyy'
     | 'MMM DD, YYYY'
     | 'yyyy/mm/dd'
     | 'dd/mm/yyyy';
@@ -69,9 +70,11 @@ const meta: Meta<DateArgs> = {
       options: [
         'yyyy-mm-dd',
         'dd-mm-yyyy',
+        'mm-dd-yyyy',
         'MMM DD, YYYY',
         'yyyy/mm/dd',
         'dd/mm/yyyy',
+        'mm/dd/yyyy',
       ],
     },
     'week-start-day': {
