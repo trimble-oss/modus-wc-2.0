@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { keyed } from 'lit/directives/keyed.js';
 import { Orientation } from '../types';
 
 interface HandleArgs {
@@ -112,15 +113,19 @@ const PanelWithKeyboardInfo = (
 </div>
 `;
 
+// Generate unique ID for each render to avoid conflicts on docs page
+const generateUniqueId = () => Math.random().toString(36).substring(2, 9);
+
 // Reusable render function for demos
 const Template = (args?: HandleArgs) => {
   const orientation = args?.orientation ?? 'horizontal';
   const type = args?.type ?? 'bar';
   const isHorizontal = orientation === 'horizontal';
-  const leftId = `panel-left-${type}`;
-  const rightId = `panel-right-${type}`;
+  const uniqueId = generateUniqueId();
+  const leftId = `panel-left-${uniqueId}`;
+  const rightId = `panel-right-${uniqueId}`;
   // prettier-ignore
-  return html`
+  return html`${keyed(orientation, html`
 <div
   style="display: flex; ${isHorizontal
     ? ''
@@ -150,7 +155,7 @@ const Template = (args?: HandleArgs) => {
     'flex: 1'
   )}
 </div>
-  `;
+  `)}`;
 };
 
 export const Default: Story = {
