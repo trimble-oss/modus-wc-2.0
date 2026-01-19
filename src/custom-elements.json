@@ -2328,15 +2328,6 @@
               "type": {
                 "text": "boolean"
               }
-            },
-            {
-              "name": "show-search",
-              "fieldName": "showSearch",
-              "default": "false",
-              "description": "Whether to show the search input.",
-              "type": {
-                "text": "boolean"
-              }
             }
           ],
           "tagName": "modus-wc-content-tree",

@@ -17,7 +17,6 @@ Uses menu items to create the tree structure with support for expanding/collapsi
 | `customClass`       | `custom-class`       | Custom CSS class to apply to the component.                                | `string \| undefined`  | `''`          |
 | `searchPlaceholder` | `search-placeholder` | Placeholder text for the search input.                                     | `string \| undefined`  | `'Search...'` |
 | `showActions`       | `show-actions`       | Whether to show the action bar with add, delete, and collapse all buttons. | `boolean \| undefined` | `false`       |
-| `showSearch`        | `show-search`        | Whether to show the search input.                                          | `boolean \| undefined` | `false`       |
 
 
 ## Dependencies

@@ -26,12 +26,9 @@ export class ModusWcContentTree {
   /** Whether to show the action bar with add, delete, and collapse all buttons. */
   @Prop() showActions?: boolean = false;
 
-  /** Whether to show the search input. */
-  @Prop() showSearch?: boolean = false;
-
   @State() private hasSlotContent: boolean = false;
   @State() private searchValue: string = '';
-  @State() private showAddNodeInput: boolean = false;
+  @State() private isAddNodeMode: boolean = false;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -57,41 +54,119 @@ export class ModusWcContentTree {
   }
 
   private addMenuItem = () => {
-    this.showAddNodeInput = true;
+    this.searchValue = '';
+    this.filterNodes('');
   };
 
   private createMenuItem() {
     console.log('Creating menu item:', this.searchValue);
+    this.searchValue = '';
+    this.isAddNodeMode = false;
   }
 
-  private handleAddNodeInput = (event: CustomEvent) => {
+  private handleInputChange = (event: CustomEvent) => {
     const target = event.target as HTMLInputElement;
     this.searchValue = target.value;
+
+    if (!this.isAddNodeMode) {
+      this.filterNodes(this.searchValue);
+    }
   };
 
-  private handleAddNodeKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'Enter' && this.searchValue.trim()) {
-      this.createMenuItem();
-    } else if (event.key === 'Escape') {
-      this.showAddNodeInput = false;
+  private filterNodes(searchTerm: string) {
+    const menuItems = this.el.querySelectorAll('modus-wc-menu-item');
+    const normalizedSearch = searchTerm.toLowerCase().trim();
+
+    if (!normalizedSearch) {
+      // Show all nodes when search is empty
+      menuItems.forEach((item) => {
+        (item as HTMLElement).style.display = '';
+      });
+      return;
+    }
+
+    menuItems.forEach((item) => {
+      const label = item.getAttribute('label') || '';
+      const normalizedLabel = label.toLowerCase();
+      const matches = normalizedLabel.includes(normalizedSearch);
+
+      if (matches) {
+        // Show matching node
+        (item as HTMLElement).style.display = '';
+
+        // Expand and show all parent nodes
+        let parent = item.parentElement;
+        while (parent && parent !== this.el) {
+          if (parent.tagName === 'MODUS-WC-MENU-ITEM') {
+            parent.style.display = '';
+            parent.setAttribute('expanded', 'true');
+          }
+          parent = parent.parentElement;
+        }
+      } else {
+        // Check if any children match
+        const hasMatchingChildren = this.hasMatchingDescendants(
+          item as HTMLElement,
+          normalizedSearch
+        );
+
+        if (hasMatchingChildren) {
+          (item as HTMLElement).style.display = '';
+          item.setAttribute('expanded', 'true');
+        } else {
+          (item as HTMLElement).style.display = 'none';
+        }
+      }
+    });
+  }
+
+  private hasMatchingDescendants(
+    element: HTMLElement,
+    searchTerm: string
+  ): boolean {
+    const childMenuItems = element.querySelectorAll('modus-wc-menu-item');
+
+    for (const child of Array.from(childMenuItems)) {
+      const label = child.getAttribute('label') || '';
+      if (label.toLowerCase().includes(searchTerm)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private handleInputKeyDown = (event: KeyboardEvent) => {
+    const value = this.searchValue.trim();
+
+    if (event.key === 'Enter') {
+      if (this.isAddNodeMode && value) {
+        this.createMenuItem();
+      }
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      this.isAddNodeMode = false;
       this.searchValue = '';
+      this.filterNodes('');
     }
   };
 
   private handleClickOutside = (event: MouseEvent) => {
     const target = event.target as HTMLElement;
-    const addNodeSection = this.el.querySelector(
-      '.modus-wc-content-tree-add-node'
+    const searchSection = this.el.querySelector(
+      '.modus-wc-content-tree-search'
     );
     const emptySection = this.el.querySelector('.modus-wc-content-tree-empty');
 
     if (
-      addNodeSection &&
-      !addNodeSection.contains(target) &&
-      emptySection &&
-      !emptySection.contains(target)
+      this.isAddNodeMode &&
+      searchSection &&
+      !searchSection.contains(target) &&
+      (!emptySection || !emptySection.contains(target))
     ) {
-      this.showAddNodeInput = false;
+      this.isAddNodeMode = false;
       this.searchValue = '';
     }
   };
@@ -118,17 +193,19 @@ export class ModusWcContentTree {
           {...this.inheritedAttributes}
         >
           <div class="modus-wc-content-tree-header">
-            {this.showSearch && (
-              <div class="modus-wc-content-tree-search">
-                <modus-wc-text-input
-                  placeholder={this.searchPlaceholder}
-                  value={this.searchValue}
-                  include-clear
-                  include-search
-                  customClass="modus-wc-content-tree-search-input"
-                ></modus-wc-text-input>
-              </div>
-            )}
+            <div class="modus-wc-content-tree-search">
+              <modus-wc-text-input
+                placeholder={
+                  this.isAddNodeMode ? 'Add node...' : this.searchPlaceholder
+                }
+                value={this.searchValue}
+                include-clear
+                include-search={!this.isAddNodeMode}
+                customClass="modus-wc-content-tree-search-input"
+                onKeyDown={this.handleInputKeyDown}
+                onInputChange={this.handleInputChange}
+              ></modus-wc-text-input>
+            </div>
 
             {this.showActions && (
               <div class="modus-wc-content-tree-actions">
@@ -136,26 +213,15 @@ export class ModusWcContentTree {
                   decorative={true}
                   name="delete"
                   size="sm"
+                  variant="solid"
                 ></modus-wc-icon>
 
                 <modus-wc-icon
                   decorative={true}
                   name="unfold_less"
                   size="sm"
+                  variant="solid"
                 ></modus-wc-icon>
-              </div>
-            )}
-
-            {this.showAddNodeInput && (
-              <div class="modus-wc-content-tree-add-node">
-                <modus-wc-text-input
-                  placeholder="Add node..."
-                  value={this.searchValue}
-                  include-clear
-                  customClass="modus-wc-content-tree-add-node-input"
-                  onKeyDown={this.handleAddNodeKeyDown}
-                  onInputChange={this.handleAddNodeInput}
-                ></modus-wc-text-input>
               </div>
             )}
           </div>
@@ -163,12 +229,17 @@ export class ModusWcContentTree {
             <slot></slot>
             {!this.hasSlotContent && (
               <div class="modus-wc-content-tree-empty">
-                <modus-wc-icon name="folder_open"></modus-wc-icon>
+                <modus-wc-icon
+                  name="folder_open"
+                  variant="solid"
+                  customClass="modus-wc-content-tree-empty-icon"
+                ></modus-wc-icon>
                 <modus-wc-typography
                   hierarchy="p"
                   label="Empty Content Tree"
                   size="lg"
                   weight="normal"
+                  customClass="modus-wc-content-tree-empty-text"
                 ></modus-wc-typography>
                 <modus-wc-button
                   color="primary"

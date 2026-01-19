@@ -523,10 +523,6 @@ export namespace Components {
           * Whether to show the action bar with add, delete, and collapse all buttons.
          */
         "showActions"?: boolean;
-        /**
-          * Whether to show the search input.
-         */
-        "showSearch"?: boolean;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -3602,10 +3598,6 @@ declare namespace LocalJSX {
           * Whether to show the action bar with add, delete, and collapse all buttons.
          */
         "showActions"?: boolean;
-        /**
-          * Whether to show the search input.
-         */
-        "showSearch"?: boolean;
     }
     /**
      * A customizable date picker component used to create date inputs.

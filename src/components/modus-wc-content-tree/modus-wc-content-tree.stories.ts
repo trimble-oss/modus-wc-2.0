@@ -1,11 +1,10 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface ContentTreeArgs {
   'custom-class'?: string;
-  'multi-select'?: boolean;
-  'show-search'?: boolean;
   'show-actions'?: boolean;
   'search-placeholder'?: string;
 }
@@ -14,23 +13,21 @@ const meta: Meta<ContentTreeArgs> = {
   title: 'Components/Content Tree',
   component: 'modus-wc-content-tree',
   args: {
-    'multi-select': false,
-    'show-search': false,
     'show-actions': false,
     'search-placeholder': 'Search...',
   },
   argTypes: {
-    'multi-select': {
-      control: { type: 'boolean' },
-    },
-    'show-search': {
-      control: { type: 'boolean' },
-    },
     'show-actions': {
       control: { type: 'boolean' },
     },
     'search-placeholder': {
       control: { type: 'text' },
+    },
+  },
+  decorators: [withActions],
+  parameters: {
+    actions: {
+      handles: ['itemSelect'],
     },
   },
 };
@@ -43,10 +40,9 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-content-tree
-        class=${ifDefined(args['custom-class'])}
-        multi-select="true"
-        show-search="true"
-        show-actions="true"
+        custom-class=${ifDefined(args['custom-class'])}
+        show-actions=${args['show-actions']}
+        search-placeholder=${args['search-placeholder']}
       >
       </modus-wc-content-tree>
     `;
@@ -57,15 +53,14 @@ export const UsingSlot: Story = {
   render: (args) => {
     return html`
       <modus-wc-content-tree
-        class=${ifDefined(args['custom-class'])}
-        multi-select="true"
-        show-search="true"
-        show-actions="true"
+        custom-class=${ifDefined(args['custom-class'])}
+        show-actions=${args['show-actions']}
+        search-placeholder=${args['search-placeholder']}
       >
         <modus-wc-menu>
           <modus-wc-menu-item
-            label="Tree Item 1"
-            value="item1"
+            label="Documents"
+            value="documents"
             has-submenu="true"
             size="md"
             checkbox
@@ -78,8 +73,8 @@ export const UsingSlot: Story = {
             ></modus-wc-icon>
             <modus-wc-menu .isSubMenu=${true}>
               <modus-wc-menu-item
-                label="Submenu Item 1.1"
-                value="item1-1"
+                label="Reports.pdf"
+                value="reports"
                 size="md"
                 checkbox
               >
@@ -91,8 +86,8 @@ export const UsingSlot: Story = {
                 ></modus-wc-icon>
               </modus-wc-menu-item>
               <modus-wc-menu-item
-                label="Submenu Item 1.2"
-                value="item1-2"
+                label="Proposal.docx"
+                value="proposal"
                 size="md"
                 checkbox
               >
@@ -106,8 +101,8 @@ export const UsingSlot: Story = {
             </modus-wc-menu>
           </modus-wc-menu-item>
           <modus-wc-menu-item
-            label="Tree Item 2"
-            value="item2"
+            label="Projects"
+            value="projects"
             has-submenu="true"
             size="md"
             checkbox
@@ -120,8 +115,8 @@ export const UsingSlot: Story = {
             ></modus-wc-icon>
             <modus-wc-menu .isSubMenu=${true}>
               <modus-wc-menu-item
-                label="Submenu Item 2.1"
-                value="item2-1"
+                label="Website Redesign"
+                value="website"
                 size="md"
                 checkbox
               >
@@ -133,8 +128,8 @@ export const UsingSlot: Story = {
                 ></modus-wc-icon>
               </modus-wc-menu-item>
               <modus-wc-menu-item
-                label="Submenu Item 2.2"
-                value="item2-2"
+                label="Client Work"
+                value="client-work"
                 has-submenu="true"
                 size="md"
                 checkbox
@@ -147,8 +142,8 @@ export const UsingSlot: Story = {
                 ></modus-wc-icon>
                 <modus-wc-menu .isSubMenu=${true}>
                   <modus-wc-menu-item
-                    label="Nested Item 2.2.1"
-                    value="item2-2-1"
+                    label="Design Mockups"
+                    value="mockups"
                     size="md"
                     checkbox
                   >
@@ -164,8 +159,8 @@ export const UsingSlot: Story = {
             </modus-wc-menu>
           </modus-wc-menu-item>
           <modus-wc-menu-item
-            label="Tree Item 3"
-            value="item3"
+            label="Resources"
+            value="resources"
             has-submenu="true"
             size="md"
             checkbox
@@ -178,8 +173,8 @@ export const UsingSlot: Story = {
             ></modus-wc-icon>
             <modus-wc-menu .isSubMenu=${true}>
               <modus-wc-menu-item
-                label="Submenu Item 3.1"
-                value="item3-1"
+                label="Brand Guidelines.pdf"
+                value="guidelines"
                 size="md"
                 checkbox
               >
@@ -200,19 +195,22 @@ export const UsingSlot: Story = {
 
 export const SingleLevel: Story = {
   render: (args) => {
-    const multiSelect = args['multi-select'];
     return html`
       <modus-wc-content-tree
-        class=${ifDefined(args['custom-class'])}
-        ?multi-select=${multiSelect}
+        custom-class=${ifDefined(args['custom-class'])}
+        search-placeholder=${args['search-placeholder']}
       >
         <modus-wc-menu>
-          <modus-wc-menu-item
-            label="Tree Item"
-            value="item1"
-            size="md"
-            ?checkbox=${multiSelect}
-          >
+          <modus-wc-menu-item label="Home" value="home" size="md">
+            <modus-wc-icon
+              slot="start-icon"
+              name="description"
+              variant="solid"
+              size="sm"
+            ></modus-wc-icon>
+          </modus-wc-menu-item>
+
+          <modus-wc-menu-item label="Settings" value="settings" size="md">
             <modus-wc-icon
               slot="start-icon"
               name="description"
@@ -222,25 +220,10 @@ export const SingleLevel: Story = {
           </modus-wc-menu-item>
 
           <modus-wc-menu-item
-            label="Tree Item"
-            value="item2"
-            size="md"
-            ?checkbox=${multiSelect}
-          >
-            <modus-wc-icon
-              slot="start-icon"
-              name="description"
-              variant="solid"
-              size="sm"
-            ></modus-wc-icon>
-          </modus-wc-menu-item>
-
-          <modus-wc-menu-item
-            label="Tree Item"
-            value="item3"
+            label="Profile"
+            value="profile"
             size="md"
             selected="true"
-            ?checkbox=${multiSelect}
           >
             <modus-wc-icon
               slot="start-icon"
