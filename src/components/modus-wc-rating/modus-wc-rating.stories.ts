@@ -136,7 +136,9 @@ export const ShadowDomParent: Story = {
           ratingEl.count = v.count;
           ratingEl.customClass = v['custom-class'] || '';
           ratingEl.disabled = Boolean(v.disabled);
-          ratingEl.getAriaLabelText = v.getAriaLabelText || (() => '');
+          if (v.getAriaLabelText) {
+            ratingEl.getAriaLabelText = v.getAriaLabelText; // Conditional assignment only if provided
+          }
           ratingEl.size = v.size || 'md';
           ratingEl.value = v.value || 0;
           ratingEl.variant = v.variant;

@@ -142,12 +142,9 @@ export const ShadowDomParent: Story = {
           collapseEl.customClass = v['custom-class'] || '';
           collapseEl.expanded = Boolean(v.expanded);
           collapseEl.id = v.id ?? '';
-          collapseEl.options = v.options ?? {
-            title: 'Collapse Title',
-            description: 'Collapse description',
-            icon: 'alert',
-            iconAriaLabel: 'Alert',
-          };
+          if (v.options) {
+            collapseEl.options = v.options; // Conditional assignment only if provided
+          }
         },
       });
       customElements.define('collapse-shadow-host', CollapseShadowHost);

@@ -200,7 +200,9 @@ export const ShadowDomParent: Story = {
           timeInputEl.bordered = Boolean(v.bordered) || true;
           timeInputEl.customClass = v['custom-class'] || '';
           timeInputEl.datalistId = v['datalist-id'] ?? '';
-          timeInputEl.datalistOptions = v['datalist-options'] ?? [];
+          if (v['datalist-options']) {
+            timeInputEl.datalistOptions = v['datalist-options']; // Conditional assignment only if provided
+          }
           timeInputEl.disabled = Boolean(v.disabled);
 
           timeInputEl.inputId = v['input-id'] ?? '';
