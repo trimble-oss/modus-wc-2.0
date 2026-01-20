@@ -48,6 +48,16 @@ Type: `Promise<void>`
 
 
 
+### `expandSubmenu() => Promise<void>`
+
+Public method to expand the submenu if it's collapsed
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 
 ## Dependencies
 

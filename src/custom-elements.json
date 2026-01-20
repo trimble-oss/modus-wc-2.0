@@ -3639,6 +3639,16 @@
               "description": "Reference to the host element"
             },
             {
+              "kind": "method",
+              "name": "expandSubmenu",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Public method to expand the submenu if it's collapsed"
+            },
+            {
               "kind": "field",
               "name": "isExpanded",
               "type": {

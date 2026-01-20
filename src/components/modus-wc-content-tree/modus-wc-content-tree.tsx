@@ -23,9 +23,6 @@ export class ModusWcContentTree {
   /** Placeholder text for the search input. */
   @Prop() searchPlaceholder?: string = 'Search...';
 
-  /** Whether to show the action bar with add, delete, and collapse all buttons. */
-  @Prop() showActions?: boolean = false;
-
   @State() private hasSlotContent: boolean = false;
   @State() private searchValue: string = '';
   @State() private isAddNodeMode: boolean = false;
@@ -56,6 +53,24 @@ export class ModusWcContentTree {
   private addMenuItem = () => {
     this.searchValue = '';
     this.filterNodes('');
+  };
+
+  private expandAllMenuItems = () => {
+    const menuItems = this.el.querySelectorAll('modus-wc-menu-item');
+
+    // Check if any items are expanded by checking the li element for the class
+    const hasExpandedItems = Array.from(menuItems).some((item) => {
+      const liElement = item.querySelector('li');
+      return liElement?.classList.contains('modus-wc-menu-item-expanded');
+    });
+
+    menuItems.forEach((item) => {
+      if (hasExpandedItems) {
+        (item as any).collapseSubmenu();
+      } else {
+        (item as any).expandSubmenu();
+      }
+    });
   };
 
   private createMenuItem() {
@@ -99,7 +114,7 @@ export class ModusWcContentTree {
         while (parent && parent !== this.el) {
           if (parent.tagName === 'MODUS-WC-MENU-ITEM') {
             parent.style.display = '';
-            parent.setAttribute('expanded', 'true');
+            (parent as any).expandSubmenu();
           }
           parent = parent.parentElement;
         }
@@ -112,7 +127,7 @@ export class ModusWcContentTree {
 
         if (hasMatchingChildren) {
           (item as HTMLElement).style.display = '';
-          item.setAttribute('expanded', 'true');
+          (item as any).expandSubmenu();
         } else {
           (item as HTMLElement).style.display = 'none';
         }
@@ -207,23 +222,22 @@ export class ModusWcContentTree {
               ></modus-wc-text-input>
             </div>
 
-            {this.showActions && (
-              <div class="modus-wc-content-tree-actions">
-                <modus-wc-icon
-                  decorative={true}
-                  name="delete"
-                  size="sm"
-                  variant="solid"
-                ></modus-wc-icon>
+            <div class="modus-wc-content-tree-actions">
+              <modus-wc-icon
+                decorative={true}
+                name="delete"
+                size="sm"
+                variant="solid"
+              ></modus-wc-icon>
 
-                <modus-wc-icon
-                  decorative={true}
-                  name="unfold_less"
-                  size="sm"
-                  variant="solid"
-                ></modus-wc-icon>
-              </div>
-            )}
+              <modus-wc-icon
+                decorative={true}
+                name="unfold_less"
+                size="sm"
+                variant="solid"
+                onClick={this.expandAllMenuItems}
+              ></modus-wc-icon>
+            </div>
           </div>
           <div class="modus-wc-content-tree-content" role="tree">
             <slot></slot>

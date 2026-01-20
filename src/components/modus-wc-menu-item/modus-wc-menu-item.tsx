@@ -90,6 +90,26 @@ export class ModusWcMenuItem {
   };
 
   /**
+   * Public method to expand the submenu if it's collapsed
+   */
+
+  @Method()
+  async expandSubmenu(): Promise<void> {
+    if (this.hasSubmenu && !this.isExpanded) {
+      const submenu = this.el.querySelector(
+        '.modus-wc-menu-dropdown'
+      ) as HTMLElement;
+      const liElement = this.el.querySelector('li');
+      if (submenu && liElement) {
+        submenu.classList.add('modus-wc-menu-dropdown-show');
+        liElement.classList.add('modus-wc-menu-item-expanded');
+        this.isExpanded = true;
+      }
+    }
+    return Promise.resolve();
+  }
+
+  /**
    * Public method to collapse the submenu if it's expanded
    */
   @Method()

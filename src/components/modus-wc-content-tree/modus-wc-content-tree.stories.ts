@@ -5,7 +5,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface ContentTreeArgs {
   'custom-class'?: string;
-  'show-actions'?: boolean;
   'search-placeholder'?: string;
 }
 
@@ -13,13 +12,9 @@ const meta: Meta<ContentTreeArgs> = {
   title: 'Components/Content Tree',
   component: 'modus-wc-content-tree',
   args: {
-    'show-actions': false,
     'search-placeholder': 'Search...',
   },
   argTypes: {
-    'show-actions': {
-      control: { type: 'boolean' },
-    },
     'search-placeholder': {
       control: { type: 'text' },
     },
@@ -41,7 +36,6 @@ export const Default: Story = {
     return html`
       <modus-wc-content-tree
         custom-class=${ifDefined(args['custom-class'])}
-        show-actions=${args['show-actions']}
         search-placeholder=${args['search-placeholder']}
       >
       </modus-wc-content-tree>
@@ -54,7 +48,6 @@ export const UsingSlot: Story = {
     return html`
       <modus-wc-content-tree
         custom-class=${ifDefined(args['custom-class'])}
-        show-actions=${args['show-actions']}
         search-placeholder=${args['search-placeholder']}
       >
         <modus-wc-menu>

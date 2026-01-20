@@ -519,10 +519,6 @@ export namespace Components {
           * Placeholder text for the search input.
          */
         "searchPlaceholder"?: string;
-        /**
-          * Whether to show the action bar with add, delete, and collapse all buttons.
-         */
-        "showActions"?: boolean;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -920,6 +916,10 @@ export namespace Components {
           * The disabled state of the menu item.
          */
         "disabled"?: boolean;
+        /**
+          * Public method to expand the submenu if it's collapsed
+         */
+        "expandSubmenu": () => Promise<void>;
         /**
           * The focused state of the menu item.
          */
@@ -3594,10 +3594,6 @@ declare namespace LocalJSX {
           * Placeholder text for the search input.
          */
         "searchPlaceholder"?: string;
-        /**
-          * Whether to show the action bar with add, delete, and collapse all buttons.
-         */
-        "showActions"?: boolean;
     }
     /**
      * A customizable date picker component used to create date inputs.
