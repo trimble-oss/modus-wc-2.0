@@ -1,8 +1,54 @@
 import { Meta, StoryObj } from '@storybook/web-components';
-import { html } from 'lit';
+import { html, unsafeCSS } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { keyed } from 'lit/directives/keyed.js';
 import { Orientation } from '../types';
+
+// Shared styles for story demos
+const storyStyles = unsafeCSS(`
+  .handle-demo-container {
+    display: flex;
+    gap: 0;
+  }
+
+  .handle-demo-container.horizontal {
+    height: 300px;
+  }
+
+  .handle-demo-container.vertical {
+    flex-direction: column;
+    height: 500px;
+  }
+
+  .handle-demo-panel {
+    background-color: var(--modus-wc-color-base-100);
+    padding: 16px;
+    overflow: auto;
+  }
+
+  .handle-demo-panel.initial-size-200 {
+    width: 200px;
+  }
+
+  .handle-demo-panel.initial-height-200 {
+    height: 200px;
+  }
+
+  .handle-demo-panel.initial-size-400 {
+    width: 400px;
+  }
+
+  .handle-demo-panel.flex-fill {
+    flex: 1;
+  }
+
+  .handle-demo-right-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+`);
 
 interface HandleArgs {
   'custom-class'?: string;
@@ -87,14 +133,11 @@ const PanelTemplate = (
   id: string,
   title: string,
   content: string,
-  style: string
+  className: string = ''
 ) =>
   // prettier-ignore
   html`
-<div
-  id="${id}"
-  style="${style}; background-color: var(--modus-wc-color-base-100); padding: 16px; overflow: auto;"
->
+<div id="${id}" class="handle-demo-panel ${className}">
   <h3>${title}</h3>
   <p>${content}</p>
 </div>
@@ -105,14 +148,11 @@ const PanelWithKeyboardInfo = (
   title: string,
   content: string,
   keyboardInfo: string,
-  style: string
+  className: string = ''
 ) =>
   // prettier-ignore
   html`
-<div
-  id="${id}"
-  style="${style}; background-color: var(--modus-wc-color-base-100); padding: 16px; overflow: auto;"
->
+<div id="${id}" class="handle-demo-panel ${className}">
   <h3>${title}</h3>
   <p>${content}</p>
   <p><strong>Keyboard:</strong> ${keyboardInfo}</p>
@@ -131,20 +171,16 @@ const Template = (args?: HandleArgs) => {
   const leftId = `panel-left-${uniqueId}`;
   const rightId = `panel-right-${uniqueId}`;
   // prettier-ignore
-  return html`${keyed(orientation, html`
-<div
-  style="display: flex; ${isHorizontal
-    ? ''
-    : 'flex-direction: column;'} gap: 0; height: ${isHorizontal
-    ? '300px'
-    : '500px'};"
->
+  return html`
+<style>${storyStyles}</style>
+${keyed(orientation, html`
+<div class="handle-demo-container ${isHorizontal ? 'horizontal' : 'vertical'}">
   ${PanelWithKeyboardInfo(
     leftId,
     isHorizontal ? 'Left Panel' : 'Top Panel',
     'Drag the handle to resize this panel.',
-    `Focus the handle and use ${isHorizontal ? 'Left/Right' : 'Up/Down'} arrow keys to resize (5px per press).`,
-    isHorizontal ? 'width: 200px' : 'height: 200px'
+    `Focus the handle and use ${isHorizontal ? 'Left/Right' : 'Up/Down'} arrow keys to resize (5px per press, 15px with Shift).`,
+    isHorizontal ? 'initial-size-200' : 'initial-height-200'
   )}
   ${HandleTemplate({
     orientation: orientation,
@@ -159,10 +195,10 @@ const Template = (args?: HandleArgs) => {
     rightId,
     isHorizontal ? 'Right Panel' : 'Bottom Panel',
     'This panel will resize automatically when you drag the handle.',
-    'flex: 1'
+    'flex-fill'
   )}
 </div>
-  `)}`;
+`)}`;
 };
 
 export const Default: Story = {
@@ -188,8 +224,9 @@ export const MultipleHandlesNested: Story = {
   render: () => {
     // prettier-ignore
     return html`
-<div style="display: flex; gap: 0; height: 600px;">
-  ${PanelTemplate('panel-one', 'One', 'Large left panel', 'width: 400px')}
+<style>${storyStyles}</style>
+<div class="handle-demo-container" style="height: 600px;">
+  ${PanelTemplate('panel-one', 'One', 'Large left panel', 'initial-size-400')}
   ${HandleTemplate({
     orientation: 'horizontal',
     size: 'default',
@@ -198,16 +235,8 @@ export const MultipleHandlesNested: Story = {
     'left-target': '#panel-one',
     'right-target': '#right-container',
   })}
-  <div
-    id="right-container"
-    style="flex: 1; display: flex; flex-direction: column; gap: 0;"
-  >
-    ${PanelTemplate(
-      'panel-two',
-      'Two',
-      'Top right panel',
-      'height: 200px'
-    )}
+  <div id="right-container" class="handle-demo-right-container">
+    ${PanelTemplate('panel-two', 'Two', 'Top right panel', 'initial-height-200')}
     ${HandleTemplate({
       orientation: 'vertical',
       size: 'default',
@@ -216,12 +245,7 @@ export const MultipleHandlesNested: Story = {
       'left-target': '#panel-two',
       'right-target': '#panel-three',
     })}
-    ${PanelTemplate(
-      'panel-three',
-      'Three',
-      'Bottom right panel',
-      'flex: 1'
-    )}
+    ${PanelTemplate('panel-three', 'Three', 'Bottom right panel', 'flex-fill')}
   </div>
 </div>
     `;

@@ -384,6 +384,38 @@ describe('modus-wc-handle', () => {
 
       expect(leftPanel.style.width).toBe(initialWidth);
     });
+
+    it('should resize by 15px on Shift+ArrowRight for horizontal orientation', () => {
+      const handle = page.root as HTMLElement;
+
+      handle.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'ArrowRight',
+          shiftKey: true,
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+
+      expect(leftPanel.style.width).toBe('215px');
+      expect(rightPanel.style.width).toBe('185px');
+    });
+
+    it('should resize by 15px on Shift+ArrowLeft for horizontal orientation', () => {
+      const handle = page.root as HTMLElement;
+
+      handle.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'ArrowLeft',
+          shiftKey: true,
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+
+      expect(leftPanel.style.width).toBe('185px');
+      expect(rightPanel.style.width).toBe('215px');
+    });
   });
 
   describe('keyboard interactions - vertical orientation', () => {
@@ -473,6 +505,38 @@ describe('modus-wc-handle', () => {
       );
 
       expect(topPanel.style.height).toBe(initialHeight);
+    });
+
+    it('should resize by 15px on Shift+ArrowDown for vertical orientation', () => {
+      const handle = page.root as HTMLElement;
+
+      handle.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'ArrowDown',
+          shiftKey: true,
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+
+      expect(topPanel.style.height).toBe('215px');
+      expect(bottomPanel.style.height).toBe('185px');
+    });
+
+    it('should resize by 15px on Shift+ArrowUp for vertical orientation', () => {
+      const handle = page.root as HTMLElement;
+
+      handle.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'ArrowUp',
+          shiftKey: true,
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+
+      expect(topPanel.style.height).toBe('185px');
+      expect(bottomPanel.style.height).toBe('215px');
     });
   });
 

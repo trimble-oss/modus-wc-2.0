@@ -89,7 +89,8 @@ export class ModusWcHandle {
   };
 
   private readonly handleKeyDown = (e: KeyboardEvent) => {
-    const moveAmount = 5; // pixels to move per key press
+    // Use larger increment when Shift key is held
+    const moveAmount = e.shiftKey ? 15 : 5; // pixels to move per key press
     let delta = 0;
 
     // Vertical orientation: up/down arrows
