@@ -9,7 +9,7 @@
 
 A customizable input label component.
 
-The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text
+The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
 
 ## Properties
 

@@ -3,6 +3,8 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * A customizable toolbar component used to organize content across the entire page.
+ *
+ * This component provides 'start', 'center', and 'end' `<slot>` elements for inserting custom HTML.
  */
 @Component({
   tag: 'modus-wc-toolbar',

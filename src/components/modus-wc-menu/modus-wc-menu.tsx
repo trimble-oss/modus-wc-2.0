@@ -14,7 +14,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 /**
  * A customizable menu component used to display a list of li elements vertically or horizontally.
  *
- * The component supports a `<slot>` for injecting custom li elements inside the ul
+ * The component supports a `<slot>` for injecting custom li elements inside the ul element.
  */
 @Component({
   tag: 'modus-wc-menu',

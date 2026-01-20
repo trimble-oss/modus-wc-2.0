@@ -9,6 +9,8 @@
 
 A customizable input component used to create text inputs with types.
 
+The component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.
+
 ## Properties
 
 | Property         | Attribute          | Description                                                                                             | Type                                                                                                                                                  | Default        |
