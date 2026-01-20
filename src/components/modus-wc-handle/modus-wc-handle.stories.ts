@@ -6,6 +6,7 @@ import { Orientation } from '../types';
 
 interface HandleArgs {
   'custom-class'?: string;
+  'default-split'?: number;
   density?: 'compact' | 'comfortable' | 'relaxed';
   'left-target'?: string;
   orientation?: Orientation;
@@ -19,6 +20,7 @@ const meta: Meta<HandleArgs> = {
   component: 'modus-wc-handle',
   args: {
     'custom-class': '',
+    'default-split': 50,
     density: 'comfortable',
     'left-target': '',
     orientation: 'vertical',
@@ -29,6 +31,9 @@ const meta: Meta<HandleArgs> = {
   argTypes: {
     'custom-class': {
       control: 'text',
+    },
+    'default-split': {
+      control: { type: 'range', min: 1, max: 100, step: 1 },
     },
     density: {
       control: { type: 'select' },
@@ -67,6 +72,7 @@ const HandleTemplate = (args?: HandleArgs) =>
   html`
 <modus-wc-handle
   custom-class="${ifDefined(args?.['custom-class'])}"
+  default-split="${args?.['default-split']}"
   density="${args?.density}"
   left-target="${ifDefined(args?.['left-target'])}"
   orientation="${ifDefined(args?.orientation)}"
@@ -145,6 +151,7 @@ const Template = (args?: HandleArgs) => {
     size: args?.size ?? 'default',
     density: args?.density ?? 'comfortable',
     type: type,
+    'default-split': args?.['default-split'] ?? 50,
     'left-target': `#${leftId}`,
     'right-target': `#${rightId}`,
   })}
@@ -174,5 +181,49 @@ export const ButtonVariant: Story = {
   },
   args: {
     type: 'button',
+  },
+};
+
+export const MultipleHandlesNested: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<div style="display: flex; gap: 0; height: 600px;">
+  ${PanelTemplate('panel-one', 'One', 'Large left panel', 'width: 400px')}
+  ${HandleTemplate({
+    orientation: 'horizontal',
+    size: 'default',
+    density: 'comfortable',
+    type: 'bar',
+    'left-target': '#panel-one',
+    'right-target': '#right-container',
+  })}
+  <div
+    id="right-container"
+    style="flex: 1; display: flex; flex-direction: column; gap: 0;"
+  >
+    ${PanelTemplate(
+      'panel-two',
+      'Two',
+      'Top right panel',
+      'height: 200px'
+    )}
+    ${HandleTemplate({
+      orientation: 'vertical',
+      size: 'default',
+      density: 'comfortable',
+      type: 'bar',
+      'left-target': '#panel-two',
+      'right-target': '#panel-three',
+    })}
+    ${PanelTemplate(
+      'panel-three',
+      'Three',
+      'Bottom right panel',
+      'flex: 1'
+    )}
+  </div>
+</div>
+    `;
   },
 };

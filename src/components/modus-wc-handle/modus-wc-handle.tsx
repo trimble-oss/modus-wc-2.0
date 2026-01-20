@@ -43,6 +43,9 @@ export class ModusWcHandle {
   /** The density/spacing of the handle container (compact: 8px, comfortable: 12px, relaxed: 16px). */
   @Prop() density?: 'compact' | 'comfortable' | 'relaxed' = 'comfortable';
 
+  /** The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage. */
+  @Prop() defaultSplit?: number = 50;
+
   /** The type of handle to display. */
   @Prop() type?: 'bar' | 'button' = 'bar';
 
@@ -158,6 +161,37 @@ export class ModusWcHandle {
 
   componentDidLoad() {
     this.setupDragHandlers();
+    this.applyInitialSplit();
+  }
+
+  private applyInitialSplit() {
+    if (!this.defaultSplit || !this.leftTarget || !this.rightTarget) return;
+
+    const leftEl = this.getTargetElement(this.leftTarget);
+    const rightEl = this.getTargetElement(this.rightTarget);
+    // istanbul ignore next (unreachable code)
+    if (!leftEl || !rightEl) return;
+
+    // Clamp split value between 1 and 100
+    const splitValue = Math.max(1, Math.min(100, this.defaultSplit));
+    const leftPercent = splitValue;
+    const rightPercent = 100 - splitValue;
+
+    if (this.orientation === 'horizontal') {
+      // Set width percentages for horizontal layout
+      leftEl.style.width = `${leftPercent}%`;
+      rightEl.style.width = `${rightPercent}%`;
+      // Prevent panels from shrinking below their set percentage
+      leftEl.style.flexShrink = '0';
+      rightEl.style.flexShrink = '0';
+    } else {
+      // Set height percentages for vertical layout
+      leftEl.style.height = `${leftPercent}%`;
+      rightEl.style.height = `${rightPercent}%`;
+      // Prevent panels from shrinking below their set percentage
+      leftEl.style.flexShrink = '0';
+      rightEl.style.flexShrink = '0';
+    }
   }
 
   private setupDragHandlers() {
