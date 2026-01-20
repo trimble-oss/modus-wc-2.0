@@ -16,7 +16,7 @@ export const convertPropsToClasses = ({
   }
 
   if (feedback) {
-    classes = `${classes} modus-wc-input--${feedback.level}`;
+    classes = `${classes} modus-wc-select--${feedback.level}`;
   }
 
   if (size) {
