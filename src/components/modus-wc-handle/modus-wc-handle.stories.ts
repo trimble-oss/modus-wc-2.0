@@ -22,7 +22,6 @@ const storyStyles = unsafeCSS(`
 
   .handle-demo-panel {
     background-color: var(--modus-wc-color-base-100);
-    padding: 16px;
     overflow: auto;
   }
 
