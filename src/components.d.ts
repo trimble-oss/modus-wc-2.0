@@ -917,10 +917,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Public method to expand the submenu if it's collapsed
-         */
-        "expandSubmenu": () => Promise<void>;
-        /**
           * The focused state of the menu item.
          */
         "focused"?: boolean;
