@@ -45,9 +45,8 @@ modus-wc-table .modus-wc-table {
 }
 
 modus-wc-table .modus-wc-overflow-x-auto {
-  border: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-base-100);
   border-radius: var(--modus-wc-border-radius-table);
-  overflow-x: auto;
+  overflow-x: visible;
 }
 
 [data-theme='modus-classic-light'] modus-wc-table,
@@ -62,12 +61,7 @@ modus-wc-table .modus-wc-overflow-x-auto {
 
     th,
     td {
-      border-right: 1px solid #b7b9c3;
-    }
-
-    th:last-child,
-    td:last-child {
-      border-right: none;
+      border: 1px solid #6a6e79;
     }
   }
 }
@@ -133,7 +127,6 @@ modus-wc-table .modus-wc-overflow-x-auto {
 }
 
 .modus-wc-table {
-  overflow: hidden;
   width: 100%;
 
   th {
@@ -165,13 +158,8 @@ modus-wc-table .modus-wc-overflow-x-auto {
   }
 
   td {
-    border-bottom: 1px solid var(--modus-wc-color-alt-silver);
     padding: 0.75rem;
     vertical-align: middle;
-  }
-
-  tr:last-child td {
-    border-bottom: none;
   }
 
   /* Apply styles based on table density */
