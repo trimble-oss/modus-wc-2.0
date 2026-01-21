@@ -165,8 +165,15 @@ export const ShadowDomParent: Story = {
           };
           menuEl.ariaLabel = 'Shadow DOM Menu';
 
-          // Create menu item inside
-          const menuItem = document.createElement('modus-wc-menu-item');
+          // Get or create menu item
+          let menuItem = el.querySelector('modus-wc-menu-item');
+          if (!menuItem) {
+            menuItem = document.createElement('modus-wc-menu-item');
+            el.innerHTML = '';
+            el.appendChild(menuItem);
+          }
+
+          // Update properties on the existing element
           const menuItemEl = menuItem as unknown as {
             ariaLabel: string;
             bordered: boolean;
@@ -194,9 +201,6 @@ export const ShadowDomParent: Story = {
           menuItemEl.tooltipContent = v['tooltip-content'] || '';
           menuItemEl.tooltipPosition = v['tooltip-position'] || 'auto';
           menuItemEl.value = v.value;
-
-          el.innerHTML = '';
-          el.appendChild(menuItem);
         },
       });
       customElements.define('menu-item-shadow-host', MenuItemShadowHost);

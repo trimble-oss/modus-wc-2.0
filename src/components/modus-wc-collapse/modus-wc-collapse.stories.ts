@@ -137,7 +137,10 @@ export const ShadowDomParent: Story = {
             id: string;
             options: ICollapseOptions;
           };
-          el.innerHTML = '<div slot="content">Collapse content</div>';
+          // Only set innerHTML once on initial creation
+          if (!el.querySelector('[slot="content"]')) {
+            el.innerHTML = '<div slot="content">Collapse content</div>';
+          }
           collapseEl.bordered = Boolean(v.bordered);
           collapseEl.customClass = v['custom-class'] || '';
           collapseEl.expanded = Boolean(v.expanded);

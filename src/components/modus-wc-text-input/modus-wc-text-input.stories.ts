@@ -295,7 +295,6 @@ export const ShadowDomParent: Story = {
           textInputEl.type = v.type || '';
           textInputEl.value = v.value;
         },
-        defaultContent: 'Text Input',
       });
       customElements.define('text-input-shadow-host', TextInputShadowHost);
     }

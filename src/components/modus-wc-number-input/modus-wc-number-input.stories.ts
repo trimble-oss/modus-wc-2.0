@@ -199,9 +199,10 @@ export const ShadowDomParent: Story = {
       customElements.define('number-input-shadow-host', NumberInputShadowHost);
     }
 
-    return html`<number-input-shadow-host style="width: 200px;">
-      .props=${{ ...args }} ></number-input-shadow-host
-    >`;
+    return html`<number-input-shadow-host
+      style="width: 200px;display: block;"
+      .props=${{ ...args }}
+    ></number-input-shadow-host>`;
   },
 };
 

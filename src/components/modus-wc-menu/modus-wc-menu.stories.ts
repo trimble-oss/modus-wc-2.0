@@ -291,8 +291,9 @@ export const ShadowDomParent: Story = {
           menuEl.orientation = v.orientation || 'vertical';
           menuEl.size = v.size || 'md';
 
-          // Add menu items as children using el directly
-          el.innerHTML = `
+          // Only set innerHTML once on initial creation
+          if (!el.querySelector('modus-wc-menu-item')) {
+            el.innerHTML = `
               <modus-wc-menu-item
     label="Small"
     value="1"
@@ -331,6 +332,7 @@ export const ShadowDomParent: Story = {
     disabled="true"
   ></modus-wc-menu-item>
           `;
+          }
         },
       });
       customElements.define('menu-shadow-host', MenuShadowHost);

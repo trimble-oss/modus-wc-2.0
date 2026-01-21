@@ -127,7 +127,10 @@ export const ShadowDomParent: Story = {
       customElements.define('accordion-shadow-host', AccordionShadowHost);
     }
 
-    return html`<accordion-shadow-host .props=${{}}></accordion-shadow-host>`;
+    return html`<accordion-shadow-host
+      style="display: block; padding: 20px;"
+      .props=${{}}
+    ></accordion-shadow-host>`;
   },
 };
 
