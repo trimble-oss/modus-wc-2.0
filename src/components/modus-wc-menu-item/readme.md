@@ -9,7 +9,7 @@
 
 A customizable menu item component used to display the item portion of a menu.
 
-The component supports a `<slot>` called 'start-icon' for custom icons at the start of the item.
+This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
 
 ## Properties
 
@@ -43,6 +43,16 @@ The component supports a `<slot>` called 'start-icon' for custom icons at the st
 ### `collapseSubmenu() => Promise<void>`
 
 Public method to collapse the submenu if it's expanded
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `expandSubmenu() => Promise<void>`
+
+Public method to expand the submenu if it's collapsed
 
 #### Returns
 

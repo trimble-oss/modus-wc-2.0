@@ -267,6 +267,123 @@ describe('modus-wc-menu-item', () => {
     expect(page.rootInstance.isExpanded).toBeFalsy();
   });
 
+  it('should expand submenu when expandSubmenu method is called', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: `
+        <modus-wc-menu-item label="Parent Menu" value="parent" has-submenu="true">
+          <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown">
+            <modus-wc-menu-item label="Submenu Item" value="child"></modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+      `,
+    });
+
+    // Get elements
+    const menuItem = page.root as HTMLElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+    const submenu = menuItem.querySelector(
+      '.modus-wc-menu-dropdown'
+    ) as HTMLElement;
+
+    // Verify initial state - submenu is collapsed
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeFalsy();
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-expanded')
+    ).toBeFalsy();
+    expect(page.rootInstance.isExpanded).toBeFalsy();
+
+    // Call the expandSubmenu method
+    await page.rootInstance.expandSubmenu();
+    await page.waitForChanges();
+
+    // After calling expandSubmenu, submenu should be expanded
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeTruthy();
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-expanded')
+    ).toBeTruthy();
+    expect(page.rootInstance.isExpanded).toBeTruthy();
+  });
+
+  it('should not expand submenu when expandSubmenu is called but submenu is already expanded', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: `
+        <modus-wc-menu-item label="Parent Menu" value="parent" has-submenu="true">
+          <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown modus-wc-menu-dropdown-show">
+            <modus-wc-menu-item label="Submenu Item" value="child"></modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+      `,
+    });
+
+    // Get elements
+    const menuItem = page.root as HTMLElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+    const submenu = menuItem.querySelector(
+      '.modus-wc-menu-dropdown'
+    ) as HTMLElement;
+
+    // Set up initial expanded state
+    liElement.classList.add('modus-wc-menu-item-expanded');
+    page.rootInstance.isExpanded = true;
+
+    // Verify initial state - submenu is already expanded
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeTruthy();
+    expect(page.rootInstance.isExpanded).toBeTruthy();
+
+    // Call the expandSubmenu method
+    await page.rootInstance.expandSubmenu();
+    await page.waitForChanges();
+
+    // State should remain unchanged - still expanded
+    expect(
+      submenu.classList.contains('modus-wc-menu-dropdown-show')
+    ).toBeTruthy();
+    expect(page.rootInstance.isExpanded).toBeTruthy();
+  });
+
+  it('should do nothing when expandSubmenu is called on a menu item without submenu', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Test label" value="Test value"></modus-wc-menu-item>',
+    });
+
+    // Verify there is no submenu
+    expect(page.rootInstance.hasSubmenu).toBeFalsy();
+    expect(page.rootInstance.isExpanded).toBeFalsy();
+
+    // Call the expandSubmenu method
+    await page.rootInstance.expandSubmenu();
+    await page.waitForChanges();
+
+    // Should remain in the same state
+    expect(page.rootInstance.isExpanded).toBeFalsy();
+  });
+
+  it('should handle expandSubmenu when submenu element is missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Parent Menu" value="parent" has-submenu="true"></modus-wc-menu-item>',
+    });
+
+    // Verify initial state
+    expect(page.rootInstance.isExpanded).toBeFalsy();
+
+    // Call the expandSubmenu method
+    await page.rootInstance.expandSubmenu();
+    await page.waitForChanges();
+
+    // Should not throw an error and state should remain as is
+    expect(page.rootInstance.isExpanded).toBeFalsy();
+  });
+
   it('should collapse submenu when collapseSubmenu method is called', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenuItem],

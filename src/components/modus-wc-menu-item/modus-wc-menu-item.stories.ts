@@ -17,6 +17,8 @@ interface MenuItemArgs {
   'tooltip-content'?: string;
   'tooltip-position'?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
   value: string;
+  expandSubmenu?: () => Promise<void>;
+  collapseSubmenu?: () => Promise<void>;
 }
 
 const meta: Meta<MenuItemArgs> = {
@@ -35,6 +37,22 @@ const meta: Meta<MenuItemArgs> = {
     'tooltip-position': {
       control: { type: 'select' },
       options: ['auto', 'top', 'right', 'bottom', 'left'],
+    },
+    expandSubmenu: {
+      description:
+        'Expand the submenu if it is collapsed. Only works when has-submenu is true.',
+      table: {
+        category: 'Methods',
+        type: { summary: '() => Promise<void>' },
+      },
+    },
+    collapseSubmenu: {
+      description:
+        'Collapse the submenu if it is expanded. Only works when has-submenu is true.',
+      table: {
+        category: 'Methods',
+        type: { summary: '() => Promise<void>' },
+      },
     },
   },
   decorators: [withActions],
@@ -148,6 +166,71 @@ export const WithTooltip: Story = {
     value=${args.value}
   ></modus-wc-menu-item>
 </modus-wc-menu>
+    `;
+  },
+};
+
+export const WithSubmenu: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<style>
+  #submenu-demo-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .control-buttons {
+    display: flex;
+    gap: 8px;
+  }
+</style>
+
+<div id="submenu-demo-container">
+  <div class="control-buttons">
+    <modus-wc-button
+      @buttonClick=${() => {
+        const menuItem = document.getElementById('menu-with-submenu') as HTMLElement & {
+          expandSubmenu?: () => Promise<void>;
+        };
+        if (menuItem?.expandSubmenu) {
+          void menuItem.expandSubmenu();
+        }
+      }}
+      size="sm"
+    >
+      Expand Submenu
+    </modus-wc-button>
+    
+    <modus-wc-button
+      @buttonClick=${() => {
+        const menuItem = document.getElementById('menu-with-submenu') as HTMLElement & {
+          collapseSubmenu?: () => Promise<void>;
+        };
+        if (menuItem?.collapseSubmenu) {
+          void menuItem.collapseSubmenu();
+        }
+      }}
+      size="sm"
+    >
+      Collapse Submenu
+    </modus-wc-button>
+  </div>
+
+  <modus-wc-menu>
+    <modus-wc-menu-item
+      id="menu-with-submenu"
+      label="Parent Item"
+      value="parent"
+      has-submenu
+    >
+      <modus-wc-menu-item label="Child Item 1" value="child1"></modus-wc-menu-item>
+      <modus-wc-menu-item label="Child Item 2" value="child2"></modus-wc-menu-item>
+      <modus-wc-menu-item label="Child Item 3" value="child3"></modus-wc-menu-item>
+    </modus-wc-menu-item>
+  </modus-wc-menu>
+</div>
     `;
   },
 };
