@@ -50,6 +50,7 @@ export function createShadowHostClass<T = unknown>(
     private shadowRootRef: ShadowRoot;
     private componentEl: HTMLElement;
     private _props: T | undefined;
+    private themeObserver: MutationObserver | null = null;
 
     constructor() {
       super();
@@ -73,8 +74,8 @@ export function createShadowHostClass<T = unknown>(
       syncTheme();
 
       // Watch for theme changes
-      const observer = new MutationObserver(syncTheme);
-      observer.observe(document.documentElement, {
+      this.themeObserver = new MutationObserver(syncTheme);
+      this.themeObserver.observe(document.documentElement, {
         attributes: true,
         attributeFilter: ['data-theme'],
       });
@@ -110,6 +111,14 @@ export function createShadowHostClass<T = unknown>(
 
     get props(): T | undefined {
       return this._props;
+    }
+
+    disconnectedCallback() {
+      // Clean up observer to prevent memory leaks
+      if (this.themeObserver) {
+        this.themeObserver.disconnect();
+        this.themeObserver = null;
+      }
     }
   };
 }
