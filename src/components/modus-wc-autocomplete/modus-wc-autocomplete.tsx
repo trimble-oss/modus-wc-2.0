@@ -40,6 +40,8 @@ import {
 
 /**
  * A customizable autocomplete component used to create searchable text inputs.
+ *
+ * The component supports a `<slot>` for injecting custom content.
  */
 @Component({
   tag: 'modus-wc-autocomplete',
