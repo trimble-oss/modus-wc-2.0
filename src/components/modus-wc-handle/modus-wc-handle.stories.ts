@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html, unsafeCSS } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { keyed } from 'lit/directives/keyed.js';
-import { Orientation } from '../types';
+import { DaisySize, Orientation } from '../types';
 
 // Shared styles for story demos
 const storyStyles = unsafeCSS(`
@@ -53,6 +53,9 @@ interface HandleArgs {
   'custom-class'?: string;
   'default-split'?: number;
   density?: 'compact' | 'comfortable' | 'relaxed';
+  'button-color'?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  'button-size'?: DaisySize;
+  'button-variant'?: 'borderless' | 'filled' | 'outlined';
   'left-target'?: string;
   orientation?: Orientation;
   'right-target'?: string;
@@ -64,6 +67,9 @@ const meta: Meta<HandleArgs> = {
   title: 'Components/Handle',
   component: 'modus-wc-handle',
   args: {
+    'button-color': 'tertiary',
+    'button-size': 'md',
+    'button-variant': 'filled',
     'custom-class': '',
     'default-split': 50,
     density: 'comfortable',
@@ -83,6 +89,18 @@ const meta: Meta<HandleArgs> = {
     density: {
       control: { type: 'select' },
       options: ['compact', 'comfortable', 'relaxed'],
+    },
+    'button-size': {
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg'],
+    },
+    'button-color': {
+      control: { type: 'select' },
+      options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],
+    },
+    'button-variant': {
+      control: { type: 'select' },
+      options: ['borderless', 'filled', 'outlined'],
     },
     'left-target': {
       control: 'text',
@@ -119,6 +137,9 @@ const HandleTemplate = (args?: HandleArgs) =>
   custom-class="${ifDefined(args?.['custom-class'])}"
   default-split="${args?.['default-split']}"
   density="${args?.density}"
+  button-size="${args?.['button-size']}"
+  button-color="${args?.['button-color']}"
+  button-variant="${args?.['button-variant']}"
   left-target="${ifDefined(args?.['left-target'])}"
   orientation="${ifDefined(args?.orientation)}"
   right-target="${ifDefined(args?.['right-target'])}"
@@ -188,6 +209,9 @@ ${keyed(orientation, html`
     type: type,
     'default-split': args?.['default-split'] ?? 50,
     'custom-class': args?.['custom-class'],
+    'button-size': args?.['button-size'],
+    'button-color': args?.['button-color'],
+    'button-variant': args?.['button-variant'],
     'left-target': `#${leftId}`,
     'right-target': `#${rightId}`,
   })}

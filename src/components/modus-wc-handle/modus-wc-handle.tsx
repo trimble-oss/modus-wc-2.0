@@ -1,6 +1,6 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-handle.tailwind';
-import { Orientation } from '../types';
+import { DaisySize, Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -45,6 +45,20 @@ export class ModusWcHandle {
 
   /** The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage. */
   @Prop() defaultSplit?: number = 50;
+
+  /** The size of the button. */
+  @Prop() buttonSize?: DaisySize = 'md';
+
+  /** The color of the button. */
+  @Prop() buttonColor?:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger' = 'tertiary';
+
+  /** The variant of the button. */
+  @Prop() buttonVariant?: 'borderless' | 'filled' | 'outlined' = 'filled';
 
   /** The type of handle to display. */
   @Prop() type?: 'bar' | 'button' = 'bar';
@@ -378,9 +392,9 @@ export class ModusWcHandle {
     return (
       <div class="modus-wc-handle-button-wrapper">
         <modus-wc-button
-          size="md"
-          color="tertiary"
-          variant="filled"
+          size={this.buttonSize}
+          color={this.buttonColor}
+          variant={this.buttonVariant}
           shape="circle"
           aria-orientation={this.orientation}
           role="separator"
