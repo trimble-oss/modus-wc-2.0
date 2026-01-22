@@ -187,6 +187,7 @@ ${keyed(orientation, html`
     density: args?.density ?? 'comfortable',
     type: type,
     'default-split': args?.['default-split'] ?? 50,
+    'custom-class': args?.['custom-class'],
     'left-target': `#${leftId}`,
     'right-target': `#${rightId}`,
   })}
