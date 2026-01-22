@@ -2397,7 +2397,9 @@ export const ShadowDomParent: Story = {
           if (typeof v.label === 'string') {
             autocompleteEl.label = v.label;
           }
-          autocompleteEl.leaveMenuOpen = Boolean(v['leave-menu-open']);
+          if (typeof v['leave-menu-open'] === 'boolean') {
+            autocompleteEl.leaveMenuOpen = v['leave-menu-open'];
+          }
           if (typeof v['max-chips'] === 'number') {
             autocompleteEl.maxChips = v['max-chips'];
           }
@@ -2417,7 +2419,9 @@ export const ShadowDomParent: Story = {
           }
           autocompleteEl.readOnly = Boolean(v['read-only']);
           autocompleteEl.required = Boolean(v.required);
-          autocompleteEl.showMenuOnFocus = Boolean(v['show-menu-on-focus']);
+          if (typeof v['show-menu-on-focus'] === 'boolean') {
+            autocompleteEl.showMenuOnFocus = v['show-menu-on-focus'];
+          }
           autocompleteEl.showSpinner = Boolean(v['show-spinner']);
           if (typeof v.size === 'string') {
             autocompleteEl.size = v.size;

@@ -448,7 +448,13 @@ export class ModusWcAutocomplete {
   private handleFocusOutside = (event: FocusEvent) => {
     const relatedTarget = event.relatedTarget as HTMLElement;
 
-    if (!relatedTarget || !this.el.contains(relatedTarget)) {
+    // Use composedPath() for Shadow DOM compatibility
+    const path = event.composedPath && event.composedPath();
+    const focusedInside =
+      relatedTarget &&
+      (this.el.contains(relatedTarget) || (path && path.includes(this.el)));
+
+    if (!focusedInside) {
       // Hide menu immediately to prevent flicker
       if (!this.programmaticOpen) {
         this.menuVisible = false;
@@ -807,7 +813,11 @@ export class ModusWcAutocomplete {
   };
 
   private handleOutsideClick = (event: MouseEvent) => {
-    if (!this.el.contains(event.target as Node) && !this.programmaticOpen) {
+    // Use composedPath() for Shadow DOM compatibility
+    const path = event.composedPath();
+    const clickedInside = path.includes(this.el);
+
+    if (!clickedInside && !this.programmaticOpen) {
       this.menuVisible = false;
       this.isChipsExpanded = false;
     }
