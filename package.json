@@ -269,9 +269,11 @@
       "command": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --minify",
       "files": [
         "src/**/*.scss",
+        "src/styles/fonts.css",
         "src/styles/global.css",
         "src/styles/tailwind.css",
         "src/styles/variables.css",
+        "src/styles/assets/fonts/**",
         "tailwind.config.js"
       ],
       "output": [
@@ -283,9 +285,11 @@
       "service": true,
       "files": [
         "src/**/*.scss",
+        "src/styles/fonts.css",
         "src/styles/global.css",
         "src/styles/tailwind.css",
         "src/styles/variables.css",
+        "src/styles/assets/fonts/**",
         "tailwind.config.js"
       ]
     }
