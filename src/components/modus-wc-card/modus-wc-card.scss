@@ -4,7 +4,10 @@
 */
 
 modus-wc-card .modus-wc-card {
-  background-color: var(--modus-wc-color-base-100);
+  &:not(.modus-wc-card-bordered) {
+    background-color: var(--modus-wc-color-base-100);
+  }
+
   color: var(--modus-wc-color-base-content);
 
   figure {
@@ -32,9 +35,6 @@ modus-wc-card .modus-wc-card {
 }
 
 [data-theme='modus-classic-light'] modus-wc-card .modus-wc-card {
-  background-color: var(--modus-wc-color-white);
-  color: var(--modus-wc-color-trimble-gray);
-
   .modus-wc-card-title {
     --fallback-bc: var(--modus-wc-color-trimble-gray);
   }
@@ -45,9 +45,6 @@ modus-wc-card .modus-wc-card {
 }
 
 [data-theme='modus-classic-dark'] modus-wc-card .modus-wc-card {
-  background-color: var(--modus-wc-color-gray-9);
-  color: var(--modus-wc-color-trimble-white);
-
   .modus-wc-card-title {
     --fallback-bc: var(--modus-wc-color-white);
   }
@@ -61,7 +58,6 @@ modus-wc-card .modus-wc-card {
 [data-theme='connect-dark'] modus-wc-card .modus-wc-card {
   box-shadow: 0 0 0.25rem var(--modus-wc-color-base-200);
 
-  @include outline-styles;
   @include common-states;
 
   &:hover {
