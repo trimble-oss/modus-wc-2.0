@@ -6035,3 +6035,94 @@ it('should update menuItem.selected to false when removing a chip', async () => 
 
   expect(autocomplete['selectionOrder']).toEqual(['item2']);
 });
+
+describe('feedback prop', () => {
+  it('should render feedback when provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Autocomplete with feedback"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.feedback = {
+      level: 'error',
+      message: 'This field is required',
+    };
+    await page.waitForChanges();
+
+    const feedbackElement = page.root!.querySelector('modus-wc-input-feedback');
+    expect(feedbackElement).not.toBeNull();
+    expect(feedbackElement?.getAttribute('level')).toBe('error');
+    expect(feedbackElement?.getAttribute('message')).toBe(
+      'This field is required'
+    );
+  });
+
+  it('should not render feedback when not provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Autocomplete without feedback"></modus-wc-autocomplete>`,
+    });
+
+    const feedbackElement = page.root!.querySelector('modus-wc-input-feedback');
+    expect(feedbackElement).toBeNull();
+  });
+
+  it('should render feedback with warning level', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Autocomplete with warning"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.feedback = {
+      level: 'warning',
+      message: 'Please check your input',
+    };
+    await page.waitForChanges();
+
+    const feedbackElement = page.root!.querySelector('modus-wc-input-feedback');
+    expect(feedbackElement).not.toBeNull();
+    expect(feedbackElement?.getAttribute('level')).toBe('warning');
+    expect(feedbackElement?.getAttribute('message')).toBe(
+      'Please check your input'
+    );
+  });
+
+  it('should render feedback with success level', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Autocomplete with success"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.feedback = {
+      level: 'success',
+      message: 'Input is valid',
+    };
+    await page.waitForChanges();
+
+    const feedbackElement = page.root!.querySelector('modus-wc-input-feedback');
+    expect(feedbackElement).not.toBeNull();
+    expect(feedbackElement?.getAttribute('level')).toBe('success');
+    expect(feedbackElement?.getAttribute('message')).toBe('Input is valid');
+  });
+
+  it('should pass size prop to feedback component', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Autocomplete with sized feedback" size="lg"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.feedback = {
+      level: 'error',
+      message: 'Error message',
+    };
+    await page.waitForChanges();
+
+    const feedbackElement = page.root!.querySelector('modus-wc-input-feedback');
+    expect(feedbackElement).not.toBeNull();
+    expect(feedbackElement?.getAttribute('size')).toBe('lg');
+  });
+});

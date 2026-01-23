@@ -13,7 +13,12 @@ import {
   Watch,
 } from '@stencil/core';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
-import { IAutocompleteItem, IAutocompleteNoResults, ModusSize } from '../types';
+import {
+  IAutocompleteItem,
+  IAutocompleteNoResults,
+  IInputFeedbackProp,
+  ModusSize,
+} from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 import {
   BLUR_FOCUSOUT_DELAY_MS,
@@ -55,7 +60,7 @@ export class ModusWcAutocomplete {
   @State() private filteredItems: IAutocompleteItem[] = [];
   @State() private selectionOrder: string[] = []; // Track order of chip selection
   @State() private searchText: string = ''; // Dedicated state for active search query
-
+  //@State() private inputFeedback?: IInputFeedbackProp;
   private debounceTimer?: number;
   private inheritedAttributes: Attributes = {};
   private programmaticOpen: boolean = false;
@@ -78,6 +83,9 @@ export class ModusWcAutocomplete {
 
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
+
+  /** Feedback state for the input field. */
+  @Prop() feedback?: IInputFeedbackProp;
 
   /** Show the clear button within the input field. */
   @Prop() includeClear?: boolean = false;
@@ -966,6 +974,13 @@ export class ModusWcAutocomplete {
               <slot name="menu-items"></slot>
             </modus-wc-menu>
           )
+        )}
+        {this.feedback && (
+          <modus-wc-input-feedback
+            level={this.feedback.level}
+            message={this.feedback.message}
+            size={this.size}
+          />
         )}
       </Host>
     );

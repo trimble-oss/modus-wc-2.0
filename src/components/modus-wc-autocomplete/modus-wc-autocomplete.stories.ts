@@ -146,6 +146,7 @@ interface AutocompleteArgs {
   'custom-class'?: string;
   'debounce-ms'?: number;
   disabled?: boolean;
+  feedback?: { level: 'error' | 'warning' | 'success'; message: string };
   'include-clear'?: boolean;
   'include-search'?: boolean;
   'input-id'?: string;
@@ -514,6 +515,32 @@ ${Items}
   `,
   args: {
     placeholder: 'Search fruits...',
+  },
+};
+
+export const WithFeedback: Story = {
+  render: (args) => {
+    return html`
+      <style>
+        div[id^='story--components-forms-autocomplete--with-feedback'] {
+          height: 400px;
+        }
+      </style>
+      <div style="width: 300px;">
+        <modus-wc-autocomplete
+          aria-label="Autocomplete with feedback"
+          .feedback=${args.feedback}
+          placeholder="Search fruits"
+          min-chars="0"
+        ></modus-wc-autocomplete>
+      </div>
+    `;
+  },
+  args: {
+    feedback: {
+      level: 'error',
+      message: 'This field is required',
+    },
   },
 };
 
