@@ -10,6 +10,7 @@ import {
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
 import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
+import { handleShadowDOMStyles } from '../base-component';
 import {
   AutocompleteTypes,
   IInputFeedbackProp,
@@ -138,6 +139,9 @@ export class ModusWcTextInput {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = this.placeholder || 'Text input';
     }

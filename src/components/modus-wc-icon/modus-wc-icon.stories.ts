@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { DaisySize } from '../types';
 
 interface IconArgs {
@@ -103,6 +104,34 @@ export const CustomIcons: Story = {
 >
 </modus-wc-icon>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for icon component
+    if (!customElements.get('icon-shadow-host')) {
+      const IconShadowHost = createShadowHostClass<IconArgs>({
+        componentTag: 'modus-wc-icon',
+        propsMapper: (v: IconArgs, el: HTMLElement) => {
+          const iconEl = el as unknown as {
+            customClass: string;
+            decorative: boolean;
+            name: string;
+            size: string;
+            variant: string;
+          };
+          iconEl.customClass = v['custom-class'] || '';
+          iconEl.decorative = Boolean(v.decorative);
+          iconEl.name = v.name;
+          iconEl.size = v.size;
+          iconEl.variant = v.variant ?? 'outlined';
+        },
+      });
+      customElements.define('icon-shadow-host', IconShadowHost);
+    }
+
+    return html`<icon-shadow-host .props=${{ ...args }}></icon-shadow-host>`;
   },
 };
 

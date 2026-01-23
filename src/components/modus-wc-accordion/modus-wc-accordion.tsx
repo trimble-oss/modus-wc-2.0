@@ -7,6 +7,7 @@ import {
   Prop,
   Event as StencilEvent,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -35,6 +36,9 @@ export class ModusWcAccordion {
   }>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

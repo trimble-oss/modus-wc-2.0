@@ -8,9 +8,10 @@ import {
   Listen,
   Prop,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-button.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
+import { convertPropsToClasses } from './modus-wc-button.tailwind';
 
 /**
  * A customizable button component used to create buttons with different sizes, variants, and types.
@@ -60,6 +61,9 @@ export class ModusWcButton {
   @Event() buttonClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
