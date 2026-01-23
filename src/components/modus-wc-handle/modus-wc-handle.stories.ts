@@ -242,6 +242,26 @@ export const ButtonVariant: Story = {
   args: {
     type: 'button',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+Button type handle with customizable button properties.
+
+**Button Properties Available:**
+- \`button-size\`: sm, md, lg
+- \`button-color\`: primary, secondary, tertiary, warning, danger
+- \`button-variant\`: borderless, filled, outlined
+
+**Keyboard Navigation:**
+- Arrow keys: Move 5px per press
+- Shift + Arrow keys: Move 15px per press
+
+The button handle provides a more prominent visual indicator compared to the bar type.
+        `,
+      },
+    },
+  },
 };
 
 export const MultipleHandlesNested: Story = {
