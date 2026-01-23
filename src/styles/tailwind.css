@@ -1,5 +1,6 @@
 @import 'global.css';
 @import 'variables.css';
+@import 'fonts.css';
 
 @tailwind base;
 @tailwind components;
