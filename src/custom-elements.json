@@ -2319,15 +2319,6 @@
               "type": {
                 "text": "string"
               }
-            },
-            {
-              "name": "show-actions",
-              "fieldName": "showActions",
-              "default": "false",
-              "description": "Whether to show the action bar with add, delete, and collapse all buttons.",
-              "type": {
-                "text": "boolean"
-              }
             }
           ],
           "tagName": "modus-wc-content-tree",
@@ -3645,8 +3636,7 @@
                 "type": {
                   "text": "Promise<void>"
                 }
-              },
-              "description": "Public method to expand the submenu if it's collapsed"
+              }
             },
             {
               "kind": "field",
@@ -3707,6 +3697,14 @@
               "name": "has-submenu",
               "fieldName": "hasSubmenu",
               "description": "Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "indeterminate",
+              "fieldName": "indeterminate",
+              "description": "The indeterminate state of the checkbox.",
               "type": {
                 "text": "boolean"
               }

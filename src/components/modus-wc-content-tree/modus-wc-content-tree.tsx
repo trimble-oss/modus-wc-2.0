@@ -55,24 +55,6 @@ export class ModusWcContentTree {
     this.filterNodes('');
   };
 
-  private expandAllMenuItems = () => {
-    const menuItems = this.el.querySelectorAll('modus-wc-menu-item');
-
-    // Check if any items are expanded by checking the li element for the class
-    const hasExpandedItems = Array.from(menuItems).some((item) => {
-      const liElement = item.querySelector('li');
-      return liElement?.classList.contains('modus-wc-menu-item-expanded');
-    });
-
-    menuItems.forEach((item) => {
-      if (hasExpandedItems) {
-        (item as any).collapseSubmenu();
-      } else {
-        (item as any).expandSubmenu();
-      }
-    });
-  };
-
   private createMenuItem() {
     console.log('Creating menu item:', this.searchValue);
     this.searchValue = '';
@@ -235,7 +217,6 @@ export class ModusWcContentTree {
                 name="unfold_less"
                 size="sm"
                 variant="solid"
-                onClick={this.expandAllMenuItems}
               ></modus-wc-icon>
             </div>
           </div>
