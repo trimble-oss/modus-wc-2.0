@@ -197,7 +197,7 @@ export const ShadowDomParent: Story = {
             value: string;
           };
           timeInputEl.autoComplete = v['auto-complete'] ?? '';
-          timeInputEl.bordered = Boolean(v.bordered) || true;
+          timeInputEl.bordered = Boolean(v['bordered']);
           timeInputEl.customClass = v['custom-class'] || '';
           timeInputEl.datalistId = v['datalist-id'] ?? '';
           if (v['datalist-options']) {
@@ -215,7 +215,10 @@ export const ShadowDomParent: Story = {
           timeInputEl.required = Boolean(v.required);
           timeInputEl.showSeconds = Boolean(v['show-seconds']);
           timeInputEl.size = v.size ?? 'md';
-          timeInputEl.step = v.step ?? 1;
+          // Only set step if explicitly provided, otherwise let component calculate from showSeconds
+          if (v.step !== undefined) {
+            timeInputEl.step = v.step;
+          }
           timeInputEl.value = v.value ?? '';
         },
       });
