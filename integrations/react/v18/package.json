@@ -23,11 +23,12 @@
   "types": "types/index.d.ts",
   "scripts": {
     "prebuild": "npm run symlink",
-    "build": "npm run clean && npm run tsc && npm run copy-css && npm run copy-meta",
+    "build": "npm run clean && npm run tsc && npm run copy-css && npm run copy-assets && npm run copy-meta",
     "clean": "rimraf dist",
     "tsc": "tsc -p . --outDir ./dist",
     "symlink": "symlink-dir ../stencil-generated/ src/stencil-generated/",
     "copy-css": "copyfiles -f node_modules/@trimble-oss/moduswebcomponents/modus-wc-styles.css dist",
+    "copy-assets": "copyfiles -u 3 'node_modules/@trimble-oss/moduswebcomponents/assets/**/*' dist",
     "copy-meta": "copyfiles -f README.md package.json dist"
   },
   "sideEffects": false,

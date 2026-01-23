@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IInputFeedbackProp, ModusSize } from '../types';
 
 interface TextAreaArgs {
@@ -150,6 +151,60 @@ export const WithErrorFeedback: Story = {
       //input.feedback = { level: 'error', message: 'Value is required.' };
     </script>
   `,
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for textarea component
+    if (!customElements.get('textarea-shadow-host')) {
+      const TextareaShadowHost = createShadowHostClass<TextAreaArgs>({
+        componentTag: 'modus-wc-textarea',
+        propsMapper: (v: TextAreaArgs, el: HTMLElement) => {
+          const textareaEl = el as unknown as {
+            autoCorrect: string;
+            bordered: boolean;
+            customClass: string;
+            disabled: boolean;
+            enterkeyhint: string;
+            feedback: IInputFeedbackProp;
+            inputId: string;
+            inputTabIndex: number;
+            label: string;
+            maxLength: number;
+            minLength: number;
+            name: string;
+            placeholder: string;
+            readonly: boolean;
+            required: boolean;
+            rows: number;
+            size: string;
+          };
+          textareaEl.autoCorrect = v['auto-correct'];
+          textareaEl.bordered = Boolean(v.bordered);
+          textareaEl.customClass = v['custom-class'] || '';
+          textareaEl.disabled = Boolean(v.disabled);
+          textareaEl.enterkeyhint = v.enterkeyhint || '';
+
+          textareaEl.inputId = v['input-id'] || '';
+          textareaEl.inputTabIndex = v['input-tab-index'] || 0;
+          textareaEl.label = v.label || '';
+          textareaEl.maxLength = v['max-length'] || 100;
+          textareaEl.minLength = v['min-length'] || 0;
+          textareaEl.name = v.name || '';
+          textareaEl.placeholder = v.placeholder || '';
+          textareaEl.readonly = Boolean(v.readonly);
+          textareaEl.required = Boolean(v.required);
+          textareaEl.rows = typeof v.rows === 'number' ? v.rows : 2;
+          textareaEl.size = v.size || '';
+        },
+      });
+      customElements.define('textarea-shadow-host', TextareaShadowHost);
+    }
+
+    return html`<textarea-shadow-host
+      .props=${{ ...args }}
+    ></textarea-shadow-host>`;
+  },
 };
 
 export const Migration: Story = {

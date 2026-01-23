@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
 
 interface InputLabelArgs {
@@ -48,3 +49,35 @@ const Template: Story = {
 export const Default: Story = { ...Template };
 
 export const Required: Story = { ...Template, args: { required: true } };
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for input-label component
+    if (!customElements.get('input-label-shadow-host')) {
+      const InputLabelShadowHost = createShadowHostClass<InputLabelArgs>({
+        componentTag: 'modus-wc-input-label',
+        propsMapper: (v: InputLabelArgs, el: HTMLElement) => {
+          const inputLabelEl = el as unknown as {
+            forId: string;
+            customClass: string;
+            labelText: string;
+            required: boolean;
+            size: string;
+            subLabelText: string;
+          };
+          inputLabelEl.forId = v['for-id'] ?? '';
+          inputLabelEl.customClass = v['custom-class'] || '';
+          inputLabelEl.labelText = v['label-text'] ?? '';
+          inputLabelEl.required = Boolean(v.required);
+          inputLabelEl.size = v.size ?? 'md';
+          inputLabelEl.subLabelText = v['sub-label-text'] ?? '';
+        },
+      });
+      customElements.define('input-label-shadow-host', InputLabelShadowHost);
+    }
+
+    return html`<input-label-shadow-host
+      .props=${{ ...args }}
+    ></input-label-shadow-host>`;
+  },
+};

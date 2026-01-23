@@ -14,6 +14,8 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * File dropzone component that allows users to drag and drop files for upload.
+ *
+ * The component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
  */
 
 @Component({

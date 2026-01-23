@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IInputFeedbackProp, ModusSize } from '../types';
 
 // const timeOptions = ['08:00', '12:00', '17:00'];
@@ -164,6 +165,69 @@ export const WithErrorFeedback: Story = {
 </script>`,
       },
     },
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for time-input component
+    if (!customElements.get('time-input-shadow-host')) {
+      const TimeInputShadowHost = createShadowHostClass<TimeInputArgs>({
+        componentTag: 'modus-wc-time-input',
+        propsMapper: (v: TimeInputArgs, el: HTMLElement) => {
+          const timeInputEl = el as unknown as {
+            autoComplete: string;
+            bordered: boolean;
+            customClass: string;
+            datalistId: string;
+            datalistOptions: string[];
+            disabled: boolean;
+            feedback: IInputFeedbackProp;
+            inputId: string;
+            inputTabIndex: number;
+            label: string;
+            max: string;
+            min: string;
+            name: string;
+            readOnly: boolean;
+            required: boolean;
+            showSeconds: boolean;
+            size: string;
+            step: number;
+            value: string;
+          };
+          timeInputEl.autoComplete = v['auto-complete'] ?? '';
+          timeInputEl.bordered = v['bordered'] ?? true;
+          timeInputEl.customClass = v['custom-class'] || '';
+          timeInputEl.datalistId = v['datalist-id'] ?? '';
+          if (v['datalist-options']) {
+            timeInputEl.datalistOptions = v['datalist-options']; // Conditional assignment only if provided
+          }
+          timeInputEl.disabled = Boolean(v.disabled);
+
+          timeInputEl.inputId = v['input-id'] ?? '';
+          timeInputEl.inputTabIndex = v['input-tab-index'] ?? 0;
+          timeInputEl.label = v.label ?? '';
+          timeInputEl.max = v.max ?? '';
+          timeInputEl.min = v.min ?? '';
+          timeInputEl.name = v.name ?? '';
+          timeInputEl.readOnly = Boolean(v['read-only']);
+          timeInputEl.required = Boolean(v.required);
+          timeInputEl.showSeconds = Boolean(v['show-seconds']);
+          timeInputEl.size = v.size ?? 'md';
+          // Only set step if explicitly provided, otherwise let component calculate from showSeconds
+          if (v.step !== undefined) {
+            timeInputEl.step = v.step;
+          }
+          timeInputEl.value = v.value ?? '';
+        },
+      });
+      customElements.define('time-input-shadow-host', TimeInputShadowHost);
+    }
+
+    return html`<time-input-shadow-host
+      .props=${{ ...args }}
+    ></time-input-shadow-host>`;
   },
 };
 

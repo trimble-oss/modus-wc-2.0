@@ -1,0 +1,136 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+.modus-wc-handle-container {
+  align-items: center;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  outline: none;
+  padding: 0;
+  position: relative;
+
+  &:focus {
+    outline: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-primary);
+    outline-offset: var(--modus-wc-border-width-sm);
+  }
+
+  &:hover {
+    cursor: row-resize;
+
+    &.modus-wc-handle-vertical {
+      cursor: col-resize;
+    }
+  }
+}
+
+// Horizontal orientation styles
+.modus-wc-handle-horizontal {
+  flex-direction: column;
+
+  // Density variations for horizontal (container height)
+  &.modus-wc-handle-compact {
+    height: var(--modus-wc-spacing-sm);
+  }
+
+  &.modus-wc-handle-comfortable {
+    height: var(--modus-wc-spacing-md);
+  }
+
+  &.modus-wc-handle-relaxed {
+    height: var(--modus-wc-spacing-lg);
+  }
+
+  // Button type overrides
+  &.modus-wc-handle-type-button {
+    height: var(--modus-wc-spacing-xs);
+  }
+}
+
+// Vertical orientation styles
+.modus-wc-handle-vertical {
+  flex-direction: row;
+  height: 100%;
+
+  // Density variations for vertical (container width)
+  &.modus-wc-handle-compact {
+    width: var(--modus-wc-spacing-sm);
+  }
+
+  &.modus-wc-handle-comfortable {
+    width: var(--modus-wc-spacing-md);
+  }
+
+  &.modus-wc-handle-relaxed {
+    width: var(--modus-wc-spacing-lg);
+  }
+
+  // Button type overrides
+  &.modus-wc-handle-type-button {
+    width: var(--modus-wc-spacing-xs);
+  }
+}
+
+// Bar handle styles
+.modus-wc-handle-bar {
+  background-color: var(--modus-wc-color-base-200);
+  border-radius: var(--modus-wc-border-radius-md);
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modus-wc-handle-horizontal .modus-wc-handle-bar {
+  height: var(--modus-wc-spacing-xs);
+}
+
+.modus-wc-handle-vertical .modus-wc-handle-bar {
+  width: var(--modus-wc-spacing-xs);
+}
+
+// Bar sizes - horizontal
+.modus-wc-handle-horizontal.modus-wc-handle-default .modus-wc-handle-bar {
+  width: 44px;
+}
+
+.modus-wc-handle-horizontal.modus-wc-handle-lg .modus-wc-handle-bar {
+  width: 80px;
+}
+
+.modus-wc-handle-horizontal.modus-wc-handle-xl .modus-wc-handle-bar {
+  width: 144px;
+}
+
+.modus-wc-handle-horizontal.modus-wc-handle-2xl .modus-wc-handle-bar {
+  width: 224px;
+}
+
+// Bar sizes - vertical
+.modus-wc-handle-vertical.modus-wc-handle-default .modus-wc-handle-bar {
+  height: 44px;
+}
+
+.modus-wc-handle-vertical.modus-wc-handle-lg .modus-wc-handle-bar {
+  height: 80px;
+}
+
+.modus-wc-handle-vertical.modus-wc-handle-xl .modus-wc-handle-bar {
+  height: 144px;
+}
+
+.modus-wc-handle-vertical.modus-wc-handle-2xl .modus-wc-handle-bar {
+  height: 224px;
+}
+
+// Button handle styles
+.modus-wc-handle-type-button {
+  .modus-wc-handle-button-wrapper {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

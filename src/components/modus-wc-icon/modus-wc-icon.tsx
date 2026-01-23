@@ -1,4 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -35,6 +36,9 @@ export class ModusWcIcon {
   @Prop() variant?: 'outlined' | 'solid';
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.decorative && !this.el.ariaLabel) {
       this.el.ariaLabel = `${this.name} icon`;
     }

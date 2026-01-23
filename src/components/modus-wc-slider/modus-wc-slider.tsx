@@ -8,6 +8,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-slider.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -71,6 +72,9 @@ export class ModusWcSlider {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Slider';
     }

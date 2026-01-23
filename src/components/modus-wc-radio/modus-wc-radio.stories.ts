@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
 
 interface RadioArgs {
@@ -123,6 +124,42 @@ export const RadioGroup: Story = {
   </fieldset>
 </main>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for radio component
+    if (!customElements.get('radio-shadow-host')) {
+      const RadioShadowHost = createShadowHostClass<RadioArgs>({
+        componentTag: 'modus-wc-radio',
+        propsMapper: (v: RadioArgs, el: HTMLElement) => {
+          const radioEl = el as unknown as {
+            customClass: string;
+            disabled: boolean;
+            inputId: string;
+            inputTabIndex: number;
+            label: string;
+            name: string;
+            required: boolean;
+            size: string;
+            value: boolean;
+          };
+          radioEl.customClass = v['custom-class'] || '';
+          radioEl.disabled = Boolean(v.disabled);
+          radioEl.inputId = v['input-id'] || '';
+          radioEl.inputTabIndex = v['input-tab-index'] || 0;
+          radioEl.label = v.label || '';
+          radioEl.name = v.name || '';
+          radioEl.required = Boolean(v.required);
+          radioEl.size = v.size || 'md';
+          radioEl.value = Boolean(v.value);
+        },
+      });
+      customElements.define('radio-shadow-host', RadioShadowHost);
+    }
+
+    return html`<radio-shadow-host .props=${{ ...args }}></radio-shadow-host>`;
   },
 };
 
