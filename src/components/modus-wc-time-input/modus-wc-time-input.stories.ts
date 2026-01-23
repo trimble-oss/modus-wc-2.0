@@ -197,7 +197,7 @@ export const ShadowDomParent: Story = {
             value: string;
           };
           timeInputEl.autoComplete = v['auto-complete'] ?? '';
-          timeInputEl.bordered = Boolean(v['bordered']);
+          timeInputEl.bordered = Boolean(v['bordered']) || true;
           timeInputEl.customClass = v['custom-class'] || '';
           timeInputEl.datalistId = v['datalist-id'] ?? '';
           if (v['datalist-options']) {
