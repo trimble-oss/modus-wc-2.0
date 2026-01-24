@@ -34,6 +34,11 @@ jobs:
       - name: Build project
         run: npm run build
 
+      # We need to copy the CSS so it can be served by Storybook.
+      - name: Copy CSS file
+        run: |
+          cp src/styles/output.css storybook-static/public/output.css
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
