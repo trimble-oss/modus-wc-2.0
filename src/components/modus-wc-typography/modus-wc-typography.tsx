@@ -32,6 +32,9 @@ export class ModusWCTypography {
   /** The hierarchy of the typography component. */
   @Prop() hierarchy: TypographyHierarchy = 'p';
 
+  /** The text label to display. */
+  @Prop() label!: string;
+
   /** The size of the font. */
   @Prop() size?: TypographySize = 'md';
 
@@ -74,7 +77,7 @@ export class ModusWCTypography {
     return (
       <Host>
         <Element class={this.getClasses()} {...this.inheritedAttributes}>
-          <slot></slot>
+          {this.label}
         </Element>
       </Host>
     );

@@ -712,6 +712,7 @@ interface RenderInputParams {
   customIconSlot?: boolean;
   onBlur: (event: CustomEvent<FocusEvent>) => void;
   onChange: (event: CustomEvent<Event>) => void;
+  onClear?: (event: CustomEvent<void>) => void; // Optional handler for clear button click; not used in multiSelect mode where clear button is rendered separately
   onFocus: (event: CustomEvent<FocusEvent>) => void;
 }
 
@@ -725,6 +726,7 @@ export function renderInput(params: RenderInputParams): JSX.Element {
       inputId={params.inputId}
       inputTabIndex={params.inputTabIndex}
       name={params.name}
+      onClearClick={params.onClear}
       onInputBlur={params.onBlur}
       onInputChange={params.onChange}
       onInputFocus={params.onFocus}

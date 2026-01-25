@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/web-components';
-import { html, render } from 'lit';
+import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import {
   TypographyHierarchy,
@@ -7,14 +7,12 @@ import {
   TypographyWeight,
 } from './modus-wc-typography';
 
-// Slot content was lost due to rendering issues when changing the "variant" attribute.
-// Because of this, each variant is rendered as a unique story below.
-
 const content = 'The quick brown fox jumps over the lazy dog';
 
 interface TypographyArgs {
   'custom-class'?: string;
   hierarchy: TypographyHierarchy;
+  label: string;
   size?: TypographySize;
   weight?: TypographyWeight;
 }
@@ -24,6 +22,7 @@ const meta: Meta<TypographyArgs> = {
   component: 'modus-wc-typography',
   args: {
     hierarchy: 'p',
+    label: content,
     size: 'md',
     weight: 'normal',
   },
@@ -55,27 +54,6 @@ const meta: Meta<TypographyArgs> = {
       options: ['light', 'normal', 'semibold', 'bold'],
     },
   },
-  decorators: [
-    (story) => {
-      // Create a stable container that won't be recreated on re-renders
-      const container = document.createElement('div');
-      const template = document.createElement('template');
-      template.innerHTML = content;
-
-      const renderStory = () => {
-        render(story(), container);
-
-        // Ensure slot content is present after render
-        const typography = container.querySelector('modus-wc-typography');
-        if (typography && !typography.textContent) {
-          typography.textContent = template.innerHTML;
-        }
-      };
-
-      renderStory();
-      return container;
-    },
-  ],
 };
 
 export default meta;
@@ -89,6 +67,7 @@ const Template: Story = {
 <modus-wc-typography
   custom-class=${ifDefined(args['custom-class'])}
   hierarchy=${args.hierarchy}
+  label=${args.label}
   size=${ifDefined(args.size)}
   weight=${ifDefined(args.weight)}
   ></modus-wc-typography>
@@ -98,16 +77,45 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
-export const Heading1: Story = { ...Template, args: { hierarchy: 'h1' } };
+export const Heading1: Story = {
+  ...Template,
+  args: { hierarchy: 'h1', label: content },
+};
 
-export const Heading2: Story = { ...Template, args: { hierarchy: 'h2' } };
+export const Heading2: Story = {
+  ...Template,
+  args: { hierarchy: 'h2', label: content },
+};
 
-export const Heading3: Story = { ...Template, args: { hierarchy: 'h3' } };
+export const Heading3: Story = {
+  ...Template,
+  args: { hierarchy: 'h3', label: content },
+};
 
-export const Heading4: Story = { ...Template, args: { hierarchy: 'h4' } };
+export const Heading4: Story = {
+  ...Template,
+  args: { hierarchy: 'h4', label: content },
+};
 
-export const Heading5: Story = { ...Template, args: { hierarchy: 'h5' } };
+export const Heading5: Story = {
+  ...Template,
+  args: { hierarchy: 'h5', label: content },
+};
 
-export const Heading6: Story = { ...Template, args: { hierarchy: 'h6' } };
+export const Heading6: Story = {
+  ...Template,
+  args: { hierarchy: 'h6', label: content },
+};
 
-export const Paragraph: Story = { ...Template, args: { hierarchy: 'p' } };
+export const Paragraph: Story = {
+  ...Template,
+  args: { hierarchy: 'p', label: content },
+};
+
+export const WithLabel: Story = {
+  ...Template,
+  args: {
+    hierarchy: 'p',
+    label: 'This text is set via the label prop',
+  },
+};

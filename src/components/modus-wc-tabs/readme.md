@@ -9,6 +9,8 @@
 
 A customizable tabs component used to create groups of tabs.
 
+The component supports a `<slot>` for injecting custom tab content.
+
 ## Properties
 
 | Property         | Attribute          | Description                                 | Type                                                       | Default      |

@@ -13,6 +13,7 @@ import {
   Watch,
 } from '@stencil/core';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
+import { handleShadowDOMStyles } from '../base-component';
 import { IAutocompleteItem, IAutocompleteNoResults, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 import {
@@ -40,6 +41,8 @@ import {
 
 /**
  * A customizable autocomplete component used to create searchable text inputs.
+ *
+ * The component supports a `<slot>` for injecting custom content.
  */
 @Component({
   tag: 'modus-wc-autocomplete',
@@ -162,6 +165,9 @@ export class ModusWcAutocomplete {
   /** Event emitted when chips expansion state changes. */
   @StencilEvent() chipsExpansionChange!: EventEmitter<{ expanded: boolean }>;
 
+  /** Event emitted when the clear button is clicked. */
+  @StencilEvent() clearClick!: EventEmitter<void>;
+
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
@@ -231,6 +237,9 @@ export class ModusWcAutocomplete {
   }
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Autocomplete input';
     }
@@ -439,7 +448,13 @@ export class ModusWcAutocomplete {
   private handleFocusOutside = (event: FocusEvent) => {
     const relatedTarget = event.relatedTarget as HTMLElement;
 
-    if (!relatedTarget || !this.el.contains(relatedTarget)) {
+    // Use composedPath() for Shadow DOM compatibility
+    const path = event.composedPath && event.composedPath();
+    const focusedInside =
+      relatedTarget &&
+      (this.el.contains(relatedTarget) || (path && path.includes(this.el)));
+
+    if (!focusedInside) {
       // Hide menu immediately to prevent flicker
       if (!this.programmaticOpen) {
         this.menuVisible = false;
@@ -779,8 +794,13 @@ export class ModusWcAutocomplete {
     }
   };
 
-  private handleClearAll = () => {
+  private handleClearAll = (event?: CustomEvent<void>) => {
+    // This method is called by the text input and a button, stop propagation of the text input event
+    // istanbul ignore next
+    event?.stopPropagation();
+
     void this.clearInput();
+    this.clearClick.emit();
   };
 
   private toggleChipsExpansion = () => {
@@ -793,7 +813,11 @@ export class ModusWcAutocomplete {
   };
 
   private handleOutsideClick = (event: MouseEvent) => {
-    if (!this.el.contains(event.target as Node) && !this.programmaticOpen) {
+    // Use composedPath() for Shadow DOM compatibility
+    const path = event.composedPath();
+    const clickedInside = path.includes(this.el);
+
+    if (!clickedInside && !this.programmaticOpen) {
       this.menuVisible = false;
       this.isChipsExpanded = false;
     }
@@ -907,6 +931,7 @@ export class ModusWcAutocomplete {
               customIconSlot: hasSlottedCustomIcon,
               onBlur: this.handleBlur,
               onChange: this.handleChange,
+              onClear: this.handleClearAll,
               onFocus: this.handleFocus,
             })}
           </Fragment>

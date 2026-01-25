@@ -1163,6 +1163,14 @@
             },
             {
               "kind": "field",
+              "name": "clearClick",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "Event emitted when the clear button is clicked."
+            },
+            {
+              "kind": "field",
               "name": "inputBlur",
               "type": {
                 "text": "EventEmitter<FocusEvent>"
@@ -1705,7 +1713,7 @@
               "default": "'rectangle'",
               "description": "The shape of the button.",
               "type": {
-                "text": "'circle' | 'rectangle' | 'square'"
+                "text": "'circle' | 'ellipse' | 'rectangle' | 'square'"
               }
             },
             {
@@ -3454,6 +3462,88 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-logo/modus-wc-logo.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A component for displaying Trimble product logos with support for both fixed and scalable sizing.\nProvides consistent branding across applications with various product logo options.",
+          "name": "ModusWcLogo",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "alt",
+              "fieldName": "alt",
+              "description": "The alt text for accessibility. If not provided, defaults to the logo name.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the logo container.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "emblem",
+              "fieldName": "emblem",
+              "default": "false",
+              "description": "Show emblem version (icon only) instead of full logo",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "description": "The name of the logo to display. Accepts values like 'trimble', 'viewpoint_field_view', etc.",
+              "type": {
+                "text": "LogoName"
+              }
+            }
+          ],
+          "tagName": "modus-wc-logo",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcLogo",
+          "declaration": {
+            "name": "ModusWcLogo",
+            "module": "src/components/modus-wc-logo/modus-wc-logo.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-logo",
+          "declaration": {
+            "name": "ModusWcLogo",
+            "module": "src/components/modus-wc-logo/modus-wc-logo.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-menu-item/modus-wc-menu-item.tsx",
       "declarations": [
         {
@@ -3617,7 +3707,7 @@
               "kind": "field",
               "name": "itemSelect",
               "type": {
-                "text": "EventEmitter<{ value: string }>"
+                "text": "EventEmitter<{\n    value: string;\n    selected?: boolean;\n  }>"
               },
               "description": "Event emitted when a menu item is selected."
             }
@@ -4492,6 +4582,90 @@
           "declaration": {
             "name": "ModusWcPagination",
             "module": "src/components/modus-wc-pagination/modus-wc-pagination.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-panel/modus-wc-panel.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable panel component used to organize content in a structured layout.",
+          "name": "ModusWcPanel",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the outer div.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "floating",
+              "fieldName": "floating",
+              "default": "false",
+              "description": "Enable floating mode with elevated shadow.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "height",
+              "fieldName": "height",
+              "default": "'700px'",
+              "description": "Height of the panel in pixels.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "width",
+              "fieldName": "width",
+              "default": "'350px'",
+              "description": "Width of the panel in pixels.",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-panel",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcPanel",
+          "declaration": {
+            "name": "ModusWcPanel",
+            "module": "src/components/modus-wc-panel/modus-wc-panel.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-panel",
+          "declaration": {
+            "name": "ModusWcPanel",
+            "module": "src/components/modus-wc-panel/modus-wc-panel.tsx"
           }
         }
       ]
@@ -6353,6 +6527,14 @@
           "events": [
             {
               "kind": "field",
+              "name": "clearClick",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "Event emitted when the clear button is clicked."
+            },
+            {
+              "kind": "field",
               "name": "inputBlur",
               "type": {
                 "text": "EventEmitter<FocusEvent>"
@@ -7278,6 +7460,14 @@
               "description": "The hierarchy of the typography component.",
               "type": {
                 "text": "TypographyHierarchy"
+              }
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "description": "The text label to display if no slot content is provided.",
+              "type": {
+                "text": "string"
               }
             },
             {

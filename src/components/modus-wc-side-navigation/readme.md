@@ -9,6 +9,8 @@
 
 A customizable side navigation component for organizing primary navigation and content areas in an application.
 
+The component supports a `<slot>` for injecting custom content inside the side navigation panel.
+
 ## Properties
 
 | Property                 | Attribute                   | Description                                                                                                                             | Type                  | Default     |

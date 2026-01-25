@@ -3,7 +3,9 @@ import { convertPropsToClasses } from './modus-wc-card.tailwind';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable card component used to group and display content in a way that is easily readable
+ * A customizable card component used to group and display content in a way that is easily readable.
+ *
+ * This component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.
  */
 @Component({
   tag: 'modus-wc-card',

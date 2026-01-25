@@ -10,6 +10,7 @@ www/
 storybook-static/
 .wireit/
 src/styles/output.css
+src/providers/theme/css-content.ts
 # built npm packages
 *.tgz
 
