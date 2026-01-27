@@ -895,6 +895,10 @@ export namespace Components {
          */
         "selected"?: boolean;
         /**
+          * Show content tree action icons (visibility and more_vertical) at the end.
+         */
+        "showContentTreeActions"?: boolean;
+        /**
           * The size of the menu item.
          */
         "size"?: ModusSize;
@@ -3938,6 +3942,10 @@ declare namespace LocalJSX {
           * The selected state of the menu item.
          */
         "selected"?: boolean;
+        /**
+          * Show content tree action icons (visibility and more_vertical) at the end.
+         */
+        "showContentTreeActions"?: boolean;
         /**
           * The size of the menu item.
          */

@@ -38,6 +38,26 @@ modus-wc-menu-item .modus-wc-menu-item {
       .modus-wc-menu-item-labels {
         padding-inline-end: var(--modus-wc-spacing-xs);
         padding-inline-start: var(--modus-wc-spacing-xs);
+        flex: 1;
+      }
+
+      .modus-wc-menu-item-actions {
+        align-items: center;
+        display: flex;
+        margin-inline-start: auto;
+        gap: var(--modus-wc-spacing-xs);
+        padding-inline-start: var(--modus-wc-spacing-lg);
+        pointer-events: auto;
+        visibility: hidden;
+
+        .items-action-btn:hover {
+          background: unset;
+        }
+
+        .items-action-btn {
+          color: var(--modus-wc-color-base-content-hight-contrast);
+          pointer-events: auto;
+        }
       }
 
       .modus-wc-menu-item-sublabel {
@@ -47,6 +67,12 @@ modus-wc-menu-item .modus-wc-menu-item {
       .modus-wc-menu-item-selected-icon {
         margin-left: auto;
       }
+    }
+  }
+
+  &:hover:not(:has(.modus-wc-menu-item:hover)) {
+    > button > .modus-wc-menu-item-content > .modus-wc-menu-item-actions {
+      visibility: visible;
     }
   }
 

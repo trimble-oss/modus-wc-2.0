@@ -72,8 +72,14 @@ export class ModusWcMenuItem {
   /** Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior. */
   @Prop() hasSubmenu?: boolean;
 
+  /** Show content tree action icons (visibility and more_vertical) at the end. */
+  @Prop() showContentTreeActions?: boolean;
+
   /** Internal state to track if submenu is expanded */
   @State() isExpanded: boolean = false;
+
+  /** Internal state to track visibility state */
+  @State() isVisible: boolean = true;
 
   /** Event emitted when a menu item is selected. */
   @StencilEvent() itemSelect!: EventEmitter<{
@@ -212,6 +218,11 @@ export class ModusWcMenuItem {
     this.itemSelect.emit({ value: this.value, selected: this.selected });
   };
 
+  private handleMenuItemVisibilityClick = () => {
+    this.disabled = !this.disabled;
+    this.isVisible = !this.isVisible;
+  };
+
   render() {
     return (
       <Host>
@@ -257,6 +268,40 @@ export class ModusWcMenuItem {
                   <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
                 )}
               </div>
+              {this.showContentTreeActions && (
+                <div
+                  class="modus-wc-menu-item-actions"
+                  onClick={(e: MouseEvent) => e.stopPropagation()}
+                >
+                  <modus-wc-button
+                    aria-label="Visible button"
+                    customClass="items-action-btn"
+                    size="xs"
+                    shape="circle"
+                    variant="borderless"
+                    onClick={this.handleMenuItemVisibilityClick}
+                  >
+                    <modus-wc-icon
+                      aria-label="Visible icon"
+                      name={this.isVisible ? 'visibility_on' : 'visibility_off'}
+                      size="sm"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
+                  <modus-wc-button
+                    aria-label="Actions button"
+                    customClass="items-action-btn"
+                    size="xs"
+                    shape="circle"
+                    variant="borderless"
+                  >
+                    <modus-wc-icon
+                      aria-label="Actions icon"
+                      name="more_vertical"
+                      size="sm"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
+                </div>
+              )}
             </div>
           </button>
           <slot></slot>
