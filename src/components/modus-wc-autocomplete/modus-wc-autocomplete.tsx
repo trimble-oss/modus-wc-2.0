@@ -13,13 +13,13 @@ import {
   Watch,
 } from '@stencil/core';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
+import { handleShadowDOMStyles } from '../base-component';
 import {
   IAutocompleteItem,
   IAutocompleteNoResults,
   IInputFeedbackProp,
   ModusSize,
 } from '../types';
-import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 import {
   BLUR_FOCUSOUT_DELAY_MS,
