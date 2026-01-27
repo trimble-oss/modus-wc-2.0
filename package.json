@@ -203,7 +203,8 @@
       "command": "stencil build --docs --prod",
       "dependencies": [
         "build:cem-json",
-        "tailwind:build"
+        "tailwind:build",
+        "embed:css"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
@@ -269,13 +270,29 @@
       "command": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --minify",
       "files": [
         "src/**/*.scss",
+        "src/styles/fonts.css",
         "src/styles/global.css",
         "src/styles/tailwind.css",
         "src/styles/variables.css",
+        "src/styles/assets/fonts/**",
         "tailwind.config.js"
       ],
       "output": [
         "src/styles/output.css"
+      ]
+    },
+    "embed:css": {
+      "command": "node scripts/embed-css.js",
+      "dependencies": [
+        "tailwind:build"
+      ],
+      "files": [
+        "src/styles/output.css",
+        "src/styles/global.css",
+        "scripts/embed-css.js"
+      ],
+      "output": [
+        "src/providers/theme/css-content.ts"
       ]
     },
     "tailwind:watch": {
@@ -283,9 +300,11 @@
       "service": true,
       "files": [
         "src/**/*.scss",
+        "src/styles/fonts.css",
         "src/styles/global.css",
         "src/styles/tailwind.css",
         "src/styles/variables.css",
+        "src/styles/assets/fonts/**",
         "tailwind.config.js"
       ]
     }

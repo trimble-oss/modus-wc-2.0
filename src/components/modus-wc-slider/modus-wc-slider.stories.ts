@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
 
 interface SliderArgs {
@@ -68,6 +69,50 @@ export const Default: Story = {
         .value=${args.value}
       ></modus-wc-slider>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for slider component
+    if (!customElements.get('slider-shadow-host')) {
+      const SliderShadowHost = createShadowHostClass<SliderArgs>({
+        componentTag: 'modus-wc-slider',
+        propsMapper: (v: SliderArgs, el: HTMLElement) => {
+          const sliderEl = el as unknown as {
+            customClass: string;
+            disabled: boolean;
+            inputId: string;
+            inputTabIndex: number;
+            label: string;
+            max: number;
+            min: number;
+            name: string;
+            required: boolean;
+            size: string;
+            step: number;
+            value: number;
+          };
+          sliderEl.customClass = v['custom-class'] || '';
+          sliderEl.disabled = Boolean(v.disabled);
+          sliderEl.inputId = v['input-id'] ?? '';
+          sliderEl.inputTabIndex = v['input-tab-index'] ?? 0;
+          sliderEl.label = v.label ?? '';
+          sliderEl.max = v.max ?? 100;
+          sliderEl.min = v.min ?? 0;
+          sliderEl.name = v.name ?? '';
+          sliderEl.required = Boolean(v.required);
+          sliderEl.size = v.size ?? 'md';
+          sliderEl.step = v.step ?? 1;
+          sliderEl.value = typeof v.value === 'number' ? v.value : 0;
+        },
+      });
+      customElements.define('slider-shadow-host', SliderShadowHost);
+    }
+
+    return html`<slider-shadow-host
+      .props=${{ ...args }}
+    ></slider-shadow-host>`;
   },
 };
 

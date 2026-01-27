@@ -13,6 +13,7 @@ import {
   convertPropsToClasses,
   getIndexedRatingItemClass,
 } from './modus-wc-rating.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 
 export interface IRatingChange {
   newRating: number;
@@ -72,6 +73,9 @@ export class ModusWcRating {
   }
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Rating scale component';
     }

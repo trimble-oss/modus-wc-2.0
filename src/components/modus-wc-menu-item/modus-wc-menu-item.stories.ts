@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
 
 interface MenuItemArgs {
@@ -167,5 +168,64 @@ export const WithTooltip: Story = {
   ></modus-wc-menu-item>
 </modus-wc-menu>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for menu-item component
+    if (!customElements.get('menu-item-shadow-host')) {
+      const MenuItemShadowHost = createShadowHostClass<MenuItemArgs>({
+        componentTag: 'modus-wc-menu',
+        propsMapper: (v: MenuItemArgs, el: HTMLElement) => {
+          const menuEl = el as unknown as {
+            ariaLabel: string;
+          };
+          menuEl.ariaLabel = 'Shadow DOM Menu';
+
+          // Get or create menu item
+          let menuItem = el.querySelector('modus-wc-menu-item');
+          if (!menuItem) {
+            menuItem = document.createElement('modus-wc-menu-item');
+            el.innerHTML = '';
+            el.appendChild(menuItem);
+          }
+
+          // Update properties on the existing element
+          const menuItemEl = menuItem as unknown as {
+            ariaLabel: string;
+            bordered: boolean;
+            checkbox: boolean;
+            customClass: string;
+            disabled: boolean;
+            label: string;
+            selected: boolean;
+            size: string;
+            subLabel: string;
+            tooltipContent: string;
+            tooltipPosition: string;
+            value: string;
+          };
+
+          menuItemEl.ariaLabel = 'Menu item in shadow DOM';
+          menuItemEl.bordered = Boolean(v.bordered);
+          menuItemEl.checkbox = Boolean(v.checkbox);
+          menuItemEl.customClass = v['custom-class'] || '';
+          menuItemEl.disabled = Boolean(v.disabled);
+          menuItemEl.label = v.label;
+          menuItemEl.selected = Boolean(v.selected);
+          menuItemEl.size = v.size || 'md';
+          menuItemEl.subLabel = v['sub-label'] || '';
+          menuItemEl.tooltipContent = v['tooltip-content'] || '';
+          menuItemEl.tooltipPosition = v['tooltip-position'] || 'auto';
+          menuItemEl.value = v.value;
+        },
+      });
+      customElements.define('menu-item-shadow-host', MenuItemShadowHost);
+    }
+
+    return html`<menu-item-shadow-host
+      .props=${{ ...args }}
+    ></menu-item-shadow-host>`;
   },
 };

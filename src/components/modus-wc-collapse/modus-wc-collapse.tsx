@@ -9,6 +9,7 @@ import {
   Event as StencilEvent,
   Watch,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import {
   convertPropsToClasses,
   convertPropsToDescriptionDivClasses,
@@ -77,6 +78,9 @@ export class ModusWcCollapse {
   }
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.collapseId) {
       this.collapseId = generateRandomId();
     }

@@ -8,6 +8,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize, Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -46,6 +47,9 @@ export class ModusWcMenu {
   @StencilEvent() menuFocusout!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Menu';
     }

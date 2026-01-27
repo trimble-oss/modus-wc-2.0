@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize, Orientation } from '../types';
 
 interface MenuArgs {
@@ -268,5 +269,76 @@ export const CollapsibleMenu: Story = {
         // });
       </script>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for menu component
+    if (!customElements.get('menu-shadow-host')) {
+      const MenuShadowHost = createShadowHostClass<MenuArgs>({
+        componentTag: 'modus-wc-menu',
+        propsMapper: (v: MenuArgs, el: HTMLElement) => {
+          const menuEl = el as unknown as {
+            ariaLabel: string;
+            bordered: boolean;
+            customClass: string;
+            orientation: string;
+            size: string;
+          };
+          menuEl.ariaLabel = 'Shadow DOM Menu';
+          menuEl.bordered = Boolean(v.bordered);
+          menuEl.customClass = v['custom-class'] || '';
+          menuEl.orientation = v.orientation || 'vertical';
+          menuEl.size = v.size || 'md';
+
+          // Only set innerHTML once on initial creation
+          if (!el.querySelector('modus-wc-menu-item')) {
+            el.innerHTML = `
+              <modus-wc-menu-item
+    label="Small"
+    value="1"
+    size="sm"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item label="Medium" value="2"></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Large"
+    value="3"
+    size="lg"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Bordered"
+    value="3"
+    bordered="true"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="With Sub-label"
+    value="3"
+    sub-label="Sub-label"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Selected"
+    value="3"
+    selected="true"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="With Start Icon"
+    value="3"
+  >
+    <modus-wc-icon slot="start-icon" name="info"></modus-wc-icon>
+  </modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Disabled"
+    value="3"
+    disabled="true"
+  ></modus-wc-menu-item>
+          `;
+          }
+        },
+      });
+      customElements.define('menu-shadow-host', MenuShadowHost);
+    }
+
+    return html`<menu-shadow-host .props=${{ ...args }}></menu-shadow-host>`;
   },
 };
