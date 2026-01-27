@@ -20,7 +20,6 @@ import {
   ModusSize,
 } from '../types';
 import { handleShadowDOMStyles } from '../base-component';
-import { IAutocompleteItem, IAutocompleteNoResults, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 import {
   BLUR_FOCUSOUT_DELAY_MS,
@@ -62,7 +61,6 @@ export class ModusWcAutocomplete {
   @State() private filteredItems: IAutocompleteItem[] = [];
   @State() private selectionOrder: string[] = []; // Track order of chip selection
   @State() private searchText: string = ''; // Dedicated state for active search query
-  //@State() private inputFeedback?: IInputFeedbackProp;
   private debounceTimer?: number;
   private inheritedAttributes: Attributes = {};
   private programmaticOpen: boolean = false;
