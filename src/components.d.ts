@@ -737,6 +737,59 @@ export namespace Components {
         "successMessage"?: string;
     }
     /**
+     * A draggable handle component for resizing adjacent elements
+     */
+    interface ModusWcHandle {
+        /**
+          * The color of the button.
+         */
+        "buttonColor"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger';
+        /**
+          * The size of the button.
+         */
+        "buttonSize"?: DaisySize;
+        /**
+          * The variant of the button.
+         */
+        "buttonVariant"?: 'borderless' | 'filled' | 'outlined';
+        /**
+          * Custom CSS class to apply to the handle element.
+         */
+        "customClass"?: string;
+        /**
+          * The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage.
+         */
+        "defaultSplit"?: number;
+        /**
+          * The density/spacing of the handle container (compact: 8px, comfortable: 12px, relaxed: 16px).
+         */
+        "density"?: 'compact' | 'comfortable' | 'relaxed';
+        /**
+          * The left target element to resize (CSS selector or HTMLElement)
+         */
+        "leftTarget"?: string | HTMLElement;
+        /**
+          * The orientation of the handle.
+         */
+        "orientation"?: Orientation;
+        /**
+          * The right target element to resize (CSS selector or HTMLElement)
+         */
+        "rightTarget"?: string | HTMLElement;
+        /**
+          * The size of the handle.
+         */
+        "size"?: 'default' | 'lg' | 'xl' | '2xl';
+        /**
+          * The type of handle to display.
+         */
+        "type"?: 'bar' | 'button';
+    }
+    /**
      * A customizable icon component used to render Modus icons.
      * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      */
@@ -2423,6 +2476,15 @@ declare global {
         new (): HTMLModusWcFileDropzoneElement;
     };
     /**
+     * A draggable handle component for resizing adjacent elements
+     */
+    interface HTMLModusWcHandleElement extends Components.ModusWcHandle, HTMLStencilElement {
+    }
+    var HTMLModusWcHandleElement: {
+        prototype: HTMLModusWcHandleElement;
+        new (): HTMLModusWcHandleElement;
+    };
+    /**
      * A customizable icon component used to render Modus icons.
      * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      */
@@ -3014,6 +3076,7 @@ declare global {
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-dropdown-menu": HTMLModusWcDropdownMenuElement;
         "modus-wc-file-dropzone": HTMLModusWcFileDropzoneElement;
+        "modus-wc-handle": HTMLModusWcHandleElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
@@ -3829,6 +3892,59 @@ declare namespace LocalJSX {
           * Success message displayed when files are uploaded successfully
          */
         "successMessage"?: string;
+    }
+    /**
+     * A draggable handle component for resizing adjacent elements
+     */
+    interface ModusWcHandle {
+        /**
+          * The color of the button.
+         */
+        "buttonColor"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger';
+        /**
+          * The size of the button.
+         */
+        "buttonSize"?: DaisySize;
+        /**
+          * The variant of the button.
+         */
+        "buttonVariant"?: 'borderless' | 'filled' | 'outlined';
+        /**
+          * Custom CSS class to apply to the handle element.
+         */
+        "customClass"?: string;
+        /**
+          * The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage.
+         */
+        "defaultSplit"?: number;
+        /**
+          * The density/spacing of the handle container (compact: 8px, comfortable: 12px, relaxed: 16px).
+         */
+        "density"?: 'compact' | 'comfortable' | 'relaxed';
+        /**
+          * The left target element to resize (CSS selector or HTMLElement)
+         */
+        "leftTarget"?: string | HTMLElement;
+        /**
+          * The orientation of the handle.
+         */
+        "orientation"?: Orientation;
+        /**
+          * The right target element to resize (CSS selector or HTMLElement)
+         */
+        "rightTarget"?: string | HTMLElement;
+        /**
+          * The size of the handle.
+         */
+        "size"?: 'default' | 'lg' | 'xl' | '2xl';
+        /**
+          * The type of handle to display.
+         */
+        "type"?: 'bar' | 'button';
     }
     /**
      * A customizable icon component used to render Modus icons.
@@ -5331,6 +5447,7 @@ declare namespace LocalJSX {
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-dropdown-menu": ModusWcDropdownMenu;
         "modus-wc-file-dropzone": ModusWcFileDropzone;
+        "modus-wc-handle": ModusWcHandle;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-feedback": ModusWcInputFeedback;
         "modus-wc-input-label": ModusWcInputLabel;
@@ -5448,6 +5565,10 @@ declare module "@stencil/core" {
              * The component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
              */
             "modus-wc-file-dropzone": LocalJSX.ModusWcFileDropzone & JSXBase.HTMLAttributes<HTMLModusWcFileDropzoneElement>;
+            /**
+             * A draggable handle component for resizing adjacent elements
+             */
+            "modus-wc-handle": LocalJSX.ModusWcHandle & JSXBase.HTMLAttributes<HTMLModusWcHandleElement>;
             /**
              * A customizable icon component used to render Modus icons.
              * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>

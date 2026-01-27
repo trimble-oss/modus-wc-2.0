@@ -196,7 +196,6 @@ export const CollapsibleMenu: Story = {
           width: 400px;
         }
       </style>
-
       <modus-wc-menu custom-class="menu-width">
         <modus-wc-menu-item
           label="Charts"

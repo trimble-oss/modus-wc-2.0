@@ -3090,6 +3090,151 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-handle/modus-wc-handle.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A draggable handle component for resizing adjacent elements",
+          "name": "ModusWcHandle",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "button-color",
+              "fieldName": "buttonColor",
+              "default": "'tertiary'",
+              "description": "The color of the button.",
+              "type": {
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'warning'\r\n    | 'danger'"
+              }
+            },
+            {
+              "name": "button-size",
+              "fieldName": "buttonSize",
+              "default": "'md'",
+              "description": "The size of the button.",
+              "type": {
+                "text": "DaisySize"
+              }
+            },
+            {
+              "name": "button-variant",
+              "fieldName": "buttonVariant",
+              "default": "'filled'",
+              "description": "The variant of the button.",
+              "type": {
+                "text": "'borderless' | 'filled' | 'outlined'"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the handle element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "default-split",
+              "fieldName": "defaultSplit",
+              "default": "50",
+              "description": "The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "density",
+              "fieldName": "density",
+              "default": "'comfortable'",
+              "description": "The density/spacing of the handle container (compact: 8px, comfortable: 12px, relaxed: 16px).",
+              "type": {
+                "text": "'compact' | 'comfortable' | 'relaxed'"
+              }
+            },
+            {
+              "name": "left-target",
+              "fieldName": "leftTarget",
+              "description": "The left target element to resize (CSS selector or HTMLElement)",
+              "type": {
+                "text": "string | HTMLElement"
+              }
+            },
+            {
+              "name": "orientation",
+              "fieldName": "orientation",
+              "default": "'horizontal'",
+              "description": "The orientation of the handle.",
+              "type": {
+                "text": "Orientation"
+              }
+            },
+            {
+              "name": "right-target",
+              "fieldName": "rightTarget",
+              "description": "The right target element to resize (CSS selector or HTMLElement)",
+              "type": {
+                "text": "string | HTMLElement"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'default'",
+              "description": "The size of the handle.",
+              "type": {
+                "text": "'default' | 'lg' | 'xl' | '2xl'"
+              }
+            },
+            {
+              "name": "type",
+              "fieldName": "type",
+              "default": "'bar'",
+              "description": "The type of handle to display.",
+              "type": {
+                "text": "'bar' | 'button'"
+              }
+            }
+          ],
+          "tagName": "modus-wc-handle",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcHandle",
+          "declaration": {
+            "name": "ModusWcHandle",
+            "module": "src/components/modus-wc-handle/modus-wc-handle.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-handle",
+          "declaration": {
+            "name": "ModusWcHandle",
+            "module": "src/components/modus-wc-handle/modus-wc-handle.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-icon/modus-wc-icon.tsx",
       "declarations": [
         {
