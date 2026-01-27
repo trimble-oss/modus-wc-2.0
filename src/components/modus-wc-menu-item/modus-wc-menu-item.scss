@@ -38,14 +38,13 @@ modus-wc-menu-item .modus-wc-menu-item {
       .modus-wc-menu-item-labels {
         padding-inline-end: var(--modus-wc-spacing-xs);
         padding-inline-start: var(--modus-wc-spacing-xs);
-        flex: 1;
       }
 
       .modus-wc-menu-item-actions {
         align-items: center;
         display: flex;
-        margin-inline-start: auto;
         gap: var(--modus-wc-spacing-xs);
+        margin-inline-start: auto;
         padding-inline-start: var(--modus-wc-spacing-lg);
         pointer-events: auto;
         visibility: hidden;

@@ -73,7 +73,7 @@ export class ModusWcMenuItem {
   @Prop() hasSubmenu?: boolean;
 
   /** Show content tree action icons (visibility and more_vertical) at the end. */
-  @Prop() showContentTreeActions?: boolean;
+  @Prop() showContentTreeActions?: boolean = false;
 
   /** Internal state to track if submenu is expanded */
   @State() isExpanded: boolean = false;
