@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ModusWcRatingVariant } from './modus-wc-rating';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface RatingArgs {
   'allow-half'?: boolean;
@@ -112,6 +113,44 @@ export const CustomColors: Story = {
   variant="star"
 ></modus-wc-rating>
   `,
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for rating component
+    if (!customElements.get('rating-shadow-host')) {
+      const RatingShadowHost = createShadowHostClass<RatingArgs>({
+        componentTag: 'modus-wc-rating',
+        propsMapper: (v: RatingArgs, el: HTMLElement) => {
+          const ratingEl = el as unknown as {
+            allowHalf: boolean;
+            count: number;
+            customClass: string;
+            disabled: boolean;
+            getAriaLabelText: (index: number) => string;
+            size: string;
+            value: number;
+            variant: string;
+          };
+          ratingEl.allowHalf = Boolean(v['allow-half']);
+          ratingEl.count = v.count;
+          ratingEl.customClass = v['custom-class'] || '';
+          ratingEl.disabled = Boolean(v.disabled);
+          if (v.getAriaLabelText) {
+            ratingEl.getAriaLabelText = v.getAriaLabelText; // Conditional assignment only if provided
+          }
+          ratingEl.size = v.size || 'md';
+          ratingEl.value = v.value || 0;
+          ratingEl.variant = v.variant;
+        },
+      });
+      customElements.define('rating-shadow-host', RatingShadowHost);
+    }
+
+    return html`<rating-shadow-host
+      .props=${{ ...args }}
+    ></rating-shadow-host>`;
+  },
 };
 
 export const Migration: Story = {

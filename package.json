@@ -203,7 +203,8 @@
       "command": "stencil build --docs --prod",
       "dependencies": [
         "build:cem-json",
-        "tailwind:build"
+        "tailwind:build",
+        "embed:css"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
@@ -278,6 +279,20 @@
       ],
       "output": [
         "src/styles/output.css"
+      ]
+    },
+    "embed:css": {
+      "command": "node scripts/embed-css.js",
+      "dependencies": [
+        "tailwind:build"
+      ],
+      "files": [
+        "src/styles/output.css",
+        "src/styles/global.css",
+        "scripts/embed-css.js"
+      ],
+      "output": [
+        "src/providers/theme/css-content.ts"
       ]
     },
     "tailwind:watch": {

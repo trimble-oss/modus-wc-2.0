@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
 
 interface SwitchArgs {
@@ -65,6 +66,46 @@ export const Default: Story = {
         .value=${args.value}
       ></modus-wc-switch>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for switch component
+    if (!customElements.get('switch-shadow-host')) {
+      const SwitchShadowHost = createShadowHostClass<SwitchArgs>({
+        componentTag: 'modus-wc-switch',
+        propsMapper: (v: SwitchArgs, el: HTMLElement) => {
+          const switchEl = el as unknown as {
+            customClass: string;
+            disabled: boolean;
+            indeterminate: boolean;
+            inputId: string;
+            inputTabIndex: number;
+            label: string;
+            name: string;
+            required: boolean;
+            size: string;
+            value: boolean;
+          };
+          switchEl.customClass = v['custom-class'] || '';
+          switchEl.disabled = Boolean(v.disabled);
+          switchEl.indeterminate = Boolean(v.indeterminate);
+          switchEl.inputId = v['input-id'] || '';
+          switchEl.inputTabIndex = v['input-tab-index'] || 0;
+          switchEl.label = v.label || '';
+          switchEl.name = v.name || '';
+          switchEl.required = Boolean(v.required);
+          switchEl.size = v.size || 'md';
+          switchEl.value = Boolean(v.value);
+        },
+      });
+      customElements.define('switch-shadow-host', SwitchShadowHost);
+    }
+
+    return html`<switch-shadow-host
+      .props=${{ ...args }}
+    ></switch-shadow-host>`;
   },
 };
 

@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IAutocompleteItem, IAutocompleteNoResults } from '../types';
 import { ModusSize } from '../types';
 
@@ -2369,6 +2370,98 @@ export const DynamicOptions: Story = {
         // }
       </script>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for autocomplete component
+    if (!customElements.get('autocomplete-shadow-host')) {
+      const AutocompleteShadowHost = createShadowHostClass<AutocompleteArgs>({
+        componentTag: 'modus-wc-autocomplete',
+        propsMapper: (v: AutocompleteArgs, el: HTMLElement) => {
+          const autocompleteEl = el as unknown as {
+            bordered: boolean;
+            customClass: string;
+            debounceMs: number;
+            disabled: boolean;
+            includeClear: boolean;
+            includeSearch: boolean;
+            inputId: string;
+            inputTabIndex: number;
+            items: IAutocompleteItem[];
+            label: string;
+            leaveMenuOpen: boolean;
+            maxChips: number;
+            minChars: number;
+            minInputWidth: number;
+            multiSelect: boolean;
+            name: string;
+            noResults: IAutocompleteNoResults;
+            placeholder: string;
+            readOnly: boolean;
+            required: boolean;
+            showMenuOnFocus: boolean;
+            showSpinner: boolean;
+            size: string;
+            value: string;
+          };
+          autocompleteEl.bordered = Boolean(v.bordered);
+          autocompleteEl.customClass = v['custom-class'] || '';
+          if (typeof v['debounce-ms'] === 'number') {
+            autocompleteEl.debounceMs = v['debounce-ms'];
+          }
+          autocompleteEl.disabled = Boolean(v.disabled);
+          autocompleteEl.includeClear = Boolean(v['include-clear']);
+          autocompleteEl.includeSearch = Boolean(v['include-search']);
+          if (typeof v['input-id'] === 'string') {
+            autocompleteEl.inputId = v['input-id'];
+          }
+          if (typeof v['input-tab-index'] === 'number') {
+            autocompleteEl.inputTabIndex = v['input-tab-index'];
+          }
+          autocompleteEl.items = v.items;
+          if (typeof v.label === 'string') {
+            autocompleteEl.label = v.label;
+          }
+          if (typeof v['leave-menu-open'] === 'boolean') {
+            autocompleteEl.leaveMenuOpen = v['leave-menu-open'];
+          }
+          if (typeof v['max-chips'] === 'number') {
+            autocompleteEl.maxChips = v['max-chips'];
+          }
+          if (typeof v['min-chars'] === 'number') {
+            autocompleteEl.minChars = v['min-chars'];
+          }
+          if (typeof v['min-input-width'] === 'number') {
+            autocompleteEl.minInputWidth = v['min-input-width'];
+          }
+          autocompleteEl.multiSelect = Boolean(v['multi-select']);
+          if (typeof v.name === 'string') {
+            autocompleteEl.name = v.name;
+          }
+          autocompleteEl.noResults = v['no-results'];
+          if (typeof v.placeholder === 'string') {
+            autocompleteEl.placeholder = v.placeholder;
+          }
+          autocompleteEl.readOnly = Boolean(v['read-only']);
+          autocompleteEl.required = Boolean(v.required);
+          if (typeof v['show-menu-on-focus'] === 'boolean') {
+            autocompleteEl.showMenuOnFocus = v['show-menu-on-focus'];
+          }
+          autocompleteEl.showSpinner = Boolean(v['show-spinner']);
+          if (typeof v.size === 'string') {
+            autocompleteEl.size = v.size;
+          }
+          autocompleteEl.value = v.value;
+        },
+      });
+      customElements.define('autocomplete-shadow-host', AutocompleteShadowHost);
+    }
+
+    return html`<autocomplete-shadow-host
+      .props=${{ ...args }}
+    ></autocomplete-shadow-host>`;
   },
 };
 
