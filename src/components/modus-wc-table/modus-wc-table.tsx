@@ -641,6 +641,7 @@ export class ModusWcTable {
 
     // Simply clear editor state – Stencil will re-render cell normally
     this.activeEditor = null;
+    this.activeEditorElement = undefined;
   }
 
   private setupEditorCell(
@@ -661,7 +662,7 @@ export class ModusWcTable {
         column.editorSetup(cellNode, row, handleCommit);
       }
 
-      // Store reference to active editor element
+      // Store reference to active editor element (only called when editing)
       this.activeEditorElement = el;
 
       // Create and keep global click handler active
@@ -887,13 +888,27 @@ export class ModusWcTable {
                               }}
                               ref={(el) => {
                                 if (!el) return;
-                                this.setupEditorCell(
-                                  el,
-                                  cellNode,
-                                  column,
-                                  row,
-                                  handleCommit
-                                );
+                                // Only setup editor when cell is actually being edited
+                                if (editing) {
+                                  this.setupEditorCell(
+                                    el,
+                                    cellNode,
+                                    column,
+                                    row,
+                                    handleCommit
+                                  );
+                                } else {
+                                  // For non-editing cells, just set content directly
+                                  el.innerHTML = '';
+                                  if (
+                                    typeof cellNode !== 'string' &&
+                                    'tagName' in cellNode
+                                  ) {
+                                    el.appendChild(cellNode);
+                                  } else {
+                                    el.textContent = String(cellNode);
+                                  }
+                                }
                               }}
                             ></td>
                           );
