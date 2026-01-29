@@ -799,6 +799,8 @@ export class ModusWcTable {
                           selected:
                             !!this.internalRowSelection[String(rowObj.id)] ||
                             rowObj.getIsSelected?.(),
+                          selectable: this.selectable !== 'none',
+                          editable: this.isRowEditable(row),
                         }}
                         onClick={() => this.handleRowClick(rowObj, index)}
                       >
@@ -861,6 +863,8 @@ export class ModusWcTable {
                               class={{
                                 [column.className || '']: !!column.className,
                                 editing,
+                                'editable-cell':
+                                  !!column.editor && this.isRowEditable(row),
                               }}
                               data-col={column.id}
                               onDblClick={(e) => {

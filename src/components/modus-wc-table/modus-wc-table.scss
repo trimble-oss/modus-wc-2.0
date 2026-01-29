@@ -201,7 +201,17 @@ modus-wc-table .modus-wc-overflow-x-auto {
     }
   }
 
-  tbody tr {
+  /* Cursor styles based on interactivity */
+  tbody tr.selectable {
+    cursor: pointer;
+  }
+
+  tbody tr.editable {
+    cursor: pointer;
+  }
+
+  /* Editable cells should show pointer cursor */
+  td.editable-cell {
     cursor: pointer;
   }
 
