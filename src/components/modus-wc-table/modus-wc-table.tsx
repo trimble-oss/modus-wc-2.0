@@ -644,6 +644,19 @@ export class ModusWcTable {
     this.activeEditorElement = undefined;
   }
 
+  private renderCellContent(
+    el: HTMLElement,
+    cellNode: HTMLElement | string
+  ): void {
+    el.innerHTML = '';
+
+    if (typeof cellNode !== 'string' && 'tagName' in cellNode) {
+      el.appendChild(cellNode);
+    } else {
+      el.textContent = String(cellNode);
+    }
+  }
+
   private setupEditorCell(
     el: HTMLElement,
     cellNode: HTMLElement | string,
@@ -651,13 +664,11 @@ export class ModusWcTable {
     row: Record<string, unknown>,
     handleCommit: (val: unknown) => void
   ): void {
-    el.innerHTML = '';
+    this.renderCellContent(el, cellNode);
 
     const isNode = typeof cellNode !== 'string' && 'tagName' in cellNode;
 
     if (isNode) {
-      el.appendChild(cellNode);
-
       if (column.editorTemplate && column.editorSetup) {
         column.editorSetup(cellNode, row, handleCommit);
       }
@@ -686,8 +697,6 @@ export class ModusWcTable {
         // Register once and keep it active
         document.addEventListener('click', this.globalClickHandler, true);
       }
-    } else {
-      el.textContent = String(cellNode);
     }
   }
 
@@ -899,15 +908,7 @@ export class ModusWcTable {
                                   );
                                 } else {
                                   // For non-editing cells, just set content directly
-                                  el.innerHTML = '';
-                                  if (
-                                    typeof cellNode !== 'string' &&
-                                    'tagName' in cellNode
-                                  ) {
-                                    el.appendChild(cellNode);
-                                  } else {
-                                    el.textContent = String(cellNode);
-                                  }
+                                  this.renderCellContent(el, cellNode);
                                 }
                               }}
                             ></td>
