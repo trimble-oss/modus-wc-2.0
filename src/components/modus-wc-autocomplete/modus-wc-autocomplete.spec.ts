@@ -6125,4 +6125,76 @@ describe('feedback prop', () => {
     expect(feedbackElement).not.toBeNull();
     expect(feedbackElement?.getAttribute('size')).toBe('lg');
   });
+
+  it('should apply feedback class to multiselect container when feedback is provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcChip],
+      html: `<modus-wc-autocomplete aria-label="Multiselect with feedback" multi-select="true" bordered="true"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.feedback = {
+      level: 'error',
+      message: 'This field is required',
+    };
+    await page.waitForChanges();
+
+    const multiSelectContainer = page.root!.querySelector(
+      '.modus-wc-autocomplete-multi-select'
+    );
+    expect(multiSelectContainer).not.toBeNull();
+    expect(
+      multiSelectContainer?.classList.contains(
+        'modus-wc-autocomplete-multi-select--error'
+      )
+    ).toBe(true);
+  });
+
+  it('should apply warning feedback class to multiselect container', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcChip],
+      html: `<modus-wc-autocomplete aria-label="Multiselect with warning" multi-select="true" bordered="true"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.feedback = {
+      level: 'warning',
+      message: 'Please verify your input',
+    };
+    await page.waitForChanges();
+
+    const multiSelectContainer = page.root!.querySelector(
+      '.modus-wc-autocomplete-multi-select'
+    );
+    expect(multiSelectContainer).not.toBeNull();
+    expect(
+      multiSelectContainer?.classList.contains(
+        'modus-wc-autocomplete-multi-select--warning'
+      )
+    ).toBe(true);
+  });
+
+  it('should apply success feedback class to multiselect container', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcChip],
+      html: `<modus-wc-autocomplete aria-label="Multiselect with success" multi-select="true" bordered="true"></modus-wc-autocomplete>`,
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.feedback = {
+      level: 'success',
+      message: 'Selection is valid',
+    };
+    await page.waitForChanges();
+
+    const multiSelectContainer = page.root!.querySelector(
+      '.modus-wc-autocomplete-multi-select'
+    );
+    expect(multiSelectContainer).not.toBeNull();
+    expect(
+      multiSelectContainer?.classList.contains(
+        'modus-wc-autocomplete-multi-select--success'
+      )
+    ).toBe(true);
+  });
 });

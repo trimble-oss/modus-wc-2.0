@@ -520,28 +520,29 @@ ${Items}
 };
 
 export const WithFeedback: Story = {
-  render: (args) => {
-    return html`
-      <style>
-        div[id^='story--components-forms-autocomplete--with-feedback'] {
-          height: 400px;
-        }
-      </style>
-      <div style="width: 300px;">
-        <modus-wc-autocomplete
-          aria-label="Autocomplete with feedback"
-          .feedback=${args.feedback}
-          placeholder="Search fruits"
-          min-chars="0"
-        ></modus-wc-autocomplete>
-      </div>
-    `;
-  },
+  render: (args) => html`
+    <style>
+      div[id^='story--components-forms-autocomplete--with-feedback'] {
+        height: 400px;
+      }
+    </style>
+    <modus-wc-autocomplete
+      aria-label="Fruit autocomplete with feedback"
+      ?bordered=${args.bordered}
+      .items=${[]}
+      .feedback=${args.feedback}
+      label=${ifDefined(args.label)}
+      multi-select="false"
+      ?required=${args.required}
+    ></modus-wc-autocomplete>
+  `,
   args: {
     feedback: {
       level: 'error',
       message: 'This field is required',
     },
+    label: 'With Feedback',
+    required: true,
   },
 };
 
