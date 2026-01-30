@@ -279,6 +279,7 @@ export class ModusWcAutocomplete {
     return getMultiSelectClasses({
       bordered: this.bordered,
       disabled: this.disabled,
+      feedback: this.feedback,
       readOnly: this.readOnly,
       size: this.size,
     });
@@ -882,6 +883,7 @@ export class ModusWcAutocomplete {
                 bordered: this.bordered,
                 multiSelect: this.multiSelect,
                 disabled: this.disabled,
+                feedback: this.feedback,
                 includeClear: this.includeClear,
                 includeSearch: this.includeSearch,
                 inputId: this.inputId,
@@ -924,6 +926,7 @@ export class ModusWcAutocomplete {
               bordered: this.bordered,
               multiSelect: this.multiSelect,
               disabled: this.disabled,
+              feedback: this.feedback,
               includeClear: this.includeClear,
               includeSearch: this.includeSearch,
               inputId: this.inputId,
@@ -988,7 +991,7 @@ export class ModusWcAutocomplete {
             </modus-wc-menu>
           )
         )}
-        {this.feedback && (
+        {this.multiSelect && this.feedback && (
           <modus-wc-input-feedback
             level={this.feedback.level}
             message={this.feedback.message}
