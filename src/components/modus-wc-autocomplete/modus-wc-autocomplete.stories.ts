@@ -532,7 +532,6 @@ export const WithFeedback: Story = {
       .items=${[]}
       .feedback=${args.feedback}
       label=${ifDefined(args.label)}
-      multi-select="false"
       ?required=${args.required}
     ></modus-wc-autocomplete>
   `,
@@ -543,6 +542,27 @@ export const WithFeedback: Story = {
     },
     label: 'With Feedback',
     required: true,
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<modus-wc-autocomplete
+  aria-label="Fruit autocomplete with feedback"
+  label="With Feedback"
+  required
+></modus-wc-autocomplete>
+
+<script>
+  const autocomplete = document.querySelector('modus-wc-autocomplete');
+  autocomplete.feedback = {
+    level: 'error',
+    message: 'This field is required'
+  };
+</script>
+        `,
+      },
+    },
   },
 };
 
