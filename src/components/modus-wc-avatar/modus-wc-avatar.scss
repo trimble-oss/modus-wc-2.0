@@ -4,6 +4,8 @@
 */
 
 modus-wc-avatar .modus-wc-avatar {
+  display: flex;
+
   .initials {
     align-items: center;
     background-color: var(--modus-wc-color-black);
