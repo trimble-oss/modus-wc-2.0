@@ -12,10 +12,11 @@
     "@stencil/vue-output-target": "^0.10.8"
   },
   "peerDependencies": {
-    "@trimble-oss/moduswebcomponents": "0.0.0-beta.3",
+    "@trimble-oss/moduswebcomponents": "^1.0.2",
     "vue": "^3.0.0"
   },
   "devDependencies": {
+    "@trimble-oss/moduswebcomponents": "file:../../../dist",
     "copyfiles": "^2.4.1",
     "rimraf": "^6.0.1",
     "symlink-dir": "^6.0.3",
@@ -31,6 +32,7 @@
     }
   },
   "scripts": {
+    "dev": "npm install && npm run build",
     "prebuild": "npm run symlink",
     "build": "npm run clean && npm run transpile && npm run copy-types && npm run copy-meta",
     "clean": "rimraf dist",
