@@ -41,7 +41,7 @@ modus-wc-modal .modus-wc-modal {
 .modus-wc-modal-content {
   height: 100%;
 
-  span {
+  > span {
     border-radius: var(--rounded-box);
     display: block;
     height: 100%;
