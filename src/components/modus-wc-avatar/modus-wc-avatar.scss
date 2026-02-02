@@ -2,10 +2,11 @@
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
+modus-wc-avatar {
+  display: inline-flex;
+}
 
 modus-wc-avatar .modus-wc-avatar {
-  display: flex;
-
   .initials {
     align-items: center;
     background-color: var(--modus-wc-color-black);
