@@ -164,19 +164,21 @@ describe('modus-wc-autocomplete', () => {
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
     autocomplete.feedback = { level: 'error', message: 'Error message' };
-    
+
     // Set both flags to false and force a re-render
     autocomplete['showFeedback'] = false;
     autocomplete['menuVisible'] = false;
-    
+
     // Trigger re-render by updating items which forces render cycle
-    autocomplete.items = [{ value: 'test', label: 'Test', visibleInMenu: true }];
+    autocomplete.items = [
+      { value: 'test', label: 'Test', visibleInMenu: true },
+    ];
     await page.waitForChanges();
 
     // Verify the text-input does not receive feedback (should be undefined)
     const textInput = page.root?.querySelector('modus-wc-text-input');
     expect(textInput).toBeDefined();
-    
+
     expect(page.root).toMatchSnapshot();
   });
 
