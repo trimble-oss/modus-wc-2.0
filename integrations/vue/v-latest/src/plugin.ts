@@ -1,26 +1,26 @@
 import { Plugin } from 'vue';
 import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
+import { setAssetPath } from '@trimble-oss/moduswebcomponents/components';
 
 /**
  * Vue plugin for Modus Web Components
  * Automatically configures asset paths for components like ModusWcLogo
  * 
- * Assets are loaded from the npm package's collection folder.
- * Works in both development and production environments.
+ * Note: For production builds, you need to copy logo assets to your public folder.
+ * Add this to your Vite config or build process:
+ * - Source: node_modules/@trimble-oss/moduswebcomponents/assets
+ * - Destination: public/assets (or configure in angular.json for Angular)
  */
 export const ModusWebComponentsPlugin: Plugin = {
   install() {
-    // Use local package path with proper URL construction for browser
-    // Assets are served from node_modules in both dev and production
-    const isServer = typeof window === 'undefined';
-    const assetPath = isServer 
-      ? '/node_modules/@trimble-oss/moduswebcomponents/collection/components/modus-wc-logo/'
-      : `${window.location.origin}/node_modules/@trimble-oss/moduswebcomponents/collection/components/modus-wc-logo/`;
+    // Set asset path for components that use getAssetPath() (like ModusWcLogo)
+    // Points to the assets bundled within this Vue package in node_modules
+    if (typeof window !== 'undefined') {
+      setAssetPath(`${window.location.origin}/node_modules/@trimble-oss/moduswebcomponents-vue/`);
+    }
     
-    // Pass resourcesUrl to defineCustomElements to set asset path in loader runtime
-    defineCustomElements(window, {
-      resourcesUrl: assetPath
-    });
+    // Define custom elements
+    defineCustomElements(window);
   },
 };
 

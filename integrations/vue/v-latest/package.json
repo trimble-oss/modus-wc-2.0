@@ -34,10 +34,11 @@
   "scripts": {
     "dev": "npm install && npm run build",
     "prebuild": "npm run symlink",
-    "build": "npm run clean && npm run transpile && npm run copy-types && npm run copy-meta",
+    "build": "npm run clean && npm run transpile && npm run copy-types && npm run copy-assets && npm run copy-meta",
     "clean": "rimraf dist",
     "transpile": "tsc -p . --noEmitOnError false || true",
     "copy-types": "tsc -p . --declaration --emitDeclarationOnly --outDir dist/types || true",
+    "copy-assets": "copyfiles -u 3 'node_modules/@trimble-oss/moduswebcomponents/assets/**/*' dist",
     "symlink": "symlink-dir ../stencil-generated/ src/stencil-generated/",
     "copy-meta": "copyfiles -f README.md package.json LICENSE dist"
   },
