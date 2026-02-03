@@ -101,7 +101,7 @@ export class ModusWcLogo {
     }
 
     // Use getAssetPath to resolve the correct path for all deployment scenarios
-    return getAssetPath(`./assets/${path}`);
+    return getAssetPath(`assets/${path}`);
   }
 
   private getClasses(): string {

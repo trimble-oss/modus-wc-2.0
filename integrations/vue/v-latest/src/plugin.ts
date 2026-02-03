@@ -2,6 +2,13 @@ import { Plugin } from 'vue';
 import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
 import { setAssetPath } from '@trimble-oss/moduswebcomponents/components';
 
+// Set asset path immediately when module loads (before components initialize)
+// Points to the assets bundled within this Vue package in node_modules
+if (typeof window !== 'undefined') {
+  setAssetPath(`${window.location.origin}/node_modules/@trimble-oss/moduswebcomponents-vue/`);
+console.log('Asset path set', `${window.location.origin}/node_modules/@trimble-oss/moduswebcomponents-vue/`);
+}
+
 /**
  * Vue plugin for Modus Web Components
  * Automatically configures asset paths for components like ModusWcLogo
@@ -13,14 +20,10 @@ import { setAssetPath } from '@trimble-oss/moduswebcomponents/components';
  */
 export const ModusWebComponentsPlugin: Plugin = {
   install() {
-    // Set asset path for components that use getAssetPath() (like ModusWcLogo)
-    // Points to the assets bundled within this Vue package in node_modules
-    if (typeof window !== 'undefined') {
-      setAssetPath(`${window.location.origin}/node_modules/@trimble-oss/moduswebcomponents-vue/`);
-    }
-    
-    // Define custom elements
-    defineCustomElements(window);
+    // Define custom elements with resourcesUrl for assets
+    defineCustomElements(window, {
+      resourcesUrl: `${window.location.origin}/node_modules/@trimble-oss/moduswebcomponents-vue/`
+    });
   },
 };
 
