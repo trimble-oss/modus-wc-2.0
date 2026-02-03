@@ -43,7 +43,15 @@ modus-wc-tabs .modus-wc-tabs {
       .modus-wc-tab-disabled
     ):not([disabled]),
   .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
-    color: var(--modus-wc-color-primary);
+    background-color: transparent;
+    --tab-border: var(--border) var(--border) 0 var(--border);
+    --tab-border-colors: var(--tab-border-color) var(--tab-border-color) #0000
+      var(--tab-border-color);
+    --tab-paddings: 0 calc(var(--tab-p) - var(--border)) var(--border)
+      calc(var(--tab-p) - var(--border));
+    --tab-inset: auto auto 0 auto;
+    --radius-start: radial-gradient(circle at top left, var(--tab-radius-grad));
+    --radius-end: radial-gradient(circle at top right, var(--tab-radius-grad));
   }
 
   &.modus-wc-tabs-bordered {
@@ -115,7 +123,7 @@ modus-wc-tabs .modus-wc-tab {
       .modus-wc-tab-disabled
     ):not([disabled]),
   .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
-    color: var(--modus-wc-color-white) !important;
+    background-color: transparent;
   }
 }
 
@@ -156,6 +164,6 @@ modus-wc-tabs .modus-wc-tab {
       .modus-wc-tab-disabled
     ):not([disabled]),
   .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
-    color: var(--modus-wc-color-white);
+    background-color: transparent;
   }
 }
