@@ -111,6 +111,75 @@ describe('modus-wc-autocomplete', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should pass feedback to text-input when showFeedback is true and menuVisible is false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Feedback test"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.feedback = { level: 'error', message: 'Error message' };
+    autocomplete['showFeedback'] = true;
+    autocomplete['menuVisible'] = false;
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should pass feedback to text-input when showFeedback is false and menuVisible is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Feedback test"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.feedback = { level: 'error', message: 'Error message' };
+    autocomplete['showFeedback'] = false;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should pass feedback to text-input when both showFeedback and menuVisible are true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete aria-label="Feedback test"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.feedback = { level: 'error', message: 'Error message' };
+    autocomplete['showFeedback'] = true;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should not pass feedback to text-input when both showFeedback and menuVisible are false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: '<modus-wc-autocomplete multi-select="true" aria-label="Feedback test"></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.feedback = { level: 'error', message: 'Error message' };
+    
+    // Set both flags to false and force a re-render
+    autocomplete['showFeedback'] = false;
+    autocomplete['menuVisible'] = false;
+    
+    // Trigger re-render by updating items which forces render cycle
+    autocomplete.items = [{ value: 'test', label: 'Test', visibleInMenu: true }];
+    await page.waitForChanges();
+
+    // Verify the text-input does not receive feedback (should be undefined)
+    const textInput = page.root?.querySelector('modus-wc-text-input');
+    expect(textInput).toBeDefined();
+    
+    expect(page.root).toMatchSnapshot();
+  });
+
   it('should emit blur event', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
@@ -1402,7 +1471,7 @@ describe('modus-wc-autocomplete', () => {
     await new Promise((resolve) => setTimeout(resolve, 250));
     await page.waitForChanges();
 
-    expect(autocomplete['showFeedback']).toBe(false);
+    expect(autocomplete['showFeedback']).toBe(true);
   });
 
   it('should handle blur when items is undefined', async () => {
@@ -4159,7 +4228,7 @@ describe('modus-wc-autocomplete', () => {
       autocomplete['handleEscape']();
       await page.waitForChanges();
 
-      expect(autocomplete['showFeedback']).toBe(true);
+      expect(autocomplete['showFeedback']).toBe(false);
     });
 
     it('should not restore feedback when escaping with selection', async () => {
@@ -4212,7 +4281,7 @@ describe('modus-wc-autocomplete', () => {
       autocomplete['handleEscape']();
       await page.waitForChanges();
 
-      expect(autocomplete['showFeedback']).toBe(true);
+      expect(autocomplete['showFeedback']).toBe(false);
 
       // Restore original method
       autocomplete['clearAllFocus'] = originalClearAllFocus;
@@ -4237,7 +4306,7 @@ describe('modus-wc-autocomplete', () => {
       autocomplete['handleEscape']();
       await page.waitForChanges();
 
-      expect(autocomplete['showFeedback']).toBe(true);
+      expect(autocomplete['showFeedback']).toBe(false);
     });
 
     it('should handle enter key through handleEnter', async () => {
@@ -4308,6 +4377,31 @@ describe('modus-wc-autocomplete', () => {
 
       // Should remove the last selected item
       expect(chipRemoveSpy).toHaveBeenCalledWith(items[1]);
+    });
+
+    it('should hide feedback when backspace is pressed with menu visible', async () => {
+      const page = await newSpecPage({
+        components: [
+          ModusWcAutocomplete,
+          ModusWcTextInput,
+          ModusWcMenu,
+          ModusWcMenuItem,
+        ],
+        html: '<modus-wc-autocomplete aria-label="Backspace feedback test"></modus-wc-autocomplete>',
+      });
+
+      const autocomplete = page.rootInstance as ModusWcAutocomplete;
+      autocomplete.items = items;
+      autocomplete['menuVisible'] = true;
+      autocomplete['showFeedback'] = true;
+
+      const input = page.root!.querySelector('input') as HTMLInputElement;
+      input.value = '';
+
+      autocomplete['handleBackspace'](input);
+      await page.waitForChanges();
+
+      expect(autocomplete['showFeedback']).toBe(false);
     });
   });
 
