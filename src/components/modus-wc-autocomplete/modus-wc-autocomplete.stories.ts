@@ -529,7 +529,7 @@ export const WithFeedback: Story = {
     <modus-wc-autocomplete
       aria-label="Fruit autocomplete with feedback"
       ?bordered=${args.bordered}
-      .items=${[]}
+      .items=${args.items}
       .feedback=${args.feedback}
       label=${ifDefined(args.label)}
       ?required=${args.required}
@@ -559,6 +559,7 @@ export const WithFeedback: Story = {
     level: 'error',
     message: 'This field is required'
   };
+  autocomplete.items = autocompleteItems;
 </script>
         `,
       },

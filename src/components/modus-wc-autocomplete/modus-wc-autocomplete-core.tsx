@@ -707,6 +707,7 @@ interface RenderInputParams {
   multiSelect?: boolean;
   disabled?: boolean;
   feedback?: IInputFeedbackProp;
+  customClass?: string;
   includeClear?: boolean;
   includeSearch?: boolean;
   inputId?: string;
@@ -729,6 +730,7 @@ export function renderInput(params: RenderInputParams): JSX.Element {
   return (
     <modus-wc-text-input
       bordered={params.bordered && !params.multiSelect}
+      customClass={params.customClass}
       disabled={params.disabled}
       feedback={!params.multiSelect ? params.feedback : undefined}
       includeClear={!params.multiSelect && params.includeClear}
