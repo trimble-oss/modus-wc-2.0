@@ -41,6 +41,8 @@ modus-wc-modal .modus-wc-modal {
 .modus-wc-modal-content {
   height: 100%;
 
+  // Use a direct child selector to avoid leaking these styles into nested spans
+  // (for example, spans inside tab content or other descendants).
   > span {
     border-radius: var(--rounded-box);
     display: block;
