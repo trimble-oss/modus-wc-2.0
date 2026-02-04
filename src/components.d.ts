@@ -979,6 +979,14 @@ export namespace Components {
          */
         "selected"?: boolean;
         /**
+          * Show more actions button at the end of the menu item.
+         */
+        "showMoreActions"?: boolean;
+        /**
+          * Show visibility toggle button at the end of the menu item.
+         */
+        "showVisibilityToggle"?: boolean;
+        /**
           * The size of the menu item.
          */
         "size"?: ModusSize;
@@ -4138,6 +4146,14 @@ declare namespace LocalJSX {
           * The selected state of the menu item.
          */
         "selected"?: boolean;
+        /**
+          * Show more actions button at the end of the menu item.
+         */
+        "showMoreActions"?: boolean;
+        /**
+          * Show visibility toggle button at the end of the menu item.
+         */
+        "showVisibilityToggle"?: boolean;
         /**
           * The size of the menu item.
          */

@@ -72,14 +72,17 @@ export class ModusWcMenuItem {
   /** Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior. */
   @Prop() hasSubmenu?: boolean;
 
+  /** Show visibility toggle button at the end of the menu item. */
+  @Prop() showVisibilityToggle?: boolean = false;
+
+  /** Show more actions button at the end of the menu item. */
+  @Prop() showMoreActions?: boolean = false;
+
   /** Internal state to track if submenu is expanded */
   @State() isExpanded: boolean = false;
 
   /** Internal state to track visibility state */
   @State() isVisible: boolean = true;
-
-  /** Internal state to control display of content tree action buttons */
-  @State() showContentTreeActions?: boolean = false;
 
   /** Event emitted when a menu item is selected. */
   @StencilEvent() itemSelect!: EventEmitter<{
@@ -269,35 +272,41 @@ export class ModusWcMenuItem {
                   <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
                 )}
               </div>
-              {this.showContentTreeActions && (
+              {(this.showVisibilityToggle || this.showMoreActions) && (
                 <div class="modus-wc-menu-item-actions">
-                  <modus-wc-button
-                    aria-label="Visible button"
-                    customClass="items-action-btn"
-                    size="xs"
-                    shape="circle"
-                    variant="borderless"
-                    onClick={this.handleMenuItemVisibilityClick}
-                  >
-                    <modus-wc-icon
-                      aria-label="Visible icon"
-                      name={this.isVisible ? 'visibility_on' : 'visibility_off'}
-                      size="sm"
-                    ></modus-wc-icon>
-                  </modus-wc-button>
-                  <modus-wc-button
-                    aria-label="Actions button"
-                    customClass="items-action-btn"
-                    size="xs"
-                    shape="circle"
-                    variant="borderless"
-                  >
-                    <modus-wc-icon
-                      aria-label="Actions icon"
-                      name="more_vertical"
-                      size="sm"
-                    ></modus-wc-icon>
-                  </modus-wc-button>
+                  {this.showVisibilityToggle && (
+                    <modus-wc-button
+                      aria-label="Visible button"
+                      customClass="items-action-btn"
+                      size="xs"
+                      shape="circle"
+                      variant="borderless"
+                      onClick={this.handleMenuItemVisibilityClick}
+                    >
+                      <modus-wc-icon
+                        aria-label="Visible icon"
+                        name={
+                          this.isVisible ? 'visibility_on' : 'visibility_off'
+                        }
+                        size="sm"
+                      ></modus-wc-icon>
+                    </modus-wc-button>
+                  )}
+                  {this.showMoreActions && (
+                    <modus-wc-button
+                      aria-label="Actions button"
+                      customClass="items-action-btn"
+                      size="xs"
+                      shape="circle"
+                      variant="borderless"
+                    >
+                      <modus-wc-icon
+                        aria-label="Actions icon"
+                        name="more_vertical"
+                        size="sm"
+                      ></modus-wc-icon>
+                    </modus-wc-button>
+                  )}
                 </div>
               )}
             </div>

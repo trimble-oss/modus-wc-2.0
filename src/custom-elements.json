@@ -3798,10 +3798,19 @@
               }
             },
             {
-              "name": "show-content-tree-actions",
-              "fieldName": "showContentTreeActions",
+              "name": "show-more-actions",
+              "fieldName": "showMoreActions",
               "default": "false",
-              "description": "Show content tree action icons (visibility and more_vertical) at the end.",
+              "description": "Show more actions button at the end of the menu item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "show-visibility-toggle",
+              "fieldName": "showVisibilityToggle",
+              "default": "false",
+              "description": "Show visibility toggle button at the end of the menu item.",
               "type": {
                 "text": "boolean"
               }
