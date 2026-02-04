@@ -1,18 +1,18 @@
 import { Plugin } from 'vue';
 import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
+import { setAssetPath } from '@trimble-oss/moduswebcomponents/components';
 
 /**
  * Vue plugin for Modus Web Components
- * Automatically configures asset paths for components like ModusWcLogo
+ * Initializes the custom elements for use in Vue applications
  */
 export const ModusWebComponentsPlugin: Plugin = {
   install() {
-    // Define custom elements with resourcesUrl for the loader runtime
-    // Points to assets in the main package's dist/components folder
     if (typeof window !== 'undefined') {
-      defineCustomElements(window, {
-        resourcesUrl: `${window.location.origin}/node_modules/@trimble-oss/moduswebcomponents-vue/`
-      });
+      // Set asset path to the Vue package location
+      // Assets are bundled in this package at /assets/
+      setAssetPath(new URL('./', import.meta.url).href);
+      defineCustomElements(window);
     }
   },
 };

@@ -1,10 +1,13 @@
-// Auto-initialize asset path for components that need it (e.g., ModusWcLogo)
 import { setAssetPath } from '@trimble-oss/moduswebcomponents/components';
 
-// Set asset path for components that use getAssetPath() (like ModusWcLogo)
-// Points to assets copied into this React package
+// Auto-initialize asset path to the React package location
+// This works in both dev (node_modules) and production (bundled) scenarios
 if (typeof window !== 'undefined') {
-  setAssetPath(`${window.location.origin}/node_modules/@trimble-oss/moduswebcomponents-react/`);
+  // Set to package root - assets are bundled in this package at /assets/
+  setAssetPath(new URL('./', import.meta.url).href);
 }
 
 export * from './stencil-generated/components';
+
+// Re-export setAssetPath for users who need to override
+export { setAssetPath };
