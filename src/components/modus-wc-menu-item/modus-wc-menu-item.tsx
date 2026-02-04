@@ -72,14 +72,14 @@ export class ModusWcMenuItem {
   /** Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior. */
   @Prop() hasSubmenu?: boolean;
 
-  /** Show content tree action icons (visibility and more_vertical) at the end. */
-  @Prop() showContentTreeActions?: boolean = false;
-
   /** Internal state to track if submenu is expanded */
   @State() isExpanded: boolean = false;
 
   /** Internal state to track visibility state */
   @State() isVisible: boolean = true;
+
+  /** Internal state to control display of content tree action buttons */
+  @State() showContentTreeActions?: boolean = false;
 
   /** Event emitted when a menu item is selected. */
   @StencilEvent() itemSelect!: EventEmitter<{
@@ -218,7 +218,8 @@ export class ModusWcMenuItem {
     this.itemSelect.emit({ value: this.value, selected: this.selected });
   };
 
-  private handleMenuItemVisibilityClick = () => {
+  private handleMenuItemVisibilityClick = (e: MouseEvent) => {
+    e.stopPropagation();
     this.disabled = !this.disabled;
     this.isVisible = !this.isVisible;
   };
@@ -269,10 +270,7 @@ export class ModusWcMenuItem {
                 )}
               </div>
               {this.showContentTreeActions && (
-                <div
-                  class="modus-wc-menu-item-actions"
-                  onClick={(e: MouseEvent) => e.stopPropagation()}
-                >
+                <div class="modus-wc-menu-item-actions">
                   <modus-wc-button
                     aria-label="Visible button"
                     customClass="items-action-btn"

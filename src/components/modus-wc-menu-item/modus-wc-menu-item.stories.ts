@@ -13,7 +13,6 @@ interface MenuItemArgs {
   'has-submenu'?: boolean;
   label: string;
   selected?: boolean;
-  'show-content-tree-actions'?: boolean;
   size?: ModusSize;
   'sub-label'?: string;
   'tooltip-content'?: string;
@@ -63,7 +62,6 @@ const Template: Story = {
     ?disabled=${args.disabled}
     label=${args.label}
     ?selected=${args.selected}
-    ?show-content-tree-actions=${args['show-content-tree-actions']}
     size=${args.size}
     sub-label=${ifDefined(args['sub-label'])}
     tooltip-content=${ifDefined(args['tooltip-content'])}
@@ -89,7 +87,6 @@ export const WithIcon: Story = {
     ?disabled=${args.disabled}
     label=${args.label}
     ?selected=${args.selected}
-    ?show-content-tree-actions=${args['show-content-tree-actions']}
     size=${args.size}
     sub-label=${ifDefined(args['sub-label'])}
     tooltip-content=${ifDefined(args['tooltip-content'])}
