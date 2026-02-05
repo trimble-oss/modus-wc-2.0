@@ -112,7 +112,6 @@ export class ModusWcMenuItem {
         this.isExpanded = true;
       }
     }
-    return Promise.resolve();
   }
 
   /**
