@@ -1,6 +1,5 @@
 import { NgModule, provideAppInitializer } from '@angular/core';
 import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
-import { setAssetPath } from '@trimble-oss/moduswebcomponents/components';
 import { DIRECTIVES } from './stencil-generated';
 
 @NgModule({
@@ -8,9 +7,20 @@ import { DIRECTIVES } from './stencil-generated';
   exports: [...DIRECTIVES],
   providers: [
     provideAppInitializer(() => {
-      // In Angular build, assets are copied to /assets/ folder
-      setAssetPath('/assets/');
-      defineCustomElements(window);
+      // Point to the main package assets location
+      // Assets are in @trimble-oss/moduswebcomponents/assets
+      if (typeof window !== 'undefined') {
+        // Try to find the main package script to get its location
+        const scripts = Array.from(document.getElementsByTagName('script'));
+        const mainScript = scripts.find(s => s.src && (s.src.includes('moduswebcomponents') || s.src.includes('modus-wc')));
+        
+        const resourcesUrl = mainScript 
+          ? new URL('.', mainScript.src).href
+          : window.location.origin + '/';
+        
+        console.log('[Angular] Setting resourcesUrl to:', resourcesUrl);
+        defineCustomElements(window, { resourcesUrl });
+      }
     })
   ]
 })
