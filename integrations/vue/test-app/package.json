@@ -16,10 +16,9 @@
   "devDependencies": {
     "@stencil/vue-output-target": "^0.10.8",
     "@trimble-oss/moduswebcomponents": "file:../../../dist",
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^4.2.3",
+    "@vitejs/plugin-vue": "^5.0.0",
     "typescript": "^5.6.3",
-    "vite": "^4.4.5",
+    "vite": "^5.0.0",
     "vue-tsc": "^2.1.0"
   }
 }
