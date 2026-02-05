@@ -10,11 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@stencil/vue-output-target": "^0.10.8",
-    "@trimble-oss/moduswebcomponents": "file:../../../dist",
     "@trimble-oss/moduswebcomponents-vue": "file:../v-latest/dist",
     "vue": "^3.3.4"
   },
+  "devDependencies": {
+    "@stencil/vue-output-target": "^0.10.8",
+    "@trimble-oss/moduswebcomponents": "file:../../../dist",
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
     "typescript": "^5.6.3",
