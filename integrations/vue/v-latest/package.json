@@ -12,7 +12,7 @@
     "@stencil/vue-output-target": "^0.10.8"
   },
   "peerDependencies": {
-    "@trimble-oss/moduswebcomponents": "^1.0.2",
+    "@trimble-oss/moduswebcomponents": "*",
     "vue": "^3.0.0"
   },
   "devDependencies": {
