@@ -4,10 +4,7 @@ import { setAssetPath } from '@trimble-oss/moduswebcomponents/components';
 // This works in both dev (node_modules) and production (bundled) scenarios
 if (typeof window !== 'undefined') {
   // Set to package root - assets are bundled in this package at /assets/
-  // import.meta.url points to this file, so we go up to the directory
-  const assetPath = new URL('.', import.meta.url).href;
-  console.log('[React] Setting asset path to:', assetPath);
-  setAssetPath(assetPath);
+  setAssetPath(new URL('.', import.meta.url).href);
 }
 
 export * from './stencil-generated/components';

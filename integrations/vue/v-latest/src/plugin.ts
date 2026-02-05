@@ -11,7 +11,6 @@ export const ModusWebComponentsPlugin: Plugin = {
       // Set resourcesUrl to the Vue package location
       // Assets are bundled in this package at /assets/
       const resourcesUrl = new URL('.', import.meta.url).href;
-      console.log('[Vue] Setting resourcesUrl to:', resourcesUrl);
       
       defineCustomElements(window, {
         resourcesUrl: resourcesUrl
