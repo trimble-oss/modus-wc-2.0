@@ -605,7 +605,6 @@ export const InlineEditing: Story = {
         id: 'name',
         header: 'Name',
         accessor: 'name',
-        editor: 'text',
       },
       {
         id: 'status',
@@ -1006,7 +1005,7 @@ export const InlineEditing: Story = {
   },
   args: {
     density: 'comfortable',
-    hover: true,
+    hover: false,
     sortable: true,
     paginated: false,
     'show-page-size-selector': true,
