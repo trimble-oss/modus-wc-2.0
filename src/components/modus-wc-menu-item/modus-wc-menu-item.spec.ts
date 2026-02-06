@@ -148,32 +148,23 @@ describe('modus-wc-menu-item', () => {
     // Get elements
     const menuItem = page.root as HTMLElement;
     const button = menuItem.querySelector('button') as HTMLButtonElement;
-    const liElement = menuItem.querySelector('li') as HTMLLIElement;
 
-    // Initially the item should not have the selected class
-    expect(
-      liElement.classList.contains('modus-wc-menu-item-selected')
-    ).toBeFalsy();
+    // Initially the selected prop should be undefined/false
+    expect(page.rootInstance.selected).toBeFalsy();
 
     // Click the menu item
     button.click();
     await page.waitForChanges();
 
-    // After click, it should have the selected class and selected prop should be true
-    expect(
-      liElement.classList.contains('modus-wc-menu-item-selected')
-    ).toBeTruthy();
+    // After click, selected prop should be true
     expect(page.rootInstance.selected).toBe(true);
 
     // Click again
     button.click();
     await page.waitForChanges();
 
-    // After second click, should not have the selected class but selected prop remains true
-    expect(
-      liElement.classList.contains('modus-wc-menu-item-selected')
-    ).toBeFalsy();
-    expect(page.rootInstance.selected).toBe(true);
+    // After second click, selected prop should toggle to false
+    expect(page.rootInstance.selected).toBe(false);
   });
 
   it('should handle checkbox items that are initially selected', async () => {

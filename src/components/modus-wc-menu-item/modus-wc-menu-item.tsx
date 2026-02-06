@@ -214,7 +214,7 @@ export class ModusWcMenuItem {
   };
 
   private updateIndeterminateState = () => {
-    if (!this.hasSubmenu) return;
+    if (!this.hasSubmenu || !this.checkbox) return;
 
     const submenu = this.el.querySelector('.modus-wc-menu-dropdown');
     if (!submenu) return;
@@ -226,14 +226,13 @@ export class ModusWcMenuItem {
     let selectedCount = 0;
 
     childMenuItems.forEach((item) => {
-      const menuItem = item as any;
+      const menuItem = item as HTMLModusWcMenuItemElement;
       if (menuItem.selected) selectedCount++;
     });
 
     this.isIndeterminate =
       selectedCount > 0 && selectedCount < childMenuItems.length;
 
-    // Optional: auto-select parent if all children selected
     this.selected = selectedCount === childMenuItems.length;
   };
 
