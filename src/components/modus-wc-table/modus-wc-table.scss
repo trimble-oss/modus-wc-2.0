@@ -208,11 +208,6 @@ modus-wc-table .modus-wc-overflow-x-auto {
     cursor: pointer;
   }
 
-  /* Selection column cells should show pointer cursor */
-  td.selection-column {
-    cursor: pointer;
-  }
-
   .no-data-message {
     color: var(--modus-wc-color-gray);
     font-style: italic;
