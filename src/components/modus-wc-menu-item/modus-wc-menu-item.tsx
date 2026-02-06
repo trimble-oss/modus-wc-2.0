@@ -226,7 +226,7 @@ export class ModusWcMenuItem {
     let selectedCount = 0;
 
     childMenuItems.forEach((item) => {
-      const menuItem = item as HTMLModusWcMenuItemElement;
+      const menuItem = item as HTMLElement & { selected?: boolean };
       if (menuItem.selected) selectedCount++;
     });
 
