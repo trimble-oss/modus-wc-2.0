@@ -96,8 +96,9 @@ export class ModusWcTooltip {
     const arrow = document.createElement('div');
     arrow.className = 'modus-wc-tooltip-arrow';
     this.tooltipElement.appendChild(arrow);
-
-    document.body.appendChild(this.tooltipElement);
+    /* istanbul ignore next */
+    const tooltipContainer = this.el.parentElement || document.body;
+    tooltipContainer.appendChild(this.tooltipElement);
     this.tooltipElement.style.display = 'none';
 
     if (this.triggerElement && this.tooltipElement) {
@@ -114,8 +115,8 @@ export class ModusWcTooltip {
       this.popperInstance.destroy();
       this.popperInstance = null;
     }
-    if (this.tooltipElement && document.body.contains(this.tooltipElement)) {
-      document.body.removeChild(this.tooltipElement);
+    if (this.tooltipElement && this.tooltipElement.parentElement) {
+      this.tooltipElement.parentElement.removeChild(this.tooltipElement);
     }
 
     window.removeEventListener('resize', this.handleWindowResize);
