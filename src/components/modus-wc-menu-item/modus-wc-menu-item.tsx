@@ -75,8 +75,11 @@ export class ModusWcMenuItem {
   /** Internal state to track if submenu is expanded */
   @State() isExpanded: boolean = false;
 
+  /* State to track indeterminate state of checkbox (if applicable) */
+  @State() isIndeterminate: boolean = false;
+
   /** Event emitted when a menu item is selected. */
-  @StencilEvent() itemSelect!: EventEmitter<{
+  @StencilEvent({ bubbles: true, composed: true }) itemSelect!: EventEmitter<{
     value: string;
     selected?: boolean;
   }>;
@@ -86,6 +89,16 @@ export class ModusWcMenuItem {
     handleShadowDOMStyles(this.el);
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  componentDidLoad() {
+    if (this.hasSubmenu) {
+      this.el.addEventListener('itemSelect', this.updateIndeterminateState);
+    }
+  }
+
+  disconnectedCallback() {
+    this.el.removeEventListener('itemSelect', this.updateIndeterminateState);
   }
 
   private handleKeyDown = (e: KeyboardEvent) => {
@@ -182,27 +195,15 @@ export class ModusWcMenuItem {
     }
     // For checkbox items, provide immediate visual feedback
     else if (this.checkbox) {
-      const liElement = this.el.querySelector('li');
       const checkboxElement = this.el.querySelector('modus-wc-checkbox');
 
-      if (liElement) {
-        // Toggle based on current state
-        const isSelected = liElement.classList.contains(
-          'modus-wc-menu-item-selected'
-        );
-        if (isSelected) {
-          liElement.classList.remove('modus-wc-menu-item-selected');
-        } else {
-          liElement.classList.add('modus-wc-menu-item-selected');
-        }
-        // Update checkbox visual state
-        if (checkboxElement) {
-          checkboxElement.setAttribute('value', (!isSelected).toString());
-        }
+      this.selected = !this.selected;
 
-        this.selected = true;
+      if (checkboxElement) {
+        checkboxElement.setAttribute('value', this.selected.toString());
       }
     }
+
     // For regular menu items, set selected to true
     else {
       this.selected = true;
@@ -210,6 +211,30 @@ export class ModusWcMenuItem {
 
     // Always emit the event with current selection state
     this.itemSelect.emit({ value: this.value, selected: this.selected });
+  };
+
+  private updateIndeterminateState = () => {
+    if (!this.hasSubmenu) return;
+
+    const submenu = this.el.querySelector('.modus-wc-menu-dropdown');
+    if (!submenu) return;
+
+    const childMenuItems = Array.from(submenu.children).filter(
+      (el) => el.tagName === 'MODUS-WC-MENU-ITEM'
+    );
+
+    let selectedCount = 0;
+
+    childMenuItems.forEach((item) => {
+      const menuItem = item as any;
+      if (menuItem.selected) selectedCount++;
+    });
+
+    this.isIndeterminate =
+      selectedCount > 0 && selectedCount < childMenuItems.length;
+
+    // Optional: auto-select parent if all children selected
+    this.selected = selectedCount === childMenuItems.length;
   };
 
   render() {
@@ -238,6 +263,8 @@ export class ModusWcMenuItem {
                   disabled={this.disabled}
                   size={this.size}
                   value={!!this.selected}
+                  indeterminate={this.isIndeterminate}
+                  onClick={(e) => e.stopPropagation()}
                 />
               )}
               <slot name="start-icon"></slot>
