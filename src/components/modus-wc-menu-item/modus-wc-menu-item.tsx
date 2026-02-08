@@ -14,6 +14,15 @@ import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
+interface IMenuItemElement extends HTMLElement {
+  value: string;
+  selected?: boolean;
+  checkbox?: boolean;
+  hasSubmenu?: boolean;
+  isIndeterminate?: boolean;
+  updateChildrenSelection?: (selected: boolean) => void;
+}
+
 /**
  * A customizable menu item component used to display the item portion of a menu.
  *
@@ -220,20 +229,68 @@ export class ModusWcMenuItem {
     if (!submenu) return;
 
     const childMenuItems = Array.from(submenu.children).filter(
-      (el) => el.tagName === 'MODUS-WC-MENU-ITEM'
-    );
+      (el) =>
+        el.tagName === 'MODUS-WC-MENU-ITEM' && (el as IMenuItemElement).checkbox
+    ) as IMenuItemElement[];
 
     let selectedCount = 0;
 
     childMenuItems.forEach((item) => {
-      const menuItem = item as HTMLElement & { selected?: boolean };
-      if (menuItem.selected) selectedCount++;
+      if (item.selected) selectedCount++;
     });
 
     this.isIndeterminate =
       selectedCount > 0 && selectedCount < childMenuItems.length;
 
     this.selected = selectedCount === childMenuItems.length;
+  };
+
+  private updateChildrenSelection = (selected: boolean) => {
+    if (!this.hasSubmenu) return;
+
+    const submenu = this.el.querySelector('.modus-wc-menu-dropdown');
+    if (!submenu) return;
+
+    const childMenuItems = Array.from(submenu.children).filter(
+      (el) => el.tagName === 'MODUS-WC-MENU-ITEM'
+    ) as IMenuItemElement[];
+
+    childMenuItems.forEach((item) => {
+      if (item.checkbox) {
+        item.selected = selected;
+        item.isIndeterminate = false;
+
+        const checkboxElement = item.querySelector('modus-wc-checkbox');
+        if (checkboxElement) {
+          checkboxElement.setAttribute('value', selected.toString());
+          checkboxElement.removeAttribute('indeterminate');
+        }
+
+        if (item.hasSubmenu && item.updateChildrenSelection) {
+          item.updateChildrenSelection(selected);
+        }
+
+        item.dispatchEvent(
+          new CustomEvent('itemSelect', {
+            bubbles: true,
+            composed: true,
+            detail: { value: item.getAttribute('value'), selected },
+          })
+        );
+      }
+    });
+
+    this.isIndeterminate = false;
+  };
+
+  private handleCheckboxClick = () => {
+    const newValue = !this.selected || this.isIndeterminate;
+
+    this.selected = newValue;
+    this.isIndeterminate = false;
+    this.updateChildrenSelection(newValue);
+
+    this.itemSelect.emit({ value: this.value, selected: this.selected });
   };
 
   render() {
@@ -263,7 +320,10 @@ export class ModusWcMenuItem {
                   size={this.size}
                   value={!!this.selected}
                   indeterminate={this.isIndeterminate}
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    this.handleCheckboxClick();
+                  }}
                 />
               )}
               <slot name="start-icon"></slot>
