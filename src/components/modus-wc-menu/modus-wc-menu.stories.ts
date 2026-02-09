@@ -271,6 +271,102 @@ export const CollapsibleMenu: Story = {
   },
 };
 
+export const NestedMenu: Story = {
+  //prettier-ignore
+  render: () => {
+    return html`
+      <modus-wc-menu>
+        <modus-wc-menu-item
+          checkbox="true"
+          has-submenu="true"
+          label="Documents"
+          value="documents"
+        >
+          <modus-wc-icon
+            slot="start-icon"
+            name="folder_closed"
+            variant="solid"
+          ></modus-wc-icon>
+          <modus-wc-menu .isSubMenu=${true}>
+            <modus-wc-menu-item
+              checkbox="true"
+              label="Reports.pdf"
+              value="reports"
+            >
+              <modus-wc-icon
+                slot="start-icon"
+                name="folder_closed"
+                variant="solid"
+              ></modus-wc-icon>
+            </modus-wc-menu-item>
+            <modus-wc-menu-item
+              checkbox="true"
+              has-submenu="true"
+              label="Presentations"
+              value="presentations"
+            >
+              <modus-wc-icon
+                slot="start-icon"
+                name="folder_closed"
+                variant="solid"
+              ></modus-wc-icon>
+              <modus-wc-menu .isSubMenu=${true}>
+                <modus-wc-menu-item
+                  checkbox="true"
+                  label="Q1 Review.pptx"
+                  value="q1-review"
+                >
+                  <modus-wc-icon
+                    slot="start-icon"
+                    name="folder_closed"
+                    variant="solid"
+                  ></modus-wc-icon>
+                </modus-wc-menu-item>
+                <modus-wc-menu-item
+                  checkbox="true"
+                  label="Annual Meeting.pptx"
+                  value="annual-meeting"
+                >
+                  <modus-wc-icon
+                    slot="start-icon"
+                    name="folder_closed"
+                    variant="solid"
+                  ></modus-wc-icon>
+                </modus-wc-menu-item>
+              </modus-wc-menu>
+            </modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+        <modus-wc-menu-item
+          checkbox="true"
+          has-submenu="true"
+          label="Projects"
+          value="projects"
+        >
+          <modus-wc-icon
+            slot="start-icon"
+            name="folder_closed"
+            variant="solid"
+          ></modus-wc-icon>
+          <modus-wc-menu .isSubMenu=${true}>
+            <modus-wc-menu-item
+              checkbox="true"
+              label="Website Redesign"
+              value="website"
+            >
+              <modus-wc-icon
+                slot="start-icon"
+                name="description"
+                variant="solid"
+              ></modus-wc-icon>
+            </modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+      </modus-wc-menu>
+    `;
+  },
+};
+
 export const ShadowDomParent: Story = {
   render: (args) => {
     // Create a unique shadow host for menu component
