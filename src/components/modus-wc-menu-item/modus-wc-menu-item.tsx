@@ -81,9 +81,6 @@ export class ModusWcMenuItem {
   /** Internal state to track if submenu is expanded */
   @State() isExpanded: boolean = false;
 
-  /** Internal state to track visibility state */
-  @State() isVisible: boolean = true;
-
   /** Event emitted when a menu item is selected. */
   @StencilEvent() itemSelect!: EventEmitter<{
     value: string;
@@ -221,12 +218,6 @@ export class ModusWcMenuItem {
     this.itemSelect.emit({ value: this.value, selected: this.selected });
   };
 
-  private handleMenuItemVisibilityClick = (e: MouseEvent) => {
-    e.stopPropagation();
-    this.disabled = !this.disabled;
-    this.isVisible = !this.isVisible;
-  };
-
   render() {
     return (
       <Host>
@@ -281,13 +272,10 @@ export class ModusWcMenuItem {
                       size="xs"
                       shape="circle"
                       variant="borderless"
-                      onClick={this.handleMenuItemVisibilityClick}
                     >
                       <modus-wc-icon
                         aria-label="Visible icon"
-                        name={
-                          this.isVisible ? 'visibility_on' : 'visibility_off'
-                        }
+                        name="visibility_on"
                         size="sm"
                       ></modus-wc-icon>
                     </modus-wc-button>

@@ -53,7 +53,7 @@ const meta: Meta<MenuItemArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['itemSelect'],
+      handles: ['itemSelect', 'visibilityToggle'],
     },
   },
 };
