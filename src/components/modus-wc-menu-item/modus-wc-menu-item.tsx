@@ -251,36 +251,22 @@ export class ModusWcMenuItem {
     const submenu = this.el.querySelector('.modus-wc-menu-dropdown');
     if (!submenu) return;
 
-    const childMenuItems = Array.from(submenu.children).filter(
-      (el) => el.tagName === 'MODUS-WC-MENU-ITEM'
+    const descendants = Array.from(
+      submenu.querySelectorAll('modus-wc-menu-item')
     ) as IMenuItemElement[];
 
-    childMenuItems.forEach((item) => {
-      if (item.checkbox) {
-        item.selected = selected;
-        item.isIndeterminate = false;
+    descendants.forEach((item) => {
+      if (!item.checkbox) return;
 
-        const checkboxElement = item.querySelector('modus-wc-checkbox');
-        if (checkboxElement) {
-          checkboxElement.setAttribute('value', selected.toString());
-          checkboxElement.removeAttribute('indeterminate');
-        }
+      item.selected = selected;
+      item.isIndeterminate = false;
 
-        if (item.hasSubmenu && item.updateChildrenSelection) {
-          item.updateChildrenSelection(selected);
-        }
-
-        item.dispatchEvent(
-          new CustomEvent('itemSelect', {
-            bubbles: true,
-            composed: true,
-            detail: { value: item.getAttribute('value'), selected },
-          })
-        );
+      const checkbox = item.querySelector('modus-wc-checkbox');
+      if (checkbox) {
+        checkbox.setAttribute('value', selected.toString());
+        checkbox.removeAttribute('indeterminate');
       }
     });
-
-    this.isIndeterminate = false;
   };
 
   private handleCheckboxClick = () => {

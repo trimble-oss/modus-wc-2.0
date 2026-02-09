@@ -154,95 +154,116 @@ export const WithTooltip: Story = {
   },
 };
 
-export const WithContentTreeActions: Story = {
-  args: {
-    'show-content-tree-actions': true,
-    checkbox: true,
-  },
+export const NestedMenu: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-<modus-wc-menu>
-  <modus-wc-menu-item
-    ?checkbox=${args.checkbox}
-    has-submenu="true"
-    label="Documents"
-    ?show-content-tree-actions=${args['show-content-tree-actions']}
-    size=${args.size}
-    value="documents"
-  >
-    <modus-wc-icon
-      slot="start-icon"
-      name="folder_closed"
-      size="sm"
-      variant="solid"
-    ></modus-wc-icon>
-    <modus-wc-menu .isSubMenu=${true}>
-      <modus-wc-menu-item
-        ?checkbox=${args.checkbox}
-        label="Reports.pdf"
-        ?show-content-tree-actions=${args['show-content-tree-actions']}
-        size=${args.size}
-        value="reports"
-      >
-        <modus-wc-icon
-          slot="start-icon"
-          name="description"
-          size="sm"
-          variant="solid"
-        ></modus-wc-icon>
-      </modus-wc-menu-item>
-      <modus-wc-menu-item
-        ?checkbox=${args.checkbox}
-        label="Presentation.pptx"
-        ?show-content-tree-actions=${args['show-content-tree-actions']}
-        size=${args.size}
-        value="presentation"
-      >
-        <modus-wc-icon
-          slot="start-icon"
-          name="description"
-          size="sm"
-          variant="solid"
-        ></modus-wc-icon>
-      </modus-wc-menu-item>
-    </modus-wc-menu>
-  </modus-wc-menu-item>
-  <modus-wc-menu-item
-    ?checkbox=${args.checkbox}
-    has-submenu="true"
-    label="Projects"
-    ?show-content-tree-actions=${args['show-content-tree-actions']}
-    size=${args.size}
-    value="projects"
-  >
-    <modus-wc-icon
-      slot="start-icon"
-      name="folder_closed"
-      size="sm"
-      variant="solid"
-    ></modus-wc-icon>
-    <modus-wc-menu .isSubMenu=${true}>
-      <modus-wc-menu-item
-        ?checkbox=${args.checkbox}
-        label="Website Redesign"
-        ?show-content-tree-actions=${args['show-content-tree-actions']}
-        size=${args.size}
-        value="website"
-      >
-        <modus-wc-icon
-          slot="start-icon"
-          name="description"
-          size="sm"
-          variant="solid"
-        ></modus-wc-icon>
-      </modus-wc-menu-item>
-    </modus-wc-menu>
-  </modus-wc-menu-item>
-</modus-wc-menu>
+      <modus-wc-menu>
+        <modus-wc-menu-item
+          checkbox="true"
+          has-submenu="true"
+          label="Documents"
+          size=${args.size}
+          value="documents"
+        >
+          <modus-wc-icon
+            slot="start-icon"
+            name="folder_closed"
+            size="sm"
+            variant="solid"
+          ></modus-wc-icon>
+          <modus-wc-menu .isSubMenu=${true}>
+            <modus-wc-menu-item
+              checkbox="true"
+              label="Reports.pdf"
+              size=${args.size}
+              value="reports"
+            >
+              <modus-wc-icon
+                slot="start-icon"
+                name="description"
+                size="sm"
+                variant="solid"
+              ></modus-wc-icon>
+            </modus-wc-menu-item>
+            <modus-wc-menu-item
+              checkbox="true"
+              has-submenu="true"
+              label="Presentations"
+              size=${args.size}
+              value="presentations"
+            >
+              <modus-wc-icon
+                slot="start-icon"
+                name="folder_closed"
+                size="sm"
+                variant="solid"
+              ></modus-wc-icon>
+              <modus-wc-menu .isSubMenu=${true}>
+                <modus-wc-menu-item
+                  checkbox="true"
+                  label="Q1 Review.pptx"
+                  size=${args.size}
+                  value="q1-review"
+                >
+                  <modus-wc-icon
+                    slot="start-icon"
+                    name="description"
+                    size="sm"
+                    variant="solid"
+                  ></modus-wc-icon>
+                </modus-wc-menu-item>
+                <modus-wc-menu-item
+                  checkbox="true"
+                  label="Annual Meeting.pptx"
+                  size=${args.size}
+                  value="annual-meeting"
+                >
+                  <modus-wc-icon
+                    slot="start-icon"
+                    name="description"
+                    size="sm"
+                    variant="solid"
+                  ></modus-wc-icon>
+                </modus-wc-menu-item>
+              </modus-wc-menu>
+            </modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+        <modus-wc-menu-item
+          checkbox="true"
+          has-submenu="true"
+          label="Projects"
+          size=${args.size}
+          value="projects"
+        >
+          <modus-wc-icon
+            slot="start-icon"
+            name="folder_closed"
+            size="sm"
+            variant="solid"
+          ></modus-wc-icon>
+          <modus-wc-menu .isSubMenu=${true}>
+            <modus-wc-menu-item
+              checkbox="true"
+              label="Website Redesign"
+              size=${args.size}
+              value="website"
+            >
+              <modus-wc-icon
+                slot="start-icon"
+                name="description"
+                size="sm"
+                variant="solid"
+              ></modus-wc-icon>
+            </modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+      </modus-wc-menu>
     `;
   },
 };
+
 
 export const ShadowDomParent: Story = {
   render: (args) => {
