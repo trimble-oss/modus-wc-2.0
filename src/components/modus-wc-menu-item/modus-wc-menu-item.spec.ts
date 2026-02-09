@@ -581,4 +581,449 @@ describe('modus-wc-menu-item', () => {
     expect(preventDefaultSpy).not.toHaveBeenCalled();
     expect(selectSpy).not.toHaveBeenCalled();
   });
+
+  describe('Nested checkbox functionality', () => {
+    it('should update child checkboxes when parent checkbox is selected', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Child 1" value="child1" checkbox="true"></modus-wc-menu-item>
+              <modus-wc-menu-item label="Child 2" value="child2" checkbox="true"></modus-wc-menu-item>
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const checkbox = menuItem.querySelector(
+        'modus-wc-checkbox'
+      ) as HTMLElement;
+      const childItems = menuItem.querySelectorAll(
+        '.modus-wc-menu-dropdown > modus-wc-menu-item'
+      );
+
+      // Click parent checkbox
+      checkbox.click();
+      await page.waitForChanges();
+
+      // Parent should be selected
+      expect(page.rootInstance.selected).toBe(true);
+
+      // All children should be selected
+      childItems.forEach((child) => {
+        expect((child as any).selected).toBe(true);
+      });
+    });
+
+    it('should update child checkboxes when parent checkbox is deselected', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true" selected="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Child 1" value="child1" checkbox="true" selected="true"></modus-wc-menu-item>
+              <modus-wc-menu-item label="Child 2" value="child2" checkbox="true" selected="true"></modus-wc-menu-item>
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const checkbox = menuItem.querySelector(
+        'modus-wc-checkbox'
+      ) as HTMLElement;
+      const childItems = menuItem.querySelectorAll(
+        '.modus-wc-menu-dropdown > modus-wc-menu-item'
+      );
+
+      // Click parent checkbox to deselect
+      checkbox.click();
+      await page.waitForChanges();
+
+      // Parent should be deselected
+      expect(page.rootInstance.selected).toBe(false);
+
+      // All children should be deselected
+      childItems.forEach((child) => {
+        expect((child as any).selected).toBe(false);
+      });
+    });
+
+    it('should cascade selection to nested grandchildren', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Grandparent" value="grandparent" checkbox="true" has-submenu="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true">
+                <div class="modus-wc-menu-dropdown">
+                  <modus-wc-menu-item label="Child 1" value="child1" checkbox="true"></modus-wc-menu-item>
+                  <modus-wc-menu-item label="Child 2" value="child2" checkbox="true"></modus-wc-menu-item>
+                </div>
+              </modus-wc-menu-item>
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const grandparentItem = page.root as HTMLElement;
+      const checkbox = grandparentItem.querySelector(
+        'modus-wc-checkbox'
+      ) as HTMLElement;
+      const parentItem = grandparentItem.querySelector(
+        '.modus-wc-menu-dropdown > modus-wc-menu-item'
+      ) as any;
+      const grandchildren = parentItem
+        ?.querySelector('.modus-wc-menu-dropdown')
+        ?.querySelectorAll('modus-wc-menu-item');
+
+      // Click grandparent checkbox
+      checkbox.click();
+      await page.waitForChanges();
+
+      // Grandparent should be selected
+      expect(page.rootInstance.selected).toBe(true);
+
+      // Parent should be selected
+      expect(parentItem.selected).toBe(true);
+
+      // All grandchildren should be selected
+      grandchildren?.forEach((child) => {
+        expect((child as any).selected).toBe(true);
+      });
+    });
+
+    it('should set parent to indeterminate when some children are selected', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Child 1" value="child1" checkbox="true"></modus-wc-menu-item>
+              <modus-wc-menu-item label="Child 2" value="child2" checkbox="true"></modus-wc-menu-item>
+              <modus-wc-menu-item label="Child 3" value="child3" checkbox="true"></modus-wc-menu-item>
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const childItems = menuItem.querySelectorAll(
+        '.modus-wc-menu-dropdown > modus-wc-menu-item'
+      );
+
+      // Select only one child
+      (childItems[0] as any).selected = true;
+
+      // Dispatch itemSelect event to trigger updateIndeterminateState
+      const event = new CustomEvent('itemSelect', {
+        bubbles: true,
+        composed: true,
+      });
+      childItems[0].dispatchEvent(event);
+      await page.waitForChanges();
+
+      // Parent should be indeterminate
+      expect(page.rootInstance.isIndeterminate).toBe(true);
+      expect(page.rootInstance.selected).toBe(false);
+    });
+
+    it('should set parent to checked when all children are selected', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Child 1" value="child1" checkbox="true"></modus-wc-menu-item>
+              <modus-wc-menu-item label="Child 2" value="child2" checkbox="true"></modus-wc-menu-item>
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const childItems = menuItem.querySelectorAll(
+        '.modus-wc-menu-dropdown > modus-wc-menu-item'
+      );
+
+      // Select all children
+      childItems.forEach((child) => {
+        (child as any).selected = true;
+      });
+
+      // Dispatch itemSelect event to trigger updateIndeterminateState
+      const event = new CustomEvent('itemSelect', {
+        bubbles: true,
+        composed: true,
+      });
+      childItems[0].dispatchEvent(event);
+      await page.waitForChanges();
+
+      // Parent should be fully checked, not indeterminate
+      expect(page.rootInstance.isIndeterminate).toBe(false);
+      expect(page.rootInstance.selected).toBe(true);
+    });
+
+    it('should set parent to unchecked when no children are selected', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true" selected="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Child 1" value="child1" checkbox="true"></modus-wc-menu-item>
+              <modus-wc-menu-item label="Child 2" value="child2" checkbox="true"></modus-wc-menu-item>
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const childItems = menuItem.querySelectorAll(
+        '.modus-wc-menu-dropdown > modus-wc-menu-item'
+      );
+
+      // Ensure all children are deselected
+      childItems.forEach((child) => {
+        (child as any).selected = false;
+      });
+
+      // Dispatch itemSelect event to trigger updateIndeterminateState
+      const event = new CustomEvent('itemSelect', {
+        bubbles: true,
+        composed: true,
+      });
+      childItems[0].dispatchEvent(event);
+      await page.waitForChanges();
+
+      // Parent should be unchecked and not indeterminate
+      expect(page.rootInstance.isIndeterminate).toBe(false);
+      expect(page.rootInstance.selected).toBe(false);
+    });
+
+    it('should not update indeterminate state if parent does not have checkbox', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" has-submenu="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Child 1" value="child1" checkbox="true"></modus-wc-menu-item>
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const childItem = menuItem.querySelector(
+        '.modus-wc-menu-dropdown > modus-wc-menu-item'
+      );
+
+      // Select child
+      (childItem as any).selected = true;
+
+      // Dispatch itemSelect event
+      const event = new CustomEvent('itemSelect', {
+        bubbles: true,
+        composed: true,
+      });
+      childItem?.dispatchEvent(event);
+      await page.waitForChanges();
+
+      // Parent should not have indeterminate state since it doesn't have a checkbox
+      expect(page.rootInstance.isIndeterminate).toBe(false);
+    });
+
+    it('should clear indeterminate state when parent is explicitly checked', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Child 1" value="child1" checkbox="true" selected="true"></modus-wc-menu-item>
+              <modus-wc-menu-item label="Child 2" value="child2" checkbox="true"></modus-wc-menu-item>
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const checkbox = menuItem.querySelector(
+        'modus-wc-checkbox'
+      ) as HTMLElement;
+
+      // Set parent to indeterminate initially
+      page.rootInstance.isIndeterminate = true;
+      await page.waitForChanges();
+
+      // Click parent checkbox
+      checkbox.click();
+      await page.waitForChanges();
+
+      // Indeterminate should be cleared
+      expect(page.rootInstance.isIndeterminate).toBe(false);
+      expect(page.rootInstance.selected).toBe(true);
+    });
+
+    it('should only count child items with checkbox property when calculating indeterminate state', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Child 1" value="child1" checkbox="true" selected="true"></modus-wc-menu-item>
+              <modus-wc-menu-item label="Child 2" value="child2"></modus-wc-menu-item>
+              <modus-wc-menu-item label="Child 3" value="child3" checkbox="true"></modus-wc-menu-item>
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const childItems = menuItem.querySelectorAll(
+        '.modus-wc-menu-dropdown > modus-wc-menu-item'
+      );
+
+      // Dispatch itemSelect event to trigger updateIndeterminateState
+      const event = new CustomEvent('itemSelect', {
+        bubbles: true,
+        composed: true,
+      });
+      childItems[0].dispatchEvent(event);
+      await page.waitForChanges();
+
+      // Parent should be indeterminate (1 out of 2 checkbox children selected, non-checkbox child ignored)
+      expect(page.rootInstance.isIndeterminate).toBe(true);
+      expect(page.rootInstance.selected).toBe(false);
+    });
+
+    it('should handle updateChildrenSelection when submenu does not exist', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true">
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const checkbox = menuItem.querySelector(
+        'modus-wc-checkbox'
+      ) as HTMLElement;
+
+      // Click parent checkbox when there's no submenu element
+      checkbox.click();
+      await page.waitForChanges();
+
+      // Should not throw error and parent should still be selected
+      expect(page.rootInstance.selected).toBe(true);
+    });
+
+    it('should skip non-checkbox children in updateChildrenSelection', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Child 1" value="child1" checkbox="true"></modus-wc-menu-item>
+              <modus-wc-menu-item label="Child 2" value="child2"></modus-wc-menu-item>
+              <modus-wc-menu-item label="Child 3" value="child3" checkbox="true"></modus-wc-menu-item>
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const checkbox = menuItem.querySelector(
+        'modus-wc-checkbox'
+      ) as HTMLElement;
+      const childItems = menuItem.querySelectorAll(
+        '.modus-wc-menu-dropdown > modus-wc-menu-item'
+      );
+
+      // Click parent checkbox
+      checkbox.click();
+      await page.waitForChanges();
+
+      // Only children with checkbox should be selected
+      expect((childItems[0] as any).selected).toBe(true);
+      expect((childItems[1] as any).selected).toBeUndefined(); // No checkbox, should not be set
+      expect((childItems[2] as any).selected).toBe(true);
+    });
+
+    it('should not update indeterminate state if parent has submenu but no checkbox', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" has-submenu="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Child 1" value="child1" checkbox="true" selected="true"></modus-wc-menu-item>
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const childItem = menuItem.querySelector(
+        '.modus-wc-menu-dropdown > modus-wc-menu-item'
+      );
+
+      // Trigger updateIndeterminateState
+      const event = new CustomEvent('itemSelect', {
+        bubbles: true,
+        composed: true,
+      });
+      childItem?.dispatchEvent(event);
+      await page.waitForChanges();
+
+      // Parent should not be affected since it has no checkbox
+      expect(page.rootInstance.isIndeterminate).toBe(false);
+      expect(page.rootInstance.selected).toBeUndefined();
+    });
+
+    it('should not update indeterminate state if parent has checkbox but no submenu', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true">
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+
+      // Trigger updateIndeterminateState
+      const event = new CustomEvent('itemSelect', {
+        bubbles: true,
+        composed: true,
+      });
+      menuItem.dispatchEvent(event);
+      await page.waitForChanges();
+
+      // Parent should not update indeterminate state
+      expect(page.rootInstance.isIndeterminate).toBe(false);
+    });
+
+    it('should not cascade selection if parent has no submenu', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true">
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const checkbox = menuItem.querySelector(
+        'modus-wc-checkbox'
+      ) as HTMLElement;
+
+      // Click checkbox
+      checkbox.click();
+      await page.waitForChanges();
+
+      // Parent should be selected but no errors should occur
+      expect(page.rootInstance.selected).toBe(true);
+    });
+  });
 });

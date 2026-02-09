@@ -264,7 +264,6 @@ export const NestedMenu: Story = {
   },
 };
 
-
 export const ShadowDomParent: Story = {
   render: (args) => {
     // Create a unique shadow host for menu-item component
