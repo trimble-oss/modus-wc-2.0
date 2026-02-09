@@ -3733,6 +3733,20 @@
           ],
           "attributes": [
             {
+              "name": "_show-more-actions",
+              "fieldName": "_showMoreActions",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "_show-visibility-toggle",
+              "fieldName": "_showVisibilityToggle",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "bordered",
               "fieldName": "bordered",
               "type": {
@@ -3793,24 +3807,6 @@
               "name": "selected",
               "fieldName": "selected",
               "description": "The selected state of the menu item.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
-              "name": "show-more-actions",
-              "fieldName": "showMoreActions",
-              "default": "false",
-              "description": "Show more actions button at the end of the menu item.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
-              "name": "show-visibility-toggle",
-              "fieldName": "showVisibilityToggle",
-              "default": "false",
-              "description": "Show visibility toggle button at the end of the menu item.",
               "type": {
                 "text": "boolean"
               }

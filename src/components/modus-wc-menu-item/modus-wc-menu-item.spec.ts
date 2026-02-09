@@ -1,7 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcMenuItem } from './modus-wc-menu-item';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
-import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 
 describe('modus-wc-menu-item', () => {
   it('renders with default props', async () => {
@@ -594,7 +593,7 @@ describe('modus-wc-menu-item', () => {
 
   it('should toggle disabled state and visibility when visibility button is clicked', async () => {
     const page = await newSpecPage({
-      components: [ModusWcMenuItem, ModusWcButton, ModusWcIcon],
+      components: [ModusWcMenuItem],
       html: '<modus-wc-menu-item label="Test label" value="test-value" _show-visibility-toggle="true"></modus-wc-menu-item>',
     });
 
@@ -627,7 +626,7 @@ describe('modus-wc-menu-item', () => {
 
   it('should stop propagation when visibility button is clicked', async () => {
     const page = await newSpecPage({
-      components: [ModusWcMenuItem, ModusWcButton, ModusWcIcon],
+      components: [ModusWcMenuItem],
       html: '<modus-wc-menu-item label="Test label" value="test-value" _show-visibility-toggle="true"></modus-wc-menu-item>',
     });
 
@@ -657,7 +656,7 @@ describe('modus-wc-menu-item', () => {
 
   it('should render with more actions button', async () => {
     const page = await newSpecPage({
-      components: [ModusWcMenuItem, ModusWcButton, ModusWcIcon],
+      components: [ModusWcMenuItem],
       html: '<modus-wc-menu-item label="Test label" value="test-value" _show-more-actions="true"></modus-wc-menu-item>',
     });
 

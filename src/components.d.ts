@@ -945,6 +945,8 @@ export namespace Components {
      * This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
      */
     interface ModusWcMenuItem {
+        "_showMoreActions"?: boolean;
+        "_showVisibilityToggle"?: boolean;
         "bordered"?: boolean;
         /**
           * If true, renders a checkbox at the start of the menu item.
@@ -978,14 +980,6 @@ export namespace Components {
           * The selected state of the menu item.
          */
         "selected"?: boolean;
-        /**
-          * Show more actions button at the end of the menu item.
-         */
-        "showMoreActions"?: boolean;
-        /**
-          * Show visibility toggle button at the end of the menu item.
-         */
-        "showVisibilityToggle"?: boolean;
         /**
           * The size of the menu item.
          */
@@ -4110,6 +4104,8 @@ declare namespace LocalJSX {
      * This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
      */
     interface ModusWcMenuItem {
+        "_showMoreActions"?: boolean;
+        "_showVisibilityToggle"?: boolean;
         "bordered"?: boolean;
         /**
           * If true, renders a checkbox at the start of the menu item.
@@ -4146,14 +4142,6 @@ declare namespace LocalJSX {
           * The selected state of the menu item.
          */
         "selected"?: boolean;
-        /**
-          * Show more actions button at the end of the menu item.
-         */
-        "showMoreActions"?: boolean;
-        /**
-          * Show visibility toggle button at the end of the menu item.
-         */
-        "showVisibilityToggle"?: boolean;
         /**
           * The size of the menu item.
          */
