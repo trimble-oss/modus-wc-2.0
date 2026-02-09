@@ -13,8 +13,8 @@ interface MenuItemArgs {
   'has-submenu'?: boolean;
   label: string;
   selected?: boolean;
-  'show-visibility-toggle'?: boolean;
-  'show-more-actions'?: boolean;
+  '_show-visibility-toggle'?: boolean;
+  '_show-more-actions'?: boolean;
   size?: ModusSize;
   'sub-label'?: string;
   'tooltip-content'?: string;
@@ -38,6 +38,16 @@ const meta: Meta<MenuItemArgs> = {
     'tooltip-position': {
       control: { type: 'select' },
       options: ['auto', 'top', 'right', 'bottom', 'left'],
+    },
+    '_show-more-actions': {
+      table: {
+        disable: true,
+      },
+    },
+    '_show-visibility-toggle': {
+      table: {
+        disable: true,
+      },
     },
   },
   decorators: [withActions],
@@ -150,102 +160,6 @@ export const WithTooltip: Story = {
     tooltip-position=${ifDefined(args['tooltip-position'])}
     value=${args.value}
   ></modus-wc-menu-item>
-</modus-wc-menu>
-    `;
-  },
-};
-
-export const WithVisibilityAndActions: Story = {
-  args: {
-    'show-visibility-toggle': true,
-    'show-more-actions': true,
-    checkbox: true,
-  },
-  render: (args) => {
-    // prettier-ignore
-    return html`
-<modus-wc-menu>
-  <modus-wc-menu-item
-    ?checkbox=${args.checkbox}
-    has-submenu="true"
-    label="Documents"
-    ?show-visibility-toggle=${args['show-visibility-toggle']}
-    ?show-more-actions=${args['show-more-actions']}
-    size=${args.size}
-    value="documents"
-  >
-    <modus-wc-icon
-      slot="start-icon"
-      name="folder_closed"
-      size="sm"
-      variant="solid"
-    ></modus-wc-icon>
-    <modus-wc-menu .isSubMenu=${true}>
-      <modus-wc-menu-item
-        ?checkbox=${args.checkbox}
-        label="Reports.pdf"
-        ?show-visibility-toggle=${args['show-visibility-toggle']}
-        ?show-more-actions=${args['show-more-actions']}
-        size=${args.size}
-        value="reports"
-      >
-        <modus-wc-icon
-          slot="start-icon"
-          name="description"
-          size="sm"
-          variant="solid"
-        ></modus-wc-icon>
-      </modus-wc-menu-item>
-      <modus-wc-menu-item
-        ?checkbox=${args.checkbox}
-        label="Presentation.pptx"
-        ?show-visibility-toggle=${args['show-visibility-toggle']}
-        ?show-more-actions=${args['show-more-actions']}
-        size=${args.size}
-        value="presentation"
-      >
-        <modus-wc-icon
-          slot="start-icon"
-          name="description"
-          size="sm"
-          variant="solid"
-        ></modus-wc-icon>
-      </modus-wc-menu-item>
-    </modus-wc-menu>
-  </modus-wc-menu-item>
-  <modus-wc-menu-item
-    ?checkbox=${args.checkbox}
-    has-submenu="true"
-    label="Projects"
-    ?show-visibility-toggle=${args['show-visibility-toggle']}
-    ?show-more-actions=${args['show-more-actions']}
-    size=${args.size}
-    value="projects"
-  >
-    <modus-wc-icon
-      slot="start-icon"
-      name="folder_closed"
-      size="sm"
-      variant="solid"
-    ></modus-wc-icon>
-    <modus-wc-menu .isSubMenu=${true}>
-      <modus-wc-menu-item
-        ?checkbox=${args.checkbox}
-        label="Website Redesign"
-        ?show-visibility-toggle=${args['show-visibility-toggle']}
-        ?show-more-actions=${args['show-more-actions']}
-        size=${args.size}
-        value="website"
-      >
-        <modus-wc-icon
-          slot="start-icon"
-          name="description"
-          size="sm"
-          variant="solid"
-        ></modus-wc-icon>
-      </modus-wc-menu-item>
-    </modus-wc-menu>
-  </modus-wc-menu-item>
 </modus-wc-menu>
     `;
   },

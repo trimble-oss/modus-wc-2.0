@@ -72,11 +72,11 @@ export class ModusWcMenuItem {
   /** Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior. */
   @Prop() hasSubmenu?: boolean;
 
-  /** Show visibility toggle button at the end of the menu item. */
-  @Prop() showVisibilityToggle?: boolean = false;
+  /** @internal Show visibility toggle button at the end of the menu item. */
+  @Prop() _showVisibilityToggle?: boolean = false;
 
-  /** Show more actions button at the end of the menu item. */
-  @Prop() showMoreActions?: boolean = false;
+  /** @internal Show more actions button at the end of the menu item. */
+  @Prop() _showMoreActions?: boolean = false;
 
   /** Internal state to track if submenu is expanded */
   @State() isExpanded: boolean = false;
@@ -272,9 +272,9 @@ export class ModusWcMenuItem {
                   <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
                 )}
               </div>
-              {(this.showVisibilityToggle || this.showMoreActions) && (
+              {(this._showVisibilityToggle || this._showMoreActions) && (
                 <div class="modus-wc-menu-item-actions">
-                  {this.showVisibilityToggle && (
+                  {this._showVisibilityToggle && (
                     <modus-wc-button
                       aria-label="Visible button"
                       customClass="items-action-btn"
@@ -292,7 +292,7 @@ export class ModusWcMenuItem {
                       ></modus-wc-icon>
                     </modus-wc-button>
                   )}
-                  {this.showMoreActions && (
+                  {this._showMoreActions && (
                     <modus-wc-button
                       aria-label="Actions button"
                       customClass="items-action-btn"
