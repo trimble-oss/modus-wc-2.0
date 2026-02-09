@@ -84,7 +84,7 @@ export class ModusWcMenuItem {
   /** Internal state to track if submenu is expanded */
   @State() isExpanded: boolean = false;
 
-  /* State to track indeterminate state of checkbox (if applicable) */
+  /** Internal state to track if checkbox is in indeterminate state (for parent items with checkbox) */
   @State() isIndeterminate: boolean = false;
 
   /** Event emitted when a menu item is selected. */

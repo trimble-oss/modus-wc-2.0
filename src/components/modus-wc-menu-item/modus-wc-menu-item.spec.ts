@@ -2,6 +2,15 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcMenuItem } from './modus-wc-menu-item';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 
+interface IMenuItemElement extends HTMLElement {
+  value: string;
+  selected?: boolean;
+  checkbox?: boolean;
+  hasSubmenu?: boolean;
+  isIndeterminate?: boolean;
+  updateChildrenSelection?: (selected: boolean) => void;
+}
+
 describe('modus-wc-menu-item', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
@@ -613,7 +622,7 @@ describe('modus-wc-menu-item', () => {
 
       // All children should be selected
       childItems.forEach((child) => {
-        expect((child as any).selected).toBe(true);
+        expect((child as IMenuItemElement).selected).toBe(true);
       });
     });
 
@@ -647,7 +656,7 @@ describe('modus-wc-menu-item', () => {
 
       // All children should be deselected
       childItems.forEach((child) => {
-        expect((child as any).selected).toBe(false);
+        expect((child as IMenuItemElement).selected).toBe(false);
       });
     });
 
@@ -674,7 +683,7 @@ describe('modus-wc-menu-item', () => {
       ) as HTMLElement;
       const parentItem = grandparentItem.querySelector(
         '.modus-wc-menu-dropdown > modus-wc-menu-item'
-      ) as any;
+      ) as IMenuItemElement;
       const grandchildren = parentItem
         ?.querySelector('.modus-wc-menu-dropdown')
         ?.querySelectorAll('modus-wc-menu-item');
@@ -691,7 +700,7 @@ describe('modus-wc-menu-item', () => {
 
       // All grandchildren should be selected
       grandchildren?.forEach((child) => {
-        expect((child as any).selected).toBe(true);
+        expect((child as IMenuItemElement).selected).toBe(true);
       });
     });
 
@@ -715,7 +724,7 @@ describe('modus-wc-menu-item', () => {
       );
 
       // Select only one child
-      (childItems[0] as any).selected = true;
+      (childItems[0] as IMenuItemElement).selected = true;
 
       // Dispatch itemSelect event to trigger updateIndeterminateState
       const event = new CustomEvent('itemSelect', {
@@ -750,7 +759,7 @@ describe('modus-wc-menu-item', () => {
 
       // Select all children
       childItems.forEach((child) => {
-        (child as any).selected = true;
+        (child as IMenuItemElement).selected = true;
       });
 
       // Dispatch itemSelect event to trigger updateIndeterminateState
@@ -786,7 +795,7 @@ describe('modus-wc-menu-item', () => {
 
       // Ensure all children are deselected
       childItems.forEach((child) => {
-        (child as any).selected = false;
+        (child as IMenuItemElement).selected = false;
       });
 
       // Dispatch itemSelect event to trigger updateIndeterminateState
@@ -820,7 +829,7 @@ describe('modus-wc-menu-item', () => {
       );
 
       // Select child
-      (childItem as any).selected = true;
+      (childItem as IMenuItemElement).selected = true;
 
       // Dispatch itemSelect event
       const event = new CustomEvent('itemSelect', {
@@ -946,9 +955,9 @@ describe('modus-wc-menu-item', () => {
       await page.waitForChanges();
 
       // Only children with checkbox should be selected
-      expect((childItems[0] as any).selected).toBe(true);
-      expect((childItems[1] as any).selected).toBeUndefined(); // No checkbox, should not be set
-      expect((childItems[2] as any).selected).toBe(true);
+      expect((childItems[0] as IMenuItemElement).selected).toBe(true);
+      expect((childItems[1] as IMenuItemElement).selected).toBeUndefined(); // No checkbox, should not be set
+      expect((childItems[2] as IMenuItemElement).selected).toBe(true);
     });
 
     it('should not update indeterminate state if parent has submenu but no checkbox', async () => {
