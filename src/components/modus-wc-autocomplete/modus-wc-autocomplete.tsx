@@ -278,14 +278,11 @@ export class ModusWcAutocomplete {
   }
 
   private getMultiSelectClasses(): string {
-    const hasSelection = this.items?.some((item) => item.selected) || false;
     return getMultiSelectClasses({
       bordered: this.bordered,
       disabled: this.disabled,
       feedback:
-        this.showFeedback || (this.menuVisible && !hasSelection)
-          ? this.feedback
-          : undefined,
+        this.showFeedback || this.menuVisible ? this.feedback : undefined,
       readOnly: this.readOnly,
       size: this.size,
     });
