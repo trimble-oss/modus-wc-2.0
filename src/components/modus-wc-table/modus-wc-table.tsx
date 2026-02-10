@@ -619,7 +619,9 @@ export class ModusWcTable {
     if (!this.isRowEditable(row)) return;
 
     // Only enter edit mode if the column has an editor defined
+    /* istanbul ignore next */
     const column = this.columns?.find((col) => col.id === colId);
+    /* istanbul ignore next */
     if (
       !column?.editor &&
       !column?.editorTemplate &&

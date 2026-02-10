@@ -1151,7 +1151,10 @@ describe('modus-wc-table', () => {
     });
 
     const component = page.rootInstance as ModusWcTable;
-    component.columns = defaultColumns;
+    component.columns = [
+      { ...defaultColumns[0], editor: 'text' },
+      { ...defaultColumns[1], editor: 'text' },
+    ];
     component.data = defaultData;
 
     await page.waitForChanges();
@@ -3535,6 +3538,31 @@ describe('modus-wc-table', () => {
         expect(row.classList.contains('selectable')).toBe(true);
         expect(row.classList.contains('editable')).toBe(true);
       });
+    });
+
+    it('should not enter edit mode when column has no editor defined', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="No editor table" editable="true"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [
+        { id: 'name', accessor: 'name', header: 'Name' },
+        { id: 'age', accessor: 'age', header: 'Age' },
+      ];
+      component.data = [{ id: '1', name: 'Alice', age: 30 }];
+
+      await page.waitForChanges();
+
+      const startSpy = jest.spyOn(component.cellEditStart, 'emit');
+
+      // Try to enter edit mode on a column without editor
+      component['enterEdit'](0, 'name');
+
+      // Should not emit cellEditStart
+      expect(startSpy).not.toHaveBeenCalled();
+      expect(component['activeEditor']).toBeNull();
     });
   });
 });
