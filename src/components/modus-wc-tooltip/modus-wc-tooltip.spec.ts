@@ -496,6 +496,33 @@ describe('modus-wc-tooltip', () => {
     ).not.toBeNull();
   });
 
+  it('should append tooltip to the dialog element when inside a dialog', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<dialog><modus-wc-tooltip content="Test tooltip"><button>Trigger</button></modus-wc-tooltip></dialog>',
+    });
+
+    const dialog = page.body.querySelector('dialog');
+    const tooltipContent = dialog?.querySelector('.modus-wc-tooltip-content');
+
+    // Tooltip should be appended to the dialog, not document.body
+    expect(tooltipContent).not.toBeNull();
+    expect(tooltipContent?.parentElement?.tagName).toBe('DIALOG');
+  });
+
+  it('should append tooltip to document.body when not inside a dialog', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<div><modus-wc-tooltip content="Test tooltip"><button>Trigger</button></modus-wc-tooltip></div>',
+    });
+
+    const tooltipContent = page.body.querySelector('.modus-wc-tooltip-content');
+
+    // Tooltip should be appended to document.body
+    expect(tooltipContent).not.toBeNull();
+    expect(tooltipContent?.parentElement).toBe(document.body);
+  });
+
   it('should handle initializePopper early return when elements are not available', async () => {
     const page = await newSpecPage({
       components: [ModusWcTooltip],

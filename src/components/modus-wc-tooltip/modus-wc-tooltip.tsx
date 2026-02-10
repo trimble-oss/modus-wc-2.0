@@ -96,8 +96,8 @@ export class ModusWcTooltip {
     const arrow = document.createElement('div');
     arrow.className = 'modus-wc-tooltip-arrow';
     this.tooltipElement.appendChild(arrow);
-    /* istanbul ignore next */
-    const tooltipContainer = this.el.parentElement || document.body;
+
+    const tooltipContainer = this.getTooltipContainer();
     tooltipContainer.appendChild(this.tooltipElement);
     this.tooltipElement.style.display = 'none';
 
@@ -121,6 +121,20 @@ export class ModusWcTooltip {
 
     window.removeEventListener('resize', this.handleWindowResize);
     window.removeEventListener('scroll', this.handleWindowScroll, true);
+  }
+
+  // Finds the appropriate container for the tooltip element.
+  // If the tooltip is inside a <dialog>, appending to body would render it behind the dialog's top layer.
+  // Appending directly to the <dialog> keeps the tooltip in the top layer without being clipped by intermediate containers.
+  private getTooltipContainer(): HTMLElement {
+    let parent = this.el.parentElement;
+    while (parent) {
+      if (parent.tagName === 'DIALOG') {
+        return parent;
+      }
+      parent = parent.parentElement;
+    }
+    return document.body;
   }
 
   private initializePopper() {
