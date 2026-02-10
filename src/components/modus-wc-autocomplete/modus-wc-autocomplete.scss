@@ -24,6 +24,8 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     min-height: fit-content;
     padding: var(--modus-wc-spacing-xs);
 
+    @include feedback-levels;
+
     .modus-wc-autocomplete-search-icon {
       align-self: center;
       flex-shrink: 0;

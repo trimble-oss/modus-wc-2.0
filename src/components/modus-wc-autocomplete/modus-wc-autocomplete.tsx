@@ -14,7 +14,12 @@ import {
 } from '@stencil/core';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import { handleShadowDOMStyles } from '../base-component';
-import { IAutocompleteItem, IAutocompleteNoResults, ModusSize } from '../types';
+import {
+  IAutocompleteItem,
+  IAutocompleteNoResults,
+  IInputFeedbackProp,
+  ModusSize,
+} from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 import {
   BLUR_FOCUSOUT_DELAY_MS,
@@ -56,7 +61,7 @@ export class ModusWcAutocomplete {
   @State() private filteredItems: IAutocompleteItem[] = [];
   @State() private selectionOrder: string[] = []; // Track order of chip selection
   @State() private searchText: string = ''; // Dedicated state for active search query
-
+  @State() private showFeedback: boolean = true; // Track whether to show feedback
   private debounceTimer?: number;
   private inheritedAttributes: Attributes = {};
   private programmaticOpen: boolean = false;
@@ -79,6 +84,9 @@ export class ModusWcAutocomplete {
 
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
+
+  /** Feedback state for the input field. */
+  @Prop() feedback?: IInputFeedbackProp;
 
   /** Show the clear button within the input field. */
   @Prop() includeClear?: boolean = false;
@@ -188,6 +196,7 @@ export class ModusWcAutocomplete {
   handleMenuVisibilityChange() {
     if (this.disabled || this.readOnly) {
       this.menuVisible = false;
+      this.showFeedback = true;
     }
   }
 
@@ -272,6 +281,8 @@ export class ModusWcAutocomplete {
     return getMultiSelectClasses({
       bordered: this.bordered,
       disabled: this.disabled,
+      feedback:
+        this.showFeedback || this.menuVisible ? this.feedback : undefined,
       readOnly: this.readOnly,
       size: this.size,
     });
@@ -384,6 +395,9 @@ export class ModusWcAutocomplete {
         // Only scroll if menu is becoming visible and there's a selected item
         if (visible && this.items?.some((item) => item.selected)) {
           this.scrollToOptionSelected();
+          this.showFeedback = false;
+        } else if (visible) {
+          this.showFeedback = false;
         }
       },
       onSetInitialNavigation: (value) => (this.initialNavigation = value),
@@ -443,6 +457,11 @@ export class ModusWcAutocomplete {
       items: this.items,
       onChipRemove: (item) => this.handleChipRemove(item),
     });
+
+    // Hide feedback when backspace is pressed and menu is visible
+    if (this.menuVisible) {
+      this.showFeedback = false;
+    }
   }
 
   private handleFocusOutside = (event: FocusEvent) => {
@@ -458,6 +477,7 @@ export class ModusWcAutocomplete {
       // Hide menu immediately to prevent flicker
       if (!this.programmaticOpen) {
         this.menuVisible = false;
+        this.showFeedback = true;
       }
 
       // Use setTimeout for cleanup and blur event
@@ -521,6 +541,11 @@ export class ModusWcAutocomplete {
     }
     this.value = result.inputValue;
     this.searchText = result.inputValue; // Update search text as user types
+
+    // Hide feedback when typing and menu is visible
+    if (this.menuVisible) {
+      this.showFeedback = false;
+    }
 
     // Sync filtered items based on new search value
     this.syncFilteredItems();
@@ -606,6 +631,9 @@ export class ModusWcAutocomplete {
       if (this.showMenuOnFocus) {
         this.menuVisible = true;
 
+        // Hide feedback when menu opens
+        this.showFeedback = false;
+
         // Scroll to selected item when menu opens via mouse focus
         if (this.items?.some((item) => item.selected)) {
           requestAnimationFrame(() => {
@@ -658,6 +686,7 @@ export class ModusWcAutocomplete {
   async closeMenu() {
     this.programmaticOpen = false;
     this.menuVisible = false;
+    this.showFeedback = true;
     return Promise.resolve();
   }
 
@@ -751,6 +780,7 @@ export class ModusWcAutocomplete {
 
     if (result.shouldCloseMenu) {
       this.menuVisible = false;
+      this.showFeedback = true;
     }
 
     // Clear search text after selection - this is critical to prevent state ambiguity
@@ -806,6 +836,7 @@ export class ModusWcAutocomplete {
   private toggleChipsExpansion = () => {
     if (this.leaveMenuOpen && this.isChipsExpanded) {
       this.menuVisible = false;
+      this.showFeedback = true;
     }
 
     this.isChipsExpanded = !this.isChipsExpanded;
@@ -819,6 +850,7 @@ export class ModusWcAutocomplete {
 
     if (!clickedInside && !this.programmaticOpen) {
       this.menuVisible = false;
+      this.showFeedback = true;
       this.isChipsExpanded = false;
     }
 
@@ -845,6 +877,11 @@ export class ModusWcAutocomplete {
       <Host class={this.getClasses()} style={cssVariables}>
         {this.label && (
           <modus-wc-input-label
+            customClass={
+              this.feedback && (this.showFeedback || this.menuVisible)
+                ? `modus-wc-input-label--${this.feedback.level}`
+                : ''
+            }
             forId={this.inputId}
             labelText={this.label}
             required={this.required}
@@ -875,6 +912,10 @@ export class ModusWcAutocomplete {
                 bordered: this.bordered,
                 multiSelect: this.multiSelect,
                 disabled: this.disabled,
+                feedback:
+                  this.showFeedback || this.menuVisible
+                    ? this.feedback
+                    : undefined,
                 includeClear: this.includeClear,
                 includeSearch: this.includeSearch,
                 inputId: this.inputId,
@@ -917,6 +958,11 @@ export class ModusWcAutocomplete {
               bordered: this.bordered,
               multiSelect: this.multiSelect,
               disabled: this.disabled,
+              feedback: undefined,
+              customClass:
+                this.feedback && (this.showFeedback || this.menuVisible)
+                  ? `modus-wc-input--${this.feedback.level}`
+                  : '',
               includeClear: this.includeClear,
               includeSearch: this.includeSearch,
               inputId: this.inputId,
@@ -935,6 +981,13 @@ export class ModusWcAutocomplete {
               onFocus: this.handleFocus,
             })}
           </Fragment>
+        )}
+        {!this.multiSelect && this.feedback && this.showFeedback && (
+          <modus-wc-input-feedback
+            level={this.feedback.level}
+            message={this.feedback.message}
+            size={this.size}
+          />
         )}
         {hasSlottedMenuItems ? (
           // When using custom slots, keep menu in DOM and use CSS to hide/show
@@ -980,6 +1033,13 @@ export class ModusWcAutocomplete {
               <slot name="menu-items"></slot>
             </modus-wc-menu>
           )
+        )}
+        {this.multiSelect && this.feedback && this.showFeedback && (
+          <modus-wc-input-feedback
+            level={this.feedback.level}
+            message={this.feedback.message}
+            size={this.size}
+          />
         )}
       </Host>
     );
