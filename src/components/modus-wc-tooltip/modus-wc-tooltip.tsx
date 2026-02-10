@@ -96,9 +96,9 @@ export class ModusWcTooltip {
     const arrow = document.createElement('div');
     arrow.className = 'modus-wc-tooltip-arrow';
     this.tooltipElement.appendChild(arrow);
+    this.tooltipElement.setAttribute('popover', 'manual');
 
-    const tooltipContainer = this.getTooltipContainer();
-    tooltipContainer.appendChild(this.tooltipElement);
+    document.body.appendChild(this.tooltipElement);
     this.tooltipElement.style.display = 'none';
 
     if (this.triggerElement && this.tooltipElement) {
@@ -115,26 +115,21 @@ export class ModusWcTooltip {
       this.popperInstance.destroy();
       this.popperInstance = null;
     }
-    if (this.tooltipElement && this.tooltipElement.parentElement) {
-      this.tooltipElement.parentElement.removeChild(this.tooltipElement);
+    if (this.tooltipElement) {
+      if (typeof this.tooltipElement.hidePopover === 'function') {
+        try {
+          this.tooltipElement.hidePopover();
+        } catch {
+          // Already hidden or element not connected
+        }
+      }
+      if (this.tooltipElement.parentElement) {
+        this.tooltipElement.parentElement.removeChild(this.tooltipElement);
+      }
     }
 
     window.removeEventListener('resize', this.handleWindowResize);
     window.removeEventListener('scroll', this.handleWindowScroll, true);
-  }
-
-  // Finds the appropriate container for the tooltip element.
-  // If the tooltip is inside a <dialog>, appending to body would render it behind the dialog's top layer.
-  // Appending directly to the <dialog> keeps the tooltip in the top layer without being clipped by intermediate containers.
-  private getTooltipContainer(): HTMLElement {
-    let parent = this.el.parentElement;
-    while (parent) {
-      if (parent.tagName === 'DIALOG') {
-        return parent;
-      }
-      parent = parent.parentElement;
-    }
-    return document.body;
   }
 
   private initializePopper() {
@@ -151,7 +146,7 @@ export class ModusWcTooltip {
       this.tooltipElement,
       {
         placement,
-        strategy: 'absolute',
+        strategy: 'fixed',
         modifiers: [
           {
             name: 'offset',
@@ -218,6 +213,13 @@ export class ModusWcTooltip {
   private showTooltip() {
     if (this.disabled || this.escapeDismissed || !this.tooltipElement) return;
     this.tooltipElement.style.display = 'block';
+    if (typeof this.tooltipElement.showPopover === 'function') {
+      try {
+        this.tooltipElement.showPopover();
+      } catch {
+        // Already showing or element not connected
+      }
+    }
     this.isVisible = true;
     if (this.popperInstance) {
       void this.popperInstance.update();
@@ -233,6 +235,13 @@ export class ModusWcTooltip {
   private hideTooltip() {
     if (!this.tooltipElement) return;
     if (!this.forceOpen || this.escapeDismissed) {
+      if (typeof this.tooltipElement.hidePopover === 'function') {
+        try {
+          this.tooltipElement.hidePopover();
+        } catch {
+          // Already hidden or element not connected
+        }
+      }
       this.tooltipElement.style.display = 'none';
       this.isVisible = false;
     }
