@@ -2513,7 +2513,7 @@ export const Migration: Story = {
 | disable-close-on-select       | leave-menu-open     |                                                             |
 | dropdown-max-height           |                     | Not carried over, use CSS instead                           |
 | dropdown-z-index              |                     | Not carried over, use CSS instead                           |
-| error-text                    | feedback.message    | Use feedback level                                          |
+| error-text                    | feedback            | feedback.level = 'error', feedback.message = 'Error message'|
 | filter-options                |                     | Rebind options                                              |
 | include-search-icon           | include-search      |                                                             |
 | label                         | label               |                                                             |
