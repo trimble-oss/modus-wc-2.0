@@ -14,7 +14,6 @@ interface MenuItemArgs {
   label: string;
   selected?: boolean;
   '_show-visibility-toggle'?: boolean;
-  '_show-more-actions'?: boolean;
   size?: ModusSize;
   'sub-label'?: string;
   'tooltip-content'?: string;
@@ -39,11 +38,6 @@ const meta: Meta<MenuItemArgs> = {
       control: { type: 'select' },
       options: ['auto', 'top', 'right', 'bottom', 'left'],
     },
-    '_show-more-actions': {
-      table: {
-        disable: true,
-      },
-    },
     '_show-visibility-toggle': {
       table: {
         disable: true,
@@ -53,7 +47,7 @@ const meta: Meta<MenuItemArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['itemSelect', 'visibilityToggle'],
+      handles: ['itemSelect', 'itemVisibilityToggle'],
     },
   },
 };
@@ -161,6 +155,47 @@ export const WithTooltip: Story = {
     value=${args.value}
   ></modus-wc-menu-item>
 </modus-wc-menu>
+    `;
+  },
+};
+
+export const WithVisibilityToggle: Story = {
+  render: (args) => {
+    const handleVisibilityToggle = (event: CustomEvent) => {
+      const source = event.target as HTMLElement;
+      const menuItem = source.closest('modus-wc-menu-item') as any;
+      if (!menuItem) return;
+
+      const isVisible = event.detail.visible;
+      menuItem.disabled = !isVisible;
+    };
+    // prettier-ignore
+    return html`
+      <script>
+        const handleVisibilityToggle = (event: CustomEvent) => {
+           const source = event.target as HTMLElement;
+           const menuItem = source.closest('modus-wc-menu-item') as any;
+           if (!menuItem) return;
+
+           const isVisible = event.detail.visible;
+           menuItem.disabled = !isVisible;
+         };
+      </script>
+      <modus-wc-menu>
+        <modus-wc-menu-item
+          label=${args.label}
+          size=${args.size}
+          value=${args.value}
+          _show-visibility-toggle="true"
+          @itemVisibilityToggle=${handleVisibilityToggle}
+        >
+          <modus-wc-icon
+            slot="start-icon"
+            name="folder_closed"
+            variant="solid"
+          ></modus-wc-icon>
+        </modus-wc-menu-item>
+      </modus-wc-menu>
     `;
   },
 };

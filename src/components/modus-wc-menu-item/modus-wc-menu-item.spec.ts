@@ -591,47 +591,113 @@ describe('modus-wc-menu-item', () => {
     expect(selectSpy).not.toHaveBeenCalled();
   });
 
-  it('should render with more actions button', async () => {
+  it('should render with visibility toggle button when _showVisibilityToggle is true', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenuItem, ModusWcIcon],
-      html: '<modus-wc-menu-item label="Test label" value="test-value" _show-more-actions="true"></modus-wc-menu-item>',
+      html: '<modus-wc-menu-item label="Test label" value="Test value"></modus-wc-menu-item>',
     });
 
     const menuItem = page.root as HTMLElement;
-    const buttons = menuItem.querySelectorAll('modus-wc-button');
+    page.rootInstance._showVisibilityToggle = true;
+    await page.waitForChanges();
 
-    // Should have at least one button (the more actions button)
-    expect(buttons.length).toBeGreaterThanOrEqual(1);
-
-    // Find the more actions button
-    const moreActionsButton = Array.from(buttons).find(
-      (btn) => btn.getAttribute('aria-label') === 'Actions button'
-    );
-
-    expect(moreActionsButton).toBeTruthy();
+    const visibilityButton = menuItem.querySelector(
+      '.items-action-btn'
+    ) as HTMLElement;
+    expect(visibilityButton).toBeDefined();
   });
 
-  it('should render with both visibility and more actions buttons', async () => {
+  it('should emit itemVisibilityToggle event when visibility button is clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenuItem, ModusWcIcon],
-      html: '<modus-wc-menu-item label="Test label" value="test-value" _show-visibility-toggle="true" _show-more-actions="true"></modus-wc-menu-item>',
+      html: '<modus-wc-menu-item label="Test label" value="test-value"></modus-wc-menu-item>',
     });
 
     const menuItem = page.root as HTMLElement;
-    const buttons = menuItem.querySelectorAll('modus-wc-button');
+    page.rootInstance._showVisibilityToggle = true;
+    await page.waitForChanges();
 
-    // Should have both buttons
-    expect(buttons.length).toBe(2);
+    const visibilityToggleSpy = jest.fn();
+    menuItem.addEventListener('itemVisibilityToggle', visibilityToggleSpy);
 
-    // Find both buttons
-    const visibilityButton = Array.from(buttons).find(
-      (btn) => btn.getAttribute('aria-label') === 'Visible button'
-    );
-    const moreActionsButton = Array.from(buttons).find(
-      (btn) => btn.getAttribute('aria-label') === 'Actions button'
-    );
+    const visibilityButton = menuItem.querySelector(
+      '.items-action-btn'
+    ) as HTMLElement;
 
-    expect(visibilityButton).toBeTruthy();
-    expect(moreActionsButton).toBeTruthy();
+    // Click the visibility button
+    visibilityButton.click();
+    await page.waitForChanges();
+
+    // Event should be emitted with visible: false (toggled from true)
+    expect(visibilityToggleSpy).toHaveBeenCalledTimes(1);
+    expect(visibilityToggleSpy.mock.calls[0][0].detail).toEqual({
+      value: 'test-value',
+      visible: false,
+    });
+
+    // Click again
+    visibilityButton.click();
+    await page.waitForChanges();
+
+    // Event should be emitted again with visible: true
+    expect(visibilityToggleSpy).toHaveBeenCalledTimes(2);
+    expect(visibilityToggleSpy.mock.calls[1][0].detail).toEqual({
+      value: 'test-value',
+      visible: true,
+    });
+  });
+
+  it('should stop propagation when visibility button is clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem, ModusWcIcon],
+      html: '<modus-wc-menu-item label="Test label" value="test-value"></modus-wc-menu-item>',
+    });
+
+    const menuItem = page.root as HTMLElement;
+    page.rootInstance._showVisibilityToggle = true;
+    await page.waitForChanges();
+
+    const visibilityButton = menuItem.querySelector(
+      '.items-action-btn'
+    ) as HTMLElement;
+
+    // Create a mock event with stopPropagation
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+    });
+    const stopPropagationSpy = jest.spyOn(clickEvent, 'stopPropagation');
+
+    // Dispatch the event
+    visibilityButton.dispatchEvent(clickEvent);
+    await page.waitForChanges();
+
+    // stopPropagation should have been called
+    expect(stopPropagationSpy).toHaveBeenCalled();
+  });
+
+  it('should not trigger itemSelect when visibility button is clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem, ModusWcIcon],
+      html: '<modus-wc-menu-item label="Test label" value="test-value"></modus-wc-menu-item>',
+    });
+
+    const menuItem = page.root as HTMLElement;
+    page.rootInstance._showVisibilityToggle = true;
+    await page.waitForChanges();
+
+    const itemSelectSpy = jest.fn();
+    menuItem.addEventListener('itemSelect', itemSelectSpy);
+
+    const visibilityButton = menuItem.querySelector(
+      '.items-action-btn'
+    ) as HTMLElement;
+
+    // Click the visibility button
+    visibilityButton.click();
+    await page.waitForChanges();
+
+    // itemSelect event should NOT be emitted
+    expect(itemSelectSpy).not.toHaveBeenCalled();
   });
 });

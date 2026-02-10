@@ -33,9 +33,10 @@ This component supports a 'start-icon' `<slot>` that allows for custom icons to 
 
 ## Events
 
-| Event        | Description                                 | Type                                                               |
-| ------------ | ------------------------------------------- | ------------------------------------------------------------------ |
-| `itemSelect` | Event emitted when a menu item is selected. | `CustomEvent<{ value: string; selected?: boolean \| undefined; }>` |
+| Event                  | Description                                 | Type                                                               |
+| ---------------------- | ------------------------------------------- | ------------------------------------------------------------------ |
+| `itemSelect`           | Event emitted when a menu item is selected. | `CustomEvent<{ value: string; selected?: boolean \| undefined; }>` |
+| `itemVisibilityToggle` |                                             | `CustomEvent<{ value: string; visible: boolean; }>`                |
 
 
 ## Methods
@@ -62,7 +63,6 @@ Type: `Promise<void>`
 
 - [modus-wc-checkbox](../modus-wc-checkbox)
 - [modus-wc-tooltip](../modus-wc-tooltip)
-- [modus-wc-button](../modus-wc-button)
 - [modus-wc-icon](../modus-wc-icon)
 
 ### Graph
@@ -70,7 +70,6 @@ Type: `Promise<void>`
 graph TD;
   modus-wc-menu-item --> modus-wc-checkbox
   modus-wc-menu-item --> modus-wc-tooltip
-  modus-wc-menu-item --> modus-wc-button
   modus-wc-menu-item --> modus-wc-icon
   modus-wc-checkbox --> modus-wc-input-label
   modus-wc-autocomplete --> modus-wc-menu-item

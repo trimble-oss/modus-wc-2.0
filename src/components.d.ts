@@ -130,6 +130,10 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * Feedback state for the input field.
+         */
+        "feedback"?: IInputFeedbackProp;
+        /**
           * Programmatically set focus to input
          */
         "focusInput": () => Promise<void>;
@@ -945,7 +949,6 @@ export namespace Components {
      * This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
      */
     interface ModusWcMenuItem {
-        "_showMoreActions"?: boolean;
         "_showVisibilityToggle"?: boolean;
         "bordered"?: boolean;
         /**
@@ -2557,6 +2560,10 @@ declare global {
     value: string;
     selected?: boolean;
   };
+        "itemVisibilityToggle": {
+    value: string;
+    visible: boolean;
+  };
     }
     /**
      * A customizable menu item component used to display the item portion of a menu.
@@ -3203,6 +3210,10 @@ declare namespace LocalJSX {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * Feedback state for the input field.
+         */
+        "feedback"?: IInputFeedbackProp;
         /**
           * Show the clear button within the input field.
          */
@@ -4104,7 +4115,6 @@ declare namespace LocalJSX {
      * This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
      */
     interface ModusWcMenuItem {
-        "_showMoreActions"?: boolean;
         "_showVisibilityToggle"?: boolean;
         "bordered"?: boolean;
         /**
@@ -4137,6 +4147,10 @@ declare namespace LocalJSX {
         "onItemSelect"?: (event: ModusWcMenuItemCustomEvent<{
     value: string;
     selected?: boolean;
+  }>) => void;
+        "onItemVisibilityToggle"?: (event: ModusWcMenuItemCustomEvent<{
+    value: string;
+    visible: boolean;
   }>) => void;
         /**
           * The selected state of the menu item.

@@ -280,7 +280,7 @@
             {
               "name": "props",
               "type": {
-                "text": "{\r\n  bordered?: boolean;\r\n  disabled?: boolean;\r\n  readOnly?: boolean;\r\n  size?: ModusSize;\r\n}"
+                "text": "{\r\n  bordered?: boolean;\r\n  disabled?: boolean;\r\n  feedback?: IInputFeedbackProp;\r\n  readOnly?: boolean;\r\n  size?: ModusSize;\r\n}"
               }
             }
           ]
@@ -964,6 +964,14 @@
               "description": "Whether the form control is disabled.",
               "type": {
                 "text": "boolean"
+              }
+            },
+            {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "Feedback state for the input field.",
+              "type": {
+                "text": "IInputFeedbackProp"
               }
             },
             {
@@ -3718,27 +3726,20 @@
               "description": "Internal state to track if submenu is expanded"
             },
             {
+              "kind": "method",
+              "name": "render"
+            },
+            {
               "kind": "field",
-              "name": "isVisible",
+              "name": "toggleVisibilityIcon",
               "type": {
                 "text": "boolean"
               },
               "default": "true",
-              "description": "Internal state to track visibility state"
-            },
-            {
-              "kind": "method",
-              "name": "render"
+              "description": "Internal state to track if more actions are shown"
             }
           ],
           "attributes": [
-            {
-              "name": "_show-more-actions",
-              "fieldName": "_showMoreActions",
-              "type": {
-                "text": "boolean"
-              }
-            },
             {
               "name": "_show-visibility-toggle",
               "fieldName": "_showVisibilityToggle",
@@ -3872,6 +3873,13 @@
                 "text": "EventEmitter<{\r\n    value: string;\r\n    selected?: boolean;\r\n  }>"
               },
               "description": "Event emitted when a menu item is selected."
+            },
+            {
+              "kind": "field",
+              "name": "itemVisibilityToggle",
+              "type": {
+                "text": "EventEmitter<{\r\n    value: string;\r\n    visible: boolean;\r\n  }>"
+              }
             }
           ],
           "customElement": true
