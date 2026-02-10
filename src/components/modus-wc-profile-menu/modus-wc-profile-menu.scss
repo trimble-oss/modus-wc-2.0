@@ -1,0 +1,24 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+modus-wc-profile-menu {
+  .modus-wc-divider {
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .modus-wc-panel {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .submenu-section {
+    modus-wc-typography .modus-wc-typography{
+      margin-inline-start: var(--modus-wc-spacing-md);
+    }
+  }
+}
