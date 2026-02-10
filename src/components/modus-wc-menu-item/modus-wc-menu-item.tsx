@@ -223,13 +223,20 @@ export class ModusWcMenuItem {
     this.itemSelect.emit({ value: this.value, selected: this.selected });
   };
 
-  private handleMenuItemVisibility = (e: MouseEvent) => {
+  private handleMenuItemVisibility = (e: MouseEvent | KeyboardEvent) => {
     e.stopPropagation();
     this.toggleVisibilityIcon = !this.toggleVisibilityIcon;
     this.itemVisibilityToggle.emit({
       value: this.value,
       visible: this.toggleVisibilityIcon,
     });
+  };
+
+  private handleVisibilityKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      this.handleMenuItemVisibility(e);
+    }
   };
 
   render() {
@@ -282,13 +289,11 @@ export class ModusWcMenuItem {
                   {this._showVisibilityToggle && (
                     <span
                       aria-label="Visible button"
-                      class={{
-                        'items-action-btn': true,
-                        'is-hidden': !this._showVisibilityToggle,
-                      }}
+                      class="items-action-btn"
                       role="button"
-                      tabIndex={-1}
+                      tabIndex={0}
                       onClick={this.handleMenuItemVisibility}
+                      onKeyDown={this.handleVisibilityKeyDown}
                     >
                       <modus-wc-icon
                         aria-label="Visible icon"

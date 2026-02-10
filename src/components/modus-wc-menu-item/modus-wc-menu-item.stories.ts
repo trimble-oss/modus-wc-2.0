@@ -163,7 +163,7 @@ export const WithVisibilityToggle: Story = {
   render: (args) => {
     const handleVisibilityToggle = (event: CustomEvent) => {
       const source = event.target as HTMLElement;
-      const menuItem = source.closest('modus-wc-menu-item') as any;
+      const menuItem = source.closest('modus-wc-menu-item');
       if (!menuItem) return;
 
       const isVisible = event.detail.visible;
@@ -174,7 +174,7 @@ export const WithVisibilityToggle: Story = {
       <script>
         const handleVisibilityToggle = (event: CustomEvent) => {
            const source = event.target as HTMLElement;
-           const menuItem = source.closest('modus-wc-menu-item') as any;
+           const menuItem = source.closest('modus-wc-menu-item');
            if (!menuItem) return;
 
            const isVisible = event.detail.visible;

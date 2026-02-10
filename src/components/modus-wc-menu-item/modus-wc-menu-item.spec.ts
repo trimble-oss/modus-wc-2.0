@@ -700,4 +700,136 @@ describe('modus-wc-menu-item', () => {
     // itemSelect event should NOT be emitted
     expect(itemSelectSpy).not.toHaveBeenCalled();
   });
+
+  it('should handle keyboard Enter key on visibility button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem, ModusWcIcon],
+      html: '<modus-wc-menu-item label="Test label" value="test-value"></modus-wc-menu-item>',
+    });
+
+    const menuItem = page.root as HTMLElement;
+    page.rootInstance._showVisibilityToggle = true;
+    await page.waitForChanges();
+
+    const visibilityToggleSpy = jest.fn();
+    menuItem.addEventListener('itemVisibilityToggle', visibilityToggleSpy);
+
+    const visibilityButton = menuItem.querySelector(
+      '.items-action-btn'
+    ) as HTMLElement;
+
+    // Dispatch Enter key event
+    const enterEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+    const preventDefaultSpy = jest.spyOn(enterEvent, 'preventDefault');
+    visibilityButton.dispatchEvent(enterEvent);
+    await page.waitForChanges();
+
+    // Event should be emitted
+    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(visibilityToggleSpy).toHaveBeenCalledTimes(1);
+    expect(visibilityToggleSpy.mock.calls[0][0].detail).toEqual({
+      value: 'test-value',
+      visible: false,
+    });
+  });
+
+  it('should handle keyboard Space key on visibility button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem, ModusWcIcon],
+      html: '<modus-wc-menu-item label="Test label" value="test-value"></modus-wc-menu-item>',
+    });
+
+    const menuItem = page.root as HTMLElement;
+    page.rootInstance._showVisibilityToggle = true;
+    await page.waitForChanges();
+
+    const visibilityToggleSpy = jest.fn();
+    menuItem.addEventListener('itemVisibilityToggle', visibilityToggleSpy);
+
+    const visibilityButton = menuItem.querySelector(
+      '.items-action-btn'
+    ) as HTMLElement;
+
+    // Dispatch Space key event
+    const spaceEvent = new KeyboardEvent('keydown', {
+      key: ' ',
+      bubbles: true,
+      cancelable: true,
+    });
+    const preventDefaultSpy = jest.spyOn(spaceEvent, 'preventDefault');
+    visibilityButton.dispatchEvent(spaceEvent);
+    await page.waitForChanges();
+
+    // Event should be emitted
+    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(visibilityToggleSpy).toHaveBeenCalledTimes(1);
+    expect(visibilityToggleSpy.mock.calls[0][0].detail).toEqual({
+      value: 'test-value',
+      visible: false,
+    });
+  });
+
+  it('should not respond to other keyboard keys on visibility button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem, ModusWcIcon],
+      html: '<modus-wc-menu-item label="Test label" value="test-value"></modus-wc-menu-item>',
+    });
+
+    const menuItem = page.root as HTMLElement;
+    page.rootInstance._showVisibilityToggle = true;
+    await page.waitForChanges();
+
+    const visibilityToggleSpy = jest.fn();
+    menuItem.addEventListener('itemVisibilityToggle', visibilityToggleSpy);
+
+    const visibilityButton = menuItem.querySelector(
+      '.items-action-btn'
+    ) as HTMLElement;
+
+    // Dispatch Escape key event
+    const escapeEvent = new KeyboardEvent('keydown', {
+      key: 'Escape',
+      bubbles: true,
+      cancelable: true,
+    });
+    visibilityButton.dispatchEvent(escapeEvent);
+    await page.waitForChanges();
+
+    // Event should NOT be emitted
+    expect(visibilityToggleSpy).not.toHaveBeenCalled();
+  });
+
+  it('should toggle visibility icon state when clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem, ModusWcIcon],
+      html: '<modus-wc-menu-item label="Test label" value="test-value"></modus-wc-menu-item>',
+    });
+
+    const menuItem = page.root as HTMLElement;
+    page.rootInstance._showVisibilityToggle = true;
+    await page.waitForChanges();
+
+    // Initial state should be true
+    expect(page.rootInstance.toggleVisibilityIcon).toBe(true);
+
+    const visibilityButton = menuItem.querySelector(
+      '.items-action-btn'
+    ) as HTMLElement;
+
+    // Click to toggle
+    visibilityButton.click();
+    await page.waitForChanges();
+
+    expect(page.rootInstance.toggleVisibilityIcon).toBe(false);
+
+    // Click again to toggle back
+    visibilityButton.click();
+    await page.waitForChanges();
+
+    expect(page.rootInstance.toggleVisibilityIcon).toBe(true);
+  });
 });
