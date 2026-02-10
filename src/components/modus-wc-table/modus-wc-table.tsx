@@ -618,6 +618,16 @@ export class ModusWcTable {
     const row = this.data[rowIndex];
     if (!this.isRowEditable(row)) return;
 
+    // Only enter edit mode if the column has an editor defined
+    const column = this.columns?.find((col) => col.id === colId);
+    if (
+      !column?.editor &&
+      !column?.editorTemplate &&
+      !column?.customEditorRenderer
+    ) {
+      return;
+    }
+
     this.activeEditor = { rowIndex, colId };
     this.cellEditStart.emit({ rowIndex, colId });
   }
