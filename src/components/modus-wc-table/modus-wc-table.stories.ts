@@ -169,17 +169,6 @@ const createDemoColumns = (): ITableColumn[] => [
     width: '100px',
   },
   {
-    id: 'button',
-    header: 'Button',
-    accessor: 'button',
-    cellRenderer: (value) => {
-      const button = document.createElement('modus-wc-button');
-      button.textContent = value as string;
-      button.addEventListener('click', (e) => e.stopPropagation());
-      return button;
-    },
-  },
-  {
     id: 'email',
     header: 'Email',
     accessor: 'email',
@@ -202,7 +191,6 @@ const createDemoData = (count = 5): Record<string, any>[] => {
     data.push({
       id: i.toString(),
       name: `User ${i}`,
-      button: `Button ${i}`,
       email: `user${i}@example.com`,
       role: i % 2 === 0 ? 'Admin' : 'User',
     });
@@ -614,17 +602,11 @@ export const InlineEditing: Story = {
         width: '20px',
       },
       {
-        id: 'button',
-        header: 'Button',
-        accessor: 'button',
-        cellRenderer: (value) => {
-          const button = document.createElement('modus-wc-button');
-          button.textContent = value as string;
-          button.addEventListener('click', (e) => e.stopPropagation());
-          return button;
-        },
+        id: 'name',
+        header: 'Name',
+        accessor: 'name',
+        editor: 'text',
       },
-
       {
         id: 'status',
         header: 'Status',
@@ -792,22 +774,19 @@ export const InlineEditing: Story = {
       {
         id: '1',
         name: 'John Doe',
-        button: 'Button 1',
         status: 'Active',
         dueDate: '15-10-2025',
       },
       {
         id: '2',
         name: 'Jane Smith',
-        button: 'Button 2',
         status: 'Inactive',
         dueDate: '20-11-2025',
       },
       {
         id: '3',
         name: 'Bob Johnson',
-        button: 'Click me',
-        status: 'Button 3',
+        status: 'Pending',
         dueDate: '05-12-2025',
       },
     ];
