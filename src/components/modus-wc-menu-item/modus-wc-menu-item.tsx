@@ -109,6 +109,11 @@ export class ModusWcMenuItem {
       if (submenu && liElement) {
         submenu.classList.add('modus-wc-menu-dropdown-show');
         liElement.classList.add('modus-wc-menu-item-expanded');
+        const buttonElement = liElement.querySelector('button');
+
+        if (buttonElement) {
+          buttonElement.classList.add('modus-wc-menu-dropdown-show');
+        }
         this.isExpanded = true;
       }
     }
@@ -129,6 +134,11 @@ export class ModusWcMenuItem {
       if (submenu && liElement) {
         submenu.classList.remove('modus-wc-menu-dropdown-show');
         liElement.classList.remove('modus-wc-menu-item-expanded');
+        const buttonElement = liElement.querySelector('button');
+
+        if (buttonElement) {
+          buttonElement.classList.remove('modus-wc-menu-dropdown-show');
+        }
         this.isExpanded = false;
       }
     }
@@ -245,6 +255,7 @@ export class ModusWcMenuItem {
           {...this.inheritedAttributes}
         >
           <button
+            aria-expanded={this.hasSubmenu ? this.isExpanded.toString() : undefined}
             class={this.getButtonClasses()}
             disabled={this.disabled}
             onClick={this.handleItemSelect}
