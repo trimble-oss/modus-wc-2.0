@@ -77,7 +77,7 @@ export class ModusWCTypography {
     return (
       <Host>
         <Element class={this.getClasses()} {...this.inheritedAttributes}>
-          {this.label}
+          <slot>{this.label}</slot>
         </Element>
       </Host>
     );

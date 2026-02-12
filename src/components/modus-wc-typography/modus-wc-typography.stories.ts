@@ -119,3 +119,19 @@ export const WithLabel: Story = {
     label: 'This text is set via the label prop',
   },
 };
+
+export const WithSlot: Story = {
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-typography
+  custom-class=${ifDefined(args['custom-class'])}
+  hierarchy=${args.hierarchy}
+  size=${ifDefined(args.size)}
+  weight=${ifDefined(args.weight)}
+>
+  This <u>text</u> is set using <em>slot</em> </strong>
+</modus-wc-typography>
+  `;
+  },
+};
