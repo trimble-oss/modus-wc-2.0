@@ -605,7 +605,6 @@ export const InlineEditing: Story = {
         id: 'name',
         header: 'Name',
         accessor: 'name',
-        editor: 'text',
       },
       {
         id: 'status',
