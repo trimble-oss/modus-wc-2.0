@@ -618,6 +618,18 @@ export class ModusWcTable {
     const row = this.data[rowIndex];
     if (!this.isRowEditable(row)) return;
 
+    // Only enter edit mode if the column has an editor defined
+    /* istanbul ignore next */
+    const column = this.columns?.find((col) => col.id === colId);
+    /* istanbul ignore next */
+    if (
+      !column?.editor &&
+      !column?.editorTemplate &&
+      !column?.customEditorRenderer
+    ) {
+      return;
+    }
+
     this.activeEditor = { rowIndex, colId };
     this.cellEditStart.emit({ rowIndex, colId });
   }
@@ -641,6 +653,20 @@ export class ModusWcTable {
 
     // Simply clear editor state – Stencil will re-render cell normally
     this.activeEditor = null;
+    this.activeEditorElement = undefined;
+  }
+
+  private renderCellContent(
+    el: HTMLElement,
+    cellNode: HTMLElement | string
+  ): void {
+    el.innerHTML = '';
+
+    if (typeof cellNode !== 'string' && 'tagName' in cellNode) {
+      el.appendChild(cellNode);
+    } else {
+      el.textContent = String(cellNode);
+    }
   }
 
   private setupEditorCell(
@@ -650,18 +676,16 @@ export class ModusWcTable {
     row: Record<string, unknown>,
     handleCommit: (val: unknown) => void
   ): void {
-    el.innerHTML = '';
+    this.renderCellContent(el, cellNode);
 
     const isNode = typeof cellNode !== 'string' && 'tagName' in cellNode;
 
     if (isNode) {
-      el.appendChild(cellNode);
-
       if (column.editorTemplate && column.editorSetup) {
         column.editorSetup(cellNode, row, handleCommit);
       }
 
-      // Store reference to active editor element
+      // Store reference to active editor element (only called when editing)
       this.activeEditorElement = el;
 
       // Create and keep global click handler active
@@ -685,8 +709,6 @@ export class ModusWcTable {
         // Register once and keep it active
         document.addEventListener('click', this.globalClickHandler, true);
       }
-    } else {
-      el.textContent = String(cellNode);
     }
   }
 
@@ -799,6 +821,8 @@ export class ModusWcTable {
                           selected:
                             !!this.internalRowSelection[String(rowObj.id)] ||
                             rowObj.getIsSelected?.(),
+                          selectable: this.selectable !== 'none',
+                          editable: this.isRowEditable(row),
                         }}
                         onClick={() => this.handleRowClick(rowObj, index)}
                       >
@@ -861,6 +885,8 @@ export class ModusWcTable {
                               class={{
                                 [column.className || '']: !!column.className,
                                 editing,
+                                'editable-cell':
+                                  !!column.editor && this.isRowEditable(row),
                               }}
                               data-col={column.id}
                               onDblClick={(e) => {
@@ -883,13 +909,19 @@ export class ModusWcTable {
                               }}
                               ref={(el) => {
                                 if (!el) return;
-                                this.setupEditorCell(
-                                  el,
-                                  cellNode,
-                                  column,
-                                  row,
-                                  handleCommit
-                                );
+                                // Only setup editor when cell is actually being edited
+                                if (editing) {
+                                  this.setupEditorCell(
+                                    el,
+                                    cellNode,
+                                    column,
+                                    row,
+                                    handleCommit
+                                  );
+                                } else {
+                                  // For non-editing cells, just set content directly
+                                  this.renderCellContent(el, cellNode);
+                                }
                               }}
                             ></td>
                           );

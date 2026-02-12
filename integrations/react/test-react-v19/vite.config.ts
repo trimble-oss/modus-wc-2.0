@@ -9,7 +9,8 @@ export default defineConfig({
 		fs: {
 			allow: [
 				path.resolve(__dirname),
-				path.resolve(__dirname, '../v19/dist')
+				path.resolve(__dirname, '../v19/dist'),
+				path.resolve(__dirname, 'node_modules')
 			]
 		}
 	},
