@@ -147,6 +147,7 @@ interface AutocompleteArgs {
   'custom-class'?: string;
   'debounce-ms'?: number;
   disabled?: boolean;
+  feedback?: { level: 'error' | 'warning' | 'success'; message: string };
   'include-clear'?: boolean;
   'include-search'?: boolean;
   'input-id'?: string;
@@ -434,6 +435,7 @@ const Template: Story = {
   custom-class=${ifDefined(args['custom-class'])}
   debounce-ms=${ifDefined(args['debounce-ms'])}
   ?disabled=${args.disabled}
+  .feedback=${ifDefined(args.feedback)}
   ?include-clear=${args['include-clear']}
   ?include-search=${args['include-search']}
   input-id=${ifDefined(args['input-id'])}
@@ -483,6 +485,7 @@ export const WithCustomIconSlot: Story = {
   custom-class=${ifDefined(args['custom-class'])}
   debounce-ms=${ifDefined(args['debounce-ms'])}
   ?disabled=${args.disabled}
+  .feedback=${ifDefined(args.feedback)}
   ?include-clear=${args['include-clear']}
   ?include-search=${args['include-search']}
   input-id=${ifDefined(args['input-id'])}
@@ -515,6 +518,54 @@ ${Items}
   `,
   args: {
     placeholder: 'Search fruits...',
+  },
+};
+
+export const WithFeedback: Story = {
+  render: (args) => html`
+    <style>
+      div[id^='story--components-forms-autocomplete--with-feedback'] {
+        height: 400px;
+      }
+    </style>
+    <modus-wc-autocomplete
+      aria-label="Fruit autocomplete with feedback"
+      ?bordered=${args.bordered}
+      .items=${args.items}
+      .feedback=${args.feedback}
+      label=${ifDefined(args.label)}
+      ?required=${args.required}
+    ></modus-wc-autocomplete>
+  `,
+  args: {
+    feedback: {
+      level: 'error',
+      message: 'This field is required',
+    },
+    label: 'With Feedback',
+    required: true,
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<modus-wc-autocomplete
+  aria-label="Fruit autocomplete with feedback"
+  label="With Feedback"
+  required
+></modus-wc-autocomplete>
+
+<script>
+  const autocomplete = document.querySelector('modus-wc-autocomplete');
+  autocomplete.feedback = {
+    level: 'error',
+    message: 'This field is required'
+  };
+  autocomplete.items = autocompleteItems;
+</script>
+        `,
+      },
+    },
   },
 };
 
@@ -2462,7 +2513,7 @@ export const Migration: Story = {
 | disable-close-on-select       | leave-menu-open     |                                                             |
 | dropdown-max-height           |                     | Not carried over, use CSS instead                           |
 | dropdown-z-index              |                     | Not carried over, use CSS instead                           |
-| error-text                    | feedback.message    | Use feedback level                                          |
+| error-text                    | feedback            | feedback.level = 'error', feedback.message = 'Error message'|
 | filter-options                |                     | Rebind options                                              |
 | include-search-icon           | include-search      |                                                             |
 | label                         | label               |                                                             |
