@@ -255,7 +255,9 @@ export class ModusWcMenuItem {
           {...this.inheritedAttributes}
         >
           <button
-            aria-expanded={this.hasSubmenu ? this.isExpanded.toString() : undefined}
+            aria-expanded={
+              this.hasSubmenu ? this.isExpanded.toString() : undefined
+            }
             class={this.getButtonClasses()}
             disabled={this.disabled}
             onClick={this.handleItemSelect}
