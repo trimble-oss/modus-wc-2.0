@@ -994,14 +994,53 @@ describe('modus-wc-menu-item', () => {
       const page = await newSpecPage({
         components: [ModusWcMenuItem],
         html: `
-          <modus-wc-menu-item label="Parent" value="parent" checkbox="true">
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true">
+            <div class="modus-wc-menu-dropdown">
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const submenu = menuItem.querySelector(
+        '.modus-wc-menu-dropdown'
+      ) as HTMLElement;
+
+      // Create a temporary child to dispatch event from
+      const tempChild = document.createElement('div');
+      submenu.appendChild(tempChild);
+
+      // Trigger updateIndeterminateState from a child
+      const event = new CustomEvent('itemSelect', {
+        bubbles: true,
+        composed: true,
+      });
+      tempChild.dispatchEvent(event);
+      await page.waitForChanges();
+
+      // Parent should not update indeterminate state because submenu has no checkbox children
+      expect(page.rootInstance.isIndeterminate).toBe(false);
+    });
+
+    it('should not update indeterminate state when event originates from parent itself', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Child" value="child" checkbox="true"></modus-wc-menu-item>
+            </div>
           </modus-wc-menu-item>
         `,
       });
 
       const menuItem = page.root as HTMLElement;
 
-      // Trigger updateIndeterminateState
+      // Set initial indeterminate state
+      page.rootInstance.isIndeterminate = true;
+      await page.waitForChanges();
+
+      // Trigger updateIndeterminateState from parent itself
       const event = new CustomEvent('itemSelect', {
         bubbles: true,
         composed: true,
@@ -1009,8 +1048,41 @@ describe('modus-wc-menu-item', () => {
       menuItem.dispatchEvent(event);
       await page.waitForChanges();
 
-      // Parent should not update indeterminate state
-      expect(page.rootInstance.isIndeterminate).toBe(false);
+      // State should not change because event is from parent itself
+      expect(page.rootInstance.isIndeterminate).toBe(true);
+    });
+
+    it('should not update indeterminate state if submenu DOM element does not exist', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true">
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+
+      // Set initial state
+      page.rootInstance.isIndeterminate = true;
+      page.rootInstance.selected = true;
+      await page.waitForChanges();
+
+      // Create a temporary child to dispatch event from (not inside a submenu)
+      const tempChild = document.createElement('div');
+      menuItem.appendChild(tempChild);
+
+      // Trigger updateIndeterminateState
+      const event = new CustomEvent('itemSelect', {
+        bubbles: true,
+        composed: true,
+      });
+      tempChild.dispatchEvent(event);
+      await page.waitForChanges();
+
+      // State should not change because submenu element doesn't exist
+      expect(page.rootInstance.isIndeterminate).toBe(true);
+      expect(page.rootInstance.selected).toBe(true);
     });
 
     it('should not cascade selection if parent has no submenu', async () => {
