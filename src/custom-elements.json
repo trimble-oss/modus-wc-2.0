@@ -3723,7 +3723,8 @@
               "type": {
                 "text": "boolean"
               },
-              "default": "false"
+              "default": "false",
+              "description": "Internal state to track if checkbox is in indeterminate state (for parent items with checkbox)"
             },
             {
               "kind": "method",
