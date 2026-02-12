@@ -14,6 +14,15 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    fs: {
+      allow: [
+        path.resolve(__dirname),
+        path.resolve(__dirname, '../v-latest/dist'),
+        path.resolve(__dirname, 'node_modules')
+      ]
+    }
+  },
   resolve: {
     alias: {
       '@trimble-oss/moduswebcomponents/loader': path.resolve(__dirname, '../../../dist/loader'),
