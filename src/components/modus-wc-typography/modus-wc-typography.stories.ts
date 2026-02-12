@@ -130,7 +130,7 @@ export const WithSlot: Story = {
   size=${ifDefined(args.size)}
   weight=${ifDefined(args.weight)}
 >
-  This <u>text</u> is set using <em>slot</em> </strong>
+  This <u>text</u> is set using <em>slot</em>
 </modus-wc-typography>
   `;
   },
