@@ -231,9 +231,8 @@ export class ModusWcMenuItem {
   };
 
   private updateIndeterminateState = (e: Event) => {
-
     if (e.target === this.el) return;
-    
+
     if (!this.hasSubmenu || !this.checkbox) return;
 
     const submenu = this.el.querySelector('.modus-wc-menu-dropdown');
