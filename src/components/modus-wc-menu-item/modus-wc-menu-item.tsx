@@ -117,6 +117,14 @@ export class ModusWcMenuItem {
     }
   };
 
+  private handleCheckboxKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.stopPropagation();
+      this.handleCheckboxClick();
+    }
+  };
+
   /**
    * Public method to collapse the submenu if it's expanded
    */
@@ -309,6 +317,9 @@ export class ModusWcMenuItem {
                   onClick={(e) => {
                     e.stopPropagation();
                     this.handleCheckboxClick();
+                  }}
+                  onKeyDown={(e) => {
+                    this.handleCheckboxKeyDown(e);
                   }}
                 />
               )}

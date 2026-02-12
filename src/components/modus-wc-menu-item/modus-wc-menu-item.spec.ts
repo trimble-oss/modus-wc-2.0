@@ -1035,4 +1035,217 @@ describe('modus-wc-menu-item', () => {
       expect(page.rootInstance.selected).toBe(true);
     });
   });
+
+  describe('Checkbox keyboard navigation', () => {
+    it('should handle Enter key on checkbox to toggle selection', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: '<modus-wc-menu-item label="Test" value="test" checkbox="true"></modus-wc-menu-item>',
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const checkbox = menuItem.querySelector(
+        'modus-wc-checkbox'
+      ) as HTMLElement;
+      const selectSpy = jest.fn();
+      menuItem.addEventListener('itemSelect', selectSpy);
+
+      // Initially not selected
+      expect(page.rootInstance.selected).toBeFalsy();
+
+      // Simulate Enter key on checkbox
+      const enterEvent = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+      });
+      const preventDefaultSpy = jest.spyOn(enterEvent, 'preventDefault');
+      const stopPropagationSpy = jest.spyOn(enterEvent, 'stopPropagation');
+      checkbox.dispatchEvent(enterEvent);
+      await page.waitForChanges();
+
+      // Should prevent default and stop propagation
+      expect(preventDefaultSpy).toHaveBeenCalled();
+      expect(stopPropagationSpy).toHaveBeenCalled();
+
+      // Should be selected
+      expect(page.rootInstance.selected).toBe(true);
+
+      // Should emit itemSelect event
+      expect(selectSpy).toHaveBeenCalledTimes(1);
+      expect(selectSpy.mock.calls[0][0].detail).toEqual({
+        value: 'test',
+        selected: true,
+      });
+    });
+
+    it('should handle Space key on checkbox to toggle selection', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: '<modus-wc-menu-item label="Test" value="test" checkbox="true"></modus-wc-menu-item>',
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const checkbox = menuItem.querySelector(
+        'modus-wc-checkbox'
+      ) as HTMLElement;
+      const selectSpy = jest.fn();
+      menuItem.addEventListener('itemSelect', selectSpy);
+
+      // Initially not selected
+      expect(page.rootInstance.selected).toBeFalsy();
+
+      // Simulate Space key on checkbox
+      const spaceEvent = new KeyboardEvent('keydown', {
+        key: ' ',
+        bubbles: true,
+      });
+      const preventDefaultSpy = jest.spyOn(spaceEvent, 'preventDefault');
+      const stopPropagationSpy = jest.spyOn(spaceEvent, 'stopPropagation');
+      checkbox.dispatchEvent(spaceEvent);
+      await page.waitForChanges();
+
+      // Should prevent default and stop propagation
+      expect(preventDefaultSpy).toHaveBeenCalled();
+      expect(stopPropagationSpy).toHaveBeenCalled();
+
+      // Should be selected
+      expect(page.rootInstance.selected).toBe(true);
+
+      // Should emit itemSelect event
+      expect(selectSpy).toHaveBeenCalledTimes(1);
+      expect(selectSpy.mock.calls[0][0].detail).toEqual({
+        value: 'test',
+        selected: true,
+      });
+    });
+
+    it('should toggle checkbox selection off when already selected', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: '<modus-wc-menu-item label="Test" value="test" checkbox="true" selected="true"></modus-wc-menu-item>',
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const checkbox = menuItem.querySelector(
+        'modus-wc-checkbox'
+      ) as HTMLElement;
+
+      // Initially selected
+      expect(page.rootInstance.selected).toBe(true);
+
+      // Simulate Enter key on checkbox
+      const enterEvent = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+      });
+      checkbox.dispatchEvent(enterEvent);
+      await page.waitForChanges();
+
+      // Should be deselected
+      expect(page.rootInstance.selected).toBe(false);
+    });
+
+    it('should update child checkboxes when parent checkbox is toggled via keyboard', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Child 1" value="child1" checkbox="true"></modus-wc-menu-item>
+              <modus-wc-menu-item label="Child 2" value="child2" checkbox="true"></modus-wc-menu-item>
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const checkbox = menuItem.querySelector(
+        'modus-wc-checkbox'
+      ) as HTMLElement;
+      const childItems = menuItem.querySelectorAll(
+        '.modus-wc-menu-dropdown > modus-wc-menu-item'
+      );
+
+      // Press Enter on parent checkbox
+      const enterEvent = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+      });
+      checkbox.dispatchEvent(enterEvent);
+      await page.waitForChanges();
+
+      // Parent should be selected
+      expect(page.rootInstance.selected).toBe(true);
+
+      // All children should be selected
+      childItems.forEach((child) => {
+        expect((child as IMenuItemElement).selected).toBe(true);
+      });
+    });
+
+    it('should handle indeterminate state when parent checkbox is toggled via keyboard', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: `
+          <modus-wc-menu-item label="Parent" value="parent" checkbox="true" has-submenu="true">
+            <div class="modus-wc-menu-dropdown">
+              <modus-wc-menu-item label="Child 1" value="child1" checkbox="true" selected="true"></modus-wc-menu-item>
+              <modus-wc-menu-item label="Child 2" value="child2" checkbox="true"></modus-wc-menu-item>
+            </div>
+          </modus-wc-menu-item>
+        `,
+      });
+
+      const menuItem = page.root as HTMLElement;
+
+      // Manually set indeterminate state
+      page.rootInstance.isIndeterminate = true;
+      await page.waitForChanges();
+
+      const checkbox = menuItem.querySelector(
+        'modus-wc-checkbox'
+      ) as HTMLElement;
+
+      // Press Space on parent checkbox with indeterminate state
+      const spaceEvent = new KeyboardEvent('keydown', {
+        key: ' ',
+        bubbles: true,
+      });
+      checkbox.dispatchEvent(spaceEvent);
+      await page.waitForChanges();
+
+      // Should select all (indeterminate is treated as unchecked)
+      expect(page.rootInstance.selected).toBe(true);
+      expect(page.rootInstance.isIndeterminate).toBe(false);
+    });
+
+    it('should not trigger item selection when checkbox is toggled via keyboard', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: '<modus-wc-menu-item label="Test" value="test" checkbox="true"></modus-wc-menu-item>',
+      });
+
+      const menuItem = page.root as HTMLElement;
+      const li = menuItem.querySelector('li') as HTMLElement;
+      const checkbox = menuItem.querySelector(
+        'modus-wc-checkbox'
+      ) as HTMLElement;
+
+      // Spy on li keydown (which handles menu item selection)
+      const liKeydownSpy = jest.fn();
+      li.addEventListener('keydown', liKeydownSpy);
+
+      // Simulate Enter key on checkbox
+      const enterEvent = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+      });
+      const stopPropagationSpy = jest.spyOn(enterEvent, 'stopPropagation');
+      checkbox.dispatchEvent(enterEvent);
+      await page.waitForChanges();
+
+      // Event should be stopped from propagating to li
+      expect(stopPropagationSpy).toHaveBeenCalled();
+    });
+  });
 });
