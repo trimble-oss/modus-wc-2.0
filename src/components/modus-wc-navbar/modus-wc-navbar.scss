@@ -104,6 +104,12 @@ modus-wc-navbar .modus-wc-navbar {
       z-index: 99;
     }
 
+    modus-wc-profile-menu {
+      position: absolute;
+      right: 0;
+      z-index: 99;
+    }
+
     // Notifications slot
     .notifications {
       @extend %dropdown-menu;

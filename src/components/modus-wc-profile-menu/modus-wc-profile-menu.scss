@@ -3,22 +3,64 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 modus-wc-profile-menu {
+  background-color: var(--modus-wc-color-base-page);
+
   .modus-wc-divider {
-    display: block;
+    display: flex;
     margin: 0;
     padding: 0;
-    width: 100%;
   }
 
   .modus-wc-panel {
+    background-color: var(--modus-wc-color-base-page);
     display: block;
-    width: 100%;
     height: auto;
+    padding-inline-end: var(--modus-wc-spacing-md);
+    padding-inline-start: var(--modus-wc-spacing-md);
+    width: 298px;
+  }
+
+  .profile-menu-header {
+    align-items: center;
+    border-bottom: 1px solid var(--modus-wc-color-gray-0);
+    display: flex;
+    flex-direction: column;
+    gap: var(--modus-wc-spacing-xs);
+    margin-inline-end: var(--modus-wc-spacing-md);
+    margin-inline-start: var(--modus-wc-spacing-md);
+    padding-bottom: var(--modus-wc-spacing-md);
+    padding-top: var(--modus-wc-spacing-xl);
+
+    .manage-link {
+      margin-bottom: var(--modus-wc-spacing-lg);
+    }
+  }
+
+  .profile-menu-footer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--modus-wc-spacing-sm);
+    padding: var(--modus-wc-spacing-md);
+  }
+
+  .main-menu-container {
+    .modus-wc-divider {
+      margin-inline-end: var(--modus-wc-spacing-xl);
+      margin-inline-start: var(--modus-wc-spacing-xl);
+    }
   }
 
   .submenu-section {
-    modus-wc-typography .modus-wc-typography{
-      margin-inline-start: var(--modus-wc-spacing-md);
+    .modus-wc-typography {
+      border-bottom: 1px solid var(--modus-wc-color-gray-0);
+      padding-bottom: var(--modus-wc-spacing-sm);
+      padding-left: var(--modus-wc-spacing-lg);
+      padding-top: var(--modus-wc-spacing-md);
     }
+  }
+
+  [slot='body'] modus-wc-menu {
+    position: static !important;
   }
 }
