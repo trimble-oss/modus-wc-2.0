@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`modus-wc-profile-menu should render with both subMenus 1`] = `
+exports[`modus-wc-profile-menu should render with both menus 1`] = `
 <modus-wc-profile-menu>
   <modus-wc-panel height="auto" width="282px">
     <div class="profile-menu-header" slot="header">
@@ -30,7 +30,7 @@ exports[`modus-wc-profile-menu should render with both subMenus 1`] = `
         </modus-wc-menu>
       </div>
       <div class="submenu-section">
-        <modus-wc-typography hierarchy="h6" label="Submenu One" size="md"></modus-wc-typography>
+        <modus-wc-typography hierarchy="h6" label="Menu One" size="md"></modus-wc-typography>
         <modus-wc-menu size="md">
           <modus-wc-menu-item label="Item 1">
             <modus-wc-icon name="home" slot="start-icon" variant="solid"></modus-wc-icon>
@@ -38,20 +38,122 @@ exports[`modus-wc-profile-menu should render with both subMenus 1`] = `
         </modus-wc-menu>
       </div>
       <div class="submenu-section">
-        <modus-wc-typography hierarchy="h6" label="Submenu Two" size="md"></modus-wc-typography>
+        <modus-wc-typography hierarchy="h6" label="Menu Two" size="md"></modus-wc-typography>
         <modus-wc-menu size="md">
           <modus-wc-menu-item label="Item A">
             <modus-wc-icon name="settings" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
         </modus-wc-menu>
       </div>
-    </div>
-    <div class="profile-menu-footer" slot="footer">
       <modus-wc-menu>
         <modus-wc-menu-item label="Sign Out" size="md">
           <modus-wc-icon name="sign_out" slot="start-icon"></modus-wc-icon>
         </modus-wc-menu-item>
       </modus-wc-menu>
+    </div>
+    <div class="profile-menu-footer" slot="footer">
+      <modus-wc-typography hierarchy="p" label="©[Year], Trimble Inc."></modus-wc-typography>
+    </div>
+  </modus-wc-panel>
+</modus-wc-profile-menu>
+`;
+
+exports[`modus-wc-profile-menu should render with menuOne 1`] = `
+<modus-wc-profile-menu>
+  <modus-wc-panel height="auto" width="282px">
+    <div class="profile-menu-header" slot="header">
+      <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="md"></modus-wc-avatar>
+      <modus-wc-typography label="Test Header" weight="semibold"></modus-wc-typography>
+      <modus-wc-typography label="John Doe" size="sm" weight="semibold"></modus-wc-typography>
+      <modus-wc-typography label="john.doe@example.com" size="xs" weight="semibold"></modus-wc-typography>
+      <a href="https://example.com/manage">
+        <modus-wc-typography class="manage-link" hierarchy="p" label="Manage my Trimble ID"></modus-wc-typography>
+      </a>
+    </div>
+    <div slot="body">
+      <div class="submenu-section">
+        <modus-wc-menu size="md">
+          <modus-wc-menu-item label="My Profile">
+            <modus-wc-icon name="info" slot="start-icon" variant="solid"></modus-wc-icon>
+          </modus-wc-menu-item>
+          <modus-wc-menu-item label="My Products">
+            <modus-wc-icon name="home" slot="start-icon" variant="solid"></modus-wc-icon>
+          </modus-wc-menu-item>
+          <modus-wc-menu-item label="Support center">
+            <modus-wc-icon name="bar_graph" slot="start-icon" variant="solid"></modus-wc-icon>
+          </modus-wc-menu-item>
+          <modus-wc-menu-item label="Admin settings">
+            <modus-wc-icon name="download" slot="start-icon" variant="solid"></modus-wc-icon>
+          </modus-wc-menu-item>
+        </modus-wc-menu>
+      </div>
+      <div class="submenu-section">
+        <modus-wc-typography hierarchy="h6" label="Menu One" size="md"></modus-wc-typography>
+        <modus-wc-menu size="md">
+          <modus-wc-menu-item label="Item 1">
+            <modus-wc-icon name="home" slot="start-icon" variant="solid"></modus-wc-icon>
+          </modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2">
+            <modus-wc-icon name="settings" slot="start-icon" variant="solid"></modus-wc-icon>
+          </modus-wc-menu-item>
+        </modus-wc-menu>
+      </div>
+      <modus-wc-menu>
+        <modus-wc-menu-item label="Sign Out" size="md">
+          <modus-wc-icon name="sign_out" slot="start-icon"></modus-wc-icon>
+        </modus-wc-menu-item>
+      </modus-wc-menu>
+    </div>
+    <div class="profile-menu-footer" slot="footer">
+      <modus-wc-typography hierarchy="p" label="©[Year], Trimble Inc."></modus-wc-typography>
+    </div>
+  </modus-wc-panel>
+</modus-wc-profile-menu>
+`;
+
+exports[`modus-wc-profile-menu should render with menuTwo 1`] = `
+<modus-wc-profile-menu>
+  <modus-wc-panel height="auto" width="282px">
+    <div class="profile-menu-header" slot="header">
+      <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="md"></modus-wc-avatar>
+      <modus-wc-typography label="Test Header" weight="semibold"></modus-wc-typography>
+      <modus-wc-typography label="John Doe" size="sm" weight="semibold"></modus-wc-typography>
+      <modus-wc-typography label="john.doe@example.com" size="xs" weight="semibold"></modus-wc-typography>
+      <a href="https://example.com/manage">
+        <modus-wc-typography class="manage-link" hierarchy="p" label="Manage my Trimble ID"></modus-wc-typography>
+      </a>
+    </div>
+    <div slot="body">
+      <div class="submenu-section">
+        <modus-wc-menu size="md">
+          <modus-wc-menu-item label="My Profile">
+            <modus-wc-icon name="info" slot="start-icon" variant="solid"></modus-wc-icon>
+          </modus-wc-menu-item>
+          <modus-wc-menu-item label="My Products">
+            <modus-wc-icon name="home" slot="start-icon" variant="solid"></modus-wc-icon>
+          </modus-wc-menu-item>
+          <modus-wc-menu-item label="Support center">
+            <modus-wc-icon name="bar_graph" slot="start-icon" variant="solid"></modus-wc-icon>
+          </modus-wc-menu-item>
+          <modus-wc-menu-item label="Admin settings">
+            <modus-wc-icon name="download" slot="start-icon" variant="solid"></modus-wc-icon>
+          </modus-wc-menu-item>
+        </modus-wc-menu>
+      </div>
+      <div class="submenu-section">
+        <modus-wc-typography hierarchy="h6" label="Menu Two" size="md"></modus-wc-typography>
+        <modus-wc-menu size="md">
+          <modus-wc-menu-item label="Item A"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item B"></modus-wc-menu-item>
+        </modus-wc-menu>
+      </div>
+      <modus-wc-menu>
+        <modus-wc-menu-item label="Sign Out" size="md">
+          <modus-wc-icon name="sign_out" slot="start-icon"></modus-wc-icon>
+        </modus-wc-menu-item>
+      </modus-wc-menu>
+    </div>
+    <div class="profile-menu-footer" slot="footer">
       <modus-wc-typography hierarchy="p" label="©[Year], Trimble Inc."></modus-wc-typography>
     </div>
   </modus-wc-panel>
@@ -87,115 +189,13 @@ exports[`modus-wc-profile-menu should render with required props 1`] = `
           </modus-wc-menu-item>
         </modus-wc-menu>
       </div>
-    </div>
-    <div class="profile-menu-footer" slot="footer">
       <modus-wc-menu>
         <modus-wc-menu-item label="Sign Out" size="md">
           <modus-wc-icon name="sign_out" slot="start-icon"></modus-wc-icon>
         </modus-wc-menu-item>
       </modus-wc-menu>
-      <modus-wc-typography hierarchy="p" label="©[Year], Trimble Inc."></modus-wc-typography>
-    </div>
-  </modus-wc-panel>
-</modus-wc-profile-menu>
-`;
-
-exports[`modus-wc-profile-menu should render with subMenuOne 1`] = `
-<modus-wc-profile-menu>
-  <modus-wc-panel height="auto" width="282px">
-    <div class="profile-menu-header" slot="header">
-      <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="md"></modus-wc-avatar>
-      <modus-wc-typography label="Test Header" weight="semibold"></modus-wc-typography>
-      <modus-wc-typography label="John Doe" size="sm" weight="semibold"></modus-wc-typography>
-      <modus-wc-typography label="john.doe@example.com" size="xs" weight="semibold"></modus-wc-typography>
-      <a href="https://example.com/manage">
-        <modus-wc-typography class="manage-link" hierarchy="p" label="Manage my Trimble ID"></modus-wc-typography>
-      </a>
-    </div>
-    <div slot="body">
-      <div class="submenu-section">
-        <modus-wc-menu size="md">
-          <modus-wc-menu-item label="My Profile">
-            <modus-wc-icon name="info" slot="start-icon" variant="solid"></modus-wc-icon>
-          </modus-wc-menu-item>
-          <modus-wc-menu-item label="My Products">
-            <modus-wc-icon name="home" slot="start-icon" variant="solid"></modus-wc-icon>
-          </modus-wc-menu-item>
-          <modus-wc-menu-item label="Support center">
-            <modus-wc-icon name="bar_graph" slot="start-icon" variant="solid"></modus-wc-icon>
-          </modus-wc-menu-item>
-          <modus-wc-menu-item label="Admin settings">
-            <modus-wc-icon name="download" slot="start-icon" variant="solid"></modus-wc-icon>
-          </modus-wc-menu-item>
-        </modus-wc-menu>
-      </div>
-      <div class="submenu-section">
-        <modus-wc-typography hierarchy="h6" label="Submenu One" size="md"></modus-wc-typography>
-        <modus-wc-menu size="md">
-          <modus-wc-menu-item label="Item 1">
-            <modus-wc-icon name="home" slot="start-icon" variant="solid"></modus-wc-icon>
-          </modus-wc-menu-item>
-          <modus-wc-menu-item label="Item 2">
-            <modus-wc-icon name="settings" slot="start-icon" variant="solid"></modus-wc-icon>
-          </modus-wc-menu-item>
-        </modus-wc-menu>
-      </div>
     </div>
     <div class="profile-menu-footer" slot="footer">
-      <modus-wc-menu>
-        <modus-wc-menu-item label="Sign Out" size="md">
-          <modus-wc-icon name="sign_out" slot="start-icon"></modus-wc-icon>
-        </modus-wc-menu-item>
-      </modus-wc-menu>
-      <modus-wc-typography hierarchy="p" label="©[Year], Trimble Inc."></modus-wc-typography>
-    </div>
-  </modus-wc-panel>
-</modus-wc-profile-menu>
-`;
-
-exports[`modus-wc-profile-menu should render with subMenuTwo 1`] = `
-<modus-wc-profile-menu>
-  <modus-wc-panel height="auto" width="282px">
-    <div class="profile-menu-header" slot="header">
-      <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="md"></modus-wc-avatar>
-      <modus-wc-typography label="Test Header" weight="semibold"></modus-wc-typography>
-      <modus-wc-typography label="John Doe" size="sm" weight="semibold"></modus-wc-typography>
-      <modus-wc-typography label="john.doe@example.com" size="xs" weight="semibold"></modus-wc-typography>
-      <a href="https://example.com/manage">
-        <modus-wc-typography class="manage-link" hierarchy="p" label="Manage my Trimble ID"></modus-wc-typography>
-      </a>
-    </div>
-    <div slot="body">
-      <div class="submenu-section">
-        <modus-wc-menu size="md">
-          <modus-wc-menu-item label="My Profile">
-            <modus-wc-icon name="info" slot="start-icon" variant="solid"></modus-wc-icon>
-          </modus-wc-menu-item>
-          <modus-wc-menu-item label="My Products">
-            <modus-wc-icon name="home" slot="start-icon" variant="solid"></modus-wc-icon>
-          </modus-wc-menu-item>
-          <modus-wc-menu-item label="Support center">
-            <modus-wc-icon name="bar_graph" slot="start-icon" variant="solid"></modus-wc-icon>
-          </modus-wc-menu-item>
-          <modus-wc-menu-item label="Admin settings">
-            <modus-wc-icon name="download" slot="start-icon" variant="solid"></modus-wc-icon>
-          </modus-wc-menu-item>
-        </modus-wc-menu>
-      </div>
-      <div class="submenu-section">
-        <modus-wc-typography hierarchy="h6" label="Submenu Two" size="md"></modus-wc-typography>
-        <modus-wc-menu size="md">
-          <modus-wc-menu-item label="Item A"></modus-wc-menu-item>
-          <modus-wc-menu-item label="Item B"></modus-wc-menu-item>
-        </modus-wc-menu>
-      </div>
-    </div>
-    <div class="profile-menu-footer" slot="footer">
-      <modus-wc-menu>
-        <modus-wc-menu-item label="Sign Out" size="md">
-          <modus-wc-icon name="sign_out" slot="start-icon"></modus-wc-icon>
-        </modus-wc-menu-item>
-      </modus-wc-menu>
       <modus-wc-typography hierarchy="p" label="©[Year], Trimble Inc."></modus-wc-typography>
     </div>
   </modus-wc-panel>
