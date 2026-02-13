@@ -85,7 +85,8 @@ const Template: Story = {
   parameters: {
     docs: {
       source: {
-        transform: (_src, { args }) => getSourceCode(args),
+        transform: (_src, { args }: { args: ProfileMenuArgs }) =>
+          getSourceCode(args),
       },
     },
   },
@@ -112,7 +113,8 @@ export const Default: Story = {
           'Basic profile menu with default menu items (My Profile, My Products, Support center, Admin settings) and no custom submenus.',
       },
       source: {
-        transform: (_src, { args }) => getSourceCode(args),
+        transform: (_src, { args }: { args: ProfileMenuArgs }) =>
+          getSourceCode(args),
       },
     },
   },
@@ -127,7 +129,8 @@ export const WithOneSubmenu: Story = {
           'Profile menu with one additional custom submenu section. Submenus can include a title and items with icons.',
       },
       source: {
-        transform: (_src, { args }) => getSourceCode(args),
+        transform: (_src, { args }: { args: ProfileMenuArgs }) =>
+          getSourceCode(args),
       },
     },
   },
@@ -152,7 +155,8 @@ export const WithTwoSubmenus: Story = {
           'Profile menu with two additional custom submenu sections. Each submenu can have its own title and menu items with icons.',
       },
       source: {
-        transform: (_src, { args }) => getSourceCode(args),
+        transform: (_src, { args }: { args: ProfileMenuArgs }) =>
+          getSourceCode(args),
       },
     },
   },

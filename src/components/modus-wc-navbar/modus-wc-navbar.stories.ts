@@ -4,8 +4,8 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import {
   INavbarTextOverrides,
-  INavbarUserCard,
   INavbarVisibility,
+  IProfileMenuProps,
 } from './modus-wc-navbar';
 
 const textOverrides: INavbarTextOverrides = {
@@ -15,11 +15,12 @@ const textOverrides: INavbarTextOverrides = {
   search: 'Search',
 };
 
-const userCard: INavbarUserCard = {
-  avatarAlt: 'Sonic',
-  avatarSrc: 'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
-  email: 'sonic@trimble.com',
-  name: 'Sonic the Hedgehog',
+const userCard: IProfileMenuProps = {
+  profileImageUrl:
+    'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+  headerName: 'sonic@trimble.com',
+  userEmail: 'sonic@trimble.com',
+  userName: 'Sonic the Hedgehog',
 };
 
 const visibility: INavbarVisibility = {
@@ -43,7 +44,7 @@ interface NavbarArgs {
   'search-debounce-ms'?: number;
   'search-input-open'?: boolean;
   'text-overrides'?: INavbarTextOverrides;
-  'user-card': INavbarUserCard;
+  'user-card': IProfileMenuProps;
   'user-menu-open'?: boolean;
   visibility?: INavbarVisibility;
 }
@@ -150,13 +151,13 @@ const Template: Story = {
 <style>
   div[id^='story--components-navbar--default'] {
     border: 1px dashed black;
-    height: 360px;
+    height: 470px;
     overflow: hidden;
   }
   [slot=main-menu] {
     background-color: #0063a3;
     color: white;
-    height: 400px;
+    height: 470px;
   }
 </style>
 <modus-wc-navbar

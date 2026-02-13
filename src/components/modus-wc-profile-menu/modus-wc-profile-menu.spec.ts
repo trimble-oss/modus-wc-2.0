@@ -1,6 +1,6 @@
+import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcProfileMenu } from './modus-wc-profile-menu';
-import { h } from '@stencil/core';
 
 describe('modus-wc-profile-menu', () => {
   const mockProfileProps = {

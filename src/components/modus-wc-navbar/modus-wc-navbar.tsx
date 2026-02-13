@@ -55,19 +55,17 @@ export interface INavbarVisibility {
   user?: boolean;
 }
 
-export interface INavbarUserCard {
-  /** The alt value to set on the avatar. */
-  avatarAlt?: string;
-  /** The avatar image source value. */
-  avatarSrc?: string;
-  /** The email address of the user. */
-  email: string;
-  /** Text override for the Access MyTrimble button, allows for translation. */
-  myTrimbleButton?: string;
-  /** The name of the user */
-  name: string;
-  /** Text override for the Sign out button, allows for translation. */
-  signOutButton?: string;
+export interface IProfileMenuProps {
+  /** The URL of the profile image. */
+  profileImageUrl: string;
+  /** The header name of the profile menu. */
+  headerName: string;
+  /** The name of the user. */
+  userName: string;
+  /** The email of the user. */
+  userEmail: string;
+  /** The URL for managing the user's Trimble ID (optional). */
+  manageTrimbleIdLink?: string;
 }
 
 /**
@@ -120,7 +118,7 @@ export class ModusWcNavbar {
   @Prop() textOverrides?: INavbarTextOverrides;
 
   /** User information used to render the user card. */
-  @Prop() userCard!: INavbarUserCard;
+  @Prop() userCard!: IProfileMenuProps;
 
   /** The open state of the user menu. */
   @Prop({ mutable: true }) userMenuOpen?: boolean = false;
@@ -277,11 +275,15 @@ export class ModusWcNavbar {
       const userButton = this.el.querySelector(
         'modus-wc-button:has([class*="user-button"])'
       );
+      const profileMenu = this.el.querySelector('modus-wc-profile-menu');
+
       if (
         this.userRef &&
         !this.userRef.contains(target) &&
         userButton !== target &&
-        !userButton?.contains(target)
+        !userButton?.contains(target) &&
+        profileMenu !== target &&
+        !profileMenu?.contains(target)
       ) {
         this.userMenuOpen = false;
         this.userMenuOpenChange.emit(false);
@@ -319,11 +321,11 @@ export class ModusWcNavbar {
     this.helpClick.emit(event?.detail);
   };
 
-  private handleMyTrimbleClick = (
-    event: CustomEvent<MouseEvent | KeyboardEvent>
-  ) => {
-    this.myTrimbleClick.emit(event.detail);
-  };
+  // private handleMyTrimbleClick = (
+  //   event: CustomEvent<MouseEvent | KeyboardEvent>
+  // ) => {
+  //   this.myTrimbleClick.emit(event.detail);
+  // };
 
   private handleNotificationsClick = (
     event?: CustomEvent<MouseEvent | KeyboardEvent>
@@ -355,11 +357,11 @@ export class ModusWcNavbar {
     this.searchClick.emit(event?.detail);
   };
 
-  private handleSignOutClick = (
-    event: CustomEvent<MouseEvent | KeyboardEvent>
-  ) => {
-    this.signOutClick.emit(event.detail);
-  };
+  // private handleSignOutClick = (
+  //   event: CustomEvent<MouseEvent | KeyboardEvent>
+  // ) => {
+  //   this.signOutClick.emit(event.detail);
+  // };
 
   private handleTrimbleLogoClick = (
     event: CustomEvent<MouseEvent | KeyboardEvent>
@@ -618,45 +620,20 @@ export class ModusWcNavbar {
                   variant="borderless"
                 >
                   <modus-wc-avatar
-                    alt={this.userCard?.avatarAlt || ''}
-                    imgSrc={this.userCard?.avatarSrc}
-                    initials={this.userCard?.name}
+                    alt={this.userCard?.headerName || ''}
+                    imgSrc={this.userCard?.profileImageUrl}
+                    initials={this.userCard?.userName}
                     size="xs"
                   />
                 </modus-wc-button>
-                <div
-                  class={`user ${this.userMenuOpen ? 'visible' : 'hidden'}`}
-                  ref={(el) => (this.userRef = el)}
-                >
-                  <modus-wc-card>
-                    <div slot="header">
-                      <modus-wc-avatar
-                        alt={this.userCard?.avatarAlt || ''}
-                        imgSrc={this.userCard?.avatarSrc}
-                        initials={this.userCard?.name}
-                      />
-                    </div>
-                    <div slot="title">{this.userCard?.name}</div>
-                    <div>{this.userCard?.email}</div>
-                    <div slot="actions">
-                      <modus-wc-button
-                        customClass="my-trimble"
-                        onButtonClick={this.handleMyTrimbleClick}
-                      >
-                        {this.userCard?.myTrimbleButton || 'Access MyTrimble'}
-                      </modus-wc-button>
-                    </div>
-                    <div slot="footer">
-                      <modus-wc-button
-                        customClass="sign-out"
-                        onButtonClick={this.handleSignOutClick}
-                        variant="borderless"
-                      >
-                        {this.userCard?.signOutButton || 'Sign out'}
-                      </modus-wc-button>
-                    </div>
-                  </modus-wc-card>
-                </div>
+                {this.userMenuOpen && (
+                  <div
+                    class={`user ${this.userMenuOpen ? 'visible' : 'hidden'}`}
+                    ref={(el) => (this.userRef = el)}
+                  >
+                    <modus-wc-profile-menu profileProps={this.userCard} />
+                  </div>
+                )}
               </Fragment>
             )}
           </div>
