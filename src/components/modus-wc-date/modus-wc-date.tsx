@@ -12,6 +12,7 @@ import {
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-date.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize, WeekStartDay } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import DatePickerCalendar from './utils/calendar';
@@ -117,8 +118,10 @@ export class ModusWcDate {
   @Prop() format?:
     | 'yyyy-mm-dd'
     | 'dd-mm-yyyy'
+    | 'mm-dd-yyyy'
     | 'yyyy/mm/dd'
     | 'dd/mm/yyyy'
+    | 'mm/dd/yyyy'
     | 'MMM DD, YYYY' = 'dd-mm-yyyy';
 
   /** The value of the control. */
@@ -219,6 +222,9 @@ export class ModusWcDate {
   }
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Date input';
     }
@@ -934,6 +940,8 @@ export class ModusWcDate {
 
       if (this.format === 'dd-mm-yyyy' || this.format === 'dd/mm/yyyy') {
         [dayStr, monthStr, yearStr] = parts;
+      } else if (this.format === 'mm-dd-yyyy' || this.format === 'mm/dd/yyyy') {
+        [monthStr, dayStr, yearStr] = parts;
       } else {
         // yyyy-mm-dd or yyyy/mm/dd
         [yearStr, monthStr, dayStr] = parts;
@@ -975,8 +983,12 @@ export class ModusWcDate {
     switch (this.format) {
       case 'dd-mm-yyyy':
         return `${day}-${month}-${year}`;
+      case 'mm-dd-yyyy':
+        return `${month}-${day}-${year}`;
       case 'dd/mm/yyyy':
         return `${day}/${month}/${year}`;
+      case 'mm/dd/yyyy':
+        return `${month}/${day}/${year}`;
       case 'yyyy/mm/dd':
         return `${year}/${month}/${day}`;
       case 'MMM DD, YYYY': {

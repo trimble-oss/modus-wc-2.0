@@ -8,13 +8,14 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize, Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * A customizable menu component used to display a list of li elements vertically or horizontally.
  *
- * The component supports a `<slot>` for injecting custom li elements inside the ul
+ * The component supports a `<slot>` for injecting custom li elements inside the ul element.
  */
 @Component({
   tag: 'modus-wc-menu',
@@ -46,6 +47,9 @@ export class ModusWcMenu {
   @StencilEvent() menuFocusout!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Menu';
     }

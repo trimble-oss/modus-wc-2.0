@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { AutocompleteTypes, IInputFeedbackProp, ModusSize } from '../types';
 
 interface TextInputArgs {
@@ -233,6 +234,74 @@ export const WithCustomIconSlot: Story = {
   `,
   args: {
     placeholder: 'Enter text here...',
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for text-input component
+    if (!customElements.get('text-input-shadow-host')) {
+      const TextInputShadowHost = createShadowHostClass<TextInputArgs>({
+        componentTag: 'modus-wc-text-input',
+        propsMapper: (v: TextInputArgs, el: HTMLElement) => {
+          const textInputEl = el as unknown as {
+            autoCapitalize: string;
+            autoComplete: string;
+            autoCorrect: string;
+            bordered: boolean;
+            clearAriaLabel: string;
+            customClass: string;
+            disabled: boolean;
+            enterkeyhint: string;
+            feedback: IInputFeedbackProp;
+            includeClear: boolean;
+            includeSearch: boolean;
+            inputId: string;
+            inputTabIndex: number;
+            label: string;
+            maxLength: number;
+            minLength: number;
+            name: string;
+            pattern: string;
+            placeholder: string;
+            readOnly: boolean;
+            required: boolean;
+            size: string;
+            type: string;
+            value: string;
+          };
+          textInputEl.autoCapitalize = v['auto-capitalize'] || '';
+          textInputEl.autoComplete = v['auto-complete'] || '';
+          textInputEl.autoCorrect = v['auto-correct'] || '';
+          textInputEl.bordered = Boolean(v.bordered);
+          textInputEl.clearAriaLabel =
+            v['clear-aria-label'] || '' || 'Clear text';
+          textInputEl.customClass = v['custom-class'] || '';
+          textInputEl.disabled = Boolean(v.disabled);
+          textInputEl.enterkeyhint = v.enterkeyhint || '';
+          textInputEl.includeClear = Boolean(v['include-clear']);
+          textInputEl.includeSearch = Boolean(v['include-search']);
+          textInputEl.inputId = v['input-id'] || '';
+          textInputEl.inputTabIndex = v['input-tab-index'] || 0;
+          textInputEl.label = v.label || '';
+          textInputEl.maxLength = v['max-length'];
+          textInputEl.minLength = v['min-length'];
+          textInputEl.name = v.name || '';
+          textInputEl.pattern = v.pattern || '';
+          textInputEl.placeholder = v.placeholder || '';
+          textInputEl.readOnly = Boolean(v['read-only']);
+          textInputEl.required = Boolean(v.required);
+          textInputEl.size = v.size || '';
+          textInputEl.type = v.type || '';
+          textInputEl.value = v.value;
+        },
+      });
+      customElements.define('text-input-shadow-host', TextInputShadowHost);
+    }
+
+    return html`<text-input-shadow-host
+      .props=${{ ...args }}
+    ></text-input-shadow-host>`;
   },
 };
 

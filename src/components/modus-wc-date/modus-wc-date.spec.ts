@@ -2431,6 +2431,50 @@ describe('modus-wc-date', () => {
     });
     const component5 = page5.rootInstance as ModusWcDate;
     expect(component5['formatISODate'](date)).toBe('Oct 15, 2025');
+
+    // Test mm-dd-yyyy
+    const page6 = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Format mm-dd-yyyy" format="mm-dd-yyyy"></modus-wc-date>',
+    });
+    const component6 = page6.rootInstance as ModusWcDate;
+    expect(component6['formatISODate'](date)).toBe('10-15-2025');
+
+    // Test mm/dd/yyyy
+    const page7 = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Format mm/dd/yyyy" format="mm/dd/yyyy"></modus-wc-date>',
+    });
+    const component7 = page7.rootInstance as ModusWcDate;
+    expect(component7['formatISODate'](date)).toBe('10/15/2025');
+  });
+
+  it('should parse dates with mm-dd-yyyy format', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Parse mm-dd-yyyy" format="mm-dd-yyyy"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    const parsed = component['parseISODate']('10-15-2025');
+    expect(parsed).toBeDefined();
+    expect(parsed?.getFullYear()).toBe(2025);
+    expect(parsed?.getMonth()).toBe(9); // October (0-indexed)
+    expect(parsed?.getDate()).toBe(15);
+  });
+
+  it('should parse dates with mm/dd/yyyy format', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Parse mm/dd/yyyy" format="mm/dd/yyyy"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    const parsed = component['parseISODate']('10/15/2025');
+    expect(parsed).toBeDefined();
+    expect(parsed?.getFullYear()).toBe(2025);
+    expect(parsed?.getMonth()).toBe(9); // October (0-indexed)
+    expect(parsed?.getDate()).toBe(15);
   });
 
   it('should use default yyyy-mm-dd format for unknown format values', async () => {

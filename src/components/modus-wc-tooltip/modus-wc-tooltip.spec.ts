@@ -244,12 +244,21 @@ describe('modus-wc-tooltip', () => {
     expect(tooltipElement).not.toBeNull();
     expect(document.body.contains(tooltipElement)).toBe(true);
 
+    // Mock hidePopover to verify it is called during cleanup
+    const hidePopoverSpy = jest.fn();
+    if (tooltipElement) {
+      tooltipElement.hidePopover = hidePopoverSpy as unknown as () => void;
+    }
+
     // Simulate component disconnection
     page.root?.remove();
     await page.waitForChanges();
 
     // Verify the popper instance was destroyed
     expect(mockDestroy).toHaveBeenCalled();
+
+    // Verify hidePopover was called during cleanup
+    expect(hidePopoverSpy).toHaveBeenCalled();
 
     // Verify event listeners were removed
     expect(removeEventListenerSpy).toHaveBeenCalledWith(
@@ -494,6 +503,105 @@ describe('modus-wc-tooltip', () => {
     expect(
       mockTooltipElement.querySelector('.modus-wc-tooltip-arrow')
     ).not.toBeNull();
+  });
+
+  it('should set popover="manual" attribute on the tooltip element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<modus-wc-tooltip content="Test tooltip"><button>Trigger</button></modus-wc-tooltip>',
+    });
+
+    const tooltipContent = page.body.querySelector('.modus-wc-tooltip-content');
+    expect(tooltipContent).not.toBeNull();
+    expect(tooltipContent?.getAttribute('popover')).toBe('manual');
+    expect(tooltipContent?.parentElement).toBe(document.body);
+  });
+
+  it('should call showPopover when showing tooltip and API is available', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<modus-wc-tooltip content="Test tooltip"><button>Trigger</button></modus-wc-tooltip>',
+    });
+
+    const tooltipComponent = page.rootInstance as ModusWcTooltip;
+
+    // @ts-expect-error - Access private property for testing
+    const tooltipElement = tooltipComponent.tooltipElement;
+
+    // Mock the showPopover API
+    const showPopoverSpy = jest.fn();
+    if (tooltipElement) {
+      tooltipElement.showPopover = showPopoverSpy as unknown as () => void;
+    }
+
+    // Trigger show via mouse enter
+    const enterEvent = new MouseEvent('mouseenter');
+    page.root?.dispatchEvent(enterEvent);
+    await page.waitForChanges();
+
+    expect(showPopoverSpy).toHaveBeenCalled();
+  });
+
+  it('should call hidePopover when hiding tooltip and API is available', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<modus-wc-tooltip content="Test tooltip"><button>Trigger</button></modus-wc-tooltip>',
+    });
+
+    const tooltipComponent = page.rootInstance as ModusWcTooltip;
+
+    // @ts-expect-error - Access private property for testing
+    const tooltipElement = tooltipComponent.tooltipElement;
+
+    // Mock the popover API
+    if (tooltipElement) {
+      tooltipElement.showPopover = jest.fn();
+    }
+    const hidePopoverSpy = jest.fn();
+    if (tooltipElement) {
+      tooltipElement.hidePopover = hidePopoverSpy as unknown as () => void;
+    }
+
+    // Show then hide via mouse events
+    const enterEvent = new MouseEvent('mouseenter');
+    page.root?.dispatchEvent(enterEvent);
+    await page.waitForChanges();
+
+    const leaveEvent = new MouseEvent('mouseleave');
+    page.root?.dispatchEvent(leaveEvent);
+    await page.waitForChanges();
+
+    expect(hidePopoverSpy).toHaveBeenCalled();
+  });
+
+  it('should handle showPopover throwing when already open', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<modus-wc-tooltip content="Test tooltip"><button>Trigger</button></modus-wc-tooltip>',
+    });
+
+    const tooltipComponent = page.rootInstance as ModusWcTooltip;
+
+    // @ts-expect-error - Access private property for testing
+    const tooltipElement = tooltipComponent.tooltipElement;
+
+    // Mock showPopover to throw (simulating already open state)
+    if (tooltipElement) {
+      tooltipElement.showPopover = jest.fn(() => {
+        throw new DOMException('Already showing', 'InvalidStateError');
+      });
+
+      // Should not throw
+      expect(() => {
+        const enterEvent = new MouseEvent('mouseenter');
+        page.root?.dispatchEvent(enterEvent);
+      }).not.toThrow();
+    }
+    if (tooltipElement) {
+      tooltipElement.showPopover = jest.fn(() => {
+        throw new DOMException('Already showing', 'InvalidStateError');
+      });
+    }
   });
 
   it('should handle initializePopper early return when elements are not available', async () => {

@@ -79,6 +79,7 @@ modus-wc-2.0/
    - Dynamically added DaisyUI and Tailwind classes are added in their own files (e.g, `modus-wc-avatar.tailwind.ts`)
    - Use `&:hover {}` in the theme block instead of `:hover` pseudo-class where applicable.
    - Use `margin-inline-start` and `margin-inline-end` instead of `margin-left` and `margin-right` for improved compatibility with bidirectional (LTR/RTL) layouts.
+   - Use direct child selectors (e.g., `> span`) when targeting specific elements to avoid leaking styles into nested elements of the same type. This prevents unintended style inheritance in complex component hierarchies.
 
 5. **Consistent Code Style**:
 

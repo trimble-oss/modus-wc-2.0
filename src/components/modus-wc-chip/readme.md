@@ -9,6 +9,8 @@
 
 A customizable chip component used to display information in a compact area
 
+The component supports a `<slot>` for injecting custom content such as avatar and icons.
+
 ## Properties
 
 | Property      | Attribute      | Description                                               | Type                                   | Default       |

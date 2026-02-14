@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
+          "description": "A customizable accordion component used for showing and hiding related groups of content.\n\nThe component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
           "name": "ModusWcAccordion",
           "members": [
             {
@@ -74,7 +74,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable alert component used to inform the user about important events",
+          "description": "A customizable alert component used to inform the user about important events.\n\nThe component supports `<slot>` elements for injecting custom content and buttons.",
           "name": "ModusWcAlert",
           "members": [
             {
@@ -809,7 +809,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable autocomplete component used to create searchable text inputs.",
+          "description": "A customizable autocomplete component used to create searchable text inputs.\n\nThe component supports a `<slot>` for injecting custom content.",
           "name": "ModusWcAutocomplete",
           "members": [
             {
@@ -1639,7 +1639,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button",
+          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\n\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button.",
           "name": "ModusWcButton",
           "members": [
             {
@@ -1776,7 +1776,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable card component used to group and display content in a way that is easily readable",
+          "description": "A customizable card component used to group and display content in a way that is easily readable.\n\nThis component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.",
           "name": "ModusWcCard",
           "members": [
             {
@@ -2029,7 +2029,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable chip component used to display information in a compact area",
+          "description": "A customizable chip component used to display information in a compact area\n\nThe component supports a `<slot>` for injecting custom content such as avatar and icons.",
           "name": "ModusWcChip",
           "members": [
             {
@@ -2173,7 +2173,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable collapse component used for showing and hiding content.\r\n\r\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.\r\nDo not set",
+          "description": "A customizable collapse component used for showing and hiding content.\n\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.",
           "name": "ModusWcCollapse",
           "members": [
             {
@@ -2488,7 +2488,7 @@
               "default": "'dd-mm-yyyy'",
               "description": "The date format for display and input.",
               "type": {
-                "text": "| 'yyyy-mm-dd'\r\n    | 'dd-mm-yyyy'\r\n    | 'yyyy/mm/dd'\r\n    | 'dd/mm/yyyy'\r\n    | 'MMM DD, YYYY'"
+                "text": "| 'yyyy-mm-dd'\n    | 'dd-mm-yyyy'\n    | 'mm-dd-yyyy'\n    | 'yyyy/mm/dd'\n    | 'dd/mm/yyyy'\n    | 'mm/dd/yyyy'\n    | 'MMM DD, YYYY'"
               }
             },
             {
@@ -2988,7 +2988,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "File dropzone component that allows users to drag and drop files for upload.",
+          "description": "File dropzone component that allows users to drag and drop files for upload.\n\nThe component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.",
           "name": "ModusWcFileDropzone",
           "members": [
             {
@@ -3150,6 +3150,151 @@
           "declaration": {
             "name": "ModusWcFileDropzone",
             "module": "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-handle/modus-wc-handle.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A draggable handle component for resizing adjacent elements",
+          "name": "ModusWcHandle",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "button-color",
+              "fieldName": "buttonColor",
+              "default": "'tertiary'",
+              "description": "The color of the button.",
+              "type": {
+                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'warning'\n    | 'danger'"
+              }
+            },
+            {
+              "name": "button-size",
+              "fieldName": "buttonSize",
+              "default": "'md'",
+              "description": "The size of the button.",
+              "type": {
+                "text": "DaisySize"
+              }
+            },
+            {
+              "name": "button-variant",
+              "fieldName": "buttonVariant",
+              "default": "'filled'",
+              "description": "The variant of the button.",
+              "type": {
+                "text": "'borderless' | 'filled' | 'outlined'"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the handle element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "default-split",
+              "fieldName": "defaultSplit",
+              "default": "50",
+              "description": "The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "density",
+              "fieldName": "density",
+              "default": "'comfortable'",
+              "description": "The density/spacing of the handle container (compact: 8px, comfortable: 12px, relaxed: 16px).",
+              "type": {
+                "text": "'compact' | 'comfortable' | 'relaxed'"
+              }
+            },
+            {
+              "name": "left-target",
+              "fieldName": "leftTarget",
+              "description": "The left target element to resize (CSS selector or HTMLElement)",
+              "type": {
+                "text": "string | HTMLElement"
+              }
+            },
+            {
+              "name": "orientation",
+              "fieldName": "orientation",
+              "default": "'horizontal'",
+              "description": "The orientation of the handle.",
+              "type": {
+                "text": "Orientation"
+              }
+            },
+            {
+              "name": "right-target",
+              "fieldName": "rightTarget",
+              "description": "The right target element to resize (CSS selector or HTMLElement)",
+              "type": {
+                "text": "string | HTMLElement"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'default'",
+              "description": "The size of the handle.",
+              "type": {
+                "text": "'default' | 'lg' | 'xl' | '2xl'"
+              }
+            },
+            {
+              "name": "type",
+              "fieldName": "type",
+              "default": "'bar'",
+              "description": "The type of handle to display.",
+              "type": {
+                "text": "'bar' | 'button'"
+              }
+            }
+          ],
+          "tagName": "modus-wc-handle",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcHandle",
+          "declaration": {
+            "name": "ModusWcHandle",
+            "module": "src/components/modus-wc-handle/modus-wc-handle.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-handle",
+          "declaration": {
+            "name": "ModusWcHandle",
+            "module": "src/components/modus-wc-handle/modus-wc-handle.tsx"
           }
         }
       ]
@@ -3343,7 +3488,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input label component.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text",
+          "description": "A customizable input label component.\n\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.",
           "name": "ModusWcInputLabel",
           "members": [
             {
@@ -3608,7 +3753,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable menu item component used to display the item portion of a menu",
+          "description": "A customizable menu item component used to display the item portion of a menu.\n\nThis component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.",
           "name": "ModusWcMenuItem",
           "members": [
             {
@@ -3817,7 +3962,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\r\n\r\nThe component supports a `<slot>` for injecting custom li elements inside the ul",
+          "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\n\nThe component supports a `<slot>` for injecting custom li elements inside the ul element.",
           "name": "ModusWcMenu",
           "members": [
             {
@@ -3917,7 +4062,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable modal component used to display content in a dialog.\r\n\r\nThe component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML",
+          "description": "A customizable modal component used to display content in a dialog.\n\nThis component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.",
           "name": "ModusWcModal",
           "members": [
             {
@@ -4027,7 +4172,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nThe component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.\r\nIt also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML",
+          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\n\nThe component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.",
           "name": "ModusWcNavbar",
           "members": [
             {
@@ -4669,7 +4814,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable panel component used to organize content in a structured layout.",
+          "description": "A customizable panel component used to organize content in a structured layout.\n\nThis component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.",
           "name": "ModusWcPanel",
           "members": [
             {
@@ -4753,7 +4898,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\r\n\r\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle",
+          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\n\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle.",
           "name": "ModusWcProgress",
           "members": [
             {
@@ -5308,7 +5453,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable side navigation component for organizing primary navigation and content areas in an application.",
+          "description": "A customizable side navigation component for organizing primary navigation and content areas in an application.\n\nThe component supports a `<slot>` for injecting custom content inside the side navigation panel.",
           "name": "ModusWcSideNavigation",
           "members": [
             {
@@ -6267,7 +6412,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tabs component used to create groups of tabs.",
+          "description": "A customizable tabs component used to create groups of tabs.\n\nThe component supports a `<slot>` for injecting custom tab content.",
           "name": "ModusWcTabs",
           "members": [
             {
@@ -6366,7 +6511,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input component used to create text inputs with types.",
+          "description": "A customizable input component used to create text inputs with types.\n\nThe component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.",
           "name": "ModusWcTextInput",
           "members": [
             {
@@ -7274,7 +7419,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable toolbar component used to organize content across the entire page.",
+          "description": "A customizable toolbar component used to organize content across the entire page.\n\nThis component provides 'start', 'center', and 'end' `<slot>` elements for inserting custom HTML.",
           "name": "ModusWcToolbar",
           "members": [
             {

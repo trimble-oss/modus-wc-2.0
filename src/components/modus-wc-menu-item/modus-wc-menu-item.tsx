@@ -10,11 +10,14 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu-item.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable menu item component used to display the item portion of a menu
+ * A customizable menu item component used to display the item portion of a menu.
+ *
+ * This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
  */
 @Component({
   tag: 'modus-wc-menu-item',
@@ -79,6 +82,9 @@ export class ModusWcMenuItem {
   }>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
