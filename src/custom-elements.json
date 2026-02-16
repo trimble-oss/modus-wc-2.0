@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable accordion component used for showing and hiding related groups of content.\n\nThe component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
+          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
           "name": "ModusWcAccordion",
           "members": [
             {
@@ -74,7 +74,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable alert component used to inform the user about important events.\n\nThe component supports `<slot>` elements for injecting custom content and buttons.",
+          "description": "A customizable alert component used to inform the user about important events.\r\n\r\nThe component supports `<slot>` elements for injecting custom content and buttons.",
           "name": "ModusWcAlert",
           "members": [
             {
@@ -280,7 +280,7 @@
             {
               "name": "props",
               "type": {
-                "text": "{\r\n  bordered?: boolean;\r\n  disabled?: boolean;\r\n  readOnly?: boolean;\r\n  size?: ModusSize;\r\n}"
+                "text": "{\r\n  bordered?: boolean;\r\n  disabled?: boolean;\r\n  feedback?: IInputFeedbackProp;\r\n  readOnly?: boolean;\r\n  size?: ModusSize;\r\n}"
               }
             }
           ]
@@ -809,7 +809,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable autocomplete component used to create searchable text inputs.\n\nThe component supports a `<slot>` for injecting custom content.",
+          "description": "A customizable autocomplete component used to create searchable text inputs.\r\n\r\nThe component supports a `<slot>` for injecting custom content.",
           "name": "ModusWcAutocomplete",
           "members": [
             {
@@ -964,6 +964,14 @@
               "description": "Whether the form control is disabled.",
               "type": {
                 "text": "boolean"
+              }
+            },
+            {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "Feedback state for the input field.",
+              "type": {
+                "text": "IInputFeedbackProp"
               }
             },
             {
@@ -1639,7 +1647,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\n\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button.",
+          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button.",
           "name": "ModusWcButton",
           "members": [
             {
@@ -1776,7 +1784,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable card component used to group and display content in a way that is easily readable.\n\nThis component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.",
+          "description": "A customizable card component used to group and display content in a way that is easily readable.\r\n\r\nThis component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.",
           "name": "ModusWcCard",
           "members": [
             {
@@ -2029,7 +2037,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable chip component used to display information in a compact area\n\nThe component supports a `<slot>` for injecting custom content such as avatar and icons.",
+          "description": "A customizable chip component used to display information in a compact area\r\n\r\nThe component supports a `<slot>` for injecting custom content such as avatar and icons.",
           "name": "ModusWcChip",
           "members": [
             {
@@ -2173,7 +2181,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable collapse component used for showing and hiding content.\n\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.",
+          "description": "A customizable collapse component used for showing and hiding content.\r\n\r\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.",
           "name": "ModusWcCollapse",
           "members": [
             {
@@ -2347,6 +2355,214 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A tree item component that represents a single node in a hierarchical tree structure.\r\nThis component uses the modus-wc-menu-item structure for consistency.",
+          "name": "ModusWcTreeItem",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "field",
+              "name": "isExpanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Internal state to track if subtree is expanded"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "checkbox",
+              "fieldName": "checkbox",
+              "default": "false",
+              "description": "If true, renders a checkbox at the start of the tree item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the li element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "description": "The disabled state of the tree item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "has-subtree",
+              "fieldName": "hasSubtree",
+              "description": "Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "description": "The text label displayed for the tree item.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "selected",
+              "fieldName": "selected",
+              "description": "The selected state of the tree item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the tree item.",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              }
+            },
+            {
+              "name": "start-icon",
+              "fieldName": "startIcon",
+              "description": "The modus icon name to render at the start of the tree item.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "default": "''",
+              "description": "The unique identifying value of the tree item.",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-tree-item",
+          "events": [
+            {
+              "kind": "field",
+              "name": "itemSelect",
+              "type": {
+                "text": "EventEmitter<{\r\n    value: string;\r\n    selected?: boolean;\r\n  }>"
+              },
+              "description": "Event emitted when a tree item is selected."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTreeItem",
+          "declaration": {
+            "name": "ModusWcTreeItem",
+            "module": "src/components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-tree-item",
+          "declaration": {
+            "name": "ModusWcTreeItem",
+            "module": "src/components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-content-tree/modus-wc-tree-view/modus-wc-tree-view.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A wrapper component that provides the ul element for tree items.\r\nThis component uses the modus-wc-menu structure to wrap tree items in a proper list structure.",
+          "name": "ModusWcTreeView",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the ul element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "is-sub-list",
+              "fieldName": "isSubList",
+              "default": "false",
+              "description": "Indicates that this list is a nested sublist.",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "tagName": "modus-wc-tree-view",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTreeView",
+          "declaration": {
+            "name": "ModusWcTreeView",
+            "module": "src/components/modus-wc-content-tree/modus-wc-tree-view/modus-wc-tree-view.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-tree-view",
+          "declaration": {
+            "name": "ModusWcTreeView",
+            "module": "src/components/modus-wc-content-tree/modus-wc-tree-view/modus-wc-tree-view.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-date/modus-wc-date.tsx",
       "declarations": [
         {
@@ -2488,7 +2704,7 @@
               "default": "'dd-mm-yyyy'",
               "description": "The date format for display and input.",
               "type": {
-                "text": "| 'yyyy-mm-dd'\n    | 'dd-mm-yyyy'\n    | 'mm-dd-yyyy'\n    | 'yyyy/mm/dd'\n    | 'dd/mm/yyyy'\n    | 'mm/dd/yyyy'\n    | 'MMM DD, YYYY'"
+                "text": "| 'yyyy-mm-dd'\r\n    | 'dd-mm-yyyy'\r\n    | 'mm-dd-yyyy'\r\n    | 'yyyy/mm/dd'\r\n    | 'dd/mm/yyyy'\r\n    | 'mm/dd/yyyy'\r\n    | 'MMM DD, YYYY'"
               }
             },
             {
@@ -2988,7 +3204,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "File dropzone component that allows users to drag and drop files for upload.\n\nThe component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.",
+          "description": "File dropzone component that allows users to drag and drop files for upload.\r\n\r\nThe component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.",
           "name": "ModusWcFileDropzone",
           "members": [
             {
@@ -3183,7 +3399,7 @@
               "default": "'tertiary'",
               "description": "The color of the button.",
               "type": {
-                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'warning'\n    | 'danger'"
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'warning'\r\n    | 'danger'"
               }
             },
             {
@@ -3488,7 +3704,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input label component.\n\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.",
+          "description": "A customizable input label component.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.",
           "name": "ModusWcInputLabel",
           "members": [
             {
@@ -3753,7 +3969,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable menu item component used to display the item portion of a menu.\n\nThis component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.",
+          "description": "A customizable menu item component used to display the item portion of a menu.\r\n\r\nThis component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.",
           "name": "ModusWcMenuItem",
           "members": [
             {
@@ -3773,15 +3989,6 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "expandSubmenu",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
             },
             {
               "kind": "field",
@@ -3842,14 +4049,6 @@
               "name": "has-submenu",
               "fieldName": "hasSubmenu",
               "description": "Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
-              "name": "indeterminate",
-              "fieldName": "indeterminate",
-              "description": "The indeterminate state of the checkbox.",
               "type": {
                 "text": "boolean"
               }
@@ -3962,7 +4161,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\n\nThe component supports a `<slot>` for injecting custom li elements inside the ul element.",
+          "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\r\n\r\nThe component supports a `<slot>` for injecting custom li elements inside the ul element.",
           "name": "ModusWcMenu",
           "members": [
             {
@@ -4062,7 +4261,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable modal component used to display content in a dialog.\n\nThis component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.",
+          "description": "A customizable modal component used to display content in a dialog.\r\n\r\nThis component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.",
           "name": "ModusWcModal",
           "members": [
             {
@@ -4172,7 +4371,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\n\nThe component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.",
+          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nThe component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.",
           "name": "ModusWcNavbar",
           "members": [
             {
@@ -4814,7 +5013,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable panel component used to organize content in a structured layout.\n\nThis component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.",
+          "description": "A customizable panel component used to organize content in a structured layout.\r\n\r\nThis component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.",
           "name": "ModusWcPanel",
           "members": [
             {
@@ -4898,7 +5097,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\n\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle.",
+          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\r\n\r\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle.",
           "name": "ModusWcProgress",
           "members": [
             {
@@ -5453,7 +5652,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable side navigation component for organizing primary navigation and content areas in an application.\n\nThe component supports a `<slot>` for injecting custom content inside the side navigation panel.",
+          "description": "A customizable side navigation component for organizing primary navigation and content areas in an application.\r\n\r\nThe component supports a `<slot>` for injecting custom content inside the side navigation panel.",
           "name": "ModusWcSideNavigation",
           "members": [
             {
@@ -6412,7 +6611,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tabs component used to create groups of tabs.\n\nThe component supports a `<slot>` for injecting custom tab content.",
+          "description": "A customizable tabs component used to create groups of tabs.\r\n\r\nThe component supports a `<slot>` for injecting custom tab content.",
           "name": "ModusWcTabs",
           "members": [
             {
@@ -6511,7 +6710,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input component used to create text inputs with types.\n\nThe component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.",
+          "description": "A customizable input component used to create text inputs with types.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.",
           "name": "ModusWcTextInput",
           "members": [
             {
@@ -7419,7 +7618,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable toolbar component used to organize content across the entire page.\n\nThis component provides 'start', 'center', and 'end' `<slot>` elements for inserting custom HTML.",
+          "description": "A customizable toolbar component used to organize content across the entire page.\r\n\r\nThis component provides 'start', 'center', and 'end' `<slot>` elements for inserting custom HTML.",
           "name": "ModusWcToolbar",
           "members": [
             {

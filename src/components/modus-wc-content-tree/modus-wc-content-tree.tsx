@@ -96,7 +96,7 @@ export class ModusWcContentTree {
         while (parent && parent !== this.el) {
           if (parent.tagName === 'MODUS-WC-MENU-ITEM') {
             parent.style.display = '';
-            (parent as any).expandSubmenu();
+            // (parent as any).expandSubmenu();
           }
           parent = parent.parentElement;
         }
@@ -109,7 +109,7 @@ export class ModusWcContentTree {
 
         if (hasMatchingChildren) {
           (item as HTMLElement).style.display = '';
-          (item as any).expandSubmenu();
+          // (item as any).expandSubmenu();
         } else {
           (item as HTMLElement).style.display = 'none';
         }

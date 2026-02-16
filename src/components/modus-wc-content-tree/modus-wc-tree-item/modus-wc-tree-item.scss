@@ -1,0 +1,46 @@
+/**
+* This component uses modus-wc-menu-item structure and DaisyUI menu classes.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+modus-wc-tree-item {
+  .content-tree-item {
+    list-style: none;
+  }
+
+  .modus-wc-tree-item-content {
+    align-items: center;
+    display: flex;
+    gap: var(--modus-wc-spacing-sm, 0.5rem);
+  }
+
+  .modus-wc-tree-item-labels {
+    flex: 1;
+
+    .modus-wc-tree-item-label {
+      display: block;
+    }
+  }
+
+  button {
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    gap: var(--modus-wc-spacing-sm, 0.5rem);
+    padding: var(--modus-wc-spacing-xs, 0.25rem)
+      var(--modus-wc-spacing-sm, 0.5rem);
+    text-align: start;
+    width: 100%;
+  }
+
+  .modus-wc-tree-dropdown {
+    display: none;
+    list-style: none;
+  }
+
+  .modus-wc-tree-dropdown.modus-wc-tree-dropdown-show {
+    display: block;
+  }
+}

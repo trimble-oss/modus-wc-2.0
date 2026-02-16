@@ -42,7 +42,7 @@ export { TypographyHierarchy, TypographySize, TypographyWeight } from "./compone
 export namespace Components {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
-     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
+     * The component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
      */
     interface ModusWcAccordion {
         /**
@@ -51,7 +51,8 @@ export namespace Components {
         "customClass"?: string;
     }
     /**
-     * A customizable alert component used to inform the user about important events
+     * A customizable alert component used to inform the user about important events.
+     * The component supports `<slot>` elements for injecting custom content and buttons.
      */
     interface ModusWcAlert {
         /**
@@ -85,6 +86,7 @@ export namespace Components {
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
+     * The component supports a `<slot>` for injecting custom content.
      */
     interface ModusWcAutocomplete {
         /**
@@ -127,6 +129,10 @@ export namespace Components {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * Feedback state for the input field.
+         */
+        "feedback"?: IInputFeedbackProp;
         /**
           * Programmatically set focus to input
          */
@@ -302,7 +308,7 @@ export namespace Components {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
-     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
+     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
      */
     interface ModusWcButton {
         /**
@@ -369,7 +375,8 @@ export namespace Components {
         "variant": 'borderless' | 'filled' | 'outlined';
     }
     /**
-     * A customizable card component used to group and display content in a way that is easily readable
+     * A customizable card component used to group and display content in a way that is easily readable.
+     * This component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.
      */
     interface ModusWcCard {
         /**
@@ -440,6 +447,7 @@ export namespace Components {
     }
     /**
      * A customizable chip component used to display information in a compact area
+     * The component supports a `<slot>` for injecting custom content such as avatar and icons.
      */
     interface ModusWcChip {
         /**
@@ -482,7 +490,6 @@ export namespace Components {
     /**
      * A customizable collapse component used for showing and hiding content.
      * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
-     * Do not set
      */
     interface ModusWcCollapse {
         /**
@@ -546,8 +553,10 @@ export namespace Components {
          */
         "format"?: | 'yyyy-mm-dd'
     | 'dd-mm-yyyy'
+    | 'mm-dd-yyyy'
     | 'yyyy/mm/dd'
     | 'dd/mm/yyyy'
+    | 'mm/dd/yyyy'
     | 'MMM DD, YYYY';
         /**
           * The ID of the input element.
@@ -689,6 +698,7 @@ export namespace Components {
     }
     /**
      * File dropzone component that allows users to drag and drop files for upload.
+     * The component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
      */
     interface ModusWcFileDropzone {
         /**
@@ -745,6 +755,59 @@ export namespace Components {
         "successMessage"?: string;
     }
     /**
+     * A draggable handle component for resizing adjacent elements
+     */
+    interface ModusWcHandle {
+        /**
+          * The color of the button.
+         */
+        "buttonColor"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger';
+        /**
+          * The size of the button.
+         */
+        "buttonSize"?: DaisySize;
+        /**
+          * The variant of the button.
+         */
+        "buttonVariant"?: 'borderless' | 'filled' | 'outlined';
+        /**
+          * Custom CSS class to apply to the handle element.
+         */
+        "customClass"?: string;
+        /**
+          * The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage.
+         */
+        "defaultSplit"?: number;
+        /**
+          * The density/spacing of the handle container (compact: 8px, comfortable: 12px, relaxed: 16px).
+         */
+        "density"?: 'compact' | 'comfortable' | 'relaxed';
+        /**
+          * The left target element to resize (CSS selector or HTMLElement)
+         */
+        "leftTarget"?: string | HTMLElement;
+        /**
+          * The orientation of the handle.
+         */
+        "orientation"?: Orientation;
+        /**
+          * The right target element to resize (CSS selector or HTMLElement)
+         */
+        "rightTarget"?: string | HTMLElement;
+        /**
+          * The size of the handle.
+         */
+        "size"?: 'default' | 'lg' | 'xl' | '2xl';
+        /**
+          * The type of handle to display.
+         */
+        "type"?: 'bar' | 'button';
+    }
+    /**
      * A customizable icon component used to render Modus icons.
      * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      */
@@ -798,7 +861,7 @@ export namespace Components {
     }
     /**
      * A customizable input label component.
-     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text
+     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
      */
     interface ModusWcInputLabel {
         /**
@@ -871,7 +934,7 @@ export namespace Components {
     }
     /**
      * A customizable menu component used to display a list of li elements vertically or horizontally.
-     * The component supports a `<slot>` for injecting custom li elements inside the ul
+     * The component supports a `<slot>` for injecting custom li elements inside the ul element.
      */
     interface ModusWcMenu {
         /**
@@ -896,7 +959,8 @@ export namespace Components {
         "size"?: ModusSize;
     }
     /**
-     * A customizable menu item component used to display the item portion of a menu
+     * A customizable menu item component used to display the item portion of a menu.
+     * This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
      */
     interface ModusWcMenuItem {
         "bordered"?: boolean;
@@ -959,7 +1023,7 @@ export namespace Components {
     }
     /**
      * A customizable modal component used to display content in a dialog.
-     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML
+     * This component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.
      */
     interface ModusWcModal {
         /**
@@ -993,8 +1057,7 @@ export namespace Components {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
-     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML
+     * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
      */
     interface ModusWcNavbar {
         /**
@@ -1162,6 +1225,7 @@ export namespace Components {
     }
     /**
      * A customizable panel component used to organize content in a structured layout.
+     * This component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.
      */
     interface ModusWcPanel {
         /**
@@ -1183,7 +1247,7 @@ export namespace Components {
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
-     * The radial variant supports slotting in custom HTML to be displayed within the progress circle
+     * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
      */
     interface ModusWcProgress {
         /**
@@ -1344,6 +1408,7 @@ export namespace Components {
     }
     /**
      * A customizable side navigation component for organizing primary navigation and content areas in an application.
+     * The component supports a `<slot>` for injecting custom content inside the side navigation panel.
      */
     interface ModusWcSideNavigation {
         /**
@@ -1571,6 +1636,7 @@ export namespace Components {
     }
     /**
      * A customizable tabs component used to create groups of tabs.
+     * The component supports a `<slot>` for injecting custom tab content.
      */
     interface ModusWcTabs {
         /**
@@ -1596,6 +1662,7 @@ export namespace Components {
     }
     /**
      * A customizable input component used to create text inputs with types.
+     * The component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.
      */
     interface ModusWcTextInput {
         /**
@@ -1903,6 +1970,7 @@ export namespace Components {
     }
     /**
      * A customizable toolbar component used to organize content across the entire page.
+     * This component provides 'start', 'center', and 'end' `<slot>` elements for inserting custom HTML.
      */
     interface ModusWcToolbar {
         /**
@@ -1940,6 +2008,62 @@ export namespace Components {
           * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
          */
         "tooltipId"?: string;
+    }
+    /**
+     * A tree item component that represents a single node in a hierarchical tree structure.
+     * This component uses the modus-wc-menu-item structure for consistency.
+     */
+    interface ModusWcTreeItem {
+        /**
+          * If true, renders a checkbox at the start of the tree item.
+         */
+        "checkbox"?: boolean;
+        /**
+          * Custom CSS class to apply to the li element.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the tree item.
+         */
+        "disabled"?: boolean;
+        /**
+          * Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior.
+         */
+        "hasSubtree"?: boolean;
+        /**
+          * The text label displayed for the tree item.
+         */
+        "label": string;
+        /**
+          * The selected state of the tree item.
+         */
+        "selected"?: boolean;
+        /**
+          * The size of the tree item.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * The modus icon name to render at the start of the tree item.
+         */
+        "startIcon"?: string;
+        /**
+          * The unique identifying value of the tree item.
+         */
+        "value": string;
+    }
+    /**
+     * A wrapper component that provides the ul element for tree items.
+     * This component uses the modus-wc-menu structure to wrap tree items in a proper list structure.
+     */
+    interface ModusWcTreeView {
+        /**
+          * Custom CSS class to apply to the ul element.
+         */
+        "customClass"?: string;
+        /**
+          * Indicates that this list is a nested sublist.
+         */
+        "isSubList"?: boolean;
     }
     /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
@@ -2104,6 +2228,10 @@ export interface ModusWcTooltipCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTooltipElement;
 }
+export interface ModusWcTreeItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTreeItemElement;
+}
 export interface ModusWcUtilityPanelCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcUtilityPanelElement;
@@ -2117,7 +2245,7 @@ declare global {
     }
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
-     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
+     * The component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
      */
     interface HTMLModusWcAccordionElement extends Components.ModusWcAccordion, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcAccordionElementEventMap>(type: K, listener: (this: HTMLModusWcAccordionElement, ev: ModusWcAccordionCustomEvent<HTMLModusWcAccordionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2137,7 +2265,8 @@ declare global {
         "dismissClick": any;
     }
     /**
-     * A customizable alert component used to inform the user about important events
+     * A customizable alert component used to inform the user about important events.
+     * The component supports `<slot>` elements for injecting custom content and buttons.
      */
     interface HTMLModusWcAlertElement extends Components.ModusWcAlert, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcAlertElementEventMap>(type: K, listener: (this: HTMLModusWcAlertElement, ev: ModusWcAlertCustomEvent<HTMLModusWcAlertElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2164,6 +2293,7 @@ declare global {
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
+     * The component supports a `<slot>` for injecting custom content.
      */
     interface HTMLModusWcAutocompleteElement extends Components.ModusWcAutocomplete, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcAutocompleteElementEventMap>(type: K, listener: (this: HTMLModusWcAutocompleteElement, ev: ModusWcAutocompleteCustomEvent<HTMLModusWcAutocompleteElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2225,7 +2355,7 @@ declare global {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
-     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
+     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
      */
     interface HTMLModusWcButtonElement extends Components.ModusWcButton, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcButtonElementEventMap>(type: K, listener: (this: HTMLModusWcButtonElement, ev: ModusWcButtonCustomEvent<HTMLModusWcButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2269,7 +2399,8 @@ declare global {
         new (): HTMLModusWcButtonGroupElement;
     };
     /**
-     * A customizable card component used to group and display content in a way that is easily readable
+     * A customizable card component used to group and display content in a way that is easily readable.
+     * This component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.
      */
     interface HTMLModusWcCardElement extends Components.ModusWcCard, HTMLStencilElement {
     }
@@ -2305,6 +2436,7 @@ declare global {
     }
     /**
      * A customizable chip component used to display information in a compact area
+     * The component supports a `<slot>` for injecting custom content such as avatar and icons.
      */
     interface HTMLModusWcChipElement extends Components.ModusWcChip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcChipElementEventMap>(type: K, listener: (this: HTMLModusWcChipElement, ev: ModusWcChipCustomEvent<HTMLModusWcChipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2326,7 +2458,6 @@ declare global {
     /**
      * A customizable collapse component used for showing and hiding content.
      * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
-     * Do not set
      */
     interface HTMLModusWcCollapseElement extends Components.ModusWcCollapse, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcCollapseElementEventMap>(type: K, listener: (this: HTMLModusWcCollapseElement, ev: ModusWcCollapseCustomEvent<HTMLModusWcCollapseElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2412,6 +2543,7 @@ declare global {
     }
     /**
      * File dropzone component that allows users to drag and drop files for upload.
+     * The component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
      */
     interface HTMLModusWcFileDropzoneElement extends Components.ModusWcFileDropzone, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcFileDropzoneElementEventMap>(type: K, listener: (this: HTMLModusWcFileDropzoneElement, ev: ModusWcFileDropzoneCustomEvent<HTMLModusWcFileDropzoneElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2426,6 +2558,15 @@ declare global {
     var HTMLModusWcFileDropzoneElement: {
         prototype: HTMLModusWcFileDropzoneElement;
         new (): HTMLModusWcFileDropzoneElement;
+    };
+    /**
+     * A draggable handle component for resizing adjacent elements
+     */
+    interface HTMLModusWcHandleElement extends Components.ModusWcHandle, HTMLStencilElement {
+    }
+    var HTMLModusWcHandleElement: {
+        prototype: HTMLModusWcHandleElement;
+        new (): HTMLModusWcHandleElement;
     };
     /**
      * A customizable icon component used to render Modus icons.
@@ -2449,7 +2590,7 @@ declare global {
     };
     /**
      * A customizable input label component.
-     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text
+     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
      */
     interface HTMLModusWcInputLabelElement extends Components.ModusWcInputLabel, HTMLStencilElement {
     }
@@ -2481,7 +2622,7 @@ declare global {
     }
     /**
      * A customizable menu component used to display a list of li elements vertically or horizontally.
-     * The component supports a `<slot>` for injecting custom li elements inside the ul
+     * The component supports a `<slot>` for injecting custom li elements inside the ul element.
      */
     interface HTMLModusWcMenuElement extends Components.ModusWcMenu, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcMenuElementEventMap>(type: K, listener: (this: HTMLModusWcMenuElement, ev: ModusWcMenuCustomEvent<HTMLModusWcMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2504,7 +2645,8 @@ declare global {
   };
     }
     /**
-     * A customizable menu item component used to display the item portion of a menu
+     * A customizable menu item component used to display the item portion of a menu.
+     * This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
      */
     interface HTMLModusWcMenuItemElement extends Components.ModusWcMenuItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcMenuItemElementEventMap>(type: K, listener: (this: HTMLModusWcMenuItemElement, ev: ModusWcMenuItemCustomEvent<HTMLModusWcMenuItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2522,7 +2664,7 @@ declare global {
     };
     /**
      * A customizable modal component used to display content in a dialog.
-     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML
+     * This component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.
      */
     interface HTMLModusWcModalElement extends Components.ModusWcModal, HTMLStencilElement {
     }
@@ -2549,8 +2691,7 @@ declare global {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
-     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML
+     * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
      */
     interface HTMLModusWcNavbarElement extends Components.ModusWcNavbar, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcNavbarElementEventMap>(type: K, listener: (this: HTMLModusWcNavbarElement, ev: ModusWcNavbarCustomEvent<HTMLModusWcNavbarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2610,6 +2751,7 @@ declare global {
     };
     /**
      * A customizable panel component used to organize content in a structured layout.
+     * This component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.
      */
     interface HTMLModusWcPanelElement extends Components.ModusWcPanel, HTMLStencilElement {
     }
@@ -2619,7 +2761,7 @@ declare global {
     };
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
-     * The radial variant supports slotting in custom HTML to be displayed within the progress circle
+     * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
      */
     interface HTMLModusWcProgressElement extends Components.ModusWcProgress, HTMLStencilElement {
     }
@@ -2696,6 +2838,7 @@ declare global {
     }
     /**
      * A customizable side navigation component for organizing primary navigation and content areas in an application.
+     * The component supports a `<slot>` for injecting custom content inside the side navigation panel.
      */
     interface HTMLModusWcSideNavigationElement extends Components.ModusWcSideNavigation, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcSideNavigationElementEventMap>(type: K, listener: (this: HTMLModusWcSideNavigationElement, ev: ModusWcSideNavigationCustomEvent<HTMLModusWcSideNavigationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2817,6 +2960,7 @@ declare global {
     }
     /**
      * A customizable tabs component used to create groups of tabs.
+     * The component supports a `<slot>` for injecting custom tab content.
      */
     interface HTMLModusWcTabsElement extends Components.ModusWcTabs, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTabsElementEventMap>(type: K, listener: (this: HTMLModusWcTabsElement, ev: ModusWcTabsCustomEvent<HTMLModusWcTabsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2840,6 +2984,7 @@ declare global {
     }
     /**
      * A customizable input component used to create text inputs with types.
+     * The component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.
      */
     interface HTMLModusWcTextInputElement extends Components.ModusWcTextInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTextInputElementEventMap>(type: K, listener: (this: HTMLModusWcTextInputElement, ev: ModusWcTextInputCustomEvent<HTMLModusWcTextInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2938,6 +3083,7 @@ declare global {
     };
     /**
      * A customizable toolbar component used to organize content across the entire page.
+     * This component provides 'start', 'center', and 'end' `<slot>` elements for inserting custom HTML.
      */
     interface HTMLModusWcToolbarElement extends Components.ModusWcToolbar, HTMLStencilElement {
     }
@@ -2966,6 +3112,40 @@ declare global {
     var HTMLModusWcTooltipElement: {
         prototype: HTMLModusWcTooltipElement;
         new (): HTMLModusWcTooltipElement;
+    };
+    interface HTMLModusWcTreeItemElementEventMap {
+        "itemSelect": {
+    value: string;
+    selected?: boolean;
+  };
+    }
+    /**
+     * A tree item component that represents a single node in a hierarchical tree structure.
+     * This component uses the modus-wc-menu-item structure for consistency.
+     */
+    interface HTMLModusWcTreeItemElement extends Components.ModusWcTreeItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTreeItemElementEventMap>(type: K, listener: (this: HTMLModusWcTreeItemElement, ev: ModusWcTreeItemCustomEvent<HTMLModusWcTreeItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTreeItemElementEventMap>(type: K, listener: (this: HTMLModusWcTreeItemElement, ev: ModusWcTreeItemCustomEvent<HTMLModusWcTreeItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTreeItemElement: {
+        prototype: HTMLModusWcTreeItemElement;
+        new (): HTMLModusWcTreeItemElement;
+    };
+    /**
+     * A wrapper component that provides the ul element for tree items.
+     * This component uses the modus-wc-menu structure to wrap tree items in a proper list structure.
+     */
+    interface HTMLModusWcTreeViewElement extends Components.ModusWcTreeView, HTMLStencilElement {
+    }
+    var HTMLModusWcTreeViewElement: {
+        prototype: HTMLModusWcTreeViewElement;
+        new (): HTMLModusWcTreeViewElement;
     };
     /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
@@ -3015,6 +3195,7 @@ declare global {
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-dropdown-menu": HTMLModusWcDropdownMenuElement;
         "modus-wc-file-dropzone": HTMLModusWcFileDropzoneElement;
+        "modus-wc-handle": HTMLModusWcHandleElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
@@ -3046,6 +3227,8 @@ declare global {
         "modus-wc-toast": HTMLModusWcToastElement;
         "modus-wc-toolbar": HTMLModusWcToolbarElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
+        "modus-wc-tree-item": HTMLModusWcTreeItemElement;
+        "modus-wc-tree-view": HTMLModusWcTreeViewElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
         "modus-wc-utility-panel": HTMLModusWcUtilityPanelElement;
     }
@@ -3053,7 +3236,7 @@ declare global {
 declare namespace LocalJSX {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
-     * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
+     * The component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
      */
     interface ModusWcAccordion {
         /**
@@ -3069,7 +3252,8 @@ declare namespace LocalJSX {
   }>) => void;
     }
     /**
-     * A customizable alert component used to inform the user about important events
+     * A customizable alert component used to inform the user about important events.
+     * The component supports `<slot>` elements for injecting custom content and buttons.
      */
     interface ModusWcAlert {
         /**
@@ -3107,6 +3291,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
+     * The component supports a `<slot>` for injecting custom content.
      */
     interface ModusWcAutocomplete {
         /**
@@ -3141,6 +3326,10 @@ declare namespace LocalJSX {
           * Whether the form control is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * Feedback state for the input field.
+         */
+        "feedback"?: IInputFeedbackProp;
         /**
           * Show the clear button within the input field.
          */
@@ -3332,7 +3521,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable button component used to create buttons with different sizes, variants, and types.
-     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
+     * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
      */
     interface ModusWcButton {
         /**
@@ -3416,7 +3605,8 @@ declare namespace LocalJSX {
         "variant"?: 'borderless' | 'filled' | 'outlined';
     }
     /**
-     * A customizable card component used to group and display content in a way that is easily readable
+     * A customizable card component used to group and display content in a way that is easily readable.
+     * This component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.
      */
     interface ModusWcCard {
         /**
@@ -3499,6 +3689,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable chip component used to display information in a compact area
+     * The component supports a `<slot>` for injecting custom content such as avatar and icons.
      */
     interface ModusWcChip {
         /**
@@ -3549,7 +3740,6 @@ declare namespace LocalJSX {
     /**
      * A customizable collapse component used for showing and hiding content.
      * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
-     * Do not set
      */
     interface ModusWcCollapse {
         /**
@@ -3617,8 +3807,10 @@ declare namespace LocalJSX {
          */
         "format"?: | 'yyyy-mm-dd'
     | 'dd-mm-yyyy'
+    | 'mm-dd-yyyy'
     | 'yyyy/mm/dd'
     | 'dd/mm/yyyy'
+    | 'mm/dd/yyyy'
     | 'MMM DD, YYYY';
         /**
           * The ID of the input element.
@@ -3784,6 +3976,7 @@ declare namespace LocalJSX {
     }
     /**
      * File dropzone component that allows users to drag and drop files for upload.
+     * The component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
      */
     interface ModusWcFileDropzone {
         /**
@@ -3840,6 +4033,59 @@ declare namespace LocalJSX {
         "successMessage"?: string;
     }
     /**
+     * A draggable handle component for resizing adjacent elements
+     */
+    interface ModusWcHandle {
+        /**
+          * The color of the button.
+         */
+        "buttonColor"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger';
+        /**
+          * The size of the button.
+         */
+        "buttonSize"?: DaisySize;
+        /**
+          * The variant of the button.
+         */
+        "buttonVariant"?: 'borderless' | 'filled' | 'outlined';
+        /**
+          * Custom CSS class to apply to the handle element.
+         */
+        "customClass"?: string;
+        /**
+          * The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage.
+         */
+        "defaultSplit"?: number;
+        /**
+          * The density/spacing of the handle container (compact: 8px, comfortable: 12px, relaxed: 16px).
+         */
+        "density"?: 'compact' | 'comfortable' | 'relaxed';
+        /**
+          * The left target element to resize (CSS selector or HTMLElement)
+         */
+        "leftTarget"?: string | HTMLElement;
+        /**
+          * The orientation of the handle.
+         */
+        "orientation"?: Orientation;
+        /**
+          * The right target element to resize (CSS selector or HTMLElement)
+         */
+        "rightTarget"?: string | HTMLElement;
+        /**
+          * The size of the handle.
+         */
+        "size"?: 'default' | 'lg' | 'xl' | '2xl';
+        /**
+          * The type of handle to display.
+         */
+        "type"?: 'bar' | 'button';
+    }
+    /**
      * A customizable icon component used to render Modus icons.
      * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      */
@@ -3893,7 +4139,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable input label component.
-     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text
+     * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
      */
     interface ModusWcInputLabel {
         /**
@@ -3966,7 +4212,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable menu component used to display a list of li elements vertically or horizontally.
-     * The component supports a `<slot>` for injecting custom li elements inside the ul
+     * The component supports a `<slot>` for injecting custom li elements inside the ul element.
      */
     interface ModusWcMenu {
         /**
@@ -3995,7 +4241,8 @@ declare namespace LocalJSX {
         "size"?: ModusSize;
     }
     /**
-     * A customizable menu item component used to display the item portion of a menu
+     * A customizable menu item component used to display the item portion of a menu.
+     * This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
      */
     interface ModusWcMenuItem {
         "bordered"?: boolean;
@@ -4061,7 +4308,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable modal component used to display content in a dialog.
-     * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML
+     * This component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.
      */
     interface ModusWcModal {
         /**
@@ -4095,8 +4342,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
-     * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML
+     * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
      */
     interface ModusWcNavbar {
         /**
@@ -4340,6 +4586,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable panel component used to organize content in a structured layout.
+     * This component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.
      */
     interface ModusWcPanel {
         /**
@@ -4361,7 +4608,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
-     * The radial variant supports slotting in custom HTML to be displayed within the progress circle
+     * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
      */
     interface ModusWcProgress {
         /**
@@ -4550,6 +4797,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable side navigation component for organizing primary navigation and content areas in an application.
+     * The component supports a `<slot>` for injecting custom content inside the side navigation panel.
      */
     interface ModusWcSideNavigation {
         /**
@@ -4843,6 +5091,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable tabs component used to create groups of tabs.
+     * The component supports a `<slot>` for injecting custom tab content.
      */
     interface ModusWcTabs {
         /**
@@ -4875,6 +5124,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable input component used to create text inputs with types.
+     * The component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.
      */
     interface ModusWcTextInput {
         /**
@@ -5226,6 +5476,7 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable toolbar component used to organize content across the entire page.
+     * This component provides 'start', 'center', and 'end' `<slot>` elements for inserting custom HTML.
      */
     interface ModusWcToolbar {
         /**
@@ -5267,6 +5518,69 @@ declare namespace LocalJSX {
           * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
          */
         "tooltipId"?: string;
+    }
+    /**
+     * A tree item component that represents a single node in a hierarchical tree structure.
+     * This component uses the modus-wc-menu-item structure for consistency.
+     */
+    interface ModusWcTreeItem {
+        /**
+          * If true, renders a checkbox at the start of the tree item.
+         */
+        "checkbox"?: boolean;
+        /**
+          * Custom CSS class to apply to the li element.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the tree item.
+         */
+        "disabled"?: boolean;
+        /**
+          * Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior.
+         */
+        "hasSubtree"?: boolean;
+        /**
+          * The text label displayed for the tree item.
+         */
+        "label": string;
+        /**
+          * Event emitted when a tree item is selected.
+         */
+        "onItemSelect"?: (event: ModusWcTreeItemCustomEvent<{
+    value: string;
+    selected?: boolean;
+  }>) => void;
+        /**
+          * The selected state of the tree item.
+         */
+        "selected"?: boolean;
+        /**
+          * The size of the tree item.
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * The modus icon name to render at the start of the tree item.
+         */
+        "startIcon"?: string;
+        /**
+          * The unique identifying value of the tree item.
+         */
+        "value"?: string;
+    }
+    /**
+     * A wrapper component that provides the ul element for tree items.
+     * This component uses the modus-wc-menu structure to wrap tree items in a proper list structure.
+     */
+    interface ModusWcTreeView {
+        /**
+          * Custom CSS class to apply to the ul element.
+         */
+        "customClass"?: string;
+        /**
+          * Indicates that this list is a nested sublist.
+         */
+        "isSubList"?: boolean;
     }
     /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
@@ -5336,6 +5650,7 @@ declare namespace LocalJSX {
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-dropdown-menu": ModusWcDropdownMenu;
         "modus-wc-file-dropzone": ModusWcFileDropzone;
+        "modus-wc-handle": ModusWcHandle;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-feedback": ModusWcInputFeedback;
         "modus-wc-input-label": ModusWcInputLabel;
@@ -5367,6 +5682,8 @@ declare namespace LocalJSX {
         "modus-wc-toast": ModusWcToast;
         "modus-wc-toolbar": ModusWcToolbar;
         "modus-wc-tooltip": ModusWcTooltip;
+        "modus-wc-tree-item": ModusWcTreeItem;
+        "modus-wc-tree-view": ModusWcTreeView;
         "modus-wc-typography": ModusWcTypography;
         "modus-wc-utility-panel": ModusWcUtilityPanel;
     }
@@ -5377,15 +5694,17 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             /**
              * A customizable accordion component used for showing and hiding related groups of content.
-             * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
+             * The component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
              */
             "modus-wc-accordion": LocalJSX.ModusWcAccordion & JSXBase.HTMLAttributes<HTMLModusWcAccordionElement>;
             /**
-             * A customizable alert component used to inform the user about important events
+             * A customizable alert component used to inform the user about important events.
+             * The component supports `<slot>` elements for injecting custom content and buttons.
              */
             "modus-wc-alert": LocalJSX.ModusWcAlert & JSXBase.HTMLAttributes<HTMLModusWcAlertElement>;
             /**
              * A customizable autocomplete component used to create searchable text inputs.
+             * The component supports a `<slot>` for injecting custom content.
              */
             "modus-wc-autocomplete": LocalJSX.ModusWcAutocomplete & JSXBase.HTMLAttributes<HTMLModusWcAutocompleteElement>;
             /**
@@ -5405,7 +5724,7 @@ declare module "@stencil/core" {
             "modus-wc-breadcrumbs": LocalJSX.ModusWcBreadcrumbs & JSXBase.HTMLAttributes<HTMLModusWcBreadcrumbsElement>;
             /**
              * A customizable button component used to create buttons with different sizes, variants, and types.
-             * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button
+             * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
              */
             "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
             /**
@@ -5414,7 +5733,8 @@ declare module "@stencil/core" {
              */
             "modus-wc-button-group": LocalJSX.ModusWcButtonGroup & JSXBase.HTMLAttributes<HTMLModusWcButtonGroupElement>;
             /**
-             * A customizable card component used to group and display content in a way that is easily readable
+             * A customizable card component used to group and display content in a way that is easily readable.
+             * This component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.
              */
             "modus-wc-card": LocalJSX.ModusWcCard & JSXBase.HTMLAttributes<HTMLModusWcCardElement>;
             /**
@@ -5423,12 +5743,12 @@ declare module "@stencil/core" {
             "modus-wc-checkbox": LocalJSX.ModusWcCheckbox & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
             /**
              * A customizable chip component used to display information in a compact area
+             * The component supports a `<slot>` for injecting custom content such as avatar and icons.
              */
             "modus-wc-chip": LocalJSX.ModusWcChip & JSXBase.HTMLAttributes<HTMLModusWcChipElement>;
             /**
              * A customizable collapse component used for showing and hiding content.
              * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
-             * Do not set
              */
             "modus-wc-collapse": LocalJSX.ModusWcCollapse & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;
             /**
@@ -5452,8 +5772,13 @@ declare module "@stencil/core" {
             "modus-wc-dropdown-menu": LocalJSX.ModusWcDropdownMenu & JSXBase.HTMLAttributes<HTMLModusWcDropdownMenuElement>;
             /**
              * File dropzone component that allows users to drag and drop files for upload.
+             * The component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
              */
             "modus-wc-file-dropzone": LocalJSX.ModusWcFileDropzone & JSXBase.HTMLAttributes<HTMLModusWcFileDropzoneElement>;
+            /**
+             * A draggable handle component for resizing adjacent elements
+             */
+            "modus-wc-handle": LocalJSX.ModusWcHandle & JSXBase.HTMLAttributes<HTMLModusWcHandleElement>;
             /**
              * A customizable icon component used to render Modus icons.
              * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
@@ -5466,7 +5791,7 @@ declare module "@stencil/core" {
             "modus-wc-input-feedback": LocalJSX.ModusWcInputFeedback & JSXBase.HTMLAttributes<HTMLModusWcInputFeedbackElement>;
             /**
              * A customizable input label component.
-             * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text
+             * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
              */
             "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
             /**
@@ -5480,22 +5805,22 @@ declare module "@stencil/core" {
             "modus-wc-logo": LocalJSX.ModusWcLogo & JSXBase.HTMLAttributes<HTMLModusWcLogoElement>;
             /**
              * A customizable menu component used to display a list of li elements vertically or horizontally.
-             * The component supports a `<slot>` for injecting custom li elements inside the ul
+             * The component supports a `<slot>` for injecting custom li elements inside the ul element.
              */
             "modus-wc-menu": LocalJSX.ModusWcMenu & JSXBase.HTMLAttributes<HTMLModusWcMenuElement>;
             /**
-             * A customizable menu item component used to display the item portion of a menu
+             * A customizable menu item component used to display the item portion of a menu.
+             * This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
              */
             "modus-wc-menu-item": LocalJSX.ModusWcMenuItem & JSXBase.HTMLAttributes<HTMLModusWcMenuItemElement>;
             /**
              * A customizable modal component used to display content in a dialog.
-             * The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML
+             * This component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.
              */
             "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
             /**
              * A customizable navbar component used for top level navigation of all Trimble applications.
-             * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
-             * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML
+             * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
              */
             "modus-wc-navbar": LocalJSX.ModusWcNavbar & JSXBase.HTMLAttributes<HTMLModusWcNavbarElement>;
             /**
@@ -5508,11 +5833,12 @@ declare module "@stencil/core" {
             "modus-wc-pagination": LocalJSX.ModusWcPagination & JSXBase.HTMLAttributes<HTMLModusWcPaginationElement>;
             /**
              * A customizable panel component used to organize content in a structured layout.
+             * This component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.
              */
             "modus-wc-panel": LocalJSX.ModusWcPanel & JSXBase.HTMLAttributes<HTMLModusWcPanelElement>;
             /**
              * A customizable progress component used to show the progress of a task or show the passing of time.
-             * The radial variant supports slotting in custom HTML to be displayed within the progress circle
+             * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
              */
             "modus-wc-progress": LocalJSX.ModusWcProgress & JSXBase.HTMLAttributes<HTMLModusWcProgressElement>;
             /**
@@ -5529,6 +5855,7 @@ declare module "@stencil/core" {
             "modus-wc-select": LocalJSX.ModusWcSelect & JSXBase.HTMLAttributes<HTMLModusWcSelectElement>;
             /**
              * A customizable side navigation component for organizing primary navigation and content areas in an application.
+             * The component supports a `<slot>` for injecting custom content inside the side navigation panel.
              */
             "modus-wc-side-navigation": LocalJSX.ModusWcSideNavigation & JSXBase.HTMLAttributes<HTMLModusWcSideNavigationElement>;
             /**
@@ -5550,10 +5877,12 @@ declare module "@stencil/core" {
             "modus-wc-table": LocalJSX.ModusWcTable & JSXBase.HTMLAttributes<HTMLModusWcTableElement>;
             /**
              * A customizable tabs component used to create groups of tabs.
+             * The component supports a `<slot>` for injecting custom tab content.
              */
             "modus-wc-tabs": LocalJSX.ModusWcTabs & JSXBase.HTMLAttributes<HTMLModusWcTabsElement>;
             /**
              * A customizable input component used to create text inputs with types.
+             * The component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.
              */
             "modus-wc-text-input": LocalJSX.ModusWcTextInput & JSXBase.HTMLAttributes<HTMLModusWcTextInputElement>;
             /**
@@ -5577,6 +5906,7 @@ declare module "@stencil/core" {
             "modus-wc-toast": LocalJSX.ModusWcToast & JSXBase.HTMLAttributes<HTMLModusWcToastElement>;
             /**
              * A customizable toolbar component used to organize content across the entire page.
+             * This component provides 'start', 'center', and 'end' `<slot>` elements for inserting custom HTML.
              */
             "modus-wc-toolbar": LocalJSX.ModusWcToolbar & JSXBase.HTMLAttributes<HTMLModusWcToolbarElement>;
             /**
@@ -5585,6 +5915,16 @@ declare module "@stencil/core" {
              * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
+            /**
+             * A tree item component that represents a single node in a hierarchical tree structure.
+             * This component uses the modus-wc-menu-item structure for consistency.
+             */
+            "modus-wc-tree-item": LocalJSX.ModusWcTreeItem & JSXBase.HTMLAttributes<HTMLModusWcTreeItemElement>;
+            /**
+             * A wrapper component that provides the ul element for tree items.
+             * This component uses the modus-wc-menu structure to wrap tree items in a proper list structure.
+             */
+            "modus-wc-tree-view": LocalJSX.ModusWcTreeView & JSXBase.HTMLAttributes<HTMLModusWcTreeViewElement>;
             /**
              * A customizable typography component used to render text with different sizes, hierarchy, and weights.
              * Note: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
