@@ -2011,7 +2011,6 @@ export namespace Components {
     }
     /**
      * A tree item component that represents a single node in a hierarchical tree structure.
-     * This component uses the modus-wc-menu-item structure for consistency.
      */
     interface ModusWcTreeItem {
         /**
@@ -2027,6 +2026,10 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * If true, renders a drag handle icon at the start of the tree item.
+         */
+        "dragHandle"?: boolean;
+        /**
           * Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior.
          */
         "hasSubtree"?: boolean;
@@ -2038,14 +2041,6 @@ export namespace Components {
           * The selected state of the tree item.
          */
         "selected"?: boolean;
-        /**
-          * The size of the tree item.
-         */
-        "size"?: 'sm' | 'md' | 'lg';
-        /**
-          * The modus icon name to render at the start of the tree item.
-         */
-        "startIcon"?: string;
         /**
           * The unique identifying value of the tree item.
          */
@@ -3116,12 +3111,10 @@ declare global {
     interface HTMLModusWcTreeItemElementEventMap {
         "itemSelect": {
     value: string;
-    selected?: boolean;
   };
     }
     /**
      * A tree item component that represents a single node in a hierarchical tree structure.
-     * This component uses the modus-wc-menu-item structure for consistency.
      */
     interface HTMLModusWcTreeItemElement extends Components.ModusWcTreeItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTreeItemElementEventMap>(type: K, listener: (this: HTMLModusWcTreeItemElement, ev: ModusWcTreeItemCustomEvent<HTMLModusWcTreeItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5521,7 +5514,6 @@ declare namespace LocalJSX {
     }
     /**
      * A tree item component that represents a single node in a hierarchical tree structure.
-     * This component uses the modus-wc-menu-item structure for consistency.
      */
     interface ModusWcTreeItem {
         /**
@@ -5537,6 +5529,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * If true, renders a drag handle icon at the start of the tree item.
+         */
+        "dragHandle"?: boolean;
+        /**
           * Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior.
          */
         "hasSubtree"?: boolean;
@@ -5549,20 +5545,11 @@ declare namespace LocalJSX {
          */
         "onItemSelect"?: (event: ModusWcTreeItemCustomEvent<{
     value: string;
-    selected?: boolean;
   }>) => void;
         /**
           * The selected state of the tree item.
          */
         "selected"?: boolean;
-        /**
-          * The size of the tree item.
-         */
-        "size"?: 'sm' | 'md' | 'lg';
-        /**
-          * The modus icon name to render at the start of the tree item.
-         */
-        "startIcon"?: string;
         /**
           * The unique identifying value of the tree item.
          */
@@ -5917,7 +5904,6 @@ declare module "@stencil/core" {
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**
              * A tree item component that represents a single node in a hierarchical tree structure.
-             * This component uses the modus-wc-menu-item structure for consistency.
              */
             "modus-wc-tree-item": LocalJSX.ModusWcTreeItem & JSXBase.HTMLAttributes<HTMLModusWcTreeItemElement>;
             /**

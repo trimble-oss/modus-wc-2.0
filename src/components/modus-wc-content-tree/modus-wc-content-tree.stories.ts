@@ -49,52 +49,101 @@ export const UsingContentTreeItem: Story = {
       <modus-wc-content-tree>
         <modus-wc-tree-view>
           <modus-wc-tree-item
+            checkbox=${true}
             label="Documents"
             .hasSubtree=${true}
             value="documents"
           >
+            <modus-wc-icon
+              slot="start-icon"
+              name="folder_closed"
+              variant="solid"
+            ></modus-wc-icon>
             <modus-wc-tree-view .isSubList=${true}>
               <modus-wc-tree-item
+                checkbox=${true}
                 label="Report.pdf"
                 value="report"
-              ></modus-wc-tree-item>
+              >
+                <modus-wc-icon
+                  slot="start-icon"
+                  name="folder_closed"
+                  variant="solid"
+                ></modus-wc-icon>
+              </modus-wc-tree-item>
               <modus-wc-tree-item
+                checkbox=${true}
                 label="Proposal.docx"
                 value="proposal"
-              ></modus-wc-tree-item>
+              >
+                <modus-wc-icon
+                  slot="start-icon"
+                  name="folder_closed"
+                  variant="solid"
+                ></modus-wc-icon>
+              </modus-wc-tree-item>
             </modus-wc-tree-view>
           </modus-wc-tree-item>
           <modus-wc-tree-item
+            checkbox=${true}
             label="Projects"
             .hasSubtree=${true}
             value="projects"
           >
+            <modus-wc-icon
+              slot="start-icon"
+              name="folder_closed"
+              variant="solid"
+            ></modus-wc-icon>
             <modus-wc-tree-view .isSubList=${true}>
               <modus-wc-tree-item
+                checkbox=${true}
                 label="Website Redesign"
                 value="website"
-              ></modus-wc-tree-item>
+              >
+                <modus-wc-icon
+                  slot="start-icon"
+                  name="folder_closed"
+                  variant="solid"
+                ></modus-wc-icon>
+              </modus-wc-tree-item>
               <modus-wc-tree-item
+                checkbox=${true}
                 label="Client Work"
                 .hasSubtree=${true}
                 value="client-work"
               >
+                <modus-wc-icon
+                  slot="start-icon"
+                  name="folder_closed"
+                  variant="solid"
+                ></modus-wc-icon>
                 <modus-wc-tree-view .isSubList=${true}>
                   <modus-wc-tree-item
+                    checkbox=${true}
                     label="Design Mockups"
-                    start-icon="folder_closed"
                     value="mockups"
-                  ></modus-wc-tree-item>
+                  >
+                    <modus-wc-icon
+                      slot="start-icon"
+                      name="folder_closed"
+                      variant="solid"
+                    ></modus-wc-icon>
+                  </modus-wc-tree-item>
                 </modus-wc-tree-view>
               </modus-wc-tree-item>
             </modus-wc-tree-view>
           </modus-wc-tree-item>
           <modus-wc-tree-item
+            checkbox=${true}
             label="Resources"
-            start-icon="folder_closed"
-            .hasSubtree=${true}
             value="resources"
           >
+            <modus-wc-icon
+              slot="start-icon"
+              name="folder_closed"
+              variant="solid"
+            ></modus-wc-icon>
           </modus-wc-tree-item>
         </modus-wc-tree-view>
       </modus-wc-content-tree>

@@ -9,10 +9,10 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../../utils';
+import { convertPropsToClasses } from './modus-wc-tree-item.tailwind';
 
 /**
  * A tree item component that represents a single node in a hierarchical tree structure.
- * This component uses the modus-wc-menu-item structure for consistency.
  */
 @Component({
   tag: 'modus-wc-tree-item',
@@ -28,14 +28,11 @@ export class ModusWcTreeItem {
   /** The disabled state of the tree item. */
   @Prop() disabled?: boolean;
 
-  /** The size of the tree item. */
-  @Prop() size?: 'sm' | 'md' | 'lg' = 'md';
-
   /** If true, renders a checkbox at the start of the tree item. */
   @Prop() checkbox?: boolean = false;
 
-  /** The modus icon name to render at the start of the tree item. */
-  @Prop() startIcon?: string;
+  /** If true, renders a drag handle icon at the start of the tree item. */
+  @Prop() dragHandle?: boolean = false;
 
   /** The text label displayed for the tree item. */
   @Prop() label!: string;
@@ -44,7 +41,7 @@ export class ModusWcTreeItem {
   @Prop() customClass?: string = '';
 
   /** The selected state of the tree item. */
-  @Prop() selected?: boolean;
+  @Prop({ mutable: true, reflect: true }) selected?: boolean;
 
   /** The unique identifying value of the tree item. */
   @Prop() value: string = '';
@@ -58,63 +55,53 @@ export class ModusWcTreeItem {
   /** Event emitted when a tree item is selected. */
   @StencilEvent() itemSelect!: EventEmitter<{
     value: string;
-    selected?: boolean;
   }>;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  private handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      this.handleItemSelect();
-    }
-  };
-
   private getClasses(): string {
     const classList: string[] = ['modus-wc-tree-item'];
 
-    if (this.disabled) classList.push('modus-wc-tree-item-disabled');
-    if (this.selected && !this.hasSubtree)
-      classList.push('modus-wc-tree-item-selected');
+    const propClasses = convertPropsToClasses({
+      disabled: this.disabled,
+      selected: this.selected,
+    });
+
+    if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
   }
 
-  private handleItemSelect = () => {
-    // For subtree items, handle the toggle
-    if (this.hasSubtree) {
-      const submenu = this.el.querySelector(
-        '.modus-wc-tree-dropdown'
-      ) as HTMLElement;
-      const liElement = this.el.querySelector('li');
+  private handleToggleClick = (event: MouseEvent) => {
+    event.stopPropagation();
+    if (!this.hasSubtree) return;
 
-      if (submenu && liElement) {
-        submenu.classList.toggle('modus-wc-tree-dropdown-show');
-        const buttonElement = liElement.querySelector('button');
+    this.isExpanded = !this.isExpanded;
 
-        // Update internal expanded state and add/remove class
-        this.isExpanded = submenu.classList.contains(
-          'modus-wc-tree-dropdown-show'
-        );
+    const submenu = this.el.querySelector(
+      '.modus-wc-tree-dropdown'
+    ) as HTMLElement;
 
-        if (this.isExpanded) {
-          liElement.classList.add('modus-wc-tree-item-expanded');
-          if (buttonElement) {
-            buttonElement.classList.add('modus-wc-tree-dropdown-show');
-          }
-        } else {
-          liElement.classList.remove('modus-wc-tree-item-expanded');
-          if (buttonElement) {
-            buttonElement.classList.remove('modus-wc-tree-dropdown-show');
-          }
-        }
-      }
+    submenu?.classList.toggle('modus-wc-tree-dropdown-show');
+  };
+
+  private handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      this.handleEmittedSelect();
     }
-    // Always emit the event with current selection state
-    this.itemSelect.emit({ value: this.value, selected: this.selected });
+  };
+
+  private handleItemSelect = (event: MouseEvent) => {
+    event.stopPropagation();
+    this.handleEmittedSelect();
+  };
+
+  private handleEmittedSelect = () => {
+    this.itemSelect.emit({ value: this.value });
   };
 
   render() {
@@ -122,8 +109,8 @@ export class ModusWcTreeItem {
       <Host>
         <li
           aria-current={this.selected}
-          aria-disabled={this.disabled}
           aria-selected={this.selected ? 'true' : 'false'}
+          aria-expanded={this.hasSubtree ? String(this.isExpanded) : undefined}
           class={this.getClasses()}
           onClick={this.handleItemSelect}
           onKeyDown={this.handleKeyDown}
@@ -131,12 +118,28 @@ export class ModusWcTreeItem {
           tabIndex={this.disabled ? -1 : 0}
           {...this.inheritedAttributes}
         >
-          <div class="modus-wc-tree-item-content">
+          <div
+            class={`modus-wc-tree-content ${
+              this.selected ? 'modus-wc-tree-item-active' : ''
+            }`}
+          >
+            {this.dragHandle && (
+              <modus-wc-icon
+                name="drag_indicator"
+                customClass="modus-wc-tree-drag-handle"
+              ></modus-wc-icon>
+            )}
+            {this.hasSubtree && (
+              <modus-wc-icon
+                name={this.isExpanded ? 'expand_more' : 'chevron_right'}
+                onClick={this.handleToggleClick}
+                customClass={`modus-wc-tree-toggle-icon ${this.isExpanded ? 'modus-wc-tree-toggle-expanded' : ''}`}
+              ></modus-wc-icon>
+            )}
             {this.checkbox && (
               <modus-wc-checkbox
                 aria-label="Checkbox"
                 disabled={this.disabled}
-                size={this.size}
                 value={!!this.selected}
               />
             )}
