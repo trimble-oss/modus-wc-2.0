@@ -21,6 +21,8 @@ import { SortingState } from "@tanstack/table-core";
 import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
+import { ModusTreeItemActions } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
+import { ModusTreeItemActions as ModusTreeItemActions1 } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
 import { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, WeekStartDay } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
@@ -38,6 +40,8 @@ export { SortingState } from "@tanstack/table-core";
 export { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
+export { ModusTreeItemActions } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
+export { ModusTreeItemActions as ModusTreeItemActions1 } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
 export { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
@@ -2009,6 +2013,16 @@ export namespace Components {
          */
         "tooltipId"?: string;
     }
+    interface ModusWcTreeActions {
+        /**
+          * List of actions to display
+         */
+        "actions"?: ModusTreeItemActions[];
+        /**
+          * The size of the action buttons and icons.
+         */
+        "size": 'xs' | 'sm' | 'md';
+    }
     /**
      * A tree item component that represents a single node in a hierarchical tree structure.
      */
@@ -2017,6 +2031,10 @@ export namespace Components {
           * If true, renders a checkbox at the start of the tree item.
          */
         "checkbox"?: boolean;
+        /**
+          * Public method to collapse the subtree if it's expanded
+         */
+        "collapseSubTree": () => Promise<void>;
         /**
           * Custom CSS class to apply to the li element.
          */
@@ -2030,6 +2048,10 @@ export namespace Components {
          */
         "dragHandle"?: boolean;
         /**
+          * Public method to expand the subtree if it's collapsed
+         */
+        "expandSubTree": () => Promise<void>;
+        /**
           * Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior.
          */
         "hasSubtree"?: boolean;
@@ -2041,6 +2063,14 @@ export namespace Components {
           * The selected state of the tree item.
          */
         "selected"?: boolean;
+        /**
+          * The size of the tree item icons and actions.
+         */
+        "size": 'xs' | 'sm' | 'md';
+        /**
+          * Actions to display for this tree item.
+         */
+        "treeItemActions"?: ModusTreeItemActions1[];
         /**
           * The unique identifying value of the tree item.
          */
@@ -2222,6 +2252,10 @@ export interface ModusWcTimeInputCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcTooltipCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTooltipElement;
+}
+export interface ModusWcTreeActionsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTreeActionsElement;
 }
 export interface ModusWcTreeItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -3108,6 +3142,27 @@ declare global {
         prototype: HTMLModusWcTooltipElement;
         new (): HTMLModusWcTooltipElement;
     };
+    interface HTMLModusWcTreeActionsElementEventMap {
+        "dropdownOpened": HTMLElement;
+        "treeActionClick": {
+    actionId: string;
+    actionName: string;
+  };
+    }
+    interface HTMLModusWcTreeActionsElement extends Components.ModusWcTreeActions, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTreeActionsElementEventMap>(type: K, listener: (this: HTMLModusWcTreeActionsElement, ev: ModusWcTreeActionsCustomEvent<HTMLModusWcTreeActionsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTreeActionsElementEventMap>(type: K, listener: (this: HTMLModusWcTreeActionsElement, ev: ModusWcTreeActionsCustomEvent<HTMLModusWcTreeActionsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTreeActionsElement: {
+        prototype: HTMLModusWcTreeActionsElement;
+        new (): HTMLModusWcTreeActionsElement;
+    };
     interface HTMLModusWcTreeItemElementEventMap {
         "itemSelect": {
     value: string;
@@ -3220,6 +3275,7 @@ declare global {
         "modus-wc-toast": HTMLModusWcToastElement;
         "modus-wc-toolbar": HTMLModusWcToolbarElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
+        "modus-wc-tree-actions": HTMLModusWcTreeActionsElement;
         "modus-wc-tree-item": HTMLModusWcTreeItemElement;
         "modus-wc-tree-view": HTMLModusWcTreeViewElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
@@ -5512,6 +5568,27 @@ declare namespace LocalJSX {
          */
         "tooltipId"?: string;
     }
+    interface ModusWcTreeActions {
+        /**
+          * List of actions to display
+         */
+        "actions"?: ModusTreeItemActions[];
+        /**
+          * Event emitted when a dropdown is opened
+         */
+        "onDropdownOpened"?: (event: ModusWcTreeActionsCustomEvent<HTMLElement>) => void;
+        /**
+          * Event emitted when an action is clicked
+         */
+        "onTreeActionClick"?: (event: ModusWcTreeActionsCustomEvent<{
+    actionId: string;
+    actionName: string;
+  }>) => void;
+        /**
+          * The size of the action buttons and icons.
+         */
+        "size"?: 'xs' | 'sm' | 'md';
+    }
     /**
      * A tree item component that represents a single node in a hierarchical tree structure.
      */
@@ -5550,6 +5627,14 @@ declare namespace LocalJSX {
           * The selected state of the tree item.
          */
         "selected"?: boolean;
+        /**
+          * The size of the tree item icons and actions.
+         */
+        "size"?: 'xs' | 'sm' | 'md';
+        /**
+          * Actions to display for this tree item.
+         */
+        "treeItemActions"?: ModusTreeItemActions1[];
         /**
           * The unique identifying value of the tree item.
          */
@@ -5669,6 +5754,7 @@ declare namespace LocalJSX {
         "modus-wc-toast": ModusWcToast;
         "modus-wc-toolbar": ModusWcToolbar;
         "modus-wc-tooltip": ModusWcTooltip;
+        "modus-wc-tree-actions": ModusWcTreeActions;
         "modus-wc-tree-item": ModusWcTreeItem;
         "modus-wc-tree-view": ModusWcTreeView;
         "modus-wc-typography": ModusWcTypography;
@@ -5902,6 +5988,7 @@ declare module "@stencil/core" {
              * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
+            "modus-wc-tree-actions": LocalJSX.ModusWcTreeActions & JSXBase.HTMLAttributes<HTMLModusWcTreeActionsElement>;
             /**
              * A tree item component that represents a single node in a hierarchical tree structure.
              */

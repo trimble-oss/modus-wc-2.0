@@ -1,0 +1,73 @@
+/**
+* Tree actions component styles
+*/
+
+modus-wc-tree-actions {
+  .modus-wc-tree-actions-container {
+    align-items: center;
+    display: flex;
+
+    .modus-wc-tree-action-button {
+      .modus-wc-tree-action-icon {
+        color: black;
+      }
+    }
+  }
+
+  .modus-wc-tree-more-actions-dropdown {
+    background: var(--modus-wc-color-base-page);
+    border: 1px solid var(--modus-wc-color-base-100);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    display: none;
+    min-width: 150px;
+    padding: 4px 0;
+    position: fixed;
+    z-index: 1000;
+
+    &.show {
+      display: block;
+    }
+  }
+
+  .modus-wc-tree-dropdown-action {
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    gap: var(--modus-wc-spacing-sm, 0.5rem);
+    padding: var(--modus-wc-spacing-sm, 0.5rem) var(--modus-wc-spacing-md, 1rem);
+    text-align: start;
+    width: 100%;
+
+    &:hover:not(.disabled) {
+      background-color: var(--modus-wc-color-gray-light);
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    span {
+      font-size: var(--modus-wc-font-size-sm, 0.875rem);
+    }
+  }
+}
+
+[data-theme='modus-classic-dark'],
+[data-theme='modus-modern-dark'],
+[data-theme='connect-dark'] {
+  .modus-wc-tree-more-actions-dropdown {
+    background: var(--modus-wc-color-trimble-gray);
+    border-color: var(----modus-wc-color-gray-6);
+  }
+
+  .modus-wc-tree-dropdown-action {
+    &:hover:not(.disabled) {
+      background-color: var(--modus-wc-color-base-100);
+    }
+  }
+}

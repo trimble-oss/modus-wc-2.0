@@ -22,7 +22,7 @@ const meta: Meta<ContentTreeArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['itemSelect'],
+      handles: ['itemSelect', 'treeActionClick'],
     },
   },
 };
@@ -45,14 +45,48 @@ export const Default: Story = {
 
 export const UsingContentTreeItem: Story = {
   render: () => {
+    const actions = [
+      {
+        id: 'view',
+        label: 'View',
+        icon: 'visibility_on',
+        ariaLabel: 'View item',
+      },
+      {
+        id: 'edit',
+        label: 'Edit',
+        icon: 'pencil',
+        ariaLabel: 'Edit item',
+      },
+      {
+        id: 'delete',
+        label: 'Delete',
+        icon: 'delete',
+        ariaLabel: 'Delete item',
+      },
+    ];
+
     return html`
       <modus-wc-content-tree>
         <modus-wc-tree-view>
           <modus-wc-tree-item
             checkbox=${true}
+            label="Resources"
+            value="resources"
+            .treeItemActions=${actions}
+          >
+            <modus-wc-icon
+              slot="start-icon"
+              name="folder_closed"
+              variant="solid"
+            ></modus-wc-icon>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            checkbox=${true}
             label="Documents"
             .hasSubtree=${true}
             value="documents"
+            .treeItemActions=${actions}
           >
             <modus-wc-icon
               slot="start-icon"
@@ -64,6 +98,7 @@ export const UsingContentTreeItem: Story = {
                 checkbox=${true}
                 label="Report.pdf"
                 value="report"
+                .treeItemActions=${actions}
               >
                 <modus-wc-icon
                   slot="start-icon"
@@ -75,6 +110,7 @@ export const UsingContentTreeItem: Story = {
                 checkbox=${true}
                 label="Proposal.docx"
                 value="proposal"
+                .treeItemActions=${actions}
               >
                 <modus-wc-icon
                   slot="start-icon"
@@ -89,6 +125,7 @@ export const UsingContentTreeItem: Story = {
             label="Projects"
             .hasSubtree=${true}
             value="projects"
+            .treeItemActions=${actions}
           >
             <modus-wc-icon
               slot="start-icon"
@@ -100,6 +137,7 @@ export const UsingContentTreeItem: Story = {
                 checkbox=${true}
                 label="Website Redesign"
                 value="website"
+                .treeItemActions=${actions}
               >
                 <modus-wc-icon
                   slot="start-icon"
@@ -112,6 +150,7 @@ export const UsingContentTreeItem: Story = {
                 label="Client Work"
                 .hasSubtree=${true}
                 value="client-work"
+                .treeItemActions=${actions}
               >
                 <modus-wc-icon
                   slot="start-icon"
@@ -123,6 +162,7 @@ export const UsingContentTreeItem: Story = {
                     checkbox=${true}
                     label="Design Mockups"
                     value="mockups"
+                    .treeItemActions=${actions}
                   >
                     <modus-wc-icon
                       slot="start-icon"
@@ -134,16 +174,94 @@ export const UsingContentTreeItem: Story = {
               </modus-wc-tree-item>
             </modus-wc-tree-view>
           </modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
+    `;
+  },
+};
+
+export const WithActions: Story = {
+  render: () => {
+    const actions = [
+      {
+        id: 'view',
+        label: 'View',
+        icon: 'visibility_on',
+        ariaLabel: 'View item',
+      },
+      {
+        id: 'edit',
+        label: 'Edit',
+        icon: 'pencil',
+        ariaLabel: 'Edit item',
+      },
+      {
+        id: 'delete',
+        label: 'Delete',
+        icon: 'delete',
+        ariaLabel: 'Delete item',
+      },
+    ];
+
+    return html`
+      <modus-wc-content-tree>
+        <modus-wc-tree-view>
           <modus-wc-tree-item
-            checkbox=${true}
+            label="Documents"
+            .hasSubtree=${true}
+            value="documents"
+            .treeItemActions=${actions}
+          >
+            <modus-wc-tree-view .isSubList=${true}>
+              <modus-wc-tree-item
+                label="Report.pdf"
+                value="report"
+                .treeItemActions=${actions}
+              >
+              </modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Proposal.docx"
+                value="proposal"
+                .treeItemActions=${actions}
+              >
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Projects"
+            .hasSubtree=${true}
+            value="projects"
+            .treeItemActions=${actions}
+          >
+            <modus-wc-tree-view .isSubList=${true}>
+              <modus-wc-tree-item
+                label="Website Redesign"
+                value="website"
+                .treeItemActions=${actions}
+              >
+              </modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Client Work"
+                .hasSubtree=${true}
+                value="client-work"
+                .treeItemActions=${actions}
+              >
+                <modus-wc-tree-view .isSubList=${true}>
+                  <modus-wc-tree-item
+                    label="Design Mockups"
+                    value="mockups"
+                    .treeItemActions=${actions}
+                  >
+                  </modus-wc-tree-item>
+                </modus-wc-tree-view>
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
             label="Resources"
             value="resources"
+            .treeItemActions=${actions}
           >
-            <modus-wc-icon
-              slot="start-icon"
-              name="folder_closed"
-              variant="solid"
-            ></modus-wc-icon>
           </modus-wc-tree-item>
         </modus-wc-tree-view>
       </modus-wc-content-tree>

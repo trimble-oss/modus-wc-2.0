@@ -2355,12 +2355,12 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item.tsx",
+      "path": "src/components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions.tsx",
       "declarations": [
         {
           "kind": "class",
-          "description": "A tree item component that represents a single node in a hierarchical tree structure.",
-          "name": "ModusWcTreeItem",
+          "description": "",
+          "name": "ModusWcTreeActions",
           "members": [
             {
               "kind": "field",
@@ -2369,6 +2369,129 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleOtherDropdownOpened",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent<HTMLElement>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "isDropdownOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Internal state for dropdown visibility"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "actions",
+              "fieldName": "actions",
+              "description": "List of actions to display",
+              "type": {
+                "text": "ModusTreeItemActions[]"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'xs'",
+              "description": "The size of the action buttons and icons.",
+              "type": {
+                "text": "'xs' | 'sm' | 'md'"
+              }
+            }
+          ],
+          "tagName": "modus-wc-tree-actions",
+          "events": [
+            {
+              "kind": "field",
+              "name": "dropdownOpened",
+              "type": {
+                "text": "EventEmitter<HTMLElement>"
+              },
+              "description": "Event emitted when a dropdown is opened"
+            },
+            {
+              "kind": "field",
+              "name": "treeActionClick",
+              "type": {
+                "text": "EventEmitter<{\r\n    actionId: string;\r\n    actionName: string;\r\n  }>"
+              },
+              "description": "Event emitted when an action is clicked"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTreeActions",
+          "declaration": {
+            "name": "ModusWcTreeActions",
+            "module": "src/components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-tree-actions",
+          "declaration": {
+            "name": "ModusWcTreeActions",
+            "module": "src/components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A tree item component that represents a single node in a hierarchical tree structure.",
+          "name": "ModusWcTreeItem",
+          "members": [
+            {
+              "kind": "method",
+              "name": "collapseSubTree",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Public method to collapse the subtree if it's expanded"
+            },
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "expandSubTree",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Public method to expand the subtree if it's collapsed"
             },
             {
               "kind": "field",
@@ -2445,6 +2568,23 @@
               }
             },
             {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'sm'",
+              "description": "The size of the tree item icons and actions.",
+              "type": {
+                "text": "'xs' | 'sm' | 'md'"
+              }
+            },
+            {
+              "name": "tree-item-actions",
+              "fieldName": "treeItemActions",
+              "description": "Actions to display for this tree item.",
+              "type": {
+                "text": "ModusTreeItemActions[]"
+              }
+            },
+            {
               "name": "value",
               "fieldName": "value",
               "default": "''",
@@ -2460,7 +2600,7 @@
               "kind": "field",
               "name": "itemSelect",
               "type": {
-                "text": "EventEmitter<{\r\n    value: string;\r\n    selected?: boolean;\r\n  }>"
+                "text": "EventEmitter<{\r\n    value: string;\r\n  }>"
               },
               "description": "Event emitted when a tree item is selected."
             }
@@ -2511,7 +2651,7 @@
                 {
                   "name": "event",
                   "type": {
-                    "text": "CustomEvent<{ value: string; selected?: boolean }>"
+                    "text": "CustomEvent<{ value: string }>"
                   }
                 }
               ]

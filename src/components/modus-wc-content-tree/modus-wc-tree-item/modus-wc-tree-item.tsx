@@ -4,12 +4,14 @@ import {
   EventEmitter,
   h,
   Host,
+  Method,
   Prop,
   State,
   Event as StencilEvent,
 } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 import { convertPropsToClasses } from './modus-wc-tree-item.tailwind';
+import { ModusTreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions';
 
 /**
  * A tree item component that represents a single node in a hierarchical tree structure.
@@ -49,8 +51,14 @@ export class ModusWcTreeItem {
   /** Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior. */
   @Prop() hasSubtree?: boolean;
 
+  /** Actions to display for this tree item. */
+  @Prop() treeItemActions?: ModusTreeItemActions[];
+
   /** Internal state to track if subtree is expanded */
   @State() isExpanded: boolean = false;
+
+  /** The size of the tree item icons and actions. */
+  @Prop() size: 'xs' | 'sm' | 'md' = 'sm';
 
   /** Event emitted when a tree item is selected. */
   @StencilEvent() itemSelect!: EventEmitter<{
@@ -59,6 +67,40 @@ export class ModusWcTreeItem {
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  /**
+   * Public method to collapse the subtree if it's expanded
+   */
+  @Method()
+  async collapseSubTree(): Promise<void> {
+    if (this.hasSubtree && this.isExpanded) {
+      const submenu = this.el.querySelector(
+        '.modus-wc-tree-dropdown'
+      ) as HTMLElement;
+
+      if (submenu) {
+        submenu.classList.remove('modus-wc-tree-dropdown-show');
+        this.isExpanded = false;
+      }
+    }
+  }
+
+  /**
+   * Public method to expand the subtree if it's collapsed
+   */
+  @Method()
+  async expandSubTree(): Promise<void> {
+    if (this.hasSubtree && !this.isExpanded) {
+      const submenu = this.el.querySelector(
+        '.modus-wc-tree-dropdown'
+      ) as HTMLElement;
+
+      if (submenu) {
+        submenu.classList.add('modus-wc-tree-dropdown-show');
+        this.isExpanded = true;
+      }
+    }
   }
 
   private getClasses(): string {
@@ -127,6 +169,7 @@ export class ModusWcTreeItem {
               <modus-wc-icon
                 name="drag_indicator"
                 customClass="modus-wc-tree-drag-handle"
+                size={this.size}
               ></modus-wc-icon>
             )}
             {this.hasSubtree && (
@@ -134,6 +177,7 @@ export class ModusWcTreeItem {
                 name={this.isExpanded ? 'expand_more' : 'chevron_right'}
                 onClick={this.handleToggleClick}
                 customClass={`modus-wc-tree-toggle-icon ${this.isExpanded ? 'modus-wc-tree-toggle-expanded' : ''}`}
+                size={this.size}
               ></modus-wc-icon>
             )}
             {this.checkbox && (
@@ -141,11 +185,18 @@ export class ModusWcTreeItem {
                 aria-label="Checkbox"
                 disabled={this.disabled}
                 value={!!this.selected}
+                size="sm"
               />
             )}
             <slot name="start-icon"></slot>
             <div class="modus-wc-tree-item-labels">
               <div class="modus-wc-tree-item-label">{this.label}</div>
+            </div>
+            <div class="modus-wc-tree-item-actions">
+              <modus-wc-tree-actions
+                actions={this.treeItemActions}
+                size={this.size}
+              ></modus-wc-tree-actions>
             </div>
           </div>
           <slot></slot>

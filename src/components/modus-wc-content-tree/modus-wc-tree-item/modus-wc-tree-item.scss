@@ -10,8 +10,8 @@ modus-wc-tree-item {
 
   .modus-wc-tree-item-active {
     background-color: var(--modus-wc-color-blue-pale);
-    color: var(--modus-wc-color-primary);
     border-radius: unset;
+    color: var(--modus-wc-color-primary);
   }
 
   .modus-wc-tree-content {
@@ -20,8 +20,8 @@ modus-wc-tree-item {
     gap: var(--modus-wc-spacing-sm, 0.5rem);
 
     .modus-wc-tree-drag-handle {
-      position: absolute;
       left: 0;
+      position: absolute;
     }
   }
 
@@ -31,6 +31,13 @@ modus-wc-tree-item {
     .modus-wc-tree-item-label {
       display: block;
     }
+  }
+
+  .modus-wc-tree-item-actions {
+    align-items: center;
+    display: flex;
+    gap: var(--modus-wc-spacing-xs, 0.25rem);
+    margin-inline-start: auto;
   }
 
   button {
@@ -52,6 +59,16 @@ modus-wc-tree-item {
 
     &.modus-wc-tree-dropdown-show {
       display: block;
+    }
+  }
+
+  .modus-wc-tree-item-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+
+    .modus-wc-tree-content {
+      cursor: not-allowed;
     }
   }
 }

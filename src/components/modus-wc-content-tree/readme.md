@@ -23,17 +23,17 @@ Uses menu items to create the tree structure with support for expanding/collapsi
 ### Depends on
 
 - [modus-wc-text-input](../modus-wc-text-input)
+- [modus-wc-button](../modus-wc-button)
 - [modus-wc-icon](../modus-wc-icon)
 - [modus-wc-typography](../modus-wc-typography)
-- [modus-wc-button](../modus-wc-button)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-content-tree --> modus-wc-text-input
+  modus-wc-content-tree --> modus-wc-button
   modus-wc-content-tree --> modus-wc-icon
   modus-wc-content-tree --> modus-wc-typography
-  modus-wc-content-tree --> modus-wc-button
   modus-wc-text-input --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon

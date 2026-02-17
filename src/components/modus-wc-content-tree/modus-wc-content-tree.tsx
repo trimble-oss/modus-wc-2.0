@@ -1,6 +1,12 @@
 import { Component, Element, h, Host, Prop, State } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
+interface HTMLModusWcTreeItemElement extends HTMLElement {
+  hasSubtree?: boolean;
+  expandSubTree: () => Promise<void>;
+  collapseSubTree: () => Promise<void>;
+}
+
 /**
  * A customizable content tree component used to display hierarchical data in a tree structure.
  * Uses menu items to create the tree structure with support for expanding/collapsing nodes and selection.
@@ -26,6 +32,7 @@ export class ModusWcContentTree {
   @State() private hasSlotContent: boolean = false;
   @State() private searchValue: string = '';
   @State() private isAddNodeMode: boolean = false;
+  @State() private areAllExpanded: boolean = false;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -50,13 +57,8 @@ export class ModusWcContentTree {
     document.removeEventListener('click', this.handleClickOutside);
   }
 
-  private addMenuItem = () => {
-    this.searchValue = '';
-    this.filterNodes('');
-  };
-
-  private createMenuItem() {
-    console.log('Creating menu item:', this.searchValue);
+  private createTreeItem() {
+    console.log('Creating tree item:', this.searchValue);
     this.searchValue = '';
     this.isAddNodeMode = false;
   }
@@ -71,7 +73,7 @@ export class ModusWcContentTree {
   };
 
   private filterNodes(searchTerm: string) {
-    const menuItems = this.el.querySelectorAll('modus-wc-menu-item');
+    const menuItems = this.el.querySelectorAll('modus-wc-tree-item');
     const normalizedSearch = searchTerm.toLowerCase().trim();
 
     if (!normalizedSearch) {
@@ -94,9 +96,9 @@ export class ModusWcContentTree {
         // Expand and show all parent nodes
         let parent = item.parentElement;
         while (parent && parent !== this.el) {
-          if (parent.tagName === 'MODUS-WC-MENU-ITEM') {
+          if (parent.tagName === 'MODUS-WC-TREE-ITEM') {
             parent.style.display = '';
-            // (parent as any).expandSubmenu();
+            (parent as HTMLModusWcTreeItemElement).expandSubTree();
           }
           parent = parent.parentElement;
         }
@@ -109,7 +111,7 @@ export class ModusWcContentTree {
 
         if (hasMatchingChildren) {
           (item as HTMLElement).style.display = '';
-          // (item as any).expandSubmenu();
+          (item as HTMLModusWcTreeItemElement).expandSubTree();
         } else {
           (item as HTMLElement).style.display = 'none';
         }
@@ -121,7 +123,7 @@ export class ModusWcContentTree {
     element: HTMLElement,
     searchTerm: string
   ): boolean {
-    const childMenuItems = element.querySelectorAll('modus-wc-menu-item');
+    const childMenuItems = element.querySelectorAll('modus-wc-tree-item');
 
     for (const child of Array.from(childMenuItems)) {
       const label = child.getAttribute('label') || '';
@@ -138,7 +140,7 @@ export class ModusWcContentTree {
 
     if (event.key === 'Enter') {
       if (this.isAddNodeMode && value) {
-        this.createMenuItem();
+        this.createTreeItem();
       }
       return;
     }
@@ -182,6 +184,28 @@ export class ModusWcContentTree {
     this.hasSlotContent = assigned.length > 0;
   };
 
+  private toggleExpandCollapse = async () => {
+    const treeItems = this.el.querySelectorAll('modus-wc-tree-item');
+    this.areAllExpanded = !this.areAllExpanded;
+
+    const promises = Array.from(treeItems).map((item) => {
+      const treeItem = item as HTMLModusWcTreeItemElement;
+      const hasSubtree =
+        item.hasAttribute('has-subtree') || treeItem.hasSubtree === true;
+
+      if (hasSubtree) {
+        if (this.areAllExpanded) {
+          return treeItem.expandSubTree();
+        } else {
+          return treeItem.collapseSubTree();
+        }
+      }
+      return Promise.resolve();
+    });
+
+    await Promise.all(promises);
+  };
+
   render() {
     return (
       <Host>
@@ -205,19 +229,20 @@ export class ModusWcContentTree {
             </div>
 
             <div class="modus-wc-content-tree-actions">
-              <modus-wc-icon
-                decorative={true}
-                name="delete"
+              <modus-wc-button
+                variant="borderless"
                 size="sm"
-                variant="solid"
-              ></modus-wc-icon>
-
-              <modus-wc-icon
-                decorative={true}
-                name="unfold_less"
-                size="sm"
-                variant="solid"
-              ></modus-wc-icon>
+                shape="circle"
+                onClick={this.toggleExpandCollapse}
+                aria-label={this.areAllExpanded ? 'Collapse all' : 'Expand all'}
+              >
+                <modus-wc-icon
+                  decorative={true}
+                  name={this.areAllExpanded ? 'unfold_less' : 'unfold_more'}
+                  size="sm"
+                  variant="solid"
+                ></modus-wc-icon>
+              </modus-wc-button>
             </div>
           </div>
           <div class="modus-wc-content-tree-content" role="tree">
@@ -236,16 +261,6 @@ export class ModusWcContentTree {
                   weight="normal"
                   customClass="modus-wc-content-tree-empty-text"
                 ></modus-wc-typography>
-                <modus-wc-button
-                  color="primary"
-                  shape="rectangle"
-                  size="md"
-                  type="button"
-                  variant="filled"
-                  onClick={this.addMenuItem}
-                >
-                  Create Node
-                </modus-wc-button>
               </div>
             )}
           </div>
