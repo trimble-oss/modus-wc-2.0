@@ -18,6 +18,7 @@ export type TypographyWeight = 'light' | 'normal' | 'semibold' | 'bold';
  *
 
  * - If both slot content and `label` are provided, only the slot content will be rendered
+ * - Use the `label` prop when you need to dynamically update the text.
  */
 @Component({
   tag: 'modus-wc-typography',
