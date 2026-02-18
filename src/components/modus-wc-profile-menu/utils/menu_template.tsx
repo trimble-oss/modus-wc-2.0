@@ -2,11 +2,15 @@ import { h } from '@stencil/core';
 import { ISubMenu } from '../modus-wc-profile-menu';
 
 /**
- * Renders a submenu section with optional title, divider, and menu items
+ * Renders a submenu section with optional title and menu items
  * @param subMenu - The submenu configuration containing title and items
+ * @param onMenuItemClick - Callback function when a menu item is clicked
  * @returns JSX element for the submenu section or null if no items
  */
-export const renderSubMenu = (subMenu?: ISubMenu) => {
+export const renderSubMenu = (
+  subMenu?: ISubMenu,
+  onMenuItemClick?: (value: string) => void
+) => {
   if (!subMenu || !subMenu.items || subMenu.items.length === 0) {
     return null;
   }
@@ -22,7 +26,11 @@ export const renderSubMenu = (subMenu?: ISubMenu) => {
       )}
       <modus-wc-menu size="md">
         {subMenu.items.map((item) => (
-          <modus-wc-menu-item label={item.label}>
+          <modus-wc-menu-item
+            label={item.label}
+            value={item.value ?? item.label}
+            onItemSelect={() => onMenuItemClick?.(item.value ?? item.label)}
+          >
             {item.icon && (
               <modus-wc-icon
                 slot="start-icon"

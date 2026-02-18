@@ -23,6 +23,7 @@ import { NotificationsSolidIcon } from '../../icons/notifications-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import { TrimbleLogoFullIcon } from '../../icons/trimble-logo-full.icon';
 import { TrimbleLogoGlobeIcon } from '../../icons/trimble-logo-globe.icon';
+import { IProfileMenuProps } from '../modus-wc-profile-menu/modus-wc-profile-menu';
 import { Attributes, inheritAriaAttributes, isLightMode } from '../utils';
 
 export interface INavbarTextOverrides {
@@ -53,19 +54,6 @@ export interface INavbarVisibility {
   searchInput?: boolean;
   /** Controls visibility of the user button. */
   user?: boolean;
-}
-
-export interface IProfileMenuProps {
-  /** The URL of the profile image. */
-  profileImageUrl: string;
-  /** The header name of the profile menu. */
-  headerName: string;
-  /** The name of the user. */
-  userName: string;
-  /** The email of the user. */
-  userEmail: string;
-  /** The URL for managing the user's Trimble ID (optional). */
-  manageTrimbleIdLink?: string;
 }
 
 /**
@@ -627,10 +615,7 @@ export class ModusWcNavbar {
                   />
                 </modus-wc-button>
                 {this.userMenuOpen && (
-                  <div
-                    class={`user ${this.userMenuOpen ? 'visible' : 'hidden'}`}
-                    ref={(el) => (this.userRef = el)}
-                  >
+                  <div ref={(el) => (this.userRef = el)}>
                     <modus-wc-profile-menu profileProps={this.userCard} />
                   </div>
                 )}

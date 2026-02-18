@@ -316,4 +316,61 @@ describe('modus-wc-profile-menu', () => {
     const avatar = page.root?.querySelector('modus-wc-avatar');
     expect(avatar?.getAttribute('alt')).toBe('Profile');
   });
+
+  it('should emit menuItemClick event when handleMenuItemClick is called', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', { profileProps: mockProfileProps }),
+    });
+
+    const menuItemClickSpy = jest.fn();
+    page.root?.addEventListener('menuItemClick', menuItemClickSpy);
+
+    const component = page.rootInstance as ModusWcProfileMenu;
+    component['handleMenuItemClick']('my-profile');
+    await page.waitForChanges();
+
+    expect(menuItemClickSpy).toHaveBeenCalledTimes(1);
+    expect(menuItemClickSpy.mock.calls[0][0].detail).toBe('my-profile');
+  });
+
+  it('should emit signOutClick event when sign out is triggered', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', { profileProps: mockProfileProps }),
+    });
+
+    const signOutSpy = jest.fn();
+    page.root?.addEventListener('signOutClick', signOutSpy);
+
+    const component = page.rootInstance as ModusWcProfileMenu;
+    component.signOutClick.emit();
+    await page.waitForChanges();
+
+    expect(signOutSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should emit signOutClick event when sign out menu item triggers itemSelect', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', { profileProps: mockProfileProps }),
+    });
+
+    const signOutSpy = jest.fn();
+    page.root?.addEventListener('signOutClick', signOutSpy);
+
+    const signOutItem = Array.from(
+      page.root?.querySelectorAll('modus-wc-menu-item') || []
+    ).find((item) => item.getAttribute('label') === 'Sign Out');
+
+    signOutItem?.dispatchEvent(
+      new CustomEvent('itemSelect', { bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(signOutSpy).toHaveBeenCalledTimes(1);
+  });
 });

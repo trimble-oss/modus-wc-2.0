@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { IProfileMenuProps, ISubMenu } from './modus-wc-profile-menu';
@@ -51,6 +52,10 @@ A customizable profile menu component that displays user information with option
 - **Sign Out**: Built-in sign out menu item in the footer
 - **Icon Support**: Menu items can include icons with solid or outlined variants
 
+### Events
+- **menuItemClick**: Emitted when any menu item is clicked, passing back the item label/identifier
+- **signOutClick**: Emitted when the Sign Out menu item is clicked
+
 ### Usage
 The component requires a \`profileProps\` object with user information and optionally accepts \`menuOne\` and \`menuTwo\` for custom menus.
         `,
@@ -76,6 +81,15 @@ const getSourceCode = (args: ProfileMenuArgs) => {
   
   const element = document.querySelector('modus-wc-profile-menu');
   element.profileProps = profileProps;${args['menu-one'] ? '\n  element.menuOne = menuOne;' : ''}${args['menu-two'] ? '\n  element.menuTwo = menuTwo;' : ''}
+
+  // Event listeners
+  element.addEventListener('menuItemClick', (event) => {
+    console.log('Menu item clicked:', event.detail);
+  });
+  element.addEventListener('signOutClick', () => {
+    console.log('Sign Out clicked');
+  });
+
 </script>
 
 <modus-wc-profile-menu></modus-wc-profile-menu>`;
@@ -98,6 +112,8 @@ const Template: Story = {
     .profileProps=${args['profile-props']}
     .menuOne=${args['menu-one']}
     .menuTwo=${args['menu-two']}
+    @signOutClick=${action('signOutClick')}
+    @menuItemClick=${action('menuItemClick')}
   ></modus-wc-profile-menu>
 </div>
     `;
@@ -139,7 +155,7 @@ export const WithOneSubmenu: Story = {
       title: 'Recent Projects',
       items: [
         { label: 'Project Alpha', icon: 'bug', iconVariant: 'solid' },
-        { label: 'Project  Beta', icon: 'triangle_down', iconVariant: 'solid' },
+        { label: 'Project Beta', icon: 'triangle_down', iconVariant: 'solid' },
         { label: 'Project Gamma', icon: 'service_rep', iconVariant: 'solid' },
       ],
     },

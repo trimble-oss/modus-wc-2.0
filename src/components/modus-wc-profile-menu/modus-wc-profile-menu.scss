@@ -4,12 +4,7 @@
 */
 modus-wc-profile-menu {
   background-color: var(--modus-wc-color-base-page);
-
-  .modus-wc-divider {
-    display: flex;
-    margin: 0;
-    padding: 0;
-  }
+  border-radius: var(--rounded-box);
 
   .modus-wc-panel {
     background-color: var(--modus-wc-color-base-page);
@@ -17,7 +12,6 @@ modus-wc-profile-menu {
     height: auto;
     padding-inline-end: var(--modus-wc-spacing-md);
     padding-inline-start: var(--modus-wc-spacing-md);
-    width: 298px;
   }
 
   .profile-menu-header {
@@ -26,13 +20,33 @@ modus-wc-profile-menu {
     display: flex;
     flex-direction: column;
     gap: var(--modus-wc-spacing-xs);
-    margin-inline-end: var(--modus-wc-spacing-md);
-    margin-inline-start: var(--modus-wc-spacing-md);
+    max-width: 100%;
+    overflow: hidden;
     padding-bottom: var(--modus-wc-spacing-md);
     padding-top: var(--modus-wc-spacing-xl);
 
+    .text-container {
+      text-align: center;
+      width: 100%;
+    }
+
+    .email-text,
+    .header-text,
+    .user-name-text {
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .email-text,
+    .header-text {
+      opacity: var(--modus-wc-opacity-overlay);
+    }
+
     .manage-link {
-      margin-bottom: var(--modus-wc-spacing-lg);
+      text-decoration: underline;
     }
   }
 
@@ -44,23 +58,21 @@ modus-wc-profile-menu {
     padding: var(--modus-wc-spacing-md);
   }
 
-  .main-menu-container {
-    .modus-wc-divider {
-      margin-inline-end: var(--modus-wc-spacing-xl);
-      margin-inline-start: var(--modus-wc-spacing-xl);
-    }
-  }
-
   .submenu-section {
     .modus-wc-typography {
       border-bottom: 1px solid var(--modus-wc-color-gray-0);
       padding-bottom: var(--modus-wc-spacing-sm);
-      padding-left: var(--modus-wc-spacing-lg);
+      padding-inline-start: var(--modus-wc-spacing-lg);
       padding-top: var(--modus-wc-spacing-md);
     }
   }
 
   [slot='body'] modus-wc-menu {
     position: static !important;
+
+    li.modus-wc-menu-item-selected {
+      background-color: transparent;
+      color: inherit;
+    }
   }
 }
