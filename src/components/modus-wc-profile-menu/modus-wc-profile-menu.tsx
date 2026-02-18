@@ -2,8 +2,8 @@ import {
   Component,
   Element,
   EventEmitter,
-  Host,
   h,
+  Host,
   Prop,
   Event as StencilEvent,
 } from '@stencil/core';
