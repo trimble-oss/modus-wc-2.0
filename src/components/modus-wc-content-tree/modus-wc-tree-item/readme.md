@@ -16,11 +16,10 @@ A tree item component that represents a single node in a hierarchical tree struc
 | `checkbox`           | `checkbox`          | If true, renders a checkbox at the start of the tree item.                                                          | `boolean \| undefined`                | `false`     |
 | `customClass`        | `custom-class`      | Custom CSS class to apply to the li element.                                                                        | `string \| undefined`                 | `''`        |
 | `disabled`           | `disabled`          | The disabled state of the tree item.                                                                                | `boolean \| undefined`                | `undefined` |
-| `dragHandle`         | `drag-handle`       | If true, renders a drag handle icon at the start of the tree item.                                                  | `boolean \| undefined`                | `false`     |
 | `hasSubtree`         | `has-subtree`       | Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior. | `boolean \| undefined`                | `undefined` |
 | `label` _(required)_ | `label`             | The text label displayed for the tree item.                                                                         | `string`                              | `undefined` |
 | `selected`           | `selected`          | The selected state of the tree item.                                                                                | `boolean \| undefined`                | `undefined` |
-| `size`               | `size`              | The size of the tree item icons and actions.                                                                        | `"md" \| "sm" \| "xs"`                | `'sm'`      |
+| `size`               | `size`              | The size of the tree item icons and actions.                                                                        | `"lg" \| "md" \| "sm"`                | `'md'`      |
 | `treeItemActions`    | `tree-item-actions` | Actions to display for this tree item.                                                                              | `ModusTreeItemActions[] \| undefined` | `undefined` |
 | `value`              | `value`             | The unique identifying value of the tree item.                                                                      | `string`                              | `''`        |
 

@@ -12,6 +12,20 @@ import {
 import { Attributes, inheritAriaAttributes } from '../../utils';
 import { convertPropsToClasses } from './modus-wc-tree-item.tailwind';
 import { ModusTreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions';
+import { ModusSize } from '../../types';
+
+interface IMenuItemElement extends HTMLElement {
+  /** The unique identifying value of the tree item. */
+  value: string;
+  /** The selected state of the tree item. */
+  selected?: boolean;
+  /** Whether the item has a checkbox (used for selection in tree structure) */
+  checkbox?: boolean;
+  /** Whether this item has a submenu (used for tree structure) */
+  hasSubmenu?: boolean;
+  /** Whether the checkbox is in an indeterminate state (only applicable if checkbox is true) */
+  isIndeterminate?: boolean;
+}
 
 /**
  * A tree item component that represents a single node in a hierarchical tree structure.
@@ -33,9 +47,6 @@ export class ModusWcTreeItem {
   /** If true, renders a checkbox at the start of the tree item. */
   @Prop() checkbox?: boolean = false;
 
-  /** If true, renders a drag handle icon at the start of the tree item. */
-  @Prop() dragHandle?: boolean = false;
-
   /** The text label displayed for the tree item. */
   @Prop() label!: string;
 
@@ -54,19 +65,32 @@ export class ModusWcTreeItem {
   /** Actions to display for this tree item. */
   @Prop() treeItemActions?: ModusTreeItemActions[];
 
+  /** The size of the tree item icons and actions. */
+  @Prop() size: ModusSize = 'md';
+
   /** Internal state to track if subtree is expanded */
   @State() isExpanded: boolean = false;
 
-  /** The size of the tree item icons and actions. */
-  @Prop() size: 'xs' | 'sm' | 'md' = 'sm';
+  /** Internal state to track if checkbox is in indeterminate state */
+  @State() isIndeterminate: boolean = false;
 
   /** Event emitted when a tree item is selected. */
-  @StencilEvent() itemSelect!: EventEmitter<{
+  @StencilEvent({ bubbles: true, composed: true }) itemSelect!: EventEmitter<{
     value: string;
   }>;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  componentDidLoad() {
+    if (this.hasSubtree) {
+      this.el.addEventListener('itemSelect', this.updateIndeterminateState);
+    }
+  }
+
+  disconnectedCallback() {
+    this.el.removeEventListener('itemSelect', this.updateIndeterminateState);
   }
 
   /**
@@ -142,7 +166,74 @@ export class ModusWcTreeItem {
     this.handleEmittedSelect();
   };
 
+  private handleCheckboxKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.stopPropagation();
+      this.handleCheckboxClick();
+    }
+  };
+
+  private updateIndeterminateState = (e: Event) => {
+    if (e.target === this.el) return;
+
+    if (!this.hasSubtree || !this.checkbox) return;
+
+    const submenu = this.el.querySelector('.modus-wc-tree-dropdown');
+    if (!submenu) return;
+
+    const childMenuItems = Array.from(submenu.children).filter(
+      (el) =>
+        el.tagName === 'MODUS-WC-TREE-ITEM' && (el as IMenuItemElement).checkbox
+    ) as IMenuItemElement[];
+
+    let selectedCount = 0;
+
+    childMenuItems.forEach((item) => {
+      if (item.selected) selectedCount++;
+    });
+
+    this.isIndeterminate =
+      selectedCount > 0 && selectedCount < childMenuItems.length;
+
+    this.selected = selectedCount === childMenuItems.length;
+  };
+
+  private updateChildrenSelection = (selected: boolean) => {
+    if (!this.hasSubtree) return;
+
+    const submenu = this.el.querySelector('.modus-wc-tree-dropdown');
+    if (!submenu) return;
+
+    const descendants = Array.from(
+      submenu.querySelectorAll('modus-wc-tree-item')
+    ) as IMenuItemElement[];
+
+    descendants.forEach((item) => {
+      if (!item.checkbox) return;
+
+      item.selected = selected;
+      item.isIndeterminate = false;
+
+      const checkbox = item.querySelector('modus-wc-checkbox');
+      if (checkbox) {
+        checkbox.setAttribute('value', selected.toString());
+        checkbox.removeAttribute('indeterminate');
+      }
+    });
+  };
+
   private handleEmittedSelect = () => {
+    this.itemSelect.emit({ value: this.value });
+  };
+
+  private handleCheckboxClick = () => {
+    const newValue = !this.selected || this.isIndeterminate;
+
+    this.selected = newValue;
+    this.isIndeterminate = false;
+    this.updateChildrenSelection(newValue);
+
     this.itemSelect.emit({ value: this.value });
   };
 
@@ -165,13 +256,6 @@ export class ModusWcTreeItem {
               this.selected ? 'modus-wc-tree-item-active' : ''
             }`}
           >
-            {this.dragHandle && (
-              <modus-wc-icon
-                name="drag_indicator"
-                customClass="modus-wc-tree-drag-handle"
-                size={this.size}
-              ></modus-wc-icon>
-            )}
             {this.hasSubtree && (
               <modus-wc-icon
                 name={this.isExpanded ? 'expand_more' : 'chevron_right'}
@@ -185,7 +269,15 @@ export class ModusWcTreeItem {
                 aria-label="Checkbox"
                 disabled={this.disabled}
                 value={!!this.selected}
-                size="sm"
+                size="md"
+                indeterminate={this.isIndeterminate}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  this.handleCheckboxClick();
+                }}
+                onKeyDown={(e) => {
+                  this.handleCheckboxKeyDown(e);
+                }}
               />
             )}
             <slot name="start-icon"></slot>

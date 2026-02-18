@@ -2021,7 +2021,7 @@ export namespace Components {
         /**
           * The size of the action buttons and icons.
          */
-        "size": 'xs' | 'sm' | 'md';
+        "size": ModusSize;
     }
     /**
      * A tree item component that represents a single node in a hierarchical tree structure.
@@ -2044,10 +2044,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * If true, renders a drag handle icon at the start of the tree item.
-         */
-        "dragHandle"?: boolean;
-        /**
           * Public method to expand the subtree if it's collapsed
          */
         "expandSubTree": () => Promise<void>;
@@ -2066,7 +2062,7 @@ export namespace Components {
         /**
           * The size of the tree item icons and actions.
          */
-        "size": 'xs' | 'sm' | 'md';
+        "size": ModusSize;
         /**
           * Actions to display for this tree item.
          */
@@ -5587,7 +5583,7 @@ declare namespace LocalJSX {
         /**
           * The size of the action buttons and icons.
          */
-        "size"?: 'xs' | 'sm' | 'md';
+        "size"?: ModusSize;
     }
     /**
      * A tree item component that represents a single node in a hierarchical tree structure.
@@ -5605,10 +5601,6 @@ declare namespace LocalJSX {
           * The disabled state of the tree item.
          */
         "disabled"?: boolean;
-        /**
-          * If true, renders a drag handle icon at the start of the tree item.
-         */
-        "dragHandle"?: boolean;
         /**
           * Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior.
          */
@@ -5630,7 +5622,7 @@ declare namespace LocalJSX {
         /**
           * The size of the tree item icons and actions.
          */
-        "size"?: 'xs' | 'sm' | 'md';
+        "size"?: ModusSize;
         /**
           * Actions to display for this tree item.
          */

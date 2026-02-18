@@ -1,7 +1,7 @@
 import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
+// import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface ContentTreeArgs {
   'custom-class'?: string;
@@ -32,18 +32,6 @@ export default meta;
 type Story = StoryObj<ContentTreeArgs>;
 
 export const Default: Story = {
-  render: (args) => {
-    return html`
-      <modus-wc-content-tree
-        custom-class=${ifDefined(args['custom-class'])}
-        search-placeholder=${args['search-placeholder']}
-      >
-      </modus-wc-content-tree>
-    `;
-  },
-};
-
-export const UsingContentTreeItem: Story = {
   render: () => {
     const actions = [
       {

@@ -2503,6 +2503,15 @@
               "description": "Internal state to track if subtree is expanded"
             },
             {
+              "kind": "field",
+              "name": "isIndeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Internal state to track if checkbox is in indeterminate state"
+            },
+            {
               "kind": "method",
               "name": "render"
             }
@@ -2643,18 +2652,6 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
-            },
-            {
-              "kind": "method",
-              "name": "handleItemSelect",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "CustomEvent<{ value: string }>"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",

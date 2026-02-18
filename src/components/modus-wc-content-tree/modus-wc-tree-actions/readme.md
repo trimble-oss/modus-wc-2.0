@@ -10,7 +10,7 @@
 | Property  | Attribute | Description                               | Type                                  | Default     |
 | --------- | --------- | ----------------------------------------- | ------------------------------------- | ----------- |
 | `actions` | `actions` | List of actions to display                | `ModusTreeItemActions[] \| undefined` | `undefined` |
-| `size`    | `size`    | The size of the action buttons and icons. | `"md" \| "sm" \| "xs"`                | `'xs'`      |
+| `size`    | `size`    | The size of the action buttons and icons. | `"lg" \| "md" \| "sm"`                | `'md'`      |
 
 
 ## Events

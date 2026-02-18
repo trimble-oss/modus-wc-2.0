@@ -1,4 +1,4 @@
-import { Component, Element, h, Host, Listen, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 
 /**
@@ -24,16 +24,6 @@ export class ModusWcTreeView {
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
-  }
-
-  @Listen('itemSelect')
-  handleItemSelect(event: CustomEvent<{ value: string }>) {
-    const target = event.target as HTMLElement;
-
-    const allItems = this.el.querySelectorAll('modus-wc-tree-item');
-    allItems.forEach((item) => {
-      (item as HTMLModusWcTreeItemElement).selected = item === target;
-    });
   }
 
   private getClasses(): string {

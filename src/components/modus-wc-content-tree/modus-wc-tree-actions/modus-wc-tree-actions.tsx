@@ -10,6 +10,7 @@ import {
   EventEmitter,
   Listen,
 } from '@stencil/core';
+import { ModusSize } from '../../types';
 
 export interface ModusTreeItemActions {
   id: string; // Unique identifier for the action
@@ -37,7 +38,7 @@ export class ModusWcTreeActions {
   @Prop({ mutable: true }) actions?: ModusTreeItemActions[];
 
   /** The size of the action buttons and icons. */
-  @Prop() size: 'xs' | 'sm' | 'md' = 'xs';
+  @Prop() size: ModusSize = 'md';
 
   /** Internal state for dropdown visibility */
   @State() isDropdownOpen: boolean = false;
