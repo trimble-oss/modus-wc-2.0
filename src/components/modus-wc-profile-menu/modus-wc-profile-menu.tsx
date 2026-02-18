@@ -2,10 +2,10 @@ import {
   Component,
   Element,
   EventEmitter,
-  Event as StencilEvent,
-  h,
   Host,
+  h,
   Prop,
+  Event as StencilEvent,
 } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { renderSubMenu } from './utils/menu_template';
