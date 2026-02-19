@@ -26,6 +26,11 @@ modus-wc-profile-menu {
     padding-top: var(--modus-wc-spacing-xl);
 
     .text-container {
+      .header-text,
+      .user-name-text {
+        padding-bottom: var(--modus-wc-spacing-xs);
+      }
+      
       text-align: center;
       width: 100%;
     }

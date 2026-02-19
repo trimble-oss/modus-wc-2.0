@@ -6,12 +6,12 @@ exports[`modus-wc-profile-menu should render with both menus 1`] = `
     <div class="profile-menu-header" slot="header">
       <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="md"></modus-wc-avatar>
       <div class="text-container">
-        <modus-wc-typography customclass="header-text" label="Test Header" size="sm" weight="semibold"></modus-wc-typography>
+        <modus-wc-typography customclass="header-text" label="Test Header" size="xs" weight="semibold"></modus-wc-typography>
         <modus-wc-typography customclass="user-name-text" label="John Doe" weight="semibold"></modus-wc-typography>
-        <modus-wc-typography customclass="email-text" label="john.doe@example.com" size="sm" weight="semibold"></modus-wc-typography>
+        <modus-wc-typography customclass="email-text" label="john.doe@example.com" size="xs" weight="semibold"></modus-wc-typography>
       </div>
       <a href="https://example.com/manage">
-        <modus-wc-typography customclass="manageLink" hierarchy="p" label="Manage my Trimble ID"></modus-wc-typography>
+        <modus-wc-typography customclass="manage-link" hierarchy="p" label="Manage my Trimble ID"></modus-wc-typography>
       </a>
     </div>
     <div slot="body">
@@ -66,12 +66,12 @@ exports[`modus-wc-profile-menu should render with menuOne 1`] = `
     <div class="profile-menu-header" slot="header">
       <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="md"></modus-wc-avatar>
       <div class="text-container">
-        <modus-wc-typography customclass="header-text" label="Test Header" size="sm" weight="semibold"></modus-wc-typography>
+        <modus-wc-typography customclass="header-text" label="Test Header" size="xs" weight="semibold"></modus-wc-typography>
         <modus-wc-typography customclass="user-name-text" label="John Doe" weight="semibold"></modus-wc-typography>
-        <modus-wc-typography customclass="email-text" label="john.doe@example.com" size="sm" weight="semibold"></modus-wc-typography>
+        <modus-wc-typography customclass="email-text" label="john.doe@example.com" size="xs" weight="semibold"></modus-wc-typography>
       </div>
       <a href="https://example.com/manage">
-        <modus-wc-typography customclass="manageLink" hierarchy="p" label="Manage my Trimble ID"></modus-wc-typography>
+        <modus-wc-typography customclass="manage-link" hierarchy="p" label="Manage my Trimble ID"></modus-wc-typography>
       </a>
     </div>
     <div slot="body">
@@ -121,12 +121,12 @@ exports[`modus-wc-profile-menu should render with menuTwo 1`] = `
     <div class="profile-menu-header" slot="header">
       <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="md"></modus-wc-avatar>
       <div class="text-container">
-        <modus-wc-typography customclass="header-text" label="Test Header" size="sm" weight="semibold"></modus-wc-typography>
+        <modus-wc-typography customclass="header-text" label="Test Header" size="xs" weight="semibold"></modus-wc-typography>
         <modus-wc-typography customclass="user-name-text" label="John Doe" weight="semibold"></modus-wc-typography>
-        <modus-wc-typography customclass="email-text" label="john.doe@example.com" size="sm" weight="semibold"></modus-wc-typography>
+        <modus-wc-typography customclass="email-text" label="john.doe@example.com" size="xs" weight="semibold"></modus-wc-typography>
       </div>
       <a href="https://example.com/manage">
-        <modus-wc-typography customclass="manageLink" hierarchy="p" label="Manage my Trimble ID"></modus-wc-typography>
+        <modus-wc-typography customclass="manage-link" hierarchy="p" label="Manage my Trimble ID"></modus-wc-typography>
       </a>
     </div>
     <div slot="body">
@@ -172,12 +172,12 @@ exports[`modus-wc-profile-menu should render with required props 1`] = `
     <div class="profile-menu-header" slot="header">
       <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="md"></modus-wc-avatar>
       <div class="text-container">
-        <modus-wc-typography customclass="header-text" label="Test Header" size="sm" weight="semibold"></modus-wc-typography>
+        <modus-wc-typography customclass="header-text" label="Test Header" size="xs" weight="semibold"></modus-wc-typography>
         <modus-wc-typography customclass="user-name-text" label="John Doe" weight="semibold"></modus-wc-typography>
-        <modus-wc-typography customclass="email-text" label="john.doe@example.com" size="sm" weight="semibold"></modus-wc-typography>
+        <modus-wc-typography customclass="email-text" label="john.doe@example.com" size="xs" weight="semibold"></modus-wc-typography>
       </div>
       <a href="https://example.com/manage">
-        <modus-wc-typography customclass="manageLink" hierarchy="p" label="Manage my Trimble ID"></modus-wc-typography>
+        <modus-wc-typography customclass="manage-link" hierarchy="p" label="Manage my Trimble ID"></modus-wc-typography>
       </a>
     </div>
     <div slot="body">

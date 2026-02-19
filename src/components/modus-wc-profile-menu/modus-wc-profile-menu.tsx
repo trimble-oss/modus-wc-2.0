@@ -113,7 +113,7 @@ export class ModusWcProfileMenu {
               <modus-wc-typography
                 customClass="header-text"
                 weight="semibold"
-                size="sm"
+                size="xs"
                 label={this.profileProps.headerName}
               ></modus-wc-typography>
 
@@ -126,14 +126,14 @@ export class ModusWcProfileMenu {
               <modus-wc-typography
                 customClass="email-text"
                 weight="semibold"
-                size="sm"
+                size="xs"
                 label={this.profileProps.userEmail}
               ></modus-wc-typography>
             </div>
             {this.profileProps.manageTrimbleIdLink && (
               <a href={this.profileProps.manageTrimbleIdLink}>
                 <modus-wc-typography
-                  customClass="manageLink"
+                  customClass="manage-link"
                   hierarchy="p"
                   label="Manage my Trimble ID"
                 ></modus-wc-typography>
