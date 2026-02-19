@@ -23,6 +23,26 @@ modus-wc-tree-item {
       left: 0;
       position: absolute;
     }
+
+    .modus-wc-tree-toggle-button-hidden {
+      visibility: hidden;
+    }
+
+    .modus-wc-tree-toggle-button {
+      visibility: visible;
+    }
+
+    &:hover {
+      border-radius: unset;
+
+      modus-wc-tree-actions .modus-wc-tree-action-button {
+        visibility: visible;
+      }
+    }
+  }
+
+  .modus-wc-tree-item-group {
+    border-left: 2px solid var(--modus-wc-color-primary);
   }
 
   .modus-wc-tree-item-labels {

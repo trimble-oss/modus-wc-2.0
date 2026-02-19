@@ -14,7 +14,7 @@ import { convertPropsToClasses } from './modus-wc-tree-item.tailwind';
 import { ModusTreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions';
 import { ModusSize } from '../../types';
 
-interface IMenuItemElement extends HTMLElement {
+export interface IMenuItemElement extends HTMLElement {
   /** The unique identifying value of the tree item. */
   value: string;
   /** The selected state of the tree item. */
@@ -66,7 +66,7 @@ export class ModusWcTreeItem {
   @Prop() treeItemActions?: ModusTreeItemActions[];
 
   /** The size of the tree item icons and actions. */
-  @Prop() size: ModusSize = 'md';
+  @Prop() size: ModusSize = 'sm';
 
   /** Internal state to track if subtree is expanded */
   @State() isExpanded: boolean = false;
@@ -251,25 +251,20 @@ export class ModusWcTreeItem {
           tabIndex={this.disabled ? -1 : 0}
           {...this.inheritedAttributes}
         >
-          <div
-            class={`modus-wc-tree-content ${
-              this.selected ? 'modus-wc-tree-item-active' : ''
-            }`}
-          >
-            {this.hasSubtree && (
-              <modus-wc-icon
-                name={this.isExpanded ? 'expand_more' : 'chevron_right'}
-                onClick={this.handleToggleClick}
-                customClass={`modus-wc-tree-toggle-icon ${this.isExpanded ? 'modus-wc-tree-toggle-expanded' : ''}`}
-                size={this.size}
-              ></modus-wc-icon>
-            )}
+          <div class={`modus-wc-tree-content`}>
+            <modus-wc-icon
+              name={this.isExpanded ? 'expand_more' : 'chevron_right'}
+              customClass={`modus-wc-tree-toggle-icon ${this.isExpanded ? 'modus-wc-tree-toggle-expanded' : ''} ${this.hasSubtree ? 'modus-wc-tree-toggle-button' : 'modus-wc-tree-toggle-button-hidden'}`}
+              size={this.size}
+              onClick={this.handleToggleClick}
+            ></modus-wc-icon>
+
             {this.checkbox && (
               <modus-wc-checkbox
                 aria-label="Checkbox"
                 disabled={this.disabled}
                 value={!!this.selected}
-                size="md"
+                size={this.size}
                 indeterminate={this.isIndeterminate}
                 onClick={(e) => {
                   e.stopPropagation();

@@ -5,7 +5,7 @@
 
 modus-wc-content-tree {
   background-color: var(--modus-wc-color-base-page);
-  border: 1px solid var(--modus-wc-color-border-default, #d1d5db);
+  border: 1px solid var(--modus-wc-color-base-100);
   display: block;
   min-width: 320px;
   width: 100%;
@@ -18,8 +18,9 @@ modus-wc-content-tree {
     margin-top: var(--modus-wc-spacing-md, 1rem);
     padding-bottom: var(--modus-wc-spacing-sm, 0.75rem);
 
-    .modus-wc-icon {
+    .modus-wc-content-tree-action-icon {
       cursor: pointer;
+      color: var(--modus-wc-color-black);
     }
   }
 
@@ -31,6 +32,10 @@ modus-wc-content-tree {
     align-items: center;
     display: block;
     min-height: 500px;
+  }
+
+  li.modus-wc-tree-item-selected:not(.modus-wc-tree-dropdown-show li) {
+    border-inline-start: 2px solid var(--modus-wc-color-primary);
   }
 
   .modus-wc-content-tree-header {
@@ -54,6 +59,16 @@ modus-wc-content-tree {
       color: var(--modus-wc-color-text-secondary, #6b7280);
       font-size: var(--modus-wc-font-size-md, 1rem);
       text-align: center;
+    }
+  }
+}
+
+[data-theme='modus-classic-dark'],
+[data-theme='modus-modern-dark'],
+[data-theme='connect-dark'] modus-wc-content-tree {
+  .modus-wc-content-tree-actions {
+    .modus-wc-content-tree-action-icon {
+      color: var(--modus-wc-color-gray-light);
     }
   }
 }

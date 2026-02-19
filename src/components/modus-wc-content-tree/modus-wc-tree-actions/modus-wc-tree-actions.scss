@@ -8,8 +8,15 @@ modus-wc-tree-actions {
     display: flex;
 
     .modus-wc-tree-action-button {
-      .modus-wc-tree-action-icon {
-        color: black;
+      background: transparent;
+      color: var(--modus-wc-color-black);
+      border: none;
+      cursor: pointer;
+      visibility: hidden;
+
+      &:hover {
+        background: transparent;
+        color: var(--modus-wc-color-black);
       }
     }
   }
@@ -60,6 +67,16 @@ modus-wc-tree-actions {
 [data-theme='modus-classic-dark'],
 [data-theme='modus-modern-dark'],
 [data-theme='connect-dark'] {
+  .modus-wc-tree-actions-container {
+    .modus-wc-tree-action-button {
+      color: var(--modus-wc-color-gray-light);
+
+      &:hover {
+        color: var(--modus-wc-color-white);
+      }
+    }
+  }
+
   .modus-wc-tree-more-actions-dropdown {
     background: var(--modus-wc-color-trimble-gray);
     border-color: var(--modus-wc-color-gray-6);
