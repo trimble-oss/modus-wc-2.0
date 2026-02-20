@@ -763,7 +763,15 @@ describe('modus-wc-date', () => {
 
     component['hasFocus'] = true;
 
-    const partialValues = ['1', '15', '15-', '15-0', '15-06', '15-06-', '15-06-2025'];
+    const partialValues = [
+      '1',
+      '15',
+      '15-',
+      '15-0',
+      '15-06',
+      '15-06-',
+      '15-06-2025',
+    ];
     for (const partial of partialValues) {
       component['handleValueChange'](partial);
       await page.waitForChanges();
