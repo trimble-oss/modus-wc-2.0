@@ -9,10 +9,10 @@ import {
   State,
   Event as StencilEvent,
 } from '@stencil/core';
-import { Attributes, inheritAriaAttributes } from '../../utils';
 import { convertPropsToClasses } from './modus-wc-tree-item.tailwind';
-import { ModusTreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions';
 import { ModusSize } from '../../types';
+import { Attributes, inheritAriaAttributes } from '../../utils';
+import { ModusTreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions';
 
 export interface IMenuItemElement extends HTMLElement {
   /** The unique identifying value of the tree item. */
@@ -104,7 +104,7 @@ export class ModusWcTreeItem {
    * Public method to collapse the subtree if it's expanded
    */
   @Method()
-  async collapseSubTree(): Promise<void> {
+  collapseSubTree(): Promise<void> {
     if (this.hasSubtree && this.isExpanded) {
       const submenu = this.el.querySelector(
         '.modus-wc-tree-dropdown'
@@ -115,13 +115,14 @@ export class ModusWcTreeItem {
         this.isExpanded = false;
       }
     }
+    return Promise.resolve();
   }
 
   /**
    * Public method to expand the subtree if it's collapsed
    */
   @Method()
-  async expandSubTree(): Promise<void> {
+  expandSubTree(): Promise<void> {
     if (this.hasSubtree && !this.isExpanded) {
       const submenu = this.el.querySelector(
         '.modus-wc-tree-dropdown'
@@ -132,6 +133,7 @@ export class ModusWcTreeItem {
         this.isExpanded = true;
       }
     }
+    return Promise.resolve();
   }
 
   private getClasses(): string {

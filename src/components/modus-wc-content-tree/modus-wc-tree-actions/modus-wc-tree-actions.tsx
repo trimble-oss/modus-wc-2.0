@@ -2,13 +2,13 @@ import { createPopper, Instance as PopperInstance } from '@popperjs/core';
 import {
   Component,
   Element,
+  EventEmitter,
   h,
   Host,
+  Listen,
   Prop,
   State,
   Event as StencilEvent,
-  EventEmitter,
-  Listen,
 } from '@stencil/core';
 import { ModusSize } from '../../types';
 
@@ -105,7 +105,7 @@ export class ModusWcTreeActions {
       this.dropdownOpened.emit(this.el);
 
       if (this.popperInstance) {
-        this.popperInstance.update();
+        void this.popperInstance.update();
       }
     }
   };

@@ -84,37 +84,39 @@ export class ModusWcContentTree {
     }
 
     menuItems.forEach((item) => {
-      const label = item.getAttribute('label') || '';
-      const normalizedLabel = label.toLowerCase();
-      const matches = normalizedLabel.includes(normalizedSearch);
+      void (async () => {
+        const label = item.getAttribute('label') || '';
+        const normalizedLabel = label.toLowerCase();
+        const matches = normalizedLabel.includes(normalizedSearch);
 
-      if (matches) {
-        // Show matching node
-        (item as HTMLElement).style.display = '';
-
-        // Expand and show all parent nodes
-        let parent = item.parentElement;
-        while (parent && parent !== this.el) {
-          if (parent.tagName === 'MODUS-WC-TREE-ITEM') {
-            parent.style.display = '';
-            (parent as HTMLModusWcTreeItemElement).expandSubTree();
-          }
-          parent = parent.parentElement;
-        }
-      } else {
-        // Check if any children match
-        const hasMatchingChildren = this.hasMatchingDescendants(
-          item as HTMLElement,
-          normalizedSearch
-        );
-
-        if (hasMatchingChildren) {
+        if (matches) {
+          // Show matching node
           (item as HTMLElement).style.display = '';
-          (item as HTMLModusWcTreeItemElement).expandSubTree();
+
+          // Expand and show all parent nodes
+          let parent = item.parentElement;
+          while (parent && parent !== this.el) {
+            if (parent.tagName === 'MODUS-WC-TREE-ITEM') {
+              parent.style.display = '';
+              await (parent as HTMLModusWcTreeItemElement).expandSubTree();
+            }
+            parent = parent.parentElement;
+          }
         } else {
-          (item as HTMLElement).style.display = 'none';
+          // Check if any children match
+          const hasMatchingChildren = this.hasMatchingDescendants(
+            item as HTMLElement,
+            normalizedSearch
+          );
+
+          if (hasMatchingChildren) {
+            (item as HTMLElement).style.display = '';
+            await (item as HTMLModusWcTreeItemElement).expandSubTree();
+          } else {
+            (item as HTMLElement).style.display = 'none';
+          }
         }
-      }
+      })();
     });
   }
 
@@ -205,7 +207,7 @@ export class ModusWcContentTree {
                   variant="borderless"
                   size="sm"
                   shape="circle"
-                  onClick={this.toggleExpandCollapse}
+                  onClick={() => void this.toggleExpandCollapse()}
                   aria-label={
                     this.areAllExpanded ? 'Collapse all' : 'Expand all'
                   }
