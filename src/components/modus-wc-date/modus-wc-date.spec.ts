@@ -723,6 +723,69 @@ describe('modus-wc-date', () => {
     expect(component.value).toBe('');
   });
 
+  it('should pass through partial value without validation when input has focus', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Controlled input test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+
+    component['hasFocus'] = true;
+    component['handleValueChange']('2');
+    await page.waitForChanges();
+
+    expect(input.value).toBe('2');
+  });
+
+  it('should pass through partial value when input has focus but inputRef is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Null ref focus test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    component['hasFocus'] = true;
+    component['inputRef'] = undefined;
+    component['handleValueChange']('15-0');
+    await page.waitForChanges();
+
+    expect(component.value).toBe('');
+  });
+
+  it('should not clear value during controlled input typing sequence', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Typing sequence test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+
+    component['hasFocus'] = true;
+
+    const partialValues = ['1', '15', '15-', '15-0', '15-06', '15-06-', '15-06-2025'];
+    for (const partial of partialValues) {
+      component['handleValueChange'](partial);
+      await page.waitForChanges();
+      expect(input.value).toBe(partial);
+    }
+  });
+
+  it('should validate value when input does not have focus', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Programmatic set test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    component['hasFocus'] = false;
+    component.value = 'invalid';
+    component['handleValueChange']('invalid');
+    await page.waitForChanges();
+
+    expect(component.value).toBe('');
+  });
+
   it('should navigate to selected date when opening calendar with value', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
