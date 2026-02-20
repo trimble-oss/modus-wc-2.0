@@ -179,6 +179,16 @@ export class ModusWcDate {
       return;
     }
 
+    // When the input has focus, the user is actively typing.
+    // Allow partial/incomplete values to pass through without validation
+    // so that controlled input patterns (e.g. React) work correctly.
+    if (this.hasFocus) {
+      if (this.inputRef) {
+        this.inputRef.value = newValue;
+      }
+      return;
+    }
+
     const parsed = this.parseISODate(newValue);
     if (!parsed) {
       if (this.value) {
