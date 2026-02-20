@@ -77,6 +77,13 @@ export class ModusWcTreeItem {
   /** Event emitted when a tree item is selected. */
   @StencilEvent({ bubbles: true, composed: true }) itemSelect!: EventEmitter<{
     value: string;
+    selected?: boolean;
+  }>;
+
+  /** Event emitted when checkbox selection changes in multi-select mode. */
+  @StencilEvent({ bubbles: true, composed: true })
+  selectionsChange!: EventEmitter<{
+    selectedValues: string[];
   }>;
 
   componentWillLoad() {
@@ -224,7 +231,8 @@ export class ModusWcTreeItem {
   };
 
   private handleEmittedSelect = () => {
-    this.itemSelect.emit({ value: this.value });
+    if (this.checkbox) return;
+    this.itemSelect.emit({ value: this.value, selected: this.selected });
   };
 
   private handleCheckboxClick = () => {
@@ -234,7 +242,20 @@ export class ModusWcTreeItem {
     this.isIndeterminate = false;
     this.updateChildrenSelection(newValue);
 
-    this.itemSelect.emit({ value: this.value });
+    // Emit selectionChange event with all selected values for multi-select mode
+    const rootTreeView = this.el
+      .closest('modus-wc-content-tree')
+      ?.querySelector('modus-wc-tree-view');
+    if (rootTreeView) {
+      const allTreeItems = Array.from(
+        rootTreeView.querySelectorAll('modus-wc-tree-item')
+      ) as IMenuItemElement[];
+      const selectedValues = allTreeItems
+        .filter((item) => item.checkbox && item.selected)
+        .map((item) => item.value);
+
+      this.selectionsChange.emit({ selectedValues });
+    }
   };
 
   render() {

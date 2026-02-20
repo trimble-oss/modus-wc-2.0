@@ -2320,6 +2320,24 @@
               }
             },
             {
+              "name": "include-actions",
+              "fieldName": "includeActions",
+              "default": "true",
+              "description": "If true, displays the action buttons (expand/collapse all, etc.).",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "include-search",
+              "fieldName": "includeSearch",
+              "default": "true",
+              "description": "If true, displays the search input to filter tree items.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "search-placeholder",
               "fieldName": "searchPlaceholder",
               "default": "'Search...'",
@@ -2408,10 +2426,10 @@
             {
               "name": "size",
               "fieldName": "size",
-              "default": "'xs'",
+              "default": "'md'",
               "description": "The size of the action buttons and icons.",
               "type": {
-                "text": "'xs' | 'sm' | 'md'"
+                "text": "ModusSize"
               }
             }
           ],
@@ -2544,15 +2562,6 @@
               }
             },
             {
-              "name": "drag-handle",
-              "fieldName": "dragHandle",
-              "default": "false",
-              "description": "If true, renders a drag handle icon at the start of the tree item.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
               "name": "has-subtree",
               "fieldName": "hasSubtree",
               "description": "Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior.",
@@ -2582,7 +2591,7 @@
               "default": "'sm'",
               "description": "The size of the tree item icons and actions.",
               "type": {
-                "text": "'xs' | 'sm' | 'md'"
+                "text": "ModusSize"
               }
             },
             {
@@ -2609,9 +2618,17 @@
               "kind": "field",
               "name": "itemSelect",
               "type": {
-                "text": "EventEmitter<{\r\n    value: string;\r\n  }>"
+                "text": "EventEmitter<{\r\n    value: string;\r\n    selected?: boolean;\r\n  }>"
               },
               "description": "Event emitted when a tree item is selected."
+            },
+            {
+              "kind": "field",
+              "name": "selectionsChange",
+              "type": {
+                "text": "EventEmitter<{\r\n    selectedValues: string[];\r\n  }>"
+              },
+              "description": "Event emitted when checkbox selection changes in multi-select mode."
             }
           ],
           "customElement": true
@@ -2652,6 +2669,18 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleItemSelect",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent<{ value: string }>"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",

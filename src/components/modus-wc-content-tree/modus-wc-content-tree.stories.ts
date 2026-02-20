@@ -32,7 +32,7 @@ const meta: Meta<ContentTreeArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['itemSelect', 'treeActionClick'],
+      handles: ['itemSelect', 'treeActionClick', 'selectionsChange'],
     },
   },
 };
@@ -42,6 +42,56 @@ export default meta;
 type Story = StoryObj<ContentTreeArgs>;
 
 export const Default: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-content-tree
+        search-placeholder=${args['search-placeholder']}
+        customClass=${args['custom-class']}
+        .includeSearch=${args['include-search']}
+        .includeActions=${args['include-actions']}
+      >
+        <modus-wc-tree-view>
+          <modus-wc-tree-item
+            label="Documents"
+            .hasSubtree=${true}
+            value="documents"
+          >
+            <modus-wc-tree-view .isSubList=${true}>
+              <modus-wc-tree-item label="Report.pdf" value="report">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="Proposal.docx" value="proposal">
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Projects"
+            .hasSubtree=${true}
+            value="projects"
+          >
+            <modus-wc-tree-view .isSubList=${true}>
+              <modus-wc-tree-item label="Website Redesign" value="website">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Client Work"
+                .hasSubtree=${true}
+                value="client-work"
+              >
+                <modus-wc-tree-view .isSubList=${true}>
+                  <modus-wc-tree-item label="Design Mockups" value="mockups">
+                  </modus-wc-tree-item>
+                </modus-wc-tree-view>
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item label="Resources" value="resources">
+          </modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
+    `;
+  },
+};
+
+export const MultiSelect: Story = {
   render: (args) => {
     return html`
       <modus-wc-content-tree
@@ -206,10 +256,35 @@ export const WithActions: Story = {
         ariaLabel: 'View item',
       },
       {
+        id: 'add',
+        label: 'Add new above',
+        icon: 'add',
+        ariaLabel: 'Add new item',
+      },
+
+      {
+        id: 'add-below',
+        label: 'Add new below',
+        icon: 'add',
+        ariaLabel: 'Add new item',
+      },
+      {
+        id: 'new-child-node',
+        label: 'Add new child node',
+        icon: 'tree_structure',
+        ariaLabel: 'Add new child node',
+      },
+      {
         id: 'edit',
-        label: 'Edit',
+        label: 'Edit Name',
         icon: 'pencil',
         ariaLabel: 'Edit item',
+      },
+      {
+        id: 'make-copy',
+        label: 'Make a copy',
+        icon: 'copy_content',
+        ariaLabel: 'Make a copy of item',
       },
       {
         id: 'delete',

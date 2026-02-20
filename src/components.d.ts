@@ -527,6 +527,14 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * If true, displays the action buttons (expand/collapse all, etc.).
+         */
+        "includeActions"?: boolean;
+        /**
+          * If true, displays the search input to filter tree items.
+         */
+        "includeSearch"?: boolean;
+        /**
           * Placeholder text for the search input.
          */
         "searchPlaceholder"?: string;
@@ -3162,6 +3170,10 @@ declare global {
     interface HTMLModusWcTreeItemElementEventMap {
         "itemSelect": {
     value: string;
+    selected?: boolean;
+  };
+        "selectionsChange": {
+    selectedValues: string[];
   };
     }
     /**
@@ -3821,6 +3833,14 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the component.
          */
         "customClass"?: string;
+        /**
+          * If true, displays the action buttons (expand/collapse all, etc.).
+         */
+        "includeActions"?: boolean;
+        /**
+          * If true, displays the search input to filter tree items.
+         */
+        "includeSearch"?: boolean;
         /**
           * Placeholder text for the search input.
          */
@@ -5614,6 +5634,13 @@ declare namespace LocalJSX {
          */
         "onItemSelect"?: (event: ModusWcTreeItemCustomEvent<{
     value: string;
+    selected?: boolean;
+  }>) => void;
+        /**
+          * Event emitted when checkbox selection changes in multi-select mode.
+         */
+        "onSelectionsChange"?: (event: ModusWcTreeItemCustomEvent<{
+    selectedValues: string[];
   }>) => void;
         /**
           * The selected state of the tree item.

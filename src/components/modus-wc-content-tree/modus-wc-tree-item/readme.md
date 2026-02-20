@@ -26,9 +26,10 @@ A tree item component that represents a single node in a hierarchical tree struc
 
 ## Events
 
-| Event        | Description                                 | Type                              |
-| ------------ | ------------------------------------------- | --------------------------------- |
-| `itemSelect` | Event emitted when a tree item is selected. | `CustomEvent<{ value: string; }>` |
+| Event              | Description                                                         | Type                                                               |
+| ------------------ | ------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `itemSelect`       | Event emitted when a tree item is selected.                         | `CustomEvent<{ value: string; selected?: boolean \| undefined; }>` |
+| `selectionsChange` | Event emitted when checkbox selection changes in multi-select mode. | `CustomEvent<{ selectedValues: string[]; }>`                       |
 
 
 ## Methods

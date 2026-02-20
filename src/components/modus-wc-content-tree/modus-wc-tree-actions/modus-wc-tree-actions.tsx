@@ -15,7 +15,7 @@ import { ModusSize } from '../../types';
 export interface ModusTreeItemActions {
   id: string; // Unique identifier for the action
   icon: string; // Icon name for the action, e.g., 'edit', 'trash'
-  iconVariant?: 'solid' | 'outline'; // Optional variant for the icon
+  iconVariant?: 'solid' | 'outlined'; // Optional variant for the icon
   label: string; // Text label for the action, used for accessibility and tooltips
   ariaLabel?: string; // Optional label for accessibility
   disabled?: boolean; // Optional flag to disable the action
@@ -92,6 +92,8 @@ export class ModusWcTreeActions {
       actionId: action.id,
       actionName: action.label,
     });
+
+    this.isDropdownOpen = false;
   };
 
   private handleMoreActionsClick = (event: MouseEvent) => {
@@ -109,19 +111,11 @@ export class ModusWcTreeActions {
   };
 
   private handleClickOutside = (event: MouseEvent) => {
-    const target = event.target as HTMLElement;
-
     if (!this.isDropdownOpen) return;
 
-    // Check if clicking inside this component's button or dropdown
-    const clickedInside =
-      this.moreActionsButton?.contains(target) ||
-      this.moreActionsDropdown?.contains(target);
-
-    // Check if clicking another more actions button
-    const clickedAnotherButton = target.closest('.modus-wc-tree-action-button');
-
-    if (!clickedInside || clickedAnotherButton) {
+    const target = event.target as HTMLElement;
+    const clickedButton = this.moreActionsButton?.contains(target);
+    if (!clickedButton) {
       this.isDropdownOpen = false;
     }
   };
