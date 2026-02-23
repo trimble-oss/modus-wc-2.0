@@ -125,6 +125,10 @@ const meta: Meta<NavbarArgs> = {
         },
       },
     },
+    'logo-name': {
+      control: { type: 'select' },
+      options: getAvailableLogos(),
+    },
   },
   decorators: [withActions],
   parameters: {
