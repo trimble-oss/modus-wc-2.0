@@ -139,14 +139,14 @@ export const CustomBackground: Story = {
       source: {
         transform: (_src, { args }) => `<style>
 .custom-tabs {
-          --tabs-inactive-color: #353a40;
-          --tabs-inactive-bg: #90939f;
-          --tabs-active-bg: #171c1e;
-          --tabs-active-color: #fec157;
-          --tabs-hover-bg-color: #cbcdd6;
-          --tabs-hover-color: #000000;
-          --tabs-focus-bg-color: #e0eccf;
-          --tabs-focus-color: #fec157;
+  --tabs-inactive-color: #353a40;
+  --tabs-inactive-bg: #90939f;
+  --tabs-active-bg: #171c1e;
+  --tabs-active-color: #fec157;
+  --tabs-hover-bg-color: #cbcdd6;
+  --tabs-hover-color: #000000;
+  --tabs-focus-bg-color: #e0eccf;
+  --tabs-focus-color: #fec157;
 }
 </style>
 <modus-wc-tabs
