@@ -128,6 +128,62 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
+export const CustomBackground: Story = {
+  ...Template,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The background color of the tabs can be customized by applying a custom class to the component and defining CSS variables for the desired colors.',
+      },
+      source: {
+        transform: (_src, { args }) => `<style>
+.custom-tabs {
+          --tabs-inactive-color: #353a40;
+          --tabs-inactive-bg: #90939f;
+          --tabs-active-bg: #171c1e;
+          --tabs-active-color: #fec157;
+          --tabs-hover-bg-color: #cbcdd6;
+          --tabs-hover-color: #000000;
+          --tabs-focus-bg-color: #e0eccf;
+          --tabs-focus-color: #fec157;
+}
+</style>
+<modus-wc-tabs
+  aria-label="Tab group"
+  custom-class="custom-tabs"
+  tab-style="lifted"
+  size="md"
+></modus-wc-tabs>${getSourceCode(args.tabs as ITab[])}`,
+      },
+    },
+  },
+  render: (args) => {
+    return html`
+      <style>
+        .custom-tabs {
+          --tabs-inactive-color: #353a40;
+          --tabs-inactive-bg: #90939f;
+          --tabs-active-bg: #171c1e;
+          --tabs-active-color: #fec157;
+          --tabs-hover-bg-color: #cbcdd6;
+          --tabs-hover-color: #000000;
+          --tabs-focus-bg-color: #e0eccf;
+          --tabs-focus-color: #fec157;
+        }
+      </style>
+      <modus-wc-tabs
+        aria-label="Tab group"
+        custom-class="custom-tabs"
+        tab-style="lifted"
+        .tabs=${args.tabs}
+        size="${ifDefined(args.size)}"
+      >
+      </modus-wc-tabs>
+    `;
+  },
+};
+
 export const CustomContent: Story = {
   args: {
     tabs: [

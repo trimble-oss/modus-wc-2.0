@@ -37,21 +37,21 @@ modus-wc-tabs .modus-wc-tabs {
       line-height: var(--modus-wc-line-height-xl);
     }
   }
+  &.modus-wc-tabs-lifted
+    > .modus-wc-tab:not(.modus-wc-tab-active):not([aria-selected='true']):not(
+      .modus-wc-tab-disabled
+    ):not([disabled]) {
+    --tab-color: var(--tabs-inactive-color, var(--modus-wc-color-gray-10));
+    background-color: var(--tabs-inactive-bg, var(--modus-wc-color-base-100));
+  }
 
   &.modus-wc-tabs-lifted
     > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
       .modus-wc-tab-disabled
     ):not([disabled]),
   .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
-    background-color: transparent;
-    --tab-border: var(--border) var(--border) 0 var(--border);
-    --tab-border-colors: var(--tab-border-color) var(--tab-border-color) #0000
-      var(--tab-border-color);
-    --tab-paddings: 0 calc(var(--tab-p) - var(--border)) var(--border)
-      calc(var(--tab-p) - var(--border));
-    --tab-inset: auto auto 0 auto;
-    --radius-start: radial-gradient(circle at top left, var(--tab-radius-grad));
-    --radius-end: radial-gradient(circle at top right, var(--tab-radius-grad));
+    color: var(--tabs-active-color, var(--modus-wc-color-primary));
+    --tab-bg: var(--tabs-active-bg, var(--modus-wc-color-base-200));
   }
 
   &.modus-wc-tabs-bordered {
@@ -76,6 +76,22 @@ modus-wc-tabs .modus-wc-tab {
   height: inherit;
 
   @include common-states;
+
+  &:not(.modus-wc-tab-active):not(.modus-wc-tab-disabled):hover {
+    background-color: var(
+      --tabs-hover-bg-color,
+      var(--modus-wc-color-base-200)
+    );
+    color: var(--tabs-hover-color, var(--modus-wc-color-primary));
+  }
+
+  &:not(.modus-wc-tab-active):not(.modus-wc-tab-disabled):focus {
+    background-color: var(
+      --tabs-focus-bg-color,
+      var(--modus-wc-color-base-200)
+    );
+    color: var(--tabs-focus-color, var(--modus-wc-color-primary));
+  }
 
   &-active {
     background-color: var(--modus-wc-color-base-page);
