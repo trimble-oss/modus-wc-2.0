@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-tree-view renders with custom props 1`] = `
+<modus-wc-tree-view custom-class="test-class
+                    expand-all=" multi-select="true" selected-values="[&quot;item1&quot;, &quot;item2&quot;]" true"="">
+  <!---->
+  <ul class="expand-all= modus-wc-menu modus-wc-tree-view test-class" role="tree">
+  </ul>
+</modus-wc-tree-view>
+`;
+
+exports[`modus-wc-tree-view renders with default props 1`] = `
+<modus-wc-tree-view>
+  <!---->
+  <ul class="modus-wc-menu modus-wc-tree-view" role="tree"></ul>
+</modus-wc-tree-view>
+`;

@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-tree-item renders with checkbox 1`] = `
+<modus-wc-tree-item checkbox="" label="Test Item" value="test">
+  <!---->
+  <li aria-selected="false" class="modus-wc-tree-item" role="treeitem" tabindex="0">
+    <div class="modus-wc-tree-content">
+      <modus-wc-icon customclass="modus-wc-tree-toggle-icon  modus-wc-tree-toggle-button-hidden" name="chevron_right" size="sm"></modus-wc-icon>
+      <modus-wc-checkbox aria-label="Checkbox" size="sm"></modus-wc-checkbox>
+      <div class="modus-wc-tree-item-labels">
+        <div class="modus-wc-tree-item-label">
+          Test Item
+        </div>
+      </div>
+      <div class="modus-wc-tree-item-actions">
+        <modus-wc-tree-actions size="sm"></modus-wc-tree-actions>
+      </div>
+    </div>
+  </li>
+</modus-wc-tree-item>
+`;
+
+exports[`modus-wc-tree-item renders with default props 1`] = `
+<modus-wc-tree-item label="Test Item" value="test">
+  <!---->
+  <li aria-selected="false" class="modus-wc-tree-item" role="treeitem" tabindex="0">
+    <div class="modus-wc-tree-content">
+      <modus-wc-icon customclass="modus-wc-tree-toggle-icon  modus-wc-tree-toggle-button-hidden" name="chevron_right" size="sm"></modus-wc-icon>
+      <div class="modus-wc-tree-item-labels">
+        <div class="modus-wc-tree-item-label">
+          Test Item
+        </div>
+      </div>
+      <div class="modus-wc-tree-item-actions">
+        <modus-wc-tree-actions size="sm"></modus-wc-tree-actions>
+      </div>
+    </div>
+  </li>
+</modus-wc-tree-item>
+`;

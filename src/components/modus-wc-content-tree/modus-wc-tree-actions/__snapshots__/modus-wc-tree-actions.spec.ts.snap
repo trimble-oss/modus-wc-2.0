@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-tree-actions renders correctly 1`] = `
+<modus-wc-tree-actions>
+  <div class="modus-wc-tree-actions-container"></div>
+</modus-wc-tree-actions>
+`;
