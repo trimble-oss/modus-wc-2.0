@@ -1151,7 +1151,10 @@ describe('modus-wc-table', () => {
     });
 
     const component = page.rootInstance as ModusWcTable;
-    component.columns = defaultColumns;
+    component.columns = [
+      { ...defaultColumns[0], editor: 'text' },
+      { ...defaultColumns[1], editor: 'text' },
+    ];
     component.data = defaultData;
 
     await page.waitForChanges();
@@ -3305,5 +3308,261 @@ describe('modus-wc-table', () => {
     component.selectedRowIds = [];
     component.componentWillLoad();
     expect(component['internalRowSelection']).toEqual({});
+  });
+
+  describe('Cursor behavior', () => {
+    it('should not apply selectable or editable classes to rows when table is not selectable or editable', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Read-only table"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [
+        { id: 'name', accessor: 'name', header: 'Name' },
+        { id: 'age', accessor: 'age', header: 'Age' },
+      ];
+      component.data = [
+        { id: '1', name: 'Alice', age: 30 },
+        { id: '2', name: 'Bob', age: 25 },
+      ];
+      component.selectable = 'none';
+      component.editable = false;
+
+      await page.waitForChanges();
+
+      const rows = page.root?.querySelectorAll('tbody tr');
+      expect(rows?.length).toBeGreaterThan(0);
+
+      rows?.forEach((row) => {
+        expect(row.classList.contains('selectable')).toBe(false);
+        expect(row.classList.contains('editable')).toBe(false);
+      });
+    });
+
+    it('should apply selectable class to rows when selectable is single', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Selectable table" selectable="single"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [
+        { id: 'name', accessor: 'name', header: 'Name' },
+        { id: 'age', accessor: 'age', header: 'Age' },
+      ];
+      component.data = [
+        { id: '1', name: 'Alice', age: 30 },
+        { id: '2', name: 'Bob', age: 25 },
+      ];
+
+      await page.waitForChanges();
+
+      const rows = page.root?.querySelectorAll('tbody tr');
+      expect(rows?.length).toBeGreaterThan(0);
+
+      rows?.forEach((row) => {
+        expect(row.classList.contains('selectable')).toBe(true);
+      });
+    });
+
+    it('should apply selectable class to rows when selectable is multi', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Multi-select table" selectable="multi"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [
+        { id: 'name', accessor: 'name', header: 'Name' },
+        { id: 'age', accessor: 'age', header: 'Age' },
+      ];
+      component.data = [
+        { id: '1', name: 'Alice', age: 30 },
+        { id: '2', name: 'Bob', age: 25 },
+      ];
+
+      await page.waitForChanges();
+
+      const rows = page.root?.querySelectorAll('tbody tr');
+      expect(rows?.length).toBeGreaterThan(0);
+
+      rows?.forEach((row) => {
+        expect(row.classList.contains('selectable')).toBe(true);
+      });
+    });
+
+    it('should apply editable class to rows when editable is true', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Editable table"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [
+        { id: 'name', accessor: 'name', header: 'Name', editor: 'text' },
+        { id: 'age', accessor: 'age', header: 'Age', editor: 'number' },
+      ];
+      component.data = [
+        { id: '1', name: 'Alice', age: 30 },
+        { id: '2', name: 'Bob', age: 25 },
+      ];
+      component.editable = true;
+
+      await page.waitForChanges();
+
+      const rows = page.root?.querySelectorAll('tbody tr');
+      expect(rows?.length).toBeGreaterThan(0);
+
+      rows?.forEach((row) => {
+        expect(row.classList.contains('editable')).toBe(true);
+      });
+    });
+
+    it('should apply editable class conditionally based on row predicate function', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Conditionally editable table"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [
+        { id: 'name', accessor: 'name', header: 'Name', editor: 'text' },
+        { id: 'age', accessor: 'age', header: 'Age', editor: 'number' },
+      ];
+      component.data = [
+        { id: '1', name: 'Alice', age: 30, canEdit: true },
+        { id: '2', name: 'Bob', age: 25, canEdit: false },
+      ];
+      component.editable = (row: Record<string, unknown>) =>
+        row.canEdit === true;
+
+      await page.waitForChanges();
+
+      const rows = page.root?.querySelectorAll('tbody tr');
+      expect(rows?.length).toBe(2);
+
+      // First row should be editable
+      expect(rows?.[0].classList.contains('editable')).toBe(true);
+
+      // Second row should not be editable
+      expect(rows?.[1].classList.contains('editable')).toBe(false);
+    });
+
+    it('should apply editable-cell class to cells with editors when row is editable', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Editable cells table"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [
+        { id: 'name', accessor: 'name', header: 'Name', editor: 'text' },
+        { id: 'age', accessor: 'age', header: 'Age', editor: 'number' },
+        { id: 'email', accessor: 'email', header: 'Email' }, // No editor
+      ];
+      component.data = [
+        { id: '1', name: 'Alice', age: 30, email: 'alice@example.com' },
+      ];
+      component.editable = true;
+
+      await page.waitForChanges();
+
+      const cells = page.root?.querySelectorAll('tbody tr td');
+
+      // Skip the first cell if it's a selection column
+      const startIndex = component.selectable !== 'none' ? 1 : 0;
+
+      // Name cell (has editor) should have editable-cell class
+      expect(cells?.[startIndex].classList.contains('editable-cell')).toBe(
+        true
+      );
+
+      // Age cell (has editor) should have editable-cell class
+      expect(cells?.[startIndex + 1].classList.contains('editable-cell')).toBe(
+        true
+      );
+
+      // Email cell (no editor) should not have editable-cell class
+      expect(cells?.[startIndex + 2].classList.contains('editable-cell')).toBe(
+        false
+      );
+    });
+
+    it('should not apply editable-cell class when row is not editable', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Non-editable cells table"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [
+        { id: 'name', accessor: 'name', header: 'Name', editor: 'text' },
+        { id: 'age', accessor: 'age', header: 'Age', editor: 'number' },
+      ];
+      component.data = [{ id: '1', name: 'Alice', age: 30 }];
+      component.editable = false;
+
+      await page.waitForChanges();
+
+      const cells = page.root?.querySelectorAll('tbody tr td');
+
+      cells?.forEach((cell) => {
+        expect(cell.classList.contains('editable-cell')).toBe(false);
+      });
+    });
+
+    it('should apply both selectable and editable classes when table is both selectable and editable', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Selectable and editable table" selectable="multi"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [
+        { id: 'name', accessor: 'name', header: 'Name', editor: 'text' },
+        { id: 'age', accessor: 'age', header: 'Age', editor: 'number' },
+      ];
+      component.data = [
+        { id: '1', name: 'Alice', age: 30 },
+        { id: '2', name: 'Bob', age: 25 },
+      ];
+      component.editable = true;
+
+      await page.waitForChanges();
+
+      const rows = page.root?.querySelectorAll('tbody tr');
+      expect(rows?.length).toBeGreaterThan(0);
+
+      rows?.forEach((row) => {
+        expect(row.classList.contains('selectable')).toBe(true);
+        expect(row.classList.contains('editable')).toBe(true);
+      });
+    });
+
+    it('should not enter edit mode when column has no editor defined', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="No editor table" editable="true"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [
+        { id: 'name', accessor: 'name', header: 'Name' },
+        { id: 'age', accessor: 'age', header: 'Age' },
+      ];
+      component.data = [{ id: '1', name: 'Alice', age: 30 }];
+
+      await page.waitForChanges();
+
+      const startSpy = jest.spyOn(component.cellEditStart, 'emit');
+
+      // Try to enter edit mode on a column without editor
+      component['enterEdit'](0, 'name');
+
+      // Should not emit cellEditStart
+      expect(startSpy).not.toHaveBeenCalled();
+      expect(component['activeEditor']).toBeNull();
+    });
   });
 });
