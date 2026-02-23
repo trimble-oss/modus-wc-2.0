@@ -37,11 +37,13 @@ modus-wc-tabs .modus-wc-tabs {
       line-height: var(--modus-wc-line-height-xl);
     }
   }
+
   &.modus-wc-tabs-lifted
     > .modus-wc-tab:not(.modus-wc-tab-active):not([aria-selected='true']):not(
       .modus-wc-tab-disabled
     ):not([disabled]) {
     --tab-color: var(--tabs-inactive-color, var(--modus-wc-color-gray-10));
+
     background-color: var(--tabs-inactive-bg, var(--modus-wc-color-base-100));
   }
 
@@ -51,6 +53,7 @@ modus-wc-tabs .modus-wc-tabs {
     ):not([disabled]),
   .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
     color: var(--tabs-active-color, var(--modus-wc-color-primary));
+
     --tab-bg: var(--tabs-active-bg, var(--modus-wc-color-base-200));
   }
 
