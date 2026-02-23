@@ -92,12 +92,18 @@ export class ModusWcTreeItem {
 
   componentDidLoad() {
     if (this.hasSubtree) {
-      this.el.addEventListener('selectionsChange', this.updateIndeterminateState);
+      this.el.addEventListener(
+        'selectionsChange',
+        this.updateIndeterminateState
+      );
     }
   }
 
   disconnectedCallback() {
-    this.el.removeEventListener('selectionsChange', this.updateIndeterminateState);
+    this.el.removeEventListener(
+      'selectionsChange',
+      this.updateIndeterminateState
+    );
   }
 
   /**
