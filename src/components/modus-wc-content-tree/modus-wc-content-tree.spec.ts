@@ -591,6 +591,35 @@ describe('modus-wc-content-tree', () => {
     expect(tree.areAllExpanded).toBe(false);
   });
 
+  it('handleToggleClick calls toggleExpandCollapse', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree],
+      html: `
+        <modus-wc-content-tree>
+          <modus-wc-tree-item has-subtree></modus-wc-tree-item>
+        </modus-wc-content-tree>
+      `,
+    });
+
+    const tree = page.rootInstance;
+
+    // Mock the tree item methods
+    const item = page.root?.querySelector(
+      'modus-wc-tree-item'
+    ) as ModusWcTreeItemElement;
+    item.expandSubTree = jest.fn().mockResolvedValue(undefined);
+    item.collapseSubTree = jest.fn().mockResolvedValue(undefined);
+
+    const toggleSpy = jest.spyOn(tree, 'toggleExpandCollapse' as never);
+
+    tree['handleToggleClick']();
+
+    // Wait for the async operation to complete
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(toggleSpy).toHaveBeenCalled();
+  });
+
   it('filterNodes caches menu items on first call', async () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],

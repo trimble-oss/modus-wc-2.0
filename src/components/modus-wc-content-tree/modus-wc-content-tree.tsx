@@ -178,7 +178,11 @@ export class ModusWcContentTree {
     this.cachedItems = undefined;
   };
 
-  private toggleExpandCollapse = async () => {
+  private handleToggleClick = (): void => {
+    void this.toggleExpandCollapse();
+  };
+
+  private async toggleExpandCollapse(): Promise<void> {
     const treeItems = this.el.querySelectorAll('modus-wc-tree-item');
     this.areAllExpanded = !this.areAllExpanded;
 
@@ -197,7 +201,7 @@ export class ModusWcContentTree {
     });
 
     await Promise.all(promises);
-  };
+  }
 
   render() {
     return (
@@ -227,7 +231,7 @@ export class ModusWcContentTree {
                   variant="borderless"
                   size="sm"
                   shape="circle"
-                  onClick={() => void this.toggleExpandCollapse()}
+                  onClick={this.handleToggleClick}
                   aria-label={
                     this.areAllExpanded ? 'Collapse all' : 'Expand all'
                   }
