@@ -42,6 +42,10 @@ export const config: Config = {
       copy: [
         // This is scoped to /src
         { src: './styles/output.css', dest: 'dist/modus-wc-styles.css' },
+        {
+          src: './styles/modus-wc-variables.css',
+          dest: 'dist/modus-wc-variables.css',
+        },
         { src: './styles/modus-icons.css', dest: 'dist/modus-icons.css' },
         { src: './styles/assets', dest: 'dist/styles/assets' },
         { src: './styles/assets', dest: 'dist/assets' },
