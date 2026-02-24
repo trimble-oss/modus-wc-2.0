@@ -2293,7 +2293,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable content tree component used to display hierarchical data in a tree structure.\r\nUses menu items to create the tree structure with support for expanding/collapsing nodes and selection.",
+          "description": "A customizable content tree component used to display hierarchical data in a tree structure.",
           "name": "ModusWcContentTree",
           "members": [
             {

@@ -8,7 +8,6 @@
 ## Overview
 
 A customizable content tree component used to display hierarchical data in a tree structure.
-Uses menu items to create the tree structure with support for expanding/collapsing nodes and selection.
 
 ## Properties
 

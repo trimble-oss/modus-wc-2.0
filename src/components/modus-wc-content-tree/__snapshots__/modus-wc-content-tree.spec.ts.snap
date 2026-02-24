@@ -14,7 +14,7 @@ exports[`modus-wc-content-tree should render with custom props 1`] = `
         </modus-wc-button>
       </div>
     </div>
-    <div class="modus-wc-content-tree-content" role="tree">
+    <div class="modus-wc-content-tree-content">
       <div class="modus-wc-content-tree-empty">
         <modus-wc-icon customclass="modus-wc-content-tree-empty-icon" name="folder_open" variant="solid"></modus-wc-icon>
         <modus-wc-typography customclass="modus-wc-content-tree-empty-text" hierarchy="p" label="Empty Content Tree" size="lg" weight="normal"></modus-wc-typography>
@@ -38,7 +38,7 @@ exports[`modus-wc-content-tree should render with default props 1`] = `
         </modus-wc-button>
       </div>
     </div>
-    <div class="modus-wc-content-tree-content" role="tree">
+    <div class="modus-wc-content-tree-content">
       <div class="modus-wc-content-tree-empty">
         <modus-wc-icon customclass="modus-wc-content-tree-empty-icon" name="folder_open" variant="solid"></modus-wc-icon>
         <modus-wc-typography customclass="modus-wc-content-tree-empty-text" hierarchy="p" label="Empty Content Tree" size="lg" weight="normal"></modus-wc-typography>

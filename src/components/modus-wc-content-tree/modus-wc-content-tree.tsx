@@ -1,15 +1,9 @@
 import { Component, Element, h, Host, Prop, State } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../utils';
-
-interface HTMLModusWcTreeItemElement extends HTMLElement {
-  hasSubtree?: boolean;
-  expandSubTree: () => Promise<void>;
-  collapseSubTree: () => Promise<void>;
-}
+import { ModusWcTreeItemElement } from './modus-wc-tree-item/modus-wc-tree-item';
 
 /**
  * A customizable content tree component used to display hierarchical data in a tree structure.
- * Uses menu items to create the tree structure with support for expanding/collapsing nodes and selection.
  */
 @Component({
   tag: 'modus-wc-content-tree',
@@ -19,6 +13,8 @@ interface HTMLModusWcTreeItemElement extends HTMLElement {
 export class ModusWcContentTree {
   private inheritedAttributes: Attributes = {};
   private slotEl?: HTMLSlotElement;
+  private debounceTimer?: number;
+  private cachedItems?: HTMLModusWcTreeItemElement[];
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -63,77 +59,100 @@ export class ModusWcContentTree {
 
   disconnectedCallback() {
     this.slotEl?.removeEventListener('slotchange', this.updateSlotContent);
+    if (this.debounceTimer) {
+      window.clearTimeout(this.debounceTimer);
+    }
   }
 
   private handleInputChange = (event: CustomEvent) => {
     const target = event.target as HTMLInputElement;
     this.searchValue = target.value;
-    this.filterNodes(this.searchValue);
+
+    // Debounce search to avoid excessive filtering
+    if (this.debounceTimer) {
+      window.clearTimeout(this.debounceTimer);
+    }
+
+    this.debounceTimer = window.setTimeout(() => {
+      this.filterNodes(this.searchValue);
+    }, 150);
   };
 
-  private filterNodes(searchTerm: string) {
-    const menuItems = this.el.querySelectorAll('modus-wc-tree-item');
+  private async filterNodes(searchTerm: string): Promise<void> {
+    // Cache menu items to avoid repeated queries
+    if (!this.cachedItems) {
+      this.cachedItems = Array.from(
+        this.el.querySelectorAll('modus-wc-tree-item')
+      ) as HTMLModusWcTreeItemElement[];
+    }
+    const menuItems = this.cachedItems;
+
     const normalizedSearch = searchTerm.toLowerCase().trim();
 
+    // If search is empty, reset everything in batch
     if (!normalizedSearch) {
-      // Show all nodes when search is empty
-      menuItems.forEach((item) => {
+      for (const item of menuItems) {
         (item as HTMLElement).style.display = '';
-      });
+      }
       return;
     }
 
-    menuItems.forEach((item) => {
-      void (async () => {
-        const label = item.getAttribute('label') || '';
-        const normalizedLabel = label.toLowerCase();
-        const matches = normalizedLabel.includes(normalizedSearch);
+    // First pass: identify matches and collect items to show/hide
+    const matchingItems = new Set<HTMLElement>();
+    const itemsToExpand: HTMLModusWcTreeItemElement[] = [];
+    const processedParents = new Set<HTMLElement>();
 
-        if (matches) {
-          // Show matching node
-          (item as HTMLElement).style.display = '';
-
-          // Expand and show all parent nodes
-          let parent = item.parentElement;
-          while (parent && parent !== this.el) {
-            if (parent.tagName === 'MODUS-WC-TREE-ITEM') {
-              parent.style.display = '';
-              await (parent as HTMLModusWcTreeItemElement).expandSubTree();
-            }
-            parent = parent.parentElement;
-          }
-        } else {
-          // Check if any children match
-          const hasMatchingChildren = this.hasMatchingDescendants(
-            item as HTMLElement,
-            normalizedSearch
-          );
-
-          if (hasMatchingChildren) {
-            (item as HTMLElement).style.display = '';
-            await (item as HTMLModusWcTreeItemElement).expandSubTree();
-          } else {
-            (item as HTMLElement).style.display = 'none';
-          }
-        }
-      })();
-    });
-  }
-
-  private hasMatchingDescendants(
-    element: HTMLElement,
-    searchTerm: string
-  ): boolean {
-    const childMenuItems = element.querySelectorAll('modus-wc-tree-item');
-
-    for (const child of Array.from(childMenuItems)) {
-      const label = child.getAttribute('label') || '';
-      if (label.toLowerCase().includes(searchTerm)) {
-        return true;
+    // Build match set efficiently
+    for (const item of menuItems) {
+      const label = item.getAttribute('label') || '';
+      if (label.toLowerCase().includes(normalizedSearch)) {
+        matchingItems.add(item as HTMLElement);
       }
     }
 
-    return false;
+    // Second pass: determine visibility and expansion needs
+    for (const item of menuItems) {
+      const itemElement = item as HTMLElement;
+      const isDirectMatch = matchingItems.has(itemElement);
+
+      if (isDirectMatch) {
+        itemElement.style.display = '';
+
+        // Process ancestors only once
+        let parent = item.parentElement;
+        while (parent && parent !== this.el) {
+          if (
+            parent.tagName === 'MODUS-WC-TREE-ITEM' &&
+            !processedParents.has(parent)
+          ) {
+            processedParents.add(parent);
+            parent.style.display = '';
+            itemsToExpand.push(parent as HTMLModusWcTreeItemElement);
+          }
+          parent = parent.parentElement;
+        }
+      } else {
+        // Check descendants using pre-computed match set
+        const descendants = itemElement.querySelectorAll('modus-wc-tree-item');
+        const hasMatchingChild = Array.from(descendants).some((child) =>
+          matchingItems.has(child as HTMLElement)
+        );
+
+        if (hasMatchingChild) {
+          itemElement.style.display = '';
+          itemsToExpand.push(item);
+        } else {
+          itemElement.style.display = 'none';
+        }
+      }
+    }
+
+    // Batch all expand operations
+    if (itemsToExpand.length > 0) {
+      await Promise.all(
+        itemsToExpand.map((item) => item.expandSubTree().catch(() => {}))
+      );
+    }
   }
 
   private handleInputKeyDown = (event: KeyboardEvent) => {
@@ -155,6 +174,8 @@ export class ModusWcContentTree {
       );
 
     this.hasSlotContent = assigned.length > 0;
+    // Invalidate cache when content changes
+    this.cachedItems = undefined;
   };
 
   private toggleExpandCollapse = async () => {
@@ -162,10 +183,9 @@ export class ModusWcContentTree {
     this.areAllExpanded = !this.areAllExpanded;
 
     const promises = Array.from(treeItems).map((item) => {
-      const treeItem = item as HTMLModusWcTreeItemElement;
+      const treeItem = item as ModusWcTreeItemElement;
       const hasSubtree =
         item.hasAttribute('has-subtree') || treeItem.hasSubtree === true;
-
       if (hasSubtree) {
         if (this.areAllExpanded) {
           return treeItem.expandSubTree();
@@ -207,7 +227,7 @@ export class ModusWcContentTree {
                   variant="borderless"
                   size="sm"
                   shape="circle"
-                  onClick={() => void this.toggleExpandCollapse()}
+                  onClick={this.toggleExpandCollapse}
                   aria-label={
                     this.areAllExpanded ? 'Collapse all' : 'Expand all'
                   }
@@ -223,7 +243,7 @@ export class ModusWcContentTree {
               </div>
             )}
           </div>
-          <div class="modus-wc-content-tree-content" role="tree">
+          <div class="modus-wc-content-tree-content">
             <slot></slot>
             {!this.hasSlotContent && (
               <div class="modus-wc-content-tree-empty">

@@ -14,17 +14,14 @@ import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 import { ModusTreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions';
 
-export interface IMenuItemElement extends HTMLElement {
-  /** The unique identifying value of the tree item. */
+export interface ModusWcTreeItemElement extends HTMLElement {
   value: string;
-  /** The selected state of the tree item. */
   selected?: boolean;
-  /** Whether the item has a checkbox (used for selection in tree structure) */
   checkbox?: boolean;
-  /** Whether this item has a submenu (used for tree structure) */
-  hasSubmenu?: boolean;
-  /** Whether the checkbox is in an indeterminate state (only applicable if checkbox is true) */
+  hasSubtree?: boolean;
   isIndeterminate?: boolean;
+  collapseSubTree(): Promise<void>;
+  expandSubTree(): Promise<void>;
 }
 
 /**
@@ -166,7 +163,9 @@ export class ModusWcTreeItem {
       '.modus-wc-tree-dropdown'
     ) as HTMLElement;
 
-    submenu?.classList.toggle('modus-wc-tree-dropdown-show');
+    if (submenu) {
+      submenu.classList.toggle('modus-wc-tree-dropdown-show');
+    }
   };
 
   private handleKeyDown = (e: KeyboardEvent) => {
@@ -199,8 +198,9 @@ export class ModusWcTreeItem {
 
     const childMenuItems = Array.from(submenu.children).filter(
       (el) =>
-        el.tagName === 'MODUS-WC-TREE-ITEM' && (el as IMenuItemElement).checkbox
-    ) as IMenuItemElement[];
+        el.tagName === 'MODUS-WC-TREE-ITEM' &&
+        (el as ModusWcTreeItemElement).checkbox
+    ) as ModusWcTreeItemElement[];
 
     let selectedCount = 0;
 
@@ -222,7 +222,7 @@ export class ModusWcTreeItem {
 
     const descendants = Array.from(
       submenu.querySelectorAll('modus-wc-tree-item')
-    ) as IMenuItemElement[];
+    ) as ModusWcTreeItemElement[];
 
     descendants.forEach((item) => {
       if (!item.checkbox) return;
@@ -257,7 +257,7 @@ export class ModusWcTreeItem {
     if (rootTreeView) {
       const allTreeItems = Array.from(
         rootTreeView.querySelectorAll('modus-wc-tree-item')
-      ) as IMenuItemElement[];
+      ) as ModusWcTreeItemElement[];
       const selectedValues = allTreeItems
         .filter((item) => item.checkbox && item.selected)
         .map((item) => item.value);

@@ -519,7 +519,6 @@ export namespace Components {
     }
     /**
      * A customizable content tree component used to display hierarchical data in a tree structure.
-     * Uses menu items to create the tree structure with support for expanding/collapsing nodes and selection.
      */
     interface ModusWcContentTree {
         /**
@@ -2508,7 +2507,6 @@ declare global {
     };
     /**
      * A customizable content tree component used to display hierarchical data in a tree structure.
-     * Uses menu items to create the tree structure with support for expanding/collapsing nodes and selection.
      */
     interface HTMLModusWcContentTreeElement extends Components.ModusWcContentTree, HTMLStencilElement {
     }
@@ -3826,7 +3824,6 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable content tree component used to display hierarchical data in a tree structure.
-     * Uses menu items to create the tree structure with support for expanding/collapsing nodes and selection.
      */
     interface ModusWcContentTree {
         /**
@@ -5845,7 +5842,6 @@ declare module "@stencil/core" {
             "modus-wc-collapse": LocalJSX.ModusWcCollapse & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;
             /**
              * A customizable content tree component used to display hierarchical data in a tree structure.
-             * Uses menu items to create the tree structure with support for expanding/collapsing nodes and selection.
              */
             "modus-wc-content-tree": LocalJSX.ModusWcContentTree & JSXBase.HTMLAttributes<HTMLModusWcContentTreeElement>;
             /**
