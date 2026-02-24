@@ -280,7 +280,7 @@
             {
               "name": "props",
               "type": {
-                "text": "{\n  bordered?: boolean;\n  disabled?: boolean;\n  readOnly?: boolean;\n  size?: ModusSize;\n}"
+                "text": "{\n  bordered?: boolean;\n  disabled?: boolean;\n  feedback?: IInputFeedbackProp;\n  readOnly?: boolean;\n  size?: ModusSize;\n}"
               }
             }
           ]
@@ -964,6 +964,14 @@
               "description": "Whether the form control is disabled.",
               "type": {
                 "text": "boolean"
+              }
+            },
+            {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "Feedback state for the input field.",
+              "type": {
+                "text": "IInputFeedbackProp"
               }
             },
             {
@@ -4155,6 +4163,15 @@
               }
             },
             {
+              "name": "logo-name",
+              "fieldName": "logoName",
+              "default": "'trimble'",
+              "description": "The name of the logo to display. Can be set to any value supported by the `modus-wc-logo` component, but defaults to \"trimble\".",
+              "type": {
+                "text": "LogoName"
+              }
+            },
+            {
               "name": "main-menu-open",
               "fieldName": "mainMenuOpen",
               "default": "false",
@@ -4269,6 +4286,14 @@
             },
             {
               "kind": "field",
+              "name": "logoClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the logo is clicked or activated via keyboard."
+            },
+            {
+              "kind": "field",
               "name": "mainMenuOpenChange",
               "type": {
                 "text": "EventEmitter<boolean>"
@@ -4330,14 +4355,6 @@
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
               },
               "description": "Event emitted when the user profile sign out button is clicked or activated via keyboard."
-            },
-            {
-              "kind": "field",
-              "name": "trimbleLogoClick",
-              "type": {
-                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
-              },
-              "description": "Event emitted when the Trimble logo is clicked or activated via keyboard."
             },
             {
               "kind": "field",
