@@ -14,7 +14,7 @@ export class ModusWcContentTree {
   private inheritedAttributes: Attributes = {};
   private slotEl?: HTMLSlotElement;
   private debounceTimer?: number;
-  private cachedItems?: HTMLModusWcTreeItemElement[];
+  private cachedItems?: ModusWcTreeItemElement[];
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -74,7 +74,7 @@ export class ModusWcContentTree {
     }
 
     this.debounceTimer = window.setTimeout(() => {
-      this.filterNodes(this.searchValue);
+      void this.filterNodes(this.searchValue);
     }, 150);
   };
 
@@ -83,7 +83,7 @@ export class ModusWcContentTree {
     if (!this.cachedItems) {
       this.cachedItems = Array.from(
         this.el.querySelectorAll('modus-wc-tree-item')
-      ) as HTMLModusWcTreeItemElement[];
+      );
     }
     const menuItems = this.cachedItems;
 
@@ -99,7 +99,7 @@ export class ModusWcContentTree {
 
     // First pass: identify matches and collect items to show/hide
     const matchingItems = new Set<HTMLElement>();
-    const itemsToExpand: HTMLModusWcTreeItemElement[] = [];
+    const itemsToExpand: ModusWcTreeItemElement[] = [];
     const processedParents = new Set<HTMLElement>();
 
     // Build match set efficiently
@@ -127,7 +127,7 @@ export class ModusWcContentTree {
           ) {
             processedParents.add(parent);
             parent.style.display = '';
-            itemsToExpand.push(parent as HTMLModusWcTreeItemElement);
+            itemsToExpand.push(parent as ModusWcTreeItemElement);
           }
           parent = parent.parentElement;
         }
@@ -158,7 +158,7 @@ export class ModusWcContentTree {
   private handleInputKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       this.searchValue = '';
-      this.filterNodes('');
+      void this.filterNodes('');
     }
   };
 
@@ -227,7 +227,7 @@ export class ModusWcContentTree {
                   variant="borderless"
                   size="sm"
                   shape="circle"
-                  onClick={this.toggleExpandCollapse}
+                  onClick={() => void this.toggleExpandCollapse()}
                   aria-label={
                     this.areAllExpanded ? 'Collapse all' : 'Expand all'
                   }

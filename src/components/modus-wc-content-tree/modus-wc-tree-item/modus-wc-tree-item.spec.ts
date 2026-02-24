@@ -721,7 +721,7 @@ describe('modus-wc-tree-item', () => {
     page.root?.addEventListener('selectionsChange', eventSpy);
 
     const treeItem = page.rootInstance;
-    treeItem['handleCheckboxClick'](new MouseEvent('click') as any);
+    treeItem['handleCheckboxClick'](new MouseEvent('click'));
     await page.waitForChanges();
 
     expect(eventSpy).toHaveBeenCalled();
@@ -740,7 +740,7 @@ describe('modus-wc-tree-item', () => {
     page.root?.addEventListener('selectionsChange', eventSpy);
 
     const treeItem = page.rootInstance;
-    treeItem['handleCheckboxClick'](new MouseEvent('click') as any);
+    treeItem['handleCheckboxClick'](new MouseEvent('click'));
     await page.waitForChanges();
 
     expect(eventSpy).not.toHaveBeenCalled();

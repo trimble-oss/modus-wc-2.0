@@ -8006,7 +8006,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\r\n\r\nNote: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying\r\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by\r\nproviding your own custom values for the size or weight properties from the available options.",
+          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\r\n\r\nNote:\r\n- When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying\r\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by\r\nproviding your own custom values for the size or weight properties from the available options.\r\n\r\n\r\n- If both slot content and `label` are provided, only the slot content will be rendered\r\n- Use the `label` prop when you need to dynamically update the text.",
           "name": "ModusWCTypography",
           "members": [
             {

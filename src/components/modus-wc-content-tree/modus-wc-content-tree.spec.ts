@@ -102,7 +102,8 @@ describe('modus-wc-content-tree', () => {
     )[1] as ModusWcTreeItemElement;
 
     // Mock expandSubTree on parent
-    parent.expandSubTree = jest.fn().mockResolvedValue(undefined);
+    const expandSubTreeMock = jest.fn().mockResolvedValue(undefined);
+    parent.expandSubTree = expandSubTreeMock;
 
     const tree = page.rootInstance;
 
@@ -117,7 +118,7 @@ describe('modus-wc-content-tree', () => {
     expect(parent.style.display).toBe('');
 
     // Parent expansion should be triggered
-    expect(parent.expandSubTree).toHaveBeenCalled();
+    expect(expandSubTreeMock).toHaveBeenCalled();
   });
 
   it('updateSlotContent returns early if slotEl is not set', async () => {
@@ -152,11 +153,12 @@ describe('modus-wc-content-tree', () => {
     ) as ModusWcTreeItemElement;
 
     item.hasSubtree = true;
-    item.expandSubTree = jest.fn().mockResolvedValue(undefined);
+    const expandMock = jest.fn().mockResolvedValue(undefined);
+    item.expandSubTree = expandMock;
 
     await tree.toggleExpandCollapse();
 
-    expect(item.expandSubTree).toHaveBeenCalled();
+    expect(expandMock).toHaveBeenCalled();
   });
 
   it('skips nodes without subtrees', async () => {
@@ -481,14 +483,13 @@ describe('modus-wc-content-tree', () => {
     ) as ModusWcTreeItemElement;
 
     // Mock expandSubTree to reject with error
-    parent.expandSubTree = jest
-      .fn()
-      .mockRejectedValue(new Error('Expand failed'));
+    const expandMock = jest.fn().mockRejectedValue(new Error('Expand failed'));
+    parent.expandSubTree = expandMock;
 
     // Should not throw despite the error
     await expect(tree.filterNodes('Child')).resolves.not.toThrow();
 
-    expect(parent.expandSubTree).toHaveBeenCalled();
+    expect(expandMock).toHaveBeenCalled();
   });
 
   it('filterNodes continues expanding other items when one fails', async () => {
@@ -512,16 +513,18 @@ describe('modus-wc-content-tree', () => {
     ) as NodeListOf<ModusWcTreeItemElement>;
 
     // First parent fails
-    parents[0].expandSubTree = jest.fn().mockRejectedValue(new Error('Failed'));
+    const expandMock1 = jest.fn().mockRejectedValue(new Error('Failed'));
+    parents[0].expandSubTree = expandMock1;
 
     // Second parent succeeds
-    parents[1].expandSubTree = jest.fn().mockResolvedValue(undefined);
+    const expandMock2 = jest.fn().mockResolvedValue(undefined);
+    parents[1].expandSubTree = expandMock2;
 
     await tree.filterNodes('Match');
 
     // Both should be called despite first one failing
-    expect(parents[0].expandSubTree).toHaveBeenCalled();
-    expect(parents[1].expandSubTree).toHaveBeenCalled();
+    expect(expandMock1).toHaveBeenCalled();
+    expect(expandMock2).toHaveBeenCalled();
   });
 
   it('updateSlotContent invalidates cached items', async () => {
@@ -531,7 +534,7 @@ describe('modus-wc-content-tree', () => {
     });
 
     const tree = page.rootInstance;
-    tree['cachedItems'] = [] as any;
+    tree['cachedItems'] = [];
 
     const mockSlot = {
       assignedNodes: jest.fn().mockReturnValue([]),
@@ -579,11 +582,12 @@ describe('modus-wc-content-tree', () => {
     const item = page.root?.querySelector(
       'modus-wc-tree-item'
     ) as ModusWcTreeItemElement;
-    item.collapseSubTree = jest.fn().mockResolvedValue(undefined);
+    const collapseMock = jest.fn().mockResolvedValue(undefined);
+    item.collapseSubTree = collapseMock;
 
     await tree.toggleExpandCollapse();
 
-    expect(item.collapseSubTree).toHaveBeenCalled();
+    expect(collapseMock).toHaveBeenCalled();
     expect(tree.areAllExpanded).toBe(false);
   });
 
@@ -642,12 +646,13 @@ describe('modus-wc-content-tree', () => {
     const parent = page.root?.querySelector(
       'modus-wc-tree-item'
     ) as ModusWcTreeItemElement;
-    parent.expandSubTree = jest.fn().mockResolvedValue(undefined);
+    const expandMock = jest.fn().mockResolvedValue(undefined);
+    parent.expandSubTree = expandMock;
 
     await tree.filterNodes('Child');
 
-    expect((parent as HTMLElement).style.display).toBe('');
-    expect(parent.expandSubTree).toHaveBeenCalled();
+    expect(parent.style.display).toBe('');
+    expect(expandMock).toHaveBeenCalled();
   });
 
   it('inherits ARIA attributes', async () => {
@@ -685,15 +690,15 @@ describe('modus-wc-content-tree', () => {
       html: `<modus-wc-content-tree></modus-wc-content-tree>`,
     });
 
-    const instance = page.rootInstance as any;
+    const instance = page.rootInstance;
 
     const filterSpy = jest
       .spyOn(instance, 'filterNodes')
       .mockResolvedValue(undefined);
 
-    instance.handleInputChange({
+    instance['handleInputChange']({
       target: { value: 'hello' },
-    } as any);
+    } as unknown as CustomEvent);
 
     // Wait slightly longer than debounce (150ms)
     await new Promise((r) => setTimeout(r, 180));
@@ -707,18 +712,18 @@ describe('modus-wc-content-tree', () => {
       html: `<modus-wc-content-tree></modus-wc-content-tree>`,
     });
 
-    const instance = page.rootInstance as any;
+    const instance = page.rootInstance;
 
     jest.spyOn(instance, 'filterNodes').mockResolvedValue(undefined);
 
     const clearSpy = jest.spyOn(window, 'clearTimeout');
 
     // Force branch
-    instance.debounceTimer = 999;
+    instance['debounceTimer'] = 999;
 
-    instance.handleInputChange({
+    instance['handleInputChange']({
       target: { value: 'x' },
-    } as any);
+    } as unknown as CustomEvent);
 
     expect(clearSpy).toHaveBeenCalledWith(999);
   });

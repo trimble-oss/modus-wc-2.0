@@ -63,10 +63,7 @@ describe('modus-wc-tree-actions', () => {
     page.root?.addEventListener('treeActionClick', eventSpy);
 
     const treeActions = page.rootInstance;
-    treeActions['handleActionClick'](
-      actions[0],
-      new MouseEvent('click') as any
-    );
+    treeActions['handleActionClick'](actions[0], new MouseEvent('click'));
 
     expect(eventSpy).not.toHaveBeenCalled();
   });
@@ -89,12 +86,12 @@ describe('modus-wc-tree-actions', () => {
     const treeActions = page.rootInstance;
     expect(treeActions.isDropdownOpen).toBe(false);
 
-    treeActions['handleMoreActionsClick'](new MouseEvent('click') as any);
+    treeActions['handleMoreActionsClick'](new MouseEvent('click'));
     await page.waitForChanges();
 
     expect(treeActions.isDropdownOpen).toBe(true);
 
-    treeActions['handleMoreActionsClick'](new MouseEvent('click') as any);
+    treeActions['handleMoreActionsClick'](new MouseEvent('click'));
     await page.waitForChanges();
 
     expect(treeActions.isDropdownOpen).toBe(false);
@@ -118,7 +115,7 @@ describe('modus-wc-tree-actions', () => {
     page.root?.addEventListener('dropdownOpened', eventSpy);
 
     const treeActions = page.rootInstance;
-    treeActions['handleMoreActionsClick'](new MouseEvent('click') as any);
+    treeActions['handleMoreActionsClick'](new MouseEvent('click'));
     await page.waitForChanges();
 
     expect(eventSpy).toHaveBeenCalled();
@@ -162,7 +159,7 @@ describe('modus-wc-tree-actions', () => {
 
     const treeActions = page.rootInstance;
     treeActions.isDropdownOpen = true;
-    treeActions.moreActionsButton = null as any;
+    treeActions.moreActionsButton = null;
 
     const outsideElement = document.createElement('div');
     const clickEvent = new MouseEvent('click', { bubbles: true });
@@ -277,7 +274,7 @@ describe('modus-wc-tree-actions', () => {
     });
 
     const treeActions = page.rootInstance;
-    const initializerSpy = jest.spyOn(treeActions as any, 'initializePopper');
+    const initializerSpy = jest.spyOn(treeActions, 'initializePopper' as never);
 
     treeActions.actions = actions;
     await page.waitForChanges();
@@ -297,7 +294,7 @@ describe('modus-wc-tree-actions', () => {
     const destroySpy = jest.fn();
     treeActions.popperInstance = {
       destroy: destroySpy,
-    } as any;
+    } as unknown as ReturnType<typeof import('@popperjs/core').createPopper>;
 
     treeActions.actions = [{ id: '1', icon: 'edit', label: 'Edit' }];
     treeActions.componentDidUpdate();
@@ -440,10 +437,7 @@ describe('modus-wc-tree-actions', () => {
     const treeActions = page.rootInstance;
     treeActions.isDropdownOpen = true;
 
-    treeActions['handleActionClick'](
-      actions[1],
-      new MouseEvent('click') as any
-    );
+    treeActions['handleActionClick'](actions[1], new MouseEvent('click'));
     await page.waitForChanges();
 
     expect(treeActions.isDropdownOpen).toBe(false);
@@ -456,8 +450,8 @@ describe('modus-wc-tree-actions', () => {
     });
 
     const treeActions = page.rootInstance;
-    treeActions.moreActionsButton = null as any;
-    treeActions.moreActionsDropdown = null as any;
+    treeActions.moreActionsButton = null;
+    treeActions.moreActionsDropdown = null;
 
     treeActions['initializePopper']();
 
@@ -483,7 +477,9 @@ describe('modus-wc-tree-actions', () => {
     const mockPopper = {
       destroy: jest.fn(),
     };
-    treeActions.popperInstance = mockPopper as any;
+    treeActions.popperInstance = mockPopper as unknown as ReturnType<
+      typeof import('@popperjs/core').createPopper
+    >;
 
     treeActions.moreActionsButton = page.root?.querySelector(
       '.modus-wc-tree-more-actions-wrapper modus-wc-button'
@@ -509,7 +505,7 @@ describe('modus-wc-tree-actions', () => {
     const destroySpy = jest.fn();
     treeActions.popperInstance = {
       destroy: destroySpy,
-    } as any;
+    } as unknown as ReturnType<typeof import('@popperjs/core').createPopper>;
 
     treeActions.disconnectedCallback();
 
@@ -554,8 +550,8 @@ describe('modus-wc-tree-actions', () => {
 
     const treeActions = page.rootInstance;
     const handleActionClickSpy = jest.spyOn(
-      treeActions as any,
-      'handleActionClick'
+      treeActions,
+      'handleActionClick' as never
     );
 
     const button = page.root?.querySelector('modus-wc-button');
@@ -588,10 +584,7 @@ describe('modus-wc-tree-actions', () => {
     treeActions.isDropdownOpen = true;
     await page.waitForChanges();
 
-    const handleActionClickSpy = jest.spyOn(
-      treeActions as any,
-      'handleActionClick'
-    );
+    const handleActionClickSpy = jest.spyOn(treeActions, 'handleActionClick');
 
     const dropdownAction = page.root?.querySelector(
       '.modus-wc-tree-dropdown-action'
