@@ -12,7 +12,7 @@ import {
 } from '@stencil/core';
 import { ModusSize } from '../../types';
 
-export interface ModusTreeItemActions {
+export interface ITreeItemActions {
   id: string; // Unique identifier for the action
   icon: string; // Icon name for the action, e.g., 'edit', 'trash'
   iconVariant?: 'solid' | 'outlined'; // Optional variant for the icon
@@ -21,10 +21,10 @@ export interface ModusTreeItemActions {
   disabled?: boolean; // Optional flag to disable the action
 }
 
-/** * ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.
+/**
+ * ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.
  * It supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.
  */
-
 @Component({
   tag: 'modus-wc-tree-actions',
   styleUrl: 'modus-wc-tree-actions.scss',
@@ -39,7 +39,7 @@ export class ModusWcTreeActions {
   @Element() el!: HTMLElement;
 
   /** List of actions to display */
-  @Prop({ mutable: true }) actions?: ModusTreeItemActions[];
+  @Prop({ mutable: true }) actions?: ITreeItemActions[];
 
   /** The size of the action buttons and icons. */
   @Prop() size: ModusSize = 'md';
@@ -85,10 +85,7 @@ export class ModusWcTreeActions {
     }
   }
 
-  private handleActionClick = (
-    action: ModusTreeItemActions,
-    event: MouseEvent
-  ) => {
+  private handleActionClick = (action: ITreeItemActions, event: MouseEvent) => {
     event.stopPropagation();
     if (action.disabled) return;
 

@@ -12,9 +12,9 @@ import {
 import { convertPropsToClasses } from './modus-wc-tree-item.tailwind';
 import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
-import { ModusTreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions';
+import { ITreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions';
 
-export interface ModusWcTreeItemElement extends HTMLElement {
+export interface ITreeItemElement extends HTMLElement {
   value: string;
   selected?: boolean;
   checkbox?: boolean;
@@ -60,7 +60,7 @@ export class ModusWcTreeItem {
   @Prop() hasSubtree?: boolean;
 
   /** Actions to display for this tree item. */
-  @Prop() treeItemActions?: ModusTreeItemActions[];
+  @Prop() treeItemActions?: ITreeItemActions[];
 
   /** The size of the tree item icons and actions. */
   @Prop() size: ModusSize = 'sm';
@@ -198,9 +198,8 @@ export class ModusWcTreeItem {
 
     const childMenuItems = Array.from(submenu.children).filter(
       (el) =>
-        el.tagName === 'MODUS-WC-TREE-ITEM' &&
-        (el as ModusWcTreeItemElement).checkbox
-    ) as ModusWcTreeItemElement[];
+        el.tagName === 'MODUS-WC-TREE-ITEM' && (el as ITreeItemElement).checkbox
+    ) as ITreeItemElement[];
 
     let selectedCount = 0;
 
@@ -222,7 +221,7 @@ export class ModusWcTreeItem {
 
     const descendants = Array.from(
       submenu.querySelectorAll('modus-wc-tree-item')
-    ) as ModusWcTreeItemElement[];
+    ) as ITreeItemElement[];
 
     descendants.forEach((item) => {
       if (!item.checkbox) return;
@@ -257,7 +256,7 @@ export class ModusWcTreeItem {
     if (rootTreeView) {
       const allTreeItems = Array.from(
         rootTreeView.querySelectorAll('modus-wc-tree-item')
-      ) as ModusWcTreeItemElement[];
+      ) as ITreeItemElement[];
       const selectedValues = allTreeItems
         .filter((item) => item.checkbox && item.selected)
         .map((item) => item.value);
@@ -270,7 +269,6 @@ export class ModusWcTreeItem {
     return (
       <Host>
         <li
-          aria-current={this.selected}
           aria-selected={this.selected ? 'true' : 'false'}
           aria-expanded={this.hasSubtree ? String(this.isExpanded) : undefined}
           class={this.getClasses()}

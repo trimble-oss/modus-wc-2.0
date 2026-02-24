@@ -1,6 +1,6 @@
 import { Component, Element, h, Host, Prop, State } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../utils';
-import { ModusWcTreeItemElement } from './modus-wc-tree-item/modus-wc-tree-item';
+import { ITreeItemElement } from './modus-wc-tree-item/modus-wc-tree-item';
 
 /**
  * A customizable content tree component used to display hierarchical data in a tree structure.
@@ -14,7 +14,7 @@ export class ModusWcContentTree {
   private inheritedAttributes: Attributes = {};
   private slotEl?: HTMLSlotElement;
   private debounceTimer?: number;
-  private cachedItems?: ModusWcTreeItemElement[];
+  private cachedItems?: ITreeItemElement[];
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -99,7 +99,7 @@ export class ModusWcContentTree {
 
     // First pass: identify matches and collect items to show/hide
     const matchingItems = new Set<HTMLElement>();
-    const itemsToExpand: ModusWcTreeItemElement[] = [];
+    const itemsToExpand: ITreeItemElement[] = [];
     const processedParents = new Set<HTMLElement>();
 
     // Build match set efficiently
@@ -127,7 +127,7 @@ export class ModusWcContentTree {
           ) {
             processedParents.add(parent);
             parent.style.display = '';
-            itemsToExpand.push(parent as ModusWcTreeItemElement);
+            itemsToExpand.push(parent as ITreeItemElement);
           }
           parent = parent.parentElement;
         }
@@ -187,7 +187,7 @@ export class ModusWcContentTree {
     this.areAllExpanded = !this.areAllExpanded;
 
     const promises = Array.from(treeItems).map((item) => {
-      const treeItem = item as ModusWcTreeItemElement;
+      const treeItem = item as ITreeItemElement;
       const hasSubtree =
         item.hasAttribute('has-subtree') || treeItem.hasSubtree === true;
       if (hasSubtree) {

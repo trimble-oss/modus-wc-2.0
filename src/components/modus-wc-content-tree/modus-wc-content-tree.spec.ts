@@ -1,6 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcContentTree } from './modus-wc-content-tree';
-import { ModusWcTreeItemElement } from './modus-wc-tree-item/modus-wc-tree-item';
+import { ITreeItemElement } from './modus-wc-tree-item/modus-wc-tree-item';
 
 describe('modus-wc-content-tree', () => {
   it('should render with default props', async () => {
@@ -83,10 +83,10 @@ describe('modus-wc-content-tree', () => {
     const root = page.root!;
     const parent = root.querySelectorAll(
       'modus-wc-tree-item'
-    )[0] as ModusWcTreeItemElement;
+    )[0] as ITreeItemElement;
     const child = root.querySelectorAll(
       'modus-wc-tree-item'
-    )[1] as ModusWcTreeItemElement;
+    )[1] as ITreeItemElement;
 
     // Mock expandSubTree on parent
     const expandSubTreeMock = jest.fn().mockResolvedValue(undefined);
@@ -137,7 +137,7 @@ describe('modus-wc-content-tree', () => {
     const tree = page.rootInstance;
     const item = page.root!.querySelector(
       'modus-wc-tree-item'
-    ) as ModusWcTreeItemElement;
+    ) as ITreeItemElement;
 
     item.hasSubtree = true;
     const expandMock = jest.fn().mockResolvedValue(undefined);
@@ -467,7 +467,7 @@ describe('modus-wc-content-tree', () => {
     const tree = page.rootInstance;
     const parent = page.root?.querySelector(
       'modus-wc-tree-item'
-    ) as ModusWcTreeItemElement;
+    ) as ITreeItemElement;
 
     // Mock expandSubTree to reject with error
     const expandMock = jest.fn().mockRejectedValue(new Error('Expand failed'));
@@ -497,7 +497,7 @@ describe('modus-wc-content-tree', () => {
     const tree = page.rootInstance;
     const parents = page.root?.querySelectorAll(
       'modus-wc-tree-item[has-subtree]'
-    ) as NodeListOf<ModusWcTreeItemElement>;
+    ) as NodeListOf<ITreeItemElement>;
 
     // First parent fails
     const expandMock1 = jest.fn().mockRejectedValue(new Error('Failed'));
@@ -568,7 +568,7 @@ describe('modus-wc-content-tree', () => {
 
     const item = page.root?.querySelector(
       'modus-wc-tree-item'
-    ) as ModusWcTreeItemElement;
+    ) as ITreeItemElement;
     const collapseMock = jest.fn().mockResolvedValue(undefined);
     item.collapseSubTree = collapseMock;
 
@@ -593,7 +593,7 @@ describe('modus-wc-content-tree', () => {
     // Mock the tree item methods
     const item = page.root?.querySelector(
       'modus-wc-tree-item'
-    ) as ModusWcTreeItemElement;
+    ) as ITreeItemElement;
     item.expandSubTree = jest.fn().mockResolvedValue(undefined);
     item.collapseSubTree = jest.fn().mockResolvedValue(undefined);
 
@@ -661,7 +661,7 @@ describe('modus-wc-content-tree', () => {
     const tree = page.rootInstance;
     const parent = page.root?.querySelector(
       'modus-wc-tree-item'
-    ) as ModusWcTreeItemElement;
+    ) as ITreeItemElement;
     const expandMock = jest.fn().mockResolvedValue(undefined);
     parent.expandSubTree = expandMock;
 

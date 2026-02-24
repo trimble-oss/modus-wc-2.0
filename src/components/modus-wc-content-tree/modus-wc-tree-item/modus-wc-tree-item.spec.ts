@@ -1,5 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcTreeItem, ModusWcTreeItemElement } from './modus-wc-tree-item';
+import { ModusWcTreeItem, ITreeItemElement } from './modus-wc-tree-item';
 
 describe('modus-wc-tree-item', () => {
   it('renders with default props', async () => {
@@ -342,7 +342,7 @@ describe('modus-wc-tree-item', () => {
     const parent = page.rootInstance;
     const children = page.root?.querySelectorAll(
       '.modus-wc-tree-dropdown modus-wc-tree-item'
-    ) as NodeListOf<ModusWcTreeItemElement>;
+    ) as NodeListOf<ITreeItemElement>;
 
     const checkbox = page.root?.querySelector('modus-wc-checkbox');
     checkbox?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -524,7 +524,7 @@ describe('modus-wc-tree-item', () => {
     const submenu = page.root?.querySelector('.modus-wc-tree-dropdown');
     const children = Array.from(
       submenu?.querySelectorAll('modus-wc-tree-item') || []
-    ) as ModusWcTreeItemElement[];
+    ) as ITreeItemElement[];
 
     // First child with checkbox should be selected
     expect(children[0]?.selected).toBe(true);
