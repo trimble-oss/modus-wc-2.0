@@ -1063,7 +1063,7 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
-          * The name of the logo to display. Can be set to any value supported by the `modus-wc-logo` component, but defaults to "trimble".
+          * The name of the logo to display. Can be set to any value supported by the `modus-wc-logo` component.
          */
         "logoName"?: LogoName;
         /**
@@ -4231,7 +4231,7 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * The name of the logo to display. Can be set to any value supported by the `modus-wc-logo` component, but defaults to "trimble".
+          * The name of the logo to display. Can be set to any value supported by the `modus-wc-logo` component.
          */
         "logoName"?: LogoName;
         /**

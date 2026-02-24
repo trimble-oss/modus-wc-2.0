@@ -411,7 +411,7 @@ export const CustomMenuAndSlots: Story = {
     `;
   },
 };
-export const customLogoSizes: Story = {
+export const CustomLogoSizes: Story = {
   render: (args) => html`
     <style>
       .logo-small .modus-wc-logo {

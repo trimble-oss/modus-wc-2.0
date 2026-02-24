@@ -4166,7 +4166,7 @@
               "name": "logo-name",
               "fieldName": "logoName",
               "default": "'trimble'",
-              "description": "The name of the logo to display. Can be set to any value supported by the `modus-wc-logo` component, but defaults to \"trimble\".",
+              "description": "The name of the logo to display. Can be set to any value supported by the `modus-wc-logo` component.",
               "type": {
                 "text": "LogoName"
               }

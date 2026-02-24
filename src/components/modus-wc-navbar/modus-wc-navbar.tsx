@@ -91,7 +91,7 @@ export class ModusWcNavbar {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** The name of the logo to display. Can be set to any value supported by the `modus-wc-logo` component, but defaults to "trimble". */
+  /** The name of the logo to display. Can be set to any value supported by the `modus-wc-logo` component. */
   @Prop() logoName?: LogoName = 'trimble';
 
   /** The open state of the apps menu. */
