@@ -49,6 +49,13 @@ modus-wc-divider .modus-wc-divider {
       background-color: var(--modus-wc-color-red-dark);
     }
   }
+
+  &.modus-wc-divider-warning {
+    &::before,
+    &::after {
+      background-color: var(--modus-wc-color-yellow-dark);
+    }
+  }
 }
 
 // Dark Theme Styles
@@ -64,6 +71,27 @@ modus-wc-divider .modus-wc-divider {
         var(--modus-wc-color-gray-light) 10%,
         transparent
       );
+    }
+  }
+
+  &.modus-wc-divider-success {
+    &::before,
+    &::after {
+      background-color: var(--modus-wc-color-green-light);
+    }
+  }
+
+  &.modus-wc-divider-error {
+    &::before,
+    &::after {
+      background-color: var(--modus-wc-color-red-light);
+    }
+  }
+
+  &.modus-wc-divider-warning {
+    &::before,
+    &::after {
+      background-color: var(--modus-wc-color-yellow-light);
     }
   }
 }
