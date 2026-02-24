@@ -21,6 +21,15 @@ export interface IMenuItem {
   value?: string;
 }
 
+export interface IManageTrimbleId {
+  /** The URL for managing the user's Trimble ID. */
+  link: string;
+  /** The target for the Manage my Trimble ID link (optional). */
+  target?: '_blank' | '_self' | '_parent' | '_top';
+  /** The rel attribute for the Manage my Trimble ID link (optional). Defaults to 'noopener noreferrer' when target is '_blank'. */
+  rel?: string;
+}
+
 export interface ISubMenu {
   /** Title for the submenu section */
   title?: string;
@@ -37,8 +46,8 @@ export interface IProfileMenuProps {
   userName: string;
   /** The email of the user. */
   userEmail: string;
-  /** The URL for managing the user's Trimble ID (optional). */
-  manageTrimbleIdLink?: string;
+  /** The manage Trimble ID link configuration (optional). */
+  manageTrimbleId?: IManageTrimbleId;
 }
 
 @Component({
@@ -130,14 +139,29 @@ export class ModusWcProfileMenu {
                 label={this.profileProps.userEmail}
               ></modus-wc-typography>
             </div>
-            {this.profileProps.manageTrimbleIdLink && (
-              <a href={this.profileProps.manageTrimbleIdLink}>
+            {this.profileProps.manageTrimbleId ? (
+              <a
+                href={this.profileProps.manageTrimbleId.link}
+                target={this.profileProps.manageTrimbleId.target}
+                rel={
+                  this.profileProps.manageTrimbleId.rel ??
+                  (this.profileProps.manageTrimbleId.target === '_blank'
+                    ? 'noopener noreferrer'
+                    : undefined)
+                }
+              >
                 <modus-wc-typography
                   customClass="manage-link"
                   hierarchy="p"
                   label="Manage my Trimble ID"
                 ></modus-wc-typography>
               </a>
+            ) : (
+              <modus-wc-typography
+                customClass="manage-link"
+                hierarchy="p"
+                label="Manage my Trimble ID"
+              ></modus-wc-typography>
             )}
           </div>
           <div slot="body">

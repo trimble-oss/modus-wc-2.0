@@ -15,9 +15,12 @@ const textOverrides: INavbarTextOverrides = {
 const userCard: IProfileMenuProps = {
   profileImageUrl:
     'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
-  headerName: 'sonic@trimble.com',
+  headerName: 'Sonic the Hedgehog',
   userEmail: 'sonic@trimble.com',
-  userName: 'Sonic the Hedgehog',
+  userName: 'Sonic',
+  manageTrimbleId: {
+    link: '#',
+  },
 };
 
 const visibility: INavbarVisibility = {
@@ -122,6 +125,7 @@ const meta: Meta<NavbarArgs> = {
         'condensedMenuOpenChange',
         'helpClick',
         'mainMenuOpenChange',
+        'menuItemClick',
         'myTrimbleClick',
         'notificationsMenuOpenChange',
         'notificationsClick',
@@ -148,13 +152,13 @@ const Template: Story = {
 <style>
   div[id^='story--components-navbar--default'] {
     border: 1px dashed black;
-    height: 470px;
+    height: 480px;
     overflow: hidden;
   }
   [slot=main-menu] {
     background-color: #0063a3;
     color: white;
-    height: 470px;
+    height: 480px;
   }
 </style>
 <modus-wc-navbar

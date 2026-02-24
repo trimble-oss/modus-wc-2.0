@@ -15,7 +15,9 @@ const profileData: IProfileMenuProps = {
   headerName: 'Enterprise ABC',
   userName: 'Jane Doe',
   userEmail: 'jane.doe@example.com',
-  manageTrimbleIdLink: '#',
+  manageTrimbleId: {
+    link: '#',
+  },
 };
 
 const meta: Meta<ProfileMenuArgs> = {

@@ -73,8 +73,6 @@ modus-wc-profile-menu {
   }
 
   [slot='body'] modus-wc-menu {
-    position: static !important;
-
     li.modus-wc-menu-item-selected {
       background-color: transparent;
       color: inherit;

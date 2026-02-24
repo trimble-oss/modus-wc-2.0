@@ -97,7 +97,7 @@ modus-wc-navbar .modus-wc-navbar {
     }
 
     // Condensed menu
-    modus-wc-menu {
+    > modus-wc-menu {
       @extend %dropdown-menu;
 
       right: var(--modus-wc-spacing-2xl);

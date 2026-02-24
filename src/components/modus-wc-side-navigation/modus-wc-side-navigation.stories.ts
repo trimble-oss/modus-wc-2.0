@@ -100,11 +100,14 @@ export const Default: Story = {
           logo="/assets/logo.svg"
           @mainMenuOpenChange=${handleMenuOpenChange}
           .userCard=${{
-            avatarAlt: 'User Avatar',
-            avatarSrc:
+            profileImageUrl:
               'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
-            email: 'user@trimble.com',
-            name: 'Sonic the Hedgehog',
+            headerName: 'Sonic the Hedgehog',
+            userEmail: 'sonic@trimble.com',
+            userName: 'Sonic',
+            manageTrimbleId: {
+              link: '#',
+            },
           }}
           .visibility=${{
             ai: true,
@@ -195,13 +198,16 @@ export const Default: Story = {
         //   user: true,
         // };
 
-        // const userCard = {
-        //   avatarAlt: 'User Avatar',
-        //   avatarSrc:
-        //     'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
-        //   email: 'user@trimble.com',
-        //   name: 'Sonic the Hedgehog',
-        // };
+        //    navbar.userCard = {
+        //       profileImageUrl:
+        //          'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+        //       headerName: 'Sonic the Hedgehog',
+        //       userEmail: 'sonic@trimble.com',
+        //       userName: 'Sonic',
+        //       manageTrimbleId: {
+        //        link: '#',
+        //      },
+        //   };
 
         // const navbar = document.querySelector('modus-wc-navbar');
         // const sideNav = document.querySelector('modus-wc-side-navigation');
@@ -297,11 +303,14 @@ export const WithSubmenu: Story = {
           logo="/assets/logo.svg"
           @mainMenuOpenChange=${handleMenuOpenChange}
           .userCard=${{
-            avatarAlt: 'User Avatar',
-            avatarSrc:
+            profileImageUrl:
               'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
-            email: 'user@trimble.com',
-            name: 'Sonic the Hedgehog',
+            headerName: 'Sonic the Hedgehog',
+            userEmail: 'sonic@trimble.com',
+            userName: 'Sonic',
+            manageTrimbleId: {
+              link: '#',
+            },
           }}
           .visibility=${{
             ai: true,
@@ -473,11 +482,14 @@ export const WithSubmenu: Story = {
         //     if (navbar) {
         //       // Set navbar properties
         //       navbar.userCard = {
-        //         avatarAlt: 'User Avatar',
-        //         avatarSrc:
-        //           'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
-        //         email: 'user@trimble.com',
-        //         name: 'Sonic the Hedgehog',
+        //            profileImageUrl:
+        //               'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+        //             headerName: 'Sonic the Hedgehog',
+        //             userEmail: 'sonic@trimble.com',
+        //             userName: 'Sonic',
+        //             manageTrimbleId: {
+        //               link: '#',
+        //             },
         //       };
 
         //       navbar.visibility = {

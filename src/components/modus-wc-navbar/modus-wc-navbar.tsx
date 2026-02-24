@@ -73,7 +73,7 @@ export class ModusWcNavbar {
   private menuRef?: HTMLDivElement;
   private notificationsRef?: HTMLDivElement;
   private searchDebounceTimer: number | null = null;
-  private userRef?: HTMLDivElement;
+  private userRef?: HTMLElement;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -141,6 +141,9 @@ export class ModusWcNavbar {
   /** Event emitted when the main menu open state changes. */
   @StencilEvent() mainMenuOpenChange!: EventEmitter<boolean>;
 
+  /** Event emitted when a menu item inside the Profile menu is clicked. */
+  @StencilEvent() menuItemClick!: EventEmitter<string>;
+
   /** Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard. */
   @StencilEvent() myTrimbleClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
@@ -160,7 +163,7 @@ export class ModusWcNavbar {
   @StencilEvent() searchInputOpenChange!: EventEmitter<boolean>;
 
   /** Event emitted when the user profile sign out button is clicked or activated via keyboard. */
-  @StencilEvent() signOutClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+  @StencilEvent() signOutClick!: EventEmitter<void>;
 
   /** Event emitted when the Trimble logo is clicked or activated via keyboard. */
   @StencilEvent() trimbleLogoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
@@ -309,12 +312,6 @@ export class ModusWcNavbar {
     this.helpClick.emit(event?.detail);
   };
 
-  // private handleMyTrimbleClick = (
-  //   event: CustomEvent<MouseEvent | KeyboardEvent>
-  // ) => {
-  //   this.myTrimbleClick.emit(event.detail);
-  // };
-
   private handleNotificationsClick = (
     event?: CustomEvent<MouseEvent | KeyboardEvent>
   ) => {
@@ -345,11 +342,15 @@ export class ModusWcNavbar {
     this.searchClick.emit(event?.detail);
   };
 
-  // private handleSignOutClick = (
-  //   event: CustomEvent<MouseEvent | KeyboardEvent>
-  // ) => {
-  //   this.signOutClick.emit(event.detail);
-  // };
+  private handleMenuItemClick = (event: CustomEvent<string>) => {
+    event.stopPropagation();
+    this.menuItemClick.emit(event.detail);
+  };
+
+  private handleSignOutClick = (event: CustomEvent<void>) => {
+    event.stopPropagation();
+    this.signOutClick.emit();
+  };
 
   private handleTrimbleLogoClick = (
     event: CustomEvent<MouseEvent | KeyboardEvent>
@@ -615,9 +616,12 @@ export class ModusWcNavbar {
                   />
                 </modus-wc-button>
                 {this.userMenuOpen && (
-                  <div ref={(el) => (this.userRef = el)}>
-                    <modus-wc-profile-menu profileProps={this.userCard} />
-                  </div>
+                  <modus-wc-profile-menu
+                    onMenuItemClick={this.handleMenuItemClick}
+                    onSignOutClick={this.handleSignOutClick}
+                    profileProps={this.userCard}
+                    ref={(el) => (this.userRef = el as HTMLElement)}
+                  />
                 )}
               </Fragment>
             )}

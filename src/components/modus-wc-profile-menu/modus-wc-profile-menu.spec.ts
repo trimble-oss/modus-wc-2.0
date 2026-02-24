@@ -8,7 +8,7 @@ describe('modus-wc-profile-menu', () => {
     headerName: 'Test Header',
     userName: 'John Doe',
     userEmail: 'john.doe@example.com',
-    manageTrimbleIdLink: 'https://example.com/manage',
+    manageTrimbleId: { link: 'https://example.com/manage' },
   };
 
   it('should render with required props', async () => {
@@ -115,8 +115,86 @@ describe('modus-wc-profile-menu', () => {
 
     const link = page.root?.querySelector('a');
     expect(link?.getAttribute('href')).toBe(
-      mockProfileProps.manageTrimbleIdLink
+      mockProfileProps.manageTrimbleId.link
     );
+  });
+
+  it('should render typography without anchor when manageTrimbleId is not provided', async () => {
+    const propsWithoutTrimbleId = {
+      profileImageUrl: mockProfileProps.profileImageUrl,
+      headerName: mockProfileProps.headerName,
+      userName: mockProfileProps.userName,
+      userEmail: mockProfileProps.userEmail,
+    };
+
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', { profileProps: propsWithoutTrimbleId }),
+    });
+
+    const link = page.root?.querySelector('a');
+    expect(link).toBeNull();
+
+    const manageTypography = Array.from(
+      page.root?.querySelectorAll('modus-wc-typography') || []
+    ).find((el) => el.getAttribute('label') === 'Manage my Trimble ID');
+    expect(manageTypography).not.toBeUndefined();
+  });
+
+  it('should apply rel="noopener noreferrer" automatically when target is _blank', async () => {
+    const props = {
+      ...mockProfileProps,
+      manageTrimbleId: {
+        link: 'https://example.com/manage',
+        target: '_blank' as const,
+      },
+    };
+
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () => h('modus-wc-profile-menu', { profileProps: props }),
+    });
+
+    const link = page.root?.querySelector('a');
+    expect(link?.getAttribute('rel')).toBe('noopener noreferrer');
+  });
+
+  it('should use explicit rel when provided, overriding auto-apply', async () => {
+    const props = {
+      ...mockProfileProps,
+      manageTrimbleId: {
+        link: 'https://example.com/manage',
+        target: '_blank' as const,
+        rel: 'noopener',
+      },
+    };
+
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () => h('modus-wc-profile-menu', { profileProps: props }),
+    });
+
+    const link = page.root?.querySelector('a');
+    expect(link?.getAttribute('rel')).toBe('noopener');
+  });
+
+  it('should not apply rel when target is not _blank and no explicit rel', async () => {
+    const props = {
+      ...mockProfileProps,
+      manageTrimbleId: {
+        link: 'https://example.com/manage',
+        target: '_self' as const,
+      },
+    };
+
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () => h('modus-wc-profile-menu', { profileProps: props }),
+    });
+
+    const link = page.root?.querySelector('a');
+    expect(link?.getAttribute('rel')).toBeNull();
   });
 
   it('should render footer with copyright', async () => {
@@ -235,10 +313,12 @@ describe('modus-wc-profile-menu', () => {
     expect(panel?.getAttribute('height')).toBe('auto');
   });
 
-  it('should render without optional manageTrimbleIdLink', async () => {
+  it('should render without optional manageTrimbleId', async () => {
     const propsWithoutLink = {
-      ...mockProfileProps,
-      manageTrimbleIdLink: undefined,
+      profileImageUrl: mockProfileProps.profileImageUrl,
+      headerName: mockProfileProps.headerName,
+      userName: mockProfileProps.userName,
+      userEmail: mockProfileProps.userEmail,
     };
 
     const page = await newSpecPage({
