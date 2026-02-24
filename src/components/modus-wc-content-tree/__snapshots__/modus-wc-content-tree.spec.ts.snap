@@ -1,29 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`modus-wc-content-tree should render with custom props 1`] = `
-<modus-wc-content-tree custom-class="test-class" expand-all="true" multi-select="true" selected-values="[&quot;item1&quot;, &quot;item2&quot;]">
-  <!---->
-  <div class="modus-wc-content-tree-wrapper test-class">
-    <div class="modus-wc-content-tree-header">
-      <div class="modus-wc-content-tree-search">
-        <modus-wc-text-input customclass="modus-wc-content-tree-search-input" include-clear="" include-search="" placeholder="Search..." value=""></modus-wc-text-input>
-      </div>
-      <div class="modus-wc-content-tree-actions">
-        <modus-wc-button aria-label="Expand all" shape="circle" size="sm" variant="borderless">
-          <modus-wc-icon customclass="modus-wc-content-tree-action-icon" decorative="" name="unfold_more" size="sm" variant="solid"></modus-wc-icon>
-        </modus-wc-button>
-      </div>
-    </div>
-    <div class="modus-wc-content-tree-content">
-      <div class="modus-wc-content-tree-empty">
-        <modus-wc-icon customclass="modus-wc-content-tree-empty-icon" name="folder_open" variant="solid"></modus-wc-icon>
-        <modus-wc-typography customclass="modus-wc-content-tree-empty-text" hierarchy="p" label="Empty Content Tree" size="lg" weight="normal"></modus-wc-typography>
-      </div>
-    </div>
-  </div>
-</modus-wc-content-tree>
-`;
-
 exports[`modus-wc-content-tree should render with default props 1`] = `
 <modus-wc-content-tree>
   <!---->

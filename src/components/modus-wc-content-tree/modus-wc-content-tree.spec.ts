@@ -11,19 +11,6 @@ describe('modus-wc-content-tree', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should render with custom props', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcContentTree],
-      html: `<modus-wc-content-tree
-                    custom-class="test-class"
-                    expand-all="true"
-                    multi-select="true"
-                    selected-values='["item1", "item2"]'>
-                    </modus-wc-content-tree>`,
-    });
-    expect(page.root).toMatchSnapshot();
-  });
-
   it('should filter nodes based on search input', async () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],

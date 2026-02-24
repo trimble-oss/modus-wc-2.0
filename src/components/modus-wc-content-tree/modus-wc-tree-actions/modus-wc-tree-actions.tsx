@@ -21,6 +21,10 @@ export interface ModusTreeItemActions {
   disabled?: boolean; // Optional flag to disable the action
 }
 
+/** * ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.
+ * It supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.
+ */
+
 @Component({
   tag: 'modus-wc-tree-actions',
   styleUrl: 'modus-wc-tree-actions.scss',
