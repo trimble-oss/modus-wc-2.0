@@ -41,12 +41,14 @@ import ModusToastExamples from './examples/ModusToastExamples.vue';
 import ModusToolbarExamples from './examples/ModusToolbarExamples.vue';
 import ModusTooltipExamples from './examples/ModusTooltipExamples.vue';
 import ModusTypographyExamples from './examples/ModusTypographyExamples.vue';
+import ModusLogoExamples from './examples/ModusLogoExamples.vue';
 </script>
 
 <template>
   <modus-wc-theme-provider :initial-theme="{ theme: 'modus-classic-light' }">
     <h1>Modus Vue Examples</h1>
     <div>
+      <ModusLogoExamples />
       <ModusAccordionExamples />
       <ModusAlertExamples />
       <ModusAutocompleteExamples />

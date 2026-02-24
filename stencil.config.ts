@@ -45,6 +45,10 @@ export const config: Config = {
         { src: './styles/modus-icons.css', dest: 'dist/modus-icons.css' },
         { src: './styles/assets', dest: 'dist/styles/assets' },
         { src: './styles/assets', dest: 'dist/assets' },
+        {
+          src: './components/modus-wc-logo/assets',
+          dest: 'dist/assets',
+        },
         { src: '../README.md', dest: 'dist/README.md' },
         { src: '../LICENSE', dest: 'dist/LICENSE' },
         { src: '../package.json', dest: 'dist/package.json' },

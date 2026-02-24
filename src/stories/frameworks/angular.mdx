@@ -39,7 +39,35 @@ You will need to import our styling in your main JavaScript or CSS file:
 import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
 ```
 
-### 3. Import Modus Angular Web Components library into your Angular app's module:
+### 3. Configure asset copying in `angular.json`:
+
+For components that use static assets (like `modus-wc-logo`), you need to configure Angular to copy the assets to your build output.
+
+Add this to your `angular.json` under `projects > your-app > architect > build > options`:
+
+```json
+{
+  "projects": {
+    "your-app": {
+      "architect": {
+        "build": {
+          "options": {
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "node_modules/@trimble-oss/moduswebcomponents/assets",
+                "output": "/assets"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### 4. Import Modus Angular Web Components library into your Angular app's module:
 
 ```ts
 // app.module.ts

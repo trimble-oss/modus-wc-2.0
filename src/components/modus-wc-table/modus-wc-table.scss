@@ -201,7 +201,10 @@ modus-wc-table .modus-wc-overflow-x-auto {
     }
   }
 
-  tbody tr {
+  /* Cursor styles based on interactivity - apply to cells, not rows */
+
+  /* Editable cells should show pointer cursor */
+  td.editable-cell {
     cursor: pointer;
   }
 
