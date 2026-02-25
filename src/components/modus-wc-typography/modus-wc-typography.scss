@@ -94,7 +94,7 @@ modus-wc-typography {
 
 [data-theme='connect-light'] modus-wc-typography,
 [data-theme='connect-dark'] modus-wc-typography {
-  * {
+  :not(a) {
     color: var(--modus-wc-color-base-content-low-contrast);
   }
 
