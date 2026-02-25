@@ -74,7 +74,6 @@ export class ModusWcTreeItem {
   /** Event emitted when a tree item is selected. */
   @StencilEvent({ bubbles: true, composed: true }) itemSelect!: EventEmitter<{
     value: string;
-    selected?: boolean;
   }>;
 
   /** Event emitted when checkbox selection changes in multi-select mode. */
@@ -239,7 +238,7 @@ export class ModusWcTreeItem {
 
   private handleEmittedSelect = () => {
     if (this.checkbox) return;
-    this.itemSelect.emit({ value: this.value, selected: this.selected });
+    this.itemSelect.emit({ value: this.value });
   };
 
   private handleCheckboxClick = () => {

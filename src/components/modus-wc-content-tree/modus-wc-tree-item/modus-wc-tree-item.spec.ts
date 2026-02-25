@@ -1,5 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcTreeItem, ITreeItemElement } from './modus-wc-tree-item';
+import { ITreeItemElement, ModusWcTreeItem } from './modus-wc-tree-item';
 
 describe('modus-wc-tree-item', () => {
   it('renders with default props', async () => {
