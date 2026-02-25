@@ -73,6 +73,13 @@ export interface INavbarUserCard {
  * A customizable navbar component used for top level navigation of all Trimble applications.
  *
  *The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
+
+<strong><span style="color: black">⚠️ Deprecation Alert</span></strong>
+
+ 
+The `trimbleLogoClick` event is deprecated and will be removed in a future major version.
+Please use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.
+The `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.
  */
 @Component({
   tag: 'modus-wc-navbar',
@@ -180,6 +187,10 @@ export class ModusWcNavbar {
 
   /** Event emitted when the logo is clicked or activated via keyboard. */
   @StencilEvent() logoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
+  /** @deprecated */
+  /** Deprecated: Use logoClick instead. This event will be removed in a future release.*/
+  @StencilEvent() trimbleLogoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the user menu open state changes. */
   @StencilEvent() userMenuOpenChange!: EventEmitter<boolean>;
@@ -367,6 +378,7 @@ export class ModusWcNavbar {
     event: CustomEvent<MouseEvent | KeyboardEvent>
   ) => {
     this.logoClick.emit(event.detail);
+    this.trimbleLogoClick.emit(event.detail);
   };
 
   private toggleApps = () => {

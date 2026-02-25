@@ -144,6 +144,7 @@ const meta: Meta<NavbarArgs> = {
         'searchInputOpenChange',
         'signOutClick',
         'logoClick',
+        'trimbleLogoClick',
         'userMenuOpenChange',
       ],
     },
